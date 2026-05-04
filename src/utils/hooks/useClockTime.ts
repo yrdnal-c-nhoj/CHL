@@ -78,47 +78,20 @@ export function generateTickMarks(
   thickness: number;
   isHour: boolean;
 }> {
-  const tickMarks = [];
-
-  // Hour marks
-  for (let i = 0; i < 12; i++) {
-    const angle = (i * 30 - 90) * (Math.PI / 180); // -90 to start from top
-    const x1 = centerX + Math.cos(angle) * (radius - 15);
-    const y1 = centerY + Math.sin(angle) * (radius - 15);
-    const x2 = centerX + Math.cos(angle) * radius;
-    const y2 = centerY + Math.sin(angle) * radius;
-
-    tickMarks.push({
-      x1,
-      y1,
-      x2,
-      y2,
-      thickness: 3,
-      isHour: true,
-    });
-  }
-
-  // Minute marks
-  for (let i = 0; i < 60; i++) {
-    if (i % 5 === 0) continue; // Skip hour positions
-
+  return Array.from({ length: 60 }, (_, i) => {
+    const isHour = i % 5 === 0;
     const angle = (i * 6 - 90) * (Math.PI / 180);
-    const x1 = centerX + Math.cos(angle) * (radius - 5);
-    const y1 = centerY + Math.sin(angle) * (radius - 5);
-    const x2 = centerX + Math.cos(angle) * radius;
-    const y2 = centerY + Math.sin(angle) * radius;
+    const inset = isHour ? 15 : 5;
 
-    tickMarks.push({
-      x1,
-      y1,
-      x2,
-      y2,
-      thickness: 1,
-      isHour: false,
-    });
-  }
-
-  return tickMarks;
+    return {
+      x1: centerX + Math.cos(angle) * (radius - inset),
+      y1: centerY + Math.sin(angle) * (radius - inset),
+      x2: centerX + Math.cos(angle) * radius,
+      y2: centerY + Math.sin(angle) * radius,
+      thickness: isHour ? 3 : 1,
+      isHour,
+    };
+  });
 }
 
 /**

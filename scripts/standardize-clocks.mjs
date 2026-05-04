@@ -37,7 +37,25 @@ sourceFiles.forEach(file => {
     }
   });
 
-  // 2. Find the default export (the Clock component)
+  // 3. Fix incorrect React.FC usage on logic functions
+  // We look for variables typed as React.FC that aren't using PascalCase (standard for components)
+  file.getDescendantsOfKind(SyntaxKind.VariableDeclaration).forEach(decl => {
+    const typeNode = decl.getTypeNode();
+    if (typeNode) {
+      const typeText = typeNode.getText().replace(/\s+/g, '');
+      const fcTypes = ['React.FC', 'FC', 'React.FC<{}>', 'FC<{}>'];
+      
+      if (fcTypes.some(t => typeText.startsWith(t))) {
+        const name = decl.getName();
+        // If it's not PascalCase, it's likely a logic function (e.g., updateTime), not a component.
+        if (!/^[A-Z]/.test(name)) {
+          decl.removeType();
+        }
+      }
+    }
+  });
+
+  // 4. Find the default export (the Clock component)
   const defaultExport = file.getDefaultExportSymbol();
   if (defaultExport) {
     const declaration = defaultExport.getDeclarations()[0];
