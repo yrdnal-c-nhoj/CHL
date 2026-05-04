@@ -55,7 +55,7 @@ const DiscClock: React.FC = () => {
   );
 };
 
-const Disc = ({ size, degrees, color, label }) => (
+const Disc = ({ size, degrees, color }: { size: string; degrees: number; color: string }) => (
   <div
     style={{
       ...styles.disc,
@@ -101,6 +101,21 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     willChange: 'transform', // Optimization for animations
+  },
+  leadLine: {
+    position: 'absolute',
+    top: '0',
+    left: '50%',
+    width: '2px',
+    height: '50%',
+    transform: 'translateX(-50%)',
+  },
+  centerPin: {
+    width: '12px',
+    height: '12px',
+    backgroundColor: '#000',
+    borderRadius: '50%',
+    zIndex: 10,
   },
 };
 
