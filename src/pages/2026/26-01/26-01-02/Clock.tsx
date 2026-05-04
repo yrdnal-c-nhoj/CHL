@@ -53,7 +53,7 @@ const StretchedClock: React.FC = () => {
     };
   }, []);
 
-  const formatTime = (date) => {
+  const formatTime = (date: Date) => {
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
     return { hours, minutes };
@@ -61,7 +61,7 @@ const StretchedClock: React.FC = () => {
 
   const { hours, minutes } = formatTime(time);
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     position: 'relative',
     width: '100vw',
     height: '100dvh',
@@ -76,7 +76,7 @@ const StretchedClock: React.FC = () => {
     visibility: fontsLoaded && bgReady ? 'visible' : 'hidden',
   };
 
-  const segmentStyle = {
+  const segmentStyle: React.CSSProperties = {
     position: 'relative', // Required for the absolute pseudo-element background
     display: 'flex',
     flex: 1,
@@ -85,7 +85,7 @@ const StretchedClock: React.FC = () => {
     overflow: 'hidden',
   };
 
-  const textStyle = {
+  const textStyle: React.CSSProperties = {
     position: 'relative', // Ensures text stays above the background layer
     zIndex: 2,
     color: '#FFD505',
