@@ -46,7 +46,13 @@ export default defineConfig({
       output: {
         // Optimize chunk splitting
         manualChunks: (id) => {
-          if (!id.includes('node_modules')) return;
+          if (!id.includes('node_modules')) {
+            // Split clock utilities into separate chunk
+            if (id.includes('@/utils/')) return 'utils';
+            // Split clock pages into smaller chunks
+            if (id.includes('@/pages/')) return 'clocks';
+            return;
+          }
           
           if (id.includes('three')) return 'three';
           
@@ -64,6 +70,14 @@ export default defineConfig({
           if (id.includes('framer-motion')) return 'animation';
           return 'vendor';
         },
+      },
+      onwarn: (warning, warn) => {
+        // Suppress circular dependency warnings for now
+        if (warning.code === 'CIRCULAR_DEPENDENCY') {
+          console.warn('Circular dependency detected:', warning.message);
+          return;
+        }
+        warn(warning);
       },
     },
     // Optimize chunk size warning limit
@@ -86,6 +100,7 @@ export default defineConfig({
       'three',
       '@react-three/fiber',
       '@react-three/drei',
+      '@/utils/clockUtils',
     ],
     exclude: ['@types/three'], // Exclude type definitions
   },
