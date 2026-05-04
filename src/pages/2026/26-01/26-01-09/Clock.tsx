@@ -17,7 +17,7 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
-const BackgroundGrid = ({ children }) => {
+const BackgroundGrid = ({ children }: { children: React.ReactNode }) => {
   const [isBackgroundLoaded, setIsBackgroundLoaded] = useState<boolean>(false);
   const [isClient, setIsClient] = useState<boolean>(false);
 
@@ -54,7 +54,7 @@ const BackgroundGrid = ({ children }) => {
     };
   }, []);
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     position: 'fixed',
     top: 0,
     left: 0,
@@ -166,7 +166,7 @@ export default function TicTacToeClock() {
   // Font is loaded by useSuspenseFontLoader in BackgroundGrid component
 
   const fontFamily = 'CustomClockFont, monospace';
-  const formatTime = useCallback((date) => {
+  const formatTime = useCallback((date: Date) => {
     const hours = date.getHours();
     const minutes = date.getHours();
     const seconds = date.getSeconds();
