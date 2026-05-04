@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import centerImage from '@/assets/images/2025/25-09/25-09-04/sky.gif';
 import bgImage from '@/assets/images/2025/25-09/25-09-04/wood.jpeg';

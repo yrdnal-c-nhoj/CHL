@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import sliFont from '@/assets/fonts/2025/25-07-10-sli.otf';
 import sli2Font from '@/assets/fonts/2025/25-07-10-sli2.ttf';

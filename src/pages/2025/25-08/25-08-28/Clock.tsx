@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import clockFontFile from '@/assets/fonts/2025/25-08-28-gob.ttf';
 import backgroundImage from '@/assets/images/2025/25-08/25-08-28/gob.jpg';

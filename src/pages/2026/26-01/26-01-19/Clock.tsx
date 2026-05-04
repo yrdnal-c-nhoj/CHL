@@ -1,354 +1,275 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 
-import bgImage from '@/assets/images/2026/26-01/26-01-19/hands.webp';
-import { useMillisecondClock } from '@/utils/hooks';
+import custom260119Font from '@/assets/fonts/2026/26-01-19-migrate.ttf';
+import tileImage from '@/assets/images/2026/26-01/26-01-19/flap.webp';
+import backgroundImage from '@/assets/images/2026/26-01/26-01-19/fllap.webp';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
-import styles from './Clock.module.css';
+const fontFamilyName = 'Custom260119Font';
 
-const COLORS = {
-    bg: '#FFFFFF',
-    secondHand: '#F1E206', // Bright Yellow
-    mainHands: '#1E293B',
-    border: '#330202', // Darker border for contrast
-};
+export const fontConfigs = [
+    { fontFamily: fontFamilyName, fontUrl: custom260119Font },
+];
 
-// --- Physics deviation functions ---
-const getJumpOvershoot = (f: number) => (f < 0.2 ? f * 10 : f < 0.5 ? 2 : 0);
-const getSlowWiggle = (f: number) => Math.sin(f * Math.PI * 2) * 12;
-const getElasticStretch = (f: number) => (f < 0.7 ? -f * 8 : -5.6 + (f - 0.7) * 40);
-const getHeavyTwitch = (f: number) => (f > 0.4 && f < 0.6 ? 6 : 0);
-const getDelayedRush = (f: number) => (f < 0.6 ? -10 : (f - 0.6) * 25);
-
-interface ComplexYellowHandProps {
-    rotation: number;
-    zIndex: number;
-    transition?: string;
-    size: number;
+interface ClockNumbersProps {
+    fontFamily: string;
 }
 
-const ComplexYellowHand: React.FC<ComplexYellowHandProps> = ({ rotation, zIndex, transition = 'none', size }) => {
-  const radius = size / 2;
-  const handWidth = size * 0.008;
-  const outlineWidth = `${size * 0.0015}vh`;
-
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        bottom: '50%',
-        left: '50%',
-        width: handWidth,
-        height: 0,
-        transformOrigin: 'bottom center',
-        transform: `translateX(-50%) rotate(${rotation}deg)`,
-        zIndex,
-        transition,
-      }}
-    >
-      {/* Arrow head (Black Border Layer) */}
-      <div
-        style={{
-          width: 0,
-          height: 0,
-          borderLeft: `${size * 0.09}vh solid transparent`,
-          borderRight: `${size * 0.09}vh solid transparent`,
-          borderBottom: `${size * 0.08}vh solid ${COLORS.border}`,
-          position: 'absolute',
-          bottom: `${radius * 0.9}vh`,
-          left: '50%',
-          transform: 'translateX(-50%)',
-        }}
-      />
-
-      {/* Arrow head (Yellow Fill Layer) */}
-      <div
-        style={{
-          width: 0,
-          height: 0,
-          borderLeft: `${size * 0.08}vh solid transparent`,
-          borderRight: `${size * 0.08}vh solid transparent`,
-          borderBottom: `${size * 0.074}vh solid ${COLORS.secondHand}`,
-          position: 'absolute',
-          bottom: `${radius * 0.9}vh`,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 1,
-        }}
-      />
-
-      {/* Main blade */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          width: '100%',
-          height: `${radius * 0.8}vh`,
-          background: COLORS.secondHand,
-          borderTop: `${outlineWidth} solid ${COLORS.border}`,
-          borderLeft: `${outlineWidth} solid ${COLORS.border}`,
-          borderRight: `${outlineWidth} solid ${COLORS.border}`,
-          boxSizing: 'border-box',
-        }}
-      />
-
-      {/* Tail */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: `${radius * 0.3}vh`,
-          background: COLORS.secondHand,
-          border: `${outlineWidth} solid ${COLORS.border}`,
-          borderTop: 'none',
-          boxSizing: 'border-box',
-        }}
-      />
-
-      {/* Tail ball */}
-      <div
-        style={{
-          position: 'absolute',
-          top: `${radius * 0.4}vh`,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: `${size * 0.08}vh`,
-          height: `${size * 0.08}vh`,
-          borderRadius: '50%',
-          background: COLORS.secondHand,
-          border: `${outlineWidth} solid ${COLORS.border}`,
-          boxSizing: 'border-box',
-        }}
-      />
-    </div>
-  );
-};
+// Memoize Numbers so they don't re-render every second
+const ClockNumbers = React.memo<ClockNumbersProps>(({ fontFamily }) => (
+    <>
+        {[...Array(12)].map((_, i) => (
+            <div
+                key={i}
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'flex-start',
+                    paddingTop: '2%',
+                    transform: `rotate(${i * 30}deg)`,
+                }}
+            >
+                <span style={{
+                    fontSize: 'min(11vw, 11vh)',
+                    color: '#830DD2',
+                    textShadow: '0 0 15px #8B5CF6',
+                    userSelect: 'none',
+                    fontFamily
+                }}>{i === 0 ? 12 : i}</span>
+            </div>
+        ))}
+    </>
+));
 
 const ManyHandClock: React.FC = () => {
-  const time = useMillisecondClock(); // Use the standardized hook
-  const [clockSize, setClockSize] = useState<number>(90);
-  const [bgReady, setBgReady] = useState<boolean>(false);
+    const [time, setTime] = useState(new Date());
+    const [bgReady, setBgReady] = useState(false);
 
-  // Hand positions
-  const [forgetfulPos, setForgetfulPos] = useState<number>(0);
-  const [sleepyPos1, setSleepyPos1] = useState<number>(0);
-  const [sleepyPos2, setSleepyPos2] = useState<number>(0);
-  const [panickedPos, setPanickedPos] = useState<number>(0);
-
-  // Behavior Refs
-  const nextChangeRef = useRef(0);
-  const isFrozenRef = useRef(false);
-  const frozenAtRef = useRef(0);
-  const sleepyRefs = useRef([
-    { frozen: false, at: 0, next: 0, shaking: false, start: 0 },
-    { frozen: false, at: 0, next: 0, shaking: false, start: 0 },
-  ]);
-  const panicStateRef = useRef('normal');
-  const panicStuckAtRef = useRef(0);
+    useSuspenseFontLoader(fontConfigs);
 
     useEffect(() => {
-        const updateSize = () => {
-            const vmin = Math.min(window.innerWidth, window.innerHeight);
-            setClockSize((vmin / window.innerHeight) * 95);
-        };
-        updateSize();
-        window.addEventListener('resize', updateSize);
-        return () => window.removeEventListener('resize', updateSize);
+        const interval = setInterval(() => setTime(new Date()), 1000);
+        return () => clearInterval(interval);
     }, []);
 
-  // Preload background to avoid flash
-  useEffect(() => {
-    const img = new Image();
-    const done = () => setBgReady(true);
-    img.onload = done;
-    img.onerror = done;
-    img.src = bgImage;
-    const timeout = setTimeout(done, 1200);
-    return () => clearTimeout(timeout);
-  }, []);
+    useEffect(() => {
+        const img = new Image();
+        img.onload = () => setBgReady(true);
+        img.src = backgroundImage;
+    }, [backgroundImage]);
 
-  // Logic for hand behaviors, now triggered by `time` updates
-  useEffect(() => {
-    const currentTime = time.getTime();
-    const s = time.getSeconds();
-    const sFraction = s + time.getMilliseconds() / 1000;
-    const baseRotation = (sFraction / 60) * 360;
+    const hours = time.getHours() % 12;
+    const minutes = time.getMinutes();
+    const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+    const hourRot = ((hours + minutes / 60) / 12) * 360;
+    const minuteRot = ((minutes + seconds / 60) / 60) * 360;
+    const baseSecondRot = (seconds / 60) * 360;
+    const tickingRot = Math.floor(seconds) * 6;
 
-    // 1. Forgetful Logic
-    // This logic needs to be re-evaluated on every `time` update
-      if (currentTime > nextChangeRef.current) {
-        isFrozenRef.current = !isFrozenRef.current;
-        if (isFrozenRef.current) frozenAtRef.current = baseRotation;
-        nextChangeRef.current = currentTime + (Math.random() * 3000 + 1000);
-      }
-      setForgetfulPos(isFrozenRef.current ? frozenAtRef.current : baseRotation);
+    const clockSize = 80;
 
-    // 2. Sleepy Logic
-      sleepyRefs.current.forEach((ref, i) => {
-        if (currentTime > ref.next) {
-          if (ref.frozen) {
-            ref.shaking = true;
-            ref.start = currentTime;
-            ref.frozen = false;
-          } else {
-            ref.frozen = true;
-            ref.at = baseRotation;
-          }
-          ref.next = currentTime + (Math.random() * 6000 + 2000);
-        }
-        if (ref.shaking && currentTime - ref.start > 300) ref.shaking = false;
-        const pos = ref.frozen
-          ? ref.at
-          : ref.shaking
-            ? ref.at + Math.sin(currentTime * (0.05 + i * 0.01)) * 8
-            : baseRotation;
-        i === 0 ? setSleepyPos1(pos) : setSleepyPos2(pos);
-      });
+    const panicStateRef = useRef<'calm' | 'rushing'>('calm');
+    const forgetfulPos = useMemo(() => baseSecondRot - Math.random() * 30, [baseSecondRot]);
+    const sleepyPos1 = useMemo(() => baseSecondRot - Math.random() * 20, [baseSecondRot]);
+    const sleepyPos2 = useMemo(() => baseSecondRot - Math.random() * 25, [baseSecondRot]);
+    const panickedPos = useMemo(() => baseSecondRot + Math.random() * 40, [baseSecondRot]);
 
-    // 3. Panicked Logic
-      if (s >= 0 && s < 6) {
-        if (panicStateRef.current === 'normal') {
-          panicStateRef.current = 'stuck';
-          panicStuckAtRef.current = (Math.random() * 3 + 1) * 6;
-        }
-      }
-      if (panicStateRef.current === 'stuck') {
-        setPanickedPos(panicStuckAtRef.current);
-        if (s >= 7) panicStateRef.current = 'rushing';
-      } else if (panicStateRef.current === 'rushing') {
-        const shake = Math.sin(currentTime * 0.12) * 2.5;
-        setPanickedPos(baseRotation + 12 + shake);
-        if (s >= 15) panicStateRef.current = 'normal';
-      } else {
-        setPanickedPos(baseRotation);
-      }
-  }, [time]); // Re-run this effect whenever `time` updates
+    const deviations = useMemo(() => [ // Memoize deviations as they depend on `s`
+        Math.sin(seconds % 1) * 12,
+        (seconds % 1 < 0.6 ? -10 : (seconds % 1 - 0.6) * 25),
+    ], [seconds]);
 
-  const h = time.getHours();
-  const m = time.getMinutes();
-  const s = time.getSeconds() + time.getMilliseconds() / 1000; // Use fractional seconds from time hook
-  const hourRot = (((h % 12) + m / 60) / 12) * 360;
-  const minuteRot = ((m + s / 60) / 60) * 360;
-  const baseSecondRot = (s / 60) * 360;
-  const tickingRot = Math.floor(s) * 6;
-  const deviations = useMemo(() => [ // Memoize deviations as they depend on `s`
-    getHeavyTwitch(s % 1),
-    getDelayedRush(s % 1),
-  ];
+    interface ComplexYellowHandProps {
+        rotation: number;
+        zIndex: number;
+        transition?: string;
+        size: number;
+    }
 
-  return (
-    <div
-      className={styles.container}
-      style={{ // This style object is correctly typed as React.CSSProperties
-        backgroundImage: `radial-gradient(circle at center, rgba(135, 168, 126, 0.73) 0%, rgba(123, 135, 87, 0.4) 100%), url(${bgImage})`,
-        opacity: bgReady ? 1 : 0,
-        visibility: bgReady ? 'visible' : 'hidden',
-      }}
-    >
-      <div
-        style={{
-          position: 'relative',
-          width: `${clockSize}vh`,
-          height: `${clockSize}vh`,
-        }}
-      >
-        {/* Main Hands (Hour/Minute) */}
+    const ComplexYellowHand: React.FC<ComplexYellowHandProps> = ({ rotation, zIndex, transition = 'none', size }) => {
+        const radius = size / 2;
+        const handWidth = size * 0.008;
+        const outlineWidth = `${size * 0.0015}vh`;
+
+        return (
+            <div
+                style={{
+                    position: 'absolute',
+                    bottom: '50%',
+                    left: '50%',
+                    width: handWidth,
+                    height: 0,
+                    transformOrigin: 'bottom center',
+                    transform: `translateX(-50%) rotate(${rotation}deg)`,
+                    zIndex,
+                    transition,
+                }}
+            >
+                {/* Arrow head (Black Border Layer) */}
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: `-${radius * 0.15}vh`,
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: 0,
+                        height: 0,
+                        borderLeft: `${handWidth / 2}vh solid transparent`,
+                        borderRight: `${handWidth / 2}vh solid transparent`,
+                        borderBottom: `${radius * 0.15}vh solid #000`,
+                    }}
+                />
+                {/* Arrow head (Yellow Fill) */}
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: `-${radius * 0.14}vh`,
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: 0,
+                        height: 0,
+                        borderLeft: `${handWidth / 2.5}vh solid transparent`,
+                        borderRight: `${handWidth / 2.5}vh solid transparent`,
+                        borderBottom: `${radius * 0.14}vh solid #F1E206`,
+                    }}
+                />
+            </div>
+        );
+    };
+
+    return (
         <div
-          className={styles.hand}
-          style={{
-            height: `${clockSize * 0.25}vh`,
-            width: `${clockSize * 0.015}vh`,
-            background: COLORS.mainHands,
-            transform: `translateX(-50%) rotate(${hourRot}deg)`,
-          }}
-        />
-        <div
-          className={styles.hand}
-          style={{
-            height: `${clockSize * 0.4}vh`,
-            width: `${clockSize * 0.01}vh`,
-            background: COLORS.mainHands,
-            transform: `translateX(-50%) rotate(${minuteRot}deg)`,
-            zIndex: 11,
-          }}
-        />
+            style={{
+                width: '100vw',
+                height: '100dvh',
+                background: 'linear-gradient(180deg, #185591 0%, #835CD7 100%)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                overflow: 'hidden',
+            }}
+        >
+            <div
+                style={{
+                    width: `${clockSize}vh`,
+                    height: `${clockSize}vh`,
+                    position: 'relative',
+                }}
+            >
+                {/* Main Hands (Hour/Minute) */}
+                <div
+                    style={{
+                        position: 'absolute',
+                        bottom: '50%',
+                        left: '50%',
+                        width: `${clockSize * 0.015}vh`,
+                        height: `${clockSize * 0.25}vh`,
+                        background: '#1E293B',
+                        transform: `translateX(-50%) rotate(${hourRot}deg)`,
+                        transformOrigin: 'bottom center',
+                        borderRadius: '10px',
+                        boxShadow: '0 0 20px #8B5CF6',
+                        zIndex: 15,
+                    }}
+                />
+                <div
+                    style={{
+                        position: 'absolute',
+                        bottom: '50%',
+                        left: '50%',
+                        width: `${clockSize * 0.01}vh`,
+                        height: `${clockSize * 0.4}vh`,
+                        background: '#1E293B',
+                        transform: `translateX(-50%) rotate(${minuteRot}deg)`,
+                        transformOrigin: 'bottom center',
+                        borderRadius: '10px',
+                        boxShadow: '0 0 20px #8B5CF6',
+                        zIndex: 11,
+                    }}
+                />
 
-        {/* --- YELLOW HAND ARMY --- */}
+                {/* --- YELLOW HAND ARMY --- */}
 
-        {/* Regular Second Hand (At the very bottom of the yellow pile) */}
-        <ComplexYellowHand
-          rotation={baseSecondRot}
-          size={clockSize}
-          zIndex={1}
-          transition="none"
-        />
+                {/* Regular Second Hand (At very bottom of yellow pile) */}
+                <ComplexYellowHand
+                    rotation={baseSecondRot}
+                    size={clockSize}
+                    zIndex={1}
+                    transition="none"
+                />
 
-        {/* Deviation Hands */}
-        {deviations.map((dev, i) => (
-          <ComplexYellowHand
-            key={i}
-            rotation={baseSecondRot + dev}
-            size={clockSize}
-            zIndex={20 + i}
-            transition="transform 0.1s ease-out"
-          />
-        ))}
+                {/* Deviation Hands */}
+                {deviations.map((dev, i) => (
+                    <ComplexYellowHand
+                        key={i}
+                        rotation={baseSecondRot + dev}
+                        size={clockSize}
+                        zIndex={20 + i}
+                        transition="transform 0.1s ease-out"
+                    />
+                ))}
 
-        {/* Forgetful Hand */}
-        <ComplexYellowHand
-          rotation={forgetfulPos}
-          size={clockSize}
-          zIndex={40}
-          transition="transform 0.5s ease-out"
-        />
+                {/* Forgetful Hand */}
+                <ComplexYellowHand
+                    rotation={forgetfulPos}
+                    size={clockSize}
+                    zIndex={40}
+                    transition="transform 0.5s ease-out"
+                />
 
-        {/* Sleepy Hands */}
-        <ComplexYellowHand
-          rotation={sleepyPos1}
-          size={clockSize}
-          zIndex={41}
-          transition="transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)"
-        />
-        <ComplexYellowHand
-          rotation={sleepyPos2}
-          size={clockSize}
-          zIndex={42}
-          transition="transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)"
-        />
+                {/* Sleepy Hands */}
+                <ComplexYellowHand
+                    rotation={sleepyPos1}
+                    size={clockSize}
+                    zIndex={41}
+                    transition="transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)"
+                />
+                <ComplexYellowHand
+                    rotation={sleepyPos2}
+                    size={clockSize}
+                    zIndex={42}
+                    transition="transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)"
+                />
 
-        {/* Ticking Hand */}
-        <ComplexYellowHand
-          rotation={tickingRot}
-          size={clockSize}
-          zIndex={90}
-          transition="transform 0.15s cubic-bezier(0.2, 2, 0.4, 1)"
-        />
+                {/* Ticking Hand */}
+                <ComplexYellowHand
+                    rotation={tickingRot}
+                    size={clockSize}
+                    zIndex={90}
+                    transition="transform 0.15s cubic-bezier(0.2, 2, 0.4, 1)"
+                />
 
-        {/* Panicked Hand (Topmost) */}
-        <ComplexYellowHand
-          rotation={panickedPos}
-          size={clockSize}
-          zIndex={150}
-          transition={
-            panicStateRef.current === 'rushing'
-              ? 'transform 0.4s cubic-bezier(0.17, 0.67, 0.6, 1.3)'
-              : 'none'
-          }
-        />
+                {/* Panicked Hand (Topmost) */}
+                <ComplexYellowHand
+                    rotation={panickedPos}
+                    size={clockSize}
+                    zIndex={150}
+                    transition={
+                        panicStateRef.current === 'rushing'
+                            ? 'transform 0.4s cubic-bezier(0.17, 0.67, 0.6, 1.3)'
+                            : 'none'
+                    }
+                />
 
-        {/* Center Dot */}
-        <div
-          className={styles.centerDot}
-          style={{
-            width: `${clockSize * 0.02}vh`,
-            height: `${clockSize * 0.02}vh`,
-          }}
-        />
-      </div>
-    </div>
-  );
+                {/* Center Dot */}
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        width: `${clockSize * 0.02}vh`,
+                        height: `${clockSize * 0.02}vh`,
+                        background: '#330202',
+                        borderRadius: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        zIndex: 200,
+                    }}
+                />
+            </div>
+        </div>
+    );
 };
 
 export default ManyHandClock;

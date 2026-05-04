@@ -1,5 +1,5 @@
 // BTS: Use named imports for hooks and types to satisfy the 'automatic' JSX runtime
-import { useMemo, type FC } from 'react';
+import React, { useMemo, type FC } from 'react';
 
 import myFontWoff2 from '@/assets/fonts/2025/25-08-02-hea.ttf';
 import bg2 from '@/assets/images/2025/25-08/25-08-02/25-08-02-em.webp';

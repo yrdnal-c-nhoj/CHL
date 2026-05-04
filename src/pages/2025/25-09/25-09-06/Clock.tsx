@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import font_06_09_2025 from '@/assets/fonts/2025/25-09-06-boom.ttf';
 import hourHandImg from '@/assets/images/2025/25-09/25-09-06/b.gif';

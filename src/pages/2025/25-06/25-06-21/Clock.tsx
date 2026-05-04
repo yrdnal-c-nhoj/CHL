@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import fontUrl from '@/assets/fonts/2025/25-06-21-merc.ttf';
 import minuteImg from '@/assets/images/2025/25-06/25-06-21/memm.gif';

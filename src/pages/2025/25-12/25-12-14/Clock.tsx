@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 import screw251214 from '@/assets/fonts/2025/25-12-14-steel.ttf?url';
 import bgImage from '@/assets/images/2025/25-12/25-12-14/steel.webp';

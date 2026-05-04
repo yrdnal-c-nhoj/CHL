@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
 import WebFonnov25ufuf from '@/assets/fonts/2025/25-11-05-webs1.ttf';
 import Webfont2511055 from '@/assets/fonts/2025/25-11-05-webs2.ttf';

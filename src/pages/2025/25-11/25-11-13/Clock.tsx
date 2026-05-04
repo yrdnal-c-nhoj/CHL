@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 import bgImage from '@/assets/images/2025/25-11/25-11-13/bg.webp';
 import { useClockTime } from '@/utils/hooks';

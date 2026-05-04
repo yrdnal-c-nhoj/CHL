@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import rockFont from '@/assets/fonts/2025/25-07-03-rock.ttf';
 import rocketGif from '@/assets/images/2025/25-07/25-07-03/rocket.gif';

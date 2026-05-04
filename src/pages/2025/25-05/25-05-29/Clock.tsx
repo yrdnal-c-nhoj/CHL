@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Color } from 'three';
 
 import watchFont from '@/assets/fonts/2025/25-05-29-watch.ttf?url';

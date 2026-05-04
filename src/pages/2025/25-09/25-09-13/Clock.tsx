@@ -10,23 +10,7 @@ const DigitalClock: React.FC = () => {
     const [isHorizontal, setIsHorizontal] = useState<boolean>(
         window.innerWidth >= 768,
     );
-    const [time, setTime] = useState(new Date());
-    const [prevTime, setPrevTime] = useState(new Date());
-    const [isHorizontal, setIsHorizontal] = useState<boolean>(
-        window.innerWidth >= 768,
-    );
 
-    const fontConfigs = useMemo(
-        () => [
-            {
-                fontFamily: 'CustomClockFont',
-                fontUrl: customFontpawww,
-                options: { weight: 'normal', style: 'normal' },
-            },
-        ],
-        [],
-    );
-    useSuspenseFontLoader(fontConfigs);
     const fontConfigs = useMemo(
         () => [
             {
@@ -46,161 +30,100 @@ const DigitalClock: React.FC = () => {
         }, 1000);
         return () => clearInterval(interval);
     }, [time]);
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setPrevTime(time);
-            setTime(new Date());
-        }, 1000);
-        return () => clearInterval(interval);
-    }, [time]);
 
     useEffect(() => {
-        const handleResize = () => setIsHorizontal(window.innerWidth >= 768);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-    useEffect(() => {
-        const handleResize = () => setIsHorizontal(window.innerWidth >= 768);
+        const handleResize = () => {
+            setIsHorizontal(window.innerWidth >= 768);
+        };
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const formatTime = (date) => {
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
-        const seconds = date.getSeconds();
-        const pad = (num) => String(num).padStart(2, '0');
-        return { hours: pad(hours), minutes: pad(minutes), seconds: pad(seconds) };
-    };
-    const formatTime = (date: Date) => {
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
-        const seconds = date.getSeconds();
-        const pad = (num: number) => String(num).padStart(2, '0');
-        return { hours: pad(hours), minutes: pad(minutes), seconds: pad(seconds) };
+    const formatDigits = (num: number): string[] => {
+        return num.toString().padStart(2, '0').split('');
     };
 
-    const current = formatTime(time);
-    const previous = formatTime(prevTime);
-    const replaceNine = (str) => str.replace(/9/g, 'q');
-    const current = formatTime(time);
-    const previous = formatTime(prevTime);
-    const replaceNine = (str: string) => str.replace(/9/g, 'q');
+    const current = {
+        hours: formatDigits(time.getHours()),
+        minutes: formatDigits(time.getMinutes()),
+        seconds: formatDigits(time.getSeconds()),
+    };
+
+    const previous = {
+        hours: formatDigits(prevTime.getHours()),
+        minutes: formatDigits(prevTime.getMinutes()),
+        seconds: formatDigits(prevTime.getSeconds()),
+    };
 
     const containerStyle: React.CSSProperties = {
-        width: '100vw',
-        height: '100dvh',
-        display: 'flex',
-        flexDirection: isHorizontal ? 'row' : 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        fontFamily: 'CustomClockFont, sans-serif',
-        visibility: 'visible',
-    };
-    const containerStyle: React.CSSProperties = {
-        width: '100vw',
-        height: '100dvh',
-        display: 'flex',
-        flexDirection: isHorizontal ? 'row' : 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        fontFamily: 'CustomClockFont, sans-serif',
-        visibility: 'visible',
-    };
-
-    const rowStyle: React.CSSProperties = { display: 'flex' };
-    const digitBoxStyle: React.CSSProperties = {
-        padding: '1rem 1.2rem',
-        fontSize: '6rem',
-        minWidth: '4rem',
-        minHeight: '4rem',
-        textAlign: 'center',
         position: 'relative',
-        overflow: 'hidden',
-    };
-    const digitStyle: React.CSSProperties = {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
+        width: '100vw',
+        height: '100vh',
+        background: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         display: 'flex',
-        justifyContent: 'center',
+        flexDirection: isHorizontal ? 'row' : 'column',
         alignItems: 'center',
-        background: `
-  const rowStyle: React.CSSProperties = { display: 'flex' };
-  const digitBoxStyle: React.CSSProperties = {
-    padding: '1rem 1.2rem',
-    fontSize: '6rem',
-    minWidth: '4rem',
-    minHeight: '4rem',
-    textAlign: 'center',
-    position: 'relative',
-    overflow: 'hidden',
-  };
-  const digitStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    background: `
-      linear- gradient(
-            to bottom,
-            rgba(20, 20, 20, 0.9) 15 %,
-            rgba(128, 128, 128, 0.9) 40 %,
-            rgba(128, 128, 128, 0.9) 50 %,
-            rgba(225, 225, 255, 0.9) 85 %,
-            white 90 %,
-            white 100 %
-      )
-            `,
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        backgroundClip: 'text',
-        textFillColor: 'transparent',
-        opacity: 0.8,
+        justifyContent: 'center',
+        gap: isHorizontal ? '2rem' : '1rem',
+        padding: '2rem',
+        fontFamily: 'CustomClockFont, monospace',
+        fontSize: isHorizontal ? '3rem' : '2rem',
+        color: '#fff',
+        textShadow: '0 0 10px rgba(0,0,0,0.8)',
     };
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    backgroundClip: 'text',
-    textFillColor: 'transparent',
-    opacity: 0.8,
-  };
 
-    const renderRow = (
-        currentStr: string,
-        previousStr: string,
-        boxStyle: React.CSSProperties,
-    ) =>
-        replaceNine(currentStr)
-            .split('')
-            .map((digit, idx) => (
+    const rowStyle: React.CSSProperties = {
+        display: 'flex',
+        gap: '1rem',
+        alignItems: 'center',
+    };
+
+    const digitBoxStyle: React.CSSProperties = {
+        position: 'relative',
+        width: isHorizontal ? '4rem' : '3rem',
+        height: isHorizontal ? '5rem' : '4rem',
+        border: '2px solid rgba(255,255,255,0.3)',
+        borderRadius: '0.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'rgba(0,0,0,0.5)',
+        backdropFilter: 'blur(5px)',
+    };
+
+    const digitStyle: React.CSSProperties = {
+        fontSize: isHorizontal ? '2.5rem' : '2rem',
+        fontWeight: 'bold',
+        color: '#00ff88',
+        textShadow: '0 0 5px rgba(0,255,136,0.5)',
+    };
+
+    const renderRow = (current: string[], previous: string[], boxStyle: React.CSSProperties) => {
+        return current.map((digit, idx) => {
+            const isChanged = digit !== previous[idx];
+            return (
                 <div key={idx} style={{ ...boxStyle, position: 'relative' }}>
                     <div style={digitStyle}>{digit}</div>
+                    {isChanged && (
+                        <div
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                background: 'rgba(0,255,136,0.2)',
+                                borderRadius: '0.5rem',
+                                animation: 'pulse 0.5s ease-out',
+                            }}
+                        />
+                    )}
                 </div>
-            ));
-  const renderRow = (
-    currentStr: string,
-    previousStr: string,
-    boxStyle: React.CSSProperties,
-  ) =>
-    replaceNine(currentStr)
-      .split('')
-      .map((digit, idx) => (
-        <div key={idx} style={{ ...boxStyle, position: 'relative' }}>
-          <div style={digitStyle}>{digit}</div>
-        </div>
-      ));
+            );
+        });
+    };
 
     return (
         <div style={containerStyle}>
@@ -208,21 +131,11 @@ const DigitalClock: React.FC = () => {
             <div style={rowStyle}>
                 {renderRow(current.hours, previous.hours, digitBoxStyle)}
             </div>
-  return (
-    <div style={containerStyle}>
-      {/* Hours */}
-      <div style={rowStyle}>
-        {renderRow(current.hours, previous.hours, digitBoxStyle)}
-      </div>
 
             {/* Minutes */}
             <div style={rowStyle}>
                 {renderRow(current.minutes, previous.minutes, digitBoxStyle)}
             </div>
-      {/* Minutes */}
-      <div style={rowStyle}>
-        {renderRow(current.minutes, previous.minutes, digitBoxStyle)}
-      </div>
 
             {/* Seconds */}
             <div style={rowStyle}>
@@ -230,12 +143,6 @@ const DigitalClock: React.FC = () => {
             </div>
         </div>
     );
-      {/* Seconds */}
-      <div style={rowStyle}>
-        {renderRow(current.seconds, previous.seconds, digitBoxStyle)}
-      </div>
-    </div>
-  );
 };
 
 export default DigitalClock;

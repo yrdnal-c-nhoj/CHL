@@ -1,5 +1,5 @@
 // src/components/PyramidzBackground.jsx
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Vite public folder imports (root-relative → auto-hashed in prod)
 import gizaFont from '@/assets/fonts/2026/26-01-06-26-01-05-giza.otf?url';

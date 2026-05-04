@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const widthVW = 1; // abstract width unit for SVG
 const heightVH = 6; // abstract height unit for SVG

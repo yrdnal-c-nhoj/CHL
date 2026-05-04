@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import gridImage from '@/assets/images/2025/25-10/25-10-02/lan.gif';
 

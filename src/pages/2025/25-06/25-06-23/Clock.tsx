@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import squFontUrl from '@/assets/fonts/2025/25-06-23-squ.ttf';
 

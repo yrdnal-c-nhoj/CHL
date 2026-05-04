@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import cus250903font from '@/assets/fonts/2025/25-09-03-mau.ttf';
 import cornerImage from '@/assets/images/2025/25-09/25-09-03/corner.gif';

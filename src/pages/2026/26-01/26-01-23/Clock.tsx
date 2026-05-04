@@ -1,10 +1,9 @@
-import type { CSSProperties } from 'react';
 import React, { useState, useEffect } from 'react';
+import type { CSSProperties } from 'react';
 
 // Asset imports
 import clockDigitImage from '@/assets/images/2026/26-01/26-01-23/eye.gif';
 import clockBackground from '@/assets/images/2026/26-01/26-01-23/eye.webp';
-
 import styles from './Clock.module.css';
 
 interface CustomStyle extends CSSProperties {
@@ -17,12 +16,10 @@ const Clock: React.FC = () => {
 
     useEffect(() => {
         let animationFrameId: number;
-
         const tick = () => {
             setTime(new Date());
             animationFrameId = requestAnimationFrame(tick);
         };
-
         animationFrameId = requestAnimationFrame(tick);
         return () => cancelAnimationFrame(animationFrameId);
     }, []);
@@ -31,7 +28,6 @@ const Clock: React.FC = () => {
     useEffect(() => {
         let isMounted = true;
         const imgs = [clockDigitImage, clockBackground];
-
         const loadPromises = imgs.map((src) => {
             return new Promise((resolve) => {
                 const img = new Image();
@@ -40,16 +36,14 @@ const Clock: React.FC = () => {
                 img.src = src;
             });
         });
-
-        Promise.all(loadPromises).then(() => {
-            if (isMounted) setBgReady(true);
-        });
-
+        Promise.all(loadPromises)
+            .then(() => {
+                if (isMounted) setBgReady(true);
+            });
         // Fallback timeout
         const timeout = setTimeout(() => {
             if (isMounted) setBgReady(true);
         }, 1200);
-
         return () => {
             isMounted = false;
             clearTimeout(timeout);
@@ -82,12 +76,9 @@ const Clock: React.FC = () => {
                 {/* Rotating Background Layer */}
                 <div
                     className={styles.bgLayer}
-                    style={
-                        {
-                            backgroundImage: `url(${clockBackground})`,
-                            '--rotation': `${bgRotation}deg`,
-                        } as CustomStyle
-                    }
+                    style={{
+                        '--rotation': `${bgRotation}deg`,
+                    } as CustomStyle}
                 />
 
                 {/* Static Digits Layer */}

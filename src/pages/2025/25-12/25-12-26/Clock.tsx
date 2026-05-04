@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
 import fontFile from '@/assets/fonts/2025/25-12-26-sat.ttf?url'; // ?url tells Vite to copy the file to output
 import bgImage from '@/assets/images/2025/25-12/25-12-26/sat.webp';
