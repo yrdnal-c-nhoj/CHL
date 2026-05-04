@@ -47,7 +47,7 @@ const AquariumClock: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handStyle = {
+  const handStyle: React.CSSProperties = {
     position: 'absolute',
     left: '50%',
     top: '50%',
