@@ -20,7 +20,7 @@ import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 
 import './index.css';
-import App from './App.tsx';
+import App from './App';
 
 /**
  * Performance monitoring and error reporting
@@ -41,7 +41,7 @@ if (enablePerformanceMonitoring) {
       console.log('Page Load Performance:', {
         domContentLoaded: perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart,
         loadComplete: perfData.loadEventEnd - perfData.loadEventStart,
-        totalTime: perfData.loadEventEnd - perfData.navigationStart,
+        totalTime: perfData.duration,
       });
     });
   }
@@ -93,7 +93,7 @@ const initializeApp = () => {
     if (enablePerformanceMonitoring) {
       console.log('🚀 React application initialized successfully');
       console.log('📊 Environment:', import.meta.env.MODE);
-      console.log('🔧 Vite HMR enabled:', import.meta.hot?.status);
+      console.log('🔧 Vite HMR enabled:', (import.meta.hot as any)?.status);
     }
   } catch (error) {
     console.error('Failed to initialize application:', error);
@@ -116,7 +116,7 @@ if (document.readyState === 'loading') {
  * Hot Module Replacement (HMR) acceptance for development
  */
 if (import.meta.hot) {
-  import.meta.hot.accept('./App.tsx', () => {
+  import.meta.hot.accept('./App', () => {
     console.log('🔄 HMR: App component updated');
   });
 
