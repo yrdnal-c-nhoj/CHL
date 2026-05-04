@@ -1,0 +1,29 @@
+BorrowedTime is an art project from Cubist Heart Laboratories that publishes a uniquely clock every day at a unique URL (/:YY-MM-DD). The site features a growing collection of interactive clock designs, each with its own artistic concept, visual style, and implementation. The architecture is built around a clock registry system in 
+clockpages.json that maps dates to dynamically-loaded clock components, with each day's clock living in its own directory under src/pages/YYYY/YY-MM/YY-MM-DD/.
+
+The project is built with React, TypeScript, and Vite for fast development and optimized production builds. TailwindCSS handles shared UI styling while CSS Modules scope styles per clock to prevent leakage. The clock loading pipeline uses dynamic imports via import.meta.glob with preloading for assets, Suspense boundaries for loading states, and a custom font loading system with reference counting. Testing runs on Vitest with @testing-library/react and jsdom, and the site deploys to Vercel.
+
+
+
+
+
+
+BorrowedTime is an art project by Cubist Heart Laboratories that publishes a unique, experimental clock design every day. 
+
+Built with React 18, TypeScript and Vite, the project combines open-source code, appropriated visual elements, and xxxxxx typefaces
+
+
+Feedback submitted
+
+React 
+TypeScript 
+React Router DOM 
+Node.js
+Vite
+
+Babel
+Vercel
+
+https://mern-todo-b3fe.onrender.com
+
+TailwindCSS 
