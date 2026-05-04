@@ -5,7 +5,7 @@ import secondHand from '@/assets/images/2026/26-04/26-04-10/second.webp';
 import { useMillisecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
-import { React } from "react";
+import React, { React } from "react";
 
 const Clock = () => {
     const now = useMillisecondClock();

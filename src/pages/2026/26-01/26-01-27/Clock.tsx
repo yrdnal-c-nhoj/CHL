@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import panFont from '@/assets/fonts/2026/26-01-27-pan.ttf';
 import backgroundImage from '@/assets/images/2026/26-01/26-01-27/pan.jpg';

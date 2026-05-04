@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 
 import dodecahedronFontFile from '@/assets/fonts/2025/25-08-27-root.ttf'; // renamed import
 import backgroundImage from '@/assets/images/2025/25-08/25-08-27/rootsu.gif';

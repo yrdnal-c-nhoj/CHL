@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import dirFontUrl from '@/assets/fonts/2025/25-05-22-Dir.ttf'; // Use static import
 import sunGif from '@/assets/images/2025/25-05/25-05-22/sun.gif'; // Use static import

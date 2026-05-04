@@ -7,6 +7,7 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 import styles from './Clock.module.css';
+
 const DigitalClock: React.FC = () => {
     const [now, setNow] = useState(() => new Date());
 
@@ -23,171 +24,53 @@ const DigitalClock: React.FC = () => {
         ],
         [],
     );
-    export default function DigitalClock() {
-        const [now, setNow] = useState(() => new Date());
 
-        useSuspenseFontLoader(fontConfigs);
-        const fontConfigs = useMemo<FontConfig[]>(
-            () => [
-                {
-                    fontFamily: 'ClockFont2025_12_01',
-                    fontUrl: font251130,
-                    options: {
-                        weight: 'normal',
-                        style: 'normal',
-                    },
-                },
-            ],
-            [],
-        );
+    useSuspenseFontLoader(fontConfigs);
 
-        // --- 2. Clock Update (Unchanged) ---
-        useEffect(() => {
-            const interval = setInterval(() => setNow(new Date()), 1000);
-            return () => clearInterval(interval);
-        }, []);
-        useSuspenseFontLoader(fontConfigs);
+    // --- 2. Clock Update (Unchanged) ---
+    useEffect(() => {
+        const interval = setInterval(() => setNow(new Date()), 1000);
+        return () => clearInterval(interval);
+    }, []);
 
-        // --- 3. Time Calculations and Leetspeak (Unchanged) ---
-        const digitMap: Record<string, string> = {
-            0: '1',
-            1: 'T',
-            2: 'm',
-            3: 'E',
-            4: 'F',
-            5: 'r',
-            6: 'L',
-            7: '2',
-            8: 'q',
-            9: 'C',
-        };
-        // --- 2. Clock Update (Unchanged) ---
-        useEffect(() => {
-            const interval = setInterval(() => setNow(new Date()), 1000);
-            return () => clearInterval(interval);
-        }, []);
+    const formatTime = useCallback((date: Date) => {
+        const HH = date.getHours().toString().padStart(2, '0');
+        const MM = date.getMinutes().toString().padStart(2, '0');
+        const SS = date.getSeconds().toString().padStart(2, '0');
+        return { HH, MM, SS };
+    }, []);
 
-        const sub = useCallback(
-            (str) =>
-                str
-                    .split('')
-                    .map((d) => digitMap[d] || d)
-                    .join(''),
-            [],
-        );
-        // --- 3. Time Calculations and Leetspeak (Unchanged) ---
-        const digitMap: Record<string, string> = {
-            0: '1',
-            1: 'T',
-            2: 'm',
-            3: 'E',
-            4: 'F',
-            5: 'r',
-            6: 'L',
-            7: '2',
-            8: 'q',
-            9: 'C',
-        };
+    const { HH, MM, SS } = formatTime(now);
 
-        const HH = sub(String(now.getHours()).padStart(2, '0'));
-        const MM = sub(String(now.getMinutes()).padStart(2, '0'));
-        const SS = sub(String(now.getSeconds()).padStart(2, '0'));
-        const sub = useCallback(
-            (str: string) =>
-                str
-                    .split('')
-                    .map((d) => digitMap[d] || d)
-                    .join(''),
-            [],
-        );
+    const isPhone = window.innerWidth < 768;
 
-        const isPhone = window.innerWidth < 600;
-        const HH = sub(String(now.getHours()).padStart(2, '0'));
-        const MM = sub(String(now.getMinutes()).padStart(2, '0'));
-        const SS = sub(String(now.getSeconds()).padStart(2, '0'));
+    const renderPair = (pair: string) => (
+        <div className={styles.pair}>
+            <span className={styles.digit}>{pair[0]}</span>
+            <span className={styles.digit}>{pair[1]}</span>
+        </div>
+    );
 
-        const baseFontSize = isPhone ? '32vw' : '18vw';
-        const boxWidth = isPhone ? '26vw' : '14vw';
-        const boxHeight = isPhone ? '24vw' : '16vw';
-        const isPhone = window.innerWidth < 600;
-
-        const renderPair = (digits: string) => (
-            <div style={{ display: 'flex', gap: isPhone ? '2vw' : '1vw' }}>
-                <div
-                    className={styles.digitBox}
-                    style={{ width: boxWidth, height: boxHeight, fontSize: baseFontSize }}
-                >
-                    {digits[0]}
+    return (
+        <div
+            className={`${styles.container} ${isPhone ? styles.containerMobile : ''}`}
+            style={{ backgroundImage: `url(${backgroundImg})` }}
+        >
+            {isPhone ? (
+                <div className={styles.column}>
+                    {renderPair(HH)}
+                    {renderPair(MM)}
+                    {renderPair(SS)}
                 </div>
-                <div
-                    className={styles.digitBox}
-                    style={{ width: boxWidth, height: boxHeight, fontSize: baseFontSize }}
-                >
-                    {digits[1]}
+            ) : (
+                <div className={styles.row}>
+                    {renderPair(HH)}
+                    {renderPair(MM)}
+                    {renderPair(SS)}
                 </div>
-            </div>
-        );
-        const baseFontSize = isPhone ? '32vw' : '18vw';
-        const boxWidth = isPhone ? '26vw' : '14vw';
-        const boxHeight = isPhone ? '24vw' : '16vw';
-
-        const renderPair = (digits: string) => (
-            <div style={{ display: 'flex', gap: isPhone ? '2vw' : '1vw' }}>
-                <div
-                    className={styles.digitBox}
-                    style={{ width: boxWidth, height: boxHeight, fontSize: baseFontSize }}
-                >
-                    {digits[0]}
-                </div>
-                <div
-                    className={styles.digitBox}
-                    style={{ width: boxWidth, height: boxHeight, fontSize: baseFontSize }}
-                >
-                    {digits[1]}
-                </div>
-            </div>
-        );
-
-        return (
-            <div
-                className={`${styles.container} ${isPhone ? styles.containerMobile : ''}`}
-                style={{ backgroundImage: `url(${backgroundImg})` }}
-            >
-                {isPhone ? (
-                    <div className={styles.column}>
-                        {renderPair(HH)}
-                        {renderPair(MM)}
-                        {renderPair(SS)}
-                    </div>
-                ) : (
-                    <div className={styles.row}>
-                        {renderPair(HH)}
-                        {renderPair(MM)}
-                        {renderPair(SS)}
-                    </div>
-                )}
-                return (
-                <div
-                    className={`${styles.container} ${isPhone ? styles.containerMobile : ''}`}
-                    style={{ backgroundImage: `url(${backgroundImg})` }}
-                >
-                    {isPhone ? (
-                        <div className={styles.column}>
-                            {renderPair(HH)}
-                            {renderPair(MM)}
-                            {renderPair(SS)}
-                        </div>
-                    );
+            )}
+        </div>
+    );
 };
 
-                    export default DigitalClock;
-                    ) : (
-                    <div className={styles.row}>
-                        {renderPair(HH)}
-                        {renderPair(MM)}
-                        {renderPair(SS)}
-                    </div>
-      )}
-                </div>
-                );
-}
+export default DigitalClock;

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 import flaFont from '@/assets/fonts/2025/25-05-20-fla.ttf'; // Import the font file from the same folder

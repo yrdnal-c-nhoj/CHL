@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import airFontUrl from '@/assets/fonts/2025/25-06-01-air.ttf';
 import frameImg from '@/assets/images/2025/25-06/25-06-01/frame.jpg';

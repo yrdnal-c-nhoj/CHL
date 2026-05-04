@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import FONT_PATH from '@/assets/fonts/2025/25-12-17-facexxxx.ttf?url';
 import background from '@/assets/images/2025/25-12/25-12-17/swagr.webp';

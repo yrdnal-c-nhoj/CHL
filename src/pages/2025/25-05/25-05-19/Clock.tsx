@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import antFontUrl from '@/assets/fonts/2025/25-05-19-Ant.ttf';
 import bg1 from '@/assets/images/2025/25-05/25-05-19/ants.gif';
