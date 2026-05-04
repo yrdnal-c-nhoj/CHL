@@ -1,55 +1,47 @@
 import React, { useMemo, useRef, useEffect } from 'react';
 
 import { useClockTime } from '@/utils/clockUtils';
+import backgroundImage from '@/assets/images/2026/26-05/26-05-01/sampson-radar-spinning-loop-1yfouy6i3iowbryl-ezgif.com-speed.webp';
 
 import styles from './Clock.module.css';
 
 interface HandProps {
   angle: number;
-  length: number;
-  width: number;
+  length: string;
+  width: string;
   color: string;
   type: 'hour' | 'minute' | 'second';
 }
 
-const getHandZIndex = (type: 'hour' | 'minute' | 'second'): number => {
-  if (type === 'second') return 30;
-  if (type === 'minute') return 20;
-  return 10;
-};
-
-const getHandBorderRadius = (type: 'hour' | 'minute' | 'second', width: number): string => {
-  if (type === 'second') return '1px';
-  return `${width / 2}px`;
-};
-
-const getHandTransition = (type: 'hour' | 'minute' | 'second'): string => {
-  if (type === 'second') return 'none';
-  return 'transform 0.1s ease-out';
-};
-
 const ClockHand: React.FC<HandProps> = ({ angle, length, width, color, type }) => {
+  const zIndex = type === 'second' ? 30 : type === 'minute' ? 20 : 10;
+  
   const handStyle: React.CSSProperties = {
     position: 'absolute',
     bottom: '50%',
     left: '50%',
-    width: `${width}px`,
-    height: `${length}px`,
+    width: width,
+    height: length,
     backgroundColor: color,
     transformOrigin: 'bottom center',
     transform: `translateX(-50%) rotate(${angle}deg)`,
-    borderRadius: getHandBorderRadius(type, width),
-    zIndex: getHandZIndex(type),
-    transition: getHandTransition(type),
+    borderRadius: '50%',
+    zIndex: zIndex,
+    transition: 'none',
   };
 
   return <div style={handStyle} className={styles.hand} data-hand-type={type} />;
 };
 
 const AnalogClock: React.FC = () => {
-  const time = useClockTime();
+  const time = useClockTime('ms');
   const rafRef = useRef<number | null>(null);
   const [, forceRender] = React.useReducer((x) => x + 1, 0);
+  
+  // Get current dimensions for oval calculations
+  const [dims, setDims] = React.useState({ w: window.innerWidth, h: window.innerHeight });
+  const rx = (dims.w * 0.95) / 2;
+  const ry = (dims.h * 0.95) / 2;
 
   useEffect(() => {
     const animate = () => {
@@ -58,10 +50,12 @@ const AnalogClock: React.FC = () => {
     };
     rafRef.current = requestAnimationFrame(animate);
 
+    const handleResize = () => setDims({ w: window.innerWidth, h: window.innerHeight });
+    window.addEventListener('resize', handleResize);
+
     return () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -79,42 +73,39 @@ const AnalogClock: React.FC = () => {
     };
   }, [time]);
 
-  const hourAngle = ((hours % 12) + minutes / 60) * 30;
-  const minuteAngle = (minutes + seconds / 60) * 6;
-  const secondAngle = (seconds + ms / 1000) * 6;
+  // Ellipse distance formula: r = (a*b) / sqrt((b*sinθ)² + (a*cosθ)²)
+  // We use this to calculate how long a hand should be at a specific angle
+  const getOvalRadius = (deg: number) => {
+    const rad = (deg - 90) * (Math.PI / 180);
+    const a = rx;
+    const b = ry;
+    const r = (a * b) / Math.sqrt(Math.pow(b * Math.cos(rad), 2) + Math.pow(a * Math.sin(rad), 2));
+    return r;
+  };
 
-  const tickMarks = useMemo(() => {
-    return Array.from({ length: 60 }, (_, i) => {
-      const isHour = i % 5 === 0;
-      const angle = i * 6;
-      return {
-        id: i,
-        angle,
-        isHour,
-        length: isHour ? 16 : 8,
-        width: isHour ? 4 : 2,
-      };
-    });
-  }, []);
+  const totalSeconds = seconds + ms / 1000;
+  const secondAngle = totalSeconds * 6;
+  const minuteAngle = (minutes + totalSeconds / 60) * 6;
+  const hourAngle = ((hours % 12) + (minutes + totalSeconds / 60) / 60) * 30;
 
-  const numbers = useMemo(() => {
-    return Array.from({ length: 12 }, (_, i) => {
-      const num = i === 0 ? 12 : i;
-      const angle = i * 30;
-      const radian = (angle - 90) * (Math.PI / 180);
-      const radius = 35;
-      const x = 50 + radius * Math.cos(radian);
-      const y = 50 + radius * Math.sin(radian);
-      return {
-        num,
-        x,
-        y,
-      };
-    });
-  }, []);
+  const tickMarks = useMemo(() => Array.from({ length: 60 }, (_, i) => {
+    const angle = i * 6;
+    const r = getOvalRadius(angle);
+    const rad = (angle - 90) * (Math.PI / 180);
+    return {
+      id: i,
+      angle,
+      isHour: i % 5 === 0,
+      x: 50 + (r / rx) * 48 * Math.cos(rad),
+      y: 50 + (r / ry) * 48 * Math.sin(rad),
+    };
+  }), [rx, ry]);
 
   return (
-    <div className={styles.container}>
+    <div 
+      className={styles.container} 
+      style={{ '--bg-image': `url(${backgroundImage})` } as React.CSSProperties}
+    >
       <time dateTime={isoTime} className={styles.timeWrapper}>
         <div className={styles.clockFace}>
           {/* Outer ring */}
@@ -129,59 +120,37 @@ const AnalogClock: React.FC = () => {
               key={tick.id}
               className={tick.isHour ? styles.hourTick : styles.minuteTick}
               style={{
-                transform: `rotate(${tick.angle}deg)`,
+                left: `${tick.x}%`,
+                top: `${tick.y}%`,
+                transform: `translate(-50%, -50%) rotate(${tick.angle}deg)`,
               }}
             />
-          ))}
-
-          {/* Numbers */}
-          {numbers.map((n) => (
-            <span
-              key={n.num}
-              className={styles.number}
-              style={{
-                left: `${n.x}%`,
-                top: `${n.y}%`,
-              }}
-            >
-              {n.num}
-            </span>
           ))}
 
           {/* Clock hands */}
           <ClockHand
             type="hour"
             angle={hourAngle}
-            length={60}
-            width={6}
-            color="#1a1a1a"
+            length={`${getOvalRadius(hourAngle) * 0.6}px`}
+            width="2vh"
+            color="rgba(255, 255, 255, 0.42)"
           />
           <ClockHand
             type="minute"
             angle={minuteAngle}
-            length={85}
-            width={4}
-            color="#333"
+            length={`${getOvalRadius(minuteAngle) * 0.85}px`}
+            width="1vh"
+            color="rgba(255, 255, 255, 0.28)"
           />
           <ClockHand
             type="second"
             angle={secondAngle}
-            length={95}
-            width={2}
-            color="#d32f2f"
+            length={`${getOvalRadius(secondAngle) * 0.98}px`}
+            width="0.5vh"
+            color="#3A3A3C"
           />
 
-          {/* Center dot */}
-          <div className={styles.centerDot} />
-          <div className={styles.centerDotInner} />
-        </div>
-
-        {/* Digital readout */}
-        <div className={styles.digitalTime}>
-          {String(hours).padStart(2, '0')}:
-          {String(minutes).padStart(2, '0')}:
-          {String(seconds).padStart(2, '0')}
-        </div>
+         </div>
       </time>
     </div>
   );
