@@ -21,11 +21,14 @@ console.log(`Processing ${sourceFiles.length} clock modules...`);
 
 sourceFiles.forEach(file => {
   // 1. Ensure React is imported
-  if (!file.getImportDeclaration('react')) {
+  const reactImport = file.getImportDeclaration('react');
+  if (!reactImport) {
     file.addImportDeclaration({
       moduleSpecifier: 'react',
-      namedImports: ['React']
+      defaultImport: 'React'
     });
+  } else if (!reactImport.getDefaultImport() && !reactImport.getNamespaceImport()) {
+    reactImport.setDefaultImport('React');
   }
 
   // 2. Automated CSS Typing: Find variables like 'containerStyle' or 'styles'

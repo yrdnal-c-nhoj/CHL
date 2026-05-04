@@ -42,11 +42,9 @@ const DigitalClockVideo: React.FC = () => {
                 setVideoFailed(true);
             };
             videoEl.onabort = () => {
-                console.warn('Video aborted');
                 setVideoFailed(true);
             };
             videoEl.onstalled = () => {
-                console.warn('Video stalled');
                 setVideoFailed(true);
             };
         }

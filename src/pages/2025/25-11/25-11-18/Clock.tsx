@@ -7,159 +7,159 @@ export { bgImg }; // Export for preloading pipeline
 import type { FontConfig, ClockDigit } from '@/types/clock';
 import { useClockTime, formatTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+const RotatedClockGrid: React.FC = () => { // Using the standardized BTS hook
+    const time = useClockTime('seconds');
+    const { hours, minutes, seconds } = formatTime(time, '24h');
 
-export default function RotatedClockGrid() {
-  // Using the standardized BTS hook
-  const time = useClockTime('seconds');
-  const { hours, minutes, seconds } = formatTime(time, '24h');
+    const slots = [
+        hours[0],
+        hours[1],
+        minutes[0],
+        minutes[1],
+        seconds[0],
+        seconds[1],
+    ];
 
-  const slots = [
-    hours[0],
-    hours[1],
-    minutes[0],
-    minutes[1],
-    seconds[0],
-    seconds[1],
-  ];
+    const digitSize = 8; // in vh
+    const gap = 1; // in vh
+    // Extra buffer: how many clock-columns to add to the left, and how many rows above
+    const extraLeft = 6; // increase to show more clocks off the left edge
+    const extraTop = 5; // increase to show more clocks above the top edge
+    const FONT_FAMILY = 'ClockFont_2025_11_18_cat';
 
-  const digitSize = 8; // in vh
-  const gap = 1; // in vh
-  // Extra buffer: how many clock-columns to add to the left, and how many rows above
-  const extraLeft = 6; // increase to show more clocks off the left edge
-  const extraTop = 5; // increase to show more clocks above the top edge
-  const FONT_FAMILY = 'ClockFont_2025_11_18_cat';
+    const fontConfigs = useMemo<FontConfig[]>(
+        () => [{ fontFamily: FONT_FAMILY, fontUrl: font_2025_11_21 }],
+        [],
+    );
 
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [{ fontFamily: FONT_FAMILY, fontUrl: font_2025_11_21 }],
-    [],
-  );
+    // Suspends component rendering until the font is loaded.
+    useSuspenseFontLoader(fontConfigs);
 
-  // Suspends component rendering until the font is loaded.
-  useSuspenseFontLoader(fontConfigs);
+    // 20-color palette provided by user
+    const COLORS = [
+        '#8B4513',
+        '#A0522D',
+        '#D2691E',
+        '#CD853F',
+        '#DEB887',
+        '#945F1AFF',
+        '#DAA520',
+        '#A39F5DFF',
+        '#808000',
+        '#556B2F',
+        '#584703FF',
+        '#3CB371',
+        '#8FBC8F',
+        '#708090',
+        '#4682B4',
+        '#6495ED',
+        '#1E90FF',
+        '#00BFFF',
+        '#5C82F4FF',
+        '#765205FF',
+    ];
 
-  // 20-color palette provided by user
-  const COLORS = [
-    '#8B4513',
-    '#A0522D',
-    '#D2691E',
-    '#CD853F',
-    '#DEB887',
-    '#945F1AFF',
-    '#DAA520',
-    '#A39F5DFF',
-    '#808000',
-    '#556B2F',
-    '#584703FF',
-    '#3CB371',
-    '#8FBC8F',
-    '#708090',
-    '#4682B4',
-    '#6495ED',
-    '#1E90FF',
-    '#00BFFF',
-    '#5C82F4FF',
-    '#765205FF',
-  ];
+    // colors for each digit cell; will be regenerated every second
+    const totalCells =
+        (Math.ceil(100 / (digitSize + gap)) + 4 + extraTop) *
+        (Math.ceil(100 / ((digitSize + gap) * 3)) + 4 + extraLeft) *
+        6;
+    const randIndex = (): number => Math.floor(Math.random() * COLORS.length);
+    const [digitColors, setDigitColors] = useState<number[]>(() =>
+        Array.from({ length: totalCells }, () => randIndex()),
+    );
 
-  // colors for each digit cell; will be regenerated every second
-  const totalCells =
-    (Math.ceil(100 / (digitSize + gap)) + 4 + extraTop) *
-    (Math.ceil(100 / ((digitSize + gap) * 3)) + 4 + extraLeft) *
-    6;
-  const randIndex = (): number => Math.floor(Math.random() * COLORS.length);
-  const [digitColors, setDigitColors] = useState<number[]>(() =>
-    Array.from({ length: totalCells }, () => randIndex()),
-  );
+    // Regenerate colors when the seconds value changes.
+    useEffect(() => {
+        setDigitColors(Array.from({ length: totalCells }, () => randIndex()));
+    }, [seconds, totalCells]); // Corrected: Side effects belong in useEffect
 
-  // Regenerate colors when the seconds value changes.
-  useEffect(() => {
-    setDigitColors(Array.from({ length: totalCells }, () => randIndex()));
-  }, [seconds, totalCells]); // Corrected: Side effects belong in useEffect
+    const rowsNeeded = Math.ceil(100 / (digitSize + gap)) + 4 + extraTop;
+    const clocksPerRow = Math.ceil(100 / ((digitSize + gap) * 3)) + 4 + extraLeft;
 
-  const rowsNeeded = Math.ceil(100 / (digitSize + gap)) + 4 + extraTop;
-  const clocksPerRow = Math.ceil(100 / ((digitSize + gap) * 3)) + 4 + extraLeft;
+    return (
+        <main
+            style={{
+                position: 'relative',
+                height: '100vh',
+                width: '100vw',
+                boxSizing: 'border-box',
+                overflow: 'hidden',
+            }}
+        >
+            {/* Background image with filter applied only to this layer */}
+            <div
+                style={{
+                    position: 'absolute',
+                    inset: 0, // top:0; right:0; bottom:0; left:0
+                    backgroundImage: `url(${bgImg})`,
+                    backgroundSize: 'cover', // covers entire viewport
+                    backgroundPosition: 'right', // center the image
+                    backgroundRepeat: 'no-repeat',
+                    filter: 'saturate(0.01) contrast(1.4) brightness(0.4)', // subtle enhancement
+                    zIndex: 0, // make sure clock is above
+                }}
+            />
 
-  return (
-    <main
-      style={{
-        position: 'relative',
-        height: '100vh',
-        width: '100vw',
-        boxSizing: 'border-box',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Background image with filter applied only to this layer */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0, // top:0; right:0; bottom:0; left:0
-          backgroundImage: `url(${bgImg})`,
-          backgroundSize: 'cover', // covers entire viewport
-          backgroundPosition: 'right', // center the image
-          backgroundRepeat: 'no-repeat',
-          filter: 'saturate(0.01) contrast(1.4) brightness(0.4)', // subtle enhancement
-          zIndex: 0, // make sure clock is above
-        }}
-      />
+            {/* Main grid of digits, no filter applied */}
+            <time
+                dateTime={`${hours}:${minutes}:${seconds}`}
+                style={{
+                    position: 'relative',
+                    zIndex: 1,
+                    transform: `rotate(-10deg) translate(-${(digitSize + gap) * extraLeft}vh, -${(digitSize + gap) * extraTop}vh)`,
+                    display: 'grid',
+                    gridTemplateColumns: `repeat(auto-fill, ${digitSize}vh)`,
+                    gridAutoRows: `${digitSize}vh`,
+                    gap: `${gap}vh`,
+                    alignItems: 'center', // This is a React.CSSProperties object
+                    justifyItems: 'center',
+                }}
+            >
+                {Array.from({ length: rowsNeeded }).map((_, rowIndex) => {
+                    const startOffset = (rowIndex * 3) % 6;
+                    return Array.from({ length: clocksPerRow }).map((_, clockIndex) =>
+                        slots.map((ch, digitIndex) => {
+                            const columnPosition = clockIndex * 6 + digitIndex + startOffset;
+                            const globalIndex =
+                                rowIndex * clocksPerRow * 6 + clockIndex * 6 + digitIndex;
+                            const color =
+                                COLORS[digitColors[globalIndex % digitColors.length]];
 
-      {/* Main grid of digits, no filter applied */}
-      <time
-        dateTime={`${hours}:${minutes}:${seconds}`}
-        style={{
-          position: 'relative',
-          zIndex: 1,
-          transform: `rotate(-10deg) translate(-${(digitSize + gap) * extraLeft}vh, -${(digitSize + gap) * extraTop}vh)`,
-          display: 'grid',
-          gridTemplateColumns: `repeat(auto-fill, ${digitSize}vh)`,
-          gridAutoRows: `${digitSize}vh`,
-          gap: `${gap}vh`,
-          alignItems: 'center', // This is a React.CSSProperties object
-          justifyItems: 'center',
-        }}
-      >
-        {Array.from({ length: rowsNeeded }).map((_, rowIndex) => {
-          const startOffset = (rowIndex * 3) % 6;
-          return Array.from({ length: clocksPerRow }).map((_, clockIndex) =>
-            slots.map((ch, digitIndex) => {
-              const columnPosition = clockIndex * 6 + digitIndex + startOffset;
-              const globalIndex =
-                rowIndex * clocksPerRow * 6 + clockIndex * 6 + digitIndex;
-              const color =
-                COLORS[digitColors[globalIndex % digitColors.length]];
+                            return (
+                                <div
+                                    key={`${rowIndex}-${clockIndex}-${digitIndex}`}
+                                    style={{
+                                        gridRow: rowIndex + 1,
+                                        gridColumn: columnPosition + 1,
+                                        height: `${digitSize}vh`,
+                                        width: `${digitSize}vh`,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        borderRadius: '0.8vh',
+                                        fontFamily: `${FONT_FAMILY}, monospace`,
+                                        fontSize: `12vh`,
+                                        lineHeight: 1,
+                                        letterSpacing: '0.2vh',
+                                        color,
+                                        opacity: 0.9,
+                                        textAlign: 'center',
+                                        userSelect: 'none',
+                                        willChange: 'color', // Performance hint for browser
+                                        WebkitFontSmoothing: 'antialiased',
+                                        MozOsxFontSmoothing: 'grayscale',
+                                    }}
+                                >
+                                    {ch}
+                                </div>
+                            );
+                        }),
+                    );
+                })}
+            </time>
+        </main>
+    );
+};
 
-              return (
-                <div
-                  key={`${rowIndex}-${clockIndex}-${digitIndex}`}
-                  style={{
-                    gridRow: rowIndex + 1,
-                    gridColumn: columnPosition + 1,
-                    height: `${digitSize}vh`,
-                    width: `${digitSize}vh`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: '0.8vh',
-                    fontFamily: `${FONT_FAMILY  }, monospace`,
-                    fontSize: `12vh`,
-                    lineHeight: 1,
-                    letterSpacing: '0.2vh',
-                    color,
-                    opacity: 0.9,
-                    textAlign: 'center',
-                    userSelect: 'none',
-                    willChange: 'color', // Performance hint for browser
-                    WebkitFontSmoothing: 'antialiased',
-                    MozOsxFontSmoothing: 'grayscale',
-                  }}
-                >
-                  {ch}
-                </div>
-              );
-            }),
-          );
-        })}
-      </time>
-    </main>
-  );
-}
+export default RotatedClockGrid;

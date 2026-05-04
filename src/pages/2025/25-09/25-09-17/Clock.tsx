@@ -10,7 +10,7 @@ import backgroundImage from '@/assets/images/2025/25-09/25-09-17/crush.jpg';
 import overlay3 from '@/assets/images/2025/25-09/25-09-17/crush2.gif';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader, useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSuspenseFontLoader , useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader, useMultipleFontLoader } from '@/utils/fontLoader';
 
 const pad = (n: number | string) => n.toString().padStart(2, '0');
 
@@ -18,9 +18,9 @@ const DigitalClock: React.FC = () => {
     const [time, setTime] = useState(new Date());
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
     const [fadeIndex, setFadeIndex] = useState<number>(-1);
-  const [time, setTime] = useState(new Date());
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [fadeIndex, setFadeIndex] = useState<number>(-1);
+    const [time, setTime] = useState(new Date());
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    const [fadeIndex, setFadeIndex] = useState<number>(-1);
 
     // Load font and images
     useEffect(() => {
@@ -30,15 +30,15 @@ const DigitalClock: React.FC = () => {
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
-      @font-face {
-        font-family: 'CustomClockFont';
-        src: url(${f250917fontt}) format('truetype');
-        font-weight: 100 900;
-        font-style: normal;
-        font-display: swap;
-        font-variation-settings: 'wght' 400;
-      }
-    `;
+        @font-face {
+            font - family: 'CustomClockFont';
+            src: url(${ f250917fontt }) format('truetype');
+            font - weight: 100 900;
+            font - style: normal;
+            font - display: swap;
+            font - variation - settings: 'wght' 400;
+        }
+        `;
         document.head.appendChild(style);
     document.head.appendChild(style);
 
@@ -279,7 +279,7 @@ const DigitalClock: React.FC = () => {
                 style={{
                     position: 'absolute',
                     inset: 0,
-                    backgroundImage: `url(${backgroundImage})`,
+                    backgroundImage: `url(${ backgroundImage })`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'top left',
                     backgroundRepeat: 'no-repeat',
@@ -303,7 +303,7 @@ const DigitalClock: React.FC = () => {
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: `url(${backgroundImage})`,
+          backgroundImage: `url(${ backgroundImage })`,
           backgroundSize: 'cover',
           backgroundPosition: 'top left',
           backgroundRepeat: 'no-repeat',
@@ -412,7 +412,7 @@ const DigitalClock: React.FC = () => {
                         left: img.left,
                         width: img.width,
                         height: img.height,
-                        transform: `translate(-50%, -50%) rotate(${img.rotate})`,
+                        transform: `translate(-50 %, -50 %) rotate(${ img.rotate })`,
                         opacity: img.opacity,
                         filter: img.filter,
                         zIndex: img.zIndex,
@@ -422,7 +422,7 @@ const DigitalClock: React.FC = () => {
                         decoding="async"
                         loading="lazy"
                         src={img.src}
-                        alt={`overlay-${i}`}
+                        alt={`overlay - ${ i } `}
                         style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                     />
                 </div>
@@ -437,7 +437,7 @@ const DigitalClock: React.FC = () => {
             left: img.left,
             width: img.width,
             height: img.height,
-            transform: `translate(-50%, -50%) rotate(${img.rotate})`,
+            transform: `translate(-50 %, -50 %) rotate(${ img.rotate })`,
             opacity: img.opacity,
             filter: img.filter,
             zIndex: img.zIndex,
@@ -447,7 +447,7 @@ const DigitalClock: React.FC = () => {
             decoding="async"
             loading="lazy"
             src={img.src}
-            alt={`overlay-${i}`}
+            alt={`overlay - ${ i } `}
             style={{ width: '100%', height: '100%', objectFit: 'contain' }}
           />
         </div>

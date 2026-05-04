@@ -5,208 +5,209 @@ import custom251112tz from '@/assets/fonts/2025/25-11-12-oct.ttf?url';
 import bgFull from '@/assets/images/2025/25-11/25-11-12/octo.webp'; // full-size background
 import bgTile from '@/assets/images/2025/25-11/25-11-12/octoh.webp'; // repeating/tiled background
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+const TwoBackgroundOctahedron: React.FC = () => {
+    const threeRef = useRef<HTMLDivElement>(null);
 
-export default function TwoBackgroundOctahedron() {
-  const threeRef = useRef<HTMLDivElement>(null);
-
-  const fontConfigs = useMemo(
-    () => [
-      {
-        fontFamily: 'OctahedronFont',
-        fontUrl: custom251112tz,
-        options: { weight: 'normal', style: 'normal' },
-      },
-    ],
-    [],
-  );
-  useSuspenseFontLoader(fontConfigs);
-
-  // THREE.js Octahedron (unchanged)
-  useEffect(() => {
-    const mount = threeRef.current;
-    if (!mount) return;
-
-    const scene = new THREE.Scene();
-    scene.background = null;
-
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.01,
-      1000,
+    const fontConfigs = useMemo(
+        () => [
+            {
+                fontFamily: 'OctahedronFont',
+                fontUrl: custom251112tz,
+                options: { weight: 'normal', style: 'normal' },
+            },
+        ],
+        [],
     );
-    camera.position.z = 1;
+    useSuspenseFontLoader(fontConfigs);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    mount.appendChild(renderer.domElement);
+    // THREE.js Octahedron (unchanged)
+    useEffect(() => {
+        const mount = threeRef.current;
+        if (!mount) return;
 
-    const canvas = document.createElement('canvas');
-    canvas.width = 256;
-    canvas.height = 256;
-    const ctx = canvas.getContext('2d');
-    const texture = new THREE.CanvasTexture(canvas);
+        const scene = new THREE.Scene();
+        scene.background = null;
 
-    const fontName = 'OctahedronFont'; // Use the same name as the loaded font
+        const camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.01,
+            1000,
+        );
+        camera.position.z = 1;
 
-    const updateClock = () => {
-      const now = new Date();
-      const h = now.getHours() % 12 || 12;
-      const m = now.getMinutes();
-      const txt = `${h}:${m < 10 ? `0${  m}` : m}`;
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        mount.appendChild(renderer.domElement);
 
-      if (!ctx) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // Font is guaranteed loaded by Suspense
-      ctx.font = `110px 'OctahedronFont', Arial`;
+        const canvas = document.createElement('canvas');
+        canvas.width = 256;
+        canvas.height = 256;
+        const ctx = canvas.getContext('2d');
+        const texture = new THREE.CanvasTexture(canvas);
 
-      ctx.fillStyle = '#043D91FF';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(
-        txt,
-        canvas.width / 2,
-        canvas.height / 2 + canvas.height * 0.2,
-      );
+        const fontName = 'OctahedronFont'; // Use the same name as the loaded font
 
-      texture.needsUpdate = true;
-    };
+        const updateClock = () => {
+            const now = new Date();
+            const h = now.getHours() % 12 || 12;
+            const m = now.getMinutes();
+            const txt = `${h}:${m < 10 ? `0${m}` : m}`;
 
-    updateClock();
-    const clockInterval = setInterval(updateClock, 1000);
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Font is guaranteed loaded by Suspense
+            ctx.font = `110px 'OctahedronFont', Arial`;
 
-    const geometry = new THREE.OctahedronGeometry(2);
+            ctx.fillStyle = '#043D91FF';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(
+                txt,
+                canvas.width / 2,
+                canvas.height / 2 + canvas.height * 0.2,
+            );
 
-    // reassign UVs (unchanged)
-    const uv = geometry.attributes.uv.array;
-    for (let i = 0; i < uv.length; i += 6) {
-      uv[i] = 0;
-      uv[i + 1] = 0;
-      uv[i + 2] = 1;
-      uv[i + 3] = 0;
-      uv[i + 4] = 0.5;
-      uv[i + 5] = 1;
-    }
-    geometry.attributes.uv.needsUpdate = true;
+            texture.needsUpdate = true;
+        };
 
-    const material = new THREE.MeshPhongMaterial({
-      color: 0xfff0f0,
-      shininess: 100,
-      transparent: true,
-      // opacity: 0.6,
-      side: THREE.DoubleSide,
-      map: texture,
-    });
+        updateClock();
+        const clockInterval = setInterval(updateClock, 1000);
 
-    const oct = new THREE.Mesh(geometry, material);
-    scene.add(oct);
+        const geometry = new THREE.OctahedronGeometry(2);
 
-    const wireframe = new THREE.LineSegments(
-      new THREE.WireframeGeometry(geometry),
-      new THREE.LineBasicMaterial({ color: 0xffffff }),
-    );
-    scene.add(wireframe);
+        // reassign UVs (unchanged)
+        const uv = geometry.attributes.uv.array;
+        for (let i = 0; i < uv.length; i += 6) {
+            uv[i] = 0;
+            uv[i + 1] = 0;
+            uv[i + 2] = 1;
+            uv[i + 3] = 0;
+            uv[i + 4] = 0.5;
+            uv[i + 5] = 1;
+        }
+        geometry.attributes.uv.needsUpdate = true;
 
-    scene.add(new THREE.DirectionalLight(0xffffff, 1));
-    scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+        const material = new THREE.MeshPhongMaterial({
+            color: 0xfff0f0,
+            shininess: 100,
+            transparent: true,
+            // opacity: 0.6,
+            side: THREE.DoubleSide,
+            map: texture,
+        });
 
-    const clock = new THREE.Clock();
-    const animate = () => {
-      requestAnimationFrame(animate);
+        const oct = new THREE.Mesh(geometry, material);
+        scene.add(oct);
 
-      oct.rotation.x += 0.003;
-      oct.rotation.y += 0.005;
-      wireframe.rotation.x += 0.003;
-      wireframe.rotation.y += 0.005;
+        const wireframe = new THREE.LineSegments(
+            new THREE.WireframeGeometry(geometry),
+            new THREE.LineBasicMaterial({ color: 0xffffff }),
+        );
+        scene.add(wireframe);
 
-      const t = clock.getElapsedTime();
-      const zStart = -15,
-        zEnd = 2;
-      const z =
-        (zEnd + zStart) / 2 +
-        Math.sin((t / 25) * Math.PI * 2) * ((zEnd - zStart) / 2);
+        scene.add(new THREE.DirectionalLight(0xffffff, 1));
+        scene.add(new THREE.AmbientLight(0xffffff, 0.4));
 
-      oct.position.z = wireframe.position.z = z;
+        const clock = new THREE.Clock();
+        const animate = () => {
+            requestAnimationFrame(animate);
 
-      renderer.render(scene, camera);
-    };
-    animate();
+            oct.rotation.x += 0.003;
+            oct.rotation.y += 0.005;
+            wireframe.rotation.x += 0.003;
+            wireframe.rotation.y += 0.005;
 
-    const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-    window.addEventListener('resize', handleResize);
+            const t = clock.getElapsedTime();
+            const zStart = -15,
+                zEnd = 2;
+            const z =
+                (zEnd + zStart) / 2 +
+                Math.sin((t / 25) * Math.PI * 2) * ((zEnd - zStart) / 2);
 
-    return () => {
-      clearInterval(clockInterval);
-      renderer.dispose();
-      geometry.dispose();
-      material.dispose();
-      texture.dispose();
-      if (mount && renderer.domElement) mount.removeChild(renderer.domElement);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []); // Dependencies cleared as font loading is handled by Suspense
+            oct.position.z = wireframe.position.z = z;
 
-  return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        position: 'relative',
-        overflow: 'hidden',
-        backgroundColor: '#000',
-      }}
-    >
-      {/* FULL IMAGE BACKGROUND */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${bgFull})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          // opacity: 0.55,          // <--- adjust
-          zIndex: 0,
-        }}
-      />
+            renderer.render(scene, camera);
+        };
+        animate();
 
-      {/* FLOATING TILED BACKGROUND */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${bgTile})`,
-          backgroundRepeat: 'repeat',
-          backgroundSize: '100px 100px',
-          animation: 'floatUp 45s linear infinite',
-          opacity: 0.3, // <--- adjust
-          zIndex: 0,
-        }}
-      />
+        const handleResize = () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        };
+        window.addEventListener('resize', handleResize);
 
-      {/* THREE.JS OCTAHEDRON */}
-      <div
-        ref={threeRef}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 1,
-          pointerEvents: 'none',
-        }}
-      />
+        return () => {
+            clearInterval(clockInterval);
+            renderer.dispose();
+            geometry.dispose();
+            material.dispose();
+            texture.dispose();
+            if (mount && renderer.domElement) mount.removeChild(renderer.domElement);
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []); // Dependencies cleared as font loading is handled by Suspense
 
-      {/* FLOATING ANIMATION KEYFRAME */}
-      <style>
-        {`
+    return (
+        <div
+            style={{
+                width: '100vw',
+                height: '100dvh',
+                position: 'relative',
+                overflow: 'hidden',
+                backgroundColor: '#000',
+            }}
+        >
+            {/* FULL IMAGE BACKGROUND */}
+            <div
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    backgroundImage: `url(${bgFull})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    // opacity: 0.55,          // <--- adjust
+                    zIndex: 0,
+                }}
+            />
+
+            {/* FLOATING TILED BACKGROUND */}
+            <div
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    backgroundImage: `url(${bgTile})`,
+                    backgroundRepeat: 'repeat',
+                    backgroundSize: '100px 100px',
+                    animation: 'floatUp 45s linear infinite',
+                    opacity: 0.3, // <--- adjust
+                    zIndex: 0,
+                }}
+            />
+
+            {/* THREE.JS OCTAHEDRON */}
+            <div
+                ref={threeRef}
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    zIndex: 1,
+                    pointerEvents: 'none',
+                }}
+            />
+
+            {/* FLOATING ANIMATION KEYFRAME */}
+            <style>
+                {`
           @keyframes floatUp {
             0% { background-position-y: 0px; }
             100% { background-position-y: -1000px; }
           }
         `}
-      </style>
-    </div>
-  );
-}
+            </style>
+        </div>
+    );
+};
+
+export default TwoBackgroundOctahedron;

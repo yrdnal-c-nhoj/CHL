@@ -20,106 +20,106 @@ const DigitalClock: React.FC = () => { // Standardized font loading with font-di
 
     const time = useClockTime('ms');
     const dateTime = time.toISOString();
-export default function DigitalClock() {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  useSuspenseFontLoader([
-    {
-      fontFamily: 'CodeFont',
-      fontUrl: font1,
-    },
-    {
-      fontFamily: 'BarFont',
-      fontUrl: font2,
-    },
-  ]);
+    export default function DigitalClock() {
+        // Standardized font loading with font-display: swap to avoid FOUC
+        useSuspenseFontLoader([
+            {
+                fontFamily: 'CodeFont',
+                fontUrl: font1,
+            },
+            {
+                fontFamily: 'BarFont',
+                fontUrl: font2,
+            },
+        ]);
 
-    const formatTimeDigits = (date: Date) => {
-        let hours = date.getHours();
-        const minutes = date.getMinutes();
-        const seconds = date.getSeconds();
-        const milliseconds = date.getMilliseconds();
-  const time = useClockTime('ms');
-  const dateTime = time.toISOString();
+        const formatTimeDigits = (date: Date) => {
+            let hours = date.getHours();
+            const minutes = date.getMinutes();
+            const seconds = date.getSeconds();
+            const milliseconds = date.getMilliseconds();
+            const time = useClockTime('ms');
+            const dateTime = time.toISOString();
 
-        hours = hours % 12 || 12;
-  const formatTimeDigits = (date: Date) => {
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
-    const milliseconds = date.getMilliseconds();
+            hours = hours % 12 || 12;
+            const formatTimeDigits = (date: Date) => {
+                let hours = date.getHours();
+                const minutes = date.getMinutes();
+                const seconds = date.getSeconds();
+                const milliseconds = date.getMilliseconds();
 
-        const h = hours.toString().padStart(2, '0');
-        const m = minutes.toString().padStart(2, '0');
-        const s: Record<string, React.CSSProperties> = seconds.toString().padStart(2, '0');
-        const ms = Math.floor(milliseconds / 10)
-            .toString()
-            .padStart(2, '0');
-    hours = hours % 12 || 12;
+                const h = hours.toString().padStart(2, '0');
+                const m = minutes.toString().padStart(2, '0');
+                const s: Record<string, React.CSSProperties> = seconds.toString().padStart(2, '0');
+                const ms = Math.floor(milliseconds / 10)
+                    .toString()
+                    .padStart(2, '0');
+                hours = hours % 12 || 12;
 
-        return [...h, ...m, ...s, ...ms];
-    };
-    const h = hours.toString().padStart(2, '0');
-    const m = minutes.toString().padStart(2, '0');
-    const s = seconds.toString().padStart(2, '0');
-    const ms = Math.floor(milliseconds / 10)
-      .toString()
-      .padStart(2, '0');
+                return [...h, ...m, ...s, ...ms];
+            };
+            const h = hours.toString().padStart(2, '0');
+            const m = minutes.toString().padStart(2, '0');
+            const s = seconds.toString().padStart(2, '0');
+            const ms = Math.floor(milliseconds / 10)
+                .toString()
+                .padStart(2, '0');
 
-    const containerStyle: React.CSSProperties = {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100dvh',
-        width: '100%',
-        backgroundImage: `url(${bgImage2}), url(${bgImage})`,
-        backgroundSize: '100% 100%',
-        backgroundPosition: 'center, center',
-        backgroundRepeat: 'no-repeat, no-repeat',
-    };
-    return [...h, ...m, ...s, ...ms];
-  };
+            const containerStyle: React.CSSProperties = {
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100dvh',
+                width: '100%',
+                backgroundImage: `url(${bgImage2}), url(${bgImage})`,
+                backgroundSize: '100% 100%',
+                backgroundPosition: 'center, center',
+                backgroundRepeat: 'no-repeat, no-repeat',
+            };
+            return [...h, ...m, ...s, ...ms];
+        };
 
-    const digitsContainer: React.CSSProperties = {
-        display: 'flex',
-        transform: 'translateX(-10%) translateY(90%)', // Move right 30%, down 20%
-    };
-  const containerStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100dvh',
-    width: '100%',
-    backgroundImage: `url(${bgImage2}), url(${bgImage})`,
-    backgroundSize: '100% 100%',
-    backgroundPosition: 'center, center',
-    backgroundRepeat: 'no-repeat, no-repeat',
-  };
+        const digitsContainer: React.CSSProperties = {
+            display: 'flex',
+            transform: 'translateX(-10%) translateY(90%)', // Move right 30%, down 20%
+        };
+        const containerStyle: React.CSSProperties = {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100dvh',
+            width: '100%',
+            backgroundImage: `url(${bgImage2}), url(${bgImage})`,
+            backgroundSize: '100% 100%',
+            backgroundPosition: 'center, center',
+            backgroundRepeat: 'no-repeat, no-repeat',
+        };
 
-    const digitStack: React.CSSProperties = {
-        display: 'flex',
-        flexDirection: 'column',
-        lineHeight: 1,
-        margin: 0,
-        padding: 0,
-    };
-  const digitsContainer: React.CSSProperties = {
-    display: 'flex',
-    transform: 'translateX(-10%) translateY(90%)', // Move right 30%, down 20%
-  };
+        const digitStack: React.CSSProperties = {
+            display: 'flex',
+            flexDirection: 'column',
+            lineHeight: 1,
+            margin: 0,
+            padding: 0,
+        };
+        const digitsContainer: React.CSSProperties = {
+            display: 'flex',
+            transform: 'translateX(-10%) translateY(90%)', // Move right 30%, down 20%
+        };
 
-    const digitStyle = (fontName: string, size: string | number): React.CSSProperties => ({
-        fontSize: size,
-        fontWeight: 'bold',
-        color: '#275254FF', // dark brown ink
-        textAlign: 'center',
-        fontFamily: fontName,
-        margin: 0,
-        padding: 0,
-        lineHeight: 1,
-        letterSpacing: '0.05em', // slightly inconsistent spacing
-        textShadow: `
+        const digitStyle = (fontName: string, size: string | number): React.CSSProperties => ({
+            fontSize: size,
+            fontWeight: 'bold',
+            color: '#275254FF', // dark brown ink
+            textAlign: 'center',
+            fontFamily: fontName,
+            margin: 0,
+            padding: 0,
+            lineHeight: 1,
+            letterSpacing: '0.05em', // slightly inconsistent spacing
+            textShadow: `
   const digitStack: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
@@ -140,10 +140,10 @@ export default function DigitalClock() {
     letterSpacing: '0.05em', // slightly inconsistent spacing
     textShadow: `
       1px 0 #4a3a28, 
-      -1px 0 #4a3a28, 
-      0 1px #4a3a28, 
-      0 -1px #4a3a28
-    `, // "bleed" edges
+      - 1px 0 #4a3a28,
+            0 1px #4a3a28,
+                0 - 1px #4a3a28
+                    `, // "bleed" edges
 
         backgroundSize: 'cover',
         WebkitBackgroundClip: 'text',

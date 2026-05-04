@@ -9,193 +9,192 @@ import bg4 from '@/assets/images/2025/25-11/25-11-17/mars5.webp';
 export { bg1, bg2, bg3, bg4 };
 
 export const fontConfigs = [
-  {
-    fontFamily: 'ClockFont',
-    fontUrl: font2025_11_18,
-  },
+    {
+        fontFamily: 'ClockFont',
+        fontUrl: font2025_11_18,
+    },
 ];
+const MarsDigitalClock: React.FC = () => {
+    const [time, setTime] = useState(new Date());
+    const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+    const rafRef = useRef<number | NodeJS.Timeout | null>(null); // Correctly type rafRef for setInterval ID
 
-export default function MarsDigitalClock() {
-  const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-  const rafRef = useRef<number | NodeJS.Timeout | null>(null); // Correctly type rafRef for setInterval ID
+    useEffect(() => {
+        let cancelled = false;
+        const font = new FontFace('ClockFont', `url(${font2025_11_18})`, {
+            style: 'normal',
+            weight: '400',
+        });
 
-  useEffect(() => {
-    let cancelled = false;
-    const font = new FontFace('ClockFont', `url(${font2025_11_18})`, {
-      style: 'normal',
-      weight: '400',
-    });
+        font
+            .load()
+            .then((loaded) => {
+                if (cancelled) return;
+                document.fonts.add(loaded);
+                setFontLoaded(true);
+            })
+            .catch(() => {
+                // In case of error, still show the clock with fallback font
+                if (!cancelled) setFontLoaded(true);
+            });
 
-    font
-      .load()
-      .then((loaded) => {
-        if (cancelled) return;
-        document.fonts.add(loaded);
-        setFontLoaded(true);
-      })
-      .catch(() => {
-        // In case of error, still show the clock with fallback font
-        if (!cancelled) setFontLoaded(true);
-      });
+        return () => {
+            cancelled = true;
+        };
+    }, []);
 
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+    useEffect(() => {
+        // Use setInterval directly for time updates
+        const intervalId = setInterval(() => {
+            setTime(new Date());
+        }, 100);
 
-  useEffect(() => {
-    // Use setInterval directly for time updates
-    const intervalId = setInterval(() => {
-      setTime(new Date());
-    }, 100);
+        // Store the interval ID in the ref
+        rafRef.current = intervalId;
 
-    // Store the interval ID in the ref
-    rafRef.current = intervalId;
+        return () => {
+            if (rafRef.current) clearInterval(rafRef.current);
+        };
+    }, []);
 
-    return () => {
-      if (rafRef.current) clearInterval(rafRef.current);
-    };
-  }, []);
+    const two = (n: number) => String(n).padStart(2, '0');
 
-  const two = (n: number) => String(n).padStart(2, '0');
+    const hoursStr = two(time.getHours());
+    const minutesStr = two(time.getMinutes());
+    const secondsStr = two(time.getSeconds());
+    const msStr = two(Math.floor(time.getMilliseconds() / 10));
 
-  const hoursStr = two(time.getHours());
-  const minutesStr = two(time.getMinutes());
-  const secondsStr = two(time.getSeconds());
-  const msStr = two(Math.floor(time.getMilliseconds() / 10));
+    const DigitBox = ({ children }: { children: React.ReactNode }) => (
+        <div className="digitBox" style={styles.digitBox}>
+            {children}
+        </div>
+    );
 
-  const DigitBox = ({ children }: { children: React.ReactNode }) => (
-    <div className="digitBox" style={styles.digitBox}>
-      {children}
-    </div>
-  );
-
-  const styles: Record<string, React.CSSProperties> = {
-    fontFace: `
+    const styles: Record<string, React.CSSProperties> = {
+        fontFace: `
       @font-face {
         font-family: 'ClockFont';
         src: url(${font2025_11_18}) format('truetype');
         font-display: swap;
       }
     `,
-    /* Mars four - behind everything else */
-    background4: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      backgroundImage: `url(${bg4})`,
-      backgroundSize: '130% 130%',
-      opacity: 0.7,
-      backgroundBlendMode: 'multiply',
-      backgroundColor: 'red',
-      filter: 'brightness(1.7) contrast(1.2)',
-      // backgroundRepeat: "no-repeat",
-      backgroundPosition: 'center',
-      zIndex: 1,
-    },
+        /* Mars four - behind everything else */
+        background4: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url(${bg4})`,
+            backgroundSize: '130% 130%',
+            opacity: 0.7,
+            backgroundBlendMode: 'multiply',
+            backgroundColor: 'red',
+            filter: 'brightness(1.7) contrast(1.2)',
+            // backgroundRepeat: "no-repeat",
+            backgroundPosition: 'center',
+            zIndex: 1,
+        },
 
-    root: {
-      minHeight: '100dvh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'relative',
-      fontFamily:
-        "ClockFont, Inter, Roboto, system-ui, -apple-system, 'Segoe UI', sans-serif",
-      overflow: 'hidden',
-      padding: '2vh',
-      boxSizing: 'border-box',
-      opacity: fontLoaded ? 1 : 0,
-      transition: 'opacity 0.35s ease-out',
-      // Opacity handled by Suspense/Loader now
-    },
-    gradientBackground: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      background: 'linear-gradient(188deg, #F3061AFF, #181717FF)',
-      zIndex: 0, // gradient behind everything
-    },
-    background1: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      backgroundImage: `url(${bg1})`,
-      backgroundSize: 'contain',
+        root: {
+            minHeight: '100dvh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative',
+            fontFamily:
+                "ClockFont, Inter, Roboto, system-ui, -apple-system, 'Segoe UI', sans-serif",
+            overflow: 'hidden',
+            padding: '2vh',
+            boxSizing: 'border-box',
+            opacity: fontLoaded ? 1 : 0,
+            transition: 'opacity 0.35s ease-out',
+            // Opacity handled by Suspense/Loader now
+        },
+        gradientBackground: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'linear-gradient(188deg, #F3061AFF, #181717FF)',
+            zIndex: 0, // gradient behind everything
+        },
+        background1: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url(${bg1})`,
+            backgroundSize: 'contain',
 
-      backgroundPosition: 'center',
-      filter: 'hue-rotate(-20deg) saturate(1.8) contrast(1.8) brightness(1.2)',
-      zIndex: 1,
-      // opacity: 0.3, // 60% opacity
-    },
-    background2: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      backgroundRepeat: 'no-repeat',
-      backgroundImage: `url(${bg2})`,
-      backgroundSize: '100% 100%', // <— Stretch to fill container
-      backgroundPosition: 'center',
-      opacity: 0.5,
-      zIndex: 2,
-    },
+            backgroundPosition: 'center',
+            filter: 'hue-rotate(-20deg) saturate(1.8) contrast(1.8) brightness(1.2)',
+            zIndex: 1,
+            // opacity: 0.3, // 60% opacity
+        },
+        background2: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundRepeat: 'no-repeat',
+            backgroundImage: `url(${bg2})`,
+            backgroundSize: '100% 100%', // <— Stretch to fill container
+            backgroundPosition: 'center',
+            opacity: 0.5,
+            zIndex: 2,
+        },
 
-    background3: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      backgroundImage: `url(${bg3})`,
-      backgroundSize: '100% 100%', // <— Stretch to fill container
-      backgroundPosition: 'center',
-      transform: 'rotate(180deg)',
-      opacity: 0.5,
-      zIndex: 3,
-    },
+        background3: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url(${bg3})`,
+            backgroundSize: '100% 100%', // <— Stretch to fill container
+            backgroundPosition: 'center',
+            transform: 'rotate(180deg)',
+            opacity: 0.5,
+            zIndex: 3,
+        },
 
-    content: {
-      position: 'relative',
-      zIndex: 4, // above all backgrounds
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '2vh',
-    },
-    group: {
-      display: 'flex',
-      flexDirection: 'row',
-      gap: '1vh',
-    },
-    digitBox: {
-      width: '10vh',
-      height: '11vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontSize: '11vh',
-      color: '#EF2005FF',
-      lineHeight: 1,
-      whiteSpace: 'nowrap',
-      textShadow: '-1px -1px 0 #040404FF, 1px 1px 0 #F7F8BFFF',
-    },
-  };
+        content: {
+            position: 'relative',
+            zIndex: 4, // above all backgrounds
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '2vh',
+        },
+        group: {
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '1vh',
+        },
+        digitBox: {
+            width: '10vh',
+            height: '11vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '11vh',
+            color: '#EF2005FF',
+            lineHeight: 1,
+            whiteSpace: 'nowrap',
+            textShadow: '-1px -1px 0 #040404FF, 1px 1px 0 #F7F8BFFF',
+        },
+    };
 
-  return (
-    <>
-      <style>{styles.fontFace}</style>
-      <style>{`
+    return (
+        <>
+            <style>{styles.fontFace}</style>
+            <style>{`
         @media (max-width: 768px) {
           .content {
             flex-direction: column !important;
@@ -208,35 +207,37 @@ export default function MarsDigitalClock() {
         }
       `}</style>
 
-      <div style={styles.root}>
-        <div style={styles.background4} aria-hidden="true" />
-        <div style={styles.gradientBackground} />
-        <div style={styles.background1} />
-        <div style={styles.background2} />
-        <div style={styles.background3} />
+            <div style={styles.root}>
+                <div style={styles.background4} aria-hidden="true" />
+                <div style={styles.gradientBackground} />
+                <div style={styles.background1} />
+                <div style={styles.background2} />
+                <div style={styles.background3} />
 
-        <div className="content" style={styles.content}>
-          <div className="group" style={styles.group}>
-            <DigitBox>{hoursStr[0]}</DigitBox>
-            <DigitBox>{hoursStr[1]}</DigitBox>
-          </div>
+                <div className="content" style={styles.content}>
+                    <div className="group" style={styles.group}>
+                        <DigitBox>{hoursStr[0]}</DigitBox>
+                        <DigitBox>{hoursStr[1]}</DigitBox>
+                    </div>
 
-          <div className="group" style={styles.group}>
-            <DigitBox>{minutesStr[0]}</DigitBox>
-            <DigitBox>{minutesStr[1]}</DigitBox>
-          </div>
+                    <div className="group" style={styles.group}>
+                        <DigitBox>{minutesStr[0]}</DigitBox>
+                        <DigitBox>{minutesStr[1]}</DigitBox>
+                    </div>
 
-          <div className="group" style={styles.group}>
-            <DigitBox>{secondsStr[0]}</DigitBox>
-            <DigitBox>{secondsStr[1]}</DigitBox>
-          </div>
+                    <div className="group" style={styles.group}>
+                        <DigitBox>{secondsStr[0]}</DigitBox>
+                        <DigitBox>{secondsStr[1]}</DigitBox>
+                    </div>
 
-          <div className="group" style={styles.group}>
-            <DigitBox>{msStr[0]}</DigitBox>
-            <DigitBox>{msStr[1]}</DigitBox>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
+                    <div className="group" style={styles.group}>
+                        <DigitBox>{msStr[0]}</DigitBox>
+                        <DigitBox>{msStr[1]}</DigitBox>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+};
+
+export default MarsDigitalClock;

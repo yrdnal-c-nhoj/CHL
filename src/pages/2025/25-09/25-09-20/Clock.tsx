@@ -4,130 +4,129 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 const o250920font = '../../../assets/fonts/2025/25-09-20-orb.ttf'; // Local font file
 
 const COLORS = {
-  hourTick: '#ff00ff',
-  minuteTick: '#ffff00',
-  number: '#00ffff',
-  hourHand: '#32a6c3',
-  minuteHand: '#00ff90',
-  secondHand: '#FD02C3FF',
-  background: '#000',
-  clockBorder: '#0ff',
-  centerDot: '#ff00ff',
-  centerDotGradient: '#800080',
+    hourTick: '#ff00ff',
+    minuteTick: '#ffff00',
+    number: '#00ffff',
+    hourHand: '#32a6c3',
+    minuteHand: '#00ff90',
+    secondHand: '#FD02C3FF',
+    background: '#000',
+    clockBorder: '#0ff',
+    centerDot: '#ff00ff',
+    centerDotGradient: '#800080',
 };
 
 const SIZES = {
-  clock: 'clamp(30vw, 50vh, 80vh)',
-  hourHand: { width: '0.6rem', height: '5rem' },
-  minuteHand: { width: '0.4rem', height: '7rem' },
-  secondHand: { width: '0.3rem', height: '8.5rem' },
-  centerDot: '1.6rem',
-  hourTick: { width: '0.5rem', height: '2rem' },
-  minuteTick: { width: '0.3rem', height: '1rem' },
-  number: { width: '2rem', height: '2rem', fontSize: '1.9rem' },
+    clock: 'clamp(30vw, 50vh, 80vh)',
+    hourHand: { width: '0.6rem', height: '5rem' },
+    minuteHand: { width: '0.4rem', height: '7rem' },
+    secondHand: { width: '0.3rem', height: '8.5rem' },
+    centerDot: '1.6rem',
+    hourTick: { width: '0.5rem', height: '2rem' },
+    minuteTick: { width: '0.3rem', height: '1rem' },
+    number: { width: '2rem', height: '2rem', fontSize: '1.9rem' },
 };
 
 const NeonClock: React.FC = () => {
-  const clockRef = useRef<HTMLDivElement>(null);
-  const ticksRef = useRef<(HTMLDivElement | null)[]>([]);
-  const lastTickRef = useRef(-1);
-  const timeRef = useRef<HTMLDivElement>(null);
+    const clockRef = useRef<HTMLDivElement>(null);
+    const ticksRef = useRef<(HTMLDivElement | null)[]>([]);
+    const lastTickRef = useRef(-1);
+    const timeRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    let animationFrameId: number;
+    useEffect(() => {
+        let animationFrameId: number;
 
-    const updateClock = () => {
-      const now = new Date();
-      const ms = now.getMilliseconds();
-      const second = now.getSeconds() + ms / 1000;
-      const minute = now.getMinutes() + second / 60;
-      const hour = now.getHours() + minute / 60;
+        const updateClock = () => {
+            const now = new Date();
+            const ms = now.getMilliseconds();
+            const second = now.getSeconds() + ms / 1000;
+            const minute = now.getMinutes() + second / 60;
+            const hour = now.getHours() + minute / 60;
 
-      const hourEl = document.getElementById('hour');
-      const minuteEl = document.getElementById('minute');
-      const secondEl = document.getElementById('second');
-      if (hourEl && minuteEl && secondEl) {
-        hourEl.style.transform = `translateX(-50%) rotate(${
-          (hour % 12) * 30
-        }deg)`;
-        minuteEl.style.transform = `translateX(-50%) rotate(${minute * 6}deg)`;
-        secondEl.style.transform = `translateX(-50%) rotate(${second * 6}deg)`;
-      }
+            const hourEl = document.getElementById('hour');
+            const minuteEl = document.getElementById('minute');
+            const secondEl = document.getElementById('second');
+            if (hourEl && minuteEl && secondEl) {
+                hourEl.style.transform = `translateX(-50%) rotate(${(hour % 12) * 30
+                    }deg)`;
+                minuteEl.style.transform = `translateX(-50%) rotate(${minute * 6}deg)`;
+                secondEl.style.transform = `translateX(-50%) rotate(${second * 6}deg)`;
+            }
 
-      if (timeRef.current) {
-        timeRef.current.textContent = now.toLocaleTimeString();
-      }
+            if (timeRef.current) {
+                timeRef.current.textContent = now.toLocaleTimeString();
+            }
 
-      const tickIndex = Math.floor(second) % 60;
-      if (lastTickRef.current !== tickIndex) {
-        const tickToGlow = ticksRef.current[tickIndex];
-        if (tickToGlow && !tickToGlow.classList.contains('glow')) {
-          tickToGlow.classList.add('glow');
-          setTimeout(() => tickToGlow.classList.remove('glow'), 4000);
-        }
-        lastTickRef.current = tickIndex;
-      }
+            const tickIndex = Math.floor(second) % 60;
+            if (lastTickRef.current !== tickIndex) {
+                const tickToGlow = ticksRef.current[tickIndex];
+                if (tickToGlow && !tickToGlow.classList.contains('glow')) {
+                    tickToGlow.classList.add('glow');
+                    setTimeout(() => tickToGlow.classList.remove('glow'), 4000);
+                }
+                lastTickRef.current = tickIndex;
+            }
 
-      animationFrameId = requestAnimationFrame(updateClock);
-    };
+            animationFrameId = requestAnimationFrame(updateClock);
+        };
 
-    animationFrameId = requestAnimationFrame(updateClock);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, []);
+        animationFrameId = requestAnimationFrame(updateClock);
+        return () => cancelAnimationFrame(animationFrameId);
+    }, []);
 
-  const renderTicks = useMemo(() => {
-    return Array.from({ length: 60 }).map((_, i) => {
-      const angle = i * 6 - 90;
-      const rad = (angle * Math.PI) / 180;
-      const tickX = 50 + 45 * Math.cos(rad);
-      const tickY = 50 + 45 * Math.sin(rad);
-      const isHour = i % 5 === 0;
+    const renderTicks = useMemo(() => {
+        return Array.from({ length: 60 }).map((_, i) => {
+            const angle = i * 6 - 90;
+            const rad = (angle * Math.PI) / 180;
+            const tickX = 50 + 45 * Math.cos(rad);
+            const tickY = 50 + 45 * Math.sin(rad);
+            const isHour = i % 5 === 0;
 
-      return (
-        <div
-          key={i}
-          ref={(el) => (ticksRef.current[i] = el)}
-          className={`tick ${isHour ? 'hour-tick' : 'minute-tick'}`}
-          style={{
-            position: 'absolute',
-            top: `${tickY}%`,
-            left: `${tickX}%`,
-            transform: `translate(-50%, -50%) rotate(${angle + 90}deg)`,
-          }}
-        />
-      );
-    });
-  }, []);
+            return (
+                <div
+                    key={i}
+                    ref={(el) => (ticksRef.current[i] = el)}
+                    className={`tick ${isHour ? 'hour-tick' : 'minute-tick'}`}
+                    style={{
+                        position: 'absolute',
+                        top: `${tickY}%`,
+                        left: `${tickX}%`,
+                        transform: `translate(-50%, -50%) rotate(${angle + 90}deg)`,
+                    }}
+                />
+            );
+        });
+    }, []);
 
-  const renderNumbers = useMemo(() => {
-    return Array.from({ length: 12 }).map((_, i) => {
-      const num = i + 1;
-      const angle = num * 30 - 90;
-      const rad = (angle * Math.PI) / 180;
-      const numX = 50 + 39 * Math.cos(rad);
-      const numY = 50 + 39 * Math.sin(rad);
+    const renderNumbers = useMemo(() => {
+        return Array.from({ length: 12 }).map((_, i) => {
+            const num = i + 1;
+            const angle = num * 30 - 90;
+            const rad = (angle * Math.PI) / 180;
+            const numX = 50 + 39 * Math.cos(rad);
+            const numY = 50 + 39 * Math.sin(rad);
 
-      return (
-        <div
-          key={num}
-          className="number"
-          style={{
-            position: 'absolute',
-            top: `${numY}%`,
-            left: `${numX}%`,
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          {num}
-        </div>
-      );
-    });
-  }, []);
+            return (
+                <div
+                    key={num}
+                    className="number"
+                    style={{
+                        position: 'absolute',
+                        top: `${numY}%`,
+                        left: `${numX}%`,
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                >
+                    {num}
+                </div>
+            );
+        });
+    }, []);
 
-  return (
-    <>
-      <style>
-        {`
+    return (
+        <>
+            <style>
+                {`
           @font-face {
             font-family: 'Orb';
             src: url(${o250920font}) format('truetype');
@@ -272,28 +271,28 @@ const NeonClock: React.FC = () => {
             }
           }
         `}
-      </style>
-      <div
-        className="neon-clock"
-        role="img"
-        aria-label="Analog neon clock displaying the current time"
-      >
-        <div className="clock-container">
-          <div ref={clockRef} className="clock-face">
-            <div className="pulse center-dot" />
-            <div id="hour" className="hand hour-hand" />
-            <div id="minute" className="hand minute-hand" />
-            <div id="second" className="hand second-hand" />
-            {renderTicks}
-            {renderNumbers}
-            <div className="sr-only" aria-live="polite" ref={timeRef}>
-              {new Date().toLocaleTimeString()}
+            </style>
+            <div
+                className="neon-clock"
+                role="img"
+                aria-label="Analog neon clock displaying the current time"
+            >
+                <div className="clock-container">
+                    <div ref={clockRef} className="clock-face">
+                        <div className="pulse center-dot" />
+                        <div id="hour" className="hand hour-hand" />
+                        <div id="minute" className="hand minute-hand" />
+                        <div id="second" className="hand second-hand" />
+                        {renderTicks}
+                        {renderNumbers}
+                        <div className="sr-only" aria-live="polite" ref={timeRef}>
+                            {new Date().toLocaleTimeString()}
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
+        </>
+    );
 };
 
 export default NeonClock;

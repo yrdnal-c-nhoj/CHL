@@ -18,156 +18,157 @@ import bg from '@/assets/images/2025/25-11/25-11-14/ice.jpg'; // background imag
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 const numberImages = [
-  num12,
-  num1,
-  num2,
-  num3,
-  num4,
-  num5,
-  num6,
-  num7,
-  num8,
-  num9,
-  num10,
-  num11,
+    num12,
+    num1,
+    num2,
+    num3,
+    num4,
+    num5,
+    num6,
+    num7,
+    num8,
+    num9,
+    num10,
+    num11,
 ];
+const ImageAnalogClock: React.FC = () => {
+    const hourRef = useRef<HTMLDivElement>(null);
+    const minuteRef = useRef<HTMLDivElement>(null);
+    const secondRef = useRef<HTMLDivElement>(null);
+    const rafRef = useRef<number | null>(null);
 
-export default function ImageAnalogClock() {
-  const hourRef = useRef<HTMLDivElement>(null);
-  const minuteRef = useRef<HTMLDivElement>(null);
-  const secondRef = useRef<HTMLDivElement>(null);
-  const rafRef = useRef<number | null>(null);
+    useEffect(() => {
+        function update() {
+            const now = new Date();
+            const ms = now.getMilliseconds();
+            const s = now.getSeconds() + ms / 1000;
+            const m = now.getMinutes() + s / 60;
+            const h = (now.getHours() % 12) + m / 60;
 
-  useEffect(() => {
-    function update() {
-      const now = new Date();
-      const ms = now.getMilliseconds();
-      const s = now.getSeconds() + ms / 1000;
-      const m = now.getMinutes() + s / 60;
-      const h = (now.getHours() % 12) + m / 60;
+            const sDeg = s * 6;
+            const mDeg = m * 6;
+            const hDeg = h * 30;
 
-      const sDeg = s * 6;
-      const mDeg = m * 6;
-      const hDeg = h * 30;
+            if (hourRef.current)
+                hourRef.current.style.transform = `translate(-50%, -100%) rotate(${hDeg}deg)`;
 
-      if (hourRef.current)
-        hourRef.current.style.transform = `translate(-50%, -100%) rotate(${hDeg}deg)`;
+            if (minuteRef.current)
+                minuteRef.current.style.transform = `translate(-50%, -100%) rotate(${mDeg}deg)`;
 
-      if (minuteRef.current)
-        minuteRef.current.style.transform = `translate(-50%, -100%) rotate(${mDeg}deg)`;
+            if (secondRef.current)
+                secondRef.current.style.transform = `translate(-50%, -100%) rotate(${sDeg}deg)`;
 
-      if (secondRef.current)
-        secondRef.current.style.transform = `translate(-50%, -100%) rotate(${sDeg}deg)`;
+            rafRef.current = requestAnimationFrame(update);
+        }
 
-      rafRef.current = requestAnimationFrame(update);
-    }
+        rafRef.current = requestAnimationFrame(update);
+        return () => {
+            if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        };
+    }, []);
 
-    rafRef.current = requestAnimationFrame(update);
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    const clockSize = 'min(190vw, 190vh)';
+
+    const wrapper: React.CSSProperties = {
+        width: clockSize,
+        height: clockSize,
+        borderRadius: '50%',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+
+        // ⭐ Gradient background behind the numbers
+        // background: "radial-gradient(circle, #, #000, #000)",
     };
-  }, []);
 
-  const clockSize = 'min(190vw, 190vh)';
+    const numberStyle = (index: number): React.CSSProperties => {
+        const angle = (index / 12) * Math.PI * 2 - Math.PI / 2;
+        const radius = 0.42;
 
-  const wrapper: React.CSSProperties = {
-    width: clockSize,
-    height: clockSize,
-    borderRadius: '50%',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+        const top = 50 + Math.sin(angle) * radius * 50;
+        const left = 50 + Math.cos(angle) * radius * 50;
 
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+        return {
+            position: 'absolute',
+            top: `${top}%`,
+            left: `${left}%`,
+            transform: 'translate(-50%, -50%)',
 
-    // ⭐ Gradient background behind the numbers
-    // background: "radial-gradient(circle, #, #000, #000)",
-  };
+            width: '15vh',
+            height: 'auto',
 
-  const numberStyle = (index: number): React.CSSProperties => {
-    const angle = (index / 12) * Math.PI * 2 - Math.PI / 2;
-    const radius = 0.42;
-
-    const top = 50 + Math.sin(angle) * radius * 50;
-    const left = 50 + Math.cos(angle) * radius * 50;
-
-    return {
-      position: 'absolute',
-      top: `${top}%`,
-      left: `${left}%`,
-      transform: 'translate(-50%, -50%)',
-
-      width: '15vh',
-      height: 'auto',
-
-      userSelect: 'none',
-      pointerEvents: 'none',
+            userSelect: 'none',
+            pointerEvents: 'none',
+        };
     };
-  };
 
-  const handCommon: React.CSSProperties = {
-    position: 'absolute',
-    left: '50%',
-    top: '50%',
-    transformOrigin: '50% 100%',
-    borderRadius: '1vh',
-    background: '#C8E0EF',
-  };
+    const handCommon: React.CSSProperties = {
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transformOrigin: '50% 100%',
+        borderRadius: '1vh',
+        background: '#C8E0EF',
+    };
 
-  const hourHand: React.CSSProperties = {
-    ...handCommon,
-    width: '1vh',
-    height: '15vh',
-    zIndex: 10,
-  };
+    const hourHand: React.CSSProperties = {
+        ...handCommon,
+        width: '1vh',
+        height: '15vh',
+        zIndex: 10,
+    };
 
-  const minuteHand: React.CSSProperties = {
-    ...handCommon,
-    width: '0.7vh',
-    height: '22vh',
-    zIndex: 11,
-  };
+    const minuteHand: React.CSSProperties = {
+        ...handCommon,
+        width: '0.7vh',
+        height: '22vh',
+        zIndex: 11,
+    };
 
-  const secondHand: React.CSSProperties = {
-    ...handCommon,
-    width: '0.35vh',
-    height: '25vh',
-    zIndex: 12,
-    background: '#C8E0EF',
-  };
+    const secondHand: React.CSSProperties = {
+        ...handCommon,
+        width: '0.35vh',
+        height: '25vh',
+        zIndex: 12,
+        background: '#C8E0EF',
+    };
 
-  return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        position: 'relative',
-        overflow: 'hidden',
-        backgroundImage: `url(${bg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
-      <div style={wrapper}>
-        {numberImages.map((src, index) => (
-          <img
-            decoding="async"
-            loading="lazy"
-            key={index}
-            src={src}
-            alt=""
-            style={numberStyle(index)}
-          />
-        ))}
+    return (
+        <div
+            style={{
+                width: '100vw',
+                height: '100dvh',
+                position: 'relative',
+                overflow: 'hidden',
+                backgroundImage: `url(${bg})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+            }}
+        >
+            <div style={wrapper}>
+                {numberImages.map((src, index) => (
+                    <img
+                        decoding="async"
+                        loading="lazy"
+                        key={index}
+                        src={src}
+                        alt=""
+                        style={numberStyle(index)}
+                    />
+                ))}
 
-        <div ref={hourRef} style={hourHand} />
-        <div ref={minuteRef} style={minuteHand} />
-        <div ref={secondRef} style={secondHand} />
-      </div>
-    </div>
-  );
-}
+                <div ref={hourRef} style={hourHand} />
+                <div ref={minuteRef} style={minuteHand} />
+                <div ref={secondRef} style={secondHand} />
+            </div>
+        </div>
+    );
+};
+
+export default ImageAnalogClock;
