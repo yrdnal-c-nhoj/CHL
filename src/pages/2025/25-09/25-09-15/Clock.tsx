@@ -46,7 +46,7 @@ const SkewFlatClock = ({
 
   // Update time and hue
   useEffect(() => {
-    const updateTime: React.FC = () => {
+    const updateTime = () => {
       const now = new Date();
       let hours = now.getHours();
       const minutes = now.getMinutes().toString().padStart(2, '0');
@@ -76,7 +76,7 @@ const SkewFlatClock = ({
     );
   }
 
-  const createTartanGrid = (colors) => {
+  const createTartanGrid = (colors: string[]) => {
     const rows = [];
     for (let row = 0; row < verticalRepeats; row++) {
       const rowColor = colors[row % colors.length];
@@ -106,7 +106,7 @@ const SkewFlatClock = ({
     return rows;
   };
 
-  const baseGridStyle = {
+  const baseGridStyle: React.CSSProperties = {
     fontSize: '2.6rem',
     position: 'absolute',
     top: '50%',
