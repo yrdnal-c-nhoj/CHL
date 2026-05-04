@@ -4,6 +4,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import cus251101font from '@/assets/fonts/2025/25-11-01-edgecase.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 const EdgeClockWithHands: React.FC = () => {
@@ -20,19 +21,7 @@ const EdgeClockWithHands: React.FC = () => {
 
     useSuspenseFontLoader(fontConfigs);
 
-    const [time, setTime] = useState(new Date());
-
-    useEffect(() => {
-        const interval = setInterval(() => setTime(new Date()), 50);
-        const updateSize = () => {
-            /* Force re-render on resize if needed */
-        };
-        window.addEventListener('resize', updateSize); // Kept for behavior compatibility
-        return () => {
-            clearInterval(interval);
-            window.removeEventListener('resize', updateSize);
-        };
-    }, []);
+    const time = useMillisecondClock();
 
     const padding = 40; // Space from the literal edge of the screen in pixels
 
