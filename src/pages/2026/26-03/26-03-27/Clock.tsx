@@ -1,10 +1,19 @@
-import React from 'react';
-
+import React, { useMemo } from 'react';
 import triFont from '@/assets/fonts/2026/26-03-27-tri.ttf';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
-
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock, useClockTime } from '@/utils/hooks';
+import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
+
+// Export assets for preloading pipeline
+export { triFont };
+
+const fontConfigs: FontConfig[] = [
+    {
+        fontFamily: 'TriFont',
+        fontUrl: triFont,
+    },
+];
 
 // Returns the max radius a hand at angle `theta` (radians, 0=up, CW) can extend
 // within the triangle defined by vertices relative to center cx, cy.
@@ -32,7 +41,7 @@ function maxRadiusInTriangle(
         const tx = x1 - cx;
         const ty = y1 - cy;
         const t = (tx * ey - ty * ex) / denom;
-        const s: Record<string, React.CSSProperties> = (tx * dy - ty * dx) / denom;
+        const s = (tx * dy - ty * dx) / denom;
 
         if (t > 0.001 && s >= -0.001 && s <= 1.001) {
             minT = Math.min(minT, t);
@@ -44,16 +53,12 @@ function maxRadiusInTriangle(
 
 const TriangleClock: React.FC = () => {
     const time = useMillisecondClock();
+    const a11yTime = useClockTime();
 
-    const fontConfigs = [
-        {
-            fontFamily: 'TriFont',
-            fontUrl: triFont,
-        },
-    ];
-    const fontsLoaded = useMultipleFontLoader(fontConfigs);
+    // Suspends until fonts load (prevents FOUC)
+    useSuspenseFontLoader(fontConfigs);
 
-    const fontFamily = fontsLoaded ? 'TriFont, Georgia, serif' : 'Georgia, serif';
+    const fontFamily = 'TriFont, Georgia, serif';
 
     const hours = time.getHours() % 12;
     const minutes = time.getMinutes();
@@ -152,8 +157,14 @@ const TriangleClock: React.FC = () => {
     const tickMajor = '#184F11';
     const numberFill = '#184F11';
 
+    const isoTime = useMemo(() => a11yTime.toISOString(), [a11yTime]);
+    const displayTime = useMemo(() => a11yTime.toLocaleTimeString(), [a11yTime]);
+
     return (
         <div className={styles.container}>
+            {/* Semantic time for screen readers and SEO */}
+            <time dateTime={isoTime} className="sr-only">{displayTime}</time>
+
             <svg
                 viewBox={`0 0 ${VW} ${VH}`}
                 className={styles.svg}
