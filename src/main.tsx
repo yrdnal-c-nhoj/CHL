@@ -21,45 +21,14 @@ import { HelmetProvider } from 'react-helmet-async';
 import './index.css';
 import App from './App.tsx';
 
-/**
- * Performance monitoring and error reporting
- * Only enabled in development for debugging
- */
-const enablePerformanceMonitoring = import.meta.env.DEV;
-
-if (enablePerformanceMonitoring) {
-  // Performance monitoring setup
-  if ('performance' in window) {
-    window.addEventListener('load', (event: Event) => {
-      const perfData = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-      console.log('Page Load Performance:', {
-        domContentLoaded: perfData &&
-          perfData.domContentLoadedEventEnd -
-          perfData.domContentLoadedEventStart,
-        loadComplete: perfData.loadEventEnd - perfData.loadEventStart,
-        totalTime: perfData.loadEventEnd - perfData.navigationStart,
-      });
-    });
-  }
-}
-
-/**
- * Error handling for unhandled promise rejections
- */
 window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => {
-  console.error('Unhandled Promise Rejection:', event.reason);
-  // In production, you might want to send this to an error reporting service
-  if (import.meta.env.PROD) {
-    // Example: sendToErrorReporting(event.reason);
+  if (import.meta.env.DEV) {
+    console.error('Unhandled Promise Rejection:', event.reason);
   }
 });
 
-/**
- * Initialize the application
- */
 const initializeApp = () => {
   try {
-    // Find the root element
     const rootElement = document.getElementById('root');
 
     if (!rootElement) {
@@ -79,36 +48,8 @@ const initializeApp = () => {
       </StrictMode>,
     );
   } catch (error) {
-    console.error('Failed to initialize application:', error);
-    document.body.innerHTML = `
-      <div style="
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        font-family: monospace;
-        text-align: center;
-        background: #f5f5f5;
-        margin: 0;
-        padding: 20px;
-      ">
-        <div>
-          <h1 style="color: #e74c3c;">Application Error</h1>
-          <p>Failed to load the application. Please refresh the page.</p>
-          <button onclick="window.location.reload()" style="
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-          ">
-            Refresh Page
-          </button>
-        </div>
-      </div>
-    `;
+    if (import.meta.env.DEV) console.error('Failed to initialize:', error);
+    document.body.innerHTML = '<div style="padding: 2rem; font-family: sans-serif;">Something went wrong. Please reload.</div>';
   }
 };
 

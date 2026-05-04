@@ -20,16 +20,12 @@ const About: React.FC = () => {
             <span className="smallcaps">a project by </span>Cubist Heart
             Laboratories, BorrowedTime is new clock each day, using found images
             from the Internet. It is made with VSCode using React JavaScript,
-            housed on Github and deployed on Vercel.
+            housed on GitHub and deployed on Vercel.
           </p>
           <br />
           <p>
-              About Cubist Heart Laboratories
-              <br />
-              &nbsp;
-            </span>
             <span className="smallcaps">Cubist Heart Laboratories </span>
-            is a global collective of scientists, artists and shamans found
+            is a global collective of scientists, artists, and shamans found
             wherever electrons move.
           </p>
           <br />

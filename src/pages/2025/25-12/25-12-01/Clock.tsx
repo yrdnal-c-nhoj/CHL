@@ -1,6 +1,6 @@
-// DigitalClock.jsx
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks/useSmoothClock';
 import bgImg from '@/assets/images/2025/25-12/25-12-01/shark.webp';
 import clockfoont12012 from '@/assets/fonts/2025/25-12-01-shark.ttf?url';
 import type { FontConfig } from '@/types/clock';
@@ -13,15 +13,9 @@ const fontConfigs: FontConfig[] = [
 ];
 
 export default function DigitalClock() {
-  const [time, setTime] = useState(() => new Date());
+  const time = useSecondClock();
 
-  // Use standardized font loader
   useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   const formatTime = (num) => num.toString().padStart(2, '0');
   const hours = formatTime(time.getHours());
