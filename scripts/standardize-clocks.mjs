@@ -48,6 +48,10 @@ sourceFiles.forEach(file => {
         // Otherwise, type the variable itself (Object literals)
         const typeToSet = (name === 'styles') ? STYLE_TYPES[1] : STYLE_TYPES[0];
         decl.setType(typeToSet);
+        
+        // Fix for "string is not assignable to Position/FlexDirection"
+        // Cast the object literal using 'as React.CSSProperties' if it's a known style name
+        initializer.replaceWithText(`${initializer.getText()} as ${typeToSet}`);
       }
     }
   });
