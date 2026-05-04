@@ -24,6 +24,7 @@ export function useClock() {
         const serverTime = new Date(data.utc_datetime).getTime();
         offsetRef.current = serverTime - (Date.now() + networkDelay);
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.warn('NTP Sync failed, falling back to local time.', e);
       }
     };

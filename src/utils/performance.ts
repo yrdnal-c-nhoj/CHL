@@ -32,7 +32,7 @@ export function useDebounce<T>(value: T, delay: number): T {
  * @param delay - Delay in milliseconds
  * @returns Throttled function
  */
-export function useThrottle<T extends (...args: any[]) => any>(
+export function useThrottle<T extends (...args: unknown[]) => unknown>(
   func: T,
   delay: number,
 ): T {
@@ -80,8 +80,9 @@ export function useMemoWithCleanup<T>(
   const depsRef = useRef<React.DependencyList>();
 
   // Check if dependencies changed
+  const currentDeps = depsRef.current;
   const depsChanged =
-    !depsRef.current || !deps.every((dep, i) => dep === depsRef.current![i]);
+    !currentDeps || !deps.every((dep, i) => dep === currentDeps[i]);
 
   if (depsChanged) {
     // Cleanup previous value
@@ -119,8 +120,8 @@ export function useIntersectionObserver(
 
     const observer = new IntersectionObserver(
       (entries) => {
-        const entry = entries[0];
-        if (entry) {
+        if (entries[0]) {
+          const entry = entries[0];
           setIsIntersecting(entry.isIntersecting);
           setEntry(entry);
         }
@@ -179,27 +180,21 @@ export function useLazyImage(
     if (!isIntersecting || !src) return;
 
     const img = new Image();
-    img.src = src;
-
-    const onLoad = () => {
+    const handleLoad = () => {
       setIsLoaded(true);
       setIsError(false);
-      if (imgRef.current) {
-        imgRef.current.src = src;
-      }
+      if (imgRef.current) imgRef.current.src = src;
     };
-
-    const onError = () => {
+    const handleError = () => {
       setIsError(true);
       setIsLoaded(false);
     };
-
-    img.addEventListener('load', onLoad);
-    img.addEventListener('error', onError);
-
+    img.addEventListener('load', handleLoad);
+    img.addEventListener('error', handleError);
+    img.src = src;
     return () => {
-      img.removeEventListener('load', onLoad);
-      img.removeEventListener('error', onError);
+      img.removeEventListener('load', handleLoad);
+      img.removeEventListener('error', handleError);
     };
   }, [isIntersecting, src]);
 
@@ -230,6 +225,7 @@ export class PerformanceMonitor {
 
     // Log performance warnings
     if (duration > 100) {
+      // eslint-disable-next-line no-console
       console.warn(
         `Slow operation detected: ${name} took ${duration.toFixed(2)}ms`,
       );
@@ -238,11 +234,11 @@ export class PerformanceMonitor {
     return duration;
   }
 
-  static measureFunction<T extends (...args: any[]) => any>(
+  static measureFunction<T extends (...args: unknown[]) => unknown>(
     name: string,
     fn: T,
   ): T {
-    return ((...args: any[]) => {
+    return ((...args: unknown[]) => {
       this.startTimer(name);
       try {
         const result = fn(...args);
@@ -261,7 +257,7 @@ export class PerformanceMonitor {
     percentage: number;
   } {
     if ('memory' in performance) {
-      const {memory} = (performance as any);
+      const memory = (performance as unknown as { memory: { usedJSHeapSize: number; totalJSHeapSize: number } }).memory;
       return {
         used: memory.usedJSHeapSize,
         total: memory.totalJSHeapSize,
