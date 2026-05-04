@@ -22,7 +22,8 @@
     "audit:fonts": "node scripts/list-non-standard-fonts.mjs",
     "audit:images": "node scripts/audit-images.mjs",
     "capture:clock": "tsx scripts/capture-clock.ts",
-    "scaffold:may": "node scripts/scaffold-may-clocks.js"
+    "scaffold:may": "node scripts/scaffold-may-clocks.js",
+    "scaffold:may-assets": "node scripts/scaffold_may_assets.js"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

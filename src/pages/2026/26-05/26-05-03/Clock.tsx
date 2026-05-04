@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useEffect } from 'react';
 
 import { useClockTime } from '@/utils/clockUtils';
+import carVideo from '@/assets/images/2026/26-05/26-05-03/car.mov';
 
 import styles from './Clock.module.css';
 
@@ -114,7 +115,12 @@ const AnalogClock: React.FC = () => {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{
+      backgroundImage: `url(${carVideo})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+    }}>
       <time dateTime={isoTime} className={styles.timeWrapper}>
         <div className={styles.clockFace}>
           {/* Outer ring */}
