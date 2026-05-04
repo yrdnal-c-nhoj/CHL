@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 
 import cloudGif from '@/assets/images/2026/26-03/26-03-01/cloud.webp';
-import westVideo from '@/assets/images/2026/26-03/26-03-01/west.mp4';
 import westtImage from '@/assets/images/2026/26-03/26-03-01/westt.webp';
 import { useMillisecondClock } from '@/utils/hooks';
+
+const westVideo = '/assets/media/26-03-01-west.mp4';
 
 import styles from './Clock.module.css';
 

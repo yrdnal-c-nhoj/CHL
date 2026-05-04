@@ -19,9 +19,10 @@ import five from '@/assets/images/2025/25-10/25-10-01/9.png';
 import clockFace from '@/assets/images/2025/25-10/25-10-01/gears.webp';
 
 // Background video and fallback
-import backgroundVideo from '@/assets/images/2025/25-10/25-10-01/small.mp4';
 import fallbackGif from '@/assets/images/2025/25-10/25-10-01/small.webp';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
+
+const backgroundVideo = '/assets/media/25-10-01-small.mp4';
 
 export default function ImageAnalogClock() {
   const [time, setTime] = useState(new Date());
