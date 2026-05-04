@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import React, { useEffect, useState, useRef } from 'react';
 
 import botFontUrl from '@/assets/fonts/2025/25-05-25-bot.ttf';
@@ -23,7 +22,6 @@ const Clock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  // Font loading handled by useMultipleFontLoader
   const hourHandRef = useRef<HTMLDivElement>(null);
   const minuteHandRef = useRef<HTMLDivElement>(null);
   const secondHandRef = useRef<HTMLDivElement>(null);
@@ -41,12 +39,6 @@ const Clock: React.FC = () => {
       const minuteDeg = minute * 6 + second * 0.1;
       const hourDeg = hour * 30 + minute * 0.5;
 
-      document.getElementById('second-hand')!.style.transform =
-        `translate(-50%, -100%) rotate(${secondDeg}deg)`;
-      document.getElementById('minute-hand')!.style.transform =
-        `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
-      document.getElementById('hour-hand')!.style.transform =
-        `translate(-50%, -100%) rotate(${hourDeg}deg)`;
       if (secondHandRef.current) 
         secondHandRef.current.style.transform = `translate(-50%, -100%) rotate(${secondDeg}deg)`;
       if (minuteHandRef.current) 
@@ -59,27 +51,6 @@ const Clock: React.FC = () => {
     const interval = setInterval(updateClock, 1000);
     return () => clearInterval(interval);
   }, []);
-
-  // Inject font-face dynamically
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @font-face {
-        font-family: 'bot';
-        src: url('${botFontUrl}') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
-      }
-    `;
-    document.head.appendChild(style);
-
-    return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
-      }
-    };
-  }, [botFontUrl]);
 
   const containerStyle: React.CSSProperties = {
     margin: 0,
@@ -168,7 +139,6 @@ const Clock: React.FC = () => {
           })}
 
           {/* Hands */}
-          <div className="hand second" id="second-hand" style={handBaseStyle}>
           <div className="hand second" ref={secondHandRef} style={handBaseStyle}>
             <img
               decoding="async"
@@ -183,7 +153,6 @@ const Clock: React.FC = () => {
             />
           </div>
 
-          <div className="hand minute" id="minute-hand" style={handBaseStyle}>
           <div className="hand minute" ref={minuteHandRef} style={handBaseStyle}>
             <img
               decoding="async"
@@ -197,7 +166,6 @@ const Clock: React.FC = () => {
             />
           </div>
 
-          <div className="hand hour" id="hour-hand" style={handBaseStyle}>
           <div className="hand hour" ref={hourHandRef} style={handBaseStyle}>
             <img
               decoding="async"
