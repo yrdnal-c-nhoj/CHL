@@ -41,7 +41,7 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     sourcemap: false, // Disable sourcemaps for production
-    minify: 'esbuild',
+    minify: 'terser', // Use Terser for more robust minification
     rollupOptions: {
       output: {
         // Optimize chunk splitting
@@ -55,8 +55,6 @@ export default defineConfig({
           if (
             id.includes('node_modules/react/') || 
             id.includes('node_modules/react-dom/') || 
-            id.includes('node_modules/react-router/') ||
-            id.includes('node_modules/react-router-dom/') ||
             id.includes('node_modules/scheduler/')
           ) {
             return 'framework';
