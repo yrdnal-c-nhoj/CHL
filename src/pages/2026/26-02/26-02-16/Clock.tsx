@@ -11,90 +11,90 @@ import styles from './Clock.module.css';
 
 export { mazeImage };
 
-const getBackgroundStyle = (isFlipped: boolean) => ({
-  position: 'absolute',
-  inset: 0,
-  backgroundImage: `url(${mazeImage})`,
-  backgroundSize: '200px auto',
-  backgroundRepeat: 'repeat',
-  backgroundPosition: 'center',
-  filter: `contrast(6.4) brightness(2.0)`,
-  opacity: isFlipped ? 0.3 : 0.6,
-  transform: isFlipped ? 'scale(-1, -1)' : 'none',
-  zIndex: isFlipped ? 2 : 1,
+const getBackgroundStyle = (isFlipped: boolean): React.CSSProperties => ({
+    position: 'absolute',
+    inset: 0,
+    backgroundImage: `url(${mazeImage})`,
+    backgroundSize: '200px auto',
+    backgroundRepeat: 'repeat',
+    backgroundPosition: 'center',
+    filter: `contrast(6.4) brightness(2.0)`,
+    opacity: isFlipped ? 0.3 : 0.6,
+    transform: isFlipped ? 'scale(-1, -1)' : 'none',
+    zIndex: isFlipped ? 2 : 1,
 });
 
 const BackgroundLayers = React.memo(() => (
-  <>
-    {/* Full-cover background - no tiling */}
-    <div
-      style={{ // This is a React.CSSProperties object
-        position: 'absolute',
-        inset: 0,
-        backgroundImage: `url(${loopImage})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        filter: 'saturate(5.8)',
-        // opacity: 0.5,
-        zIndex: 0,
-      }}
-    />
-    {/* First image - original background */}
-    <div style={getBackgroundStyle(false)} />
-    {/* Second image - flipped background */}
-    <div style={getBackgroundStyle(true)} />
-  </>
+    <>
+        {/* Full-cover background - no tiling */}
+        <div
+            style={{ // This is a React.CSSProperties object
+                position: 'absolute',
+                inset: 0,
+                backgroundImage: `url(${loopImage})`,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+                filter: 'saturate(5.8)',
+                // opacity: 0.5,
+                zIndex: 0,
+            }}
+        />
+        {/* First image - original background */}
+        <div style={getBackgroundStyle(false)} />
+        {/* Second image - flipped background */}
+        <div style={getBackgroundStyle(true)} />
+    </>
 ));
 BackgroundLayers.displayName = 'BackgroundLayers';
 
 const Digit = React.memo(({ char }: { char: string }) => {
-  const isColon = char === ':';
-  return (
-    <div className={styles.digitBox}>
-      <span className={`${styles.digit} ${isColon ? styles.colon : ''}`}>
-        {char}
-      </span>
-    </div>
-  );
+    const isColon = char === ':';
+    return (
+        <div className={styles.digitBox}>
+            <span className={`${styles.digit} ${isColon ? styles.colon : ''}`}>
+                {char}
+            </span>
+        </div>
+    );
 });
 Digit.displayName = 'Digit';
 
 export const fontConfigs = [
-  {
-    fontFamily: 'MazeFont',
-    fontUrl: mazeFont,
-    options: {
-      weight: 'normal',
-      style: 'normal',
+    {
+        fontFamily: 'MazeFont',
+        fontUrl: mazeFont,
+        options: {
+            weight: 'normal',
+            style: 'normal',
+        },
     },
-  },
 ];
 
 const DigitalClock: React.FC = () => {
-  useSuspenseFontLoader(fontConfigs);
+    useSuspenseFontLoader(fontConfigs);
 
-  const time = useSecondClock();
+    const time = useSecondClock();
 
-  const timeParts = useMemo(() => {
-    const h = time.getHours().toString().padStart(2, '0');
-    const m = time.getMinutes().toString().padStart(2, '0');
-    const s = time.getSeconds().toString().padStart(2, '0');
-    return `${h}:${m}:${s}`.split('');
-  }, [time]);
+    const timeParts = useMemo(() => {
+        const h = time.getHours().toString().padStart(2, '0');
+        const m = time.getMinutes().toString().padStart(2, '0');
+        const s = time.getSeconds().toString().padStart(2, '0');
+        return `${h}:${m}:${s}`.split('');
+    }, [time]);
 
-  return (
-    <main className={styles.container}>
-      <BackgroundLayers />
-      <div className={styles.digitalContainer}>
-        <div className={styles.timeWrapper}>
-          {timeParts.map((char, idx) => (
-            <Digit key={`${idx}-${char}`} char={char} />
-          ))}
-        </div>
-      </div>
-    </main>
-  );
+    return (
+        <main className={styles.container}>
+            <BackgroundLayers />
+            <div className={styles.digitalContainer}>
+                <div className={styles.timeWrapper}>
+                    {timeParts.map((char, idx) => (
+                        <Digit key={`${idx}-${char}`} char={char} />
+                    ))}
+                </div>
+            </div>
+        </main>
+    );
 };
 
 export default DigitalClock;

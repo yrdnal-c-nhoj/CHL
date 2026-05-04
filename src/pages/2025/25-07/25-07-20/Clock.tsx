@@ -9,91 +9,91 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const FStopClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'fstop-cam',
-      fontUrl: camFont,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
-  useEffect(() => {
-    const hourHand = document.getElementById('fstop-hourHand');
-    const minuteHand = document.getElementById('fstop-minuteHand');
-    const secondHand = document.getElementById('fstop-secondHand');
-
-    const updateClock = () => {
-      const now = new Date();
-      const sec = now.getSeconds();
-      const min = now.getMinutes();
-      const hr = now.getHours() % 12;
-
-      if (hourHand) hourHand.style.transform = `rotate(${(hr + min / 60) * 30}deg)`;
-      if (minuteHand) minuteHand.style.transform = `rotate(${(min + sec / 60) * 6}deg)`;
-      if (secondHand) secondHand.style.transform = `rotate(${sec * 6}deg)`;
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const clock = document.querySelector('.fstop-clock');
-    const customDigits = [
-      'f/1.0',
-      'f/1.4',
-      'f/2.0',
-      'f/2.8',
-      'f/4.0',
-      'f/5.6',
-      'f/8.0',
-      'f/11',
-      'f/16',
-      'f/22',
-      'f/32',
-      'f/45',
+    // Standardized font loading with font-display: swap to avoid FOUC
+    const fontConfigs = [
+        {
+            fontFamily: 'fstop-cam',
+            fontUrl: camFont,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
     ];
-    const sharpIndices: number[] = [];
-    while (sharpIndices.length < 6) {
-      const randIndex = Math.floor(Math.random() * 12);
-      if (!sharpIndices.includes(randIndex)) sharpIndices.push(randIndex);
-    }
+    const fontsLoaded = useMultipleFontLoader(fontConfigs);
+    useEffect(() => {
+        const hourHand = document.getElementById('fstop-hourHand');
+        const minuteHand = document.getElementById('fstop-minuteHand');
+        const secondHand = document.getElementById('fstop-secondHand');
 
-    for (let i = 1; i <= 12; i++) {
-      const angle = (i / 12) * 2 * Math.PI;
-      const x = 50 + 42 * Math.sin(angle);
-      const y = 50 - 42 * Math.cos(angle);
-      const num = document.createElement('div');
-      const isSharp = sharpIndices.includes(i - 1);
-      num.className = `fstop-number ${isSharp ? 'fstop-sharp' : ''}`;
-      num.style.left = `${x}%`;
-      num.style.top = `${y}%`;
-      num.textContent = customDigits[i - 1];
-      const randomDelay = Math.random() * 10;
-      num.style.animation = `fstop-blurFocus${isSharp ? 'Sharp' : ''} 5s infinite ${randomDelay}s`;
-      clock.appendChild(num);
-    }
-  }, []);
+        const updateClock = () => {
+            const now = new Date();
+            const sec = now.getSeconds();
+            const min = now.getMinutes();
+            const hr = now.getHours() % 12;
 
-  return (
-    <div
-      className="fstop-wrapper"
-      style={{
-        margin: 0,
-        background: '#111',
-        height: '100dvh',
-        width: '100vw',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <style>{`
+            if (hourHand) hourHand.style.transform = `rotate(${(hr + min / 60) * 30}deg)`;
+            if (minuteHand) minuteHand.style.transform = `rotate(${(min + sec / 60) * 6}deg)`;
+            if (secondHand) secondHand.style.transform = `rotate(${sec * 6}deg)`;
+        };
+
+        updateClock();
+        const interval = setInterval(updateClock, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        const clock = document.querySelector('.fstop-clock');
+        const customDigits = [
+            'f/1.0',
+            'f/1.4',
+            'f/2.0',
+            'f/2.8',
+            'f/4.0',
+            'f/5.6',
+            'f/8.0',
+            'f/11',
+            'f/16',
+            'f/22',
+            'f/32',
+            'f/45',
+        ];
+        const sharpIndices: number[] = [];
+        while (sharpIndices.length < 6) {
+            const randIndex = Math.floor(Math.random() * 12);
+            if (!sharpIndices.includes(randIndex)) sharpIndices.push(randIndex);
+        }
+
+        for (let i = 1; i <= 12; i++) {
+            const angle = (i / 12) * 2 * Math.PI;
+            const x = 50 + 42 * Math.sin(angle);
+            const y = 50 - 42 * Math.cos(angle);
+            const num = document.createElement('div');
+            const isSharp = sharpIndices.includes(i - 1);
+            num.className = `fstop-number ${isSharp ? 'fstop-sharp' : ''}`;
+            num.style.left = `${x}%`;
+            num.style.top = `${y}%`;
+            num.textContent = customDigits[i - 1];
+            const randomDelay = Math.random() * 10;
+            num.style.animation = `fstop-blurFocus${isSharp ? 'Sharp' : ''} 5s infinite ${randomDelay}s`;
+            clock.appendChild(num);
+        }
+    }, []);
+
+    return (
+        <div
+            className="fstop-wrapper"
+            style={{
+                margin: 0,
+                background: '#111',
+                height: '100dvh',
+                width: '100vw',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            <style>{`
         /* Font loading handled by useMultipleFontLoader */
 
         .fstop-wrapper {
@@ -244,42 +244,42 @@ const FStopClock: React.FC = () => {
         .fstop-bgimage4 { z-index: 4; opacity: 0.2; width: 104vw; }
       `}</style>
 
-      <img
-        decoding="async"
-        loading="lazy"
-        src={bg4}
-        className="fstop-bgimage4"
-        alt="bg4"
-      />
-      <img
-        decoding="async"
-        loading="lazy"
-        src={bg3}
-        className="fstop-bgimage3"
-        alt="bg3"
-      />
-      <img
-        decoding="async"
-        loading="lazy"
-        src={bg1}
-        className="fstop-bgimage"
-        alt="bg1"
-      />
-      <img
-        decoding="async"
-        loading="lazy"
-        src={bg2}
-        className="fstop-bgimage2"
-        alt="bg2"
-      />
+            <img
+                decoding="async"
+                loading="lazy"
+                src={bg4}
+                className="fstop-bgimage4"
+                alt="bg4"
+            />
+            <img
+                decoding="async"
+                loading="lazy"
+                src={bg3}
+                className="fstop-bgimage3"
+                alt="bg3"
+            />
+            <img
+                decoding="async"
+                loading="lazy"
+                src={bg1}
+                className="fstop-bgimage"
+                alt="bg1"
+            />
+            <img
+                decoding="async"
+                loading="lazy"
+                src={bg2}
+                className="fstop-bgimage2"
+                alt="bg2"
+            />
 
-      <div className="fstop-clock">
-        <div className="fstop-hand fstop-hour" id="fstop-hourHand" />
-        <div className="fstop-hand fstop-minute" id="fstop-minuteHand" />
-        <div className="fstop-hand fstop-second" id="fstop-secondHand" />
-      </div>
-    </div>
-  );
+            <div className="fstop-clock">
+                <div className="fstop-hand fstop-hour" id="fstop-hourHand" />
+                <div className="fstop-hand fstop-minute" id="fstop-minuteHand" />
+                <div className="fstop-hand fstop-second" id="fstop-secondHand" />
+            </div>
+        </div>
+    );
 };
 
 export default FStopClock;
