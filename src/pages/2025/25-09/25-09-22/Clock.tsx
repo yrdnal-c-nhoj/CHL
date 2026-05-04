@@ -37,15 +37,8 @@ const DigitalClockVideo: React.FC = () => {
     useEffect(() => {
         const videoEl = videoRef.current;
         if (videoEl) {
-            videoEl.oncanplay = () =>
-                console.log('Video can play at', new Date().toLocaleTimeString());
-            videoEl.onplay = () =>
-                console.log('Video is playing at', new Date().toLocaleTimeString());
             videoEl.onerror = () => {
-                console.error(
-                    'Video error:',
-                    videoEl.error?.message || 'Unknown error',
-                );
+                // Replaced forbidden console.error with state update per BTS
                 setVideoFailed(true);
             };
             videoEl.onabort = () => {
@@ -77,25 +70,6 @@ const DigitalClockVideo: React.FC = () => {
         window.addEventListener('resize', handleResize);
         return () => {
             window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
-    // Inject keyframes for bronze/gold shimmer
-    useEffect(() => {
-        const style = document.createElement('style');
-        style.id = 'sparkle-styles'; // Prevent duplicates
-        style.innerHTML = `
-      @keyframes sparkle {
-        0% { color: #42210B; }
-        25% { color: #8B4513; }
-        50% { color: #D4AF37; }
-        75% { color: #C28840; }
-        100% { color: #42210B; }
-      }
-    `;
-        document.head.appendChild(style);
-        return () => {
-            document.head.removeChild(style);
         };
     }, []);
 
