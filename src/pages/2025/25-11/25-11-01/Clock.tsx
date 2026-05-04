@@ -119,18 +119,18 @@ const EdgeClockWithHands: React.FC = () => {
                 </div>
             ))}
             <div aria-hidden="true">
-            {/* Clock Hands */}
-            <div className={styles.hand} style={getHandStyle(12, 30, h * 30)} />{' '}
-            {/* Hour */}
-            <div className={styles.hand} style={getHandStyle(8, 40, m * 6)} />{' '}
-            {/* Minute */}
-            <div
-                className={styles.hand}
-                style={getHandStyle(4, 45, s * 6, '#FF6B6B')}
-            />{' '}
-            {/* Second */}
-            {/* Center Cap */}
-            <div className={styles.centerDot} />
+                {/* Clock Hands */}
+                <div className={styles.hand} style={getHandStyle(12, 30, h * 30)} />{' '}
+                {/* Hour */}
+                <div className={styles.hand} style={getHandStyle(8, 40, m * 6)} />{' '}
+                {/* Minute */}
+                <div
+                    className={styles.hand}
+                    style={getHandStyle(4, 45, s * 6, '#FF6B6B')}
+                />{' '}
+                {/* Second */}
+                {/* Center Cap */}
+                <div className={styles.centerDot} />
             </div>
         </div>
     );
