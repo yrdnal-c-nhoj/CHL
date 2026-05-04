@@ -6,56 +6,56 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
 const FullscreenClock: React.FC = () => {
-  const [showContent, setShowContent] = useState(false);
+    const [showContent, setShowContent] = useState(false);
 
-  const fontConfigs = useMemo(
-    () => [
-      {
-        fontFamily: 'GearFont',
-        fontUrl: customFontUrl,
-        options: {
-          weight: 'normal',
-          style: 'normal',
-        },
-      },
-    ],
-    [],
-  );
+    const fontConfigs = useMemo(
+        () => [
+            {
+                fontFamily: 'GearFont',
+                fontUrl: customFontUrl,
+                options: {
+                    weight: 'normal',
+                    style: 'normal',
+                },
+            },
+        ],
+        [],
+    );
 
-  useSuspenseFontLoader(fontConfigs);
+    useSuspenseFontLoader(fontConfigs);
 
-  useEffect(() => {
-    setShowContent(true);
-  }, []);
+    useEffect(() => {
+        setShowContent(true);
+    }, []);
 
-  const time = useSecondClock();
+    const time = useSecondClock();
 
-  const digits = useMemo(() => {
-    let hours = time.getHours();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12;
-    const str = [
-      String(hours).padStart(2, '0'),
-      String(time.getMinutes()).padStart(2, '0'),
-      String(time.getSeconds()).padStart(2, '0'),
-      ampm,
-    ].join('');
-    return str.split('');
-  }, [time]);
+    const digits = useMemo(() => {
+        let hours = time.getHours();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+        const str = [
+            String(hours).padStart(2, '0'),
+            String(time.getMinutes()).padStart(2, '0'),
+            String(time.getSeconds()).padStart(2, '0'),
+            ampm,
+        ].join('');
+        return str.split('');
+    }, [time]);
 
-  return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        backgroundColor: '#E9F7AB',
-        backgroundImage: 'radial-gradient(circle, #E9F7AB 0%, #CDF296 100%)',
-        overflow: 'hidden',
-        fontFamily: 'GearFont, sans-serif',
-      }}
-    >
-      <style>{`
+    return (
+        <div
+            style={{
+                position: 'relative',
+                width: '100vw',
+                height: '100dvh',
+                backgroundColor: '#E9F7AB',
+                backgroundImage: 'radial-gradient(circle, #E9F7AB 0%, #CDF296 100%)',
+                overflow: 'hidden',
+                fontFamily: 'GearFont, sans-serif',
+            }}
+        >
+            <style>{`
         @keyframes rotate {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
@@ -135,44 +135,44 @@ const FullscreenClock: React.FC = () => {
         }
       `}</style>
 
-      <svg style={{ position: 'absolute', width: 0, height: 0 }}>
-        <filter id="gear-fix">
-          <feColorMatrix
-            type="matrix"
-            values="
+            <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+                <filter id="gear-fix">
+                    <feColorMatrix
+                        type="matrix"
+                        values="
              -0.81  2.13  0.18  0  0
               0.18 -0.81  2.13  0  0
               2.13  0.18 -0.81  0  0
               0     0     0     0.4 0"
-          />
-        </filter>
-      </svg>
+                    />
+                </filter>
+            </svg>
 
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: '15vh 15vh',
-          backgroundRepeat: 'repeat',
-          backgroundPosition: 'center',
-          transform: 'scaleX(-1) translateZ(0)',
-          filter: 'url(#gear-fix) brightness(2.8) contrast(0.8)',
-          zIndex: 1,
-          pointerEvents: 'none',
-        }}
-      />
+            <div
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    backgroundImage: `url(${backgroundImage})`,
+                    backgroundSize: '15vh 15vh',
+                    backgroundRepeat: 'repeat',
+                    backgroundPosition: 'center',
+                    transform: 'scaleX(-1) translateZ(0)',
+                    filter: 'url(#gear-fix) brightness(2.8) contrast(0.8)',
+                    zIndex: 1,
+                    pointerEvents: 'none',
+                }}
+            />
 
-      <div className="clock-grid">
-        {digits.map((char, i) => (
-          /* key={i} ensures the DIV is not re-mounted, so rotation is continuous */
-          <div key={i} className="clock-digit">
-            {char}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+            <div className="clock-grid">
+                {digits.map((char, i) => (
+                    /* key={i} ensures the DIV is not re-mounted, so rotation is continuous */
+                    <div key={i} className="clock-digit">
+                        {char}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
 };
 
 export default FullscreenClock;

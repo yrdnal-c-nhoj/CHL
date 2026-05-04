@@ -10,82 +10,82 @@ import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface FlatClockProps {
-  // No props required for this component
+    // No props required for this component
 }
 
 const FlatClock: React.FC<FlatClockProps> = () => {
-  // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [
-      {
-        fontFamily: 'hyd',
-        fontUrl: hydFont,
-        options: {
-          weight: 'normal',
-          style: 'normal',
-        },
-      },
-    ],
-    [],
-  );
-  useSuspenseFontLoader(fontConfigs);
+    // Font loading configuration (memoized)
+    const fontConfigs = useMemo<FontConfig[]>(
+        () => [
+            {
+                fontFamily: 'hyd',
+                fontUrl: hydFont,
+                options: {
+                    weight: 'normal',
+                    style: 'normal',
+                },
+            },
+        ],
+        [],
+    );
+    useSuspenseFontLoader(fontConfigs);
 
-  // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+    // Use the standardized hook for smooth clock updates
+    const currentTime = useSecondClock();
 
-  useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      const second = now.getSeconds();
-      const minute = now.getMinutes();
-      const hour = now.getHours() % 12;
+    useEffect(() => {
+        const updateClock = () => {
+            const now = new Date();
+            const second = now.getSeconds();
+            const minute = now.getMinutes();
+            const hour = now.getHours() % 12;
 
-      const secDeg = second * 6;
-      const minDeg = minute * 6 + second * 0.1;
-      const hourDeg = hour * 30 + minute * 0.5;
+            const secDeg = second * 6;
+            const minDeg = minute * 6 + second * 0.1;
+            const hourDeg = hour * 30 + minute * 0.5;
 
-      document.getElementById('second-hand').style.transform =
-        `rotate(${secDeg}deg)`;
-      document.getElementById('minute-hand').style.transform =
-        `rotate(${minDeg}deg)`;
-      document.getElementById('hour-hand').style.transform =
-        `rotate(${hourDeg}deg)`;
+            document.getElementById('second-hand').style.transform =
+                `rotate(${secDeg}deg)`;
+            document.getElementById('minute-hand').style.transform =
+                `rotate(${minDeg}deg)`;
+            document.getElementById('hour-hand').style.transform =
+                `rotate(${hourDeg}deg)`;
 
-      document.getElementById('clock-time').textContent =
-        `Current time: ${now.toLocaleTimeString()}`;
-    };
+            document.getElementById('clock-time').textContent =
+                `Current time: ${now.toLocaleTimeString()}`;
+        };
 
-    const tick: React.FC = () => {
-      updateClock();
-      requestAnimationFrame(tick);
-    };
+        const tick = () => {
+            updateClock();
+            requestAnimationFrame(tick);
+        };
 
-    tick();
-  }, []);
+        tick();
+    }, []);
 
-  useEffect(() => {
-    const container = document.getElementById('clock-numbers');
-    for (let i = 1; i <= 12; i++) {
-      const numEl = document.createElement('div');
-      numEl.className = 'number';
-      numEl.textContent = i;
+    useEffect(() => {
+        const container = document.getElementById('clock-numbers');
+        for (let i = 1; i <= 12; i++) {
+            const numEl = document.createElement('div');
+            numEl.className = 'number';
+            numEl.textContent = i;
 
-      const angle = (i * Math.PI * 2) / 12 - Math.PI / 2;
-      const radiusPercent = 42;
-      const x = 50 + radiusPercent * Math.cos(angle);
-      const y = 50 + radiusPercent * Math.sin(angle);
+            const angle = (i * Math.PI * 2) / 12 - Math.PI / 2;
+            const radiusPercent = 42;
+            const x = 50 + radiusPercent * Math.cos(angle);
+            const y = 50 + radiusPercent * Math.sin(angle);
 
-      numEl.style.left = `${x}%`;
-      numEl.style.top = `${y}%`;
+            numEl.style.left = `${x}%`;
+            numEl.style.top = `${y}%`;
 
-      container.appendChild(numEl);
-    }
-  }, []);
+            container.appendChild(numEl);
+        }
+    }, []);
 
-  return (
-    <>
-      <style>
-        {`
+    return (
+        <>
+            <style>
+                {`
         @font-face {
           font-family: 'hyd';
           src: url(${hydFont}) format('truetype');
@@ -191,20 +191,20 @@ const FlatClock: React.FC<FlatClockProps> = () => {
           border: 0;
         }
       `}
-      </style>
+            </style>
 
-      <div className="scene">
-        <div className="grid-plane" />
-        <div className="clock">
-          <div className="numbers" id="clock-numbers" />
-          <div className="hand hour" id="hour-hand" />
-          <div className="hand minute" id="minute-hand" />
-          <div className="hand second" id="second-hand" />
-        </div>
-      </div>
-      <div className="sr-only" id="clock-time" aria-live="polite" />
-    </>
-  );
+            <div className="scene">
+                <div className="grid-plane" />
+                <div className="clock">
+                    <div className="numbers" id="clock-numbers" />
+                    <div className="hand hour" id="hour-hand" />
+                    <div className="hand minute" id="minute-hand" />
+                    <div className="hand second" id="second-hand" />
+                </div>
+            </div>
+            <div className="sr-only" id="clock-time" aria-live="polite" />
+        </>
+    );
 };
 
 export default FlatClock;

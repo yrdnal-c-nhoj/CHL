@@ -5,103 +5,103 @@ import backgroundImage from '@/assets/images/2025/25-12/25-12-29/shrine.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const DynamicClockComponent: React.FC = () => {
-  const FONT_FAMILY = 'ShrineFont_20251229';
-  const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+    const FONT_FAMILY = 'ShrineFont_20251229';
+    const [time, setTime] = useState(new Date());
+    const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
-  // Load the custom font
-  useEffect(() => {
-    const font = new FontFace(FONT_FAMILY, `url(${shrineFont})`);
-    font
-      .load()
-      .then((loaded) => {
-        document.fonts.add(loaded);
-        setFontLoaded(true);
-      })
-      .catch((err) => {
-        console.error('Font load error:', err);
-        setFontLoaded(true); // Still show clock even if font fails
-      });
+    // Load the custom font
+    useEffect(() => {
+        const font = new FontFace(FONT_FAMILY, `url(${shrineFont})`);
+        font
+            .load()
+            .then((loaded) => {
+                document.fonts.add(loaded);
+                setFontLoaded(true);
+            })
+            .catch((err) => {
+                console.error('Font load error:', err);
+                setFontLoaded(true); // Still show clock even if font fails
+            });
 
-    return () => {
-      // Cleanup if needed
+        return () => {
+            // Cleanup if needed
+        };
+    }, []);
+
+    useEffect(() => {
+        const timer = setInterval(() => setTime(new Date()), 1000);
+        return () => clearInterval(timer);
+    }, []);
+
+    const formattedTime = time
+        .toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+        })
+        .replace(/\s/g, '');
+
+    const styles: Record<string, React.CSSProperties> = {
+        container: {
+            width: '100vw',
+            height: '100dvh',
+            position: 'relative',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            backgroundColor: '#000',
+            gap: '20px',
+        },
+        background: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '104vw',
+            height: '100dvh',
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundSize: '100% 100%',
+            backgroundPosition: 'right center',
+            filter: 'contrast(0.7) brightness(0.9)',
+            zIndex: 0,
+        },
+        clockBase: {
+            fontSize: '12vh',
+            color: 'white',
+            textShadow:
+                '2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000',
+            zIndex: 10,
+            position: 'relative',
+            fontFamily: `"${FONT_FAMILY}", sans-serif`,
+        },
     };
-  }, []);
 
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+    if (!fontLoaded) return null;
 
-  const formattedTime = time
-    .toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
-    })
-    .replace(/\s/g, '');
+    return (
+        <div style={styles.container}>
+            <div style={styles.background} />
 
-  const styles = {
-    container: {
-      width: '100vw',
-      height: '100dvh',
-      position: 'relative',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      overflow: 'hidden',
-      backgroundColor: '#000',
-      gap: '20px',
-    },
-    background: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '104vw',
-      height: '100dvh',
-      backgroundImage: `url(${backgroundImage})`,
-      backgroundSize: '100% 100%',
-      backgroundPosition: 'right center',
-      filter: 'contrast(0.7) brightness(0.9)',
-      zIndex: 0,
-    },
-    clockBase: {
-      fontSize: '12vh',
-      color: 'white',
-      textShadow:
-        '2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000',
-      zIndex: 10,
-      position: 'relative',
-      fontFamily: `"${FONT_FAMILY}", sans-serif`,
-    },
-  };
+            <div
+                style={{
+                    ...styles.clockBase,
+                    writingMode: 'vertical-rl',
+                    transform: 'rotate(180deg)',
+                }}
+            >
+                {formattedTime}
+            </div>
 
-  if (!fontLoaded) return null;
-
-  return (
-    <div style={styles.container}>
-      <div style={styles.background} />
-
-      <div
-        style={{
-          ...styles.clockBase,
-          writingMode: 'vertical-rl',
-          transform: 'rotate(180deg)',
-        }}
-      >
-        {formattedTime}
-      </div>
-
-      <div
-        style={{
-          ...styles.clockBase,
-          writingMode: 'vertical-lr',
-        }}
-      >
-        {formattedTime}
-      </div>
-    </div>
-  );
+            <div
+                style={{
+                    ...styles.clockBase,
+                    writingMode: 'vertical-lr',
+                }}
+            >
+                {formattedTime}
+            </div>
+        </div>
+    );
 };
 
 export default DynamicClockComponent;

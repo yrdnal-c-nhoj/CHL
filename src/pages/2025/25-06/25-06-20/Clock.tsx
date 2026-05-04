@@ -6,111 +6,111 @@ import React, { useEffect, useState } from 'react';
 export const fontConfigs = [];
 
 const IndecisiveClock: React.FC = () => {
-  const [time, setTime] = useState({ h: '', m: '', s: '' });
-  const [showFirst, setShowFirst] = useState<boolean>(true);
+    const [time, setTime] = useState({ h: '', m: '', s: '' });
+    const [showFirst, setShowFirst] = useState<boolean>(true);
 
-  // Font loading disabled - using CSS @import instead
-  // useSuspenseFontLoader(fontConfigs);
+    // Font loading disabled - using CSS @import instead
+    // useSuspenseFontLoader(fontConfigs);
 
-  // Convert numbers to Roman numerals
-  const toRoman = (num: string) => {
-    const romanNumerals: { [key: string]: string } = {
-      '0': '0',
-      '1': 'I',
-      '2': 'II',
-      '3': 'III',
-      '4': 'IV',
-      '5': 'V',
-      '6': 'VI',
-      '7': 'VII',
-      '8': 'VIII',
-      '9': 'IX',
-      '10': 'X',
-      '11': 'XI',
-      '12': 'XII',
-    };
-    return romanNumerals[num] || num;
-  };
-
-  // Update time every second
-  useEffect(() => {
-    let frameId: number;
-    const tick = () => {
-      const now = new Date();
-      const h = String(now.getHours()).padStart(2, '0');
-      const m = String(now.getMinutes()).padStart(2, '0');
-      const s = String(now.getSeconds()).padStart(2, '0');
-      setTime({ h, m, s });
-      frameId = requestAnimationFrame(tick);
+    // Convert numbers to Roman numerals
+    const toRoman = (num: string) => {
+        const romanNumerals: { [key: string]: string } = {
+            '0': '0',
+            '1': 'I',
+            '2': 'II',
+            '3': 'III',
+            '4': 'IV',
+            '5': 'V',
+            '6': 'VI',
+            '7': 'VII',
+            '8': 'VIII',
+            '9': 'IX',
+            '10': 'X',
+            '11': 'XI',
+            '12': 'XII',
+        };
+        return romanNumerals[num] || num;
     };
 
-    frameId = requestAnimationFrame(tick);
+    // Update time every second
+    useEffect(() => {
+        let frameId: number;
+        const tick = () => {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s: Record<string, React.CSSProperties> = String(now.getSeconds()).padStart(2, '0');
+            setTime({ h, m, s });
+            frameId = requestAnimationFrame(tick);
+        };
 
-    // Toggle font every 1 second for better visibility
-    const fontInterval = setInterval(() => {
-      setShowFirst((prev) => !prev);
-    }, 1000);
+        frameId = requestAnimationFrame(tick);
 
-    return () => {
-      cancelAnimationFrame(frameId);
-      clearInterval(fontInterval);
-    };
-  }, []);
+        // Toggle font every 1 second for better visibility
+        const fontInterval = setInterval(() => {
+            setShowFirst((prev) => !prev);
+        }, 1000);
 
-  const bodyStyle = {
-    margin: 0,
-    backgroundColor: '#8A8E8A',
-    backgroundImage: `linear-gradient(30deg, #888888 12%, transparent 12.5%, transparent 87%, #888888 87.5%, #888888),
+        return () => {
+            cancelAnimationFrame(frameId);
+            clearInterval(fontInterval);
+        };
+    }, []);
+
+    const bodyStyle: React.CSSProperties = {
+        margin: 0,
+        backgroundColor: '#8A8E8A',
+        backgroundImage: `linear-gradient(30deg, #888888 12%, transparent 12.5%, transparent 87%, #888888 87.5%, #888888),
        linear-gradient(150deg, #888888 12%, transparent 12.5%, transparent 87%, #888888 87.5%, #888888),
        linear-gradient(30deg, #888888 12%, transparent 12.5%, transparent 87%, #888888 87.5%, #888888),
        linear-gradient(150deg, #888888 12%, transparent 12.5%, transparent 87%, #888888 87.5%, #888888),
        linear-gradient(60deg, #7B7E7A77 25%, transparent 25.5%, transparent 75%, #75787477 75%, #21351a77),
        linear-gradient(60deg, #71737077 25%, transparent 25.5%, transparent 75%, #6C6E6B77 75%, #21351a77)`,
-    backgroundSize: '24vw 42vh',
-    backgroundPosition: '0 0, 0 0, 12vw 21vh, 12vw 21vh, 0 0, 12vw 21vh',
-    overflow: 'hidden',
-    height: '100dvh',
-    width: '100vw',
-  };
+        backgroundSize: '24vw 42vh',
+        backgroundPosition: '0 0, 0 0, 12vw 21vh, 12vw 21vh, 0 0, 12vw 21vh',
+        overflow: 'hidden',
+        height: '100dvh',
+        width: '100vw',
+    };
 
-  const containerStyle = {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    margin: 'auto',
-    width: '100vw',
-    height: '40vh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    filter: 'url(#threshold) blur(0.05rem)',
-  };
+    const containerStyle: React.CSSProperties = {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        margin: 'auto',
+        width: '100vw',
+        height: '40vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        filter: 'url(#threshold) blur(0.05rem)',
+    };
 
-  const timeBlockBase = {
-    position: 'absolute',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    userSelect: 'none',
-    transition: 'opacity 1s ease-in-out',
-  };
+    const timeBlockBase = {
+        position: 'absolute',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        userSelect: 'none',
+        transition: 'opacity 1s ease-in-out',
+    };
 
-  const digitStyle = {
-    fontSize: '8rem',
-    lineHeight: '7rem',
-  };
+    const digitStyle: React.CSSProperties = {
+        fontSize: '8rem',
+        lineHeight: '7rem',
+    };
 
-  return (
-    <div style={bodyStyle}>
-      <style>{`
+    return (
+        <div style={bodyStyle}>
+            <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Metal+Mania:wght@400&display=swap');
       `}</style>
-      <style jsx>{`
+            <style jsx>{`
         .time-block {
             flex-direction: column !important;
             gap: 0.5rem !important;
@@ -121,102 +121,102 @@ const IndecisiveClock: React.FC = () => {
         }
       `}</style>
 
-      <div id="container" style={containerStyle}>
-        <div
-          className="time-block"
-          style={{
-            ...timeBlockBase,
-            opacity: showFirst ? 1 : 0,
-          }}
-        >
-          <span
-            className="digit"
-            style={{
-              ...digitStyle,
-              fontFamily: "'Kalam', sans-serif",
-              color: 'white',
-            }}
-          >
-            {showFirst ? toRoman(time.m) : time.m}
-          </span>
-          <span
-            className="digit"
-            style={{
-              ...digitStyle,
-              fontFamily: "'Kalam', sans-serif",
-              color: 'white',
-            }}
-          >
-            {showFirst ? toRoman(time.s) : time.s}
-          </span>
-          <span
-            className="digit"
-            style={{
-              ...digitStyle,
-              fontFamily: "'Kalam', sans-serif",
-              color: 'white',
-            }}
-          >
-            {time.s}
-          </span>
-        </div>
+            <div id="container" style={containerStyle}>
+                <div
+                    className="time-block"
+                    style={{
+                        ...timeBlockBase,
+                        opacity: showFirst ? 1 : 0,
+                    }}
+                >
+                    <span
+                        className="digit"
+                        style={{
+                            ...digitStyle,
+                            fontFamily: "'Kalam', sans-serif",
+                            color: 'white',
+                        }}
+                    >
+                        {showFirst ? toRoman(time.m) : time.m}
+                    </span>
+                    <span
+                        className="digit"
+                        style={{
+                            ...digitStyle,
+                            fontFamily: "'Kalam', sans-serif",
+                            color: 'white',
+                        }}
+                    >
+                        {showFirst ? toRoman(time.s) : time.s}
+                    </span>
+                    <span
+                        className="digit"
+                        style={{
+                            ...digitStyle,
+                            fontFamily: "'Kalam', sans-serif",
+                            color: 'white',
+                        }}
+                    >
+                        {time.s}
+                    </span>
+                </div>
 
-        <div
-          className="time-block"
-          style={{
-            ...timeBlockBase,
-            opacity: showFirst ? 0 : 1,
-          }}
-        >
-          <span
-            className="digit"
-            style={{
-              ...digitStyle,
-              fontFamily: "'Metal Mania', sans-serif",
-              color: 'black',
-            }}
-          >
-            {time.h}
-          </span>
-          <span
-            className="digit"
-            style={{
-              ...digitStyle,
-              fontFamily: "'Metal Mania', sans-serif",
-              color: 'black',
-            }}
-          >
-            {time.m}
-          </span>
-          <span
-            className="digit"
-            style={{
-              ...digitStyle,
-              fontFamily: "'Metal Mania', sans-serif",
-              color: 'black',
-            }}
-          >
-            {time.s}
-          </span>
-        </div>
-      </div>
+                <div
+                    className="time-block"
+                    style={{
+                        ...timeBlockBase,
+                        opacity: showFirst ? 0 : 1,
+                    }}
+                >
+                    <span
+                        className="digit"
+                        style={{
+                            ...digitStyle,
+                            fontFamily: "'Metal Mania', sans-serif",
+                            color: 'black',
+                        }}
+                    >
+                        {time.h}
+                    </span>
+                    <span
+                        className="digit"
+                        style={{
+                            ...digitStyle,
+                            fontFamily: "'Metal Mania', sans-serif",
+                            color: 'black',
+                        }}
+                    >
+                        {time.m}
+                    </span>
+                    <span
+                        className="digit"
+                        style={{
+                            ...digitStyle,
+                            fontFamily: "'Metal Mania', sans-serif",
+                            color: 'black',
+                        }}
+                    >
+                        {time.s}
+                    </span>
+                </div>
+            </div>
 
-      <svg id="filters" style={{ position: 'absolute', width: 0, height: 0 }}>
-        <defs>
-          <filter id="threshold">
-            <feColorMatrix
-              in="SourceGraphic"
-              type="matrix"
-              values="1 0 0 0 0
+            <svg id="filters" style={{ position: 'absolute', width: 0, height: 0 }}>
+                <defs>
+                    <filter id="threshold">
+                        <feColorMatrix
+                            in="SourceGraphic"
+                            type="matrix"
+                            values="1 0 0 0 0
                         0 1 0 0 0
                         0 0 1 0 0
                         0 0 0 255 -140"
-            />
-          </filter>
-        </defs>
-      </svg>
-    </div>
-  );
+                        />
+                    </filter>
+                </defs>
+            </svg>
+        </div>
+    );
 };
 
 export default IndecisiveClock;

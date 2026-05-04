@@ -23,7 +23,7 @@ const CosmicWheelClock: React.FC = () => {
   // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       let hours = now.getHours();
       const minutes = now.getMinutes();

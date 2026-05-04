@@ -10,168 +10,168 @@ import { useSecondClock } from '@/utils/hooks';
 
 
 const DISCO_COLORS = [
-  '#FF00FF', // Neon Magenta
-  '#FFFB00', // Neon Yellow
-  '#FF3131', // Neon Red
-  '#39FF14', // Neon Green
-  '#B473F1', // Blue Violet
-  '#FF5E00', // Neon Orange
+    '#FF00FF', // Neon Magenta
+    '#FFFB00', // Neon Yellow
+    '#FF3131', // Neon Red
+    '#39FF14', // Neon Green
+    '#B473F1', // Blue Violet
+    '#FF5E00', // Neon Orange
 ];
 
 interface TimeDigits {
-  digits: string[];
-  rawSeconds: number;
+    digits: string[];
+    rawSeconds: number;
 }
 
 const CONFIG = {
-  use24Hour: false,
-  showSeconds: true,
+    use24Hour: false,
+    showSeconds: true,
 };
 
 const DigitalClockTemplate: React.FC = () => {
-  const time = useSecondClock();
+    const time = useSecondClock();
 
-  const fontConfigs = useMemo(
-    () => [
-      {
-        fontFamily: 'BorrowedDigital',
-        fontUrl: digitalFontUrl,
-        options: {
-          weight: 'normal',
-          style: 'normal',
-        },
-      },
-    ],
-    [],
-  );
+    const fontConfigs = useMemo(
+        () => [
+            {
+                fontFamily: 'BorrowedDigital',
+                fontUrl: digitalFontUrl,
+                options: {
+                    weight: 'normal',
+                    style: 'normal',
+                },
+            },
+        ],
+        [],
+    );
 
-  useSuspenseFontLoader(fontConfigs);
+    useSuspenseFontLoader(fontConfigs);
 
-  const { digits, rawSeconds }: TimeDigits = useMemo(() => {
-    const hours24 = time.getHours();
-    const hours = CONFIG.use24Hour ? hours24 : hours24 % 12 || 12;
-    const pad = (n: number): string => String(n).padStart(2, '0');
+    const { digits, rawSeconds }: TimeDigits = useMemo(() => {
+        const hours24 = time.getHours();
+        const hours = CONFIG.use24Hour ? hours24 : hours24 % 12 || 12;
+        const pad = (n: number): string => String(n).padStart(2, '0');
 
-    const hh = pad(hours);
-    const mm = pad(time.getMinutes());
-    const ss = pad(time.getSeconds());
+        const hh = pad(hours);
+        const mm = pad(time.getMinutes());
+        const ss = pad(time.getSeconds());
 
-    return {
-      digits: (hh + mm + (CONFIG.showSeconds ? ss : '')).split(''),
-      rawSeconds: time.getSeconds(),
+        return {
+            digits: (hh + mm + (CONFIG.showSeconds ? ss : '')).split(''),
+            rawSeconds: time.getSeconds(),
+        };
+    }, [time]);
+
+    const getDiscoColor = (index: number): string => {
+        const colorIndex = (rawSeconds + index) % DISCO_COLORS.length;
+        return DISCO_COLORS[colorIndex] || DISCO_COLORS[0];
     };
-  }, [time]);
 
-  const getDiscoColor = (index: number): string => {
-    const colorIndex = (rawSeconds + index) % DISCO_COLORS.length;
-    return DISCO_COLORS[colorIndex] || DISCO_COLORS[0];
-  };
+    const layerBase = {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        pointerEvents: 'none',
+    };
 
-  const layerBase = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    pointerEvents: 'none',
-  };
+    return (
+        <div
+            style={{
+                position: 'relative',
+                width: '100vw',
+                height: '100dvh',
+                overflow: 'hidden',
+                backgroundColor: '#000',
+            }}
+        >
+            <div
+                style={{
+                    ...layerBase,
+                    backgroundImage: `url(${digitalBgImage})`,
+                    opacity: 1.0,
+                    filter: 'saturate(3.8) brightness(1.5)',
+                    zIndex: 1,
+                }}
+            />
+            <div
+                style={{
+                    ...layerBase,
+                    backgroundImage: `url(${extraBg1})`,
+                    opacity: 0.6,
+                    filter: 'saturate(3.8) contrast(1.5) brightness(1.5)',
+                    mixBlendMode: 'overlay',
+                    zIndex: 2,
+                }}
+            />
+            <div
+                style={{
+                    ...layerBase,
+                    backgroundImage: `url(${extraBg2})`,
+                    opacity: 0.3,
+                    filter: 'saturate(3.8) contrast(1.5) brightness(1.5)',
+                    zIndex: 3,
+                }}
+            />
+            <div
+                style={{
+                    ...layerBase,
+                    backgroundImage: `url(${extraBg3})`,
+                    opacity: 0.3,
+                    filter: 'saturate(1.8) contrast(1.5) brightness(2.5)',
+                    zIndex: 4,
+                }}
+            />
 
-  return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        backgroundColor: '#000',
-      }}
-    >
-      <div
-        style={{
-          ...layerBase,
-          backgroundImage: `url(${digitalBgImage})`,
-          opacity: 1.0,
-          filter: 'saturate(3.8) brightness(1.5)',
-          zIndex: 1,
-        }}
-      />
-      <div
-        style={{
-          ...layerBase,
-          backgroundImage: `url(${extraBg1})`,
-          opacity: 0.6,
-          filter: 'saturate(3.8) contrast(1.5) brightness(1.5)',
-          mixBlendMode: 'overlay',
-          zIndex: 2,
-        }}
-      />
-      <div
-        style={{
-          ...layerBase,
-          backgroundImage: `url(${extraBg2})`,
-          opacity: 0.3,
-          filter: 'saturate(3.8) contrast(1.5) brightness(1.5)',
-          zIndex: 3,
-        }}
-      />
-      <div
-        style={{
-          ...layerBase,
-          backgroundImage: `url(${extraBg3})`,
-          opacity: 0.3,
-          filter: 'saturate(1.8) contrast(1.5) brightness(2.5)',
-          zIndex: 4,
-        }}
-      />
-
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-          fontFamily: "'BorrowedDigital', sans-serif",
-        }}
-      >
-        <div style={clockWrapperStyle}>
-          {digits.map((digit, i) => (
-            <span
-              key={i}
-              style={{
-                ...digitBoxStyle,
-                color: getDiscoColor(i),
-                // textShadow: `0 0 15px ${getDiscoColor(i)}`,
-                // transition: 'color 0.1s ease', // Optional: makes the color swap feel punchier
-              }}
+            <div
+                style={{
+                    position: 'relative',
+                    zIndex: 10,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100%',
+                    fontFamily: "'BorrowedDigital', sans-serif",
+                }}
             >
-              {digit}
-            </span>
-          ))}
+                <div style={clockWrapperStyle}>
+                    {digits.map((digit, i) => (
+                        <span
+                            key={i}
+                            style={{
+                                ...digitBoxStyle,
+                                color: getDiscoColor(i),
+                                // textShadow: `0 0 15px ${getDiscoColor(i)}`,
+                                // transition: 'color 0.1s ease', // Optional: makes the color swap feel punchier
+                            }}
+                        >
+                            {digit}
+                        </span>
+                    ))}
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
-const clockWrapperStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: '1.5rem',
+const clockWrapperStyle: React.CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '1.5rem',
 };
 
-const digitBoxStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '0.8em', // Tight width since there are no spacers
-  height: '1.1em',
-  fontSize: 'clamp(4rem, 16vw, 10rem)',
-  textAlign: 'center',
+const digitBoxStyle: React.CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '0.8em', // Tight width since there are no spacers
+    height: '1.1em',
+    fontSize: 'clamp(4rem, 16vw, 10rem)',
+    textAlign: 'center',
 };
 
 export default DigitalClockTemplate;

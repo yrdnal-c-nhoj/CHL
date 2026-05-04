@@ -12,84 +12,78 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const CLOCK_FONT_FAMILY = 'ClockFont__Scoped_7t3';
+const ClockLetters: React.FC = () => { // Standardized font loading with font-display: swap to avoid FOUC
+    const fontConfigs = [
+        {
+            fontFamily: CLOCK_FONT_FAMILY,
+            fontUrl: fontFileUrl,
+            options: {
+                weight: '700',
+                style: 'normal',
+            },
+        },
+    ];
+    const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-export default function ClockLetters({
-  sizeVmin = 60,
-  letters = 'EPHiCUGLjgKp',
-  showSecondHand = true,
-}) {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: CLOCK_FONT_FAMILY,
-      fontUrl: fontFileUrl,
-      options: {
-        weight: '700',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+    const [now, setNow] = useState(new Date());
+    const [rotation, setRotation] = useState<any>({ layer1: 0, layer2: 0 });
 
-  const [now, setNow] = useState(new Date());
-  const [rotation, setRotation] = useState<any>({ layer1: 0, layer2: 0 });
+    useEffect(() => {
+        const interval = setInterval(() => setNow(new Date()), 1000);
+        return () => clearInterval(interval);
+    }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+    // Animate rotating layers
+    useEffect(() => {
+        let frame;
+        const animate = () => {
+            setRotation((r) => ({
+                layer1: r.layer1 + 0.1, // clockwise
+                layer2: r.layer2 + 0.06, // counterclockwise
+                layer3: r.layer1 + 0.1, // clockwise
+            }));
+            frame = requestAnimationFrame(animate);
+        };
+        frame = requestAnimationFrame(animate);
+        return () => cancelAnimationFrame(frame);
+    }, []);
 
-  // Animate rotating layers
-  useEffect(() => {
-    let frame;
-    const animate = () => {
-      setRotation((r) => ({
-        layer1: r.layer1 + 0.1, // clockwise
-        layer2: r.layer2 + 0.06, // counterclockwise
-        layer3: r.layer1 + 0.1, // clockwise
-      }));
-      frame = requestAnimationFrame(animate);
+    const { hourDeg, minDeg, secDeg } = useMemo(() => {
+        const h = now.getHours() % 12;
+        const m = now.getMinutes();
+        const s: Record<string, React.CSSProperties> = now.getSeconds();
+        const ms = now.getMilliseconds();
+        const second = s + ms / 1000;
+        const minute = m + second / 60;
+        const hour = h + minute / 60;
+        return {
+            hourDeg: hour * 30,
+            minDeg: minute * 6,
+            secDeg: second * 6,
+        };
+    }, [now]);
+
+    const glyphs = useMemo(() => {
+        const raw = (letters || '').toString();
+        if (raw.length >= 12) return raw.slice(0, 12).split('');
+        return (`${raw}ABCDEFGHIJKL`).slice(0, 12).split('');
+    }, [letters]);
+
+    const root: React.CSSProperties = {
+        position: 'relative',
+        width: '100vw',
+        height: '100dvh',
+        background: '#ffffff',
     };
-    frame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frame);
-  }, []);
 
-  const { hourDeg, minDeg, secDeg } = useMemo(() => {
-    const h = now.getHours() % 12;
-    const m = now.getMinutes();
-    const s = now.getSeconds();
-    const ms = now.getMilliseconds();
-    const second = s + ms / 1000;
-    const minute = m + second / 60;
-    const hour = h + minute / 60;
-    return {
-      hourDeg: hour * 30,
-      minDeg: minute * 6,
-      secDeg: second * 6,
-    };
-  }, [now]);
-
-  const glyphs = useMemo(() => {
-    const raw = (letters || '').toString();
-    if (raw.length >= 12) return raw.slice(0, 12).split('');
-    return (`${raw  }ABCDEFGHIJKL`).slice(0, 12).split('');
-  }, [letters]);
-
-  const root: React.CSSProperties = {
-    position: 'relative',
-    width: '100vw',
-    height: '100dvh',
-    background: '#ffffff',
-  };
-
-  const targetBackground: React.CSSProperties = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '200vmax',
-    height: '200vmax',
-    transform: 'translate(-50%, -50%)',
-    background: `
+    const targetBackground: React.CSSProperties = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        width: '200vmax',
+        height: '200vmax',
+        transform: 'translate(-50%, -50%)',
+        background: `
       radial-gradient(
         circle at center,
         #DCEF07FF 0%, #CB4B4BFF 10%, /* Black bullseye */
@@ -102,285 +96,284 @@ export default function ClockLetters({
         transparent 70%
       )
     `,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-    backgroundRepeat: 'no-repeat',
-    zIndex: 0, // Lowest z-index to place behind all elements
-  };
+        backgroundSize: 'cover',
+        backgroundPosition: 'center center',
+        backgroundRepeat: 'no-repeat',
+        zIndex: 0, // Lowest z-index to place behind all elements
+    };
 
-  const backgroundLayers = [
-    {
-      url: bg1,
-      opacity: 0.7,
-      contrast: 8.0,
-      zIndex: 2,
-      size: '70%',
-      pos: 'center',
-      saturation: 2.2,
-      hue: 20,
-      rotate: rotation.layer1,
-    },
-    {
-      url: bg2,
-      opacity: 0.9,
-      contrast: 8.0,
-      zIndex: 3,
-      size: '50%',
-      pos: 'center',
-      saturation: 2.8,
-      hue: 10,
-      rotate: rotation.layer2,
-    },
-    {
-      url: bg3,
-      opacity: 1.0,
-      contrast: 8.0,
-      zIndex: 1,
-      size: '50%',
-      pos: 'center',
-      saturation: 2.5,
-      hue: -40,
-    },
-    {
-      url: bg4,
-      opacity: 0.7,
-      contrast: 6.0,
-      zIndex: 4,
-      size: '50%',
-      pos: 'center',
-      saturation: 2.5,
-      hue: -40,
-      rotate: rotation.layer3,
-    },
-  ];
+    const backgroundLayers = [
+        {
+            url: bg1,
+            opacity: 0.7,
+            contrast: 8.0,
+            zIndex: 2,
+            size: '70%',
+            pos: 'center',
+            saturation: 2.2,
+            hue: 20,
+            rotate: rotation.layer1,
+        },
+        {
+            url: bg2,
+            opacity: 0.9,
+            contrast: 8.0,
+            zIndex: 3,
+            size: '50%',
+            pos: 'center',
+            saturation: 2.8,
+            hue: 10,
+            rotate: rotation.layer2,
+        },
+        {
+            url: bg3,
+            opacity: 1.0,
+            contrast: 8.0,
+            zIndex: 1,
+            size: '50%',
+            pos: 'center',
+            saturation: 2.5,
+            hue: -40,
+        },
+        {
+            url: bg4,
+            opacity: 0.7,
+            contrast: 6.0,
+            zIndex: 4,
+            size: '50%',
+            pos: 'center',
+            saturation: 2.5,
+            hue: -40,
+            rotate: rotation.layer3,
+        },
+    ];
 
-  const bgLayerStyle = (layer: any): React.CSSProperties => ({
-    position: 'absolute',
-    width: '150vw',
-    height: '150vh',
-    top: '50%',
-    left: '50%',
-    transform: layer.rotate
-      ? `translate(-50%, -50%) rotate(${layer.rotate}deg)`
-      : 'translate(-50%, -50%)',
-    transformOrigin: 'center',
-    backgroundImage: `url(${layer.url})`,
-    backgroundSize: layer.size || 'cover',
-    backgroundPosition: layer.pos || 'center',
-    backgroundRepeat: 'no-repeat',
-    opacity: layer.opacity,
-    zIndex: layer.zIndex,
-    filter: `saturate(${layer.saturation || 1}) hue-rotate(${layer.hue || 0}deg) contrast(${layer.contrast || 1})`, // Fix: Added missing contrast
-  });
-
-  const crosshairStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '100vmax',
-    height: '100vmax',
-    transform: 'translate(-50%, -50%)',
-    zIndex: 5, // Above target background and image layers
-    pointerEvents: 'none',
-  };
-
-  const crosshairLineStyle: React.CSSProperties = {
-    position: 'absolute',
-    background: 'rgba(0, 0, 0, 0.5)',
-  };
-
-  const targetNumberStyle: React.CSSProperties = {
-    position: 'absolute',
-    fontFamily: 'Arial, sans-serif',
-    // fontWeight: "bold",
-    color: '#EA1010',
-    fontSize: `${sizeVmin * 0.1}vmin`,
-    textShadow: '0 2px 0.2vmin #FFFFFF', // Fix: Removed extra dot
-    userSelect: 'none',
-    zIndex: 6, // Above crosshairs
-  };
-
-  const faceWrap: React.CSSProperties = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: `${sizeVmin}vmin`,
-    height: `${sizeVmin}vmin`,
-    display: 'grid',
-    placeItems: 'center',
-    zIndex: 10,
-  };
-
-  const face: React.CSSProperties = {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
-    borderRadius: '50%',
-    boxShadow: '1px 0 0 2px rgba(231, 167, 167, 0.5)',
-  };
-
-  const letterStyleBase: React.CSSProperties = {
-    position: 'absolute',
-    left: '50%',
-    top: '50%',
-    transform: 'translate(-50%, -50%)',
-    fontFamily: `${CLOCK_FONT_FAMILY}, Arial, sans-serif`,
-    fontWeight: '700',
-    userSelect: 'none',
-    color: '#0D0C0CFF',
-    textShadow: '1px 1px 0px rgba(244, 240, 240, 0.5)',
-    zIndex: 2,
-  };
-
-  const lettersNodes = useMemo(() => {
-    const radius = sizeVmin / 2 - sizeVmin * 0.08;
-    return glyphs.map((ch, i) => {
-      const angle = ((i / 12) * 360 - 90) * (Math.PI / 180);
-      const x = Math.cos(angle) * radius;
-      const y = Math.sin(angle) * radius;
-      const size = sizeVmin * 0.22;
-      return (
-        <div
-          key={i}
-          style={{
-            ...letterStyleBase,
-            left: `calc(50% + ${x}vmin)`,
-            top: `calc(50% + ${y}vmin)`,
-            fontSize: `${size}vmin`,
-          }}
-        >
-          {ch}
-        </div>
-      );
-    });
-  }, [glyphs, sizeVmin]);
-
-  const ticks = useMemo(() => {
-    const nodes = [];
-    for (let i = 0; i < 60; i++) {
-      const isHour = i % 5 === 0;
-      const len = isHour ? sizeVmin * 0.05 : sizeVmin * 0.03;
-      const thick = isHour ? sizeVmin * 0.008 : sizeVmin * 0.004;
-      nodes.push(
-        <div
-          key={i}
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '50%',
-            width: `${len}vmin`,
-            height: `${thick}vmin`,
-            background: 'rgba(0,0,0,0.5)',
-            transformOrigin: '0% 50%',
-            transform: `rotate(${i * 6 - 90}deg) translateX(${
-              sizeVmin * 0.48
-            }vmin)`,
-            borderRadius: '1vmin',
-            opacity: isHour ? 0.9 : 0.6,
-          }}
-        />,
-      );
-    }
-    return nodes;
-  }, [sizeVmin]);
-
-  const targetNumbers = useMemo(() => {
-    const numbers = [10, 9, 8, 7, 6, 5]; // Typical shooting range scoring rings
-    const nodes = [];
-
-    // Horizontal crosshair numbers (left and right)
-    numbers.forEach((num, i) => {
-      const offset = (i + 1) * 15; // Spread numbers across viewport
-      // Left side
-      nodes.push(
-        <div
-          key={`h-${num}-left`}
-          style={{
-            ...targetNumberStyle,
-            left: `calc(50% - ${offset}vw)`,
-            top: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          {num}
-        </div>,
-      );
-      // Right side
-      nodes.push(
-        <div
-          key={`h-${num}-right`}
-          style={{
-            ...targetNumberStyle,
-            left: `calc(50% + ${offset}vw)`,
-            top: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          {num}
-        </div>,
-      );
+    const bgLayerStyle = (layer: any): React.CSSProperties => ({
+        position: 'absolute',
+        width: '150vw',
+        height: '150vh',
+        top: '50%',
+        left: '50%',
+        transform: layer.rotate
+            ? `translate(-50%, -50%) rotate(${layer.rotate}deg)`
+            : 'translate(-50%, -50%)',
+        transformOrigin: 'center',
+        backgroundImage: `url(${layer.url})`,
+        backgroundSize: layer.size || 'cover',
+        backgroundPosition: layer.pos || 'center',
+        backgroundRepeat: 'no-repeat',
+        opacity: layer.opacity,
+        zIndex: layer.zIndex,
+        filter: `saturate(${layer.saturation || 1}) hue-rotate(${layer.hue || 0}deg) contrast(${layer.contrast || 1})`, // Fix: Added missing contrast
     });
 
-    // Vertical crosshair numbers (top and bottom)
-    numbers.forEach((num, i) => {
-      const offset = (i + 1) * 15; // Spread numbers across viewport
-      // Top side
-      nodes.push(
-        <div
-          key={`v-${num}-top`}
-          style={{
-            ...targetNumberStyle,
-            left: '50%',
-            top: `calc(50% - ${offset}vh)`,
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          {num}
-        </div>,
-      );
-      // Bottom side
-      nodes.push(
-        <div
-          key={`v-${num}-bottom`}
-          style={{
-            ...targetNumberStyle,
-            left: '50%',
-            top: `calc(50% + ${offset}vh)`,
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          {num}
-        </div>,
-      );
+    const crosshairStyle: React.CSSProperties = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        width: '100vmax',
+        height: '100vmax',
+        transform: 'translate(-50%, -50%)',
+        zIndex: 5, // Above target background and image layers
+        pointerEvents: 'none',
+    };
+
+    const crosshairLineStyle: React.CSSProperties = {
+        position: 'absolute',
+        background: 'rgba(0, 0, 0, 0.5)',
+    };
+
+    const targetNumberStyle: React.CSSProperties = {
+        position: 'absolute',
+        fontFamily: 'Arial, sans-serif',
+        // fontWeight: "bold",
+        color: '#EA1010',
+        fontSize: `${sizeVmin * 0.1}vmin`,
+        textShadow: '0 2px 0.2vmin #FFFFFF', // Fix: Removed extra dot
+        userSelect: 'none',
+        zIndex: 6, // Above crosshairs
+    };
+
+    const faceWrap: React.CSSProperties = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: `${sizeVmin}vmin`,
+        height: `${sizeVmin}vmin`,
+        display: 'grid',
+        placeItems: 'center',
+        zIndex: 10,
+    };
+
+    const face: React.CSSProperties = {
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        borderRadius: '50%',
+        boxShadow: '1px 0 0 2px rgba(231, 167, 167, 0.5)',
+    };
+
+    const letterStyleBase: React.CSSProperties = {
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+        fontFamily: `${CLOCK_FONT_FAMILY}, Arial, sans-serif`,
+        fontWeight: '700',
+        userSelect: 'none',
+        color: '#0D0C0CFF',
+        textShadow: '1px 1px 0px rgba(244, 240, 240, 0.5)',
+        zIndex: 2,
+    };
+
+    const lettersNodes = useMemo(() => {
+        const radius = sizeVmin / 2 - sizeVmin * 0.08;
+        return glyphs.map((ch, i) => {
+            const angle = ((i / 12) * 360 - 90) * (Math.PI / 180);
+            const x = Math.cos(angle) * radius;
+            const y = Math.sin(angle) * radius;
+            const size = sizeVmin * 0.22;
+            return (
+                <div
+                    key={i}
+                    style={{
+                        ...letterStyleBase,
+                        left: `calc(50% + ${x}vmin)`,
+                        top: `calc(50% + ${y}vmin)`,
+                        fontSize: `${size}vmin`,
+                    }}
+                >
+                    {ch}
+                </div>
+            );
+        });
+    }, [glyphs, sizeVmin]);
+
+    const ticks = useMemo(() => {
+        const nodes = [];
+        for (let i = 0; i < 60; i++) {
+            const isHour = i % 5 === 0;
+            const len = isHour ? sizeVmin * 0.05 : sizeVmin * 0.03;
+            const thick = isHour ? sizeVmin * 0.008 : sizeVmin * 0.004;
+            nodes.push(
+                <div
+                    key={i}
+                    style={{
+                        position: 'absolute',
+                        left: '50%',
+                        top: '50%',
+                        width: `${len}vmin`,
+                        height: `${thick}vmin`,
+                        background: 'rgba(0,0,0,0.5)',
+                        transformOrigin: '0% 50%',
+                        transform: `rotate(${i * 6 - 90}deg) translateX(${sizeVmin * 0.48
+                            }vmin)`,
+                        borderRadius: '1vmin',
+                        opacity: isHour ? 0.9 : 0.6,
+                    }}
+                />,
+            );
+        }
+        return nodes;
+    }, [sizeVmin]);
+
+    const targetNumbers = useMemo(() => {
+        const numbers = [10, 9, 8, 7, 6, 5]; // Typical shooting range scoring rings
+        const nodes = [];
+
+        // Horizontal crosshair numbers (left and right)
+        numbers.forEach((num, i) => {
+            const offset = (i + 1) * 15; // Spread numbers across viewport
+            // Left side
+            nodes.push(
+                <div
+                    key={`h-${num}-left`}
+                    style={{
+                        ...targetNumberStyle,
+                        left: `calc(50% - ${offset}vw)`,
+                        top: '50%',
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                >
+                    {num}
+                </div>,
+            );
+            // Right side
+            nodes.push(
+                <div
+                    key={`h-${num}-right`}
+                    style={{
+                        ...targetNumberStyle,
+                        left: `calc(50% + ${offset}vw)`,
+                        top: '50%',
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                >
+                    {num}
+                </div>,
+            );
+        });
+
+        // Vertical crosshair numbers (top and bottom)
+        numbers.forEach((num, i) => {
+            const offset = (i + 1) * 15; // Spread numbers across viewport
+            // Top side
+            nodes.push(
+                <div
+                    key={`v-${num}-top`}
+                    style={{
+                        ...targetNumberStyle,
+                        left: '50%',
+                        top: `calc(50% - ${offset}vh)`,
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                >
+                    {num}
+                </div>,
+            );
+            // Bottom side
+            nodes.push(
+                <div
+                    key={`v-${num}-bottom`}
+                    style={{
+                        ...targetNumberStyle,
+                        left: '50%',
+                        top: `calc(50% + ${offset}vh)`,
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                >
+                    {num}
+                </div>,
+            );
+        });
+
+        return nodes;
+    }, [sizeVmin]);
+
+    const handContainerStyle = (deg: number, length: number, z: number): React.CSSProperties => ({
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transformOrigin: '0% 50%',
+        transform: `rotate(${deg - 90}deg) translateX(${sizeVmin * 0.04}vmin)`,
+        width: `${length}vmin`,
+        height: 'auto',
+        zIndex: z,
+        pointerEvents: 'none',
     });
 
-    return nodes;
-  }, [sizeVmin]);
+    const handImageStyle: React.CSSProperties = {
+        width: '100%',
+        height: 'auto',
+        transform: 'rotate(180deg)',
+        transformOrigin: 'center',
+        filter: 'drop-shadow(0.2vmin 0.2vmin 0.3vmin rgba(0,0,0,0.5))',
+    };
 
-  const handContainerStyle = (deg: number, length: number, z: number): React.CSSProperties => ({
-    position: 'absolute',
-    left: '50%',
-    top: '50%',
-    transformOrigin: '0% 50%',
-    transform: `rotate(${deg - 90}deg) translateX(${sizeVmin * 0.04}vmin)`,
-    width: `${length}vmin`,
-    height: 'auto',
-    zIndex: z,
-    pointerEvents: 'none',
-  });
-
-  const handImageStyle: React.CSSProperties = {
-    width: '100%',
-    height: 'auto',
-    transform: 'rotate(180deg)',
-    transformOrigin: 'center',
-    filter: 'drop-shadow(0.2vmin 0.2vmin 0.3vmin rgba(0,0,0,0.5))',
-  };
-
-  return (
-    <div style={root}>
-      <style>{`
+    return (
+        <div style={root}>
+            <style>{`
         @font-face {
           font-family: '${CLOCK_FONT_FAMILY}';
           src: url(${fontFileUrl}) format('opentype');
@@ -390,78 +383,80 @@ export default function ClockLetters({
         }
       `}</style>
 
-      {/* Target background behind all layers */}
-      <div style={targetBackground} />
+            {/* Target background behind all layers */}
+            <div style={targetBackground} />
 
-      {/* Background image layers */}
-      {backgroundLayers.map((layer, i) => (
-        <div key={i} style={bgLayerStyle(layer)} />
-      ))}
+            {/* Background image layers */}
+            {backgroundLayers.map((layer, i) => (
+                <div key={i} style={bgLayerStyle(layer)} />
+            ))}
 
-      {/* Crosshair overlay */}
-      <div style={crosshairStyle}>
-        <div
-          style={{
-            ...crosshairLineStyle,
-            width: '100%',
-            height: '0.2vmin',
-            top: '50%',
-            transform: 'translateY(-50%)',
-          }}
-        />
-        <div
-          style={{
-            ...crosshairLineStyle,
-            width: '0.2vmin',
-            height: '100%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-          }}
-        />
-      </div>
-
-      {/* Target numbers along crosshairs */}
-      {targetNumbers}
-
-      <div style={faceWrap}>
-        <div style={face}>
-          {fontsLoaded && ( // Only render clock face when font is loaded
-            <>
-              {ticks}
-              {lettersNodes}
-              <div style={handContainerStyle(hourDeg, sizeVmin * 0.37, 3)}>
-                <img
-                  decoding="async"
-                  loading="lazy"
-                  src={hourHandImg}
-                  style={handImageStyle}
-                  alt="Hour hand"
+            {/* Crosshair overlay */}
+            <div style={crosshairStyle}>
+                <div
+                    style={{
+                        ...crosshairLineStyle,
+                        width: '100%',
+                        height: '0.2vmin',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                    }}
                 />
-              </div>
-              <div style={handContainerStyle(minDeg, sizeVmin * 0.53, 4)}>
-                <img
-                  decoding="async"
-                  loading="lazy"
-                  src={minuteHandImg}
-                  style={handImageStyle}
-                  alt="Minute hand"
+                <div
+                    style={{
+                        ...crosshairLineStyle,
+                        width: '0.2vmin',
+                        height: '100%',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                    }}
                 />
-              </div>
-              {showSecondHand && (
-                <div style={handContainerStyle(secDeg, sizeVmin * 0.6, 5)}>
-                  <img
-                    decoding="async"
-                    loading="lazy"
-                    src={secondHandImg}
-                    style={handImageStyle}
-                    alt="Second hand"
-                  />
+            </div>
+
+            {/* Target numbers along crosshairs */}
+            {targetNumbers}
+
+            <div style={faceWrap}>
+                <div style={face}>
+                    {fontsLoaded && ( // Only render clock face when font is loaded
+                        <>
+                            {ticks}
+                            {lettersNodes}
+                            <div style={handContainerStyle(hourDeg, sizeVmin * 0.37, 3)}>
+                                <img
+                                    decoding="async"
+                                    loading="lazy"
+                                    src={hourHandImg}
+                                    style={handImageStyle}
+                                    alt="Hour hand"
+                                />
+                            </div>
+                            <div style={handContainerStyle(minDeg, sizeVmin * 0.53, 4)}>
+                                <img
+                                    decoding="async"
+                                    loading="lazy"
+                                    src={minuteHandImg}
+                                    style={handImageStyle}
+                                    alt="Minute hand"
+                                />
+                            </div>
+                            {showSecondHand && (
+                                <div style={handContainerStyle(secDeg, sizeVmin * 0.6, 5)}>
+                                    <img
+                                        decoding="async"
+                                        loading="lazy"
+                                        src={secondHandImg}
+                                        style={handImageStyle}
+                                        alt="Second hand"
+                                    />
+                                </div>
+                            )}
+                        </>
+                    )}
                 </div>
-              )}
-            </>
-          )}
+            </div>
         </div>
-      </div>
-    </div>
-  );
-}
+    );
+};
+
+export default ClockLetters;

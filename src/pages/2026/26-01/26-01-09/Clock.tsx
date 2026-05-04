@@ -11,320 +11,308 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const fontConfigs: FontConfig[] = [
-  {
-    fontFamily: 'CustomClockFont',
-    fontUrl: customFont,
-  },
+    {
+        fontFamily: 'CustomClockFont',
+        fontUrl: customFont,
+    },
 ];
 
 const BackgroundGrid = ({ children }: { children: React.ReactNode }) => {
-  const [isBackgroundLoaded, setIsBackgroundLoaded] = useState<boolean>(false);
-  const [isClient, setIsClient] = useState<boolean>(false);
+    const [isBackgroundLoaded, setIsBackgroundLoaded] = useState<boolean>(false);
+    const [isClient, setIsClient] = useState<boolean>(false);
 
-  // Use standardized font loader
-  useSuspenseFontLoader(fontConfigs);
+    // Use standardized font loader
+    useSuspenseFontLoader(fontConfigs);
 
-  useEffect(() => {
-    setIsClient(true);
+    useEffect(() => {
+        setIsClient(true);
 
-    // Preload all background images
-    const images = [gifOne, gifTwo, gifThree, gifFour];
-    const imagePromises = images.map((src) => {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = resolve;
-        img.onerror = reject;
-        img.src = src;
-      });
-    });
+        // Preload all background images
+        const images = [gifOne, gifTwo, gifThree, gifFour];
+        const imagePromises = images.map((src) => {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = resolve;
+                img.onerror = reject;
+                img.src = src;
+            });
+        });
 
-    let mounted = true;
+        let mounted = true;
 
-    Promise.all([...imagePromises])
-      .then(() => {
-        if (mounted) setIsBackgroundLoaded(true);
-      })
-      .catch((err) => {
-        console.error('Resource loading failed', err);
-        if (mounted) setIsBackgroundLoaded(true);
-      });
+        Promise.all([...imagePromises])
+            .then(() => {
+                if (mounted) setIsBackgroundLoaded(true);
+            })
+            .catch((err) => {
+                console.error('Resource loading failed', err);
+                if (mounted) setIsBackgroundLoaded(true);
+            });
 
-    return () => {
-      mounted = false;
-    };
-  }, []);
+        return () => {
+            mounted = false;
+        };
+    }, []);
 
-  const containerStyle: React.CSSProperties = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    margin: 0,
-    padding: 0,
-    overflow: 'hidden',
-    boxSizing: 'border-box',
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gridTemplateRows: 'repeat(4, 1fr)',
-    gap: 0,
-    backgroundColor: '#000',
-    zIndex: 1,
-    opacity: isBackgroundLoaded ? 1 : 0,
-    transition: 'opacity 0.3s ease-in-out',
-    WebkitTapHighlightColor: 'transparent',
-    WebkitTouchCallout: 'none',
-    WebkitUserSelect: 'none',
-    userSelect: 'none',
-    touchAction: 'manipulation',
-    WebkitFontSmoothing: 'antialiased',
-    MozOsxFontSmoothing: 'grayscale',
-  };
-
-  const gridItemStyle = {
-    width: '100%',
-    height: '100%',
-    backgroundPosition: 'center',
-    backgroundSize: 'cover', // Changed to cover for a more seamless grid
-    backgroundRepeat: 'no-repeat',
-  };
-
-  const gridCells = Array.from({ length: 16 }).map((_, index) => {
-    const row = Math.floor(index / 4);
-    const col = index % 4;
-    const imageIndex = (row + col) % 4;
-
-    let backgroundImage;
-    switch (imageIndex) {
-      case 0:
-        backgroundImage = gifOne;
-        break;
-      case 1:
-        backgroundImage = gifTwo;
-        break;
-      case 2:
-        backgroundImage = gifThree;
-        break;
-      case 3:
-        backgroundImage = gifFour;
-        break;
-      default:
-        backgroundImage = gifOne;
-    }
-
-    return (
-      <div
-        key={index}
-        style={{
-          ...gridItemStyle,
-          backgroundImage: `url(${backgroundImage})`,
-        }}
-      />
-    );
-  });
-
-  // Add viewport meta tag for mobile responsiveness
-  useEffect(() => {
-    if (typeof document !== 'undefined') {
-      const viewportMeta = document.querySelector('meta[name="viewport"]');
-      if (!viewportMeta) {
-        const meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content =
-          'width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no';
-        document.head.appendChild(meta);
-      }
-    }
-  }, []);
-
-  return (
-    <>
-      <div style={containerStyle}>{gridCells}</div>
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          zIndex: 10,
-          pointerEvents: 'none',
-          opacity: isBackgroundLoaded ? 1 : 0,
-          transition: 'opacity 0.3s ease-in-out',
-        }}
-      >
-        {children}
-      </div>
-    </>
-  );
-};
-
-export default function TicTacToeClock() {
-  const [time, setTime] = useState(() => new Date());
-  const [isClient, setIsClient] = useState<boolean>(false);
-
-  // Font is loaded by useSuspenseFontLoader in BackgroundGrid component
-
-  const fontFamily = 'CustomClockFont, monospace';
-  const formatTime = useCallback((date: Date) => {
-    const hours = date.getHours();
-    const minutes = date.getHours();
-    const seconds = date.getSeconds();
-    const ms = date.getMilliseconds();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const displayHours = hours % 12 || 12;
-
-    return {
-      h1: Math.floor(displayHours / 10),
-      h2: displayHours % 10,
-      m1: Math.floor(minutes / 10),
-      m2: minutes % 10,
-      s1: Math.floor(seconds / 10),
-      s2: seconds % 10,
-      ms1: Math.floor((ms % 100) / 10),
-      ampm,
-    };
-  }, []);
-
-  const [displayTime, setDisplayTime] = useState(() => formatTime(new Date()));
-
-  // Set up animation frame
-  useEffect(() => {
-    setIsClient(true);
-
-    // Use requestAnimationFrame for smoother updates
-    let animationFrameId;
-    let lastUpdate = 0;
-
-    const updateTime = (timestamp) => {
-      if (!lastUpdate || timestamp - lastUpdate >= 16) {
-        // ~60fps
-        setTime(new Date());
-        lastUpdate = timestamp;
-      }
-      animationFrameId = setInterval(() => setTime(new Date()), 100);
+    const containerStyle: React.CSSProperties = {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        margin: 0,
+        padding: 0,
+        overflow: 'hidden' as const,
+        boxSizing: 'border-box' as const,
+        display: 'grid',
+        gridTemplateColumns: 'repeat(4, 1fr)',
+        gridTemplateRows: 'repeat(4, 1fr)',
+        gap: 0,
+        backgroundColor: '#000',
+        zIndex: 1,
+        opacity: isBackgroundLoaded ? 1 : 0,
+        transition: 'opacity 0.3s ease-in-out',
+        WebkitTapHighlightColor: 'transparent',
+        WebkitTouchCallout: 'none',
+        WebkitUserSelect: 'none',
+        userSelect: 'none',
+        touchAction: 'manipulation',
+        WebkitFontSmoothing: 'antialiased',
+        MozOsxFontSmoothing: 'grayscale',
     };
 
-    animationFrameId = setInterval(() => setTime(new Date()), 100);
-
-    return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
+    const gridItemStyle: React.CSSProperties = {
+        width: '100%',
+        height: '100%',
+        backgroundPosition: 'center',
+        backgroundSize: 'cover', // Changed to cover for a more seamless grid
+        backgroundRepeat: 'no-repeat',
     };
-  }, []);
 
-  // Update display time when time changes
-  useEffect(() => {
-    setDisplayTime(formatTime(time));
-  }, [time, formatTime]);
+    const gridCells = Array.from({ length: 16 }).map((_, index) => {
+        const row = Math.floor(index / 4);
+        const col = index % 4;
+        const imageIndex = (row + col) % 4;
 
-  const clockContainerStyle = {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    opacity: isClient ? 1 : 0,
-    transition: 'opacity 0.3s ease-in-out',
-    fontFamily,
-    position: 'relative',
-    zIndex: 10,
-    pointerEvents: 'none',
-    WebkitTapHighlightColor: 'transparent',
-    WebkitTouchCallout: 'none',
-    WebkitUserSelect: 'none',
-    userSelect: 'none',
-    touchAction: 'manipulation',
-    WebkitFontSmoothing: 'antialiased',
-    MozOsxFontSmoothing: 'grayscale',
-  };
+        let backgroundImage;
+        switch (imageIndex) {
+            case 0:
+                backgroundImage = gifOne;
+                break;
+            case 1:
+                backgroundImage = gifTwo;
+                break;
+            case 2:
+                backgroundImage = gifThree;
+                break;
+            case 3:
+                backgroundImage = gifFour;
+                break;
+            default:
+                backgroundImage = gifOne;
+        }
 
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gridTemplateRows: 'repeat(3, 1fr)',
-    gap: '1px',
-    width: '90vmin',
-    height: '90vmin',
-    maxWidth: '500px',
-    maxHeight: '500px',
-    padding:
-      'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
-  };
-
-  const cellStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: 'clamp(24px, 25vmin, 120px)',
-    color: '#00ff88',
-    fontVariantNumeric: 'tabular-nums',
-    lineHeight: 1,
-    textAlign: 'center',
-    textRendering: 'optimizeLegibility',
-    WebkitFontSmoothing: 'antialiased',
-    MozOsxFontSmoothing: 'grayscale',
-  };
-
-  // Memoize time values array to prevent unnecessary re-renders
-  const timeValues = React.useMemo(
-    () => [
-      displayTime.h1,
-      displayTime.h2,
-      displayTime.m1,
-      displayTime.m2,
-      displayTime.s1,
-      displayTime.s2,
-      displayTime.ms1,
-      displayTime.ampm.charAt(0),
-      displayTime.ampm.charAt(1),
-    ],
-    [displayTime],
-  );
-
-  // Only render on the client to prevent hydration mismatches
-  if (!isClient) {
-    return (
-      <div
-        style={{
-          width: '100%',
-          height: '100vh',
-          backgroundColor: '#000',
-          position: 'relative',
-          zIndex: 1,
-        }}
-      />
-    );
-  }
-
-  return (
-    <BackgroundGrid>
-      <div style={clockContainerStyle}>
-        <div style={gridStyle}>
-          {timeValues.map((value, index) => {
-            const isEven = index % 2 === 0;
-            const color = isEven ? '#ff4444' : '#4444ff';
-            const shadowColor = isEven ? '255, 68, 68' : '68, 68, 255';
-
-            return (
-              <div
+        return (
+            <div
                 key={index}
                 style={{
-                  ...cellStyle,
-                  color,
-                  textShadow: `0 0 10px rgba(${shadowColor}, 0.5)`,
-                  willChange: 'transform',
-                  transform: 'translateZ(0)', // Promote to own layer for better performance
+                    ...gridItemStyle,
+                    backgroundImage: `url(${backgroundImage})`,
                 }}
-                aria-hidden="true"
-              >
-                {value}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </BackgroundGrid>
-  );
-}
+            />
+        );
+    });
+
+    // Add viewport meta tag for mobile responsiveness
+    useEffect(() => {
+        if (typeof document !== 'undefined') {
+            const viewportMeta = document.querySelector('meta[name="viewport"]');
+            if (!viewportMeta) {
+                const meta = document.createElement('meta');
+                meta.name = 'viewport';
+                meta.content =
+                    'width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no';
+                document.head.appendChild(meta);
+            }
+        }
+    }, []);
+
+    return (
+        <>
+            <div style={containerStyle}>{gridCells}</div>
+            <div
+                style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 10,
+                    pointerEvents: 'none',
+                    opacity: isBackgroundLoaded ? 1 : 0,
+                    transition: 'opacity 0.3s ease-in-out',
+                }}
+            >
+                {children}
+            </div>
+        </>
+    );
+};
+const TicTacToeClock: React.FC = () => {
+    const [time, setTime] = useState(() => new Date());
+    const [isClient, setIsClient] = useState<boolean>(false);
+
+    // Font is loaded by useSuspenseFontLoader in BackgroundGrid component
+
+    const fontFamily = 'CustomClockFont, monospace';
+    const formatTime = useCallback((date: Date) => {
+        const hours = date.getHours();
+        const minutes = date.getHours();
+        const seconds = date.getSeconds();
+        const ms = date.getMilliseconds();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const displayHours = hours % 12 || 12;
+
+        return {
+            h1: Math.floor(displayHours / 10),
+            h2: displayHours % 10,
+            m1: Math.floor(minutes / 10),
+            m2: minutes % 10,
+            s1: Math.floor(seconds / 10),
+            s2: seconds % 10,
+            ms1: Math.floor((ms % 100) / 10),
+            ampm,
+        };
+    }, []);
+
+    const [displayTime, setDisplayTime] = useState(() => formatTime(new Date()));
+
+    // Set up animation frame
+    useEffect(() => {
+        setIsClient(true);
+
+        // Use setInterval for consistent clock updates
+        const intervalId = setInterval(() => {
+            setTime(new Date());
+        }, 100);
+
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, []);
+
+    // Update display time when time changes
+    useEffect(() => {
+        setDisplayTime(formatTime(time));
+    }, [time, formatTime]);
+
+    const clockContainerStyle: React.CSSProperties = {
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        opacity: isClient ? 1 : 0,
+        transition: 'opacity 0.3s ease-in-out',
+        fontFamily,
+        position: 'relative',
+        zIndex: 10,
+        pointerEvents: 'none',
+        WebkitTapHighlightColor: 'transparent',
+        WebkitTouchCallout: 'none',
+        WebkitUserSelect: 'none',
+        userSelect: 'none',
+        touchAction: 'manipulation',
+        WebkitFontSmoothing: 'antialiased',
+        MozOsxFontSmoothing: 'grayscale',
+    };
+
+    const gridStyle: React.CSSProperties = {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gridTemplateRows: 'repeat(3, 1fr)',
+        gap: '1px',
+        width: '90vmin',
+        height: '90vmin',
+        maxWidth: '500px',
+        maxHeight: '500px',
+        padding: 'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)' as const,
+    };
+
+    const cellStyle: React.CSSProperties = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: 'clamp(24px, 25vmin, 120px)',
+        color: '#00ff88',
+        fontVariantNumeric: 'tabular-nums',
+        lineHeight: 1,
+        textAlign: 'center',
+        textRendering: 'optimizeLegibility',
+        WebkitFontSmoothing: 'antialiased',
+        MozOsxFontSmoothing: 'grayscale',
+    };
+
+    // Memoize time values array to prevent unnecessary re-renders
+    const timeValues = React.useMemo(
+        () => [
+            displayTime.h1,
+            displayTime.h2,
+            displayTime.m1,
+            displayTime.m2,
+            displayTime.s1,
+            displayTime.s2,
+            displayTime.ms1,
+            displayTime.ampm.charAt(0),
+            displayTime.ampm.charAt(1),
+        ],
+        [displayTime],
+    );
+
+    // Only render on the client to prevent hydration mismatches
+    if (!isClient) {
+        return (
+            <div
+                style={{
+                    width: '100%',
+                    height: '100vh',
+                    backgroundColor: '#000',
+                    position: 'relative',
+                    zIndex: 1,
+                }}
+            />
+        );
+    }
+
+    return (
+        <BackgroundGrid>
+            <div style={clockContainerStyle}>
+                <div style={gridStyle}>
+                    {timeValues.map((value, index) => {
+                        const isEven = index % 2 === 0;
+                        const color = isEven ? '#ff4444' : '#4444ff';
+                        const shadowColor = isEven ? '255, 68, 68' : '68, 68, 255';
+
+                        return (
+                            <div
+                                key={index}
+                                style={{
+                                    ...cellStyle,
+                                    color,
+                                    textShadow: `0 0 10px rgba(${shadowColor}, 0.5)`,
+                                    willChange: 'transform',
+                                    transform: 'translateZ(0)', // Promote to own layer for better performance
+                                }}
+                                aria-hidden="true"
+                            >
+                                {value}
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        </BackgroundGrid>
+    );
+};
+
+export default TicTacToeClock;

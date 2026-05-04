@@ -211,7 +211,7 @@ const redOverlayStyle: React.CSSProperties = {
   position: 'absolute',
   inset: 0,
   backgroundColor: 'rgba(249, 9, 9, 0.7)',
-  mixBlendMode: 'multiply', // Creates a professional "printed" look
+  mixBlendMode: 'multiply' as const, // Creates a professional "printed" look
   zIndex: 1,
 };
 

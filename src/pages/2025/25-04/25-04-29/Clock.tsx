@@ -11,159 +11,159 @@ import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface FireworksClockProps {
-  // No props required for this component
+    // No props required for this component
 }
 
 const FireworksClock: React.FC<FireworksClockProps> = () => {
-  const clockRef = useRef<HTMLDivElement>(null);
-  const componentId = `fireworks-clock-${Math.random().toString(36).substr(2, 9)}`;
+    const clockRef = useRef<HTMLDivElement>(null);
+    const componentId = `fireworks-clock-${Math.random().toString(36).substr(2, 9)}`;
 
-  // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [
-      {
-        fontFamily: 'bang',
-        fontUrl,
-        options: {
-          weight: 'normal',
-          style: 'normal',
-        },
-      },
-    ],
-    [],
-  );
+    // Font loading configuration (memoized)
+    const fontConfigs = useMemo<FontConfig[]>(
+        () => [
+            {
+                fontFamily: 'bang',
+                fontUrl,
+                options: {
+                    weight: 'normal',
+                    style: 'normal',
+                },
+            },
+        ],
+        [],
+    );
 
-  // Load fonts using suspense-based loader
-  useSuspenseFontLoader(fontConfigs);
+    // Load fonts using suspense-based loader
+    useSuspenseFontLoader(fontConfigs);
 
-  // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+    // Use the standardized hook for smooth clock updates
+    const currentTime = useSecondClock();
 
-  const showClock = useCallback((): void => {
-    const clock = clockRef.current;
-    if (!clock) return;
+    const showClock = useCallback((): void => {
+        const clock = clockRef.current;
+        if (!clock) return;
 
-    const timeString = currentTime
-      .toLocaleTimeString('en-US', { hour12: false })
-      .slice(0, 5);
+        const timeString = currentTime
+            .toLocaleTimeString('en-US', { hour12: false })
+            .slice(0, 5);
 
-    clock.innerHTML = '';
-    clock.style.animation = 'none';
-    void clock.offsetWidth;
-    clock.style.animation = `${componentId}-riseUp 1.5s ease-out forwards`;
+        clock.innerHTML = '';
+        clock.style.animation = 'none';
+        void clock.offsetWidth;
+        clock.style.animation = `${componentId}-riseUp 1.5s ease-out forwards`;
 
-    for (const char of timeString) {
-      const span = document.createElement('span');
-      span.textContent = char;
-      span.style.color = getRandomBrightColor();
-      span.style.fontSize = getRandomFontSize();
-      span.style.fontWeight = 'bold';
-      span.style.position = 'relative';
-      span.style.display = 'inline-block';
-      span.style.willChange = 'transform, opacity';
-      span.style.textShadow = '0 0 0.5rem white';
+        for (const char of timeString) {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.style.color = getRandomBrightColor();
+            span.style.fontSize = getRandomFontSize();
+            span.style.fontWeight = 'bold';
+            span.style.position = 'relative';
+            span.style.display = 'inline-block';
+            span.style.willChange = 'transform, opacity';
+            span.style.textShadow = '0 0 0.5rem white';
 
-      const { dx, dy, rot } = getRandomExplosionVector();
-      span.style.setProperty('--dx', dx);
-      span.style.setProperty('--dy', dy);
-      span.style.setProperty('--rot', rot);
-      clock.appendChild(span);
-    }
+            const { dx, dy, rot } = getRandomExplosionVector();
+            span.style.setProperty('--dx', dx);
+            span.style.setProperty('--dy', dy);
+            span.style.setProperty('--rot', rot);
+            clock.appendChild(span);
+        }
 
-    setTimeout(() => {
-      for (const digit of clock.children) {
-        (digit as HTMLElement).style.animation =
-          `${componentId}-explodeWild 1.5s ease-out forwards`;
-      }
-    }, 1500);
-  }, [currentTime, componentId]);
+        setTimeout(() => {
+            for (const digit of clock.children) {
+                (digit as HTMLElement).style.animation =
+                    `${componentId}-explodeWild 1.5s ease-out forwards`;
+            }
+        }, 1500);
+    }, [currentTime, componentId]);
 
-  const getRandomBrightColor = useCallback((): string => {
-    const hue = Math.floor(Math.random() * 360);
-    return `hsl(${hue}, 100%, 50%)`;
-  }, []);
+    const getRandomBrightColor = useCallback((): string => {
+        const hue = Math.floor(Math.random() * 360);
+        return `hsl(${hue}, 100%, 50%)`;
+    }, []);
 
-  const getRandomFontSize = useCallback((): string => {
-    return `${Math.floor(Math.random() * 2) + 4}rem`;
-  }, []);
+    const getRandomFontSize = useCallback((): string => {
+        return `${Math.floor(Math.random() * 2) + 4}rem`;
+    }, []);
 
-  const getRandomExplosionVector = useCallback((): {
-    dx: string;
-    dy: string;
-    rot: string;
-  } => {
-    const dx = `${(Math.random() - 0.5) * 80}vw`;
-    const dy = `${(Math.random() - 0.5) * 80}vh`;
-    const rot = `${Math.random() * 1440 - 720}deg`;
-    return { dx, dy, rot };
-  }, []);
+    const getRandomExplosionVector = useCallback((): {
+        dx: string;
+        dy: string;
+        rot: string;
+    } => {
+        const dx = `${(Math.random() - 0.5) * 80}vw`;
+        const dy = `${(Math.random() - 0.5) * 80}vh`;
+        const rot = `${Math.random() * 1440 - 720}deg`;
+        return { dx, dy, rot };
+    }, []);
 
-  useEffect(() => {
-    showClock();
-  }, [showClock]);
+    useEffect(() => {
+        showClock();
+    }, [showClock]);
 
-  const containerStyle = {
-    fontFamily: 'bang, sans-serif',
-    margin: 0,
-    padding: 0,
-    background: 'rgb(9, 9, 9)',
-    height: '100dvh',
-    width: '100vw',
-    overflow: 'hidden',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    position: 'relative',
-  };
+    const containerStyle: React.CSSProperties = {
+        fontFamily: 'bang, sans-serif',
+        margin: 0,
+        padding: 0,
+        background: 'rgb(9, 9, 9)',
+        height: '100dvh',
+        width: '100vw',
+        overflow: 'hidden',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        position: 'relative',
+    };
 
-  const bgStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    opacity: 0.7,
-    filter: 'saturate(1.3)',
-    zIndex: 0,
-  };
+    const bgStyle: React.CSSProperties = {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        opacity: 0.7,
+        filter: 'saturate(1.3)',
+        zIndex: 0,
+    };
 
-  const clockStyle = {
-    display: 'flex',
-    position: 'relative',
-    zIndex: 50,
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: '0.5rem',
-    fontFamily: 'bang, sans-serif !important',
-  };
+    const clockStyle: React.CSSProperties = {
+        display: 'flex',
+        position: 'relative',
+        zIndex: 50,
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '0.5rem',
+        fontFamily: 'bang, sans-serif !important',
+    };
 
-  return (
-    <div style={containerStyle} data-component={componentId}>
-      <img
-        decoding="async"
-        loading="lazy"
-        src={gif1}
-        alt="bg1"
-        style={bgStyle}
-      />
-      <img
-        decoding="async"
-        loading="lazy"
-        src={gif2}
-        alt="bg2"
-        style={bgStyle}
-      />
-      <img
-        decoding="async"
-        loading="lazy"
-        src={gif3}
-        alt="bg3"
-        style={bgStyle}
-      />
-      <div ref={clockRef} style={clockStyle} />
-      <style>{`
+    return (
+        <div style={containerStyle} data-component={componentId}>
+            <img
+                decoding="async"
+                loading="lazy"
+                src={gif1}
+                alt="bg1"
+                style={bgStyle}
+            />
+            <img
+                decoding="async"
+                loading="lazy"
+                src={gif2}
+                alt="bg2"
+                style={bgStyle}
+            />
+            <img
+                decoding="async"
+                loading="lazy"
+                src={gif3}
+                alt="bg3"
+                style={bgStyle}
+            />
+            <div ref={clockRef} style={clockStyle} />
+            <style>{`
         @keyframes ${componentId}-pulse {
           from {
             transform: scale(1);
@@ -199,8 +199,8 @@ const FireworksClock: React.FC<FireworksClockProps> = () => {
           animation: ${componentId}-pulse 3s infinite alternate ease-in-out;
         }
       `}</style>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default FireworksClock;

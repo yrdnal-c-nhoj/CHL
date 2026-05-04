@@ -4,131 +4,131 @@ import rorFontUrl from '@/assets/fonts/2025/25-07-13-ror.ttf';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const RorschachClock: React.FC = () => {
-  const clockRef = useRef();
-  const mirrorRef = useRef();
+    const clockRef = useRef();
+    const mirrorRef = useRef();
 
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'ror',
-      fontUrl: rorFontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+    // Standardized font loading with font-display: swap to avoid FOUC
+    const fontConfigs = [
+        {
+            fontFamily: 'ror',
+            fontUrl: rorFontUrl,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
+    ];
+    const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const getRandomFontSize = (min = 5, max = 14) => {
-    return `${(Math.random() * (max - min) + min).toFixed(2)  }vh`;
-  };
-
-  const getRandomAmpmSize = (min = 2, max = 4) => {
-    return `${(Math.random() * (max - min) + min).toFixed(2)  }vh`;
-  };
-
-  const wrapDigits = (timeStr, ampm) => {
-    const digitsHtml = timeStr
-      .split('')
-      .map(
-        (char, i) =>
-          `<span style="font-size: ${getRandomFontSize()};">${char}</span>`,
-      )
-      .join('');
-
-    const ampmHtml = ampm
-      .split('')
-      .map(
-        (char) =>
-          `<span class="ampm" style="font-size: ${getRandomAmpmSize()};">${char}</span>`,
-      )
-      .join('');
-
-    return digitsHtml + ampmHtml;
-  };
-
-  const formatTime = (date) => {
-    let hours = date.getHours();
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12;
-    return {
-      timeString: `${hours}:${minutes}`,
-      ampm,
+    const getRandomFontSize = (min = 5, max = 14) => {
+        return `${(Math.random() * (max - min) + min).toFixed(2)}vh`;
     };
-  };
 
-  const fadeUpdateClock: React.FC = () => {
-    if (!clockRef.current || !mirrorRef.current) return;
+    const getRandomAmpmSize = (min = 2, max = 4) => {
+        return `${(Math.random() * (max - min) + min).toFixed(2)}vh`;
+    };
 
-    clockRef.current.style.opacity = 0;
-    mirrorRef.current.style.opacity = 0;
+    const wrapDigits = (timeStr, ampm) => {
+        const digitsHtml = timeStr
+            .split('')
+            .map(
+                (char, i) =>
+                    `<span style="font-size: ${getRandomFontSize()};">${char}</span>`,
+            )
+            .join('');
 
-    setTimeout(() => {
-      const now = new Date();
-      const { timeString, ampm } = formatTime(now);
-      const html = wrapDigits(timeString, ampm);
+        const ampmHtml = ampm
+            .split('')
+            .map(
+                (char) =>
+                    `<span class="ampm" style="font-size: ${getRandomAmpmSize()};">${char}</span>`,
+            )
+            .join('');
 
-      clockRef.current.innerHTML = html;
-      mirrorRef.current.innerHTML = html;
+        return digitsHtml + ampmHtml;
+    };
 
-      clockRef.current.style.opacity = 1;
-      mirrorRef.current.style.opacity = 1;
-    }, 1500);
-  };
+    const formatTime = (date) => {
+        let hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+        return {
+            timeString: `${hours}:${minutes}`,
+            ampm,
+        };
+    };
 
-  useEffect(() => {
-    fadeUpdateClock();
-    const interval = setInterval(fadeUpdateClock, 5000);
-    return () => clearInterval(interval);
-  }, []);
+    const fadeUpdateClock = () => {
+        if (!clockRef.current || !mirrorRef.current) return;
 
-  const containerStyle = {
-    margin: 0,
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5f0f0',
-    position: 'relative',
-    fontFamily: 'ror, monospace, sans-serif',
-  };
+        clockRef.current.style.opacity = 0;
+        mirrorRef.current.style.opacity = 0;
 
-  const clockContainerStyle = {
-    position: 'absolute',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  };
+        setTimeout(() => {
+            const now = new Date();
+            const { timeString, ampm } = formatTime(now);
+            const html = wrapDigits(timeString, ampm);
 
-  const clockStyle = (rotate, flip) => ({
-    fontWeight: 'bold',
-    color: '#333',
-    whiteSpace: 'nowrap',
-    display: 'flex',
-    padding: 0,
-    margin: 0,
-    opacity: 1,
-    transition: 'opacity 1.5s ease',
-    transform: `rotate(${rotate}) ${flip ? 'scaleX(-1)' : ''}`,
-  });
+            clockRef.current.innerHTML = html;
+            mirrorRef.current.innerHTML = html;
 
-  return (
-    <div style={containerStyle}>
-      <div style={{ ...clockContainerStyle, left: 'calc(50% - 20vw)' }}>
-        <div
-          ref={mirrorRef}
-          style={clockStyle('-90deg', true)}
-          id="mirrorClock"
-         />
-      </div>
+            clockRef.current.style.opacity = 1;
+            mirrorRef.current.style.opacity = 1;
+        }, 1500);
+    };
 
-      <div style={{ ...clockContainerStyle, right: 'calc(50% - 20vw)' }}>
-        <div ref={clockRef} style={clockStyle('90deg', false)} id="clock" />
-      </div>
-    </div>
-  );
+    useEffect(() => {
+        fadeUpdateClock();
+        const interval = setInterval(fadeUpdateClock, 5000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const containerStyle: React.CSSProperties = {
+        margin: 0,
+        height: '100dvh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f5f0f0',
+        position: 'relative',
+        fontFamily: 'ror, monospace, sans-serif',
+    };
+
+    const clockContainerStyle: React.CSSProperties = {
+        position: 'absolute',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    };
+
+    const clockStyle = (rotate, flip): React.CSSProperties => ({
+        fontWeight: 'bold',
+        color: '#333',
+        whiteSpace: 'nowrap',
+        display: 'flex',
+        padding: 0,
+        margin: 0,
+        opacity: 1,
+        transition: 'opacity 1.5s ease',
+        transform: `rotate(${rotate}) ${flip ? 'scaleX(-1)' : ''}`,
+    });
+
+    return (
+        <div style={containerStyle}>
+            <div style={{ ...clockContainerStyle, left: 'calc(50% - 20vw)' }}>
+                <div
+                    ref={mirrorRef}
+                    style={clockStyle('-90deg', true)}
+                    id="mirrorClock"
+                />
+            </div>
+
+            <div style={{ ...clockContainerStyle, right: 'calc(50% - 20vw)' }}>
+                <div ref={clockRef} style={clockStyle('90deg', false)} id="clock" />
+            </div>
+        </div>
+    );
 };
 
 export default RorschachClock;

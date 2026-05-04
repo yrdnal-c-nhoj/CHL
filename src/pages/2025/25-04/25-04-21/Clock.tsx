@@ -14,55 +14,55 @@ import { useMillisecondClock } from '@/utils/hooks';
 
 // Clock refs interface
 interface ClockRefs {
-  hour: React.RefObject<HTMLImageElement | null>;
-  minute: React.RefObject<HTMLImageElement | null>;
-  second: React.RefObject<HTMLImageElement | null>;
+    hour: React.RefObject<HTMLImageElement | null>;
+    minute: React.RefObject<HTMLImageElement | null>;
+    second: React.RefObject<HTMLImageElement | null>;
 }
 
 // Component Props interface
 interface AnalogImageClockProps {
-  // No props required for this component
+    // No props required for this component
 }
 
-export default function AnalogImageClock() {
-  const clockRefs: ClockRefs = {
-    hour: useRef<HTMLImageElement>(null),
-    minute: useRef<HTMLImageElement>(null),
-    second: useRef<HTMLImageElement>(null),
-  };
-  const rafRef = useRef<number>(0);
+const AnalogImageClock: React.FC = () => {
+    const clockRefs: ClockRefs = {
+        hour: useRef<HTMLImageElement>(null),
+        minute: useRef<HTMLImageElement>(null),
+        second: useRef<HTMLImageElement>(null),
+    };
+    const rafRef = useRef<number>(0);
 
-  // Font loading configuration (memoized) - no custom fonts needed
-  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
-  useSuspenseFontLoader(fontConfigs);
+    // Font loading configuration (memoized) - no custom fonts needed
+    const fontConfigs = useMemo<FontConfig[]>(() => [], []);
+    useSuspenseFontLoader(fontConfigs);
 
-  // Use the standardized hook for smooth millisecond clock updates
-  const currentTime = useMillisecondClock();
+    // Use the standardized hook for smooth millisecond clock updates
+    const currentTime = useMillisecondClock();
 
-  const update = useCallback((): void => {
-    const ms = currentTime.getMilliseconds();
-    const s = currentTime.getSeconds() + ms / 1000;
-    const m = currentTime.getMinutes() + s / 60;
-    const h = (currentTime.getHours() % 12) + m / 60;
+    const update = useCallback((): void => {
+        const ms = currentTime.getMilliseconds();
+        const s: Record<string, React.CSSProperties> = currentTime.getSeconds() + ms / 1000;
+        const m = currentTime.getMinutes() + s / 60;
+        const h = (currentTime.getHours() % 12) + m / 60;
 
-    if (clockRefs.hour.current) {
-      clockRefs.hour.current.style.transform = `translate(-50%, -85%) rotate(${h * 30}deg)`;
-    }
-    if (clockRefs.minute.current) {
-      clockRefs.minute.current.style.transform = `translate(-50%, -85%) rotate(${m * 6}deg)`;
-    }
-    if (clockRefs.second.current) {
-      clockRefs.second.current.style.transform = `translate(-50%, -85%) rotate(${s * 6}deg)`;
-    }
-  }, [currentTime]);
+        if (clockRefs.hour.current) {
+            clockRefs.hour.current.style.transform = `translate(-50%, -85%) rotate(${h * 30}deg)`;
+        }
+        if (clockRefs.minute.current) {
+            clockRefs.minute.current.style.transform = `translate(-50%, -85%) rotate(${m * 6}deg)`;
+        }
+        if (clockRefs.second.current) {
+            clockRefs.second.current.style.transform = `translate(-50%, -85%) rotate(${s * 6}deg)`;
+        }
+    }, [currentTime]);
 
-  useEffect(() => {
-    update();
-  }, [update]);
+    useEffect(() => {
+        update();
+    }, [update]);
 
-  return (
-    <div className="analog-clock">
-      <style>{`
+    return (
+        <div className="analog-clock">
+            <style>{`
         .analog-clock {
           position: fixed;
           inset: 0;
@@ -132,53 +132,55 @@ export default function AnalogImageClock() {
         }
       `}</style>
 
-      {/* Background layers */}
-      <div className="background clockwise" />
-      <div className="background counter" />
+            {/* Background layers */}
+            <div className="background clockwise" />
+            <div className="background counter" />
 
-      {/* Clock */}
-      <div className="clock-face" aria-label="Analog clock">
-        <img
-          decoding="async"
-          loading="lazy"
-          ref={clockRefs.hour}
-          src={hourHand}
-          alt="hour hand"
-          className="hand hour-hand"
-        />
-        <img
-          decoding="async"
-          loading="lazy"
-          ref={clockRefs.minute}
-          src={minuteHand}
-          alt="minute hand"
-          className="hand minute-hand"
-        />
-        <img
-          decoding="async"
-          loading="lazy"
-          ref={clockRefs.second}
-          src={secondHand}
-          alt="second hand"
-          className="hand second-hand"
-        />
-      </div>
+            {/* Clock */}
+            <div className="clock-face" aria-label="Analog clock">
+                <img
+                    decoding="async"
+                    loading="lazy"
+                    ref={clockRefs.hour}
+                    src={hourHand}
+                    alt="hour hand"
+                    className="hand hour-hand"
+                />
+                <img
+                    decoding="async"
+                    loading="lazy"
+                    ref={clockRefs.minute}
+                    src={minuteHand}
+                    alt="minute hand"
+                    className="hand minute-hand"
+                />
+                <img
+                    decoding="async"
+                    loading="lazy"
+                    ref={clockRefs.second}
+                    src={secondHand}
+                    alt="second hand"
+                    className="hand second-hand"
+                />
+            </div>
 
-      {/* Overlay images */}
-      <img
-        decoding="async"
-        loading="lazy"
-        src={overlayTopLeft}
-        alt="top left overlay"
-        className="top-left overlay"
-      />
-      <img
-        decoding="async"
-        loading="lazy"
-        src={overlayBottomRight}
-        alt="bottom right overlay"
-        className="bottom-right overlay"
-      />
-    </div>
-  );
-}
+            {/* Overlay images */}
+            <img
+                decoding="async"
+                loading="lazy"
+                src={overlayTopLeft}
+                alt="top left overlay"
+                className="top-left overlay"
+            />
+            <img
+                decoding="async"
+                loading="lazy"
+                src={overlayBottomRight}
+                alt="bottom right overlay"
+                className="bottom-right overlay"
+            />
+        </div>
+    );
+};
+
+export default AnalogImageClock;

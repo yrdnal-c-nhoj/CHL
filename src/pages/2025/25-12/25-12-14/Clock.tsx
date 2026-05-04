@@ -8,115 +8,115 @@ import { useClockTime } from '@/utils/hooks'; // Import the standardized clock h
 
 
 // Font imported with today's date (December 16, 2025)
-export default function DigitalClock() {
-  const time = useClockTime(); // Use the standardized clock hook
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-  // Load and detect the custom font as early as possible
-  useEffect(() => {
-    if (!document.fonts) {
-      setFontLoaded(true); // fallback if FontFaceSet API not supported
-      return;
-    }
+const DigitalClock: React.FC = () => {
+    const time = useClockTime(); // Use the standardized clock hook
+    const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+    // Load and detect the custom font as early as possible
+    useEffect(() => {
+        if (!document.fonts) {
+            setFontLoaded(true); // fallback if FontFaceSet API not supported
+            return;
+        }
 
-    const font = new FontFace('screw251214', `url(${screw251214})`);
+        const font = new FontFace('screw251214', `url(${screw251214})`);
 
-    document.fonts.add(font);
+        document.fonts.add(font);
 
-    font
-      .load()
-      .then(() => {
-        setFontLoaded(true);
-      })
-      .catch(() => {
-        setFontLoaded(true); // proceed even if load fails
-      });
+        font
+            .load()
+            .then(() => {
+                setFontLoaded(true);
+            })
+            .catch(() => {
+                setFontLoaded(true); // proceed even if load fails
+            });
 
-    // Also listen to the global fonts ready state for safety
-    document.fonts.ready.then(() => {
-      if (document.fonts.check('1em screw251214')) {
-        setFontLoaded(true);
-      }
-    });
-  }, []);
+        // Also listen to the global fonts ready state for safety
+        document.fonts.ready.then(() => {
+            if (document.fonts.check('1em screw251214')) {
+                setFontLoaded(true);
+            }
+        });
+    }, []);
 
-  const { hours, minutes } = useMemo(() => {
-    return {
-      hours: time.getHours().toString().padStart(2, '0'),
-      minutes: time.getMinutes().toString().padStart(2, '0'),
+    const { hours, minutes } = useMemo(() => {
+        return {
+            hours: time.getHours().toString().padStart(2, '0'),
+            minutes: time.getMinutes().toString().padStart(2, '0'),
+        };
+    }, [time]);
+
+    const [textureOffsets] = useState(() =>
+        allDigits.map(() => ({
+            x: Math.floor(Math.random() * 100),
+            y: Math.floor(Math.random() * 100),
+        })),
+    );
+
+    const containerStyle: React.CSSProperties = {
+        width: '100vw',
+        height: '100dvh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        overflow: 'hidden',
+        fontFamily: fontLoaded ? '"screw251214", monospace' : 'monospace', // solid fallback before custom font loads
     };
-  }, [time]);
 
-  const [textureOffsets] = useState(() =>
-    allDigits.map(() => ({
-      x: Math.floor(Math.random() * 100),
-      y: Math.floor(Math.random() * 100),
-    })),
-  );
+    const clockStyle: React.CSSProperties = {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '2vmin',
+        alignItems: 'center',
+        opacity: fontLoaded ? 1 : 0, // hide until font is ready (avoids FOUC)
+        transition: 'opacity 0.2s ease-in',
+    };
 
-  const containerStyle = {
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    overflow: 'hidden',
-    fontFamily: fontLoaded ? '"screw251214", monospace' : 'monospace', // solid fallback before custom font loads
-  };
+    const rowStyle: React.CSSProperties = {
+        display: 'flex',
+        gap: '1.5vmin',
+        alignItems: 'center',
+    };
 
-  const clockStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '2vmin',
-    alignItems: 'center',
-    opacity: fontLoaded ? 1 : 0, // hide until font is ready (avoids FOUC)
-    transition: 'opacity 0.2s ease-in',
-  };
+    const digitBoxStyle: React.CSSProperties = {
+        width: '24vmin',
+        height: '24vmin',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    };
 
-  const rowStyle = {
-    display: 'flex',
-    gap: '1.5vmin',
-    alignItems: 'center',
-  };
+    let textureIndex = 0;
 
-  const digitBoxStyle = {
-    width: '24vmin',
-    height: '24vmin',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  };
+    const renderDigits = (digits, prefix) =>
+        digits.map((digit, i) => {
+            const offset = textureOffsets[textureIndex++];
+            return (
+                <span key={`${prefix}-${i}`} style={digitBoxStyle}>
+                    <span
+                        className="digit-text"
+                        style={{
+                            backgroundImage: `url(${digitTexture})`,
+                            backgroundPosition: `${offset.x}% ${offset.y}%`,
+                        }}
+                    >
+                        {digit}
+                    </span>
+                </span>
+            );
+        });
 
-  let textureIndex = 0;
-
-  const renderDigits = (digits, prefix) =>
-    digits.map((digit, i) => {
-      const offset = textureOffsets[textureIndex++];
-      return (
-        <span key={`${prefix}-${i}`} style={digitBoxStyle}>
-          <span
-            className="digit-text"
-            style={{
-              backgroundImage: `url(${digitTexture})`,
-              backgroundPosition: `${offset.x}% ${offset.y}%`,
-            }}
-          >
-            {digit}
-          </span>
-        </span>
-      );
-    });
-
-  return (
-    <div style={containerStyle}>
-      <div style={clockStyle}>
-        <div style={rowStyle}>{renderDigits(hoursDigits, 'hours')}</div>
-        <div style={rowStyle}>{renderDigits(minutesDigits, 'minutes')}</div>
-      </div>
-      <style>
-        {`
+    return (
+        <div style={containerStyle}>
+            <div style={clockStyle}>
+                <div style={rowStyle}>{renderDigits(hoursDigits, 'hours')}</div>
+                <div style={rowStyle}>{renderDigits(minutesDigits, 'minutes')}</div>
+            </div>
+            <style>
+                {`
           @font-face {
             font-family: 'screw251214';
             src: url(${screw251214}) format('truetype');
@@ -145,7 +145,9 @@ export default function DigitalClock() {
             white-space: nowrap;
           }
         `}
-      </style>
-    </div>
-  );
-}
+            </style>
+        </div>
+    );
+};
+
+export default DigitalClock;

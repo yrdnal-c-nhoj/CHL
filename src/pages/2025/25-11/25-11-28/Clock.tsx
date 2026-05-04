@@ -81,7 +81,7 @@ export default function TimelineClock() {
   const percent = (seconds / 86400) * 100;
 
   const s: Record<string, React.CSSProperties | ((pos: number) => React.CSSProperties)> = {
-    page: { // This is a React.CSSProperties object
+    page: {
       width: '100vw',
       height: '100dvh',
       position: 'fixed',
@@ -91,8 +91,8 @@ export default function TimelineClock() {
       fontFamily: "'Li251128font', system-ui, sans-serif",
       overflow: 'hidden',
     },
-    timeline: { position: 'relative', width: '100%', height: '100%' } as React.CSSProperties,
-    bar: { // This is a React.CSSProperties object
+    timeline: { position: 'relative', width: '100%', height: '100%' },
+    bar: {
       position: 'absolute',
       inset: 0,
       backgroundImage: `url(${patternImg})`,
@@ -101,7 +101,7 @@ export default function TimelineClock() {
     },
     // MODIFIED: Ticks now follow a diagonal path regardless of orientation
     tick: (pos) => ({
-      position: 'absolute' as const,
+      position: 'absolute',
       left: `${pos}%`, // Position horizontally based on hour percentage
       top: `${pos}%`, // Position vertically based on hour percentage
       transform: 'translate(-50%, -50%)', // Centered on the diagonal point
@@ -112,7 +112,7 @@ export default function TimelineClock() {
       textShadow: `-1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red, -1px 0 0 red, 1px 0 0 red, 0 -1px 0 red, 0 1px 0 red`,
       userSelect: 'none',
     }),
-    // UNCHANGED: MAIN RED LINE (nowLine) position based on orientation // This is a React.CSSProperties object
+    // UNCHANGED: MAIN RED LINE (nowLine) position based on orientation
     nowLine: {
       position: 'absolute',
       top: isVertical ? `${percent}%` : 0,
@@ -128,9 +128,9 @@ export default function TimelineClock() {
         ? '0 0 40px #ff0000, 0 0 80px #ff3333'
         : '0 0 20px #ff0000, 0 0 40px #ff2222',
       zIndex: 10,
-      transition: 'all 0.4s ease',
+      transition: 'all 0.4s ease' as const,
     },
-    // UNCHANGED: COMET position and visibility based on orientation // This is a React.CSSProperties object
+    // UNCHANGED: COMET position and visibility based on orientation
     comet: {
       position: 'absolute',
       top: isVertical ? `${comet}%` : '50%',

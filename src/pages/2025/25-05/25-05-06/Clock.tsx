@@ -7,82 +7,82 @@ import { useSecondClock } from '@/utils/hooks';
 
 
 const googleFonts = [
-  'Kablammo',
-  'Oi',
-  'Ballet',
-  'Stalinist One',
-  'Silkscreen',
-  'Creepster',
-  'Monoton',
-  'Rubik Beastly',
-  'Lakki Reddy',
-  'Metal Mania',
-  'Kumar One Outline',
-  'Rye',
-  'Nosifer',
-  'Caesar Dressing',
-  'Moo Lah Lah',
-  'Danfo',
+    'Kablammo',
+    'Oi',
+    'Ballet',
+    'Stalinist One',
+    'Silkscreen',
+    'Creepster',
+    'Monoton',
+    'Rubik Beastly',
+    'Lakki Reddy',
+    'Metal Mania',
+    'Kumar One Outline',
+    'Rye',
+    'Nosifer',
+    'Caesar Dressing',
+    'Moo Lah Lah',
+    'Danfo',
 ];
 
 const UnrulyClock: React.FC = () => {
-  const digitRefs = useRef([]);
-  // Added 'shake' to the behavior list
-  const animations = [
-    'bounce',
-    'skew',
-    'skew2',
-    'rotate',
-    'rotateRev',
-    'scale',
-    'scale2',
-    'shake',
-  ];
+    const digitRefs = useRef([]);
+    // Added 'shake' to the behavior list
+    const animations = [
+        'bounce',
+        'skew',
+        'skew2',
+        'rotate',
+        'rotateRev',
+        'scale',
+        'scale2',
+        'shake',
+    ];
 
-  useEffect(() => {
-    const link = document.createElement('link');
-    const fontQuery = googleFonts
-      .map((f) => `family=${f.replace(/ /g, '+')}`)
-      .join('&');
-    link.href = `https://fonts.googleapis.com/css2?${fontQuery}&display=swap`;
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
+    useEffect(() => {
+        const link = document.createElement('link');
+        const fontQuery = googleFonts
+            .map((f) => `family=${f.replace(/ /g, '+')}`)
+            .join('&');
+        link.href = `https://fonts.googleapis.com/css2?${fontQuery}&display=swap`;
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
 
-    const updateClock: React.FC = () => {
-      const now = new Date();
-      const timeStr = [now.getHours(), now.getMinutes(), now.getSeconds()]
-        .map((n) => String(n).padStart(2, '0'))
-        .join('');
+        const updateClock = () => {
+            const now = new Date();
+            const timeStr = [now.getHours(), now.getMinutes(), now.getSeconds()]
+                .map((n) => String(n).padStart(2, '0'))
+                .join('');
 
-      [...timeStr].forEach((val, i) => {
-        const el = digitRefs.current[i];
-        if (!el) return;
+            [...timeStr].forEach((val, i) => {
+                const el = digitRefs.current[i];
+                if (!el) return;
 
-        // Randomize Appearance
-        el.textContent = val;
-        el.style.fontFamily = `'${googleFonts[Math.floor(Math.random() * googleFonts.length)]}', cursive`;
-        el.style.color = `hsl(${Math.floor(Math.random() * 360)}, 100%, 60%)`;
+                // Randomize Appearance
+                el.textContent = val;
+                el.style.fontFamily = `'${googleFonts[Math.floor(Math.random() * googleFonts.length)]}', cursive`;
+                el.style.color = `hsl(${Math.floor(Math.random() * 360)}, 100%, 60%)`;
 
-        // Trigger Animation
-        el.classList.remove(...animations);
-        void el.offsetWidth; // Force reflow to restart animation
-        el.classList.add(
-          animations[Math.floor(Math.random() * animations.length)],
-        );
-      });
-    };
+                // Trigger Animation
+                el.classList.remove(...animations);
+                void el.offsetWidth; // Force reflow to restart animation
+                el.classList.add(
+                    animations[Math.floor(Math.random() * animations.length)],
+                );
+            });
+        };
 
-    const interval = setInterval(updateClock, 1000);
-    updateClock();
-    return () => {
-      clearInterval(interval);
-      if (document.head.contains(link)) document.head.removeChild(link);
-    };
-  }, []);
+        const interval = setInterval(updateClock, 1000);
+        updateClock();
+        return () => {
+            clearInterval(interval);
+            if (document.head.contains(link)) document.head.removeChild(link);
+        };
+    }, []);
 
-  return (
-    <div className="container">
-      <style>{`
+    return (
+        <div className="container">
+            <style>{`
         .container {
           background: #4C514C;
           height: 100vh;
@@ -165,19 +165,19 @@ const UnrulyClock: React.FC = () => {
         .shake { animation: shake 0.5s linear infinite; }
       `}</style>
 
-      <div className="clock-wrapper">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            ref={(el) => (digitRefs.current[i] = el)}
-            className="digit"
-          >
-            0
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+            <div className="clock-wrapper">
+                {[...Array(6)].map((_, i) => (
+                    <div
+                        key={i}
+                        ref={(el) => (digitRefs.current[i] = el)}
+                        className="digit"
+                    >
+                        0
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
 };
 
 export default UnrulyClock;

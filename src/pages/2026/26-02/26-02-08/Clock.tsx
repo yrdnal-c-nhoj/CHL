@@ -44,7 +44,7 @@ const TrocClock: React.FC = () => {
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
-    fontFamily: "'TrocaderoFont', serif",
+    fontFamily: "'TrocaderoFont', serif" as const,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -58,7 +58,7 @@ const TrocClock: React.FC = () => {
     width: '100%',
     height: '100%',
     backgroundImage: `url(${analogBgImage})`,
-    backgroundSize: 'con',
+    backgroundSize: 'cover' as const, // Corrected from 'con'
     backgroundPosition: 'center',
     filter: 'brightness(0.9) saturate(0.9) contrast(0.9)',
     zIndex: 0,

@@ -1,9 +1,9 @@
 import React, {
-  useEffect,
-  useRef,
-  useState,
-  useMemo,
-  useCallback,
+    useEffect,
+    useRef,
+    useState,
+    useMemo,
+    useCallback,
 } from 'react';
 import type { CSSProperties } from 'react'; // Keep this import if CSSProperties is used elsewhere
 
@@ -14,69 +14,69 @@ import { useSecondClock } from '@/utils/hooks';
 
 // Google Fonts URLs for Michroma, Economica, and Questrial
 const michromaFontUrl =
-  'https://fonts.gstatic.com/s/michroma/v18/PN_zRfy9qWD8fE-oB4_J_Q.woff2';
+    'https://fonts.gstatic.com/s/michroma/v18/PN_zRfy9qWD8fE-oB4_J_Q.woff2';
 const economicaFontUrl =
-  'https://fonts.gstatic.com/s/economica/v13/QwZTDPRQo_oF4RxQ_N_J_Q.woff2';
+    'https://fonts.gstatic.com/s/economica/v13/QwZTDPRQo_oF4RxQ_N_J_Q.woff2';
 const questrialFontUrl =
-  'https://fonts.gstatic.com/s/questrial/v19/Cf6gUOLrC6N_V5I_AQ.woff2';
+    'https://fonts.gstatic.com/s/questrial/v19/Cf6gUOLrC6N_V5I_AQ.woff2';
 
 const fonts = ["'michroma'", "'economica'", "'questrial'"];
 
 const getRand = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 const getComplementaryColor = (r, g, b) =>
-  `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
+    `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
 const getTimeString = () =>
-  new Date().toLocaleTimeString('en-US', { hour12: false });
+    new Date().toLocaleTimeString('en-US', { hour12: false });
 
 const throwTimeCharacters = (timeStr, throwContainer) => {
-  if (!throwContainer.current) return;
+    if (!throwContainer.current) return;
 
-  let letterId = 0;
-  const r = getRand(90, 255);
-  const g = getRand(1, 255);
-  const b = getRand(1, 200);
-  const sharedColor = `rgb(${r},${g},${b})`;
-  const compColor = getComplementaryColor(r, g, b);
+    let letterId = 0;
+    const r = getRand(90, 255);
+    const g = getRand(1, 255);
+    const b = getRand(1, 200);
+    const sharedColor = `rgb(${r},${g},${b})`;
+    const compColor = getComplementaryColor(r, g, b);
 
-  for (let i = 0; i < timeStr.length; i++) {
-    const x = getRand(0, 100); // percentage
-    const size = getRand(1, 12);
-    const gravityDuration = size >= 7 ? 1500 : 900;
-    const y = getRand(0, 100);
+    for (let i = 0; i < timeStr.length; i++) {
+        const x = getRand(0, 100); // percentage
+        const size = getRand(1, 12);
+        const gravityDuration = size >= 7 ? 1500 : 900;
+        const y = getRand(0, 100);
 
-    const span = document.createElement('span');
-    span.textContent = timeStr[i];
-    span.style.position = 'absolute';
-    span.style.left = `${x}vw`;
-    span.style.top = `${y}vh`;
-    span.style.fontSize = `${size}rem`;
-    span.style.fontFamily = fonts[i % fonts.length];
-    span.style.animationDuration = `${gravityDuration}ms`;
-    span.style.color = sharedColor;
-    span.style.textShadow = `0.5rem 0.5rem 0 ${compColor}`;
-    span.id = `letter-${letterId++}`;
-    span.className = `an-${getRand(1, 6)}`;
-    throwContainer.current.appendChild(span);
+        const span = document.createElement('span');
+        span.textContent = timeStr[i];
+        span.style.position = 'absolute';
+        span.style.left = `${x}vw`;
+        span.style.top = `${y}vh`;
+        span.style.fontSize = `${size}rem`;
+        span.style.fontFamily = fonts[i % fonts.length];
+        span.style.animationDuration = `${gravityDuration}ms`;
+        span.style.color = sharedColor;
+        span.style.textShadow = `0.5rem 0.5rem 0 ${compColor}`;
+        span.id = `letter-${letterId++}`;
+        span.className = `an-${getRand(1, 6)}`;
+        throwContainer.current.appendChild(span);
 
-    setTimeout(() => {
-      span.style.transition = 'opacity 5s, transform 5s';
-      span.style.opacity = '0';
-      span.style.transform += ' scale(0.5)';
-      setTimeout(() => span.remove(), 2000);
-    }, 30000);
-  }
-
-  if (throwContainer.current.children.length > 300) {
-    while (throwContainer.current.children.length > 150) {
-      throwContainer.current.removeChild(throwContainer.current.firstChild);
+        setTimeout(() => {
+            span.style.transition = 'opacity 5s, transform 5s';
+            span.style.opacity = '0';
+            span.style.transform += ' scale(0.5)';
+            setTimeout(() => span.remove(), 2000);
+        }, 30000);
     }
-  }
+
+    if (throwContainer.current.children.length > 300) {
+        while (throwContainer.current.children.length > 150) {
+            throwContainer.current.removeChild(throwContainer.current.firstChild);
+        }
+    }
 };
 
 const NumberTossClock: React.FC = () => {
-  // Inject animation styles globally
-  useGlobalStyles(
-    `
+    // Inject animation styles globally
+    useGlobalStyles(
+        `
     .an-1 {
       animation: throw-1-up 1200ms ease-out forwards, throw-1-down 750ms 1200ms ease-in forwards;
     }
@@ -150,100 +150,100 @@ const NumberTossClock: React.FC = () => {
       100% { transform: translateY(0%); }
     }
   `,
-    'clock-25-05-10-animations',
-  );
+        'clock-25-05-10-animations',
+    );
 
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'michroma',
-      fontUrl: michromaFontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-    {
-      fontFamily: 'economica',
-      fontUrl: economicaFontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-    {
-      fontFamily: 'questrial',
-      fontUrl: questrialFontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  useSuspenseFontLoader(fontConfigs);
+    // Standardized font loading with font-display: swap to avoid FOUC
+    const fontConfigs = [
+        {
+            fontFamily: 'michroma',
+            fontUrl: michromaFontUrl,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
+        {
+            fontFamily: 'economica',
+            fontUrl: economicaFontUrl,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
+        {
+            fontFamily: 'questrial',
+            fontUrl: questrialFontUrl,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
+    ];
+    useSuspenseFontLoader(fontConfigs);
 
-  const throwContainer = useRef(null);
-  const [backgroundTime, setBackgroundTime] = useState(getTimeString());
+    const throwContainer = useRef(null);
+    const [backgroundTime, setBackgroundTime] = useState(getTimeString());
 
-  useEffect(() => {
-    const updateBackgroundTime = setInterval(() => {
-      setBackgroundTime(getTimeString());
-    }, 1000);
+    useEffect(() => {
+        const updateBackgroundTime = setInterval(() => {
+            setBackgroundTime(getTimeString());
+        }, 1000);
 
-    let animationFrame;
-    const loop: React.FC = () => {
-      throwTimeCharacters(getTimeString(), throwContainer);
-      animationFrame = setTimeout(() => requestAnimationFrame(loop), 2000);
-    };
+        let animationFrame;
+        const loop = () => {
+            throwTimeCharacters(getTimeString(), throwContainer);
+            animationFrame = setTimeout(() => requestAnimationFrame(loop), 2000);
+        };
 
-    loop();
+        loop();
 
-    return () => {
-      clearTimeout(animationFrame);
-      clearInterval(updateBackgroundTime);
-    };
-  }, []);
+        return () => {
+            clearTimeout(animationFrame);
+            clearInterval(updateBackgroundTime);
+        };
+    }, []);
 
-  return (
-    <div style={styles.body}>
-      <div style={styles.stationaryClock}>{backgroundTime}</div>
-      <div ref={throwContainer} style={styles.throw} />
-    </div>
-  );
+    return (
+        <div style={styles.body}>
+            <div style={styles.stationaryClock}>{backgroundTime}</div>
+            <div ref={throwContainer} style={styles.throw} />
+        </div>
+    );
 };
 
-const styles = {
-  body: {
-    height: '100dvh',
-    width: '100vw',
-    margin: 0,
-    overflow: 'hidden',
-    background: 'linear-gradient(180deg, #f50ae1 0%, #ed5e0b 100%)',
-    position: 'relative',
-  },
-  throw: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    width: '100%',
-    height: '100%',
-    pointerEvents: 'none',
-    overflow: 'hidden',
-    zIndex: 1,
-  },
-  stationaryClock: {
-    position: 'fixed',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    fontSize: '12vw',
-    fontFamily: 'Courier New',
-    color: 'rgba(255, 255, 255, 0.08)',
-    zIndex: 0,
-    pointerEvents: 'none',
-    userSelect: 'none',
-    whiteSpace: 'nowrap',
-  },
+const styles: Record<string, React.CSSProperties> = {
+    body: {
+        height: '100dvh',
+        width: '100vw',
+        margin: 0,
+        overflow: 'hidden',
+        background: 'linear-gradient(180deg, #f50ae1 0%, #ed5e0b 100%)',
+        position: 'relative',
+    },
+    throw: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        width: '100%',
+        height: '100%',
+        pointerEvents: 'none',
+        overflow: 'hidden',
+        zIndex: 1,
+    },
+    stationaryClock: {
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        fontSize: '12vw',
+        fontFamily: 'Courier New',
+        color: 'rgba(255, 255, 255, 0.08)',
+        zIndex: 0,
+        pointerEvents: 'none',
+        userSelect: 'none',
+        whiteSpace: 'nowrap',
+    },
 };
 
 export default NumberTossClock;

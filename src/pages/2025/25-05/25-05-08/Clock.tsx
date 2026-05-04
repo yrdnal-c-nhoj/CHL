@@ -9,60 +9,60 @@ import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface GoldenHourClockProps {
-  // No props required for this component
+    // No props required for this component
 }
 
 const GoldenHourClock: React.FC<GoldenHourClockProps> = () => {
-  // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [
-      {
-        fontFamily: 'ShinyFont',
-        fontUrl: shinyFont,
-        options: {
-          weight: 'normal',
-          style: 'normal',
-        },
-      },
-    ],
-    [],
-  );
-  useSuspenseFontLoader(fontConfigs);
+    // Font loading configuration (memoized)
+    const fontConfigs = useMemo<FontConfig[]>(
+        () => [
+            {
+                fontFamily: 'ShinyFont',
+                fontUrl: shinyFont,
+                options: {
+                    weight: 'normal',
+                    style: 'normal',
+                },
+            },
+        ],
+        [],
+    );
+    useSuspenseFontLoader(fontConfigs);
 
-  // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+    // Use the standardized hook for smooth clock updates
+    const currentTime = useSecondClock();
 
-  useEffect(() => {
-    const updateClock: React.FC = () => {
-      const now = new Date();
-      const pad = (n) => String(n).padStart(2, '0');
-      document.getElementById('hours').textContent = pad(now.getHours());
-      document.getElementById('minutes').textContent = pad(now.getMinutes());
-    };
+    useEffect(() => {
+        const updateClock = () => {
+            const now = new Date();
+            const pad = (n) => String(n).padStart(2, '0');
+            document.getElementById('hours').textContent = pad(now.getHours());
+            document.getElementById('minutes').textContent = pad(now.getMinutes());
+        };
 
-    const interval = setInterval(updateClock, 1000);
-    updateClock();
+        const interval = setInterval(updateClock, 1000);
+        updateClock();
 
-    return () => clearInterval(interval);
-  }, []);
+        return () => clearInterval(interval);
+    }, []);
 
-  return (
-    <div
-      style={{
-        margin: 0,
-        padding: 0,
-        height: '100dvh',
-        width: '100vw',
-        overflow: 'hidden',
-        background: 'black',
+    return (
+        <div
+            style={{
+                margin: 0,
+                padding: 0,
+                height: '100dvh',
+                width: '100vw',
+                overflow: 'hidden',
+                background: 'black',
 
-        // Center horizontally & vertically
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <style>{`
+                // Center horizontally & vertically
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            <style>{`
         @font-face {
           font-family: 'Shiny';
           src: url(${shinyFont}) format('truetype');
@@ -241,38 +241,38 @@ const GoldenHourClock: React.FC<GoldenHourClockProps> = () => {
         }
       `}</style>
 
-      <img
-        decoding="async"
-        loading="lazy"
-        src={bgGif}
-        alt="Background"
-        className="bgimage"
-      />
+            <img
+                decoding="async"
+                loading="lazy"
+                src={bgGif}
+                alt="Background"
+                className="bgimage"
+            />
 
-      <div className="frame">
-        <div className="clock">
-          <div className="time-unit" id="hours">
-            00
-          </div>
-          <div className="time-unit" id="minutes">
-            00
-          </div>
-        </div>
-      </div>
-
-      <div className="light">
-        <div className="flare one">
-          <div className="flare two">
-            <div className="flare five" />
-            <div className="flare six" />
-            <div className="flare three">
-              <div className="flare four" />
+            <div className="frame">
+                <div className="clock">
+                    <div className="time-unit" id="hours">
+                        00
+                    </div>
+                    <div className="time-unit" id="minutes">
+                        00
+                    </div>
+                </div>
             </div>
-          </div>
+
+            <div className="light">
+                <div className="flare one">
+                    <div className="flare two">
+                        <div className="flare five" />
+                        <div className="flare six" />
+                        <div className="flare three">
+                            <div className="flare four" />
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default GoldenHourClock;

@@ -8,80 +8,80 @@ import { useMillisecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface ClockProps {
-  // No props required for this component
+    // No props required for this component
 }
 
 const Clock: React.FC<ClockProps> = () => {
-  // Font loading configuration (memoized) - no custom fonts needed
-  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
-  useSuspenseFontLoader(fontConfigs);
+    // Font loading configuration (memoized) - no custom fonts needed
+    const fontConfigs = useMemo<FontConfig[]>(() => [], []);
+    useSuspenseFontLoader(fontConfigs);
 
-  // Use the standardized hook for smooth millisecond clock updates
-  const currentTime = useMillisecondClock();
-  const requestRef = useRef<number>();
+    // Use the standardized hook for smooth millisecond clock updates
+    const currentTime = useMillisecondClock();
+    const requestRef = useRef<number>();
 
-  const updateClock: React.FC = () => {
-    const now = new Date();
-    const ms = now.getMilliseconds();
-    const seconds = now.getSeconds();
-    const minutes = now.getMinutes();
-    const hours = now.getHours();
+    const updateClock = () => {
+        const now = new Date();
+        const ms = now.getMilliseconds();
+        const seconds = now.getSeconds();
+        const minutes = now.getMinutes();
+        const hours = now.getHours();
 
-    const secondsDeg = ((seconds + ms / 1000) / 60) * 360;
-    const minutesDeg = ((minutes + seconds / 60) / 60) * 360;
-    const hoursDeg = (((hours % 12) + minutes / 60) / 12) * 360;
+        const secondsDeg = ((seconds + ms / 1000) / 60) * 360;
+        const minutesDeg = ((minutes + seconds / 60) / 60) * 360;
+        const hoursDeg = (((hours % 12) + minutes / 60) / 12) * 360;
 
-    const sHand = document.querySelector('.second-hand');
-    const mHand = document.querySelector('.minute-hand');
-    const hHand = document.querySelector('.hour-hand');
-    const sweep = document.querySelector('.radar-sweep');
+        const sHand = document.querySelector('.second-hand');
+        const mHand = document.querySelector('.minute-hand');
+        const hHand = document.querySelector('.hour-hand');
+        const sweep = document.querySelector('.radar-sweep');
 
-    if (sHand)
-      sHand.style.transform = `translateX(-50%) rotate(${secondsDeg}deg)`;
-    if (sweep)
-      sweep.style.transform = `translate(-50%, -50%) rotate(${secondsDeg}deg)`;
-    if (mHand)
-      mHand.style.transform = `translateX(-50%) rotate(${minutesDeg}deg)`;
-    if (hHand)
-      hHand.style.transform = `translateX(-50%) rotate(${hoursDeg}deg)`;
+        if (sHand)
+            sHand.style.transform = `translateX(-50%) rotate(${secondsDeg}deg)`;
+        if (sweep)
+            sweep.style.transform = `translate(-50%, -50%) rotate(${secondsDeg}deg)`;
+        if (mHand)
+            mHand.style.transform = `translateX(-50%) rotate(${minutesDeg}deg)`;
+        if (hHand)
+            hHand.style.transform = `translateX(-50%) rotate(${hoursDeg}deg)`;
 
-    requestRef.current = requestAnimationFrame(updateClock);
-  };
+        requestRef.current = requestAnimationFrame(updateClock);
+    };
 
-  useEffect(() => {
-    requestRef.current = requestAnimationFrame(updateClock);
-    return () => cancelAnimationFrame(requestRef.current);
-  }, []);
+    useEffect(() => {
+        requestRef.current = requestAnimationFrame(updateClock);
+        return () => cancelAnimationFrame(requestRef.current);
+    }, []);
 
-  return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <img src={bgImage} alt="background" className="full-page-image" />
+    return (
+        <div
+            style={{
+                position: 'relative',
+                width: '100vw',
+                height: '100dvh',
+                overflow: 'hidden',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            <img src={bgImage} alt="background" className="full-page-image" />
 
-      <div className="clock">
-        <div id="radar">
-          {/* The trailing glow effect */}
-          <div className="radar-sweep" />
+            <div className="clock">
+                <div id="radar">
+                    {/* The trailing glow effect */}
+                    <div className="radar-sweep" />
 
-          <div className="clock-face">
-            <div className="hand hour-hand" />
-            <div className="hand minute-hand" />
-            {/* <div className="hand second-hand"></div> */}
-            {/* <div className="center"></div> */}
-          </div>
-        </div>
-      </div>
+                    <div className="clock-face">
+                        <div className="hand hour-hand" />
+                        <div className="hand minute-hand" />
+                        {/* <div className="hand second-hand"></div> */}
+                        {/* <div className="center"></div> */}
+                    </div>
+                </div>
+            </div>
 
-      <style>{`
+            <style>{`
         :root {
           --hand-color: #0bf226;
           --clock-gray: #1a1a1a; 
@@ -172,8 +172,8 @@ const Clock: React.FC<ClockProps> = () => {
         }
 
       `}</style>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default Clock;

@@ -62,7 +62,7 @@ const StretchedClock: React.FC = () => {
   const { hours, minutes } = formatTime(time);
 
   const containerStyle: React.CSSProperties = {
-    position: 'relative',
+    position: 'relative' as const,
     width: '100vw',
     height: '100dvh',
     display: 'flex',
@@ -77,7 +77,7 @@ const StretchedClock: React.FC = () => {
   };
 
   const segmentStyle: React.CSSProperties = {
-    position: 'relative', // Required for the absolute pseudo-element background
+    position: 'relative' as const, // Required for the absolute pseudo-element background
     display: 'flex',
     flex: 1,
     justifyContent: 'center',
@@ -86,7 +86,7 @@ const StretchedClock: React.FC = () => {
   };
 
   const textStyle: React.CSSProperties = {
-    position: 'relative', // Ensures text stays above the background layer
+    position: 'relative' as const, // Ensures text stays above the background layer
     zIndex: 2,
     color: '#FFD505',
     fontFamily: 'Cram260102, sans-serif',

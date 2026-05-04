@@ -8,119 +8,118 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const fontConfigs: FontConfig[] = [
-  {
-    fontFamily: 'RomanFont2025_10_27',
-    fontUrl: romanFont2025_10_27,
-  },
+    {
+        fontFamily: 'RomanFont2025_10_27',
+        fontUrl: romanFont2025_10_27,
+    },
 ];
+const MonarchClock: React.FC = () => {
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const [mediaReady, setMediaReady] = useState<boolean>(false);
+    const [videoFailed, setVideoFailed] = useState<boolean>(false);
+    const [videoStyle, setVideoStyle]: React.CSSProperties = useState<Record<string, any>>({});
 
-export default function MonarchClock() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [mediaReady, setMediaReady] = useState<boolean>(false);
-  const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const [videoStyle, setVideoStyle] = useState<Record<string, any>>({});
+    // Font loading
+    useSuspenseFontLoader(fontConfigs);
 
-  // Font loading
-  useSuspenseFontLoader(fontConfigs);
+    // Gradient for hands & numerals
+    const clockGradient = 'linear-gradient(180deg, #E8B87DFF, #EA9227FF)';
 
-  // Gradient for hands & numerals
-  const clockGradient = 'linear-gradient(180deg, #E8B87DFF, #EA9227FF)';
+    // Clock state
+    const [now, setNow] = useState(new Date());
+    useEffect(() => {
+        let lastUpdate = Date.now();
+        const id = setInterval(() => {
+            const now = Date.now();
+            if (now - lastUpdate >= 1000) {
+                setNow(new Date());
+                lastUpdate = now;
+            }
+        }, 100);
+        return () => clearInterval(id);
+    }, []);
 
-  // Clock state
-  const [now, setNow] = useState(new Date());
-  useEffect(() => {
-    let lastUpdate = Date.now();
-    const id = setInterval(() => {
-      const now = Date.now();
-      if (now - lastUpdate >= 1000) {
-        setNow(new Date());
-        lastUpdate = now;
-      }
-    }, 100);
-    return () => clearInterval(id);
-  }, []);
+    const handleVideoLoaded = () => {
+        setMediaReady(true);
+        adjustVideoPosition();
+    };
+    const handleVideoError = () => setVideoFailed(true);
+    const handleImageLoad = () => setMediaReady(true);
 
-  const handleVideoLoaded = () => {
-    setMediaReady(true);
-    adjustVideoPosition();
-  };
-  const handleVideoError = () => setVideoFailed(true);
-  const handleImageLoad = () => setMediaReady(true);
+    const adjustVideoPosition = () => {
+        const video = videoRef.current;
+        if (!video) return;
 
-  const adjustVideoPosition = () => {
-    const video = videoRef.current;
-    if (!video) return;
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const videoAspect = video.videoWidth / video.videoHeight;
+        const viewportAspect = vw / vh;
 
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const videoAspect = video.videoWidth / video.videoHeight;
-    const viewportAspect = vw / vh;
+        // Always cover the viewport completely
+        if (viewportAspect < videoAspect) {
+            // Video is wider → center horizontally
+            setVideoStyle({
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                height: '100dvh',
+                width: 'auto',
+                objectFit: 'cover',
+                zIndex: 0,
+                filter: 'saturate(1.5)',
+            });
+        } else {
+            // Video is taller → center vertically
+            setVideoStyle({
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '100dvw',
+                height: 'auto',
+                objectFit: 'cover',
+                zIndex: 0,
+                filter: 'saturate(1.5)',
+            });
+        }
+    };
 
-    // Always cover the viewport completely
-    if (viewportAspect < videoAspect) {
-      // Video is wider → center horizontally
-      setVideoStyle({
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        height: '100dvh',
-        width: 'auto',
-        objectFit: 'cover',
-        zIndex: 0,
-        filter: 'saturate(1.5)',
-      });
-    } else {
-      // Video is taller → center vertically
-      setVideoStyle({
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '100dvw',
-        height: 'auto',
-        objectFit: 'cover',
-        zIndex: 0,
-        filter: 'saturate(1.5)',
-      });
-    }
-  };
+    useEffect(() => {
+        window.addEventListener('resize', adjustVideoPosition);
+        return () => window.removeEventListener('resize', adjustVideoPosition);
+    }, []);
 
-  useEffect(() => {
-    window.addEventListener('resize', adjustVideoPosition);
-    return () => window.removeEventListener('resize', adjustVideoPosition);
-  }, []);
+    // Clock calculations
+    const clockDiameterVh = 56;
+    const clockRadiusVh = clockDiameterVh / 2.7;
+    const numeralOffsetVh = 4.2;
+    const numeralRadiusVh = clockRadiusVh + numeralOffsetVh;
 
-  // Clock calculations
-  const clockDiameterVh = 56;
-  const clockRadiusVh = clockDiameterVh / 2.7;
-  const numeralOffsetVh = 4.2;
-  const numeralRadiusVh = clockRadiusVh + numeralOffsetVh;
+    const seconds = now.getSeconds();
+    const minutes = now.getMinutes();
+    const hours = (now.getHours() % 12) + minutes / 60 + seconds / 3600;
 
-  const seconds = now.getSeconds();
-  const minutes = now.getMinutes();
-  const hours = (now.getHours() % 12) + minutes / 60 + seconds / 3600;
+    const secAngle = seconds * 6;
+    const minAngle = minutes * 6 + seconds * 0.1;
+    const hourAngle = hours * 30;
 
-  const secAngle = seconds * 6;
-  const minAngle = minutes * 6 + seconds * 0.1;
-  const hourAngle = hours * 30;
-
-  const romanNumerals = [
-    'XII',
-    'I',
-    'II',
-    'III',
-    'IV',
-    'V',
-    'VI',
-    'VII',
-    'VIII',
-    'IX',
-    'X',
-    'XI',
-  ];
-  const fontFamilyName = 'RomanClockFont_2025_10_27';
-  const fontFaceStyle = `
+    const romanNumerals = [
+        'XII',
+        'I',
+        'II',
+        'III',
+        'IV',
+        'V',
+        'VI',
+        'VII',
+        'VIII',
+        'IX',
+        'X',
+        'XI',
+    ];
+    const fontFamilyName = 'RomanClockFont_2025_10_27';
+    const fontFaceStyle: React.CSSProperties = `
     @font-face {
       font-family: '${fontFamilyName}';
       src: url('${romanFont2025_10_27}') format('opentype');
@@ -128,140 +127,142 @@ export default function MonarchClock() {
     }
   `;
 
-  const handCommon: React.CSSProperties = {
-    position: 'absolute',
-    left: '50%',
-    top: '50%',
-    background: clockGradient,
-    transformOrigin: '50% 90%',
-    borderRadius: '0.6dvh',
-    pointerEvents: 'none',
-  };
+    const handCommon: React.CSSProperties = {
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        background: clockGradient,
+        transformOrigin: '50% 90%',
+        borderRadius: '0.6dvh',
+        pointerEvents: 'none',
+    };
 
-  const hourHandStyle = {
-    ...handCommon,
-    height: `${clockRadiusVh * 0.4}dvh`,
-    width: '0.7dvh',
-    transform: `translate(-50%,-100%) rotate(${hourAngle}deg)`,
-    zIndex: 6,
-  };
-  const minuteHandStyle = {
-    ...handCommon,
-    height: `${clockRadiusVh * 0.72}dvh`,
-    width: '0.5dvh',
-    transform: `translate(-50%,-100%) rotate(${minAngle}deg)`,
-    zIndex: 8,
-  };
-  const secondHandStyle = {
-    ...handCommon,
-    height: `${clockRadiusVh * 0.9}dvh`,
-    width: '0.25dvh',
-    transform: `translate(-50%,-100%) rotate(${secAngle}deg)`,
-    zIndex: 9,
-  };
+    const hourHandStyle: React.CSSProperties = {
+        ...handCommon,
+        height: `${clockRadiusVh * 0.4}dvh`,
+        width: '0.7dvh',
+        transform: `translate(-50%,-100%) rotate(${hourAngle}deg)`,
+        zIndex: 6,
+    };
+    const minuteHandStyle: React.CSSProperties = {
+        ...handCommon,
+        height: `${clockRadiusVh * 0.72}dvh`,
+        width: '0.5dvh',
+        transform: `translate(-50%,-100%) rotate(${minAngle}deg)`,
+        zIndex: 8,
+    };
+    const secondHandStyle: React.CSSProperties = {
+        ...handCommon,
+        height: `${clockRadiusVh * 0.9}dvh`,
+        width: '0.25dvh',
+        transform: `translate(-50%,-100%) rotate(${secAngle}deg)`,
+        zIndex: 9,
+    };
 
-  const numeralBaseStyle: React.CSSProperties = {
-    position: 'absolute',
-    fontFamily: `'${fontFamilyName}', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`,
-    fontSize: '7dvh',
-    fontWeight: 600,
-    userSelect: 'none',
-    pointerEvents: 'none',
-    transformOrigin: '50% 50%',
-    letterSpacing: '0.15rem',
-    background: clockGradient,
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-  };
+    const numeralBaseStyle: React.CSSProperties = {
+        position: 'absolute',
+        fontFamily: `'${fontFamilyName}', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`,
+        fontSize: '7dvh',
+        fontWeight: 600,
+        userSelect: 'none',
+        pointerEvents: 'none',
+        transformOrigin: '50% 50%',
+        letterSpacing: '0.15rem',
+        background: clockGradient,
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+    };
 
-  return (
-    <div
-      style={{
-        height: '100dvh',
-        width: '100dvw',
-        overflow: 'hidden',
-        position: 'relative',
-        backgroundColor: '#000',
-      }}
-    >
-      {!videoFailed ? (
-        <video
-          ref={videoRef}
-          src={bgVideo}
-          muted
-          autoPlay
-          loop
-          playsInline
-          onLoadedData={handleVideoLoaded}
-          onError={handleVideoError}
-          style={videoStyle}
-        />
-      ) : (
-        <img
-          decoding="async"
-          loading="lazy"
-          src={fallbackImg}
-          alt=""
-          onLoad={handleImageLoad}
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: 0,
-            transform: 'translateY(-50%)',
-            height: '100dvh',
-            width: 'auto',
-            objectFit: 'cover',
-            zIndex: 0,
-          }}
-        />
-      )}
-
-      {mediaReady && (
+    return (
         <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%,-50%)',
-            width: `${clockDiameterVh}dvh`,
-            height: `${clockDiameterVh}dvh`,
-            borderRadius: '50%',
-            display: 'grid',
-            placeItems: 'center',
-            zIndex: 2,
-          }}
+            style={{
+                height: '100dvh',
+                width: '100dvw',
+                overflow: 'hidden',
+                position: 'relative',
+                backgroundColor: '#000',
+            }}
         >
-          <style>{fontFaceStyle}</style>
-          {romanNumerals.map((num, i) => {
-            const angleFromTop = i * 30 - 90;
-            const angleRad = (angleFromTop * Math.PI) / 180;
-            const xOffset = Math.cos(angleRad) * numeralRadiusVh;
-            const yOffset = Math.sin(angleRad) * numeralRadiusVh;
-            const leftCalc = `calc(50% + ${xOffset}dvh)`;
-            const topCalc = `calc(50% + ${yOffset}dvh)`;
-            const tangentialRotation = angleFromTop + 90;
+            {!videoFailed ? (
+                <video
+                    ref={videoRef}
+                    src={bgVideo}
+                    muted
+                    autoPlay
+                    loop
+                    playsInline
+                    onLoadedData={handleVideoLoaded}
+                    onError={handleVideoError}
+                    style={videoStyle}
+                />
+            ) : (
+                <img
+                    decoding="async"
+                    loading="lazy"
+                    src={fallbackImg}
+                    alt=""
+                    onLoad={handleImageLoad}
+                    style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: 0,
+                        transform: 'translateY(-50%)',
+                        height: '100dvh',
+                        width: 'auto',
+                        objectFit: 'cover',
+                        zIndex: 0,
+                    }}
+                />
+            )}
 
-            return (
-              <div
-                key={i}
-                style={{
-                  ...numeralBaseStyle,
-                  left: leftCalc,
-                  top: topCalc,
-                  transform: `translate(-50%,-50%) rotate(${tangentialRotation}deg)`,
-                  zIndex: 5,
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {num}
-              </div>
-            );
-          })}
-          <div style={hourHandStyle} />
-          <div style={minuteHandStyle} />
-          <div style={secondHandStyle} />
+            {mediaReady && (
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%,-50%)',
+                        width: `${clockDiameterVh}dvh`,
+                        height: `${clockDiameterVh}dvh`,
+                        borderRadius: '50%',
+                        display: 'grid',
+                        placeItems: 'center',
+                        zIndex: 2,
+                    }}
+                >
+                    <style>{fontFaceStyle}</style>
+                    {romanNumerals.map((num, i) => {
+                        const angleFromTop = i * 30 - 90;
+                        const angleRad = (angleFromTop * Math.PI) / 180;
+                        const xOffset = Math.cos(angleRad) * numeralRadiusVh;
+                        const yOffset = Math.sin(angleRad) * numeralRadiusVh;
+                        const leftCalc = `calc(50% + ${xOffset}dvh)`;
+                        const topCalc = `calc(50% + ${yOffset}dvh)`;
+                        const tangentialRotation = angleFromTop + 90;
+
+                        return (
+                            <div
+                                key={i}
+                                style={{
+                                    ...numeralBaseStyle,
+                                    left: leftCalc,
+                                    top: topCalc,
+                                    transform: `translate(-50%,-50%) rotate(${tangentialRotation}deg)`,
+                                    zIndex: 5,
+                                    whiteSpace: 'nowrap',
+                                }}
+                            >
+                                {num}
+                            </div>
+                        );
+                    })}
+                    <div style={hourHandStyle} />
+                    <div style={minuteHandStyle} />
+                    <div style={secondHandStyle} />
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
-}
+    );
+};
+
+export default MonarchClock;

@@ -8,101 +8,101 @@ import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface ClockProps {
-  // No props required for this component
+    // No props required for this component
 }
 
 const Clock: React.FC<ClockProps> = () => {
-  // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [
-      {
-        fontFamily: 'DottedRough2025_11_01',
-        fontUrl: dottedFont,
-        options: {
-          weight: 'normal',
-          style: 'normal',
-        },
-      },
-    ],
-    [],
-  );
-  useSuspenseFontLoader(fontConfigs);
+    // Font loading configuration (memoized)
+    const fontConfigs = useMemo<FontConfig[]>(
+        () => [
+            {
+                fontFamily: 'DottedRough2025_11_01',
+                fontUrl: dottedFont,
+                options: {
+                    weight: 'normal',
+                    style: 'normal',
+                },
+            },
+        ],
+        [],
+    );
+    useSuspenseFontLoader(fontConfigs);
 
-  // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+    // Use the standardized hook for smooth clock updates
+    const currentTime = useSecondClock();
 
-  // Font loading handled by useMultipleFontLoader
+    // Font loading handled by useMultipleFontLoader
 
-  useEffect(() => {
-    const SCOPE_ID = 'ri-clock-2025-11-01';
-    let animationFrameId;
+    useEffect(() => {
+        const SCOPE_ID = 'ri-clock-2025-11-01';
+        let animationFrameId;
 
-    // ------------------- Utility functions -------------------
-    const getTimeDigits = (srTime) => {
-      const now = new Date();
-      const hours = now.getHours() % 12 || 12;
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      srTime.textContent = now.toLocaleTimeString([], {
-        hour: 'numeric',
-        minute: '2-digit',
-      });
-      return [...(String(hours) + minutes)];
-    };
+        // ------------------- Utility functions -------------------
+        const getTimeDigits = (srTime) => {
+            const now = new Date();
+            const hours = now.getHours() % 12 || 12;
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            srTime.textContent = now.toLocaleTimeString([], {
+                hour: 'numeric',
+                minute: '2-digit',
+            });
+            return [...(String(hours) + minutes)];
+        };
 
-    const randomColor: React.FC = () => {
-      const hues = [0, 120, 240, 300];
-      return `hsl(${hues[Math.floor(Math.random() * hues.length)]}, 70%, 50%)`;
-    };
+        const randomColor = () => {
+            const hues = [0, 120, 240, 300];
+            return `hsl(${hues[Math.floor(Math.random() * hues.length)]}, 70%, 50%)`;
+        };
 
-    const randomFontSizeVH = () => `28vh`;
-    const randomScale = () => (Math.random() * 0.5 + 0.75).toFixed(2);
-    const randomRotation = () => `${Math.floor(Math.random() * 720 - 360)}deg`;
-    const randomFinalAngle = () => `${Math.floor(Math.random() * 31 - 15)}deg`;
+        const randomFontSizeVH = () => `28vh`;
+        const randomScale = () => (Math.random() * 0.5 + 0.75).toFixed(2);
+        const randomRotation = () => `${Math.floor(Math.random() * 720 - 360)}deg`;
+        const randomFinalAngle = () => `${Math.floor(Math.random() * 31 - 15)}deg`;
 
-    function randomDirectionOffset() {
-      const side = ['top', 'bottom', 'left', 'right'][
-        Math.floor(Math.random() * 4)
-      ];
-      const vw = 100,
-        vh = 100;
-      switch (side) {
-        case 'top':
-          return { x: `${(Math.random() * vw).toFixed(2)}vw`, y: `-10vh` };
-        case 'bottom':
-          return { x: `${(Math.random() * vw).toFixed(2)}vw`, y: `110vh` };
-        case 'left':
-          return { x: `-10vw`, y: `${(Math.random() * vh).toFixed(2)}vh` };
-        case 'right':
-          return { x: `110vw`, y: `${(Math.random() * vh).toFixed(2)}vh` };
-        default:
-          return { x: '0vw', y: '0vh' };
-      }
-    }
+        function randomDirectionOffset() {
+            const side = ['top', 'bottom', 'left', 'right'][
+                Math.floor(Math.random() * 4)
+            ];
+            const vw = 100,
+                vh = 100;
+            switch (side) {
+                case 'top':
+                    return { x: `${(Math.random() * vw).toFixed(2)}vw`, y: `-10vh` };
+                case 'bottom':
+                    return { x: `${(Math.random() * vw).toFixed(2)}vw`, y: `110vh` };
+                case 'left':
+                    return { x: `-10vw`, y: `${(Math.random() * vh).toFixed(2)}vh` };
+                case 'right':
+                    return { x: `110vw`, y: `${(Math.random() * vh).toFixed(2)}vh` };
+                default:
+                    return { x: '0vw', y: '0vh' };
+            }
+        }
 
-    const throwDigitsUp = (root, srTime) => {
-      const digits = getTimeDigits(srTime);
-      const fragment = document.createDocumentFragment();
-      const digitCount = digits.length;
-      const baseX = 50 - 5; // shift left by 5vw
-      const spreadX = 20,
-        baseY = 30,
-        spreadY = 5,
-        minSpacing = 8;
-      const batchColor = randomColor();
+        const throwDigitsUp = (root, srTime) => {
+            const digits = getTimeDigits(srTime);
+            const fragment = document.createDocumentFragment();
+            const digitCount = digits.length;
+            const baseX = 50 - 5; // shift left by 5vw
+            const spreadX = 20,
+                baseY = 30,
+                spreadY = 5,
+                minSpacing = 8;
+            const batchColor = randomColor();
 
-      digits.forEach((char, index) => {
-        const span = document.createElement('span');
-        span.className = 'digit';
-        span.textContent = char;
+            digits.forEach((char, index) => {
+                const span = document.createElement('span');
+                span.className = 'digit';
+                span.textContent = char;
 
-        const xOffset = (index - (digitCount - 1) / 2) * minSpacing;
-        const xFinal = `${(baseX + xOffset + (Math.random() * spreadX - spreadX / 2)).toFixed(2)}vw`;
-        const yFinal = `${(baseY + (Math.random() * spreadY - spreadY / 2)).toFixed(2)}vh`;
-        const scale = randomScale();
-        const { x: xStart, y: yStart } = randomDirectionOffset();
-        const duration = 10 + Math.random() * 8;
+                const xOffset = (index - (digitCount - 1) / 2) * minSpacing;
+                const xFinal = `${(baseX + xOffset + (Math.random() * spreadX - spreadX / 2)).toFixed(2)}vw`;
+                const yFinal = `${(baseY + (Math.random() * spreadY - spreadY / 2)).toFixed(2)}vh`;
+                const scale = randomScale();
+                const { x: xStart, y: yStart } = randomDirectionOffset();
+                const duration = 10 + Math.random() * 8;
 
-        span.style.cssText = `
+                span.style.cssText = `
           --x-start: ${xStart};
           --y-start: ${yStart};
           --x-final: ${xFinal};
@@ -118,44 +118,44 @@ const Clock: React.FC<ClockProps> = () => {
           opacity: 1;
         `;
 
-        // Remove digit after animation completes
-        setTimeout(() => {
-          if (span.parentNode) {
-            span.remove();
-          }
-        }, duration * 1000);
+                // Remove digit after animation completes
+                setTimeout(() => {
+                    if (span.parentNode) {
+                        span.remove();
+                    }
+                }, duration * 1000);
 
-        fragment.appendChild(span);
-      });
+                fragment.appendChild(span);
+            });
 
-      root.appendChild(fragment);
-    };
+            root.appendChild(fragment);
+        };
 
-    // ------------------- Clock logic -------------------
-    const startClockLogic: React.FC = () => {
-      const root = document.getElementById(SCOPE_ID);
-      const srTime = document.getElementById('screen-reader-time');
-      if (!root || !srTime) return;
+        // ------------------- Clock logic -------------------
+        const startClockLogic = () => {
+            const root = document.getElementById(SCOPE_ID);
+            const srTime = document.getElementById('screen-reader-time');
+            if (!root || !srTime) return;
 
-      const interval = 1000; // once per second
-      let lastFrameTime = 0;
+            const interval = 1000; // once per second
+            let lastFrameTime = 0;
 
-      const tick = (currentTime) => {
-        if (currentTime - lastFrameTime >= interval) {
-          throwDigitsUp(root, srTime);
-          lastFrameTime =
-            currentTime - ((currentTime - lastFrameTime) % interval);
-        }
-        animationFrameId = requestAnimationFrame(tick);
-      };
+            const tick = (currentTime) => {
+                if (currentTime - lastFrameTime >= interval) {
+                    throwDigitsUp(root, srTime);
+                    lastFrameTime =
+                        currentTime - ((currentTime - lastFrameTime) % interval);
+                }
+                animationFrameId = requestAnimationFrame(tick);
+            };
 
-      animationFrameId = requestAnimationFrame(tick);
-    };
+            animationFrameId = requestAnimationFrame(tick);
+        };
 
-    // ------------------- Inject font + styles -------------------
-    const style = document.createElement('style');
-    style.setAttribute('data-scope', SCOPE_ID);
-    style.textContent = `
+        // ------------------- Inject font + styles -------------------
+        const style: React.CSSProperties = document.createElement('style');
+        style.setAttribute('data-scope', SCOPE_ID);
+        style.textContent = `
       @font-face {
         font-family: 'DottedRough2025_11_01';
         src: url('${dottedFont}') format('truetype');
@@ -194,40 +194,40 @@ const Clock: React.FC<ClockProps> = () => {
         white-space: nowrap; border: 0;
       }
     `;
-    document.head.appendChild(style);
+        document.head.appendChild(style);
 
-    const font = new FontFace('DottedRough2025_11_01', `url(${dottedFont})`, {
-      style: 'normal',
-      weight: '400',
-    });
-    font
-      .load()
-      .then((loadedFont) => {
-        document.fonts.add(loadedFont);
-        startClockLogic();
-      })
-      .catch(() => startClockLogic());
+        const font = new FontFace('DottedRough2025_11_01', `url(${dottedFont})`, {
+            style: 'normal',
+            weight: '400',
+        });
+        font
+            .load()
+            .then((loadedFont) => {
+                document.fonts.add(loadedFont);
+                startClockLogic();
+            })
+            .catch(() => startClockLogic());
 
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      document
-        .querySelectorAll(`style[data-scope="${SCOPE_ID}"]`)
-        .forEach((el) => el.remove());
-      document
-        .querySelectorAll(`#${SCOPE_ID} .digit`)
-        .forEach((n) => n.remove());
-    };
-  }, []);
+        return () => {
+            cancelAnimationFrame(animationFrameId);
+            document
+                .querySelectorAll(`style[data-scope="${SCOPE_ID}"]`)
+                .forEach((el) => el.remove());
+            document
+                .querySelectorAll(`#${SCOPE_ID} .digit`)
+                .forEach((n) => n.remove());
+        };
+    }, []);
 
-  return (
-    <div
-      id="ri-clock-2025-11-01"
-      role="timer"
-      aria-label="Animated digital clock"
-    >
-      <time id="screen-reader-time" aria-live="polite" />
-    </div>
-  );
+    return (
+        <div
+            id="ri-clock-2025-11-01"
+            role="timer"
+            aria-label="Animated digital clock"
+        >
+            <time id="screen-reader-time" aria-live="polite" />
+        </div>
+    );
 };
 
 export default Clock;

@@ -178,7 +178,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
 
   backgroundLayer: {
-    position: 'absolute',
+    position: 'absolute' as const,
     inset: 0,
     backgroundSize: '200px auto',
     backgroundRepeat: 'repeat',
