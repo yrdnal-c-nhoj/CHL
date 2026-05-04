@@ -20,7 +20,9 @@
     "optimize:images": "npx sharp-cli -i ./src/assets/images -o ./src/assets/images --webp",
     "standardize:fonts": "node scripts/standardize-font-names.mjs",
     "audit:fonts": "node scripts/list-non-standard-fonts.mjs",
-    "audit:images": "node scripts/audit-images.mjs"
+    "audit:images": "node scripts/audit-images.mjs",
+    "capture:clock": "tsx scripts/capture-clock.ts",
+    "scaffold:may": "node scripts/scaffold-may-clocks.js"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -72,8 +74,8 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "express": "^5.2.1",
     "form-data": "^4.0.4",
-    "globby": "^14.0.0",
     "globals": "^17.4.0",
+    "globby": "^14.0.0",
     "googleapis": "^159.0.0",
     "jsdom": "^28.1.0",
     "mongodb": "^7.0.0",
@@ -84,6 +86,7 @@
     "puppeteer": "^24.22.3",
     "tailwindcss": "^4.1.18",
     "terser": "^5.46.1",
+    "tsx": "^4.21.0",
     "twitter-api-v2": "^1.27.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.57.1",
