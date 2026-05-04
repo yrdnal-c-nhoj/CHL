@@ -68,10 +68,7 @@ const initializeApp = () => {
       );
     }
 
-    // Mark React as hydrated to prevent FOUC (Flash of Unstyled Content)
     document.documentElement.classList.add('react-hydrated');
-
-    // Create and render the React application
     const root = createRoot(rootElement);
 
     root.render(
@@ -81,17 +78,8 @@ const initializeApp = () => {
         </HelmetProvider>
       </StrictMode>,
     );
-
-    // Log successful initialization in development
-    if (enablePerformanceMonitoring) {
-      console.log('🚀 React application initialized successfully');
-      console.log('📊 Environment:', import.meta.env.MODE);
-      console.log('🔧 Vite HMR enabled:', import.meta.hot?.status);
-    }
   } catch (error) {
     console.error('Failed to initialize application:', error);
-
-    // Fallback UI for critical initialization errors
     document.body.innerHTML = `
       <div style="
         display: flex;
@@ -124,22 +112,12 @@ const initializeApp = () => {
   }
 };
 
-/**
- * Wait for DOM to be ready before initializing
- */
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initializeApp);
 } else {
   initializeApp();
 }
 
-/**
- * Hot Module Replacement (HMR) acceptance for development
- */
 if (import.meta.hot) {
-  import.meta.hot.accept('./App.tsx', () => {
-    console.log('🔄 HMR: App component updated');
-  });
-
   import.meta.hot.accept();
 }
