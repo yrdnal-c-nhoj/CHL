@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useMemo } from 'react';
+import React, { useState, useContext, useEffect, useMemo, FC } from 'react';
 import { Link } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import TopNav from './components/TopNav';
@@ -7,15 +7,23 @@ import styles from './Home.module.css';
 import instaImg from './assets/i.png';
 import elonImg from './assets/x.png';
 
-const Home = () => {
-  const { items, loading, error } = useContext(DataContext);
-  const [sortBy, setSortBy] = useState('date-desc');
+interface DataItem {
+  date: string;
+  title?: string;
+  clockNumber?: string | number;
+  path: string;
+}
+
+type SortOption = 'date-desc' | 'date-asc' | 'title-asc' | 'title-desc' | 'random';
+
+const Home: FC = () => {
+  const { items, loading, error } = useContext(DataContext) as { items: DataItem[], loading: boolean, error: string | null };
+  const [sortBy, setSortBy] = useState<SortOption>('date-desc');
   const [randomSortKey, setRandomSortKey] = useState(0);
-  const [fontsReady, setFontsReady] = useState(
+  const [fontsReady, setFontsReady] = useState<boolean>(
     sessionStorage.getItem('fontsLoaded') === 'true',
   );
 
-  // 🟢 Load fonts and prevent FOUT
   useEffect(() => {
     if (!fontsReady) {
       document.fonts.ready.then(() => {
@@ -27,7 +35,7 @@ const Home = () => {
 
   // Load saved sort preference
   useEffect(() => {
-    const savedSort = localStorage.getItem('sortBy');
+    const savedSort = localStorage.getItem('sortBy') as SortOption | null;
     if (savedSort) setSortBy(savedSort);
   }, []);
 
@@ -35,17 +43,17 @@ const Home = () => {
     localStorage.setItem('sortBy', sortBy);
   }, [sortBy]);
 
-  // Validate date format
-  const isValidDate = (str) => {
+  const isValidDate = (str: string | undefined): boolean => {
     const parts = str?.split('-');
     if (!parts || parts.length !== 3) return false;
     const [yy, mm, dd] = parts.map(Number);
     if (isNaN(yy) || isNaN(mm) || isNaN(dd)) return false;
+    // Assumes 20xx
     const date = new Date(2000 + yy, mm - 1, dd);
     return !isNaN(date.getTime());
   };
 
-  const formatDate = (dateStr) => {
+  const formatDate = (dateStr: string | undefined): string => {
     const parts = dateStr?.split('-');
     if (!parts || parts.length !== 3) return 'Unknown Date';
     const [yy, mm, dd] = parts.map(Number);
@@ -59,10 +67,7 @@ const Home = () => {
     return `${year}.${month}.${day}`; // YYYY-MM-DD
   };
 
-  // Fo
-
-  // Sorted items
-  const sortedItems = useMemo(() => {
+  const sortedItems = useMemo<DataItem[]>(() => {
     const itemsCopy = [...items].filter(
       (item) => item?.date && isValidDate(item.date),
     );
@@ -72,20 +77,22 @@ const Home = () => {
     if (sortBy === 'date-asc')
       return itemsCopy.sort((a, b) => a.date.localeCompare(b.date));
     if (sortBy === 'title-asc')
-      return itemsCopy.sort((a, b) => a.title.localeCompare(b.title));
+      return itemsCopy.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
     if (sortBy === 'title-desc')
-      return itemsCopy.sort((a, b) => b.title.localeCompare(a.title));
+      return itemsCopy.sort((a, b) => (b.title || '').localeCompare(a.title || ''));
+    if (sortBy === 'random')
+      return itemsCopy.sort(() => Math.random() - 0.5);
+    
     return itemsCopy.sort(() => Math.random() - 0.5);
   }, [items, sortBy, randomSortKey]);
 
   const handleRandomSort = () =>
-    setSortBy('random') || setRandomSortKey((prev) => prev + 1);
+    { setSortBy('random'); setRandomSortKey((prev) => prev + 1); };
   const handleDateSort = () =>
-    setSortBy((prev) => (prev === 'date-desc' ? 'date-asc' : 'date-desc'));
+    setSortBy((prev) => (prev === 'date-desc' ? 'date-asc' : 'date-desc') as SortOption);
   const handleTitleSort = () =>
-    setSortBy((prev) => (prev === 'title-asc' ? 'title-desc' : 'title-asc'));
+    setSortBy((prev) => (prev === 'title-asc' ? 'title-desc' : 'title-asc') as SortOption);
 
-  // 🟡 Show loader until fonts AND data are ready
   if (!fontsReady || loading) {
     return (
       <div

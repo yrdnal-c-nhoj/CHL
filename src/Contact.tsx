@@ -1,32 +1,39 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, FC } from 'react';
 import TopNav from './components/TopNav';
 import Footer from './components/Footer';
 import './WordPages.css';
-import instaImg from './assets/insta.png';
+import instaImg from './assets/i.png';
 import elonImg from './assets/x.png';
 import fbookImg from './assets/fbook.png';
 
-function Contact() {
+const Contact: FC = () => {
   // Sync body styles to ensure scrolling works as expected
   useEffect(() => {
-    const rootElements = [document.body, document.documentElement, document.getElementById('root')];
+    const rootElements = [document.body, document.documentElement, document.getElementById('root')] as (HTMLElement | null)[];
     rootElements.forEach(el => {
       if (el) {
-        el.style.overflow = 'auto';
+        el.style.overflowY = 'auto';
         el.style.height = 'auto';
       }
     });
+
+    return () => {
+      rootElements.forEach(el => {
+        if (el) {
+          el.style.overflowY = '';
+          el.style.height = '';
+        }
+      });
+    };
   }, []);
 
   return (
     <>
-      {/* Injected styles to override any global CSS conflicts 
-          preventing the page from scrolling.
-      */}
+      {/* Ensure scroll capability for text-heavy content */}
       <style>{`
         body, #root {
-          overflow: auto !important;
-          height: auto !important;
+          overflow-y: auto !important;
+          height: auto;
           min-height: 100vh !important;
         }
       `}</style>

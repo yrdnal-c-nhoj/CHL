@@ -140,7 +140,7 @@ const ManyHandClock: React.FC = () => {
   const panicStuckAtRef = useRef(0);
 
   useEffect(() => {
-    const updateSize: React.FC = () => {
+    const updateSize = () => {
       const vmin = Math.min(window.innerWidth, window.innerHeight);
       setClockSize((vmin / window.innerHeight) * 95);
     };
