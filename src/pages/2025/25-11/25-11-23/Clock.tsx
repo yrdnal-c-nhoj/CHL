@@ -4,80 +4,79 @@ import React, { useEffect, useState } from 'react';
 import font2025_11_24 from '@/assets/fonts/2025/25-11-23-gal.ttf?url'; // your custom font
 import bgImg from '@/assets/images/2025/25-11/25-11-23/gs.webp'; // your background
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+const DigitalStackClock: React.FC = () => {
+    const [now, setNow] = useState(new Date());
 
-export default function DigitalStackClock() {
-  const [now, setNow] = useState(new Date());
+    // Update time every 250 ms
+    useEffect(() => {
+        const id = setInterval(() => setNow(new Date()), 250);
+        return () => clearInterval(id);
+    }, []);
 
-  // Update time every 250 ms
-  useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 250);
-    return () => clearInterval(id);
-  }, []);
+    // Format time
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    const ss = String(now.getSeconds()).padStart(2, '0');
 
-  // Format time
-  const hh = String(now.getHours()).padStart(2, '0');
-  const mm = String(now.getMinutes()).padStart(2, '0');
-  const ss = String(now.getSeconds()).padStart(2, '0');
+    // Styles
+    const containerStyle: React.CSSProperties = {
+        minHeight: '100dvh', // fixes mobile Chrome centering
+        width: '100vw',
+        margin: 0,
+        padding: '4dvh 2vw',
+        boxSizing: 'border-box',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: `url(${bgImg}) center/cover no-repeat`,
+        fontFamily: '"CustomClock", system-ui, monospace',
+    };
 
-  // Styles
-  const containerStyle = {
-    minHeight: '100dvh', // fixes mobile Chrome centering
-    width: '100vw',
-    margin: 0,
-    padding: '4dvh 2vw',
-    boxSizing: 'border-box',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: `url(${bgImg}) center/cover no-repeat`,
-    fontFamily: '"CustomClock", system-ui, monospace',
-  };
+    const panelStyle: React.CSSProperties = {
+        display: 'flex',
+        flexDirection: 'column', // mobile = stacked
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '3vh',
+        width: 'min(92vw, 70vh)',
+        padding: '3vh 2.5vw',
+    };
 
-  const panelStyle = {
-    display: 'flex',
-    flexDirection: 'column', // mobile = stacked
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '3vh',
-    width: 'min(92vw, 70vh)',
-    padding: '3vh 2.5vw',
-  };
+    const digitRow = {
+        display: 'flex',
+        gap: '1vh',
+    };
 
-  const digitRow = {
-    display: 'flex',
-    gap: '1vh',
-  };
+    const digitStyle: React.CSSProperties = {
+        width: '14vh',
+        height: '18vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '24vh',
+        fontVariantNumeric: 'tabular-nums',
+        color: '#07487DFF',
 
-  const digitStyle = {
-    width: '14vh',
-    height: '18vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '24vh',
-    fontVariantNumeric: 'tabular-nums',
-    color: '#07487DFF',
+        borderRadius: '1vh',
+        userSelect: 'none',
+    };
 
-    borderRadius: '1vh',
-    userSelect: 'none',
-  };
+    return (
+        <>
+            {/* Preload font instantly */}
+            <link
+                rel="preload"
+                href={font2025_11_24}
+                as="font"
+                type="font/ttf"
+                crossOrigin=""
+            />
 
-  return (
-    <>
-      {/* Preload font instantly */}
-      <link
-        rel="preload"
-        href={font2025_11_24}
-        as="font"
-        type="font/ttf"
-        crossOrigin=""
-      />
-
-      <div style={containerStyle}>
-        {/* Global styles + font-face */}
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
+            <div style={containerStyle}>
+                {/* Global styles + font-face */}
+                <style
+                    dangerouslySetInnerHTML={{
+                        __html: `
               @font-face {
                 font-family: "CustomClock";
                 src: url("${font2025_11_24}") format("truetype");
@@ -102,41 +101,43 @@ export default function DigitalStackClock() {
                 }
               }
             `,
-          }}
-        />
+                    }}
+                />
 
-        {/* Clock becomes visible immediately since font preloads */}
-        <div className="font-ready clock-root">
-          <div className="clock-layout" style={panelStyle}>
-            {/* HOURS */}
-            <div style={digitRow}>
-              {[...hh].map((d, i) => (
-                <div key={`h${i}`} className="digit-box" style={digitStyle}>
-                  {d}
-                </div>
-              ))}
-            </div>
+                {/* Clock becomes visible immediately since font preloads */}
+                <div className="font-ready clock-root">
+                    <div className="clock-layout" style={panelStyle}>
+                        {/* HOURS */}
+                        <div style={digitRow}>
+                            {[...hh].map((d, i) => (
+                                <div key={`h${i}`} className="digit-box" style={digitStyle}>
+                                    {d}
+                                </div>
+                            ))}
+                        </div>
 
-            {/* MINUTES */}
-            <div style={digitRow}>
-              {[...mm].map((d, i) => (
-                <div key={`m${i}`} className="digit-box" style={digitStyle}>
-                  {d}
-                </div>
-              ))}
-            </div>
+                        {/* MINUTES */}
+                        <div style={digitRow}>
+                            {[...mm].map((d, i) => (
+                                <div key={`m${i}`} className="digit-box" style={digitStyle}>
+                                    {d}
+                                </div>
+                            ))}
+                        </div>
 
-            {/* SECONDS */}
-            <div style={digitRow}>
-              {[...ss].map((d, i) => (
-                <div key={`s${i}`} className="digit-box" style={digitStyle}>
-                  {d}
+                        {/* SECONDS */}
+                        <div style={digitRow}>
+                            {[...ss].map((d, i) => (
+                                <div key={`s${i}`} className="digit-box" style={digitStyle}>
+                                    {d}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
-              ))}
             </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
+        </>
+    );
+};
+
+export default DigitalStackClock;

@@ -130,7 +130,7 @@ export default function ClockTemplate() {
       : 'clamp(16px, 2.4vw, 26px)',
     fontWeight: '600', // slightly bolder if Forum supports it
     whiteSpace: 'nowrap',
-    textAlign: 'center',
+    textAlign: 'center' as const,
   };
 
   const bottomStyle: React.CSSProperties = {

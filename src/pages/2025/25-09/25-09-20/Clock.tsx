@@ -9,7 +9,7 @@ const COLORS = {
   number: '#00ffff',
   hourHand: '#32a6c3',
   minuteHand: '#00ff90',
-  secondHand: '#FD02C3FF' as const,
+  secondHand: '#FD02C3FF',
   background: '#000',
   clockBorder: '#0ff',
   centerDot: '#ff00ff',
@@ -18,13 +18,13 @@ const COLORS = {
 
 const SIZES = {
   clock: 'clamp(30vw, 50vh, 80vh)',
-  hourHand: { width: '0.6rem', height: '5rem' } as const,
-  minuteHand: { width: '0.4rem', height: '7rem' } as const,
-  secondHand: { width: '0.3rem', height: '8.5rem' } as const,
+  hourHand: { width: '0.6rem', height: '5rem' },
+  minuteHand: { width: '0.4rem', height: '7rem' },
+  secondHand: { width: '0.3rem', height: '8.5rem' },
   centerDot: '1.6rem',
-  hourTick: { width: '0.5rem', height: '2rem' } as const,
-  minuteTick: { width: '0.3rem', height: '1rem' } as const,
-  number: { width: '2rem', height: '2rem', fontSize: '1.9rem' } as const,
+  hourTick: { width: '0.5rem', height: '2rem' },
+  minuteTick: { width: '0.3rem', height: '1rem' },
+  number: { width: '2rem', height: '2rem', fontSize: '1.9rem' },
 };
 
 const NeonClock: React.FC = () => {

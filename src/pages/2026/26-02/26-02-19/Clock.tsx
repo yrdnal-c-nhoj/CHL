@@ -5,49 +5,49 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
 const ImageDisplay: React.FC = () => {
-  const time = useSecondClock();
-  const [showContent, setShowContent] = useState(false);
+    const time = useSecondClock();
+    const [showContent, setShowContent] = useState(false);
 
-  const fontConfigs = useMemo(
-    () => [
-      {
-        fontFamily: 'PlatFont',
-        fontUrl: platFont,
-        options: {
-          weight: 'normal',
-          style: 'normal',
-        },
-      },
-    ],
-    [],
-  );
+    const fontConfigs = useMemo(
+        () => [
+            {
+                fontFamily: 'PlatFont',
+                fontUrl: platFont,
+                options: {
+                    weight: 'normal',
+                    style: 'normal',
+                },
+            },
+        ],
+        [],
+    );
 
-  useSuspenseFontLoader(fontConfigs);
+    useSuspenseFontLoader(fontConfigs);
 
-  useEffect(() => {
-    setShowContent(true);
-  }, []);
+    useEffect(() => {
+        setShowContent(true);
+    }, []);
 
-  const mins = time.getMinutes();
-  const hrs = time.getHours();
-  const secs = time.getSeconds();
-  const minDegrees = mins * 6;
-  const hrDegrees = (hrs % 12) * 30 + mins * 0.5;
-  const secDegrees = secs * 6;
+    const mins = time.getMinutes();
+    const hrs = time.getHours();
+    const secs = time.getSeconds();
+    const minDegrees = mins * 6;
+    const hrDegrees = (hrs % 12) * 30 + mins * 0.5;
+    const secDegrees = secs * 6;
 
-  const timeString = time.toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  });
+    const timeString = time.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+    });
 
-  const [rawTime, amPm] = timeString.split(' ');
-  const digits = rawTime.replace(/:/g, '').split('');
-  const spacedAmPm = amPm.split('').join(' ');
+    const [rawTime, amPm] = timeString.split(' ');
+    const digits = rawTime.replace(/:/g, '').split('');
+    const spacedAmPm = amPm.split('').join(' ');
 
-  return (
-    <>
-      <style>{`
+    return (
+        <>
+            <style>{`
         /* BASE LAYOUT */
         .main-container {
           width: 100vw;
@@ -166,100 +166,100 @@ const ImageDisplay: React.FC = () => {
         }
       `}</style>
 
-      <div className="main-container">
+            <div className="main-container">
         /* Digital Clock */
-        <div className="digital-group">
-          <div className="digits-container">
-            {digits.map((char, index) => (
-              <div key={index} className="digit-box">
-                {char}
-              </div>
-            ))}
-          </div>
-          <div className="ampm-box">{spacedAmPm}</div>
-        </div>
+                <div className="digital-group">
+                    <div className="digits-container">
+                        {digits.map((char, index) => (
+                            <div key={index} className="digit-box">
+                                {char}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="ampm-box">{spacedAmPm}</div>
+                </div>
         /* Analog Clock */
-        <div className="analog-section">
-          <div className="clock-face" style={{ backgroundColor: '#F1E9C2' }}>
-            {/* Ticks */}
-            {[...Array(12)].map((_, i) => {
-              const isMainHour = [0, 3, 6, 9].includes(i);
-              return (
-                <div
-                  key={i}
-                  style={{
-                    position: 'absolute',
-                    width: isMainHour ? '1.2vh' : '0.8vh',
-                    height: isMainHour ? '4vh' : '2vh',
-                    backgroundColor: isMainHour ? '#B67423' : '#FFFFFF',
-                    top: '0.5vh',
-                    left:
-                      `calc(50% - ${  isMainHour ? '0.6vh' : '0.4vh'  })`,
-                    transformOrigin: '50% 17.25vh',
-                    transform: `rotate(${i * 30}deg)`,
-                    borderRadius: '1vh',
-                  }}
-                />
-              );
-            })}
+                <div className="analog-section">
+                    <div className="clock-face" style={{ backgroundColor: '#F1E9C2' }}>
+                        {/* Ticks */}
+                        {[...Array(12)].map((_, i) => {
+                            const isMainHour = [0, 3, 6, 9].includes(i);
+                            return (
+                                <div
+                                    key={i}
+                                    style={{
+                                        position: 'absolute',
+                                        width: isMainHour ? '1.2vh' : '0.8vh',
+                                        height: isMainHour ? '4vh' : '2vh',
+                                        backgroundColor: isMainHour ? '#B67423' : '#FFFFFF',
+                                        top: '0.5vh',
+                                        left:
+                                            `calc(50% - ${isMainHour ? '0.6vh' : '0.4vh'})`,
+                                        transformOrigin: '50% 17.25vh',
+                                        transform: `rotate(${i * 30}deg)`,
+                                        borderRadius: '1vh',
+                                    }}
+                                />
+                            );
+                        })}
 
-            {/* Hour Hand */}
-            <div
-              style={{
-                ...handBase,
-                height: '22%',
-                width: '1.4vh',
-                backgroundColor: '#2D312D',
-                transform: `rotate(${hrDegrees}deg)`,
-              }}
-            />
+                        {/* Hour Hand */}
+                        <div
+                            style={{
+                                ...handBase,
+                                height: '22%',
+                                width: '1.4vh',
+                                backgroundColor: '#2D312D',
+                                transform: `rotate(${hrDegrees}deg)`,
+                            }}
+                        />
 
-            {/* Minute Hand */}
-            <div
-              style={{
-                ...handBase,
-                height: '35%',
-                width: '0.8vh',
-                backgroundColor: '#202220',
-                transform: `rotate(${minDegrees}deg)`,
-              }}
-            />
+                        {/* Minute Hand */}
+                        <div
+                            style={{
+                                ...handBase,
+                                height: '35%',
+                                width: '0.8vh',
+                                backgroundColor: '#202220',
+                                transform: `rotate(${minDegrees}deg)`,
+                            }}
+                        />
 
-            {/* Second Hand */}
-            <div
-              style={{
-                ...handBase,
-                height: '42%',
-                width: '0.4vh',
-                backgroundColor: '#B67423',
-                transform: `rotate(${secDegrees}deg)`,
-                transition: 'transform 0.1s cubic-bezier(0.4, 0.0, 0.2, 1)',
-              }}
-            />
+                        {/* Second Hand */}
+                        <div
+                            style={{
+                                ...handBase,
+                                height: '42%',
+                                width: '0.4vh',
+                                backgroundColor: '#B67423',
+                                transform: `rotate(${secDegrees}deg)`,
+                                transition: 'transform 0.1s cubic-bezier(0.4, 0.0, 0.2, 1)',
+                            }}
+                        />
 
-            {/* Center Pin */}
-            <div style={centerDot} />
-          </div>
-        </div>
-      </div>
-    </>
-  );
+                        {/* Center Pin */}
+                        <div style={centerDot} />
+                    </div>
+                </div>
+            </div>
+        </>
+    );
 };
 
 const handBase: React.CSSProperties = {
-  position: 'absolute',
-  bottom: '50%',
-  transformOrigin: 'bottom center',
-  borderRadius: '1vh',
-  zIndex: 10,
+    position: 'absolute',
+    bottom: '50%',
+    transformOrigin: 'bottom center',
+    borderRadius: '1vh',
+    zIndex: 10,
 };
 
 const centerDot: React.CSSProperties = {
-  width: '2vh',
-  height: '2vh',
-  backgroundColor: '#4F594F',
-  borderRadius: '50%',
-  zIndex: 15,
+    width: '2vh',
+    height: '2vh',
+    backgroundColor: '#4F594F',
+    borderRadius: '50%',
+    zIndex: 15,
 };
 
 export default ImageDisplay;

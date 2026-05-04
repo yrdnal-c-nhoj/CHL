@@ -7,7 +7,7 @@ import bg0 from '@/assets/images/2025/25-08/25-08-26/rrr.webp'; // bottom-most
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
-export default function DigitalClock() {
+export default function DigitalClock(): React.FC {
   const [time, setTime] = useState<any>(getTimeParts);
 
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -87,7 +87,7 @@ export default function DigitalClock() {
       left = 0 as string | number,
       backgroundSize = 'cover',
       backgroundPosition = 'center',
-    }: any): React.CSSProperties => ({
+    }: LayerProps): React.CSSProperties => ({
       position: 'absolute',
       top,
       left,
@@ -107,6 +107,23 @@ export default function DigitalClock() {
       fontFace: `/* Font loading handled by useMultipleFontLoader */`,
     },
   };
+
+interface LayerProps {
+  img: string;
+  opacity?: number;
+  zIndex?: number;
+  brightness?: number;
+  saturation?: number;
+  invert?: number;
+  hueRotate?: number;
+  transform?: string;
+  width?: string;
+  height?: string;
+  top?: string | number;
+  left?: string | number;
+  backgroundSize?: string;
+  backgroundPosition?: string;
+}
 
   const layers = [
     {

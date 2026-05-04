@@ -8,65 +8,65 @@ import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface CloudClockProps {
-  // No props required for this component
+    // No props required for this component
 }
 
 const CloudClock = () => {
-  // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [
-      {
-        fontFamily: 'CloFont',
-        fontUrl: cloFont,
-        options: {
-          weight: 'normal',
-          style: 'normal',
-        },
-      },
-    ],
-    [],
-  );
+    // Font loading configuration (memoized)
+    const fontConfigs = useMemo<FontConfig[]>(
+        () => [
+            {
+                fontFamily: 'CloFont',
+                fontUrl: cloFont,
+                options: {
+                    weight: 'normal',
+                    style: 'normal',
+                },
+            },
+        ],
+        [],
+    );
 
-  // Load fonts using suspense-based loader
-  useSuspenseFontLoader(fontConfigs);
+    // Load fonts using suspense-based loader
+    useSuspenseFontLoader(fontConfigs);
 
-  // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+    // Use the standardized hook for smooth clock updates
+    const currentTime = useSecondClock();
 
-  const [hoursHTML, setHoursHTML] = useState<string>('');
-  const [minutesHTML, setMinutesHTML] = useState<string>('');
-  const [ampmHTML, setAmPmHTML] = useState<string>('');
+    const [hoursHTML, setHoursHTML] = useState<string>('');
+    const [minutesHTML, setMinutesHTML] = useState<string>('');
+    const [ampmHTML, setAmPmHTML] = useState<string>('');
 
-  const getStyledText = useCallback(
-    (str: string): string =>
-      str
-        .split('')
-        .map((char, i) => {
-          const randomSize = (Math.random() * 11 + 1.5).toFixed(2); // 1.5rem–3.5rem
-          return `<span class="digit" style="font-size: ${randomSize}rem;" data-key="${Date.now() + i}">${char}</span>`;
-        })
-        .join(''),
-    [],
-  );
+    const getStyledText: React.CSSProperties = useCallback(
+        (str: string): string =>
+            str
+                .split('')
+                .map((char, i) => {
+                    const randomSize = (Math.random() * 11 + 1.5).toFixed(2); // 1.5rem–3.5rem
+                    return `<span class="digit" style="font-size: ${randomSize}rem;" data-key="${Date.now() + i}">${char}</span>`;
+                })
+                .join(''),
+        [],
+    );
 
-  const updateTime = useCallback((): void => {
-    let h = currentTime.getHours();
-    const m = currentTime.getMinutes();
-    const ampm = h >= 12 ? 'PM' : 'AM';
-    h = h % 12 || 12;
+    const updateTime = useCallback((): void => {
+        let h = currentTime.getHours();
+        const m = currentTime.getMinutes();
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        h = h % 12 || 12;
 
-    setHoursHTML(getStyledText(String(h)));
-    setMinutesHTML(getStyledText(String(m).padStart(2, '0')));
-    setAmPmHTML(getStyledText(ampm));
-  }, [currentTime, getStyledText]);
+        setHoursHTML(getStyledText(String(h)));
+        setMinutesHTML(getStyledText(String(m).padStart(2, '0')));
+        setAmPmHTML(getStyledText(ampm));
+    }, [currentTime, getStyledText]);
 
-  useEffect(() => {
-    updateTime();
-  }, [updateTime]);
+    useEffect(() => {
+        updateTime();
+    }, [updateTime]);
 
-  return (
-    <>
-      <style>{`
+    return (
+        <>
+            <style>{`
         * {
           margin: 0;
           padding: 0;
@@ -133,61 +133,61 @@ const CloudClock = () => {
         }
       `}</style>
 
-      <div
-        style={{
-          width: '100vw',
-          height: '100dvh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
-          position: 'relative',
-          margin: 0,
-          padding: 0,
-          backgroundSize: 'cover',
-        }}
-      >
-        <div className="timeStack">
-          <div id="hours" dangerouslySetInnerHTML={{ __html: hoursHTML }} />
-          <div id="minutes" dangerouslySetInnerHTML={{ __html: minutesHTML }} />
-          <div id="ampm" dangerouslySetInnerHTML={{ __html: ampmHTML }} />
-        </div>
+            <div
+                style={{
+                    width: '100vw',
+                    height: '100dvh',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    overflow: 'hidden',
+                    position: 'relative',
+                    margin: 0,
+                    padding: 0,
+                    backgroundSize: 'cover',
+                }}
+            >
+                <div className="timeStack">
+                    <div id="hours" dangerouslySetInnerHTML={{ __html: hoursHTML }} />
+                    <div id="minutes" dangerouslySetInnerHTML={{ __html: minutesHTML }} />
+                    <div id="ampm" dangerouslySetInnerHTML={{ __html: ampmHTML }} />
+                </div>
 
-        <img
-          decoding="async"
-          loading="lazy"
-          src={clouds}
-          alt="Clouds Background"
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            zIndex: 2,
-            objectFit: 'cover',
-          }}
-        />
-        <img
-          decoding="async"
-          loading="lazy"
-          src={clouds}
-          alt="Clouds Background Mirrored"
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            zIndex: 2,
-            objectFit: 'cover',
-            transform: 'scaleX(-1)',
-            opacity: 0.5,
-          }}
-        />
-      </div>
-    </>
-  );
+                <img
+                    decoding="async"
+                    loading="lazy"
+                    src={clouds}
+                    alt="Clouds Background"
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100vw',
+                        height: '100vh',
+                        zIndex: 2,
+                        objectFit: 'cover',
+                    }}
+                />
+                <img
+                    decoding="async"
+                    loading="lazy"
+                    src={clouds}
+                    alt="Clouds Background Mirrored"
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100vw',
+                        height: '100vh',
+                        zIndex: 2,
+                        objectFit: 'cover',
+                        transform: 'scaleX(-1)',
+                        opacity: 0.5,
+                    }}
+                />
+            </div>
+        </>
+    );
 };
 
 export default CloudClock;

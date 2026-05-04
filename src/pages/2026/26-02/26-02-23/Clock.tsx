@@ -9,144 +9,144 @@ import { useSecondClock } from '@/utils/hooks';
 const loopBg = '/assets/media/26-02-23-swirl.gif';
 
 const DigitalClock: React.FC = () => {
-  const time = useSecondClock();
-  const [showContent, setShowContent] = useState(false);
+    const time = useSecondClock();
+    const [showContent, setShowContent] = useState(false);
 
-  const fontConfigs = useMemo(
-    () => [
-      {
-        fontFamily: 'NeptuneFont',
-        fontUrl: neptuneFont,
-        options: {
-          weight: 'normal',
-          style: 'normal',
-        },
-      },
-    ],
-    [],
-  );
+    const fontConfigs = useMemo(
+        () => [
+            {
+                fontFamily: 'NeptuneFont',
+                fontUrl: neptuneFont,
+                options: {
+                    weight: 'normal',
+                    style: 'normal',
+                },
+            },
+        ],
+        [],
+    );
 
-  useSuspenseFontLoader(fontConfigs);
+    useSuspenseFontLoader(fontConfigs);
 
-  useEffect(() => {
-    setShowContent(true);
-  }, []);
+    useEffect(() => {
+        setShowContent(true);
+    }, []);
 
-  const formatTime = (date: Date) => {
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const seconds = date.getSeconds().toString().padStart(2, '0');
-    return { hours, minutes, seconds };
-  };
+    const formatTime = (date: Date) => {
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const seconds = date.getSeconds().toString().padStart(2, '0');
+        return { hours, minutes, seconds };
+    };
 
-  const { hours, minutes, seconds } = formatTime(time);
+    const { hours, minutes, seconds } = formatTime(time);
 
-  const DigitBox = ({ digit }: { digit: string }) => (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        margin: '0 5px',
-      }}
-    >
-      <div
-        style={{
-          width: '5vh',
-          height: '10vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '7vh',
-          // fontWeight: 'bold',
-          // textShadow: '0 0 10px #7FFFD4, 0 0 20px #40E0D0',
-          background:
-            'linear-gradient(45deg, #7FFFD4, #40E0D0, #00CED1, #7FFFD4)',
-          backgroundSize: '200% 200%',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          animation:
-            'shimmer 3s ease-in-out infinite, aquaGlow 2s ease-in-out infinite alternate',
-          fontFamily: 'NeptuneFont, monospace',
-        }}
-      >
-        {digit}
-      </div>
-    </div>
-  );
+    const DigitBox = ({ digit }: { digit: string }) => (
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                margin: '0 5px' as const,
+            }}
+        >
+            <div
+                style={{
+                    width: '5vh',
+                    height: '10vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '7vh',
+                    // fontWeight: 'bold',
+                    // textShadow: '0 0 10px #7FFFD4, 0 0 20px #40E0D0',
+                    background:
+                        'linear-gradient(45deg, #7FFFD4, #40E0D0, #00CED1, #7FFFD4)',
+                    backgroundSize: '200% 200%',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    animation:
+                        'shimmer 3s ease-in-out infinite, aquaGlow 2s ease-in-out infinite alternate',
+                    fontFamily: 'NeptuneFont, monospace',
+                }}
+            >
+                {digit}
+            </div>
+        </div>
+    );
 
-  return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#000',
-        overflow: 'hidden',
-        position: 'relative',
-      }}
-    >
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${triBg})`,
-          backgroundRepeat: 'repeat',
-          backgroundSize: '300px auto',
+    return (
+        <div
+            style={{
+                width: '100vw',
+                height: '100dvh',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#000',
+                overflow: 'hidden',
+                position: 'relative',
+            }}
+        >
+            <div
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    backgroundImage: `url(${triBg})`,
+                    backgroundRepeat: 'repeat',
+                    backgroundSize: '300px auto',
 
-          zIndex: 0,
-          animation: 'tileScroll 20s linear infinite',
-        }}
-      />
+                    zIndex: 0,
+                    animation: 'tileScroll 20s linear infinite',
+                }}
+            />
 
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${loopBg})`,
-          backgroundSize: '200% 200%',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.4,
-          zIndex: 1,
-        }}
-      />
+            <div
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    backgroundImage: `url(${loopBg})`,
+                    backgroundSize: '200% 200%',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                    opacity: 0.4,
+                    zIndex: 1,
+                }}
+            />
 
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${nepBg})`,
-          backgroundSize: 'contain',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          zIndex: 2,
-        }}
-      />
+            <div
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    backgroundImage: `url(${nepBg})`,
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                    zIndex: 2,
+                }}
+            />
 
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          position: 'relative',
-          opacity: 0.8,
-          zIndex: 10,
-        }}
-      >
-        <DigitBox digit={hours[0]} />
-        <DigitBox digit={hours[1]} />
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    position: 'relative',
+                    opacity: 0.8,
+                    zIndex: 10,
+                }}
+            >
+                <DigitBox digit={hours[0]} />
+                <DigitBox digit={hours[1]} />
 
-        <DigitBox digit={minutes[0]} />
-        <DigitBox digit={minutes[1]} />
+                <DigitBox digit={minutes[0]} />
+                <DigitBox digit={minutes[1]} />
 
-        <DigitBox digit={seconds[0]} />
-        <DigitBox digit={seconds[1]} />
-      </div>
+                <DigitBox digit={seconds[0]} />
+                <DigitBox digit={seconds[1]} />
+            </div>
 
-      <style>{`
+            <style>{`
         @keyframes shimmer {
           0% {
             background-position: 0% 50%;
@@ -179,8 +179,8 @@ const DigitalClock: React.FC = () => {
           }
         }
       `}</style>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default DigitalClock;

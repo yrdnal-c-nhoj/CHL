@@ -18,252 +18,252 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const digitImages = [
-  digit1,
-  digit2,
-  digit3,
-  digit4,
-  digit5,
-  digit6,
-  digit7,
-  digit8,
-  digit9,
-  digit10,
-  digit11,
-  digit12,
+    digit1,
+    digit2,
+    digit3,
+    digit4,
+    digit5,
+    digit6,
+    digit7,
+    digit8,
+    digit9,
+    digit10,
+    digit11,
+    digit12,
 ];
 
 const words = [
-  'APR',
-  'MAY',
-  'JUN',
-  'JUL',
-  'AUG',
-  'SEP',
-  'OCT',
-  'NOV',
-  'DEC',
-  'JAN',
-  'FEB',
-  'MAR',
+    'APR',
+    'MAY',
+    'JUN',
+    'JUL',
+    'AUG',
+    'SEP',
+    'OCT',
+    'NOV',
+    'DEC',
+    'JAN',
+    'FEB',
+    'MAR',
 ];
 
 const AnalogClock: React.FC = () => {
-  const fontConfigs = [
-    {
-      fontFamily: 'CustomClockFont',
-      fontUrl: customFont,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+    const fontConfigs = [
+        {
+            fontFamily: 'CustomClockFont',
+            fontUrl: customFont,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
+    ];
+    const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const [now, setNow] = useState(new Date());
+    const [now, setNow] = useState(new Date());
 
-  // Smoothly update time
-  useEffect(() => {
-    const update: React.FC = () => {
-      setNow(new Date());
-      requestAnimationFrame(update);
-    };
-    requestAnimationFrame(update);
-  }, []);
+    // Smoothly update time
+    useEffect(() => {
+        const update = () => {
+            setNow(new Date());
+            requestAnimationFrame(update);
+        };
+        requestAnimationFrame(update);
+    }, []);
 
-  // Enhanced font loading with error handling
-  useEffect(() => {
-    const fontName = 'CustomClockFont';
+    // Enhanced font loading with error handling
+    useEffect(() => {
+        const fontName = 'CustomClockFont';
 
-    // Check if font is already loaded
-    if (document.fonts) {
-      document.fonts.ready.then(() => {
-        if (!document.fonts.check(`12px ${fontName}`)) {
-          console.warn(`Font ${fontName} failed to load, using fallback`);
+        // Check if font is already loaded
+        if (document.fonts) {
+            document.fonts.ready.then(() => {
+                if (!document.fonts.check(`12px ${fontName}`)) {
+                    console.warn(`Font ${fontName} failed to load, using fallback`);
+                }
+            });
         }
-      });
-    }
 
-    // Font loading handled by useMultipleFontLoader
-    const style = document.createElement('style');
-    style.setAttribute('data-font', 'custom-clock-font');
-    style.textContent = ``;
+        // Font loading handled by useMultipleFontLoader
+        const style: React.CSSProperties = document.createElement('style');
+        style.setAttribute('data-font', 'custom-clock-font');
+        style.textContent = ``;
 
-    document.head.appendChild(style);
+        document.head.appendChild(style);
 
-    // Cleanup
-    return () => {
-      const existingStyle = document.head.querySelector(
-        'style[data-font="custom-clock-font"]',
-      );
-      if (existingStyle) {
-        document.head.removeChild(existingStyle);
-      }
+        // Cleanup
+        return () => {
+            const existingStyle: React.CSSProperties = document.head.querySelector(
+                'style[data-font="custom-clock-font"]',
+            );
+            if (existingStyle) {
+                document.head.removeChild(existingStyle);
+            }
+        };
+    }, [customFont]);
+
+    // Calculate angles
+    const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+    const minutes = now.getMinutes() + seconds / 60;
+    const hours = (now.getHours() % 12) + minutes / 60;
+
+    const secondDeg = seconds * 6;
+    const minuteDeg = minutes * 6;
+    const hourDeg = hours * 30;
+
+    const pageStyle: React.CSSProperties = {
+        width: '100vw',
+        height: '100dvh',
+        position: 'relative',
+        overflow: 'hidden',
     };
-  }, [customFont]);
 
-  // Calculate angles
-  const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
-  const minutes = now.getMinutes() + seconds / 60;
-  const hours = (now.getHours() % 12) + minutes / 60;
+    const backgroundStyle: React.CSSProperties = {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        backgroundImage: `url(${backgroundImg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        filter: 'brightness(0.4)',
+        zIndex: 0,
+    };
 
-  const secondDeg = seconds * 6;
-  const minuteDeg = minutes * 6;
-  const hourDeg = hours * 30;
+    const clockContainerStyle: React.CSSProperties = {
+        position: 'relative',
+        zIndex: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+    };
 
-  const pageStyle = {
-    width: '100vw',
-    height: '100dvh',
-    position: 'relative',
-    overflow: 'hidden',
-  };
+    const clockStyle: React.CSSProperties = {
+        position: 'relative',
+        // width: '60vmin',   // bigger clock
+        // height: '60vmin'
+    };
 
-  const backgroundStyle = {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    backgroundImage: `url(${backgroundImg})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    filter: 'brightness(0.4)',
-    zIndex: 0,
-  };
+    const handCommonStyle: React.CSSProperties = {
+        position: 'absolute',
+        left: '50%',
+        bottom: '50%',
+        transformOrigin: 'bottom center',
+    };
 
-  const clockContainerStyle = {
-    position: 'relative',
-    zIndex: 1,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-  };
+    return (
+        <div style={pageStyle}>
+            <div style={backgroundStyle} />
 
-  const clockStyle = {
-    position: 'relative',
-    // width: '60vmin',   // bigger clock
-    // height: '60vmin'
-  };
+            <div style={clockContainerStyle}>
+                <div style={clockStyle}>
+                    {/* Digits */}
+                    {digitImages.map((digit, index) => {
+                        const angle = (index + 1) * 30;
+                        return (
+                            <div
+                                key={index}
+                                style={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    left: '50%',
+                                    width: '13vmin', // bigger digits
+                                    height: '13vmin',
+                                    transform: `translate(-50%, -50%) rotate(${angle}deg) translate(0, -35vmin) rotate(-${angle}deg)`,
+                                }}
+                            >
+                                <img
+                                    decoding="async"
+                                    loading="lazy"
+                                    src={digit}
+                                    alt={`${index + 1}`}
+                                    style={{ width: '100%', height: '100%' }}
+                                />
+                            </div>
+                        );
+                    })}
 
-  const handCommonStyle = {
-    position: 'absolute',
-    left: '50%',
-    bottom: '50%',
-    transformOrigin: 'bottom center',
-  };
+                    {/* Words */}
+                    {words.map((word, index) => {
+                        const angle = (index + 1) * 30;
+                        return (
+                            <div
+                                key={`word-${index}`}
+                                style={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    left: '50%',
+                                    width: '10vmin',
+                                    transform: `rotate(${angle}deg) translateX(9vmin)`, // pushed closer to digits
+                                    transformOrigin: 'left center',
+                                    color: '#C8C1C1FF',
+                                    fontSize: '1.6rem', // bigger font
+                                    fontFamily: 'CustomClockFont',
+                                    textAlign: 'right',
+                                    letterSpacing: '0.1em',
+                                    whiteSpace: 'nowrap',
+                                    pointerEvents: 'none',
+                                    fontSmooth: 'always',
+                                    WebkitFontSmoothing: 'antialiased',
+                                    MozOsxFontSmoothing: 'grayscale',
+                                }}
+                            >
+                                {word}
+                            </div>
+                        );
+                    })}
 
-  return (
-    <div style={pageStyle}>
-      <div style={backgroundStyle} />
+                    {/* Hour Hand */}
+                    <div
+                        style={{
+                            ...handCommonStyle,
+                            width: '1vmin',
+                            height: '22vmin', // longer hand
+                            backgroundColor: '#F9F6F6FF',
+                            opacity: 0.6,
+                            transform: `translateX(-50%) rotate(${hourDeg}deg)`,
+                        }}
+                    />
+                    {/* Minute Hand */}
+                    <div
+                        style={{
+                            ...handCommonStyle,
+                            width: '0.5vmin',
+                            height: '33vmin',
+                            backgroundColor: '#F7EFEFFF',
+                            opacity: 0.6,
+                            transform: `translateX(-50%) rotate(${minuteDeg}deg)`,
+                        }}
+                    />
+                    {/* Second Hand */}
+                    <div
+                        style={{
+                            ...handCommonStyle,
+                            width: '0.25vmin',
+                            height: '33vmin',
+                            backgroundColor: '#F7EFEFFF',
+                            opacity: 0.6,
+                            transform: `translateX(-50%) rotate(${secondDeg}deg)`,
+                        }}
+                    />
 
-      <div style={clockContainerStyle}>
-        <div style={clockStyle}>
-          {/* Digits */}
-          {digitImages.map((digit, index) => {
-            const angle = (index + 1) * 30;
-            return (
-              <div
-                key={index}
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  width: '13vmin', // bigger digits
-                  height: '13vmin',
-                  transform: `translate(-50%, -50%) rotate(${angle}deg) translate(0, -35vmin) rotate(-${angle}deg)`,
-                }}
-              >
-                <img
-                  decoding="async"
-                  loading="lazy"
-                  src={digit}
-                  alt={`${index + 1}`}
-                  style={{ width: '100%', height: '100%' }}
-                />
-              </div>
-            );
-          })}
-
-          {/* Words */}
-          {words.map((word, index) => {
-            const angle = (index + 1) * 30;
-            return (
-              <div
-                key={`word-${index}`}
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  width: '10vmin',
-                  transform: `rotate(${angle}deg) translateX(9vmin)`, // pushed closer to digits
-                  transformOrigin: 'left center',
-                  color: '#C8C1C1FF',
-                  fontSize: '1.6rem', // bigger font
-                  fontFamily: 'CustomClockFont',
-                  textAlign: 'right',
-                  letterSpacing: '0.1em',
-                  whiteSpace: 'nowrap',
-                  pointerEvents: 'none',
-                  fontSmooth: 'always',
-                  WebkitFontSmoothing: 'antialiased',
-                  MozOsxFontSmoothing: 'grayscale',
-                }}
-              >
-                {word}
-              </div>
-            );
-          })}
-
-          {/* Hour Hand */}
-          <div
-            style={{
-              ...handCommonStyle,
-              width: '1vmin',
-              height: '22vmin', // longer hand
-              backgroundColor: '#F9F6F6FF',
-              opacity: 0.6,
-              transform: `translateX(-50%) rotate(${hourDeg}deg)`,
-            }}
-          />
-          {/* Minute Hand */}
-          <div
-            style={{
-              ...handCommonStyle,
-              width: '0.5vmin',
-              height: '33vmin',
-              backgroundColor: '#F7EFEFFF',
-              opacity: 0.6,
-              transform: `translateX(-50%) rotate(${minuteDeg}deg)`,
-            }}
-          />
-          {/* Second Hand */}
-          <div
-            style={{
-              ...handCommonStyle,
-              width: '0.25vmin',
-              height: '33vmin',
-              backgroundColor: '#F7EFEFFF',
-              opacity: 0.6,
-              transform: `translateX(-50%) rotate(${secondDeg}deg)`,
-            }}
-          />
-
-          {/* Center Circle */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              width: '1.5vmin',
-              height: '1.5vmin',
-              backgroundColor: 'grey',
-              borderRadius: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          />
+                    {/* Center Circle */}
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            width: '1.5vmin',
+                            height: '1.5vmin',
+                            backgroundColor: 'grey',
+                            borderRadius: '50%',
+                            transform: 'translate(-50%, -50%)',
+                        }}
+                    />
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default AnalogClock;

@@ -6,29 +6,28 @@ import gizaFont from '@/assets/fonts/2026/26-01-06-26-01-05-giza.otf?url';
 import backgroundImage from '@/assets/images/2026/26-01/26-01-05/pyr.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+const PyramidzBackground: React.FC = () => {
+    const [timeString, setTimeString] = useState<any>('');
+    const [bgReady, setBgReady] = useState<boolean>(false);
 
-export default function PyramidzBackground() {
-  const [timeString, setTimeString] = useState<any>('');
-  const [bgReady, setBgReady] = useState<boolean>(false);
+    // Generate unique font-family name: Giza_20260107
+    const dateStr = '20260107'; // January 07, 2026
+    const uniqueFontFamily = `Giza_${dateStr}`;
 
-  // Generate unique font-family name: Giza_20260107
-  const dateStr = '20260107'; // January 07, 2026
-  const uniqueFontFamily = `Giza_${dateStr}`;
+    const fontConfigs: FontConfig[] = [
+        {
+            fontFamily: uniqueFontFamily,
+            fontUrl: gizaFont,
+        },
+    ];
 
-  const fontConfigs: FontConfig[] = [
-    {
-      fontFamily: uniqueFontFamily,
-      fontUrl: gizaFont,
-    },
-  ];
+    // Use standardized font loader
+    useSuspenseFontLoader(fontConfigs);
 
-  // Use standardized font loader
-  useSuspenseFontLoader(fontConfigs);
-
-  // 2. Inject marquee styles (cleaned up on unmount)
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
+    // 2. Inject marquee styles (cleaned up on unmount)
+    useEffect(() => {
+        const style: React.CSSProperties = document.createElement('style');
+        style.textContent = `
       .pz-marquee-wrapper {
         display: flex;
         width: fit-content;
@@ -58,63 +57,63 @@ export default function PyramidzBackground() {
         100% { transform: translateX(-50%); }
       }
     `;
-    document.head.appendChild(style);
+        document.head.appendChild(style);
 
-    // Cleanup
-    return () => {
-      if (style.parentNode) {
-        style.parentNode.removeChild(style);
-      }
-    };
-  }, [uniqueFontFamily]);
+        // Cleanup
+        return () => {
+            if (style.parentNode) {
+                style.parentNode.removeChild(style);
+            }
+        };
+    }, [uniqueFontFamily]);
 
-  // 2b. Preload background to avoid flash
-  useEffect(() => {
-    const img = new Image();
-    const done = () => setBgReady(true);
-    img.onload = done;
-    img.onerror = done;
-    img.src = backgroundImage;
-    const timeout = setTimeout(done, 1200);
-    return () => clearTimeout(timeout);
-  }, []);
+    // 2b. Preload background to avoid flash
+    useEffect(() => {
+        const img = new Image();
+        const done = () => setBgReady(true);
+        img.onload = done;
+        img.onerror = done;
+        img.src = backgroundImage;
+        const timeout = setTimeout(done, 1200);
+        return () => clearTimeout(timeout);
+    }, []);
 
-  // 3. Clock update
-  useEffect(() => {
-    const updateTime: React.FC = () => {
-      const now = new Date();
-      const time = now.toLocaleTimeString('en-US', {
-        hour12: true,
-        hour: 'numeric',
-        minute: '2-digit',
-      });
-      const formatted = time.replace(/^0/, '').replace(/\s+/g, '');
-      setTimeString(formatted);
-    };
+    // 3. Clock update
+    useEffect(() => {
+        const updateTime = () => {
+            const now = new Date();
+            const time = now.toLocaleTimeString('en-US', {
+                hour12: true,
+                hour: 'numeric',
+                minute: '2-digit',
+            });
+            const formatted = time.replace(/^0/, '').replace(/\s+/g, '');
+            setTimeString(formatted);
+        };
 
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
+        updateTime();
+        const interval = setInterval(updateTime, 1000);
+        return () => clearInterval(interval);
+    }, []);
 
-  // Block render until bg is confirmed loaded
-  if (!bgReady) return null;
+    // Block render until bg is confirmed loaded
+    if (!bgReady) return null;
 
-  return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        width: '100vw',
-        height: '100dvh',
-        margin: 0,
-        padding: 0,
-        overflow: 'hidden',
-        // Fade in once ready
-        animation: 'pzFadeIn 125ms ease-out forwards',
-      }}
-    >
-      <style>{`
+    return (
+        <div
+            style={{
+                position: 'fixed',
+                inset: 0,
+                width: '100vw',
+                height: '100dvh',
+                margin: 0,
+                padding: 0,
+                overflow: 'hidden',
+                // Fade in once ready
+                animation: 'pzFadeIn 125ms ease-out forwards',
+            }}
+        >
+            <style>{`
         @keyframes pzFadeIn {
           from { opacity: 0; }
           to   { opacity: 1; }
@@ -131,27 +130,29 @@ export default function PyramidzBackground() {
           filter: brightness(0.7) contrast(1.5);
         }
       `}</style>
-      <div
-        className="pz-background"
-        style={{ position: 'absolute', inset: 0 }}
-       />
+            <div
+                className="pz-background"
+                style={{ position: 'absolute', inset: 0 }}
+            />
 
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden',
-          pointerEvents: 'none',
-        }}
-      >
-        <div className="pz-marquee-wrapper">
-          <div className="pz-marquee-group">{timeString.repeat(20)}</div>
-          <div className="pz-marquee-group">{timeString.repeat(20)}</div>
+            <div
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                    pointerEvents: 'none',
+                }}
+            >
+                <div className="pz-marquee-wrapper">
+                    <div className="pz-marquee-group">{timeString.repeat(20)}</div>
+                    <div className="pz-marquee-group">{timeString.repeat(20)}</div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
-}
+    );
+};
+
+export default PyramidzBackground;

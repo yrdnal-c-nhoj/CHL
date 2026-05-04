@@ -125,7 +125,7 @@ const styles: Record<string, React.CSSProperties> = {
     transform: 'translate(-50%, -50%)',
     zIndex: 10,
     width: '100%',
-    display: 'flex',
+    display: 'flex' as const,
     flexDirection: 'column',
     justifyContent: 'center',
   },

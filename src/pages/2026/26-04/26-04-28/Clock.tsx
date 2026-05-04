@@ -4,43 +4,43 @@ import backgroundImg from '@/assets/images/2026/26-04/26-04-28/2021-07-06-0012.j
 import { useClockTime, calculateAngles } from '@/utils/clockUtils';
 
 const Clock: React.FC = () => {
-  // Use useClockTime with 'ms' precision for smooth analog hand movement
-  const time = useClockTime('ms');
+    // Use useClockTime with 'ms' precision for smooth analog hand movement
+    const time = useClockTime('ms');
 
-  const hourHandRef = useRef<HTMLDivElement>(null);
-  const minuteHandRef = useRef<HTMLDivElement>(null);
-  const secondHandRef = useRef<HTMLDivElement>(null);
+    const hourHandRef = useRef<HTMLDivElement>(null);
+    const minuteHandRef = useRef<HTMLDivElement>(null);
+    const secondHandRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const { hour, minute, second } = calculateAngles(time);
+    useEffect(() => {
+        const { hour, minute, second } = calculateAngles(time);
 
-    if (hourHandRef.current) {
-      hourHandRef.current.style.transform = `translateX(-50%) rotate(${hour}deg)`;
-    }
-    if (minuteHandRef.current) {
-      minuteHandRef.current.style.transform = `translateX(-50%) rotate(${minute}deg)`;
-    }
-    if (secondHandRef.current) {
-      secondHandRef.current.style.transform = `translateX(-50%) rotate(${second}deg)`;
-    }
-  }, [time]); // Dependency array includes 'time' to re-run on every time update
+        if (hourHandRef.current) {
+            hourHandRef.current.style.transform = `translateX(-50%) rotate(${hour}deg)`;
+        }
+        if (minuteHandRef.current) {
+            minuteHandRef.current.style.transform = `translateX(-50%) rotate(${minute}deg)`;
+        }
+        if (secondHandRef.current) {
+            secondHandRef.current.style.transform = `translateX(-50%) rotate(${second}deg)`;
+        }
+    }, [time]); // Dependency array includes 'time' to re-run on every time update
 
-  const containerStyle: React.CSSProperties = {
-    width: '100vw',
-    height: '100dvh',
-    backgroundImage: `url(${backgroundImg})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-  };
+    const containerStyle: React.CSSProperties = {
+        width: '100vw',
+        height: '100dvh',
+        backgroundImage: `url(${backgroundImg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+    };
 
-  return (
-    <main style={containerStyle}>
-      <style>{`
+    return (
+        <main style={containerStyle}>
+            <style>{`
         .analog-clock-container {
           position: relative;
           width: 500px;
@@ -93,14 +93,14 @@ const Clock: React.FC = () => {
         }
       `}</style>
 
-      <div className="analog-clock-container">
-        <div ref={hourHandRef} className="hand hour-hand" />
-        <div ref={minuteHandRef} className="hand minute-hand" />
-        <div ref={secondHandRef} className="hand second-hand" />
-        <div className="center-dot" />
-      </div>
-    </main>
-  );
+            <div className="analog-clock-container">
+                <div ref={hourHandRef} className="hand hour-hand" />
+                <div ref={minuteHandRef} className="hand minute-hand" />
+                <div ref={secondHandRef} className="hand second-hand" />
+                <div className="center-dot" />
+            </div>
+        </main>
+    );
 };
 
 export default Clock;

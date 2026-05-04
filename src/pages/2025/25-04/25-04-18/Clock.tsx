@@ -3,60 +3,60 @@ import React, { useEffect, useRef } from 'react';
 import backgroundImg from '@/assets/images/2025/25-04/25-04-18/Antarctica.jpg';
 
 const AntarcticaClock: React.FC = () => {
-  const clockRef = useRef(null);
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
+    const clockRef = useRef(null);
+    const hourRef = useRef(null);
+    const minuteRef = useRef(null);
+    const secondRef = useRef(null);
 
-  useEffect(() => {
-    const clock = clockRef.current;
+    useEffect(() => {
+        const clock = clockRef.current;
 
-    // Clear any existing ticks (in case of remount)
-    while (clock.firstChild) {
-      clock.removeChild(clock.firstChild);
-    }
+        // Clear any existing ticks (in case of remount)
+        while (clock.firstChild) {
+            clock.removeChild(clock.firstChild);
+        }
 
-    // Create tick marks
-    for (let i = 0; i < 60; i++) {
-      const tick = document.createElement('div');
-      tick.className = 'tick';
-      if (i % 5 === 0) tick.classList.add('major');
-      tick.style.transform = `rotate(${i * 6}deg)`;
-      clock.appendChild(tick);
-    }
+        // Create tick marks
+        for (let i = 0; i < 60; i++) {
+            const tick = document.createElement('div');
+            tick.className = 'tick';
+            if (i % 5 === 0) tick.classList.add('major');
+            tick.style.transform = `rotate(${i * 6}deg)`;
+            clock.appendChild(tick);
+        }
 
-    // Append hands
-    clock.appendChild(hourRef.current);
-    clock.appendChild(minuteRef.current);
-    clock.appendChild(secondRef.current);
+        // Append hands
+        clock.appendChild(hourRef.current);
+        clock.appendChild(minuteRef.current);
+        clock.appendChild(secondRef.current);
 
-    const updateClock: React.FC = () => {
-      const now = new Date();
-      const hours = now.getHours() % 12;
-      const minutes = now.getMinutes();
-      const seconds = now.getSeconds();
-      const ms = now.getMilliseconds();
+        const updateClock = () => {
+            const now = new Date();
+            const hours = now.getHours() % 12;
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            const ms = now.getMilliseconds();
 
-      const hourAngle = hours * 30 + minutes / 2;
-      const minuteAngle = minutes * 6 + seconds / 10;
-      const baseSecondAngle = seconds * 6;
-      const progress = ms / 1000;
-      const secondAngle = baseSecondAngle + progress * 6;
+            const hourAngle = hours * 30 + minutes / 2;
+            const minuteAngle = minutes * 6 + seconds / 10;
+            const baseSecondAngle = seconds * 6;
+            const progress = ms / 1000;
+            const secondAngle = baseSecondAngle + progress * 6;
 
-      hourRef.current.style.transform = `translateX(-50%) rotate(${hourAngle}deg)`;
-      minuteRef.current.style.transform = `translateX(-50%) rotate(${minuteAngle}deg)`;
-      secondRef.current.style.transform = `translateX(-50%) rotate(${secondAngle}deg)`;
+            hourRef.current.style.transform = `translateX(-50%) rotate(${hourAngle}deg)`;
+            minuteRef.current.style.transform = `translateX(-50%) rotate(${minuteAngle}deg)`;
+            secondRef.current.style.transform = `translateX(-50%) rotate(${secondAngle}deg)`;
 
-      requestAnimationFrame(updateClock);
-    };
+            requestAnimationFrame(updateClock);
+        };
 
-    updateClock();
-  }, []);
+        updateClock();
+    }, []);
 
-  return (
-    <>
-      <style>
-        {`
+    return (
+        <>
+            <style>
+                {`
           .tick {
             position: absolute;
             width: 0.1vw;
@@ -130,46 +130,46 @@ const AntarcticaClock: React.FC = () => {
             transform-origin: center center;
           }
         `}
-      </style>
+            </style>
 
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100dvh',
-          width: '100vw',
-          margin: 0,
-          overflow: 'hidden',
-          position: 'relative',
-        }}
-      >
-        <img
-          decoding="async"
-          loading="lazy"
-          src={backgroundImg}
-          alt="Antarctica"
-          className="bgimage"
-        />
-        <div
-          ref={clockRef}
-          className="clock"
-          style={{
-            position: 'relative',
-            width: '50vh',
-            height: '30vh',
-            borderRadius: '50%',
-            zIndex: 1, // added this so clock is above background image
-          }}
-        >
-          <div className="center" />
-          <div ref={hourRef} className="hand hour-hand" />
-          <div ref={minuteRef} className="hand minute-hand" />
-          <div ref={secondRef} className="hand second-hand" />
-        </div>
-      </div>
-    </>
-  );
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100dvh',
+                    width: '100vw',
+                    margin: 0,
+                    overflow: 'hidden',
+                    position: 'relative',
+                }}
+            >
+                <img
+                    decoding="async"
+                    loading="lazy"
+                    src={backgroundImg}
+                    alt="Antarctica"
+                    className="bgimage"
+                />
+                <div
+                    ref={clockRef}
+                    className="clock"
+                    style={{
+                        position: 'relative',
+                        width: '50vh',
+                        height: '30vh',
+                        borderRadius: '50%',
+                        zIndex: 1, // added this so clock is above background image
+                    }}
+                >
+                    <div className="center" />
+                    <div ref={hourRef} className="hand hour-hand" />
+                    <div ref={minuteRef} className="hand minute-hand" />
+                    <div ref={secondRef} className="hand second-hand" />
+                </div>
+            </div>
+        </>
+    );
 };
 
 export default AntarcticaClock;

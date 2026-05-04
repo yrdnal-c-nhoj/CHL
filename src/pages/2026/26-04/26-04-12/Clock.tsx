@@ -1,9 +1,9 @@
 import React, {
-  useMemo,
-  useRef,
-  useState,
-  useEffect,
-  useCallback,
+    useMemo,
+    useRef,
+    useState,
+    useEffect,
+    useCallback,
 } from 'react';
 
 
@@ -34,269 +34,269 @@ import styles from './Clock.module.css';
 const allMatchImages = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13];
 
 const imageSettings = [
-  {
-    size: '21%',
-    opacity: 1.0,
-    brightness: 10.5,
-    saturation: 1.2,
-    vignetteBlackStop: '40%',
-    vignetteTransparentStop: '85%',
-  },
-  {
-    size: '21%',
-    opacity: 0.8,
-    brightness: 1.0,
-    saturation: 1.5,
-    vignetteBlackStop: '40%',
-    vignetteTransparentStop: '85%',
-  },
-  {
-    size: '21%',
-    opacity: 0.9,
-    brightness: 1.2,
-    saturation: 2.2,
-    vignetteBlackStop: '100%',
-    vignetteTransparentStop: '100%',
-  },
-  {
-    size: '21%',
-    opacity: 0.8,
-    brightness: 1.2,
-    saturation: 1.7,
-    vignetteBlackStop: '40%',
-    vignetteTransparentStop: '65%',
-  },
-  {
-    size: '21%',
-    opacity: 0.8,
-    brightness: 1.0,
-    saturation: 2.0,
-    vignetteBlackStop: '100%',
-    vignetteTransparentStop: '100%',
-  },
-  {
-    size: '22%',
-    opacity: 0.9,
-    brightness: 1.4,
-    saturation: 1.5,
-    vignetteBlackStop: '40%',
-    vignetteTransparentStop: '75%',
-  },
-  {
-    size: '31%',
-    opacity: 0.9,
-    brightness: 0.9,
-    saturation: 1.1,
-    vignetteBlackStop: '40%',
-    vignetteTransparentStop: '85%',
-  },
-  {
-    size: '29%',
-    opacity: 0.8,
-    brightness: 1.3,
-    saturation: 1.9,
-    vignetteBlackStop: '100%',
-    vignetteTransparentStop: '100%',
-  },
-  {
-    size: '31%',
-    opacity: 0.9,
-    brightness: 1.3,
-    saturation: 3.0,
-    vignetteBlackStop: '20%',
-    vignetteTransparentStop: '55%',
-  },
-  {
-    size: '31%',
-    opacity: 0.9,
-    brightness: 1.3,
-    saturation: 1.6,
-    vignetteBlackStop: '100%',
-    vignetteTransparentStop: '100%',
-  },
-  {
-    size: '38%',
-    opacity: 0.9,
-    brightness: 0.9,
-    saturation: 1.8,
-    vignetteBlackStop: '40%',
-    vignetteTransparentStop: '65%',
-  },
-  {
-    size: '32%',
-    opacity: 0.8,
-    brightness: 1.3,
-    saturation: 1.7,
-    vignetteBlackStop: '40%',
-    vignetteTransparentStop: '85%',
-  },
-  {
-    size: '31%',
-    opacity: 0.8,
-    brightness: 1.4,
-    saturation: 1.8,
-    vignetteBlackStop: '40%',
-    vignetteTransparentStop: '55%',
-  },
+    {
+        size: '21%',
+        opacity: 1.0,
+        brightness: 10.5,
+        saturation: 1.2,
+        vignetteBlackStop: '40%',
+        vignetteTransparentStop: '85%',
+    },
+    {
+        size: '21%',
+        opacity: 0.8,
+        brightness: 1.0,
+        saturation: 1.5,
+        vignetteBlackStop: '40%',
+        vignetteTransparentStop: '85%',
+    },
+    {
+        size: '21%',
+        opacity: 0.9,
+        brightness: 1.2,
+        saturation: 2.2,
+        vignetteBlackStop: '100%',
+        vignetteTransparentStop: '100%',
+    },
+    {
+        size: '21%',
+        opacity: 0.8,
+        brightness: 1.2,
+        saturation: 1.7,
+        vignetteBlackStop: '40%',
+        vignetteTransparentStop: '65%',
+    },
+    {
+        size: '21%',
+        opacity: 0.8,
+        brightness: 1.0,
+        saturation: 2.0,
+        vignetteBlackStop: '100%',
+        vignetteTransparentStop: '100%',
+    },
+    {
+        size: '22%',
+        opacity: 0.9,
+        brightness: 1.4,
+        saturation: 1.5,
+        vignetteBlackStop: '40%',
+        vignetteTransparentStop: '75%',
+    },
+    {
+        size: '31%',
+        opacity: 0.9,
+        brightness: 0.9,
+        saturation: 1.1,
+        vignetteBlackStop: '40%',
+        vignetteTransparentStop: '85%',
+    },
+    {
+        size: '29%',
+        opacity: 0.8,
+        brightness: 1.3,
+        saturation: 1.9,
+        vignetteBlackStop: '100%',
+        vignetteTransparentStop: '100%',
+    },
+    {
+        size: '31%',
+        opacity: 0.9,
+        brightness: 1.3,
+        saturation: 3.0,
+        vignetteBlackStop: '20%',
+        vignetteTransparentStop: '55%',
+    },
+    {
+        size: '31%',
+        opacity: 0.9,
+        brightness: 1.3,
+        saturation: 1.6,
+        vignetteBlackStop: '100%',
+        vignetteTransparentStop: '100%',
+    },
+    {
+        size: '38%',
+        opacity: 0.9,
+        brightness: 0.9,
+        saturation: 1.8,
+        vignetteBlackStop: '40%',
+        vignetteTransparentStop: '65%',
+    },
+    {
+        size: '32%',
+        opacity: 0.8,
+        brightness: 1.3,
+        saturation: 1.7,
+        vignetteBlackStop: '40%',
+        vignetteTransparentStop: '85%',
+    },
+    {
+        size: '31%',
+        opacity: 0.8,
+        brightness: 1.4,
+        saturation: 1.8,
+        vignetteBlackStop: '40%',
+        vignetteTransparentStop: '55%',
+    },
 ];
 
 const Clock: React.FC = () => {
-  const time = useClockTime();
+    const time = useClockTime();
 
-  // Initialize state for face indices and spare index
-  const [faceIndices, setFaceIndices] = useState<number[]>([]);
-  const [spareIndex, setSpareIndex] = useState<number>(-1); // Use -1 as an initial invalid state
+    // Initialize state for face indices and spare index
+    const [faceIndices, setFaceIndices] = useState<number[]>([]);
+    const [spareIndex, setSpareIndex] = useState<number>(-1); // Use -1 as an initial invalid state
 
-  const randomizeImages = useCallback(() => {
-    const indices = Array.from({ length: allMatchImages.length }, (_, i) => i);
-    // Fisher-Yates shuffle
-    for (let i = indices.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [indices[i], indices[j]] = [indices[j], indices[i]];
-    }
-    setFaceIndices(indices.slice(0, 12));
-    setSpareIndex(indices[12]);
-  }, []);
+    const randomizeImages = useCallback(() => {
+        const indices = Array.from({ length: allMatchImages.length }, (_, i) => i);
+        // Fisher-Yates shuffle
+        for (let i = indices.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        setFaceIndices(indices.slice(0, 12));
+        setSpareIndex(indices[12]);
+    }, []);
 
-  // Effect to perform randomization on component mount
-  useEffect(() => {
-    randomizeImages();
-  }, [randomizeImages]);
-
-  const lastProcessedSec = useRef<number>(-1);
-  const seconds = time.getSeconds();
-  const milliseconds = time.getMilliseconds();
-
-  useEffect(() => {
-    // Only trigger once per second change and if faceIndices has been initialized
-    if (seconds !== lastProcessedSec.current && faceIndices.length > 0) {
-      lastProcessedSec.current = seconds;
-
-      // Every 12 seconds, when a new full cycle begins, reshuffle the entire list
-      if (seconds % 12 === 0) {
+    // Effect to perform randomization on component mount
+    useEffect(() => {
         randomizeImages();
-        return;
-      }
+    }, [randomizeImages]);
 
-      // Identify which clock position counter-clockwise from 12 o'clock (0-11)
-      const activePos = (12 - (seconds % 12)) % 12;
+    const lastProcessedSec = useRef<number>(-1);
+    const seconds = time.getSeconds();
+    const milliseconds = time.getMilliseconds();
 
-      setFaceIndices((prev) => {
-        const newFace = [...prev];
-        // Ensure prev has enough elements before accessing
-        if (newFace.length === 0 || activePos >= newFace.length) return prev;
+    useEffect(() => {
+        // Only trigger once per second change and if faceIndices has been initialized
+        if (seconds !== lastProcessedSec.current && faceIndices.length > 0) {
+            lastProcessedSec.current = seconds;
 
-        const outgoingImage = newFace[activePos];
+            // Every 12 seconds, when a new full cycle begins, reshuffle the entire list
+            if (seconds % 12 === 0) {
+                randomizeImages();
+                return;
+            }
 
-        // SWAP: Put the spare image on the face, and take the face image to the spare slot
-        newFace[activePos] = spareIndex;
-        setSpareIndex(outgoingImage);
+            // Identify which clock position counter-clockwise from 12 o'clock (0-11)
+            const activePos = (12 - (seconds % 12)) % 12;
 
-        return newFace;
-      });
-    }
-  }, [seconds, spareIndex, faceIndices, randomizeImages]);
+            setFaceIndices((prev) => {
+                const newFace = [...prev];
+                // Ensure prev has enough elements before accessing
+                if (newFace.length === 0 || activePos >= newFace.length) return prev;
 
-  const rotations = useMemo(() => {
-    const s = seconds + milliseconds / 1000;
-    const m = time.getMinutes() + s / 60;
-    const h = (time.getHours() % 12) + m / 60;
-    return { sec: s * 6, min: m * 6, hr: h * 30 };
-  }, [seconds, milliseconds, time]);
+                const outgoingImage = newFace[activePos];
 
-  return (
-    <div
-      className={styles.container}
-      style={{ backgroundImage: `url(${bgImage})` }}
-    >
-      <div className={styles.clock}>
-        {/* Render the 12 Positions */}
-        {faceIndices.map((imgIdx, i) => {
-          // Only render if imgIdx is valid (i.e., after initial shuffle in useEffect)
-          if (imgIdx === -1) return null;
+                // SWAP: Put the spare image on the face, and take the face image to the spare slot
+                newFace[activePos] = spareIndex;
+                setSpareIndex(outgoingImage);
 
-          const hour = i + 1;
-          const angle = hour * 30 - 90;
-          const rad = (angle * Math.PI) / 180;
-          const x = 50 + 40 * Math.cos(rad);
-          const y = 50 + 40 * Math.sin(rad);
-          const config = imageSettings[imgIdx];
+                return newFace;
+            });
+        }
+    }, [seconds, spareIndex, faceIndices, randomizeImages]);
 
-          return (
-            <img
-              key={`pos-${i}`}
-              src={allMatchImages[imgIdx]}
-              className={styles.faceImage}
-              style={{
-                width: config.size,
-                height: config.size,
-                left: `${x}%`,
-                top: `${y}%`,
-                opacity: config.opacity,
-                filter: `brightness(${config.brightness}) saturate(${config.saturation})`,
-                ['--vignette-black' as string]: config.vignetteBlackStop,
-                ['--vignette-transparent' as string]:
-                  config.vignetteTransparentStop,
-              }}
-              alt=""
-            />
-          );
-        })}
+    const rotations = useMemo(() => {
+        const s: Record<string, React.CSSProperties> = seconds + milliseconds / 1000;
+        const m = time.getMinutes() + s / 60;
+        const h = (time.getHours() % 12) + m / 60;
+        return { sec: s * 6, min: m * 6, hr: h * 30 };
+    }, [seconds, milliseconds, time]);
 
-        {/* Hands */}
-        <Hand
-          src={hourHandImg}
-          deg={rotations.hr}
-          width="26%"
-          height="30%"
-          z={2}
-        />
-        <Hand
-          src={minuteHandImg}
-          deg={rotations.min}
-          width="84%"
-          height="60%"
-          z={3}
-        />
-        <Hand
-          src={secondHandImg}
-          deg={rotations.sec}
-          width="72%"
-          height="50%"
-          z={4}
-          isSec
-          ms={milliseconds}
-        />
+    return (
+        <div
+            className={styles.container}
+            style={{ backgroundImage: `url(${bgImage})` }}
+        >
+            <div className={styles.clock}>
+                {/* Render the 12 Positions */}
+                {faceIndices.map((imgIdx, i) => {
+                    // Only render if imgIdx is valid (i.e., after initial shuffle in useEffect)
+                    if (imgIdx === -1) return null;
 
-        {/* Center overlay */}
-        <img src={centerImg} className={styles.centerOverlay} alt="" />
-      </div>
-    </div>
-  );
+                    const hour = i + 1;
+                    const angle = hour * 30 - 90;
+                    const rad = (angle * Math.PI) / 180;
+                    const x = 50 + 40 * Math.cos(rad);
+                    const y = 50 + 40 * Math.sin(rad);
+                    const config = imageSettings[imgIdx];
+
+                    return (
+                        <img
+                            key={`pos-${i}`}
+                            src={allMatchImages[imgIdx]}
+                            className={styles.faceImage}
+                            style={{
+                                width: config.size,
+                                height: config.size,
+                                left: `${x}%`,
+                                top: `${y}%`,
+                                opacity: config.opacity,
+                                filter: `brightness(${config.brightness}) saturate(${config.saturation})`,
+                                ['--vignette-black' as string]: config.vignetteBlackStop,
+                                ['--vignette-transparent' as string]:
+                                    config.vignetteTransparentStop,
+                            }}
+                            alt=""
+                        />
+                    );
+                })}
+
+                {/* Hands */}
+                <Hand
+                    src={hourHandImg}
+                    deg={rotations.hr}
+                    width="26%"
+                    height="30%"
+                    z={2}
+                />
+                <Hand
+                    src={minuteHandImg}
+                    deg={rotations.min}
+                    width="84%"
+                    height="60%"
+                    z={3}
+                />
+                <Hand
+                    src={secondHandImg}
+                    deg={rotations.sec}
+                    width="72%"
+                    height="50%"
+                    z={4}
+                    isSec
+                    ms={milliseconds}
+                />
+
+                {/* Center overlay */}
+                <img src={centerImg} className={styles.centerOverlay} alt="" />
+            </div>
+        </div>
+    );
 };
 
 interface HandProps {
-  src: string;
-  deg: number;
-  width: string;
-  height: string;
-  z: number;
-  isSec?: boolean;
-  ms?: number;
+    src: string;
+    deg: number;
+    width: string;
+    height: string;
+    z: number;
+    isSec?: boolean;
+    ms?: number;
 }
 const Hand = ({ src, deg, width, height, z, isSec, ms }: HandProps) => (
-  <img
-    src={src}
-    className={styles.hand}
-    style={{
-      width,
-      height,
-      zIndex: z,
-      transform: `translateX(-50%) rotate(${deg}deg)`,
-      transition: isSec && ms! >= 100 ? 'transform 0.1s linear' : 'none',
-    }}
-    alt=""
-  />
+    <img
+        src={src}
+        className={styles.hand}
+        style={{
+            width,
+            height,
+            zIndex: z,
+            transform: `translateX(-50%) rotate(${deg}deg)`,
+            transition: isSec && ms! >= 100 ? 'transform 0.1s linear' : 'none',
+        }}
+        alt=""
+    />
 );
 
 export default Clock;

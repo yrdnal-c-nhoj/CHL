@@ -91,7 +91,7 @@ const styles: Record<string, React.CSSProperties> = {
   digitalDisplay: {
     fontSize: 'clamp(3rem, 12vw, 6rem)',
     color: CLOCK_CONFIG.COLORS.silverText,
-    textAlign: 'center',
+    textAlign: 'center' as const,
     letterSpacing: '0.05em',
     lineHeight: 1,
   },

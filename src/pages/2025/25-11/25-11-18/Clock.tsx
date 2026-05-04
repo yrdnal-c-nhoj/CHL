@@ -114,8 +114,8 @@ export default function RotatedClockGrid() {
           gridTemplateColumns: `repeat(auto-fill, ${digitSize}vh)`,
           gridAutoRows: `${digitSize}vh`,
           gap: `${gap}vh`,
-          alignItems: 'center',
-          justifyItems: 'center' as const,
+          alignItems: 'center', // This is a React.CSSProperties object
+          justifyItems: 'center',
         }}
       >
         {Array.from({ length: rowsNeeded }).map((_, rowIndex) => {

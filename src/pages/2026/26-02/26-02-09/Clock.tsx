@@ -44,7 +44,7 @@ export default function CenteredLightClock() {
       width: '100vw',
       height: '100dvh',
       display: 'block',
-      backgroundColor: '#4F5B6D',
+      backgroundColor: '#4F5B6D' as const,
       overflow: 'hidden',
       margin: 0,
     }),

@@ -33,6 +33,7 @@ export function useDebounce<T>(value: T, delay: number): T {
  * @returns Throttled function
  */
 export function useThrottle<T extends (...args: unknown[]) => unknown>(
+export function useThrottle<T extends (...args: Parameters<T>) => ReturnType<T>>(
   func: T,
   delay: number,
 ): T {

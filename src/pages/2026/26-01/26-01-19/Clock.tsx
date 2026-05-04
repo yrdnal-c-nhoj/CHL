@@ -5,10 +5,10 @@ import bgImage from '@/assets/images/2026/26-01/26-01-19/hands.webp';
 import styles from './Clock.module.css';
 
 const COLORS = {
-  bg: '#FFFFFF',
-  secondHand: '#F1E206', // Bright Yellow
-  mainHands: '#1E293B',
-  border: '#330202', // Darker border for contrast
+    bg: '#FFFFFF',
+    secondHand: '#F1E206', // Bright Yellow
+    mainHands: '#1E293B',
+    border: '#330202', // Darker border for contrast
 };
 
 // --- Physics deviation functions ---
@@ -19,10 +19,10 @@ const getHeavyTwitch = (f: number) => (f > 0.4 && f < 0.6 ? 6 : 0);
 const getDelayedRush = (f: number) => (f < 0.6 ? -10 : (f - 0.6) * 25);
 
 interface ComplexYellowHandProps {
-  rotation: number;
-  zIndex: number;
-  transition?: string;
-  size: number;
+    rotation: number;
+    zIndex: number;
+    transition?: string;
+    size: number;
 }
 
 const ComplexYellowHand: React.FC<ComplexYellowHandProps> = ({ rotation, zIndex, transition = 'none', size }) => {
@@ -148,6 +148,15 @@ const ManyHandClock: React.FC = () => {
   const panicStateRef = useRef('normal');
   const panicStuckAtRef = useRef(0);
 
+    useEffect(() => {
+        const updateSize = () => {
+            const vmin = Math.min(window.innerWidth, window.innerHeight);
+            setClockSize((vmin / window.innerHeight) * 95);
+        };
+        updateSize();
+        window.addEventListener('resize', updateSize);
+        return () => window.removeEventListener('resize', updateSize);
+    }, []);
   useEffect(() => {
     const updateSize = () => {
       const vmin = Math.min(window.innerWidth, window.innerHeight);
@@ -169,21 +178,39 @@ const ManyHandClock: React.FC = () => {
     return () => clearTimeout(timeout);
   }, []);
 
+    useEffect(() => {
+        let frameId: number;
   useEffect(() => {
     let frameId: number;
 
+        const tick = () => {
+            frameId = requestAnimationFrame(tick);
     const tick = () => {
       frameId = requestAnimationFrame(tick);
 
+            const t = new Date();
+            const currentTime = t.getTime();
+            const s = t.getSeconds();
+            const sFraction = s + t.getMilliseconds() / 1000;
+            const baseRotation = (sFraction / 60) * 360;
       const t = new Date();
       const currentTime = t.getTime();
       const s = t.getSeconds();
       const sFraction = s + t.getMilliseconds() / 1000;
       const baseRotation = (sFraction / 60) * 360;
 
+            setNow(t);
+            setFraction(sFraction);
       setNow(t);
       setFraction(sFraction);
 
+            // 1. Forgetful Logic
+            if (currentTime > nextChangeRef.current) {
+                isFrozenRef.current = !isFrozenRef.current;
+                if (isFrozenRef.current) frozenAtRef.current = baseRotation;
+                nextChangeRef.current = currentTime + (Math.random() * 3000 + 1000);
+            }
+            setForgetfulPos(isFrozenRef.current ? frozenAtRef.current : baseRotation);
       // 1. Forgetful Logic
       if (currentTime > nextChangeRef.current) {
         isFrozenRef.current = !isFrozenRef.current;

@@ -4,62 +4,62 @@ import shaFont from '@/assets/fonts/2025/25-06-10-sha.ttf';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const ShapesClock: React.FC = () => {
-  const [time, setTime] = useState<any>({
-    hours: '00',
-    minutes: '00',
-    seconds: '00',
-  });
+    const [time, setTime] = useState<any>({
+        hours: '00',
+        minutes: '00',
+        seconds: '00',
+    });
 
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'sha',
-      fontUrl: shaFont,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+    // Standardized font loading with font-display: swap to avoid FOUC
+    const fontConfigs = [
+        {
+            fontFamily: 'sha',
+            fontUrl: shaFont,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
+    ];
+    const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  useEffect(() => {
-    const updateClock: React.FC = () => {
-      const now = new Date();
-      setTime({
-        hours: String(now.getHours()).padStart(2, '0'),
-        minutes: String(now.getMinutes()).padStart(2, '0'),
-        seconds: String(now.getSeconds()).padStart(2, '0'),
-      });
+    useEffect(() => {
+        const updateClock = () => {
+            const now = new Date();
+            setTime({
+                hours: String(now.getHours()).padStart(2, '0'),
+                minutes: String(now.getMinutes()).padStart(2, '0'),
+                seconds: String(now.getSeconds()).padStart(2, '0'),
+            });
+        };
+
+        const interval = setInterval(updateClock, 1000);
+        updateClock();
+        return () => clearInterval(interval);
+    }, []);
+
+    const bodyStyle: React.CSSProperties = {
+        margin: 0,
+        height: '100dvh',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#FFFFFF',
+        flexDirection: 'column',
+        fontFamily: 'sha',
     };
 
-    const interval = setInterval(updateClock, 1000);
-    updateClock();
-    return () => clearInterval(interval);
-  }, []);
-
-  const bodyStyle = {
-    margin: 0,
-    height: '100dvh',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    flexDirection: 'column',
-    fontFamily: 'sha',
-  };
-
-  const clockStyle = {
-    display: 'flex',
-    flexDirection: window.innerWidth >= 768 ? 'row' : 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    maxWidth: '90vw',
-    letterSpacing: '0.15em',
-    color: '#000000',
-    textShadow: `
+    const clockStyle: React.CSSProperties = {
+        display: 'flex',
+        flexDirection: window.innerWidth >= 768 ? 'row' : 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        maxWidth: '90vw',
+        letterSpacing: '0.15em',
+        color: '#000000',
+        textShadow: `
       1px -1px 0 #767676, -1px 2px 1px #737272, -2px 4px 1px #767474, -3px 6px 1px #787777,
       -4px 8px 1px #7b7a7a, -5px 10px 1px #7f7d7d, -6px 12px 1px #828181, -7px 14px 1px #868585,
       -8px 16px 1px #8b8a89, -9px 18px 1px #8f8e8d, -10px 20px 1px #949392, -11px 22px 1px #999897,
@@ -69,28 +69,28 @@ const ShapesClock: React.FC = () => {
       -24px 48px 1px #d8d6d5, -25px 50px 1px #dbdad9, -26px 52px 1px #dfdddc, -27px 54px 1px #e2e0df,
       -28px 56px 1px #e4e3e2
     `,
-  };
+    };
 
-  const spanStyle = {
-    fontSize: window.innerWidth >= 768 ? '15vw' : '23vh',
-    transition: 'all 0.7s ease',
-  };
+    const spanStyle: React.CSSProperties = {
+        fontSize: window.innerWidth >= 768 ? '15vw' : '23vh',
+        transition: 'all 0.7s ease',
+    };
 
-  return (
-    <div style={bodyStyle}>
-      <div style={clockStyle}>
-        <div>
-          <span style={spanStyle}>{time.hours}</span>
+    return (
+        <div style={bodyStyle}>
+            <div style={clockStyle}>
+                <div>
+                    <span style={spanStyle}>{time.hours}</span>
+                </div>
+                <div>
+                    <span style={spanStyle}>{time.minutes}</span>
+                </div>
+                <div>
+                    <span style={spanStyle}>{time.seconds}</span>
+                </div>
+            </div>
         </div>
-        <div>
-          <span style={spanStyle}>{time.minutes}</span>
-        </div>
-        <div>
-          <span style={spanStyle}>{time.seconds}</span>
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default ShapesClock;

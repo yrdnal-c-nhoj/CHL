@@ -38,8 +38,8 @@ const ImageDisplay: React.FC = () => {
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     mixBlendMode: 'screen',
-    willChange: 'filter, transform',
-    backfaceVisibility: 'hidden',
+    willChange: 'filter, transform' as const,
+    backfaceVisibility: 'hidden' as const,
   };
 
   return (
