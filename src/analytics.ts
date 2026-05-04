@@ -16,7 +16,7 @@ const APP_ENV =
 const isProdEnv = (): boolean => (APP_ENV || '').toLowerCase() === 'production';
 const dntEnabled = (): boolean => {
   const dnt =
-    navigator?.doNotTrack ||
+    (navigator as any)?.doNotTrack ||
     (window as any)?.doNotTrack ||
     (navigator as any)?.msDoNotTrack;
   return dnt === '1' || dnt === 'yes';

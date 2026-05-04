@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import morseFont from '@/assets/fonts/2025/25-06-27-morse.ttf';
-import birdsGif from '@/assets/images/2025/25-06/25-06-27/birds.gif';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
+
+const birdsGif = '/assets/media/25-06-27-birds.gif';
 
 const colors = [
   '#c0c6c7',
