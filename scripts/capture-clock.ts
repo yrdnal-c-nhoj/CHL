@@ -1,20 +1,23 @@
 import { chromium, Browser } from 'playwright';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Automation script to capture high-quality screenshots of BorrowedTime clocks.
  * 
  * How to use:
  * 1. Ensure the dev server is running: npm run dev
- * 2. Run this script: npx tsx scripts/capture-clock.ts 26-04-12
+ * 2. Run this script: npm run capture:clock -- 25-04-12
  */
 
 async function captureDate(browser: Browser, dateArg: string) {
   const date = dateArg.replace(/[–—]/g, '-');
   const context = await browser.newContext({
     viewport: { width: 1920, height: 1080 },
-    deviceScaleFactor: process.env.CI ? 1 : 2, // Use standard DPI in CI to save memory/time
+    deviceScaleFactor: 1, // Match old script's standard DPI for consistent 16:9 aspect ratio
   });
   
   const page = await context.newPage();
@@ -31,17 +34,21 @@ async function captureDate(browser: Browser, dateArg: string) {
   const url = `http://localhost:5173/${date}`;
   
   console.log(`🚀 Navigating to ${url}...`);
-  await page.goto(url, { waitUntil: 'domcontentloaded' });
+  // Use networkidle to ensure all heavy assets (videos, fonts) are ready
+  await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 });
 
-  // Smart Wait: Instead of 4s, wait for the loading overlay to be removed/hidden
-  // Replace '[data-testid="loading-overlay"]' with your actual overlay selector
+  // Wait for the 'useClockPage' loading overlay to fade out
   await page.waitForFunction(() => {
     const overlay = document.querySelector('[class*="overlay"]'); 
     return !overlay || window.getComputedStyle(overlay).opacity === '0';
   }, { timeout: 10000 }).catch(() => console.warn(`Timeout waiting for overlay on ${date}`));
 
-  const outputDir = path.join(process.cwd(), 'screenshots');
-  if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
+  // Additional buffer to allow React state and animations to settle (matches old script 3s behavior)
+  await page.waitForTimeout(2000);
+
+  const projectRoot = path.resolve(__dirname, '..');
+  const outputDir = path.join(projectRoot, 'public', 'screenshots');
+  if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
 
   const filePath = path.join(outputDir, `${date}.png`);
   await page.screenshot({ path: filePath });
@@ -52,8 +59,16 @@ async function captureDate(browser: Browser, dateArg: string) {
 
 async function main() {
   const args = process.argv.slice(2);
-  const dates = args.length > 0 ? args : ['26-04-12'];
   
+  let dates: string[] = args;
+  if (dates.length === 0) {
+    console.log('📖 No dates provided. Reading from clockpages.json...');
+    const projectRoot = path.resolve(__dirname, '..');
+    const registryPath = path.join(projectRoot, 'src/context/clockpages.json');
+    const clocks = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+    dates = clocks.map((c: any) => c.date);
+  }
+
   const browser = await chromium.launch({ headless: true });
   
   // Capture in parallel (limited to 4 at a time to prevent OOM in CI)

@@ -33,6 +33,7 @@ const Manifesto = React.lazy(() => import('./Manifesto'));
 const About = React.lazy(() => import('./About'));
 const Today = React.lazy(() => import('./Today'));
 const Contact = React.lazy(() => import('./Contact'));
+const Gallery = React.lazy(() => import('./Gallery'));
 
 import { pageview } from './analytics';
 
@@ -189,6 +190,7 @@ const App: React.FC = () => {
               <Route path="/manifesto" element={<Manifesto />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/today" element={<Today />} />
+              <Route path="/gallery" element={<Gallery />} />
               <Route path="/index.html" element={<Navigate to="/" replace />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

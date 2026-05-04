@@ -49,8 +49,9 @@ export default defineConfig({
           if (!id.includes('node_modules')) return;
           
           if (id.includes('three')) return 'three';
-          if (id.includes('react')) return 'vendor';
+          if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) return 'framework';
           if (id.includes('gsap')) return 'animation';
+          if (id.includes('framer-motion')) return 'animation';
           return 'vendor';
         },
       },

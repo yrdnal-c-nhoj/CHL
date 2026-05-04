@@ -10,12 +10,10 @@ async function captureClocks() {
   // Paths relative to this script
   const projectRoot = path.resolve(__dirname, '..');
   const registryPath = path.join(projectRoot, 'src/context/clockpages.json');
-  const outputDir = path.join(projectRoot, 'screenshots');
+  const outputDir = path.join(projectRoot, 'public', 'screenshots');
 
   // 1. Ensure output directory exists
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
-  }
+  if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
 
   // 2. Read and parse registry
   if (!fs.existsSync(registryPath)) {
@@ -41,8 +39,7 @@ async function captureClocks() {
 
   for (const clock of last12) {
     const url = `http://localhost:5173/${clock.path}`;
-    const safeTitle = clock.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-    const outputPath = path.join(outputDir, `${clock.date}_${safeTitle}.png`);
+    const outputPath = path.join(outputDir, `${clock.date}.png`);
 
     console.log(`📸 Capturing: [${clock.date}] ${clock.title}...`);
 
