@@ -25,7 +25,7 @@ const Clock: React.FC = () => {
   // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const second = now.getSeconds();
       const minute = now.getMinutes();
@@ -35,11 +35,11 @@ const Clock: React.FC = () => {
       const minuteDeg = minute * 6 + second * 0.1;
       const hourDeg = hour * 30 + minute * 0.5;
 
-      document.getElementById('second-hand').style.transform =
+      document.getElementById('second-hand')!.style.transform =
         `translate(-50%, -100%) rotate(${secondDeg}deg)`;
-      document.getElementById('minute-hand').style.transform =
+      document.getElementById('minute-hand')!.style.transform =
         `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
-      document.getElementById('hour-hand').style.transform =
+      document.getElementById('hour-hand')!.style.transform =
         `translate(-50%, -100%) rotate(${hourDeg}deg)`;
     };
 
@@ -69,7 +69,7 @@ const Clock: React.FC = () => {
     };
   }, [botFontUrl]);
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     margin: 0,
     padding: 0,
     height: '100dvh',
@@ -80,13 +80,13 @@ const Clock: React.FC = () => {
     alignItems: 'center',
   };
 
-  const clockContainerStyle = {
+  const clockContainerStyle: React.CSSProperties = {
     position: 'relative',
     width: '80vmin',
     height: '80vmin',
   };
 
-  const clockStyle = {
+  const clockStyle: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -96,7 +96,7 @@ const Clock: React.FC = () => {
     zIndex: 1,
   };
 
-  const numberStyle = {
+  const numberStyle: React.CSSProperties = {
     position: 'absolute',
     color: 'rgb(1, 80, 94)',
     fontSize: '7vh',
@@ -107,13 +107,13 @@ const Clock: React.FC = () => {
     // border: fontReady ? '2px solid green' : '2px solid red',
   };
 
-  const handBaseStyle = {
+  const handBaseStyle: React.CSSProperties = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transformOrigin: 'bottom center',
     transform: 'translate(-50%, -100%) rotate(0deg)',
-    pointerEvents: 'none',
+    pointerEvents: 'none' as const,
   };
 
   return (
