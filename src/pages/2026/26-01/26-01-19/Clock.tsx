@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 import custom260119Font from '@/assets/fonts/2026/26-01-19-migrate.ttf';
-import tileImage from '@/assets/images/2026/26-01/26-01-19/flap.webp';
 import backgroundImage from '@/assets/images/2026/26-01/26-01-19/fllap.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
 
 const fontFamilyName = 'Custom260119Font';
 
@@ -43,16 +43,68 @@ const ClockNumbers = React.memo<ClockNumbersProps>(({ fontFamily }) => (
     </>
 ));
 
+interface ComplexYellowHandProps {
+    rotation: number;
+    zIndex: number;
+    transition?: string;
+    size: number;
+}
+
+const ComplexYellowHand: React.FC<ComplexYellowHandProps> = ({ rotation, zIndex, transition = 'none', size }) => {
+    const radius = size / 2;
+    const handWidth = size * 0.008;
+
+    return (
+        <div
+            style={{
+                position: 'absolute',
+                bottom: '50%',
+                left: '50%',
+                width: handWidth,
+                height: 0,
+                transformOrigin: 'bottom center',
+                transform: `translateX(-50%) rotate(${rotation}deg)`,
+                zIndex,
+                transition,
+            }}
+        >
+            {/* Arrow head (Black Border Layer) */}
+            <div
+                style={{
+                    position: 'absolute',
+                    top: `-${radius * 0.15}vh`,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: 0,
+                    height: 0,
+                    borderLeft: `${handWidth / 2}vh solid transparent`,
+                    borderRight: `${handWidth / 2}vh solid transparent`,
+                    borderBottom: `${radius * 0.15}vh solid #000`,
+                }}
+            />
+            {/* Arrow head (Yellow Fill) */}
+            <div
+                style={{
+                    position: 'absolute',
+                    top: `-${radius * 0.14}vh`,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: 0,
+                    height: 0,
+                    borderLeft: `${handWidth / 2.5}vh solid transparent`,
+                    borderRight: `${handWidth / 2.5}vh solid transparent`,
+                    borderBottom: `${radius * 0.14}vh solid #F1E206`,
+                }}
+            />
+        </div>
+    );
+};
+
 const ManyHandClock: React.FC = () => {
-    const [time, setTime] = useState(new Date());
+    const time = useMillisecondClock();
     const [bgReady, setBgReady] = useState(false);
 
     useSuspenseFontLoader(fontConfigs);
-
-    useEffect(() => {
-        const interval = setInterval(() => setTime(new Date()), 1000);
-        return () => clearInterval(interval);
-    }, []);
 
     useEffect(() => {
         const img = new Image();
@@ -70,74 +122,16 @@ const ManyHandClock: React.FC = () => {
 
     const clockSize = 80;
 
-    const panicStateRef = useRef<'calm' | 'rushing'>('calm');
+    // Random behaviors driven by current second rotation
     const forgetfulPos = useMemo(() => baseSecondRot - Math.random() * 30, [baseSecondRot]);
     const sleepyPos1 = useMemo(() => baseSecondRot - Math.random() * 20, [baseSecondRot]);
     const sleepyPos2 = useMemo(() => baseSecondRot - Math.random() * 25, [baseSecondRot]);
     const panickedPos = useMemo(() => baseSecondRot + Math.random() * 40, [baseSecondRot]);
 
-    const deviations = useMemo(() => [ // Memoize deviations as they depend on `s`
+    const deviations = useMemo(() => [
         Math.sin(seconds % 1) * 12,
         (seconds % 1 < 0.6 ? -10 : (seconds % 1 - 0.6) * 25),
     ], [seconds]);
-
-    interface ComplexYellowHandProps {
-        rotation: number;
-        zIndex: number;
-        transition?: string;
-        size: number;
-    }
-
-    const ComplexYellowHand: React.FC<ComplexYellowHandProps> = ({ rotation, zIndex, transition = 'none', size }) => {
-        const radius = size / 2;
-        const handWidth = size * 0.008;
-        const outlineWidth = `${size * 0.0015}vh`;
-
-        return (
-            <div
-                style={{
-                    position: 'absolute',
-                    bottom: '50%',
-                    left: '50%',
-                    width: handWidth,
-                    height: 0,
-                    transformOrigin: 'bottom center',
-                    transform: `translateX(-50%) rotate(${rotation}deg)`,
-                    zIndex,
-                    transition,
-                }}
-            >
-                {/* Arrow head (Black Border Layer) */}
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: `-${radius * 0.15}vh`,
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: 0,
-                        height: 0,
-                        borderLeft: `${handWidth / 2}vh solid transparent`,
-                        borderRight: `${handWidth / 2}vh solid transparent`,
-                        borderBottom: `${radius * 0.15}vh solid #000`,
-                    }}
-                />
-                {/* Arrow head (Yellow Fill) */}
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: `-${radius * 0.14}vh`,
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: 0,
-                        height: 0,
-                        borderLeft: `${handWidth / 2.5}vh solid transparent`,
-                        borderRight: `${handWidth / 2.5}vh solid transparent`,
-                        borderBottom: `${radius * 0.14}vh solid #F1E206`,
-                    }}
-                />
-            </div>
-        );
-    };
 
     return (
         <div
@@ -151,12 +145,14 @@ const ManyHandClock: React.FC = () => {
                 overflow: 'hidden',
             }}
         >
+            <time dateTime={time.toISOString()} style={{ display: 'none' }} />
             <div
                 style={{
                     width: `${clockSize}vh`,
                     height: `${clockSize}vh`,
                     position: 'relative',
                 }}
+                aria-hidden="true"
             >
                 {/* Main Hands (Hour/Minute) */}
                 <div
@@ -246,11 +242,6 @@ const ManyHandClock: React.FC = () => {
                     rotation={panickedPos}
                     size={clockSize}
                     zIndex={150}
-                    transition={
-                        panicStateRef.current === 'rushing'
-                            ? 'transform 0.4s cubic-bezier(0.17, 0.67, 0.6, 1.3)'
-                            : 'none'
-                    }
                 />
 
                 {/* Center Dot */}
