@@ -5,48 +5,48 @@ import bgOverlay from '@/assets/images/2025/25-07/25-07-19/cun1.webp';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const CuneiformClock: React.FC = () => {
-  const [time, setTime] = useState<string>('');
+    const [time, setTime] = useState<string>('');
 
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'cunei-cun',
-      fontUrl: cunFont,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+    // Standardized font loading with font-display: swap to avoid FOUC
+    const fontConfigs = [
+        {
+            fontFamily: 'cunei-cun',
+            fontUrl: cunFont,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
+    ];
+    const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      const hours = now.getHours() % 12 || 12;
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      setTime(`${hours}:${minutes}`);
-    };
+    useEffect(() => {
+        const updateClock = () => {
+            const now = new Date();
+            const hours = now.getHours() % 12 || 12;
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            setTime(`${hours}:${minutes}`);
+        };
 
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+        updateClock();
+        const interval = setInterval(updateClock, 1000);
+        return () => clearInterval(interval);
+    }, []);
 
-  return (
-    <div
-      className="cunei-wrapper"
-      style={{
-        height: '100dvh',
-        width: '100vw',
-        backgroundColor: '#062bb4',
-        margin: 0,
-        overflow: 'hidden',
-        fontFamily: 'cunei-cun, sans-serif',
-        position: 'relative',
-      }}
-    >
-      <style>{`
+    return (
+        <div
+            className="cunei-wrapper"
+            style={{
+                height: '100dvh',
+                width: '100vw',
+                backgroundColor: '#062bb4',
+                margin: 0,
+                overflow: 'hidden',
+                fontFamily: 'cunei-cun, sans-serif',
+                position: 'relative',
+            }}
+        >
+            <style>{`
         /* Font loading handled by useMultipleFontLoader */
 
         .cunei-wrapper {
@@ -114,20 +114,20 @@ const CuneiformClock: React.FC = () => {
         }
       `}</style>
 
-      {/* Spinning overlay fills entire screen */}
-      <img
-        decoding="async"
-        loading="lazy"
-        src={bgOverlay}
-        className="cunei-bg-overlay"
-        alt="Spinning Overlay"
-      />
+            {/* Spinning overlay fills entire screen */}
+            <img
+                decoding="async"
+                loading="lazy"
+                src={bgOverlay}
+                className="cunei-bg-overlay"
+                alt="Spinning Overlay"
+            />
 
-      <div className="cunei-container">
-        <div className="cunei-clock">{time}</div>
-      </div>
-    </div>
-  );
+            <div className="cunei-container">
+                <div className="cunei-clock">{time}</div>
+            </div>
+        </div>
+    );
 };
 
 export default CuneiformClock;

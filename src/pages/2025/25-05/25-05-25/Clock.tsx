@@ -9,88 +9,88 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 // Use the ttf font instead of corrupted woff2
 
 const Clock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'bot',
-      fontUrl: botFontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+    // Standardized font loading with font-display: swap to avoid FOUC
+    const fontConfigs = [
+        {
+            fontFamily: 'bot',
+            fontUrl: botFontUrl,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
+    ];
+    const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const hourHandRef = useRef<HTMLDivElement>(null);
-  const minuteHandRef = useRef<HTMLDivElement>(null);
-  const secondHandRef = useRef<HTMLDivElement>(null);
-  const [time, setTime] = useState(new Date());
+    const hourHandRef = useRef<HTMLDivElement>(null);
+    const minuteHandRef = useRef<HTMLDivElement>(null);
+    const secondHandRef = useRef<HTMLDivElement>(null);
+    const [time, setTime] = useState(new Date());
 
-  useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      setTime(now);
-      const second = now.getSeconds();
-      const minute = now.getMinutes();
-      const hour = now.getHours() % 12;
+    useEffect(() => {
+        const updateClock = () => {
+            const now = new Date();
+            setTime(now);
+            const second = now.getSeconds();
+            const minute = now.getMinutes();
+            const hour = now.getHours() % 12;
 
-      const secondDeg = second * 6;
-      const minuteDeg = minute * 6 + second * 0.1;
-      const hourDeg = hour * 30 + minute * 0.5;
+            const secondDeg = second * 6;
+            const minuteDeg = minute * 6 + second * 0.1;
+            const hourDeg = hour * 30 + minute * 0.5;
 
-      if (secondHandRef.current) 
-        secondHandRef.current.style.transform = `translate(-50%, -100%) rotate(${secondDeg}deg)`;
-      if (minuteHandRef.current) 
-        minuteHandRef.current.style.transform = `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
-      if (hourHandRef.current) 
-        hourHandRef.current.style.transform = `translate(-50%, -100%) rotate(${hourDeg}deg)`;
+            if (secondHandRef.current)
+                secondHandRef.current.style.transform = `translate(-50%, -100%) rotate(${secondDeg}deg)`;
+            if (minuteHandRef.current)
+                minuteHandRef.current.style.transform = `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
+            if (hourHandRef.current)
+                hourHandRef.current.style.transform = `translate(-50%, -100%) rotate(${hourDeg}deg)`;
+        };
+
+        updateClock();
+        const interval = setInterval(updateClock, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const containerStyle: React.CSSProperties = {
+        margin: 0,
+        padding: 0,
+        height: '100dvh',
+        width: '100vw',
+        background: 'radial-gradient(circle at center, #E2EE76, #ff6a06)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
     };
 
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    const clockContainerStyle: React.CSSProperties = {
+        position: 'relative',
+        width: '80vmin',
+        height: '80vmin',
+    };
 
-  const containerStyle: React.CSSProperties = {
-    margin: 0,
-    padding: 0,
-    height: '100dvh',
-    width: '100vw',
-    background: 'radial-gradient(circle at center, #E2EE76, #ff6a06)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  };
+    const clockStyle: React.CSSProperties = {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        borderRadius: '50%',
+        zIndex: 1,
+    };
 
-  const clockContainerStyle: React.CSSProperties = {
-    position: 'relative',
-    width: '80vmin',
-    height: '80vmin',
-  };
+    const numberStyle: React.CSSProperties = {
+        position: 'absolute',
+        color: 'rgb(1, 80, 94)',
+        fontSize: '7vh',
+        transform: 'translate(-50%, -50%)',
+        textShadow: '#f4d6f4 6px 6px',
+        fontFamily: "'bot', sans-serif",
+        // Debug styles
+        // border: fontReady ? '2px solid green' : '2px solid red',
+    };
 
-  const clockStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    borderRadius: '50%',
-    zIndex: 1,
-  };
-
-  const numberStyle: React.CSSProperties = {
-    position: 'absolute',
-    color: 'rgb(1, 80, 94)',
-    fontSize: '7vh',
-    transform: 'translate(-50%, -50%)',
-    textShadow: '#f4d6f4 6px 6px',
-    fontFamily: "'bot', sans-serif",
-    // Debug styles
-    // border: fontReady ? '2px solid green' : '2px solid red',
-  };
-
-  const fontFaceStyle: string = `
+    const fontFaceStyle: string = `
     @font-face {
       font-family: 'bot';
       src: url('${botFontUrl}') format('truetype');
@@ -98,91 +98,91 @@ const Clock: React.FC = () => {
     }
   `;
 
-  const handBaseStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transformOrigin: 'bottom center',
-    transform: 'translate(-50%, -100%) rotate(0deg)',
-    pointerEvents: 'none' as const,
-  };
+    const handBaseStyle: React.CSSProperties = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transformOrigin: 'bottom center',
+        transform: 'translate(-50%, -100%) rotate(0deg)',
+        pointerEvents: 'none' as const,
+    };
 
-  return (
-    <div
-      style={{
-        ...containerStyle,
-        opacity: fontsLoaded ? 1 : 0.5,
-        transition: 'opacity 0.3s ease',
-      }}
-    >
-      <style>{fontFaceStyle}</style>
-      <div style={clockContainerStyle}>
-        <div style={clockStyle} id="clock">
-          {/* Numbers */}
-          {Array.from({ length: 12 }, (_, i) => {
-            const num = i + 1;
-            const angle = num * 30 * (Math.PI / 180);
-            const x = 50 + 42 * Math.sin(angle);
-            const y = 50 - 42 * Math.cos(angle);
-            return (
-              <div
-                key={num}
-                style={{
-                  ...numberStyle,
-                  left: `${x}%`,
-                  top: `${y}%`,
-                }}
-              >
-                {num}
-              </div>
-            );
-          })}
+    return (
+        <div
+            style={{
+                ...containerStyle,
+                opacity: fontsLoaded ? 1 : 0.5,
+                transition: 'opacity 0.3s ease',
+            }}
+        >
+            <style>{fontFaceStyle}</style>
+            <div style={clockContainerStyle}>
+                <div style={clockStyle} id="clock">
+                    {/* Numbers */}
+                    {Array.from({ length: 12 }, (_, i) => {
+                        const num = i + 1;
+                        const angle = num * 30 * (Math.PI / 180);
+                        const x = 50 + 42 * Math.sin(angle);
+                        const y = 50 - 42 * Math.cos(angle);
+                        return (
+                            <div
+                                key={num}
+                                style={{
+                                    ...numberStyle,
+                                    left: `${x}%`,
+                                    top: `${y}%`,
+                                }}
+                            >
+                                {num}
+                            </div>
+                        );
+                    })}
 
-          {/* Hands */}
-          <div className="hand second" ref={secondHandRef} style={handBaseStyle}>
-            <img
-              decoding="async"
-              loading="lazy"
-              src={arm2}
-              alt="Second Hand"
-              style={{
-                height: '45vmin',
-                filter:
-                  'saturate(100%)  hue-rotate(73deg) contrast(280%) brightness(150%)',
-              }}
-            />
-          </div>
+                    {/* Hands */}
+                    <div className="hand second" ref={secondHandRef} style={handBaseStyle}>
+                        <img
+                            decoding="async"
+                            loading="lazy"
+                            src={arm2}
+                            alt="Second Hand"
+                            style={{
+                                height: '45vmin',
+                                filter:
+                                    'saturate(100%)  hue-rotate(73deg) contrast(280%) brightness(150%)',
+                            }}
+                        />
+                    </div>
 
-          <div className="hand minute" ref={minuteHandRef} style={handBaseStyle}>
-            <img
-              decoding="async"
-              loading="lazy"
-              src={arm3}
-              alt="Minute Hand"
-              style={{
-                height: '35vmin',
-                filter: 'saturate(600%) contrast(180%) hue-rotate(170deg)',
-              }}
-            />
-          </div>
+                    <div className="hand minute" ref={minuteHandRef} style={handBaseStyle}>
+                        <img
+                            decoding="async"
+                            loading="lazy"
+                            src={arm3}
+                            alt="Minute Hand"
+                            style={{
+                                height: '35vmin',
+                                filter: 'saturate(600%) contrast(180%) hue-rotate(170deg)',
+                            }}
+                        />
+                    </div>
 
-          <div className="hand hour" ref={hourHandRef} style={handBaseStyle}>
-            <img
-              decoding="async"
-              loading="lazy"
-              src={arm}
-              alt="Hour Hand"
-              style={{
-                height: '27vmin',
-                transform: 'scaleX(-1)',
-                filter: 'saturate(70%)  hue-rotate(73deg) contrast(180%)',
-              }}
-            />
-          </div>
+                    <div className="hand hour" ref={hourHandRef} style={handBaseStyle}>
+                        <img
+                            decoding="async"
+                            loading="lazy"
+                            src={arm}
+                            alt="Hour Hand"
+                            style={{
+                                height: '27vmin',
+                                transform: 'scaleX(-1)',
+                                filter: 'saturate(70%)  hue-rotate(73deg) contrast(180%)',
+                            }}
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Clock;

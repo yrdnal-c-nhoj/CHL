@@ -5,12 +5,28 @@ import bgImage from '@/assets/images/2025/25-09/25-09-13/anim.jpg';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const DigitalClock: React.FC = () => {
+    const [time, setTime] = useState(new Date());
+    const [prevTime, setPrevTime] = useState(new Date());
+    const [isHorizontal, setIsHorizontal] = useState<boolean>(
+        window.innerWidth >= 768,
+    );
   const [time, setTime] = useState(new Date());
   const [prevTime, setPrevTime] = useState(new Date());
   const [isHorizontal, setIsHorizontal] = useState<boolean>(
     window.innerWidth >= 768,
   );
 
+    const fontConfigs = useMemo(
+        () => [
+            {
+                fontFamily: 'CustomClockFont',
+                fontUrl: customFontpawww,
+                options: { weight: 'normal', style: 'normal' },
+            },
+        ],
+        [],
+    );
+    useSuspenseFontLoader(fontConfigs);
   const fontConfigs = useMemo(
     () => [
       {
@@ -23,6 +39,13 @@ const DigitalClock: React.FC = () => {
   );
   useSuspenseFontLoader(fontConfigs);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setPrevTime(time);
+            setTime(new Date());
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [time]);
   useEffect(() => {
     const interval = setInterval(() => {
       setPrevTime(time);
@@ -31,24 +54,52 @@ const DigitalClock: React.FC = () => {
     return () => clearInterval(interval);
   }, [time]);
 
+    useEffect(() => {
+        const handleResize = () => setIsHorizontal(window.innerWidth >= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
   useEffect(() => {
     const handleResize = () => setIsHorizontal(window.innerWidth >= 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const formatTime = (date) => {
+    const formatTime = (date) => {
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const seconds = date.getSeconds();
+        const pad = (num) => String(num).padStart(2, '0');
+        return { hours: pad(hours), minutes: pad(minutes), seconds: pad(seconds) };
+    };
+  const formatTime = (date: Date) => {
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
-    const pad = (num) => String(num).padStart(2, '0');
+    const pad = (num: number) => String(num).padStart(2, '0');
     return { hours: pad(hours), minutes: pad(minutes), seconds: pad(seconds) };
   };
 
+    const current = formatTime(time);
+    const previous = formatTime(prevTime);
+    const replaceNine = (str) => str.replace(/9/g, 'q');
   const current = formatTime(time);
   const previous = formatTime(prevTime);
-  const replaceNine = (str) => str.replace(/9/g, 'q');
+  const replaceNine = (str: string) => str.replace(/9/g, 'q');
 
+    const containerStyle: React.CSSProperties = {
+        width: '100vw',
+        height: '100dvh',
+        display: 'flex',
+        flexDirection: isHorizontal ? 'row' : 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        fontFamily: 'CustomClockFont, sans-serif',
+        visibility: 'visible',
+    };
   const containerStyle: React.CSSProperties = {
     width: '100vw',
     height: '100dvh',
@@ -63,6 +114,26 @@ const DigitalClock: React.FC = () => {
     visibility: 'visible',
   };
 
+    const rowStyle: React.CSSProperties = { display: 'flex' };
+    const digitBoxStyle: React.CSSProperties = {
+        padding: '1rem 1.2rem',
+        fontSize: '6rem',
+        minWidth: '4rem',
+        minHeight: '4rem',
+        textAlign: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+    };
+    const digitStyle: React.CSSProperties = {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background: `
   const rowStyle: React.CSSProperties = { display: 'flex' };
   const digitBoxStyle: React.CSSProperties = {
     padding: '1rem 1.2rem',
@@ -93,6 +164,12 @@ const DigitalClock: React.FC = () => {
         white 100%
       )
     `,
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        backgroundClip: 'text',
+        textFillColor: 'transparent',
+        opacity: 0.8,
+    };
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text',
@@ -100,6 +177,18 @@ const DigitalClock: React.FC = () => {
     opacity: 0.8,
   };
 
+    const renderRow = (
+        currentStr: string,
+        previousStr: string,
+        boxStyle: React.CSSProperties,
+    ) =>
+        replaceNine(currentStr)
+            .split('')
+            .map((digit, idx) => (
+                <div key={idx} style={{ ...boxStyle, position: 'relative' }}>
+                    <div style={digitStyle}>{digit}</div>
+                </div>
+            ));
   const renderRow = (
     currentStr: string,
     previousStr: string,
@@ -113,6 +202,12 @@ const DigitalClock: React.FC = () => {
         </div>
       ));
 
+    return (
+        <div style={containerStyle}>
+            {/* Hours */}
+            <div style={rowStyle}>
+                {renderRow(current.hours, previous.hours, digitBoxStyle)}
+            </div>
   return (
     <div style={containerStyle}>
       {/* Hours */}
@@ -120,11 +215,21 @@ const DigitalClock: React.FC = () => {
         {renderRow(current.hours, previous.hours, digitBoxStyle)}
       </div>
 
+            {/* Minutes */}
+            <div style={rowStyle}>
+                {renderRow(current.minutes, previous.minutes, digitBoxStyle)}
+            </div>
       {/* Minutes */}
       <div style={rowStyle}>
         {renderRow(current.minutes, previous.minutes, digitBoxStyle)}
       </div>
 
+            {/* Seconds */}
+            <div style={rowStyle}>
+                {renderRow(current.seconds, previous.seconds, digitBoxStyle)}
+            </div>
+        </div>
+    );
       {/* Seconds */}
       <div style={rowStyle}>
         {renderRow(current.seconds, previous.seconds, digitBoxStyle)}

@@ -20,148 +20,147 @@ import digit9 from '@/assets/images/2025/25-09/25-09-23/z9.webp';
 
 // hands
 import { useMultiAssetLoader } from '@/utils/assetLoader';
+const AnalogClock: React.FC = () => {
+    const hourRef = useRef(null);
+    const minuteRef = useRef(null);
+    const secondRef = useRef(null);
+    const animationFrameRef = useRef(null);
+    const [ready, setReady] = useState<boolean>(false);
 
-export default function AnalogClock() {
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
-  const animationFrameRef = useRef(null);
-  const [ready, setReady] = useState<boolean>(false);
+    // Digits array
+    const digits = useMemo(
+        () => [
+            digit12,
+            digit1,
+            digit2,
+            digit3,
+            digit4,
+            digit5,
+            digit6,
+            digit7,
+            digit8,
+            digit9,
+            digit10,
+            digit11,
+        ],
+        [],
+    );
 
-  // Digits array
-  const digits = useMemo(
-    () => [
-      digit12,
-      digit1,
-      digit2,
-      digit3,
-      digit4,
-      digit5,
-      digit6,
-      digit7,
-      digit8,
-      digit9,
-      digit10,
-      digit11,
-    ],
-    [],
-  );
+    // Preload images once
+    useEffect(() => {
+        const allImages = [...digits, hourHandImg, minuteHandImg, secondHandImg];
+        Promise.all(
+            allImages.map(
+                (src) =>
+                    new Promise((resolve) => {
+                        const img = new Image();
+                        img.onload = img.onerror = resolve;
+                        img.src = src;
+                    }),
+            ),
+        ).then(() => setReady(true));
+    }, [digits]);
 
-  // Preload images once
-  useEffect(() => {
-    const allImages = [...digits, hourHandImg, minuteHandImg, secondHandImg];
-    Promise.all(
-      allImages.map(
-        (src) =>
-          new Promise((resolve) => {
-            const img = new Image();
-            img.onload = img.onerror = resolve;
-            img.src = src;
-          }),
-      ),
-    ).then(() => setReady(true));
-  }, [digits]);
+    // Digit positions (static)
+    const digitElements = useMemo(() => {
+        return digits.map((src, i) => {
+            const angle = (i / 12) * 2 * Math.PI;
+            const radius = 42;
+            const x = 50 + radius * Math.sin(angle);
+            const y = 50 - radius * Math.cos(angle);
 
-  // Digit positions (static)
-  const digitElements = useMemo(() => {
-    return digits.map((src, i) => {
-      const angle = (i / 12) * 2 * Math.PI;
-      const radius = 42;
-      const x = 50 + radius * Math.sin(angle);
-      const y = 50 - radius * Math.cos(angle);
+            return (
+                <img
+                    decoding="async"
+                    loading="lazy"
+                    key={i}
+                    src={src}
+                    alt={`digit-${i}`}
+                    className="clock-digit"
+                    style={{
+                        position: 'absolute',
+                        top: `${y}%`,
+                        left: `${x}%`,
+                        transform: 'translate(-50%, -50%)',
+                        width: 'auto',
+                    }}
+                />
+            );
+        });
+    }, [digits]);
 
-      return (
-        <img
-          decoding="async"
-          loading="lazy"
-          key={i}
-          src={src}
-          alt={`digit-${i}`}
-          className="clock-digit"
-          style={{
-            position: 'absolute',
-            top: `${y}%`,
-            left: `${x}%`,
-            transform: 'translate(-50%, -50%)',
-            width: 'auto',
-          }}
-        />
-      );
-    });
-  }, [digits]);
+    // Animate hands efficiently
+    useEffect(() => {
+        if (!ready) return;
 
-  // Animate hands efficiently
-  useEffect(() => {
-    if (!ready) return;
+        const update = () => {
+            const now = new Date();
+            const ms = now.getMilliseconds() / 1000;
+            const seconds = now.getSeconds() + ms;
+            const minutes = now.getMinutes() + seconds / 60;
+            const hours = (now.getHours() % 12) + minutes / 60;
 
-    const update: React.FC = () => {
-      const now = new Date();
-      const ms = now.getMilliseconds() / 1000;
-      const seconds = now.getSeconds() + ms;
-      const minutes = now.getMinutes() + seconds / 60;
-      const hours = (now.getHours() % 12) + minutes / 60;
+            if (secondRef.current) {
+                secondRef.current.style.transform = `translateX(-50%) rotate(${(seconds / 60) * 360}deg)`;
+            }
+            if (minuteRef.current) {
+                minuteRef.current.style.transform = `translateX(-50%) rotate(${(minutes / 60) * 360}deg)`;
+            }
+            if (hourRef.current) {
+                hourRef.current.style.transform = `translateX(-50%) rotate(${(hours / 12) * 360}deg)`;
+            }
 
-      if (secondRef.current) {
-        secondRef.current.style.transform = `translateX(-50%) rotate(${(seconds / 60) * 360}deg)`;
-      }
-      if (minuteRef.current) {
-        minuteRef.current.style.transform = `translateX(-50%) rotate(${(minutes / 60) * 360}deg)`;
-      }
-      if (hourRef.current) {
-        hourRef.current.style.transform = `translateX(-50%) rotate(${(hours / 12) * 360}deg)`;
-      }
+            animationFrameRef.current = requestAnimationFrame(update);
+        };
 
-      animationFrameRef.current = requestAnimationFrame(update);
-    };
+        animationFrameRef.current = requestAnimationFrame(update);
+        return () => cancelAnimationFrame(animationFrameRef.current);
+    }, [ready]);
 
-    animationFrameRef.current = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(animationFrameRef.current);
-  }, [ready]);
+    if (!ready) return null;
 
-  if (!ready) return null;
+    return (
+        <div
+            style={{
+                height: '100dvh',
+                width: '100vw',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                background:
+                    'radial-gradient(circle, rgba(123,120,120,0.8) 0%, rgba(159,116,10,0.3) 80%)',
+            }}
+        >
+            <div className="clock-face">
+                {digitElements}
 
-  return (
-    <div
-      style={{
-        height: '100dvh',
-        width: '100vw',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        background:
-          'radial-gradient(circle, rgba(123,120,120,0.8) 0%, rgba(159,116,10,0.3) 80%)',
-      }}
-    >
-      <div className="clock-face">
-        {digitElements}
+                <img
+                    decoding="async"
+                    loading="lazy"
+                    ref={hourRef}
+                    src={hourHandImg}
+                    alt="hour-hand"
+                    className="hour-hand"
+                />
+                <img
+                    decoding="async"
+                    loading="lazy"
+                    ref={minuteRef}
+                    src={minuteHandImg}
+                    alt="minute-hand"
+                    className="minute-hand"
+                />
+                <img
+                    decoding="async"
+                    loading="lazy"
+                    ref={secondRef}
+                    src={secondHandImg}
+                    alt="second-hand"
+                    className="second-hand"
+                />
+            </div>
 
-        <img
-          decoding="async"
-          loading="lazy"
-          ref={hourRef}
-          src={hourHandImg}
-          alt="hour-hand"
-          className="hour-hand"
-        />
-        <img
-          decoding="async"
-          loading="lazy"
-          ref={minuteRef}
-          src={minuteHandImg}
-          alt="minute-hand"
-          className="minute-hand"
-        />
-        <img
-          decoding="async"
-          loading="lazy"
-          ref={secondRef}
-          src={secondHandImg}
-          alt="second-hand"
-          className="second-hand"
-        />
-      </div>
-
-      <style>{`
+            <style>{`
         /* Clock Face */
         .clock-face {
           position: relative;
@@ -229,6 +228,8 @@ export default function AnalogClock() {
           }
         }
       `}</style>
-    </div>
-  );
-}
+        </div>
+    );
+};
+
+export default AnalogClock;

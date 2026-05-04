@@ -4,58 +4,58 @@ import font20250924 from '@/assets/fonts/2025/25-09-24-cora.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 const HorizontalProportionalGradientClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+    const [time, setTime] = useState(new Date());
 
-  // Load font via Suspense
-  useSuspenseFontLoader([{ fontFamily: 'CustomFont', fontUrl: font20250924 }]);
+    // Load font via Suspense
+    useSuspenseFontLoader([{ fontFamily: 'CustomFont', fontUrl: font20250924 }]);
 
-  // Clock tick animation
-  useEffect(() => {
-    let frame;
-    const tick = () => {
-      setTime(new Date());
-      frame = requestAnimationFrame(tick);
+    // Clock tick animation
+    useEffect(() => {
+        let frame;
+        const tick = () => {
+            setTime(new Date());
+            frame = requestAnimationFrame(tick);
+        };
+
+        tick();
+        return () => cancelAnimationFrame(frame);
+    }, []);
+
+    let hours = time.getHours() % 12;
+    if (hours === 0) hours = 12;
+
+    const minutes = time.getMinutes();
+    const seconds = time.getSeconds();
+
+    const numbers = [
+        { value: hours, max: 12, isHour: true },
+        { value: Math.floor(minutes / 10), max: 5 },
+        { value: minutes % 10, max: 9 },
+        { value: Math.floor(seconds / 10), max: 5 },
+        { value: seconds % 10, max: 9 },
+    ];
+
+    const scaleFactor = 29;
+    const adder = 2;
+
+    const scaleDigit = (num) => {
+        const normalized = num.isHour ? (num.value - 1) / 11 : num.value / num.max;
+        return normalized * scaleFactor + adder;
     };
 
-    tick();
-    return () => cancelAnimationFrame(frame);
-  }, []);
+    const getGray = (value, max) => {
+        const gray = Math.floor((value / max) * 255);
+        return `rgb(${gray}, ${gray}, ${gray})`;
+    };
 
-  let hours = time.getHours() % 12;
-  if (hours === 0) hours = 12;
+    const containerStyle: React.CSSProperties = {
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'row',
+    };
 
-  const minutes = time.getMinutes();
-  const seconds = time.getSeconds();
-
-  const numbers = [
-    { value: hours, max: 12, isHour: true },
-    { value: Math.floor(minutes / 10), max: 5 },
-    { value: minutes % 10, max: 9 },
-    { value: Math.floor(seconds / 10), max: 5 },
-    { value: seconds % 10, max: 9 },
-  ];
-
-  const scaleFactor = 29;
-  const adder = 2;
-
-  const scaleDigit = (num) => {
-    const normalized = num.isHour ? (num.value - 1) / 11 : num.value / num.max;
-    return normalized * scaleFactor + adder;
-  };
-
-  const getGray = (value, max) => {
-    const gray = Math.floor((value / max) * 255);
-    return `rgb(${gray}, ${gray}, ${gray})`;
-  };
-
-  const containerStyle = {
-    width: '100vw',
-    height: '100vh',
-    display: 'flex',
-    flexDirection: 'row',
-  };
-
-  const styles = `
+    const styles: Record<string, React.CSSProperties> = `
     .clock-digit {
       font-family: 'CustomFont', sans-serif;
       text-shadow: -4px 0px 0px black, 2px 0px 0px white;
@@ -78,31 +78,31 @@ const HorizontalProportionalGradientClock: React.FC = () => {
     }
   `;
 
-  return (
-    <>
-      <style>{styles}</style>
-      <div style={containerStyle}>
-        {numbers.map((num, idx) => {
-          const size = scaleDigit(num);
-          const bgColor = getGray(num.value, num.max);
+    return (
+        <>
+            <style>{styles}</style>
+            <div style={containerStyle}>
+                {numbers.map((num, idx) => {
+                    const size = scaleDigit(num);
+                    const bgColor = getGray(num.value, num.max);
 
-          return (
-            <div
-              key={idx}
-              className="clock-digit"
-              style={{
-                flex: `${size} 1 0`,
-                fontSize: `${size}vw`,
-                backgroundColor: bgColor,
-              }}
-            >
-              {num.value}
+                    return (
+                        <div
+                            key={idx}
+                            className="clock-digit"
+                            style={{
+                                flex: `${size} 1 0`,
+                                fontSize: `${size}vw`,
+                                backgroundColor: bgColor,
+                            }}
+                        >
+                            {num.value}
+                        </div>
+                    );
+                })}
             </div>
-          );
-        })}
-      </div>
-    </>
-  );
+        </>
+    );
 };
 
 export default HorizontalProportionalGradientClock;

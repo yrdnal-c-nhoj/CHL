@@ -5,8 +5,8 @@ import backgroundVideo from '@/assets/images/2026/26-04/26-04-23/sunflower.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useClockTime } from '@/utils/clockUtils';
 import {
-  useSuspenseFontLoader,
-  ClockLoadingFallback,
+    useSuspenseFontLoader,
+    ClockLoadingFallback,
 } from '@/utils/fontLoader';
 
 import styles from './Clock.module.css';
@@ -15,50 +15,50 @@ const formatTime = (num: number): string => num.toString().padStart(2, '0');
 const formatMs = (num: number): string => num.toString().padStart(3, '0');
 
 const ClockInner: React.FC = () => {
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [{ fontFamily: 'Clock26-04-23', fontUrl }],
-    [],
-  );
-  useSuspenseFontLoader(fontConfigs);
+    const fontConfigs = useMemo<FontConfig[]>(
+        () => [{ fontFamily: 'Clock26-04-23', fontUrl }],
+        [],
+    );
+    useSuspenseFontLoader(fontConfigs);
 
-  const time = useClockTime();
+    const time = useClockTime();
 
-  const h = formatTime(time.getHours());
-  const m = formatTime(time.getMinutes());
-  const s = formatTime(time.getSeconds());
-  const ms = formatMs(time.getMilliseconds());
+    const h = formatTime(time.getHours());
+    const m = formatTime(time.getMinutes());
+    const s: Record<string, React.CSSProperties> = formatTime(time.getSeconds());
+    const ms = formatMs(time.getMilliseconds());
 
-  // Join them to treat the milliseconds as part of the sequence
-  const allDigits = (h + m + s + ms).split('');
+    // Join them to treat the milliseconds as part of the sequence
+    const allDigits = (h + m + s + ms).split('');
 
-  return (
-    <div className={styles.container}>
-      <video
-        className={styles.video}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-      >
-        <source src={backgroundVideo} type="video/mp4" />
-      </video>
+    return (
+        <div className={styles.container}>
+            <video
+                className={styles.video}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+            >
+                <source src={backgroundVideo} type="video/mp4" />
+            </video>
 
-      <main className={styles.digitsContainer}>
-        {allDigits.map((digit, index) => (
-          <span key={index} className={styles.digitBox}>
-            {digit}
-          </span>
-        ))}
-      </main>
-    </div>
-  );
+            <main className={styles.digitsContainer}>
+                {allDigits.map((digit, index) => (
+                    <span key={index} className={styles.digitBox}>
+                        {digit}
+                    </span>
+                ))}
+            </main>
+        </div>
+    );
 };
 
 const Clock: React.FC = () => (
-  <Suspense fallback={<ClockLoadingFallback />}>
-    <ClockInner />
-  </Suspense>
+    <Suspense fallback={<ClockLoadingFallback />}>
+        <ClockInner />
+    </Suspense>
 );
 
 export default Clock;

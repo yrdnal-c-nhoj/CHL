@@ -49,6 +49,7 @@ export default function AnalogClock() {
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
+    background: '#000', // Added a default background
   };
 
   const pageBackgroundBase: React.CSSProperties = {
@@ -58,7 +59,7 @@ export default function AnalogClock() {
     width: '100%',
     height: '100%',
     backgroundImage: `url(${pageBgImgBase})`,
-    backgroundSize: 'cover',
+    backgroundSize: 'cover' as const,
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     filter: 'saturate(2.7) contrast(0.4) brightness(0.4)',
@@ -72,7 +73,7 @@ export default function AnalogClock() {
     width: '100%',
     height: '100%',
     backgroundImage: `url(${pageBgImg})`,
-    backgroundRepeat: 'repeat',
+    backgroundRepeat: 'repeat' as const,
     filter: 'saturate(2.7)',
     opacity: 0.6,
     backgroundSize: `${tileSize}${unit} ${tileSize}${unit}`,

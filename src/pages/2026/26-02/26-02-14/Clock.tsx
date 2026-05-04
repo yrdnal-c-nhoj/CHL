@@ -128,7 +128,7 @@ const DigitalClock: React.FC = () => {
       color: '#D4D8E3',
       fontFamily: "'Airport', monospace",
       textAlign: 'center',
-      lineHeight: 1,
+      lineHeight: 1 as const,
       // textShadow: '0 0 15px rgba(9, 51, 177, 0.4)', // Subtle blue glow
     },
   };

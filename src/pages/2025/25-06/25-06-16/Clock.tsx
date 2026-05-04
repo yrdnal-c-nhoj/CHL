@@ -10,159 +10,159 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const romanNumerals = [
-  'xii',
-  'i',
-  'ii',
-  'iii',
-  'iv',
-  'v',
-  'vi',
-  'vii',
-  'viii',
-  'ix',
-  'x',
-  'xi',
+    'xii',
+    'i',
+    'ii',
+    'iii',
+    'iv',
+    'v',
+    'vi',
+    'vii',
+    'viii',
+    'ix',
+    'x',
+    'xi',
 ];
 
 const KlaxonClock: React.FC = () => {
-  useEffect(() => {
-    const fontStyle = document.createElement('style');
-    fontStyle.textContent = `
+    useEffect(() => {
+        const fontStyle: React.CSSProperties = document.createElement('style');
+        fontStyle.textContent = `
       @font-face {
         font-family: 'klax';
         src: url(${klaxFont}) format('truetype');
       }
     `;
-    document.head.appendChild(fontStyle);
+        document.head.appendChild(fontStyle);
 
-    const clock = document.getElementById('clock');
-    const numberElements = [];
+        const clock = document.getElementById('clock');
+        const numberElements = [];
 
-    romanNumerals.forEach((num, i) => {
-      const angleDeg = i * 30;
-      const angleRad = (angleDeg * Math.PI) / 180;
-      const radius = 43;
+        romanNumerals.forEach((num, i) => {
+            const angleDeg = i * 30;
+            const angleRad = (angleDeg * Math.PI) / 180;
+            const radius = 43;
 
-      const x = 50 + radius * Math.sin(angleRad);
-      const y = 50 - radius * Math.cos(angleRad);
+            const x = 50 + radius * Math.sin(angleRad);
+            const y = 50 - radius * Math.cos(angleRad);
 
-      const el = document.createElement('div');
-      el.className = 'number';
-      el.style.left = `${x}%`;
-      el.style.top = `${y}%`;
-      el.textContent = num;
-      el.style.transform = `translate(-50%, -50%) rotate(${angleDeg}deg)`;
-      el.dataset.angle = angleDeg;
-      el.isFlashing = false;
-      el.lastPassedTime = 0;
-      numberElements.push(el);
-      clock.appendChild(el);
-    });
-
-    const flashStartOffset = 6;
-    const flashEndOffset = 6;
-    const lingerDuration = 300;
-
-    const updateClock: React.FC = () => {
-      const now = new Date();
-      const ms = now.getMilliseconds();
-      const sec = now.getSeconds() + ms / 1000;
-      const min = now.getMinutes();
-      const hr = now.getHours();
-
-      const secondDeg = sec * 6;
-      const minuteDeg = min * 6 + sec * 0.1;
-      const hourDeg = (hr % 12) * 30 + min * 0.5;
-
-      document.getElementById('second').style.transform =
-        `translateX(-50%) rotate(${secondDeg}deg)`;
-      document.getElementById('minute').style.transform =
-        `translateX(-50%) rotate(${minuteDeg}deg)`;
-      document.getElementById('hour').style.transform =
-        `translateX(-50%) rotate(${hourDeg}deg)`;
-
-      const normalizedSecond = secondDeg % 360;
-
-      numberElements.forEach((el) => {
-        const numAngle = parseFloat(el.dataset.angle);
-        const startAngle = (numAngle - flashStartOffset + 360) % 360;
-        const endAngle = (numAngle + flashEndOffset) % 360;
-
-        let insideZone = false;
-        if (startAngle < endAngle) {
-          insideZone =
-            normalizedSecond >= startAngle && normalizedSecond <= endAngle;
-        } else {
-          insideZone =
-            normalizedSecond >= startAngle || normalizedSecond <= endAngle;
-        }
-
-        if (insideZone) {
-          el.isFlashing = true;
-          el.lastPassedTime = performance.now();
-          el.classList.add('flash-red');
-        } else {
-          const nowTime = performance.now();
-          if (el.isFlashing && nowTime - el.lastPassedTime < lingerDuration) {
-            el.classList.add('flash-red');
-          } else {
+            const el = document.createElement('div');
+            el.className = 'number';
+            el.style.left = `${x}%`;
+            el.style.top = `${y}%`;
+            el.textContent = num;
+            el.style.transform = `translate(-50%, -50%) rotate(${angleDeg}deg)`;
+            el.dataset.angle = angleDeg;
             el.isFlashing = false;
-            el.classList.remove('flash-red');
-          }
-        }
-      });
+            el.lastPassedTime = 0;
+            numberElements.push(el);
+            clock.appendChild(el);
+        });
 
-      requestAnimationFrame(updateClock);
+        const flashStartOffset = 6;
+        const flashEndOffset = 6;
+        const lingerDuration = 300;
+
+        const updateClock = () => {
+            const now = new Date();
+            const ms = now.getMilliseconds();
+            const sec = now.getSeconds() + ms / 1000;
+            const min = now.getMinutes();
+            const hr = now.getHours();
+
+            const secondDeg = sec * 6;
+            const minuteDeg = min * 6 + sec * 0.1;
+            const hourDeg = (hr % 12) * 30 + min * 0.5;
+
+            document.getElementById('second').style.transform =
+                `translateX(-50%) rotate(${secondDeg}deg)`;
+            document.getElementById('minute').style.transform =
+                `translateX(-50%) rotate(${minuteDeg}deg)`;
+            document.getElementById('hour').style.transform =
+                `translateX(-50%) rotate(${hourDeg}deg)`;
+
+            const normalizedSecond = secondDeg % 360;
+
+            numberElements.forEach((el) => {
+                const numAngle = parseFloat(el.dataset.angle);
+                const startAngle = (numAngle - flashStartOffset + 360) % 360;
+                const endAngle = (numAngle + flashEndOffset) % 360;
+
+                let insideZone = false;
+                if (startAngle < endAngle) {
+                    insideZone =
+                        normalizedSecond >= startAngle && normalizedSecond <= endAngle;
+                } else {
+                    insideZone =
+                        normalizedSecond >= startAngle || normalizedSecond <= endAngle;
+                }
+
+                if (insideZone) {
+                    el.isFlashing = true;
+                    el.lastPassedTime = performance.now();
+                    el.classList.add('flash-red');
+                } else {
+                    const nowTime = performance.now();
+                    if (el.isFlashing && nowTime - el.lastPassedTime < lingerDuration) {
+                        el.classList.add('flash-red');
+                    } else {
+                        el.isFlashing = false;
+                        el.classList.remove('flash-red');
+                    }
+                }
+            });
+
+            requestAnimationFrame(updateClock);
+        };
+
+        requestAnimationFrame(updateClock);
+    }, []);
+
+    const formatDate = (offset) => {
+        const d = new Date();
+        d.setDate(d.getDate() + offset);
+        return `${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
     };
 
-    requestAnimationFrame(updateClock);
-  }, []);
+    return (
+        <div style={styles.body}>
+            <div style={styles.bgImage} />
 
-  const formatDate = (offset) => {
-    const d = new Date();
-    d.setDate(d.getDate() + offset);
-    return `${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
-  };
+            <div style={styles.overlay} />
 
-  return (
-    <div style={styles.body}>
-      <div style={styles.bgImage} />
+            <div style={styles.clockWrapper}>
+                <div style={styles.clock} id="clock">
+                    <img
+                        decoding="async"
+                        loading="lazy"
+                        src={klax}
+                        alt="Hour Hand"
+                        className="hand hour"
+                        id="hour"
+                        style={styles.handHour}
+                    />
+                    <img
+                        decoding="async"
+                        loading="lazy"
+                        src={klaxon}
+                        alt="Minute Hand"
+                        className="hand minute"
+                        id="minute"
+                        style={styles.handMinute}
+                    />
+                    <img
+                        decoding="async"
+                        loading="lazy"
+                        src={klaHand}
+                        alt="Second Hand"
+                        className="hand second"
+                        id="second"
+                        style={styles.handSecond}
+                    />
+                </div>
+            </div>
 
-      <div style={styles.overlay} />
-
-      <div style={styles.clockWrapper}>
-        <div style={styles.clock} id="clock">
-          <img
-            decoding="async"
-            loading="lazy"
-            src={klax}
-            alt="Hour Hand"
-            className="hand hour"
-            id="hour"
-            style={styles.handHour}
-          />
-          <img
-            decoding="async"
-            loading="lazy"
-            src={klaxon}
-            alt="Minute Hand"
-            className="hand minute"
-            id="minute"
-            style={styles.handMinute}
-          />
-          <img
-            decoding="async"
-            loading="lazy"
-            src={klaHand}
-            alt="Second Hand"
-            className="hand second"
-            id="second"
-            style={styles.handSecond}
-          />
-        </div>
-      </div>
-
-      <style>{`
+            <style>{`
         .number {
           position: absolute;
           font-size: 29.5vh;
@@ -191,99 +191,99 @@ const KlaxonClock: React.FC = () => {
           }
         }
       `}</style>
-    </div>
-  );
+        </div>
+    );
 };
 
-const styles = {
-  body: {
-    margin: 0,
-    padding: 0,
-    height: '100dvh',
-    width: '100vw',
-    background: '#0c0c0c',
-    position: 'relative',
-    overflow: 'hidden',
-    fontFamily: 'klax, serif',
-  },
-  bgImage: {
-    backgroundImage: `url(${kla})`,
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100vw',
-    height: '100vh',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    filter: 'brightness(50%)',
-    zIndex: 1,
-    pointerEvents: 'none',
-  },
-  overlay: {
-    backgroundImage: `url(${overlayImage})`,
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100vw',
-    height: '100vh',
-    backgroundSize: '190%', // Scale up the image
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    zIndex: 2,
-    pointerEvents: 'none',
-    opacity: 0.7,
-    mixBlendMode: 'screen',
-  },
+const styles: Record<string, React.CSSProperties> = {
+    body: {
+        margin: 0,
+        padding: 0,
+        height: '100dvh',
+        width: '100vw',
+        background: '#0c0c0c',
+        position: 'relative',
+        overflow: 'hidden',
+        fontFamily: 'klax, serif',
+    },
+    bgImage: {
+        backgroundImage: `url(${kla})`,
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        filter: 'brightness(50%)',
+        zIndex: 1,
+        pointerEvents: 'none',
+    },
+    overlay: {
+        backgroundImage: `url(${overlayImage})`,
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundSize: '190%', // Scale up the image
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        zIndex: 2,
+        pointerEvents: 'none',
+        opacity: 0.7,
+        mixBlendMode: 'screen',
+    },
 
-  clockWrapper: {
-    position: 'relative',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100vw',
-    height: '100vh',
-    zIndex: 5,
-  },
-  clock: {
-    width: '80vmin',
-    height: '80vmin',
-    borderRadius: '50%',
-    position: 'relative',
-    color: 'rgb(241, 231, 244)',
-  },
-  handHour: {
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    transformOrigin: 'bottom',
-    transform: 'translateX(-50%)',
-    height: '35%',
-    filter:
-      'sepia(100%) saturate(150%) hue-rotate(-10deg) brightness(90%) contrast(120%)',
-    zIndex: 7,
-    pointerEvents: 'none',
-  },
-  handMinute: {
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    transformOrigin: 'bottom',
-    transform: 'translateX(-50%)',
-    height: '45%',
-    zIndex: 7,
-    pointerEvents: 'none',
-  },
-  handSecond: {
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    transformOrigin: 'bottom',
-    transform: 'translateX(-50%)',
-    height: '55%',
-    zIndex: 7,
-    pointerEvents: 'none',
-  },
+    clockWrapper: {
+        position: 'relative',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100vw',
+        height: '100vh',
+        zIndex: 5,
+    },
+    clock: {
+        width: '80vmin',
+        height: '80vmin',
+        borderRadius: '50%',
+        position: 'relative',
+        color: 'rgb(241, 231, 244)',
+    },
+    handHour: {
+        position: 'absolute',
+        bottom: '50%',
+        left: '50%',
+        transformOrigin: 'bottom',
+        transform: 'translateX(-50%)',
+        height: '35%',
+        filter:
+            'sepia(100%) saturate(150%) hue-rotate(-10deg) brightness(90%) contrast(120%)',
+        zIndex: 7,
+        pointerEvents: 'none',
+    },
+    handMinute: {
+        position: 'absolute',
+        bottom: '50%',
+        left: '50%',
+        transformOrigin: 'bottom',
+        transform: 'translateX(-50%)',
+        height: '45%',
+        zIndex: 7,
+        pointerEvents: 'none',
+    },
+    handSecond: {
+        position: 'absolute',
+        bottom: '50%',
+        left: '50%',
+        transformOrigin: 'bottom',
+        transform: 'translateX(-50%)',
+        height: '55%',
+        zIndex: 7,
+        pointerEvents: 'none',
+    },
 };
 
 export default KlaxonClock;

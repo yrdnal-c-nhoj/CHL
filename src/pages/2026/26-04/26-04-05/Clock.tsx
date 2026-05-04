@@ -10,54 +10,54 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {
-  const time = useClockTime();
+    const time = useClockTime();
 
-  // Load the meteor font using useSuspenseFontLoader
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [{ fontFamily: 'Meteor', fontUrl: meteorFont }],
-    [],
-  );
-  useSuspenseFontLoader(fontConfigs);
+    // Load the meteor font using useSuspenseFontLoader
+    const fontConfigs = useMemo<FontConfig[]>(
+        () => [{ fontFamily: 'Meteor', fontUrl: meteorFont }],
+        [],
+    );
+    useSuspenseFontLoader(fontConfigs);
 
-  // Split time into 6 individual digits: [H, H, M, M, S, S]
-  const digits = useMemo(() => {
-    const h = time.getHours().toString().padStart(2, '0');
-    const m = time.getMinutes().toString().padStart(2, '0');
-    const s = time.getSeconds().toString().padStart(2, '0');
-    return [...h, ...m, ...s];
-  }, [time]);
+    // Split time into 6 individual digits: [H, H, M, M, S, S]
+    const digits = useMemo(() => {
+        const h = time.getHours().toString().padStart(2, '0');
+        const m = time.getMinutes().toString().padStart(2, '0');
+        const s: Record<string, React.CSSProperties> = time.getSeconds().toString().padStart(2, '0');
+        return [...h, ...m, ...s];
+    }, [time]);
 
-  return (
-    <div className={styles.container}>
-      <video
-        className={styles.videoLayer}
-        autoPlay
-        loop
-        muted
-        playsInline
-        src={backgroundVideo}
-      />
-      <video
-        className={styles.middleVideoLayer}
-        autoPlay
-        loop
-        muted
-        playsInline
-        src={middleVideo}
-      />
+    return (
+        <div className={styles.container}>
+            <video
+                className={styles.videoLayer}
+                autoPlay
+                loop
+                muted
+                playsInline
+                src={backgroundVideo}
+            />
+            <video
+                className={styles.middleVideoLayer}
+                autoPlay
+                loop
+                muted
+                playsInline
+                src={middleVideo}
+            />
 
-      <div className={styles.clockWrapper}>
-        <div className={styles.digitGroup}>
-          <div className={styles.digitBox}>{digits[0]}</div>
-          <div className={styles.digitBox}>{digits[1]}</div>
-          <div className={styles.digitBox}>{digits[2]}</div>
-          <div className={styles.digitBox}>{digits[3]}</div>
-          <div className={styles.digitBox}>{digits[4]}</div>
-          <div className={styles.digitBox}>{digits[5]}</div>
+            <div className={styles.clockWrapper}>
+                <div className={styles.digitGroup}>
+                    <div className={styles.digitBox}>{digits[0]}</div>
+                    <div className={styles.digitBox}>{digits[1]}</div>
+                    <div className={styles.digitBox}>{digits[2]}</div>
+                    <div className={styles.digitBox}>{digits[3]}</div>
+                    <div className={styles.digitBox}>{digits[4]}</div>
+                    <div className={styles.digitBox}>{digits[5]}</div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Clock;

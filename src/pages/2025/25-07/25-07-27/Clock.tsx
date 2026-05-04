@@ -5,123 +5,123 @@ import backgroundImage from '@/assets/images/2025/25-07/25-07-27/met.jpg'; // Im
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 interface Digit {
-  id: number;
-  char: string;
-  top: number;
-  typeClass: 'hour' | 'minuteTens' | 'minuteOnes';
-  color: string;
+    id: number;
+    char: string;
+    top: number;
+    typeClass: 'hour' | 'minuteTens' | 'minuteOnes';
+    color: string;
 }
 
 const Clock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'MyCustomFont',
-      fontUrl: myCustomFont,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+    // Standardized font loading with font-display: swap to avoid FOUC
+    const fontConfigs = [
+        {
+            fontFamily: 'MyCustomFont',
+            fontUrl: myCustomFont,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
+    ];
+    const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const [digits, setDigits] = useState<Digit[]>([]);
+    const [digits, setDigits] = useState<Digit[]>([]);
 
-  useEffect(() => {
-    const formatTime = (date: Date): string => {
-      let h = date.getHours() % 12;
-      if (h === 0) h = 12;
-      const m = String(date.getMinutes()).padStart(2, '0');
-      return `${h}${m}`;
-    };
+    useEffect(() => {
+        const formatTime = (date: Date): string => {
+            let h = date.getHours() % 12;
+            if (h === 0) h = 12;
+            const m = String(date.getMinutes()).padStart(2, '0');
+            return `${h}${m}`;
+        };
 
-    const addDigit = (char: string, index: number, hourLength: number) => {
-      const id = Date.now() + Math.random();
-      const top = Math.random() * 90;
+        const addDigit = (char: string, index: number, hourLength: number) => {
+            const id = Date.now() + Math.random();
+            const top = Math.random() * 90;
 
-      let typeClass: Digit['typeClass'], color: string;
+            let typeClass: Digit['typeClass'], color: string;
 
-      if (index < hourLength) {
-        typeClass = 'hour';
-        color = '#FFD700'; // Gold
-      } else {
-        const minuteIndex = index - hourLength;
-        if (minuteIndex === 0) {
-          typeClass = 'minuteTens';
-          color = '#C0C0C0'; // Silver
-        } else {
-          typeClass = 'minuteOnes';
-          color = '#CD7F32'; // Bronze
-        }
-      }
+            if (index < hourLength) {
+                typeClass = 'hour';
+                color = '#FFD700'; // Gold
+            } else {
+                const minuteIndex = index - hourLength;
+                if (minuteIndex === 0) {
+                    typeClass = 'minuteTens';
+                    color = '#C0C0C0'; // Silver
+                } else {
+                    typeClass = 'minuteOnes';
+                    color = '#CD7F32'; // Bronze
+                }
+            }
 
-      setDigits((prev) => [...prev, { id, char, top, typeClass, color }]);
+            setDigits((prev) => [...prev, { id, char, top, typeClass, color }]);
 
-      setTimeout(() => {
-        setDigits((prev) => prev.filter((d) => d.id !== id));
-      }, 6000);
-    };
+            setTimeout(() => {
+                setDigits((prev) => prev.filter((d) => d.id !== id));
+            }, 6000);
+        };
 
-    const showTimeDigits: React.FC = () => {
-      const now = new Date();
-      const timeStr = formatTime(now);
-      const hourLength = timeStr.length - 2;
+        const showTimeDigits = () => {
+            const now = new Date();
+            const timeStr = formatTime(now);
+            const hourLength = timeStr.length - 2;
 
-      [...timeStr].forEach((char, i) => {
-        setTimeout(() => addDigit(char, i, hourLength), i * 1000);
-      });
-    };
+            [...timeStr].forEach((char, i) => {
+                setTimeout(() => addDigit(char, i, hourLength), i * 1000);
+            });
+        };
 
-    showTimeDigits();
-    const interval = setInterval(showTimeDigits, 666);
+        showTimeDigits();
+        const interval = setInterval(showTimeDigits, 666);
 
-    return () => clearInterval(interval);
-  }, []);
+        return () => clearInterval(interval);
+    }, []);
 
-  const digitStyle = (top: number): React.CSSProperties => ({
-    position: 'absolute',
-    top: `${top}vh`,
-    left: '-30vw',
-    fontFamily: 'MyCustomFont, monospace',
-    whiteSpace: 'pre',
-    transformOrigin: 'center',
-  });
+    const digitStyle = (top: number): React.CSSProperties => ({
+        position: 'absolute',
+        top: `${top}vh`,
+        left: '-30vw',
+        fontFamily: 'MyCustomFont, monospace',
+        whiteSpace: 'pre',
+        transformOrigin: 'center',
+    });
 
-  return (
-    <>
-      <div
-        style={{
-          position: 'relative',
-          width: '100vw',
-          height: '100dvh',
-          backgroundImage: `url(${backgroundImage})`, // Add background image
-          backgroundSize: 'cover', // Ensure the image covers the entire area
-          backgroundPosition: 'center', // Center the image
-          backgroundRepeat: 'no-repeat', // Prevent tiling
-          overflow: 'hidden',
-          fontFamily: 'MyCustomFont, monospace',
-        }}
-      >
-        {digits.map(({ id, char, top, typeClass }) => (
-          <div
-            key={id}
-            className={typeClass}
-            style={{
-              ...digitStyle(top),
-              fontSize:
-                typeClass === 'hour'
-                  ? '5rem'
-                  : typeClass === 'minuteTens'
-                    ? '3.5rem'
-                    : '1.6rem',
-            }}
-          >
-            {char}
-          </div>
-        ))}
-      </div>
-      <style>{`
+    return (
+        <>
+            <div
+                style={{
+                    position: 'relative',
+                    width: '100vw',
+                    height: '100dvh',
+                    backgroundImage: `url(${backgroundImage})`, // Add background image
+                    backgroundSize: 'cover', // Ensure the image covers the entire area
+                    backgroundPosition: 'center', // Center the image
+                    backgroundRepeat: 'no-repeat', // Prevent tiling
+                    overflow: 'hidden',
+                    fontFamily: 'MyCustomFont, monospace',
+                }}
+            >
+                {digits.map(({ id, char, top, typeClass }) => (
+                    <div
+                        key={id}
+                        className={typeClass}
+                        style={{
+                            ...digitStyle(top),
+                            fontSize:
+                                typeClass === 'hour'
+                                    ? '5rem'
+                                    : typeClass === 'minuteTens'
+                                        ? '3.5rem'
+                                        : '1.6rem',
+                        }}
+                    >
+                        {char}
+                    </div>
+                ))}
+            </div>
+            <style>{`
         /* Font loading handled by useMultipleFontLoader */
 
         .hour, .minuteTens, .minuteOnes {
@@ -203,8 +203,8 @@ const Clock: React.FC = () => {
           }
         }
       `}</style>
-    </>
-  );
+        </>
+    );
 };
 
 export default Clock;

@@ -12,47 +12,47 @@ import styles from './Clock.module.css';
 export const assets = [bgImg];
 
 const Clock: React.FC = () => {
-  const time = useClockTime();
+    const time = useClockTime();
 
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [{ fontFamily: 'H1', fontUrl }],
-    [],
-  );
+    const fontConfigs = useMemo<FontConfig[]>(
+        () => [{ fontFamily: 'H1', fontUrl }],
+        [],
+    );
 
-  useSuspenseFontLoader(fontConfigs);
+    useSuspenseFontLoader(fontConfigs);
 
-  const hours = time.getHours().toString().padStart(2, '0');
-  const minutes = time.getMinutes().toString().padStart(2, '0');
+    const hours = time.getHours().toString().padStart(2, '0');
+    const minutes = time.getMinutes().toString().padStart(2, '0');
 
-  const size = 'min(100vw, 100vh)';
-  const cell = `calc(${size} / 2)`;
+    const size = 'min(100vw, 100vh)';
+    const cell = `calc(${size} / 2)`;
 
-  return (
-    <div
-      className={styles.container}
-      style={{ '--cell': cell } as React.CSSProperties}
-    >
-      <div
-        className={styles.bgImage}
-        style={{ backgroundImage: `url(${bgImg})` }}
-      />
-      <div className={styles.overlay} />
-      <div className={styles.grid}>
-        <div className={styles.charWrapper}>
-          <div className={styles.radioDigit}>{hours[0]}</div>
+    return (
+        <div
+            className={styles.container}
+            style={{ '--cell': cell } as React.CSSProperties}
+        >
+            <div
+                className={styles.bgImage}
+                style={{ backgroundImage: `url(${bgImg})` }}
+            />
+            <div className={styles.overlay} />
+            <div className={styles.grid}>
+                <div className={styles.charWrapper}>
+                    <div className={styles.radioDigit}>{hours[0]}</div>
+                </div>
+                <div className={styles.charWrapper}>
+                    <div className={styles.radioDigit}>{hours[1]}</div>
+                </div>
+                <div className={styles.charWrapper}>
+                    <div className={styles.radioDigit}>{minutes[0]}</div>
+                </div>
+                <div className={styles.charWrapper}>
+                    <div className={styles.radioDigit}>{minutes[1]}</div>
+                </div>
+            </div>
         </div>
-        <div className={styles.charWrapper}>
-          <div className={styles.radioDigit}>{hours[1]}</div>
-        </div>
-        <div className={styles.charWrapper}>
-          <div className={styles.radioDigit}>{minutes[0]}</div>
-        </div>
-        <div className={styles.charWrapper}>
-          <div className={styles.radioDigit}>{minutes[1]}</div>
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Clock;

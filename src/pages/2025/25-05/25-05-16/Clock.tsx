@@ -4,35 +4,35 @@ import braiFont from '@/assets/fonts/2025/25-05-16-brai.ttf';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const Clock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'brai',
-      fontUrl: braiFont,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+    // Standardized font loading with font-display: swap to avoid FOUC
+    const fontConfigs = [
+        {
+            fontFamily: 'brai',
+            fontUrl: braiFont,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
+    ];
+    const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const [time, setTime] = useState(new Date());
+    const [time, setTime] = useState(new Date());
 
-  // Font loading handled by useMultipleFontLoader
+    // Font loading handled by useMultipleFontLoader
 
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+    useEffect(() => {
+        const interval = setInterval(() => setTime(new Date()), 1000);
+        return () => clearInterval(interval);
+    }, []);
 
-  const pad = (n) => n.toString().padStart(2, '0');
+    const pad = (n) => n.toString().padStart(2, '0');
 
-  const hours = pad(time.getHours());
-  const minutes = pad(time.getMinutes());
-  const seconds = pad(time.getSeconds());
+    const hours = pad(time.getHours());
+    const minutes = pad(time.getMinutes());
+    const seconds = pad(time.getSeconds());
 
-  const styleTag = `
+    const styleTag: React.CSSProperties = `
     .clock {
       display: flex;
       justify-content: center;
@@ -88,27 +88,27 @@ const Clock: React.FC = () => {
     }
   `;
 
-  return (
-    <>
-      <style>{styleTag}</style>
-      <div
-        className="clock"
-        role="timer"
-        aria-live="polite"
-        aria-label={`Current time is ${hours} hours, ${minutes} minutes, and ${seconds} seconds`}
-      >
-        <div className="segment">
-          <div className="time-part">{hours}</div>
-        </div>
-        <div className="segment">
-          <div className="time-part">{minutes}</div>
-        </div>
-        <div className="segment">
-          <div className="time-part">{seconds}</div>
-        </div>
-      </div>
-    </>
-  );
+    return (
+        <>
+            <style>{styleTag}</style>
+            <div
+                className="clock"
+                role="timer"
+                aria-live="polite"
+                aria-label={`Current time is ${hours} hours, ${minutes} minutes, and ${seconds} seconds`}
+            >
+                <div className="segment">
+                    <div className="time-part">{hours}</div>
+                </div>
+                <div className="segment">
+                    <div className="time-part">{minutes}</div>
+                </div>
+                <div className="segment">
+                    <div className="time-part">{seconds}</div>
+                </div>
+            </div>
+        </>
+    );
 };
 
 export default Clock;

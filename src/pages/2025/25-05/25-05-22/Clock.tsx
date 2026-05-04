@@ -5,125 +5,125 @@ import sunGif from '@/assets/images/2025/25-05/25-05-22/sun.gif'; // Use static 
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const romanNumerals = [
-  'XII',
-  'I',
-  'II',
-  'III',
-  'IV',
-  'V',
-  'VI',
-  'VII',
-  'VIII',
-  'IX',
-  'X',
-  'XI',
+    'XII',
+    'I',
+    'II',
+    'III',
+    'IV',
+    'V',
+    'VI',
+    'VII',
+    'VIII',
+    'IX',
+    'X',
+    'XI',
 ];
 
 const Clock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'Dir',
-      fontUrl: dirFontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+    // Standardized font loading with font-display: swap to avoid FOUC
+    const fontConfigs = [
+        {
+            fontFamily: 'Dir',
+            fontUrl: dirFontUrl,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
+    ];
+    const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  // Font loading handled by useMultipleFontLoader
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    // Font loading handled by useMultipleFontLoader
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
-  useEffect(() => {
-    // Asset Preloading
-    const sources = [sunGif];
-    let loaded = 0;
+    useEffect(() => {
+        // Asset Preloading
+        const sources = [sunGif];
+        let loaded = 0;
 
-    sources.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = img.onerror = () => {
-        loaded++;
-        if (loaded === sources.length) {
-          setIsLoaded(true);
+        sources.forEach((src) => {
+            const img = new Image();
+            img.src = src;
+            img.onload = img.onerror = () => {
+                loaded++;
+                if (loaded === sources.length) {
+                    setIsLoaded(true);
+                }
+            };
+        });
+    }, []);
+
+    useEffect(() => {
+        // Check if fonts are loaded
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => {
+                setFontsLoaded(true);
+            });
+        } else {
+            setFontsLoaded(true);
         }
-      };
-    });
-  }, []);
+    }, []);
 
-  useEffect(() => {
-    // Check if fonts are loaded
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => {
-        setFontsLoaded(true);
-      });
-    } else {
-      setFontsLoaded(true);
+    // Combined loading check
+    const everythingLoaded = isLoaded && (fontsLoaded || !document.fonts);
+
+    useEffect(() => {
+        if (!everythingLoaded) return;
+
+        const updateClock = () => {
+            const now = new Date();
+            const sec = now.getSeconds();
+            const min = now.getMinutes();
+            const hr = now.getHours();
+
+            const secondDeg = sec * 6;
+            const minuteDeg = min * 6 + sec * 0.1;
+            const hourDeg = (hr % 12) * 30 + min * 0.5;
+
+            document.getElementById('second').style.transform =
+                `translateX(-50%) rotate(${secondDeg}deg)`;
+            document.getElementById('minute').style.transform =
+                `translateX(-50%) rotate(${minuteDeg}deg)`;
+            document.getElementById('hour').style.transform =
+                `translateX(-50%) rotate(${hourDeg}deg)`;
+        };
+
+        const interval = setInterval(updateClock, 1000);
+        updateClock();
+        return () => clearInterval(interval);
+    }, [everythingLoaded]);
+
+    if (!everythingLoaded) {
+        return (
+            <div
+                style={{
+                    height: '100dvh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#fff',
+                    background: '#000',
+                }}
+            />
+        );
     }
-  }, []);
 
-  // Combined loading check
-  const everythingLoaded = isLoaded && (fontsLoaded || !document.fonts);
-
-  useEffect(() => {
-    if (!everythingLoaded) return;
-
-    const updateClock: React.FC = () => {
-      const now = new Date();
-      const sec = now.getSeconds();
-      const min = now.getMinutes();
-      const hr = now.getHours();
-
-      const secondDeg = sec * 6;
-      const minuteDeg = min * 6 + sec * 0.1;
-      const hourDeg = (hr % 12) * 30 + min * 0.5;
-
-      document.getElementById('second').style.transform =
-        `translateX(-50%) rotate(${secondDeg}deg)`;
-      document.getElementById('minute').style.transform =
-        `translateX(-50%) rotate(${minuteDeg}deg)`;
-      document.getElementById('hour').style.transform =
-        `translateX(-50%) rotate(${hourDeg}deg)`;
-    };
-
-    const interval = setInterval(updateClock, 1000);
-    updateClock();
-    return () => clearInterval(interval);
-  }, [everythingLoaded]);
-
-  if (!everythingLoaded) {
     return (
-      <div
-        style={{
-          height: '100dvh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#fff',
-          background: '#000',
-        }}
-       />
-    );
-  }
-
-  return (
-    <div
-      style={{
-        height: '100dvh',
-        width: '100vw',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'relative',
-        background: '#000000',
-        fontFamily: 'Dir, serif',
-        overflow: 'hidden',
-      }}
-    >
-      <style>
-        {`
+        <div
+            style={{
+                height: '100dvh',
+                width: '100vw',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'relative',
+                background: '#000000',
+                fontFamily: 'Dir, serif',
+                overflow: 'hidden',
+            }}
+        >
+            <style>
+                {`
           body { margin: 0; padding: 0; overflow: hidden; background: '#000'; }
         
           /* Ensure smooth transitions */
@@ -143,100 +143,100 @@ const Clock: React.FC = () => {
             src: url(${dirFontUrl}) format('truetype');
           }
         `}
-      </style>
+            </style>
 
-      <div className="clock-content">
-        <img
-          decoding="async"
-          loading="lazy"
-          src={sunGif}
-          alt="Sun"
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            maxWidth: 600,
-            maxHeight: 600,
-            zIndex: 0,
-            filter: 'hue-rotate(322deg) contrast(180%) saturate(160%)',
-            pointerEvents: 'none',
-          }}
-        />
+            <div className="clock-content">
+                <img
+                    decoding="async"
+                    loading="lazy"
+                    src={sunGif}
+                    alt="Sun"
+                    style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        maxWidth: 600,
+                        maxHeight: 600,
+                        zIndex: 0,
+                        filter: 'hue-rotate(322deg) contrast(180%) saturate(160%)',
+                        pointerEvents: 'none',
+                    }}
+                />
 
-        <div
-          id="clock"
-          style={{
-            width: '90vmin',
-            height: '90vmin',
-            borderRadius: '50%',
-            position: 'relative',
-            color: '#abe5f3',
-            fontWeight: 'bold',
-            zIndex: 1,
-          }}
-        >
-          {romanNumerals.map((num, i) => {
-            const angleDeg = i * 30;
-            const angleRad = angleDeg * (Math.PI / 180);
-            const radius = 43;
-            const x = 50 + radius * Math.sin(angleRad);
-            const y = 50 - radius * Math.cos(angleRad);
-            return (
-              <div
-                key={i}
-                style={{
-                  position: 'absolute',
-                  fontSize: '7vh',
-                  left: `${x}%`,
-                  top: `${y}%`,
-                  transform: `translate(-50%, -50%) rotate(${angleDeg}deg)`,
-                }}
-              >
-                {num}
-              </div>
-            );
-          })}
-          <div
-            id="hour"
-            style={{
-              position: 'absolute',
-              bottom: '50%',
-              left: '50%',
-              transformOrigin: 'bottom',
-              background: '#abe5f3',
-              width: '2%',
-              height: '25%',
-            }}
-           />
-          <div
-            id="minute"
-            style={{
-              position: 'absolute',
-              bottom: '50%',
-              left: '50%',
-              transformOrigin: 'bottom',
-              background: '#abe5f3',
-              width: '1%',
-              height: '35%',
-            }}
-           />
-          <div
-            id="second"
-            style={{
-              position: 'absolute',
-              bottom: '50%',
-              left: '50%',
-              transformOrigin: 'bottom',
-              background: '#abe5f3',
-              width: '0.4%',
-              height: '45%',
-            }}
-           />
+                <div
+                    id="clock"
+                    style={{
+                        width: '90vmin',
+                        height: '90vmin',
+                        borderRadius: '50%',
+                        position: 'relative',
+                        color: '#abe5f3',
+                        fontWeight: 'bold',
+                        zIndex: 1,
+                    }}
+                >
+                    {romanNumerals.map((num, i) => {
+                        const angleDeg = i * 30;
+                        const angleRad = angleDeg * (Math.PI / 180);
+                        const radius = 43;
+                        const x = 50 + radius * Math.sin(angleRad);
+                        const y = 50 - radius * Math.cos(angleRad);
+                        return (
+                            <div
+                                key={i}
+                                style={{
+                                    position: 'absolute',
+                                    fontSize: '7vh',
+                                    left: `${x}%`,
+                                    top: `${y}%`,
+                                    transform: `translate(-50%, -50%) rotate(${angleDeg}deg)`,
+                                }}
+                            >
+                                {num}
+                            </div>
+                        );
+                    })}
+                    <div
+                        id="hour"
+                        style={{
+                            position: 'absolute',
+                            bottom: '50%',
+                            left: '50%',
+                            transformOrigin: 'bottom',
+                            background: '#abe5f3',
+                            width: '2%',
+                            height: '25%',
+                        }}
+                    />
+                    <div
+                        id="minute"
+                        style={{
+                            position: 'absolute',
+                            bottom: '50%',
+                            left: '50%',
+                            transformOrigin: 'bottom',
+                            background: '#abe5f3',
+                            width: '1%',
+                            height: '35%',
+                        }}
+                    />
+                    <div
+                        id="second"
+                        style={{
+                            position: 'absolute',
+                            bottom: '50%',
+                            left: '50%',
+                            transformOrigin: 'bottom',
+                            background: '#abe5f3',
+                            width: '0.4%',
+                            height: '45%',
+                        }}
+                    />
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Clock;

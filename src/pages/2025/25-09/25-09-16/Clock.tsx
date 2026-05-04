@@ -7,39 +7,39 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 
 const Clock: React.FC = () => {
-  const time = useClockTime();
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    const time = useClockTime();
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [{ fontFamily: 'MyD250916font', fontUrl: d250916font }],
-    [],
-  );
+    const fontConfigs = useMemo<FontConfig[]>(
+        () => [{ fontFamily: 'MyD250916font', fontUrl: d250916font }],
+        [],
+    );
 
-  useSuspenseFontLoader(fontConfigs);
+    useSuspenseFontLoader(fontConfigs);
 
-  // Handle background image preloading separately as font is handled by Suspense
-  useEffect(() => {
-    const img = new Image();
-    img.src = bgImage;
-    img.onload = () => setIsLoaded(true);
-    img.onerror = () => setIsLoaded(true);
-  }, []);
+    // Handle background image preloading separately as font is handled by Suspense
+    useEffect(() => {
+        const img = new Image();
+        img.src = bgImage;
+        img.onload = () => setIsLoaded(true);
+        img.onerror = () => setIsLoaded(true);
+    }, []);
 
-  // Format time
-  const hours = String(((time.getHours() + 11) % 12) + 1).padStart(2, '0');
-  const minutes = String(time.getMinutes()).padStart(2, '0');
-  const seconds = String(time.getSeconds()).padStart(2, '0');
+    // Format time
+    const hours = String(((time.getHours() + 11) % 12) + 1).padStart(2, '0');
+    const minutes = String(time.getMinutes()).padStart(2, '0');
+    const seconds = String(time.getSeconds()).padStart(2, '0');
 
-  const digitBox: React.CSSProperties = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontFamily: "'MyD250916font', sans-serif", // Use the loaded custom font
-    fontSize: '10vmin', // Standardize on vmin for responsive sizing
-    color: '#ffffff',
-    margin: '0 0.5vw',
-    minWidth: '8vw',
-    textShadow: `
+    const digitBox: React.CSSProperties = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontFamily: "'MyD250916font', sans-serif", // Use the loaded custom font
+        fontSize: '10vmin', // Standardize on vmin for responsive sizing
+        color: '#ffffff',
+        margin: '0 0.5vw',
+        minWidth: '8vw',
+        textShadow: `
       0 0 5px #ff0000,
       0 0 10px #ff9900,
       0 0 15px #ffff00,
@@ -58,54 +58,54 @@ const Clock: React.FC = () => {
       0 0 90px #ffffff,
       0 0 99px #ffffff
     `,
-  };
+    };
 
-  const containerStyle: React.CSSProperties = {
-    height: '100dvh',
-    width: '100vw',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'black', // fallback black until loaded
-    backgroundImage: isLoaded ? `url(${bgImage})` : 'none',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  };
+    const containerStyle: React.CSSProperties = {
+        height: '100dvh',
+        width: '100vw',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'black', // fallback black until loaded
+        backgroundImage: isLoaded ? `url(${bgImage})` : 'none',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+    };
 
-  const faceStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  };
+    const faceStyle: React.CSSProperties = {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    };
 
-  const renderDigits = (value: string) =>
-    value.split('').map((d, i) => (
-      <div key={i} style={digitBox}>
-        {d}
-      </div>
-    ));
+    const renderDigits = (value: string) =>
+        value.split('').map((d, i) => (
+            <div key={i} style={digitBox}>
+                {d}
+            </div>
+        ));
 
-  // Show black screen until everything is ready
-  if (!isLoaded) {
+    // Show black screen until everything is ready
+    if (!isLoaded) {
+        return (
+            <div
+                style={{ height: '100dvh', width: '100vw', backgroundColor: 'black' }}
+            />
+        );
+    }
+
     return (
-      <div
-        style={{ height: '100dvh', width: '100vw', backgroundColor: 'black' }}
-      />
+        <main style={containerStyle}>
+            <time dateTime={time.toISOString()} style={faceStyle}>
+                {renderDigits(hours)}
+                <div style={digitBox}>:</div>
+                {renderDigits(minutes)}
+                <div style={digitBox}>:</div>
+                {renderDigits(seconds)}
+            </time>
+        </main>
     );
-  }
-
-  return (
-    <main style={containerStyle}>
-      <time dateTime={time.toISOString()} style={faceStyle}>
-        {renderDigits(hours)}
-        <div style={digitBox}>:</div>
-        {renderDigits(minutes)}
-        <div style={digitBox}>:</div>
-        {renderDigits(seconds)}
-      </time>
-    </main>
-  );
 };
 
 export default Clock;

@@ -63,7 +63,7 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    position: 'relative',
+    position: 'relative' as const,
   },
   machine: { // This is a React.CSSProperties object
     background: '#575656',
@@ -77,7 +77,7 @@ const styles: Record<string, React.CSSProperties> = {
     height: '60vh',
     maxHeight: '50rem',
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column' as const,
     justifyContent: 'space-between',
     position: 'relative',
   },

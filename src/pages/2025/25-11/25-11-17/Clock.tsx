@@ -18,7 +18,7 @@ export const fontConfigs = [
 export default function MarsDigitalClock() {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-  const rafRef = useRef<number | null>(null); // Correctly type rafRef for setInterval ID
+  const rafRef = useRef<number | NodeJS.Timeout | null>(null); // Correctly type rafRef for setInterval ID
 
   useEffect(() => {
     let cancelled = false;

@@ -14,39 +14,39 @@ export { bg2 };
 
 // BTS: Export font config for pre-buffering
 export const fontConfigs = [
-  {
-    fontFamily: 'hea',
-    fontUrl: myFontWoff2,
-    options: { weight: 'normal', style: 'normal' },
-  },
+    {
+        fontFamily: 'hea',
+        fontUrl: myFontWoff2,
+        options: { weight: 'normal', style: 'normal' },
+    },
 ];
 
 const DigitalClock: FC = () => {
-  const time = useClockTime();
+    const time = useClockTime();
 
-  // BTS: Suspend until font is ready to prevent FOUC
-  useSuspenseFontLoader(fontConfigs);
+    // BTS: Suspend until font is ready to prevent FOUC
+    useSuspenseFontLoader(fontConfigs);
 
-  const displayTime = useMemo(() => {
-    const h = time.getHours().toString().padStart(2, '0');
-    const m = time.getMinutes().toString().padStart(2, '0');
-    return `${h}:${m}`;
-  }, [time]);
+    const displayTime = useMemo(() => {
+        const h = time.getHours().toString().padStart(2, '0');
+        const m = time.getMinutes().toString().padStart(2, '0');
+        return `${h}:${m}`;
+    }, [time]);
 
-  return (
-    <main>
-      {/* Full-Screen Background Layer for bg2, stretched with distortion */}
-      <div
-        className={styles.background}
-        style={{ backgroundImage: `url(${bg2})` }}
-      />
+    return (
+        <main>
+            {/* Full-Screen Background Layer for bg2, stretched with distortion */}
+            <div
+                className={styles.background}
+                style={{ backgroundImage: `url(${bg2})` }}
+            />
 
-      {/* Clock Display */}
-      <time dateTime={time.toISOString()} className={styles.container}>
-        {displayTime}
-      </time>
-    </main>
-  );
+            {/* Clock Display */}
+            <time dateTime={time.toISOString()} className={styles.container}>
+                {displayTime}
+            </time>
+        </main>
+    );
 };
 
 export default DigitalClock;

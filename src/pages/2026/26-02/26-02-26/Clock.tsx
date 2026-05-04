@@ -181,7 +181,7 @@ const ImageGridClock: React.FC = () => {
     fontSize: '11vh',
     fontWeight: 'bold',
     zIndex: 10,
-    letterSpacing: '-1vh',
+    letterSpacing: '-1vh' as const,
     whiteSpace: 'nowrap',
     pointerEvents: 'none' as const,
     textShadow:

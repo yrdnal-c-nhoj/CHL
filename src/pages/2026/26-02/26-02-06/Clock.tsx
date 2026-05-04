@@ -31,7 +31,7 @@ const Analog260205Clock: React.FC = () => {
   const hourAngle = ((hours + minutes / 60) / 12) * 360;
 
   const containerStyle: React.CSSProperties = {
-    width: '100vw',
+    width: '100vw' as const,
     height: '100vh',
     display: 'flex',
     justifyContent: 'center',
@@ -48,7 +48,7 @@ const Analog260205Clock: React.FC = () => {
   };
 
   const clockFaceStyle: React.CSSProperties = {
-    position: 'relative',
+    position: 'relative' as const,
     width: '300px',
     height: '300px',
     borderRadius: '50%',

@@ -12,7 +12,7 @@ import styles from './Clock.module.css';
 export { mazeImage };
 
 const getBackgroundStyle = (isFlipped: boolean) => ({
-  position: 'absolute' as const,
+  position: 'absolute',
   inset: 0,
   backgroundImage: `url(${mazeImage})`,
   backgroundSize: '200px auto',
@@ -28,8 +28,8 @@ const BackgroundLayers = React.memo(() => (
   <>
     {/* Full-cover background - no tiling */}
     <div
-      style={{
-        position: 'absolute' as const,
+      style={{ // This is a React.CSSProperties object
+        position: 'absolute',
         inset: 0,
         backgroundImage: `url(${loopImage})`,
         backgroundSize: 'cover',

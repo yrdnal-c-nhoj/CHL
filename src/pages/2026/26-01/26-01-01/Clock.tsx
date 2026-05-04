@@ -47,7 +47,7 @@ const InvertedClock: React.FC = () => {
   }, []);
 
   const containerStyle: React.CSSProperties = {
-    position: 'relative',
+    position: 'relative' as const,
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
@@ -61,7 +61,7 @@ const InvertedClock: React.FC = () => {
   };
 
   const bgMediaStyle: React.CSSProperties = {
-    position: 'absolute',
+    position: 'absolute' as const,
     inset: 0,
     backgroundImage: `url(${bg1})`,
     backgroundSize: 'cover',
@@ -73,7 +73,7 @@ const InvertedClock: React.FC = () => {
   };
 
   const clockOverlayStyle: React.CSSProperties = {
-    position: 'relative', // Relative to the flex container
+    position: 'relative' as const, // Relative to the flex container
     zIndex: 1,
     mixBlendMode: 'difference',
     display: 'flex',
@@ -85,13 +85,13 @@ const InvertedClock: React.FC = () => {
   };
 
   const clockFaceStyle: React.CSSProperties = {
-    position: 'relative',
+    position: 'relative' as const,
     width: '50vh', // Larger container to accommodate numbers without clipping
     height: '50vh',
   };
 
   const handBaseStyle: React.CSSProperties = {
-    position: 'absolute',
+    position: 'absolute' as const,
     top: '50%',
     left: '50%',
     backgroundColor: 'white',

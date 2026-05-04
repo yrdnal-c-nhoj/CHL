@@ -7,54 +7,54 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const BarrelrollClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'ber',
-      fontUrl: berFont,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
-  useEffect(() => {
-    const updateClock: React.FC = () => {
-      const now = new Date();
-      const second = now.getSeconds();
-      const minute = now.getMinutes();
-      const hour = now.getHours();
+    // Standardized font loading with font-display: swap to avoid FOUC
+    const fontConfigs = [
+        {
+            fontFamily: 'ber',
+            fontUrl: berFont,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
+    ];
+    const fontsLoaded = useMultipleFontLoader(fontConfigs);
+    useEffect(() => {
+        const updateClock = () => {
+            const now = new Date();
+            const second = now.getSeconds();
+            const minute = now.getMinutes();
+            const hour = now.getHours();
 
-      const secondDeg = second * 6;
-      const minuteDeg = minute * 6 + second * 0.1;
-      const hourDeg = ((hour % 12) / 12) * 360 + (minute / 60) * 30;
+            const secondDeg = second * 6;
+            const minuteDeg = minute * 6 + second * 0.1;
+            const hourDeg = ((hour % 12) / 12) * 360 + (minute / 60) * 30;
 
-      document.getElementById('second').style.transform =
-        `translateX(-50%) rotate(${secondDeg}deg)`;
-      document.getElementById('minute').style.transform =
-        `translateX(-50%) rotate(${minuteDeg}deg)`;
-      document.getElementById('hour').style.transform =
-        `translateX(-50%) rotate(${hourDeg}deg)`;
-    };
+            document.getElementById('second').style.transform =
+                `translateX(-50%) rotate(${secondDeg}deg)`;
+            document.getElementById('minute').style.transform =
+                `translateX(-50%) rotate(${minuteDeg}deg)`;
+            document.getElementById('hour').style.transform =
+                `translateX(-50%) rotate(${hourDeg}deg)`;
+        };
 
-    const interval = setInterval(updateClock, 1000);
-    updateClock();
+        const interval = setInterval(updateClock, 1000);
+        updateClock();
 
-    return () => clearInterval(interval);
-  }, []);
+        return () => clearInterval(interval);
+    }, []);
 
-  return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        background: '#000',
-        fontSize: '1rem',
-      }}
-    >
-      <style>{`
+    return (
+        <div
+            style={{
+                width: '100vw',
+                height: '100dvh',
+                overflow: 'hidden',
+                background: '#000',
+                fontSize: '1rem',
+            }}
+        >
+            <style>{`
         /* Font loading handled by useMultipleFontLoader */
 
         * {
@@ -193,41 +193,41 @@ const BarrelrollClock: React.FC = () => {
      
       `}</style>
 
-      <div className="container">
-        <div className="spin-wrapper">
-          <div className="left half">
-            <img
-              decoding="async"
-              loading="lazy"
-              src={bardImg}
-              alt="Left Image"
-            />
-          </div>
-          <div className="right half">
-            <img
-              decoding="async"
-              loading="lazy"
-              src={barrsImg}
-              alt="Right Image"
-            />
-          </div>
-          <div className="center-line" />
-        </div>
+            <div className="container">
+                <div className="spin-wrapper">
+                    <div className="left half">
+                        <img
+                            decoding="async"
+                            loading="lazy"
+                            src={bardImg}
+                            alt="Left Image"
+                        />
+                    </div>
+                    <div className="right half">
+                        <img
+                            decoding="async"
+                            loading="lazy"
+                            src={barrsImg}
+                            alt="Right Image"
+                        />
+                    </div>
+                    <div className="center-line" />
+                </div>
 
-        <div className="clock" id="clock">
-          {[...Array(12)].map((_, i) => (
-            <div className="number" key={i} style={{ '--i': i + 1 }}>
-              {i + 1}
+                <div className="clock" id="clock">
+                    {[...Array(12)].map((_, i) => (
+                        <div className="number" key={i} style={{ '--i': i + 1 }}>
+                            {i + 1}
+                        </div>
+                    ))}
+
+                    <div className="hand hour" id="hour" />
+                    <div className="hand minute" id="minute" />
+                    <div className="hand second" id="second" />
+                </div>
             </div>
-          ))}
-
-          <div className="hand hour" id="hour" />
-          <div className="hand minute" id="minute" />
-          <div className="hand second" id="second" />
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default BarrelrollClock;

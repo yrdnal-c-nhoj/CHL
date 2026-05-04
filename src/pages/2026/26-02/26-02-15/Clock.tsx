@@ -148,7 +148,7 @@ export default function PixelInverseClock() {
   return (
     <div
       style={{
-        backgroundColor: '#000',
+        backgroundColor: '#000' as const,
         width: '100vw',
         height: '100dvh',
         overflow: 'hidden',

@@ -113,7 +113,7 @@ const DigitalClock: React.FC = () => {
           transform: 'translate(-50%, -50%) scaleX(-1)',
           width: '100vw',
           height: '120dvh',
-          backgroundImage: `url(${gridImage})`, // This is a string, compatible with React.CSSProperties
+          backgroundImage: `url(${gridImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

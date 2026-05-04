@@ -12,177 +12,177 @@ import { useSecondClock } from '@/utils/hooks';
 
 // Component Props interface
 interface FlyingPetalsClockProps {
-  // No props required for this component
+    // No props required for this component
 }
 
 const FlyingPetalsClock: React.FC<FlyingPetalsClockProps> = () => {
-  // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
-  const [time, setTime] = useState(new Date());
+    // Use the standardized hook for smooth clock updates
+    const currentTime = useSecondClock();
+    const [time, setTime] = useState(new Date());
 
-  // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [
-      {
-        fontFamily: 'Petal',
-        fontUrl,
-        options: {
-          weight: 'normal',
-          style: 'normal',
+    // Font loading configuration (memoized)
+    const fontConfigs = useMemo<FontConfig[]>(
+        () => [
+            {
+                fontFamily: 'Petal',
+                fontUrl,
+                options: {
+                    weight: 'normal',
+                    style: 'normal',
+                },
+            },
+        ],
+        [],
+    );
+    useSuspenseFontLoader(fontConfigs);
+
+    // Font loading handled by useSuspenseFontLoader
+
+    useEffect(() => {
+        const interval = setInterval(() => setTime(new Date()), 1000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const getTimeParts = () => {
+        const hours = time.getHours().toString().padStart(2, '0');
+        const minutes = time.getMinutes().toString().padStart(2, '0');
+        const seconds = time.getSeconds().toString().padStart(2, '0');
+        return [...hours, ...minutes, ...seconds];
+    };
+
+    const digits = getTimeParts();
+
+    const containerStyle: React.CSSProperties = {
+        fontFamily: 'Petal, sans-serif',
+        margin: 0,
+        padding: 0,
+        overflow: 'hidden',
+        backgroundColor: 'rgb(224, 145, 156)',
+        height: '100dvh',
+        width: '100vw',
+        position: 'relative',
+    };
+
+    const imgStyleBase: React.CSSProperties = {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+    };
+
+    const imageStyles: React.CSSProperties = [
+        {
+            ...imgStyleBase,
+            transform: 'rotate(180deg)',
+            filter: 'saturate(7.5)',
+            zIndex: 4,
         },
-      },
-    ],
-    [],
-  );
-  useSuspenseFontLoader(fontConfigs);
+        {
+            ...imgStyleBase,
+            transform: 'rotate(185deg)',
+            filter: 'saturate(2.5) brightness(1.5)',
+            zIndex: 1,
+        },
+        {
+            ...imgStyleBase,
+            transform: 'rotate(180deg)',
+            filter: 'saturate(1.5) brightness(1.5)',
+            zIndex: 2,
+        },
+        {
+            ...imgStyleBase,
+            transform: 'rotate(10deg)',
+            filter: 'saturate(1.5) brightness(1.5)',
+            zIndex: 3,
+        },
+    ];
 
-  // Font loading handled by useSuspenseFontLoader
+    const wrapperStyle: React.CSSProperties = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        zIndex: 10,
+    };
 
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+    const clockContainerStyle: React.CSSProperties = {
+        display: 'flex',
+        flexWrap: 'nowrap',
+        gap: '2vw',
+        justifyContent: 'center',
+        alignItems: 'center',
+    };
 
-  const getTimeParts = () => {
-    const hours = time.getHours().toString().padStart(2, '0');
-    const minutes = time.getMinutes().toString().padStart(2, '0');
-    const seconds = time.getSeconds().toString().padStart(2, '0');
-    return [...hours, ...minutes, ...seconds];
-  };
+    const digitGroupStyle: React.CSSProperties = {
+        display: 'flex',
+        gap: '0.5vw',
+    };
 
-  const digits = getTimeParts();
+    const digitBoxStyle: React.CSSProperties = {
+        color: '#7f8431',
+        textShadow:
+            '#88f157 0.2rem 0.3rem 2rem, #88f157 -0.2rem 0.3rem 2rem, #88f157 0.2rem -0.3rem 2rem, #88f157 -0.2rem -0.3rem 2rem',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: '9vw',
+        fontFamily: 'Petal, sans-serif',
+        width: '8vw',
+        height: '6vw',
+        minWidth: '5vw',
+        textAlign: 'center',
+        boxSizing: 'border-box',
+    };
 
-  const containerStyle = {
-    fontFamily: 'Petal, sans-serif',
-    margin: 0,
-    padding: 0,
-    overflow: 'hidden',
-    backgroundColor: 'rgb(224, 145, 156)',
-    height: '100dvh',
-    width: '100vw',
-    position: 'relative',
-  };
-
-  const imgStyleBase = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100vw',
-    height: '100vh',
-  };
-
-  const imageStyles = [
-    {
-      ...imgStyleBase,
-      transform: 'rotate(180deg)',
-      filter: 'saturate(7.5)',
-      zIndex: 4,
-    },
-    {
-      ...imgStyleBase,
-      transform: 'rotate(185deg)',
-      filter: 'saturate(2.5) brightness(1.5)',
-      zIndex: 1,
-    },
-    {
-      ...imgStyleBase,
-      transform: 'rotate(180deg)',
-      filter: 'saturate(1.5) brightness(1.5)',
-      zIndex: 2,
-    },
-    {
-      ...imgStyleBase,
-      transform: 'rotate(10deg)',
-      filter: 'saturate(1.5) brightness(1.5)',
-      zIndex: 3,
-    },
-  ];
-
-  const wrapperStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    zIndex: 10,
-  };
-
-  const clockContainerStyle = {
-    display: 'flex',
-    flexWrap: 'nowrap',
-    gap: '2vw',
-    justifyContent: 'center',
-    alignItems: 'center',
-  };
-
-  const digitGroupStyle = {
-    display: 'flex',
-    gap: '0.5vw',
-  };
-
-  const digitBoxStyle = {
-    color: '#7f8431',
-    textShadow:
-      '#88f157 0.2rem 0.3rem 2rem, #88f157 -0.2rem 0.3rem 2rem, #88f157 0.2rem -0.3rem 2rem, #88f157 -0.2rem -0.3rem 2rem',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: '9vw',
-    fontFamily: 'Petal, sans-serif',
-    width: '8vw',
-    height: '6vw',
-    minWidth: '5vw',
-    textAlign: 'center',
-    boxSizing: 'border-box',
-  };
-
-  return (
-    <div style={containerStyle}>
-      <img
-        decoding="async"
-        loading="lazy"
-        src={bg1}
-        alt="background1"
-        style={imageStyles[0]}
-      />
-      <img
-        decoding="async"
-        loading="lazy"
-        src={bg2}
-        alt="background2"
-        style={imageStyles[1]}
-      />
-      <img
-        decoding="async"
-        loading="lazy"
-        src={bg3}
-        alt="background3"
-        style={imageStyles[2]}
-      />
-      <img
-        decoding="async"
-        loading="lazy"
-        src={bg4}
-        alt="background4"
-        style={imageStyles[3]}
-      />
-      <div style={wrapperStyle}>
-        <div style={clockContainerStyle}>
-          <div style={digitGroupStyle}>
-            <div style={digitBoxStyle}>{digits[0]}</div>
-            <div style={digitBoxStyle}>{digits[1]}</div>
-          </div>
-          <div style={digitGroupStyle}>
-            <div style={digitBoxStyle}>{digits[2]}</div>
-            <div style={digitBoxStyle}>{digits[3]}</div>
-          </div>
-          <div style={digitGroupStyle}>
-            <div style={digitBoxStyle}>{digits[4]}</div>
-            <div style={digitBoxStyle}>{digits[5]}</div>
-          </div>
+    return (
+        <div style={containerStyle}>
+            <img
+                decoding="async"
+                loading="lazy"
+                src={bg1}
+                alt="background1"
+                style={imageStyles[0]}
+            />
+            <img
+                decoding="async"
+                loading="lazy"
+                src={bg2}
+                alt="background2"
+                style={imageStyles[1]}
+            />
+            <img
+                decoding="async"
+                loading="lazy"
+                src={bg3}
+                alt="background3"
+                style={imageStyles[2]}
+            />
+            <img
+                decoding="async"
+                loading="lazy"
+                src={bg4}
+                alt="background4"
+                style={imageStyles[3]}
+            />
+            <div style={wrapperStyle}>
+                <div style={clockContainerStyle}>
+                    <div style={digitGroupStyle}>
+                        <div style={digitBoxStyle}>{digits[0]}</div>
+                        <div style={digitBoxStyle}>{digits[1]}</div>
+                    </div>
+                    <div style={digitGroupStyle}>
+                        <div style={digitBoxStyle}>{digits[2]}</div>
+                        <div style={digitBoxStyle}>{digits[3]}</div>
+                    </div>
+                    <div style={digitGroupStyle}>
+                        <div style={digitBoxStyle}>{digits[4]}</div>
+                        <div style={digitBoxStyle}>{digits[5]}</div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default FlyingPetalsClock;

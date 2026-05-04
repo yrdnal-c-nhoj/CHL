@@ -29,11 +29,22 @@ sourceFiles.forEach(file => {
   }
 
   // 2. Automated CSS Typing: Find variables like 'containerStyle' or 'styles'
-  file.getVariableStatements().forEach(v => {
-    const declaration = v.getDeclarations()[0];
-    const name = declaration.getName().toLowerCase();
-    if ((name.includes('style') || name === 's') && !declaration.getTypeNode()) {
-      declaration.setType(name === 'styles' || name === 's' ? STYLE_TYPES[1] : STYLE_TYPES[0]);
+  file.getDescendantsOfKind(SyntaxKind.VariableDeclaration).forEach(decl => {
+    const name = decl.getName().toLowerCase();
+    if ((name.includes('style') || name === 's') && !decl.getTypeNode()) {
+      const initializer = decl.getInitializer();
+      
+      // If the variable is an arrow function or function expression, type its return value
+      if (initializer && (initializer.getKind() === SyntaxKind.ArrowFunction || initializer.getKind() === SyntaxKind.FunctionExpression)) {
+        const func = initializer;
+        if (!func.getReturnTypeNode()) {
+          func.setReturnType('React.CSSProperties');
+        }
+      } else {
+        // Otherwise, type the variable itself (Object literals)
+        const typeToSet = (name === 'styles' || name === 's') ? STYLE_TYPES[1] : STYLE_TYPES[0];
+        decl.setType(typeToSet);
+      }
     }
   });
 

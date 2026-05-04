@@ -5,94 +5,94 @@ import bgImage from '@/assets/images/2025/25-07/25-07-01/mu.jpg';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const CinemaClock: React.FC = () => {
-  const [time, setTime] = useState<any>({ hours: '', minutes: '' });
+    const [time, setTime] = useState<any>({ hours: '', minutes: '' });
 
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'mult',
-      fontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+    // Standardized font loading with font-display: swap to avoid FOUC
+    const fontConfigs = [
+        {
+            fontFamily: 'mult',
+            fontUrl,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
+    ];
+    const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  useEffect(() => {
-    const updateClock: React.FC = () => {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes();
+    useEffect(() => {
+        const updateClock = () => {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes();
 
-      hours = hours % 12 || 12;
+            hours = hours % 12 || 12;
 
-      setTime({
-        hours: String(hours), // no leading zero
-        minutes: String(minutes).padStart(2, '0'), // leading zero on minutes
-      });
-    };
+            setTime({
+                hours: String(hours), // no leading zero
+                minutes: String(minutes).padStart(2, '0'), // leading zero on minutes
+            });
+        };
 
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+        updateClock();
+        const interval = setInterval(updateClock, 1000);
+        return () => clearInterval(interval);
+    }, []);
 
-  const fontFace = `
+    const fontFace = `
     @font-face {
       font-family: 'mult';
       src: url(${fontUrl}) format('truetype');
     }
   `;
 
-  const styles = {
-    htmlBody: {
-      margin: 0,
-      padding: 0,
-      height: '100dvh',
-      width: '100vw',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'relative',
-      fontFamily: 'mult, monospace',
-    },
-    clock: {
-      position: 'absolute',
-      top: '32vh',
-      color: 'rgb(137, 3, 3)',
-      fontSize: '2.1rem',
-      letterSpacing: '0.5rem',
-      textTransform: 'uppercase',
-      zIndex: 2,
-    },
-    bgImage: {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      backgroundImage: `url(${bgImage})`,
-      backgroundSize: '100% 100%',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      filter: 'contrast(100%)',
-      zIndex: 1,
-      pointerEvents: 'none',
-    },
-  };
+    const styles: Record<string, React.CSSProperties> = {
+        htmlBody: {
+            margin: 0,
+            padding: 0,
+            height: '100dvh',
+            width: '100vw',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative',
+            fontFamily: 'mult, monospace',
+        },
+        clock: {
+            position: 'absolute',
+            top: '32vh',
+            color: 'rgb(137, 3, 3)',
+            fontSize: '2.1rem',
+            letterSpacing: '0.5rem',
+            textTransform: 'uppercase',
+            zIndex: 2,
+        },
+        bgImage: {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: '100% 100%',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            filter: 'contrast(100%)',
+            zIndex: 1,
+            pointerEvents: 'none',
+        },
+    };
 
-  return (
-    <div style={styles.htmlBody}>
-      <style>{fontFace}</style>
-      <div style={styles.bgImage} />
-      <div style={styles.clock}>
-        {time.hours}
-        {time.minutes}
-      </div>
-    </div>
-  );
+    return (
+        <div style={styles.htmlBody}>
+            <style>{fontFace}</style>
+            <div style={styles.bgImage} />
+            <div style={styles.clock}>
+                {time.hours}
+                {time.minutes}
+            </div>
+        </div>
+    );
 };
 
 export default CinemaClock;

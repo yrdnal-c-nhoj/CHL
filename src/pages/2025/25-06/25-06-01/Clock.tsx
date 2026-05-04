@@ -9,7 +9,7 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 // Font loading handled by useMultipleFontLoader
-const styleSheet = new CSSStyleSheet();
+const styleSheet: React.CSSProperties = new CSSStyleSheet();
 styleSheet.replaceSync(`
 
   @keyframes bounceJostle {
@@ -50,182 +50,182 @@ styleSheet.replaceSync(`
 
 document.adoptedStyleSheets = [...document.adoptedStyleSheets, styleSheet];
 
-const styles = {
-  body: {
-    color: 'rgb(84, 82, 176)',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '100dvh',
-    width: '100vw',
-    margin: 0,
-    overflow: 'visible', // Changed to 'visible' to ensure no clipping of the image
-    position: 'relative',
-    fontFamily: 'air, Arial, sans-serif',
-    boxSizing: 'border-box',
-  },
-  clock: {
-    display: 'flex',
-    zIndex: 10,
-    marginTop: '10vh', // Prevent overlap with stamps
-  },
-  digitBox: {
-    width: '2rem',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: '8rem',
-    boxSizing: 'border-box',
-  },
-  colon: {
-    width: '1rem',
-    height: '7rem',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: '7rem',
-  },
-  jostle: {
-    animation: 'bounceJostle 10s infinite ease-in-out',
-    willChange: 'transform',
-  },
-  bgimage: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)', // Center the image
-    maxHeight: '100dvh',
-    // maxWidth: '190vw',
-    width: 'auto',
-    height: 'auto',
-    objectFit: 'contain', // Ensure no clipping
-    zIndex: 1,
-    // Removed jostle animation to isolate centering issue
-  },
-  stamp: {
-    position: 'absolute',
-    top: '2rem',
-    right: '9.6rem',
-    width: '6rem',
-    height: '4rem',
-    transformOrigin: 'center center',
-    zIndex: 5,
-    animationDelay: '0.4s',
-  },
-  stamp2: {
-    position: 'absolute',
-    top: '4.9rem',
-    right: '3rem',
-    width: '5rem',
-    height: '4rem',
-    transformOrigin: 'center center',
-    zIndex: 5,
-    animationDelay: '0.8s',
-  },
-  stamp3: {
-    position: 'absolute',
-    top: '2.5rem',
-    right: '3.3rem',
-    width: '7rem',
-    height: '3rem',
-    transformOrigin: 'center center',
-    zIndex: 5,
-  },
+const styles: Record<string, React.CSSProperties> = {
+    body: {
+        color: 'rgb(84, 82, 176)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100dvh',
+        width: '100vw',
+        margin: 0,
+        overflow: 'visible', // Changed to 'visible' to ensure no clipping of the image
+        position: 'relative',
+        fontFamily: 'air, Arial, sans-serif',
+        boxSizing: 'border-box',
+    },
+    clock: {
+        display: 'flex',
+        zIndex: 10,
+        marginTop: '10vh', // Prevent overlap with stamps
+    },
+    digitBox: {
+        width: '2rem',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: '8rem',
+        boxSizing: 'border-box',
+    },
+    colon: {
+        width: '1rem',
+        height: '7rem',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: '7rem',
+    },
+    jostle: {
+        animation: 'bounceJostle 10s infinite ease-in-out',
+        willChange: 'transform',
+    },
+    bgimage: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)', // Center the image
+        maxHeight: '100dvh',
+        // maxWidth: '190vw',
+        width: 'auto',
+        height: 'auto',
+        objectFit: 'contain', // Ensure no clipping
+        zIndex: 1,
+        // Removed jostle animation to isolate centering issue
+    },
+    stamp: {
+        position: 'absolute',
+        top: '2rem',
+        right: '9.6rem',
+        width: '6rem',
+        height: '4rem',
+        transformOrigin: 'center center',
+        zIndex: 5,
+        animationDelay: '0.4s',
+    },
+    stamp2: {
+        position: 'absolute',
+        top: '4.9rem',
+        right: '3rem',
+        width: '5rem',
+        height: '4rem',
+        transformOrigin: 'center center',
+        zIndex: 5,
+        animationDelay: '0.8s',
+    },
+    stamp3: {
+        position: 'absolute',
+        top: '2.5rem',
+        right: '3.3rem',
+        width: '7rem',
+        height: '3rem',
+        transformOrigin: 'center center',
+        zIndex: 5,
+    },
+};
+const Clock: React.FC = () => { // Standardized font loading with font-display: swap to avoid FOUC
+    const fontConfigs = [
+        {
+            fontFamily: 'air',
+            fontUrl: airFontUrl,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
+    ];
+    const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+    const [time, setTime] = useState(() => new Date());
+
+    useEffect(() => {
+        const interval = setInterval(() => setTime(new Date()), 1000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const timeStr = time
+        .toLocaleTimeString('en-US', {
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+        })
+        .replace(/:/g, '');
+    const format = [
+        'digit',
+        'digit',
+        'colon',
+        'digit',
+        'digit',
+        'colon',
+        'digit',
+        'digit',
+    ];
+    const timeParts = [...timeStr];
+    let i = 0;
+
+    return (
+        <div style={styles.body} role="timer" aria-live="polite">
+            <img
+                decoding="async"
+                loading="lazy"
+                src={frameImg}
+                alt="Background frame"
+                style={styles.bgimage}
+            />
+            <img
+                decoding="async"
+                loading="lazy"
+                src={stamp3Img}
+                alt="Stamp 3"
+                style={{ ...styles.stamp3, ...styles.jostle }}
+            />
+            <img
+                decoding="async"
+                loading="lazy"
+                src={stamp2Img}
+                alt="Stamp 2"
+                style={{ ...styles.stamp2, ...styles.jostle }}
+            />
+            <img
+                decoding="async"
+                loading="lazy"
+                src={stampImg}
+                alt="Stamp 1"
+                style={{ ...styles.stamp, ...styles.jostle }}
+            />
+            <div style={styles.clock}>
+                {format.map((type, idx) => {
+                    if (type === 'colon') {
+                        return (
+                            <div
+                                key={idx}
+                                style={{ ...styles.colon, ...styles.jostle }}
+                                aria-hidden="true"
+                            >
+                                :
+                            </div>
+                        );
+                    }
+                    return (
+                        <div key={idx} style={{ ...styles.digitBox, ...styles.jostle }}>
+                            {timeParts[i++]}
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
 };
 
-export default function Clock() {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'air',
-      fontUrl: airFontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
-
-  const [time, setTime] = useState(() => new Date());
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const timeStr = time
-    .toLocaleTimeString('en-US', {
-      hour12: false,
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    })
-    .replace(/:/g, '');
-  const format = [
-    'digit',
-    'digit',
-    'colon',
-    'digit',
-    'digit',
-    'colon',
-    'digit',
-    'digit',
-  ];
-  const timeParts = [...timeStr];
-  let i = 0;
-
-  return (
-    <div style={styles.body} role="timer" aria-live="polite">
-      <img
-        decoding="async"
-        loading="lazy"
-        src={frameImg}
-        alt="Background frame"
-        style={styles.bgimage}
-      />
-      <img
-        decoding="async"
-        loading="lazy"
-        src={stamp3Img}
-        alt="Stamp 3"
-        style={{ ...styles.stamp3, ...styles.jostle }}
-      />
-      <img
-        decoding="async"
-        loading="lazy"
-        src={stamp2Img}
-        alt="Stamp 2"
-        style={{ ...styles.stamp2, ...styles.jostle }}
-      />
-      <img
-        decoding="async"
-        loading="lazy"
-        src={stampImg}
-        alt="Stamp 1"
-        style={{ ...styles.stamp, ...styles.jostle }}
-      />
-      <div style={styles.clock}>
-        {format.map((type, idx) => {
-          if (type === 'colon') {
-            return (
-              <div
-                key={idx}
-                style={{ ...styles.colon, ...styles.jostle }}
-                aria-hidden="true"
-              >
-                :
-              </div>
-            );
-          }
-          return (
-            <div key={idx} style={{ ...styles.digitBox, ...styles.jostle }}>
-              {timeParts[i++]}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
+export default Clock;

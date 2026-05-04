@@ -87,7 +87,7 @@ export default function AnalogClock() {
           src={hourHand}
           alt="hour"
           style={handStyle(hourDeg, 18, 24)}
-        />
+        /> // This is a string, compatible with React.CSSProperties
         
         {/* Minute hand (restored) */}
         <img
