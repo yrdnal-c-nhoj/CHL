@@ -31,7 +31,7 @@ const Home: FC = () => {
         setFontsReady(true);
       });
     }
-  }, [fontsReady]);
+  }, [fontsReady, setFontsReady]);
 
   // Load saved sort preference
   useEffect(() => {
