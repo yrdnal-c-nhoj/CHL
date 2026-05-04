@@ -191,8 +191,8 @@ const ImageAnalogClock: React.FC = () => {
                         position: 'absolute',
                         width: clockSize,
                         height: clockSize,
-                    backgroundImage: `url(${clockFace})`, // This is a string, compatible with React.CSSProperties
-                    backgroundSize: 'cover',
+                        backgroundImage: `url(${clockFace})`, // This is a string, compatible with React.CSSProperties
+                        backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         filter: 'grayscale(95%)',
                         opacity: 0.9,

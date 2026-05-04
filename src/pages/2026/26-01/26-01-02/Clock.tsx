@@ -5,103 +5,103 @@ import backgroundImage from '@/assets/images/2026/26-01/26-01-02/brick.webp';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const StretchedClock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'Cram260102',
-      fontUrl: fontFile,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+    // Standardized font loading with font-display: swap to avoid FOUC
+    const fontConfigs = [
+        {
+            fontFamily: 'Cram260102',
+            fontUrl: fontFile,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
+    ];
+    const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const [time, setTime] = useState(new Date());
-  const [isLargeScreen, setIsLargeScreen] = useState<any>(
-    window.innerWidth > 768,
-  );
-  const [bgReady, setBgReady] = useState<boolean>(false);
+    const [time, setTime] = useState(new Date());
+    const [isLargeScreen, setIsLargeScreen] = useState<any>(
+        window.innerWidth > 768,
+    );
+    const [bgReady, setBgReady] = useState<boolean>(false);
 
-  // Font loading handled by useMultipleFontLoader
+    // Font loading handled by useMultipleFontLoader
 
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    const handleResize = () => setIsLargeScreen(window.innerWidth > 768);
+    useEffect(() => {
+        const timer = setInterval(() => setTime(new Date()), 1000);
+        const handleResize = () => setIsLargeScreen(window.innerWidth > 768);
 
-    window.addEventListener('resize', handleResize);
-    return () => {
-      clearInterval(timer);
-      window.removeEventListener('resize', handleResize);
+        window.addEventListener('resize', handleResize);
+        return () => {
+            clearInterval(timer);
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    // Load background to avoid flashing
+    useEffect(() => {
+        let cancelled = false;
+        const img = new Image();
+        const done = () => !cancelled && setBgReady(true);
+        img.onload = done;
+        img.onerror = done;
+        img.src = backgroundImage;
+        const timeout = setTimeout(done, 1200);
+
+        return () => {
+            cancelled = true;
+            clearTimeout(timeout);
+        };
+    }, []);
+
+    const formatTime = (date: Date) => {
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return { hours, minutes };
     };
-  }, []);
 
-  // Load background to avoid flashing
-  useEffect(() => {
-    let cancelled = false;
-    const img = new Image();
-    const done = () => !cancelled && setBgReady(true);
-    img.onload = done;
-    img.onerror = done;
-    img.src = backgroundImage;
-    const timeout = setTimeout(done, 1200);
+    const { hours, minutes } = formatTime(time);
 
-    return () => {
-      cancelled = true;
-      clearTimeout(timeout);
+    const containerStyle: React.CSSProperties = {
+        position: 'relative' as const,
+        width: '100vw',
+        height: '100dvh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+        padding: 0,
+        backgroundColor: '#C9C7AF',
+        opacity: fontsLoaded && bgReady ? 1 : 0,
+        transition: 'opacity 0.35s ease',
+        visibility: fontsLoaded && bgReady ? 'visible' : 'hidden',
     };
-  }, []);
 
-  const formatTime = (date: Date) => {
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return { hours, minutes };
-  };
+    const segmentStyle: React.CSSProperties = {
+        position: 'relative' as const, // Required for the absolute pseudo-element background
+        display: 'flex',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+    };
 
-  const { hours, minutes } = formatTime(time);
+    const textStyle: React.CSSProperties = {
+        position: 'relative' as const, // Ensures text stays above the background layer
+        zIndex: 2,
+        color: '#FFD505',
+        fontFamily: 'Cram260102, sans-serif',
+        lineHeight: '1',
+        fontSize: isLargeScreen ? '25vw' : '35dvh',
+        transform: 'scale(1.2, 1.5)',
+        width: '100%',
+        textAlign: 'center',
+        userSelect: 'none',
+        textShadow: '2px 2px 10px rgba(0,0,0,0.2), 1vh 1vh 0px #FF00FF',
+    };
 
-  const containerStyle: React.CSSProperties = {
-    position: 'relative' as const,
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-    padding: 0,
-    backgroundColor: '#C9C7AF',
-    opacity: fontsLoaded && bgReady ? 1 : 0,
-    transition: 'opacity 0.35s ease',
-    visibility: fontsLoaded && bgReady ? 'visible' : 'hidden',
-  };
-
-  const segmentStyle: React.CSSProperties = {
-    position: 'relative' as const, // Required for the absolute pseudo-element background
-    display: 'flex',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-  };
-
-  const textStyle: React.CSSProperties = {
-    position: 'relative' as const, // Ensures text stays above the background layer
-    zIndex: 2,
-    color: '#FFD505',
-    fontFamily: 'Cram260102, sans-serif',
-    lineHeight: '1',
-    fontSize: isLargeScreen ? '25vw' : '35dvh',
-    transform: 'scale(1.2, 1.5)',
-    width: '100%',
-    textAlign: 'center',
-    userSelect: 'none',
-    textShadow: '2px 2px 10px rgba(0,0,0,0.2), 1vh 1vh 0px #FF00FF',
-  };
-
-  return (
-    <div style={containerStyle}>
-      <style>{`
+    return (
+        <div style={containerStyle}>
+            <style>{`
         @font-face {
           font-family: 'Cram260102';
           src: url(${fontFile}) format('truetype');
@@ -126,17 +126,17 @@ const StretchedClock: React.FC = () => {
         }
       `}</style>
 
-      {/* Hours Section */}
-      <div style={segmentStyle} className="filtered-bg">
-        <div style={textStyle}>{hours}</div>
-      </div>
+            {/* Hours Section */}
+            <div style={segmentStyle} className="filtered-bg">
+                <div style={textStyle}>{hours}</div>
+            </div>
 
-      {/* Minutes Section */}
-      <div style={segmentStyle} className="filtered-bg">
-        <div style={textStyle}>{minutes}</div>
-      </div>
-    </div>
-  );
+            {/* Minutes Section */}
+            <div style={segmentStyle} className="filtered-bg">
+                <div style={textStyle}>{minutes}</div>
+            </div>
+        </div>
+    );
 };
 
 export default StretchedClock;

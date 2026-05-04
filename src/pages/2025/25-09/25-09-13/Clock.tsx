@@ -10,11 +10,11 @@ const DigitalClock: React.FC = () => {
     const [isHorizontal, setIsHorizontal] = useState<boolean>(
         window.innerWidth >= 768,
     );
-  const [time, setTime] = useState(new Date());
-  const [prevTime, setPrevTime] = useState(new Date());
-  const [isHorizontal, setIsHorizontal] = useState<boolean>(
-    window.innerWidth >= 768,
-  );
+    const [time, setTime] = useState(new Date());
+    const [prevTime, setPrevTime] = useState(new Date());
+    const [isHorizontal, setIsHorizontal] = useState<boolean>(
+        window.innerWidth >= 768,
+    );
 
     const fontConfigs = useMemo(
         () => [
@@ -27,17 +27,17 @@ const DigitalClock: React.FC = () => {
         [],
     );
     useSuspenseFontLoader(fontConfigs);
-  const fontConfigs = useMemo(
-    () => [
-      {
-        fontFamily: 'CustomClockFont',
-        fontUrl: customFontpawww,
-        options: { weight: 'normal', style: 'normal' },
-      },
-    ],
-    [],
-  );
-  useSuspenseFontLoader(fontConfigs);
+    const fontConfigs = useMemo(
+        () => [
+            {
+                fontFamily: 'CustomClockFont',
+                fontUrl: customFontpawww,
+                options: { weight: 'normal', style: 'normal' },
+            },
+        ],
+        [],
+    );
+    useSuspenseFontLoader(fontConfigs);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -46,24 +46,24 @@ const DigitalClock: React.FC = () => {
         }, 1000);
         return () => clearInterval(interval);
     }, [time]);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPrevTime(time);
-      setTime(new Date());
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [time]);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setPrevTime(time);
+            setTime(new Date());
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [time]);
 
     useEffect(() => {
         const handleResize = () => setIsHorizontal(window.innerWidth >= 768);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-  useEffect(() => {
-    const handleResize = () => setIsHorizontal(window.innerWidth >= 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    useEffect(() => {
+        const handleResize = () => setIsHorizontal(window.innerWidth >= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const formatTime = (date) => {
         const hours = date.getHours();
@@ -72,20 +72,20 @@ const DigitalClock: React.FC = () => {
         const pad = (num) => String(num).padStart(2, '0');
         return { hours: pad(hours), minutes: pad(minutes), seconds: pad(seconds) };
     };
-  const formatTime = (date: Date) => {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
-    const pad = (num: number) => String(num).padStart(2, '0');
-    return { hours: pad(hours), minutes: pad(minutes), seconds: pad(seconds) };
-  };
+    const formatTime = (date: Date) => {
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const seconds = date.getSeconds();
+        const pad = (num: number) => String(num).padStart(2, '0');
+        return { hours: pad(hours), minutes: pad(minutes), seconds: pad(seconds) };
+    };
 
     const current = formatTime(time);
     const previous = formatTime(prevTime);
     const replaceNine = (str) => str.replace(/9/g, 'q');
-  const current = formatTime(time);
-  const previous = formatTime(prevTime);
-  const replaceNine = (str: string) => str.replace(/9/g, 'q');
+    const current = formatTime(time);
+    const previous = formatTime(prevTime);
+    const replaceNine = (str: string) => str.replace(/9/g, 'q');
 
     const containerStyle: React.CSSProperties = {
         width: '100vw',
@@ -100,19 +100,19 @@ const DigitalClock: React.FC = () => {
         fontFamily: 'CustomClockFont, sans-serif',
         visibility: 'visible',
     };
-  const containerStyle: React.CSSProperties = {
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    flexDirection: isHorizontal ? 'row' : 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    fontFamily: 'CustomClockFont, sans-serif',
-    visibility: 'visible',
-  };
+    const containerStyle: React.CSSProperties = {
+        width: '100vw',
+        height: '100dvh',
+        display: 'flex',
+        flexDirection: isHorizontal ? 'row' : 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        fontFamily: 'CustomClockFont, sans-serif',
+        visibility: 'visible',
+    };
 
     const rowStyle: React.CSSProperties = { display: 'flex' };
     const digitBoxStyle: React.CSSProperties = {
@@ -154,16 +154,16 @@ const DigitalClock: React.FC = () => {
     justifyContent: 'center',
     alignItems: 'center',
     background: `
-      linear-gradient(
-        to bottom,
-        rgba(20,20,20,0.9) 15%,  
-        rgba(128,128,128,0.9) 40%,     
-        rgba(128,128,128,0.9) 50%, 
-        rgba(225,225,255,0.9) 85%,
-        white 90%, 
-        white 100%
+      linear- gradient(
+            to bottom,
+            rgba(20, 20, 20, 0.9) 15 %,
+            rgba(128, 128, 128, 0.9) 40 %,
+            rgba(128, 128, 128, 0.9) 50 %,
+            rgba(225, 225, 255, 0.9) 85 %,
+            white 90 %,
+            white 100 %
       )
-    `,
+            `,
         WebkitBackgroundClip: 'text',
         WebkitTextFillColor: 'transparent',
         backgroundClip: 'text',

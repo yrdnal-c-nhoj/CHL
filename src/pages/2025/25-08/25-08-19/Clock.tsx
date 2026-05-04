@@ -5,112 +5,112 @@ import bgUrl from '@/assets/images/2025/25-08/25-08-19/ap.jpeg';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 const Pendulum: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'CustomFont',
-      fontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+    // Standardized font loading with font-display: swap to avoid FOUC
+    const fontConfigs = [
+        {
+            fontFamily: 'CustomFont',
+            fontUrl,
+            options: {
+                weight: 'normal',
+                style: 'normal',
+            },
+        },
+    ];
+    const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  useEffect(() => {
-    // Font loading handled by useMultipleFontLoader
-    const style = document.createElement('style');
-    style.textContent = ``;
-    document.head.appendChild(style);
+    useEffect(() => {
+        // Font loading handled by useMultipleFontLoader
+        const style = document.createElement('style');
+        style.textContent = ``;
+        document.head.appendChild(style);
 
-    const updateTimeOnBalls = () => {
-      const now = new Date();
-      let hours = now.getHours();
-      hours = hours % 12 || 12;
-      hours = String(hours).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      const timeString = `${hours}${minutes}${seconds}`;
-      const pieces = document.querySelectorAll('.piece');
-      pieces.forEach((piece, index) => {
-        piece.setAttribute('data-digit', timeString[index]);
-      });
-    };
-    updateTimeOnBalls();
-    const interval = setInterval(updateTimeOnBalls, 1000);
-    return () => {
-      clearInterval(interval);
-      document.head.removeChild(style);
-    };
-  }, []);
+        const updateTimeOnBalls = () => {
+            const now = new Date();
+            let hours = now.getHours();
+            hours = hours % 12 || 12;
+            hours = String(hours).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const timeString = `${hours}${minutes}${seconds}`;
+            const pieces = document.querySelectorAll('.piece');
+            pieces.forEach((piece, index) => {
+                piece.setAttribute('data-digit', timeString[index]);
+            });
+        };
+        updateTimeOnBalls();
+        const interval = setInterval(updateTimeOnBalls, 1000);
+        return () => {
+            clearInterval(interval);
+            document.head.removeChild(style);
+        };
+    }, []);
 
-  const styles = {
-    pendulumApp: {
-      height: '100dvh',
-      margin: 0,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'column',
-      position: 'relative',
-      overflow: 'hidden',
-    },
-    bgLayer: {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh',
-      backgroundImage: `url(${bgUrl})`,
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center center',
-      backgroundSize: 'cover',
-      filter: 'contrast(0.8) brightness(0.5) saturate(1.6)',
-      zIndex: 0,
-    },
+    const styles: Record<string, React.CSSProperties> = {
+        pendulumApp: {
+            height: '100dvh',
+            margin: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            position: 'relative',
+            overflow: 'hidden',
+        },
+        bgLayer: {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundImage: `url(${bgUrl})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center',
+            backgroundSize: 'cover',
+            filter: 'contrast(0.8) brightness(0.5) saturate(1.6)',
+            zIndex: 0,
+        },
 
-    pendulum: {
-      display: 'flex',
-      borderStyle: 'solid',
-      borderWidth: '1vw 1vw 3vw 1vw', // thicker bottom
-      borderRadius: '3.25vw 3.25vw 0 0', // rounded top corners
-      padding: '0 4.5vw 2.25vw',
-      height: '26vw',
-      zIndex: 1,
-      borderImage:
-        'linear-gradient(145deg, #b08d57, #f6e27a, #b08d57, #8c6b32) 1',
-      borderImageSlice: 1, // ensures the gradient slices evenly
-      backgroundColor: 'transparent', // keeps inside open
-      boxShadow: `
+        pendulum: {
+            display: 'flex',
+            borderStyle: 'solid',
+            borderWidth: '1vw 1vw 3vw 1vw', // thicker bottom
+            borderRadius: '3.25vw 3.25vw 0 0', // rounded top corners
+            padding: '0 4.5vw 2.25vw',
+            height: '26vw',
+            zIndex: 1,
+            borderImage:
+                'linear-gradient(145deg, #b08d57, #f6e27a, #b08d57, #8c6b32) 1',
+            borderImageSlice: 1, // ensures the gradient slices evenly
+            backgroundColor: 'transparent', // keeps inside open
+            boxShadow: `
     inset 0 0.25vw 0.5vw rgba(255, 255, 255, 0.5),
     inset 0 -0.25vw 0.5vw rgba(0, 0, 0, 0.5)
   `,
-    },
+        },
 
-    piece: {
-      transformOrigin: 'center top',
-      display: 'flex',
-      alignItems: 'center',
-      flexDirection: 'column',
-      width: '4.5vw',
-      height: '22.5vw',
-    },
-    pieceFirstChild: {
-      animation:
-        'left 1s cubic-bezier(0.215, 0.61, 0.355, 1) infinite alternate',
-    },
-    pieceLastChild: {
-      animation:
-        'right 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite alternate',
-    },
-  };
+        piece: {
+            transformOrigin: 'center top',
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+            width: '4.5vw',
+            height: '22.5vw',
+        },
+        pieceFirstChild: {
+            animation:
+                'left 1s cubic-bezier(0.215, 0.61, 0.355, 1) infinite alternate',
+        },
+        pieceLastChild: {
+            animation:
+                'right 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite alternate',
+        },
+    };
 
-  return (
-    <div style={styles.pendulumApp}>
-      <div style={styles.bgLayer} />
+    return (
+        <div style={styles.pendulumApp}>
+            <div style={styles.bgLayer} />
 
-      <style>{`
+            <style>{`
         @keyframes left {
           0% { transform: rotate(0deg); }
           50% { transform: rotate(0deg); }
@@ -157,22 +157,22 @@ const Pendulum: React.FC = () => {
   }
 `}</style>
 
-      <div style={styles.pendulum}>
-        <div
-          style={{ ...styles.piece, ...styles.pieceFirstChild }}
-          className="piece"
-         />
-        <div style={styles.piece} className="piece" />
-        <div style={styles.piece} className="piece" />
-        <div style={styles.piece} className="piece" />
-        <div style={styles.piece} className="piece" />
-        <div
-          style={{ ...styles.piece, ...styles.pieceLastChild }}
-          className="piece"
-         />
-      </div>
-    </div>
-  );
+            <div style={styles.pendulum}>
+                <div
+                    style={{ ...styles.piece, ...styles.pieceFirstChild }}
+                    className="piece"
+                />
+                <div style={styles.piece} className="piece" />
+                <div style={styles.piece} className="piece" />
+                <div style={styles.piece} className="piece" />
+                <div style={styles.piece} className="piece" />
+                <div
+                    style={{ ...styles.piece, ...styles.pieceLastChild }}
+                    className="piece"
+                />
+            </div>
+        </div>
+    );
 };
 
 export default Pendulum;

@@ -39,7 +39,7 @@ const Clock: React.FC = () => {
         };
     }, []);
 
-    const getRotationStyles = () => {
+    const getRotationStyles = (): React.CSSProperties => {
         const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
         const minutes = time.getMinutes() + seconds / 60;
         const hours = (time.getHours() % 12) + minutes / 60;

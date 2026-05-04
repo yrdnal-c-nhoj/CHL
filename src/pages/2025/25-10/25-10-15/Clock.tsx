@@ -13,200 +13,229 @@ function toBrahmi(num: string | number) {
         .toString()
         .split('')
         .map((d: string) => brahmiDigits[parseInt(d)]);
-  return num
-    .toString()
-    .split('')
-    .map((d: string) => brahmiDigits[parseInt(d)]);
+    return num
+        .toString()
+        .split('')
+        .map((d: string) => brahmiDigits[parseInt(d)]);
 }
 
 const BrahmiClock: React.FC = () => {
     const [time, setTime] = useState(new Date());
-export default function BrahmiClock() {
-  const [time, setTime] = useState(new Date());
+    export default function BrahmiClock() {
+        const [time, setTime] = useState(new Date());
 
-    const fontConfigs = useMemo<FontConfig[]>(
-        () => [{ fontFamily: 'BrahmiFont', fontUrl: font20251016 }],
-        [],
-    );
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [{ fontFamily: 'BrahmiFont', fontUrl: font20251016 }],
-    [],
-  );
+        const fontConfigs = useMemo<FontConfig[]>(
+            () => [{ fontFamily: 'BrahmiFont', fontUrl: font20251016 }],
+            [],
+        );
+        const fontConfigs = useMemo<FontConfig[]>(
+            () => [{ fontFamily: 'BrahmiFont', fontUrl: font20251016 }],
+            [],
+        );
 
-    useSuspenseFontLoader(fontConfigs);
-  useSuspenseFontLoader(fontConfigs);
+        useSuspenseFontLoader(fontConfigs);
+        useSuspenseFontLoader(fontConfigs);
 
-    // Update time every second
-    useEffect(() => {
-        const interval = setInterval(() => setTime(new Date()), 1000);
-        return () => clearInterval(interval);
-    }, []);
-  // Update time every second
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+        // Update time every second
+        useEffect(() => {
+            const interval = setInterval(() => setTime(new Date()), 1000);
+            return () => clearInterval(interval);
+        }, []);
+        // Update time every second
+        useEffect(() => {
+            const interval = setInterval(() => setTime(new Date()), 1000);
+            return () => clearInterval(interval);
+        }, []);
 
-    const hours = toBrahmi(time.getHours().toString().padStart(2, '0'));
-    const minutes = toBrahmi(time.getMinutes().toString().padStart(2, '0'));
-    const seconds = toBrahmi(time.getSeconds().toString().padStart(2, '0'));
-  const hours = toBrahmi(time.getHours().toString().padStart(2, '0'));
-  const minutes = toBrahmi(time.getMinutes().toString().padStart(2, '0'));
-  const seconds = toBrahmi(time.getSeconds().toString().padStart(2, '0'));
+        const hours = toBrahmi(time.getHours().toString().padStart(2, '0'));
+        const minutes = toBrahmi(time.getMinutes().toString().padStart(2, '0'));
+        const seconds = toBrahmi(time.getSeconds().toString().padStart(2, '0'));
+        const hours = toBrahmi(time.getHours().toString().padStart(2, '0'));
+        const minutes = toBrahmi(time.getMinutes().toString().padStart(2, '0'));
+        const seconds = toBrahmi(time.getSeconds().toString().padStart(2, '0'));
 
-    // ... your existing styles
-    const containerStyle: React.CSSProperties = {
-        position: 'relative',
-        height: '100dvh',
-        width: '100vw',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontFamily: 'BrahmiFont, serif',
-        fontSize: '8vh',
-        color: '#ffd700',
-        textShadow: '0 0 1vh #ffd700, 0 0 2vh #ffdd55, 0 0 3vh #ffaa00',
-        userSelect: 'none',
-        overflow: 'hidden',
-        background: 'black',
+        // ... your existing styles
+        const containerStyle: React.CSSProperties = {
+            position: 'relative',
+            height: '100dvh',
+            width: '100vw',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontFamily: 'BrahmiFont, serif',
+            fontSize: '8vh',
+            color: '#ffd700',
+            textShadow: '0 0 1vh #ffd700, 0 0 2vh #ffdd55, 0 0 3vh #ffaa00',
+            userSelect: 'none',
+            overflow: 'hidden',
+            background: 'black',
+        };
+        // ... your existing styles
+        const containerStyle: React.CSSProperties = {
+            position: 'relative',
+            height: '100dvh',
+            width: '100vw',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontFamily: 'BrahmiFont, serif',
+            fontSize: '8vh',
+            color: '#ffd700',
+            textShadow: '0 0 1vh #ffd700, 0 0 2vh #ffdd55, 0 0 3vh #ffaa00',
+            userSelect: 'none',
+            overflow: 'hidden',
+            background: 'black',
+        };
+
+        const gradientStyle: React.CSSProperties = {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'linear-gradient(180deg, #3366E5FF, #9A9C9FFF, #351E03FF)',
+            zIndex: 1,
+        };
+        const gradientStyle: React.CSSProperties = {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'linear-gradient(180deg, #3366E5FF, #9A9C9FFF, #351E03FF)',
+            zIndex: 1,
+        };
+
+        const gridStyle: React.CSSProperties = {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url(${image1})`,
+            backgroundRepeat: 'repeat',
+            backgroundPosition: 'center center',
+            backgroundSize: '2rem 2rem',
+            filter: 'contrast(0.2) brightness(1.1) hue-rotate(120deg) saturate(0.3)',
+            transform: 'scaleX(-1)',
+            zIndex: 2,
+        };
+        const gridStyle: React.CSSProperties = {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url(${image1})`,
+            backgroundRepeat: 'repeat',
+            backgroundPosition: 'center center',
+            backgroundSize: '2rem 2rem',
+            filter: 'contrast(0.2) brightness(1.1) hue-rotate(120deg) saturate(0.3)',
+            transform: 'scaleX(-1)',
+            zIndex: 2,
+        };
+
+        const holeStyle: React.CSSProperties = {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url(${image2})`,
+            backgroundRepeat: 'repeat',
+            backgroundPosition: 'center center',
+            backgroundSize: '5rem 5rem',
+            opacity: '0.4',
+            filter:
+                'contrast(1.5) brightness(1.2) hue-rotate(-10deg) saturate(0.1) opacity(0.4)',
+            zIndex: 1,
+        };
+        const holeStyle: React.CSSProperties = {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url(${image2})`,
+            backgroundRepeat: 'repeat',
+            backgroundPosition: 'center center',
+            backgroundSize: '5rem 5rem',
+            opacity: '0.4',
+            filter:
+                'contrast(1.5) brightness(1.2) hue-rotate(-10deg) saturate(0.1) opacity(0.4)',
+            zIndex: 1,
+        };
+
+        const clockStyle: React.CSSProperties = {
+            position: 'relative',
+            display: 'flex',
+            zIndex: 3,
+        };
+        const clockStyle: React.CSSProperties = {
+            position: 'relative',
+            display: 'flex',
+            zIndex: 3,
+        };
+
+        const digitBoxStyle: React.CSSProperties = {
+            display: 'inline-flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '7vh',
+            height: '4rem',
+            margin: '0 0.02rem',
+        };
+        const digitBoxStyle: React.CSSProperties = {
+            display: 'inline-flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '7vh',
+            height: '4rem',
+            margin: '0 0.02rem',
+        };
+
+        const colonStyle: React.CSSProperties = {
+            display: 'inline-flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '0.5rem',
+        };
+        const colonStyle: React.CSSProperties = {
+            display: 'inline-flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '0.5rem',
+        };
+
+        return (
+            <div style={containerStyle}>
+                <div style={gradientStyle} />
+                <div style={gridStyle} />
+                <div style={holeStyle} />
+                <div style={clockStyle}>
+                    {hours.map((h: string, i: number) => (
+                        <div key={`h${i}`} style={digitBoxStyle}>
+                            {h}
+                        </div>
+                    ))}
+                    <div style={colonStyle}>:</div>
+                    {minutes.map((m: string, i: number) => (
+                        <div key={`m${i}`} style={digitBoxStyle}>
+                            {m}
+                        </div>
+                    ))}
+                    <div style={colonStyle}>:</div>
+                    {seconds.map((s: string, i: number) => (
+                        <div key={`s${i}`} style={digitBoxStyle}>
+                            {s}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
     };
-  // ... your existing styles
-  const containerStyle: React.CSSProperties = {
-    position: 'relative',
-    height: '100dvh',
-    width: '100vw',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontFamily: 'BrahmiFont, serif',
-    fontSize: '8vh',
-    color: '#ffd700',
-    textShadow: '0 0 1vh #ffd700, 0 0 2vh #ffdd55, 0 0 3vh #ffaa00',
-    userSelect: 'none',
-    overflow: 'hidden',
-    background: 'black',
-  };
 
-    const gradientStyle: React.CSSProperties = {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        background: 'linear-gradient(180deg, #3366E5FF, #9A9C9FFF, #351E03FF)',
-        zIndex: 1,
-    };
-  const gradientStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    background: 'linear-gradient(180deg, #3366E5FF, #9A9C9FFF, #351E03FF)',
-    zIndex: 1,
-  };
-
-    const gridStyle: React.CSSProperties = {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundImage: `url(${image1})`,
-        backgroundRepeat: 'repeat',
-        backgroundPosition: 'center center',
-        backgroundSize: '2rem 2rem',
-        filter: 'contrast(0.2) brightness(1.1) hue-rotate(120deg) saturate(0.3)',
-        transform: 'scaleX(-1)',
-        zIndex: 2,
-    };
-  const gridStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundImage: `url(${image1})`,
-    backgroundRepeat: 'repeat',
-    backgroundPosition: 'center center',
-    backgroundSize: '2rem 2rem',
-    filter: 'contrast(0.2) brightness(1.1) hue-rotate(120deg) saturate(0.3)',
-    transform: 'scaleX(-1)',
-    zIndex: 2,
-  };
-
-    const holeStyle: React.CSSProperties = {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundImage: `url(${image2})`,
-        backgroundRepeat: 'repeat',
-        backgroundPosition: 'center center',
-        backgroundSize: '5rem 5rem',
-        opacity: '0.4',
-        filter:
-            'contrast(1.5) brightness(1.2) hue-rotate(-10deg) saturate(0.1) opacity(0.4)',
-        zIndex: 1,
-    };
-  const holeStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundImage: `url(${image2})`,
-    backgroundRepeat: 'repeat',
-    backgroundPosition: 'center center',
-    backgroundSize: '5rem 5rem',
-    opacity: '0.4',
-    filter:
-      'contrast(1.5) brightness(1.2) hue-rotate(-10deg) saturate(0.1) opacity(0.4)',
-    zIndex: 1,
-  };
-
-    const clockStyle: React.CSSProperties = {
-        position: 'relative',
-        display: 'flex',
-        zIndex: 3,
-    };
-  const clockStyle: React.CSSProperties = {
-    position: 'relative',
-    display: 'flex',
-    zIndex: 3,
-  };
-
-    const digitBoxStyle: React.CSSProperties = {
-        display: 'inline-flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '7vh',
-        height: '4rem',
-        margin: '0 0.02rem',
-    };
-  const digitBoxStyle = {
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '7vh',
-    height: '4rem',
-    margin: '0 0.02rem',
-  };
-
-    const colonStyle: React.CSSProperties = {
-        display: 'inline-flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '0.5rem',
-    };
-  const colonStyle: React.CSSProperties = {
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '0.5rem',
-  };
-
+    export default BrahmiClock;
     return (
         <div style={containerStyle}>
             <div style={gradientStyle} />
@@ -233,33 +262,4 @@ export default function BrahmiClock() {
             </div>
         </div>
     );
-};
-
-export default BrahmiClock;
-  return (
-    <div style={containerStyle}>
-      <div style={gradientStyle} />
-      <div style={gridStyle} />
-      <div style={holeStyle} />
-      <div style={clockStyle}>
-        {hours.map((h: string, i: number) => (
-          <div key={`h${i}`} style={digitBoxStyle}>
-            {h}
-          </div>
-        ))}
-        <div style={colonStyle}>:</div>
-        {minutes.map((m: string, i: number) => (
-          <div key={`m${i}`} style={digitBoxStyle}>
-            {m}
-          </div>
-        ))}
-        <div style={colonStyle}>:</div>
-        {seconds.map((s: string, i: number) => (
-          <div key={`s${i}`} style={digitBoxStyle}>
-            {s}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
 }

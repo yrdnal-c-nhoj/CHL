@@ -10,115 +10,115 @@ const RotatingBackground: React.FC = () => {
     const [rotationAngle, setRotationAngle] = useState<number>(0);
     const [sideLength, setSideLength] = useState<number>(0);
     const [time, setTime] = useState(new Date());
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [rotationAngle, setRotationAngle] = useState<number>(0);
-  const [sideLength, setSideLength] = useState<number>(0);
-  const [time, setTime] = useState(new Date());
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [rotationAngle, setRotationAngle] = useState<number>(0);
+    const [sideLength, setSideLength] = useState<number>(0);
+    const [time, setTime] = useState(new Date());
 
     // Preload the background image and compute sizes
     useEffect(() => {
         let isMounted = true;
-  // Preload the background image and compute sizes
-  useEffect(() => {
-    let isMounted = true;
+        // Preload the background image and compute sizes
+        useEffect(() => {
+            let isMounted = true;
 
-        const loadImage = () => {
-            const img = new Image();
-            img.src = backgroundImage;
-    const loadImage = () => {
-      const img = new Image();
-      img.src = backgroundImage;
+            const loadImage = () => {
+                const img = new Image();
+                img.src = backgroundImage;
+                const loadImage = () => {
+                    const img = new Image();
+                    img.src = backgroundImage;
 
-            img.onload = () => {
-                if (isMounted) {
-                    const computeSize = () => {
-                        const w = window.innerWidth;
-                        const h = window.innerHeight;
-                        const diagonal = Math.sqrt(w * w + h * h) * ZOOM_MULTIPLIER;
-                        setSideLength(diagonal);
+                    img.onload = () => {
+                        if (isMounted) {
+                            const computeSize = () => {
+                                const w = window.innerWidth;
+                                const h = window.innerHeight;
+                                const diagonal = Math.sqrt(w * w + h * h) * ZOOM_MULTIPLIER;
+                                setSideLength(diagonal);
+                            };
+                            img.onload = () => {
+                                if (isMounted) {
+                                    const computeSize = () => {
+                                        const w = window.innerWidth;
+                                        const h = window.innerHeight;
+                                        const diagonal = Math.sqrt(w * w + h * h) * ZOOM_MULTIPLIER;
+                                        setSideLength(diagonal);
+                                    };
+
+                                    computeSize();
+                                    window.addEventListener('resize', computeSize);
+                                    setIsLoading(false);
+                                    computeSize();
+                                    window.addEventListener('resize', computeSize);
+                                    setIsLoading(false);
+
+                                    return () => window.removeEventListener('resize', computeSize);
+                                }
+                            };
+                            return () => window.removeEventListener('resize', computeSize);
+                        }
                     };
-      img.onload = () => {
-        if (isMounted) {
-          const computeSize = () => {
-            const w = window.innerWidth;
-            const h = window.innerHeight;
-            const diagonal = Math.sqrt(w * w + h * h) * ZOOM_MULTIPLIER;
-            setSideLength(diagonal);
-          };
 
-                    computeSize();
-                    window.addEventListener('resize', computeSize);
-                    setIsLoading(false);
-          computeSize();
-          window.addEventListener('resize', computeSize);
-          setIsLoading(false);
-
-                    return () => window.removeEventListener('resize', computeSize);
-                }
+                    img.onerror = () => {
+                        if (isMounted) {
+                            console.error('Failed to load background image');
+                            setIsLoading(false);
+                        }
+                    };
+                };
+                img.onerror = () => {
+                    if (isMounted) {
+                        console.error('Failed to load background image');
+                        setIsLoading(false);
+                    }
+                };
             };
-          return () => window.removeEventListener('resize', computeSize);
-        }
-      };
 
-            img.onerror = () => {
-                if (isMounted) {
-                    console.error('Failed to load background image');
-                    setIsLoading(false);
-                }
+            loadImage();
+            loadImage();
+
+            return () => {
+                isMounted = false;
             };
-        };
-      img.onerror = () => {
-        if (isMounted) {
-          console.error('Failed to load background image');
-          setIsLoading(false);
-        }
-      };
-    };
-
-        loadImage();
-    loadImage();
-
+        }, []);
         return () => {
             isMounted = false;
         };
     }, []);
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
     // Smooth rotation of background
     useEffect(() => {
         let startTime: number | null = null;
         let frameId: number;
-  // Smooth rotation of background
-  useEffect(() => {
-    let startTime: number | null = null;
-    let frameId: number;
+        // Smooth rotation of background
+        useEffect(() => {
+            let startTime: number | null = null;
+            let frameId: number;
 
-        const rotate = (timestamp: number) => {
-            if (!startTime) startTime = timestamp;
-            const elapsed = (timestamp - startTime) / 1000; // seconds
-            const angle = (-360 * (elapsed / ROTATION_DURATION)) % 360; // Clockwise rotation (negative)
-            setRotationAngle(angle);
-            frameId = requestAnimationFrame(rotate); // Use RAF for continuous animation
-        };
-    const rotate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const elapsed = (timestamp - startTime) / 1000; // seconds
-      const angle = (-360 * (elapsed / ROTATION_DURATION)) % 360; // Clockwise rotation (negative)
-      setRotationAngle(angle);
-      frameId = requestAnimationFrame(rotate); // Use RAF for continuous animation
-    };
+            const rotate = (timestamp: number) => {
+                if (!startTime) startTime = timestamp;
+                const elapsed = (timestamp - startTime) / 1000; // seconds
+                const angle = (-360 * (elapsed / ROTATION_DURATION)) % 360; // Clockwise rotation (negative)
+                setRotationAngle(angle);
+                frameId = requestAnimationFrame(rotate); // Use RAF for continuous animation
+            };
+            const rotate = (timestamp: number) => {
+                if (!startTime) startTime = timestamp;
+                const elapsed = (timestamp - startTime) / 1000; // seconds
+                const angle = (-360 * (elapsed / ROTATION_DURATION)) % 360; // Clockwise rotation (negative)
+                setRotationAngle(angle);
+                frameId = requestAnimationFrame(rotate); // Use RAF for continuous animation
+            };
 
+            // Start animation loop
+            frameId = requestAnimationFrame(rotate);
+            return () => cancelAnimationFrame(frameId);
+        }, []);
         // Start animation loop
         frameId = requestAnimationFrame(rotate);
         return () => cancelAnimationFrame(frameId);
     }, []);
-    // Start animation loop
-    frameId = requestAnimationFrame(rotate);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
 
     // Smooth time updates (for second hand)
     useEffect(() => {
@@ -127,13 +127,13 @@ const RotatingBackground: React.FC = () => {
         }, 100); // Update every 100ms for smooth time display
         return () => clearInterval(interval);
     }, []);
-  // Smooth time updates (for second hand)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 100); // Update every 100ms for smooth time display
-    return () => clearInterval(interval);
-  }, []);
+    // Smooth time updates (for second hand)
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTime(new Date());
+        }, 100); // Update every 100ms for smooth time display
+        return () => clearInterval(interval);
+    }, []);
 
     const viewportContainerStyle: React.CSSProperties = {
         height: '100dvh',
@@ -143,14 +143,14 @@ const RotatingBackground: React.FC = () => {
         padding: 0,
         position: 'relative',
     };
-  const viewportContainerStyle: React.CSSProperties = {
-    height: '100dvh',
-    width: '100vw',
-    overflow: 'hidden',
-    margin: 0,
-    padding: 0,
-    position: 'relative',
-  };
+    const viewportContainerStyle: React.CSSProperties = {
+        height: '100dvh',
+        width: '100vw',
+        overflow: 'hidden',
+        margin: 0,
+        padding: 0,
+        position: 'relative',
+    };
 
     const rotatingImageStyle: React.CSSProperties = {
         width: sideLength,
@@ -164,25 +164,25 @@ const RotatingBackground: React.FC = () => {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
     };
-  const rotatingImageStyle: React.CSSProperties = {
-    width: sideLength,
-    height: sideLength,
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: `translate(-50%, -50%) rotate(${rotationAngle}deg)`,
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-  };
+    const rotatingImageStyle: React.CSSProperties = {
+        width: sideLength,
+        height: sideLength,
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: `translate(-50%, -50%) rotate(${rotationAngle}deg)`,
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+    };
 
     const clockRadius = 150;
     const tickLength = 10;
     const tickWidth = 2;
-  const clockRadius = 150;
-  const tickLength = 10;
-  const tickWidth = 2;
+    const clockRadius = 150;
+    const tickLength = 10;
+    const tickWidth = 2;
 
     const clockStyle: React.CSSProperties = {
         position: 'absolute',
@@ -196,18 +196,18 @@ const RotatingBackground: React.FC = () => {
         mixBlendMode: 'difference',
         filter: 'saturate(2) brightness(1.5)',
     };
-  const clockStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: `${clockRadius * 5}px`,
-    height: `${clockRadius * 5}px`,
-    transform: 'translate(-50%, -50%)',
-    borderRadius: '50%',
-    pointerEvents: 'none',
-    mixBlendMode: 'difference',
-    filter: 'saturate(2) brightness(1.5)',
-  };
+    const clockStyle: React.CSSProperties = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        width: `${clockRadius * 5}px`,
+        height: `${clockRadius * 5}px`,
+        transform: 'translate(-50%, -50%)',
+        borderRadius: '50%',
+        pointerEvents: 'none',
+        mixBlendMode: 'difference',
+        filter: 'saturate(2) brightness(1.5)',
+    };
 
     const handStyle = (
         length: number,
@@ -226,37 +226,37 @@ const RotatingBackground: React.FC = () => {
         borderRadius: '2px',
         boxShadow: `0 0 8px ${color}`,
     });
-  const handStyle = (
-    length: number,
-    width: number,
-    color: string,
-    angle: number
-  ): React.CSSProperties => ({
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    transformOrigin: '50% 100%',
-    transform: `translateX(-50%) rotate(${angle}deg)`,
-    width: `${width}px`,
-    height: `${length}px`,
-    backgroundColor: color,
-    borderRadius: '2px',
-    boxShadow: `0 0 8px ${color}`,
-  });
+    const handStyle = (
+        length: number,
+        width: number,
+        color: string,
+        angle: number
+    ): React.CSSProperties => ({
+        position: 'absolute',
+        bottom: '50%',
+        left: '50%',
+        transformOrigin: '50% 100%',
+        transform: `translateX(-50%) rotate(${angle}deg)`,
+        width: `${width}px`,
+        height: `${length}px`,
+        backgroundColor: color,
+        borderRadius: '2px',
+        boxShadow: `0 0 8px ${color}`,
+    });
 
     const hour = time.getHours() % 12;
     const minute = time.getMinutes();
     const second = time.getSeconds() + time.getMilliseconds() / 1000; // smooth seconds
-  const hour = time.getHours() % 12;
-  const minute = time.getMinutes();
-  const second = time.getSeconds() + time.getMilliseconds() / 1000; // smooth seconds
+    const hour = time.getHours() % 12;
+    const minute = time.getMinutes();
+    const second = time.getSeconds() + time.getMilliseconds() / 1000; // smooth seconds
 
     const hourAngle = (hour + minute / 60) * 30;
     const minuteAngle = (minute + second / 60) * 6;
     const secondAngle = second * 6;
-  const hourAngle = (hour + minute / 60) * 30;
-  const minuteAngle = (minute + second / 60) * 6;
-  const secondAngle = second * 6;
+    const hourAngle = (hour + minute / 60) * 30;
+    const minuteAngle = (minute + second / 60) * 6;
+    const secondAngle = second * 6;
 
     if (isLoading) {
         return (
@@ -279,87 +279,87 @@ const RotatingBackground: React.FC = () => {
         );
     }
 
-  if (isLoading) {
-    return (
-        <div style={viewportContainerStyle}>
-            <div style={rotatingImageStyle} />
-            <div style={clockStyle}>
-                {/* Ticks */}
-                {Array.from({ length: 60 }).map((_, i) => {
-                    const angle = i * 6;
-                    const tickStyle: React.CSSProperties = {
-                        position: 'absolute',
-                        width: `${tickWidth}px` as const,
-                        height: `${tickLength}px`,
-                        backgroundColor: 'white',
-                        top: '50%',
-                        left: '50%',
-                        transform: `rotate(${angle}deg) translateY(-${clockRadius}px)`,
-                        transformOrigin: 'center bottom',
-                        boxShadow: '0 0 4px white',
-                    };
-                    return <div key={i} style={tickStyle} />;
-                })}
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: '#000',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 9999,
-        }}
-      >
-        {/* Optional: Add a loading spinner or text here if desired */}
-      </div>
-    );
+    if (isLoading) {
+        return (
+            <div style={viewportContainerStyle}>
+                <div style={rotatingImageStyle} />
+                <div style={clockStyle}>
+                    {/* Ticks */}
+                    {Array.from({ length: 60 }).map((_, i) => {
+                        const angle = i * 6;
+                        const tickStyle: React.CSSProperties = {
+                            position: 'absolute',
+                            width: `${tickWidth}px` as const,
+                            height: `${tickLength}px`,
+                            backgroundColor: 'white',
+                            top: '50%',
+                            left: '50%',
+                            transform: `rotate(${angle}deg) translateY(-${clockRadius}px)`,
+                            transformOrigin: 'center bottom',
+                            boxShadow: '0 0 4px white',
+                        };
+                        return <div key={i} style={tickStyle} />;
+                    })}
+                    <div
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            backgroundColor: '#000',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 9999,
+                        }}
+                    >
+                        {/* Optional: Add a loading spinner or text here if desired */}
+                    </div>
+                    );
   }
 
-                {/* Hour hand */}
-                <div style={handStyle(clockRadius * 0.5, 6, 'white', hourAngle)} />
-  return (
-    <div style={viewportContainerStyle}>
-      <div style={rotatingImageStyle} />
-      <div style={clockStyle}>
-        {/* Ticks */}
-        {Array.from({ length: 60 }).map((_, i) => {
-          const angle = i * 6;
-          const tickStyle = {
-            position: 'absolute',
-            width: `${tickWidth}px`,
-            height: `${tickLength}px`,
-            backgroundColor: 'white',
-            top: '50%',
-            left: '50%',
-            transform: `rotate(${angle}deg) translateY(-${clockRadius}px)`,
-            transformOrigin: 'center bottom',
-            boxShadow: '0 0 4px white',
-          };
-          return <div key={i} style={tickStyle} />;
-        })}
+                    {/* Hour hand */}
+                    <div style={handStyle(clockRadius * 0.5, 6, 'white', hourAngle)} />
+                    return (
+                    <div style={viewportContainerStyle}>
+                        <div style={rotatingImageStyle} />
+                        <div style={clockStyle}>
+                            {/* Ticks */}
+                            {Array.from({ length: 60 }).map((_, i) => {
+                                const angle = i * 6;
+                                const tickStyle: React.CSSProperties = {
+                                    position: 'absolute',
+                                    width: `${tickWidth}px`,
+                                    height: `${tickLength}px`,
+                                    backgroundColor: 'white',
+                                    top: '50%',
+                                    left: '50%',
+                                    transform: `rotate(${angle}deg) translateY(-${clockRadius}px)`,
+                                    transformOrigin: 'center bottom',
+                                    boxShadow: '0 0 4px white',
+                                };
+                                return <div key={i} style={tickStyle} />;
+                            })}
 
-                {/* Minute hand */}
-                <div style={handStyle(clockRadius * 0.7, 4, 'white', minuteAngle)} />
-        {/* Hour hand */}
-        <div style={handStyle(clockRadius * 0.5, 6, 'white', hourAngle)} />
+                            {/* Minute hand */}
+                            <div style={handStyle(clockRadius * 0.7, 4, 'white', minuteAngle)} />
+                            {/* Hour hand */}
+                            <div style={handStyle(clockRadius * 0.5, 6, 'white', hourAngle)} />
 
-                {/* Smooth Second hand */}
-                <div style={handStyle(clockRadius * 0.9, 2, 'white', secondAngle)} />
+                            {/* Smooth Second hand */}
+                            <div style={handStyle(clockRadius * 0.9, 2, 'white', secondAngle)} />
+                        </div>
+                    </div>
+                    );
+                    {/* Minute hand */}
+                    <div style={handStyle(clockRadius * 0.7, 4, 'white', minuteAngle)} />
+
+                    {/* Smooth Second hand */}
+                    <div style={handStyle(clockRadius * 0.9, 2, 'white', secondAngle)} />
+                </div>
             </div>
-        </div>
-    );
-        {/* Minute hand */}
-        <div style={handStyle(clockRadius * 0.7, 4, 'white', minuteAngle)} />
+        );
+    };
 
-        {/* Smooth Second hand */}
-        <div style={handStyle(clockRadius * 0.9, 2, 'white', secondAngle)} />
-      </div>
-    </div>
-  );
-};
-
-export default RotatingBackground;
+    export default RotatingBackground;
