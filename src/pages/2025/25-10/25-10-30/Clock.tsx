@@ -1,5 +1,5 @@
 /** @jsxImportSource react */
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import customFont2025_10_31 from '@/assets/fonts/2025/25-10-30-turqs.ttf?url';
 import clockFaceImage from '@/assets/images/2025/25-10/25-10-30/tur.jpg';

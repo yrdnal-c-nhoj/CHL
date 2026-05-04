@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import gizaFont from '@/assets/fonts/2026/26-01-05-26-01-06-aa.ttf?url';
 import backgroundImage from '@/assets/images/2026/26-01/26-01-06/aa.jpg';

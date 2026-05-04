@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import myFontWoff2 from '@/assets/fonts/2025/25-08-01-zod.ttf';
 import htmlLogo from '@/assets/images/2025/25-08/25-08-01/st.gif';

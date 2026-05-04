@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-
 import f250917fontt from '@/assets/fonts/2025/25-09-17-crush.ttf?url';
 import overlay1 from '@/assets/images/2025/25-09/25-09-17/ccr.gif';
 import centerImage from '@/assets/images/2025/25-09/25-09-17/cr.gif'; // middle image
@@ -10,7 +9,6 @@ import backgroundImage from '@/assets/images/2025/25-09/25-09-17/crush.jpg';
 import overlay3 from '@/assets/images/2025/25-09/25-09-17/crush2.gif';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader, useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSuspenseFontLoader, useMultipleFontLoader } from '@/utils/fontLoader';
 
 const pad = (n: number | string) => n.toString().padStart(2, '0');
 
@@ -18,689 +16,258 @@ const DigitalClock: React.FC = () => {
     const [time, setTime] = useState(new Date());
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
     const [fadeIndex, setFadeIndex] = useState<number>(-1);
-    const [time, setTime] = useState(new Date());
-    const [isLoaded, setIsLoaded] = useState<boolean>(false);
-    const [fadeIndex, setFadeIndex] = useState<number>(-1);
 
     // Load font and images
     useEffect(() => {
-        const style: React.CSSProperties = document.createElement('style');
+        const style = document.createElement('style');
         style.textContent = `
-  // Load font and images
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
         @font-face {
-            font - family: 'CustomClockFont';
-            src: url(${ f250917fontt }) format('truetype');
-            font - weight: 100 900;
-            font - style: normal;
-            font - display: swap;
-            font - variation - settings: 'wght' 400;
+            font-family: 'CustomClockFont';
+            src: url(${f250917fontt}) format('truetype');
+            font-weight: 100 900;
+            font-style: normal;
+            font-display: swap;
+            font-variation-settings: 'wght' 400;
         }
         `;
         document.head.appendChild(style);
-    document.head.appendChild(style);
 
         const fontPromise = document.fonts.load('10rem CustomClockFont');
-    const fontPromise = document.fonts.load('10rem CustomClockFont');
 
         const loadImage = (src: string) =>
             new Promise((resolve, reject) => {
                 const img = new Image();
-                img.src = src;
-                img.onload = resolve;
+                img.onload = () => resolve(img);
                 img.onerror = reject;
+                img.src = src;
             });
-    const loadImage = (src: string) =>
-      new Promise((resolve, reject) => {
-        const img = new Image();
-        img.src = src;
-        img.onload = resolve;
-        img.onerror = reject;
-      });
 
-        Promise.all([
-            fontPromise,
-            loadImage(backgroundImage),
+        const imagePromises = [
+            loadImage(overlay1),
             loadImage(centerImage),
             loadImage(topImage),
-            loadImage(overlay1),
             loadImage(overlay2),
+            loadImage(backgroundImage),
             loadImage(overlay3),
-        ])
+        ];
+
+        Promise.all([fontPromise, ...imagePromises])
             .then(() => setIsLoaded(true))
-            .catch(() => setIsLoaded(true));
-    Promise.all([
-      fontPromise,
-      loadImage(backgroundImage),
-      loadImage(centerImage),
-      loadImage(topImage),
-      loadImage(overlay1),
-      loadImage(overlay2),
-      loadImage(overlay3),
-    ])
-      .then(() => setIsLoaded(true))
-      .catch(() => setIsLoaded(true));
+            .catch(console.error);
 
         return () => {
-            document.head.removeChild(style);
+            if (document.head.contains(style)) {
+                document.head.removeChild(style);
+            }
         };
     }, []);
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
 
-    // Update time every second
     useEffect(() => {
-        const interval = setInterval(() => setTime(new Date()), 1000);
-        return () => clearInterval(interval);
+        const timer = setInterval(() => {
+            setTime(new Date());
+        }, 1000);
+        return () => clearInterval(timer);
     }, []);
-  // Update time every second
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
 
-    // Fade logic for digits
     useEffect(() => {
-        let currentIndex = 0;
-        const digitsCount = 8;
+        if (!isLoaded) return;
+
         const interval = setInterval(() => {
-            setFadeIndex(currentIndex);
-            setTimeout(() => setFadeIndex(-1), 1000);
-            setTimeout(() => {
-                currentIndex = (currentIndex + 1) % digitsCount;
-            }, 2000);
+            setFadeIndex((prev) => (prev + 1) % 8);
         }, 2000);
         return () => clearInterval(interval);
-    }, []);
-  // Fade logic for digits
-  useEffect(() => {
-    let currentIndex = 0;
-    const digitsCount = 8;
-    const interval = setInterval(() => {
-      setFadeIndex(currentIndex);
-      setTimeout(() => setFadeIndex(-1), 1000);
-      setTimeout(() => {
-        currentIndex = (currentIndex + 1) % digitsCount;
-      }, 2000);
-    }, 2000);
-    return () => clearInterval(interval);
-  }, []);
+    }, [isLoaded]);
 
-    const hours = pad(time.getHours() % 12 || 12);
-    const minutes = pad(time.getMinutes());
-    const seconds = pad(time.getSeconds());
-    const ampm = time.getHours() >= 12 ? 'PM' : 'AM';
-  const hours = pad(time.getHours() % 12 || 12);
-  const minutes = pad(time.getMinutes());
-  const seconds = pad(time.getSeconds());
-  const ampm = time.getHours() >= 12 ? 'PM' : 'AM';
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const seconds = time.getSeconds();
 
     const digits = [
-        hours[0],
-        hours[1],
-        minutes[0],
-        minutes[1],
-        seconds[0],
-        seconds[1],
-        ampm[0],
-        ampm[1],
+        Math.floor(hours / 10),
+        hours % 10,
+        Math.floor(minutes / 10),
+        minutes % 10,
+        Math.floor(seconds / 10),
+        seconds % 10,
     ];
-  const digits = [
-    hours[0],
-    hours[1],
-    minutes[0],
-    minutes[1],
-    seconds[0],
-    seconds[1],
-    ampm[0],
-    ampm[1],
-  ];
+
+    const getOpacity = (index: number, base: number) => {
+        if (fadeIndex === -1) return base;
+        const distance = Math.abs(fadeIndex - index);
+        return Math.max(0, base - distance * 0.1);
+    };
 
     if (!isLoaded) {
         return (
             <div
                 style={{
-                    position: 'fixed',
-                    inset: 0,
-                    backgroundColor: 'black',
-                    zIndex: 9999,
+                    position: 'relative',
+                    width: '100vw',
+                    height: '100vh',
+                    background: '#000',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#fff',
+                    fontFamily: 'CustomClockFont, monospace',
+                    fontSize: '2rem',
                 }}
-            />
+            >
+                Loading...
+            </div>
         );
     }
-  if (!isLoaded) {
-    return (
-      <div
-        style={{
-          position: 'fixed',
-          inset: 0,
-          backgroundColor: 'black',
-          zIndex: 9999,
-        }}
-      />
-    );
-  }
-
-    const getOpacity = (index, defaultOpacity = 1) =>
-        fadeIndex === index ? 0 : defaultOpacity;
-  const getOpacity = (index: number, defaultOpacity = 1) =>
-    fadeIndex === index ? 0 : defaultOpacity;
-
-    // Config for additional overlay images
-    const overlayImages = [
-        {
-            src: overlay1,
-            top: '25%',
-            left: '65%',
-            width: '30vw',
-            height: '30vh',
-            rotate: '35deg',
-            opacity: 0.3,
-            filter: 'saturate(150%) hue-rotate(50deg)',
-            zIndex: 5,
-        },
-        {
-            src: overlay2,
-            top: '50%',
-            left: '85%',
-            width: '25vw',
-            height: '25vh',
-            rotate: '-30deg',
-            opacity: 0.6,
-            filter: 'saturate(120%) hue-rotate(180deg)',
-            zIndex: 6,
-        },
-        {
-            src: overlay3,
-            top: '85%',
-            left: '75%',
-            width: '45vw',
-            height: '45vh',
-            rotate: '0deg',
-            opacity: 0.4,
-            filter: 'saturate(20%) hue-rotate(-260deg)',
-            zIndex: 7,
-        },
-    ];
-  // Config for additional overlay images
-  const overlayImages = [
-    {
-      src: overlay1,
-      top: '25%',
-      left: '65%',
-      width: '30vw',
-      height: '30vh',
-      rotate: '35deg',
-      opacity: 0.3,
-      filter: 'saturate(150%) hue-rotate(50deg)',
-      zIndex: 5,
-    },
-    {
-      src: overlay2,
-      top: '50%',
-      left: '85%',
-      width: '25vw',
-      height: '25vh',
-      rotate: '-30deg',
-      opacity: 0.6,
-      filter: 'saturate(120%) hue-rotate(180deg)',
-      zIndex: 6,
-    },
-    {
-      src: overlay3,
-      top: '85%',
-      left: '75%',
-      width: '45vw',
-      height: '45vh',
-      rotate: '0deg',
-      opacity: 0.4,
-      filter: 'saturate(20%) hue-rotate(-260deg)',
-      zIndex: 7,
-    },
-  ];
 
     return (
         <div
             style={{
                 position: 'relative',
                 width: '100vw',
-                height: '100dvh',
+                height: '100vh',
+                background: `url(${backgroundImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
                 overflow: 'hidden',
-                fontFamily: 'CustomClockFont, sans-serif',
-                fontVariationSettings: '"wght" 400',
             }}
         >
-            {/* Background */}
-            <div
+            {/* Background overlays */}
+            <img
+                src={overlay1}
+                alt="overlay1"
                 style={{
                     position: 'absolute',
-                    inset: 0,
-                    backgroundImage: `url(${ backgroundImage })`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'top left',
-                    backgroundRepeat: 'no-repeat',
-                    filter: 'saturate(300%) hue-rotate(-240deg) opacity(1)',
-                    zIndex: 1,
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    opacity: 0.3,
+                    pointerEvents: 'none',
                 }}
             />
-  return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        fontFamily: 'CustomClockFont, sans-serif',
-        fontVariationSettings: '"wght" 400',
-      }}
-    >
-      {/* Background */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${ backgroundImage })`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'top left',
-          backgroundRepeat: 'no-repeat',
-          filter: 'saturate(300%) hue-rotate(-240deg) opacity(1)',
-          zIndex: 1,
-        }}
-      />
+            <img
+                src={overlay2}
+                alt="overlay2"
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    opacity: 0.2,
+                    pointerEvents: 'none',
+                }}
+            />
+            <img
+                src={overlay3}
+                alt="overlay3"
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    opacity: 0.15,
+                    pointerEvents: 'none',
+                }}
+            />
 
-            {/* Center Image */}
+            {/* Center image */}
+            <img
+                src={centerImage}
+                alt="center"
+                style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '60%',
+                    height: '60%',
+                    objectFit: 'contain',
+                    opacity: 0.8,
+                }}
+            />
+
+            {/* Top overlay */}
+            <img
+                src={topImage}
+                alt="top"
+                style={{
+                    position: 'absolute',
+                    top: '10%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '80%',
+                    height: '20%',
+                    objectFit: 'contain',
+                    opacity: 0.6,
+                }}
+            />
+
+            {/* Time digits */}
             <div
                 style={{
                     position: 'absolute',
-                    top: '40%',
-                    left: '30%',
-                    transform: 'translate(-50%, -50%) rotate(-32deg)',
-                    width: '35vw',
-                    height: '35vh',
-                    // opacity: 0.5,
-                    filter: 'saturate(120%) hue-rotate(290deg)',
-                    zIndex: 2,
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    display: 'flex',
+                    gap: '2vw',
+                    fontFamily: 'CustomClockFont, monospace',
+                    fontWeight: 'bold',
                 }}
             >
-                <img
-                    decoding="async"
-                    loading="lazy"
-                    src={centerImage}
-                    alt="Center"
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                />
+                {digits.map((digit, index) => (
+                    <div
+                        key={index}
+                        style={{
+                            fontSize: index === 0 || index === 1 ? '25vh' : '20vh',
+                            color: index < 2 ? '#FF6B6B' : index < 4 ? '#4ECDC4' : '#45B7D1',
+                            opacity: getOpacity(index, 0.9),
+                            transition: 'opacity 0.5s ease-in-out',
+                            textShadow: '0 0 20px rgba(255,255,255,0.5)',
+                            transform: `rotate(${Math.sin(index) * 5}deg)`,
+                        }}
+                    >
+                        {digit}
+                    </div>
+                ))}
             </div>
-      {/* Center Image */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '40%',
-          left: '30%',
-          transform: 'translate(-50%, -50%) rotate(-32deg)',
-          width: '35vw',
-          height: '35vh',
-          // opacity: 0.5,
-          filter: 'saturate(120%) hue-rotate(290deg)',
-          zIndex: 2,
-        }}
-      >
-        <img
-          decoding="async"
-          loading="lazy"
-          src={centerImage}
-          alt="Center"
-          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-        />
-      </div>
 
-            {/* Top overlay image */}
+            {/* AM/PM indicator */}
             <div
                 style={{
                     position: 'absolute',
-                    top: '77%',
-                    left: '40%',
-                    transform: 'translate(-50%, -50%) rotate(20deg)',
-                    width: '30vw',
-                    height: '30vh',
-                    // opacity: 0.3,
-                    filter: 'saturate(150%) hue-rotate(10deg)',
-                    zIndex: 4,
+                    top: '20%',
+                    right: '10%',
+                    fontSize: '3vh',
+                    color: '#FFD93D',
+                    fontFamily: 'CustomClockFont, monospace',
+                    fontWeight: 'bold',
+                    opacity: getOpacity(6, 0.8),
+                    transition: 'opacity 0.5s ease-in-out',
                 }}
             >
-                <img
-                    decoding="async"
-                    loading="lazy"
-                    src={topImage}
-                    alt="Top overlay"
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                />
+                {hours >= 12 ? 'PM' : 'AM'}
             </div>
-      {/* Top overlay image */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '77%',
-          left: '40%',
-          transform: 'translate(-50%, -50%) rotate(20deg)',
-          width: '30vw',
-          height: '30vh',
-          // opacity: 0.3,
-          filter: 'saturate(150%) hue-rotate(10deg)',
-          zIndex: 4,
-        }}
-      >
-        <img
-          decoding="async"
-          loading="lazy"
-          src={topImage}
-          alt="Top overlay"
-          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-        />
-      </div>
 
-            {/* Additional overlay images */}
-            {overlayImages.map((img, i) => (
-                <div
-                    key={i}
-                    style={{
-                        position: 'absolute',
-                        top: img.top,
-                        left: img.left,
-                        width: img.width,
-                        height: img.height,
-                        transform: `translate(-50 %, -50 %) rotate(${ img.rotate })`,
-                        opacity: img.opacity,
-                        filter: img.filter,
-                        zIndex: img.zIndex,
-                    }}
-                >
-                    <img
-                        decoding="async"
-                        loading="lazy"
-                        src={img.src}
-                        alt={`overlay - ${ i } `}
-                        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                    />
-                </div>
-            ))}
-      {/* Additional overlay images */}
-      {overlayImages.map((img, i) => (
-        <div
-          key={i}
-          style={{
-            position: 'absolute',
-            top: img.top,
-            left: img.left,
-            width: img.width,
-            height: img.height,
-            transform: `translate(-50 %, -50 %) rotate(${ img.rotate })`,
-            opacity: img.opacity,
-            filter: img.filter,
-            zIndex: img.zIndex,
-          }}
-        >
-          <img
-            decoding="async"
-            loading="lazy"
-            src={img.src}
-            alt={`overlay - ${ i } `}
-            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-          />
-        </div>
-      ))}
-
-            {/* Clock digits */}
-            <div style={{ position: 'relative', zIndex: 3 }}>
-                {/* Hours */}
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: '1vh',
-                        left: '2rem',
-                        transform: 'rotate(23deg)',
-                        fontSize: '23vh',
-                        color: '#F65427FF',
-                        opacity: getOpacity(0, 0.9),
-                        transition: 'opacity 0.5s ease-in-out',
-                    }}
-                >
-                    {digits[0]}
-                </div>
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: '16vh',
-                        left: '10rem',
-                        transform: 'rotate(-20deg)',
-                        fontSize: '29vh',
-                        color: '#589CE9FF',
-                        opacity: getOpacity(1, 0.8),
-                        transition: 'opacity 0.5s ease-in-out',
-                    }}
-                >
-                    {digits[1]}
-                </div>
-      {/* Clock digits */}
-      <div style={{ position: 'relative', zIndex: 3 }}>
-        {/* Hours */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '1vh',
-            left: '2rem',
-            transform: 'rotate(23deg)',
-            fontSize: '23vh',
-            color: '#F65427FF',
-            opacity: getOpacity(0, 0.9),
-            transition: 'opacity 0.5s ease-in-out',
-          }}
-        >
-          {digits[0]}
-        </div>
-        <div
-          style={{
-            position: 'absolute',
-            top: '16vh',
-            left: '10rem',
-            transform: 'rotate(-20deg)',
-            fontSize: '29vh',
-            color: '#589CE9FF',
-            opacity: getOpacity(1, 0.8),
-            transition: 'opacity 0.5s ease-in-out',
-          }}
-        >
-          {digits[1]}
-        </div>
-
-                {/* Minutes */}
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: '33vh',
-                        left: '4rem',
-                        transform: 'rotate(27deg) translateY(50%)',
-                        fontSize: '33vh',
-                        color: '#07DFDFFF',
-                        opacity: getOpacity(2, 0.9),
-                        transition: 'opacity 0.5s ease-in-out',
-                    }}
-                >
-                    {digits[2]}
-                </div>
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: '55vh',
-                        left: '3rem',
-                        transform: 'rotate(-67deg) translateY(50%)',
-                        fontSize: '33vh',
-                        color: '#F0F406FF',
-                        opacity: getOpacity(3, 1),
-                        transition: 'opacity 0.5s ease-in-out',
-                    }}
-                >
-                    {digits[3]}
-                </div>
-        {/* Minutes */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '33vh',
-            left: '4rem',
-            transform: 'rotate(27deg) translateY(50%)',
-            fontSize: '33vh',
-            color: '#07DFDFFF',
-            opacity: getOpacity(2, 0.9),
-            transition: 'opacity 0.5s ease-in-out',
-          }}
-        >
-          {digits[2]}
-        </div>
-        <div
-          style={{
-            position: 'absolute',
-            top: '55vh',
-            left: '3rem',
-            transform: 'rotate(-67deg) translateY(50%)',
-            fontSize: '33vh',
-            color: '#F0F406FF',
-            opacity: getOpacity(3, 1),
-            transition: 'opacity 0.5s ease-in-out',
-          }}
-        >
-          {digits[3]}
-        </div>
-
-                {/* Seconds */}
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: '1vh',
-                        right: '28vw',
-                        transform: 'rotate(52deg)',
-                        fontSize: '33vh',
-                        color: '#EB0CC5',
-                        opacity: getOpacity(4, 0.7),
-                        transition: 'opacity 0.5s ease-in-out',
-                    }}
-                >
-                    {digits[4]}
-                </div>
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: '3vh',
-                        right: '5vw',
-                        transform: 'rotate(-22deg)',
-                        fontSize: '23vh',
-                        color: '#AEF606FF',
-                        opacity: getOpacity(5, 0.8),
-                        transition: 'opacity 0.5s ease-in-out',
-                    }}
-                >
-                    {digits[5]}
-                </div>
-        {/* Seconds */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '1vh',
-            right: '28vw',
-            transform: 'rotate(52deg)',
-            fontSize: '33vh',
-            color: '#EB0CC5',
-            opacity: getOpacity(4, 0.7),
-            transition: 'opacity 0.5s ease-in-out',
-          }}
-        >
-          {digits[4]}
-        </div>
-        <div
-          style={{
-            position: 'absolute',
-            top: '3vh',
-            right: '5vw',
-            transform: 'rotate(-22deg)',
-            fontSize: '23vh',
-            color: '#AEF606FF',
-            opacity: getOpacity(5, 0.8),
-            transition: 'opacity 0.5s ease-in-out',
-          }}
-        >
-          {digits[5]}
-        </div>
-
-                {/* AM/PM */}
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: '61vh',
-                        right: '5vw',
-                        transform: 'rotate(-6deg)',
-                        fontSize: '23vh',
-                        color: '#7A73E5FF',
-                        opacity: getOpacity(6, 0.7),
-                        transition: 'opacity 0.5s ease-in-out',
-                        fontWeight: 'bold',
-                    }}
-                >
-                    {digits[6]}
-                </div>
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: '78vh',
-                        right: '3vw',
-                        transform: 'rotate(22deg)',
-                        fontSize: '19vh',
-                        color: '#E50AD6FF',
-                        opacity: getOpacity(7, 0.8),
-                        transition: 'opacity 0.5s ease-in-out',
-                        fontWeight: 'bold',
-                    }}
-                >
-                    {digits[7]}
-                </div>
+            {/* Date display */}
+            <div
+                style={{
+                    position: 'absolute',
+                    bottom: '10%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    fontSize: '2vh',
+                    color: '#A8E6CF',
+                    fontFamily: 'CustomClockFont, monospace',
+                    opacity: getOpacity(7, 0.7),
+                    transition: 'opacity 0.5s ease-in-out',
+                }}
+            >
+                {time.toLocaleDateString()}
             </div>
-        {/* AM/PM */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '61vh',
-            right: '5vw',
-            transform: 'rotate(-6deg)',
-            fontSize: '23vh',
-            color: '#7A73E5FF',
-            opacity: getOpacity(6, 0.7),
-            transition: 'opacity 0.5s ease-in-out',
-            fontWeight: 'bold',
-          }}
-        >
-          {digits[6]}
         </div>
     );
-        <div
-          style={{
-            position: 'absolute',
-            top: '78vh',
-            right: '3vw',
-            transform: 'rotate(22deg)',
-            fontSize: '19vh',
-            color: '#E50AD6FF',
-            opacity: getOpacity(7, 0.8),
-            transition: 'opacity 0.5s ease-in-out',
-            fontWeight: 'bold',
-          }}
-        >
-          {digits[7]}
-        </div>
-      </div>
-    </div>
-  );
 };
 
 export default DigitalClock;

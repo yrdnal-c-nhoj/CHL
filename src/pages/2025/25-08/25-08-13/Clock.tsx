@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import bgImage from '@/assets/images/2025/25-08/25-08-13/bg.webp';
 import secondBgImage from '@/assets/images/2025/25-08/25-08-13/loop.webp';

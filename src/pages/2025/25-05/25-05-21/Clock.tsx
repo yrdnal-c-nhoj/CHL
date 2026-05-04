@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import semFont from '@/assets/fonts/2025/25-05-21-sem.ttf';
 import background from '@/assets/images/2025/25-05/25-05-21/signals.jpg';

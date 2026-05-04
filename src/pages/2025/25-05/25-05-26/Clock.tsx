@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
 import sproutFontTtf from '@/assets/fonts/2025/25-05-26-sprout.ttf?url';
 import spr from '@/assets/images/2025/25-05/25-05-26/spr.gif';
