@@ -78,7 +78,7 @@ const DigitalClockVideo: React.FC = () => {
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, [isPhone]);
+    }, []);
 
     // Inject keyframes for bronze/gold shimmer
     useEffect(() => {

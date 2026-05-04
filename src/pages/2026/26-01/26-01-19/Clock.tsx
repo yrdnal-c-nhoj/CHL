@@ -157,15 +157,6 @@ const ManyHandClock: React.FC = () => {
         window.addEventListener('resize', updateSize);
         return () => window.removeEventListener('resize', updateSize);
     }, []);
-  useEffect(() => {
-    const updateSize = () => {
-      const vmin = Math.min(window.innerWidth, window.innerHeight);
-      setClockSize((vmin / window.innerHeight) * 95);
-    };
-    updateSize();
-    window.addEventListener('resize', updateSize);
-    return () => window.removeEventListener('resize', updateSize);
-  }, []);
 
   // Preload background to avoid flash
   useEffect(() => {
@@ -178,39 +169,21 @@ const ManyHandClock: React.FC = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-    useEffect(() => {
-        let frameId: number;
   useEffect(() => {
     let frameId: number;
 
-        const tick = () => {
-            frameId = requestAnimationFrame(tick);
     const tick = () => {
       frameId = requestAnimationFrame(tick);
 
-            const t = new Date();
-            const currentTime = t.getTime();
-            const s = t.getSeconds();
-            const sFraction = s + t.getMilliseconds() / 1000;
-            const baseRotation = (sFraction / 60) * 360;
       const t = new Date();
       const currentTime = t.getTime();
       const s = t.getSeconds();
       const sFraction = s + t.getMilliseconds() / 1000;
       const baseRotation = (sFraction / 60) * 360;
 
-            setNow(t);
-            setFraction(sFraction);
       setNow(t);
       setFraction(sFraction);
 
-            // 1. Forgetful Logic
-            if (currentTime > nextChangeRef.current) {
-                isFrozenRef.current = !isFrozenRef.current;
-                if (isFrozenRef.current) frozenAtRef.current = baseRotation;
-                nextChangeRef.current = currentTime + (Math.random() * 3000 + 1000);
-            }
-            setForgetfulPos(isFrozenRef.current ? frozenAtRef.current : baseRotation);
       // 1. Forgetful Logic
       if (currentTime > nextChangeRef.current) {
         isFrozenRef.current = !isFrozenRef.current;
