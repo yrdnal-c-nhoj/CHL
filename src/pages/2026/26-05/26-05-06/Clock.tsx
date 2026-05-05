@@ -3,8 +3,6 @@ import React, { useMemo, useRef, useEffect } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
 
 import styles from './Clock.module.css';
-import jumpVideo from '@/assets/images/2026/26-05/26-05-06/jump.mp4';
-import dolphinFont from '@/assets/fonts/2026/26-05-06-dolphin.ttf';
 
 interface HandProps {
   angle: number;
@@ -63,7 +61,7 @@ const AnalogClock: React.FC = () => {
     return () => {
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
-      }
+      }w
     };
   }, []);
 
@@ -111,24 +109,31 @@ const AnalogClock: React.FC = () => {
         num,
         x,
         y,
-        rotation: angle, // Add rotation to align with clock face edge
       };
     });
   }, []);
 
   return (
     <div className={styles.container}>
-      <video
-        className={styles.backgroundVideo}
-        autoPlay
-        loop
-        muted
-        playsInline
-        src={jumpVideo}
-      />
       <time dateTime={isoTime} className={styles.timeWrapper}>
         <div className={styles.clockFace}>
-        
+          {/* Outer ring */}
+          <div className={styles.outerRing} />
+
+          {/* Inner decorative ring */}
+          <div className={styles.innerRing} />
+
+          {/* Tick marks */}
+          {tickMarks.map((tick) => (
+            <div
+              key={tick.id}
+              className={tick.isHour ? styles.hourTick : styles.minuteTick}
+              style={{
+                transform: `rotate(${tick.angle}deg)`,
+              }}
+            />
+          ))}
+
           {/* Numbers */}
           {numbers.map((n) => (
             <span
@@ -137,7 +142,6 @@ const AnalogClock: React.FC = () => {
               style={{
                 left: `${n.x}%`,
                 top: `${n.y}%`,
-                transform: `translate(-50%, -50%) rotate(${n.rotation}deg)`,
               }}
             >
               {n.num}
@@ -150,19 +154,34 @@ const AnalogClock: React.FC = () => {
             angle={hourAngle}
             length={60}
             width={6}
-            color="var(--clock-accent-color)"
+            color="#1a1a1a"
           />
           <ClockHand
             type="minute"
             angle={minuteAngle}
             length={85}
             width={4}
-            color="var(--clock-accent-color)"
+            color="#333"
           />
-        
+          <ClockHand
+            type="second"
+            angle={secondAngle}
+            length={95}
+            width={2}
+            color="#d32f2f"
+          />
+
+          {/* Center dot */}
+          <div className={styles.centerDot} />
+          <div className={styles.centerDotInner} />
         </div>
 
-      
+        {/* Digital readout */}
+        <div className={styles.digitalTime}>
+          {String(hours).padStart(2, '0')}:
+          {String(minutes).padStart(2, '0')}:
+          {String(seconds).padStart(2, '0')}
+        </div>
       </time>
     </div>
   );
