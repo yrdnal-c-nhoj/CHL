@@ -1,4 +1,8 @@
 .container {
+  --clock-accent-color: #243d71;
+  --clock-text-shadow: 1px 1px 0px rgb(248, 246, 246);
+  --clock-hand-shadow: 1px 1px 0px rgb(248, 246, 246);
+  
   width: 100vw;
   height: 100dvh;
   display: flex;
@@ -28,18 +32,24 @@
 
 .clockFace {
   position: relative;
-  width: 300px;
-  height: 300px;
+  width: 550px;
+  height: 550px;
   border-radius: 50%;
+}
+
+@font-face {
+  font-family: 'Dolphin';
+  src: url('/src/assets/fonts/2026/26-05-04-dolphin.ttf') format('truetype');
 }
 
 .number {
   position: absolute;
   transform: translate(-50%, -50%);
-  font-family: 'Georgia', serif;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #697ca5;
+  font-family: 'Dolphin', 'Georgia', serif;
+  font-size: 15vh;
+  color: var(--clock-accent-color);
+  text-shadow: var(--clock-text-shadow);
+  opacity: 0.4;
   -webkit-user-select: none;
   user-select: none;
 }
@@ -50,28 +60,18 @@
   left: 50%;
   transform-origin: bottom center;
   border-radius: 2px;
+  box-shadow: var(--clock-hand-shadow);
+  opacity: 0.4;
 }
 
 /* Mobile responsive */
 @media (max-width: 480px) {
   .clockFace {
-    width: 250px;
-    height: 250px;
-  }
-
-  .hourTick {
-    transform-origin: center 117px;
-  }
-
-  .minuteTick {
-    transform-origin: center 117px;
+    width: 500px;
+    height: 500px;
   }
 
   .number {
-    font-size: 1.2rem;
-  }
-
-  .digitalTime {
-    font-size: 1.2rem;
+    font-size: 12vh;
   }
 }

@@ -4,6 +4,7 @@ import { useClockTime } from '@/utils/clockUtils';
 
 import styles from './Clock.module.css';
 import jumpVideo from '@/assets/images/2026/26-05/26-05-04/jump.mp4';
+import dolphinFont from '@/assets/fonts/2026/26-05-04-dolphin.ttf';
 
 interface HandProps {
   angle: number;
@@ -149,14 +150,14 @@ const AnalogClock: React.FC = () => {
             angle={hourAngle}
             length={60}
             width={6}
-            color="#55618F"
+            color="var(--clock-accent-color)"
           />
           <ClockHand
             type="minute"
             angle={minuteAngle}
             length={85}
             width={4}
-            color="#5E6B94"
+            color="var(--clock-accent-color)"
           />
         
         </div>
