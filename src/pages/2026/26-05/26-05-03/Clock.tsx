@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, FC } from 'react';
 import { useClockTime } from '@/utils/hooks';
 import styles from './Clock.module.css';
 import '@fontsource/share-tech-mono/400.css';
@@ -52,7 +52,7 @@ interface VoxelProps {
   seed: number;
 }
 
-const Voxel: React.FC<VoxelProps> = ({ x, y, seed }) => {
+const Voxel: FC<VoxelProps> = ({ x, y, seed }) => {
   const size = 16;
   const depth = 8;
   const color = pickColor(seed);
@@ -60,12 +60,12 @@ const Voxel: React.FC<VoxelProps> = ({ x, y, seed }) => {
   return (
     <div className={styles.voxel} style={{ left: x * size, top: y * size }}>
       <div className={styles.cube}>
-        <div className={styles.face} style={{ transform: `translateZ(${depth}px)`, background: shade(color, 18) }} />
-        <div className={styles.face} style={{ transform: `rotateY(180deg) translateZ(${depth}px)`, background: shade(color, -18) }} />
-        <div className={styles.face} style={{ transform: `rotateY(90deg) translateZ(${depth}px)`, background: shade(color, -10) }} />
-        <div className={styles.face} style={{ transform: `rotateY(-90deg) translateZ(${depth}px)`, background: shade(color, -10) }} />
-        <div className={styles.face} style={{ transform: `rotateX(90deg) translateZ(${depth}px)`, background: shade(color, 8) }} />
-        <div className={styles.face} style={{ transform: `rotateX(-90deg) translateZ(${depth}px)`, background: shade(color, -24) }} />
+        <div className={styles.face} style={{ transform: `translateZ(${depth}px)`, background: shade(color || '#000000', 18) }} />
+        <div className={styles.face} style={{ transform: `rotateY(180deg) translateZ(${depth}px)`, background: shade(color || '#000000', -18) }} />
+        <div className={styles.face} style={{ transform: `rotateY(90deg) translateZ(${depth}px)`, background: shade(color || '#000000', -10) }} />
+        <div className={styles.face} style={{ transform: `rotateY(-90deg) translateZ(${depth}px)`, background: shade(color || '#000000', -10) }} />
+        <div className={styles.face} style={{ transform: `rotateX(90deg) translateZ(${depth}px)`, background: shade(color || '#000000', 8) }} />
+        <div className={styles.face} style={{ transform: `rotateX(-90deg) translateZ(${depth}px)`, background: shade(color || '#000000', -24) }} />
       </div>
     </div>
   );
@@ -86,8 +86,8 @@ const Glyph: React.FC<GlyphProps> = ({ char }) => {
       {points.map(([x, y], i) => (
         <Voxel
           key={`${char}-${i}`}
-          x={x}
-          y={y}
+          x={x || 0}
+          y={y || 0}
           seed={char.charCodeAt(0) * 1000 + i}
         />
       ))}
