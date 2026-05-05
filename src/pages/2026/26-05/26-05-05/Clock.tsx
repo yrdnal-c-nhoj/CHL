@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
-import { useClockTime } from '../../utils/hooks'; // Use standardized hook
-import { useSuspenseFontLoader } from '../../utils/fontLoader';
-import type { FontConfig } from '../../types/clock';
+import { useClockTime } from '@/utils/hooks'; // Use standardized hook
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
 
 // 1. Export assets for the preloading pipeline
@@ -13,7 +13,7 @@ export const fontConfigs: FontConfig[] = [
 ];
 
 const Clock: React.FC = () => {
-  const time = useClockTime('ms'); // Request millisecond precision for smooth animations
+  const time = useClockTime(); // Get current time
 
   // Load fonts and suspend if necessary
   useSuspenseFontLoader(fontConfigs);
