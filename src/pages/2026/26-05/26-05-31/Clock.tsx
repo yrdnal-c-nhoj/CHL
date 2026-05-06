@@ -1,187 +1,150 @@
-import React, { useMemo, useRef, useEffect } from 'react';
-
-import { useClockTime } from '@/utils/clockUtils';
-
+import React, { useEffect, useMemo, useRef } from 'react';
+import { useClockTime } from '@/utils/hooks';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import styles from './Clock.module.css';
 
-interface HandProps {
-  angle: number;
-  length: number;
-  width: number;
-  color: string;
-  type: 'hour' | 'minute' | 'second';
+// ---------------- INTERFACES ----------------
+interface HandDimensions {
+  width: string;
+  height: string;
+  zIndex: number;
 }
 
-const getHandZIndex = (type: 'hour' | 'minute' | 'second'): number => {
-  if (type === 'second') return 30;
-  if (type === 'minute') return 20;
-  return 10;
+interface ClockHandProps {
+  type: 'hour' | 'minute' | 'second';
+  rotation: number;
+}
+
+interface TimeValues {
+  hr: number;
+  min: number;
+  sec: number;
+}
+
+// ---------------- CONFIGURATION ----------------
+const CLOCK_CONFIG = {
+  NUMERAL_RADIUS: 40,
+  COLORS: {
+    background: '#000000',
+    primary: '#FFFFFF',
+    shadow: 'drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8))',
+  },
+  HAND_DIMENSIONS: {
+    hour: { width: '1.2vmin', height: '20vmin', zIndex: 3 },
+    minute: { width: '0.8vmin', height: '32vmin', zIndex: 4 },
+    second: { width: '0.4vmin', height: '38vmin', zIndex: 5 },
+  },
+} as const;
+
+// ---------------- FONT CONFIGURATION ----------------
+const fontConfigs = [
+  {
+    name: 'ClockFont',
+    url: '@/assets/fonts/2026/26-05-05-dolphin.ttf',
+  },
+];
+
+// ---------------- UTILITIES ----------------
+const calculateTimeValues = (date: Date): TimeValues => {
+  const msec = date.getMilliseconds();
+  const sec = date.getSeconds() + msec / 1000;
+  const min = date.getMinutes() + sec / 60;
+  const hr = (date.getHours() % 12) + min / 60;
+
+  return { hr, min, sec };
 };
 
-const getHandBorderRadius = (type: 'hour' | 'minute' | 'second', width: number): string => {
-  if (type === 'second') return '1px';
-  return `${width / 2}px`;
-};
+const calculateNumeralPosition = (number: number) => {
+  const angleRad = (number / 12) * 2 * Math.PI;
+  const angleDeg = (number / 12) * 360;
 
-const getHandTransition = (type: 'hour' | 'minute' | 'second'): string => {
-  if (type === 'second') return 'none';
-  return 'transform 0.1s ease-out';
-};
-
-const ClockHand: React.FC<HandProps> = ({ angle, length, width, color, type }) => {
-  const handStyle: React.CSSProperties = {
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    width: `${width}px`,
-    height: `${length}px`,
-    backgroundColor: color,
-    transformOrigin: 'bottom center',
-    transform: `translateX(-50%) rotate(${angle}deg)`,
-    borderRadius: getHandBorderRadius(type, width),
-    zIndex: getHandZIndex(type),
-    transition: getHandTransition(type),
+  return {
+    x: 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angleRad),
+    y: 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angleRad),
+    angle: angleDeg,
   };
-
-  return <div style={handStyle} className={styles.hand} data-hand-type={type} />;
 };
 
-const AnalogClock: React.FC = () => {
-  const time = useClockTime();
-  const rafRef = useRef<number | null>(null);
-  const [, forceRender] = React.useReducer((x) => x + 1, 0);
+const getHandRotation = (value: number, multiplier: number): number => value * multiplier;
 
-  useEffect(() => {
-    const animate = () => {
-      forceRender();
-      rafRef.current = requestAnimationFrame(animate);
-    };
-    rafRef.current = requestAnimationFrame(animate);
+// ---------------- COMPONENTS ----------------
+const BackgroundLayers: React.FC = () => (
+  <video
+    className={styles.backgroundVideo}
+    autoPlay
+    loop
+    muted
+    playsInline
+  >
+    <source src="/src/assets/images/2026/26-05/26-05-05/jump.mp4" type="video/mp4" />
+  </video>
+);
 
-    return () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-    };
-  }, []);
-
-  const { hours, minutes, seconds, ms, isoTime } = useMemo(() => {
-    const h = time.getHours();
-    const m = time.getMinutes();
-    const s = time.getSeconds();
-    const msVal = time.getMilliseconds();
-    return {
-      hours: h,
-      minutes: m,
-      seconds: s,
-      ms: msVal,
-      isoTime: time.toISOString(),
-    };
-  }, [time]);
-
-  const hourAngle = ((hours % 12) + minutes / 60) * 30;
-  const minuteAngle = (minutes + seconds / 60) * 6;
-  const secondAngle = (seconds + ms / 1000) * 6;
-
-  const tickMarks = useMemo(() => {
-    return Array.from({ length: 60 }, (_, i) => {
-      const isHour = i % 5 === 0;
-      const angle = i * 6;
-      return {
-        id: i,
-        angle,
-        isHour,
-        length: isHour ? 16 : 8,
-        width: isHour ? 4 : 2,
-      };
-    });
-  }, []);
-
-  const numbers = useMemo(() => {
+const ClockNumerals: React.FC = () => {
+  const numerals = useMemo(() => {
     return Array.from({ length: 12 }, (_, i) => {
-      const num = i === 0 ? 12 : i;
-      const angle = i * 30;
-      const radian = (angle - 90) * (Math.PI / 180);
-      const radius = 35;
-      const x = 50 + radius * Math.cos(radian);
-      const y = 50 + radius * Math.sin(radian);
-      return {
-        num,
-        x,
-        y,
-      };
+      const num = i + 1;
+      const { x, y, angle } = calculateNumeralPosition(num);
+
+      return (
+        <div
+          key={num}
+          className={styles.numeral}
+          style={{
+            left: `${x}%`,
+            top: `${y}%`,
+            transform: `translate(-50%, -50%) rotate(${angle}deg)`,
+          }}
+        >
+          {num}
+        </div>
+      );
     });
   }, []);
+
+  return <>{numerals}</>;
+};
+
+const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
+  const { width, height, zIndex } = CLOCK_CONFIG.HAND_DIMENSIONS[type];
+
+  return (
+    <div
+      className={styles.hand}
+      style={{
+        width,
+        height,
+        zIndex,
+        transform: `translate(-50%, 0) rotate(${rotation}deg)`,
+      }}
+    />
+  );
+};
+
+const CenterDot: React.FC = () => (
+  <div className={styles.centerDot} />
+);
+
+// ---------------- MAIN CLOCK COMPONENT ----------------
+const AnalogClock: React.FC = () => {
+  const currentTime = useClockTime();
+  const { hr, min, sec } = calculateTimeValues(currentTime);
+
+  // Load fonts with suspense to prevent FOUC
+  useSuspenseFontLoader(fontConfigs);
 
   return (
     <div className={styles.container}>
-      <time dateTime={isoTime} className={styles.timeWrapper}>
-        <div className={styles.clockFace}>
-          {/* Outer ring */}
-          <div className={styles.outerRing} />
-
-          {/* Inner decorative ring */}
-          <div className={styles.innerRing} />
-
-          {/* Tick marks */}
-          {tickMarks.map((tick) => (
-            <div
-              key={tick.id}
-              className={tick.isHour ? styles.hourTick : styles.minuteTick}
-              style={{
-                transform: `rotate(${tick.angle}deg)`,
-              }}
-            />
-          ))}
-
-          {/* Numbers */}
-          {numbers.map((n) => (
-            <span
-              key={n.num}
-              className={styles.number}
-              style={{
-                left: `${n.x}%`,
-                top: `${n.y}%`,
-              }}
-            >
-              {n.num}
-            </span>
-          ))}
-
-          {/* Clock hands */}
-          <ClockHand
-            type="hour"
-            angle={hourAngle}
-            length={60}
-            width={6}
-            color="#1a1a1a"
-          />
-          <ClockHand
-            type="minute"
-            angle={minuteAngle}
-            length={85}
-            width={4}
-            color="#333"
-          />
-          <ClockHand
-            type="second"
-            angle={secondAngle}
-            length={95}
-            width={2}
-            color="#d32f2f"
-          />
-
-          {/* Center dot */}
-          <div className={styles.centerDot} />
-          <div className={styles.centerDotInner} />
-        </div>
-
-        {/* Digital readout */}
-        <div className={styles.digitalTime}>
-          {String(hours).padStart(2, '0')}:
-          {String(minutes).padStart(2, '0')}:
-          {String(seconds).padStart(2, '0')}
-        </div>
+      <BackgroundLayers />
+      
+      <time dateTime={currentTime.toISOString()} className={styles.clockFace}>
+        <ClockNumerals />
+        
+        <ClockHand type="hour" rotation={getHandRotation(hr, 30)} />
+        <ClockHand type="minute" rotation={getHandRotation(min, 6)} />
+        <ClockHand type="second" rotation={getHandRotation(sec, 6)} />
+        
+        <CenterDot />
       </time>
     </div>
   );
