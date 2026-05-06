@@ -1,126 +1,153 @@
-import React, { useMemo, FC } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useClockTime } from '@/utils/hooks';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import styles from './Clock.module.css';
-import fontUrl from '@/assets/fonts/2026/26-05-03-dolphin.ttf?url';
-import boxImage from '@/assets/images/2026/26-05/26-05-03/box.webp';
 
-/* ---------------- FONT MAP ---------------- */
+// ---------------- INTERFACES ----------------
+interface HandDimensions {
+  width: string;
+  height: string;
+  zIndex: number;
+}
 
-const FONT: Record<string, number[][]> = {
-  '0': [[1,0],[2,0],[3,0],[0,1],[4,1],[0,2],[4,2],[0,3],[4,3],[0,4],[4,4],[0,5],[4,5],[0,6],[4,6],[1,7],[2,7],[3,7]],
-  '1': [[2,0],[2,1],[2,2],[2,3],[2,4],[2,5],[2,6],[2,7]],
-  '2': [[1,0],[2,0],[3,0],[4,1],[3,2],[2,3],[1,4],[0,5],[0,6],[1,7],[2,7],[3,7],[4,7]],
-  '3': [[0,0],[1,0],[2,0],[3,0],[4,0],[4,1],[4,2],[1,3],[2,3],[3,3],[4,3],[4,4],[4,5],[4,6],[0,7],[1,7],[2,7],[3,7],[4,7]],
-  '4': [[3,0],[2,1],[1,2],[0,3],[3,3],[4,3],[3,4],[3,5],[3,6],[3,7]],
-  '5': [[0,0],[1,0],[2,0],[3,0],[4,0],[0,1],[0,2],[1,2],[2,2],[3,2],[4,3],[4,4],[0,5],[4,5],[1,6],[4,6],[1,7],[2,7],[3,7]],
-  '6': [[1,0],[2,0],[3,0],[0,1],[0,2],[0,3],[1,3],[2,3],[3,3],[0,4],[4,4],[0,5],[4,5],[0,6],[4,6],[1,7],[2,7],[3,7]],
-  '7': [[0,0],[1,0],[2,0],[3,0],[4,0],[4,1],[3,2],[2,3],[2,4],[1,5],[1,6],[1,7]],
-  '8': [[1,0],[2,0],[3,0],[0,1],[4,1],[0,2],[4,2],[1,3],[2,3],[3,3],[0,4],[4,4],[0,5],[4,5],[0,6],[4,6],[1,7],[2,7],[3,7]],
-  '9': [[1,0],[2,0],[3,0],[0,1],[4,1],[0,2],[4,2],[0,3],[4,3],[1,4],[2,4],[3,4],[4,4],[4,5],[4,6],[1,7],[2,7],[3,7]],
-  ':': [[2,2],[2,5]],
-};
+interface ClockHandProps {
+  type: 'hour' | 'minute' | 'second';
+  rotation: number;
+}
 
-/* ---------------- COLORS ---------------- */
+interface TimeValues {
+  hr: number;
+  min: number;
+  sec: number;
+}
 
-const COLORS = [
-  '#0CA2D0','#06C255','#CE086E','#D89D08',
-  '#2B29D7','#CF0625','#C909B3','#D8590A',
-  '#800ADB','#3B3A3B'
+// ---------------- CONFIGURATION ----------------
+const CLOCK_CONFIG = {
+  NUMERAL_RADIUS: 40,
+  COLORS: {
+    background: '#000000',
+    primary: '#FFFFFF',
+    shadow: 'drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8))',
+  },
+  HAND_DIMENSIONS: {
+    hour: { width: '1.2vmin', height: '20vmin', zIndex: 3 },
+    minute: { width: '0.8vmin', height: '32vmin', zIndex: 4 },
+    second: { width: '0.4vmin', height: '38vmin', zIndex: 5 },
+  },
+} as const;
+
+// ---------------- FONT CONFIGURATION ----------------
+const fontConfigs = [
+  {
+    name: 'ClockFont',
+    url: '@/assets/fonts/2026/26-05-05-dolphin.ttf',
+  },
 ];
 
-/* ---------------- UTILS ---------------- */
+// ---------------- UTILITIES ----------------
+const calculateTimeValues = (date: Date): TimeValues => {
+  const msec = date.getMilliseconds();
+  const sec = date.getSeconds() + msec / 1000;
+  const min = date.getMinutes() + sec / 60;
+  const hr = (date.getHours() % 12) + min / 60;
 
-const pickColor = (seed: number) =>
-  COLORS[Math.abs(Math.floor(Math.sin(seed) * 9999)) % COLORS.length];
-
-const shade = (hex: string, amt: number) => {
-  const n = parseInt(hex.slice(1), 16);
-  let r = (n >> 16) & 255;
-  let g = (n >> 8) & 255;
-  let b = n & 255;
-  r = Math.max(0, Math.min(255, r + amt));
-  g = Math.max(0, Math.min(255, g + amt));
-  b = Math.max(0, Math.min(255, b + amt));
-  return `rgb(${r},${g},${b})`;
+  return { hr, min, sec };
 };
 
-/* ---------------- VOXEL ---------------- */
+const calculateNumeralPosition = (number: number) => {
+  const angleRad = (number / 12) * 2 * Math.PI;
+  const angleDeg = (number / 12) * 360;
 
-interface VoxelProps {
-  x: number;
-  y: number;
-  seed: number;
-}
-
-const Voxel: FC<VoxelProps> = ({ x, y, seed }) => {
-  const size = 16;
-  const depth = 8;
-  const color = pickColor(seed);
-
-  return (
-    <div className={styles.voxel} style={{ left: x * size, top: y * size }}>
-      <div className={styles.cube}>
-        <div className={styles.face} style={{ transform: `translateZ(${depth}px)`, background: shade(color || '#000000', 18) }} />
-        <div className={styles.face} style={{ transform: `rotateY(180deg) translateZ(${depth}px)`, background: shade(color || '#000000', -18) }} />
-        <div className={styles.face} style={{ transform: `rotateY(90deg) translateZ(${depth}px)`, background: shade(color || '#000000', -10) }} />
-        <div className={styles.face} style={{ transform: `rotateY(-90deg) translateZ(${depth}px)`, background: shade(color || '#000000', -10) }} />
-        <div className={styles.face} style={{ transform: `rotateX(90deg) translateZ(${depth}px)`, background: shade(color || '#000000', 8) }} />
-        <div className={styles.face} style={{ transform: `rotateX(-90deg) translateZ(${depth}px)`, background: shade(color || '#000000', -24) }} />
-      </div>
-    </div>
-  );
+  return {
+    x: 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angleRad),
+    y: 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angleRad),
+    angle: angleDeg,
+  };
 };
 
-/* ---------------- GLYPH ---------------- */
+const getHandRotation = (value: number, multiplier: number): number => value * multiplier;
 
-interface GlyphProps {
-  char: string;
-}
+// ---------------- COMPONENTS ----------------
+const BackgroundLayers: React.FC = () => (
+  <video
+    className={styles.backgroundVideo}
+    autoPlay
+    loop
+    muted
+    playsInline
+  >
+    <source src="/src/assets/images/2026/26-05/26-05-05/jump.mp4" type="video/mp4" />
+  </video>
+);
 
-const Glyph: React.FC<GlyphProps> = ({ char }) => {
-  const points = FONT[char] || [];
-  const isColon = char === ':';
+const ClockNumerals: React.FC = () => {
+  const numerals = useMemo(() => {
+    return Array.from({ length: 12 }, (_, i) => {
+      const num = i + 1;
+      const { x, y, angle } = calculateNumeralPosition(num);
 
-  return (
-    <div className={`${styles.glyph} ${isColon ? styles.colon : ''}`}>
-      {points.map(([x, y], i) => (
-        <Voxel
-          key={`${char}-${i}`}
-          x={x || 0}
-          y={y || 0}
-          seed={char.charCodeAt(0) * 1000 + i}
-        />
-      ))}
-    </div>
-  );
+      return (
+        <div
+          key={num}
+          className={styles.numeral}
+          style={{
+            left: `${x}%`,
+            top: `${y}%`,
+            transform: `translate(-50%, -50%) rotate(${angle}deg)`,
+          }}
+        >
+          {num}
+        </div>
+      );
+    });
+  }, []);
+
+  return <>{numerals}</>;
 };
 
-/* ---------------- CLOCK ---------------- */
-
-const Clock3D: React.FC = () => {
-  const time = useClockTime();
-
-  const chars = useMemo(() => {
-    const h = String(time.getHours()).padStart(2, '0');
-    const m = String(time.getMinutes()).padStart(2, '0');
-    const s = String(time.getSeconds()).padStart(2, '0');
-    return [...h, ':', ...m, ':', ...s];
-  }, [time]);
+const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
+  const { width, height, zIndex } = CLOCK_CONFIG.HAND_DIMENSIONS[type];
 
   return (
     <div
-      className={styles.clock3d}
-      role="img"
-      aria-label={time.toLocaleTimeString()}
-      style={{ backgroundImage: `url(${boxImage})` }}
-    >
-      <div className={styles.clockOrbit}>
-        {chars.map((c, i) => (
-          <Glyph key={`${c}-${i}`} char={c} />
-        ))}
-      </div>
+      className={styles.hand}
+      style={{
+        width,
+        height,
+        zIndex,
+        transform: `translate(-50%, 0) rotate(${rotation}deg)`,
+      }}
+    />
+  );
+};
+
+const CenterDot: React.FC = () => (
+  <div className={styles.centerDot} />
+);
+
+// ---------------- MAIN CLOCK COMPONENT ----------------
+const AnalogClock: React.FC = () => {
+  const currentTime = useClockTime();
+  const { hr, min, sec } = calculateTimeValues(currentTime);
+
+  // Load fonts with suspense to prevent FOUC
+  useSuspenseFontLoader(fontConfigs);
+
+  return (
+    <div className={styles.container}>
+      <BackgroundLayers />
+      
+      <time dateTime={currentTime.toISOString()} className={styles.clockFace}>
+        <ClockNumerals />
+        
+        <ClockHand type="hour" rotation={getHandRotation(hr, 30)} />
+        <ClockHand type="minute" rotation={getHandRotation(min, 6)} />
+        <ClockHand type="second" rotation={getHandRotation(sec, 6)} />
+        
+        <CenterDot />
+      </time>
     </div>
   );
 };
 
-export default Clock3D;
+export default AnalogClock;
