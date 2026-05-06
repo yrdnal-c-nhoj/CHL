@@ -48,7 +48,7 @@ const Clock: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false); // Start false for hydration safety
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 600);
     handleResize(); // Set actual value on mount
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -73,7 +73,6 @@ const Clock: React.FC = () => {
       justifyContent: 'center',
       fontFamily: "'ShapesFont', monospace",
       fontSize: isMobile ? '14vh' : '12vw',
-      lineHeight: 0.69,
       WebkitUserSelect: 'none',
       userSelect: 'none',
       overflow: 'hidden',
@@ -89,16 +88,12 @@ const Clock: React.FC = () => {
         inset 0 0 20px rgba(0, 0, 0, 0.3)
       `,
       filter: `
-        contrast(1.3) 
-        brightness(1.1) 
-        saturate(1.2)
         drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))
       `,
-      transform: 'skew(-2deg)',
-      fontWeight: '900',
+      fontWeight: '300',
       letterSpacing: '0.05em',
-      height: isMobile ? '33.3vh' : '100dvh',
-      width: isMobile ? '50vw' : '16.66vw',
+      height: isMobile ? '30vh' : '100dvh',
+      width: isMobile ? '50vh' : '16.66vw',
       minWidth: isMobile ? '50vw' : '16.66vw',
       maxWidth: isMobile ? '50vw' : '16.66vw',
       boxSizing: 'border-box',
