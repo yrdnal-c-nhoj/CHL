@@ -1,78 +1,77 @@
-@keyframes orbit {
-  0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-  100% { transform: rotateX(-360deg) rotateY(-360deg) rotateZ(-360deg); }
-}
-
-.clock3d {
+/* ---------------- CONTAINER ---------------- */
+.container {
+  position: relative;
   width: 100vw;
-  height: 100vh;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  filter: brightness(1.3) contrast(0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  perspective: 2000px;
-  font-family: "Share Tech Mono", monospace;
+  height: 100dvh;
   overflow: hidden;
-  box-sizing: border-box;
+  background-color: #000000;
 }
 
-.clockOrbit {
-  display: flex;
-  transform-style: preserve-3d;
-  transform: rotateX(12deg);
-  animation: orbit 22s linear infinite;
+/* ---------------- BACKGROUND VIDEO ---------------- */
+.backgroundVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* ---------------- CLOCK FACE ---------------- */
+.clockFace {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vmin;
+  height: 100vmin;
+  z-index: 7;
+  font-family: 'ClockFont', serif;
+}
+
+/* ---------------- NUMERALS ---------------- */
+.numeral {
+  position: absolute;
+  font-size: clamp(4rem, 10vw, 19rem);
+  color: #FFFFFF;
+  filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8));
+  user-select: none;
+}
+
+/* ---------------- CLOCK HANDS ---------------- */
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+  filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8));
+  border-radius: 10px;
   will-change: transform;
 }
 
-.glyph {
-  width: 100px;
-  height: 180px;
-  flex: 0 0 100px;
-  position: relative;
-  transform-style: preserve-3d;
-}
-
-.glyph.colon {
-  width: 60px;
-  flex: 0 0 60px;
-}
-
-.voxel {
+/* ---------------- CENTER DOT ---------------- */
+.centerDot {
   position: absolute;
-  width: 16px;
-  height: 16px;
-  transform-style: preserve-3d;
-}
-
-.cube {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  left: 50%;
   top: 50%;
+  left: 50%;
+  width: 2vmin;
+  height: 2vmin;
+  background-color: #FFFFFF;
+  border-radius: 50%;
   transform: translate(-50%, -50%);
-  transform-style: preserve-3d;
+  z-index: 10;
+  filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8));
 }
 
-.face {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  backface-visibility: hidden;
-  opacity: 1; /* Set to 1 to avoid z-fighting and 'wavy' line artifacts */
-}
-
-/* Mobile optimizations */
+/* ---------------- MOBILE RESPONSIVE ---------------- */
 @media (max-width: 768px) {
-  .clockOrbit {
-    transform: scale(0.6) rotateX(12deg);
+  .clockFace {
+    width: 90vmin;
+    height: 90vmin;
   }
   
-  .glyph {
-    width: 60px;
-    flex: 0 0 60px;
+  .numeral {
+    font-size: clamp(3rem, 8vw, 15rem);
   }
 }

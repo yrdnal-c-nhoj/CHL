@@ -39,7 +39,7 @@ const BackgroundLayers = () => (
     style={{
       position: 'absolute',
       inset: 0,
-      filter: 'saturate(200%) contrast(1.3) brightness(1.2)',
+      filter: 'saturate(120%) contrast(1.3) brightness(1.2)',
       width: '100%',
       height: '100%',
       objectFit: 'cover',
