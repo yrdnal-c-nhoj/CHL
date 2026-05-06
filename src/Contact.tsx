@@ -2,9 +2,9 @@ import React, { useEffect, FC } from 'react';
 import TopNav from './components/TopNav';
 import Footer from './components/Footer';
 import './WordPages.css';
-import instaImg from './assets/i.png';
-import elonImg from './assets/x.png';
-import fbookImg from './assets/fbook.png';
+import instaImg from '@/assets/icons/i.png';
+import elonImg from '@/assets/icons/x.png';
+import fbookImg from '@/assets/icons/fbook.png';
 
 const Contact: FC = () => {
   // Sync body styles to ensure scrolling works as expected

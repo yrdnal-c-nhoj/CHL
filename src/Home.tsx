@@ -4,8 +4,8 @@ import { DataContext } from './context/DataContext';
 import TopNav from './components/TopNav';
 import Footer from './components/Footer';
 import styles from './Home.module.css';
-import instaImg from './assets/i.png';
-import elonImg from './assets/x.png';
+import instaImg from '@/assets/icons/i.png';
+import elonImg from '@/assets/icons/x.png';
 
 interface DataItem {
   date: string;
