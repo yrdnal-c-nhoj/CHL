@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import * as THREE from 'three';
-import fontUrl from '@/assets/fonts/2026/26-05-06-droplet.ttf';
-import backgroundImage from '@/assets/images/2026/26-05/26-05-06/drops.jpg';
+import fontUrl from '@/assets/fonts/2026/26-05-07-droplet.ttf';
+import backgroundImage from '@/assets/images/2026/26-05/26-05-07/drops.jpg';
 
 // ========================== CONSTANTS ==========================
 const MAX_DROPLETS = 40;
@@ -11,8 +11,8 @@ const MAX_FRAME_DT_MS = 100;
 const MAX_CATCHUP = 6;
 
 // === SIMULATION SPEED CONTROL ===
-const SIM_SPEED = 1 / 12;       // Overall movement speed (much slower)
-const MERGE_SPLIT_SPEED = 0.3;  // Slow down merging/splitting too
+const SIM_SPEED = 1 / 6;        // Overall movement speed
+const MERGE_SPLIT_SPEED = 3;  // Keep merging/splitting responsive
 
 // Physics Constants (slowed down)
 const DAMP = 0.993;
@@ -58,7 +58,6 @@ uniform vec2 uRes;
 uniform sampler2D uData;
 uniform sampler2D uBg;
 uniform int uCount;
-uniform float uTime;
 
 void main(){
   vec2 uv = gl_FragCoord.xy / uRes;
@@ -224,7 +223,7 @@ const useBackgroundAndTime = () => {
     }
 
     // Draw time overlay with each digit in its own box
-    ctx.fillStyle = '#BDD1EF';
+    ctx.fillStyle = '#BDD1EFD2';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.font = `300 ${Math.round(w * 0.56)}px ${fontLoaded ? "'26-05-06-droplet'" : 'system-ui'}, sans-serif`;
@@ -236,11 +235,6 @@ const useBackgroundAndTime = () => {
     
     for (let i = 0; i < timeChars.length; i++) {
       const charX = startX + i * charWidth;
-      
-      // Draw digit box
-      ctx.strokeStyle = '#FFFFFF37';
-      ctx.lineWidth = 0;
-      ctx.strokeRect(charX - charWidth * 0.4, h * 0.4, charWidth * 1.8, h * 0.2);
       
       // Draw digit
       ctx.fillText(timeChars[i], charX, h * 0.5);
