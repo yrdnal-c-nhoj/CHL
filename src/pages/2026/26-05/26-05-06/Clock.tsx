@@ -11,8 +11,8 @@ const MAX_FRAME_DT_MS = 100;
 const MAX_CATCHUP = 6;
 
 // === SIMULATION SPEED CONTROL ===
-const SIM_SPEED = 1 / 3;        // Overall movement speed
-const MERGE_SPLIT_SPEED = 1.0;  // Keep merging/splitting responsive
+const SIM_SPEED = 1 / 12;       // Overall movement speed (much slower)
+const MERGE_SPLIT_SPEED = 0.3;  // Slow down merging/splitting too
 
 // Physics Constants (slowed down)
 const DAMP = 0.993;
