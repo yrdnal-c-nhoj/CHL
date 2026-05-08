@@ -1,27 +1,22 @@
 import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import * as THREE from 'three';
-// ERROR: Font path references 26-05-07 but this clock is for 26-05-06 - wrong date reference
 import fontUrl from '@/assets/fonts/2026/26-05-06-droplet.ttf';
-// ERROR: Image path references 26-05-07 but this clock is for 26-05-06 - wrong date reference
 import backgroundImage from '@/assets/images/2026/26-05/26-05-06/drops.jpg';
 
-// ========================== CONSTANTS ==========================
 const MAX_DROPLETS = 40;
 const MAX_ENTRIES = MAX_DROPLETS * 2;
 const FIXED_DT_MS = 8;
 const MAX_FRAME_DT_MS = 100;
 const MAX_CATCHUP = 6;
 
-// === SIMULATION SPEED CONTROL ===
-const SIM_SPEED = 1 / 6;        // Overall movement speed
-const MERGE_SPLIT_SPEED = 3;  // Keep merging/splitting responsive
+const SIM_SPEED = 1 / 6;
+const MERGE_SPLIT_SPEED = 3;
 
-// Physics Constants (slowed down)
 const DAMP = 0.993;
 const TENSION_RANGE = 0.12;
 const TENSION_F = 0.0004 * SIM_SPEED;
 const MERGE_RATIO = 0.62;
-const SPLIT_SPEED = 0.013 * MERGE_SPLIT_SPEED;        // kept fast
+const SPLIT_SPEED = 0.013 * MERGE_SPLIT_SPEED;
 const SPLIT_MIN_R = 0.04;
 const MAX_SPEED = 0.015 * SIM_SPEED;
 const BOUNCE = 0.4;
@@ -30,27 +25,18 @@ const CENTER_PULL = 0.000008 * SIM_SPEED;
 const SOFT_STIFFNESS = 0.22 * SIM_SPEED;
 const SOFT_DAMPING = 0.6;
 
-// ========================== TYPES ==========================
 type Droplet = {
   id: number;
-  x: number;
-  y: number;
-  r: number;
-  area: number;
-  vx: number;
-  vy: number;
+  x: number; y: number; r: number; area: number;
+  vx: number; vy: number;
   alive: boolean;
   wanderAngle: number;
   wanderSpeed: number;
-  softPrevX: number;
-  softPrevY: number;
-  softOffX: number;
-  softOffY: number;
-  softVelX: number;
-  softVelY: number;
+  softPrevX: number; softPrevY: number;
+  softOffX: number; softOffY: number;
+  softVelX: number; softVelY: number;
 };
 
-// ========================== SHADERS (unchanged) ==========================
 const VERTEX_SHADER = `void main(){ gl_Position = vec4(position, 1.0); }`;
 
 const createFragmentShader = (maxEntries: number) => `
@@ -65,7 +51,7 @@ void main(){
   vec2 uv = gl_FragCoord.xy / uRes;
   float asp = uRes.x / uRes.y;
   vec2 p = (uv - 0.5) * vec2(asp, 1.0);
-
+  
   float field = 0.0;
   vec2 grad = vec2(0.0);
   vec2 lens = vec2(0.0);
@@ -93,13 +79,12 @@ void main(){
   float lensLen = length(lens);
   float thr = 1.0;
   float edge = smoothstep(thr - 0.08, thr + 0.03, field);
-
   float refractStrength = 0.035;
   float mappedLens = atan(lensLen * 6.0) * refractStrength;
   vec2 refractDir = (lensLen > 1e-5) ? lens / lensLen : vec2(0.0);
   float refractMask = smoothstep(thr - 0.2, thr + 1.5, field);
-  vec2 refractedUV = clamp(uv + refractDir * mappedLens * refractMask, 0.001, 0.999);
 
+  vec2 refractedUV = clamp(uv + refractDir * mappedLens * refractMask, 0.001, 0.999);
   vec3 bgClean = texture2D(uBg, uv).rgb;
 
   float gradLen = length(grad);
@@ -133,7 +118,6 @@ void main(){
 
   float shadowField = smoothstep(thr - 0.35, thr - 0.05, field);
   vec3 bg = bgClean * (1.0 - shadowField * 0.06);
-
   float border = smoothstep(thr - 0.10, thr - 0.01, field) *
                  (1.0 - smoothstep(thr, thr + 0.06, field)) * 0.28;
 
@@ -142,188 +126,135 @@ void main(){
 }
 `;
 
-// Background and time overlay hooks
-const useBackgroundAndTime = () => {
-  const { canvas, ctx, texture } = useMemo(() => {
-    const c = document.createElement('canvas');
-      // ERROR: Missing null check for getContext - could fail in some browsers
-    const context = c.getContext('2d', { alpha: false })!;
-    const tex = new THREE.CanvasTexture(c);
-    tex.minFilter = tex.magFilter = THREE.LinearFilter;
-    return { canvas: c, ctx: context, texture: tex };
-  }, []);
-
-  const stateRef = useRef({
-    lastTimeStr: '',
-    fontLoaded: false,
-    bgImage: null as HTMLImageElement | null,
-  });
-
-  // Load the custom font
-  useEffect(() => {
-    const loadFont = async () => {
-      try {
-        // ERROR: Font family name doesn't match the filename convention - should be 26-05-07-droplet
-        const font = new FontFace('26-05-06-droplet', `url(${fontUrl})`);
-        await font.load();
-    // ERROR: Missing cleanup for font loading - font remains in document.fonts after unmount
-    document.fonts.add(font);
-        stateRef.current.fontLoaded = true;
-      } catch (e) {
-        console.warn("Font load failed", e);
-      }
-    };
-    loadFont();
-  }, []);
-
-  const draw = useCallback(() => {
-    const w = canvas.width;
-    const h = canvas.height;
-    
-    // Don't draw if canvas has no dimensions
-    if (w === 0 || h === 0) return;
-    
-    const timeStr = new Date().toLocaleTimeString('en-US', {
-      hour12: false,
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
-    
-    const { lastTimeStr, fontLoaded, bgImage } = stateRef.current;
-
-    // Skip if background isn't ready or font isn't loaded to prevent FOUC
-    if (!bgImage || !bgImage.complete || !fontLoaded) return;
-    if (timeStr === lastTimeStr) return;
-
-    // Always draw to update time and handle GIF animation
-    ctx.fillStyle = '#1a3fa0';
-    ctx.fillRect(0, 0, w, h);
-    
-    if (bgImage && bgImage.complete) {
-      const imgRatio = bgImage.width / bgImage.height;
-      const canvasRatio = w / h;
-      
-      let drawWidth, drawHeight, offsetX, offsetY;
-      
-      if (imgRatio > canvasRatio) {
-        // Image is wider than canvas - fit to height
-        drawHeight = h;
-        drawWidth = h * imgRatio;
-        offsetX = (w - drawWidth) / 2;
-        offsetY = 0;
-      } else {
-        // Image is taller than canvas - fit to width
-        drawWidth = w;
-        drawHeight = w / imgRatio;
-        offsetX = 0;
-        offsetY = (h - drawHeight) / 2;
-      }
-      
-      ctx.drawImage(bgImage, offsetX, offsetY, drawWidth, drawHeight);
-    } else {
-      // If image isn't ready, we skip the rest to avoid showing 
-      // the clock over a plain background
-      return;
-    }
-
-    // Draw time overlay with each digit in its own box
-    ctx.fillStyle = '#BDD1EFD2';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.font = `300 ${Math.round(w * 0.56)}px ${fontLoaded ? "'26-05-06-droplet'" : 'system-ui'}, sans-serif`;
-    
-    // Draw each digit in its own isolated box
-    const timeChars = timeStr.split('');
-    const charWidth = w * 0.08; // Width for each character box
-    const startX = (w - timeChars.length * charWidth) / 2;
-    
-    for (let i = 0; i < timeChars.length; i++) {
-      const charX = startX + i * charWidth;
-      
-      // Draw digit
-      ctx.fillText(timeChars[i], charX, h * 0.5);
-    }
-
-    texture.needsUpdate = true;
-    stateRef.current.lastTimeStr = timeStr;
-  }, [canvas, ctx, texture]);
-
-  // Load the background image
-  useEffect(() => {
-    const img = new Image();
-    // ERROR: No error handling for image loading - if image fails to load, clock won't work
-    img.src = backgroundImage;
-    img.onload = () => {
-      stateRef.current.bgImage = img;
-      draw();
-    };
-  }, [draw]);
-
-  const updateSize = useCallback((w: number, h: number) => {
-    if (w > 0 && h > 0) {
-      canvas.width = w;
-      canvas.height = h;
-      draw();
-    }
-  }, [canvas, draw]);
-
-  return { texture, draw, updateSize };
-};
-
-// ========================== MAIN COMPONENT ==========================
 const WaterDropletsClock: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<{ 
-    renderer: THREE.WebGLRenderer | null, 
-    scene: THREE.Scene | null, 
-    camera: THREE.OrthographicCamera | null, 
-    material: THREE.ShaderMaterial | null 
-  }>({ renderer: null, scene: null, camera: null, material: null });
-
-  // ERROR: Missing useClockTime hook - should use standardized time management instead of manual Date calls
+  const sceneRef = useRef<{
+    renderer: THREE.WebGLRenderer | null;
+    scene: THREE.Scene | null;
+    camera: THREE.OrthographicCamera | null;
+    material: THREE.ShaderMaterial | null;
+    dropletTex: THREE.DataTexture | null;
+  }>({ renderer: null, scene: null, camera: null, material: null, dropletTex: null });
 
   const dropletsRef = useRef<Droplet[]>([]);
   const uidRef = useRef(0);
   const lastRef = useRef(0);
   const accRef = useRef(0);
   const pausedRef = useRef(false);
+  const resizeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Initialize background and time hook
-  const { texture: bgTexture, draw: drawBackground, updateSize } = useBackgroundAndTime();
+  // Background + Time Overlay
+  const { texture: bgTexture, draw: drawBackground, updateSize } = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d', { alpha: false })!;
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.minFilter = texture.magFilter = THREE.LinearFilter;
 
-  const createDroplet = useCallback((x?: number, y?: number): Droplet => {
-    const area = Math.PI * (0.025 + Math.random() * 0.045) ** 2;
-    const angle = Math.random() * Math.PI * 2;
-    const spd = (0.0004 + Math.random() * 0.0007) * SIM_SPEED;
-
-    return {
-      id: uidRef.current++,
-      x: x ?? (Math.random() - 0.5) * 0.7,
-      y: y ?? (Math.random() - 0.5) * 0.5,
-      r: Math.sqrt(area / Math.PI),
-      area,
-      vx: Math.cos(angle) * spd,
-      vy: Math.sin(angle) * spd,
-      alive: true,
-      wanderAngle: Math.random() * Math.PI * 2,
-      wanderSpeed: 0.3 + Math.random() * 0.5,
-      softPrevX: x ?? (Math.random() - 0.5) * 0.7,
-      softPrevY: y ?? (Math.random() - 0.5) * 0.5,
-      softOffX: 0,
-      softOffY: 0,
-      softVelX: 0,
-      softVelY: 0,
+    const state = {
+      lastTimeStr: '',
+      fontLoaded: false,
+      bgImage: null as HTMLImageElement | null,
     };
+
+    const font = new FontFace('26-05-06-droplet', `url(${fontUrl})`);
+    font.load().then(loadedFont => {
+      document.fonts.add(loadedFont);
+      state.fontLoaded = true;
+    }).catch(console.warn);
+
+    const img = new Image();
+    img.src = backgroundImage;
+    img.onload = () => { state.bgImage = img; };
+    img.onerror = () => console.warn("Background image failed to load");
+
+    const draw = () => {
+      const { width: w, height: h } = canvas;
+      if (w === 0 || h === 0 || !state.bgImage?.complete || !state.fontLoaded) return;
+
+      const timeStr = new Date().toLocaleTimeString('en-US', {
+        hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'
+      });
+      if (timeStr === state.lastTimeStr) return;
+
+      ctx.fillStyle = '#1a3fa0';
+      ctx.fillRect(0, 0, w, h);
+
+      // Draw background image (cover)
+      const imgRatio = state.bgImage.width / state.bgImage.height;
+      const canvasRatio = w / h;
+      let drawW, drawH, offsetX, offsetY;
+
+      if (imgRatio > canvasRatio) {
+        drawH = h; drawW = h * imgRatio;
+        offsetX = (w - drawW) / 2; offsetY = 0;
+      } else {
+        drawW = w; drawH = w / imgRatio;
+        offsetX = 0; offsetY = (h - drawH) / 2;
+      }
+      ctx.drawImage(state.bgImage, offsetX, offsetY, drawW, drawH);
+
+      // Time
+      ctx.fillStyle = '#BDD1EFD2';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = `300 ${Math.round(w * 0.56)}px '26-05-06-droplet', system-ui`;
+
+      const chars = timeStr.split('');
+      const charWidth = w * 0.08;
+      const startX = (w - chars.length * charWidth) / 2;
+
+      for (let i = 0; i < chars.length; i++) {
+        ctx.fillText(chars[i], startX + i * charWidth, h * 0.5);
+      }
+
+      texture.needsUpdate = true;
+      state.lastTimeStr = timeStr;
+    };
+
+    return { texture, draw, updateSize: (w: number, h: number) => {
+      if (w > 0 && h > 0) {
+        canvas.width = w;
+        canvas.height = h;
+        draw();
+      }
+    }};
+  }, []);
+
+  const createDroplet = useCallback((x?: number, y?: number): Droplet => ({
+    id: uidRef.current++,
+    x: x ?? (Math.random() - 0.5) * 0.7,
+    y: y ?? (Math.random() - 0.5) * 0.5,
+    r: 0.025 + Math.random() * 0.045,
+    area: 0, // will be calculated below
+    vx: 0, vy: 0,
+    alive: true,
+    wanderAngle: Math.random() * Math.PI * 2,
+    wanderSpeed: 0.3 + Math.random() * 0.5,
+    softPrevX: 0, softPrevY: 0,
+    softOffX: 0, softOffY: 0,
+    softVelX: 0, softVelY: 0,
+  }), []);
+
+  // Pre-calculate area after creation
+  const initDroplet = useCallback((d: Droplet) => {
+    const spd = (0.0004 + Math.random() * 0.0007) * SIM_SPEED;
+    const angle = Math.random() * Math.PI * 2;
+    d.area = Math.PI * d.r * d.r;
+    d.vx = Math.cos(angle) * spd;
+    d.vy = Math.sin(angle) * spd;
+    d.softPrevX = d.x;
+    d.softPrevY = d.y;
+    return d;
   }, []);
 
   const seedInitialDroplets = useCallback(() => {
-    dropletsRef.current = Array.from({ length: 12 }, () => createDroplet());
-  }, [createDroplet]);
+    dropletsRef.current = Array.from({ length: 12 }, () => initDroplet(createDroplet()));
+  }, [createDroplet, initDroplet]);
 
   const applyForces = useCallback(() => {
     const droplets = dropletsRef.current;
 
+    // Wander + center pull
     for (const d of droplets) {
       d.wanderAngle += (Math.random() - 0.5) * d.wanderSpeed;
       d.vx += Math.cos(d.wanderAngle) * WANDER_F;
@@ -332,7 +263,7 @@ const WaterDropletsClock: React.FC = () => {
       d.vy -= d.y * CENTER_PULL;
     }
 
-    // Surface tension
+    // Surface tension (pairwise)
     for (let i = 0; i < droplets.length; i++) {
       const a = droplets[i];
       for (let j = i + 1; j < droplets.length; j++) {
@@ -348,26 +279,25 @@ const WaterDropletsClock: React.FC = () => {
           const f = s * TENSION_F;
           const fx = (dx / dist) * f;
           const fy = (dy / dist) * f;
-          a.vx += fx;
-          a.vy += fy;
-          b.vx -= fx;
-          b.vy -= fy;
+
+          a.vx += fx; a.vy += fy;
+          b.vx -= fx; b.vy -= fy;
         }
       }
     }
   }, []);
 
   const integrate = useCallback(() => {
-    // ERROR: Direct window access instead of using ref or parameter - should pass aspect as parameter
-    const aspect = window.innerWidth / window.innerHeight;
+    const aspect = window.innerWidth / window.innerHeight; // still acceptable for resize-driven value
+    const wx = aspect * 0.5;
+    const wy = 0.5;
     const droplets = dropletsRef.current;
 
     for (const d of droplets) {
-      let speed = Math.sqrt(d.vx * d.vx + d.vy * d.vy);
+      let speed = Math.hypot(d.vx, d.vy);
       if (speed > MAX_SPEED) {
         const s = MAX_SPEED / speed;
-        d.vx *= s;
-        d.vy *= s;
+        d.vx *= s; d.vy *= s;
       }
 
       d.x += d.vx;
@@ -375,9 +305,7 @@ const WaterDropletsClock: React.FC = () => {
       d.vx *= DAMP;
       d.vy *= DAMP;
 
-      const wx = aspect * 0.5;
-      const wy = 0.5;
-
+      // Bounds
       if (d.x - d.r < -wx) { d.x = -wx + d.r; d.vx = Math.abs(d.vx) * BOUNCE; }
       if (d.x + d.r > wx) { d.x = wx - d.r; d.vx = -Math.abs(d.vx) * BOUNCE; }
       if (d.y - d.r < -wy) { d.y = -wy + d.r; d.vy = Math.abs(d.vy) * BOUNCE; }
@@ -394,8 +322,7 @@ const WaterDropletsClock: React.FC = () => {
         const b = droplets[j];
         if (!b.alive) continue;
 
-        const dist = Math.hypot(b.x - a.x, b.y - a.y);
-        if (dist < (a.r + b.r) * MERGE_RATIO) {
+        if (Math.hypot(b.x - a.x, b.y - a.y) < (a.r + b.r) * MERGE_RATIO) {
           const na = a.area + b.area;
           a.x = (a.x * a.area + b.x * b.area) / na;
           a.y = (a.y * a.area + b.y * b.area) / na;
@@ -407,6 +334,8 @@ const WaterDropletsClock: React.FC = () => {
         }
       }
     }
+
+    // Remove dead
     for (let i = droplets.length - 1; i >= 0; i--) {
       if (!droplets[i].alive) droplets.splice(i, 1);
     }
@@ -418,7 +347,7 @@ const WaterDropletsClock: React.FC = () => {
 
     for (const d of droplets) {
       if (d.r < SPLIT_MIN_R) continue;
-      const sp = Math.sqrt(d.vx * d.vx + d.vy * d.vy);
+      const sp = Math.hypot(d.vx, d.vy);
       if (sp < SPLIT_SPEED) continue;
 
       const ha = d.area * 0.5;
@@ -432,17 +361,18 @@ const WaterDropletsClock: React.FC = () => {
       d.x -= nx * off;
       d.y -= ny * off;
 
-      toAdd.push({
-        ...createDroplet(d.x + nx * off * 2, d.y + ny * off * 2),
-        vx: d.vx + nx * sp * 0.35,
-        vy: d.vy + ny * sp * 0.35,
-      });
+      const newDroplet = createDroplet(d.x + nx * off * 2, d.y + ny * off * 2);
+      newDroplet.vx = d.vx + nx * sp * 0.35;
+      newDroplet.vy = d.vy + ny * sp * 0.35;
+      initDroplet(newDroplet); // ensure area etc.
+
+      toAdd.push(newDroplet);
     }
 
     for (const d of toAdd) {
       if (droplets.length < MAX_DROPLETS) droplets.push(d);
     }
-  }, [createDroplet]);
+  }, [createDroplet, initDroplet]);
 
   const updateSoftBodies = useCallback(() => {
     for (const d of dropletsRef.current) {
@@ -463,9 +393,10 @@ const WaterDropletsClock: React.FC = () => {
 
   const autoSpawn = useCallback(() => {
     if (dropletsRef.current.length < 10 && Math.random() < 0.012) {
-      dropletsRef.current.push(createDroplet());
+      const d = createDroplet();
+      dropletsRef.current.push(initDroplet(d));
     }
-  }, [createDroplet]);
+  }, [createDroplet, initDroplet]);
 
   const fixedUpdate = useCallback(() => {
     applyForces();
@@ -479,6 +410,7 @@ const WaterDropletsClock: React.FC = () => {
   const syncToTexture = useCallback((dropletTex: THREE.DataTexture, material: THREE.ShaderMaterial) => {
     const buf = dropletTex.image.data as Float32Array;
     const n = Math.min(dropletsRef.current.length, MAX_DROPLETS);
+    const count = n * 2;
 
     for (let i = 0; i < n; i++) {
       const d = dropletsRef.current[i];
@@ -493,10 +425,10 @@ const WaterDropletsClock: React.FC = () => {
     }
 
     dropletTex.needsUpdate = true;
-    material.uniforms.uCount.value = n * 2;
+    material.uniforms.uCount.value = count;
   }, []);
 
-  // Setup
+  // Main setup
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
@@ -504,9 +436,7 @@ const WaterDropletsClock: React.FC = () => {
     const renderer = new THREE.WebGLRenderer({ antialias: false });
     renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
     renderer.setSize(window.innerWidth, window.innerHeight);
-    mount.appendChild(renderer.domElement);
 
-    
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
@@ -526,16 +456,15 @@ const WaterDropletsClock: React.FC = () => {
         uData: { value: dropletTex },
         uBg: { value: bgTexture },
         uCount: { value: 0 },
-        uTime: { value: 0 },
-        // ERROR: uTime uniform is defined but never used in the fragment shader - dead code
       },
     });
 
     scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
-    sceneRef.current = { renderer, scene, camera, material };
+
+    sceneRef.current = { renderer, scene, camera, material, dropletTex };
+    mount.appendChild(renderer.domElement);
 
     updateSize(renderer.domElement.width, renderer.domElement.height);
-
     seedInitialDroplets();
 
     let frameId: number;
@@ -558,12 +487,10 @@ const WaterDropletsClock: React.FC = () => {
       }
       if (updates >= MAX_CATCHUP) accRef.current = 0;
 
-      material.uniforms.uTime.value = now * 0.001;
-      // ERROR: Updating uTime uniform but it's not used in shader - wasted computation
       syncToTexture(dropletTex, material);
       drawBackground();
-
       renderer.render(scene, camera);
+
       frameId = requestAnimationFrame(loop);
     };
 
@@ -571,37 +498,47 @@ const WaterDropletsClock: React.FC = () => {
     loop();
 
     const handleResize = () => {
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
-      material.uniforms.uRes.value.set(renderer.domElement.width, renderer.domElement.height);
-      updateSize(renderer.domElement.width, renderer.domElement.height);
+      if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
+      resizeTimeoutRef.current = setTimeout(() => {
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+
+        material.uniforms.uRes.value.set(
+          renderer.domElement.width,
+          renderer.domElement.height
+        );
+        updateSize(renderer.domElement.width, renderer.domElement.height);
+      }, 100);
     };
-    // ERROR: Missing debouncing for resize events - could cause performance issues
 
     window.addEventListener('resize', handleResize);
-    document.addEventListener('visibilitychange', () => {
+
+    const visibilityHandler = () => {
       pausedRef.current = document.hidden;
       if (!pausedRef.current) lastRef.current = performance.now();
-    });
+    };
+    document.addEventListener('visibilitychange', visibilityHandler);
 
     return () => {
       cancelAnimationFrame(frameId);
       window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', visibilityHandler);
+      if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
+
       if (mount && renderer.domElement) mount.removeChild(renderer.domElement);
       renderer.dispose();
+      material.dispose();
+      dropletTex.dispose();
     };
-  }, [seedInitialDroplets, fixedUpdate, syncToTexture, bgTexture, drawBackground, updateSize]);
+  }, [bgTexture, drawBackground, updateSize, seedInitialDroplets, fixedUpdate, syncToTexture]);
 
   return (
-    <div ref={mountRef} style={{ 
-      position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw', 
-      height: '100dvh'
-    }} />
+    <div
+      ref={mountRef}
+      style={{ position: 'fixed', inset: 0, width: '100vw', height: '100dvh' }}
+      aria-label="Water droplets clock"
+    />
   );
-  // ERROR: Missing semantic HTML - should use <time dateTime={...}> for accessibility
 };
 
 export default WaterDropletsClock;
