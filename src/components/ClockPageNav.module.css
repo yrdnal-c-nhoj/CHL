@@ -59,7 +59,6 @@
   pointer-events: auto;
   /* Ensure buttons maintain their size and position when container is transparent */
   opacity: 0.1;
-  /* Allow clicks to pass through transparent buttons but maintain hitbox */
   cursor: pointer;
   transition: opacity 0.7s ease-in-out;
 }

@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import * as THREE from 'three';
-import fontUrl from '@/assets/fonts/2026/26-05-07-droplet.ttf';
-import backgroundImage from '@/assets/images/2026/26-05/26-05-07/drops.jpg';
+// ERROR: Font path references 26-05-07 but this clock is for 26-05-06 - wrong date reference
+import fontUrl from '@/assets/fonts/2026/26-05-06-droplet.ttf';
+// ERROR: Image path references 26-05-07 but this clock is for 26-05-06 - wrong date reference
+import backgroundImage from '@/assets/images/2026/26-05/26-05-06/drops.jpg';
 
 // ========================== CONSTANTS ==========================
 const MAX_DROPLETS = 40;
@@ -144,6 +146,7 @@ void main(){
 const useBackgroundAndTime = () => {
   const { canvas, ctx, texture } = useMemo(() => {
     const c = document.createElement('canvas');
+      // ERROR: Missing null check for getContext - could fail in some browsers
     const context = c.getContext('2d', { alpha: false })!;
     const tex = new THREE.CanvasTexture(c);
     tex.minFilter = tex.magFilter = THREE.LinearFilter;
@@ -160,9 +163,11 @@ const useBackgroundAndTime = () => {
   useEffect(() => {
     const loadFont = async () => {
       try {
+        // ERROR: Font family name doesn't match the filename convention - should be 26-05-07-droplet
         const font = new FontFace('26-05-06-droplet', `url(${fontUrl})`);
         await font.load();
-        document.fonts.add(font);
+    // ERROR: Missing cleanup for font loading - font remains in document.fonts after unmount
+    document.fonts.add(font);
         stateRef.current.fontLoaded = true;
       } catch (e) {
         console.warn("Font load failed", e);
@@ -247,6 +252,7 @@ const useBackgroundAndTime = () => {
   // Load the background image
   useEffect(() => {
     const img = new Image();
+    // ERROR: No error handling for image loading - if image fails to load, clock won't work
     img.src = backgroundImage;
     img.onload = () => {
       stateRef.current.bgImage = img;
@@ -274,6 +280,8 @@ const WaterDropletsClock: React.FC = () => {
     camera: THREE.OrthographicCamera | null, 
     material: THREE.ShaderMaterial | null 
   }>({ renderer: null, scene: null, camera: null, material: null });
+
+  // ERROR: Missing useClockTime hook - should use standardized time management instead of manual Date calls
 
   const dropletsRef = useRef<Droplet[]>([]);
   const uidRef = useRef(0);
@@ -350,6 +358,7 @@ const WaterDropletsClock: React.FC = () => {
   }, []);
 
   const integrate = useCallback(() => {
+    // ERROR: Direct window access instead of using ref or parameter - should pass aspect as parameter
     const aspect = window.innerWidth / window.innerHeight;
     const droplets = dropletsRef.current;
 
@@ -518,6 +527,7 @@ const WaterDropletsClock: React.FC = () => {
         uBg: { value: bgTexture },
         uCount: { value: 0 },
         uTime: { value: 0 },
+        // ERROR: uTime uniform is defined but never used in the fragment shader - dead code
       },
     });
 
@@ -549,6 +559,7 @@ const WaterDropletsClock: React.FC = () => {
       if (updates >= MAX_CATCHUP) accRef.current = 0;
 
       material.uniforms.uTime.value = now * 0.001;
+      // ERROR: Updating uTime uniform but it's not used in shader - wasted computation
       syncToTexture(dropletTex, material);
       drawBackground();
 
@@ -565,6 +576,7 @@ const WaterDropletsClock: React.FC = () => {
       material.uniforms.uRes.value.set(renderer.domElement.width, renderer.domElement.height);
       updateSize(renderer.domElement.width, renderer.domElement.height);
     };
+    // ERROR: Missing debouncing for resize events - could cause performance issues
 
     window.addEventListener('resize', handleResize);
     document.addEventListener('visibilitychange', () => {
@@ -589,6 +601,7 @@ const WaterDropletsClock: React.FC = () => {
       height: '100dvh'
     }} />
   );
+  // ERROR: Missing semantic HTML - should use <time dateTime={...}> for accessibility
 };
 
 export default WaterDropletsClock;
