@@ -1,153 +1,66 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { useClockTime } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import React, { useEffect } from 'react';
+
+import { useClockTime } from '@/utils/hooks/useClockTime';
+
 import styles from './Clock.module.css';
 
-// ---------------- INTERFACES ----------------
-interface HandDimensions {
-  width: string;
-  height: string;
-  zIndex: number;
-}
+const GOOGLE_FONTS_URL = 'https://fonts.googleapis.com/css2?family=VT323&display=swap';
 
-interface ClockHandProps {
-  type: 'hour' | 'minute' | 'second';
-  rotation: number;
-}
-
-interface TimeValues {
-  hr: number;
-  min: number;
-  sec: number;
-}
-
-// ---------------- CONFIGURATION ----------------
-const CLOCK_CONFIG = {
-  NUMERAL_RADIUS: 40,
-  COLORS: {
-    background: '#000000',
-    primary: '#FFFFFF',
-    shadow: 'drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8))',
-  },
-  HAND_DIMENSIONS: {
-    hour: { width: '1.2vmin', height: '20vmin', zIndex: 3 },
-    minute: { width: '0.8vmin', height: '32vmin', zIndex: 4 },
-    second: { width: '0.4vmin', height: '38vmin', zIndex: 5 },
-  },
-} as const;
-
-// ---------------- FONT CONFIGURATION ----------------
-const fontConfigs = [
-  {
-    name: 'ClockFont',
-    url: '@/assets/fonts/2026/26-05-05-dolphin.ttf',
-  },
-];
-
-// ---------------- UTILITIES ----------------
-const calculateTimeValues = (date: Date): TimeValues => {
-  const msec = date.getMilliseconds();
-  const sec = date.getSeconds() + msec / 1000;
-  const min = date.getMinutes() + sec / 60;
-  const hr = (date.getHours() % 12) + min / 60;
-
-  return { hr, min, sec };
-};
-
-const calculateNumeralPosition = (number: number) => {
-  const angleRad = (number / 12) * 2 * Math.PI;
-  const angleDeg = (number / 12) * 360;
-
-  return {
-    x: 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angleRad),
-    y: 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angleRad),
-    angle: angleDeg,
-  };
-};
-
-const getHandRotation = (value: number, multiplier: number): number => value * multiplier;
-
-// ---------------- COMPONENTS ----------------
-const BackgroundLayers: React.FC = () => (
-  <video
-    className={styles.backgroundVideo}
-    autoPlay
-    loop
-    muted
-    playsInline
-  >
-    <source src="/src/assets/images/2026/26-05/26-05-05/jump.mp4" type="video/mp4" />
-  </video>
-);
-
-const ClockNumerals: React.FC = () => {
-  const numerals = useMemo(() => {
-    return Array.from({ length: 12 }, (_, i) => {
-      const num = i + 1;
-      const { x, y, angle } = calculateNumeralPosition(num);
-
-      return (
-        <div
-          key={num}
-          className={styles.numeral}
-          style={{
-            left: `${x}%`,
-            top: `${y}%`,
-            transform: `translate(-50%, -50%) rotate(${angle}deg)`,
-          }}
-        >
-          {num}
-        </div>
-      );
-    });
+const Clock: React.FC = () => {
+  const time = useClockTime();
+  
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = GOOGLE_FONTS_URL;
+    document.head.appendChild(link);
+    
+    return () => {
+      document.head.removeChild(link);
+    };
   }, []);
-
-  return <>{numerals}</>;
-};
-
-const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
-  const { width, height, zIndex } = CLOCK_CONFIG.HAND_DIMENSIONS[type];
-
-  return (
-    <div
-      className={styles.hand}
-      style={{
-        width,
-        height,
-        zIndex,
-        transform: `translate(-50%, 0) rotate(${rotation}deg)`,
-      }}
-    />
-  );
-};
-
-const CenterDot: React.FC = () => (
-  <div className={styles.centerDot} />
-);
-
-// ---------------- MAIN CLOCK COMPONENT ----------------
-const AnalogClock: React.FC = () => {
-  const currentTime = useClockTime();
-  const { hr, min, sec } = calculateTimeValues(currentTime);
-
-  // Load fonts with suspense to prevent FOUC
-  useSuspenseFontLoader(fontConfigs);
-
+  
+  // Calculate grid dimensions based on viewport and tile size
+  const tileWidth = 260;
+  const tileHeight = 100;
+  const cols = Math.ceil(window.innerWidth / tileWidth) + 2; // Extra for centering
+  const rows = Math.ceil(window.innerHeight / tileHeight) + 2; // Extra for centering
+  
+  // Generate clock positions
+  const clocks = [];
+  // Center the grid like the background
+  const centerX = window.innerWidth / 2;
+  const centerY = window.innerHeight / 2;
+  const offsetX = -1; // Move left
+  const offsetY = 33;  // Move down
+  
+  for (let row = -1; row < rows; row++) {
+    for (let col = -1; col < cols; col++) {
+      clocks.push({
+        key: `${row}-${col}`,
+        left: centerX + (col * tileWidth - (cols * tileWidth) / 2) + offsetX,
+        top: centerY + (row * tileHeight - (rows * tileHeight) / 2) + offsetY
+      });
+    }
+  }
+  
   return (
     <div className={styles.container}>
-      <BackgroundLayers />
-      
-      <time dateTime={currentTime.toISOString()} className={styles.clockFace}>
-        <ClockNumerals />
-        
-        <ClockHand type="hour" rotation={getHandRotation(hr, 30)} />
-        <ClockHand type="minute" rotation={getHandRotation(min, 6)} />
-        <ClockHand type="second" rotation={getHandRotation(sec, 6)} />
-        
-        <CenterDot />
-      </time>
+      <div className={styles.background} />
+      {clocks.map(({ key, left, top }) => (
+        <div
+          key={key}
+          className={styles.clockTile}
+          style={{
+            '--left': `${left}px`,
+            '--top': `${top}px`
+          } as React.CSSProperties}
+        >
+          {time.toLocaleTimeString()}
+        </div>
+      ))}
     </div>
   );
 };
 
-export default AnalogClock;
+export default Clock;
