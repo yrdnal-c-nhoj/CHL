@@ -31,8 +31,15 @@ const ClockPageNav = ({
   formatDate,
 }: ClockPageNavProps) => {
   const [visible, setVisible] = useState(true);
+  const [isInHotZone, setIsInHotZone] = useState(false);
   // Using a ref for the timer to avoid unnecessary re-renders when setting the state
-  const timerRef = useRef(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const lastActivityRef = useRef<number>(0);
+
+  // Initialize last activity time on mount
+  useEffect(() => {
+    lastActivityRef.current = Date.now();
+  }, []);
 
   const clearInactivityTimer = useCallback(() => {
     if (timerRef.current) {
@@ -44,23 +51,29 @@ const ClockPageNav = ({
   const startInactivityTimer = useCallback(() => {
     clearInactivityTimer();
     timerRef.current = setTimeout(() => {
-      setVisible(false); // Stay visible for 3 seconds of inactivity
-    }, 3000); // Stay visible for 3 seconds of inactivity
+      setVisible(false); // Hide after 1500ms of inactivity
+    }, 1500); // Hide after 1500ms
   }, [clearInactivityTimer]);
+
+  const resetActivity = useCallback(() => {
+    lastActivityRef.current = Date.now();
+    setVisible(true);
+    startInactivityTimer();
+  }, [startInactivityTimer]);
 
   const handleMouseEnter = useCallback(() => {
-    setVisible(true);
-    clearInactivityTimer();
-  }, [clearInactivityTimer]);
+    setIsInHotZone(true);
+    resetActivity(); // Immediately restore navigation and restart timer
+  }, [resetActivity]);
 
   const handleMouseLeave = useCallback(() => {
-    startInactivityTimer();
+    setIsInHotZone(false);
+    startInactivityTimer(); // Start timer when leaving to ensure fade behavior
   }, [startInactivityTimer]);
 
   const handleMouseMove = useCallback(() => {
-    setVisible(true);
-    startInactivityTimer();
-  }, [startInactivityTimer]);
+    resetActivity(); // Any mouse movement resets timer and shows navigation
+  }, [resetActivity]);
 
   const handleTouchStart = useCallback(() => {
     setVisible(true);
@@ -86,6 +99,18 @@ const ClockPageNav = ({
     startInactivityTimer();
     return () => clearInactivityTimer();
   }, [startInactivityTimer, clearInactivityTimer]);
+
+  // Global mouse movement listener to detect activity anywhere on page
+  useEffect(() => {
+    const handleGlobalMouseMove = () => {
+      if (isInHotZone) {
+        resetActivity();
+      }
+    };
+
+    document.addEventListener('mousemove', handleGlobalMouseMove);
+    return () => document.removeEventListener('mousemove', handleGlobalMouseMove);
+  }, [isInHotZone, resetActivity]);
 
   if (!currentItem) return null;
 
