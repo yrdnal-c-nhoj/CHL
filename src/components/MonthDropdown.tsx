@@ -94,7 +94,13 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
             display: 'flex', 
             gap: '0.25rem', 
             marginBottom: '0.5rem',
-            paddingLeft: '1rem'
+            justifyContent: 'center',
+            width: '100vw',
+            marginLeft: 'calc(-50vw + 50%)',
+            marginRight: 'calc(-50vw + 50%)',
+            position: 'relative',
+            left: '0',
+            right: '0'
           }}>
             <button
               onClick={handleDateSort}

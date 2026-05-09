@@ -11,9 +11,11 @@
   text-align: center;
   background-color: #333333;
   width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
   position: relative;
   left: 0;
-  margin: 0;
+  right: 0;
   padding: 0.1rem;
   box-sizing: border-box;
 }
@@ -32,9 +34,11 @@
   text-align: center;
   letter-spacing: -0.05rem;
   width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  position: relative;
   left: 0;
   right: 0;
-  margin: 0;
   padding: 0;
   box-sizing: border-box;
   overflow-x: hidden;
@@ -54,7 +58,11 @@
 .navbar {
   position: relative;
   width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
   background-color: #2e382e;
+  left: 0;
+  right: 0;
 }
 
 .nav-menu {
