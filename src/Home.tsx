@@ -16,6 +16,30 @@ interface DataItem {
 
 type SortOption = 'date-desc' | 'date-asc' | 'title-asc' | 'title-desc' | 'random';
 
+const isValidDate = (str: string | undefined): boolean => {
+  const parts = str?.split('-');
+  if (!parts || parts.length !== 3) return false;
+  const [yy, mm, dd] = parts.map(Number);
+  if (isNaN(yy) || isNaN(mm) || isNaN(dd)) return false;
+  // Assumes 20xx
+  const date = new Date(2000 + yy, mm - 1, dd);
+  return !isNaN(date.getTime());
+};
+
+const formatDate = (dateStr: string | undefined): string => {
+  const parts = dateStr?.split('-');
+  if (!parts || parts.length !== 3) return 'Unknown Date';
+  const [yy, mm, dd] = parts.map(Number);
+  const date = new Date(2000 + yy, mm - 1, dd);
+  if (isNaN(date.getTime())) return 'Unknown Date';
+
+  const year = String(date.getFullYear()).slice(-2);
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}.${month}.${day}`;
+};
+
 const Home: FC = () => {
   const { items, loading, error } = useContext(DataContext) as { items: DataItem[], loading: boolean, error: string | null };
   const [sortBy, setSortBy] = useState<SortOption>('date-desc');
@@ -43,30 +67,6 @@ const Home: FC = () => {
     localStorage.setItem('sortBy', sortBy);
   }, [sortBy]);
 
-  const isValidDate = (str: string | undefined): boolean => {
-    const parts = str?.split('-');
-    if (!parts || parts.length !== 3) return false;
-    const [yy, mm, dd] = parts.map(Number);
-    if (isNaN(yy) || isNaN(mm) || isNaN(dd)) return false;
-    // Assumes 20xx
-    const date = new Date(2000 + yy, mm - 1, dd);
-    return !isNaN(date.getTime());
-  };
-
-  const formatDate = (dateStr: string | undefined): string => {
-    const parts = dateStr?.split('-');
-    if (!parts || parts.length !== 3) return 'Unknown Date';
-    const [yy, mm, dd] = parts.map(Number);
-    const date = new Date(2000 + yy, mm - 1, dd);
-    if (isNaN(date.getTime())) return 'Unknown Date';
-
-    const year = String(date.getFullYear()).slice(-2); // 2-digit year
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // 2-digit month
-    const day = String(date.getDate()).padStart(2, '0'); // 2-digit day
-
-    return `${year}.${month}.${day}`; // YYYY-MM-DD
-  };
-
   const sortedItems = useMemo<DataItem[]>(() => {
     const itemsCopy = [...items].filter(
       (item) => item?.date && isValidDate(item.date),
@@ -81,9 +81,13 @@ const Home: FC = () => {
     if (sortBy === 'title-desc')
       return itemsCopy.sort((a, b) => (b.title || '').localeCompare(a.title || ''));
     if (sortBy === 'random')
-      return itemsCopy.sort(() => Math.random() - 0.5);
+      // Use the randomSortKey as a seed-like trigger for a fresh shuffle
+      // and sort using a more stable comparison
+      return itemsCopy.map(value => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value);
     
-    return itemsCopy.sort(() => Math.random() - 0.5);
+    return itemsCopy;
   }, [items, sortBy, randomSortKey]);
 
   const handleRandomSort = () =>
