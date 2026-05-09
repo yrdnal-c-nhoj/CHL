@@ -13,7 +13,7 @@
   height: 100%;
   z-index: 1;
   background-image: url('@/assets/images/2026/26-05/26-05-08/sunpath.webp');
-  background-size: 260px 100px;
+  background-size: 32vh 11vh;
   background-position: center;
   background-repeat: repeat;
   filter: saturate(500%);
@@ -24,14 +24,12 @@
   left: var(--left, 0);
   top: var(--top, 0);
   z-index: 2;
-  width: 260px;
-  height: 100px;
+  width: 64vh;
+  height: 22vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5vh;
-  /* font-weight: bold; */
-  color: rgb(228, 198, 4);
-  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.477);
+  font-size: 4.5vh;
+  color: rgba(121, 126, 155, 0.41);
   font-family: 'VT323', monospace;
 }
