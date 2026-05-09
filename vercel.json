@@ -1,5 +1,5 @@
 {
-  "installCommand": "npm install",
+  "installCommand": "rm -rf node_modules && npm ci",
   "buildCommand": "npm run build",
   "framework": "vite"
 }
