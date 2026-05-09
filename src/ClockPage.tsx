@@ -6,14 +6,14 @@ import React, {
   useState,
 } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { DataContext } from './context/DataContext';
-import Header from './components/Header';
-import ClockPageNav from './components/ClockPageNav';
-import { ClockLoadingFallback } from './utils/fontLoader';
-import { useClockPage } from './hooks/useClockPage';
+import { DataContext } from '@/context/DataContext';
+import Header from '@/components/Header';
+import ClockPageNav from '@/components/ClockPageNav';
+import { ClockLoadingFallback } from '@/utils/fontLoader';
+import { useClockPage } from '@/hooks/useClockPage';
 import styles from './ClockPage.module.css';
-import { ClockItem, DataContextType } from './types/data'; // Import centralized interfaces
-import { useAutoHeader } from './hooks/useAutoHeader';
+import type { ClockItem, DataContextType } from '@/types/data';
+import { useAutoHeader } from '@/hooks/useAutoHeader';
 import {
   DATE_REGEX,
   normalizeDate,
@@ -29,63 +29,65 @@ const OVERLAY_FADE_DURATION = 300; // 0.3 seconds for a smoother fade
  * Custom hook to encapsulate navigation and item discovery logic.
  * This helps keep the main component under the 50-line BTS limit.
  */
-const useClockNavigation = (items: ClockItem[], date: string | undefined) => {
+const useClockNavigation = (items: ClockItem[] = [], date = '') => {
   const normalizedDate = useMemo(() => normalizeDate(date || ''), [date]);
 
-  const currentItem = useMemo(() => {
-    return items?.find((item) => normalizeDate(item.date) === normalizedDate) || null;
-  }, [items, normalizedDate]);
-
-  const navItems = useMemo(() => {
-    if (!items?.length || !currentItem) return { prevItem: null, nextItem: null };
+  return useMemo(() => {
     const idx = items.findIndex((i) => normalizeDate(i.date) === normalizedDate);
+    const currentItem = idx !== -1 ? items[idx] : null;
     return {
+      currentItem,
       prevItem: idx > 0 ? items[idx - 1] : null,
       nextItem: idx < items.length - 1 ? items[idx + 1] : null
     };
-  }, [items, currentItem, normalizedDate]);
-
-  return { currentItem, ...navItems };
+  }, [items, normalizedDate]);
 };
+
+/**
+ * Sub-component for Error UI to keep main component within line limits.
+ */
+const ErrorDisplay: React.FC<{ message: string; onBack: () => void }> = ({ message, onBack }) => (
+  <div className={styles.errorContainer}>
+    <h1>Error</h1>
+    <p>{message}</p>
+    <button onClick={onBack} className={styles.errorButton}>
+      Back to Home
+    </button>
+  </div>
+);
+
+const LoadingOverlay: React.FC<{ visible: boolean }> = ({ visible }) => (
+  <div
+    className={styles.loadingOverlay}
+    style={{
+      opacity: visible ? 1 : 0,
+      transition: `opacity ${OVERLAY_FADE_DURATION}ms ease-out`,
+      pointerEvents: 'none'
+    }}
+  />
+);
 
 const ClockPage: React.FC = () => {
   const { date } = useParams();
-  const context = useContext(DataContext) as DataContextType;
-  const { items, loading, error: contextError } = context;
+  const { items, loading, error: contextError } = useContext(DataContext) as DataContextType;
   const navigate = useNavigate();
   const headerVisible = useAutoHeader(HEADER_FADE_DELAY);
   const { currentItem, prevItem, nextItem } = useClockNavigation(items, date);
   const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPage(currentItem);
 
-  // Validate date format and redirect if invalid
   useEffect(() => {
     if (!date || !DATE_REGEX.test(date)) {
       navigate('/', { replace: true });
     }
   }, [date, navigate]);
 
-  // Apply/remove 'clock-mode' class to body based on clock readiness
   useEffect(() => {
     document.body.classList.toggle('clock-mode', isReady);
     return () => document.body.classList.remove('clock-mode');
   }, [isReady]);
 
-  // Error state display
   if (pageError || contextError || (!loading && !currentItem && items.length > 0)) {
-    return (
-      <div
-        className={styles.errorContainer}
-      >
-        <h1>Error</h1>
-        <p>{pageError || contextError || 'Clock not found'}</p>
-        <button
-          onClick={() => navigate('/')}
-          className={styles.errorButton}
-        >
-          Back to Home
-        </button>
-      </div>
-    );
+    return <ErrorDisplay message={pageError || contextError || 'Clock not found'} onBack={() => navigate('/')} />;
   }
 
   return (
@@ -94,11 +96,13 @@ const ClockPage: React.FC = () => {
         <Header visible={headerVisible} />
       </div>}
 
-      {isReady && ClockComponent && <div className={styles.clockWrapper}>
+      {isReady && ClockComponent && (
+        <div className={styles.clockWrapper}>
         <Suspense fallback={<ClockLoadingFallback />}>
           <ClockComponent />
         </Suspense>
-      </div>}
+        </div>
+      )}
 
       {isReady && ClockComponent && currentItem && (
         <ClockPageNav
@@ -110,14 +114,7 @@ const ClockPage: React.FC = () => {
         />
       )}
 
-      {/* Loading overlay */}
-      <div
-        className={styles.loadingOverlay}
-        style={{
-          opacity: overlayVisible ? 1 : 0,
-          transition: `opacity ${OVERLAY_FADE_DURATION}ms ease-out`
-        }}
-      />
+      <LoadingOverlay visible={overlayVisible} />
     </div>
   );
 };
