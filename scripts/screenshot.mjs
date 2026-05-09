@@ -26,9 +26,9 @@ function findClockPaths(dir, paths = [], basePath = '') {
     const fullPath = join(dir, item);
     const stat = statSync(fullPath);
     if (stat.isDirectory()) {
-      // Check if this is a clock directory (contains Clock.tsx or Clock.jsx)
+      // Check if this is a clock directory (contains Clock.tsx)
       const files = readdirSync(fullPath);
-      if (files.some(f => f === 'Clock.tsx' || f === 'Clock.jsx')) {
+      if (files.some(f => f === 'Clock.tsx')) {
         const relativePath = basePath ? `${basePath}/${item}` : item;
         paths.push(relativePath);
       } else {
@@ -59,21 +59,23 @@ async function captureScreenshot(browser, datePath) {
       timeout: 30000 
     });
     
-    // Wait for clock to be ready (250ms = 1/4 second after load)
-    await new Promise(resolve => setTimeout(resolve, 250));
+    // Wait for clock to be ready (0.1 seconds after load)
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     // Generate unique filename to avoid overwriting
-    const baseFileName = `${datePath.replace(/\//g, '-')}.png`;
+    const baseFileName = `${datePath.replace(/\//g, '-')}.webp`;
     let outputFile = join(OUTPUT_DIR, baseFileName);
     let counter = 1;
     while (existsSync(outputFile)) {
-      const newFileName = `${datePath.replace(/\//g, '-')}-${counter}.png`;
+      const newFileName = `${datePath.replace(/\//g, '-')}-${counter}.webp`;
       outputFile = join(OUTPUT_DIR, newFileName);
       counter++;
     }
 
     await page.screenshot({
       path: outputFile,
+      type: 'webp',
+      quality: 80,
       fullPage: false
     });
     
@@ -125,7 +127,12 @@ Examples:
       await captureScreenshot(browser, specificDate);
     } else if (captureAll) {
       const pagesDir = join(__dirname, '../src/pages');
-      const clockPaths = findClockPaths(pagesDir);
+      const today = new Date().toISOString().slice(2, 10); // Gets current date in YY-MM-DD format
+      
+      // Find all clocks, filter out future dates, and sort descending (today -> oldest)
+      const clockPaths = findClockPaths(pagesDir)
+        .filter(p => p.split('/').pop() <= today)
+        .sort((a, b) => b.localeCompare(a));
       
       console.log(`Found ${clockPaths.length} clocks to capture\n`);
       
@@ -133,7 +140,11 @@ Examples:
       let failCount = 0;
       
       for (const datePath of clockPaths) {
-        const success = await captureScreenshot(browser, datePath);
+        // The datePath is the full file system path (e.g., '2026/26-05/26-05-08').
+        // The website route expects only the date folder name (e.g., '26-05-08').
+        const dateFolder = datePath.split('/').pop();
+        
+        const success = await captureScreenshot(browser, dateFolder);
         if (success) {
           successCount++;
         } else {
