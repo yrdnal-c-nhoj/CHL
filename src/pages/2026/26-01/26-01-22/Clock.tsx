@@ -70,7 +70,7 @@ const DynamicClock: React.FC = () => {
     color: 'transparent',
     WebkitTextFillColor: 'transparent',
     filter: 'contrast(2.2) brightness(1.1)',
-    // WebkitTextStroke: '1.5px rgba(255, 255, 255, 0.5)',
+    // WebkitTextStroke: '1.5px rgba(255, 254, 255, 0.5)',
     userSelect: 'none',
     textAlign: 'center',
   };
