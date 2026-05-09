@@ -21,18 +21,20 @@ const Clock: React.FC = () => {
   }, []);
   
   // Calculate grid dimensions based on viewport and tile size
-  const tileWidth = 260;
-  const tileHeight = 100;
-  const cols = Math.ceil(window.innerWidth / tileWidth) + 2; // Extra for centering
-  const rows = Math.ceil(window.innerHeight / tileHeight) + 2; // Extra for centering
+  const tileWidth = 26; // 26vh (260px / 10)
+  const tileHeight = 10; // 10vh (100px / 10)
+  const viewportWidth = window.innerWidth / (window.innerHeight / 100); // Convert to vh
+  const viewportHeight = 100; // 100vh
+  const cols = Math.ceil(viewportWidth / tileWidth) + 2; // Extra for centering
+  const rows = Math.ceil(viewportHeight / tileHeight) + 2; // Extra for centering
   
   // Generate clock positions
   const clocks = [];
   // Center the grid like the background
-  const centerX = window.innerWidth / 2;
-  const centerY = window.innerHeight / 2;
-  const offsetX = -1; // Move left
-  const offsetY = 33;  // Move down
+  const centerX = viewportWidth / 2;
+  const centerY = viewportHeight / 2;
+  const offsetX = -0.1; // Move left in vh
+  const offsetY = 3.3;  // Move down in vh
   
   for (let row = -1; row < rows; row++) {
     for (let col = -1; col < cols; col++) {
@@ -52,8 +54,8 @@ const Clock: React.FC = () => {
           key={key}
           className={styles.clockTile}
           style={{
-            '--left': `${left}px`,
-            '--top': `${top}px`
+            '--left': `${left}vh`,
+            '--top': `${top}vh`
           } as React.CSSProperties}
         >
           {time.toLocaleTimeString()}
