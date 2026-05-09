@@ -228,6 +228,7 @@
   width: 100%;
   padding: 0;
   margin: 0;
+  position: relative;
 }
 
 /* --- Month grid --- */
@@ -235,14 +236,27 @@
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
   gap: 0 !important;
-  width: 100% !important;
-  border: 1px solid #d1d5db;
+  width: 100vw !important;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  border-top: 1px solid #d1d5db;
   border-collapse: collapse;
+  position: relative;
+  left: 0;
+  right: 0;
 }
 
 @media (min-width: 768px) {
   .monthGrid {
     grid-template-columns: repeat(5, 1fr) !important;
+  }
+  
+  .monthItem:nth-child(5n) {
+    border-right: 1px solid #d1d5db;
+  }
+  
+  .monthItem:last-child {
+    border-right: 1px solid #d1d5db;
   }
 }
 
@@ -256,19 +270,15 @@
   background-color: var(--lab-bg-gray);
   border-right: 1px solid #d1d5db;
   border-bottom: 1px solid #d1d5db;
+  position: relative;
 }
 
 .monthItem:nth-child(3n) {
-  border-right: none;
+  border-right: 1px solid #d1d5db;
 }
 
-@media (min-width: 768px) {
-  .monthItem:nth-child(3n) {
-    border-right: 1px solid #d1d5db;
-  }
-  .monthItem:nth-child(5n) {
-    border-right: none;
-  }
+.monthItem:last-child {
+  border-right: 1px solid #d1d5db;
 }
 
 .monthItem:hover {
