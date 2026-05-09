@@ -40,6 +40,64 @@ const formatDate = (dateStr: string | undefined): string => {
   return `${year}.${month}.${day}`;
 };
 
+// New component for handling image and fallback
+interface ThumbnailProps {
+  date: string;
+  title?: string;
+}
+
+const Thumbnail: FC<ThumbnailProps> = ({ date, title }) => {
+  const [imageError, setImageError] = useState(false);
+  const imageUrl = `/screenshots/${date}.png`;
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  if (imageError) {
+    return (
+      <div style={{
+        width: '80px',
+        height: '45px',
+        marginRight: '1.5rem',
+        flexShrink: 0,
+        overflow: 'hidden',
+        backgroundColor: 'var(--lab-bg-gray)', // Use a distinct background color
+        border: '1px solid rgba(157, 161, 168, 0.2)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'rgba(157, 161, 168, 0.5)',
+        fontSize: '0.6rem',
+        textAlign: 'center',
+        lineHeight: '1',
+      }}>
+        No Image
+      </div>
+    );
+  }
+
+  return (
+    <div style={{
+      width: '80px',
+      height: '45px',
+      marginRight: '1.5rem',
+      flexShrink: 0,
+      overflow: 'hidden',
+      backgroundColor: '#111', // This background will be covered by the image if it loads
+      border: '1px solid rgba(157, 161, 168, 0.2)'
+    }}>
+      <img
+        src={imageUrl}
+        alt={title}
+        style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }}
+        loading="lazy"
+        onError={handleImageError}
+      />
+    </div>
+  );
+};
+
 const Home: FC = () => {
   const { items, loading, error } = useContext(DataContext) as { items: DataItem[], loading: boolean, error: string | null };
   const [sortBy, setSortBy] = useState<SortOption>('date-desc');
@@ -172,7 +230,12 @@ const Home: FC = () => {
               <ul className={styles.dateList}>
                 {sortedItems.map((item) => (
                   <li key={item.date} className={styles.entry}>
-                    <Link to={`/${item.date}`} className={styles.navLink}>
+                    <Link 
+                      to={`/${item.date}`} 
+                      className={styles.navLink}
+                      style={{ display: 'flex', alignItems: 'center' }}
+                    >
+                      <Thumbnail date={item.date} title={item.title} />
                       <span className={styles.date}>
                         {formatDate(item.date)}
                       </span>

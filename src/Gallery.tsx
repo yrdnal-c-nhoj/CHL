@@ -1,9 +1,22 @@
-import React from 'react';
+import React, { useContext, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import clocks from './context/clockpages.json';
+import { DataContext } from './context/DataContext';
+import { DataContextType } from './types/data';
 import styles from './Gallery.module.css';
 
 const Gallery: React.FC = () => {
+  const { items, loading } = useContext(DataContext) as DataContextType;
+
+  // Sort items newest first to show the latest experiments at the top
+  const sortedItems = useMemo(() => {
+    if (!items) return [];
+    return [...items].sort((a, b) => b.date.localeCompare(a.date));
+  }, [items]);
+
+  if (loading) {
+    return <div className={styles.loading}>Loading Archive...</div>;
+  }
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -17,7 +30,7 @@ const Gallery: React.FC = () => {
       </header>
 
       <div className={styles.grid}>
-        {clocks.map((clock) => (
+        {sortedItems.map((clock) => (
           <Link 
             key={clock.date} 
             to={`/${clock.date}`} 
