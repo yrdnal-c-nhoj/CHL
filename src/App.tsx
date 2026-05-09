@@ -38,7 +38,7 @@ const Gallery = React.lazy(() => import('./Gallery'));
 import { pageview } from './analytics';
 
 // Configuration constants
-const BASE_URL = 'https://www.cubistheart.com';
+const BASE_URL = 'https://www.cubistheart.com/test';
 const DYNAMIC_CLOCK_REGEX = /^\/\d{2}-\d{2}-\d{2}$/;
 
 /**
@@ -160,6 +160,7 @@ const App: React.FC = () => {
     <ErrorBoundary>
       <DataProvider>
         <Router
+          basename="/test"
           future={{
             v7_startTransition: true,
             v7_relativeSplatPath: true,

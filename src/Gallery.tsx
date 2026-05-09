@@ -2,6 +2,7 @@ import React, { useContext, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import { DataContextType } from './types/data';
+import Thumbnail from './components/Thumbnail';
 import styles from './Gallery.module.css';
 
 const Gallery: React.FC = () => {
@@ -37,15 +38,10 @@ const Gallery: React.FC = () => {
             className={styles.clockCard}
           >
             <div className={styles.thumbnailWrapper}>
-              <img 
-                src={`/screenshots/${clock.date}.png`} 
-                alt={clock.title}
+              <Thumbnail 
+                date={clock.date} 
+                title={clock.title} 
                 className={styles.thumbnail}
-                loading="lazy"
-                onError={(e) => {
-                  // Fallback for missing screenshots
-                  (e.target as HTMLImageElement).src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
-                }}
               />
             </div>
             <div className={styles.cardOverlay}>

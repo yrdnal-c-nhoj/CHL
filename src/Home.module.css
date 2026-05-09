@@ -3,13 +3,15 @@
 .container {
   margin: 0;
   padding: 0;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   position: relative;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
 /* --- Centered content --- */
@@ -215,4 +217,107 @@
 
 .loading {
   color: #212521;
+}
+
+/* --- Month list --- */
+.monthList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+/* --- Month grid --- */
+.monthGrid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 0 !important;
+  width: 100% !important;
+  border: 1px solid #d1d5db;
+  border-collapse: collapse;
+}
+
+@media (min-width: 768px) {
+  .monthGrid {
+    grid-template-columns: repeat(5, 1fr) !important;
+  }
+}
+
+.monthItem {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: #0c0d0d;
+  transition: opacity 0.2s ease;
+  padding: 1rem;
+  background-color: var(--lab-bg-gray);
+  border-right: 1px solid #d1d5db;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.monthItem:nth-child(3n) {
+  border-right: none;
+}
+
+@media (min-width: 768px) {
+  .monthItem:nth-child(3n) {
+    border-right: 1px solid #d1d5db;
+  }
+  .monthItem:nth-child(5n) {
+    border-right: none;
+  }
+}
+
+.monthItem:hover {
+  opacity: 0.7;
+}
+
+.monthItemImage {
+  width: 100%;
+  aspect-ratio: auto;
+  max-height: 300px;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+  border-radius: 0.25rem;
+}
+
+.monthItemInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.monthItemDate {
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+  font-family: 'Manrope', sans-serif;
+  color: #0c0d0d;
+  letter-spacing: -0.06rem;
+  font-weight: 500;
+}
+
+.monthItemNumber {
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+  font-family: 'Manrope', sans-serif;
+  color: #0c0d0d;
+  letter-spacing: -0.04rem;
+  font-weight: 500;
+}
+
+.monthItemTitle {
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  font-family: 'Manrope', sans-serif;
+  letter-spacing: 0.02rem;
+  color: #0c0d0d;
+  text-align: center;
+  font-weight: 600;
+  line-height: 1.3;
+  min-height: 2.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

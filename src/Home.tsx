@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect, useMemo, FC } from 'react';
-import { Link } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import TopNav from './components/TopNav';
 import Footer from './components/Footer';
+import MonthDropdown from './components/MonthDropdown';
 import styles from './Home.module.css';
 import instaImg from '@/assets/icons/i.png';
 import elonImg from '@/assets/icons/x.png';
@@ -14,7 +14,6 @@ interface DataItem {
   path: string;
 }
 
-type SortOption = 'date-desc' | 'date-asc' | 'title-asc' | 'title-desc' | 'random';
 
 const isValidDate = (str: string | undefined): boolean => {
   const parts = str?.split('-');
@@ -40,68 +39,8 @@ const formatDate = (dateStr: string | undefined): string => {
   return `${year}.${month}.${day}`;
 };
 
-// New component for handling image and fallback
-interface ThumbnailProps {
-  date: string;
-  title?: string;
-}
-
-const Thumbnail: FC<ThumbnailProps> = ({ date, title }) => {
-  const [imageError, setImageError] = useState(false);
-  const imageUrl = `/screenshots/${date}.png`;
-
-  const handleImageError = () => {
-    setImageError(true);
-  };
-
-  if (imageError) {
-    return (
-      <div style={{
-        width: '80px',
-        height: '45px',
-        marginRight: '1.5rem',
-        flexShrink: 0,
-        overflow: 'hidden',
-        backgroundColor: 'var(--lab-bg-gray)', // Use a distinct background color
-        border: '1px solid rgba(157, 161, 168, 0.2)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: 'rgba(157, 161, 168, 0.5)',
-        fontSize: '0.6rem',
-        textAlign: 'center',
-        lineHeight: '1',
-      }}>
-        No Image
-      </div>
-    );
-  }
-
-  return (
-    <div style={{
-      width: '80px',
-      height: '45px',
-      marginRight: '1.5rem',
-      flexShrink: 0,
-      overflow: 'hidden',
-      backgroundColor: '#111', // This background will be covered by the image if it loads
-      border: '1px solid rgba(157, 161, 168, 0.2)'
-    }}>
-      <img
-        src={imageUrl}
-        alt={title}
-        style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }}
-        loading="lazy"
-        onError={handleImageError}
-      />
-    </div>
-  );
-};
-
 const Home: FC = () => {
   const { items, loading, error } = useContext(DataContext) as { items: DataItem[], loading: boolean, error: string | null };
-  const [sortBy, setSortBy] = useState<SortOption>('date-desc');
-  const [randomSortKey, setRandomSortKey] = useState(0);
   const [fontsReady, setFontsReady] = useState<boolean>(
     sessionStorage.getItem('fontsLoaded') === 'true',
   );
@@ -115,45 +54,48 @@ const Home: FC = () => {
     }
   }, [fontsReady, setFontsReady]);
 
-  // Load saved sort preference
-  useEffect(() => {
-    const savedSort = localStorage.getItem('sortBy') as SortOption | null;
-    if (savedSort) setSortBy(savedSort);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('sortBy', sortBy);
-  }, [sortBy]);
 
   const sortedItems = useMemo<DataItem[]>(() => {
-    const itemsCopy = [...items].filter(
+    return [...items].filter(
       (item) => item?.date && isValidDate(item.date),
     );
+  }, [items]);
 
-    if (sortBy === 'date-desc')
-      return itemsCopy.sort((a, b) => b.date.localeCompare(a.date));
-    if (sortBy === 'date-asc')
-      return itemsCopy.sort((a, b) => a.date.localeCompare(b.date));
-    if (sortBy === 'title-asc')
-      return itemsCopy.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
-    if (sortBy === 'title-desc')
-      return itemsCopy.sort((a, b) => (b.title || '').localeCompare(a.title || ''));
-    if (sortBy === 'random')
-      // Use the randomSortKey as a seed-like trigger for a fresh shuffle
-      // and sort using a more stable comparison
-      return itemsCopy.map(value => ({ value, sort: Math.random() }))
-        .sort((a, b) => a.sort - b.sort)
-        .map(({ value }) => value);
+  const formatMonthName = (monthKey: string): string => {
+    const [yy, mm] = monthKey.split('-');
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    const monthIndex = parseInt(mm, 10) - 1;
+    const year = 2000 + parseInt(yy, 10);
+    return `${monthNames[monthIndex]} ${year}`;
+  };
+
+  const groupedByMonth = useMemo(() => {
+    const groups: Record<string, DataItem[]> = {};
     
-    return itemsCopy;
-  }, [items, sortBy, randomSortKey]);
+    sortedItems.forEach(item => {
+      if (item.date) {
+        const [yy, mm] = item.date.split('-');
+        const monthKey = `${yy}-${mm}`;
+        if (!groups[monthKey]) {
+          groups[monthKey] = [];
+        }
+        groups[monthKey].push(item);
+      }
+    });
 
-  const handleRandomSort = () =>
-    { setSortBy('random'); setRandomSortKey((prev) => prev + 1); };
-  const handleDateSort = () =>
-    setSortBy((prev) => (prev === 'date-desc' ? 'date-asc' : 'date-desc') as SortOption);
-  const handleTitleSort = () =>
-    setSortBy((prev) => (prev === 'title-asc' ? 'title-desc' : 'title-asc') as SortOption);
+    // Sort months in descending order (newest first)
+    const sortedMonths = Object.keys(groups).sort((a, b) => b.localeCompare(a));
+    
+    return sortedMonths.map(monthKey => ({
+      monthKey,
+      monthName: formatMonthName(monthKey),
+      items: groups[monthKey] || []
+    }));
+  }, [sortedItems]);
+
 
   if (!fontsReady || loading) {
     return (
@@ -189,66 +131,17 @@ const Home: FC = () => {
         <main style={{ flex: 1 }}>
           <div className={styles.container}>
             <div className={styles.centeredContent}>
-              <div className={styles.sortContainer}>
-                <button
-                  onClick={handleDateSort}
-                  className={`${styles.sortButton} ${styles.dateSortButton} ${sortBy.includes('date') ? styles.active : ''}`}
-                  title={
-                    sortBy === 'date-desc'
-                      ? 'Sort Oldest to Newest'
-                      : 'Sort Newest to Oldest'
-                  }
-                >
-                  date{' '}
-                  {sortBy === 'date-asc'
-                    ? '↓'
-                    : sortBy === 'date-desc'
-                      ? '↑'
-                      : ''}
-                </button>
-                <button
-                  onClick={handleTitleSort}
-                  className={`${styles.sortButton} ${styles.titleSortButton} ${sortBy.includes('title') ? styles.active : ''}`}
-                  title={sortBy === 'title-asc' ? 'Sort Z–A' : 'Sort A–Z'}
-                >
-                  title{' '}
-                  {sortBy === 'title-asc'
-                    ? '↓'
-                    : sortBy === 'title-desc'
-                      ? '↑'
-                      : ''}
-                </button>
-                <button
-                  onClick={handleRandomSort}
-                  className={`${styles.sortButton} ${sortBy === 'random' ? styles.active : ''}`}
-                  title="Sort Randomly"
-                >
-                  random
-                </button>
-              </div>
-
-              <ul className={styles.dateList}>
-                {sortedItems.map((item) => (
-                  <li key={item.date} className={styles.entry}>
-                    <Link 
-                      to={`/${item.date}`} 
-                      className={styles.navLink}
-                      style={{ display: 'flex', alignItems: 'center' }}
-                    >
-                      <Thumbnail date={item.date} title={item.title} />
-                      <span className={styles.date}>
-                        {formatDate(item.date)}
-                      </span>
-                      <span className={styles.title}>
-                        {item.title || 'No Title'}
-                      </span>
-                      <span className={styles.clockNumber}>
-                        #{item.clockNumber}
-                      </span>
-                    </Link>
-                  </li>
+              <div className={styles.monthList}>
+                {groupedByMonth.map((month) => (
+                  <MonthDropdown
+                    key={month.monthKey}
+                    monthKey={month.monthKey}
+                    monthName={month.monthName}
+                    items={month.items}
+                    formatDate={formatDate}
+                  />
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
         </main>
