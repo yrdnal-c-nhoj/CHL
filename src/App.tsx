@@ -160,7 +160,6 @@ const App: React.FC = () => {
     <ErrorBoundary>
       <DataProvider>
         <Router
-          basename="/test"
           future={{
             v7_startTransition: true,
             v7_relativeSplatPath: true,
