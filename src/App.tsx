@@ -15,7 +15,9 @@
  * - Future-proof React Router v7 compatibility
  */
 
-import React, { useEffect, useCallback, ReactNode, ErrorInfo } from 'react';
+import type { ReactNode, ErrorInfo } from 'react';
+import React, { useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import {
   BrowserRouter as Router,
   Routes,
@@ -23,7 +25,7 @@ import {
   Navigate,
   useLocation,
 } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { pageview } from './analytics';
 import { DataProvider } from './context/DataContext';
 
 // Lazy loaded components for better performance
@@ -34,8 +36,6 @@ const About = React.lazy(() => import('./About'));
 const Today = React.lazy(() => import('./Today'));
 const Contact = React.lazy(() => import('./Contact'));
 const Gallery = React.lazy(() => import('./Gallery'));
-
-import { pageview } from './analytics';
 
 // Configuration constants
 const BASE_URL = 'https://www.cubistheart.com/test';
@@ -75,8 +75,8 @@ const AnalyticsAndSEO = React.memo(() => {
   const trackPageView = useCallback(() => {
     try {
       pageview(processedPath.path + location.search);
-    } catch (error) {
-      console.warn('Analytics tracking failed:', error);
+    } catch (_error) {
+      // Analytics tracking failed silently
     }
   }, [processedPath.path, location.search]);
 
@@ -118,12 +118,12 @@ class ErrorBoundary extends React.Component<Props, State> {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: Error): State {
+  static getDerivedStateFromError(_error: Error): State {
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Application Error:', error, errorInfo);
+  componentDidCatch(_error: Error, _errorInfo: ErrorInfo) {
+    // Error logged silently
   }
 
   render() {

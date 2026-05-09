@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 
-import Thumbnail from './Thumbnail';
 import styles from '../Home.module.css';
+import Thumbnail from './Thumbnail';
 
 interface DataItem {
   date: string;
@@ -11,7 +11,7 @@ interface DataItem {
 }
 
 interface MonthDropdownProps {
-  monthKey: string;
+  monthKey?: string;
   monthName: string;
   items: DataItem[];
   formatDate: (dateStr: string | undefined) => string;
@@ -20,7 +20,6 @@ interface MonthDropdownProps {
 type SortOption = 'date-desc' | 'date-asc' | 'title-asc' | 'title-desc';
 
 const MonthDropdown: React.FC<MonthDropdownProps> = ({ 
-  monthKey, 
   monthName, 
   items, 
   formatDate 
@@ -125,11 +124,7 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
               }}
             >
               date{' '}
-              {sortBy === 'date-asc'
-                ? '↓'
-                : sortBy === 'date-desc'
-                  ? '↑'
-                  : ''}
+              {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
             </button>
             <button
               onClick={handleTitleSort}
@@ -154,11 +149,7 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
               }}
             >
               title{' '}
-              {sortBy === 'title-asc'
-                ? '↓'
-                : sortBy === 'title-desc'
-                  ? '↑'
-                  : ''}
+              {sortBy === 'title-asc' ? '↓' : sortBy === 'title-desc' ? '↑' : ''}
             </button>
           </div>
           <div style={{
@@ -176,7 +167,7 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
                   <div className={styles.monthItemImage}>
                     <Thumbnail 
                       date={item.date} 
-                      title={item.title || undefined} 
+                      title={item.title || ''} 
                       style={{ width: '100%', height: 'auto', objectFit: 'cover', opacity: 0.8 }}
                     />
                   </div>
