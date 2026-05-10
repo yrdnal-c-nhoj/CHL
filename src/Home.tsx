@@ -139,9 +139,9 @@ const Home: FC = () => {
         }}
       >
         <main style={{ flex: 1 }}>
-          <div className={styles.container}>
-            <div className={styles.centeredContent}>
-              <div className={styles.monthList}>
+        <div className="home-container">
+          <div className="home-centered-content">
+            <div className="month-list">
                 {groupedByMonth.map((month) => (
                   <MonthDropdown
                     key={month.monthKey}

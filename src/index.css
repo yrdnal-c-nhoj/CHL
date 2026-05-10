@@ -28,83 +28,134 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ========================================
-   SHARED UTILITY CLASSES
-   ======================================== */
+@layer components {
+  /* --- TopNav Branding & Navigation --- */
+  .topnavchl {
+    @apply font-roboto text-[#f6f6f2] text-[0.8rem] tracking-[0.03rem] text-left bg-[#333] w-screen relative left-1/2 -ml-[50vw] p-[0.1rem] box-border max-[600px]:text-[0.5rem] max-[600px]:px-[0.2rem];
+    text-shadow: #0e0d0d 0.5px 0.5px 0px, #000000 -0.5px -0.5px 0px;
+  }
 
-/* Common layout patterns */
-.flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .topnavbt {
+    @apply font-oxanium -skew-x-20 text-[#eae8ed] text-[4rem] leading-none text-center tracking-[-0.23rem] w-screen relative left-1/2 -ml-[50vw] top-[-11px] box-border overflow-x-hidden max-[768px]:text-[3.5rem] max-[600px]:text-[3rem] max-[600px]:leading-[3.5rem] max-[600px]:tracking-0;
+    text-shadow: #b6e548 1px 0px 0px, #101601 2px 0px 0px, #eb7373 3px 0px 0px, #fdf1f1 4px 0px 0px, #24f704 -4px 0px 6px;
+  }
 
-.flex-col {
-  display: flex;
-  flex-direction: column;
-}
+  .topnavtag {
+    @apply font-oxanium -skew-x-10 text-[0.8rem] leading-[0.01rem] text-[#ede7e7] text-center italic py-[0.6rem] max-[600px]:text-[0.7rem] max-[600px]:leading-[0.7rem] max-[600px]:py-[0.1rem];
+  }
 
-.flex-between {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+  .navbar { @apply relative w-screen left-1/2 -ml-[50vw] bg-[#2e382e]; }
+  
+  .nav-menu {
+    @apply font-roboto font-bold text-[1rem] tracking-[0.1rem] list-none p-0 m-0 bg-[#2e382e] z-[999] flex justify-center items-center gap-[0.2rem] min-[601px]:flex-row min-[601px]:static min-[601px]:w-full min-[601px]:py-[0.5rem] max-[600px]:hidden max-[600px]:fixed max-[600px]:top-[3.2rem] max-[600px]:right-0 max-[600px]:w-screen max-[600px]:flex-col max-[600px]:p-[0.2rem];
+  }
+  .nav-menu.active { @apply flex; }
+  .nav-item { @apply m-[0.5rem] min-[601px]:mx-[1rem] min-[601px]:my-0; }
+  .nav-link { @apply text-[#b5c9f7] no-underline text-[1rem] p-[0.5rem] block transition-colors duration-300 ease-in-out min-[601px]:py-[0.3rem] min-[601px]:px-[0.5rem] max-[600px]:text-[0.9rem] max-[600px]:p-[0.4rem]; }
+  .nav-link:hover { @apply text-[#f35f02] underline; }
+  .nav-link.active { @apply font-bold text-white; }
+  
+  .hamburger {
+    @apply absolute right-[0.4rem] top-[0.5rem] z-[1000] block bg-[#767373] border-none cursor-pointer min-[601px]:hidden max-[600px]:right-[0.3rem] max-[600px]:top-[-3.3rem] max-[600px]:p-[0.2rem];
+  }
+  .hamburger span { @apply block w-[22px] h-[3px] bg-[#c9bebe] my-[5px] mx-0 transition-all duration-300 ease-in-out; }
+  .hamburger.active span:nth-child(1) { @apply rotate-45 translate-x-[5px] translate-y-[5px]; }
+  .hamburger.active span:nth-child(2) { @apply opacity-0; }
+  .hamburger.active span:nth-child(3) { @apply -rotate-45 translate-x-[7px] translate-y-[-7px]; }
 
-/* Common positioning patterns */
-.absolute-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+  /* --- Home Page Layout & Lists --- */
+  .home-container {
+    @apply flex flex-col items-center justify-center w-full min-h-screen relative overflow-y-auto box-border p-0 m-0;
+  }
 
-.fixed-top {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-}
+  .home-centered-content {
+    @apply flex flex-col items-center w-full max-w-full box-border z-[5] gap-[clamp(0.5rem,1vw,1.5rem)] flex-1;
+  }
 
-/* Common text patterns */
-.text-center {
-  text-align: center;
-}
+  .date-list {
+    @apply list-none p-0 m-0 w-full flex flex-col items-stretch gap-[clamp(0.5rem,1vw,1.5rem)];
+  }
 
-.text-left {
-  text-align: left;
-}
+  .entry {
+    @apply flex items-center justify-between w-full box-border px-[clamp(0.2rem,0.5vw,1rem)] py-[clamp(0.2rem,0.5vw,1rem)] relative z-[1] gap-[clamp(0.5rem,1vw,1.5rem)] border-b border-[#f8f9fb];
+  }
+  .entry:first-child { @apply border-t border-[#f1f3f5]; }
+  
+  .entry::before {
+    @apply content-[''] absolute top-0 left-1/2 w-0 h-full bg-[#e5e7eb] z-[-1] -translate-x-1/2 transition-[width,height] duration-200 ease-in-out;
+  }
+  .entry:hover::before { @apply w-screen h-full; }
+  .entry:hover { @apply border-b-transparent; }
+  .entry:hover:first-child { @apply border-t-transparent; }
+  
+  .entry:hover .clock-number,
+  .entry:hover .entry-title,
+  .entry:hover .entry-date {
+    @apply text-[#0c0d0d] transition-colors duration-200 ease-in-out;
+  }
 
-/* Common spacing patterns */
-.full-width {
-  width: 100%;
-}
+  .clock-number, .entry-date {
+    @apply flex-none font-manrope text-[#0c0d0d] px-[0.5rem] py-[0.2rem] transition-[color,transform] duration-200 text-[clamp(0.9rem,2vw,2rem)] tracking-[-0.04rem];
+  }
+  .entry-date { @apply tracking-[-0.06rem]; }
 
-.full-height {
-  height: 100%;
-}
+  .entry-title {
+    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-manrope text-[#0c0d0d] text-center whitespace-normal overflow-visible break-words z-[5] px-[0.5rem] py-[0.2rem] transition-[color,transform] duration-200 text-[clamp(0.9rem,2.2vw,2.2rem)] max-w-[80%];
+  }
 
-/* Common transition patterns */
-.transition-smooth {
-  transition: all 0.3s ease;
-}
+  /* --- Month Grid --- */
+  .month-list { @apply flex flex-col items-center gap-[0.25rem] w-full p-0 m-0 relative; }
+  
+  .month-grid {
+    @apply grid grid-cols-3 gap-0 w-screen relative left-1/2 -ml-[50vw] border-t border-[#d1d5db] border-collapse;
+  }
+  @media (min-width: 768px) {
+    .month-grid { @apply grid-cols-5; }
+  }
 
-.transition-fade {
-  transition: opacity 0.3s ease;
-}
+  .month-item {
+    @apply flex flex-col no-underline text-[#0c0d0d] transition-opacity duration-200 p-4 bg-lab-bg-gray border-r border-b border-[#d1d5db] relative;
+  }
+  .month-item:hover { @apply bg-[#e5e7eb] opacity-100; }
+  
+  .month-item-image {
+    @apply w-full aspect-auto max-h-[300px] mb-2 overflow-hidden rounded-[0.25rem];
+  }
 
-/* Root element stuff — keep it clean */
-html.fonts-loading body {
-  visibility: hidden;
-}
+  .month-item-info { @apply flex justify-between items-center mb-2 w-full; }
+  .month-item-date, .month-item-number {
+    @apply font-manrope text-[#0c0d0d] font-medium text-[clamp(0.8rem,1.5vw,1rem)];
+  }
+  .month-item-date { @apply tracking-[-0.06rem]; }
+  .month-item-number { @apply tracking-[-0.04rem]; }
 
-/* Prevent FOUC during React hydration */
-html:not(.dom-loaded) body {
-  visibility: hidden;
-}
+  .month-item-title {
+    @apply font-manrope text-[#0c0d0d] text-center font-semibold leading-[1.3] min-h-[2.6rem] flex items-center justify-center text-[clamp(0.9rem,1.8vw,1.1rem)];
+  }
 
-/* Smooth transition for when content becomes visible */
-body {
-  transition: visibility 0s linear;
+  /* --- Word Pages (Manifesto/About/Contact) --- */
+  .word-page-container {
+    @apply flex flex-col items-center w-full min-h-screen relative overflow-y-auto pb-16;
+  }
+  
+  .hat {
+    @apply font-roboto text-[1.1rem] font-bold text-lab-red mt-4 -mb-[1.9rem] block tracking-[0.02em];
+  }
+  
+  .smallcaps {
+    @apply font-manrope text-[0.75rem] font-bold tracking-[0.041em] uppercase;
+  }
+
+  .section-divider {
+    @apply border-none border-t border-lab-divider my-2 w-[300px];
+  }
+
+  /* --- Footer --- */
+  .footer {
+    @apply text-[0.6rem] text-center w-screen relative left-1/2 -ml-[50vw] text-[#dde2dd] font-manrope;
+    background: linear-gradient(to right, #302f2a, #55552a);
+  }
+  .chl_logo { @apply text-[1.3rem]; }
 }
 
 /* Standard Document Flow */

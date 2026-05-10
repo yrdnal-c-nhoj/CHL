@@ -1,6 +1,4 @@
-import React, { useState, useMemo } from 'react';
-
-import styles from '../Home.module.css';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Thumbnail from './Thumbnail';
 
 interface DataItem {
@@ -32,8 +30,15 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
   const [internalExpanded, setInternalExpanded] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>('date-desc');
   const [isHovered, setIsHovered] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   
   const isExpanded = propExpanded !== undefined ? propExpanded : internalExpanded;
+
+  useEffect(() => {
+    if (isExpanded && containerRef.current) {
+      containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [isExpanded]);
 
   const toggleExpanded = () => {
     if (onToggle && monthKey) {
@@ -62,7 +67,14 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
     setSortBy((prev) => (prev === 'title-asc' ? 'title-desc' : 'title-asc') as SortOption);
 
   return (
-    <div style={{ marginBottom: '0.25rem', position: 'relative' }}>
+    <div 
+      ref={containerRef}
+      style={{ 
+        marginBottom: '0.25rem', 
+        position: 'relative',
+        scrollMarginTop: '2rem' 
+      }}
+    >
       <div
         style={{
           position: 'absolute',
@@ -70,7 +82,7 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
           left: '50%',
           width: isHovered ? '100vw' : '0',
           height: '100%',
-          backgroundColor: 'rgba(48, 49, 50, 0.1)',
+          backgroundColor: '#e5e7eb',
           transform: 'translateX(-50%)',
           transition: 'width 0.2s ease',
           zIndex: 0,
@@ -91,14 +103,12 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
           alignItems: 'center',
           gap: '0.5rem',
           transition: 'color 0.2s',
-          color: isHovered ? '#0066cc' : (isExpanded ? '#554444' : '#8b8f8c'),
+          color: isHovered ? '#0c0d0d' : (isExpanded ? '#554444' : '#8b8f8c'),
           fontFamily: 'Manrope, sans-serif',
           fontWeight: isExpanded ? '700' : '400',
-          width: 'auto',
+          width: '100%',
           position: 'relative',
           zIndex: 1,
-          marginLeft: 'auto',
-          marginRight: 'auto',
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -116,17 +126,10 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
       
       {isExpanded && (
         <>
-          <div style={{ 
-            position: 'fixed',
-            top: '0',
-            left: '0',
-            right: '0',
-            zIndex: '1000',
-            backgroundColor: '#3c3d3c',
-            padding: '1rem',
-            display: 'flex', 
-            gap: '0.25rem', 
-            marginBottom: '0.5rem',
+          <div style={{
+            display: 'flex',
+            gap: '0.75rem',
+            margin: '0.5rem 0 1.5rem 0',
             justifyContent: 'center',
             width: '100%'
           }}>
@@ -182,15 +185,15 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
             </button>
           </div>
           <div>
-            <div className={styles.monthGrid}>
+            <div className="month-grid">
               {sortedItems.map((item) => (
                 <a
                   key={item.date}
                   href={`/${item.date}`}
-                  className={styles.monthItem}
+                  className="month-item"
                 >
                   {/* Image at top */}
-                  <div className={styles.monthItemImage}>
+                  <div className="month-item-image">
                     <Thumbnail 
                       date={item.date} 
                       title={item.title || ''} 
@@ -199,17 +202,17 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
                   </div>
                   
                   {/* Date and number row */}
-                  <div className={styles.monthItemInfo}>
-                    <span className={styles.monthItemDate}>
+                  <div className="month-item-info">
+                    <span className="month-item-date">
                       {formatDate(item.date)}
                     </span>
-                    <span className={styles.monthItemNumber}>
+                    <span className="month-item-number">
                       #{item.clockNumber}
                     </span>
                   </div>
                   
                   {/* Title centered below */}
-                  <div className={styles.monthItemTitle}>
+                  <div className="month-item-title">
                     {item.title || 'No Title'}
                   </div>
                 </a>
