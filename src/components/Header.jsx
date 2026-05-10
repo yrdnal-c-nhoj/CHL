@@ -1,11 +1,11 @@
 import React from 'react';
-import './Header.css';
+import styles from './Header.module.css';
 
 export default function Header({ visible }) {
   return (
-    <div className={`title-container ${visible ? 'visible' : 'hidden'}`}>
-      <div className="chltitle">🧊🫀🔭</div>
-      <div className="bttitle">BorrowedTime</div>
+    <div className={`${styles.titleContainer} ${visible ? styles.visible : styles.hidden}`}>
+      <div className={styles.chlTitle}>🧊🫀🔭</div>
+      <div className={styles.btTitle}>BorrowedTime</div>
     </div>
   );
 }
