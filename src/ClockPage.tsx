@@ -86,6 +86,8 @@ const ClockPage: React.FC = () => {
   const handleHeaderClick = () => {
     if (currentItem?.date) {
       const monthKey = getMonthFromDate(currentItem.date);
+      // Save current scroll position before navigation
+      sessionStorage.setItem(`scrollPos_${monthKey}`, window.scrollY.toString());
       // Navigate to home with month expanded (we'll need to update Home component to handle this)
       navigate(`/?month=${monthKey}`);
     } else {
