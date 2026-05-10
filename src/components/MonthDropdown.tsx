@@ -15,20 +15,32 @@ interface MonthDropdownProps {
   monthName: string;
   items: DataItem[];
   formatDate: (dateStr: string | undefined) => string;
+  onToggle?: (monthKey: string) => void;
+  isExpanded?: boolean;
 }
 
 type SortOption = 'date-desc' | 'date-asc' | 'title-asc' | 'title-desc';
 
 const MonthDropdown: React.FC<MonthDropdownProps> = ({ 
+  monthKey,
   monthName, 
   items, 
-  formatDate 
+  formatDate,
+  onToggle,
+  isExpanded: propExpanded
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [internalExpanded, setInternalExpanded] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>('date-desc');
+  const [isHovered, setIsHovered] = useState(false);
+  
+  const isExpanded = propExpanded !== undefined ? propExpanded : internalExpanded;
 
   const toggleExpanded = () => {
-    setIsExpanded(!isExpanded);
+    if (onToggle && monthKey) {
+      onToggle(monthKey);
+    } else {
+      setInternalExpanded(!isExpanded);
+    }
   };
 
   const sortedItems = useMemo<DataItem[]>(() => {
@@ -50,7 +62,21 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
     setSortBy((prev) => (prev === 'title-asc' ? 'title-desc' : 'title-asc') as SortOption);
 
   return (
-    <div style={{ marginBottom: '0.25rem' }}>
+    <div style={{ marginBottom: '0.25rem', position: 'relative' }}>
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: '50%',
+          width: isHovered ? '100vw' : '0',
+          height: '100%',
+          backgroundColor: 'rgba(48, 49, 50, 0.1)',
+          transform: 'translateX(-50%)',
+          transition: 'width 0.2s ease',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      />
       <button
         onClick={toggleExpanded}
         style={{
@@ -64,27 +90,26 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
           justifyContent: 'center',
           alignItems: 'center',
           gap: '0.5rem',
-          transition: 'background-color 0.2s, text-shadow 0.2s',
-          color: '#8b8f8c',
+          transition: 'color 0.2s',
+          color: isHovered ? '#0066cc' : (isExpanded ? '#554444' : '#8b8f8c'),
           fontFamily: 'Manrope, sans-serif',
+          fontWeight: isExpanded ? '700' : '400',
           width: 'auto',
+          position: 'relative',
+          zIndex: 1,
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = 'rgba(48, 49, 50, 0.5)';
-          e.currentTarget.style.color = '#feffff';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = 'transparent';
-          e.currentTarget.style.color = '#8b8f8c';
-        }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         <span>{monthName}</span>
-        <span style={{ 
-          fontSize: '0.8rem', 
-          color: 'inherit',
-        }}>
-          {isExpanded ? '↑' : '↓'}
-        </span>
+        {isExpanded && (
+          <span style={{ 
+            fontSize: '0.8rem', 
+            color: 'inherit',
+          }}>
+            ↑
+          </span>
+        )}
       </button>
       
       {isExpanded && (
@@ -94,12 +119,7 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
             gap: '0.25rem', 
             marginBottom: '0.5rem',
             justifyContent: 'center',
-            width: '100vw',
-            marginLeft: 'calc(-50vw + 50%)',
-            marginRight: 'calc(-50vw + 50%)',
-            position: 'relative',
-            left: '0',
-            right: '0'
+            width: '100%'
           }}>
             <button
               onClick={handleDateSort}
@@ -152,10 +172,7 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
               {sortBy === 'title-asc' ? '↓' : sortBy === 'title-desc' ? '↑' : ''}
             </button>
           </div>
-          <div style={{
-            paddingLeft: '1rem',
-            borderLeft: '2px solid rgba(157, 161, 168, 0.2)',
-          }}>
+          <div>
             <div className={styles.monthGrid}>
               {sortedItems.map((item) => (
                 <a
@@ -168,7 +185,7 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
                     <Thumbnail 
                       date={item.date} 
                       title={item.title || ''} 
-                      style={{ width: '100%', height: 'auto', objectFit: 'cover', opacity: 0.8 }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }}
                     />
                   </div>
                   
