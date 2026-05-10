@@ -159,12 +159,16 @@ class ErrorBoundary extends React.Component<Props, State> {
  * and global providers for the entire application
  */
 const App: React.FC = () => {
+  // Use basename only in production if hosted on /test
+  const basename = import.meta.env.DEV ? '/' : '/test';
+
   return (
     <ErrorBoundary>
       <DataProvider>
-        <Router
-          future={{
-            v7_startTransition: true,
+        <Router 
+          basename={basename}
+          future={{ 
+            v7_startTransition: true, 
             v7_relativeSplatPath: true,
           }}
         >

@@ -97,11 +97,13 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
           width: 'auto',
           position: 'relative',
           zIndex: 1,
+          marginLeft: 'auto',
+          marginRight: 'auto',
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <span>{monthName}</span>
+        <span style={{ textAlign: 'center' }}>{monthName}</span>
         {isExpanded && (
           <span style={{ 
             fontSize: '0.8rem', 
