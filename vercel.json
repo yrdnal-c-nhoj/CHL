@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/test/:path*",
-      "destination": "https://chl-git-test-cubistheart.vercel.app/:path*"
+      "source": "/test/:match*",
+      "destination": "https://chl-git-test-two-cubistheart.vercel.app/:match*"
     }
   ]
 }
