@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect, useMemo, FC } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import TopNav from './components/TopNav';
 import Footer from './components/Footer';
@@ -41,9 +42,15 @@ const formatDate = (dateStr: string | undefined): string => {
 
 const Home: FC = () => {
   const { items, loading, error } = useContext(DataContext) as { items: DataItem[], loading: boolean, error: string | null };
+  const [searchParams] = useSearchParams();
   const [fontsReady, setFontsReady] = useState<boolean>(
     sessionStorage.getItem('fontsLoaded') === 'true',
   );
+  const [expandedMonth, setExpandedMonth] = useState<string | null>(() => {
+    // Initialize expanded month from URL parameter
+    const monthParam = searchParams.get('month');
+    return monthParam;
+  });
 
   useEffect(() => {
     if (!fontsReady) {
@@ -54,6 +61,9 @@ const Home: FC = () => {
     }
   }, [fontsReady, setFontsReady]);
 
+  const handleMonthToggle = (monthKey: string) => {
+    setExpandedMonth(expandedMonth === monthKey ? null : monthKey);
+  };
 
   const sortedItems = useMemo<DataItem[]>(() => {
     return [...items].filter(
@@ -139,6 +149,8 @@ const Home: FC = () => {
                     monthName={month.monthName}
                     items={month.items}
                     formatDate={formatDate}
+                    onToggle={handleMonthToggle}
+                    isExpanded={expandedMonth === month.monthKey}
                   />
                 ))}
               </div>
