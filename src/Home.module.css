@@ -236,14 +236,9 @@
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
   gap: 0 !important;
-  width: 100vw !important;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
+  width: 100%;
   border-top: 1px solid #d1d5db;
   border-collapse: collapse;
-  position: relative;
-  left: 0;
-  right: 0;
 }
 
 @media (min-width: 768px) {
@@ -287,11 +282,14 @@
 
 .monthItemImage {
   width: 100%;
-  aspect-ratio: auto;
-  max-height: 300px;
+  aspect-ratio: 1/1;
+  height: auto;
   margin-bottom: 0.5rem;
   overflow: hidden;
   border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .monthItemInfo {
