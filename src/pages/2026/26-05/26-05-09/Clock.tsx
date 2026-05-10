@@ -69,15 +69,7 @@ const getHandRotation = (value: number, multiplier: number): number => value * m
 
 // ---------------- COMPONENTS ----------------
 const BackgroundLayers: React.FC = () => (
-  <video
-    className={styles.backgroundVideo}
-    autoPlay
-    loop
-    muted
-    playsInline
-  >
-    <source src="/src/assets/images/2026/26-05/26-05-05/jump.mp4" type="video/mp4" />
-  </video>
+  <div className={styles.backgroundImage} />
 );
 
 const ClockNumerals: React.FC = () => {
