@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import './TopNav.css';
+import styles from './TopNav.module.css';
 
 export default function TopNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,19 +11,19 @@ export default function TopNav() {
 
   return (
     <>
-      <div className="topnavchl">🧊🫀🔭 Cubist Heart Laboratories 🧊🫀🔭</div>
+      <div className={styles.topnavchl}>Cubist Heart Laboratories</div>
 
-      <div className="topnavbgcolor">
-        <div className="topnavbt">BorrowedTime</div>
+      <div className={styles.topnavbgcolor}>
+        <div className={styles.topnavbt}>BorrowedTime</div>
 
-        <div className="topnavtag">
+        <div className={styles.topnavtag}>
           a new clock every day, made from recycled internet stuff
         </div>
       </div>
 
-      <nav className="navbar">
+      <nav className={styles.navbar}>
         <button
-          className={`hamburger ${isMenuOpen ? 'active' : ''}`}
+          className={`${styles.hamburger} ${isMenuOpen ? styles.active : ''}`}
           onClick={toggleMenu}
           aria-label="Toggle menu"
         >
@@ -31,12 +31,12 @@ export default function TopNav() {
           <span></span>
           <span></span>
         </button>
-        <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
-          <li className="nav-item">
+        <ul className={`${styles.navMenu} ${isMenuOpen ? styles.active : ''}`}>
+          <li className={styles.navItem}>
             <NavLink
               to="/"
               className={({ isActive }) =>
-                isActive ? 'nav-link active' : 'nav-link'
+                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
               }
               onClick={() => setIsMenuOpen(false)}
             >
@@ -45,10 +45,10 @@ export default function TopNav() {
           </li>
 
           {/* 
-          <li className="nav-item">
+          <li className={styles.navItem}>
             <NavLink
               to="/manifesto"
-              className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+              className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
               onClick={() => setIsMenuOpen(false)}
             >
               MANIFESTO
@@ -56,10 +56,10 @@ export default function TopNav() {
           </li>
         
 
-            <li className="nav-item">
+            <li className={styles.navItem}>
             <NavLink
               to="/about"
-              className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+              className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
               onClick={() => setIsMenuOpen(false)}
             >
               ABOUT
@@ -67,22 +67,22 @@ export default function TopNav() {
           </li>
            */}
 
-          <li className="nav-item">
+          <li className={styles.navItem}>
             <NavLink
               to="/contact"
               className={({ isActive }) =>
-                isActive ? 'nav-link active' : 'nav-link'
+                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
               }
               onClick={() => setIsMenuOpen(false)}
             >
               CONTACT
             </NavLink>
           </li>
-          <li className="nav-item">
+          <li className={styles.navItem}>
             <NavLink
               to="/today"
               className={({ isActive }) =>
-                isActive ? 'nav-link active' : 'nav-link'
+                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
               }
               onClick={() => setIsMenuOpen(false)}
             >
