@@ -115,8 +115,15 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
       </button>
       
       {isExpanded && (
-        <div>
+        <>
           <div style={{ 
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            right: '0',
+            zIndex: '1000',
+            backgroundColor: '#3c3d3c',
+            padding: '1rem',
             display: 'flex', 
             gap: '0.25rem', 
             marginBottom: '0.5rem',
@@ -209,7 +216,7 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
               ))}
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
