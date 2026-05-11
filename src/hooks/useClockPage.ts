@@ -72,11 +72,14 @@ export function useClockPage(currentItem: { date: string } | null) {
         const yearShort = dateParts[0].length === 4 ? dateParts[0].slice(-2) : dateParts[0];
         const yearFull = dateParts[0].length === 4 ? dateParts[0] : `20${dateParts[0]}`;
         
-        const searchPattern = `${yearFull}/${yearShort}-${dateParts[1]}/${currentItem.date}/Clock.tsx`;
-        const match = Object.entries(clockModules).find(([p]) => p.endsWith(searchPattern));
+        // Robust lookup: search for exact date folder regardless of YYYY vs YY nesting
+        const match = Object.entries(clockModules).find(([p]) => 
+          p.includes(`/${currentItem.date}/Clock.tsx`) || 
+          p.endsWith(`${yearFull}/${yearShort}-${dateParts[1]}/${currentItem.date}/Clock.tsx`)
+        );
         
         if (!match) {
-          throw new Error(`Clock lookup failed for date: ${currentItem.date}. Expected pattern: ${searchPattern}`);
+          throw new Error(`Clock lookup failed for date: ${currentItem.date}`);
         }
         const [path, importFn] = match;
 

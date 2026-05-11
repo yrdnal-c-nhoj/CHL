@@ -3,6 +3,10 @@
     {
       "source": "/test/:match*",
       "destination": "https://chl-git-test-two-cubistheart.vercel.app/:match*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

@@ -32,7 +32,7 @@ export default defineConfig({
   },
 
   esbuild: {
-    drop: ['console', 'debugger'],
+    drop: [], // Temporarily disable to debug the blank page deployment
   },
 
   build: {
