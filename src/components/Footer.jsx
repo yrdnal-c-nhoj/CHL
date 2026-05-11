@@ -1,9 +1,9 @@
 import React from 'react';
-import './Footer.css';
+import styles from './Footer.module.css';
 
 function Footer() {
   return (
-    <footer className="footer">
+    <footer className={styles.footer}>
       <p>&copy; 2026 Cubist Heart Laboratories. All rights reserved.</p>🧊🫀🔭
     </footer>
   );
