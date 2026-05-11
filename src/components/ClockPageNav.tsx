@@ -131,21 +131,17 @@ const ClockPageNav = ({
         aria-label={
           prevItem
             ? `Go to previous clock: ${formatTitle(prevItem.title)}`
-            : 'Go back to homepage'
+            : ''
         }
       >
         <span aria-hidden="true">⇽</span>
-        <span className={styles.screenReaderText}>
-          {prevItem
-            ? `Previous: ${formatTitle(prevItem.title)}`
-            : 'Go back to homepage'}
-        </span>
+        <span className={styles.screenReaderText} />
       </Link>
 
       <Link
         to="/"
         className={styles.footerButton}
-        aria-label="Go back to homepage"
+        aria-label=""
       >
         <div className={styles.footerCenter}>
           <span className={styles.footerDate}>
@@ -158,7 +154,7 @@ const ClockPageNav = ({
             #{currentItem.clockNumber}
           </span>
         </div>
-        <span className={styles.screenReaderText}>Go back to homepage</span>
+        <span className={styles.screenReaderText} />
       </Link>
 
       <Link
@@ -167,15 +163,11 @@ const ClockPageNav = ({
         aria-label={
           nextItem
             ? `Go to next clock: ${formatTitle(nextItem.title)}`
-            : 'Go back to homepage'
+            : ''
         }
       >
         <span aria-hidden="true">⇾</span>
-        <span className={styles.screenReaderText}>
-          {nextItem
-            ? `Next: ${formatTitle(nextItem.title)}`
-            : 'Go back to homepage'}
-        </span>
+        <span className={styles.screenReaderText} />
       </Link>
     </div>
   );
