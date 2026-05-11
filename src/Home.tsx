@@ -5,7 +5,6 @@ import TopNav from './components/TopNav';
 import Footer from './components/Footer';
 import MonthDropdown from './components/MonthDropdown';
 import { useNavigationState } from './hooks/useNavigationState';
-import homeStyles from './styles/Home.module.css'; // Import Home.module.css
 import styles from './styles/Home.module.css';
 import instaImg from '@/assets/icons/i.png';
 import elonImg from '@/assets/icons/x.png';
@@ -163,12 +162,12 @@ const Home: FC = () => {
 
   return (
     <div
-      className={homeStyles.homeContainer}
+      className={styles.homeContainer}
       style={{ opacity: fontsReady ? 1 : 0, transition: 'opacity 0.4s ease-in' }}
     >
       <TopNav />
-      <div className={homeStyles.homeCenteredContent}>
-        <div className={homeStyles.monthList}>
+      <div className={styles.homeCenteredContent}>
+        <div className={styles.monthList}>
           {groupedByMonth.map((month) => (
             <MonthDropdown
               key={month.monthKey}
