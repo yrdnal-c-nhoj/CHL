@@ -129,7 +129,7 @@ const UnixEpochClock: React.FC = () => {
             lineHeight: '0.9',
           }}
         >
-          On January 1st, 1970, at precisely 00:00:00 UTC, the digital universe
+          On JAN 1st, 1970, at precisely 00:00:00 UTC, the digital universe
           began counting at zero seconds. That moment became the foundation of
           time itself in computing. The UNIX Epoch was underway.
         </div>

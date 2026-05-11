@@ -1,0 +1,16 @@
+/* ========================================
+   FOOTER COMPONENT STYLES
+   ======================================== */
+
+.footer {
+  font-size: 0.6rem;
+  text-align: center;
+  width: 100%;
+  color: var(--color-lab-gray-light);
+  font-family: var(--font-manrope);
+  background: linear-gradient(to right, var(--color-lab-gray-dark), #55552a);
+}
+
+.chlLogo {
+  font-size: 1.3rem;
+}
