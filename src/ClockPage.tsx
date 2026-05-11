@@ -11,6 +11,7 @@ import Header from '@/components/Header';
 import ClockPageNav from '@/components/ClockPageNav';
 import { ClockLoadingFallback } from '@/utils/fontLoader';
 import { useClockPage } from '@/hooks/useClockPage';
+import { useNavigationState } from '@/hooks/useNavigationState';
 import styles from './ClockPage.module.css';
 import type { ClockItem, DataContextType } from '@/types/data';
 import { useAutoHeader } from '@/hooks/useAutoHeader';
@@ -82,13 +83,14 @@ const ClockPage: React.FC = () => {
   const headerVisible = useAutoHeader(HEADER_FADE_DELAY);
   const { currentItem, prevItem, nextItem } = useClockNavigation(items, date);
   const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPage(currentItem);
+  const { saveNavigationState, clearNavigationState } = useNavigationState();
 
   const handleHeaderClick = () => {
     if (currentItem?.date) {
       const monthKey = getMonthFromDate(currentItem.date);
-      // Save current scroll position before navigation
-      sessionStorage.setItem(`scrollPos_${monthKey}`, window.scrollY.toString());
-      // Navigate to home with month expanded (we'll need to update Home component to handle this)
+      // Save navigation state before leaving
+      saveNavigationState(monthKey);
+      // Navigate to home with month expanded
       navigate(`/?month=${monthKey}`);
     } else {
       navigate('/');
