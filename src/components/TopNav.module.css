@@ -14,23 +14,22 @@
   font-size: 0.8rem;
   letter-spacing: 0.03rem;
   text-align: left;
-  width: 100vw;
-  position: relative;
+  width: 100%;
   font-family: var(--font-roboto), serif;
+  padding: 0.2rem 1rem;
 }
 
 .topnavbt {
   transform: skewX(-20deg);
   color: #343434;
   font-size: 4rem;
- letter-spacing: -0.2rem;
+  letter-spacing: -0.2rem;
   text-align: center;
-  width: 100vw;
-  position: relative;
-  top: -12px;
+  width: 100%;
+  margin-top: -1rem;
   font-family: var(--font-oxanium), sans-serif;
   text-shadow: 
-    #b6e548c3 4px 0px 0px, 
+    #b6e548 4px 0px 0px, 
     #101601 2px 0px 0px, 
     #eb7373 3px 1px 0px, 
     #fdf1f1 4px 0px 0px, 
@@ -43,34 +42,27 @@
   color: #8a8787;
   text-align: center;
   display: block;
-  width: 100vw;
-  position: relative;
-   top: -32px;
+  width: 100%;
+  margin-top: -1.3rem;
   font-family: var(--font-oxanium), sans-serif;
 }
 
 .navbar {
-  position: relative;
-  width: 100vw;
-  text-align: center;
-  box-sizing: border-box;
+  width: 100%;
+  margin-top: -0.4rem;
 }
 
 .navMenu {
   font-family: var(--font-roboto), serif;
   font-weight: 700;
-  letter-spacing: 0.1rem;
+  letter-spacing: 0.03rem;
   list-style: none;
-  color: #3b4f81;
+  color: rgba(59, 79, 129, 0.83);
   z-index: 999;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-}
-
-.navMenu.active {
-  display: flex;
 }
 
 
@@ -81,13 +73,18 @@
   transition: color 0.3s ease-in-out;
 }
 
+.navLink:focus {
+  outline: 2px solid #0536b3;
+  outline-offset: 2px;
+}
+
 .navLink:hover {
   color: #f35f02;
   text-decoration: underline;
 }
 
 .navLink.active {
-  color: rgb(89, 68, 68);
+  color: #594444;
 }
 
 .hamburger {
@@ -96,7 +93,7 @@
   top: 0.5rem;
   z-index: 1000;
   display: block;
-  background-color: #767373;
+  background-color: #cac5c5;
   border: none;
   cursor: pointer;
 }
@@ -105,7 +102,7 @@
   display: block;
   width: 22px;
   height: 3px;
-  background-color: #c9bebe;
+  background-color: #627952;
   margin: 5px 0;
   transition: all 0.3s ease-in-out;
 }
@@ -172,7 +169,7 @@
     line-height: 0.7rem;
   }
 
-  .navbar { height: 3.2rem; }
+  .navbar { height: auto; }
   .navLink { padding: 0.4rem; font-size: 0.9rem; }
 
   .navMenu {
@@ -180,10 +177,10 @@
     position: fixed;
     top: 3.2rem;
     right: 0;
-    width: 100vw;
+    width: 100%;
     flex-direction: column;
     padding: 0.2rem;
-    background-color: #2e382e; /* Added background for visibility when open */
+    background-color: #c0c4c0;
   }
 
   .hamburger {
