@@ -15,11 +15,7 @@
  * - Future-proof React Router v7 compatibility
  */
 
-/* eslint-disable */
-
-import type { ReactNode, ErrorInfo } from 'react';
-import React, { useEffect, useCallback } from 'react';
-import { Helmet } from 'react-helmet-async';
+import React, { useEffect, useCallback, ReactNode, ErrorInfo } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -27,17 +23,22 @@ import {
   Navigate,
   useLocation,
 } from 'react-router-dom';
-import { pageview } from './analytics';
+import { Helmet } from 'react-helmet-async';
 import { DataProvider } from './context/DataContext';
 
 // Lazy loaded components for better performance
 const Home = React.lazy(() => import('./Home'));
 const ClockPage = React.lazy(() => import('./ClockPage'));
+const Manifesto = React.lazy(() => import('./Manifesto'));
+const About = React.lazy(() => import('./About'));
 const Today = React.lazy(() => import('./Today'));
 const Contact = React.lazy(() => import('./Contact'));
+const Gallery = React.lazy(() => import('./Gallery'));
+
+import { pageview } from './analytics';
 
 // Configuration constants
-const BASE_URL = 'https://www.cubistheart.com/test';
+const BASE_URL = 'https://www.cubistheart.com';
 const DYNAMIC_CLOCK_REGEX = /^\/\d{2}-\d{2}-\d{2}$/;
 
 /**
@@ -73,9 +74,10 @@ const AnalyticsAndSEO = React.memo(() => {
   // Analytics tracking with useCallback to prevent unnecessary re-renders
   const trackPageView = useCallback(() => {
     try {
+      if (typeof pageview !== 'function') return;
       pageview(processedPath.path + location.search);
-    } catch (_error) {
-      // Analytics tracking failed silently
+    } catch (error) {
+      console.warn('Analytics tracking failed:', error);
     }
   }, [processedPath.path, location.search]);
 
@@ -117,19 +119,18 @@ class ErrorBoundary extends React.Component<Props, State> {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(_error: Error): State {
+  static getDerivedStateFromError(error: Error): State {
     return { hasError: true };
   }
 
-  componentDidCatch(_error: Error, _errorInfo: ErrorInfo) {
-    // Error logged silently
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Application Error:', error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
       return (
         <div
-          // eslint-disable-next-line react/no-unknown-property
           style={{
             display: 'flex',
             justifyContent: 'center',
@@ -156,23 +157,18 @@ class ErrorBoundary extends React.Component<Props, State> {
  * and global providers for the entire application
  */
 const App: React.FC = () => {
-  // Use basename only in production if hosted on /test
-  const basename = import.meta.env.DEV ? '/' : '/test';
-
   return (
     <ErrorBoundary>
       <DataProvider>
-        <Router 
-          basename={basename}
-          future={{ 
-            v7_startTransition: true, 
+        <Router
+          future={{
+            v7_startTransition: true,
             v7_relativeSplatPath: true,
           }}
         >
           <AnalyticsAndSEO />
 
           <React.Suspense
-            // eslint-disable-next-line react/no-unknown-property
             fallback={
               <div
                 style={{
@@ -191,8 +187,11 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/:date" element={<ClockPage />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/manifesto" element={<Manifesto />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/today" element={<Today />} />
+              <Route path="/gallery" element={<Gallery />} />
               <Route path="/index.html" element={<Navigate to="/" replace />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
