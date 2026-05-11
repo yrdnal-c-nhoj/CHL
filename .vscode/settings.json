@@ -1,4 +1,36 @@
 {
     "editor.tabCompletion": "on",
-    "diffEditor.codeLens": true
+    "diffEditor.codeLens": true,
+    "css.lint.unknownProperties": "ignore",
+    "css.lint.zeroUnits": "ignore",
+    "css.validate": false,
+    "stylelint.enable": false,
+    "emmet.includeLanguages": {
+        "typescript": "html",
+        "typescriptreact": "html"
+    },
+    "html.validate.styles": false,
+    "css.lint.validProperties": [
+        "display",
+        "justifyContent",
+        "alignItems",
+        "height",
+        "flexDirection",
+        "fontFamily",
+        "fontSize",
+        "backgroundColor",
+        "opacity",
+        "transition",
+        "width",
+        "minHeight",
+        "overflowY",
+        "padding",
+        "margin",
+        "gap",
+        "color"
+    ],
+    "typescript.preferences.quoteStyle": "single",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "never"
+    }
 }

@@ -1,0 +1,5 @@
+TITLE: Many Hand Clock
+DATE: 2026-01-19
+DESCRIPTION: A physics-based exploration of time using multiple second hands exhibiting different behavioral archetypes: forgetful, sleepy, and panicked.
+SOURCE: Found hand imagery and simulated mechanical deviations.
+LAB_NOTES: Using requestAnimationFrame for complex physics-based overshoot and elastic stretch logic.
