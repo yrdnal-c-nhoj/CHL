@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './ImageGrid.css';
+import styles from './ImageGrid.module.css';
 
 const ImageGrid = () => {
   const [images, setImages] = useState([]);
@@ -124,24 +124,24 @@ const ImageGrid = () => {
   };
 
   if (gridSize.rows === 0 || gridSize.cols === 0) {
-    return <div className="image-grid-loading">Calculating grid...</div>;
+    return <div className={styles.imageGridLoading}>Calculating grid...</div>;
   }
 
   if (error) {
-    return <div className="image-grid-error">Error: {error}</div>;
+    return <div className={styles.imageGridError}>Error: {error}</div>;
   }
 
   if (images.length === 0) {
-    return <div className="image-grid-loading">Loading images...</div>;
+    return <div className={styles.imageGridLoading}>Loading images...</div>;
   }
 
   const spiralOrder = generateSpiralOrder();
   const totalCells = gridSize.rows * gridSize.cols;
 
   return (
-    <div className="image-grid-container" ref={gridRef}>
+    <div className={styles.imageGridContainer} ref={gridRef}>
       <div
-        className="image-grid"
+        className={styles.imageGrid}
         style={{
           gridTemplateColumns: `repeat(${gridSize.cols}, 100px)`,
           gridTemplateRows: `repeat(${gridSize.rows}, 100px)`,
@@ -157,7 +157,7 @@ const ImageGrid = () => {
           return (
             <div
               key={index}
-              className="grid-cell"
+              className={styles.gridCell}
               style={{
                 animationDelay: `${delay}s`,
                 width: '100px',
@@ -168,7 +168,7 @@ const ImageGrid = () => {
                 <img
                   src={imageUrl}
                   alt={`Grid cell ${index}`}
-                  className="grid-image"
+                  className={styles.gridImage}
                   onLoad={() => handleImageLoad(index)}
                   style={{
                     opacity: loadedImages.has(index) ? 1 : 0,
@@ -180,7 +180,7 @@ const ImageGrid = () => {
           );
         })}
       </div>
-      <div className="grid-info">
+      <div className={styles.gridInfo}>
         <p>
           Grid: {gridSize.cols} × {gridSize.rows}
         </p>
