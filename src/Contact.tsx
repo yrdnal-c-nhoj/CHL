@@ -41,7 +41,7 @@ const Contact: FC = () => {
             className="flex flex-col gap-2 mt-2 w-full"
           >
             <input type="email" name="email" id="bd-email" placeholder="you@example.com" className={styles.input} required />
-            <input type="submit" value="Subscribe" className={`${styles.button} rounded py-3 px-6 cursor-pointer border-none w-auto self-center`} />
+            <input type="submit" value="Subscribe" className={`${styles.button} rounded py-3 px-6 cursor-pointer border-none w-40 h-12 self-start`} />
           </form>
         </section>
 
@@ -55,7 +55,7 @@ const Contact: FC = () => {
             <input type="text" name="name" placeholder="Your name" className={styles.input} required />
             <input type="email" name="email" placeholder="your@email.com" className={styles.input} required />
             <textarea name="message" placeholder="Your message..." rows={5} className={`${styles.input} resize-y min-h-[120px]`} required />
-            <input type="submit" value="Send Message" className={`${styles.button} rounded py-3 px-6 cursor-pointer border-none w-auto self-center`} />
+            <input type="submit" value="Send Message" className={`${styles.button} rounded py-3 px-6 cursor-pointer border-none w-40 h-12 self-start`} />
           </form>
           
           <p className="mt-4 font-manrope text-[#666] text-[0.85rem] text-left">
