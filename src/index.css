@@ -34,44 +34,13 @@
 
 @layer components {
   
-  /* --- Home Page Layout & Lists --- */
+  /* --- Home Page Layout --- */
   .home-container {
     @apply box-border relative flex flex-col justify-center items-center m-0 p-0 w-full min-h-screen overflow-y-auto;
   }
 
   .home-centered-content {
     @apply z-[5] box-border flex flex-col flex-1 items-center gap-[clamp(0.5rem,1vw,1.5rem)] w-full max-w-full;
-  }
-
-  .date-list {
-    @apply flex flex-col items-stretch gap-[clamp(0.5rem,1vw,1.5rem)] m-0 p-0 w-full list-none;
-  }
-
-  .entry {
-    @apply z-[1] box-border relative flex justify-between items-center gap-[clamp(0.5rem,1vw,1.5rem)] px-[clamp(0.2rem,0.5vw,1rem)] py-[clamp(0.2rem,0.5vw,1rem)] border-[#f8f9fb] border-b w-full;
-  }
-  .entry:first-child { @apply border-[#f1f3f5] border-t; }
-  
-  .entry::before {
-    @apply content-[''] absolute top-0 left-1/2 w-0 h-full bg-[#e5e7eb] z-[-1] -translate-x-1/2 transition-[width,height] duration-200 ease-in-out;
-  }
-  .entry:hover::before { @apply w-screen h-full; }
-  .entry:hover { @apply border-b-transparent; }
-  .entry:hover:first-child { @apply border-t-transparent; }
-  
-  .entry:hover .clock-number,
-  .entry:hover .entry-title,
-  .entry:hover .entry-date {
-    @apply text-[#0c0d0d] transition-colors duration-200 ease-in-out;
-  }
-
-  .clock-number, .entry-date {
-    @apply flex-none px-[0.5rem] py-[0.2rem] font-manrope text-[#0c0d0d] text-[clamp(0.9rem,2vw,2rem)] tracking-[-0.04rem] transition-[color,transform] duration-200;
-  }
-  .entry-date { @apply tracking-[-0.06rem]; }
-
-  .entry-title {
-    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-manrope text-[#0c0d0d] text-center whitespace-normal overflow-visible break-words z-[5] px-[0.5rem] py-[0.2rem] transition-[color,transform] duration-200 text-[clamp(0.9rem,2.2vw,2.2rem)] max-w-[80%];
   }
 
   /* --- Month Grid --- */
@@ -114,25 +83,6 @@
   .word-page-container section {
     @apply flex flex-col items-center w-full text-center;
   }
-  
-  .hat {
-    @apply block mt-4 -mb-[1.9rem] font-roboto font-bold text-[1.1rem] text-lab-red tracking-[0.02em];
-  }
-  
-  .smallcaps {
-    @apply font-manrope font-bold text-[0.75rem] uppercase tracking-[0.041em];
-  }
-
-  .section-divider {
-    @apply my-2 border-lab-divider border-t border-none w-[300px];
-  }
-
-  /* --- Footer --- */
-  .footer {
-    @apply text-[0.6rem] text-center w-screen relative left-1/2 -ml-[50vw] text-[#dde2dd] font-manrope;
-    background: linear-gradient(to right, #302f2a, #55552a);
-  }
-  .chl_logo { @apply text-[1.3rem]; }
 }
 
 /* Standard Document Flow */

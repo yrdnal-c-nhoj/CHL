@@ -20,7 +20,9 @@ interface DataItem {
 const isValidDate = (str: string | undefined): boolean => {
   const parts = str?.split('-');
   if (!parts || parts.length !== 3) return false;
-  const [yy, mm, dd] = parts.map(Number);
+  const yy = Number(parts[0]);
+  const mm = Number(parts[1]);
+  const dd = Number(parts[2]);
   if (isNaN(yy) || isNaN(mm) || isNaN(dd)) return false;
   // Assumes 20xx
   const date = new Date(2000 + yy, mm - 1, dd);
@@ -30,7 +32,10 @@ const isValidDate = (str: string | undefined): boolean => {
 const formatDate = (dateStr: string | undefined): string => {
   const parts = dateStr?.split('-');
   if (!parts || parts.length !== 3) return 'Unknown Date';
-  const [yy, mm, dd] = parts.map(Number);
+  const yy = Number(parts[0]);
+  const mm = Number(parts[1]);
+  const dd = Number(parts[2]);
+  if (isNaN(yy) || isNaN(mm) || isNaN(dd)) return 'Unknown Date';
   const date = new Date(2000 + yy, mm - 1, dd);
   if (isNaN(date.getTime())) return 'Unknown Date';
 
@@ -103,8 +108,8 @@ const Home: FC = () => {
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
-    const monthIndex = parseInt(mm, 10) - 1;
-    const year = 2000 + parseInt(yy, 10);
+    const monthIndex = parseInt(mm || '0', 10) - 1;
+    const year = 2000 + parseInt(yy || '0', 10);
     return `${monthNames[monthIndex]} ${year}`;
   };
 
