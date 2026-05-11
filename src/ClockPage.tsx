@@ -12,7 +12,7 @@ import ClockPageNav from '@/components/ClockPageNav';
 import { ClockLoadingFallback } from '@/utils/fontLoader';
 import { useClockPage } from '@/hooks/useClockPage';
 import { useNavigationState } from '@/hooks/useNavigationState';
-import styles from './ClockPage.module.css';
+import styles from './styles/ClockPage.module.css';
 import type { ClockItem, DataContextType } from '@/types/data';
 import { useAutoHeader } from '@/hooks/useAutoHeader';
 import {
