@@ -31,7 +31,7 @@ const TopNav: React.FC = () => {
         <div className={styles.topnavtag}>
             a new clock every day, made from recycled internet stuff
         </div>
-      </div>
+    
 
       <nav className={styles.navbar}>
         <ul className={`${styles.navMenu} ${isMenuOpen ? styles.active : ''}`}>
@@ -94,7 +94,8 @@ const TopNav: React.FC = () => {
           </li>
         </ul>
       </nav>
-    </div>
+      </div>
+      </div>
   );
 };
 
