@@ -5,8 +5,8 @@ import TopNav from './components/TopNav';
 import Footer from './components/Footer';
 import MonthDropdown from './components/MonthDropdown';
 import { useNavigationState } from './hooks/useNavigationState';
-import homeStyles from './Home.module.css'; // Import Home.module.css
-import styles from './Home.module.css';
+import homeStyles from './styles/Home.module.css'; // Import Home.module.css
+import styles from './styles/Home.module.css';
 import instaImg from '@/assets/icons/i.png';
 import elonImg from '@/assets/icons/x.png';
 
