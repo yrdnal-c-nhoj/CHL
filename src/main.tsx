@@ -18,7 +18,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
-import './styles/globals.css';
+import './index.css';
 import App from './App.tsx';
 
 window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => {
@@ -48,8 +48,17 @@ const initializeApp = () => {
       </StrictMode>,
     );
   } catch (error) {
-    if (import.meta.env.DEV) console.error('Failed to initialize:', error);
-    document.body.innerHTML = '<div style="padding: 2rem; font-family: sans-serif;">Something went wrong. Please reload.</div>';
+    // Log to console for debugging
+    console.error('Critical initialization failure:', error);
+    
+    // Show error on screen in production to diagnose the "blank page"
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    document.body.innerHTML = `
+      <div style="padding: 2rem; font-family: monospace; background: white; color: black; line-height: 1.5;">
+        <h1 style="color: red;">Critical Initialization Error</h1>
+        <pre style="background: #eee; padding: 1rem; overflow: auto;">${errorMessage}</pre>
+        <button onclick="window.location.reload()">Reload Page</button>
+      </div>`;
   }
 };
 
