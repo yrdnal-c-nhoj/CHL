@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Thumbnail from './Thumbnail';
-import styles from './MonthDropdown.module.css';
+import styles from '../styles/MonthDropdown.module.css';
 
 interface DataItem {
   date: string;
