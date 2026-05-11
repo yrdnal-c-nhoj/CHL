@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { formatTime as utilFormatTime } from '@/utils/clockUtils'; // Alias to avoid conflict with local formatTime
 import { useClockTime } from '@/utils/hooks'; // Use the standardized hook
 import styles from './Clock.module.css';
@@ -157,7 +157,9 @@ const Clock: React.FC = () => {
 
   // This useEffect replaces the time update and emoji cycling from the old rAF loop
   useEffect(() => {
-    const currentSecond = time.getSeconds();
+    // Accessing the state once to avoid unnecessary re-runs
+    const date = new Date(time);
+    const currentSecond = date.getSeconds();
     
     // Only update emoji every 3 seconds
     // Ensure it only triggers once per second when the condition is met
@@ -181,7 +183,7 @@ const Clock: React.FC = () => {
         return nextIndex;
       });
     }
-  }, [time.getSeconds(), emojiCycle, activeBuffer]); // Depend on seconds to trigger every second, then filter every 3rd.
+  }, [time, emojiCycle, activeBuffer]); 
 
   // --- SCREEN RESIZE LISTENER ---
   useEffect(() => {
