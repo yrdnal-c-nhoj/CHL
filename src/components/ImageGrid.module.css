@@ -1,0 +1,77 @@
+/* ========================================
+   IMAGE GRID COMPONENT STYLES
+   ======================================== */
+
+.imageGridContainer {
+  @apply relative bg-black w-screen h-screen overflow-hidden;
+}
+
+.imageGrid {
+  @apply grid w-full h-full;
+  gap: 0;
+}
+
+.gridCell {
+  @apply relative bg-black border border-[#222] overflow-hidden;
+  animation: rollIn 0.6s ease-out forwards;
+  opacity: 0;
+  transform: scale(0) rotate(180deg);
+}
+
+.gridImage {
+  @apply w-full h-full object-cover;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.gridCell:hover .gridImage {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+}
+
+@keyframes rollIn {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(180deg) translate(-50%, -50%);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2) rotate(90deg) translate(-25%, -25%);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg) translate(0, 0);
+  }
+}
+
+.gridInfo {
+  @apply absolute top-[10px] left-[10px] bg-black/80 text-white p-[10px] rounded-[5px] font-mono text-[12px] z-10;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.imageGridError {
+  @apply flex justify-center items-center bg-black p-[20px] h-screen font-mono text-[18px] text-red-500 text-center;
+}
+
+.imageGridLoading {
+  @apply flex justify-center items-center bg-black h-screen font-mono text-[18px] text-white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .gridCell {
+    width: 80px !important;
+    height: 80px !important;
+  }
+
+  .gridInfo {
+    @apply p-[5px] text-[10px];
+  }
+}
+
+@media (max-width: 480px) {
+  .gridCell {
+    width: 60px !important;
+    height: 60px !important;
+  }
+}

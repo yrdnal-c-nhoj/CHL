@@ -1,0 +1,12 @@
+/* ========================================
+   FOOTER COMPONENT STYLES
+   ======================================== */
+
+.footer {
+  @apply text-[0.6rem] text-center w-screen relative left-1/2 ml-[-50vw] text-[#dde2dd] font-manrope;
+  background: linear-gradient(to right, #302f2a, #55552a);
+}
+
+.chlLogo {
+  @apply text-[1.3rem];
+}
