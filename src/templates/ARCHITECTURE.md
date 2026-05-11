@@ -1,5 +1,6 @@
 # Clock Architecture
 
+
 ## Structure
 
 ```text
