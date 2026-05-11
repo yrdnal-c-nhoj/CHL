@@ -135,6 +135,71 @@ body.clock-mode {
   border: 0;
 }
 
+/* ========================================
+   GRID LAYOUT STYLES
+   ======================================== */
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  border-top: 1px solid #d15db;
+  border-collapse: collapse;
+}
+
+@media (min-width: 768px) {
+  .month-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.month-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-lab-bg-gray);
+  padding: 1rem;
+  border-right: 1px solid #d15db;
+  border-bottom: 1px solid #d15db;
+  color: #0c0d0d;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.month-item:hover {
+  background-color: #e5e7eb;
+  opacity: 1;
+}
+
+.month-item-image {
+  margin-bottom: 0.5rem;
+  border-radius: 0.25rem;
+  width: 100%;
+  max-height: 300px;
+  aspect-ratio: auto;
+  overflow: hidden;
+}
+
+.month-item-info {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.75rem;
+  color: #888;
+  margin-bottom: 0.2rem;
+}
+
+.month-item-title {
+  font-family: 'Roboto Slab', serif;
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 0.25rem;
+}
+
 /* --- Global Animations --- */
 @keyframes fadeIn {
   from { opacity: 0; }
