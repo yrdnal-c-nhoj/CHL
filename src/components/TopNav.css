@@ -1,5 +1,5 @@
 .topnavchl {
-  @apply font-roboto text-[#f6f6f2] text-[0.8rem] tracking-[0.03rem] text-left bg-[#333] w-screen relative left-1/2 -ml-[50vw] p-[0.1rem] box-border max-[600px]:text-[0.5rem] max-[600px]:px-[0.2rem];
+  @apply font-roboto text-[#f6f6f2] text-[0.8rem] tracking-[0.03rem] text-center bg-[#333] w-screen relative left-1/2 -ml-[50vw] p-[0.1rem] box-border max-[600px]:text-[0.5rem] max-[600px]:px-[0.2rem];
   text-shadow: #0e0d0d 0.5px 0.5px 0px, #000000 -0.5px -0.5px 0px;
 }
 
@@ -13,7 +13,7 @@
 }
 
 .navbar {
-  @apply relative w-screen left-1/2 -ml-[50vw] bg-[#2e382e];
+  @apply relative w-screen left-1/2 -ml-[50vw] bg-[#2e382e] text-center box-border max-[600px]:h-[3.2rem];
 }
 
 .nav-menu {
