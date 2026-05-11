@@ -56,11 +56,9 @@
 
 .socialContainer {
   display: flex;
-  justify-content: center;
-  align-items: center;
   gap: 0.1rem;
   padding: 0.1rem;
-  margin-top: 1rem;
+  margin-top: 0.01rem;
 }
 
 .footerIcon {

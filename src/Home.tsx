@@ -8,6 +8,7 @@ import { useNavigationState } from './hooks/useNavigationState';
 import styles from './styles/Home.module.css';
 import instaImg from '@/assets/icons/i.png';
 import elonImg from '@/assets/icons/x.png';
+import fbookImg from '@/assets/icons/fbook.png';
 
 interface DataItem {
   date: string;
@@ -188,6 +189,19 @@ const Home: FC = () => {
 
         <div className={styles.socialContainer}>
           <a
+            href="https://x.com/cubistheartlabs"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              decoding="async"
+              loading="lazy"
+              src={elonImg}
+              alt="X"
+              className={styles.footerIcon}
+            />
+          </a>
+          <a
             href="https://www.instagram.com/cubist_heart_labs/"
             target="_blank"
             rel="noopener noreferrer"
@@ -201,15 +215,15 @@ const Home: FC = () => {
             />
           </a>
           <a
-            href="https://x.com/cubistheartlabs"
+            href="https://www.facebook.com/profile.php?id=100090369371981"
             target="_blank"
             rel="noopener noreferrer"
           >
             <img
               decoding="async"
               loading="lazy"
-              src={elonImg}
-              alt="X"
+              src={fbookImg}
+              alt="Facebook"
               className={styles.footerIcon}
             />
           </a>
