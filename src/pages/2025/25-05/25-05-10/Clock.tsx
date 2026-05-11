@@ -4,6 +4,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useGlobalStyles } from '@/utils/enhancedFontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react'; // Keep this import if CSSProperties is used elsewhere
+import clockTax from './tax';
 // Google Fonts URLs for Michroma, Economica, and Questrial
 const michromaFontUrl = 'https://fonts.gstatic.com/s/michroma/v18/PN_zRfy9qWD8fE-oB4_J_Q.woff2';
 const economicaFontUrl = 'https://fonts.gstatic.com/s/economica/v13/QwZTDPRQo_oF4RxQ_N_J_Q.woff2';
@@ -194,6 +195,12 @@ const NumberTossClock: React.FC = () => {
     <div style={styles.body}>
       <div style={styles.stationaryClock}>{backgroundTime}</div>
       <div ref={throwContainer} style={styles.throw}></div>
+      <div style={styles.taxOverlay}>
+        <div style={styles.taxContent}>
+          <h4 style={styles.taxTitle}>{clockTax.title}</h4>
+          <p style={styles.taxText}>{clockTax.content}</p>
+        </div>
+      </div>
     </div>
   );
 };
@@ -229,6 +236,32 @@ const styles = {
     pointerEvents: 'none',
     userSelect: 'none',
     whiteSpace: 'nowrap',
+  },
+  taxOverlay: {
+    position: 'absolute',
+    bottom: '20px',
+    right: '20px',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    borderRadius: '8px',
+    padding: '12px',
+    maxWidth: '300px',
+    zIndex: 10,
+    pointerEvents: 'auto',
+  },
+  taxContent: {
+    color: 'white',
+    fontFamily: 'Arial, sans-serif',
+  },
+  taxTitle: {
+    margin: '0 0 8px 0',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    color: '#f50ae1',
+  },
+  taxText: {
+    margin: 0,
+    fontSize: '12px',
+    lineHeight: '1.4',
   },
 };
 

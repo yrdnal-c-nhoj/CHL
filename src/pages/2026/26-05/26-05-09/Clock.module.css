@@ -8,6 +8,36 @@
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
 }
 
+.backgroundImage {
+  background-image: url('/src/assets/images/2026/26-05/26-05-09/lotus.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  filter: saturate(300%);
+}
+
+.backgroundImageTop {
+  background-image: url('/src/assets/images/2026/26-05/26-05-09/lotus.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transform: scaleX(-1);
+  opacity: 0.5;
+  filter: saturate(300%);
+}
+
 .timeWrapper {
   display: flex;
   flex-direction: column;
@@ -72,6 +102,12 @@
   color: #1a1a1a;
   -webkit-user-select: none;
   user-select: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.number:hover {
+  color: #d3d3d3;
 }
 
 .hand {
