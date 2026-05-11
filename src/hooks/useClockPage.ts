@@ -67,10 +67,10 @@ export function useClockPage(currentItem: { date: string } | null) {
 
       try {
         // 1. Resolve the module path
-        const [year, month] = currentItem.date.split('-');
-        const path = `../pages/20${year}/${year}-${month}/${currentItem.date}/Clock.tsx`;
+        const dateParts = currentItem.date.split('-');
+        const searchPattern = `${dateParts[0]}/${dateParts[0]}-${dateParts[1]}/${currentItem.date}/Clock.tsx`;
         
-        const importFn = clockModules[path];
+        const [path, importFn] = Object.entries(clockModules).find(([p]) => p.endsWith(searchPattern)) || [];
         if (!importFn) {
           throw new Error(`Clock not found at path: ${path}`);
         }
