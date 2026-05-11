@@ -64,7 +64,12 @@
 .footerIcon {
   width: 2rem;
   height: 2rem;
+  opacity: 0.8;
   transition: opacity 0.2s;
+}
+
+.footerIcon:hover {
+  opacity: 0.6;
 }
 
 /* ========================================
