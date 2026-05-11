@@ -2,24 +2,38 @@
    IMAGE GRID COMPONENT STYLES
    ======================================== */
 
+/* Import design tokens from globals.css */
+@import '../styles/globals.css';
+
 .imageGridContainer {
-  @apply relative bg-black w-screen h-screen overflow-hidden;
+  position: relative;
+  background-color: var(--color-lab-black);
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .imageGrid {
-  @apply grid w-full h-full;
+  display: grid;
+  width: 100%;
+  height: 100%;
   gap: 0;
 }
 
 .gridCell {
-  @apply relative bg-black border border-[#222] overflow-hidden;
+  position: relative;
+  background-color: var(--color-lab-black);
+  border: 1px solid #222;
+  overflow: hidden;
   animation: rollIn 0.6s ease-out forwards;
   opacity: 0;
   transform: scale(0) rotate(180deg);
 }
 
 .gridImage {
-  @apply w-full h-full object-cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   transition: transform 0.3s ease, filter 0.3s ease;
 }
 
@@ -44,17 +58,42 @@
 }
 
 .gridInfo {
-  @apply absolute top-[10px] left-[10px] bg-black/80 text-white p-[10px] rounded-[5px] font-mono text-[12px] z-10;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: var(--color-lab-white);
+  padding: 10px;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 12px;
+  z-index: 10;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 
 .imageGridError {
-  @apply flex justify-center items-center bg-black p-[20px] h-screen font-mono text-[18px] text-red-500 text-center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-lab-black);
+  padding: 20px;
+  height: 100vh;
+  font-family: monospace;
+  font-size: 18px;
+  color: #ef4444;
+  text-align: center;
 }
 
 .imageGridLoading {
-  @apply flex justify-center items-center bg-black h-screen font-mono text-[18px] text-white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-lab-black);
+  height: 100vh;
+  font-family: monospace;
+  font-size: 18px;
+  color: var(--color-lab-white);
 }
 
 /* Responsive adjustments */
@@ -65,7 +104,8 @@
   }
 
   .gridInfo {
-    @apply p-[5px] text-[10px];
+    padding: 5px;
+    font-size: 10px;
   }
 }
 

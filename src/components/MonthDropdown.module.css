@@ -79,12 +79,19 @@
   color: #feffff;
 }
 
+/* Month Grid */
 .monthGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 25px;
+  gap: 5px;
   padding: 1rem 0;
   background-color: #050b18; /* Dark navy for grid lines */
+}
+
+@media (min-width: 768px) {
+  .monthGrid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Adjust as needed for larger screens */
+  }
 }
 
 .monthItem {
@@ -92,6 +99,10 @@
   flex-direction: column;
   text-decoration: none;
   background-color: #0a192f; /* Dark blue cell background */
+  position: relative;
+  padding: 1rem;
+  border-right: 1px solid #050b18; /* Match grid line color */
+  border-bottom: 1px solid #050b18; /* Match grid line color */
   color: inherit;
   transition: transform 0.2s;
 }
@@ -103,7 +114,7 @@
 .monthItemImage {
   aspect-ratio: 16 / 9;
   background-color: #0a192f;
-  overflow: hidden;
+  overflow: hidden; /* Ensure image doesn't spill out */
   border-radius: 2px;
   margin-bottom: 0.5rem;
 }
@@ -112,14 +123,14 @@
   display: flex;
   justify-content: space-between;
   font-family: 'Manrope', sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.75rem; /* Change this for date and # number size */
   color: #888;
   margin-bottom: 0.2rem;
 }
 
 .monthItemTitle {
   font-family: 'Roboto Slab', serif;
-  font-size: 1rem;
+  font-size: 1rem; /* Change this for the clock title size */
   text-align: center;
   margin-top: 0.25rem;
 }
