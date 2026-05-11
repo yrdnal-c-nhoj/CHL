@@ -4,7 +4,7 @@
   scroll-margin-top: 2rem;
 }
 
-.hoverBg {
+/* .hoverBg {
   position: absolute;
   top: 0;
   left: 50%;
@@ -15,7 +15,7 @@
   transition: width 0.2s ease;
   z-index: 0;
   pointer-events: none;
-}
+} */
 
 .hoverBgActive {
   width: 100vw;

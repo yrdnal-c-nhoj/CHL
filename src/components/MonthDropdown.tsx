@@ -89,25 +89,7 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
       />
       <button
         onClick={toggleExpanded}
-        style={{
-          backgroundColor: 'transparent',
-          fontSize: 'clamp(0.9rem, 1.5vw, 1.5rem)',
-          padding: 'clamp(0.4rem, 0.8vw, 1rem) clamp(1.5rem, 2.5vw, 3rem)',
-          border: '1px solid transparent',
-          borderRadius: '3px',
-          cursor: 'pointer',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: '0.5rem',
-          transition: 'color 0.2s',
-          color: isHovered ? '#000000' : (isExpanded ? '#2d2d2d' : '#4a4a4a'),
-          fontFamily: 'Manrope, sans-serif',
-          fontWeight: isExpanded ? '700' : '400',
-          width: '100%',
-          position: 'relative',
-          zIndex: 1,
-        }}
+        className={`${styles.dropdownButton} ${isHovered ? styles.dropdownButtonHovered : ''} ${isExpanded ? styles.dropdownButtonExpanded : ''}`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -124,59 +106,17 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
       
       {isExpanded && (
         <>
-          <div style={{
-            display: 'flex',
-            gap: '0.75rem',
-            margin: '0.5rem 0 1.5rem 0',
-            justifyContent: 'center',
-            width: '100%'
-          }}>
+          <div className={styles.controls}>
             <button
               onClick={handleDateSort}
-              style={{
-                backgroundColor: 'transparent',
-                fontSize: 'clamp(0.8rem, 1.2vw, 1.2rem)',
-                padding: 'clamp(0.3rem, 0.6vw, 0.8rem) clamp(1rem, 1.8vw, 2rem)',
-                border: '1px solid transparent',
-                borderRadius: '3px',
-                cursor: 'pointer',
-                transition: 'background-color 0.2s, text-shadow 0.2s',
-                color: '#8b8f8c',
-                fontFamily: 'Manrope, sans-serif',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'rgba(48, 49, 50, 0.5)';
-                e.currentTarget.style.color = '#feffff';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = '#8b8f8c';
-              }}
+              className={styles.sortButton}
             >
               date{' '}
               {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
             </button>
             <button
               onClick={handleTitleSort}
-              style={{
-                backgroundColor: 'transparent',
-                fontSize: 'clamp(0.8rem, 1.2vw, 1.2rem)',
-                padding: 'clamp(0.3rem, 0.6vw, 0.8rem) clamp(1rem, 1.8vw, 2rem)',
-                border: '1px solid transparent',
-                borderRadius: '3px',
-                cursor: 'pointer',
-                transition: 'background-color 0.2s, text-shadow 0.2s',
-                color: '#8b8f8c',
-                fontFamily: 'Manrope, sans-serif',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'rgba(48, 49, 50, 0.5)';
-                e.currentTarget.style.color = '#feffff';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = '#8b8f8c';
-              }}
+              className={styles.sortButton}
             >
               title{' '}
               {sortBy === 'title-asc' ? '↓' : sortBy === 'title-desc' ? '↑' : ''}
