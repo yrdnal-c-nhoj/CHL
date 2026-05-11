@@ -7,15 +7,15 @@ import fbookImg from '@/assets/icons/fbook.png';
 
 const Contact: FC = () => {
   const inputStyles = "p-3 text-base font-manrope border border-[#ccc] rounded w-full box-border focus:outline-none focus:ring-1 focus:ring-lab-blue";
-  const buttonStyles = "bg-[#6e6c6c] text-white font-bold font-manrope text-base border-none rounded py-3 px-6 cursor-pointer transition-colors duration-200 hover:bg-[#585656] w-auto self-start";
-  const hatStyles = "font-roboto text-[1.1rem] font-bold text-lab-red mt-4 -mb-[1.9rem] block";
+  const buttonStyles = "bg-[#6e6c6c] text-white font-bold font-manrope text-base border-none rounded py-3 px-6 cursor-pointer transition-colors duration-200 hover:bg-[#585656] w-auto self-center";
+  const hatStyles = "font-roboto text-[1.1rem] font-bold text-lab-red mt-4 -mb-[1.9rem] block text-center";
   const dividerStyles = "border-none border-t border-lab-divider my-2 w-[300px]";
 
   return (
-    <div className="relative flex flex-col items-center w-full min-h-screen pb-16 overflow-y-auto bg-lab-bg-gray">
+    <div className="word-page-container">
       <TopNav />
 
-      <main className="flex flex-col items-start w-[90%] max-w-[60ch] z-10 text-[#060706] lg:w-[70%] lg:max-w-[70ch]">
+      <main className="flex flex-col items-center w-[90%] max-w-[60ch] z-10 text-[#060706] lg:w-[70%] lg:max-w-[70ch]">
         <h1 className="font-roboto text-lab-red tracking-widest text-[clamp(1.7rem,2vw,3rem)] text-center w-full my-2 leading-[1.4em]">
           CONTACT
         </h1>
@@ -39,7 +39,7 @@ const Contact: FC = () => {
         
         <section className="w-full">
           <span className={hatStyles}>Get the Lab's Monthly Newsletter</span>
-          <p className="font-manrope mt-8 text-[clamp(0.9rem,1.2vw,1.1rem)] leading-relaxed">
+          <p className="font-manrope mt-8 text-[clamp(0.9rem,1.2vw,1.1rem)] leading-relaxed text-center">
             <span className="font-manrope text-[0.75rem] font-bold tracking-wider uppercase">Subscribe</span> to receive the lab's monthly newsletter.
             <br />
             We will never sell or release your email address.
@@ -58,7 +58,7 @@ const Contact: FC = () => {
         <section className="w-full mt-4">
           <hr className={dividerStyles} />
           <span className={hatStyles}>Send a Message to the Lab</span>
-          <p className="font-manrope mt-8 text-[clamp(0.9rem,1.2vw,1.1rem)] leading-relaxed">
+          <p className="font-manrope mt-8 text-[clamp(0.9rem,1.2vw,1.1rem)] leading-relaxed text-center">
             <span className="font-manrope text-[0.75rem] font-bold tracking-wider uppercase">Questions?</span> Comments? Suggestions?
           </p>
           <form action="https://formspree.io/f/xnjobvva" method="POST" className="flex flex-col w-full gap-3 mt-4">
@@ -68,7 +68,7 @@ const Contact: FC = () => {
             <input type="submit" value="Send Message" className={buttonStyles} />
           </form>
           
-          <p className="mt-4 text-[0.85rem] text-[#666] font-manrope">
+          <p className="mt-4 text-[0.85rem] text-[#666] font-manrope text-center">
             Or email directly:{' '}
             <a className="font-bold no-underline text-lab-blue-deep hover:underline" href="mailto:cubistheart@gmail.com?subject=🧊🫀🔭">
               cubistheart@gmail.com

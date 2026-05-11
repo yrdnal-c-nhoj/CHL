@@ -152,42 +152,31 @@ const Home: FC = () => {
   if (error) return <div className={styles.error}>Error: {error}</div>;
 
   return (
-    <div style={{ width: '100%', minHeight: '100vh', overflowY: 'auto' }}>
+    <div 
+      className="home-container" 
+      style={{ opacity: fontsReady ? 1 : 0, transition: 'opacity 0.6s ease-in', backgroundColor: 'var(--lab-bg-gray)' }}
+    >
       <TopNav />
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '100vh',
-          backgroundColor: 'var(--lab-bg-gray)',
-          opacity: fontsReady ? 1 : 0,
-          transition: 'opacity 0.6s ease-in',
-        }}
-      >
-        <main style={{ flex: 1 }}>
-        <div className="home-container">
-          <div className="home-centered-content">
-            <div className="month-list">
-                {groupedByMonth.map((month) => (
-                  <MonthDropdown
-                    key={month.monthKey}
-                    monthKey={month.monthKey}
-                    monthName={month.monthName}
-                    items={month.items}
-                    formatDate={formatDate}
-                    onToggle={handleMonthToggle}
-                    isExpanded={expandedMonth === month.monthKey}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </main>
+      <div className="home-centered-content">
+        <div className="month-list">
+          {groupedByMonth.map((month) => (
+            <MonthDropdown
+              key={month.monthKey}
+              monthKey={month.monthKey}
+              monthName={month.monthName}
+              items={month.items}
+              formatDate={formatDate}
+              onToggle={handleMonthToggle}
+              isExpanded={expandedMonth === month.monthKey}
+            />
+          ))}
+        </div>
+      </div>
 
         <div
           style={{
             display: 'flex',
-            justifyContent: 'flex-end',
+            justifyContent: 'center',
             alignItems: 'center',
             gap: '0.1rem',
             padding: '0.1rem',
@@ -222,7 +211,6 @@ const Home: FC = () => {
         </div>
 
         <Footer />
-      </div>
     </div>
   );
 };
