@@ -83,13 +83,10 @@ const ClockPage: React.FC = () => {
   const headerVisible = useAutoHeader(HEADER_FADE_DELAY);
   const { currentItem, prevItem, nextItem } = useClockNavigation(items, date);
   const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPage(currentItem);
-  const { saveNavigationState, clearNavigationState } = useNavigationState();
 
   const handleHeaderClick = () => {
     if (currentItem?.date) {
       const monthKey = getMonthFromDate(currentItem.date);
-      // Save navigation state before leaving
-      saveNavigationState(monthKey);
       // Navigate to home with month expanded
       navigate(`/?month=${monthKey}`);
     } else {

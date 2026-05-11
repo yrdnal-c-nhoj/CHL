@@ -14,7 +14,8 @@
   z-index: 10000; /* Above loading overlay */
   font-family: 'Manrope', sans-serif;
   pointer-events: auto;
-  transition: opacity 0.7s ease-in-out;
+  will-change: opacity, transform;
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
 }
 
 /* Hitbox layer - always active for interaction */
@@ -31,7 +32,7 @@
 .footerStrip.visualLayer {
   transform: translateY(0);
   pointer-events: none; /* Visual layer doesn't handle interactions */
-  transition: opacity 0.7s ease-in-out;
+  transition: opacity 0.4s ease-out;
   z-index: 10000; /* Below hitbox layer */
 }
 
