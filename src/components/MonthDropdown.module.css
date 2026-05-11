@@ -10,7 +10,7 @@
   left: 50%;
   width: 0;
   height: 100%;
-  background-color: #37519e;
+  background-color: #1c58d1;
   transform: translateX(-50%);
   transition: width 0.2s ease;
   z-index: 0;
@@ -82,14 +82,16 @@
 .monthGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  /* gap: 1.5rem; */
-  /* padding: 1rem 0; */
+  gap: 25px;
+  padding: 1rem 0;
+  background-color: #050b18; /* Dark navy for grid lines */
 }
 
 .monthItem {
   display: flex;
   flex-direction: column;
   text-decoration: none;
+  background-color: #0a192f; /* Dark blue cell background */
   color: inherit;
   transition: transform 0.2s;
 }
@@ -100,7 +102,7 @@
 
 .monthItemImage {
   aspect-ratio: 16 / 9;
-  background-color: #111;
+  background-color: #0a192f;
   overflow: hidden;
   border-radius: 2px;
   margin-bottom: 0.5rem;
@@ -110,7 +112,7 @@
   display: flex;
   justify-content: space-between;
   font-family: 'Manrope', sans-serif;
-  font-size: 10.75rem;
+  font-size: 0.75rem;
   color: #888;
   margin-bottom: 0.2rem;
 }
