@@ -6,9 +6,9 @@
   font-size: 0.6rem;
   text-align: center;
   width: 100%;
-  color: var(--color-lab-gray-light);
+  color: var(--color-lab-gray-dark);
   font-family: var(--font-manrope);
-  background: linear-gradient(to right, var(--color-lab-gray-dark), #55552a);
+  background: linear-gradient(to right, var(--color-lab-gray-light), #babab7);
 }
 
 .chlLogo {
