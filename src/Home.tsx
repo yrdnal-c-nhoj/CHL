@@ -39,11 +39,15 @@ const formatDate = (dateStr: string | undefined): string => {
   const date = new Date(2000 + yy, mm - 1, dd);
   if (isNaN(date.getTime())) return 'Unknown Date';
 
-  const year = String(date.getFullYear());
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const monthNames = [
+    'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
+    'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
+  ];
+  const day = String(date.getDate());
+  const month = monthNames[date.getMonth()];
+  const year = String(date.getFullYear()).slice(-2);
 
-  return `${month}/${day}/${year}`;
+  return `${day} ${month} '${year}`;
 };
 
 const Home: FC = () => {
@@ -119,12 +123,12 @@ const Home: FC = () => {
   const formatMonthName = (monthKey: string): string => {
     const [yy, mm] = monthKey.split('-');
     const monthNames = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
+      'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
     ];
     const monthIndex = parseInt(mm || '0', 10) - 1;
-    const year = 2000 + parseInt(yy || '0', 10);
-    return `${monthNames[monthIndex]} ${year}`;
+    const year = String(yy || '0');
+    return `${monthNames[monthIndex]} '${year}`;
   };
 
   const groupedByMonth = useMemo(() => {

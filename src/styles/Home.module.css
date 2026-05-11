@@ -81,7 +81,7 @@
   position: relative;
   left: 50%;
   margin-left: -50vw;
-  border-top: 1px solid var(--color-lab-orange);
+  border-top: 1px solid var(--color-lab-gray-medium);
   background-color: var(--color-lab-gray-light);
   align-items: stretch;
   box-sizing: border-box;
@@ -92,8 +92,8 @@
   display: flex;
   flex-direction: column;
   padding: 0.25rem;
-  border-right: 1px solid var(--color-lab-orange);
-  border-bottom: 1px solid var(--color-lab-orange);
+  border-right: 1px solid var(--color-lab-gray-medium);
+  border-bottom: 1px solid var(--color-lab-gray-medium);
   color: var(--color-lab-text);
   text-decoration: none;
   transition: opacity 0.2s ease;
@@ -126,8 +126,9 @@
 }
 
 .monthItemImage {
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.1rem;
   border-radius: 0.25rem;
+  border: 0.5px solid var(--color-lab-gray-dark);
   width: 100%;
   max-height: 300px;
   aspect-ratio: auto;
@@ -138,14 +139,15 @@
   display: flex;
   justify-content: space-between;
   font-family: 'Manrope', sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   color: #888;
-  margin-bottom: 0.1rem;
+  margin-bottom: 0;
 }
 
 .monthItemTitle {
-  font-family: 'Roboto Slab', serif;
+  /* font-family: 'Roboto Slab', serif; */
+   font-family: 'Manrope', sans-serif;
   font-size: 1rem;
   text-align: center;
-  margin-top: 0.1rem;
+  margin-top: -0.15rem;
 }
