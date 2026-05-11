@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import styles from './TopNav.module.css';
+import styles from '../styles/TopNav.module.css';
 
-export default function TopNav() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const TopNav: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-  const toggleMenu = () => {
+  const toggleMenu = (): void => {
     setIsMenuOpen(!isMenuOpen);
   };
 
@@ -16,9 +16,9 @@ export default function TopNav() {
         onClick={toggleMenu}
         aria-label="Toggle menu"
       >
-        <span></span>
-        <span></span>
-        <span></span>
+        <span />
+        <span />
+        <span />
       </button>
 
       <div className={styles.topnavbgcolor}>
@@ -96,4 +96,6 @@ export default function TopNav() {
       </nav>
     </div>
   );
-}
+};
+
+export default TopNav;

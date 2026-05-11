@@ -1,12 +1,12 @@
 import React from 'react';
-import styles from './Footer.module.css';
+import styles from '../styles/Footer.module.css';
 
-function Footer() {
+const Footer: React.FC = () => {
   return (
     <footer className={styles.footer}>
       <p>&copy; 2026 Cubist Heart Laboratories. All rights reserved.</p>🧊🫀🔭
     </footer>
   );
-}
+};
 
 export default Footer;
