@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Thumbnail from './Thumbnail';
 import styles from '../styles/MonthDropdown.module.css';
+import homeStyles from '../styles/Home.module.css';
 
 interface DataItem {
   date: string;
@@ -186,15 +187,15 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
             </button>
           </div>
           <div>
-            <div className="month-grid">
+            <div className={homeStyles.monthGrid}>
               {sortedItems.map((item) => (
                 <a
                   key={item.date}
                   href={`/${item.date}`}
-                  className="month-item"
+                  className={homeStyles.monthItem}
                 >
                   {/* Image at top */}
-                  <div className="month-item-image">
+                  <div className={homeStyles.monthItemImage}>
                     <Thumbnail 
                       date={item.date} 
                       title={item.title || ''} 
@@ -203,17 +204,17 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
                   </div>
                   
                   {/* Date and number row */}
-                  <div className="month-item-info">
-                    <span className="month-item-date">
+                  <div className={homeStyles.monthItemInfo}>
+                    <span>
                       {formatDate(item.date)}
                     </span>
-                    <span className="month-item-number">
+                    <span>
                       #{item.clockNumber}
                     </span>
                   </div>
                   
                   {/* Title centered below */}
-                  <div className="month-item-title">
+                  <div className={homeStyles.monthItemTitle}>
                     {item.title || 'No Title'}
                   </div>
                 </a>
