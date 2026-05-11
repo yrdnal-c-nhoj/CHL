@@ -1,7 +1,17 @@
 .monthDropdownContainer {
-  margin-bottom: -0.45rem;
+  margin-bottom: 0;
   position: relative;
-  scroll-margin-top: 12rem;
+  /* scroll-margin-top: 12rem; */
+  border-bottom: 1px solid var(--color-lab-green);
+  width: 100%;
+}
+
+.monthDropdownContainer:last-child {
+  border-bottom: none;
+}
+
+.monthDropdownContainer:first-child {
+  border-top: 1px solid var(--color-lab-green);
 }
 
 .hoverBgActive {
@@ -11,28 +21,32 @@
 .dropdownButton {
   background-color: transparent;
   font-size: clamp(0.9rem, 1.5vw, 1.5rem);
-  padding: clamp(0.4rem, 0.8vw, 1rem) clamp(1.5rem, 2.5vw, 3rem);
-  border: 11px solid transparent;
+  padding: clamp(0.1rem, 0.2vw, 0.3rem) clamp(1.5rem, 2.5vw, 3rem);
+  /* border: 3px solid transparent;  */
   border-radius: 3px;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  transition: color 0.2s;
-  color: var(--color-lab-text-light);
+  transition: background-color 0.2s, color 0.2s;
+  color: #424346;
   font-family: var(--font-manrope);
   width: 100%;
   position: relative;
   z-index: 1;
 }
 
+.dropdownButton:hover {
+  background-color: rgb(210, 216, 233); 
+}
+
 .dropdownButtonHovered {
-  color: var(--color-lab-blue);
+  color: #014c63;
 }
 
 .dropdownButtonExpanded {
-  color: var(--color-lab-red);
+  color:#351101;
   font-weight: 700;
 }
 
@@ -65,4 +79,3 @@
   background-color: #c0d3ec;
   color: var(--color-lab-gray-dark);
 }
-
