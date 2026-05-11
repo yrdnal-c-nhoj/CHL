@@ -109,7 +109,7 @@ body {
 /* Clock Mode: Force viewport constraint */
 body.clock-mode {
   overflow: hidden;
-  background-color: var(--color-lab-black);
+  /* background-color: var(--color-lab-black); */
 }
 
 #root {
@@ -152,7 +152,7 @@ body.clock-mode {
   inset: 0;
   width: 100vw;
   height: 100dvh;
-  background-color: var(--color-lab-black);
+  /* background-color: var(--color-lab-black); */
   z-index: 9999;
   pointer-events: none;
   will-change: opacity;
