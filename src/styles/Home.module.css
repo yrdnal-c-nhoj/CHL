@@ -69,13 +69,15 @@
 .monthGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0;
+  gap: 1px;
   width: 100vw;
   position: relative;
   left: 50%;
   margin-left: -50vw;
-  border-top: 1px solid #d15db;
-  border-collapse: collapse;
+  border-top: 1px solid var(--color-lab-divider);
+  background-color: var(--color-lab-gray-light);
+  align-items: stretch;
+  box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
@@ -90,12 +92,15 @@
   flex-direction: column;
   background-color: var(--color-lab-bg-gray);
   padding: 1rem;
-  border-right: 1px solid #d15db;
-  border-bottom: 1px solid #d15db;
-  color: #0c0d0d;
+  border-right: 1px solid var(--color-lab-divider);
+  border-bottom: 1px solid var(--color-lab-divider);
+  color: var(--color-lab-text);
   text-decoration: none;
   transition: opacity 0.2s ease;
+  height: 100%;
+  box-sizing: border-box;
 }
+
 
 .monthItem:hover {
   background-color: #e5e7eb;
