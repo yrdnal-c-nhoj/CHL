@@ -1,0 +1,201 @@
+.footerStrip {
+  /* Pin navigation to the viewport so it can't be clipped
+     by the scroll container or page content height */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 2px;
+  box-sizing: border-box;
+  z-index: 10000; /* Above loading overlay */
+  font-family: 'Manrope', sans-serif;
+  pointer-events: auto;
+  will-change: opacity, transform;
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+
+/* Hitbox layer - always active for interaction */
+.footerStrip.hitboxLayer {
+  opacity: 0.01; /* Nearly invisible but allows mouse events */
+  transform: translateY(0);
+  pointer-events: auto;
+  z-index: 10001; /* Above visual layer */
+  background: transparent;
+  border: none;
+}
+
+/* Visual layer - fades based on visibility state */
+.footerStrip.visualLayer {
+  transform: translateY(0);
+  pointer-events: none; /* Visual layer doesn't handle interactions */
+  transition: opacity 0.4s ease-out;
+  z-index: 10000; /* Below hitbox layer */
+}
+
+/* --- Visibility states --- */
+.footerStrip.visible {
+  opacity: 0.7;
+  transform: translateY(0);
+}
+
+.footerStrip.hidden {
+  opacity: 0;
+  /* Keep the container at translateY(0) so the mouse can still 'hit' the 
+     area at the bottom of the screen to trigger handleMouseEnter/MouseMove */
+  transform: translateY(0);
+  pointer-events: auto;
+  /* Ensure hot zone remains active even when visually hidden */
+  background: transparent;
+  border: none;
+}
+
+/* Navigation buttons remain clickable even when visually hidden */
+.footerStrip.hidden .navButton,
+.footerStrip.hidden .footerButton {
+  /* Keep pointer-events: auto to allow clicks when faded out */
+  pointer-events: auto;
+  /* Ensure buttons maintain their size and position when container is transparent */
+  opacity: 0.1;
+  cursor: pointer;
+  transition: opacity 0.7s ease-in-out;
+}
+
+/* --- Buttons --- */
+.footerButton,
+.navButton {
+  padding: 0.5rem;
+  background: rgba(3, 2, 2, 0.7);
+  border: 0.5px solid rgba(98, 103, 112, 0.8);
+  color: #dadbd7; /* uniform text color */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  text-decoration: none; /* remove underlines */
+  box-sizing: border-box;
+  font-family: inherit;
+  transition:
+    background 0.4s ease,
+    color 0.4s ease,
+    opacity 0.4s ease;
+}
+
+/* Hitbox layer buttons - invisible but clickable */
+.footerStrip.hitboxLayer .footerButton,
+.footerStrip.hitboxLayer .navButton {
+  opacity: 0;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* Visual layer buttons - visible but non-interactive */
+.footerStrip.visualLayer .footerButton,
+.footerStrip.visualLayer .navButton {
+  pointer-events: none;
+}
+
+/* Ensure all text inside footer buttons uses the same color */
+.footerButton span,
+.navButton span {
+  color: #e2e3de; /* same color for title, date, number, arrows */
+  text-decoration: none; /* no underline on inner spans */
+}
+
+/* Hover effect */
+.footerButton:hover,
+.navButton:hover {
+  background: rgb(1, 10, 61);
+  color: #fffffe; /* keep uniform color even on hover */
+  opacity: 1;
+  text-decoration: none; /* remove underlines */
+  border-color: rgba(200, 215, 242, 0.8);
+}
+
+/* --- Center footer layout --- */
+.footerCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.footerDate {
+  font-size: 1rem;
+  letter-spacing: -0.05rem;
+}
+
+.footerTitle {
+  font-size: 1rem;
+  letter-spacing: 0.02rem;
+}
+
+.footerNumber {
+  font-size: 1rem;
+  letter-spacing: -0.05rem;
+}
+
+/* --- Left/right nav buttons --- */
+.footerLeft,
+.footerRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Accessibility --- */
+
+.navButton {
+  width: 100px;
+  font-size: 2.2rem;
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  .footerStrip {
+    /* Respect safe-area inset on devices with gesture bars */
+    padding-bottom: max(env(safe-area-inset-bottom, 0px), 2px);
+    /* Make navigation area shorter */
+    min-height: 40px;
+    /* Prevent zoom on double tap */
+    touch-action: manipulation;
+    /* Improve touch response */
+    -webkit-tap-highlight-color: transparent;
+    /* Higher z-index to ensure visibility above loading overlay */
+    z-index: 10000;
+  }
+
+  .footerButton,
+  .navButton {
+    padding: 0.4rem;
+    /* Smaller touch targets for mobile */
+    min-height: 35px;
+    min-width: 60px;
+    /* Prevent text selection on touch */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* Prevent callout on touch */
+    -webkit-touch-callout: none;
+    /* Improve touch response */
+    touch-action: manipulation;
+  }
+
+  .navButton {
+    width: 100px;
+    font-size: 1.6rem;
+    /* Ensure arrow is easily tappable */
+    padding: 0.6rem;
+  }
+
+  .footerCenter {
+    /* Make center section easier to tap */
+    padding: 0.5rem;
+  }
+}

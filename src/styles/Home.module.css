@@ -1,0 +1,151 @@
+.loadingContainer {
+  height: 100dvh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-lab-bg-gray);
+  font-family: var(--font-manrope);
+}
+
+/* Home Page Layout */
+.homeContainer {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+.homeCenteredContent {
+  z-index: 5;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  gap: clamp(0.5rem, 1vw, 1.5rem);
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Month List Container */
+.monthList {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* Add space before the first line on phone view */
+@media (max-width: 600px) {
+  .monthList {
+    margin-top: 1rem; /* Adjust this value as needed */
+  }
+}
+
+.socialContainer {
+  display: flex;
+  gap: 0.1rem;
+  padding: 0.1rem;
+  margin-top: 0.01rem;
+}
+
+.footerIcon {
+  width: 2rem;
+  height: 2rem;
+  transition: opacity 0.2s;
+}
+
+/* ========================================
+   MONTH GRID STYLES
+   ======================================== */
+
+.monthGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  border-top: 1px solid var(--color-lab-gray-medium);
+  background-color: var(--color-lab-gray-light);
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+.monthItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem;
+  border-right: 1px solid var(--color-lab-gray-medium);
+  border-bottom: 1px solid var(--color-lab-gray-medium);
+  color: var(--color-lab-text);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* --- Mobile Grid Logic (3 Columns) --- */
+@media (max-width: 767px) {
+  .monthItem:nth-child(3n) {
+    border-right: none;
+  }
+}
+
+/* --- Laptop/Desktop Grid Logic (5 Columns) --- */
+@media (min-width: 768px) {
+  .monthGrid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .monthItem:nth-child(5n) {
+    border-right: none;
+  }
+}
+
+
+.monthItem:hover {
+  background-color: #c4ccdd;
+  opacity: 1;
+}
+
+.monthItemImage {
+  margin-bottom: 0.1rem;
+  border-radius: 0.25rem;
+  border: 0.5px solid var(--color-lab-gray-dark);
+  width: 100%;
+  max-height: 300px;
+  aspect-ratio: auto;
+  overflow: hidden;
+}
+
+.monthItemInfo {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.65rem;
+  color: #888;
+  margin-bottom: 0;
+}
+
+.monthItemTitle {
+  /* font-family: 'Roboto Slab', serif; */
+   font-family: 'Manrope', sans-serif;
+  font-size: 1rem;
+  text-align: center;
+  margin-top: -0.15rem;
+}

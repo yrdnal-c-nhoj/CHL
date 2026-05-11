@@ -11,7 +11,8 @@ import Header from '@/components/Header';
 import ClockPageNav from '@/components/ClockPageNav';
 import { ClockLoadingFallback } from '@/utils/fontLoader';
 import { useClockPage } from '@/hooks/useClockPage';
-import styles from './ClockPage.module.css';
+import { useNavigationState } from '@/hooks/useNavigationState';
+import styles from './styles/ClockPage.module.css';
 import type { ClockItem, DataContextType } from '@/types/data';
 import { useAutoHeader } from '@/hooks/useAutoHeader';
 import {
@@ -41,6 +42,14 @@ const useClockNavigation = (items: ClockItem[] = [], date = '') => {
       nextItem: idx < items.length - 1 ? items[idx + 1] : null
     };
   }, [items, normalizedDate]);
+};
+
+/**
+ * Extract month key from date string (YY-MM-DD -> YY-MM)
+ */
+const getMonthFromDate = (date: string): string => {
+  const parts = date.split('-');
+  return parts.length >= 2 ? `${parts[0]}-${parts[1]}` : '';
 };
 
 /**
@@ -75,6 +84,16 @@ const ClockPage: React.FC = () => {
   const { currentItem, prevItem, nextItem } = useClockNavigation(items, date);
   const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPage(currentItem);
 
+  const handleHeaderClick = () => {
+    if (currentItem?.date) {
+      const monthKey = getMonthFromDate(currentItem.date);
+      // Navigate to home with month expanded
+      navigate(`/?month=${monthKey}`);
+    } else {
+      navigate('/');
+    }
+  };
+
   useEffect(() => {
     if (!date || !DATE_REGEX.test(date)) {
       navigate('/', { replace: true });
@@ -92,15 +111,35 @@ const ClockPage: React.FC = () => {
 
   return (
     <div className={`${styles.container} ${isReady ? styles.loaded : ''}`}>
-      {isReady && <div className={styles.headerWrapper} style={{ opacity: headerVisible ? 1 : 0, pointerEvents: headerVisible ? 'auto' : 'none' }}>
-        <Header visible={headerVisible} />
-      </div>}
+      {isReady && (
+        <div 
+          onClick={handleHeaderClick}
+          style={{ 
+            cursor: 'pointer',
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column'
+          }}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handleHeaderClick();
+            }
+          }}
+          aria-label="Go back to month"
+        >
+          <div className={styles.headerWrapper} style={{ opacity: headerVisible ? 1 : 0, pointerEvents: headerVisible ? 'auto' : 'none' }}>
+            <Header visible={headerVisible} />
+          </div>
 
-      {isReady && ClockComponent && (
-        <div className={styles.clockWrapper}>
-        <Suspense fallback={<ClockLoadingFallback />}>
-          <ClockComponent />
-        </Suspense>
+          {ClockComponent && (
+            <div className={styles.clockWrapper}>
+              <Suspense fallback={<ClockLoadingFallback />}>
+                <ClockComponent />
+              </Suspense>
+            </div>
+          )}
         </div>
       )}
 
