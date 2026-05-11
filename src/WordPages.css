@@ -14,7 +14,7 @@
 .centeredContent {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* changed from 'left' */
+  align-items: center; 
   width: 90%;
   max-width: 60ch; /* limits line length for readability */
   box-sizing: border-box;
@@ -35,7 +35,7 @@
 .centeredContent p {
   font-size: clamp(0.9rem, 1.2vw, 1.1rem); /* responsive font size */
   line-height: 1.6;
-  text-align: left;
+  text-align: center;
 }
 /* 
 .epigraph {
@@ -192,7 +192,7 @@ a:hover {
   cursor: pointer;
   transition: background 0.2s;
   width: auto;
-  align-self: flex-start;
+  align-self: center;
 }
 
 .form-button:hover {
@@ -274,7 +274,7 @@ a:hover {
   cursor: pointer;
   transition: background 0.2s;
   width: auto;
-  align-self: flex-start;
+  align-self: center;
 }
 
 .contact-form input[type='submit'].form-button:hover,

@@ -35,7 +35,7 @@
 @layer components {
   /* --- TopNav Branding & Navigation --- */
   .topnavchl {
-    @apply font-roboto text-[#f6f6f2] text-[0.8rem] tracking-[0.03rem] text-left bg-[#333] w-screen relative left-1/2 -ml-[50vw] p-[0.1rem] box-border;
+    @apply font-roboto text-[#f6f6f2] text-[0.8rem] tracking-[0.03rem] text-center bg-[#333] w-screen relative left-1/2 -ml-[50vw] p-[0.1rem] box-border;
     @media (max-width: 600px) {
       @apply text-[0.5rem] px-[0.2rem];
     }
@@ -54,9 +54,9 @@
   }
 
   .topnavtag {
-    @apply font-oxanium -skew-x-10 text-[0.8rem] leading-[0.01rem] text-[#ede7e7] text-center italic py-[0.6rem];
+    @apply font-oxanium -skew-x-10 text-[0.8rem] leading-[0.01rem] text-[#ede7e7] text-center italic py-[0.6rem] block w-full;
     @media (max-width: 600px) {
-      @apply text-[0.7rem] leading-[0.7rem] py-[0.1rem];
+      @apply text-[0.7rem] leading-[0.7rem] py-[0.4rem];
     }
   }
 
