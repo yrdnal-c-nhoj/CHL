@@ -71,11 +71,7 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
   return (
     <div 
       ref={containerRef}
-      style={{ 
-        marginBottom: '0.25rem', 
-        position: 'relative',
-        scrollMarginTop: '2rem' 
-      }}
+      className={styles.monthDropdownContainer}
     >
       <div
         style={{
