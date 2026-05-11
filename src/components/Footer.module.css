@@ -2,12 +2,21 @@
    FOOTER COMPONENT STYLES
    ======================================== */
 
+/* Import design tokens from globals.css */
+@import '../styles/globals.css';
+
 .footer {
-  @apply text-[0.6rem] text-center w-screen relative left-1/2 ml-[-50vw] text-[#dde2dd];
-  font-family: var(--font-manrope), sans-serif;
+  font-size: 0.6rem;
+  text-align: center;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  color: #dde2dd;
+  font-family: var(--font-manrope);
   background: linear-gradient(to right, #302f2a, #55552a);
 }
 
 .chlLogo {
-  @apply text-[1.3rem];
+  font-size: 1.3rem;
 }
