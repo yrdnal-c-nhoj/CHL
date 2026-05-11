@@ -71,6 +71,12 @@ const Home: FC = () => {
     return monthParam || savedState?.expandedMonth || null;
   });
 
+  // Safety cleanup: Ensure background is white and clock-mode is removed when Home mounts
+  useEffect(() => {
+    document.body.classList.remove('clock-mode');
+    document.body.style.backgroundColor = '#ffffff';
+  }, []);
+
   useEffect(() => {
     if (!fontsReady) {
       document.fonts.ready.then(() => {
