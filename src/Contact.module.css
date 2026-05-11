@@ -1,0 +1,84 @@
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 60ch;
+  z-index: 10;
+  color: #060706;
+}
+
+@media (min-width: 1024px) {
+  .mainContent {
+    width: 70%;
+    max-width: 70ch;
+  }
+}
+
+.title {
+  font-family: 'Roboto Slab', serif;
+  color: var(--lab-red);
+  letter-spacing: 0.1em;
+  font-size: clamp(1.7rem, 2vw, 3rem);
+  text-align: center;
+  width: 100%;
+  margin: 0.5rem 0;
+  line-height: 1.4;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--lab-divider);
+  margin: 0.5rem 0;
+  width: 300px;
+}
+
+.hat {
+  font-family: 'Roboto Slab', serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--lab-red);
+  margin-top: 1rem;
+  margin-bottom: -1.9rem;
+  display: block;
+  text-align: center;
+}
+
+.socialLinks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.socialIcon {
+  width: 4rem;
+  height: 4rem;
+  transition: opacity 0.2s;
+}
+
+.socialIcon:hover {
+  opacity: 0.7;
+}
+
+.input {
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-family: 'Manrope', sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.button {
+  background-color: #6e6c6c;
+  color: white;
+  font-weight: bold;
+  font-family: 'Manrope', sans-serif;
+  padding: 0.75rem 1.5rem;
+  transition: background-color 0.2s;
+}
