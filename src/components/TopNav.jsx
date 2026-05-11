@@ -10,27 +10,30 @@ export default function TopNav() {
   };
 
   return (
-    <>
-      <div className={styles.topnavchl}>Cubist Heart Laboratories</div>
+    <div className={styles.topnavContainer}>
+      <button
+        className={`${styles.hamburger} ${isMenuOpen ? styles.active : ''}`}
+        onClick={toggleMenu}
+        aria-label="Toggle menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
       <div className={styles.topnavbgcolor}>
-        <div className={styles.topnavbt}>BorrowedTime</div>
-
+        <div className={styles.topnavchl}>
+          Cubist Heart Laboratories
+        </div>
+        <div className={styles.topnavbt}>
+          BorrowedTime
+        </div>
         <div className={styles.topnavtag}>
-          a new clock every day, made from recycled internet stuff
+            a new clock every day, made from recycled internet stuff
         </div>
       </div>
 
       <nav className={styles.navbar}>
-        <button
-          className={`${styles.hamburger} ${isMenuOpen ? styles.active : ''}`}
-          onClick={toggleMenu}
-          aria-label="Toggle menu"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
         <ul className={`${styles.navMenu} ${isMenuOpen ? styles.active : ''}`}>
           <li className={styles.navItem}>
             <NavLink
@@ -91,6 +94,6 @@ export default function TopNav() {
           </li>
         </ul>
       </nav>
-    </>
+    </div>
   );
 }
