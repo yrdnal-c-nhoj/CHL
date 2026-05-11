@@ -12,19 +12,13 @@ const Contact: FC = () => {
       <TopNav />
 
       <main className={styles.mainContent}>
-        <h1 className={styles.title}>
-          CONTACT
-        </h1>
-        
-        <hr className={styles.divider} />
-        
         <span className={styles.hat}>Follow on Social</span>
         <div className={styles.socialLinks}>
+          <a href="https://x.com/CubistL91804" target="_blank" rel="noopener noreferrer">
+            <img src={elonImg} alt="X (Twitter)" className={styles.contactSocialIcon} />
+          </a>
           <a href="https://www.instagram.com/cubist_heart_labs/" target="_blank" rel="noopener noreferrer">
             <img src={instaImg} alt="Instagram" className={styles.contactSocialIcon} />
-          </a>
-          <a href="https://x.com/cubistheartlabs" target="_blank" rel="noopener noreferrer">
-            <img src={elonImg} alt="X (Twitter)" className={styles.contactSocialIcon} />
           </a>
           <a href="https://www.facebook.com/profile.php?id=100090369371981" target="_blank" rel="noopener noreferrer">
             <img src={fbookImg} alt="Facebook" className={styles.contactSocialIcon} />
@@ -35,7 +29,7 @@ const Contact: FC = () => {
         
         <section className="w-full">
           <span className={styles.hat}>Get the Lab's Monthly Newsletter</span>
-          <p className="mt-8 font-manrope text-[clamp(0.9rem,1.2vw,1.1rem)] text-center leading-relaxed">
+          <p className="mt-8 font-manrope text-[clamp(0.9rem,1.2vw,1.1rem)] text-left leading-relaxed">
             <span className="font-manrope font-bold text-[0.75rem] uppercase tracking-wider">Subscribe</span> to receive the lab's monthly newsletter.
             <br />
             We will never sell or release your email address.
@@ -54,7 +48,7 @@ const Contact: FC = () => {
         <section className="mt-4 w-full">
           <hr className={styles.divider} />
           <span className={styles.hat}>Send a Message to the Lab</span>
-          <p className="mt-8 font-manrope text-[clamp(0.9rem,1.2vw,1.1rem)] text-center leading-relaxed">
+          <p className="mt-8 font-manrope text-[clamp(0.9rem,1.2vw,1.1rem)] text-lefy leading-relaxed">
             <span className="font-manrope font-bold text-[0.75rem] uppercase tracking-wider">Questions?</span> Comments? Suggestions?
           </p>
           <form action="https://formspree.io/f/xnjobvva" method="POST" className="flex flex-col gap-3 mt-4 w-full">
@@ -64,7 +58,7 @@ const Contact: FC = () => {
             <input type="submit" value="Send Message" className={`${styles.button} rounded py-3 px-6 cursor-pointer border-none w-auto self-center`} />
           </form>
           
-          <p className="mt-4 font-manrope text-[#666] text-[0.85rem] text-center">
+          <p className="mt-4 font-manrope text-[#666] text-[0.85rem] text-left">
             Or email directly:{' '}
             <a className="font-bold text-lab-blue-deep hover:underline no-underline" href="mailto:cubistheart@gmail.com?subject=🧊🫀🔭">
               cubistheart@gmail.com
