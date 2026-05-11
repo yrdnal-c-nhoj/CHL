@@ -1,5 +1,6 @@
 /* Global Fonts Centralization */
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Cinzel+Decorative:wght@400;700;900&family=Manrope:wght@200..800&family=Nanum+Gothic&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&family=Almendra+Display&family=Metamorphous&family=Orbitron:wght@400..900&display=swap');
+@import "tailwindcss";
 
 /* Custom font for 26-01-22 */
 @font-face {
@@ -10,18 +11,21 @@
   font-display: swap;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@theme {
+  /* Fonts */
+  --font-roboto: "Roboto Slab", serif;
+  --font-oxanium: "Oxanium", sans-serif;
+  --font-manrope: "Manrope", sans-serif;
+
+  /* Colors - Automatically generates classes like bg-lab-red, text-lab-bg-gray, etc. */
+  --color-lab-red: #850404;
+  --color-lab-blue: #02385f;
+  --color-lab-blue-deep: #04406a;
+  --color-lab-bg-gray: #f5f5f5;
+  --color-lab-divider: #5b5a5a;
+}
 
 :root {
-  /* Brand Tokens (Available for legacy CSS files) */
-  --lab-red: #850404;
-  --lab-blue: #02385f;
-  --lab-blue-deep: #04406a;
-  --lab-bg-gray: #f5f5f5;
-  --lab-divider: #5b5a5a;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -31,32 +35,64 @@
 @layer components {
   /* --- TopNav Branding & Navigation --- */
   .topnavchl {
-    @apply font-roboto text-[#f6f6f2] text-[0.8rem] tracking-[0.03rem] text-left bg-[#333] w-screen relative left-1/2 -ml-[50vw] p-[0.1rem] box-border max-[600px]:text-[0.5rem] max-[600px]:px-[0.2rem];
+    @apply font-roboto text-[#f6f6f2] text-[0.8rem] tracking-[0.03rem] text-left bg-[#333] w-screen relative left-1/2 -ml-[50vw] p-[0.1rem] box-border;
+    @media (max-width: 600px) {
+      @apply text-[0.5rem] px-[0.2rem];
+    }
     text-shadow: #0e0d0d 0.5px 0.5px 0px, #000000 -0.5px -0.5px 0px;
   }
 
   .topnavbt {
-    @apply font-oxanium -skew-x-20 text-[#eae8ed] text-[4rem] leading-none text-center tracking-[-0.23rem] w-screen relative left-1/2 -ml-[50vw] top-[-11px] box-border overflow-x-hidden max-[768px]:text-[3.5rem] max-[600px]:text-[3rem] max-[600px]:leading-[3.5rem] max-[600px]:tracking-0;
+    @apply font-oxanium -skew-x-20 text-[#eae8ed] text-[4rem] leading-none text-center tracking-[-0.23rem] w-screen relative left-1/2 -ml-[50vw] top-[-11px] box-border overflow-x-hidden;
+    @media (max-width: 768px) {
+      @apply text-[3.5rem];
+    }
+    @media (max-width: 600px) {
+      @apply text-[3rem] leading-[3.5rem] tracking-normal;
+    }
     text-shadow: #b6e548 1px 0px 0px, #101601 2px 0px 0px, #eb7373 3px 0px 0px, #fdf1f1 4px 0px 0px, #24f704 -4px 0px 6px;
   }
 
   .topnavtag {
-    @apply font-oxanium -skew-x-10 text-[0.8rem] leading-[0.01rem] text-[#ede7e7] text-center italic py-[0.6rem] max-[600px]:text-[0.7rem] max-[600px]:leading-[0.7rem] max-[600px]:py-[0.1rem];
+    @apply font-oxanium -skew-x-10 text-[0.8rem] leading-[0.01rem] text-[#ede7e7] text-center italic py-[0.6rem];
+    @media (max-width: 600px) {
+      @apply text-[0.7rem] leading-[0.7rem] py-[0.1rem];
+    }
   }
 
   .navbar { @apply relative w-screen left-1/2 -ml-[50vw] bg-[#2e382e]; }
   
   .nav-menu {
-    @apply font-roboto font-bold text-[1rem] tracking-[0.1rem] list-none p-0 m-0 bg-[#2e382e] z-[999] flex justify-center items-center gap-[0.2rem] min-[601px]:flex-row min-[601px]:static min-[601px]:w-full min-[601px]:py-[0.5rem] max-[600px]:hidden max-[600px]:fixed max-[600px]:top-[3.2rem] max-[600px]:right-0 max-[600px]:w-screen max-[600px]:flex-col max-[600px]:p-[0.2rem];
+    @apply font-roboto font-bold text-[1rem] tracking-[0.1rem] list-none p-0 m-0 bg-[#2e382e] z-[999] flex justify-center items-center gap-[0.2rem];
+    @media (min-width: 601px) {
+      @apply flex-row static w-full py-[0.5rem];
+    }
+    @media (max-width: 600px) {
+      @apply hidden fixed top-[3.2rem] right-0 w-screen flex-col p-[0.2rem];
+    }
   }
   .nav-menu.active { @apply flex; }
   .nav-item { @apply m-[0.5rem] min-[601px]:mx-[1rem] min-[601px]:my-0; }
-  .nav-link { @apply text-[#b5c9f7] no-underline text-[1rem] p-[0.5rem] block transition-colors duration-300 ease-in-out min-[601px]:py-[0.3rem] min-[601px]:px-[0.5rem] max-[600px]:text-[0.9rem] max-[600px]:p-[0.4rem]; }
+  .nav-link { 
+    @apply text-[#b5c9f7] no-underline text-[1rem] p-[0.5rem] block transition-colors duration-300 ease-in-out; 
+    @media (min-width: 601px) {
+      @apply py-[0.3rem] px-[0.5rem];
+    }
+    @media (max-width: 600px) {
+      @apply text-[0.9rem] p-[0.4rem];
+    }
+  }
   .nav-link:hover { @apply text-[#f35f02] underline; }
   .nav-link.active { @apply font-bold text-white; }
   
   .hamburger {
-    @apply absolute right-[0.4rem] top-[0.5rem] z-[1000] block bg-[#767373] border-none cursor-pointer min-[601px]:hidden max-[600px]:right-[0.3rem] max-[600px]:top-[-3.3rem] max-[600px]:p-[0.2rem];
+    @apply absolute right-[0.4rem] top-[0.5rem] z-[1000] block bg-[#767373] border-none cursor-pointer;
+    @media (min-width: 601px) {
+      @apply hidden;
+    }
+    @media (max-width: 600px) {
+      @apply right-[0.3rem] top-[-3.3rem] p-[0.2rem];
+    }
   }
   .hamburger span { @apply block w-[22px] h-[3px] bg-[#c9bebe] my-[5px] mx-0 transition-all duration-300 ease-in-out; }
   .hamburger.active span:nth-child(1) { @apply rotate-45 translate-x-[5px] translate-y-[5px]; }
@@ -65,7 +101,7 @@
 
   /* --- Home Page Layout & Lists --- */
   .home-container {
-    @apply flex flex-col items-center justify-center w-full min-h-screen relative overflow-y-auto box-border p-0 m-0;
+    @apply box-border relative flex flex-col items-center justify-center w-full min-h-screen p-0 m-0 overflow-y-auto;
   }
 
   .home-centered-content {
@@ -122,7 +158,7 @@
     @apply w-full aspect-auto max-h-[300px] mb-2 overflow-hidden rounded-[0.25rem];
   }
 
-  .month-item-info { @apply flex justify-between items-center mb-2 w-full; }
+  .month-item-info { @apply flex items-center justify-between w-full mb-2; }
   .month-item-date, .month-item-number {
     @apply font-manrope text-[#0c0d0d] font-medium text-[clamp(0.8rem,1.5vw,1rem)];
   }
@@ -135,7 +171,7 @@
 
   /* --- Word Pages (Manifesto/About/Contact) --- */
   .word-page-container {
-    @apply flex flex-col items-center w-full min-h-screen relative overflow-y-auto pb-16;
+    @apply relative flex flex-col items-center w-full min-h-screen pb-16 overflow-y-auto;
   }
   
   .hat {
