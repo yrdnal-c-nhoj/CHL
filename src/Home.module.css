@@ -8,6 +8,45 @@
   font-family: sans-serif;
 }
 
+/* Home Page Layout */
+.homeContainer {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+.homeCenteredContent {
+  z-index: 5;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  gap: clamp(0.5rem, 1vw, 1.5rem);
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Month List Container */
+.monthList {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
 .socialContainer {
   display: flex;
   justify-content: center;
