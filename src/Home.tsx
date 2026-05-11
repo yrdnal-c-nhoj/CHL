@@ -4,6 +4,7 @@ import { DataContext } from './context/DataContext';
 import TopNav from './components/TopNav';
 import Footer from './components/Footer';
 import MonthDropdown from './components/MonthDropdown';
+import { useNavigationState } from './hooks/useNavigationState';
 import styles from './Home.module.css';
 import instaImg from '@/assets/icons/i.png';
 import elonImg from '@/assets/icons/x.png';
@@ -46,10 +47,12 @@ const Home: FC = () => {
   const [fontsReady, setFontsReady] = useState<boolean>(
     sessionStorage.getItem('fontsLoaded') === 'true',
   );
+  const { restoreNavigationState, restoreScrollPosition, restoreCursorPosition, clearNavigationState } = useNavigationState();
   const [expandedMonth, setExpandedMonth] = useState<string | null>(() => {
-    // Initialize expanded month from URL parameter
+    // Initialize expanded month from URL parameter or saved state
     const monthParam = searchParams.get('month');
-    return monthParam;
+    const savedState = restoreNavigationState();
+    return monthParam || savedState?.expandedMonth || null;
   });
 
   useEffect(() => {
@@ -60,6 +63,29 @@ const Home: FC = () => {
       });
     }
   }, [fontsReady, setFontsReady]);
+
+  // Restore scroll position and cursor when returning from clock page
+  useEffect(() => {
+    if (fontsReady && !loading) {
+      const savedState = restoreNavigationState();
+      if (savedState) {
+        // Restore scroll position after a short delay to ensure DOM is ready
+        setTimeout(() => {
+          restoreScrollPosition(savedState);
+        }, 300);
+        
+        // Restore cursor position after scroll is restored
+        setTimeout(() => {
+          restoreCursorPosition(savedState);
+        }, 600);
+        
+        // Clear the navigation state after restoring
+        setTimeout(() => {
+          clearNavigationState();
+        }, 800);
+      }
+    }
+  }, [fontsReady, loading, restoreNavigationState, restoreScrollPosition, restoreCursorPosition, clearNavigationState]);
 
   const handleMonthToggle = (monthKey: string) => {
     setExpandedMonth(expandedMonth === monthKey ? null : monthKey);
