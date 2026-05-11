@@ -1,4 +1,4 @@
-.container {
+.monthDropdownContainer {
   margin-bottom: 0.25rem;
   position: relative;
   scroll-margin-top: 2rem;
@@ -33,19 +33,19 @@
   align-items: center;
   gap: 0.5rem;
   transition: color 0.2s;
-  color: #8b8f8c;
-  font-family: 'Manrope', sans-serif;
+  color: var(--color-lab-text-light);
+  font-family: var(--font-manrope);
   width: 100%;
   position: relative;
   z-index: 1;
 }
 
 .dropdownButtonHovered {
-  color: #057e7e;
+  color: var(--color-lab-blue);
 }
 
 .dropdownButtonExpanded {
-  color: #554444;
+  color: var(--color-lab-red);
   font-weight: 700;
 }
 
@@ -70,12 +70,12 @@
   border-radius: 3px;
   cursor: pointer;
   transition: background-color 0.2s, color 0.2s;
-  color: #8b8f8c;
-  font-family: 'Manrope', sans-serif;
+  color: var(--color-lab-text-light);
+  font-family: var(--font-manrope);
 }
 
 .sortButton:hover {
-  background-color: rgba(48, 49, 50, 0.5);
-  color: #feffff;
+  background-color: var(--color-lab-gray-dark);
+  color: var(--color-lab-white);
 }
 
