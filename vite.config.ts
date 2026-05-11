@@ -47,10 +47,10 @@ export default defineConfig({
         // Optimize chunk splitting
         manualChunks: (id) => {
           if (!id.includes('node_modules')) {
-            // Split clock utilities into separate chunk
-            if (id.includes('@/utils/')) return 'utils';
-            // Split clock pages into smaller chunks
-            if (id.includes('@/pages/')) return 'clocks';
+            // Use physical path segments instead of aliases which aren't expanded here
+            if (id.includes('/src/utils/')) return 'utils';
+            if (id.includes('/src/pages/')) return 'clocks';
+            if (id.includes('/src/components/')) return 'ui';
             return;
           }
           
