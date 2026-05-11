@@ -59,17 +59,13 @@
 .navMenu {
   font-family: var(--font-roboto), serif;
   font-weight: 700;
-  /* font-size: 1rem; */
   letter-spacing: 0.1rem;
   list-style: none;
-  padding: 0;
-  margin: 0;
   color: #3b4f81;
   z-index: 999;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* gap: 0.2rem; */
   width: 100%;
 }
 
@@ -77,9 +73,6 @@
   display: flex;
 }
 
-.navItem {
-  /* margin: 0.5rem; */
-}
 
 .navLink {
   display: block;
