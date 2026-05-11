@@ -101,7 +101,7 @@ body {
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: var(--color-lab-bg-gray);
+  /* background-color: var(--color-lab-bg-gray); */
   color: var(--color-lab-text);
   font-family: var(--font-manrope), sans-serif;
 }

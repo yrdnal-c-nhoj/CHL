@@ -21,13 +21,13 @@ const Contact: FC = () => {
         <span className={styles.hat}>Follow on Social</span>
         <div className={styles.socialLinks}>
           <a href="https://www.instagram.com/cubist_heart_labs/" target="_blank" rel="noopener noreferrer">
-            <img src={instaImg} alt="Instagram" className={styles.socialIcon} />
+            <img src={instaImg} alt="Instagram" className={styles.contactSocialIcon} />
           </a>
           <a href="https://x.com/cubistheartlabs" target="_blank" rel="noopener noreferrer">
-            <img src={elonImg} alt="X (Twitter)" className={styles.socialIcon} />
+            <img src={elonImg} alt="X (Twitter)" className={styles.contactSocialIcon} />
           </a>
           <a href="https://www.facebook.com/profile.php?id=100090369371981" target="_blank" rel="noopener noreferrer">
-            <img src={fbookImg} alt="Facebook" className={styles.socialIcon} />
+            <img src={fbookImg} alt="Facebook" className={styles.contactSocialIcon} />
           </a>
         </div>
 
