@@ -1,0 +1,159 @@
+/* ========================================
+   GLOBAL STYLES - Truly Global Only
+   ======================================== */
+
+/* Font Imports - Centralized */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Cinzel+Decorative:wght@400;700;900&family=Manrope:wght@200..800&family=Nanum+Gothic&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&family=Almendra+Display&family=Metamorphous&family=Orbitron:wght@400..900&family=Libre+Baskerville&family=Monofett&family=Nanum+Gothic+Coding:wght@400;700&display=swap');
+@import "tailwindcss";
+
+/* Custom Font Faces */
+@font-face {
+  font-family: '26-01-22-shadow';
+  src: url('/src/assets/fonts/2026/26-01-22-shadow.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ========================================
+   DESIGN TOKENS
+   ======================================== */
+
+@theme {
+  /* Font Families */
+  --font-roboto: "Roboto Slab", serif;
+  --font-oxanium: "Oxanium", sans-serif;
+  --font-manrope: "Manrope", sans-serif;
+  --font-cinzel: "Cinzel", serif;
+  --font-noto: "Noto Sans", sans-serif;
+  --font-libre: "Libre Baskerville", serif;
+  --font-monofett: "Monofett", monospace;
+  --font-nanum-coding: "Nanum Gothic Coding", monospace;
+
+  /* Color System */
+  --color-lab-red: #850404;
+  --color-lab-blue: #02385f;
+  --color-lab-blue-deep: #04406a;
+  --color-lab-bg-gray: #f5f5f5;
+  --color-lab-divider: #5b5a5a;
+  --color-lab-text: #0c0d0c;
+  --color-lab-text-light: #666;
+  --color-lab-white: #ffffff;
+  --color-lab-black: #000000;
+  --color-lab-green: #627952;
+  --color-lab-orange: #f35f02;
+  --color-lab-gray-light: #e5e7eb;
+  --color-lab-gray-medium: #cac5c5;
+  --color-lab-gray-dark: #343434;
+  
+  /* Spacing Scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  
+  /* Typography Scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.3s ease;
+  --transition-slower: 0.5s ease;
+}
+
+/* ========================================
+   GLOBAL RESET & BASE STYLES
+   ======================================== */
+
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* background-color: var(--color-lab-bg-gray); */
+  color: var(--color-lab-text);
+  font-family: var(--font-manrope), sans-serif;
+}
+
+/* Clock Mode: Force viewport constraint */
+body.clock-mode {
+  overflow: hidden;
+  background-color: var(--color-lab-black);
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* ========================================
+   GLOBAL UTILITIES
+   ======================================== */
+
+/* --- Screen Reader Text Utility --- */
+.screenReaderText {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+
+/* --- Global Animations --- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn var(--transition-slower) ease-in-out;
+}
+
+/* --- Global Loading --- */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: var(--color-lab-black);
+  z-index: 9999;
+  pointer-events: none;
+  will-change: opacity;
+}

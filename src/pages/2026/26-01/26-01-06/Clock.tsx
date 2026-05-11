@@ -11,7 +11,7 @@ export default function PyramidzBackground() {
   const [bgReady, setBgReady] = useState<boolean>(false);
 
   // Generate unique font-family name: Giza_20260107
-  const dateStr = '20260107'; // January 07, 2026
+  const dateStr = '20260107'; // JAN 07, 2026
   const uniqueFontFamily = `Giza_${dateStr}`;
 
   const fontConfigs: FontConfig[] = [

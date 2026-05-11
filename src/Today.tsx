@@ -11,7 +11,7 @@ import ClockPageNav from './components/ClockPageNav';
 import { useClockPage } from './hooks/useClockPage';
 import { ClockLoadingFallback } from './utils/fontLoader';
 import { useAutoHeader } from './hooks/useAutoHeader';
-import styles from './ClockPage.module.css';
+import styles from './styles/ClockPage.module.css';
 import { ClockItem, DataContextType } from './types/data';
 import {
   normalizeDate,

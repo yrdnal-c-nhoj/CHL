@@ -1,0 +1,88 @@
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: flex-start;
+  width: 90%;
+  max-width: 60ch;
+  margin: 0 auto;
+  padding: 2rem 0;
+  z-index: 10;
+  color: #060706;
+}
+
+@media (min-width: 1024px) {
+  .mainContent {
+    width: 70%;
+    max-width: 70ch;
+  }
+}
+
+.title {
+  font-family: var(--font-roboto);
+  color: var(--color-lab-red);
+  letter-spacing: 0.1em;
+  font-size: clamp(1.7rem, 2vw, 3rem);
+  text-align: left;
+  width: 100%;
+  margin: 0.5rem 0;
+  line-height: 1.4;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--color-lab-divider);
+  /* margin: 1rem 0; */
+  width: 100%;
+  max-width: 400px;
+}
+
+.hat {
+  font-family: var(--font-roboto);
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--color-lab-red);
+  margin-top: 0;
+  margin-bottom: 0.3rem;
+  display: block;
+  text-align: left;
+}
+
+.socialLinks {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 1rem;
+  /* margin-top: 2rem; */
+  margin-bottom: 1rem;
+}
+
+.contactSocialIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  transition: opacity 0.2s;
+}
+
+.contactSocialIcon:hover {
+  opacity: 0.5;
+}
+
+.input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-family: 'Manrope', sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.button {
+  background-color: #8e8c8c;
+  color: white;
+  font-weight: bold;
+  font-family: 'Manrope', sans-serif;
+  padding: 0.75rem 1.5rem;
+  transition: background-color 0.2s;
+}
