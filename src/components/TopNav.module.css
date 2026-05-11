@@ -12,114 +12,20 @@
    ======================================== */
 
 .topnavchl {
-  font-family: 'Roboto Slab', sans-serif;
-  color: #bfc2bf;
-  font-size: 1rem;
-  letter-spacing: 0.02rem;
-  padding: 0.02rem 0.2rem;
-  white-space: nowrap;
-  overflow: hidden;
-  display: block;
-  width: 100%;
+  composes: topnavchl from global;
 }
 .topnavbt {
-  font-family: 'Oxanium', sans-serif;
-  transform: skewX(-20deg);
-  color: #eae8ed;
-  text-shadow:
-    #b6e548 1px 0px 0px,
-    #101601 2px 0px 0px,
-    #eb7373 3px 0px 0px,
-    #fdf1f1 4px 0px 0px,
-    #24f704 -4px 0px 6px;
-  font-size: 4rem;
-  padding: 0.01rem 0.01rem;
-  margin-top: -0.5rem;
-  text-align: center; 
-  white-space: nowrap;
-  overflow: hidden;
-  display: block;
-  letter-spacing: -0.23rem;
+  composes: topnavbt from global;
 }
+
+.topnavtag {
+  composes: topnavtag from global;
+}
+
 
 /* ========================================
    NAVIGATION MENU STYLES
    ======================================== */
-
-.navbar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem 0;
-  background-color: transparent;
-}
-
-.navMenu {
-  display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  gap: 2rem;
-  justify-content: center;
-  align-items: center;
-}
-
-.navItem {
-  margin: 0;
-}
-
-.navLink {
-  text-decoration: none;
-  color: #bfc2bf;
-  font-family: 'Roboto Slab', sans-serif;
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.navLink:hover {
-  color: #eae8ed;
-  background-color: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
-}
-
-.navLink.active {
-  color: #eb7373;
-  background-color: rgba(235, 115, 115, 0.1);
-  font-weight: bold;
-}
-
-.hamburger {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-  padding: 0.5rem;
-  background: none;
-  border: none;
-}
-
-.hamburger span {
-  width: 25px;
-  height: 3px;
-  background-color: #bfc2bf;
-  margin: 3px 0;
-  transition: 0.3s;
-}
-
-.hamburger.active span:nth-child(1) {
-  transform: rotate(-45deg) translate(-5px, 6px);
-}
-
-.hamburger.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.active span:nth-child(3) {
-  transform: rotate(45deg) translate(-5px, -6px);
-}
 
 /* ========================================
    RESPONSIVE DESIGN
