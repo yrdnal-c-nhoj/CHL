@@ -1,0 +1,81 @@
+.monthDropdownContainer {
+  margin-bottom: 0;
+  position: relative;
+  /* scroll-margin-top: 12rem; */
+  border-bottom: 1px solid var(--color-lab-gray-medium);
+  width: 100%;
+}
+
+.monthDropdownContainer:last-child {
+  border-bottom: none;
+}
+
+.monthDropdownContainer:first-child {
+  border-top: 1px solid var(--color-lab-gray-medium);
+}
+
+.hoverBgActive {
+  width: 100vw;
+}
+
+.dropdownButton {
+  background-color: transparent;
+  font-size: clamp(0.9rem, 1.5vw, 1.5rem);
+  padding: clamp(0.1rem, 0.2vw, 0.3rem) clamp(1.5rem, 2.5vw, 3rem);
+  /* border: 3px solid transparent;  */
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s, color 0.2s;
+  color: #424346;
+  font-family: var(--font-manrope);
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.dropdownButton:hover {
+  background-color: rgb(210, 216, 233); 
+}
+
+.dropdownButtonHovered {
+  color: #014c63;
+}
+
+.dropdownButtonExpanded {
+  color:#351101;
+  font-weight: 700;
+}
+
+.arrow {
+  font-size: 0.8rem;
+  color: inherit;
+}
+
+.controls {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0.2rem 0 0.5rem 0;
+  justify-content: center;
+  width: 100%;
+}
+
+.sortButton {
+  background-color: transparent;
+  font-size: clamp(0.8rem, 1.2vw, 1.2rem);
+  padding: clamp(0.1rem, 0.3vw, 0.4rem) clamp(0.5rem, 1.0vw, 1rem);
+  border: 1px solid transparent;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  color:  #858687;
+  font-family: var(--font-manrope);
+}
+
+.sortButton:hover {
+  background-color: #c0d3ec;
+  color: var(--color-lab-gray-dark);
+}
