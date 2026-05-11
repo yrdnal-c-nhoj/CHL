@@ -140,17 +140,7 @@ const Home: FC = () => {
 
   if (!fontsReady || loading) {
     return (
-      <div
-        style={{
-          height: '100dvh',
-          width: '100vw',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'var(--lab-bg-gray)',
-          fontFamily: 'sans-serif',
-        }}
-      ></div>
+      <div className={styles.loadingContainer}></div>
     );
   }
 
@@ -178,15 +168,7 @@ const Home: FC = () => {
         </div>
       </div>
 
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: '0.1rem',
-            padding: '0.1rem',
-          }}
-        >
+        <div className={styles.socialContainer}>
           <a
             href="https://www.instagram.com/cubist_heart_labs/"
             target="_blank"
@@ -197,7 +179,7 @@ const Home: FC = () => {
               loading="lazy"
               src={instaImg}
               alt="Instagram"
-              style={{ width: '2rem', height: '2rem' }}
+              className={styles.footerIcon}
             />
           </a>
           <a
@@ -210,7 +192,7 @@ const Home: FC = () => {
               loading="lazy"
               src={elonImg}
               alt="X"
-              style={{ width: '2rem', height: '2rem' }}
+              className={styles.footerIcon}
             />
           </a>
         </div>
