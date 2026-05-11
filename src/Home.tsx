@@ -52,7 +52,13 @@ const Home: FC = () => {
   const [fontsReady, setFontsReady] = useState<boolean>(
     sessionStorage.getItem('fontsLoaded') === 'true',
   );
-  const { restoreNavigationState, restoreScrollPosition, restoreCursorPosition, clearNavigationState } = useNavigationState();
+  const { 
+    saveNavigationState, 
+    restoreNavigationState, 
+    restoreScrollPosition, 
+    restoreCursorPosition, 
+    clearNavigationState 
+  } = useNavigationState();
   const [expandedMonth, setExpandedMonth] = useState<string | null>(() => {
     // Initialize expanded month from URL parameter or saved state
     const monthParam = searchParams.get('month');
@@ -68,6 +74,14 @@ const Home: FC = () => {
       });
     }
   }, [fontsReady, setFontsReady]);
+
+  // Save navigation state when leaving the home page
+  useEffect(() => {
+    return () => {
+      // Capture current scroll position and expansion state before unmounting
+      saveNavigationState(expandedMonth || undefined);
+    };
+  }, [expandedMonth, saveNavigationState]);
 
   // Restore scroll position and cursor when returning from clock page
   useEffect(() => {
@@ -149,7 +163,7 @@ const Home: FC = () => {
   return (
     <div 
       className="home-container" 
-      style={{ opacity: fontsReady ? 1 : 0, transition: 'opacity 0.6s ease-in', backgroundColor: 'var(--lab-bg-gray)' }}
+      style={{ opacity: fontsReady ? 1 : 0, transition: 'opacity 0.4s ease-in' }}
     >
       <TopNav />
       <div className="home-centered-content">

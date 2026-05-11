@@ -173,18 +173,26 @@
   .navLink { padding: 0.4rem; font-size: 0.9rem; }
 
   .navMenu {
-    display: none;
+    display: flex;
     position: fixed;
     top: 3.2rem;
     right: 0;
     width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
     flex-direction: column;
     padding: 0.2rem;
     background-color: #c0c4c0;
+    pointer-events: none;
   }
 
   .navMenu.active {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 
   .hamburger {
