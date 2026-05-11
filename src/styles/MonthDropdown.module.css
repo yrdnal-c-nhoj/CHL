@@ -12,7 +12,7 @@
   background-color: transparent;
   font-size: clamp(0.9rem, 1.5vw, 1.5rem);
   padding: clamp(0.4rem, 0.8vw, 1rem) clamp(1.5rem, 2.5vw, 3rem);
-  border: 1px solid transparent;
+  border: 11px solid transparent;
   border-radius: 3px;
   cursor: pointer;
   display: flex;
