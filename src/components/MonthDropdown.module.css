@@ -1,0 +1,123 @@
+.container {
+  margin-bottom: 0.25rem;
+  position: relative;
+  scroll-margin-top: 2rem;
+}
+
+.hoverBg {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 100%;
+  background-color: #37519e;
+  transform: translateX(-50%);
+  transition: width 0.2s ease;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hoverBgActive {
+  width: 100vw;
+}
+
+.dropdownButton {
+  background-color: transparent;
+  font-size: clamp(0.9rem, 1.5vw, 1.5rem);
+  padding: clamp(0.4rem, 0.8vw, 1rem) clamp(1.5rem, 2.5vw, 3rem);
+  border: 1px solid transparent;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.2s;
+  color: #8b8f8c;
+  font-family: 'Manrope', sans-serif;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.dropdownButtonHovered {
+  color: #057e7e;
+}
+
+.dropdownButtonExpanded {
+  color: #554444;
+  font-weight: 700;
+}
+
+.arrow {
+  font-size: 0.8rem;
+  color: inherit;
+}
+
+.controls {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0.5rem 0 1.5rem 0;
+  justify-content: center;
+  width: 100%;
+}
+
+.sortButton {
+  background-color: transparent;
+  font-size: clamp(0.8rem, 1.2vw, 1.2rem);
+  padding: clamp(0.3rem, 0.6vw, 0.8rem) clamp(1rem, 1.8vw, 2rem);
+  border: 1px solid transparent;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  color: #8b8f8c;
+  font-family: 'Manrope', sans-serif;
+}
+
+.sortButton:hover {
+  background-color: rgba(48, 49, 50, 0.5);
+  color: #feffff;
+}
+
+.monthGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  /* gap: 1.5rem; */
+  /* padding: 1rem 0; */
+}
+
+.monthItem {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s;
+}
+
+.monthItem:hover {
+  transform: translateY(-2px);
+}
+
+.monthItemImage {
+  aspect-ratio: 16 / 9;
+  background-color: #111;
+  overflow: hidden;
+  border-radius: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.monthItemInfo {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Manrope', sans-serif;
+  font-size: 10.75rem;
+  color: #888;
+  margin-bottom: 0.2rem;
+}
+
+.monthItemTitle {
+  font-family: 'Roboto Slab', serif;
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 0.25rem;
+}

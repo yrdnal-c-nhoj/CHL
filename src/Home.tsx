@@ -39,11 +39,11 @@ const formatDate = (dateStr: string | undefined): string => {
   const date = new Date(2000 + yy, mm - 1, dd);
   if (isNaN(date.getTime())) return 'Unknown Date';
 
-  const year = String(date.getFullYear()).slice(-2);
+  const year = String(date.getFullYear());
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
 
-  return `${year}.${month}.${day}`;
+  return `${month}/${day}/${year}`;
 };
 
 const Home: FC = () => {
