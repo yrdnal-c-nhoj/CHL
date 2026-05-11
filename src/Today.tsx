@@ -103,7 +103,7 @@ const TodayClockPage = () => {
         width: '100vw',
         height: '100vh',
         overflow: 'hidden',
-        backgroundColor: '#000',
+        backgroundColor: '#fff',
       }}
     >
       {isReady && <Header visible={headerVisible} />}
@@ -113,7 +113,7 @@ const TodayClockPage = () => {
         style={{
           position: 'relative',
           zIndex: 10000,
-          color: '#fff',
+          color: '#000',
           textAlign: 'center',
           paddingTop: '40vh',
         }}
@@ -134,7 +134,7 @@ const TodayClockPage = () => {
               width: '100%',
               height: '100vh',
               zIndex: 1 /* Below the overlay logic if needed, but above background */,
-              backgroundColor: '#000',
+              backgroundColor: '#fff',
             }}
           >
             <div
