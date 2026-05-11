@@ -26,14 +26,14 @@ export function useClockPage(currentItem: { date: string } | null) {
   // Register all clock components via Vite glob (memoized to prevent re-renders)
   const clockModules = useMemo(() => import.meta.glob('../pages/**/Clock.tsx'), []);
 
-  const preloadAsset = useCallback((url: string): Promise<void> => {
-    return new Promise((resolve) => {
+  const preloadAsset = useCallback((url: string): Promise<boolean> => {
+    return new Promise((resolve, reject) => {
       const img = new Image();
       img.src = url;
-      img.onload = () => resolve();
+      img.onload = () => resolve(true);
       img.onerror = () => {
-        console.warn(`Failed to preload asset: ${url}`);
-        resolve(); // Resolve anyway to prevent hanging the UI
+        console.warn(`[useClockPage] Asset failed to load: ${url}. Continuing clock load.`);
+        resolve(false); // Resolve instead of reject to prevent fatal crashes
       };
     });
   }, []);
@@ -67,13 +67,18 @@ export function useClockPage(currentItem: { date: string } | null) {
 
       try {
         // 1. Resolve the module path
-        const dateParts = currentItem.date.split('-');
-        const searchPattern = `${dateParts[0]}/${dateParts[0]}-${dateParts[1]}/${currentItem.date}/Clock.tsx`;
+        // Support for nested structure: /YYYY/YY-MM/YY-MM-DD/Clock.tsx
+        const dateParts = currentItem.date.split('-'); 
+        const yearShort = dateParts[0].length === 4 ? dateParts[0].slice(-2) : dateParts[0];
+        const yearFull = dateParts[0].length === 4 ? dateParts[0] : `20${dateParts[0]}`;
         
-        const [path, importFn] = Object.entries(clockModules).find(([p]) => p.endsWith(searchPattern)) || [];
-        if (!importFn) {
-          throw new Error(`Clock not found at path: ${path}`);
+        const searchPattern = `${yearFull}/${yearShort}-${dateParts[1]}/${currentItem.date}/Clock.tsx`;
+        const match = Object.entries(clockModules).find(([p]) => p.endsWith(searchPattern));
+        
+        if (!match) {
+          throw new Error(`Clock lookup failed for date: ${currentItem.date}. Expected pattern: ${searchPattern}`);
         }
+        const [path, importFn] = match;
 
         // 2. Dynamically import the module
         const module = (await importFn()) as ClockModule;
