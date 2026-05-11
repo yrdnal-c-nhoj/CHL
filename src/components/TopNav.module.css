@@ -183,6 +183,10 @@
     background-color: #c0c4c0;
   }
 
+  .navMenu.active {
+    display: flex;
+  }
+
   .hamburger {
     right: 0.5rem;
     top: 0.5rem;

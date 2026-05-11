@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Thumbnail from './Thumbnail';
+import styles from './MonthDropdown.module.css';
 
 interface DataItem {
   date: string;
@@ -103,7 +104,7 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
           alignItems: 'center',
           gap: '0.5rem',
           transition: 'color 0.2s',
-          color: isHovered ? '#0c0d0d' : (isExpanded ? '#554444' : '#8b8f8c'),
+          color: isHovered ? '#000000' : (isExpanded ? '#2d2d2d' : '#4a4a4a'),
           fontFamily: 'Manrope, sans-serif',
           fontWeight: isExpanded ? '700' : '400',
           width: '100%',
