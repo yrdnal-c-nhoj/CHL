@@ -9,6 +9,7 @@ interface HandProps {
   angle: number;
   length: string;
   width: string;
+  width: string; // e.g., "12px", "8px", "4px"
   color: string;
   type: 'hour' | 'minute' | 'second';
 }
@@ -23,6 +24,7 @@ const ClockHand: React.FC<HandProps> = ({ angle, length, width, color, type }) =
     bottom: '50%',
     left: '50%',
     width: scaledWidth,
+    width: width, // Use the provided width directly
     height: length,
     backgroundColor: color,
     transformOrigin: 'bottom center',
@@ -37,16 +39,10 @@ const ClockHand: React.FC<HandProps> = ({ angle, length, width, color, type }) =
     `,
   };
 
-  const handTypeClass = (() => {
-    if (type === 'hour') return styles.westernHourHand;
-    if (type === 'minute') return styles.westernMinuteHand;
-    return styles.westernSecondHand;
-  })();
 
   return (
     <div 
       style={handStyle} 
-      className={`${styles.hand} ${handTypeClass}`} 
       data-hand-type={type}
     />
   );
@@ -63,6 +59,14 @@ const AnalogClock: React.FC = () => {
     window.addEventListener('resize', updateDims);
     return () => window.removeEventListener('resize', updateDims);
   }, []);
+
+  // Force visibility override for font loading issue
+  useEffect(() => {
+    document.body.style.opacity = '1';
+    document.body.style.visibility = 'visible';
+    document.documentElement.classList.remove('fonts-loading');
+  }, []);
+
 
   const radius = Math.min(dims.w, dims.h) * 0.95 / 2;
 
@@ -83,6 +87,7 @@ const AnalogClock: React.FC = () => {
   const secondAngle = (seconds + ms / 1000) * 6;
   const minuteAngle = (minutes + seconds / 60 + ms / 60000) * 6;
   const hourAngle = ((hours % 12) + (minutes + seconds / 60) / 60) * 30;
+
 
   const tickMarks = useMemo(() => Array.from({ length: 60 }, (_, i) => {
     const angle = i * 6;
