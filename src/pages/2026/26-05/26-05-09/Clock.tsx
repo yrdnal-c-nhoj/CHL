@@ -1,39 +1,36 @@
-import React, { useMemo } from 'react';
-import { useClockTime, formatTime, getFormattedDate } from '@/utils/clockUtils';
+import React from 'react';
+import { useClockTime, calculateAngles } from '@/utils/clockUtils';
 import styles from './Clock.module.css';
 
 /**
  * May 9, 2026 - "Capture"
- * A minimalist white-themed clock using high-contrast typography.
+ * An analog clock with lotus background.
  */
 const CaptureClock: React.FC = () => {
   const time = useClockTime();
   
-  const { hours, minutes, seconds } = useMemo(() => 
-    formatTime(time, '12h'),
-  [time]);
-
-  const handleCapture = () => {
-    window.print();
-  };
+  const { hour: hourAngle, minute: minuteAngle, second: secondAngle } = calculateAngles(time);
 
   return (
-    <div className={styles.container} onClick={handleCapture} style={{ cursor: 'crosshair' }}>
-      <div className={styles.captureFrame}>
-        <div className={styles.bracketTopLeft} />
-        <div className={styles.bracketTopRight} />
-        <div className={styles.bracketBottomLeft} />
-        <div className={styles.bracketBottomRight} />
-        
-        <time dateTime={time.toISOString()} className={styles.timeWrapper}>
-          <span className={styles.digit}>{hours}</span><span className={styles.separator}>:</span><span className={styles.digit}>{minutes}</span><span className={styles.seconds}>{seconds}</span>
-        </time>
-        
-        <div className={styles.label}>{getFormattedDate(time, 'MMM DD \'YY').toUpperCase()}</div>
-      </div>
-
-      <div className={styles.captureHint}>
-        Click to Capture
+    <div className={styles.container}>
+      <div className={styles.clock}>
+        <div className={styles.face}>
+          <div 
+            className={`${styles.hand} ${styles.hourHand} ${styles.hourHandRotation}`}
+            style={{ '--hour-angle': `${hourAngle}deg` } as React.CSSProperties}
+          />
+          <div 
+            className={`${styles.hand} ${styles.minuteHand} ${styles.minuteHandRotation}`}
+            style={{ '--minute-angle': `${minuteAngle}deg` } as React.CSSProperties}
+          />
+          <div 
+            className={`${styles.hand} ${styles.secondHand} ${styles.secondHandRotation}`}
+            style={{ '--second-angle': `${secondAngle}deg` } as React.CSSProperties}
+          />
+          <div className={styles.center} />
+          
+  
+        </div>
       </div>
     </div>
   );
