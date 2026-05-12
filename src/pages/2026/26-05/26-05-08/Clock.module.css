@@ -16,7 +16,7 @@
   background-size: 32vh 11vh;
   background-position: center;
   background-repeat: repeat;
-  filter: saturate(500%);
+  filter: saturate(500%) hue-rotate(-55deg) contrast(70%);
 }
 
 .clockTile {
