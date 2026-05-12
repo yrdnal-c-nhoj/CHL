@@ -153,7 +153,7 @@ const Clock: React.FC = () => {
       const width = canvas.width = window.innerWidth;
       const height = canvas.height = window.innerHeight;
       
-      ctx.fillStyle = 'black';
+      ctx.fillStyle = 'white';
       ctx.fillRect(0, 0, width, height);
 
       circlesRef.current.forEach((circle) => {

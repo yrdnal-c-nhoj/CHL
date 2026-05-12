@@ -85,8 +85,6 @@ const ClockPage: React.FC = () => {
   const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPage(currentItem);
 
   const handleHeaderClick = () => {
-    // Remove class immediately to prevent black background persistence during navigation
-    document.body.classList.remove('clock-mode');
     if (currentItem?.date) {
       const monthKey = getMonthFromDate(currentItem.date);
       // Navigate to home with month expanded
@@ -102,19 +100,11 @@ const ClockPage: React.FC = () => {
     }
   }, [date, navigate]);
 
-  useEffect(() => {
-    document.body.classList.toggle('clock-mode', isReady);
-    return () => document.body.classList.remove('clock-mode');
-  }, [isReady]);
-
   if (pageError || contextError || (!loading && !currentItem && items.length > 0)) {
     return (
       <ErrorDisplay 
         message={pageError || contextError || 'Clock not found'} 
-        onBack={() => {
-          document.body.classList.remove('clock-mode');
-          navigate('/');
-        }} 
+        onBack={() => navigate('/')} 
       />
     );
   }
