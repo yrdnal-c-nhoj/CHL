@@ -1,153 +1,211 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { useClockTime } from '@/utils/hooks';
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
+import { useClockTime } from '@/utils/hooks'; // Ensure this hook uses setInterval as a fallback to requestAnimationFrame
+import { formatTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+
 import styles from './Clock.module.css';
 
-// ---------------- INTERFACES ----------------
-interface HandDimensions {
-  width: string;
-  height: string;
-  zIndex: number;
-}
+import fontUrl from '@/assets/fonts/2026/26-05-10.ttf?url';
+import backgroundImage from '@/assets/images/2026/26-05/26-05-10/23.gif';
 
-interface ClockHandProps {
-  type: 'hour' | 'minute' | 'second';
-  rotation: number;
-}
+const NightSky: React.FC = () => {
+  const currentTime = useClockTime();
 
-interface TimeValues {
-  hr: number;
-  min: number;
-  sec: number;
-}
+  /*
+   * FONT LOADING
+   */
 
-// ---------------- CONFIGURATION ----------------
-const CLOCK_CONFIG = {
-  NUMERAL_RADIUS: 40,
-  COLORS: {
-    background: '#000000',
-    primary: '#FFFFFF',
-    shadow: 'drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8))',
-  },
-  HAND_DIMENSIONS: {
-    hour: { width: '1.2vmin', height: '20vmin', zIndex: 3 },
-    minute: { width: '0.8vmin', height: '32vmin', zIndex: 4 },
-    second: { width: '0.4vmin', height: '38vmin', zIndex: 5 },
-  },
-} as const;
+  const fontConfigs: FontConfig[] = useMemo(
+    () => [
+      {
+        fontFamily: 'ClockFont',
+        fontUrl,
+      },
+    ],
+    []
+  );
 
-// ---------------- FONT CONFIGURATION ----------------
-const fontConfigs = [
-  {
-    name: 'ClockFont',
-    url: '@/assets/fonts/2026/26-05-05-dolphin.ttf',
-  },
-];
+  useSuspenseFontLoader(fontConfigs);
 
-// ---------------- UTILITIES ----------------
-const calculateTimeValues = (date: Date): TimeValues => {
-  const msec = date.getMilliseconds();
-  const sec = date.getSeconds() + msec / 1000;
-  const min = date.getMinutes() + sec / 60;
-  const hr = (date.getHours() % 12) + min / 60;
+  /*
+   * MOBILE DETECTION
+   */
 
-  return { hr, min, sec };
-};
+  const [isMobile, setIsMobile] = useState(false);
 
-const calculateNumeralPosition = (number: number) => {
-  const angleRad = (number / 12) * 2 * Math.PI;
-  const angleDeg = (number / 12) * 360;
+  useEffect(() => {
+    const update = () => {
+      setIsMobile(window.innerWidth <= 480);
+    };
 
-  return {
-    x: 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angleRad),
-    y: 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angleRad),
-    angle: angleDeg,
-  };
-};
+    update();
 
-const getHandRotation = (value: number, multiplier: number): number => value * multiplier;
+    window.addEventListener('resize', update);
 
-// ---------------- COMPONENTS ----------------
-const BackgroundLayers: React.FC = () => (
-  <video
-    className={styles.backgroundVideo}
-    autoPlay
-    loop
-    muted
-    playsInline
-  >
-    <source src="/src/assets/images/2026/26-05/26-05-05/jump.mp4" type="video/mp4" />
-  </video>
-);
-
-const ClockNumerals: React.FC = () => {
-  const numerals = useMemo(() => {
-    return Array.from({ length: 12 }, (_, i) => {
-      const num = i + 1;
-      const { x, y, angle } = calculateNumeralPosition(num);
-
-      return (
-        <div
-          key={num}
-          className={styles.numeral}
-          style={{
-            left: `${x}%`,
-            top: `${y}%`,
-            transform: `translate(-50%, -50%) rotate(${angle}deg)`,
-          }}
-        >
-          {num}
-        </div>
-      );
-    });
+    return () => {
+      window.removeEventListener('resize', update);
+    };
   }, []);
 
-  return <>{numerals}</>;
-};
+  /*
+   * FORMATTED TIME
+   */
 
-const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
-  const { width, height, zIndex } = CLOCK_CONFIG.HAND_DIMENSIONS[type];
+  const formattedTime = useMemo(() => {
+    const { hours, minutes, seconds } = formatTime(currentTime, '12h');
+    const meridian = currentTime.getHours() >= 12 ? 'PM' : 'AM';
+    return { hours, minutes, seconds, meridian };
+  }, [currentTime]);
+
+  const clockCharacters = useMemo(() => {
+    const { hours, minutes, seconds, meridian } = formattedTime;
+    return [
+      hours[0],
+      hours[1],
+      minutes[0],
+      minutes[1],
+      seconds[0],
+      seconds[1],
+      meridian[0],
+      meridian[1],
+    ];
+  }, [formattedTime]);
+
+  /*
+   * OPTIMIZED GRID MAP CALCULATION
+   * Memoized to prevent recalculations on every render
+   */
+
+  const gridMap = useMemo(() => {
+    return isMobile
+      ? [
+          ['1', '1'],
+          ['2', '1'],
+          ['1', '2'],
+          ['2', '2'],
+          ['1', '3'],
+          ['2', '3'],
+          ['1', '4'],
+          ['2', '4'],
+        ]
+      : [
+          ['1', '1'],
+          ['2', '1'],
+          ['3', '1'],
+          ['4', '1'],
+          ['1', '2'],
+          ['2', '2'],
+          ['3', '2'],
+          ['4', '2'],
+        ];
+  }, [isMobile]);
 
   return (
     <div
-      className={styles.hand}
+      className={styles.container}
       style={{
-        width,
-        height,
-        zIndex,
-        transform: `translate(-50%, 0) rotate(${rotation}deg)`,
+        position: 'relative',
+        overflow: 'hidden',
+        width: '100vw',
+        height: '100dvh',
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        filter: 'contrast(1.5)',
       }}
-    />
-  );
-};
+    >
+      {/* CLOCK GRID */}
 
-const CenterDot: React.FC = () => (
-  <div className={styles.centerDot} />
-);
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
 
-// ---------------- MAIN CLOCK COMPONENT ----------------
-const AnalogClock: React.FC = () => {
-  const currentTime = useClockTime();
-  const { hr, min, sec } = calculateTimeValues(currentTime);
+          width: '100%',
+          height: '100%',
 
-  // Load fonts with suspense to prevent FOUC
-  useSuspenseFontLoader(fontConfigs);
+          display: 'grid',
 
-  return (
-    <div className={styles.container}>
-      <BackgroundLayers />
-      
-      <time dateTime={currentTime.toISOString()} className={styles.clockFace}>
-        <ClockNumerals />
-        
-        <ClockHand type="hour" rotation={getHandRotation(hr, 30)} />
-        <ClockHand type="minute" rotation={getHandRotation(min, 6)} />
-        <ClockHand type="second" rotation={getHandRotation(sec, 6)} />
-        
-        <CenterDot />
-      </time>
+          gridTemplateColumns: isMobile
+            ? '1fr 1fr'
+            : '1fr 1fr 1fr 1fr',
+
+          gridTemplateRows: isMobile
+            ? '1fr 1fr 1fr 1fr'
+            : '1fr 1fr',
+
+          zIndex: 20,
+        }}
+      >
+        {clockCharacters.map((char, index) => (
+          <div
+            key={index}
+            style={{
+              gridColumn: gridMap[index]?.[0] || '1',
+              gridRow: gridMap[index]?.[1] || '1',
+              position: 'relative',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'visible',
+            }}
+          >
+            <div
+              className={`
+                ${styles.timeElement}
+                ${
+                  isMobile
+                    ? styles.timeElementMobile
+                    : styles.timeElementDesktop
+                }
+                ${
+                  index >= 6
+                    ? styles.timeElementUppercase
+                    : ''
+                }
+              `}
+              style={{
+                position: 'absolute',
+                left: '50%',
+                top: '50%',
+                transform: `
+                  translate(-50%, -50%)
+                  translate(${index * -2}px, ${
+                  index * 1.5
+                }px)
+                `,
+                zIndex: index + 1,
+                pointerEvents: 'none',
+                userSelect: 'none',
+                mixBlendMode: 'screen',
+                fontFamily: 'ClockFont',
+                fontSize: isMobile
+                  ? '58vh'
+                  : '58vw',
+                lineHeight: 0.8,
+                color: '#222222B6',
+                opacity: 0.6,
+                filter: `
+                  drop-shadow(1px 1px 0px white)
+                  drop-shadow(0 0 10px rgba(255,255,255,0.45))
+                  drop-shadow(0 0 24px rgba(255,255,255,0.2))
+                `,
+              }}
+            >
+              {char}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default AnalogClock;
+export default NightSky;
