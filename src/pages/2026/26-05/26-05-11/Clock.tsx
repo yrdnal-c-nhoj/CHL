@@ -1,153 +1,128 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useClockTime } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import styles from './Clock.module.css';
 
 // ---------------- INTERFACES ----------------
-interface HandDimensions {
-  width: string;
-  height: string;
-  zIndex: number;
-}
-
-interface ClockHandProps {
-  type: 'hour' | 'minute' | 'second';
-  rotation: number;
-}
-
-interface TimeValues {
-  hr: number;
-  min: number;
-  sec: number;
+interface Star {
+  id: number;
+  x: number;
+  y: number;
+  size: number;
+  speed: number;
+  color: string;
+  twinkleSpeed: number;
+  opacity: number;
 }
 
 // ---------------- CONFIGURATION ----------------
-const CLOCK_CONFIG = {
-  NUMERAL_RADIUS: 40,
+const NIGHT_SKY_CONFIG = {
+  STAR_COUNT: 150,
   COLORS: {
-    background: '#000000',
-    primary: '#FFFFFF',
-    shadow: 'drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8))',
+    stars: [
+      '#FFFFFF', // White
+      '#FFE4B5', // Moccasin
+      '#E6E6FA', // Lavender
+      '#B0E0E6', // Powder blue
+      '#FFB6C1', // Light pink
+      '#98FB98', // Pale green
+      '#DDA0DD', // Plum
+    ],
   },
-  HAND_DIMENSIONS: {
-    hour: { width: '1.2vmin', height: '20vmin', zIndex: 3 },
-    minute: { width: '0.8vmin', height: '32vmin', zIndex: 4 },
-    second: { width: '0.4vmin', height: '38vmin', zIndex: 5 },
+  TWINKLE_DURATION: {
+    min: 1,
+    max: 4,
+  },
+  SPEED: {
+    min: 0.005,
+    max: 0.05,
+  },
+  SIZE: {
+    min: 1,
+    max: 4,
   },
 } as const;
 
-// ---------------- FONT CONFIGURATION ----------------
-const fontConfigs = [
-  {
-    name: 'ClockFont',
-    url: '@/assets/fonts/2026/26-05-05-dolphin.ttf',
-  },
-];
-
 // ---------------- UTILITIES ----------------
-const calculateTimeValues = (date: Date): TimeValues => {
-  const msec = date.getMilliseconds();
-  const sec = date.getSeconds() + msec / 1000;
-  const min = date.getMinutes() + sec / 60;
-  const hr = (date.getHours() % 12) + min / 60;
-
-  return { hr, min, sec };
-};
-
-const calculateNumeralPosition = (number: number) => {
-  const angleRad = (number / 12) * 2 * Math.PI;
-  const angleDeg = (number / 12) * 360;
-
+const generateRandomStar = (id: number): Star => {
+  const colors = NIGHT_SKY_CONFIG.COLORS.stars;
+  
   return {
-    x: 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angleRad),
-    y: 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angleRad),
-    angle: angleDeg,
+    id,
+    x: Math.random() * 100,
+    y: Math.random() * 120 - 20, // Start below viewport
+    size: Math.random() * (NIGHT_SKY_CONFIG.SIZE.max - NIGHT_SKY_CONFIG.SIZE.min) + NIGHT_SKY_CONFIG.SIZE.min,
+    speed: Math.random() * (NIGHT_SKY_CONFIG.SPEED.max - NIGHT_SKY_CONFIG.SPEED.min) + NIGHT_SKY_CONFIG.SPEED.min,
+    color: colors[Math.floor(Math.random() * colors.length)] || '#FFFFFF',
+    twinkleSpeed: Math.random() * (NIGHT_SKY_CONFIG.TWINKLE_DURATION.max - NIGHT_SKY_CONFIG.TWINKLE_DURATION.min) + NIGHT_SKY_CONFIG.TWINKLE_DURATION.min,
+    opacity: Math.random() * 0.5 + 0.5,
   };
 };
 
-const getHandRotation = (value: number, multiplier: number): number => value * multiplier;
-
 // ---------------- COMPONENTS ----------------
-const BackgroundLayers: React.FC = () => (
-  <video
-    className={styles.backgroundVideo}
-    autoPlay
-    loop
-    muted
-    playsInline
-  >
-    <source src="/src/assets/images/2026/26-05/26-05-05/jump.mp4" type="video/mp4" />
-  </video>
-);
+const StarField: React.FC = () => {
+  const [stars, setStars] = React.useState<Star[]>(() => 
+    Array.from({ length: NIGHT_SKY_CONFIG.STAR_COUNT }, (_, i) => generateRandomStar(i))
+  );
+  const animationFrameRef = useRef<number>();
 
-const ClockNumerals: React.FC = () => {
-  const numerals = useMemo(() => {
-    return Array.from({ length: 12 }, (_, i) => {
-      const num = i + 1;
-      const { x, y, angle } = calculateNumeralPosition(num);
-
-      return (
-        <div
-          key={num}
-          className={styles.numeral}
-          style={{
-            left: `${x}%`,
-            top: `${y}%`,
-            transform: `translate(-50%, -50%) rotate(${angle}deg)`,
-          }}
-        >
-          {num}
-        </div>
+  useEffect(() => {
+    const animate = () => {
+      setStars(prevStars => 
+        prevStars.map(star => ({
+          ...star,
+          y: star.y - star.speed < -10 ? 120 : star.y - star.speed,
+        }))
       );
-    });
+      
+      animationFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
   }, []);
 
-  return <>{numerals}</>;
-};
-
-const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
-  const { width, height, zIndex } = CLOCK_CONFIG.HAND_DIMENSIONS[type];
-
   return (
-    <div
-      className={styles.hand}
-      style={{
-        width,
-        height,
-        zIndex,
-        transform: `translate(-50%, 0) rotate(${rotation}deg)`,
-      }}
-    />
+    <div className={styles.starField}>
+      {stars.map(star => (
+        <div
+          key={star.id}
+          className={styles.star}
+          style={{
+            left: `${star.x}%`,
+            top: `${star.y}%`,
+            width: `${star.size}px`,
+            height: `${star.size}px`,
+            backgroundColor: star.color,
+            animationDuration: `${star.twinkleSpeed}s`,
+            opacity: star.opacity,
+          }}
+        />
+      ))}
+    </div>
   );
 };
 
-const CenterDot: React.FC = () => (
-  <div className={styles.centerDot} />
-);
 
-// ---------------- MAIN CLOCK COMPONENT ----------------
-const AnalogClock: React.FC = () => {
+// ---------------- MAIN NIGHT SKY COMPONENT ----------------
+const NightSky: React.FC = () => {
   const currentTime = useClockTime();
-  const { hr, min, sec } = calculateTimeValues(currentTime);
-
-  // Load fonts with suspense to prevent FOUC
-  useSuspenseFontLoader(fontConfigs);
 
   return (
     <div className={styles.container}>
-      <BackgroundLayers />
+      <div className={styles.nightSkyGradient}>
+        <StarField />
+      </div>
       
-      <time dateTime={currentTime.toISOString()} className={styles.clockFace}>
-        <ClockNumerals />
-        
-        <ClockHand type="hour" rotation={getHandRotation(hr, 30)} />
-        <ClockHand type="minute" rotation={getHandRotation(min, 6)} />
-        <ClockHand type="second" rotation={getHandRotation(sec, 6)} />
-        
-        <CenterDot />
+      <time dateTime={currentTime.toISOString()} className={styles.timeDisplay}>
+        {currentTime.toLocaleTimeString()}
       </time>
     </div>
   );
 };
 
-export default AnalogClock;
+export default NightSky;
