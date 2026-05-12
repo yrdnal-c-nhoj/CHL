@@ -7,6 +7,8 @@
   justify-content: center;
   background: linear-gradient(to bottom, #5d78b0 0%, #5d78b0 50%,#cbbdae 63%,#cbbdae 100%);
   position: relative;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .container::before {
@@ -84,6 +86,7 @@
 .hand {
   position: absolute;
   left: 50%;
+  bottom: 50%;
   border-radius: 2px;
   transform-origin: bottom center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
