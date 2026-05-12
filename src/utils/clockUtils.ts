@@ -165,3 +165,31 @@ export function timeStringToDate(timeString: string): Date {
   date.setHours(hours || 0, minutes || 0, 0, 0);
   return date;
 }
+
+/**
+ * Formats a date into various string formats
+ * @param {Date} date - Date to format
+ * @param {string} format - Format string (e.g., 'MMM DD \'YY', 'YYYY-MM-DD')
+ * @returns {string} Formatted date string
+ */
+export function getFormattedDate(date: Date, format: string = 'YYYY-MM-DD'): string {
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const day = date.getDate();
+  
+  const monthNames = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+  
+  switch (format) {
+    case 'MMM DD \'YY':
+      return `${monthNames[month]} ${day.toString().padStart(2, '0')} '${(year % 100).toString().padStart(2, '0')}`;
+    case 'YYYY-MM-DD':
+      return `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    case 'MM-DD-YY':
+      return `${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}-${(year % 100).toString().padStart(2, '0')}`;
+    default:
+      return date.toLocaleDateString();
+  }
+}
