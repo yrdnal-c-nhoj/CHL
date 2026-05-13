@@ -33,14 +33,6 @@
   max-width: 100%;
 }
 
-.sortButtonContainer {
-  display: flex;
-  gap: 1px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 1rem; /* Add some space below the buttons */
-}
-
 .sortButton {
   padding: 0.5rem 0.5rem;
   background: rgb(255, 254, 254);

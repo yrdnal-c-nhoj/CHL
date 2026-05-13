@@ -10,7 +10,3 @@
   font-family: var(--font-manrope);
   background: linear-gradient(to right, var(--color-lab-gray-light), #babab7);
 }
-
-.chlLogo {
-  font-size: 1.3rem;
-}
