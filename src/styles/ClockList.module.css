@@ -1,6 +1,6 @@
 .sortButtonContainer {
   display: flex;
-  gap: 5px;
+  gap: 1px;
   justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 1rem; /* Add some space below the buttons */
@@ -17,13 +17,12 @@
     background 0.4s ease,
     color 0.4s ease,
     border-color 0.4s ease;
-  border-radius: 4px; Slightly rounded corners for consistency
+  border-radius: 4px; /* Slightly rounded corners for consistency */
   font-size: 0.8rem; /* Adjust font size for buttons */
   white-space: nowrap; /* Prevent text wrapping */
 }
 
 .sortButton:hover {
-  background: rgb(1, 10, 61);
-  color: #fffffe;
-  border-color: rgba(200, 215, 242, 0.8);
+  background: rgb(149, 149, 150);
+  color: #272726;
 }
