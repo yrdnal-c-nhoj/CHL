@@ -6,15 +6,16 @@ import React, {
   useState,
 } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { DataContext } from '@/context/DataContext';
-import Header from '@/components/Header';
-import ClockPageNav from '@/components/ClockPageNav';
-import { ClockLoadingFallback } from '@/utils/fontLoader';
-import { useClockPage } from '@/hooks/useClockPage';
-import { useNavigationState } from '@/hooks/useNavigationState';
+import { DataContext } from './context/DataContext';
+import Header from './components/Header';
+import ClockPageNav from './components/ClockPageNav';
+import { ClockLoadingFallback } from './utils/fontLoader';
+import { useClockPage } from './hooks/useClockPage';
 import styles from './styles/ClockPage.module.css';
-import type { ClockItem, DataContextType } from '@/types/data';
-import { useAutoHeader } from '@/hooks/useAutoHeader';
+import sortStyles from './styles/SortButtons.module.css';
+import type { ClockItem, DataContextType } from './types/data';
+import { useAutoHeader } from './hooks/useAutoHeader';
+
 import {
   DATE_REGEX,
   normalizeDate,
@@ -34,12 +35,12 @@ const useClockNavigation = (items: ClockItem[] = [], date = '') => {
   const normalizedDate = useMemo(() => normalizeDate(date || ''), [date]);
 
   return useMemo(() => {
-    const idx = items.findIndex((i) => normalizeDate(i.date) === normalizedDate);
+const idx = items.findIndex((i) => i?.date && normalizeDate(i.date) === normalizedDate);
     const currentItem = idx !== -1 ? items[idx] : null;
     return {
       currentItem,
       prevItem: idx > 0 ? items[idx - 1] : null,
-      nextItem: idx < items.length - 1 ? items[idx + 1] : null
+      nextItem: idx < items.length - 1 ? items[idx + 1] : null,
     };
   }, [items, normalizedDate]);
 };
@@ -71,7 +72,7 @@ const LoadingOverlay: React.FC<{ visible: boolean }> = ({ visible }) => (
     style={{
       opacity: visible ? 1 : 0,
       transition: `opacity ${OVERLAY_FADE_DURATION}ms ease-out`,
-      pointerEvents: 'none'
+      pointerEvents: 'none',
     }}
   />
 );
@@ -82,7 +83,7 @@ const ClockPage: React.FC = () => {
   const navigate = useNavigate();
   const headerVisible = useAutoHeader(HEADER_FADE_DELAY);
   const { currentItem, prevItem, nextItem } = useClockNavigation(items, date);
-  const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPage(currentItem);
+const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPage(currentItem ?? null);
 
   const handleHeaderClick = () => {
     if (currentItem?.date) {
@@ -100,26 +101,94 @@ const ClockPage: React.FC = () => {
     }
   }, [date, navigate]);
 
+  const [sortBy, setSortBy] = useState<'date-desc' | 'date-asc' | 'title-asc' | 'title-desc' | 'number-asc' | 'number-desc'>('date-desc');
+
+  const sortedItems = useMemo(() => {
+    const result = [...items].filter((item) => item?.date);
+
+    switch (sortBy) {
+      case 'date-desc':
+        return result.sort((a, b) => b.date.localeCompare(a.date));
+      case 'date-asc':
+        return result.sort((a, b) => a.date.localeCompare(b.date));
+      case 'title-asc':
+        return result.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+      case 'title-desc':
+        return result.sort((a, b) => (b.title || '').localeCompare(a.title || ''));
+      case 'number-asc':
+        return result.sort((a, b) => Number(a.clockNumber || 0) - Number(b.clockNumber || 0));
+      case 'number-desc':
+        return result.sort((a, b) => Number(b.clockNumber || 0) - Number(a.clockNumber || 0));
+      default:
+        return result;
+    }
+  }, [items, sortBy]);
+
   if (pageError || contextError || (!loading && !currentItem && items.length > 0)) {
     return (
-      <ErrorDisplay 
-        message={pageError || contextError || 'Clock not found'} 
-        onBack={() => navigate('/')} 
+      <ErrorDisplay
+        message={pageError || contextError || 'Clock not found'}
+        onBack={() => navigate('/')}
       />
     );
   }
 
+
   return (
     <div className={`${styles.container} ${isReady ? styles.loaded : ''}`}>
       {isReady && (
-        <div 
+        <div
           onClick={handleHeaderClick}
-          style={{ 
+          style={{
             cursor: 'pointer',
             minHeight: '100vh',
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
           }}
+        >
+          <header
+            style={{
+              textAlign: 'center',
+              margin: '1rem 0',
+              fontFamily: 'Manrope, sans-serif',
+            }}
+          >
+            <div className={sortStyles.sortButtonContainer}>
+              <button
+                onClick={() => setSortBy(sortBy === 'date-desc' ? 'date-asc' : 'date-desc')}
+                className={`${sortStyles.sortButton} ${sortBy.startsWith('date') ? sortStyles.active : ''}`}
+              >
+                sort by date{' '}
+                {sortBy.startsWith('date')
+                  ? sortBy === 'date-desc'
+                    ? '↓'
+                    : '↑'
+                  : ''}
+              </button>
+              <button
+                onClick={() => setSortBy(sortBy === 'title-asc' ? 'title-desc' : 'title-asc')}
+                className={`${sortStyles.sortButton} ${sortBy.startsWith('title') ? sortStyles.active : ''}`}
+              >
+                sort by title{' '}
+                {sortBy.startsWith('title')
+                  ? sortBy === 'title-asc'
+                    ? '↓'
+                    : '↑'
+                  : ''}
+              </button>
+              <button
+                onClick={() => setSortBy(sortBy === 'number-desc' ? 'number-asc' : 'number-desc')}
+                className={`${sortStyles.sortButton} ${sortBy.startsWith('number') ? sortStyles.active : ''}`}
+              >
+                sort by number{' '}
+                {sortBy.startsWith('number')
+                  ? sortBy === 'number-desc'
+                    ? '↓'
+                    : '↑'
+                  : ''}
+              </button>
+            </div>
+          </header>
           role="button"
           tabIndex={0}
           onKeyDown={(e) => {
@@ -129,7 +198,13 @@ const ClockPage: React.FC = () => {
           }}
           aria-label="Go back to month"
         >
-          <div className={styles.headerWrapper} style={{ opacity: headerVisible ? 1 : 0, pointerEvents: headerVisible ? 'auto' : 'none' }}>
+          <div
+            className={styles.headerWrapper}
+            style={{
+              opacity: headerVisible ? 1 : 0,
+              pointerEvents: headerVisible ? 'auto' : 'none',
+            }}
+          >
             <Header visible={headerVisible} />
           </div>
 
@@ -145,9 +220,9 @@ const ClockPage: React.FC = () => {
 
       {isReady && ClockComponent && currentItem && (
         <ClockPageNav
-          prevItem={prevItem}
-          nextItem={nextItem}
-          currentItem={currentItem}
+prevItem={prevItem ?? null}
+nextItem={nextItem ?? null}
+currentItem={currentItem!}
           formatTitle={formatTitle}
           formatDate={formatDateDots}
         />
@@ -159,3 +234,4 @@ const ClockPage: React.FC = () => {
 };
 
 export default ClockPage;
+
