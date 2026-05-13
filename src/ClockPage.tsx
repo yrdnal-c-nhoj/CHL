@@ -3,7 +3,6 @@ import React, {
   useContext,
   useMemo,
   Suspense,
-  useState,
 } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
@@ -12,7 +11,6 @@ import ClockPageNav from './components/ClockPageNav';
 import { ClockLoadingFallback } from './utils/fontLoader';
 import { useClockPage } from './hooks/useClockPage';
 import styles from './styles/ClockPage.module.css';
-import sortStyles from './styles/SortButtons.module.css';
 import type { ClockItem, DataContextType } from './types/data';
 import { useAutoHeader } from './hooks/useAutoHeader';
 
@@ -101,29 +99,6 @@ const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPa
     }
   }, [date, navigate]);
 
-  const [sortBy, setSortBy] = useState<'date-desc' | 'date-asc' | 'title-asc' | 'title-desc' | 'number-asc' | 'number-desc'>('date-desc');
-
-  const sortedItems = useMemo(() => {
-    const result = [...items].filter((item) => item?.date);
-
-    switch (sortBy) {
-      case 'date-desc':
-        return result.sort((a, b) => b.date.localeCompare(a.date));
-      case 'date-asc':
-        return result.sort((a, b) => a.date.localeCompare(b.date));
-      case 'title-asc':
-        return result.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
-      case 'title-desc':
-        return result.sort((a, b) => (b.title || '').localeCompare(a.title || ''));
-      case 'number-asc':
-        return result.sort((a, b) => Number(a.clockNumber || 0) - Number(b.clockNumber || 0));
-      case 'number-desc':
-        return result.sort((a, b) => Number(b.clockNumber || 0) - Number(a.clockNumber || 0));
-      default:
-        return result;
-    }
-  }, [items, sortBy]);
-
   if (pageError || contextError || (!loading && !currentItem && items.length > 0)) {
     return (
       <ErrorDisplay
@@ -139,56 +114,6 @@ const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPa
       {isReady && (
         <div
           onClick={handleHeaderClick}
-          style={{
-            cursor: 'pointer',
-            minHeight: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <header
-            style={{
-              textAlign: 'center',
-              margin: '1rem 0',
-              fontFamily: 'Manrope, sans-serif',
-            }}
-          >
-            <div className={sortStyles.sortButtonContainer}>
-              <button
-                onClick={() => setSortBy(sortBy === 'date-desc' ? 'date-asc' : 'date-desc')}
-                className={`${sortStyles.sortButton} ${sortBy.startsWith('date') ? sortStyles.active : ''}`}
-              >
-                sort by date{' '}
-                {sortBy.startsWith('date')
-                  ? sortBy === 'date-desc'
-                    ? '↓'
-                    : '↑'
-                  : ''}
-              </button>
-              <button
-                onClick={() => setSortBy(sortBy === 'title-asc' ? 'title-desc' : 'title-asc')}
-                className={`${sortStyles.sortButton} ${sortBy.startsWith('title') ? sortStyles.active : ''}`}
-              >
-                sort by title{' '}
-                {sortBy.startsWith('title')
-                  ? sortBy === 'title-asc'
-                    ? '↓'
-                    : '↑'
-                  : ''}
-              </button>
-              <button
-                onClick={() => setSortBy(sortBy === 'number-desc' ? 'number-asc' : 'number-desc')}
-                className={`${sortStyles.sortButton} ${sortBy.startsWith('number') ? sortStyles.active : ''}`}
-              >
-                sort by number{' '}
-                {sortBy.startsWith('number')
-                  ? sortBy === 'number-desc'
-                    ? '↓'
-                    : '↑'
-                  : ''}
-              </button>
-            </div>
-          </header>
           role="button"
           tabIndex={0}
           onKeyDown={(e) => {
@@ -197,6 +122,12 @@ const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPa
             }
           }}
           aria-label="Go back to month"
+          style={{
+            cursor: 'pointer',
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
         >
           <div
             className={styles.headerWrapper}
@@ -220,9 +151,9 @@ const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPa
 
       {isReady && ClockComponent && currentItem && (
         <ClockPageNav
-prevItem={prevItem ?? null}
-nextItem={nextItem ?? null}
-currentItem={currentItem!}
+          prevItem={prevItem ?? null}
+          nextItem={nextItem ?? null}
+          currentItem={currentItem}
           formatTitle={formatTitle}
           formatDate={formatDateDots}
         />
