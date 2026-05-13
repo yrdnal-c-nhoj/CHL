@@ -14,10 +14,6 @@
   border-top: 1px solid var(--color-lab-gray-medium);
 }
 
-.hoverBgActive {
-  width: 100vw;
-}
-
 .dropdownButton {
   background-color: transparent;
   font-size: clamp(1.2rem, 2.0vw, 2.0rem);
@@ -48,11 +44,6 @@
 .dropdownButtonExpanded {
   color:#351101;
   font-weight: 700;
-}
-
-.arrow {
-  font-size: 0.8rem;
-  color: inherit;
 }
 
 .controls {
