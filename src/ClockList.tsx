@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Thumbnail from './components/Thumbnail';
 import homeStyles from './styles/Home.module.css';
 import dropdownStyles from './styles/MonthDropdown.module.css';
+import listStyles from './styles/ClockList.module.css';
 import type { ClockItem, DataContextType } from './types/data';
 
 const MONTH_NAMES = [
@@ -147,6 +148,25 @@ const ClockList: FC = () => {
             </a>
           ))}
         </div>
+
+        <h2 className={listStyles.simpleListHeading}>All clocks</h2>
+        <ul className={listStyles.simpleList}>
+          {sortedItems.map((item) => (
+            <li key={`list-${item.date}`}>
+              <a href={`/${item.date}`} className={listStyles.simpleListItem}>
+                <span className={listStyles.simpleListDate}>
+                  {formatDate(item.date)}
+                </span>
+                <span className={listStyles.simpleListTitle}>
+                  {item.title || 'No Title'}
+                </span>
+                <span className={listStyles.simpleListNumber}>
+                  #{item.clockNumber}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
       <Footer />
     </div>
