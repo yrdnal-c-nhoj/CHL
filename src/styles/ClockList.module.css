@@ -26,14 +26,14 @@
   background: rgb(149, 149, 150);
   color: #272726;
 }
-
+/* 
 .simpleListHeading {
   font-family: 'Manrope', sans-serif;
   font-size: 1.1rem;
   text-align: center;
   margin: 1.5rem 0 0.5rem 0;
   color: var(--color-lab-text, #424346);
-}
+} */
 
 .simpleList {
   list-style: none;
