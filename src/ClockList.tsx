@@ -4,7 +4,6 @@ import TopNav from './components/TopNav';
 import Footer from './components/Footer';
 import Thumbnail from './components/Thumbnail';
 import homeStyles from './styles/Home.module.css';
-import dropdownStyles from './styles/MonthDropdown.module.css';
 import listStyles from './styles/ClockList.module.css';
 import type { ClockItem, DataContextType } from './types/data';
 
@@ -88,11 +87,11 @@ const ClockList: FC = () => {
     <div className={homeStyles.homeContainer}>
       <TopNav />
       <div className={homeStyles.homeCenteredContent}>
-        <div className={dropdownStyles.controls}>
+        <div className={listStyles.controls}>
           <button
             type="button"
             onClick={handleDateSort}
-            className={dropdownStyles.sortButton}
+            className={listStyles.sortButton}
           >
             date{' '}
             {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
@@ -100,7 +99,7 @@ const ClockList: FC = () => {
           <button
             type="button"
             onClick={handleTitleSort}
-            className={dropdownStyles.sortButton}
+            className={listStyles.sortButton}
           >
             title{' '}
             {sortBy === 'title-asc' ? '↓' : sortBy === 'title-desc' ? '↑' : ''}
@@ -108,7 +107,7 @@ const ClockList: FC = () => {
           <button
             type="button"
             onClick={handleNumberSort}
-            className={dropdownStyles.sortButton}
+            className={listStyles.sortButton}
           >
             number{' '}
             {sortBy === 'number-asc'
@@ -119,41 +118,16 @@ const ClockList: FC = () => {
           </button>
         </div>
 
-        <div className={homeStyles.monthGrid}>
-          {sortedItems.map((item) => (
-            <a
-              key={item.date}
-              href={`/${item.date}`}
-              className={homeStyles.monthItem}
-            >
-              <div className={homeStyles.monthItemImage}>
-                <Thumbnail
-                  date={item.date}
-                  title={item.title || ''}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    opacity: 0.8,
-                  }}
-                />
-              </div>
-              <div className={homeStyles.monthItemInfo}>
-                <span>{formatDate(item.date)}</span>
-                <span>#{item.clockNumber}</span>
-              </div>
-              <div className={homeStyles.monthItemTitle}>
-                {item.title || 'No Title'}
-              </div>
-            </a>
-          ))}
-        </div>
-
-    
         <ul className={listStyles.simpleList}>
           {sortedItems.map((item) => (
             <li key={`list-${item.date}`}>
               <a href={`/${item.date}`} className={listStyles.simpleListItem}>
+                <div className={listStyles.thumbnailWrapper}>
+                  <Thumbnail 
+                    date={item.date} 
+                    title={item.title || ''} 
+                  />
+                </div>
                 <span className={listStyles.simpleListDate}>
                   {formatDate(item.date)}
                 </span>
