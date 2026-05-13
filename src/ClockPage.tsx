@@ -234,4 +234,3 @@ currentItem={currentItem!}
 };
 
 export default ClockPage;
-
