@@ -77,28 +77,51 @@ const ClockList: FC = () => {
           </div>
         </header>
 
-        <div className={styles.monthGrid}>
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: '1px', 
+          maxWidth: '800px', 
+          margin: '0 auto',
+          padding: '0 1rem'
+        }}>
           {sortedItems.map((item) => (
             <Link
               key={item.date}
               to={`/${item.date}`}
-              className={styles.monthItem}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '1rem 0',
+                borderBottom: '1px solid #eee',
+                textDecoration: 'none',
+                color: 'inherit',
+                gap: '1.5rem'
+              }}
             >
-              <div className={styles.monthItemImage}>
+              <div style={{ width: '80px', height: '80px', flexShrink: 0, overflow: 'hidden', borderRadius: '4px' }}>
                 <Thumbnail 
                   date={item.date} 
                   title={item.title || ''} 
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               </div>
               
-              <div className={styles.monthItemInfo}>
-                <span>{formatDateDots(item.date)}</span>
-                <span>#{item.clockNumber}</span>
-              </div>
-              
-              <div className={styles.monthItemTitle}>
-                {formatTitle(item.title)}
+              <div style={{ 
+                display: 'flex', 
+                flex: 1, 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                fontFamily: 'Manrope, sans-serif'
+              }}>
+                {/* <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}> */}
+                  <span style={{ fontSize: '1.1rem', fontWeight: 600 }}>{formatTitle(item.title)}</span>
+                  <span style={{ color: '#666', fontSize: '0.9rem' }}>{formatDateDots(item.date)}</span>
+                {/* </div> */}
+                
+                <span style={{ fontFamily: 'monospace', color: '#999', fontSize: '1rem' }}>
+                  #{item.clockNumber}
+                </span>
               </div>
             </Link>
           ))}
