@@ -60,19 +60,19 @@ const ClockList: FC = () => {
               onClick={() => setSortBy(sortBy === 'date-desc' ? 'date-asc' : 'date-desc')}
               className={styles.sortButton}
             >
-              Sort by Date {sortBy.startsWith('date') ? (sortBy === 'date-desc' ? '↓' : '↑') : ''}
+              sort by date {sortBy.startsWith('date') ? (sortBy === 'date-desc' ? '↓' : '↑') : ''}
             </button>
             <button 
               onClick={() => setSortBy(sortBy === 'title-asc' ? 'title-desc' : 'title-asc')}
               className={styles.sortButton}
             >
-              Sort by Title {sortBy.startsWith('title') ? (sortBy === 'title-asc' ? '↓' : '↑') : ''}
+              sort by title {sortBy.startsWith('title') ? (sortBy === 'title-asc' ? '↓' : '↑') : ''}
             </button>
             <button 
               onClick={() => setSortBy(sortBy === 'number-desc' ? 'number-asc' : 'number-desc')}
               className={styles.sortButton}
             >
-              Sort by Number {sortBy.startsWith('number') ? (sortBy === 'number-desc' ? '↓' : '↑') : ''}
+              sort by number <nav></nav> {sortBy.startsWith('number') ? (sortBy === 'number-desc' ? '↓' : '↑') : ''}
             </button>
           </div>
         </header>
