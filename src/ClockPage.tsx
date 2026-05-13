@@ -139,6 +139,14 @@ const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPa
       {isReady && (
         <div
           onClick={handleHeaderClick}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handleHeaderClick();
+            }
+          }}
+          aria-label="Go back to month"
           style={{
             cursor: 'pointer',
             minHeight: '100vh',
@@ -189,15 +197,7 @@ const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPa
               </button>
             </div>
           </header>
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              handleHeaderClick();
-            }
-          }}
-          aria-label="Go back to month"
-        >
+
           <div
             className={styles.headerWrapper}
             style={{

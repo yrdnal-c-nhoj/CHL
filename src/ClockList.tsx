@@ -1,111 +1,28 @@
-import React, {
-  useEffect,
-  useContext,
-  useMemo,
-  Suspense,
-  useState,
-} from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useContext, useMemo, FC } from 'react';
+import { Link } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
-import Header from './components/Header';
-import ClockPageNav from './components/ClockPageNav';
-import { ClockLoadingFallback } from './utils/fontLoader';
-import { useClockPage } from './hooks/useClockPage';
-import styles from './styles/ClockPage.module.css';
-import sortStyles from './styles/SortButtons.module.css';
-import type { ClockItem, DataContextType } from './types/data';
-import { useAutoHeader } from './hooks/useAutoHeader';
+import TopNav from './components/TopNav';
+import Footer from './components/Footer';
+import Thumbnail from './components/Thumbnail';
+import { formatDateDots, formatTitle } from './utils/dateUtils';
+import styles from './styles/SortButtons.module.css';
+import homeStyles from './styles/Home.module.css';
+import type { DataItem } from './Home';
 
-import {
-  DATE_REGEX,
-  normalizeDate,
-  formatTitle,
-  formatDateDots,
-} from './utils/dateUtils';
+type SortOption = 'date-desc' | 'date-asc' | 'title-asc' | 'title-desc' | 'number-asc' | 'number-desc';
 
-// Configuration constants
-const HEADER_FADE_DELAY = 1500; // 1.5 seconds
-const OVERLAY_FADE_DURATION = 300; // 0.3 seconds for a smoother fade
-
-/**
- * Custom hook to encapsulate navigation and item discovery logic.
- * This helps keep the main component under the 50-line BTS limit.
- */
-const useClockNavigation = (items: ClockItem[] = [], date = '') => {
-  const normalizedDate = useMemo(() => normalizeDate(date || ''), [date]);
-
-  return useMemo(() => {
-const idx = items.findIndex((i) => i?.date && normalizeDate(i.date) === normalizedDate);
-    const currentItem = idx !== -1 ? items[idx] : null;
-    return {
-      currentItem,
-      prevItem: idx > 0 ? items[idx - 1] : null,
-      nextItem: idx < items.length - 1 ? items[idx + 1] : null,
-    };
-  }, [items, normalizedDate]);
-};
-
-/**
- * Extract month key from date string (YY-MM-DD -> YY-MM)
- */
-const getMonthFromDate = (date: string): string => {
-  const parts = date.split('-');
-  return parts.length >= 2 ? `${parts[0]}-${parts[1]}` : '';
-};
-
-/**
- * Sub-component for Error UI to keep main component within line limits.
- */
-const ErrorDisplay: React.FC<{ message: string; onBack: () => void }> = ({ message, onBack }) => (
-  <div className={styles.errorContainer}>
-    <h1>Error</h1>
-    <p>{message}</p>
-    <button onClick={onBack} className={styles.errorButton}>
-      Back to Home
-    </button>
-  </div>
-);
-
-const LoadingOverlay: React.FC<{ visible: boolean }> = ({ visible }) => (
-  <div
-    className={styles.loadingOverlay}
-    style={{
-      opacity: visible ? 1 : 0,
-      transition: `opacity ${OVERLAY_FADE_DURATION}ms ease-out`,
-      pointerEvents: 'none',
-    }}
-  />
-);
-
-const ClockPage: React.FC = () => {
-  const { date } = useParams();
-  const { items, loading, error: contextError } = useContext(DataContext) as DataContextType;
-  const navigate = useNavigate();
-  const headerVisible = useAutoHeader(HEADER_FADE_DELAY);
-  const { currentItem, prevItem, nextItem } = useClockNavigation(items, date);
-const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPage(currentItem ?? null);
-
-  const handleHeaderClick = () => {
-    if (currentItem?.date) {
-      const monthKey = getMonthFromDate(currentItem.date);
-      // Navigate to home with month expanded
-      navigate(`/?month=${monthKey}`);
-    } else {
-      navigate('/');
-    }
+const ClockList: FC = () => {
+  const { items, loading, error } = useContext(DataContext) as { 
+    items: DataItem[], 
+    loading: boolean, 
+    error: string | null 
   };
-
-  useEffect(() => {
-    if (!date || !DATE_REGEX.test(date)) {
-      navigate('/', { replace: true });
-    }
-  }, [date, navigate]);
-
-  const [sortBy, setSortBy] = useState<'date-desc' | 'date-asc' | 'title-asc' | 'title-desc' | 'number-asc' | 'number-desc'>('date-desc');
+  
+  const [sortBy, setSortBy] = useState<SortOption>('date-desc');
 
   const sortedItems = useMemo(() => {
-    const result = [...items].filter((item) => item?.date);
-
+    const result = [...items].filter(item => item.date);
+    
     switch (sortBy) {
       case 'date-desc':
         return result.sort((a, b) => b.date.localeCompare(a.date));
@@ -124,113 +41,93 @@ const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPa
     }
   }, [items, sortBy]);
 
-  if (pageError || contextError || (!loading && !currentItem && items.length > 0)) {
-    return (
-      <ErrorDisplay
-        message={pageError || contextError || 'Clock not found'}
-        onBack={() => navigate('/')}
-      />
-    );
-  }
-
+  if (loading) return <div className={homeStyles.loadingContainer}>Loading clocks...</div>;
+  if (error) return <div className={homeStyles.error}>Error: {error}</div>;
 
   return (
-    <div className={`${styles.container} ${isReady ? styles.loaded : ''}`}>
-      {isReady && (
-        <div
-          onClick={handleHeaderClick}
-          style={{
-            cursor: 'pointer',
-            minHeight: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <header
-            style={{
-              textAlign: 'center',
-              margin: '1rem 0',
-              fontFamily: 'Manrope, sans-serif',
-            }}
-          >
-            <div className={sortStyles.sortButtonContainer}>
-              <button
-                onClick={() => setSortBy(sortBy === 'date-desc' ? 'date-asc' : 'date-desc')}
-                className={`${sortStyles.sortButton} ${sortBy.startsWith('date') ? sortStyles.active : ''}`}
-              >
-                sort by date{' '}
-                {sortBy.startsWith('date')
-                  ? sortBy === 'date-desc'
-                    ? '↓'
-                    : '↑'
-                  : ''}
-              </button>
-              <button
-                onClick={() => setSortBy(sortBy === 'title-asc' ? 'title-desc' : 'title-asc')}
-                className={`${sortStyles.sortButton} ${sortBy.startsWith('title') ? sortStyles.active : ''}`}
-              >
-                sort by title{' '}
-                {sortBy.startsWith('title')
-                  ? sortBy === 'title-asc'
-                    ? '↓'
-                    : '↑'
-                  : ''}
-              </button>
-              <button
-                onClick={() => setSortBy(sortBy === 'number-desc' ? 'number-asc' : 'number-desc')}
-                className={`${sortStyles.sortButton} ${sortBy.startsWith('number') ? sortStyles.active : ''}`}
-              >
-                sort by number{' '}
-                {sortBy.startsWith('number')
-                  ? sortBy === 'number-desc'
-                    ? '↓'
-                    : '↑'
-                  : ''}
-              </button>
-            </div>
-          </header>
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              handleHeaderClick();
-            }
-          }}
-          aria-label="Go back to month"
-        >
-          <div
-            className={styles.headerWrapper}
-            style={{
-              opacity: headerVisible ? 1 : 0,
-              pointerEvents: headerVisible ? 'auto' : 'none',
-            }}
-          >
-            <Header visible={headerVisible} />
+    <div className={homeStyles.homeContainer}>
+      <TopNav />
+      
+      <div className={homeStyles.homeCenteredContent} style={{ paddingBottom: '1rem' }}>
+        <header style={{ 
+          textAlign: 'center', 
+          margin: '1rem 0', 
+          fontFamily: 'Manrope, sans-serif' 
+        }}>
+    
+          <div className={styles.sortButtonContainer}>
+            <button 
+              onClick={() => setSortBy(sortBy === 'date-desc' ? 'date-asc' : 'date-desc')}
+              className={`${styles.sortButton} ${sortBy.startsWith('date') ? styles.active : ''}`}
+            >
+              sort by date {sortBy.startsWith('date') ? (sortBy === 'date-desc' ? '↓' : '↑') : ''}
+            </button>
+            <button 
+              onClick={() => setSortBy(sortBy === 'title-asc' ? 'title-desc' : 'title-asc')}
+              className={`${styles.sortButton} ${sortBy.startsWith('title') ? styles.active : ''}`}
+            >
+              sort by title {sortBy.startsWith('title') ? (sortBy === 'title-asc' ? '↓' : '↑') : ''}
+            </button>
+            <button 
+              onClick={() => setSortBy(sortBy === 'number-desc' ? 'number-asc' : 'number-desc')}
+              className={`${styles.sortButton} ${sortBy.startsWith('number') ? styles.active : ''}`}
+            >
+              sort by number {sortBy.startsWith('number') ? (sortBy === 'number-desc' ? '↓' : '↑') : ''}
+            </button>
           </div>
+        </header>
 
-          {ClockComponent && (
-            <div className={styles.clockWrapper}>
-              <Suspense fallback={<ClockLoadingFallback />}>
-                <ClockComponent />
-              </Suspense>
-            </div>
-          )}
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: '1px', 
+          maxWidth: '800px', 
+          margin: '0 auto',
+          padding: '0 1rem'
+        }}>
+          {sortedItems.map((item, index) => (
+            <Link
+              key={item.date}
+              to={`/${item.date}`}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '1rem 0',
+                borderBottom: index === sortedItems.length - 1 ? 'none' : '1px solid #ddd',
+                textDecoration: 'none',
+                color: 'inherit',
+                gap: '1.5rem'
+              }}
+            >
+              <div style={{ width: '80px', height: '80px', flexShrink: 0, overflow: 'hidden', borderRadius: '4px' }}>
+                <Thumbnail 
+                  date={item.date} 
+                  title={item.title || ''} 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </div>
+              
+              <div style={{ 
+                display: 'flex', 
+                flex: 1, 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                fontFamily: 'Manrope, sans-serif'
+              }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <span style={{ color: '#999', fontSize: '0.9rem' }}>{formatDateDots(item.date)}</span>
+                  <span style={{ fontSize: '1.1rem', fontWeight: 600 }}>{formatTitle(item.title)}</span>
+                  <span style={{ fontFamily: 'monospace', color: '#999', fontSize: '0.9rem'  }}>#{item.clockNumber}</span>
+                   </div>
+              </div>
+            </Link>
+          ))}
         </div>
-      )}
+      </div>
 
-      {isReady && ClockComponent && currentItem && (
-        <ClockPageNav
-prevItem={prevItem ?? null}
-nextItem={nextItem ?? null}
-currentItem={currentItem!}
-          formatTitle={formatTitle}
-          formatDate={formatDateDots}
-        />
-      )}
-
-      <LoadingOverlay visible={overlayVisible} />
+      <Footer />
     </div>
   );
 };
 
-export default ClockPage;
+export default ClockList;
