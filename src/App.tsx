@@ -15,7 +15,7 @@
  * - Future-proof React Router v7 compatibility
  */
 
-import React, { useEffect, useCallback, ReactNode, ErrorInfo } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -31,7 +31,7 @@ const Home = React.lazy(() => import('./Home'));
 const ClockPage = React.lazy(() => import('./ClockPage'));
 const Today = React.lazy(() => import('./Today'));
 const Contact = React.lazy(() => import('./Contact'));
-
+const ClockList = React.lazy(() => import('./ClockList'));
 import { pageview } from './analytics';
 
 // Configuration constants
@@ -69,16 +69,16 @@ const AnalyticsAndSEO = React.memo(() => {
   }, [processedPath]);
 
   // Analytics tracking with useCallback to prevent unnecessary re-renders
-  const trackPageView = useCallback(() => {
+  const trackPageView = React.useCallback(() => {
     try {
       if (typeof pageview !== 'function') return;
       pageview(processedPath.path + location.search);
     } catch (error) {
       console.warn('Analytics tracking failed:', error);
     }
-  }, [processedPath.path, location.search]);
+  }, [processedPath, location.search]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     trackPageView();
   }, [trackPageView]);
 
@@ -103,7 +103,7 @@ AnalyticsAndSEO.displayName = 'AnalyticsAndSEO';
  * Catches JavaScript errors in child components and displays a fallback UI
  */
 interface Props {
-  children?: ReactNode;
+  children?: React.ReactNode;
 }
 
 interface State {
@@ -120,7 +120,7 @@ class ErrorBoundary extends React.Component<Props, State> {
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('Application Error:', error, errorInfo);
   }
 
@@ -186,6 +186,7 @@ const App: React.FC = () => {
               <Route path="/:date" element={<ClockPage />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/today" element={<Today />} />
+              <Route path="/list" element={<ClockList/>} />
               <Route path="/index.html" element={<Navigate to="/" replace />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
