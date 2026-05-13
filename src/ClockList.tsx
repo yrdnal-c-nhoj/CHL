@@ -5,7 +5,7 @@ import TopNav from './components/TopNav';
 import Footer from './components/Footer';
 import Thumbnail from './components/Thumbnail';
 import { formatDateDots, formatTitle } from './utils/dateUtils';
-import styles from './styles/Home.module.css'; // Reusing grid styles for consistency
+import styles from './styles/Home.module.css';
 import type { DataItem } from './Home';
 
 type SortOption = 'date-desc' | 'date-asc' | 'title-asc' | 'title-desc' | 'number-asc' | 'number-desc';
@@ -77,32 +77,34 @@ const ClockList: FC = () => {
           </div>
         </header>
 
-        <div className={styles.monthGrid}>
+        <ul className={styles.clockList}>
           {sortedItems.map((item) => (
-            <Link
-              key={item.date}
-              to={`/${item.date}`}
-              className={styles.monthItem}
-            >
-              <div className={styles.monthItemImage}>
-                <Thumbnail 
-                  date={item.date} 
-                  title={item.title || ''} 
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }}
-                />
-              </div>
-              
-              <div className={styles.monthItemInfo}>
-                <span>{formatDateDots(item.date)}</span>
-                <span>#{item.clockNumber}</span>
-              </div>
-              
-              <div className={styles.monthItemTitle}>
-                {formatTitle(item.title)}
-              </div>
-            </Link>
+            <li key={item.date}>
+              <Link
+                to={`/${item.date}`}
+                className={styles.clockListItem}
+              >
+                <div className={styles.clockListItemImage}>
+                  <Thumbnail
+                    date={item.date}
+                    title={item.title || ''}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }}
+                  />
+                </div>
+
+                <div className={styles.clockListItemBody}>
+                  <div className={styles.clockListItemTitle}>
+                    {formatTitle(item.title)}
+                  </div>
+                  <div className={styles.clockListItemMeta}>
+                    <span>{formatDateDots(item.date)}</span>
+                    <span>#{item.clockNumber}</span>
+                  </div>
+                </div>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
 
       <Footer />

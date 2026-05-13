@@ -164,3 +164,86 @@
   text-align: center;
   margin-top: -0.15rem;
 }
+
+/* ========================================
+   CLOCK LIST STYLES (single-column list)
+   ======================================== */
+
+.clockList {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  margin: 0;
+  margin-left: -50vw;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-lab-gray-medium);
+  background-color: var(--color-lab-gray-light);
+  box-sizing: border-box;
+}
+
+.clockListItem {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--color-lab-gray-medium);
+  color: var(--color-lab-text);
+  text-decoration: none;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+  box-sizing: border-box;
+}
+
+.clockListItem:hover {
+  background-color: #c4ccdd;
+  opacity: 1;
+}
+
+.clockListItemImage {
+  flex: 0 0 auto;
+  width: 60px;
+  height: 60px;
+  aspect-ratio: 1 / 1;
+  border-radius: 0.25rem;
+  border: 0.5px solid var(--color-lab-gray-dark);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .clockListItemImage {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.clockListItemBody {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.clockListItemTitle {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1rem;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clockListItemMeta {
+  display: flex;
+  gap: 0.75rem;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.7rem;
+  color: #888;
+}
