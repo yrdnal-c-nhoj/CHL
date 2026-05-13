@@ -57,18 +57,18 @@ const TopNav: React.FC = () => {
               MANIFESTO
             </NavLink>
           </li>
-        
+           */}
 
             <li className={styles.navItem}>
             <NavLink
-              to="/about"
+              to="/list"
               className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
               onClick={() => setIsMenuOpen(false)}
             >
-              ABOUT
+              LIST
             </NavLink>
           </li>
-           */}
+        
 
           <li className={styles.navItem}>
             <NavLink
