@@ -1,6 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { Suspense, useEffect, useRef } from 'react';
 import { useClockTime } from '@/utils/hooks';
+import { useSuspenseFontLoader, ClockLoadingFallback } from '@/utils/fontLoader';
+
+
 import styles from './Clock.module.css';
+
+
 
 // ---------------- INTERFACES ----------------
 interface Star {
@@ -108,21 +113,42 @@ const StarField: React.FC = () => {
 };
 
 
-// ---------------- MAIN NIGHT SKY COMPONENT ----------------
-const NightSky: React.FC = () => {
+const fontConfigs = [
+  {
+    fontFamily: 'ClockFont_26-05-11',
+    // Vite serves /assets as-is; use a public-style path
+    fontUrl: '/assets/fonts/2026/26-05-11-stars.ttf',
+  },
+] as const;
+
+const NightSkyInner: React.FC = () => {
   const currentTime = useClockTime();
+
+  // Load date-specific font via Suspense
+  useSuspenseFontLoader(fontConfigs as any);
 
   return (
     <div className={styles.container}>
       <div className={styles.nightSkyGradient}>
         <StarField />
       </div>
-      
-      <time dateTime={currentTime.toISOString()} className={styles.timeDisplay}>
+
+      <time
+        dateTime={currentTime.toISOString()}
+        className={styles.timeDisplay}
+        style={{ fontFamily: `'ClockFont_26-05-11', 'Courier New', monospace` }}
+      >
         {currentTime.toLocaleTimeString()}
       </time>
     </div>
   );
 };
 
+const NightSky: React.FC = () => (
+  <Suspense fallback={<ClockLoadingFallback />}>
+    <NightSkyInner />
+  </Suspense>
+);
+
 export default NightSky;
+
