@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import Thumbnail from './components/Thumbnail';
 import { formatDateDots, formatTitle } from './utils/dateUtils';
 import styles from './styles/Home.module.css'; // Reusing grid styles for consistency
+import dropdownStyles from './styles/MonthDropdown.module.css';
 import type { DataItem } from './Home';
 
 type SortOption = 'date-desc' | 'date-asc' | 'title-asc' | 'title-desc' | 'number-asc' | 'number-desc';
@@ -55,24 +56,24 @@ const ClockList: FC = () => {
         }}>
           <h1 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>All Clocks</h1>
           
-          <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button 
+          <div className={dropdownStyles.controls}>
+            <button
               onClick={() => setSortBy(sortBy === 'date-desc' ? 'date-asc' : 'date-desc')}
-              style={{ padding: '8px 16px', cursor: 'pointer', border: '1px solid #ddd', background: '#fff' }}
+              className={dropdownStyles.sortButton}
             >
-              Sort by Date {sortBy.startsWith('date') ? (sortBy === 'date-desc' ? '↓' : '↑') : ''}
+              date {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
             </button>
-            <button 
+            <button
               onClick={() => setSortBy(sortBy === 'title-asc' ? 'title-desc' : 'title-asc')}
-              style={{ padding: '8px 16px', cursor: 'pointer', border: '1px solid #ddd', background: '#fff' }}
+              className={dropdownStyles.sortButton}
             >
-              Sort by Title {sortBy.startsWith('title') ? (sortBy === 'title-asc' ? '↓' : '↑') : ''}
+              title {sortBy === 'title-asc' ? '↓' : sortBy === 'title-desc' ? '↑' : ''}
             </button>
-            <button 
+            <button
               onClick={() => setSortBy(sortBy === 'number-desc' ? 'number-asc' : 'number-desc')}
-              style={{ padding: '8px 16px', cursor: 'pointer', border: '1px solid #ddd', background: '#fff' }}
+              className={dropdownStyles.sortButton}
             >
-              Sort by Number {sortBy.startsWith('number') ? (sortBy === 'number-desc' ? '↓' : '↑') : ''}
+              number {sortBy === 'number-asc' ? '↓' : sortBy === 'number-desc' ? '↑' : ''}
             </button>
           </div>
         </header>
