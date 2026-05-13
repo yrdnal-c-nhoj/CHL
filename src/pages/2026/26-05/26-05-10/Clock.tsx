@@ -118,7 +118,7 @@ const NightSky: React.FC = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        filter: 'contrast(1.5)',
+        filter: 'contrast(1.5) hue-rotate(80deg) saturate(0.2)',
       }}
     >
       {/* CLOCK GRID */}
