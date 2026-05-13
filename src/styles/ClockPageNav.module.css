@@ -18,24 +18,6 @@
   transition: opacity 0.4s ease-out, transform 0.4s ease-out;
 }
 
-/* Hitbox layer - always active for interaction */
-.footerStrip.hitboxLayer {
-  opacity: 0.01; /* Nearly invisible but allows mouse events */
-  transform: translateY(0);
-  pointer-events: auto;
-  z-index: 10001; /* Above visual layer */
-  background: transparent;
-  border: none;
-}
-
-/* Visual layer - fades based on visibility state */
-.footerStrip.visualLayer {
-  transform: translateY(0);
-  pointer-events: none; /* Visual layer doesn't handle interactions */
-  transition: opacity 0.4s ease-out;
-  z-index: 10000; /* Below hitbox layer */
-}
-
 /* --- Visibility states --- */
 .footerStrip.visible {
   opacity: 0.7;
@@ -84,20 +66,6 @@
     background 0.4s ease,
     color 0.4s ease,
     opacity 0.4s ease;
-}
-
-/* Hitbox layer buttons - invisible but clickable */
-.footerStrip.hitboxLayer .footerButton,
-.footerStrip.hitboxLayer .navButton {
-  opacity: 0;
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-/* Visual layer buttons - visible but non-interactive */
-.footerStrip.visualLayer .footerButton,
-.footerStrip.visualLayer .navButton {
-  pointer-events: none;
 }
 
 /* Ensure all text inside footer buttons uses the same color */
