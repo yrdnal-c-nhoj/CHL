@@ -5,7 +5,8 @@ import TopNav from './components/TopNav';
 import Footer from './components/Footer';
 import Thumbnail from './components/Thumbnail';
 import { formatDateDots, formatTitle } from './utils/dateUtils';
-import styles from './styles/Home.module.css'; // Reusing grid styles for consistency
+import styles from './styles/ClockList.module.css';
+import homeStyles from './styles/Home.module.css';
 import type { DataItem } from './Home';
 
 type SortOption = 'date-desc' | 'date-asc' | 'title-asc' | 'title-desc' | 'number-asc' | 'number-desc';
@@ -40,37 +41,36 @@ const ClockList: FC = () => {
     }
   }, [items, sortBy]);
 
-  if (loading) return <div className={styles.loadingContainer}>Loading clocks...</div>;
-  if (error) return <div className={styles.error}>Error: {error}</div>;
+  if (loading) return <div className={homeStyles.loadingContainer}>Loading clocks...</div>;
+  if (error) return <div className={homeStyles.error}>Error: {error}</div>;
 
   return (
-    <div className={styles.homeContainer}>
+    <div className={homeStyles.homeContainer}>
       <TopNav />
       
-      <div className={styles.homeCenteredContent} style={{ paddingBottom: '4rem' }}>
+      <div className={homeStyles.homeCenteredContent} style={{ paddingBottom: '1rem' }}>
         <header style={{ 
           textAlign: 'center', 
-          margin: '2rem 0', 
+          margin: '1rem 0', 
           fontFamily: 'Manrope, sans-serif' 
         }}>
-          <h1 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>All Clocks</h1>
-          
-          <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
+    
+          <div className={styles.sortButtonContainer}>
             <button 
               onClick={() => setSortBy(sortBy === 'date-desc' ? 'date-asc' : 'date-desc')}
-              style={{ padding: '8px 16px', cursor: 'pointer', border: '1px solid #ddd', background: '#fff' }}
+              className={styles.sortButton}
             >
               Sort by Date {sortBy.startsWith('date') ? (sortBy === 'date-desc' ? '↓' : '↑') : ''}
             </button>
             <button 
               onClick={() => setSortBy(sortBy === 'title-asc' ? 'title-desc' : 'title-asc')}
-              style={{ padding: '8px 16px', cursor: 'pointer', border: '1px solid #ddd', background: '#fff' }}
+              className={styles.sortButton}
             >
               Sort by Title {sortBy.startsWith('title') ? (sortBy === 'title-asc' ? '↓' : '↑') : ''}
             </button>
             <button 
               onClick={() => setSortBy(sortBy === 'number-desc' ? 'number-asc' : 'number-desc')}
-              style={{ padding: '8px 16px', cursor: 'pointer', border: '1px solid #ddd', background: '#fff' }}
+              className={styles.sortButton}
             >
               Sort by Number {sortBy.startsWith('number') ? (sortBy === 'number-desc' ? '↓' : '↑') : ''}
             </button>
@@ -85,7 +85,7 @@ const ClockList: FC = () => {
           margin: '0 auto',
           padding: '0 1rem'
         }}>
-          {sortedItems.map((item) => (
+          {sortedItems.map((item, index) => (
             <Link
               key={item.date}
               to={`/${item.date}`}
@@ -93,7 +93,7 @@ const ClockList: FC = () => {
                 display: 'flex',
                 alignItems: 'center',
                 padding: '1rem 0',
-                borderBottom: '1px solid #eee',
+                borderBottom: index === sortedItems.length - 1 ? 'none' : '1px solid #ddd',
                 textDecoration: 'none',
                 color: 'inherit',
                 gap: '1.5rem'
@@ -114,14 +114,11 @@ const ClockList: FC = () => {
                 alignItems: 'center',
                 fontFamily: 'Manrope, sans-serif'
               }}>
-                {/* <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}> */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <span style={{ color: '#999', fontSize: '0.9rem' }}>{formatDateDots(item.date)}</span>
                   <span style={{ fontSize: '1.1rem', fontWeight: 600 }}>{formatTitle(item.title)}</span>
-                  <span style={{ color: '#666', fontSize: '0.9rem' }}>{formatDateDots(item.date)}</span>
-                {/* </div> */}
-                
-                <span style={{ fontFamily: 'monospace', color: '#999', fontSize: '1rem' }}>
-                  #{item.clockNumber}
-                </span>
+                  <span style={{ fontFamily: 'monospace', color: '#999', fontSize: '0.9rem'  }}>#{item.clockNumber}</span>
+                   </div>
               </div>
             </Link>
           ))}
