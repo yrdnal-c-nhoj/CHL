@@ -133,19 +133,13 @@
   border-radius: 0.25rem;
   border: 0.5px solid var(--color-lab-gray-dark);
   width: 100%;
-  height: 120px;
-  aspect-ratio: 1/1;
+  /* Always square — never let height override the 1:1 ratio. */
+  height: auto;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* Larger images for desktop */
-@media (min-width: 768px) {
-  .monthItemImage {
-    height: 200px;
-  }
 }
 
 .monthItemInfo {
