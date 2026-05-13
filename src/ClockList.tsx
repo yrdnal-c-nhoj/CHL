@@ -149,7 +149,7 @@ const ClockList: FC = () => {
           ))}
         </div>
 
-        <h2 className={listStyles.simpleListHeading}>All clocks</h2>
+    
         <ul className={listStyles.simpleList}>
           {sortedItems.map((item) => (
             <li key={`list-${item.date}`}>
