@@ -1,3 +1,38 @@
+.loadingContainer {
+  height: 100dvh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Manrope', sans-serif;
+}
+
+.listPageContainer {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+.centeredContent {
+  z-index: 5;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  gap: clamp(0.5rem, 1vw, 1.5rem);
+  width: 100%;
+  max-width: 100%;
+}
+
 .sortButtonContainer {
   display: flex;
   gap: 1px;
@@ -26,14 +61,6 @@
   background: rgb(149, 149, 150);
   color: #272726;
 }
-/* 
-.simpleListHeading {
-  font-family: 'Manrope', sans-serif;
-  font-size: 1.1rem;
-  text-align: center;
-  margin: 1.5rem 0 0.5rem 0;
-  color: var(--color-lab-text, #424346);
-} */
 
 .simpleList {
   list-style: none;
@@ -78,14 +105,10 @@
   white-space: nowrap;
 }
 
-.simpleListTitle {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 
 .simpleListNumber {
   color: #888;
   font-size: 0.8rem;
-  text-align: right;
+  /* text-align: right; */
   white-space: nowrap;
 }
