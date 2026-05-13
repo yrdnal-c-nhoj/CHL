@@ -29,6 +29,7 @@ import { DataProvider } from './context/DataContext';
 // Lazy loaded components for better performance
 const Home = React.lazy(() => import('./Home'));
 const ClockPage = React.lazy(() => import('./ClockPage'));
+const ClockList = React.lazy(() => import('./ClockList'));
 const Today = React.lazy(() => import('./Today'));
 const Contact = React.lazy(() => import('./Contact'));
 
@@ -186,6 +187,7 @@ const App: React.FC = () => {
               <Route path="/:date" element={<ClockPage />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/today" element={<Today />} />
+              <Route path="/list" element={<ClockList />} />
               <Route path="/index.html" element={<Navigate to="/" replace />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
