@@ -3,7 +3,6 @@ import { DataContext } from './context/DataContext';
 import TopNav from './components/TopNav';
 import Footer from './components/Footer';
 import Thumbnail from './components/Thumbnail';
-import homeStyles from './styles/Home.module.css';
 import listStyles from './styles/ClockList.module.css';
 import type { ClockItem, DataContextType } from './types/data';
 
@@ -77,16 +76,16 @@ const ClockList: FC = () => {
     );
 
   if (loading) {
-    return <div className={homeStyles.loadingContainer} />;
+    return <div className={listStyles.loadingContainer} />;
   }
   if (error) {
     return <div>Error: {error}</div>;
   }
 
   return (
-    <div className={homeStyles.homeContainer}>
+    <div className={listStyles.listPageContainer}>
       <TopNav />
-      <div className={homeStyles.homeCenteredContent}>
+      <div className={listStyles.centeredContent}>
         <div className={listStyles.controls}>
           <button
             type="button"
@@ -128,9 +127,12 @@ const ClockList: FC = () => {
                     title={item.title || ''} 
                   />
                 </div>
-                <span className={listStyles.simpleListDate}>
+                <time 
+                  className={listStyles.simpleListDate} 
+                  dateTime={`20${item.date}`}
+                >
                   {formatDate(item.date)}
-                </span>
+                </time>
                 <span className={listStyles.simpleListTitle}>
                   {item.title || 'No Title'}
                 </span>
