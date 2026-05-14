@@ -17,11 +17,11 @@
   height: 100%;
   background: linear-gradient(
     to bottom,
-    #000428 0%,
-    #004e92 20%,
+    #04149f 0%,
+    #0e3455 20%,
     #001833 40%,
-    #000814 60%,
-    #000000 100%
+    #1b283b 60%,
+    #2c342a 100%
   );
   z-index: 1;
 }
@@ -38,19 +38,33 @@
 .star {
   position: absolute;
   border-radius: 50%;
-  animation: twinkle ease-in-out infinite;
+  /* Combine twinkle and falling animations */
+  animation: 
+    twinkle var(--twinkle-speed) ease-in-out infinite,
+    fall var(--fall-speed) linear infinite;
+  animation-delay: var(--fall-delay);
   box-shadow: 0 0 6px currentColor;
   transition: opacity 0.3s ease;
+  will-change: transform, opacity;
 }
 
 @keyframes twinkle {
   0%, 100% {
-    opacity: 0.2;
+    opacity: 0.3;
     transform: scale(0.8);
   }
   50% {
     opacity: 1;
     transform: scale(1.2);
+  }
+}
+
+@keyframes fall {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-120vh);
   }
 }
 
@@ -88,29 +102,45 @@
 .timeDisplay {
   position: relative;
   z-index: 10;
-  font-family: 'Courier New', monospace;
-  font-size: 2rem;
+  font-family: 'ClockFont_26-05-11', 'Courier New', monospace;
+  font-size: 44vh;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-items: center;
+  align-items: center;
+  line-height: 0.8;
+  font-variant-numeric: tabular-nums;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.188);
   text-shadow: 
     0 0 10px rgba(255, 255, 255, 0.5),
     0 0 20px rgba(255, 255, 255, 0.3),
     0 0 30px rgba(255, 255, 255, 0.1);
-  background: rgba(0, 0, 0, 0.3);
-  padding: 1rem 2rem;
+  padding: 1rem 0rem;
   border-radius: 10px;
   -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  letter-spacing: 0.1em;
+
+}
+
+.digitBox {
+  width: 28vh;
+  display: inline-flex;
+  justify-content: center;
 }
 
 /* Mobile responsive */
 @media (max-width: 480px) {
   .timeDisplay {
-    font-size: 1.5rem;
+    grid-template-columns: repeat(2, auto);
+    font-size: 30vh;
     padding: 0.8rem 1.5rem;
   }
+
+.digitBox {
+  width: 19vh;
+  display: inline-flex;
+  justify-content: center;
+}
 }
 
 /* Add some nebula effects */
