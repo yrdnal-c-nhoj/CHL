@@ -48,7 +48,6 @@ const formatDate = (dateStr: string | undefined): string => {
   const month = monthNames[date.getMonth()];
   const year = String(date.getFullYear()).slice(-2);
 
-  return `${day} ${month} '${year}`;
   return `${day} ${month} '${year}`.replace(/\s?'/, " '");
 };
 
