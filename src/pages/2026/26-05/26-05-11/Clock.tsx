@@ -59,7 +59,7 @@ const NIGHT_SKY_CONFIG = {
 // ---------------- UTILITIES ----------------
 const generateRandomStar = (id: number): Star => {
   const colors = NIGHT_SKY_CONFIG.COLORS.stars;
-  
+
   return {
     id,
     x: Math.random() * 100,
@@ -71,6 +71,31 @@ const generateRandomStar = (id: number): Star => {
     delay: Math.random() * -20, // Negative delay so stars start at different positions in the cycle
     opacity: Math.random() * 0.5 + 0.5,
   };
+};
+
+// Custom hook for random digit opacity fading
+const useDigitOpacities = (digitCount: number) => {
+  const [opacities, setOpacities] = useState<number[]>(() =>
+    Array.from({ length: digitCount }, () =>
+      Math.random() * (NIGHT_SKY_CONFIG.DIGIT_FADE.maxOpacity - NIGHT_SKY_CONFIG.DIGIT_FADE.minOpacity) +
+      NIGHT_SKY_CONFIG.DIGIT_FADE.minOpacity
+    )
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOpacities(prev =>
+        prev.map(() =>
+          Math.random() * (NIGHT_SKY_CONFIG.DIGIT_FADE.maxOpacity - NIGHT_SKY_CONFIG.DIGIT_FADE.minOpacity) +
+          NIGHT_SKY_CONFIG.DIGIT_FADE.minOpacity
+        )
+      );
+    }, NIGHT_SKY_CONFIG.DIGIT_FADE.updateInterval);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return opacities;
 };
 
 // ---------------- COMPONENTS ----------------
