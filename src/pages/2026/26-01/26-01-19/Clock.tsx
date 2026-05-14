@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import bgImage from '@/assets/images/2026/26-01/26-01-19/hands.webp';
+import { useClockTime } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 const COLORS = {
@@ -117,8 +118,7 @@ const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }) => {
 };
 
 const ManyHandClock: React.FC = () => {
-  const [now, setNow] = useState(new Date());
-  const [fraction, setFraction] = useState<number>(0);
+  const now = useClockTime();
   const [clockSize, setClockSize] = useState<number>(90);
   const [bgReady, setBgReady] = useState<boolean>(false);
 
@@ -160,73 +160,62 @@ const ManyHandClock: React.FC = () => {
     return () => clearTimeout(timeout);
   }, []);
 
+  // Derived time values
+  const sFraction = now.getSeconds() + now.getMilliseconds() / 1000;
+  const baseRotation = (sFraction / 60) * 360;
+  const currentTime = now.getTime();
+  const s = now.getSeconds();
+
+  // Behavior Logic triggered by time updates
   useEffect(() => {
-    let frameId: number;
+    // 1. Forgetful Logic
+    if (currentTime > nextChangeRef.current) {
+      isFrozenRef.current = !isFrozenRef.current;
+      if (isFrozenRef.current) frozenAtRef.current = baseRotation;
+      nextChangeRef.current = currentTime + (Math.random() * 3000 + 1000);
+    }
+    setForgetfulPos(isFrozenRef.current ? frozenAtRef.current : baseRotation);
 
-    const tick = () => {
-      frameId = requestAnimationFrame(tick);
-
-      const t = new Date();
-      const currentTime = t.getTime();
-      const s = t.getSeconds();
-      const sFraction = s + t.getMilliseconds() / 1000;
-      const baseRotation = (sFraction / 60) * 360;
-
-      setNow(t);
-      setFraction(sFraction);
-
-      // 1. Forgetful Logic
-      if (currentTime > nextChangeRef.current) {
-        isFrozenRef.current = !isFrozenRef.current;
-        if (isFrozenRef.current) frozenAtRef.current = baseRotation;
-        nextChangeRef.current = currentTime + (Math.random() * 3000 + 1000);
-      }
-      setForgetfulPos(isFrozenRef.current ? frozenAtRef.current : baseRotation);
-
-      // 2. Sleepy Logic
-      sleepyRefs.current.forEach((ref, i) => {
-        if (currentTime > ref.next) {
-          if (ref.frozen) {
-            ref.shaking = true;
-            ref.start = currentTime;
-            ref.frozen = false;
-          } else {
-            ref.frozen = true;
-            ref.at = baseRotation;
-          }
-          ref.next = currentTime + (Math.random() * 6000 + 2000);
+    // 2. Sleepy Logic
+    sleepyRefs.current.forEach((ref, i) => {
+      if (currentTime > ref.next) {
+        if (ref.frozen) {
+          ref.shaking = true;
+          ref.start = currentTime;
+          ref.frozen = false;
+        } else {
+          ref.frozen = true;
+          ref.at = baseRotation;
         }
-        if (ref.shaking && currentTime - ref.start > 300) ref.shaking = false;
-        const pos = ref.frozen
-          ? ref.at
-          : ref.shaking
-            ? ref.at + Math.sin(currentTime * (0.05 + i * 0.01)) * 8
-            : baseRotation;
-        i === 0 ? setSleepyPos1(pos) : setSleepyPos2(pos);
-      });
-
-      // 3. Panicked Logic
-      if (s >= 0 && s < 6) {
-        if (panicStateRef.current === 'normal') {
-          panicStateRef.current = 'stuck';
-          panicStuckAtRef.current = (Math.random() * 3 + 1) * 6;
-        }
+        ref.next = currentTime + (Math.random() * 6000 + 2000);
       }
-      if (panicStateRef.current === 'stuck') {
-        setPanickedPos(panicStuckAtRef.current);
-        if (s >= 7) panicStateRef.current = 'rushing';
-      } else if (panicStateRef.current === 'rushing') {
-        const shake = Math.sin(currentTime * 0.12) * 2.5;
-        setPanickedPos(baseRotation + 12 + shake);
-        if (s >= 15) panicStateRef.current = 'normal';
-      } else {
-        setPanickedPos(baseRotation);
-      }
-    };
+      if (ref.shaking && currentTime - ref.start > 300) ref.shaking = false;
+      const pos = ref.frozen
+        ? ref.at
+        : ref.shaking
+          ? ref.at + Math.sin(currentTime * (0.05 + i * 0.01)) * 8
+          : baseRotation;
+      i === 0 ? setSleepyPos1(pos) : setSleepyPos2(pos);
+    });
 
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
+    // 3. Panicked Logic
+    if (s >= 0 && s < 6) {
+      if (panicStateRef.current === 'normal') {
+        panicStateRef.current = 'stuck';
+        panicStuckAtRef.current = (Math.random() * 3 + 1) * 6;
+      }
+    }
+    if (panicStateRef.current === 'stuck') {
+      setPanickedPos(panicStuckAtRef.current);
+      if (s >= 7) panicStateRef.current = 'rushing';
+    } else if (panicStateRef.current === 'rushing') {
+      const shake = Math.sin(currentTime * 0.12) * 2.5;
+      setPanickedPos(baseRotation + 12 + shake);
+      if (s >= 15) panicStateRef.current = 'normal';
+    } else {
+      setPanickedPos(baseRotation);
+    }
+  }, [now, baseRotation, currentTime, s]);
 
   const h = now.getHours();
   const m = now.getMinutes();

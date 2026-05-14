@@ -186,7 +186,7 @@ const App: React.FC = () => {
               <Route path="/:date" element={<ClockPage />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/today" element={<Today />} />
-              <Route path="/list" element={<ClockList/>} />
+              <Route path="/list" element={<ClockList />} />
               <Route path="/index.html" element={<Navigate to="/" replace />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
