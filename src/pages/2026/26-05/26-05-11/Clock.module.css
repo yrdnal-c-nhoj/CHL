@@ -126,6 +126,49 @@
   width: 28vh;
   display: inline-flex;
   justify-content: center;
+  position: relative;
+}
+
+.digitInner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.digitFadeIn {
+  animation: digitIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.digitFadeOut {
+  animation: digitOut 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes digitIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes digitOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-8px);
+    filter: blur(2px);
+  }
 }
 
 /* Mobile responsive */

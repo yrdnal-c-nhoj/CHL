@@ -110,6 +110,39 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
+const SoftDigit: React.FC<{ char: string }> = ({ char }) => {
+  const prevCharRef = useRef(char);
+  const [displayed, setDisplayed] = useState(char);
+  const [transitioning, setTransitioning] = useState(false);
+
+  useEffect(() => {
+    if (char !== prevCharRef.current) {
+      setTransitioning(true);
+      const timer = setTimeout(() => {
+        setDisplayed(char);
+        setTransitioning(false);
+      }, 400);
+      prevCharRef.current = char;
+      return () => clearTimeout(timer);
+    }
+  }, [char]);
+
+  return (
+    <span className={styles.digitBox}>
+      <span
+        className={`${styles.digitInner} ${transitioning ? styles.digitFadeOut : styles.digitFadeIn}`}
+      >
+        {displayed}
+      </span>
+      {transitioning && (
+        <span className={`${styles.digitInner} ${styles.digitFadeIn}`}>
+          {char}
+        </span>
+      )}
+    </span>
+  );
+};
+
 const NightSkyInner: React.FC = () => {
   const currentTime = useClockTime();
 
@@ -135,9 +168,7 @@ const NightSkyInner: React.FC = () => {
         className={styles.timeDisplay}
       >
         {timeStr.split('').map((char, i) => (
-          <span key={i} className={styles.digitBox}>
-            {char}
-          </span>
+          <SoftDigit key={i} char={char} />
         ))}
       </time>
     </main>
