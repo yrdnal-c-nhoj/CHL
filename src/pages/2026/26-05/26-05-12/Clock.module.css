@@ -1,39 +1,36 @@
 .container {
   width: 100vw;
   height: 100dvh;
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
+  position: relative;
 }
 
 .twoUp {
-  position: absolute;
-  inset: 0;
   display: flex;
+  width: 100%;
+  height: 100%;
 }
 
 .half {
-  position: relative;
-  width: 50%;
-  height: 100%;
+  flex: 1;
   overflow: hidden;
 }
 
-.backgroundVideo {
-  position: absolute;
-  inset: 0;
+.backgroundVideo,
+.backgroundVideoMirror {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: 0;
+}
+
+.backgroundVideo {
+  object-position: right center; /* Aligns the content of the left video to the right */
 }
 
 .backgroundVideoMirror {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
   transform: scaleX(-1);
+  object-position: left center; /* Aligns the content of the right (mirrored) video to the left */
 }
-
