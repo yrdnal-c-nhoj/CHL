@@ -10,6 +10,14 @@ dist/
 .env
 .env.*
 !.env.example
+AGENTS.md
+TODO.md
 
 # OS and IDE files
 .DS_Store
+
+# Logs and Caches
+*.log
+.eslintcache
+.vite/
+coverage/
