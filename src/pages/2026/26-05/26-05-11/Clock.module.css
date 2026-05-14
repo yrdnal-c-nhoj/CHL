@@ -126,6 +126,8 @@
   width: 28vh;
   display: inline-flex;
   justify-content: center;
+  opacity: var(--digit-opacity, 1);
+  transition: opacity 3s ease-in-out;
 }
 
 /* Mobile responsive */
@@ -140,6 +142,8 @@
   width: 19vh;
   display: inline-flex;
   justify-content: center;
+  opacity: var(--digit-opacity, 1);
+  transition: opacity 3s ease-in-out;
 }
 }
 
