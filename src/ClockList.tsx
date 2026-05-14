@@ -24,6 +24,7 @@ const formatDate = (dateStr: string | undefined): string => {
   const month = MONTH_NAMES[date.getMonth()];
   const year = String(date.getFullYear()).slice(-2);
   return `${day} ${month} '${year}`;
+  return `${day} ${month} '${year}`.replace(/\s?'/, " '");
 };
 
 type SortOption =
@@ -36,10 +37,13 @@ type SortOption =
 
 const ClockList: FC = () => {
   const { items, loading, error } = useContext(DataContext) as DataContextType;
+  const context = useContext(DataContext) as DataContextType;
+  const { items = [], loading = false, error = null } = context || {};
   const [sortBy, setSortBy] = useState<SortOption>('date-desc');
 
   const sortedItems = useMemo<ClockItem[]>(() => {
     const filtered = items.filter((item) => item?.date);
+    const filtered = (items || []).filter((item) => item?.date);
     switch (sortBy) {
       case 'date-desc':
         return [...filtered].sort((a, b) => b.date.localeCompare(a.date));
@@ -77,6 +81,13 @@ const ClockList: FC = () => {
 
   if (loading) {
     return <div className={listStyles.loadingContainer} />;
+    return (
+      <div className={listStyles.listPageContainer}>
+        <TopNav />
+        <div className={listStyles.loadingContainer} />
+        <Footer />
+      </div>
+    );
   }
   if (error) {
     return <div>Error: {error}</div>;
