@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
+import AnimatedDigit from '@/components/AnimatedDigit';
 
 import carVideo from '@/assets/images/2026/26-05/26-05-02/car.mp4';
 // Import the corresponding font from the assets folder
@@ -135,12 +136,12 @@ const AnalogClock: React.FC = () => {
       <time dateTime={isoTime} className={styles.timeWrapper}>
         <div className={styles.digitalTime}>
           <span className={styles.digitGroup}>
-            <span className={styles.digitBox}>{String(hours).padStart(2, '0')[0]}</span>
-            <span className={styles.digitBox}>{String(hours).padStart(2, '0')[1]}</span>
-            <span className={styles.digitBox}>{String(minutes).padStart(2, '0')[0]}</span>
-            <span className={styles.digitBox}>{String(minutes).padStart(2, '0')[1]}</span>
-            <span className={styles.digitBox}>{String(seconds).padStart(2, '0')[0]}</span>
-            <span className={styles.digitBox}>{String(seconds).padStart(2, '0')[1]}</span>
+            <AnimatedDigit value={String(hours).padStart(2, '0')[0]} className={styles.digitBox} />
+            <AnimatedDigit value={String(hours).padStart(2, '0')[1]} className={styles.digitBox} />
+            <AnimatedDigit value={String(minutes).padStart(2, '0')[0]} className={styles.digitBox} />
+            <AnimatedDigit value={String(minutes).padStart(2, '0')[1]} className={styles.digitBox} />
+            <AnimatedDigit value={String(seconds).padStart(2, '0')[0]} className={styles.digitBox} />
+            <AnimatedDigit value={String(seconds).padStart(2, '0')[1]} className={styles.digitBox} />
             <span className={styles.digitBox}>{String(Math.floor(ms / 10)).padStart(2, '0')[0]}</span>
             <span className={styles.digitBox}>{String(Math.floor(ms / 10)).padStart(2, '0')[1]}</span>
           </span>

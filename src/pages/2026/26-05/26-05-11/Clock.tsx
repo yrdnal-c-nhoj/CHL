@@ -1,6 +1,7 @@
 import React, { Suspense, useMemo, useEffect, useState, useRef } from 'react';
 import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader, ClockLoadingFallback } from '@/utils/fontLoader';
+import AnimatedDigit from '@/components/AnimatedDigit';
 import clockFont from '@/assets/fonts/2026/26-05-11-stars.ttf';
 import type { FontConfig } from '@/types/clock';
 
@@ -135,9 +136,7 @@ const NightSkyInner: React.FC = () => {
         className={styles.timeDisplay}
       >
         {timeStr.split('').map((char, i) => (
-          <span key={i} className={styles.digitBox}>
-            {char}
-          </span>
+          <AnimatedDigit key={i} value={char} className={styles.digitBox} />
         ))}
       </time>
     </main>

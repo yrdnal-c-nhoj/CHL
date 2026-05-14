@@ -1,0 +1,50 @@
+.slot {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.char {
+  display: inline-block;
+}
+
+.charExit {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  animation: digitFadeOut 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.charEnter {
+  animation: digitFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes digitFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(0.25em);
+    filter: blur(4px);
+  }
+}
+
+@keyframes digitFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-0.25em);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}

@@ -5,6 +5,7 @@ import clockImage from '@/assets/images/2026/26-05/26-05-05/dino.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
+import AnimatedDigit from '@/components/AnimatedDigit';
 
 const fontConfigs: FontConfig[] = [
   {
@@ -111,7 +112,7 @@ const Clock: React.FC = () => {
       >
         {digits.map((digit, index) => (
           <div key={index} style={digitStyle}>
-            {digit}
+            <AnimatedDigit value={digit} />
           </div>
         ))}
       </time>

@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import type { FontConfig } from '@/types/clock';
 import { useClockTime } from '../utils/hooks';
 import { useSuspenseFontLoader } from '../utils/fontLoader';
+import AnimatedDigit from '../components/AnimatedDigit';
 import styles from './BaseClock.module.css';
 
 /**
@@ -73,18 +74,18 @@ const BaseClock: React.FC = () => {
       */}
       <time className={styles.timeDisplay} dateTime={isoTime}>
         <span className={styles.digitGroup}>
-          <span className={styles.digit}>{hours[0]}</span>
-          <span className={styles.digit}>{hours[1]}</span>
+          <AnimatedDigit value={hours[0]} className={styles.digit} />
+          <AnimatedDigit value={hours[1]} className={styles.digit} />
         </span>
         <span className={styles.separator}>:</span>
         <span className={styles.digitGroup}>
-          <span className={styles.digit}>{minutes[0]}</span>
-          <span className={styles.digit}>{minutes[1]}</span>
+          <AnimatedDigit value={minutes[0]} className={styles.digit} />
+          <AnimatedDigit value={minutes[1]} className={styles.digit} />
         </span>
         <span className={styles.separator}>:</span>
         <span className={styles.digitGroup}>
-          <span className={styles.digit}>{seconds[0]}</span>
-          <span className={styles.digit}>{seconds[1]}</span>
+          <AnimatedDigit value={seconds[0]} className={styles.digit} />
+          <AnimatedDigit value={seconds[1]} className={styles.digit} />
         </span>
       </time>
     </main>
