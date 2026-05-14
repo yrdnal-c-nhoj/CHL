@@ -222,11 +222,11 @@ const ManyHandClock: React.FC = () => {
   const baseSecondRot = (sFraction / 60) * 360;
   const tickingRot = Math.floor(s) * 6;
   const deviations = [
-    getSlowWiggle(s % 1),
-    getJumpOvershoot(s % 1),
-    getElasticStretch(s % 1),
-    getHeavyTwitch(s % 1),
-    getDelayedRush(s % 1),
+    getSlowWiggle(sFraction % 1),
+    getJumpOvershoot(sFraction % 1),
+    getElasticStretch(sFraction % 1),
+    getHeavyTwitch(sFraction % 1),
+    getDelayedRush(sFraction % 1),
   ];
 
   return (

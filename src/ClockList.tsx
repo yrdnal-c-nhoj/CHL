@@ -5,26 +5,7 @@ import Footer from './components/Footer';
 import Thumbnail from './components/Thumbnail';
 import listStyles from './styles/ClockList.module.css';
 import type { ClockItem, DataContextType } from './types/data';
-
-const MONTH_NAMES = [
-  'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
-  'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC',
-];
-
-const formatDate = (dateStr: string | undefined): string => {
-  const parts = dateStr?.split('-');
-  if (!parts || parts.length !== 3) return 'Unknown Date';
-  const yy = Number(parts[0]);
-  const mm = Number(parts[1]);
-  const dd = Number(parts[2]);
-  if (isNaN(yy) || isNaN(mm) || isNaN(dd)) return 'Unknown Date';
-  const date = new Date(2000 + yy, mm - 1, dd);
-  if (isNaN(date.getTime())) return 'Unknown Date';
-  const day = String(date.getDate());
-  const month = MONTH_NAMES[date.getMonth()];
-  const year = String(date.getFullYear()).slice(-2);
-  return `${day} ${month} '${year}`.replace(/\s?'/, " '");
-};
+import { formatDateStandard as formatDate } from './utils/dateUtils';
 
 type SortOption =
   | 'date-desc'

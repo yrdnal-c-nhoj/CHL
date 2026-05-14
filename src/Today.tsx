@@ -71,27 +71,13 @@ const TodayClockPage = () => {
   // -------------------------------
   // Navigation
   // -------------------------------
-  const currentIndex = useMemo(
-    () =>
-      currentItem && items
-        ? items.findIndex(
-            (i: ClockItem) =>
-              normalizeDate(i.date) === normalizeDate(currentItem.date),
-          )
-        : -1,
-    [currentItem, items],
-  );
-  const prevItem = useMemo<ClockItem | null>(
-    () => (items && currentIndex > 0 ? items[currentIndex - 1] : null),
-    [items, currentIndex],
-  );
-  const nextItem = useMemo<ClockItem | null>(
-    () =>
-      items && currentIndex >= 0 && currentIndex < items.length - 1
-        ? items[currentIndex + 1]
-        : null,
-    [items, currentIndex],
-  );
+  const { prevItem, nextItem } = useMemo(() => {
+    const idx = (currentItem && items) ? items.findIndex((i) => normalizeDate(i.date) === normalizeDate(currentItem.date)) : -1;
+    return {
+      prevItem: idx > 0 ? items[idx - 1] : null,
+      nextItem: idx !== -1 && idx < items.length - 1 ? items[idx + 1] : null,
+    };
+  }, [items, currentItem]);
 
   // -------------------------------
   // Render
