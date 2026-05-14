@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from '../styles/ClockPageNav.module.css'; // keep using the same styles
 
 /**
@@ -32,6 +32,7 @@ const ClockPageNav = ({
 }: ClockPageNavProps) => {
   const [visible, setVisible] = useState(true);
   const [isInHotZone, setIsInHotZone] = useState(false);
+  const navigate = useNavigate();
   // Using a ref for the timer to avoid unnecessary re-renders when setting the state
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const lastActivityRef = useRef<number>(0);
@@ -138,10 +139,17 @@ const ClockPageNav = ({
         <span className={styles.screenReaderText} />
       </Link>
 
-      <Link
-        to="/"
+      <div
         className={styles.footerButton}
-        aria-label=""
+        onClick={() => navigate(-1)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            navigate(-1);
+          }
+        }}
+        aria-label="Go back"
       >
         <div className={styles.footerCenter}>
           <span className={styles.footerDate}>
@@ -155,7 +163,7 @@ const ClockPageNav = ({
           </span>
         </div>
         <span className={styles.screenReaderText} />
-      </Link>
+      </div>
 
       <Link
         to={nextItem ? `/${nextItem.date}` : '/'}
