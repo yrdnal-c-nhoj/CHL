@@ -217,12 +217,9 @@ const ManyHandClock: React.FC = () => {
     }
   }, [now, baseRotation, currentTime, s]);
 
-  const h = now.getHours();
-  const m = now.getMinutes();
-  const s = fraction;
-  const hourRot = (((h % 12) + m / 60) / 12) * 360;
-  const minuteRot = ((m + s / 60) / 60) * 360;
-  const baseSecondRot = (s / 60) * 360;
+  const hourRot = (((now.getHours() % 12) + now.getMinutes() / 60) / 12) * 360;
+  const minuteRot = ((now.getMinutes() + sFraction / 60) / 60) * 360;
+  const baseSecondRot = (sFraction / 60) * 360;
   const tickingRot = Math.floor(s) * 6;
   const deviations = [
     getSlowWiggle(s % 1),
