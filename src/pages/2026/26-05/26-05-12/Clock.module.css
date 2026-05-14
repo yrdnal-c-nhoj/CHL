@@ -1,8 +1,20 @@
 .container {
-
   width: 100vw;
   height: 100dvh;
   position: relative;
+  overflow: hidden;
+}
+
+.twoUp {
+  position: absolute;
+  inset: 0;
+  display: flex;
+}
+
+.half {
+  position: relative;
+  width: 50%;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -15,119 +27,13 @@
   z-index: 0;
 }
 
-.timeWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-.clockFace {
+.backgroundVideoMirror {
   position: absolute;
   inset: 0;
-  margin: 0;
   width: 100%;
   height: 100%;
-}
-
-.outerRing {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 8px solid #2c3e50;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-.innerRing {
-  position: absolute;
-  inset: 12px;
-  border-radius: 50%;
-  border: 2px solid #34495e;
-}
-
-.hourTick {
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  width: 4px;
-  height: 16px;
-  background-color: #1a1a1a;
-  transform-origin: center 142px;
-  transform: translateX(-50%);
-}
-
-.minuteTick {
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  width: 2px;
-  height: 8px;
-  background-color: #666;
-  transform-origin: center 142px;
-  transform: translateX(-50%);
-}
-
-.numeral {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  font-family: 'Georgia', serif;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1a1a1a;
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-.hand {
-  display: none;
-}
-
-.centerDot {
-  display: none;
-}
-
-.centerDotInner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  background-color: #d32f2f;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 41;
-}
-
-.digitalTime {
-  font-family: 'Courier New', monospace;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #fff;
-  letter-spacing: 0.2em;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* Mobile responsive */
-@media (max-width: 480px) {
-  .clockFace {
-    width: 250px;
-    height: 250px;
-  }
-
-  .hourTick {
-    transform-origin: center 117px;
-  }
-
-  .minuteTick {
-    transform-origin: center 117px;
-  }
-
-  .numeral {
-    font-size: 1.2rem;
-  }
-
-  .digitalTime {
-    font-size: 1.2rem;
-  }
+  object-fit: cover;
+  z-index: 0;
+  transform: scaleX(-1);
 }
 
