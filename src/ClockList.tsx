@@ -125,8 +125,11 @@ const ClockList: FC = () => {
         </div>
 
         <ul className={listStyles.simpleList}>
-          {sortedItems.map((item) => (
-            <li key={`list-${item.date}`}>
+        {sortedItems.map((item, index) => (
+          <li 
+            key={`list-${item.date}`}
+            style={index !== 0 ? { borderTop: '2px solid #ddd' } : {}}
+          >
               <a href={`/${item.date}`} className={listStyles.simpleListItem}>
                 <div className={listStyles.thumbnailWrapper}>
                   <Thumbnail 
