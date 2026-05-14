@@ -141,6 +141,9 @@ const NightSkyInner: React.FC = () => {
   // Load date-specific font via Suspense
   useSuspenseFontLoader(fontConfigs);
 
+  // Get random opacities for each digit (6 digits for HHMMSS)
+  const digitOpacities = useDigitOpacities(6);
+
   const timeStr = [
     currentTime.getHours(),
     currentTime.getMinutes(),
@@ -160,7 +163,14 @@ const NightSkyInner: React.FC = () => {
         className={styles.timeDisplay}
       >
         {timeStr.split('').map((char, i) => (
-          <span key={i} className={styles.digitBox}>
+          <span
+            key={i}
+            className={styles.digitBox}
+            style={{
+              opacity: digitOpacities[i],
+              transition: `opacity ${NIGHT_SKY_CONFIG.DIGIT_FADE.transitionDuration}ms ease-in-out`,
+            }}
+          >
             {char}
           </span>
         ))}

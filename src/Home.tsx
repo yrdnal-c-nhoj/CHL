@@ -9,6 +9,7 @@ import styles from './styles/Home.module.css';
 import instaImg from '@/assets/icons/i.png';
 import elonImg from '@/assets/icons/x.png';
 import fbookImg from '@/assets/icons/fbook.png';
+import { isValidDate, formatDateStandard as formatDate } from './utils/dateUtils';
 
 interface DataItem {
   date: string;
@@ -17,42 +18,13 @@ interface DataItem {
   path: string;
 }
 
-
-const isValidDate = (str: string | undefined): boolean => {
-  const parts = str?.split('-');
-  if (!parts || parts.length !== 3) return false;
-  const yy = Number(parts[0]);
-  const mm = Number(parts[1]);
-  const dd = Number(parts[2]);
-  if (isNaN(yy) || isNaN(mm) || isNaN(dd)) return false;
-  // Assumes 20xx
-  const date = new Date(2000 + yy, mm - 1, dd);
-  return !isNaN(date.getTime());
-};
-
-const formatDate = (dateStr: string | undefined): string => {
-  const parts = dateStr?.split('-');
-  if (!parts || parts.length !== 3) return 'Unknown Date';
-  const yy = Number(parts[0]);
-  const mm = Number(parts[1]);
-  const dd = Number(parts[2]);
-  if (isNaN(yy) || isNaN(mm) || isNaN(dd)) return 'Unknown Date';
-  const date = new Date(2000 + yy, mm - 1, dd);
-  if (isNaN(date.getTime())) return 'Unknown Date';
-
-  const monthNames = [
-    'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
-    'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
-  ];
-  const day = String(date.getDate());
-  const month = monthNames[date.getMonth()];
-  const year = String(date.getFullYear()).slice(-2);
-
-  return `${day} ${month} '${year}`.replace(/\s?'/, " '");
-};
-
 const Home: FC = () => {
-  const { items, loading, error } = useContext(DataContext) as { items: DataItem[], loading: boolean, error: string | null };
+  const context = useContext(DataContext) as { 
+    items: DataItem[]; 
+    loading: boolean; 
+    error: string | null; 
+  };
+  const { items = [], loading = false, error = null } = context || {};
   const [searchParams] = useSearchParams();
   const [fontsReady, setFontsReady] = useState<boolean>(
     sessionStorage.getItem('fontsLoaded') === 'true',
