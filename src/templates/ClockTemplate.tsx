@@ -16,7 +16,7 @@ const UPDATE_INTERVAL = 1000; // Update frequency in ms
 
 // Uncomment and update paths for your assets
 // import backgroundImage from '../../../assets/images/your-folder/your-image.webp';
-// import customFont from '../../../assets/fonts/your-font.ttf';
+import customFontUrl from '../../assets/fonts/2026/26-05-12-ClockFont.ttf';
 
 /* =========================
    UTILITY FUNCTIONS
@@ -40,7 +40,7 @@ const ClockTemplate: React.FC = () => {
 
   const fontConfigs = useMemo<FontConfig[]>(
     () => [
-      // { fontFamily: 'YourClockFont', fontUrl: customFontUrl },
+      { fontFamily: 'ClockFont', fontUrl: customFontUrl },
     ],
     [],
   );
