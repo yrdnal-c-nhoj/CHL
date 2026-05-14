@@ -21,7 +21,7 @@
     #0e3455 20%,
     #001833 40%,
     #1b283b 60%,
-    #2c342a 100%
+    #36401e 100%
   );
   z-index: 1;
 }
@@ -43,7 +43,7 @@
     twinkle var(--twinkle-speed) ease-in-out infinite,
     fall var(--fall-speed) linear infinite;
   animation-delay: var(--fall-delay);
-  box-shadow: 0 0 6px currentColor;
+  box-shadow: 0 0 0.5vh currentColor;
   transition: opacity 0.3s ease;
   will-change: transform, opacity;
 }
@@ -55,7 +55,7 @@
   }
   50% {
     opacity: 1;
-    transform: scale(1.2);
+    transform: scale(12);
   }
 }
 
@@ -68,123 +68,32 @@
   }
 }
 
-.shootingStar {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background: linear-gradient(45deg, transparent, #ffffff, transparent);
-  animation: shoot 1s linear forwards;
-  z-index: 3;
-}
-
-.shootingStar::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100px;
-  height: 2px;
-  background: linear-gradient(90deg, #ffffff, transparent);
-  transform: translateX(-100px);
-}
-
-@keyframes shoot {
-  0% {
-    transform: translateX(0) translateY(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(200px) translateY(200px);
-    opacity: 0;
-  }
-}
 
 .timeDisplay {
   position: relative;
   z-index: 10;
   font-family: 'ClockFont_26-05-11', 'Courier New', monospace;
-  font-size: 44vh;
+  font-size: 48vh;
   display: grid;
-  grid-template-columns: repeat(3, auto);
+  grid-template-columns: repeat(2, auto);
   justify-items: center;
   align-items: center;
   line-height: 0.8;
   font-variant-numeric: tabular-nums;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.188);
+  color: rgba(169, 168, 168, 0.091);
   text-shadow: 
-    0 0 10px rgba(255, 255, 255, 0.5),
-    0 0 20px rgba(255, 255, 255, 0.3),
-    0 0 30px rgba(255, 255, 255, 0.1);
-  padding: 1rem 0rem;
-  border-radius: 10px;
-  -webkit-backdrop-filter: blur(5px);
-
+    1px 1px 0vh rgba(21, 19, 19, 0.276),
+    0 0 1px rgba(255, 255, 255, 0.215),
+    0 0 3vh rgba(255, 255, 255, 0.1);
+  padding: 2vh 0;
+  border-radius: 1vh;
+  /* -webkit-backdrop-filter: blur(5.5vh); */
 }
 
 .digitBox {
-  width: 28vh;
+  width: 30vh;
   display: inline-flex;
   justify-content: center;
   opacity: var(--digit-opacity, 1);
   transition: opacity 3s ease-in-out;
-}
-
-/* Mobile responsive */
-@media (max-width: 480px) {
-  .timeDisplay {
-    grid-template-columns: repeat(2, auto);
-    font-size: 30vh;
-    padding: 0.8rem 1.5rem;
-  }
-
-.digitBox {
-  width: 19vh;
-  display: inline-flex;
-  justify-content: center;
-  opacity: var(--digit-opacity, 1);
-  transition: opacity 3s ease-in-out;
-}
-}
-
-/* Add some nebula effects */
-.nightSkyGradient::before {
-  content: '';
-  position: absolute;
-  top: 20%;
-  left: 10%;
-  width: 40%;
-  height: 30%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(138, 43, 226, 0.1) 0%,
-    transparent 70%
-  );
-  animation: nebula 20s ease-in-out infinite;
-}
-
-.nightSkyGradient::after {
-  content: '';
-  position: absolute;
-  bottom: 20%;
-  right: 10%;
-  width: 35%;
-  height: 25%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(30, 144, 255, 0.1) 0%,
-    transparent 70%
-  );
-  animation: nebula 25s ease-in-out infinite reverse;
-}
-
-@keyframes nebula {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.6;
-    transform: scale(1.1);
-  }
 }

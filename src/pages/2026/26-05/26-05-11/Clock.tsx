@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo, useEffect, useState } from 'react';
+import React, { Suspense, useMemo, useEffect, useState, memo } from 'react';
 import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader, ClockLoadingFallback } from '@/utils/fontLoader';
 import clockFont from '@/assets/fonts/2026/26-05-11-stars.ttf';
@@ -24,7 +24,7 @@ interface Star {
 
 // ---------------- CONFIGURATION ----------------
 const NIGHT_SKY_CONFIG = {
-  STAR_COUNT: 150,
+  STAR_COUNT: 250,
   COLORS: {
     stars: [
       '#FFFFFF', // White
@@ -38,11 +38,11 @@ const NIGHT_SKY_CONFIG = {
   },
   TWINKLE_DURATION: {
     min: 1,
-    max: 4,
+    max: 6,
   },
   SPEED: {
-    min: 0.005,
-    max: 0.05,
+    min: 0.05,
+    max: 0.55,
   },
   SIZE: {
     min: 1,
@@ -99,7 +99,7 @@ const useDigitOpacities = (digitCount: number) => {
 };
 
 // ---------------- COMPONENTS ----------------
-const StarField: React.FC = () => {
+const StarField: React.FC = memo(() => {
   const stars = useMemo(() => 
     Array.from({ length: NIGHT_SKY_CONFIG.STAR_COUNT }, (_, i) => generateRandomStar(i)),
   []);
@@ -113,8 +113,8 @@ const StarField: React.FC = () => {
           style={{
             left: `${star.x}%`, 
             top: `${star.y}%`,
-            width: `${star.size}px`, 
-            height: `${star.size}px`, 
+            width: `${star.size * 0.1}vh`, 
+            height: `${star.size * 0.1}vh`, 
             color: star.color, // used by currentColor in CSS box-shadow
             backgroundColor: star.color, 
             ['--twinkle-speed' as any]: `${star.twinkleSpeed}s`,
@@ -126,7 +126,7 @@ const StarField: React.FC = () => {
       ))}
     </div>
   );
-};
+});
 
 const fontConfigs: FontConfig[] = [
   {
@@ -141,16 +141,14 @@ const NightSkyInner: React.FC = () => {
   // Load date-specific font via Suspense
   useSuspenseFontLoader(fontConfigs);
 
-  // Get random opacities for each digit (6 digits for HHMMSS)
-  const digitOpacities = useDigitOpacities(6);
+  // Get random opacities for each digit (4 digits for HHMM)
+  const digitOpacities = useDigitOpacities(4);
 
-  const timeStr = [
-    currentTime.getHours(),
-    currentTime.getMinutes(),
-    currentTime.getSeconds(),
-  ]
-    .map((n) => n.toString().padStart(2, '0'))
-    .join('');
+  const digits = useMemo(() => {
+    const h = currentTime.getHours().toString().padStart(2, '0');
+    const m = currentTime.getMinutes().toString().padStart(2, '0');
+    return (h + m).split('');
+  }, [currentTime.getHours(), currentTime.getMinutes()]);
 
   return (
     <main className={styles.container}>
@@ -162,7 +160,7 @@ const NightSkyInner: React.FC = () => {
         dateTime={currentTime.toISOString()}
         className={styles.timeDisplay}
       >
-        {timeStr.split('').map((char, i) => (
+        {digits.map((char, i) => (
           <span
             key={i}
             className={styles.digitBox}
