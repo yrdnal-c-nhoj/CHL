@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo, useEffect, useState, useRef } from 'react';
+import React, { Suspense, useMemo, useEffect, useState } from 'react';
 import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader, ClockLoadingFallback } from '@/utils/fontLoader';
 import clockFont from '@/assets/fonts/2026/26-05-11-stars.ttf';
@@ -167,8 +167,7 @@ const NightSkyInner: React.FC = () => {
             key={i}
             className={styles.digitBox}
             style={{
-              opacity: digitOpacities[i],
-              transition: `opacity ${NIGHT_SKY_CONFIG.DIGIT_FADE.transitionDuration}ms ease-in-out`,
+              ['--digit-opacity' as any]: digitOpacities[i],
             }}
           >
             {char}
