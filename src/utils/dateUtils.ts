@@ -10,6 +10,18 @@ export const normalizeDate = (d: string): string =>
     .join('-');
 
 /**
+ * Validates a date string in YY-MM-DD format
+ */
+export const isValidDate = (str: string | undefined): boolean => {
+  if (!str || !DATE_REGEX.test(str)) return false;
+  const parts = str.split('-');
+  const [yy, mm, dd] = parts.map(Number);
+  // Assumes 20xx
+  const date = new Date(2000 + yy, mm - 1, dd);
+  return !isNaN(date.getTime());
+};
+
+/**
  * Formats a title for display (removes "clock" case-insensitively)
  */
 export const formatTitle = (title?: string | null): string =>
@@ -36,6 +48,13 @@ export const formatDateDots = (dateString?: string | null): string => {
     return `${dd} ${month} '${yy}`;
   }
   return 'Invalid Date';
+};
+
+/**
+ * Standard date format used across the list and home views
+ */
+export const formatDateStandard = (dateString?: string | null): string => {
+  return formatDateDots(dateString);
 };
 
 /**
