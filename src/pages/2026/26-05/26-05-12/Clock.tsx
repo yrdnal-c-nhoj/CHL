@@ -76,7 +76,7 @@ const BackgroundLayers: React.FC = () => (
     muted
     playsInline
   >
-    <source src="/src/assets/images/2026/26-05/26-05-05/jump.mp4" type="video/mp4" />
+    <source src="/src/assets/images/2026/26-05/26-05-12/lionwalk.mp4" type="video/mp4" />
   </video>
 );
 
@@ -136,16 +136,7 @@ const AnalogClock: React.FC = () => {
   return (
     <div className={styles.container}>
       <BackgroundLayers />
-      
-      <time dateTime={currentTime.toISOString()} className={styles.clockFace}>
-        <ClockNumerals />
-        
-        <ClockHand type="hour" rotation={getHandRotation(hr, 30)} />
-        <ClockHand type="minute" rotation={getHandRotation(min, 6)} />
-        <ClockHand type="second" rotation={getHandRotation(sec, 6)} />
-        
-        <CenterDot />
-      </time>
+
     </div>
   );
 };
