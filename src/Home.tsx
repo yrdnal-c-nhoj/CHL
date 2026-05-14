@@ -49,6 +49,7 @@ const formatDate = (dateStr: string | undefined): string => {
   const year = String(date.getFullYear()).slice(-2);
 
   return `${day} ${month} '${year}`;
+  return `${day} ${month} '${year}`.replace(/\s?'/, " '");
 };
 
 const Home: FC = () => {
