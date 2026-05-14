@@ -49,8 +49,8 @@ const NIGHT_SKY_CONFIG = {
     max: 4,
   },
   DIGIT_FADE: {
-    minOpacity: 0.3,
-    maxOpacity: 1.0,
+    minOpacity: 0.05,
+    maxOpacity: 0.5,
     updateInterval: 2000, // Update every 2 seconds
     transitionDuration: 3000, // 3 second smooth transitions
   },
@@ -152,9 +152,7 @@ const NightSkyInner: React.FC = () => {
 
   return (
     <main className={styles.container}>
-      <div className={styles.nightSkyGradient}>
-        <StarField />
-      </div>
+      <div className={styles.nightSkyGradient} />
 
       <time
         dateTime={currentTime.toISOString()}
@@ -172,6 +170,7 @@ const NightSkyInner: React.FC = () => {
           </span>
         ))}
       </time>
+      <StarField />
     </main>
   );
 };
