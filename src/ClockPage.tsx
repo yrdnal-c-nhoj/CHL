@@ -33,7 +33,7 @@ const useClockNavigation = (items: ClockItem[] = [], date = '') => {
   const normalizedDate = useMemo(() => normalizeDate(date || ''), [date]);
 
   return useMemo(() => {
-const idx = items.findIndex((i) => i?.date && normalizeDate(i.date) === normalizedDate);
+    const idx = items.findIndex((i) => i?.date && normalizeDate(i.date) === normalizedDate);
     const currentItem = idx !== -1 ? items[idx] : null;
     return {
       currentItem,

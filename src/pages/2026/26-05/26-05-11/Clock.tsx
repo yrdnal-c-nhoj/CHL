@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo } from 'react';
+import React, { Suspense, useMemo, useEffect, useState, useRef } from 'react';
 import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader, ClockLoadingFallback } from '@/utils/fontLoader';
 import clockFont from '@/assets/fonts/2026/26-05-11-stars.ttf';
@@ -47,6 +47,12 @@ const NIGHT_SKY_CONFIG = {
   SIZE: {
     min: 1,
     max: 4,
+  },
+  DIGIT_FADE: {
+    minOpacity: 0.3,
+    maxOpacity: 1.0,
+    updateInterval: 2000, // Update every 2 seconds
+    transitionDuration: 3000, // 3 second smooth transitions
   },
 } as const;
 
