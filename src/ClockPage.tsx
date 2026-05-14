@@ -84,13 +84,7 @@ const ClockPage: React.FC = () => {
 const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPage(currentItem ?? null);
 
   const handleHeaderClick = () => {
-    if (currentItem?.date) {
-      const monthKey = getMonthFromDate(currentItem.date);
-      // Navigate to home with month expanded
-      navigate(`/?month=${monthKey}`);
-    } else {
-      navigate('/');
-    }
+    navigate(-1);
   };
 
   useEffect(() => {
@@ -121,7 +115,7 @@ const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPa
               handleHeaderClick();
             }
           }}
-          aria-label="Go back to month"
+              aria-label="Go back"
           style={{
             cursor: 'pointer',
             minHeight: '100vh',
