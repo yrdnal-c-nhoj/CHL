@@ -1,27 +1,12 @@
 import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClock } from '@/utils/hooks/useClock';
 import styles from './Clock.module.css';
 
-// Asset imports follow the YY-MM-DD convention
-import customFont from '@/assets/fonts/2026/26-05-15.ttf?url';
-import backgroundImage from '@/assets/images/2026/26-05/26-05-15/bg.webp';
-
-// Export assets for the framework preloader
-export const assets = [backgroundImage];
-
-const fontConfigs = [
-  {
-    fontFamily: 'ClockFont',
-    fontUrl: customFont,
-    options: { weight: 'normal', style: 'normal' },
-  },
-];
+export const assets = [];
 
 const AnalogClock: React.FC = () => {
-  const currentTime = useClockTime();
+  const { time: currentTime } = useClock();
 
-  // Compute precise rotations for smooth movement
   const rotations = useMemo(() => {
     const ms = currentTime.getMilliseconds();
     const s = currentTime.getSeconds() + ms / 1000;
@@ -35,20 +20,9 @@ const AnalogClock: React.FC = () => {
     };
   }, [currentTime]);
 
-  useSuspenseFontLoader(fontConfigs);
-
   return (
-    <div className={styles.container}>
-      <div className={styles.backgroundLayer}>
-        <img
-          className={styles.backgroundImage}
-          src={backgroundImage}
-          alt=""
-        />
-      </div>
-
-      <time className={styles.clockFace} dateTime={currentTime.toISOString()}>
-        {/* Render 1-12 markers with counter-rotation to keep numbers upright */}
+    <main className={styles.container}>
+      <time className={styles.clockBody} dateTime={currentTime.toISOString()}>
         {[...Array(12)].map((_, i) => {
           const val = i === 0 ? 12 : i;
           const angle = i * 30;
@@ -76,9 +50,9 @@ const AnalogClock: React.FC = () => {
           style={{ transform: `rotate(${rotations.sec}deg)` }}
         />
 
-        <div className={styles.centerPin} />
+        <div className={styles.centerPivot} />
       </time>
-    </div>
+    </main>
   );
 };
 
