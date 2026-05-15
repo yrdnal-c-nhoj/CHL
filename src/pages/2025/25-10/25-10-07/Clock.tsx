@@ -1,42 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import React, { useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
 // === Local assets ===
 import backgroundVideo from '@/assets/images/2025/25-10/25-10-07/big.mp4';
 import fallbackGif from '@/assets/images/2025/25-10/25-10-07/big.webp';
 import O251007font from '@/assets/fonts/2025/25-10-07-str.ttf';
 
 export default function ImageAnalogClock() {
-  const [time, setTime] = useState(new Date());
-  const [ready, setReady] = useState<boolean>(false);
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
+  const time = useClockTime();
 
-  // Simple scoped font loading without leaks
-  useEffect(() => {
-    const loadFont = async () => {
-      try {
-        const fontFace = new FontFace('Oct022025Font', `url(${O251007font})`);
-        await fontFace.load();
-        document.fonts.add(fontFace);
-        setFontLoaded(true);
-        // Set ready to true to prevent black page
-        setTimeout(() => setReady(true), 100);
-      } catch (error) {
-        console.warn('Font failed to load, using fallback');
-        setFontLoaded(false);
-        // Still set ready to true even if font fails
-        setTimeout(() => setReady(true), 100);
-      }
-    };
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'Oct022025Font',
+        fontUrl: O251007font,
+      },
+    ],
+    []
+  );
 
-    loadFont();
-  }, []);
-
-  // Update time every second
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+  useSuspenseFontLoader(fontConfigs);
 
   // Force autoplay (iOS sometimes ignores initial play call)
   useEffect(() => {
@@ -58,7 +41,7 @@ export default function ImageAnalogClock() {
       clearTimeout(t2);
       clearTimeout(t3);
     };
-  }, [ready]);
+  }, []);
 
   const clockSize = '80%';
   const center = { x: 50, y: 50 };
@@ -98,21 +81,6 @@ export default function ImageAnalogClock() {
     transform: `translate(-50%, -100%) rotate(${angle}deg)`,
     pointerEvents: 'none',
   });
-
-  if (!ready) {
-    return (
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100dvh',
-          backgroundColor: 'black',
-        }}
-      />
-    );
-  }
 
   return (
     <div

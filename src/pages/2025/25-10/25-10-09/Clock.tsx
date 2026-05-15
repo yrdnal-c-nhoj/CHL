@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
 import cinzel20251010 from '@/assets/fonts/2025/25-10-09-d1.ttf';
 import roboto20251010 from '@/assets/fonts/2025/25-10-09-d2.ttf';
 import orbitron20251010 from '@/assets/fonts/2025/25-10-09-d3.otf';
@@ -11,7 +12,7 @@ interface TimeState {
 }
 
 export default function ConcentricClock() {
-  const [currentTime, setCurrentTime] = useState<TimeState>({ h: 0, m: 0, s: 0 });
+  const time = useClockTime();
   const [gateReady, setGateReady] = useState(false);
 
   useEffect(() => {
@@ -35,20 +36,15 @@ export default function ConcentricClock() {
   // Use the standardized suspense loader
   useSuspenseFontLoader(fontConfigs);
 
+  const currentTime = useMemo<TimeState>(() => ({
+    h: time.getHours() % 12 || 12,
+    m: time.getMinutes(),
+    s: time.getSeconds(),
+  }), [time]);
+
   useEffect(() => {
     const t = setTimeout(() => setGateReady(true), 100);
-    const getTime = () => {
-      const now = new Date();
-      setCurrentTime({ 
-        h: now.getHours() % 12 || 12,
-        m: now.getMinutes(),
-        s: now.getSeconds(),
-      });
-    };
-    getTime();
-    const interval = setInterval(getTime, 1000);
     return () => {
-      clearInterval(interval);
       clearTimeout(t);
     };
   }, []);
