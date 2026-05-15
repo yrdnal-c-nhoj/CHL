@@ -232,7 +232,7 @@ const AnimatedClock: React.FC = () => {
 ### Pattern: Background Image Preloading
 
 ```tsx
-import bgImage from '../../../assets/images/26-04/26-04-30/bg.webp';
+import bgImage from '@/assets/images/2026/26-04/26-04-30/bg.webp';
 
 // Export for ClockPage preloader
 export { bgImage };

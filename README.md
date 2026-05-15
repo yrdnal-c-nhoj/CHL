@@ -134,10 +134,10 @@ Generated audit artifacts:
 
 ## Roadmap & Quality Goals
 
-1. **Type Zero**: Eliminate `any` usage in all clock modules.
-2. **Asset Optimization**: Migrate all legacy images to WebP.
-3. **Automated Vitals**: Integrate Lighthouse CI for performance monitoring.
-4. **Visual Regression**: Use Playwright to ensure component integrity during updates.
+1. **Technical Excellence**: Achieve zero `any` types across the `src/pages` directory.
+2. **Asset Performance**: 100% migration of legacy imagery to optimized WebP formats.
+3. **Quality Automation**: Implementation of Lighthouse CI and visual regression testing.
+4. **Developer Experience**: Expansion of the `finalize` CLI for automated component onboarding.
 
 ## Deployment
 
