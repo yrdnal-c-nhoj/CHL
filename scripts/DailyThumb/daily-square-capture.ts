@@ -117,12 +117,13 @@ async function captureDailySquare(targetDate?: string) {
     console.log('⏱️ Waiting 2 seconds for component to fully load and settle...');
     await new Promise(r => setTimeout(r, 2000));
     
-    // Target the #root element specifically to ensure we get the full component
-    const element = await page.$('#root');
-    await element?.screenshot({ 
+    // Capture the entire viewport. Since we set it to 500x500 and 
+    // used overflow:hidden, this captures the full component perfectly.
+    await page.screenshot({ 
       path: outputPath,
       type: 'webp',
-      quality: 95
+      quality: 95,
+      fullPage: false
     });
     
     console.log(`✅ Square thumbnail saved to: ${outputPath}`);
