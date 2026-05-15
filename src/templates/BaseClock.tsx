@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import type { FontConfig } from '@/types/clock';
-import { useClockTime } from '../utils/hooks';
-import { useSuspenseFontLoader } from '../utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import styles from './BaseClock.module.css';
 
 /**
