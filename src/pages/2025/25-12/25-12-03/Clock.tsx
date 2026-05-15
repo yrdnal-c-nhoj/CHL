@@ -29,7 +29,7 @@ const PuppyClockComponent: React.FC = () => {
         const img = new Image();
         img.src = nextUrl;
         img.onload = () => {
-          // 1. Set the 'next' image behind the current one
+          // Set the 'next' image behind the current one
           setImages((prev) => ({ ...prev, next: nextUrl }));
 
           // 2. Trigger the fade transition
