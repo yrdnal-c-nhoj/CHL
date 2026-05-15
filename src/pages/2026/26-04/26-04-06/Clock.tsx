@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import { useClockTime } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 // Dynamically import all images from the assets folder

@@ -132,20 +132,12 @@ Generated audit artifacts:
 - `unused-fonts-report.txt`
 - `non-standard-fonts.txt`
 
-## Current Audit Snapshot (2026-05-01)
+## Roadmap & Quality Goals
 
-- TypeScript: **3241 errors** (`typecheck-report.txt`)
-- ESLint: **518 errors / 3288 warnings** (`eslint-report.json`)
-- Production build: **passes** (`npm run build`)
-- Dist footprint: **249.87 MB**
-  - Largest JS bundle: `dist/assets/three-C9XuxQ2Y.js` (~747.2 KB)
-  - Largest driver: video assets (`.mp4` ~81.76 MB total in `dist`)
-
-Primary near-term priorities:
-1. Reduce lint/type debt in high-error clock modules.
-2. Remove or archive confirmed unused assets.
-3. Enforce naming and import conventions in CI.
-4. Keep media-heavy clocks segmented to preserve fast initial route loads.
+1. **Type Zero**: Eliminate `any` usage in all clock modules.
+2. **Asset Optimization**: Migrate all legacy images to WebP.
+3. **Automated Vitals**: Integrate Lighthouse CI for performance monitoring.
+4. **Visual Regression**: Use Playwright to ensure component integrity during updates.
 
 ## Deployment
 
