@@ -12,7 +12,6 @@ src/
 │   ├── hooks/
 │   │   ├── useClockTime.ts     # 1s updates
 │   │   ├── useSmoothClock.ts   # 60fps RAF
-│   │   └── useClock.ts         # Legacy
 │   ├── fontLoader.tsx          # Suspense-based font loading
 │   └── clockUtils.ts           # Time formatting & math
 └── types/
@@ -59,12 +58,12 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import styles from './Clock.module.css';
 
 // 1. Export assets for preloading
-import bgImage from '../../../assets/images/YY-MM/YY-MM-DD/bg.webp';
-export { bgImage };
+import bgImage from '@/assets/images/YY-MM/YY-MM-DD/bg.webp';
+export const assets = [bgImage];
 
 // 2. Font configuration
 const fontConfigs: FontConfig[] = [
-  { fontFamily: 'MyFont', fontUrl: '/fonts/my-font.woff2' },
+  { fontFamily: 'MyFont', fontUrl: new URL('@/assets/fonts/YYYY/YY-MM-DD-font.woff2', import.meta.url).href },
 ];
 
 // 3. Component
