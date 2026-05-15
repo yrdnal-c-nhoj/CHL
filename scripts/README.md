@@ -71,19 +71,6 @@ npm run capture:thumbnails  # Generate 500x500 thumbnails
 
 **Documentation**: See `SocialMediaCap/README.md`
 
-### 📸 General Capture
-
-**Purpose**: Basic screenshot utilities
-
-**Scripts**:
-- `capture-clock.ts` - Capture all clocks for documentation
-
-**Usage**:
-```bash
-npm run capture:clock         # Capture all clocks
-npm run capture:safe          # Safe capture with port detection
-```
-
 ## Workflow Integration
 
 ### Development Workflow
@@ -113,8 +100,6 @@ All scripts are accessible via npm commands:
   "capture:daily": "tsx scripts/SocialMediaCap/daily-screen-capture.ts",
   "capture:instagram": "tsx scripts/SocialMediaCap/daily-screen-capture.ts --instagram",
   "capture:twitter": "tsx scripts/SocialMediaCap/daily-screen-capture.ts --twitter",
-  "capture:clock": "tsx scripts/capture-clock.ts",
-  "capture:safe": "npx wait-on --any http://localhost:5173 http://localhost:5174 && npm run capture:clock"
 }
 ```
 
