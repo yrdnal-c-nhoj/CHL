@@ -81,7 +81,7 @@ async function captureDailySquare(targetDate?: string) {
     console.log(`📸 Capturing: ${targetClock.title} [${targetClock.date}]`);
     
     // Wait until the basic page structure is loaded
-    await page.goto(url, { waitUntil: 'load', timeout: 15000 });
+    await page.goto(url, { waitUntil: 'networkidle2', timeout: 15000 });
 
     // If we got redirected home, the route is wrong or the clock doesn't exist yet
     const currentUrl = page.url();
@@ -105,6 +105,7 @@ async function captureDailySquare(targetDate?: string) {
         body, html, #root { 
           margin: 0 !important; padding: 0 !important; 
           background: black !important; 
+          overflow: hidden !important;
         }
         header, footer, nav, [class*="footerStrip"], [class*="nav"], [class*="Overlay"] { 
           display: none !important; 
@@ -116,13 +117,12 @@ async function captureDailySquare(targetDate?: string) {
     console.log('⏱️ Waiting 2 seconds for component to fully load and settle...');
     await new Promise(r => setTimeout(r, 2000));
     
-    // Capture the square viewport directly. By rendering at 1:1, 
-    // the component layout will naturally fit the frame without clipping.
-    await page.screenshot({ 
+    // Target the #root element specifically to ensure we get the full component
+    const element = await page.$('#root');
+    await element?.screenshot({ 
       path: outputPath,
       type: 'webp',
-      quality: 95,
-      fullPage: false
+      quality: 95
     });
     
     console.log(`✅ Square thumbnail saved to: ${outputPath}`);

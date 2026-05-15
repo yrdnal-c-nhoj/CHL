@@ -43,7 +43,7 @@ export default function ImageAnalogClock() {
     const video = document.querySelector('video');
     if (!video) return;
 
-    const tryPlay: React.FC = () => {
+    const tryPlay = () => {
       video.play().catch(() => {});
     };
 

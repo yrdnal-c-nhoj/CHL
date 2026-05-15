@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
+import { useClockTime } from '../utils/hooks';
 import {
-  useClockTime,
   formatTime,
   calculateAngles,
   generateTickMarks,

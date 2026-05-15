@@ -5,6 +5,8 @@
  * This centralizes logic and ensures adherence to the BorrowedTime Standard (BTS).
  */
 
+import { useState, useEffect } from 'react';
+
 /**
  * Pads a number with a leading zero if it's a single digit.
  * @param num The number to pad.
@@ -39,4 +41,40 @@ export const formatTime = (date: Date, format: '24h' | '12h' | '12h-stylized' = 
     default:
       return date.toLocaleTimeString(); // Fallback for unknown formats
   }
+};
+
+/**
+ * Calculates clock hand angles based on a Date object.
+ * @param date The Date object to calculate angles for.
+ * @returns An object containing the angles for hour, minute, and second hands.
+ */
+export const calculateAngles = (date: Date) => {
+  const seconds = date.getSeconds();
+  const minutes = date.getMinutes();
+  const hours = date.getHours();
+
+  return {
+    // 360 degrees / 60 units = 6 degrees per unit
+    second: seconds * 6,
+    minute: minutes * 6 + seconds * 0.1,
+    hour: (hours % 12) * 30 + minutes * 0.5,
+  };
+};
+
+/**
+ * Custom hook that provides the current time, updating every second.
+ * @returns The current Date object.
+ */
+export const useClockTime = () => {
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  return time;
 };
