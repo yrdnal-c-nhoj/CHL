@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/2025/25-11/25-11-07/birds.webp';
-import fontUrl from '@/assets/fonts/2025/25-11-07-twobirds.ttf?url';
+import clockFontUrl from '@/assets/fonts/2025/25-11-07-twobirds.ttf?url';
 import styles from './Clock.module.css';
 
 export default function PanicAnalogClock() {
@@ -9,14 +9,14 @@ export default function PanicAnalogClock() {
   const fontConfigs = useMemo(() => [
     {
       fontFamily: 'CustomClockFont',
-      fontUrl: font251107kdvsf,
+      fontUrl: clockFontUrl,
       options: {
         weight: '900',
         style: 'normal'
       }
     }
   ], []);
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  useSuspenseFontLoader(fontConfigs);
 
   const rightImageDelay = 500; // 0.5s delay for right image
   const bottomImageOpacity = 1.0;
@@ -24,15 +24,15 @@ export default function PanicAnalogClock() {
   const fontName = 'CustomClockFont';
   const [leftSrc, setLeftSrc] = useState<string | null>(null);
   const [rightSrc, setRightSrc] = useState<string | null>(null);
-  const [fontUrl, setFontUrl] = useState<string | null>(null);
+  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
   const [showImages, setShowImages] = useState<{ left: boolean; right: boolean }>({ left: false, right: false }); // Restore staggered image timing
   const [fadeBlack, setFadeBlack] = useState<boolean>(false); // Black overlay fade
   const [rightImageLoaded, setRightImageLoaded] = useState<boolean>(false); // Track right image load
-  const urlsRef = useRef<{ left: string | null; right: string | null; font: string | null }>({ left: null, right: null, font: null });
+  const urlsRef = useRef<{ left: string | null; right: string | null }>({ left: null, right: null });
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [timeStr, setTimeStr] = useState<string>('');
 
-  const formatTime = (d) => {
+  const formatTime = (d: Date) => {
     let h = d.getHours();
     const m = d.getMinutes();
     const ampm = h >= 12 ? 'PM' : 'AM';
