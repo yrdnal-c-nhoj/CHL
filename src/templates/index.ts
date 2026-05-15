@@ -5,8 +5,6 @@
  *
  * Templates:
  * - BaseClock: Standardized architecture (recommended starting point)
- * - MasterTemplate: Legacy template with useClock hook
- * - ClockTemplate: JS template with inline useClock
  * - AnalogClockTemplate: Analog clock with SVG/rotations
  * - DigitalClockTemplate: Digital display template
  * - WordClockTemplate: Word-based time display
