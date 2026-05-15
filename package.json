@@ -21,7 +21,6 @@
     "standardize:fonts": "node scripts/standardize-font-names.mjs",
     "audit:fonts": "node scripts/list-non-standard-fonts.mjs",
     "audit:images": "node scripts/audit-images.mjs",
-    "capture:clock": "mkdir -p public/screenshots && tsx scripts/capture-clock.ts",
     "capture:thumbnails": "node scripts/SocialMediaCap/capture-clocks.mjs",
     "capture:daily-square": "tsx scripts/DailyThumb/daily-square-capture.ts",
     "capture:daily": "mkdir -p public/screenshots && tsx scripts/SocialMediaCap/daily-screen-capture.ts",
@@ -29,7 +28,6 @@
     "capture:twitter": "mkdir -p public/screenshots && tsx scripts/SocialMediaCap/daily-screen-capture.ts --twitter",
     "capture:facebook": "mkdir -p public/screenshots && tsx scripts/SocialMediaCap/daily-screen-capture.ts --facebook",
     "capture:range": "mkdir -p public/screenshots && tsx scripts/SocialMediaCap/daily-screen-capture.ts",
-    "capture:safe": "npx wait-on --any http://localhost:5173 http://localhost:5174 && npm run capture:clock",
     "scaffold:may": "node scripts/scaffold-may-clocks.js",
     "scaffold:may-assets": "node scripts/scaffold_may_assets.js",
     "finalize": "tsx scripts/UploadFinalize/finalize-component.ts"
