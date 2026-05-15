@@ -8,7 +8,7 @@ import { chromium } from 'playwright';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const PROJECT_ROOT = path.resolve(__dirname, '..');
+const PROJECT_ROOT = path.resolve(__dirname, '../..');
 const SRC_DIR = path.join(PROJECT_ROOT, 'src');
 const SCREENCAPS_DIR = path.join(PROJECT_ROOT, 'screen-caps');
 
@@ -92,8 +92,12 @@ class ComponentValidator {
   }
 
   private checkFont(year: string, date: string): boolean {
-    const fontPath = path.join(SRC_DIR, 'assets', 'fonts', year, `${date}-*.woff2`); // Enforce WOFF2
-    return fs.existsSync(fontPath);
+    const fontDir = path.join(SRC_DIR, 'assets', 'fonts', year);
+    if (!fs.existsSync(fontDir)) return false;
+    
+    const files = fs.readdirSync(fontDir);
+    // Check if any file starts with the date and ends with .woff2
+    return files.some(file => file.startsWith(date) && file.endsWith('.woff2'));
   }
 
   async validateComponent(component: ComponentInfo): Promise<ValidationResult> {
