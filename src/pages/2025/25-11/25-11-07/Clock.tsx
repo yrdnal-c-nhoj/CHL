@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/2025/25-11/25-11-07/birds.webp';
-import font251107kdvsf from '@/assets/fonts/2025/25-11-07-twobirds.ttf';
+import fontUrl from '@/assets/fonts/2025/25-11-07-twobirds.ttf?url';
 import styles from './Clock.module.css';
 
 export default function PanicAnalogClock() {
@@ -73,8 +73,6 @@ export default function PanicAnalogClock() {
         const blobRight = new Blob([imgBuf], { type: imgBlobType });
         const urlLeft = URL.createObjectURL(blobLeft);
         const urlRight = URL.createObjectURL(blobRight);
-        // Use imported font directly
-        const fontUrl = font251107kdvsf;
 
         if (aborted) {
           URL.revokeObjectURL(urlLeft);
@@ -82,10 +80,10 @@ export default function PanicAnalogClock() {
           return;
         }
 
-        urlsRef.current = { left: urlLeft, right: urlRight, font: fontUrl };
+        urlsRef.current = { left: urlLeft, right: urlRight };
         setLeftSrc(urlLeft);
         setRightSrc(urlRight);
-        setFontUrl(fontUrl);
+        setFontLoaded(true);
         setShowImages({ left: true, right: false });
 
         timerRef.current = setTimeout(() => {
@@ -102,7 +100,7 @@ export default function PanicAnalogClock() {
         setLeftSrc(`${bgImage}?l=${Date.now()}`);
         setRightSrc(`${bgImage}?r=${Date.now()}`);
         setShowImages({ left: true, right: false });
-        setFontUrl(null);
+        setFontLoaded(true);
         timerRef.current = setTimeout(() => {
           if (!aborted) {
             setShowImages({ left: true, right: true });
@@ -120,7 +118,6 @@ export default function PanicAnalogClock() {
       if (timerRef.current) clearTimeout(timerRef.current);
       if (urlsRef.current.left) URL.revokeObjectURL(urlsRef.current.left);
       if (urlsRef.current.right) URL.revokeObjectURL(urlsRef.current.right);
-      if (urlsRef.current.font) URL.revokeObjectURL(urlsRef.current.font);
     };
   }, [rightImageLoaded]);
 
@@ -142,9 +139,7 @@ export default function PanicAnalogClock() {
     right: 0,
     textAlign: 'center',
     zIndex: 4,
-    fontFamily: fontUrl
-      ? `"${fontName}", Menlo, Monaco, Consolas, monospace`
-      : 'Menlo, Monaco, Consolas, monospace',
+    fontFamily: `"${fontName}", Menlo, Monaco, Consolas, monospace`,
     fontWeight: 900,
     fontSize: '10vh',
     lineHeight: 1,
@@ -223,7 +218,7 @@ export default function PanicAnalogClock() {
         }}
       />
       {/* Clock */}
-      {fontUrl && showImages.right && (
+      {fontLoaded && showImages.right && (
         <div style={stoneClockStyle}>
           {Array.from(timeStr).map((ch, idx) => {
             const isAlnum = /[0-9A-Za-z]/.test(ch);

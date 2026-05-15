@@ -96,8 +96,8 @@ class ComponentValidator {
     if (!fs.existsSync(fontDir)) return false;
     
     const files = fs.readdirSync(fontDir);
-    // Check if any file starts with the date and ends with .woff2
-    return files.some(file => file.startsWith(date) && file.endsWith('.woff2'));
+    // Check if any file starts with the date and ends with common font extensions
+    return files.some(file => file.startsWith(date) && /\.(ttf|woff2|woff|otf)$/i.test(file));
   }
 
   async validateComponent(component: ComponentInfo): Promise<ValidationResult> {
