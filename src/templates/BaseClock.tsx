@@ -26,15 +26,14 @@ import styles from './BaseClock.module.css';
 // ASSET EXPORTS (Required)
 // =========================
 // Export any images/fonts for the preloading pipeline in useClockPage.ts
-// Example:
-// import bgImage from '../../../assets/images/YY-MM/YY-MM-DD/bg.webp';
-// export { bgImage };
+// import bgImage from '@/assets/images/YYYY/YY-MM/YY-MM-DD/bg.webp';
+// export const assets = [bgImage];
 
 // =========================
 // FONT CONFIGURATION
 // =========================
 const fontConfigs: FontConfig[] = [
-  // { fontFamily: 'MyClockFont', fontUrl: '/fonts/YY-MM-DD-name.ttf' }
+  // { fontFamily: 'MyClockFont', fontUrl: new URL('@/assets/fonts/YYYY/YY-MM-DD-name.woff2', import.meta.url).href }
 ];
 
 // =========================
@@ -61,7 +60,7 @@ const BaseClock: React.FC = () => {
       hours: h,
       minutes: m,
       seconds: s,
-      isoTime: `${h}:${m}:${s}`,
+      isoTime: time.toISOString(),
     };
   }, [time]);
 
