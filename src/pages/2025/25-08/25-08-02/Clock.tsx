@@ -40,7 +40,7 @@ const DigitalClock: FC = () => {
 
       {/* Clock Display */}
       <time dateTime={time.toISOString()} className={styles.container}>
-        {displayTime}
+        {displayTime.hours}:{displayTime.minutes}:{displayTime.seconds}
       </time>
     </main>
   );

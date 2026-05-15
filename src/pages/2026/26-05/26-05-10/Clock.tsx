@@ -4,7 +4,7 @@ import React, {
   useState,
 } from 'react';
 
-import { useClockTime } from '@/utils/hooks'; // Ensure this hook uses setInterval as a fallback to requestAnimationFrame
+import { useClockTime } from '@/utils/hooks';
 import { formatTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -58,22 +58,30 @@ const NightSky: React.FC = () => {
    */
 
   const formattedTime = useMemo(() => {
-    const { hours, minutes, seconds } = formatTime(currentTime, '12h');
+    if (!currentTime) {
+      return { hours: '00', minutes: '00', seconds: '00', meridian: 'AM' };
+    }
+    const {
+      hours = '00',
+      minutes = '00',
+      seconds = '00'
+    } = formatTime(currentTime, '12h') || {};
     const meridian = currentTime.getHours() >= 12 ? 'PM' : 'AM';
     return { hours, minutes, seconds, meridian };
   }, [currentTime]);
 
   const clockCharacters = useMemo(() => {
     const { hours, minutes, seconds, meridian } = formattedTime;
+
     return [
-      hours[0],
-      hours[1],
-      minutes[0],
-      minutes[1],
-      seconds[0],
-      seconds[1],
-      meridian[0],
-      meridian[1],
+      hours[0] || '0',
+      hours[1] || '0',
+      minutes[0] || '0',
+      minutes[1] || '0',
+      seconds[0] || '0',
+      seconds[1] || '0',
+      meridian[0] || 'A',
+      meridian[1] || 'M'
     ];
   }, [formattedTime]);
 
@@ -121,9 +129,8 @@ const NightSky: React.FC = () => {
         filter: 'contrast(1.5) hue-rotate(80deg) saturate(0.2)',
       }}
     >
-      {/* CLOCK GRID */}
-
-      <div
+      <time dateTime={currentTime?.toISOString()} aria-live="polite">
+        <div
         style={{
           position: 'absolute',
           inset: 0,
@@ -203,7 +210,8 @@ const NightSky: React.FC = () => {
             </div>
           </div>
         ))}
-      </div>
+        </div>
+      </time>
     </div>
   );
 };

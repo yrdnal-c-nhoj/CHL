@@ -1,5 +1,6 @@
 // GeologicTimeClock.jsx
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
+import { useClockTime } from '@/utils/hooks';
 
 // Static configuration moves outside the component lifecycle
 const GEOLOGIC_EVENTS = [
@@ -12,18 +13,7 @@ const GEOLOGIC_EVENTS = [
 ];
 
 export default function GeologicTimeClock() {
-  const [now, setNow] = useState(new Date());
-
-  // Efficient time loop
-  useEffect(() => {
-    let frameId;
-    const updateClock: React.FC = () => {
-      setNow(new Date());
-      frameId = requestAnimationFrame(updateClock);
-    };
-    updateClock();
-    return () => cancelAnimationFrame(frameId);
-  }, []);
+  const now = useClockTime();
 
   // Memoize the time formatting to separate data prep from rendering
   const timeData = useMemo(() => {
@@ -89,7 +79,13 @@ export default function GeologicTimeClock() {
  * TimelineRow Component
  * Extracted to isolate presentation logic and prevent layout trashing
  */
-const TimelineRow = React.memo(({ label, value, isLast }) => {
+interface TimelineRowProps {
+  label: string;
+  value: string;
+  isLast: boolean;
+}
+
+const TimelineRow = React.memo(({ label, value, isLast }: TimelineRowProps) => {
   return (
     <div
       style={{

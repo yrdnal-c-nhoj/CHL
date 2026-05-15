@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import cinzel20251010 from '@/assets/fonts/2025/25-10-09-d1.ttf';
 import roboto20251010 from '@/assets/fonts/2025/25-10-09-d2.ttf';
 import orbitron20251010 from '@/assets/fonts/2025/25-10-09-d3.otf';
 
+interface TimeState {
+  h: number;
+  m: number;
+  s: number;
+}
+
 export default function ConcentricClock() {
-  const [currentTime, setCurrentTime] = useState<any>({ h: 0, m: 0, s: 0 });
-  const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
+  const [currentTime, setCurrentTime] = useState<TimeState>({ h: 0, m: 0, s: 0 });
+  const [gateReady, setGateReady] = useState(false);
 
   useEffect(() => {
-    const setVh: React.FC = () => {
+    const setVh = () => {
       document.documentElement.style.setProperty(
         '--vh',
         `${window.innerHeight * 0.01}px`,
@@ -21,31 +26,20 @@ export default function ConcentricClock() {
     return () => window.removeEventListener('resize', setVh);
   }, []);
 
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'HoursFont';
-        src: url(${cinzel20251010}) format('truetype');
-      }
-      @font-face {
-        font-family: 'MinutesFont';
-        src: url(${roboto20251010}) format('opentype');
-      }
-      @font-face {
-        font-family: 'SecondsFont';
-        src: url(${orbitron20251010}) format('opentype');
-      }
-    `;
-    document.head.appendChild(style);
-    document.fonts.ready.then(() => setFontsLoaded(true));
-  }, []);
+  const fontConfigs = useMemo(() => [
+    { fontFamily: 'HoursFont', fontUrl: cinzel20251010 },
+    { fontFamily: 'MinutesFont', fontUrl: roboto20251010 },
+    { fontFamily: 'SecondsFont', fontUrl: orbitron20251010 }
+  ], []);
+
+  // Use the standardized suspense loader
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    if (!fontsLoaded) return;
-    const getTime: React.FC = () => {
+    const t = setTimeout(() => setGateReady(true), 100);
+    const getTime = () => {
       const now = new Date();
-      setCurrentTime({
+      setCurrentTime({ 
         h: now.getHours() % 12 || 12,
         m: now.getMinutes(),
         s: now.getSeconds(),
@@ -53,13 +47,21 @@ export default function ConcentricClock() {
     };
     getTime();
     const interval = setInterval(getTime, 1000);
-    return () => clearInterval(interval);
-  }, [fontsLoaded]);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(t);
+    };
+  }, []);
 
-  const renderRing = (count, radiusVh, type, offset = { x: 0, y: 0 }) => {
+  const renderRing = (
+    count: number,
+    radiusVh: number,
+    type: keyof TimeState,
+    offset = { x: 0, y: 0 }
+  ) => {
     const items = [];
     const current = currentTime[type];
-    const fontFamily =
+    const fontFamily: string =
       type === 'h' ? 'HoursFont' : type === 'm' ? 'MinutesFont' : 'SecondsFont';
     const currentOffset = (360 / count) * current;
 
@@ -120,17 +122,15 @@ export default function ConcentricClock() {
     return items;
   };
 
-  if (!fontsLoaded) return null;
-
-  // Format time in HH:MM:SS (12-hour)
-  const formattedTime = `${currentTime.h
-    .toString()
-    .padStart(2, '0')}:${currentTime.m
-    .toString()
-    .padStart(2, '0')}:${currentTime.s.toString().padStart(2, '0')}`;
-
   return (
     <div
+      style={{
+        opacity: gateReady ? 1 : 0,
+        transition: 'opacity 0.5s ease-in-out',
+        backgroundColor: '#530B7CFF'
+      }}
+    >
+      <div
       style={{
         position: 'fixed',
         inset: 0,
@@ -145,7 +145,6 @@ export default function ConcentricClock() {
         overflow: 'hidden',
       }}
     >
-      {/* Concentric rings */}
       <div
         style={{
           position: 'relative',
@@ -156,6 +155,7 @@ export default function ConcentricClock() {
         {renderRing(12, 62, 'h', { x: -79, y: -42 })}
         {renderRing(60, 139, 'm', { x: -149, y: -14 })}
         {renderRing(60, 72, 's', { x: -75, y: 11 })}
+      </div>
       </div>
     </div>
   );
