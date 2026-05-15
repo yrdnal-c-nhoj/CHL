@@ -1,6 +1,11 @@
-import React from 'react';
-import { useClockTime, calculateAngles } from '@/utils/clockUtils';
+import React, { useMemo } from 'react';
+import { useClockTime, calculateAngles, formatTime } from '@/utils/clockUtils';
+import bgImage from '@/assets/images/2026/26-05/26-05-09/lotus.webp';
 import styles from './Clock.module.css';
+
+// BTS: Export assets for the preloading pipeline
+// This ensures the capture script waits for the background to load
+export const assets = [bgImage];
 
 /**
  * May 9, 2026 - "Capture"
@@ -11,8 +16,13 @@ const CaptureClock: React.FC = () => {
   
   const { hour: hourAngle, minute: minuteAngle, second: secondAngle } = calculateAngles(time);
 
+  const formatted = useMemo(() => formatTime(time, '24h'), [time]);
+
   return (
-    <div className={styles.container}>
+    <main 
+      className={styles.container} 
+      style={{ backgroundImage: `url(${bgImage})` }}
+    >
       <div className={styles.clock}>
         <div className={styles.face}>
           <div 
@@ -28,11 +38,10 @@ const CaptureClock: React.FC = () => {
             style={{ '--second-angle': `${secondAngle}deg` } as React.CSSProperties}
           />
           <div className={styles.center} />
-          
-  
         </div>
       </div>
-    </div>
+      <time dateTime={time.toISOString()} className="sr-only">{formatted}</time>
+    </main>
   );
 };
 
