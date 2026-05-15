@@ -69,9 +69,9 @@ async function captureDailySquare(targetDate?: string) {
   const page = await browser.newPage();
 
   await page.setViewport({
-    width: 1920,
-    height: 1080,
-    deviceScaleFactor: 2
+    width: 500,
+    height: 500,
+    deviceScaleFactor: 2 // High DPI for crisp thumbnails (1000x1000 physical pixels)
   });
 
   const url = `http://localhost:${port}/${targetClock.date}`;
@@ -116,36 +116,14 @@ async function captureDailySquare(targetDate?: string) {
     console.log('⏱️ Waiting 2 seconds for component to fully load and settle...');
     await new Promise(r => setTimeout(r, 2000));
     
-    // Capture the full viewport (component uses 100vw x 100vh)
-    const fullScreenshot = await page.screenshot({ 
-      type: 'webp',
-      quality: 90,
-      fullPage: false // Use viewport size, not full page scroll
-    });
-    
-    // Create a new page for resizing to square
-    const resizePage = await browser.newPage();
-    await resizePage.setViewport({ width: 500, height: 500 });
-    
-    // Set the content as an image and resize to square (fill entire area, no letterboxing)
-    const base64Image = Buffer.from(fullScreenshot).toString('base64');
-    await resizePage.setContent(`
-      <html>
-        <body style="margin: 0; padding: 0; background: black; width: 500px; height: 500px; overflow: hidden;">
-          <img src="data:image/webp;base64,${base64Image}" 
-               style="width: 500px; height: 500px; object-fit: cover; object-position: center;">
-        </body>
-      </html>
-    `);
-    
-    // Capture the resized square
-    await resizePage.screenshot({ 
+    // Capture the square viewport directly. By rendering at 1:1, 
+    // the component layout will naturally fit the frame without clipping.
+    await page.screenshot({ 
       path: outputPath,
       type: 'webp',
-      quality: 90
+      quality: 95,
+      fullPage: false
     });
-    
-    await resizePage.close();
     
     console.log(`✅ Square thumbnail saved to: ${outputPath}`);
   } catch (err: any) {
@@ -156,7 +134,7 @@ async function captureDailySquare(targetDate?: string) {
   await browser.close();
   console.log(`🎉 Daily square capture complete!`);
   console.log(`📸 File saved in: ${OUTPUT_DIR}`);
-  console.log(`   - ${targetClock.date}-daily-square.webp (500x500px square thumbnail)`);
+  console.log(`   - ${targetClock.date}-thumb.webp (1:1 High-DPI square thumbnail)`);
 }
 
 captureDailySquare(dateArg).catch((err: any) => {
