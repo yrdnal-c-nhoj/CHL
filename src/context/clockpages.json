@@ -403,5 +403,5 @@
   { "path": "26-05-10", "date": "26-05-10", "title": "Weave" },
   { "path": "26-05-11", "date": "26-05-11", "title": "Night Rise" },
   { "path": "26-05-12", "date": "26-05-12", "title": "180° South" },
-  { "path": "26-05-13", "date": "26-05-13", "title": "Klein Blue" }
+  { "padth": "26-05-13", "date": "26-05-13", "title": "Klein Blue" }
 ]
