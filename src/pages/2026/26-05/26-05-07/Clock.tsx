@@ -8,7 +8,6 @@ import styles from './Clock.module.css';
 interface HandProps {
   angle: number;
   length: string;
-  width: string;
   width: string; // e.g., "12px", "8px", "4px"
   color: string;
   type: 'hour' | 'minute' | 'second';
@@ -24,7 +23,7 @@ const ClockHand: React.FC<HandProps> = ({ angle, length, width, color, type }) =
     bottom: '50%',
     left: '50%',
     width: scaledWidth,
-    width: width, // Use the provided width directly
+
     height: length,
     backgroundColor: color,
     transformOrigin: 'bottom center',
@@ -49,7 +48,7 @@ const ClockHand: React.FC<HandProps> = ({ angle, length, width, color, type }) =
 };
 
 const AnalogClock: React.FC = () => {
-  const time = useClockTime('ms');
+  const time = useClockTime();
   
   const [dims, setDims] = useState({ w: 0, h: 0 });
   useEffect(() => {
