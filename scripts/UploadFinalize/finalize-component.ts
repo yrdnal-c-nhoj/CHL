@@ -92,7 +92,7 @@ class ComponentValidator {
   }
 
   private checkFont(year: string, date: string): boolean {
-    const fontPath = path.join(SRC_DIR, 'assets', 'fonts', year, `${date}-*.ttf`);
+    const fontPath = path.join(SRC_DIR, 'assets', 'fonts', year, `${date}-*.woff2`); // Enforce WOFF2
     return fs.existsSync(fontPath);
   }
 
@@ -535,28 +535,24 @@ class ComponentValidator {
   }
 
   private generateDefaultCSS(date: string): string {
-    return `.container {
+    return `/* Clock.module.css for ${date} */
+
+.container {
   width: 100vw;
   height: 100dvh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #ffffff;
+  background-color: #000; /* Default to black background */
+  color: #fff; /* Default to white text */
+  font-family: monospace; /* Default font */
+  font-size: clamp(4rem, 15vw, 12rem);
 }
 
-.timeWrapper {
-  font-family: var(--font-manrope);
-  font-size: clamp(2rem, 5vw, 4rem);
-  font-weight: 700;
-  color: #000000;
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-  .timeWrapper {
-    font-size: clamp(1.5rem, 4vw, 3rem);
-  }
+/* Example for a time display element */
+.timeDisplay {
+  /* Add specific styles for your time display here */
+  text-shadow: 0 0 1rem rgba(0, 0, 0, 0.8);
 }
 `;
   }

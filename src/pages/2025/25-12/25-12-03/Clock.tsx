@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
+import { formatTime } from '@/utils/clockUtils';
 import font_25_12_03 from '@/assets/fonts/2025/25-12-03-dog.woff2';
 import styles from './Clock.module.css';
 
@@ -63,16 +64,6 @@ const PuppyClockComponent: React.FC = () => {
     };
   }, [getNewPuppy]);
 
-  // Internal helper for stylized time
-  const formatStylizedTime = (date: Date) => {
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12 || 12;
-    return `${hours}${minutes.toString().padStart(2, '0')} ${ampm}`
-      .split('')
-      .join(' ');
-  };
   return (
     <main className={styles.container}>
       {/* BACKGROUND LAYER 1: The "Old" or Static Image */}
@@ -92,7 +83,7 @@ const PuppyClockComponent: React.FC = () => {
       />
 
       {/* TIME OVERLAY */}
-      <time dateTime={time.toISOString()} className={styles.clock}>{formatStylizedTime(time)}</time>
+      <time dateTime={time.toISOString()} className={styles.clock}>{formatTime(time, '12h-stylized')}</time>
     </main>
   );
 };
