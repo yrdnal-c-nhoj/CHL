@@ -77,20 +77,17 @@ const PuppyClockComponent: React.FC = () => {
     <main className={styles.container}>
       {/* BACKGROUND LAYER 1: The "Old" or Static Image */}
       <div
-        className={styles.layer}
+        className={`${styles.layer} ${styles.currentLayer}`}
         style={{
           backgroundImage: `url(${images.current})`,
-          zIndex: 1, // Static layer is lower
         }}
       />
 
       {/* BACKGROUND LAYER 2: The "New" incoming Image */}
       <div
-        className={styles.layer}
+        className={`${styles.layer} ${styles.nextLayer} ${isTransitioning ? styles.active : ''}`}
         style={{
           backgroundImage: `url(${images.next})`,
-          opacity: isTransitioning ? 1 : 0,
-          zIndex: 2, // Transitioning layer is higher
         }}
       />
 
