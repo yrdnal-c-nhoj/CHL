@@ -25,7 +25,6 @@ src/
 | `useClockTime` | 1s | Static displays |
 | `useSmoothClock` | 60fps RAF | Smooth animations |
 | `useMillisecondClock` | 60fps RAF | Millisecond precision |
-| `useNtpClock` | 60fps RAF | NTP-synced |
 
 ### Examples
 
@@ -232,7 +231,7 @@ const AnimatedClock: React.FC = () => {
 ### Pattern: Background Image Preloading
 
 ```tsx
-import bgImage from '@/assets/images/2026/26-04/26-04-30/bg.webp';
+import bgImage from '../../../assets/images/26-04/26-04-30/bg.webp';
 
 // Export for ClockPage preloader
 export { bgImage };
