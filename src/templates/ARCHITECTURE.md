@@ -12,6 +12,7 @@ src/
 │   ├── hooks/
 │   │   ├── useClockTime.ts     # 1s updates
 │   │   ├── useSmoothClock.ts   # 60fps RAF
+│   │   └── index.ts            # Hook barrel file
 │   ├── fontLoader.tsx          # Suspense-based font loading
 │   └── clockUtils.ts           # Time formatting & math
 └── types/
@@ -32,7 +33,7 @@ src/
 // Static display
 const Clock: React.FC = () => {
   const time = useClockTime();
-  return <div>{time.toLocaleTimeString()}</div>;
+  return <time dateTime={time.toISOString()}>{time.toLocaleTimeString()}</time>;
 };
 ```
 
