@@ -26,8 +26,7 @@ import styles from './BaseClock.module.css';
 // ASSET EXPORTS (Required)
 // =========================
 // Export any images/fonts for the preloading pipeline in useClockPage.ts
-// import bgImage from '@/assets/images/YYYY/YY-MM/YY-MM-DD/bg.webp';
-// export const assets = [bgImage];
+export const assets: string[] = [];
 
 // =========================
 // FONT CONFIGURATION

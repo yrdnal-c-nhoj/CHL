@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
+import { formatTime } from '@/utils/clockUtils';
 
 // Dynamically import all images from the assets folder
 const imageModules = import.meta.glob('@/assets/images/2026/26-04/26-04-06/*', {
@@ -68,10 +69,7 @@ const Clock: React.FC = () => {
 
   // Format time for accessibility
   const timeLabel = useMemo(() => {
-    const h = time.getHours();
-    const m = time.getMinutes().toString().padStart(2, '0');
-    const s = time.getSeconds().toString().padStart(2, '0');
-    return `${h}:${m}:${s}`;
+    return formatTime(time, '24h'); // Using 24h format for consistency, adjust as needed
   }, [time]);
 
   return (
