@@ -5,7 +5,6 @@
  *
  * - useClockTime: Basic 1-second interval (default for most clocks)
  * - useSmoothClock: High-precision 60fps RAF (for smooth animations)
- * - useNtpClock: NTP-synced with smooth seconds (for precise time display)
  *
  * Usage:
  *   import { useClockTime } from '@/utils/hooks';
@@ -18,4 +17,3 @@ export {
   useMillisecondClock,
   useSecondClock,
 } from './useSmoothClock';
-export { useClock as useNtpClock } from './useClock';

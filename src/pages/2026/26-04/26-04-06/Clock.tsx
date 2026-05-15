@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 // Dynamically import all images from the assets folder
@@ -21,7 +21,7 @@ const getRandomPosition = () => ({
 });
 
 const Clock: React.FC = () => {
-  const time = useClockTime();
+  const time = useSmoothClock();
   
   // Start with all images loaded at random positions
   const [displayedImages, setDisplayedImages] = useState<Array<{ src: string; pos: React.CSSProperties; id: number }>>(() => {

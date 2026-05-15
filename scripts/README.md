@@ -13,6 +13,9 @@ scripts/
 ├── SocialMediaCap/              # Social media screenshot capture
 │   ├── README.md                # Social media capture documentation
 │   └── daily-screen-capture.ts  # Multi-platform screenshot capture
+├── DailyThumb/                  # Daily square thumbnail capture
+│   ├── README.md                # Daily thumb documentation
+│   └── daily-square-capture.ts  # Thumbnail capture script
 ├── capture-clocks.mjs           # Thumbnail generation for clocks
 └── [other utility scripts]      # Various project utilities
 ```
