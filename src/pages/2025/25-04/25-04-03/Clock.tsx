@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useEffect, useRef, useMemo, useCallback, FC } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -11,12 +11,6 @@ interface MobyDickClockProps {
   // No props required for this component
 }
 
-// Center avoid size interface
-interface CenterAvoidSize {
-  width: number;
-  height: number;
-}
-
 // Clock position interface
 interface ClockPosition {
   x: number;
@@ -25,7 +19,12 @@ interface ClockPosition {
   opacity: number;
 }
 
-const MobyDickClock = () => {
+// =========================
+// ASSET EXPORTS (Required)
+// =========================
+export const assets: string[] = [waves];
+
+const MobyDickClock: FC<MobyDickClockProps> = () => {
   // Font loading configuration (memoized)
   const fontConfigs = useMemo<FontConfig[]>(() => [
     {
@@ -41,90 +40,78 @@ const MobyDickClock = () => {
   // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);
 
-  const clockRef = useRef<HTMLDivElement>(null);
-  const componentId = useRef(`moby-clock-${Date.now()}`);
+  const clockRef = useRef<HTMLTimeElement>(null);
+  const positionRef = useRef<ClockPosition>({ x: 0, y: 0, fontSize: 4, opacity: 1 });
 
   // Use the standardized hook for smooth clock updates
   const currentTime = useSecondClock();
 
-  // Returns a random coordinate avoiding center rectangle
-  const getRandomPosAvoidCenter = useCallback((max: number, avoidStart: number, avoidEnd: number): number => {
-    let pos: number;
-    do {
-      pos = Math.random() * max;
-    } while (pos > avoidStart && pos < avoidEnd);
-    return pos;
-  }, []);
-
   // Calculate new clock position
   const calculateNewPosition = useCallback((): ClockPosition => {
-    const centerAvoidSize: CenterAvoidSize = { width: 300, height: 200 };
+    // Calculate random coordinates using the full viewport dimensions
+    // Using percentage-based logic to ensure it stays visible on all screens
+    const x = Math.random() * 70; // 0 to 70% of width
+    const y = Math.random() * 70; // 0 to 70% of height
 
-    const x = getRandomPosAvoidCenter(
-      window.innerWidth,
-      (window.innerWidth - centerAvoidSize.width) / 2,
-      (window.innerWidth + centerAvoidSize.width) / 2,
-    );
-    const y = getRandomPosAvoidCenter(
-      window.innerHeight,
-      (window.innerHeight - centerAvoidSize.height) / 2,
-      (window.innerHeight + centerAvoidSize.height) / 2,
-    );
-
-    const fontSize = 2 + Math.random() * 6; // rem
+    const fontSize = 3 + Math.random() * 5; // rem
     const opacity = Math.random() * 0.7 + 0.3;
 
     return { x, y, fontSize, opacity };
-  }, [getRandomPosAvoidCenter]);
+  }, []);
 
-  // Update clock display
-  const updateClockDisplay = useCallback((position: ClockPosition): void => {
+  // Apply new position to the element
+  const applyPosition = useCallback((position: ClockPosition): void => {
     const clock = clockRef.current;
     if (!clock) return;
 
-    // Update time
+    // Apply styles with smooth transition
+    clock.style.transition =
+      'left 3s ease-in-out, top 3s ease-in-out, font-size 3s ease-in-out, opacity 3s ease-in-out';
+    
+    // Using top/left avoids conflict with the CSS 'float' animation transform
+    clock.style.left = `${position.x}%`;
+    clock.style.top = `${position.y}%`;
+    clock.style.fontSize = `${position.fontSize}rem`;
+    clock.style.opacity = position.opacity.toString();
+  }, []);
+
+  // Separate effect for time updates to keep them efficient
+  useEffect(() => {
+    const clock = clockRef.current;
+    if (!clock) return;
+
     clock.textContent = currentTime.toLocaleTimeString('en-US', {
       hour12: false,
       hour: 'numeric',
       minute: 'numeric',
     });
-
-    // Apply styles with smooth transition
-    clock.style.transition =
-      'transform 2s ease-in-out, font-size 2s ease-in-out, opacity 2s ease-in-out';
-    clock.style.transform = `translate(${position.x}px, ${position.y}px)`;
-    clock.style.fontSize = `${position.fontSize}rem`;
-    clock.style.opacity = position.opacity.toString();
+    clock.dateTime = currentTime.toISOString();
   }, [currentTime]);
 
   useEffect(() => {
-
     let animationFrameId: number;
     let lastMoveTime: number = 0;
-    let nextMoveDelay: number = 2000 + Math.random() * 2000;
+    let nextMoveDelay: number = 3000 + Math.random() * 2000;
     let isInitialized: boolean = false;
 
-    // Initial position: place clock off-screen so first move slides it in
     const clock = clockRef.current;
     if (clock) {
       clock.style.position = 'absolute';
-      clock.style.top = '0';
-      clock.style.left = '0';
-      clock.style.opacity = '0';
-      clock.style.transform = 'translate(-500px, -500px)';
     }
 
     const animate = (timestamp: number): void => {
       if (!isInitialized) {
-        // Initialize with first move
-        updateClockDisplay(calculateNewPosition());
+        const pos = calculateNewPosition();
+        positionRef.current = pos;
+        applyPosition(pos);
         isInitialized = true;
         lastMoveTime = timestamp;
       } else if (timestamp - lastMoveTime >= nextMoveDelay) {
-        // Move clock
-        updateClockDisplay(calculateNewPosition());
+        const pos = calculateNewPosition();
+        positionRef.current = pos;
+        applyPosition(pos);
         lastMoveTime = timestamp;
-        nextMoveDelay = 2000 + Math.random() * 2000;
+        nextMoveDelay = 4000 + Math.random() * 2000;
       }
 
       animationFrameId = requestAnimationFrame(animate);
@@ -136,42 +123,40 @@ const MobyDickClock = () => {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [calculateNewPosition, updateClockDisplay]);
+  }, [calculateNewPosition, applyPosition]);
 
   return (
     <div
+      className={styles.container}
       style={{
-        margin: 0,
-        padding: 0,
-        height: '100dvh',
-        width: '100vw',
-        overflow: 'hidden',
-        backgroundColor: '#727B7BFF',
-        filter: 'brightness(300%) contrast(40%)',
         position: 'relative',
-        userSelect: 'none',
+        width: '100vw',
+        height: '100dvh',
+        overflow: 'hidden',
+        backgroundColor: '#000', // Fallback background
       }}
     >
-      <div
+      <time
         ref={clockRef}
         className={styles.mobyClock}
+        style={{
+          display: 'block',
+          zIndex: 1,
+          pointerEvents: 'none',
+        }}
       />
       <img
-        decoding="async"
-        loading="lazy"
         src={waves}
         alt="waves"
+        className={styles.backgroundImage}
         style={{
-          position: 'fixed',
+          position: 'absolute',
           top: 0,
           left: 0,
-          width: '100vw',
-          height: '100vh',
+          width: '100%',
+          height: '100%',
           objectFit: 'cover',
-          zIndex: 6,
-          opacity: 0.6,
-          filter: 'brightness(180%) contrast(110%)',
-          pointerEvents: 'none',
+          zIndex: 0,
         }}
       />
     </div>
