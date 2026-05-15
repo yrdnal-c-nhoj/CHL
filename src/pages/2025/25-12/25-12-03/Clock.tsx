@@ -3,11 +3,11 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import { formatTime } from '@/utils/clockUtils';
-import font_25_12_03 from '@/assets/fonts/2025/25-12-03-dog.woff2';
+import dogFontUrl from '@/assets/fonts/2025/25-12-03-dog.ttf?url';
 import styles from './Clock.module.css';
 
 export const fontConfigs: FontConfig[] = [
-  { fontFamily: 'CustomFont', fontUrl: font_25_12_03 }
+  { fontFamily: 'CustomFont', fontUrl: dogFontUrl }
 ];
 
 const PuppyClockComponent: React.FC = () => {
