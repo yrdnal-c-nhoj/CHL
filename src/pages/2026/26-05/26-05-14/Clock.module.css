@@ -26,11 +26,7 @@
   left: 40px;
   width: 100px;
   height: 100px;
-  background: #ffffff;
-  border: 4px solid #1a1a1a;
-  border-radius: 50%;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(0, 0, 0, 0.1);
-  z-index: 10;
+ z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,23 +36,6 @@
   position: relative;
   width: 100%;
   height: 100%;
-}
-
-.tick {
-  position: absolute;
-  width: 1px;
-  height: 15px;
-  background: #1a1a1a;
-  left: 50%;
-  margin-left: -3px;
-  transform-origin: 3px 100px;
-}
-
-/* Style every 3rd tick (3, 6, 9, 12) slightly thicker for that airport look */
-.tick:nth-child(3n) {
-  width: 10px;
-  height: 20px;
-  margin-left: -5px;
 }
 
 .hourHand,
@@ -70,7 +49,7 @@
 }
 
 .hourHand {
-  width: 8px;
+  width: 3px;
   height: 25%;
   background: #1a1a1a;
   margin-left: -4px;
@@ -78,7 +57,7 @@
 }
 
 .minuteHand {
-  width: 6px;
+  width: 2px;
   height: 40%;
   background: #1a1a1a;
   margin-left: -3px;
@@ -86,13 +65,13 @@
 }
 
 .secondHand {
-  width: 3px;
+  width: 1px;
   height: 45%;
   background: #d40000;
   margin-left: -1.5px;
   z-index: 4;
 }
-
+/* 
 .secondHand::after {
   content: '';
   position: absolute;
@@ -103,16 +82,4 @@
   height: 16px;
   background: #d40000;
   border-radius: 50%;
-}
-
-.centerDot {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 12px;
-  height: 12px;
-  background: #1a1a1a;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 5;
-}
+} */
