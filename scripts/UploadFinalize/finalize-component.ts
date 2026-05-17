@@ -87,7 +87,7 @@ class ComponentValidator {
   }
 
   private checkAssets(year: string, monthFolder: string, date: string): boolean {
-    const imagePath = path.join(SRC_DIR, 'assets', 'images', monthFolder, date);
+    const imagePath = path.join(SRC_DIR, 'assets', 'images', year, monthFolder, date);
     return fs.existsSync(imagePath);
   }
 
@@ -158,6 +158,12 @@ class ComponentValidator {
     if (!content.includes('<time dateTime=')) {
       result.warnings.push('Missing semantic time element');
       result.fixes.push('Use <time dateTime={...}> for time displays');
+    }
+
+    // Check for deprecated fullscreen API
+    if (content.includes('window.fullScreen')) {
+      result.warnings.push('Deprecated window.fullScreen detected');
+      result.fixes.push('Use document.fullscreenElement instead');
     }
 
     // 5. Asset organization validation
@@ -249,6 +255,7 @@ class ComponentValidator {
   private async findMisplacedImages(component: ComponentInfo, references: string[]): Promise<string[]> {
     const misplaced: string[] = [];
     const parts = component.path.split(path.sep);
+    const year = parts[parts.length - 4];
     const monthFolder = parts[parts.length - 3];
     const date = parts[parts.length - 2];
 
@@ -259,7 +266,7 @@ class ComponentValidator {
         
         // Check if file exists but is in wrong location
         if (fs.existsSync(assetPath)) {
-          const expectedPath = path.join(SRC_DIR, 'assets', 'images', monthFolder, date, path.basename(assetPath));
+          const expectedPath = path.join(SRC_DIR, 'assets', 'images', year, monthFolder, date, path.basename(assetPath));
           if (assetPath !== expectedPath) {
             misplaced.push(assetPath);
           }
@@ -306,7 +313,7 @@ class ComponentValidator {
     const orphanedFonts: string[] = [];
 
     // Check expected image directory
-    const expectedImageDir = path.join(SRC_DIR, 'assets', 'images', monthFolder, date);
+    const expectedImageDir = path.join(SRC_DIR, 'assets', 'images', year, monthFolder, date);
     if (fs.existsSync(expectedImageDir)) {
       const imageFiles = fs.readdirSync(expectedImageDir).filter(f => 
         ['.webp', '.jpg', '.jpeg', '.png', '.gif', '.svg'].includes(path.extname(f).toLowerCase())
@@ -370,7 +377,7 @@ class ComponentValidator {
     const modifications: string[] = [];
 
     // Create expected directories
-    const expectedImageDir = path.join(SRC_DIR, 'assets', 'images', monthFolder, date);
+    const expectedImageDir = path.join(SRC_DIR, 'assets', 'images', year, monthFolder, date);
     const expectedFontDir = path.join(SRC_DIR, 'assets', 'fonts', year);
     
     if (!fs.existsSync(expectedImageDir)) {
@@ -401,7 +408,7 @@ class ComponentValidator {
             console.log('📁 Moved image:', fileName, '→', path.relative(SRC_DIR, newPath));
             
             // Update the import path in content
-            const newImportPath = `@/assets/images/${monthFolder}/${date}/${fileName}`;
+            const newImportPath = `@/assets/images/${year}/${monthFolder}/${date}/${fileName}`;
             const updatedImport = importMatch.replace(pathMatch[1], newImportPath.replace('@/assets/images/', ''));
             content = content.replace(importMatch, updatedImport);
             contentModified = true;
@@ -445,7 +452,7 @@ class ComponentValidator {
               console.log('📁 Moved background image:', fileName, '→', path.relative(SRC_DIR, newPath));
               
               // Update the CSS URL
-              const newImageUrl = `/src/assets/images/${monthFolder}/${date}/${fileName}`;
+              const newImageUrl = `/src/assets/images/${year}/${monthFolder}/${date}/${fileName}`;
               const updatedBg = bgMatch.replace(urlMatch[1], newImageUrl);
               cssContent = cssContent.replace(bgMatch, updatedBg);
               cssModified = true;
@@ -474,11 +481,11 @@ class ComponentValidator {
           const baseName = path.basename(fileName, fileExt);
           
           // Create properly named font file: YY-MM-DD-name.ext
-          let newFileName = `${date}-${baseName}${fileExt}`;
+          let newFileName = fileName;
           
-          // If the font already starts with the date, don't duplicate it
-          if (baseName.startsWith(date + '-')) {
-            newFileName = fileName;
+          // If the font doesn't start with the date, prepend it
+          if (!baseName.startsWith(date)) {
+            newFileName = `${date}-${fileName}`;
           }
           
           const newPath = path.join(expectedFontDir, newFileName);

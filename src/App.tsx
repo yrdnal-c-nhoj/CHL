@@ -71,7 +71,7 @@ const AnalyticsAndSEO = React.memo(() => {
   // Analytics tracking with useCallback to prevent unnecessary re-renders
   const trackPageView = React.useCallback(() => {
     try {
-      if (typeof pageview !== 'function') return;
+      if (typeof pageview !== 'function' || !navigator.onLine) return;
       pageview(processedPath.path + location.search);
     } catch (error) {
       console.warn('Analytics tracking failed:', error);
@@ -108,16 +108,17 @@ interface Props {
 
 interface State {
   hasError: boolean;
+  error: Error | null;
 }
 
 class ErrorBoundary extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { hasError: false, error: null };
   }
 
   static getDerivedStateFromError(error: Error): State {
-    return { hasError: true };
+    return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
@@ -139,6 +140,11 @@ class ErrorBoundary extends React.Component<Props, State> {
         >
           <h1>Something went wrong</h1>
           <p>Please refresh the page and try again.</p>
+          {this.state.error && (
+            <pre style={{ marginTop: '1rem', color: '#ff5555', background: '#222', padding: '10px', fontSize: '0.8rem', maxWidth: '80%' }}>
+              {this.state.error.message}
+            </pre>
+          )}
         </div>
       );
     }

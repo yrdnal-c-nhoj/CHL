@@ -6,91 +6,71 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  background-color: #000;
+
+  /*
+    Background rotation should never clip.
+    Keep the clock content centered; rotation overflow is OK.
+ good to hear you  */
+  overflow: visible;
+
+  background-color: #6e5555;
 }
 
-.clockWrapper {
-  z-index: 1;
-  position: relative;
-}
-
-.glassEffect {
-  padding: 2vmin;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-}
-
-.clockBody {
-  position: relative;
-  width: 80vmin;
-  height: 80vmin;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.3);
-  border: 4px solid #fff;
-}
-
-.numeral {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  color: #fff;
-  font-size: 6vmin;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-  user-select: none;
-}
-
-.hand {
-  position: absolute;
-  left: 50%;
-  bottom: 50%;
-  transform-origin: bottom center;
-  border-radius: 10px;
-  transition: transform 0.1s cubic-bezier(0.4, 2.08, 0.55, 0.44);
-}
-
-.hourHand {
-  width: 1.5vmin;
-  height: 25vmin;
-  background: #fff;
-  z-index: 3;
-}
-
-.minuteHand {
-  width: 1vmin;
-  height: 35vmin;
-  background: #ddd;
-  z-index: 2;
-}
-
-.secondHand {
-  width: 0.5vmin;
-  height: 38vmin;
-  background: #ff3b30;
-  z-index: 4;
-}
-
-.centerPivot {
+.backgroundImage {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 3vmin;
-  height: 3vmin;
-  border-radius: 50%;
-  background: #fff;
-  transform: translate(-50%, -50%);
-  z-index: 5;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 0;
+
+  /* Rotate around center; no translate() needed if we center using translate below */
+  transform: translate(-50%, -50%) rotate(0deg);
+  transform-origin: center;
+
+  /* Size is now just a safety margin; clipping is prevented via container overflow: visible */
+  width: 300vmax;
+  height: 300vmax;
+
+  object-fit: cover;
+  object-position: center;
+
+  pointer-events: none;
+  animation: rotateCounter 60s linear infinite;
+  will-change: transform;
 }
 
-.dateDisplay {
+
+
+@keyframes rotateCounter {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+
+.clockDisplay {
+  position: relative;
   z-index: 1;
-  margin-top: 4vmin;
-  color: #fff;
-  font-size: 4vmin;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'CustomFont', 'Courier New', monospace;
+  font-size: 18vw;
+  color: #f3d46e;
+  text-shadow: 0 0 20px rgba(240, 222, 120, 0.5);
+  letter-spacing: -0.05em;
+  line-height: 0.85;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('@/assets/fonts/2026/26-05-15.ttf') format('truetype');
+}
+
+.timeSegment {
+  display: inline-block;
+  min-width: 0.6em;
+  text-align: center;
 }
