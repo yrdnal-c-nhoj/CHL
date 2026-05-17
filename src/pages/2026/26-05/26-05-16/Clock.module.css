@@ -31,7 +31,7 @@
   z-index: 10;
   display: flex;
   align-items: center;
-  opacity: 0.9;
+  opacity: 0.7;
   justify-content: center;
 }
 
@@ -97,7 +97,7 @@
   left: 50%;
   width: 4px;
   height: 4px;
-  background: #1a1a1a;
+  background: #797979;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: 5;
