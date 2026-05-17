@@ -42,15 +42,20 @@ const AnalogClock: React.FC = () => {
 
       <div className={styles.analogClock}>
         <time className={styles.face} dateTime={isoTime}>
-       
+          {/* 12 hour markers */}
+          {[...Array(12)].map((_, i) => (
+            <div
+              key={i}
+              className={styles.tick}
+              style={{ transform: `rotate(${i * 30}deg)` }}
+            />
+          ))}
 
           {/* Hands */}
           <div className={styles.hourHand} style={{ transform: `rotate(${hourDeg}deg)` }} />
           <div className={styles.minuteHand} style={{ transform: `rotate(${minuteDeg}deg)` }} />
           <div className={styles.secondHand} style={{ transform: `rotate(${secondDeg}deg)` }} />
 
-          {/* Center axis pin */}
-          <div className={styles.centerDot} />
         </time>
       </div>
     </main>
