@@ -1,5 +1,7 @@
-- [x] Convert `src/pages/2026/26-05/26-05-13/Clock.tsx` from analog hands/numerals to a centered digital `HH:MM:SS` display (24-hour)
-- [x] Update `src/pages/2026/26-05/26-05-13/Clock.module.css` with digital clock styles
-- [x] Run `npm test` (if configured) and/or `npm run build` to verify TypeScript/CSS modules
-
+- [ ] Inspect current clock implementation (Clock.tsx)
+- [x] Implement 7 stacked clocks (3 above, current, 3 below) in Clock.tsx
+- [x] Reuse one computed time + one font loading for all clocks
+- [ ] Ensure background/rotation remains as before (no duplicate background wrappers)
+- [ ] Typecheck/tests (npm test / npm run build)
+- [x] Fix font loader render-efficiency (stabilize font config)
 
