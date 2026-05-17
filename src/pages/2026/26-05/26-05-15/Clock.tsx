@@ -8,7 +8,11 @@ import backgroundImage from '@/assets/images/2026/26-05/26-05-15/rings.webp';
 
 export const assets = [font, backgroundImage];
 
-const stackSpacingVh = 16; // vertical distance between each clock row (smaller => clocks touch more)
+const stackSpacingVh = 0; // vertical distance between each clock row (0 => clocks touch/no gap)
+
+
+
+
 
 
 const fontConfig = [
