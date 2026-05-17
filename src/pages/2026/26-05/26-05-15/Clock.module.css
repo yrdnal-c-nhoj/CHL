@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  backgroundColor: #6e5555;
+  background-color: #6e5555;
   isolation: isolate;
 }
 
@@ -39,11 +39,64 @@
 .clockRow {
   position: absolute;
   left: 50%;
+  top: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   width: auto;
   z-index: 1;
+}
+
+.clockRowOffsetNegative6 {
+  transform: translate(-50%, calc(-50% - 87vw));
+}
+
+.clockRowOffsetNegative5 {
+  transform: translate(-50%, calc(-50% - 72.5vw));
+}
+
+.clockRowOffsetNegative4 {
+  transform: translate(-50%, calc(-50% - 58vw));
+}
+
+.clockRowOffsetNegative3 {
+  transform: translate(-50%, calc(-50% - 43.5vw));
+}
+
+.clockRowOffsetNegative2 {
+  transform: translate(-50%, calc(-50% - 29vw));
+}
+
+.clockRowOffsetNegative1 {
+  transform: translate(-50%, calc(-50% - 14.5vw));
+}
+
+.clockRowOffset0 {
+  transform: translate(-50%, -50%);
+}
+
+.clockRowOffset1 {
+  transform: translate(-50%, calc(-50% + 14.5vw));
+}
+
+.clockRowOffset2 {
+  transform: translate(-50%, calc(-50% + 29vw));
+}
+
+.clockRowOffset3 {
+  transform: translate(-50%, calc(-50% + 43.5vw));
+}
+
+.clockRowOffset4 {
+  transform: translate(-50%, calc(-50% + 58vw));
+}
+
+.clockRowOffset5 {
+  transform: translate(-50%, calc(-50% + 72.5vw));
+}
+
+.clockRowOffset6 {
+  transform: translate(-50%, calc(-50% + 87vw));
 }
 
 .clockDisplay {
@@ -52,29 +105,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.8vw;
+  /* gap: 0.4vw; */
   font-family: 'CustomFont', 'Courier New', monospace;
   font-variant-numeric: tabular-nums;
-  font-size: 16vw;
-  line-height: 0.82vw;
-  letter-spacing: -0.06em;
-  color: #f3d46e;
-  text-shadow: 0 0 8px rgba(240, 222, 120, 0.65),
-               0 0 18px rgba(240, 222, 120, 0.45),
-               0 0 36px rgba(240, 222, 120, 0.25);
+  font-size: 15.5vw;
+  /* Critical: remove any intrinsic vertical metrics that can create a visible gap */
+  /* line-height:- 3.1; */
+  /* letter-spacing: -0.04em; */
+  color: #804b0bc3;
+  text-shadow: 1px 1px 0 #f4f3ee71;
   transform: translateZ(0);
   will-change: contents;
 }
 
 .timeSegment {
   display: inline-block;
-  /* min-width: 1.15em; */
-  text-align: center;
-}
-
-.separator {
-  display: inline-block;
-  width: 0.4em;
   text-align: center;
 }
 
