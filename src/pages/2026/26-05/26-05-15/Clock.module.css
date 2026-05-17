@@ -2,53 +2,49 @@
   position: relative;
   width: 100vw;
   height: 100dvh;
+  overflow: hidden;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  backgroundColor: #6e5555;
+  isolation: isolate;
+}
 
-  /*
-    Background rotation should never clip.
-    Keep the clock content centered; rotation overflow is OK.
- good to hear you  */
-  overflow: visible;
-
-  background-color: #6e5555;
+.backgroundWrapper {
+  position: absolute;
+  inset: -35vmax;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  contain: layout style paint;
+  animation: rotateCounter 60s linear infinite;
 }
 
 .backgroundImage {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 0;
-
-  /* Rotate around center; no translate() needed if we center using translate below */
-  transform: translate(-50%, -50%) rotate(0deg);
-  transform-origin: center;
-
-  /* Size is now just a safety margin; clipping is prevented via container overflow: visible */
-  width: 300vmax;
-  height: 300vmax;
-
+  width: 170vmax;
+  height: 170vmax;
   object-fit: cover;
   object-position: center;
-
-  pointer-events: none;
-  animation: rotateCounter 60s linear infinite;
-  will-change: transform;
+  flex-shrink: 0;
+  user-select: none;
+  -webkit-user-drag: none;
+  image-rendering: auto;
 }
 
-
-
-@keyframes rotateCounter {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(-360deg);
-  }
+.clockRow {
+  position: absolute;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  z-index: 1;
 }
-
 
 .clockDisplay {
   position: relative;
@@ -56,21 +52,37 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.8vw;
   font-family: 'CustomFont', 'Courier New', monospace;
-  font-size: 18vw;
+  font-variant-numeric: tabular-nums;
+  font-size: 16vw;
+  line-height: 0.82vw;
+  letter-spacing: -0.06em;
   color: #f3d46e;
-  text-shadow: 0 0 20px rgba(240, 222, 120, 0.5);
-  letter-spacing: -0.05em;
-  line-height: 0.85;
-}
-
-@font-face {
-  font-family: 'CustomFont';
-  src: url('@/assets/fonts/2026/26-05-15.ttf') format('truetype');
+  text-shadow: 0 0 8px rgba(240, 222, 120, 0.65),
+               0 0 18px rgba(240, 222, 120, 0.45),
+               0 0 36px rgba(240, 222, 120, 0.25);
+  transform: translateZ(0);
+  will-change: contents;
 }
 
 .timeSegment {
   display: inline-block;
-  min-width: 0.6em;
+  /* min-width: 1.15em; */
   text-align: center;
+}
+
+.separator {
+  display: inline-block;
+  width: 0.4em;
+  text-align: center;
+}
+
+@keyframes rotateCounter {
+  from {
+    transform: translateZ(0) rotate(0deg);
+  }
+  to {
+    transform: translateZ(0) rotate(-360deg);
+  }
 }
