@@ -45,6 +45,7 @@
   left: 50%;
   transform-origin: bottom center;
   transition: transform 0.1s linear;
+  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.333);
 }
 
 .hourHand {
@@ -57,7 +58,7 @@
 
 .minuteHand {
   width: 2px;
-  height: 40%;
+  height: 50%;
   background: #aaffff;
   margin-left: -1.5px;
   z-index: 3;
@@ -65,7 +66,7 @@
 
 .secondHand {
   width: 1px;
-  height: 45%;
+  height: 50%;
   background:#aaffff;
   margin-left: -1px;
   z-index: 4;
@@ -78,10 +79,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 22vh;
+  font-size: 18vmin;
   color: #c2eeea;
   font-family: 'ClockFont_26_05_14', sans-serif;
-  text-shadow: 1px 1px 0 #0000001c;
+  text-shadow: 1px 1px 0 #00000072;
 }
 
 .centerDot {
