@@ -280,6 +280,14 @@ export default tseslint.config(
       'no-unused-labels': 'error',
       'no-useless-call': 'error',
       'no-useless-concat': 'error',
+      'no-restricted-properties': [
+        'error',
+        {
+          object: 'window',
+          property: 'fullScreen',
+          message: 'window.fullScreen is deprecated. Use document.fullscreenElement instead.'
+        }
+      ],
       radix: 'error',
       yoda: 'error',
     },

@@ -3,12 +3,12 @@
   width: 100vw;
   height: 100dvh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   background-color: #000;
 }
+
 
 .backgroundImage {
   position: absolute;
@@ -21,16 +21,15 @@
 }
 
 .analogClock {
-  position: absolute;
-  top: 40px;
-  left: 40px;
-  width: 100px;
-  height: 100px;
- z-index: 10;
+  position: relative;
+  width: min(80vmin, 720px);
+  height: min(80vmin, 720px);
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 
 .face {
   position: relative;
@@ -45,41 +44,50 @@
   bottom: 50%;
   left: 50%;
   transform-origin: bottom center;
-  transition: transform 0.05s cubic-bezier(0.4, 2.08, 0.55, 0.44);
+  transition: transform 0.1s linear;
 }
 
 .hourHand {
   width: 3px;
   height: 25%;
-  background: #1a1a1a;
-  margin-left: -4px;
+  background: #aaffff;
+  margin-left: -2px;
   z-index: 2;
 }
 
 .minuteHand {
   width: 2px;
   height: 40%;
-  background: #1a1a1a;
-  margin-left: -3px;
+  background: #aaffff;
+  margin-left: -1.5px;
   z-index: 3;
 }
 
 .secondHand {
   width: 1px;
   height: 45%;
-  background: #d40000;
-  margin-left: -1.5px;
+  background:#aaffff;
+  margin-left: -1px;
   z-index: 4;
 }
-/* 
-.secondHand::after {
-  content: '';
+
+.digit {
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 16px;
-  height: 16px;
-  background: #d40000;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22vh;
+  color: #c2eeea;
+  font-family: 'ClockFont_26_05_14', sans-serif;
+  text-shadow: 1px 1px 0 #0000001c;
+}
+
+.centerDot {
+  width: 4px;
+  height: 4px;
+  background: #aaffff;
   border-radius: 50%;
-} */
+  z-index: 5;
+}
