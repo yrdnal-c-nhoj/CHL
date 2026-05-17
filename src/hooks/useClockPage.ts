@@ -84,11 +84,15 @@ export function useClockPage(currentItem: { date: string } | null) {
         const [path, importFn] = match;
 
         // 2. Dynamically import the module
-        const module = (await importFn()) as ClockModule;
+        const module = (await importFn().catch((err) => {
+          console.error(`[useClockPage] Failed to import module at ${path}:`, err);
+          throw new Error(`Module execution failed. This usually means an internal import (image/font) is broken or there is a syntax error in Clock.tsx.`);
+        })) as ClockModule;
         
         // 3. Preload defined assets (images/gifs)
         if (module.assets && module.assets.length > 0) {
-          await Promise.all(module.assets.map(preloadAsset));
+          // Use settled to allow partial loads if some assets are missing
+          await Promise.allSettled(module.assets.map(preloadAsset));
         }
 
         // 4. Update component state
