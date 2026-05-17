@@ -49,8 +49,8 @@
   bottom: 50%;
   left: 50%;
   transform-origin: bottom center;
-  /* Smooth continuous motion instead of short tick transitions */
-  transition: transform 0.25s linear;
+  /* Continuous rotation comes from frequent angle updates; avoid 1s transitions that can cause stutter/lag */
+  will-change: transform;
 }
 
 
