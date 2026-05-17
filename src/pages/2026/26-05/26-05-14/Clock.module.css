@@ -10,6 +10,15 @@
   background-color: #000;
 }
 
+.backgroundImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
 .clockWrapper {
   z-index: 1;
   position: relative;
