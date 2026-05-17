@@ -1,22 +1,22 @@
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
-import { useClockTime } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import backgroundImage from '@/assets/images/2026/26-05/26-05-16/depart.gif';
 
 export const assets = [backgroundImage];
 
 const AnalogClock: React.FC = () => {
-  const time = useClockTime();
+  const time = useSmoothClock(16);
 
   const { hourDeg, minuteDeg, secondDeg, isoTime } = useMemo(() => {
-    const s = time.getSeconds();
-    const m = time.getMinutes();
-    const h = time.getHours();
+    // Get local time in milliseconds to ensure monotonic rotation.
+    // This prevents the hands from "winding" backwards when resetting at 60/12.
+    const localTimestamp = time.getTime() - time.getTimezoneOffset() * 60000;
 
     return {
-      secondDeg: s * 6,
-      minuteDeg: m * 6 + s * 0.1,
-      hourDeg: (h % 12) * 30 + m * 0.5,
+      secondDeg: (localTimestamp / 1000) * 6,
+      minuteDeg: (localTimestamp / 60000) * 6,
+      hourDeg: (localTimestamp / 3600000) * 30,
       isoTime: time.toISOString(),
     };
   }, [time]);
