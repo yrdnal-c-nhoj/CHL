@@ -8,28 +8,59 @@ import backgroundImage from '@/assets/images/2026/26-05/26-05-15/rings.webp';
 
 export const assets = [font, backgroundImage];
 
-const stackSpacingVh = 16; // vertical distance between each clock row (smaller => clocks touch more)
+const fontConfig = {
+  fontFamily: 'CustomFont',
+  fontUrl: font,
+};
 
+const _clockSpacingVw = 15; // slightly less than font-size to bring them closer
 
-const fontConfig = [
-  {
-    fontFamily: 'CustomFont',
-    fontUrl: font,
-  },
-];
+const getOffsetClassName = (offset: number): string => {
+  switch (offset) {
+    case -6:
+      return styles.clockRowOffsetNegative6!;
+    case -5:
+      return styles.clockRowOffsetNegative5!;
+    case -4:
+      return styles.clockRowOffsetNegative4!;
+    case -3:
+      return styles.clockRowOffsetNegative3!;
+    case -2:
+      return styles.clockRowOffsetNegative2!;
+    case -1:
+      return styles.clockRowOffsetNegative1!;
+    case 0:
+      return styles.clockRowOffset0!;
+    case 1:
+      return styles.clockRowOffset1!;
+    case 2:
+      return styles.clockRowOffset2!;
+    case 3:
+      return styles.clockRowOffset3!;
+    case 4:
+      return styles.clockRowOffset4!;
+    case 5:
+      return styles.clockRowOffset5!;
+    case 6:
+      return styles.clockRowOffset6!;
+    default:
+      return styles.clockRowOffset0!;
+  }
+};
 
 const DigitalClock: React.FC = () => {
   const currentTime = useClockTime();
 
-  useSuspenseFontLoader(fontConfig);
+  useSuspenseFontLoader([fontConfig]);
 
-  const hours = currentTime.getHours().toString().padStart(2, '0');
+  const rawHours = currentTime.getHours();
+  const hours = (rawHours % 12 || 12).toString().padStart(2, '0');
   const minutes = currentTime.getMinutes().toString().padStart(2, '0');
-  const seconds = currentTime.getSeconds().toString().padStart(2, '0');
+  const ampm = rawHours >= 12 ? 'PM' : 'AM';
   const isoTime = currentTime.toISOString();
+  const ariaLabel = `${hours}:${minutes} ${ampm}`;
 
-  const ariaBase = `${hours}:${minutes}:${seconds}`;
-  const offsets = [-3, -2, -1, 0, 1, 2, 3];
+  const offsets = [-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6];
 
   return (
     <main className={styles.container}>
@@ -44,35 +75,20 @@ const DigitalClock: React.FC = () => {
         />
       </div>
 
-      {offsets.map((offset) => {
-        const y = offset * stackSpacingVh;
-        return (
-          <div
-            key={offset}
-            className={styles.clockRow}
-            style={{
-              top: '50%',
-              transform: `translateX(-50%) translateY(${y}vh)`,
-            }}
+      {offsets.map((offset) => (
+        <div
+          key={offset}
+          className={`${styles.clockRow} ${getOffsetClassName(offset)}`}
+        >
+          <time
+            className={styles.clockDisplay}
+            dateTime={isoTime}
+            aria-label={ariaLabel}
           >
-            <time
-              className={styles.clockDisplay}
-              dateTime={isoTime}
-              aria-label={ariaBase}
-            >
-              <span className={styles.timeSegment}>{hours}</span>
-
-              <span className={styles.separator}>:</span>
-
-              <span className={styles.timeSegment}>{minutes}</span>
-
-              <span className={styles.separator}>:</span>
-
-              <span className={styles.timeSegment}>{seconds}</span>
-            </time>
-          </div>
-        );
-      })}
+            <span className={styles.timeSegment}>{hours}{minutes}{ampm}</span>
+          </time>
+        </div>
+      ))}
     </main>
   );
 };
