@@ -25,6 +25,7 @@
   height: 90vmin;
   transform: translate3d(-50%, -50%, 0);
   z-index: 2;
+  opacity: 0.6;
   font-family: 'ClockFont', serif;
   contain: layout paint;
   will-change: transform;
@@ -45,12 +46,11 @@
 
 .numeral {
   position: absolute;
-  font-size: 15vh;
+  font-size: 13vh;
   background: linear-gradient(180deg, #24058B 0%, #3e0808 45%, #232222 50%, #062D79 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(1px 1px 0px white);
-  /* line-height: 1; */
   user-select: none;
   pointer-events: none;
   white-space: nowrap;
