@@ -1,7 +1,6 @@
-- [ ] Inspect current clock implementation (Clock.tsx)
-- [x] Implement 7 stacked clocks (3 above, current, 3 below) in Clock.tsx
-- [x] Reuse one computed time + one font loading for all clocks
-- [ ] Ensure background/rotation remains as before (no duplicate background wrappers)
-- [ ] Typecheck/tests (npm test / npm run build)
-- [x] Fix font loader render-efficiency (stabilize font config)
+- [x] Update src/pages/2026/26-05/26-05-15/Clock.tsx: extend offsets from [-6..6] to [-10..-1,0..8] and add switch cases for new offsets.
+- [x] Update src/pages/2026/26-05/26-05-15/Clock.module.css: add clockRowOffsetNegative7..Negative10 and clockRowOffset7..8 with translate spacing continuing the existing 14.5vw step.
+
+- [x] Run typecheck/build or relevant tests (e.g., npm test/vitest or npm run build) and fix any issues.
+
 
