@@ -101,6 +101,6 @@ export default defineConfig({
       '@react-three/fiber',
       '@react-three/drei',
     ],
-    exclude: ['@types/three', '@/utils/clockUtils'], // Exclude type definitions and clockUtils to force rebuild
+    exclude: ['@types/three'], // Exclude type definitions
   },
 });
