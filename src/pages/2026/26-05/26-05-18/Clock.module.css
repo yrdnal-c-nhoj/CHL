@@ -1,16 +1,90 @@
 .container {
+  position: relative;
   width: 100vw;
   height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #000;
-  position: relative;
   overflow: hidden;
+  background-color: #BFA7A7;
+  contain: layout style paint;
+  isolation: isolate;
 }
 
-.digitalTime {
-  color: #fff;
-  font-size: 2rem;
+.backgroundLayer {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  background-position: center;
+  pointer-events: none;
+  will-change: transform;
 }
+
+.clockFace {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 90vmin;
+  height: 90vmin;
+  transform: translate3d(-50%, -50%, 0);
+  z-index: 2;
+  font-family: 'ClockFont', serif;
+  contain: layout paint;
+  will-change: transform;
+}
+
+.timeA11y {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+  border: 0;
+  padding: 0;
+  margin: -1px;
+}
+
+.numeral {
+  position: absolute;
+  font-size: 15vh;
+  background: linear-gradient(180deg, #24058B 0%, #3e0808 45%, #232222 50%, #062D79 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(1px 1px 0px white);
+  /* line-height: 1; */
+  user-select: none;
+  pointer-events: none;
+  white-space: nowrap;
+  transform-origin: center center;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+  border-radius: 999px;
+  filter: drop-shadow(1px 1px 0px white);
+  backface-visibility: hidden;
+  will-change: transform;
+  contain: layout paint;
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2vmin;
+  height: 2vmin;
+  transform: translate3d(-50%, -50%, 0);
+  border-radius: 50%;
+  background-color: #565856;
+  z-index: 10;
+  pointer-events: none;
+  box-shadow: 0 0 1vmin rgba(255, 255, 255, 0.35);
+}
+
+.hourHand { background: linear-gradient(to right, #4E4D4D, #282727, #4D4949); }
+.minuteHand { background: linear-gradient(to right, #3B3939, #383636, #484444); }
+.secondHand { background: linear-gradient(to top, #4B4C4F, #4F4F52); }
