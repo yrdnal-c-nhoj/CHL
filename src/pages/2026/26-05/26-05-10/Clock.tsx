@@ -209,12 +209,12 @@ const NightSky: React.FC = () => {
                   ? '58vh'
                   : '58vw',
                 lineHeight: 0.8,
-                color: '#222222B6',
+                color: '#2C2B2B52',
                 opacity: 0.6,
                 filter: `
                   drop-shadow(1px 1px 0px white)
-                  drop-shadow(0 0 10px rgba(255,255,255,0.45))
-                  drop-shadow(0 0 24px rgba(255,255,255,0.2))
+                  drop-shadow(0 1px 0px rgba(238, 107, 107, 0.96))
+                  drop-shadow(1px 0 px rgba(203, 18, 236, 0.96))
                 `,
               }}
             >
