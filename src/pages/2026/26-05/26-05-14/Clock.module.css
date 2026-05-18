@@ -80,9 +80,9 @@
   justify-content: center;
   align-items: center;
   font-size: 18vmin;
-  color: #c2eeea;
+  color: #f8f9f9;
   font-family: 'ClockFont_26_05_14', sans-serif;
-  text-shadow: 1px 1px 0 #00000072;
+  text-shadow: 2px 2px 0 #000000;
 }
 
 .centerDot {
