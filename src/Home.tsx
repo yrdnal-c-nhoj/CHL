@@ -107,7 +107,7 @@ const Home: FC = () => {
     ];
     const monthIndex = parseInt(mm || '0', 10) - 1;
     const year = String(yy || '0');
-    return `${monthNames[monthIndex]} '${year}`;
+    return `${monthNames[monthIndex]}   '${year}`;
   };
 
   const groupedByMonth = useMemo(() => {
