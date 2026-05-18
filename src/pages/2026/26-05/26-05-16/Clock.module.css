@@ -55,7 +55,7 @@
 
 
 .hourHand {
-  width: 3px;
+  width: 2px;
   height: 25%;
   background: #faf8f8;
   margin-left: -1.5px;
@@ -63,7 +63,7 @@
 }
 
 .minuteHand {
-  width: 2px;
+  width: 1px;
   height: 40%;
   background: #f6f4f4;
   margin-left: -1px;
@@ -71,9 +71,8 @@
 }
 
 .secondHand {
-  width: 0.5px;
+  width: 0.0px;
   height: 45%;
-  background: #e885bf;
   margin-left: -0.5px;
   z-index: 4;
 }
@@ -84,9 +83,9 @@
   top: 0;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 6px;
-  height: 6px;
-  background: #e885bf;
+  width: 10px;
+  height: 10px;
+  background: #f7b4dc;
   border-radius: 50%;
 }
 
