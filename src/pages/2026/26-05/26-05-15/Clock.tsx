@@ -17,6 +17,14 @@ const _clockSpacingVw = 15; // slightly less than font-size to bring them closer
 
 const getOffsetClassName = (offset: number): string => {
   switch (offset) {
+    case -10:
+      return styles.clockRowOffsetNegative10!;
+    case -9:
+      return styles.clockRowOffsetNegative9!;
+    case -8:
+      return styles.clockRowOffsetNegative8!;
+    case -7:
+      return styles.clockRowOffsetNegative7!;
     case -6:
       return styles.clockRowOffsetNegative6!;
     case -5:
@@ -29,6 +37,7 @@ const getOffsetClassName = (offset: number): string => {
       return styles.clockRowOffsetNegative2!;
     case -1:
       return styles.clockRowOffsetNegative1!;
+
     case 0:
       return styles.clockRowOffset0!;
     case 1:
@@ -43,6 +52,11 @@ const getOffsetClassName = (offset: number): string => {
       return styles.clockRowOffset5!;
     case 6:
       return styles.clockRowOffset6!;
+    case 7:
+      return styles.clockRowOffset7!;
+    case 8:
+      return styles.clockRowOffset8!;
+
     default:
       return styles.clockRowOffset0!;
   }
@@ -60,7 +74,7 @@ const DigitalClock: React.FC = () => {
   const isoTime = currentTime.toISOString();
   const ariaLabel = `${hours}:${minutes} ${ampm}`;
 
-  const offsets = [-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6];
+  const offsets = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8];
 
   return (
     <main className={styles.container}>
