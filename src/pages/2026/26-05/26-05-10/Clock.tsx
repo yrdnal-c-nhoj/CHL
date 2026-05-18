@@ -61,12 +61,24 @@ const NightSky: React.FC = () => {
     if (!currentTime) {
       return { hours: '00', minutes: '00', seconds: '00', meridian: 'AM' };
     }
-    const {
-      hours = '00',
-      minutes = '00',
-      seconds = '00'
-    } = formatTime(currentTime, '12h') || {};
-    const meridian = currentTime.getHours() >= 12 ? 'PM' : 'AM';
+
+    // utils/clockUtils.formatTime('12h') returns: "HH:MM:SS AM|PM"
+    const formatted = formatTime(currentTime, '12h');
+
+    const match = formatted.match(/^(\d{2}):(\d{2}):(\d{2})\s+(AM|PM)$/);
+    if (!match) {
+      const meridian = currentTime.getHours() >= 12 ? 'PM' : 'AM';
+      const hours12 = (currentTime.getHours() % 12) || 12;
+      const hours = hours12.toString().padStart(2, '0');
+      return {
+        hours,
+        minutes: currentTime.getMinutes().toString().padStart(2, '0'),
+        seconds: currentTime.getSeconds().toString().padStart(2, '0'),
+        meridian,
+      };
+    }
+
+    const [, hours, minutes, seconds, meridian] = match;
     return { hours, minutes, seconds, meridian };
   }, [currentTime]);
 
@@ -81,7 +93,7 @@ const NightSky: React.FC = () => {
       seconds[0] || '0',
       seconds[1] || '0',
       meridian[0] || 'A',
-      meridian[1] || 'M'
+      meridian[1] || 'M',
     ];
   }, [formattedTime]);
 
