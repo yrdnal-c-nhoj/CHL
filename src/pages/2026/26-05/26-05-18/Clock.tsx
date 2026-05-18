@@ -18,9 +18,9 @@ const CLOCK_CONFIG = {
 type HandType = 'hour' | 'minute' | 'second';
 
 const HAND_DIMENSIONS: Record<HandType, { width: string; height: string; zIndex: number }> = {
-  hour: { width: '1.2vmin', height: '20vmin', zIndex: 3 },
-  minute: { width: '0.8vmin', height: '32vmin', zIndex: 4 },
-  second: { width: '0.4vmin', height: '38vmin', zIndex: 5 },
+  hour: { width: '0.9vmin', height: '10vmin', zIndex: 3 },
+  minute: { width: '0.7vmin', height: '16vmin', zIndex: 4 },
+  second: { width: '0.2vmin', height: '22vmin', zIndex: 5 },
 };
 
 // Pre-calculate positions statically once at runtime
