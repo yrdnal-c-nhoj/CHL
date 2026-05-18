@@ -26,13 +26,13 @@ const DynamicComponent: React.FC = () => {
   const timeString = time
     .toLocaleTimeString('en-US', {
       hour12: true,
-      hour: 'numeric',
+      hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
     })
     .replace(/[: ]/g, ''); // Remove colons and spaces
 
-  const DigitBox = ({ digit }) => (
+  const DigitBox = ({ digit }: { digit: string }) => (
     <div
       style={{
         display: 'inline-flex',

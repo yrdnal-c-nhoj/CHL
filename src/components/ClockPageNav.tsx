@@ -158,9 +158,9 @@ const ClockPageNav = ({
           <span className={styles.footerTitle}>
             {formatTitle(currentItem.title)}
           </span>
-          <span className={styles.footerNumber}>
-            #{currentItem.clockNumber}
-          </span>
+          {currentItem.clockNumber && (
+            <span className={styles.footerNumber}>#{currentItem.clockNumber}</span>
+          )}
         </div>
         <span className={styles.screenReaderText} />
       </div>
