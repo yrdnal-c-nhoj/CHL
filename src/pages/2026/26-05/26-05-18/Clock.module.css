@@ -3,7 +3,7 @@
   width: 100vw;
   height: 100dvh;
   overflow: hidden;
-  background-color: #BFA7A7;
+  background-color: #2a293c;
   contain: layout style paint;
   isolation: isolate;
 }
@@ -11,7 +11,7 @@
 .backgroundLayer {
   position: absolute;
   inset: 0;
-  background-repeat: repeat;
+  background-repeat: no-repeat;
   background-position: center;
   pointer-events: none;
   will-change: transform;
@@ -21,11 +21,11 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 90vmin;
-  height: 90vmin;
+  width: 50vmin;
+  height: 50vmin;
   transform: translate3d(-50%, -50%, 0);
   z-index: 2;
-  opacity: 0.6;
+  opacity: 0.8;
   font-family: 'ClockFont', serif;
   contain: layout paint;
   will-change: transform;
@@ -46,7 +46,7 @@
 
 .numeral {
   position: absolute;
-  font-size: 13vh;
+  font-size: 6vh;
   background: linear-gradient(180deg, #24058B 0%, #3e0808 45%, #232222 50%, #062D79 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -71,20 +71,7 @@
   contain: layout paint;
 }
 
-.centerDot {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 2vmin;
-  height: 2vmin;
-  transform: translate3d(-50%, -50%, 0);
-  border-radius: 50%;
-  background-color: #565856;
-  z-index: 10;
-  pointer-events: none;
-  box-shadow: 0 0 1vmin rgba(255, 255, 255, 0.35);
-}
 
-.hourHand { background: linear-gradient(to right, #4E4D4D, #282727, #4D4949); }
-.minuteHand { background: linear-gradient(to right, #3B3939, #383636, #484444); }
-.secondHand { background: linear-gradient(to top, #4B4C4F, #4F4F52); }
+.hourHand { background: linear-gradient(to right, #283a6f, #282727, #4D4949); }
+.minuteHand { background: linear-gradient(to right, #283a6f, #383636, #484444); }
+.secondHand { background: linear-gradient(to top, #283a6f, #4F4F52); }

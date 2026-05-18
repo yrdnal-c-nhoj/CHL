@@ -20,26 +20,11 @@
 .backgroundLayer {
   position: absolute;
   inset: 0;
-  background-size: 90% 90%;
+  background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
   z-index: 1;
   pointer-events: none;
-}
-
-
-.face {
-  position: absolute;
-  top: 15%;
-  left: 10%;
-  transform: translate(-0%, -50%);
-  width: 90vmin;
-  height: 90vmin;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  font-family: 'BorrowedAnalog', sans-serif;
 }
 
 .digitalTime {
