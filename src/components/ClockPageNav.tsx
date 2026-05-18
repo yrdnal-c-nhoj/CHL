@@ -154,7 +154,7 @@ const ClockPageNav = ({
         <div className={styles.footerCenter}>
           <span className={styles.footerDate}>
             {formatDate(currentItem.date).replace(/\s*'/, "   '").replace(/^(\w+)/, '$1 ')}
-            {formatDate(currentItem.date).replace(/\s*'/, "   ' ").replace(/^(\w+)/, '$1 ')}
+  
           </span>
           <span className={styles.footerTitle}>
             {formatTitle(currentItem.title)}
