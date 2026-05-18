@@ -47,6 +47,22 @@
   z-index: 1;
 }
 
+.clockRowOffsetNegative10 {
+  transform: translate(-50%, calc(-50% - 145vw));
+}
+
+.clockRowOffsetNegative9 {
+  transform: translate(-50%, calc(-50% - 130.5vw));
+}
+
+.clockRowOffsetNegative8 {
+  transform: translate(-50%, calc(-50% - 116vw));
+}
+
+.clockRowOffsetNegative7 {
+  transform: translate(-50%, calc(-50% - 101.5vw));
+}
+
 .clockRowOffsetNegative6 {
   transform: translate(-50%, calc(-50% - 87vw));
 }
@@ -54,6 +70,7 @@
 .clockRowOffsetNegative5 {
   transform: translate(-50%, calc(-50% - 72.5vw));
 }
+
 
 .clockRowOffsetNegative4 {
   transform: translate(-50%, calc(-50% - 58vw));
@@ -98,6 +115,15 @@
 .clockRowOffset6 {
   transform: translate(-50%, calc(-50% + 87vw));
 }
+
+.clockRowOffset7 {
+  transform: translate(-50%, calc(-50% + 101.5vw));
+}
+
+.clockRowOffset8 {
+  transform: translate(-50%, calc(-50% + 116vw));
+}
+
 
 .clockDisplay {
   position: relative;
