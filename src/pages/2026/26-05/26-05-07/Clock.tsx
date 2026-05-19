@@ -16,7 +16,8 @@ interface HandProps {
 const ClockHand: React.FC<HandProps> = ({ angle, length, width, color, type }) => {
   const zIndex = type === 'second' ? 30 : type === 'minute' ? 20 : 10;
   
-  const scaledWidth = `calc(${width} * (var(--clock-radius) / 200))`;
+  const widthValue = parseFloat(width);
+  const scaledWidth = `calc(${widthValue} * var(--clock-radius) / 200)`;
 
   const handStyle: React.CSSProperties = {
     position: 'absolute',
@@ -115,15 +116,23 @@ const AnalogClock: React.FC = () => {
   }, []);
 
   return (
-    <div 
+    <main 
       className={styles.container} 
       style={{ 
         '--bg-image': `url(${backgroundImage})`,
         '--clock-radius': `${radius}px`,
       } as React.CSSProperties}
     >
-      <time dateTime={isoTime} aria-label={`Current time: ${hours}:${minutes}`} className={styles.timeWrapper}>
-        <div className={styles.clockFace}>
+      <time 
+        dateTime={isoTime} 
+        aria-label={`Current time: ${hours}:${minutes}`} 
+        className={styles.timeWrapper}
+        style={{ display: 'flex', width: '100vw', height: '100dvh', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <div 
+          className={styles.clockFace}
+          style={{ position: 'relative', width: 'calc(2 * var(--clock-radius))', height: 'calc(2 * var(--clock-radius))' }}
+        >
           <div className={styles.outerRing} />
 
           <div className={styles.innerRing} />          {tickMarks.map((tick) => (
@@ -176,7 +185,7 @@ const AnalogClock: React.FC = () => {
 
          </div>
       </time>
-    </div>
+    </main>
   );
 };
 
