@@ -8,9 +8,20 @@
   background: #000;
   position: relative;
   overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .digitalTime {
   color: #fff;
-  font-size: 2rem;
+  font-size: 20vh;
+  display: flex;
+  align-items: center;
+}
+
+.digitBox {
+  display: inline-flex;
+  justify-content: center;
+  width: 14vh;
 }
