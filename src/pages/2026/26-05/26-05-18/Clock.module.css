@@ -11,6 +11,7 @@
 .backgroundLayer {
   position: absolute;
   inset: 0;
+
   background-repeat: no-repeat;
   background-position: center;
   pointer-events: none;
