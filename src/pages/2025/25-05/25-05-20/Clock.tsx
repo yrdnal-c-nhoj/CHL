@@ -67,6 +67,13 @@ const Clock: React.FC = () => {
     fontSize: 'clamp(3rem, 18vw, 12rem)',
     fontWeight: 300,
     fontVariantNumeric: 'tabular-nums', // Prevents digits from jumping
+    display: 'flex', // Use flex to align children horizontally
+    alignItems: 'baseline', // Align items to their baseline
+  };
+
+  const colonStyle: React.CSSProperties = {
+    display: 'inline-block', // Required for transform to work
+    transform: 'translateY(-0.15em)', // Adjust this value as needed to lift the colons
   };
 
   return (
@@ -74,7 +81,11 @@ const Clock: React.FC = () => {
       <div style={displayBoxStyle}>
         <header style={titleStyle}>{title}</header>
         <time dateTime={`${hours}:${minutes}:${seconds}`} style={timeStyle}>
-          {hours}:{minutes}:{seconds}
+          <span>{hours}</span>
+          <span style={colonStyle}>:</span>
+          <span>{minutes}</span>
+          <span style={colonStyle}>:</span>
+          <span>{seconds}</span>
         </time>
         <footer style={{ marginTop: '2rem', opacity: 0.3, fontSize: '0.9rem' }}>
           {content}
