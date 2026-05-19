@@ -1,182 +1,86 @@
-import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import flaFont from '@/assets/fonts/2025/25-05-20-fla.ttf'; // Import the font file from the same folder
+import React, { useEffect } from 'react';
+import { useClockTime, formatTime as formatClockTime } from '@/utils/clockUtils';
+import { clockTax } from './tax';
 
+/**
+ * Recycled Internet Clock (25-05-11)
+ * 
+ * Features:
+ * - Converted to a robust React/TypeScript component.
+ * - Utilizes project-standard hooks for time synchronization.
+ * - Employs exclusively in-line styles for a self-contained component.
+ */
 const Clock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'fla',
-      fontUrl: flaFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  // Synchronize time with millisecond precision
+  const time = useClockTime('ms') || new Date();
 
-  const mountRef = useRef(null);
-
-  // Font loading handled by useMultipleFontLoader
-
+  // Explicitly manage body background to prevent "white flash" or bleed
   useEffect(() => {
-    const mount = mountRef.current;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000,
-    );
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0xb20832, 1); // Set background color
-    mount.appendChild(renderer.domElement);
-
-    const clockCanvas = document.createElement('canvas');
-    clockCanvas.width = 512;
-    clockCanvas.height = 512;
-    const ctx = clockCanvas.getContext('2d');
-    const textColor = '#130101FF';
-
-    const clockTexture = new THREE.CanvasTexture(clockCanvas);
-    clockTexture.minFilter = THREE.LinearFilter;
-
-    const updateClockCanvas: React.FC = () => {
-      ctx.clearRect(0, 0, 512, 512);
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, 512, 512);
-
-      ctx.shadowColor = 'black';
-      ctx.shadowBlur = 1;
-      ctx.font = '80px "fla", Arial, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillStyle = textColor;
-
-      const now = new Date();
-      const hours = now.getHours() % 12 || 12;
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      const timeString = `${hours}:${minutes}`;
-      ctx.fillText(timeString, 256, 366);
-      clockTexture.needsUpdate = true;
-    };
-
-    const faceColors = [0xff0000, 0xd3531b, 0xf76b07, 0xb80404];
-    const materials = faceColors.map(
-      (color) =>
-        new THREE.MeshBasicMaterial({
-          map: clockTexture,
-          color,
-          side: THREE.DoubleSide,
-          transparent: false,
-        }),
-    );
-
-    let geometry = new THREE.TetrahedronGeometry(1).toNonIndexed();
-    const uvAttribute = new Float32Array(
-      geometry.attributes.position.count * 2,
-    );
-    const faceCount = geometry.attributes.position.count / 3;
-
-    for (let i = 0; i < faceCount; i++) {
-      const vertexIndex = i * 3;
-      uvAttribute.set([0.0, 0.0, 1.0, 0.0, 0.5, 1.0], vertexIndex * 2);
-    }
-
-    geometry.setAttribute('uv', new THREE.BufferAttribute(uvAttribute, 2));
-
-    for (let i = 0; i < faceCount; i++) {
-      geometry.addGroup(i * 3, 3, i % materials.length);
-    }
-
-    const tetrahedron = new THREE.Mesh(geometry, materials);
-    tetrahedron.scale.set(4, 4, 4);
-    scene.add(tetrahedron);
-
-    const wireframeGeometry = new THREE.EdgesGeometry(geometry);
-    const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
-    const wireframe = new THREE.LineSegments(
-      wireframeGeometry,
-      wireframeMaterial,
-    );
-    wireframe.scale.set(4, 4, 4);
-    scene.add(wireframe);
-
-    camera.position.z = 4;
-
-    const animate: React.FC = () => {
-      requestAnimationFrame(animate);
-      tetrahedron.rotation.x += 0.01;
-      tetrahedron.rotation.y += 0.01;
-      wireframe.rotation.x += 0.01;
-      wireframe.rotation.y += 0.01;
-
-      const time = performance.now() / 1000;
-      const period = 14;
-      const zMin = -2;
-      const zMax = 17;
-      const zRange = zMax - zMin;
-      camera.position.z =
-        zMin + (zRange * (Math.sin((2 * Math.PI * time) / period) + 1)) / 2;
-
-      updateClockCanvas();
-      renderer.render(scene, camera);
-    };
-
-    document.fonts
-      .load('bold 80px "fla"')
-      .then(() => {
-        updateClockCanvas();
-        animate();
-      })
-      .catch((err) => {
-        console.warn('Font loading failed:', err);
-        updateClockCanvas();
-        animate();
-      });
-
-    const handleResize: React.FC = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-
-    window.addEventListener('resize', handleResize);
-
+    document.body.style.backgroundColor = '#0a0a0a';
+    document.body.classList.add('clock-mode');
     return () => {
-      window.removeEventListener('resize', handleResize);
-      mount.removeChild(renderer.domElement);
+      document.body.style.backgroundColor = '';
+      document.body.classList.remove('clock-mode');
     };
   }, []);
 
+  // Format the current time for display, providing a fallback to prevent null rendering
+  const formatted = formatClockTime(time, '24h') || { 
+    hours: '00', minutes: '00', seconds: '00' 
+  };
+  
+  const { hours, minutes, seconds } = formatted;
+  const title = clockTax?.title || 'Borrowed Time';
+  const content = clockTax?.content || '';
+
+  // Component-specific in-line styles
+  const containerStyle: React.CSSProperties = {
+    width: '100vw',
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#0a0a0a',
+    color: '#e0e0e0',
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+    overflow: 'hidden',
+    userSelect: 'none',
+  };
+
+  const displayBoxStyle: React.CSSProperties = {
+    textAlign: 'center',
+    padding: '3rem',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 80%)',
+  };
+
+  const titleStyle: React.CSSProperties = {
+    fontSize: '0.8rem',
+    letterSpacing: '0.4em',
+    textTransform: 'uppercase',
+    marginBottom: '2rem',
+    opacity: 0.5,
+  };
+
+  const timeStyle: React.CSSProperties = {
+    fontSize: 'clamp(3rem, 18vw, 12rem)',
+    fontWeight: 300,
+    fontVariantNumeric: 'tabular-nums', // Prevents digits from jumping
+  };
+
   return (
-    <>
-      <style>{`
-        @font-face {
-          font-family: 'fla';
-          src: url(${flaFont}) format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
-
-        body {
-          margin: 0;
-          overflow: hidden;
-          background: linear-gradient(135deg, #b20832, #541c08);
-        }
-
-        .fire-gradient {
-          height: 100vh;
-          width: 100vw;
-          overflow: hidden;
-        }
-      `}</style>
-      <div ref={mountRef} className="fire-gradient" />
-    </>
+    <main style={containerStyle}>
+      <div style={displayBoxStyle}>
+        <header style={titleStyle}>{title}</header>
+        <time dateTime={`${hours}:${minutes}:${seconds}`} style={timeStyle}>
+          {hours}:{minutes}:{seconds}
+        </time>
+        <footer style={{ marginTop: '2rem', opacity: 0.3, fontSize: '0.9rem' }}>
+          {content}
+        </footer>
+      </div>
+    </main>
   );
 };
 

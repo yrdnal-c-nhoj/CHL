@@ -67,20 +67,18 @@ export function useClockPage(currentItem: { date: string } | null) {
 
       try {
         // 1. Resolve the module path
-        // Support for nested structure: /YYYY/YY-MM/YY-MM-DD/Clock.tsx
-        const dateParts = currentItem.date.split('-'); 
-        const yearShort = dateParts[0].length === 4 ? dateParts[0].slice(-2) : dateParts[0];
-        const yearFull = dateParts[0].length === 4 ? dateParts[0] : `20${dateParts[0]}`;
-        
-        // Robust lookup: search for exact date folder regardless of YYYY vs YY nesting
-        const match = Object.entries(clockModules).find(([p]) => 
-          p.includes(`/${currentItem.date}/Clock.tsx`) || 
-          p.endsWith(`${yearFull}/${yearShort}-${dateParts[1]}/${currentItem.date}/Clock.tsx`)
-        );
-        
+        // clockModules keys come from Vite's glob and can have varying path prefixes.
+        // We match only by the suffix that must always be present.
+        const match = Object.entries(clockModules).find(([p]) => p.endsWith(`/${currentItem.date}/Clock.tsx`));
+
         if (!match) {
-          throw new Error(`Clock lookup failed for date: ${currentItem.date}`);
+          throw new Error(
+            `Clock lookup failed for date: ${currentItem.date}. ` +
+              `Expected a module ending with /${currentItem.date}/Clock.tsx. ` +
+              `Check that the folder structure under src/pages matches the date.`,
+          );
         }
+
         const [path, importFn] = match;
 
         // 2. Dynamically import the module

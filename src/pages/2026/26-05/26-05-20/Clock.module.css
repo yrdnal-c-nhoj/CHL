@@ -1,140 +1,110 @@
-.container {
-  width: 100vw;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+.pageWrapper {
+  min-block-size: 100vh;
+  display: grid;
+  place-content: center;
+  font-family: "Google Sans", system-ui, sans-serif;
+  background: hsl(193, 11%, 82%);
 }
 
-.timeWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-.clockFace {
+.frame {
+  width: 400px;
+  aspect-ratio: 1 / 1.32;
+  overflow: hidden;
   position: relative;
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #f5f5f5, #e0e0e0);
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.3),
-    inset 0 2px 5px rgba(255, 255, 255, 0.5);
+  border: 16px solid hsl(193, 6%, 41%);
+  border-bottom-color: hsl(193, 9%, 28%);
+  box-shadow: 0 1.5em 2.375em -0.26em #0006;
+  border-radius: 4px;
+  display: grid;
+  isolation: isolate;
 }
 
-.outerRing {
+.frame::after {
+  content: "";
   position: absolute;
   inset: 0;
-  border-radius: 50%;
-  border: 8px solid #2c3e50;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 7;
+  box-shadow: 0 10px 14px 8px #0005 inset;
+  pointer-events: none;
 }
 
-.innerRing {
+.inside {
   position: absolute;
-  inset: 12px;
-  border-radius: 50%;
-  border: 2px solid #34495e;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: hsl(193, 9%, 28%);
+  color: #DBC5B3;
+  font-size: 10vh;
+  letter-spacing: 0.08em;
 }
 
-.hourTick {
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  width: 4px;
-  height: 16px;
-  background-color: #1a1a1a;
-  transform-origin: center 142px;
-  transform: translateX(-50%);
-}
-
-.minuteTick {
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  width: 2px;
-  height: 8px;
-  background-color: #666;
-  transform-origin: center 142px;
-  transform: translateX(-50%);
-}
-
-.number {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  font-family: 'Georgia', serif;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1a1a1a;
-  -webkit-user-select: none;
+.digitalClock {
+  font-family: "ClockFont", monospace;
   user-select: none;
+  text-shadow: 0 2px 4px #0008;
 }
 
-.hand {
+.doors {
+  z-index: 5;
+  display: grid;
+  grid-template: "left right" 1fr / 1fr 1fr;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.door {
   position: absolute;
-  bottom: 50%;
-  left: 50%;
-  transform-origin: bottom center;
-  border-radius: 2px;
+  inset: 0;
+  overflow: hidden;
+  display: grid;
+  transition: transform 920ms cubic-bezier(0.77, 0, 0.18, 1);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
-.centerDot {
+.door::after {
+  content: "";
   position: absolute;
-  top: 50%;
+  inset: 0;
+  background: hsl(193, 6%, 41%)
+    linear-gradient(
+      to bottom,
+      #0007,
+      18%,
+      hsl(193, 6%, 65%) 30% 32%,
+      hsl(193, 5%, 54%) 42%,
+      #fff2 60%,
+      hsl(193, 6%, 41%) 78% 80%,
+      #0003
+    );
+  mix-blend-mode: multiply;
+  filter: url(#brushedMetalEffect) invert(7%) contrast(105%);
+}
+
+.leftDoor {
+  grid-area: left;
+  transform-origin: left center;
+  box-shadow: inset -3px 0 4px -1px #0007;
+  border-inline-end: 1px solid hsl(193, 16%, 14%);
+  width: 50%;
+  left: 0;
+}
+
+.rightDoor {
+  grid-area: right;
+  transform-origin: right center;
+  box-shadow: inset 3px 0 4px -1px #0007;
+  border-inline-start: 1px solid hsl(193, 16%, 14%);
+  width: 50%;
   left: 50%;
-  width: 16px;
-  height: 16px;
-  background-color: #2c3e50;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 40;
 }
 
-.centerDotInner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  background-color: #d32f2f;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 41;
+.frame.isOpen .leftDoor {
+  transform: translateX(-72%);
 }
 
-.digitalTime {
-  font-family: 'Courier New', monospace;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #fff;
-  letter-spacing: 0.2em;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* Mobile responsive */
-@media (max-width: 480px) {
-  .clockFace {
-    width: 250px;
-    height: 250px;
-  }
-
-  .hourTick {
-    transform-origin: center 117px;
-  }
-
-  .minuteTick {
-    transform-origin: center 117px;
-  }
-
-  .number {
-    font-size: 1.2rem;
-  }
-
-  .digitalTime {
-    font-size: 1.2rem;
-  }
+.frame.isOpen .rightDoor {
+  transform: translateX(72%);
 }
