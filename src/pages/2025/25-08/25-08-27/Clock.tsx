@@ -1,20 +1,18 @@
-import { useEffect, useRef, useMemo } from 'react';
+import { useEffect, useRef, useMemo, Suspense } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useClockTime, useSmoothClock } from '@/utils/hooks';
 import backgroundImage from '@/assets/images/2025/25-08/25-08-27/rootsu.gif';
 import dodecahedronFontFile from '@/assets/fonts/2025/25-08-27-root.ttf'; // renamed import
+import styles from './Clock.module.css';
 
-export default function TwelfthRootsOfUnityWithClock() {
-  const canvasRef = useRef(null);
-  const clockRef = useRef(null);
-  const fontRef = useRef('sans-serif'); // fallback
+export const assets = [backgroundImage];
+
+function ClockContent() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const clockRef = useRef<HTMLCanvasElement>(null);
+  const fontRef = useRef('sans-serif'); 
   const time = useClockTime();
-  const timeRef = useRef(time);
-
-  // Keep time ref updated for the animation loop
-  useEffect(() => {
-    timeRef.current = time;
-  }, [time]);
+  const smoothTime = useSmoothClock();
 
   const fontConfigs = useMemo(() => [
     {
@@ -30,9 +28,9 @@ export default function TwelfthRootsOfUnityWithClock() {
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
+    const canvas = canvasRef.current!;
     const ctx = canvas.getContext('2d');
-    const clock = clockRef.current;
+    const clock = clockRef.current!;
     const cctx = clock.getContext('2d');
 
     const n = 12;
@@ -67,8 +65,7 @@ export default function TwelfthRootsOfUnityWithClock() {
     resize();
     window.addEventListener('resize', resize);
 
-    const drawRoots = () => {
-      const size = canvas.width / (window.devicePixelRatio || 1);
+    const drawRoots = (ctx: CanvasRenderingContext2D, size: number) => {
       const centerX = size / 2;
       const centerY = size / 2;
       const radius = size * 0.35;
@@ -137,8 +134,7 @@ export default function TwelfthRootsOfUnityWithClock() {
       }
     };
 
-    const drawClock = (currentTime: Date) => {
-      const size = clock.width / (window.devicePixelRatio || 1);
+    const drawClock = (cctx: CanvasRenderingContext2D, currentTime: Date, size: number) => {
       const centerX = size / 2;
       const centerY = size / 2;
       const radius = size * 0.45;
@@ -169,81 +165,52 @@ export default function TwelfthRootsOfUnityWithClock() {
       drawHand(secAngle, radius * 0.9, '#1A1C1A', 0.3 * (size / 100));
     };
 
-    let animationId;
+    let animationId: number;
     const animate = () => {
-      drawRoots();
-      drawClock(timeRef.current);
+      const dpr = window.devicePixelRatio || 1;
+      const size = canvas.width / dpr;
+      
+      drawRoots(ctx!, size);
+      drawClock(cctx!, smoothTime, size);
       animationId = requestAnimationFrame(animate);
     };
 
-    // Start the animation
     animate();
 
     return () => {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationId);
     };
-  }, []); // Only run setup once
+  }, [smoothTime]); 
 
   return (
-    <main
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        background: 'radial-gradient(circle, #F9C7B4 0%, #D8CFCF 90%)',
-      }}
-    >
+    <main className={styles.container}>
       <time dateTime={time.toISOString()} style={{ display: 'none' }}>{time.toLocaleTimeString()}</time>
-      <div
-        style={{
-          position: 'relative',
-          width: '80vmin',
-          height: '80vmin',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
+      <div className={styles.clockWrapper}>
         <img
           decoding="async"
           loading="lazy"
           src={backgroundImage}
           alt="Background"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '95%',
-            objectFit: 'contain',
-            zIndex: 2,
-          }}
+          className={styles.bgImage}
         />
         <canvas
           ref={canvasRef}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            zIndex: 1,
-          }}
+          className={styles.canvasLayer1}
         />
         <canvas
           ref={clockRef}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            pointerEvents: 'none',
-            zIndex: 3,
-          }}
+          className={styles.canvasLayer3}
         />
       </div>
     </main>
+  );
+}
+
+export default function TwelfthRootsOfUnityWithClock() {
+  return (
+    <Suspense fallback={null}>
+      <ClockContent />
+    </Suspense>
   );
 }
