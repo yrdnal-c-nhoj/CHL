@@ -2,11 +2,12 @@ import React from 'react';
 import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import clockFont from '@/assets/fonts/2026/26-05-19.ttf';
+import clockFont from '@/assets/fonts/2026/26-05-19.ttf?url';
 import bgImage from '@/assets/images/2026/26-05/26-05-19/bliss.webp';
+import windowsImage from '@/assets/images/2026/26-05/26-05-19/windows5.webp';
 import styles from './Clock.module.css';
 
-export const assets = [clockFont, bgImage];
+export const assets = [clockFont, bgImage, windowsImage];
 
 const fontConfigs: FontConfig[] = [
   {
@@ -20,28 +21,36 @@ const DigitalClock: React.FC = () => {
 
   useSuspenseFontLoader(fontConfigs);
 
-  const timeString = currentTime.toLocaleTimeString('en-GB', {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
-  }).replace(/:/g, '');
+  const timeString = currentTime
+    .toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    })
+    .toLowerCase();
 
   return (
-    <div 
-      className={styles.container}
-      style={{ backgroundImage: `url(${bgImage})` }}
-    >
-      <time 
-        dateTime={currentTime.toISOString()} 
+    <div className={styles.container} style={{ backgroundImage: `url(${bgImage})` }}>
+      <time
+        dateTime={currentTime.toISOString()}
         className={styles.digitalTime}
         style={{ fontFamily: 'ClockFont_26_05_19, sans-serif' }}
       >
-        {timeString.split('').map((char, index) => (
-          <span key={index} className={styles.digitBox}>
-            {char}
-          </span>
-        ))}
+        {timeString
+          .replace(/\./g, '')
+          .replace(/:/g, '')
+          .replace(/\s/g, '')
+          .split(/(\d|\s|am|pm)/g)
+          .filter((token) => token !== '')
+          .map((token, index) => (
+            <span
+              key={index}
+              className={styles.digitBox}
+              style={{ ['--digit-mask-image' as any]: `url(${windowsImage})` }}
+            >
+              {token === ' ' ? '\u00A0' : token}
+            </span>
+          ))}
       </time>
     </div>
   );
