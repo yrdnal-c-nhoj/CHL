@@ -15,13 +15,40 @@
 
 .digitalTime {
   color: #fff;
-  font-size: 20vh;
+  font-size: 25vw;
   display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .digitalTime {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: center;
+    justify-items: center;
+    font-size: 30vh;
+    line-height: 0.9;
+    gap: 0 6vh;
+  }
+
+  .digitBox:last-child {
+    grid-column: span 2;
+  }
 }
 
 .digitBox {
   display: inline-flex;
   justify-content: center;
-  width: 14vh;
+  /* Apply the Windows image as a mask */
+  background-image: var(--digit-mask-image);
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* Essential for webkit-based browsers to ensure transparency works with background-clip */
+  -webkit-text-fill-color: transparent;
 }
