@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useClockTime, formatTime as formatClockTime } from '@/utils/clockUtils';
-import { clockTax } from './tax';
 
 /**
  * Recycled Internet Clock (25-05-11)
@@ -30,8 +29,8 @@ const Clock: React.FC = () => {
   };
   
   const { hours, minutes, seconds } = formatted;
-  const title = clockTax?.title || 'Borrowed Time';
-  const content = clockTax?.content || '';
+  const title = 'Borrowed Time';
+  const content = '';
 
   // Component-specific in-line styles
   const containerStyle: React.CSSProperties = {
