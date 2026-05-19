@@ -5,6 +5,7 @@ import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
 
 import bellImage2 from '@/assets/images/2026/26-05/26-05-18/accordion.webp';
+import accordionBg from '@/assets/images/2026/26-05/26-05-18/accordion2.webp';
 import customFont from '@/assets/fonts/2026/26-05-18.ttf?url';
 
 // ======================================================
@@ -35,7 +36,7 @@ const NUMERALS = Array.from({ length: 12 }, (_, index) => {
   };
 });
 
-export const assets = [bellImage2];
+export const assets = [bellImage2, accordionBg];
 
 // ======================================================
 // Pure Presentational Components (Render Once)
@@ -43,12 +44,22 @@ export const assets = [bellImage2];
 
 const BackgroundLayers = memo(() => (
   <>
+    <div
+      className={styles.backgroundLayer}
+      style={{
+        backgroundImage: `url(${accordionBg})`,
+        backgroundSize: '30vmin',
+        backgroundRepeat: 'repeat',
+        backgroundPosition: 'center',
+        zIndex: -1,
+      }}
+    />
     <div className={styles.backgroundLayer} style={{ opacity: 0.12, zIndex: 0 }} />
     <div
       className={styles.backgroundLayer}
       style={{
         backgroundImage: `url(${bellImage2})`,
-        backgroundSize: 'contain',
+        backgroundSize: '90vmin',
         zIndex: 1,
       }}
     />
