@@ -6,7 +6,8 @@ import backgroundImage from '@/assets/images/2026/26-05/26-05-16/depart.gif';
 export const assets = [backgroundImage];
 
 const AnalogClock: React.FC = () => {
-  const time = useSmoothClock(16);
+  const smoothTime = useSmoothClock(16);
+  const time = smoothTime || new Date();
 
   const { hourDeg, minuteDeg, secondDeg, isoTime } = useMemo(() => {
     // Get local time in milliseconds to ensure monotonic rotation.
