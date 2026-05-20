@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+import { chromium } from 'playwright';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -61,18 +61,13 @@ async function captureDailySquare(targetDate?: string) {
 
   console.log(`🚀 Starting capture sequence on http://localhost:${port}`);
 
-  const browser = await puppeteer.launch({ 
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
-  });
+  const browser = await chromium.launch();
   
-  const page = await browser.newPage();
-
-  await page.setViewport({
-    width: 500,
-    height: 500,
-    deviceScaleFactor: 2 // High DPI for crisp thumbnails (1000x1000 physical pixels)
+  const context = await browser.newContext({
+    viewport: { width: 500, height: 500 },
+    deviceScaleFactor: 2
   });
+  const page = await context.newPage();
 
   const url = `http://localhost:${port}/${targetClock.date}`;
   const outputPath = path.join(OUTPUT_DIR, `${targetClock.date}-thumb.webp`);
@@ -81,7 +76,7 @@ async function captureDailySquare(targetDate?: string) {
     console.log(`📸 Capturing: ${targetClock.title} [${targetClock.date}]`);
     
     // Wait until the basic page structure is loaded
-    await page.goto(url, { waitUntil: 'networkidle2', timeout: 15000 });
+    await page.goto(url, { waitUntil: 'load', timeout: 15000 });
 
     // If we got redirected home, the route is wrong or the clock doesn't exist yet
     const currentUrl = page.url();
@@ -91,13 +86,7 @@ async function captureDailySquare(targetDate?: string) {
     }
 
     // Wait for the React root to actually have content
-    await page.waitForFunction(
-      () => {
-        const root = document.querySelector('#root');
-        return root && root.children.length > 0;
-      },
-      { timeout: 5000 }
-    );
+    await page.waitForSelector('#root > *', { timeout: 5000 });
 
     // Apply thumbnail-style optimizations - hide UI elements but don't restrict component size
     await page.addStyleTag({
@@ -107,21 +96,23 @@ async function captureDailySquare(targetDate?: string) {
           background: black !important; 
           overflow: hidden !important;
         }
-        header, footer, nav, [class*="footerStrip"], [class*="nav"], [class*="Overlay"] { 
+        header, footer, nav, 
+        [class*="footerStrip"], 
+        [class*="nav"], 
+        [class*="Overlay"] { 
           display: none !important; 
         }
       `
     });
 
     // Wait 2 seconds after component has fully loaded (as requested)
-    console.log('⏱️ Waiting 2 seconds for component to fully load and settle...');
-    await new Promise(r => setTimeout(r, 2000));
+    console.log('⌛ Settling: Waiting 2s for animations and shaders to stabilize...');
+    await page.waitForTimeout(2000);
     
     // Capture the entire viewport. Since we set it to 500x500 and 
     // used overflow:hidden, this captures the full component perfectly.
     await page.screenshot({ 
       path: outputPath,
-      type: 'webp',
       quality: 95,
       fullPage: false
     });
