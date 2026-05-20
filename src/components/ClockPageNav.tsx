@@ -139,11 +139,10 @@ const ClockPageNav = ({
         <span className={styles.screenReaderText} />
       </Link>
 
-      <div
+      <button
         className={styles.footerButton}
         onClick={() => navigate(-1)}
-        role="button"
-        tabIndex={0}
+        type="button"
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             navigate(-1);
@@ -163,7 +162,7 @@ const ClockPageNav = ({
           )}
         </div>
         <span className={styles.screenReaderText} />
-      </div>
+      </button>
 
       <Link
         to={nextItem ? `/${nextItem.date}` : '/'}

@@ -18,7 +18,7 @@ vi.mock('../context/clockpages.json', () => ({
   ],
 }));
 
-vi.mock('../context/testclock.json', () => ({
+vi.mock('../context/testclocks.json', () => ({
   default: [
     { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
     { path: '26-03-04', date: '26-03-04', title: 'Sun Clock' },
