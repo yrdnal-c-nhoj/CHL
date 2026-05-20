@@ -23,6 +23,18 @@ Online digital art project by Cubist Heart Laboratories. [See it live](https://w
 - ESLint 9 + Prettier 3
 - Node 24.x LTS
 
+## Quick Start
+
+Follow the **First Time Right** workflow to ensure components meet technical standards:
+
+1. **Setup**: `npm ci`
+2. **Launch**: `npm run dev` (Available at http://localhost:5173)
+3. **Scaffold**: `npm run clock:new` (Scaffolds the dated directory and component)
+4. **Register**: Add the entry to `src/context/clockpages.json`
+5. **Quality Gate**: `npm run finalize` (Validates code, auto-fixes asset organization, and captures documentation thumbnails)
+
+*Note: Passing the finalization script is a strict requirement for all component submissions.*
+
 ## Architecture
 
 Registry-Discovery pattern. Zero manual routing.
