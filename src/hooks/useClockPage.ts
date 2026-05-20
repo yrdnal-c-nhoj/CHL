@@ -1,9 +1,12 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import type { AssetConfig } from '../utils/assetLoader';
+import { preloadAssets } from '../utils/assetLoader';
 
 interface ClockModule {
   default: React.ComponentType;
   assets?: string[];
 }
+
 
 // Safety timeout to prevent infinite black screen
 const LOADING_TIMEOUT = 10000; // 10 seconds
@@ -12,7 +15,9 @@ const LOADING_TIMEOUT = 10000; // 10 seconds
  * State-of-the-art dynamic clock loader.
  * Handles dynamic imports, asset preloading, and overlay synchronization.
  */
+
 export function useClockPage(currentItem: { date: string } | null) {
+
   const [ClockComponent, setClockComponent] = useState<React.ComponentType | null>(null);
   const [isReady, setIsReady] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(true);
@@ -26,17 +31,17 @@ export function useClockPage(currentItem: { date: string } | null) {
   // Register all clock components via Vite glob (memoized to prevent re-renders)
   const clockModules = useMemo(() => import.meta.glob('../pages/**/Clock.tsx'), []);
 
-  const preloadAsset = useCallback((url: string): Promise<boolean> => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = url;
-      img.onload = () => resolve(true);
-      img.onerror = () => {
-        console.warn(`[useClockPage] Asset failed to load: ${url}. Continuing clock load.`);
-        resolve(false); // Resolve instead of reject to prevent fatal crashes
-      };
-    });
+  const preloadClockAssets = useCallback(async (assetUrls: string[]): Promise<void> => {
+    const assets: AssetConfig[] = assetUrls.map((src) => ({ src }));
+
+    // Fail open: missing/broken assets should not prevent the clock from mounting.
+    try {
+      await Promise.allSettled(preloadAssets(assets));
+    } catch {
+      // preloadAssets is already Promise-based; this catch is defensive.
+    }
   }, []);
+
 
   useEffect(() => {
     if (!currentItem) {
@@ -87,11 +92,11 @@ export function useClockPage(currentItem: { date: string } | null) {
           throw new Error(`Module execution failed. This usually means an internal import (image/font) is broken or there is a syntax error in Clock.tsx.`);
         })) as ClockModule;
         
-        // 3. Preload defined assets (images/gifs)
+        // 3. Preload defined assets (images + video + audio)
         if (module.assets && module.assets.length > 0) {
-          // Use settled to allow partial loads if some assets are missing
-          await Promise.allSettled(module.assets.map(preloadAsset));
+          await preloadClockAssets(module.assets);
         }
+
 
         // 4. Update component state
         setClockComponent(() => module.default);
@@ -122,7 +127,8 @@ export function useClockPage(currentItem: { date: string } | null) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [currentItem, clockModules, preloadAsset]);
+  }, [currentItem, clockModules, preloadClockAssets]);
+
 
   return { ClockComponent, isReady, error, overlayVisible };
 }

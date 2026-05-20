@@ -5,23 +5,23 @@ import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/2025/25-12/25-12-31/shadow.jpg';
 import d250916font from '@/assets/fonts/2025/25-12-31-shadow.otf';
 
+// 1. LETTER MAPPING: Move outside to prevent recreation on every render
+const DIGIT_TO_LETTER: Record<string, string> = {
+  '0': 'Y',
+  '1': 'I',
+  '2': 'K',
+  '3': 'F',
+  '4': 'E',
+  '5': 'F',
+  '6': 'H',
+  '7': 'E',
+  '8': 'D',
+  '9': 'C',
+};
+
 const Clock: React.FC = () => {
   const time = useClockTime();
   const [isLargeScreen, setIsLargeScreen] = useState<boolean>(window.innerWidth > 768);
-
-  // 1. LETTER MAPPING: Change these letters to your preference
-  const digitToLetter = {
-    0: 'Y',
-    1: 'I',
-    2: 'K',
-    3: 'F',
-    4: 'E',
-    5: 'F',
-    6: 'H',
-    7: 'E',
-    8: 'D',
-    9: 'C',
-  };
 
   const fontConfigs = useMemo<FontConfig[]>(() => [
     { fontFamily: 'MyD250916font', fontUrl: d250916font }
@@ -93,7 +93,7 @@ const Clock: React.FC = () => {
     <div style={groupStyle}>
       {value.split('').map((digit, i) => (
         <div key={i} style={digitBoxStyle}>
-          {digitToLetter[digit] || digit}
+          {DIGIT_TO_LETTER[digit] || digit}
         </div>
       ))}
     </div>

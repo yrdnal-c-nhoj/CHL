@@ -28,7 +28,7 @@ export default function DigitalClock() {
     .toString()
     .padStart(2, '0');
 
-  const DigitBox = ({ children }) => (
+  const DigitBox: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <div
       style={{
         width: '1.5ch',
