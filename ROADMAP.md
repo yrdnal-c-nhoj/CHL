@@ -29,7 +29,7 @@ Phased backlog from the [site survey](./docs/SITE_SURVEY.md) (2026-05-20).
 
 ### Delete (after audit review)
 
-- [ ] Remove **7 unused fonts** listed in `unused-fonts-report.txt`.
+- [x] Remove **7 unused fonts** listed in `unused-fonts-report.txt`.
 - [ ] Remove **unused images** in batches from `unused-images-only-report.txt` (start with oldest months).
 - [ ] Remove misplaced `src/assets/images/**/{x.jsx,MedievalSVG.jsx}` or relocate to `src/components/`.
 
