@@ -149,10 +149,16 @@ Generated audit artifacts:
 
 ## Roadmap & Quality Goals
 
-1. **Technical Excellence**: Achieve zero `any` types across the `src/pages` directory.
+For ongoing priorities and future improvements, see:
+- `ROADMAP.md`
+
+High-level goals (current)
+
+1. **Technical Excellence**: Tighten type safety and reduce reliance on `any` where feasible.
 2. **Asset Performance**: 100% migration of legacy imagery to optimized WebP formats.
-3. **Quality Automation**: Implementation of Lighthouse CI and visual regression testing.
-4. **Developer Experience**: Expansion of the `finalize` CLI for automated component onboarding.
+3. **Quality Automation**: Expand automated quality gates (Lighthouse CI + visual regression where practical).
+4. **Developer Experience**: Expand the `finalize` CLI to enforce the clock module contract more precisely.
+
 
 ## Deployment
 
