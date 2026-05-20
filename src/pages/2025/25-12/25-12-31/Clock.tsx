@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
+import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/2025/25-12/25-12-31/shadow.jpg';
 import d250916font from '@/assets/fonts/2025/25-12-31-shadow.otf';
 
 const Clock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [isLargeScreen, setIsLargeScreen] = useState<any>(window.innerWidth > 768);
+  const time = useClockTime();
+  const [isLargeScreen, setIsLargeScreen] = useState<boolean>(window.innerWidth > 768);
 
   // 1. LETTER MAPPING: Change these letters to your preference
   const digitToLetter = {
@@ -23,38 +23,11 @@ const Clock: React.FC = () => {
     9: 'C',
   };
 
-  useEffect(() => {
-    setTime(new Date());
-    const timer = setInterval(() => setTime(new Date()), 100);
-    return () => clearInterval(timer);
-  }, []);
+  const fontConfigs = useMemo<FontConfig[]>(() => [
+    { fontFamily: 'MyD250916font', fontUrl: d250916font }
+  ], []);
 
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'MyD250916font';
-        src: url(${d250916font}) format('opentype');
-        font-display: block;
-      }
-    `;
-    document.head.appendChild(style);
-    const fontPromise = document.fonts.load('22vh MyD250916font');
-    const imagePromise = new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = bgImage;
-      img.onload = resolve;
-      img.onerror = reject;
-    });
-
-    Promise.all([fontPromise, imagePromise])
-      .then(() => setIsLoaded(true))
-      .catch(() => setIsLoaded(true));
-
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const handleResize = () => setIsLargeScreen(window.innerWidth > 768);
@@ -116,7 +89,7 @@ const Clock: React.FC = () => {
   };
 
   // 3. RENDER HELPERS
-  const renderUnit = (value) => (
+  const renderUnit = (value: string) => (
     <div style={groupStyle}>
       {value.split('').map((digit, i) => (
         <div key={i} style={digitBoxStyle}>
