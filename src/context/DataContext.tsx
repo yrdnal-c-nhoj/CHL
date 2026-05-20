@@ -30,7 +30,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
         const clockPages = await import('./clockpages.json');
         const testClocks = await import('./testclocks.json');
 
-        const data = import.meta.env.MODE === 'test' ? testClocks.default : clockPages.default;
+        const data = import.meta.env.DEV ? testClocks.default : clockPages.default;
         setItems(data);
       } catch (err) {
         setError(err instanceof Error ? err : new Error('An error occurred loading data'));
