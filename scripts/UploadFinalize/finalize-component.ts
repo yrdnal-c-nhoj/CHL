@@ -135,7 +135,8 @@ class ComponentValidator {
 
     const cssPath = component.path.replace('.tsx', '.module.css');
     if (!fs.existsSync(cssPath)) {
-      result.warnings.push('CSS module file not found');
+      result.errors.push('CRITICAL: CSS module file strictly required for component isolation');
+      result.passed = false;
       result.fixes.push('Create corresponding .module.css file');
     }
 
@@ -156,8 +157,14 @@ class ComponentValidator {
 
     // Check for semantic HTML
     if (!content.includes('<time dateTime=')) {
-      result.warnings.push('Missing semantic time element');
-      result.fixes.push('Use <time dateTime={...}> for time displays');
+      result.errors.push('BTS VIOLATION: Missing semantic <time> element');
+      result.passed = false;
+      result.fixes.push('Use <time dateTime={...}> for all time displays');
+    }
+
+    if (content.includes('style={{') && !content.includes('/* dynamic */')) {
+      result.warnings.push('Static inline styles detected. Prefer CSS Modules.');
+      result.fixes.push('Move static styles to .module.css');
     }
 
     // Check for deprecated fullscreen API
@@ -579,9 +586,10 @@ class ComponentValidator {
     // Detect running port
     let port = 5173;
     try {
-      const res = await fetch(`http://localhost:${port}`);
-      const text = await res.text();
-      if (!text.includes('id="root"')) throw new Error('Not our app');
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), 2000);
+      await fetch(`http://localhost:${port}`, { signal: controller.signal });
+      clearTimeout(id);
     } catch {
       port = 5174;
     }

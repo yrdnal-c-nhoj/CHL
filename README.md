@@ -51,15 +51,18 @@ src/
 | Markup | `<main>` containers, `<time datetime>` displays |
 | Time | `useClockTime` hook |
 | Fonts | `useSuspenseFontLoader` for FOUC prevention |
+| Styles | CSS Modules required (no global leaks) |
 | Cleanup | Clear timers/RAF on unmount |
 | DOM | `useRef` only, no `querySelector` |
+| Automation | Must pass `npm run finalize` before PR |
 
 ## Development
 
 ```bash
 npm ci
 npm run dev          # http://localhost:5173
-npm run clock:new    # Create today's clock
+npm run clock:new    # [Phase 1] Scaffold new component
+npm run finalize     # [Phase 2] The Quality Gate: Validate, Auto-fix, & Capture
 ```
 
 ## Scripts
