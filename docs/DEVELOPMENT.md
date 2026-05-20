@@ -154,8 +154,8 @@ npm run type-check && npm run lint && npm run test:run && npm run build
 
 | Command | Purpose |
 |---------|---------|
-| `npm run audit:fonts` | Writes `unused-fonts-report.txt`, `non-standard-fonts.txt` |
-| `npm run audit:images` | Writes `unused-images-report.txt`, `unused-images-only-report.txt` |
+| `npm run audit:fonts` | Writes `unused-fonts-report.txt`, `non-standard-fonts.txt` (gitignored) |
+| `npm run audit:images` | Writes `unused-images-report.txt`, `unused-images-only-report.txt` (gitignored) |
 | `npm run optimize:images` | Batch WebP conversion (review diffs before commit) |
 | `npm run perf:analyze` | Bundle size analysis |
 
