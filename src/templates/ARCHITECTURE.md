@@ -109,12 +109,15 @@ interface FontConfig {
 }
 ```
 
-### Font File Requirements
+### Font File Requirements (Current Policy)
 
-- **Format**: WOFF2 only (better compression than TTF)
-- **Naming**: `YY-MM-DD-descriptive-name.woff2`
+- **Format**: Prefer WOFF2 (better compression than TTF).
+- **Naming**: `YY-MM-DD-descriptive-name.woff2` (or the equivalent ext allowed by the repository policy).
 - **Location**: `src/assets/fonts/YYYY/`
-- **Public Path**: `/fonts/YY-MM-DD-name.woff2`
+- **Public Path**: `/fonts/YY-MM-DD-name.woff2` (used by the font preloading pipeline).
+
+If your repo policy supports additional font formats (e.g., TTF/OTF), keep the naming convention consistent so the automation scripts can reliably organize and rename fonts.
+
 
 ### Complete Font Loading Example
 
@@ -254,10 +257,14 @@ const Clock: React.FC = () => {
 1. **Use `useClockTime`** for static displays (1s updates)
 2. **Use `useSmoothClock`** only for smooth animations (60fps cost)
 3. **Memoize expensive calculations** with `useMemo`
-4. **Export assets** for preloading to prevent layout shift
+4. **Export `assets` for preloading**
+   - Clocks may export image/video/audio URLs via `export const assets`.
+   - The loader attempts to preload each asset type and remains **fail-open** (missing/broken assets should not prevent the clock from mounting).
+
 5. **Keep bundles under 5MB** per clock
 6. **Use WebP images** for better compression
 7. **Prefer WOFF2 fonts** over TTF
+
 
 ## Adding a New Clock
 

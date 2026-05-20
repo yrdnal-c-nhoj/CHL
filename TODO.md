@@ -1,6 +1,11 @@
-- [x] Update src/pages/2026/26-05/26-05-15/Clock.tsx: extend offsets from [-6..6] to [-10..-1,0..8] and add switch cases for new offsets.
-- [x] Update src/pages/2026/26-05/26-05-15/Clock.module.css: add clockRowOffsetNegative7..Negative10 and clockRowOffset7..8 with translate spacing continuing the existing 14.5vw step.
+# TODO - Documentation & Roadmap Survey (CHL)
 
-- [x] Run typecheck/build or relevant tests (e.g., npm test/vitest or npm run build) and fix any issues.
-
+- [x] Gather repo understanding (survey key files + scripts)
+- [x] Create `CHL_COMPONENT_SURVEY.md`
+- [x] Create `ROADMAP.md`
+- [x] Update `README.md` to point to ROADMAP
+- [x] Update `src/templates/ARCHITECTURE.md` to clarify asset preloading + current font policy wording
+- [ ] Update remaining docs/scripts READMEs to match the survey (follow-up sweep)
+- [ ] Final verification: run `npm run type-check` and `npm run lint` (optional but recommended)
+- [ ] Ensure new docs are consistent: no stale command names or conflicting contracts
 
