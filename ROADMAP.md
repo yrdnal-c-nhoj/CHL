@@ -14,10 +14,12 @@ Phased backlog from the [site survey](./docs/SITE_SURVEY.md) (2026-05-20).
 - [x] Add CI steps: `npm run type-check`, `npm run test:run`.
 - [x] Fix ESLint flat-config (`@typescript-eslint` plugin registration).
 - [x] Core `type-check` via `tsconfig.ci.json` (excludes `src/pages/**` archive).
-- [ ] Run `npm run audit:fonts` and `npm run audit:images`; gitignore or commit report artifacts.
-- [ ] **Manual only:** Register unlisted clocks in `clockpages.json` when you choose (never automated).
+- [x] Run `npm run audit:fonts` and `npm run audit:images`; report artifacts gitignored (regenerate locally).
+- [ ] **Manual only:** Register unlisted clocks in `clockpages.json` when you choose (never automated) — not a Phase 0 gate; see deliverables.
 
-**Verify:** `npm ci && npm run lint && npm run type-check && npm run test:run && npm run build`
+**Verify:** `npm ci && npm run lint && npm run type-check && npm run test:run && npm run build` — **passed 2026-05-20**
+
+**Phase 0 status:** Complete (registry parity for 13 clocks remains manual — start Phase 1 or register when ready).
 
 ---
 
