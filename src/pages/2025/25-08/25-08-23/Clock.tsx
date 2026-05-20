@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
@@ -47,7 +48,7 @@ const fontConfigs = [
 ];
 
 export default function DigitalClock() {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   // Style constants
@@ -55,12 +56,6 @@ export default function DigitalClock() {
   const textOffset = '-1.5rem';
   const imageWidth = '19vw';
   const floatDistance = '-7rem';
-
-  // Update time every second
-  useEffect(() => {
-    const tick = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(tick); // Cleanup interval on unmount
-  }, []);
 
   // Format time as HH:MM:SS
   const hours = String(time.getHours()).padStart(2, '0');

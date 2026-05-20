@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import Cu250830 from '@/assets/fonts/2025/25-08-30-mem.ttf'; // your font file
 import bgImage from '@/assets/images/2025/25-08/25-08-30/mem.gif'; // your background image
@@ -16,13 +17,7 @@ export default function MessyClock() {
     }
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const time = useClockTime();
 
   let hours = time.getHours();
   const minutes = time.getMinutes();

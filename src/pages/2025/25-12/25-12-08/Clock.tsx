@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import plateImage from '@/assets/images/2025/25-12/25-12-08/plate.webp';
 import hourHand from '@/assets/images/2025/25-12/25-12-08/hand.gif';
@@ -42,17 +43,7 @@ const handStyle = (deg, width, height) => ({
 });
 
 export default function AnalogClock() {
-  const [time, setTime] = useState(new Date());
-
-  // Smooth update
-  useEffect(() => {
-    let intervalId;
-    const animate: React.FC = () => {
-      setTime(new Date());
-    };
-    intervalId = setInterval(animate, 50);
-    return () => clearInterval(intervalId);
-  }, []);
+  const time = useClockTime();
 
   const now = time;
 

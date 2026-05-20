@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 const o250920font = '../../../assets/fonts/2025/25-09-20-orb.ttf'; // Local font file
 
 const COLORS = {
@@ -27,6 +28,7 @@ const SIZES = {
 };
 
 const NeonClock: React.FC = () => {
+  const time = useSmoothClock();
   const clockRef = useRef(null);
   const ticksRef = useRef([]);
   const lastTickRef = useRef(-1);
@@ -36,11 +38,10 @@ const NeonClock: React.FC = () => {
     let animationFrameId;
 
     const updateClock: React.FC = () => {
-      const now = new Date();
-      const ms = now.getMilliseconds();
-      const second = now.getSeconds() + ms / 1000;
-      const minute = now.getMinutes() + second / 60;
-      const hour = now.getHours() + minute / 60;
+      const ms = time.getMilliseconds();
+      const second = time.getSeconds() + ms / 1000;
+      const minute = time.getMinutes() + second / 60;
+      const hour = time.getHours() + minute / 60;
 
       const hourEl = document.getElementById('hour');
       const minuteEl = document.getElementById('minute');
@@ -54,7 +55,7 @@ const NeonClock: React.FC = () => {
       }
 
       if (timeRef.current) {
-        timeRef.current.textContent = now.toLocaleTimeString();
+        timeRef.current.textContent = time.toLocaleTimeString();
       }
 
       const tickIndex = Math.floor(second) % 60;

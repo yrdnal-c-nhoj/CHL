@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import laikaFont from '@/assets/fonts/2025/25-08-06-laika.ttf'; // Yourquo vadis
 import featuredImage from '@/assets/images/2025/25-08/25-08-06/Laika.jpeg'; // Your local image file
@@ -16,13 +17,7 @@ const DigitalClock: React.FC = () => {
     }
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 50);
-    return () => clearInterval(timer);
-  }, []);
+  const time = useSmoothClock();
 
   const formatTime = (date) => {
     const h = date.getHours().toString().padStart(2, '0');

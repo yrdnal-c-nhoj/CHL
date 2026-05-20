@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import issFont from '@/assets/fonts/2025/25-05-30-iss.ttf';
 import styles from './Clock.module.css';
@@ -17,19 +18,7 @@ const Clock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const [time, setTime] = useState(new Date());
-
-  // Font loading handled by useMultipleFontLoader
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  const time = useClockTime();
 
   const formatDigit = (value) => String(value).padStart(2, '0').split('');
 

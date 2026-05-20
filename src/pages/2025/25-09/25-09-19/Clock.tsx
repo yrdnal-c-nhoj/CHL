@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useKeyframes } from '@/utils/enhancedFontLoader';
 import { useGlobalStyles } from '@/utils/enhancedFontLoader';
 import { useEnhancedFontLoader } from '@/utils/enhancedFontLoader';
@@ -7,7 +8,7 @@ import bgImage from '@/assets/images/2025/25-09/25-09-19/oort.jpg';
 
 export default function AnalogClock() {
   const [ready, setReady] = useState<boolean>(false);
-  const [time, setTime] = useState(new Date());
+  const time = useSmoothClock();
 
   useEffect(() => {
     // Inject CSS for spinning background + responsive clock
@@ -44,15 +45,6 @@ export default function AnalogClock() {
     const img = new Image();
     img.src = bgImage;
     img.onload = () => setReady(true);
-
-    let animationFrameId;
-    const updateTime: React.FC = () => {
-      setTime(new Date());
-      animationFrameId = requestAnimationFrame(updateTime);
-    };
-    animationFrameId = requestAnimationFrame(updateTime);
-
-    return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
   if (!ready) {

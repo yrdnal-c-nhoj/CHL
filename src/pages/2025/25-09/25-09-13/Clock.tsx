@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import customFontpawww from '@/assets/fonts/2025/25-09-13-anim.ttf?url';
 import bgImage from '@/assets/images/2025/25-09/25-09-13/anim.jpg';
 
 const DigitalClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [prevTime, setPrevTime] = useState(new Date());
   const [isHorizontal, setIsHorizontal] = useState<any>(window.innerWidth >= 768);
 
@@ -18,11 +19,7 @@ const DigitalClock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setPrevTime(time);
-      setTime(new Date());
-    }, 1000);
-    return () => clearInterval(interval);
+    setPrevTime(time);
   }, [time]);
 
   useEffect(() => {

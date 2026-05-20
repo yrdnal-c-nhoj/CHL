@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import bgImage from '@/assets/images/2025/25-12/25-12-09/muybridge.webp';
 import customFont_2025_1210 from '@/assets/fonts/2025/25-12-09-muy.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -21,7 +22,7 @@ const digitBoxStyle = {
 };
 
 export default function DigitalClock() {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
   useEffect(() => {
@@ -39,12 +40,6 @@ export default function DigitalClock() {
         setFontLoaded(true); // Show content anyway after error
       });
   }, []);
-
-  useEffect(() => {
-    if (!fontLoaded) return;
-    const interval = setInterval(() => setTime(new Date()), 100);
-    return () => clearInterval(interval);
-  }, [fontLoaded]);
 
   const containerStyle = {
     position: 'fixed',

@@ -1,17 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import centerImage from '@/assets/images/2025/25-09/25-09-04/sky.gif';
 import bgImage from '@/assets/images/2025/25-09/25-09-04/wood.jpeg';
 
 const AnalogClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const brassColor = '#bfa166';
-
-  // Update time every second
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   // Ticking hands
   const hours = (time.getHours() % 12) + Math.floor(time.getMinutes()) / 60;

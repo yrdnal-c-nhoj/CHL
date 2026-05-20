@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import polFont from '@/assets/fonts/2025/25-07-06-pol.otf';
 import polarisGif from '@/assets/images/2025/25-07/25-07-06/polaris.gif';
@@ -19,7 +20,7 @@ const CLOCK_NUMBERS = [
 ];
 
 const Clock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -33,15 +34,6 @@ const Clock: React.FC = () => {
     }
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-
-  useEffect(() => {
-    // Time update
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   // Calculate rotations
   const minutes = time.getMinutes();

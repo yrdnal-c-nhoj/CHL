@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
 import background2 from '@/assets/images/2025/25-07/25-07-25/bb.webp'; // front
 import background1 from '@/assets/images/2025/25-07/25-07-25/bam.webp'; // back
 import background3 from '@/assets/images/2025/25-07/25-07-25/bambu.gif'; // static background
 import customFont from '@/assets/fonts/2025/25-07-25-bamboo.ttf';
 
 const Clock: React.FC = () => {
-  const [time, setTime] = useState(() => new Date());
-
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -21,11 +19,7 @@ const Clock: React.FC = () => {
     }
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+  const time = useClockTime();
 
   useEffect(() => {
     const style = document.createElement('style');

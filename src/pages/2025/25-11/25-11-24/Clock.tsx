@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import React from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 
 // Image imports with Vite ?url suffix
 import pageBgImgBase from '@/assets/images/2025/25-11/25-11-24/skin.jpg?url';
@@ -13,22 +12,11 @@ import clockCenterImg from '@/assets/images/2025/25-11/25-11-24/center.webp?url'
 import fon251124 from '@/assets/fonts/2025/25-11-24-snake.ttf?url';
 
 export default function AnalogClock() {
-  const [time, setTime] = useState(new Date());
-  const requestRef = useRef();
-
-  // Smooth update with setInterval
-  const updateTime: React.FC = () => {
-    setTime(new Date());
-  };
-
-  useEffect(() => {
-    const interval = setInterval(updateTime, 50); // Update every 50ms for smooth motion
-    return () => clearInterval(interval);
-  }, []);
+  const time = useClockTime();
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
-  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+  const seconds = time.getSeconds();
 
   const hourAngle = (hours + minutes / 60) * 30;
   const minuteAngle = (minutes + seconds / 60) * 6;

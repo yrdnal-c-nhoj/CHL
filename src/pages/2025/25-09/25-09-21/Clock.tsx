@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import cust250921font from '@/assets/fonts/2025/25-09-21-ele.ttf?url';
@@ -8,7 +9,7 @@ import stripe3 from '@/assets/images/2025/25-09/25-09-21/h2o.webp?url';
 import stripe4 from '@/assets/images/2025/25-09/25-09-21/earth.webp?url';
 
 export default function AnalogClock() {
-  const [time, setTime] = useState(new Date());
+  const time = useSmoothClock();
   const fontVar = 'ElementalFont';
 
   const fontConfigs = useMemo<FontConfig[]>(() => [
@@ -16,11 +17,6 @@ export default function AnalogClock() {
   ], []);
 
   useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 16);
-    return () => clearInterval(interval);
-  }, []);
 
   const hour = time.getHours() % 12;
   const minute = time.getMinutes();

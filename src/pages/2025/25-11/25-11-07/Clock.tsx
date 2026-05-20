@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/2025/25-11/25-11-07/birds.webp';
 import clockFontUrl from '@/assets/fonts/2025/25-11-07-twobirds.ttf?url';
+import { formatTime as utilFormatTime } from '@/utils/clockUtils'; // Import the utility formatTime
 import styles from './Clock.module.css';
 
 export default function PanicAnalogClock() {
@@ -30,21 +31,11 @@ export default function PanicAnalogClock() {
   const [rightImageLoaded, setRightImageLoaded] = useState<boolean>(false); // Track right image load
   const urlsRef = useRef<{ left: string | null; right: string | null }>({ left: null, right: null });
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [timeStr, setTimeStr] = useState<string>('');
-
-  const formatTime = (d: Date) => {
-    let h = d.getHours();
-    const m = d.getMinutes();
-    const ampm = h >= 12 ? 'PM' : 'AM';
-    h = h % 12;
-    if (h === 0) h = 12;
-    const mm = String(m).padStart(2, '0');
-    return `${h}${mm} ${ampm}`;
-  };
+  // Use the imported utility formatTime for initial state, using '12h-stylized' to match original local logic
+  const [timeStr, setTimeStr] = useState<string>(() => utilFormatTime(new Date(), '12h-stylized'));
 
   useEffect(() => {
-    const update = () => setTimeStr(formatTime(new Date()));
-    update();
+    const update = () => setTimeStr(utilFormatTime(new Date(), '12h-stylized'));
     const now = new Date();
     const msToNextMinute =
       (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
@@ -220,7 +211,7 @@ export default function PanicAnalogClock() {
       {/* Clock */}
       {fontLoaded && showImages.right && (
         <div style={stoneClockStyle}>
-          {Array.from(timeStr).map((ch, idx) => {
+          {Array.from(timeStr || '').map((ch, idx) => {
             const isAlnum = /[0-9A-Za-z]/.test(ch);
             if (!isAlnum)
               return (

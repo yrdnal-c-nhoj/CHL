@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bg from '@/assets/images/2025/25-07/25-07-31/bay.jpeg';
 import fontUrl from '@/assets/fonts/2025/25-07-31-bay.ttf';
 
 const Clock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const tick = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(tick);
-  }, []);
+  const time = useClockTime();
 
   const formatTime = (n) => n.toString().padStart(2, '0');
 

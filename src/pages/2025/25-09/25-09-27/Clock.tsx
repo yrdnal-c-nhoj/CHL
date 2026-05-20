@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 
@@ -9,7 +10,7 @@ import bgOuter from '@/assets/images/2025/25-09/25-09-27/water.webp';
 import bgInner from '@/assets/images/2025/25-09/25-09-27/disc.gif';
 
 const TempestClock: React.FC = () => {
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const currentTime = useSmoothClock();
   const [loaded, setLoaded] = useState<boolean>(false);
 
   useEffect(() => {
@@ -48,12 +49,6 @@ const TempestClock: React.FC = () => {
 
     Promise.all([...imagePromises]).then(() => setLoaded(true));
   }, []);
-
-  useEffect(() => {
-    if (!loaded) return;
-    const timer = setInterval(() => setCurrentTime(new Date()), 50);
-    return () => clearInterval(timer);
-  }, [loaded]);
 
   if (!loaded) {
     return (

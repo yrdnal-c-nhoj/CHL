@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/2025/25-08/25-08-08/q.webp';
 import fontFile_2025_11_01 from '@/assets/fonts/2025/25-08-08-q.otf';
@@ -17,20 +18,8 @@ export default function DigitalClock() {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [offsetX, setOffsetX] = useState<number>(0);
-
-  useEffect(() => {
-    const timeInterval = setInterval(() => setTime(new Date()), 40);
-    const jumpInterval = setInterval(() => {
-      setOffsetX((prev) => (prev === 0 ? 1 : 0));
-    }, 100);
-
-    return () => {
-      clearInterval(timeInterval);
-      clearInterval(jumpInterval);
-    };
-  }, []);
 
   const hours = time.getHours().toString().padStart(2, '0');
   const minutes = time.getMinutes().toString().padStart(2, '0');

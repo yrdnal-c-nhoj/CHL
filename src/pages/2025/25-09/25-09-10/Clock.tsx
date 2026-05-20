@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
@@ -24,48 +25,29 @@ const Clock: React.FC = () => {
     }
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const time = useSmoothClock();
 
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
 
-  // Font loading handled by useMultipleFontLoader
-
-  // Clock ticking
+  // Update clock hands based on smooth clock time
   useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
-      const minutes = now.getMinutes() + seconds / 60;
-      const hours = (now.getHours() % 12) + minutes / 60;
+    const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+    const minutes = time.getMinutes() + seconds / 60;
+    const hours = (time.getHours() % 12) + minutes / 60;
 
-      const secondDeg = (seconds / 60) * 360;
-      const minuteDeg = (minutes / 60) * 360;
-      const hourDeg = (hours / 12) * 360;
+    const secondDeg = (seconds / 60) * 360;
+    const minuteDeg = (minutes / 60) * 360;
+    const hourDeg = (hours / 12) * 360;
 
-      if (hourRef.current)
-        hourRef.current.style.transform = `translate(-50%, -100%) rotate(${hourDeg}deg)`;
-      if (minuteRef.current)
-        minuteRef.current.style.transform = `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
-      if (secondRef.current)
-        secondRef.current.style.transform = `translate(-50%, -100%) rotate(${secondDeg}deg)`;
-    };
-
-    const interval = setInterval(updateClock, 20);
-    updateClock();
-    return () => clearInterval(interval);
-  }, []);
-
-  // Load font
-  useEffect(() => {
-    const font = new FontFace(
-      'CustomLavaFont_25_09_18',
-      `url(${customLavaFont})`,
-    );
-    font.load().then(() => {
-      document.fonts.add(font);
-    });
-  }, []);
+    if (hourRef.current)
+      hourRef.current.style.transform = `translate(-50%, -100%) rotate(${hourDeg}deg)`;
+    if (minuteRef.current)
+      minuteRef.current.style.transform = `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
+    if (secondRef.current)
+      secondRef.current.style.transform = `translate(-50%, -100%) rotate(${secondDeg}deg)`;
+  }, [time]);
 
   return (
     <div

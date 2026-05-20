@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import morseFont from '@/assets/fonts/2025/25-06-27-morse.ttf';
 import birdsGif from '@/assets/images/2025/25-06/25-06-27/birds.gif';
@@ -31,7 +32,7 @@ function randomInt(min, max) {
 }
 
 const MorseClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [digits, setDigits] = useState(Array(6).fill('0'));
   const [changingIndices, setChangingIndices] = useState(new Set());
   const wiresRef = useRef([]);
@@ -128,31 +129,23 @@ const MorseClock: React.FC = () => {
 
   // Update time and digits every second
   useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
+    const hours = time.getHours().toString().padStart(2, '0');
+    const minutes = time.getMinutes().toString().padStart(2, '0');
+    const seconds = time.getSeconds().toString().padStart(2, '0');
+    const newDigits = [...hours, ...minutes, ...seconds];
 
-      setTime(now);
-
-      const hours = now.getHours().toString().padStart(2, '0');
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      const seconds = now.getSeconds().toString().padStart(2, '0');
-      const newDigits = [...hours, ...minutes, ...seconds];
-
-      // Detect which digits changed to animate fade
-      setChangingIndices((prev) => {
-        const changed = new Set();
-        newDigits.forEach((digit, idx) => {
-          if (digit !== digits[idx]) changed.add(idx);
-        });
-        return changed;
+    // Detect which digits changed to animate fade
+    setChangingIndices((prev) => {
+      const changed = new Set();
+      newDigits.forEach((digit, idx) => {
+        if (digit !== digits[idx]) changed.add(idx);
       });
+      return changed;
+    });
 
-      setDigits(newDigits);
-      updateWires();
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [digits]);
+    setDigits(newDigits);
+    updateWires();
+  }, [time, digits]);
 
   // Clear changing classes after fade duration (300ms)
   useEffect(() => {

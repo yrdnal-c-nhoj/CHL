@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import bgImage from '@/assets/images/2025/25-09/25-09-02/lp.webp';
 import hourHandImage from '@/assets/images/2025/25-09/25-09-02/arm1.gif';
 import minuteHandImage from '@/assets/images/2025/25-09/25-09-02/arm2.gif';
@@ -10,7 +10,7 @@ export default function FullViewportRectangularAnalogClock({
   xOffset = -10, // horizontal offset in pixels (default center)
   yOffset = 10, // vertical offset in pixels (default center)
 }) {
-  const [now, setNow] = useState(new Date());
+  const now = useClockTime();
   const [size, setSize] = useState<any>({
     w: typeof window !== 'undefined' ? window.innerWidth : 800,
     h: typeof window !== 'undefined' ? window.innerHeight : 600,
@@ -22,14 +22,6 @@ export default function FullViewportRectangularAnalogClock({
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
-
-  useEffect(() => {
-    const interval = setInterval(
-      () => setNow(new Date()),
-      showSeconds ? 1000 : 60000,
-    );
-    return () => clearInterval(interval);
-  }, [showSeconds]);
 
   const { w, h } = size;
   const cx = w / 2 + xOffset; // apply horizontal offset

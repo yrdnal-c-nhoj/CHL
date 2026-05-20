@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 const mat250918font = '../../../assets/fonts/2025/25-09-18-matrix.ttf'; // Your Matrix-style font
 
 export default function MatrixRain() {
+  const time = useClockTime();
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -28,9 +30,8 @@ export default function MatrixRain() {
 
     // Clock string → ["0","7","3","5","P","M"]
     const getTimeChars: React.FC = () => {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes();
+      let hours = time.getHours();
+      const minutes = time.getMinutes();
       const ampm = hours >= 12 ? 'PM' : 'AM';
       hours = hours % 12 || 12;
       const timeStr =

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import customFontUrl from '@/assets/fonts/2025/25-08-12-cubic.ttf'; // local font file
 import backgroundImage from '@/assets/images/2025/25-08/25-08-12/earth.webp'; // local background image
@@ -26,13 +27,7 @@ export default function BiteviteHexahedron() {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const [time, setTime] = useState(new Date());
-
-  // Font loading handled by useMultipleFontLoader
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const time = useClockTime();
 
   const formatTime: React.FC = () => {
     let hours = time.getHours();

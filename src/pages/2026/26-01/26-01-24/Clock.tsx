@@ -220,20 +220,30 @@ const Clock: React.FC = () => {
     };
   }, [isLargeScreen]); // Re-create if isLargeScreen changes
 
-  const { hours, minutes, seconds } = useMemo(() => utilFormatTime(time, '12h'), [time]);
+  const { hours, minutes, seconds } = useMemo(() => {
+    const formatted = utilFormatTime(time, '24h');
+    const [h, m, s] = (formatted || '00:00:00').split(':');
+    return { hours: h, minutes: m, seconds: s };
+  }, [time]);
 
-  const renderDigits = (str: string) => (
-    <div className={styles.digitGroup}>
-      {str.split('').map((d, i) => (
-        <div
-          key={i}
-          className={`${styles.digit} ${isLargeScreen ? styles.digitLarge : styles.digitMobile}`}
-        >
-          {digitToEmoji[d as DigitChar]}
-        </div>
-      ))}
-    </div>
-  );
+
+  const renderDigits = (str?: string) => {
+    const safeStr = str ?? '';
+
+    return (
+      <div className={styles.digitGroup}>
+        {safeStr.split('').map((d, i) => (
+          <div
+            key={i}
+            className={`${styles.digit} ${isLargeScreen ? styles.digitLarge : styles.digitMobile}`}
+          >
+            {digitToEmoji[d as DigitChar]}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
 
   return (
     <main className={styles.container} style={{ opacity: bgReady ? 1 : 0 }}>

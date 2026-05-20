@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSmoothClock } from '@/utils/hooks';
 import bgImage from '@/assets/images/2025/25-10/25-10-05/16a.webp';
 import clockBgImage from '@/assets/images/2025/25-10/25-10-05/16.webp';
 import diigi251005 from '@/assets/fonts/2025/25-10-05-dode.ttf';
 import ana251005font from '@/assets/fonts/2025/25-10-05-do.ttf';
 
 export default function HexAnalogClock() {
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const currentTime = useSmoothClock();
   const [ready, setReady] = useState<boolean>(false);
   const [viewport, setViewport] = useState<any>({
     width: window.innerWidth,
@@ -59,13 +60,6 @@ export default function HexAnalogClock() {
     }
     loadAssets();
   }, []);
-
-  // Clock tick
-  useEffect(() => {
-    if (!ready) return;
-    const timer = setInterval(() => setCurrentTime(new Date()), 100);
-    return () => clearInterval(timer);
-  }, [ready]);
 
   if (!ready) {
     return (

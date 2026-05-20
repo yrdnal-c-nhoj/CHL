@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 // === Local assets ===
@@ -35,8 +36,8 @@ const getAllDigits = (t) => {
 };
 
 export default function DigitalImageClock() {
-  const [time, setTime] = useState(() => new Date());
-  const [prevDigits, setPrevDigits] = useState(() => getAllDigits(new Date()));
+  const time = useClockTime();
+  const [prevDigits, setPrevDigits] = useState(() => getAllDigits(time));
   const [digitSize, setDigitSize] = useState<number>(0);
   const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768);
 
@@ -58,13 +59,8 @@ export default function DigitalImageClock() {
   }, [isMobile]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setPrevDigits(getAllDigits(new Date()));
-      setTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
+    setPrevDigits(getAllDigits(time));
+  }, [time]);
 
   useEffect(() => {
     const handleResize: React.FC = () => {

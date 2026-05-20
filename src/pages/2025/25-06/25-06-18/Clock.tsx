@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/2025/25-06/25-06-18/cis.jpg';
 import cisFont from '@/assets/fonts/2025/25-06-18-cis.ttf';
 
 const CistercianClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -20,11 +21,6 @@ const CistercianClock: React.FC = () => {
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   // Font loading handled by useMultipleFontLoader
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   const pad = (n) => n.toString().padStart(2, '0');
 

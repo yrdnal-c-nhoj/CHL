@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import bgImage from '@/assets/images/2025/25-09/25-09-08/orange.webp';
 import img1 from '@/assets/images/2025/25-09/25-09-08/1.webp';
@@ -15,7 +16,7 @@ import img11 from '@/assets/images/2025/25-09/25-09-08/11.jpg';
 import img12 from '@/assets/images/2025/25-09/25-09-08/12.webp';
 
 export default function ImageAnalogClock() {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [loaded, setLoaded] = useState<boolean>(false);
 
   const images = [
@@ -55,12 +56,6 @@ export default function ImageAnalogClock() {
         if (loadedCount === images.length) setLoaded(true);
       };
     });
-  }, []);
-
-  // Tick every second
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
   }, []);
 
   if (!loaded) {

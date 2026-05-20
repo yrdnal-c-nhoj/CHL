@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
@@ -28,19 +28,10 @@ const Clock: React.FC<ClockProps> = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const time = useSmoothClock();
 
   // Font loading and @font-face CSS handled by useSuspenseFontLoader
   const clockRef = useRef<HTMLDivElement>(null);
-  const [time, setTime] = useState(new Date());
-
-  // Update time every animation frame for smooth second hand
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 100); // Update every 100ms for smooth time display
-    return () => clearInterval(interval);
-  }, []);
 
   const clockSizeVW = 100; // 100vw max 60rem via max-width in CSS
   const clockMaxRem = 60; // max 60rem

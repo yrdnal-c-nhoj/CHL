@@ -59,47 +59,34 @@ describe('formatTime', () => {
     const date = new Date('2024-01-15T14:30:45');
     const result = formatTime(date);
 
-    expect(result).toEqual({
-      hours: '02',
-      minutes: '30',
-      seconds: '45',
-    });
+    // formatTime returns a string "HH:MM:SS" and defaults to 24h
+    expect(result).toBe('14:30:45');
   });
 
   it('should format time in 24h format', () => {
     const date = new Date('2024-01-15T14:30:45');
     const result = formatTime(date, '24h');
 
-    expect(result).toEqual({
-      hours: '14',
-      minutes: '30',
-      seconds: '45',
-    });
+    expect(result).toBe('14:30:45');
   });
 
   it('should handle midnight in 12h format', () => {
     const date = new Date('2024-01-15T00:00:00');
     const result = formatTime(date, '12h');
 
-    expect(result.hours).toBe('12');
+    expect(result).toContain('12:00:00 AM');
   });
 
   it('should handle noon in 12h format', () => {
     const date = new Date('2024-01-15T12:00:00');
     const result = formatTime(date, '12h');
-
-    expect(result.hours).toBe('12');
+    expect(result).toContain('12:00:00 PM');
   });
 
   it('should pad single digits with zeros', () => {
     const date = new Date('2024-01-15T01:02:03');
     const result = formatTime(date);
-
-    expect(result).toEqual({
-      hours: '01',
-      minutes: '02',
-      seconds: '03',
-    });
+    expect(result).toBe('01:02:03');
   });
 });
 

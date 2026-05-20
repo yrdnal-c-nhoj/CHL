@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from 'react';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import bgImageSrc from '@/assets/images/2025/25-09/25-09-14/bg.gif';
 
 const GoldenChordsClock: React.FC = () => {
+  const time = useSmoothClock();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const R = 180;
@@ -19,10 +21,9 @@ const GoldenChordsClock: React.FC = () => {
     bgImage.src = bgImageSrc;
 
     const draw = () => {
-      const now = new Date();
-      const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
-      const minutes = now.getMinutes() + seconds / 60;
-      const hours = (now.getHours() % 12) + minutes / 60;
+      const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+      const minutes = time.getMinutes() + seconds / 60;
+      const hours = (time.getHours() % 12) + minutes / 60;
 
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;

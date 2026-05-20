@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import customFont from '@/assets/fonts/2025/25-08-11-wash.otf';
@@ -35,7 +36,7 @@ const SwirlingImages: React.FC = () => {
     width: window.innerWidth,
     height: window.innerHeight,
   });
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
 
   const imagesRef = useRef(null);
 
@@ -88,11 +89,8 @@ const SwirlingImages: React.FC = () => {
       setViewport({ width: window.innerWidth, height: window.innerHeight });
     window.addEventListener('resize', onResize);
 
-    const timer = setInterval(() => setTime(new Date()), 1000);
-
     return () => {
       window.removeEventListener('resize', onResize);
-      clearInterval(timer);
     };
   }, []);
 
