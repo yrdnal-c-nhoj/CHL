@@ -8,8 +8,6 @@ import {
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 
-// Mock must define its values inside the factory function due to hoisting
-// Note: mocking relative to the DataContext.jsx file location
 vi.mock('../context/clockpages.json', () => ({
   default: [
     { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
@@ -26,18 +24,12 @@ vi.mock('../context/testclocks.json', () => ({
   ],
 }));
 
-// Mock import.meta.env
-vi.mock('import.meta.env', () => ({
-  DEV: true,
-  VITE_ENVIRONMENT: 'testing',
-}));
-
 describe('DataContext', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('should provide items through context', () => {
+  it('should provide items through context', async () => {
     const TestComponent = () => {
       const { items } = useDataContext();
       return <div data-testid="item-count">{items.length}</div>;
@@ -49,10 +41,12 @@ describe('DataContext', () => {
       </DataProvider>,
     );
 
-    expect(screen.getByTestId('item-count')).toHaveTextContent('3');
+    await waitFor(() => {
+      expect(screen.getByTestId('item-count')).toHaveTextContent('3');
+    });
   });
 
-  it('should indicate not loading initially', () => {
+  it('should finish loading', async () => {
     const TestComponent = () => {
       const { loading } = useDataContext();
       return <div data-testid="loading">{loading ? 'loading' : 'ready'}</div>;
@@ -64,13 +58,15 @@ describe('DataContext', () => {
       </DataProvider>,
     );
 
-    expect(screen.getByTestId('loading')).toHaveTextContent('ready');
+    await waitFor(() => {
+      expect(screen.getByTestId('loading')).toHaveTextContent('ready');
+    });
   });
 
-  it('should have no error initially', () => {
+  it('should have no error after load', async () => {
     const TestComponent = () => {
       const { error } = useDataContext();
-      return <div data-testid="error">{error || 'no-error'}</div>;
+      return <div data-testid="error">{error ? error.message : 'no-error'}</div>;
     };
 
     render(
@@ -79,18 +75,20 @@ describe('DataContext', () => {
       </DataProvider>,
     );
 
-    expect(screen.getByTestId('error')).toHaveTextContent('no-error');
+    await waitFor(() => {
+      expect(screen.getByTestId('error')).toHaveTextContent('no-error');
+    });
   });
 
-  it('should expose items with correct structure', () => {
+  it('should expose items with correct structure', async () => {
     const TestComponent = () => {
       const { items } = useDataContext();
-      const firstItem = items[0] || { path: '', date: '', title: '' };
+      const firstItem = items[0] ?? { path: '', date: '', title: '' };
       return (
         <div>
-          <div data-testid="first-path">{firstItem?.path}</div>
-          <div data-testid="first-date">{firstItem?.date}</div>
-          <div data-testid="first-title">{firstItem?.title}</div>
+          <div data-testid="first-path">{firstItem.path}</div>
+          <div data-testid="first-date">{firstItem.date}</div>
+          <div data-testid="first-title">{firstItem.title}</div>
         </div>
       );
     };
@@ -101,44 +99,29 @@ describe('DataContext', () => {
       </DataProvider>,
     );
 
-    expect(screen.getByTestId('first-path')).toHaveTextContent('26-03-05');
-    expect(screen.getByTestId('first-date')).toHaveTextContent('26-03-05');
-    expect(screen.getByTestId('first-title')).toHaveTextContent(
-      'Retro Terminal',
+    await waitFor(() => {
+      expect(screen.getByTestId('first-path')).toHaveTextContent('26-03-05');
+      expect(screen.getByTestId('first-date')).toHaveTextContent('26-03-05');
+      expect(screen.getByTestId('first-title')).toHaveTextContent('Retro Terminal');
+    });
+  });
+
+  it('should throw when used outside provider', () => {
+    const TestComponent = () => {
+      useDataContext();
+      return null;
+    };
+
+    expect(() => render(<TestComponent />)).toThrow(
+      'useDataContext must be used within a DataProvider',
     );
   });
 
-  it('should provide empty array when used outside provider', () => {
-    const TestComponent = () => {
-      const { items, loading, error } = useDataContext();
-      return (
-        <div>
-          <div data-testid="items">{items.length}</div>
-          <div data-testid="loading">{loading ? 'true' : 'false'}</div>
-          <div data-testid="error">{error || 'none'}</div>
-        </div>
-      );
-    };
-
-    // Render without DataProvider
-    render(<TestComponent />);
-
-    expect(screen.getByTestId('items')).toHaveTextContent('0');
-    expect(screen.getByTestId('loading')).toHaveTextContent('false');
-    expect(screen.getByTestId('error')).toHaveTextContent('none');
-  });
-
-  it('should have items in correct order', () => {
+  it('should have items in correct order', async () => {
     const TestComponent = () => {
       const { items } = useDataContext();
       return (
-        <div>
-          {items.map((item, index) => (
-            <div key={item.path} data-testid={`item-${index}`}>
-              {item.date}
-            </div>
-          ))}
-        </div>
+        <div data-testid="paths">{items.map((i) => i.path).join(',')}</div>
       );
     };
 
@@ -148,14 +131,16 @@ describe('DataContext', () => {
       </DataProvider>,
     );
 
-    expect(screen.getByTestId('item-0')).toHaveTextContent('26-03-05');
-    expect(screen.getByTestId('item-1')).toHaveTextContent('26-03-04');
-    expect(screen.getByTestId('item-2')).toHaveTextContent('26-03-03');
+    await waitFor(() => {
+      expect(screen.getByTestId('paths')).toHaveTextContent(
+        '26-03-05,26-03-04,26-03-03',
+      );
+    });
   });
 });
 
 describe('DataContext Provider', () => {
-  it('should handle nested providers gracefully', () => {
+  it('should handle nested providers gracefully', async () => {
     const TestComponent = () => {
       const { items } = useDataContext();
       return <div data-testid="count">{items.length}</div>;
@@ -169,28 +154,27 @@ describe('DataContext Provider', () => {
       </DataProvider>,
     );
 
-    expect(screen.getByTestId('count')).toHaveTextContent('3');
+    await waitFor(() => {
+      expect(screen.getByTestId('count')).toHaveTextContent('3');
+    });
   });
 
-  it('should provide context to multiple consumers', () => {
-    const Consumer1 = () => {
+  it('should provide context to multiple consumers', async () => {
+    const Consumer = ({ id }: { id: string }) => {
       const { items } = useDataContext();
-      return <div data-testid="consumer1">{items[0]?.title}</div>;
-    };
-
-    const Consumer2 = () => {
-      const { items } = useDataContext();
-      return <div data-testid="consumer2">{items[1]?.title}</div>;
+      return <div data-testid={id}>{items.length}</div>;
     };
 
     render(
       <DataProvider>
-        <Consumer1 />
-        <Consumer2 />
+        <Consumer id="a" />
+        <Consumer id="b" />
       </DataProvider>,
     );
 
-    expect(screen.getByTestId('consumer1')).toHaveTextContent('Retro Terminal');
-    expect(screen.getByTestId('consumer2')).toHaveTextContent('Sun');
+    await waitFor(() => {
+      expect(screen.getByTestId('a')).toHaveTextContent('3');
+      expect(screen.getByTestId('b')).toHaveTextContent('3');
+    });
   });
 });

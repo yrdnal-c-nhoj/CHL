@@ -1,4 +1,11 @@
-import { useCallback, useMemo, useRef, useEffect, useState } from 'react';
+import {
+  useCallback,
+  useMemo,
+  useRef,
+  useEffect,
+  useState,
+  type MutableRefObject,
+} from 'react';
 
 /**
  * Performance optimization utilities for React components
@@ -170,7 +177,7 @@ export function useLazyImage(
   const setRefs = useCallback(
     (node: HTMLImageElement | null) => {
       intersectionRef(node);
-      imgRef.current = node;
+      (imgRef as MutableRefObject<HTMLImageElement | null>).current = node;
     },
     [intersectionRef],
   );

@@ -1,8 +1,11 @@
 # Component Finalization Script
 
+> **Canonical workflow:** [`docs/DEVELOPMENT.md`](../../docs/DEVELOPMENT.md).  
+> `finalize` does **not** edit `clockpages.json` — register clocks manually before captures.
+
 ## Overview
 
-The `finalize-component.ts` script is a comprehensive tool that validates your clock components against the technical standards defined in `AGENTS.md`, auto-fixes common issues, and captures standardized screenshots for documentation.
+The `finalize-component.ts` script validates clock components against BTS standards (see DEVELOPMENT.md), auto-fixes common asset issues, and captures standardized screenshots.
 
 ## Usage
 
@@ -22,7 +25,7 @@ npm run finalize -- src/pages/2026/26-05/26-05-09/Clock.tsx
 - ✅ **TypeScript Compilation**: Ensures no TypeScript errors
 - ✅ **ESLint Validation**: Checks against linting rules
 - ✅ **File Structure**: Verifies required files exist (Clock.tsx, .module.css)
-- ✅ **Technical Standards**: Validates against AGENTS.md standards
+- ✅ **Technical Standards**: Validates against BTS ([`docs/DEVELOPMENT.md`](../../docs/DEVELOPMENT.md))
 - ✅ **Asset Structure**: Checks for proper asset organization
 - ✅ **Font Loading**: Ensures proper font loading with suspense
 - ✅ **Semantic HTML**: Checks for proper time element usage

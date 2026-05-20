@@ -47,7 +47,7 @@ const TodayClockPage = () => {
     // Fallback: If no past/today clock found, find the newest available valid clock anywhere
     if (!item) item = sortedItems[0];
 
-    setCurrentItem(item);
+    setCurrentItem(item ?? null);
   }, [items, loading]);
 
   // Use the hook to load the clock
@@ -74,8 +74,8 @@ const TodayClockPage = () => {
   const { prevItem, nextItem } = useMemo(() => {
     const idx = (currentItem && items) ? items.findIndex((i) => normalizeDate(i.date) === normalizeDate(currentItem.date)) : -1;
     return {
-      prevItem: idx > 0 ? items[idx - 1] : null,
-      nextItem: idx !== -1 && idx < items.length - 1 ? items[idx + 1] : null,
+      prevItem: idx > 0 ? (items[idx - 1] ?? null) : null,
+      nextItem: idx !== -1 && idx < items.length - 1 ? (items[idx + 1] ?? null) : null,
     };
   }, [items, currentItem]);
 

@@ -18,4 +18,4 @@
 - [ ] I updated docs if behavior/config changed
 - [ ] I verified no secrets are included
 - [ ] I added/updated tests when needed
-- [ ] I followed the [BTS standards](../../AGENTS.md)
+- [ ] I followed [BTS / development guide](../../docs/DEVELOPMENT.md) (manual `clockpages.json` if new clock)

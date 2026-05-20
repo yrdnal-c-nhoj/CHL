@@ -4,6 +4,8 @@ description: Quick start workflow for development
 
 # Quick Start
 
+> **Canonical guide:** [`docs/DEVELOPMENT.md`](../../docs/DEVELOPMENT.md)
+
 ## Prerequisites
 
 - Node.js 24.x LTS
@@ -16,13 +18,18 @@ npm install
 npm run dev          # http://localhost:5173
 ```
 
-## Common Tasks
+## New clock
 
 ```bash
-npm run clock:new              # Create today's clock
-npm run type-check && npm run lint && npm run build  # Pre-commit
-npm run test                   # Watch mode
-npm run test:run               # CI mode
+npm run clock:new              # scaffold only — does NOT edit clockpages.json
+# Manually add { "path", "date", "title" } to src/context/clockpages.json
+npm run finalize
+```
+
+## Pre-commit (matches CI)
+
+```bash
+npm run type-check && npm run lint && npm run test:run && npm run build
 ```
 
 ## Troubleshooting
@@ -36,6 +43,6 @@ npm run test:run               # CI mode
 
 ## Docs
 
-- [AGENTS.md](../../AGENTS.md) - Standards and CLI
-- [ARCHITECTURE.md](../../src/templates/ARCHITECTURE.md) - Clock patterns
-- [README.md](../../README.md) - Full reference
+- [`docs/DEVELOPMENT.md`](../../docs/DEVELOPMENT.md) — **SSOT** workflow, registry, CI
+- [`src/templates/ARCHITECTURE.md`](../../src/templates/ARCHITECTURE.md) — Clock patterns
+- [`README.md`](../../README.md) — Project overview
