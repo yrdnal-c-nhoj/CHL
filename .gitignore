@@ -21,3 +21,9 @@ TODO.md
 .eslintcache
 .vite/
 coverage/
+
+# Local audit reports (regenerate with npm run audit:fonts / audit:images)
+unused-fonts-report.txt
+non-standard-fonts.txt
+unused-images-report.txt
+unused-images-only-report.txt
