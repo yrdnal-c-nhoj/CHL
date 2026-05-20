@@ -52,7 +52,7 @@ const LeapClock: React.FC = () => {
 
   useEffect(() => {
     let frameId;
-    const update: React.FC = () => {
+    const update = () => {
       setNow(new Date());
       frameId = requestAnimationFrame(update);
     };
