@@ -3,7 +3,7 @@ import type { ClockItem, DataContextType } from '../types/data';
 import prodData from './clockpages.json';
 
 // Optionally load testclocks.json — resolves gracefully if absent
-const testModules = import.meta.glob('./testclocks.json', { eager: true });
+const testModules = import.meta.glob('./clockpages.json', { eager: true });
 const testData =
   (testModules['./testclocks.json'] as { default: typeof prodData } | undefined)
     ?.default ?? prodData;
