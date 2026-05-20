@@ -31,11 +31,11 @@ const Clock: React.FC = () => {
   const time = useClockTime();
   useSuspenseFontLoader(fontConfigs);
 
-  const { hours, minutes, seconds } = useMemo(() => formatTime(time, '24h'), [time]);
+  const [hours, minutes, seconds] = useMemo(() => formatTime(time, '24h').split(':'), [time]);
 
-  const renderUnit = (value: string) => (
+  const renderUnit = (value: string = '') => (
     <div className={styles.unitWrapper}>
-      {value.split('').map((digit, i) => (
+      {(value || '').split('').map((digit, i) => (
         <span key={i} className={styles.digit}>
           {DIGIT_MAP[digit as DigitChar] || digit}
         </span>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
@@ -15,9 +15,7 @@ interface FlyingPetalsClockProps {
 }
 
 const FlyingPetalsClock: React.FC<FlyingPetalsClockProps> = () => {
-  // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
 
   // Font loading configuration (memoized)
   const fontConfigs = useMemo<FontConfig[]>(() => [
@@ -33,11 +31,6 @@ const FlyingPetalsClock: React.FC<FlyingPetalsClockProps> = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Font loading handled by useSuspenseFontLoader
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   const getTimeParts = () => {
     const hours = time.getHours().toString().padStart(2, '0');

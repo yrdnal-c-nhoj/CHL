@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import myFontUrl from '@/assets/fonts/2025/25-08-20-go.otf?url';
@@ -34,17 +35,7 @@ const TIMEZONES = [
 
 // Analog clock component
 const AnalogClock: React.FC<{ zone: string; clockSize: number }> = ({ zone, clockSize }) => {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    let frameId: number;
-    const tick = () => {
-      setTime(new Date());
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
+  const time = useSmoothClock();
 
   const local = new Date(time.toLocaleString('en-US', { timeZone: zone }));
   const seconds = local.getSeconds();

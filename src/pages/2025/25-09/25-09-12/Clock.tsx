@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 
 const App: React.FC = () => {
+  const time = useSmoothClock();
   const starCanvasRef = useRef(null);
   const faceRef = useRef(null);
   const sheenRef = useRef(null);
@@ -242,14 +244,13 @@ const App: React.FC = () => {
       starCtx.globalAlpha = 1.0;
 
       // ---- Clock ----
-      const now = new Date();
       const hours =
-        (now.getHours() % 12) + now.getMinutes() / 60 + now.getSeconds() / 3600;
+        (time.getHours() % 12) + time.getMinutes() / 60 + time.getSeconds() / 3600;
       const minutes =
-        now.getMinutes() +
-        now.getSeconds() / 60 +
-        now.getMilliseconds() / 60000;
-      const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+        time.getMinutes() +
+        time.getSeconds() / 60 +
+        time.getMilliseconds() / 60000;
+      const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
 
       drawHand(
         contexts.hour,

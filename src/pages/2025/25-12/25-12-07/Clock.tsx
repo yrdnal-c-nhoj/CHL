@@ -1,4 +1,5 @@
-import React, { useRef, useMemo, useState, useEffect } from 'react';
+import React, { useRef, useMemo } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Html } from '@react-three/drei';
@@ -88,24 +89,11 @@ export default function IcosahedronScene() {
 }
 
 function FloatingIcosahedron() {
-  const groupRef = useRef();
-  const [time, setTime] = useState<any>('');
-
-  useEffect(() => {
-    const update = () =>
-      setTime(
-        new Date().toLocaleTimeString('en-GB', {
-          hour: '2-digit',
-          minute: '2-digit',
-        }),
-      );
-    update();
-    const id = setInterval(update, 1000);
-    return () => clearInterval(id);
-  }, []);
+  const groupRef = useRef<THREE.Group | null>(null);
+  const time = useClockTime();
 
   const { geometry, edges } = useMemo(() => {
-    const geo = new THREE.IcosahedronGeometry(1.2, 0).toNonIndexed();
+    const geo = new THREE.IcosahedronGeometry(1.2, 0).index ? new THREE.IcosahedronGeometry(1.2, 0).toNonIndexed() : new THREE.IcosahedronGeometry(1.2, 0);
     const pos = geo.getAttribute('position');
     const colors = new Float32Array(pos.count * 3);
     const color = new THREE.Color();
@@ -162,7 +150,7 @@ function FloatingIcosahedron() {
       <mesh geometry={geometry} scale={1.004}>
         <meshBasicMaterial
           wireframe
-          color="#6993E6FF"
+      color="#6993E6"
           opacity={0}
           transparent
         />
@@ -178,13 +166,15 @@ function FloatingIcosahedron() {
             color: '#C6EBF8FF',
             fontSize: '70px',
             letterSpacing: '3px',
-            // opacity: 0.4,
             fontFamily: "'WaterFont', monospace",
             userSelect: 'none',
             pointerEvents: 'none',
           }}
         >
-          {time}
+          {time.toLocaleTimeString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit',
+          })}
         </div>
       </Html>
     </group>

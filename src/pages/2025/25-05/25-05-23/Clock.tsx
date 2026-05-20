@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/2025/25-05/25-05-23/blank.jpg';
 import crossFont from '@/assets/fonts/2025/25-05-23-Cross.otf';
 
 const CrossClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -40,17 +41,12 @@ const CrossClock: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
     // Show content after a short delay regardless
     const showTimeout = setTimeout(() => {
       setIsLoaded(true);
     }, 500);
 
     return () => {
-      clearInterval(interval);
       clearTimeout(showTimeout);
     };
   }, []);

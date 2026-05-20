@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import rrrrFont from '@/assets/fonts/2025/25-06-06-rrrr.ttf';
 
 const RollingClock: React.FC = () => {
+  const time = useClockTime();
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -59,12 +61,9 @@ const RollingClock: React.FC = () => {
       ticker.appendChild(clockContainer);
 
       function updateHands() {
-        const now = new Date();
-        const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-        const edt = new Date(utc - 4 * 3600000);
-        const sec = edt.getSeconds();
-        const min = edt.getMinutes();
-        const hr = edt.getHours();
+        const sec = time.getSeconds();
+        const min = time.getMinutes();
+        const hr = time.getHours();
 
         secondHand.style.transform = `rotate(${sec * 6}deg)`;
         minuteHand.style.transform = `rotate(${min * 6 + sec * 0.1}deg)`;

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import gridImage from '@/assets/images/2025/25-10/25-10-02/lan.gif';
 
 // Counting rod digit map
@@ -22,7 +23,7 @@ const toCountingRod = (number) =>
     .map((digit) => digitMap[digit]);
 
 const DigitalClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [digitOpacities, setDigitOpacities] = useState<any>({
     hours: [1, 1],
     minutes: [1, 1],
@@ -30,35 +31,25 @@ const DigitalClock: React.FC = () => {
   });
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      const newTime = new Date();
-      const newHours = toCountingRod(newTime.getHours());
-      const newMinutes = toCountingRod(newTime.getMinutes());
-      const newSeconds = toCountingRod(newTime.getSeconds());
-      const prevHours = toCountingRod(time.getHours());
-      const prevMinutes = toCountingRod(time.getMinutes());
-      const prevSeconds = toCountingRod(time.getSeconds());
+    const newHours = toCountingRod(time.getHours());
+    const newMinutes = toCountingRod(time.getMinutes());
+    const newSeconds = toCountingRod(time.getSeconds());
 
-      // Fade digits that changed
+    // Fade digits that changed
+    setDigitOpacities({
+      hours: newHours.map(() => 0),
+      minutes: newMinutes.map(() => 0),
+      seconds: newSeconds.map(() => 0),
+    });
+
+    // Fade digits back in after transition
+    setTimeout(() => {
       setDigitOpacities({
-        hours: prevHours.map((d, i) => (d !== newHours[i] ? 0 : 1)),
-        minutes: prevMinutes.map((d, i) => (d !== newMinutes[i] ? 0 : 1)),
-        seconds: prevSeconds.map((d, i) => (d !== newSeconds[i] ? 0 : 1)),
+        hours: [1, 1],
+        minutes: [1, 1],
+        seconds: [1, 1],
       });
-
-      setTime(newTime);
-
-      // Fade digits back in after transition
-      setTimeout(() => {
-        setDigitOpacities({
-          hours: [1, 1],
-          minutes: [1, 1],
-          seconds: [1, 1],
-        });
-      }, 300);
-    }, 1000);
-
-    return () => clearInterval(timer);
+    }, 300);
   }, [time]);
 
   const hours = toCountingRod(time.getHours());

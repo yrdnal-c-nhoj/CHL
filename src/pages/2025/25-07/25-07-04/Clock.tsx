@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import kalFont from '@/assets/fonts/2025/25-07-04-kal.otf';
 import bgImage from '@/assets/images/2025/25-07/25-07-04/7ZAx.webp';
@@ -14,7 +15,7 @@ const COLORS = [
 ];
 
 const Clock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useSmoothClock();
   const requestRef = useRef<number | null>(null);
 
   // 1. Font Loading Logic
@@ -27,19 +28,6 @@ const Clock: React.FC = () => {
   ], []);
   
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-
-  // 2. Optimized Animation Loop
-  const animate = useCallback(() => {
-    setTime(new Date());
-    requestRef.current = requestAnimationFrame(animate);
-  }, []);
-
-  useEffect(() => {
-    requestRef.current = requestAnimationFrame(animate);
-    return () => {
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
-    };
-  }, [animate]);
 
   // 3. Loading State Guard
   if (!fontsLoaded) {

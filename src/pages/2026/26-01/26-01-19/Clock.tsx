@@ -79,6 +79,7 @@ const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }) => {
           borderTop: `${outlineWidth} solid ${COLORS.border}`,
           borderLeft: `${outlineWidth} solid ${COLORS.border}`,
           borderRight: `${outlineWidth} solid ${COLORS.border}`,
+          borderBottom: 'none', // Explicitly set to avoid shorthand conflict
           boxSizing: 'border-box',
         }}
       />
@@ -92,8 +93,10 @@ const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }) => {
           width: '100%',
           height: `${radius * 0.3}vh`,
           background: COLORS.secondHand,
-          border: `${outlineWidth} solid ${COLORS.border}`,
-          borderTop: 'none',
+          borderBottom: `${outlineWidth} solid ${COLORS.border}`,
+          borderLeft: `${outlineWidth} solid ${COLORS.border}`,
+          borderRight: `${outlineWidth} solid ${COLORS.border}`,
+          borderTop: 'none', // Explicitly set to avoid shorthand conflict
           boxSizing: 'border-box',
         }}
       />

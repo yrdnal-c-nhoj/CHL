@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import c250929 from '@/assets/fonts/2025/25-09-29-actionj.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 export default function ComicClock() {
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
 
   // Load font
   useEffect(() => {
@@ -13,12 +14,6 @@ export default function ComicClock() {
       document.fonts.add(font);
       setFontLoaded(true);
     });
-  }, []);
-
-  // Update time every second
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
   }, []);
 
   if (!fontLoaded) return null;

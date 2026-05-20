@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import myFontWoff2 from '@/assets/fonts/2025/25-08-01-zod.ttf';
 import bg1 from '@/assets/images/2025/25-08/25-08-01/stars.webp';
@@ -22,7 +22,7 @@ const romanNumerals = [
 ];
 
 const AnalogClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useSmoothClock();
   const [numerals, setNumerals] = useState(
     romanNumerals.map(() => ({
       angle: Math.random() * 360,
@@ -47,13 +47,6 @@ const AnalogClock: React.FC = () => {
     }
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 100); // Update every 100ms for smooth time display
-    return () => clearInterval(interval);
-  }, []);
 
   useEffect(() => {
     let animationFrameId;

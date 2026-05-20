@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundImage from '@/assets/images/2025/25-05/25-05-27/dot.jpg';
@@ -19,7 +20,7 @@ const Clock: React.FC = () => {
   ], []);
   useSuspenseFontLoader(fontConfigs);
 
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
 
   useEffect(() => {
@@ -28,12 +29,8 @@ const Clock: React.FC = () => {
     };
 
     window.addEventListener('resize', handleResize);
-    const intervalId = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
 
     return () => {
-      clearInterval(intervalId);
       window.removeEventListener('resize', handleResize);
     };
   }, []);

@@ -45,6 +45,10 @@ export default function DigitalClock() {
     };
   }, [time]);
 
+  const hoursDigits = hours.split('');
+  const minutesDigits = minutes.split('');
+  const allDigits = [...hoursDigits, ...minutesDigits];
+
   const [textureOffsets] = useState(() =>
     allDigits.map(() => ({
       x: Math.floor(Math.random() * 100),

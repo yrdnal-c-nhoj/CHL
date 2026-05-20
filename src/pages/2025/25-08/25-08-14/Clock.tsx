@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 import backgroundImg from '@/assets/images/2025/25-08/25-08-14/1.webp';
@@ -60,16 +60,7 @@ const AnalogClock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const [now, setNow] = useState(new Date());
-
-  // Smoothly update time
-  useEffect(() => {
-    const update: React.FC = () => {
-      setNow(new Date());
-      requestAnimationFrame(update);
-    };
-    requestAnimationFrame(update);
-  }, []);
+  const time = useSmoothClock();
 
   // Enhanced font loading with error handling
   useEffect(() => {
@@ -103,9 +94,9 @@ const AnalogClock: React.FC = () => {
   }, [customFont]);
 
   // Calculate angles
-  const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
-  const minutes = now.getMinutes() + seconds / 60;
-  const hours = (now.getHours() % 12) + minutes / 60;
+  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+  const minutes = time.getMinutes() + seconds / 60;
+  const hours = (time.getHours() % 12) + minutes / 60;
 
   const secondDeg = seconds * 6;
   const minuteDeg = minutes * 6;

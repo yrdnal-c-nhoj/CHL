@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
@@ -97,14 +98,7 @@ const AnimatedClock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 100); // Update every 100ms for smooth time display
-    return () => clearInterval(interval);
-  }, []);
+  const time = useSmoothClock();
 
   const ms = time.getMilliseconds();
   const s = time.getSeconds() + ms / 1000;

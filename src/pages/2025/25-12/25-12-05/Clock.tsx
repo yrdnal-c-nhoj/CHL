@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import font_2025_12_06 from '@/assets/fonts/2025/25-12-05-magic.ttf?url';
@@ -6,7 +7,7 @@ import bgImage from '@/assets/images/2025/25-12/25-12-05/magic.webp';
 import styles from './Clock.module.css';
 
 export default function BoxedDigitalClock() {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [visible, setVisible] = useState<boolean>(false); // Clock visibility for glitch
   const [randomOpacity, setRandomOpacity] = useState<number>(0.2); // Random opacity for glitches
 
@@ -15,19 +16,6 @@ export default function BoxedDigitalClock() {
   ], []);
 
   useSuspenseFontLoader(fontConfigs);
-
-  // -------------------------------
-  // Update clock every second
-  // -------------------------------
-  useEffect(() => {
-    let frameId: number;
-    const tick = () => {
-      setTime(new Date());
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
 
   // -------------------------------
   // Random glitch in/out

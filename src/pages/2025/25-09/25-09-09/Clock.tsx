@@ -1,4 +1,5 @@
 import React, { useEffect, useState, memo } from 'react';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import font250909 from '@/assets/fonts/2025/25-09-09-van.ttf?url';
@@ -54,7 +55,7 @@ const Clock = memo(({ timeStr }) => (
 ));
 
 export default function ClockWall() {
-  const [timeStr, setTimeStr] = useState<any>('00:00:00.00');
+  const time = useSmoothClock();
   const [grid, setGrid] = useState<any>({ rows: 1, cols: 1 });
   const [ready, setReady] = useState<boolean>(false); // ✅ only show page when true
 
@@ -93,19 +94,13 @@ export default function ClockWall() {
     preloadAll();
   }, []);
 
-  // Update time
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      const pad = (num, length = 2) => String(num).padStart(length, '0');
-      const hours = pad(now.getHours());
-      const minutes = pad(now.getMinutes());
-      const seconds = pad(now.getSeconds());
-      const ms = pad(Math.floor(now.getMilliseconds() / 10));
-      setTimeStr(`${hours}:${minutes}:${seconds}.${ms}`);
-    }, 50);
-    return () => clearInterval(interval);
-  }, []);
+  // Calculate time string from smooth clock
+  const pad = (num: number, length = 2) => String(num).padStart(length, '0');
+  const hours = pad(time.getHours());
+  const minutes = pad(time.getMinutes());
+  const seconds = pad(time.getSeconds());
+  const ms = pad(Math.floor(time.getMilliseconds() / 10));
+  const timeStr = `${hours}:${minutes}:${seconds}.${ms}`;
 
   // Calculate grid
   useEffect(() => {

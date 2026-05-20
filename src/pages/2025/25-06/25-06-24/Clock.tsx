@@ -1,9 +1,10 @@
 import { useEffect, useState, useCallback } from 'react';
-import squFontUrl from '@/assets/fonts/2025/25-06-24-squ.ttf'; // Adjust path or use ?url for bundlers
+import { useClockTime } from '@/utils/hooks/useClockTime';
+import squFontUrl from '@/assets/fonts/2025/25-06-24-squ.ttf';
 import bgImageUrl from '@/assets/images/2025/25-06/25-06-24/tho.webp'; // Ensure this file exists
 
 const ThoughtBalloonClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [bgImageError, setBgImageError] = useState<boolean>(false);
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
@@ -20,9 +21,6 @@ const ThoughtBalloonClock: React.FC = () => {
         console.error('Failed to load font:', error);
         setFontLoaded(false);
       });
-
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
   }, []);
 
   const getFormattedTime = useCallback(() => {

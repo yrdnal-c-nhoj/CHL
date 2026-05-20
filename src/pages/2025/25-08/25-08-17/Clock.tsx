@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import customFontUrl from '@/assets/fonts/2025/25-08-17-scr.otf';
 import pageBg from '@/assets/images/2025/25-08/25-08-17/bg.webp'; // full-screen background image
@@ -19,12 +20,7 @@ const StickyNoteClock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const time = useClockTime();
 
   let hours = time.getHours();
   const ampm = hours >= 12 ? 'PM' : 'AM';

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 
 
 
@@ -10,7 +11,7 @@ import font20250926B from '@/assets/fonts/2025/25-09-26-not2.otf?url';
 
 export default function DualFontClock() {
   const [ready, setReady] = useState<boolean>(false);
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [isPhone, setIsPhone] = useState<any>(window.innerWidth < 768);
   const [fadeStarted, setFadeStarted] = useState<boolean>(false);
 
@@ -61,12 +62,10 @@ export default function DualFontClock() {
       }),
     ]).then(() => setReady(true));
 
-    const timer = setInterval(() => setTime(new Date()), 1000);
     const handleResize = () => setIsPhone(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
 
     return () => {
-      clearInterval(timer);
       window.removeEventListener('resize', handleResize);
     };
   }, []);

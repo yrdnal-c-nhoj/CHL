@@ -1,24 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import font20250924 from '@/assets/fonts/2025/25-09-24-cora.ttf?url';
 
 const HorizontalProportionalGradientClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useSmoothClock();
 
   // Load font via Suspense
   useSuspenseFontLoader([{ fontFamily: 'CustomFont', fontUrl: font20250924 }]);
-
-  // Clock tick animation
-  useEffect(() => {
-    let frame;
-    const tick = () => {
-      setTime(new Date());
-      frame = requestAnimationFrame(tick);
-    };
-
-    tick();
-    return () => cancelAnimationFrame(frame);
-  }, []);
 
   let hours = time.getHours() % 12;
   if (hours === 0) hours = 12;

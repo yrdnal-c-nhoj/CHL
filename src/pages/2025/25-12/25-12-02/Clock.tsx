@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import backgroundImage from '@/assets/images/2025/25-12/25-12-02/bg.webp';
 
 const ROTATION_DURATION = 240; // seconds for a full rotation (quarter speed)
@@ -8,7 +9,7 @@ const RotatingBackground: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [rotationAngle, setRotationAngle] = useState<number>(0);
   const [sideLength, setSideLength] = useState<number>(0);
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
 
   // Preload the background image and compute sizes
   useEffect(() => {
@@ -66,14 +67,6 @@ const RotatingBackground: React.FC = () => {
     // Start animation loop
     frameId = requestAnimationFrame(rotate);
     return () => cancelAnimationFrame(frameId);
-  }, []);
-
-  // Smooth time updates (for second hand)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 100); // Update every 100ms for smooth time display
-    return () => clearInterval(interval);
   }, []);
 
   const viewportContainerStyle = {

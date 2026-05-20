@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { useClockTime, formatTime as formatClockTime } from '@/utils/clockUtils';
+import { formatTime as formatClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import videoFile from '@/assets/images/2025/25-10/25-10-22/bg.mp4';
 import fallbackImg from '@/assets/images/2025/25-10/25-10-22/bg.webp';
@@ -78,7 +79,7 @@ const clockContainerStyle: React.CSSProperties = {
 
 const ClockWithVideo: React.FC = () => {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const time = useClockTime('ms');
+  const time = useMillisecondClock();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const fontConfigs = useMemo(() => [
@@ -103,12 +104,17 @@ const ClockWithVideo: React.FC = () => {
   }, []);
 
   const renderTimeDigits = () => {
-    const { hours, minutes, seconds, milliseconds } = formatClockTime(time, '24h');
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const hours = pad(time.getHours());
+    const minutes = pad(time.getMinutes());
+    const seconds = pad(time.getSeconds());
+    const milliseconds = pad(Math.floor(time.getMilliseconds() / 10));
+
     // Combine into a single string for easier mapping
-    const fullTimeStr = `${hours}${minutes}${seconds}${milliseconds || '00'}`;
+    const fullTimeStr = `${hours}${minutes}${seconds}${milliseconds}`;
 
     return (
-      <time dateTime={`${hours}:${minutes}:${seconds}`}>
+      <time dateTime={formatClockTime(time, '24h')}>
         {fullTimeStr.split('').map((char, idx) => (
           <span key={idx} className="clock-digit">
             {char}

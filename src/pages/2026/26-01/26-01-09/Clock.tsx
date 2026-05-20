@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 // Explicit module-based imports for the background
 import gifOne from '@/assets/images/2026/26-01/26-01-12/tic.webp';
@@ -18,14 +18,11 @@ const fontConfigs: FontConfig[] = [
 
 const BackgroundGrid = ({ children }) => {
   const [isBackgroundLoaded, setIsBackgroundLoaded] = useState<boolean>(false);
-  const [isClient, setIsClient] = useState<boolean>(false);
 
   // Use standardized font loader
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    setIsClient(true);
-
     // Preload all background images
     const images = [gifOne, gifTwo, gifThree, gifFour];
     const imagePromises = images.map((src) => {
@@ -159,17 +156,15 @@ const BackgroundGrid = ({ children }) => {
 };
 
 export default function TicTacToeClock() {
-  const [time, setTime] = useState(() => new Date());
-  const [isClient, setIsClient] = useState<boolean>(false);
+  const time = useClockTime();
 
   // Font is loaded by useSuspenseFontLoader in BackgroundGrid component
   
   const fontFamily = 'CustomClockFont, monospace';
-  const formatTime = useCallback((date) => {
+  const formatTime = useCallback((date: Date) => {
     const hours = date.getHours();
-    const minutes = date.getHours();
+    const minutes = date.getMinutes();
     const seconds = date.getSeconds();
-    const ms = date.getMilliseconds();
     const ampm = hours >= 12 ? 'PM' : 'AM';
     const displayHours = hours % 12 || 12;
 
@@ -180,43 +175,13 @@ export default function TicTacToeClock() {
       m2: minutes % 10,
       s1: Math.floor(seconds / 10),
       s2: seconds % 10,
-      ms1: Math.floor((ms % 100) / 10),
-      ampm: ampm,
-    };
-  }, []);
-
-  const [displayTime, setDisplayTime] = useState(() => formatTime(new Date()));
-
-  // Set up animation frame
-  useEffect(() => {
-    setIsClient(true);
-
-    // Use requestAnimationFrame for smoother updates
-    let animationFrameId;
-    let lastUpdate = 0;
-
-    const updateTime = (timestamp) => {
-      if (!lastUpdate || timestamp - lastUpdate >= 16) {
-        // ~60fps
-        setTime(new Date());
-        lastUpdate = timestamp;
-      }
-      animationFrameId = setInterval(() => setTime(new Date()), 100);
-    };
-
-    animationFrameId = setInterval(() => setTime(new Date()), 100);
-
-    return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
+      ms1: 0, // Milliseconds not available with useClockTime
+      ampm,
     };
   }, []);
 
   // Update display time when time changes
-  useEffect(() => {
-    setDisplayTime(formatTime(time));
-  }, [time, formatTime]);
+  const displayTime = formatTime(time);
 
   const clockContainerStyle = {
     width: '100%',
@@ -224,7 +189,7 @@ export default function TicTacToeClock() {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    opacity: isClient ? 1 : 0,
+    opacity: 1,
     transition: 'opacity 0.3s ease-in-out',
     fontFamily: fontFamily,
     position: 'relative',
@@ -281,21 +246,6 @@ export default function TicTacToeClock() {
     ],
     [displayTime],
   );
-
-  // Only render on the client to prevent hydration mismatches
-  if (!isClient) {
-    return (
-      <div
-        style={{
-          width: '100%',
-          height: '100vh',
-          backgroundColor: '#000',
-          position: 'relative',
-          zIndex: 1,
-        }}
-      />
-    );
-  }
 
   return (
     <BackgroundGrid>

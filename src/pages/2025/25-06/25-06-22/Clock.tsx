@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 
 const widthVW = 1; // abstract width unit for SVG
 const heightVH = 6; // abstract height unit for SVG
@@ -54,12 +54,7 @@ function DigitSVG({ digit }) {
 }
 
 export default function ParallelLineClock() {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+  const time = useClockTime();
 
   let h = time.getHours() % 12 || 12;
   const m = time.getMinutes().toString().padStart(2, '0');

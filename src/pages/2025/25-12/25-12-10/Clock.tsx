@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useMemo, memo, useRef } from 'react';
+import React, { useEffect, useMemo, memo, useRef } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
@@ -9,7 +10,13 @@ import portImg from '@/assets/images/2025/25-12/25-12-10/eagle.webp';
 import hourHandImg from '@/assets/images/2025/25-12/25-12-10/oa.gif';
 import minuteHandImg from '@/assets/images/2025/25-12/25-12-10/oak.gif';
 import secondHandImg from '@/assets/images/2025/25-12/25-12-10/nk.gif';
-const font251211 = '../../../assets/fonts/2025/25-12-10-jup.ttf';
+const font251211Url = new URL(
+  '@/assets/fonts/2025/25-12-10-jup.ttf',
+  import.meta.url,
+).href;
+
+
+
 
 // --- CONFIG ---
 const CONFIG = {
@@ -30,29 +37,7 @@ const CONFIG = {
 };
 
 // --- HOOKS ---
-function useTime() {
-  const [time, setTime] = useState(() => new Date());
-
-  useEffect(() => {
-    let animationFrameId;
-
-    const updateTime: React.FC = () => {
-      setTime(new Date());
-    };
-
-    // Start the interval loop
-    const intervalId = setInterval(updateTime, 50);
-
-    // Cleanup function to clear the interval when component unmounts
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
-
-  return time;
-}
-
-function useClockAngles(time) {
+function useClockAngles(time: Date) {
   return useMemo(() => {
     const ms = time.getMilliseconds();
     const s = time.getSeconds() + ms / 1000;
@@ -77,7 +62,7 @@ const GlobalStyles = memo(() => (
   <style>{`
     @font-face {
       font-family: 'CustomFont251211';
-      src: url(${font251211}) format('truetype');
+      src: url(${font251211Url}) format('truetype');
       font-display: swap;
     }
     @keyframes scrollUp {
@@ -169,7 +154,7 @@ const TiledBackground = memo(() => {
 });
 
 // --- NUMERAL ---
-const ClockNumeral = memo(({ text, x, y }) => (
+const ClockNumeral = memo(({ text, x, y }: { text: string; x: number; y: number }) => (
   <div
     style={{
       position: 'absolute',
@@ -189,7 +174,7 @@ const ClockNumeral = memo(({ text, x, y }) => (
 ));
 
 // --- CLOCK HAND ---
-const ClockHand = memo(({ img, width, max, rotation }) => (
+const ClockHand = memo(({ img, width, max, rotation }: { img: string; width: string; max: string; rotation: number }) => (
   <img
     decoding="async"
     loading="lazy"
@@ -214,7 +199,7 @@ const ClockHand = memo(({ img, width, max, rotation }) => (
 ));
 
 // --- CLOCK FACE ---
-const ClockFace = memo(({ angles }) => (
+const ClockFace = memo(({ angles }: { angles: { second: number; minute: number; hour: number } }) => (
   <div
     style={{
       position: 'fixed',
@@ -256,7 +241,7 @@ const ClockFace = memo(({ angles }) => (
 
 // --- MAIN COMPONENT ---
 export default function AnalogClock() {
-  const time = useTime();
+  const time = useClockTime();
   const angles = useClockAngles(time);
   const preloadedRef = useRef(false);
 

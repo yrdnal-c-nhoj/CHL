@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useSmoothClock } from '@/utils/hooks';
 
 // Import your 12 number images
 import num1 from '@/assets/images/2025/25-10/25-10-03/1.gif';
@@ -36,7 +37,7 @@ const numberImages = [
 ];
 
 const AnalogClockWithImages: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useSmoothClock();
   const [ready, setReady] = useState<boolean>(false);
 
   // Preload all images
@@ -51,14 +52,6 @@ const AnalogClockWithImages: React.FC = () => {
         if (loaded === allImages.length) setReady(true);
       };
     });
-  }, []);
-
-  // Smooth time updates with requestAnimationFrame
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 100); // Update every 100ms for smooth time display
-    return () => clearInterval(interval);
   }, []);
 
   if (!ready) {

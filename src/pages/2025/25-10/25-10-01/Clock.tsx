@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 // Import number images
@@ -23,14 +24,8 @@ import backgroundVideo from '@/assets/images/2025/25-10/25-10-01/small.mp4';
 import fallbackGif from '@/assets/images/2025/25-10/25-10-01/small.webp';
 
 export default function ImageAnalogClock() {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [rotation, setRotation] = useState<number>(0);
-
-  // Update time smoothly
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 16);
-    return () => clearInterval(interval);
-  }, []);
 
   // Rotate face slowly
   useEffect(() => {
@@ -61,7 +56,7 @@ export default function ImageAnalogClock() {
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
-  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+  const seconds = time.getSeconds();
 
   const hourAngle = (hours + minutes / 60) * 30;
   const minuteAngle = (minutes + seconds / 60) * 6;

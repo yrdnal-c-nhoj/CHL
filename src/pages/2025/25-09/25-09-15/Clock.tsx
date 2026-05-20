@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImageUrl from '@/assets/images/2025/25-09/25-09-15/plaid.jpg';
 import m250915font from '@/assets/fonts/2025/25-09-15-plaid.ttf?url';
@@ -9,9 +10,15 @@ const SkewFlatClock = ({
   verticalRepeats = 40,
   horizontalRepeats = 30,
 }) => {
-  const [time, setTime] = useState<any>('');
+  const time = useClockTime();
   const [hue, setHue] = useState<number>(0);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+  // Format time for display
+  let hours = time.getHours();
+  const minutes = time.getMinutes().toString().padStart(2, '0');
+  hours = hours % 12 || 12; // 12-hour format
+  const timeStr = `${hours}:${minutes}_`;
 
   // Load font and background image
   useEffect(() => {
@@ -43,25 +50,14 @@ const SkewFlatClock = ({
       });
   }, []);
 
-  // Update time and hue
+  // Update hue
   useEffect(() => {
-    const updateTime: React.FC = () => {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      hours = hours % 12 || 12; // 12-hour format
-      setTime(`${hours}:${minutes}_`);
-    };
-
-    updateTime();
-    const timeInterval = setInterval(updateTime, 60000);
     const hueInterval = setInterval(
       () => setHue((prev) => (prev + 1) % 360),
       70,
     );
 
     return () => {
-      clearInterval(timeInterval);
       clearInterval(hueInterval);
     };
   }, []);
@@ -92,7 +88,7 @@ const SkewFlatClock = ({
               fontFamily: 'MyCustomFont',
             }}
           >
-            {time}
+            {timeStr}
           </span>,
         );
       }

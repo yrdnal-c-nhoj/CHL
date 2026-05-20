@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 
@@ -15,7 +16,7 @@ import overlay3 from '@/assets/images/2025/25-09/25-09-17/crush2.gif';
 const pad = (n) => n.toString().padStart(2, '0');
 
 const DigitalClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [fadeIndex, setFadeIndex] = useState<number>(-1);
 
@@ -60,10 +61,7 @@ const DigitalClock: React.FC = () => {
   }, []);
 
   // Update time every second
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+  // Time is now provided by useClockTime hook
 
   // Fade logic for digits
   useEffect(() => {

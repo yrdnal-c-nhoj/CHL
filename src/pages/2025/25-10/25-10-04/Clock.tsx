@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSmoothClock } from '@/utils/hooks';
 import c251004font from '@/assets/fonts/2025/25-10-04-iss.ttf';
 import bgMp4 from '@/assets/images/2025/25-10/25-10-04/waterfall.mp4';
 import bgWebp from '@/assets/images/2025/25-10/25-10-04/waterfall.webp';
@@ -19,25 +20,12 @@ const ClockVideoBackground: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const [time, setTime] = useState(new Date());
+  const time = useSmoothClock();
   const [loaded, setLoaded] = useState<boolean>(false);
   const [fontLoaded, setFontLoaded] = useState<boolean>(fontsLoaded);
   const videoRef = useRef(null);
 
   // Font loading handled by useMultipleFontLoader
-
-  // Smooth clock updates using requestAnimationFrame
-  useEffect(() => {
-    let animationFrame;
-
-    const updateClock: React.FC = () => {
-      setTime(new Date());
-      animationFrame = requestAnimationFrame(updateClock);
-    };
-
-    animationFrame = requestAnimationFrame(updateClock);
-    return () => cancelAnimationFrame(animationFrame);
-  }, []);
 
   // Fade-in effect for video
   useEffect(() => {
