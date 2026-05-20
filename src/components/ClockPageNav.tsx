@@ -157,7 +157,7 @@ const ClockPageNav = ({
           <span className={styles.footerTitle}>
             {formatTitle(currentItem.title)}
           </span>
-          {currentItem.clockNumber && (
+          {currentItem.clockNumber !== undefined && currentItem.clockNumber !== null && (
             <span className={styles.footerNumber}>#{currentItem.clockNumber}</span>
           )}
         </div>
