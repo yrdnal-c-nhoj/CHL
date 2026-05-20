@@ -20,6 +20,17 @@ import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import './styles/globals.css';
 import App from './App.tsx';
+import { installConsoleFilters } from './utils/consoleFilters';
+
+
+// Reduce known third-party / browser-internal console noise in production.
+if (import.meta.env.PROD) {
+  try {
+    installConsoleFilters();
+  } catch {
+    // no-op
+  }
+}
 
 window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => {
   if (import.meta.env.DEV) {
@@ -28,6 +39,7 @@ window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => 
 });
 
 const initializeApp = () => {
+
   try {
     const rootElement = document.getElementById('root');
 
