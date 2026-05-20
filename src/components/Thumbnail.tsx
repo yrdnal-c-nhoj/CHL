@@ -65,6 +65,8 @@ const Thumbnail = ({ date, title, className, style }: ThumbnailProps) => {
 
   return (
     <div className={className} style={wrapperStyle}>
+      {/* onError is required for fallback when thumbnail files are missing */}
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <img
         src={imageUrl}
         alt={title}

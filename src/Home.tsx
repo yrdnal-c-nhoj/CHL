@@ -137,7 +137,7 @@ const Home: FC = () => {
 
   if (!fontsReady || loading) {
     return (
-      <div className={styles.loadingContainer}></div>
+      <div className={styles.loadingContainer} />
     );
   }
 

@@ -1,0 +1,29 @@
+# Font audit — 2026-05-20
+
+Total font files: 331
+Referenced in source (heuristic): 324
+Unused (heuristic): 7
+Non-standard names: 12
+
+## Unused fonts
+- src/assets/fonts/2025/25-05-20-fla.ttf
+- src/assets/fonts/2025/25-06-20-inde1.ttf
+- src/assets/fonts/2025/25-06-20-inde2.ttf
+- src/assets/fonts/2025/25-09-14-swi.ttf
+- src/assets/fonts/2026/26-03-01-270west.ttf
+- src/assets/fonts/2026/26-03-02-ripple.ttf
+- src/assets/fonts/2026/26-05-07-droplet.ttf
+
+## Non-standard names (expected: YY-MM-DD-name.ext)
+- src/assets/fonts/2026/26-03-31.ttf
+- src/assets/fonts/2026/26-04-23.otf
+- src/assets/fonts/2026/26-04-27.otf
+- src/assets/fonts/2026/26-05-10.ttf
+- src/assets/fonts/2026/26-05-12.ttf
+- src/assets/fonts/2026/26-05-13.otf
+- src/assets/fonts/2026/26-05-14.ttf
+- src/assets/fonts/2026/26-05-15.ttf
+- src/assets/fonts/2026/26-05-17.otf
+- src/assets/fonts/2026/26-05-18.ttf
+- src/assets/fonts/2026/26-05-19.ttf
+- src/assets/fonts/2026/26-05-20.otf

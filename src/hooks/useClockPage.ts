@@ -36,7 +36,7 @@ export function useClockPage(currentItem: { date: string } | null) {
 
     // Fail open: missing/broken assets should not prevent the clock from mounting.
     try {
-      await Promise.allSettled(preloadAssets(assets));
+      await preloadAssets(assets);
     } catch {
       // preloadAssets is already Promise-based; this catch is defensive.
     }

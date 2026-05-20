@@ -1,6 +1,9 @@
 # Scripts Directory
 
-This directory contains automation scripts for the BorrowedTime project, organized by functionality.
+> **Canonical workflow and registry policy:** [`docs/DEVELOPMENT.md`](../docs/DEVELOPMENT.md).  
+> Scripts do **not** add entries to `clockpages.json` — registration is always manual.
+
+Automation scripts for BorrowedTime, organized by functionality.
 
 ## Directory Structure
 
@@ -75,12 +78,14 @@ npm run capture:thumbnails  # Generate 500x500 thumbnails
 
 ### Development Workflow
 
-1. **Develop** your clock component
-2. **Test** locally (`npm run dev`)
-3. **Finalize** with validation and standard screenshot (`npm run finalize`)
-4. **Capture** social media images (`npm run capture:instagram`, `npm run capture:twitter`)
-5. **Commit** and push to GitHub
-6. **Create** pull request
+See [`docs/DEVELOPMENT.md`](../docs/DEVELOPMENT.md). Summary:
+
+1. `npm run clock:new` — scaffold files only
+2. **You** add the clock to `clockpages.json`
+3. `npm run dev` — develop and test
+4. `npm run finalize` — validate and capture standard screenshot
+5. Optional: `npm run capture:instagram` / `capture:twitter`
+6. PR with CI checks (`type-check`, `lint`, `test:run`, `build`)
 
 ### Asset Organization
 
@@ -112,7 +117,7 @@ All scripts are accessible via npm commands:
 
 ### Script-Specific Requirements
 - **Finalize Script**: Component must be in proper directory structure
-- **Capture Scripts**: Clocks must be registered in `clockpages.json`
+- **Capture Scripts**: Clock must already be in `clockpages.json` (manual registration)
 
 ## Troubleshooting
 
@@ -143,7 +148,7 @@ When adding new scripts:
 
 ## Related Documentation
 
-- **AGENTS.md**: Technical standards and coding guidelines
+- **[docs/DEVELOPMENT.md](../docs/DEVELOPMENT.md)**: Technical standards and workflow (canonical)
 - **CSS_ARCHITECTURE.md**: CSS organization and best practices
 - **Project README**: Overall project documentation
 

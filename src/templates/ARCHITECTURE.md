@@ -1,5 +1,7 @@
 # Clock Architecture
 
+> **Workflow (scaffold, manual registry, finalize, CI):** [`docs/DEVELOPMENT.md`](../../docs/DEVELOPMENT.md) — canonical.  
+> This file covers **component structure, hooks, and CSS patterns** only.
 
 ## Structure
 
@@ -95,6 +97,7 @@ export default Clock;
 6. **Path Aliases**: Use `@/utils/hooks` and `@/types/clock`
 7. **Cleanup**: Clear all timers/RAF on unmount
 8. **No Direct DOM**: Use `useRef` for canvas/animation references
+
 
 ## Font Loading Deep Dive
 
@@ -268,35 +271,6 @@ const Clock: React.FC = () => {
 
 ## Adding a New Clock
 
-### Option 1: Automated (Recommended)
+See **[`docs/DEVELOPMENT.md#new-clock-workflow`](../../docs/DEVELOPMENT.md#new-clock-workflow)** for the full checklist (scaffold → **manual** `clockpages.json` → finalize → CI).
 
-```bash
-npm run clock:new
-```
-
-This creates:
-- `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx` (from MasterTemplate)
-- `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.module.css`
-
-### Option 2: Manual
-
-1. Create `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx` using BaseClock as template
-2. Create `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.module.css`
-3. Add assets to `src/assets/images/YY-MM/YY-MM-DD/`
-4. Add fonts to `src/assets/fonts/YYYY/`
-5. Add entry to `src/context/clockpages.json`:
-
-```json
-{
-  "clocks": [
-    {
-      "date": "26-04-30",
-      "title": "My Clock Title",
-      "path": "src/pages/2026/26-04/26-04-30/Clock.tsx",
-      "tags": ["minimal", "typography"]
-    }
-  ]
-}
-```
-
-6. Verify with `npm run build` and `npm run type-check`
+After scaffolding, implement using the patterns in this file (`BaseClock`, hooks, CSS modules, asset exports).

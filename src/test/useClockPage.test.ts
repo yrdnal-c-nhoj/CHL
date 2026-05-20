@@ -26,7 +26,9 @@ describe('useClockPage', () => {
   });
 
   it('should return null component when item is undefined', () => {
-    const { result } = renderHook(() => useClockPage(undefined));
+    const { result } = renderHook(() =>
+      useClockPage(undefined as unknown as { date: string } | null),
+    );
 
     expect(result.current.ClockComponent).toBeNull();
     expect(result.current.isReady).toBe(false);
@@ -109,7 +111,7 @@ describe('useClockPage', () => {
 
     await waitFor(() => {
       expect(result.current.error).not.toBeNull();
-      expect(result.current.error).toContain('No clock found');
+      expect(result.current.error).toContain('Clock lookup failed');
     });
   });
 

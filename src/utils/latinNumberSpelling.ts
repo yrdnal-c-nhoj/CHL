@@ -42,12 +42,14 @@ const spellNumber = (num: number): string => {
   ];
 
   if (num === 0) return 'NULLUS';
-  if (num < 10) return ones[num];
-  if (num < 20) return teens[num - 10];
+  if (num < 10) return ones[num] ?? num.toString();
+  if (num < 20) return teens[num - 10] ?? num.toString();
   if (num < 100) {
     const ten = Math.floor(num / 10);
     const one = num % 10;
-    return tens[ten] + (one > 0 ? ' ' + ones[one] : '');
+    const tensPart = tens[ten] ?? '';
+    const onesPart = one > 0 ? ` ${ones[one] ?? ''}`.trimEnd() : '';
+    return (tensPart + onesPart).trim() || num.toString();
   }
   return num.toString();
 };

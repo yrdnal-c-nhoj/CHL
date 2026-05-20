@@ -15,11 +15,10 @@ import styles from './BaseClock.module.css';
  * 4. Standard hook for time management
  * 5. Semantic HTML with <time> element
  *
- * To create a new clock:
- * 1. Copy this file and the .module.css file
- * 2. Update asset imports
- * 3. Customize styles and layout
- * 4. Add entry to clockpages.json
+ * New clock workflow: docs/DEVELOPMENT.md
+ * 1. npm run clock:new (or copy this file + .module.css)
+ * 2. You manually add entry to src/context/clockpages.json
+ * 3. Customize assets and layout; npm run finalize
  */
 
 // =========================

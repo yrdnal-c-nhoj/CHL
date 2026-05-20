@@ -1,135 +1,119 @@
-# BorrowedTime Roadmap (Future Improvements)
+# BorrowedTime Roadmap
 
-This roadmap is derived from a survey of the current repo architecture and documentation. It prioritizes improvements across correctness, performance, developer experience, and operational robustness.
+Phased backlog from the [site survey](./docs/SITE_SURVEY.md) (2026-05-20).
 
-## Guiding Principles
-- Keep the **clock module contract** unambiguous.
-- Ensure **documentation is executable** (commands and checks in docs must reflect actual behavior).
-- Optimize perceived performance: reduce blank screens, prewarm assets, minimize expensive work.
-- Maintain standards: BTS/AGENTS should match the implementation.
+**Canonical workflow and policy:** [`docs/DEVELOPMENT.md`](./docs/DEVELOPMENT.md) — not this file.
 
 ---
 
-## Priority 0 — Documentation correctness (Immediate)
+## Phase 0 — Truth & tooling (1–2 days)
 
-1. **Unify the “preloadable assets” contract**
-   - Current gap: `useClockPage.ts` preloads with `new Image()` only.
-   - Decide one:
-     - (A) Update loader to support images + video + audio.
-     - (B) Restrict BTS/template `assets` exports to image-like assets only.
-   - Update docs accordingly.
-   - Verification:
-     - A clock exporting mp4 in `assets` should not regress loading UX.
+**Goal:** Every documented command works; CI reflects real quality bar.
 
-2. **Unify font policy across docs**
-   - Templates emphasize WOFF2-only; AGENTS/README hint broader support.
-   - Choose canonical rules:
-     - allowed formats
-     - naming convention
-     - expected hosting/public path
-   - Verification:
-     - finalize + build + a sample clock with each allowed font format.
+- [x] Restore `npm run clock:new` (scaffold only — **manual** `clockpages.json` registration).
+- [x] Add CI steps: `npm run type-check`, `npm run test:run`.
+- [x] Fix ESLint flat-config (`@typescript-eslint` plugin registration).
+- [x] Core `type-check` via `tsconfig.ci.json` (excludes `src/pages/**` archive).
+- [ ] Run `npm run audit:fonts` and `npm run audit:images`; gitignore or commit report artifacts.
+- [ ] **Manual only:** Register unlisted clocks in `clockpages.json` when you choose (never automated).
 
-3. **Clarify typing/BTS around `any`**
-   - `ClockItem` includes `[key: string]: any`.
-   - Either remove index signature or document the allowed extension fields.
-   - Verification:
-     - `npm run type-check` stays green.
-
-4. **Remove/label legacy loader ambiguity**
-   - There is a second `useClockPage.ts` under `src/pages/2025/.../useClockPage.ts`.
-   - Ensure docs state which loader powers the route.
+**Verify:** `npm ci && npm run lint && npm run type-check && npm run test:run && npm run build`
 
 ---
 
-## Priority 1 — Performance and reliability
+## Phase 1 — Asset hygiene (1–2 weeks)
 
-1. **Upgrade asset preloader to support multiple asset types**
-   - Extend `useClockPage.ts` to preload:
-     - images (Image)
-     - videos (HTMLVideoElement preload metadata)
-     - audio (HTMLAudioElement)
-   - Keep “fail open” behavior (missing assets should not crash the page).
-   - Verification:
-     - clock module with `assets = [videoUrl]` should reduce first-frame delays.
+**Goal:** Smaller repo, faster clones, predictable naming.
 
-2. **Reduce overlay/ready flicker edge-cases**
-   - Current transitions use RAF + a short `setTimeout` buffer.
-   - Add instrumentation (optional) to measure:
-     - import duration
-     - preload duration
-     - first paint
-   - Verification:
-     - compare before/after metrics for 5–10 representative clocks.
+### Delete (after audit review)
 
-3. **Improve thumbnail/mapping robustness**
-   - `thumbnailMap` maps filenames by regex from filename prefix.
-   - Ensure naming rules are enforced by finalize.
-   - Verification:
-     - finalize fails or fixes if thumbnail naming doesn’t match.
+- [ ] Remove **7 unused fonts** listed in `unused-fonts-report.txt`.
+- [ ] Remove **unused images** in batches from `unused-images-only-report.txt` (start with oldest months).
+- [ ] Remove misplaced `src/assets/images/**/{x.jsx,MedievalSVG.jsx}` or relocate to `src/components/`.
+
+### Rename (do not delete)
+
+- [ ] Fix **12 non-standard font filenames** → `YY-MM-DD-name.ext` (`non-standard-fonts.txt`).
+
+### Optimize (keep files, change format)
+
+- [ ] Convert legacy JPG/PNG/GIF → WebP (`npm run optimize:images`), update imports per month.
+- [ ] Track progress: target **0 non-WebP** for newly touched clocks.
+
+**Verify:** Re-run audits; repo size trend down; sample clocks load correctly in `npm run preview`.
 
 ---
 
-## Priority 2 — Developer experience (DX)
+## Phase 2 — Clock standards migration (ongoing)
 
-1. **Make “Clock Module Contract” a single canonical doc**
-   - Include:
-     - required exports
-     - accepted asset formats/types for preloading
-     - font loading contract (Suspense requirement)
-     - HTML semantics requirements
-   - Verification:
-     - new clocks created from template pass finalize.
+**Goal:** BTS time and font rules applied consistently.
 
-2. **Expose a “contract lint” mode in finalize**
-   - Add a `--contract-only` flag to check module exports and patterns without screenshot capture.
-   - Useful for CI speed.
-   - Verification:
-     - CI runs contract checks quickly.
+- [ ] Migrate **137** clocks from raw `setInterval` → `useClockTime` / `useSmoothClock` (prioritize 2026 pages).
+- [ ] New/edited clocks: `.tsx` only, `useSuspenseFontLoader`, CSS Modules, `<time dateTime>`.
+- [ ] Extend `npm run finalize` with `--contract-only` for CI (exports, hooks, asset naming).
 
-3. **Add “template conformance” tests**
-   - Unit tests or snapshot tests for:
-     - font loader usage
-     - time hook usage
-     - asset export presence
+**Verify:** `rg setInterval src/pages` trends to zero; finalize passes on template + 3 representative clocks.
 
 ---
 
-## Priority 3 — Quality gates and observability
+## Phase 3 — Performance & mobile (2–3 weeks)
 
-1. **Add lightweight performance budgets per clock**
-   - Use bundle analyzer output and enforce thresholds.
-   - Verification:
-     - PRs fail when thresholds are exceeded.
+**Goal:** Meet AGENTS performance budgets; fix known mobile regressions.
 
-2. **Lighthouse CI + visual regression (where feasible)**
-   - README mentions Lighthouse CI and visual regression as goals.
-   - Implement a minimal baseline suite:
-     - route `/list`
-     - one representative clock page for each major type (analog/digital/hybrid)
-   - Verification:
-     - establish golden images.
+- [ ] Per-clock bundle check via `npm run perf:analyze` for Three.js / Pixi / heavy GSAP clocks.
+- [ ] Lazy-load heavy libs only on routes that need them (audit eager imports).
+- [ ] Mobile: fix blank routes and bottom nav clipping (see survey + prior mobile transcript).
+- [ ] Add Playwright smoke: home, `/list`, one analog + one WebGL clock, mobile viewport.
 
-3. **Add runtime error reporting (non-blocking)**
-   - Current ErrorBoundary logs to console.
-   - Consider capturing errors via a reporting endpoint.
-   - Verification:
-     - test error boundary triggers and event emission.
+**Verify:** Lighthouse mobile ≥ 90 on `/` and one representative clock; nav visible on iOS Chrome.
 
 ---
 
-## Proposed Sequence (Practical)
-1. Fix docs that contradict code (preloading contract, font policy, any/type policy).
-2. Decide preloader behavior and update code + docs together.
-3. Add contract checks and faster finalize mode.
-4. Add performance instrumentation and budgets.
-5. Add Lighthouse/visual regression.
+## Phase 4 — State-of-the-art quality gates (later)
+
+**Goal:** Prevent regressions automatically.
+
+- [ ] Unify preload contract (images vs video/audio) in `useClockPage` + docs.
+- [ ] Lighthouse CI workflow (baseline scores stored in repo).
+- [ ] Optional visual regression on `/list` + 2 clock routes.
+- [ ] Optional client error reporting from `ErrorBoundary`.
+- [ ] PWA: only if product requires offline—add manifest + SW or remove claims from docs.
 
 ---
 
-## Deliverables Checklist
-- [ ] Updated docs: `README.md`, `CSS_ARCHITECTURE.md`, `src/templates/ARCHITECTURE.md`, scripts READMEs
-- [ ] New canonical “Clock Module Contract” section
-- [ ] `ROADMAP.md` maintained for future updates
-- [ ] (Optional) CI job(s) for lighthouse + regression tests
+## Phase 5 — Documentation & DX (continuous)
 
+- [ ] Single **Clock Module Contract** doc (link from README, `ARCHITECTURE.md`, `finalize` README).
+- [ ] Keep `docs/SITE_SURVEY.md` updated quarterly or after major refactors.
+- [ ] Script README under `scripts/` lists all runnable npm scripts truthfully.
+
+---
+
+## Quick reference — npm workflows
+
+```bash
+npm run dev
+npm run clock:new             # scaffold only (manual registry)
+npm run finalize              # validate + capture thumbnails
+npm run audit:fonts
+npm run audit:images
+npm run type-check && npm run lint && npm run test:run && npm run build
+```
+
+Full command reference: [`docs/DEVELOPMENT.md`](./docs/DEVELOPMENT.md).
+
+---
+
+## Deliverables checklist
+
+- [x] `docs/SITE_SURVEY.md` — evaluation snapshot
+- [x] `ROADMAP.md` — this file
+- [x] `scripts/audit-fonts.mjs`, `scripts/audit-images.mjs`
+- [x] CI: type-check + tests
+- [ ] Registry parity for 13 clocks
+- [ ] Asset deletion PRs (fonts → images)
+- [ ] `setInterval` migration tracking issue/label
+
+---
+
+*See also: [docs/DEVELOPMENT.md](./docs/DEVELOPMENT.md), [src/templates/ARCHITECTURE.md](./src/templates/ARCHITECTURE.md)*

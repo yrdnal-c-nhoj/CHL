@@ -18,7 +18,10 @@ export default tseslint.config(
       'babel.config.js',
       '*.min.js',
       'src/assets/images/**',
-      'src/test/**'
+      'src/pages/**',
+      'src/templates/**',
+      'src/test/**',
+      'src/**/*.jsx'
     ],
   },
 
@@ -179,6 +182,9 @@ export default tseslint.config(
   // TypeScript-specific overrides
   {
     files: ['**/*.{ts,tsx}'],
+    plugins: {
+      '@typescript-eslint': tseslint.plugin,
+    },
     rules: {
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-empty-function': 'warn',
@@ -359,21 +365,6 @@ export default tseslint.config(
       'react/jsx-curly-spacing': 'off',
       'react/jsx-space-before-closing': 'off',
       'react/jsx-closing-tag-location': 'off',
-    },
-  },
-
-  // Disable unused parameter warnings for error handling
-  {
-    files: ['**/*.{js,mjs,cjs,jsx,ts,tsx}'],
-    rules: {
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { 
-          argsIgnorePattern: '^_.*$', 
-          varsIgnorePattern: '^_.*$',
-          caughtErrorsIgnorePattern: '^_.*$'
-        },
-      ],
     },
   },
 
