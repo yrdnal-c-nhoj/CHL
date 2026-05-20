@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import font_06_09_2025 from '@/assets/fonts/2025/25-09-06-boom.ttf';
 import bgImage from '@/assets/images/2025/25-09/25-09-06/boo.jpg';
@@ -21,16 +21,7 @@ const AnalogClock: React.FC = () => {
     }
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-
-  const [time, setTime] = useState(new Date());
-
-  // Font loading handled by useMultipleFontLoader
-
-  // Update clock every second
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+  const time = useClockTime();
 
   const clockSize = 50; // in vh
   const radius = clockSize / 2;

@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/2025/25-08/25-08-28/gob.jpg';
 import clockFontFile from '@/assets/fonts/2025/25-08-28-gob.ttf';
 
 export default function DigitalClock() {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -18,11 +19,6 @@ export default function DigitalClock() {
     }
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   const formatTime = (date) => {
     const h = date.getHours().toString().padStart(2, '0');

@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundImg from '@/assets/images/2025/25-11/25-11-29/squ.webp';
 import fontUrl_20251128 from '@/assets/fonts/2025/25-11-29-roc.ttf?url';
 
 export default function RococoDigitalClock() {
-  const [now, setNow] = useState(new Date());
+  const now = useClockTime();
   const [morph, setMorph] = useState<number>(0);
   const [isVertical, setIsVertical] = useState<boolean>(false);
 
@@ -16,17 +17,14 @@ export default function RococoDigitalClock() {
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    // Set up time and morph intervals
-    const timeInterval = setInterval(() => setNow(new Date()), 1000);
+    // Set up morph interval
     const morphInterval = setInterval(() => {
       setMorph((m) => m + 1);
-      setNow(new Date());
     }, 5000);
     setMorph(1);
 
     // Cleanup
     return () => {
-      clearInterval(timeInterval);
       clearInterval(morphInterval);
     };
   }, []);

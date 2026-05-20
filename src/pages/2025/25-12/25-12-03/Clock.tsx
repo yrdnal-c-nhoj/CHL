@@ -84,11 +84,7 @@ const PuppyClockComponent: React.FC = () => {
 
       {/* TIME OVERLAY */}
       <time dateTime={time.toISOString()} className={styles.clock}>
-        {(() => {
-          const t = formatTime(time, '12h');
-          // Ensure we render a string, not an object, to prevent production crashes
-          return `${t.hours}:${t.minutes}:${t.seconds}`;
-        })()}
+        {formatTime(time, '12h')}
       </time>
     </main>
   );

@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import bg1 from '@/assets/images/2025/25-11/25-11-17/mars2.webp';
 import bg2 from '@/assets/images/2025/25-11/25-11-17/mars1.gif';
 import bg3 from '@/assets/images/2025/25-11/25-11-17/mars1.gif';
@@ -15,9 +16,8 @@ export const fontConfigs = [
 ];
 
 export default function MarsDigitalClock() {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-  const rafRef = useRef(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -43,26 +43,14 @@ export default function MarsDigitalClock() {
     };
   }, []);
 
-  useEffect(() => {
-    let mounted = true;
-    const loop: React.FC = () => {
-      if (!mounted) return;
-      setTime(new Date());
-      rafRef.current = setInterval(() => setTime(new Date()), 100);
-    };
-    rafRef.current = setInterval(() => setTime(new Date()), 100);
-    return () => {
-      mounted = false;
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, []);
+  // Time is now provided by useClockTime hook
 
   const two = (n) => String(n).padStart(2, '0');
 
   const hoursStr = two(time.getHours());
   const minutesStr = two(time.getMinutes());
   const secondsStr = two(time.getSeconds());
-  const msStr = two(Math.floor(time.getMilliseconds() / 10));
+  const msStr = '00'; // Milliseconds not available with useClockTime
 
   const DigitBox = ({ children }) => (
     <div className="digitBox" style={styles.digitBox}>

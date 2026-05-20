@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader'; // This should be useMultipleFontLoader
+import React, { useMemo } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/2025/25-12/25-12-13/roc.webp';
 import fontFile from '@/assets/fonts/2025/25-12-13-cherub.ttf?url';
 import type { FontConfig } from '@/types/clock';
@@ -14,14 +15,9 @@ const fontConfigs: FontConfig[] = [
 ];
 
 export default function RococoClock() {
-  const [now, setNow] = useState(new Date());
+  const now = useClockTime();
   
   useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   // Graceful configuration
   const digitConfigs = useMemo(() => {

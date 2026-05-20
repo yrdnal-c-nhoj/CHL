@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import font_2025_11_21 from '@/assets/fonts/2025/25-11-18-cat.ttf?url';
 import bgImg from '@/assets/images/2025/25-11/25-11-18/eyes.webp';
 export { bgImg }; // Export for preloading pipeline
@@ -9,11 +9,16 @@ import type { FontConfig } from '@/types/clock';
 
 export default function RotatedClockGrid() {
   // Using the standardized BTS hook
-  const time = useClockTime('seconds');
-  const { hours, minutes, seconds } = formatTime(time, '24h');
+  const time = useClockTime(); // useClockTime returns a Date object
+  const timeStr = formatTime(time, '24h') || '00:00:00';
+  // Ensure each part is a two-digit string, even if split returns fewer parts
+  const [h = '00', m = '00', s = '00'] = timeStr.split(':');
+  const hours = h.padStart(2, '0');
+  const minutes = m.padStart(2, '0');
+  const seconds = s.padStart(2, '0');
 
   const slots = [
-    hours[0],
+    hours[0], // Guaranteed to exist now
     hours[1],
     minutes[0],
     minutes[1],
@@ -70,10 +75,10 @@ export default function RotatedClockGrid() {
   );
 
   // Regenerate colors when the seconds value changes.
-  // We memoize the regeneration logic to stay in sync with the ClockTime interface.
-  useMemo(() => {
+  // We use useEffect for side effects like updating state based on props/time.
+  useEffect(() => {
     setDigitColors(Array.from({ length: totalCells }, () => randIndex()));
-  }, [seconds]);
+  }, [seconds, totalCells]);
 
   const rowsNeeded = Math.ceil(100 / (digitSize + gap)) + 4 + extraTop;
   const clocksPerRow = Math.ceil(100 / ((digitSize + gap) * 3)) + 4 + extraLeft;

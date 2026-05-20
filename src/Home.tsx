@@ -100,7 +100,7 @@ const Home: FC = () => {
   }, [items]);
 
   const formatMonthName = (monthKey: string): string => {
-    const [yy, mm] = monthKey.split('-');
+    const [yy, mm] = (monthKey || '').split('-');
     const monthNames = [
       'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
       'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
@@ -115,7 +115,7 @@ const Home: FC = () => {
     
     sortedItems.forEach(item => {
       if (item.date) {
-        const [yy, mm] = item.date.split('-');
+        const [yy, mm] = (item.date || '').split('-');
         const monthKey = `${yy}-${mm}`;
         if (!groups[monthKey]) {
           groups[monthKey] = [];

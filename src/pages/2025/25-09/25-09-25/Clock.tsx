@@ -142,7 +142,7 @@ const UnixEpochClock: React.FC = () => {
             zIndex: 10,
           }}
         >
-          {timestamp.split('').map((digit, idx) => (
+          {(timestamp || '').split('').map((digit, idx) => (
             <div
               key={idx}
               style={{

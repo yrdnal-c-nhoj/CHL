@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 // Images
@@ -25,13 +26,8 @@ import minuteHandImg from '@/assets/images/2025/25-06/25-06-02/min.png';
 import secondHandImg from '@/assets/images/2025/25-06/25-06-02/min.png';
 
 export default function AnalogImageClock() {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [gradientShift, setGradientShift] = useState<number>(0); // for gradient animation
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   useEffect(() => {
     const anim = setInterval(() => {

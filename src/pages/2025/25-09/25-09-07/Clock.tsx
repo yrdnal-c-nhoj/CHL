@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/2025/25-09/25-09-07/wall.jpg'; // local background image
 import f250907 from '@/assets/fonts/2025/25-09-07-wall.ttf'; // local font file
@@ -18,13 +19,7 @@ export default function Clock() {
     }
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-
-  const [now, setNow] = useState(new Date());
-
-  useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+  const now = useClockTime();
 
   // Font loading handled by useMultipleFontLoader
 

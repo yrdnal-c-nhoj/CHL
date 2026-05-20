@@ -160,7 +160,7 @@ export default function DigitalClockVideo() {
 
   const renderBoxes = useCallback(
     (str) => {
-      return str.split('').map((c, i) => (
+      return (str || '').split('').map((c, i) => (
         <div key={i} style={boxStyle}>
           {c}
         </div>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -13,7 +14,7 @@ import centerImg from '@/assets/images/2025/25-12/25-12-06/walk.webp';
 import customFont_2025_1206 from '@/assets/fonts/2025/25-12-06-gir.otf?url';
 
 export default function AnalogClock() {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [viewport, setViewport] = useState<any>({
     width: typeof window !== 'undefined' ? window.innerWidth : 1200,
     height: typeof window !== 'undefined' ? window.innerHeight : 800,
@@ -54,16 +55,6 @@ export default function AnalogClock() {
     return () => {
       if (document.head.contains(style)) document.head.removeChild(style);
     };
-  }, []);
-
-  // Animation Loop
-  useEffect(() => {
-    let intervalId;
-    const tick: React.FC = () => {
-      setTime(new Date());
-    };
-    intervalId = setInterval(tick, 50);
-    return () => clearInterval(intervalId);
   }, []);
 
   // Time Calculations

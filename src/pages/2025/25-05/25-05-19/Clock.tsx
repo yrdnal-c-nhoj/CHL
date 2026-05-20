@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
 import antFontUrl from '@/assets/fonts/2025/25-05-19-Ant.ttf';
 import bg1 from '@/assets/images/2025/25-05/25-05-19/ants.gif';
 import bg2 from '@/assets/images/2025/25-05/25-05-19/ants1.gif';
@@ -18,15 +18,7 @@ const Clock: React.FC = () => {
     }
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-
-  const [time, setTime] = useState(new Date());
-
-  // Font loading handled by useMultipleFontLoader
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+  const time = useClockTime();
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();

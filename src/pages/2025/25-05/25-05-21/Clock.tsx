@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import background from '@/assets/images/2025/25-05/25-05-21/signals.jpg';
 import semFont from '@/assets/fonts/2025/25-05-21-sem.ttf';
@@ -16,8 +17,7 @@ const Clock: React.FC = () => {
     }
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const isMobile = window.innerWidth < 768;
 
   // Font loading handled by useMultipleFontLoader
@@ -35,9 +35,6 @@ const Clock: React.FC = () => {
           // ignore
         });
     }
-
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
   }, []);
 
   const getDigits = (value) => String(value).padStart(2, '0').split('');

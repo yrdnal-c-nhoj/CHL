@@ -1,22 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import iceFont from '@/assets/fonts/2025/25-12-15-ice.ttf?url'; // import font as module
 import BG_IMAGE_PATH from '@/assets/images/2025/25-12/25-12-15/forest.jpeg';
 
 const FONT_FAMILY = 'DigitalClock';
 
 export default function VerticalDigitalClock() {
-  const [now, setNow] = useState(new Date());
+  const now = useClockTime();
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-
-  // 1️⃣ Clock Timer
-  useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  // 2️⃣ Font loading
   useEffect(() => {
     // Inject the font-face
     const style = document.createElement('style');

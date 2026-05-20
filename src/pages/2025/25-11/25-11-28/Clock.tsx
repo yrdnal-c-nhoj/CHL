@@ -1,5 +1,6 @@
 // TimelineClock.jsx
 import React, { useEffect, useState } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import li251128font from '@/assets/fonts/2025/25-11-28-line.otf?url';
 import patternImg from '@/assets/images/2025/25-11/25-11-28/line.webp';
@@ -26,25 +27,14 @@ const fontStyles = `
 `;
 
 export default function TimelineClock() {
-  const [now, setNow] = useState(new Date());
+  const now = useClockTime();
   const [isVertical, setIsVertical] = useState<boolean>(false);
   const [flash, setFlash] = useState<boolean>(false);
   const [comet, setComet] = useState<number>(-100);
   
   useSuspenseFontLoader(fontConfigs);
 
-  // EXISTING: Clock update
-  useEffect(() => {
-    let frameId: number;
-    const tick = () => {
-      setNow(new Date());
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
-
-  // EXISTING: Orientation check
+  // Orientation check
   useEffect(() => {
     const check = () => setIsVertical(window.innerWidth < window.innerHeight);
     check();

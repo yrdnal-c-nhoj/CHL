@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useGlobalStyles, useKeyframes } from '@/utils/enhancedFontLoader';
 
 const DigitalClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useClockTime();
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   // Generate unique keyframe names
@@ -101,11 +102,6 @@ const DigitalClock: React.FC = () => {
       </div>
     );
   }
-
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   const formatTime = (date) => {
     let hours = date.getHours();

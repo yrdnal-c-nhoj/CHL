@@ -1,17 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 
 const UltraElaborateAnalogClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useSmoothClock();
   const [viewportSize, setViewportSize] = useState<any>({
     width: window.innerWidth,
     height: window.innerHeight,
   });
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 100);
-
     const handleResize: React.FC = () => {
       setViewportSize({
         width: window.innerWidth,
@@ -21,7 +18,6 @@ const UltraElaborateAnalogClock: React.FC = () => {
 
     window.addEventListener('resize', handleResize);
     return () => {
-      clearInterval(timer);
       window.removeEventListener('resize', handleResize);
     };
   }, []);
