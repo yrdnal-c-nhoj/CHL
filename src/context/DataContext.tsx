@@ -27,9 +27,10 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const response = await fetch('/registry.json');
-        if (!response.ok) throw new Error('Failed to load clock registry');
-        const data = await response.json();
+        const clockPages = await import('./clockpages.json');
+        const testClocks = await import('./testclocks.json');
+
+        const data = import.meta.env.MODE === 'test' ? testClocks.default : clockPages.default;
         setItems(data);
       } catch (err) {
         setError(err instanceof Error ? err : new Error('An error occurred loading data'));
