@@ -145,7 +145,7 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
                       {formatDate(item.date)}
                     </span>
                     <span>
-                      #{item.clockNumber}
+                      #{item.clockNumber ?? ''}
                     </span>
                   </div>
                   
