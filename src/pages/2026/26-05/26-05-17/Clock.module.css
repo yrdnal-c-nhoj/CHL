@@ -26,8 +26,8 @@
   align-items: center;
   font-family: sans-serif; /* Generic fallback while font loads */
   font-size: 24vw;
-  color: #aaa9a9;
-  text-shadow: 0.5px 0.5px 0px rgb(244, 8, 8);
+  color: #050404;
+  text-shadow: 2px 1px 0px rgb(243, 238, 238);
   line-height: 1;
   z-index: 10;
   opacity: 0.6;
