@@ -36,7 +36,7 @@ const loadGaScript = () => {
   window.dataLayer = window.dataLayer || [];
   window.gtag =
     window.gtag ||
-    function gtag(...args: any[]) {
+    function gtag(..._args: unknown[]) {
       window.dataLayer.push(arguments);
     };
 

@@ -464,7 +464,7 @@ export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
               await new Promise<void>((resolve, reject) => {
                 img.onload = () => resolve();
                 img.onerror = () => reject();
-                img.src = config.fallback;
+                img.src = config.fallback ?? '';
               });
               newState = 'fallback';
             }

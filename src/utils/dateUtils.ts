@@ -15,7 +15,10 @@ export const normalizeDate = (d: string): string =>
 export const isValidDate = (str: string | undefined): boolean => {
   if (!str || !DATE_REGEX.test(str)) return false;
   const parts = str.split('-');
-  const [yy, mm, dd] = parts.map(Number);
+  const yy = Number(parts[0]);
+  const mm = Number(parts[1]);
+  const dd = Number(parts[2]);
+  if (Number.isNaN(yy) || Number.isNaN(mm) || Number.isNaN(dd)) return false;
   // Assumes 20xx
   const date = new Date(2000 + yy, mm - 1, dd);
   return !isNaN(date.getTime());

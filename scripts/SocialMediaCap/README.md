@@ -1,5 +1,7 @@
 # Social Media Capture Scripts
 
+> **Registry:** Clocks must already be listed in `clockpages.json` (manual). See [`docs/DEVELOPMENT.md`](../../docs/DEVELOPMENT.md).
+
 ## Overview
 
 This folder contains scripts for capturing screenshots of clock components for social media platforms and documentation purposes.
@@ -170,7 +172,7 @@ The social media capture scripts work in conjunction with the component finaliza
 ## Requirements
 
 1. **Development Server**: Must be running on localhost:5173 or 5174
-2. **Registry**: Clocks must be registered in `src/context/clockpages.json`
+2. **Registry**: You must manually add clocks to `src/context/clockpages.json`
 3. **Dependencies**: Playwright for screenshot capture
 
 ## Example Output

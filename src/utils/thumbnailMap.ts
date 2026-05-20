@@ -14,8 +14,8 @@ Object.entries(thumbnailModules).forEach(([path, module]) => {
   if (filename) {
     // Extract date from filename (format: YY-MM-DD-title.webp)
     const dateMatch = filename.match(/^(\d{2}-\d{2}-\d{2})/);
-    if (dateMatch) {
-      const date = dateMatch[1];
+    const date = dateMatch?.[1];
+    if (date) {
       // Get the URL from the module (default export)
       const imageUrl = (module as { default: string }).default;
       if (imageUrl) {

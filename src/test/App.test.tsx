@@ -1,3 +1,4 @@
+import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
@@ -30,7 +31,7 @@ vi.mock('../Today.tsx', () => ({
 
 // Mock DataProvider
 vi.mock('../context/DataContext', () => ({
-  DataProvider: ({ children }) => children,
+  DataProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 // Mock analytics
@@ -40,8 +41,8 @@ vi.mock('../analytics', () => ({
 
 // Mock Helmet
 vi.mock('react-helmet-async', () => ({
-  Helmet: ({ children }) => children,
-  HelmetProvider: ({ children }) => children,
+  Helmet: ({ children }: { children: React.ReactNode }) => children,
+  HelmetProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 describe('App Routing', () => {

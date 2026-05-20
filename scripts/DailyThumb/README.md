@@ -1,5 +1,7 @@
 # Daily Square Capture
 
+> **Registry:** Manual entry in `clockpages.json` required. See [`docs/DEVELOPMENT.md`](../../docs/DEVELOPMENT.md).
+
 ## Quick Start - How to Capture Clocks
 
 ### **Today's Clock**
@@ -114,7 +116,7 @@ The daily square capture complements the existing thumbnail workflow:
 #### Requirements
 
 1. **Development Server**: Must be running on localhost:5173 or 5174
-2. **Clock Registration**: Clock must be registered in `clockpages.json`
+2. **Clock Registration**: You must manually add the clock to `clockpages.json` (see DEVELOPMENT.md)
 3. **Dependencies**: Playwright for screenshot capture
 
 #### Example Output

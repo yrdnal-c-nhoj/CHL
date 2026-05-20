@@ -23,155 +23,36 @@ Online digital art project by Cubist Heart Laboratories. [See it live](https://w
 - ESLint 9 + Prettier 3
 - Node 24.x LTS
 
+## Documentation
+
+**Single source of truth:** [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) — new clocks, manual registry, commands, CI, BTS.
+
+| Doc | Use for |
+|-----|---------|
+| [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) | Workflow, policy, scripts, quality gates |
+| [`src/templates/ARCHITECTURE.md`](src/templates/ARCHITECTURE.md) | Clock component patterns and hooks |
+| [`ROADMAP.md`](ROADMAP.md) | Planned future work |
+| [`docs/SITE_SURVEY.md`](docs/SITE_SURVEY.md) | Historical evaluation snapshot |
+
 ## Quick Start
-
-Follow the **First Time Right** workflow to ensure components meet technical standards:
-
-1. **Setup**: `npm ci`
-2. **Launch**: `npm run dev` (Available at http://localhost:5173)
-3. **Scaffold**: `npm run clock:new` (Scaffolds the dated directory and component)
-4. **Register**: Add the entry to `src/context/clockpages.json`
-5. **Quality Gate**: `npm run finalize` (Validates code, auto-fixes asset organization, and captures documentation thumbnails)
-
-*Note: Passing the finalization script is a strict requirement for all component submissions.*
-
-## Architecture
-
-Registry-Discovery pattern. Zero manual routing.
-
-1. Create clock: `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx`
-2. Register in `src/context/clockpages.json`
-3. Vite's `import.meta.glob` handles code-splitting
-
-```
-src/
-├── pages/YYYY/YY-MM/YY-MM-DD/    # Clock modules
-├── components/                   # Shared UI
-├── utils/hooks/                  # Time hooks
-├── assets/images/                # Imagery
-├── assets/fonts/YYYY/            # Typefaces
-├── context/clockpages.json      # Registry
-└── templates/                    # Starters
-```
-
-## BorrowedTime Standard (BTS)
-
-| Rule | Enforcement |
-|------|-------------|
-| Type Safety | `.tsx` only, no `any` |
-| Styles | `.module.css` for clocks, Tailwind for UI |
-| Markup | `<main>` containers, `<time datetime>` displays |
-| Time | `useClockTime` hook |
-| Fonts | `useSuspenseFontLoader` for FOUC prevention |
-| Styles | CSS Modules required (no global leaks) |
-| Cleanup | Clear timers/RAF on unmount |
-| DOM | `useRef` only, no `querySelector` |
-| Automation | Must pass `npm run finalize` before PR |
-
-## Development
 
 ```bash
 npm ci
-npm run dev          # http://localhost:5173
-npm run clock:new    # [Phase 1] Scaffold new component
-npm run finalize     # [Phase 2] The Quality Gate: Validate, Auto-fix, & Capture
+npm run dev    # http://localhost:5173
 ```
 
-## Scripts
-
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Dev server |
-| `npm run build` | Production build |
-| `npm run build:with-types` | Type-check + production build |
-| `npm run type-check` | TypeScript check |
-| `npm run lint` | ESLint |
-| `npm run format` | Prettier |
-| `npm run test` | Tests (watch) |
-| `npm run test:run` | Tests (CI) |
-| `npm run clock:new` | New clock from template |
-| `npm run audit:fonts` | Find unused fonts |
-| `npm run audit:images` | Find unused images |
-| `npm run standardize:fonts` | Auto-fix non-standard font names |
-| `npm run optimize:images` | Convert image assets to WebP |
-| `npm run perf:analyze` | Bundle analysis |
-
-## New Clock
-
-```bash
-npm run clock:new
-# Edit src/context/clockpages.json to register
-```
-
-Or manually:
-
-```bash
-mkdir -p src/pages/2026/26-05/26-05-01
-cp src/templates/BaseClock.tsx src/pages/2026/26-05/26-05-01/Clock.tsx
-touch src/pages/2026/26-05/26-05-01/Clock.module.css
-```
-
-## Testing
-
-```bash
-npm run test        # Watch mode
-npm run test:run    # CI mode
-npm run test:ui     # Browser UI
-```
-
-**Pre-commit:**
-```bash
-npm run type-check && npm run lint && npm run build
-```
-
-## Audit & Hygiene
-
-```bash
-# Asset audits
-npm run audit:images
-npm run audit:fonts
-
-# Naming normalization
-npm run standardize:fonts
-
-# Delivery checks
-npm run type-check
-npm run lint
-npm run build
-```
-
-Generated audit artifacts:
-- `unused-images-report.txt`
-- `unused-images-only-report.txt`
-- `unused-videos-report.txt`
-- `unused-fonts-report.txt`
-- `non-standard-fonts.txt`
-
-## Roadmap & Quality Goals
-
-For ongoing priorities and future improvements, see:
-- `ROADMAP.md`
-
-High-level goals (current)
-
-1. **Technical Excellence**: Tighten type safety and reduce reliance on `any` where feasible.
-2. **Asset Performance**: 100% migration of legacy imagery to optimized WebP formats.
-3. **Quality Automation**: Expand automated quality gates (Lighthouse CI + visual regression where practical).
-4. **Developer Experience**: Expand the `finalize` CLI to enforce the clock module contract more precisely.
+New clock (summary): `clock:new` → **you** edit `clockpages.json` → `finalize` → CI checks.  
+Full steps: [`docs/DEVELOPMENT.md#new-clock-workflow`](docs/DEVELOPMENT.md#new-clock-workflow).
 
 
 ## Deployment
 
-Main branch auto-deploys to Vercel.
+Main branch auto-deploys to Vercel. See [`docs/DEVELOPMENT.md#environment`](docs/DEVELOPMENT.md#environment) for env vars.
 
 ```bash
 npm run build
 npm run preview
 ```
-
-**Env vars:** `cp .env.example .env`
-
-- `VITE_SITE_URL` - Canonical URL
 
 ---
 

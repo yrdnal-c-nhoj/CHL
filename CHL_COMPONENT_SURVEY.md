@@ -1,7 +1,9 @@
 # CHL Component Survey (BorrowedTime)
 
+> **Legacy reference.** Operational policy and workflow live in **[`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)**. Clock implementation patterns: **[`src/templates/ARCHITECTURE.md`](src/templates/ARCHITECTURE.md)**. This file is retained for architectural deep-dive notes only.
+
 ## Scope
-This document surveys the current “CHL component” system in the BorrowedTime repo: routing, registry-driven discovery, clock page rendering, asset preloading, and the submission automation pipeline. It also highlights where documentation matches (or diverges from) current implementation.
+This document surveys the “CHL component” system: routing, registry-driven discovery, clock page rendering, asset preloading, and the submission automation pipeline.
 
 ---
 
@@ -154,7 +156,7 @@ Doc check:
 - `src/templates/ARCHITECTURE.md` states WOFF2-only font requirements and specific naming. The actual code supports `FontFace` with `fontUrl` and `FontFaceDescriptors`, and the file naming rules are documentation-level requirements.
 
 Mismatch to check:
-- `AGENTS.md` and README have slightly different font constraints (AGENTS mentions TTF/OTF/WOFF2 supported; templates emphasize WOFF2). This needs a single source of truth.
+- Font policy is now unified in [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) and ARCHITECTURE.md.
 
 ---
 

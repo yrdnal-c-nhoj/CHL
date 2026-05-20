@@ -1,5 +1,8 @@
 # AGENTS.md
 
+> **Canonical source of truth (committed):** [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md).  
+> This file is a Cursor-local shorthand (gitignored). Keep it aligned with DEVELOPMENT.md.
+
 Technical standards for BorrowedTime development.
 
 ## Architecture
@@ -9,10 +12,15 @@ Technical standards for BorrowedTime development.
 - Dynamic loading: `import.meta.glob` in `useClockPage.ts`
 
 ## Priority Focus (Current Sprint)
-1. **Asset Pruning**: Remove the 270 identified unused font files to reduce repo bloat.
-2. **Naming Compliance**: Fix the 33 non-standardized font filenames.
-3. **Logic Migration**: Refactor remaining `setInterval` clocks to `useClockTime()`.
-4. **Image Optimization**: Transition to Phase 4 (WebP automation).
+
+*Sprint backlog: `ROADMAP.md`. Historical metrics: `docs/SITE_SURVEY.md`.*
+
+1. **Registry parity:** Register 13 clock folders missing from `clockpages.json` (or remove orphans).
+2. **Asset hygiene:** Delete 7 unused fonts; review 149 heuristic-unused images; convert 648 legacy non-WebP images.
+3. **Naming compliance:** Rename 12 non-standard font filenames to `YY-MM-DD-name.ext`.
+4. **Logic migration:** Refactor ~137 clocks still using raw `setInterval` → `useClockTime()` / `useSmoothClock()`.
+5. **CI:** `type-check` + `test:run` in GitHub Actions (see DEVELOPMENT.md).
+6. **Tooling:** Use `npm run audit:fonts` / `audit:images`; `clock:new` scaffolds files only — registry is always manual.
 
 **Key Hooks**
 - `useClockTime()` - 1s updates from `@/utils/hooks`
@@ -24,8 +32,8 @@ Technical standards for BorrowedTime development.
 1. **Strict Typing**: `.tsx` only, no `any`
 2. **CSS Modules**: `.module.css` for clocks, Tailwind for UI
 3. **Semantic HTML**: `<time dateTime={...}>` for displays
-4.  **No Direct DOM**: Avoid `document.querySelector`. Use `useRef` for canvas/animations.
-5.  **Clean Up**: Always clear `setTimeout`, `setInterval`, and `requestAnimationFrame` on unmount.
+4. **No Direct DOM**: Avoid `document.querySelector`. Use `useRef` for canvas/animations.
+5. **Clean Up**: Always clear `setTimeout`, `setInterval`, and `requestAnimationFrame` on unmount.
 
 ## CLI Operations
 
@@ -52,15 +60,16 @@ Technical standards for BorrowedTime development.
 
 | Command | Purpose |
 |---------|---------|
-| `npm run clock:new` | Create clock from template |
+| `npm run clock:new` | Scaffold `Clock.tsx` + CSS only (**never** edits `clockpages.json`) |
+| Manual step | **You** add `{ path, date, title }` to `src/context/clockpages.json` |
+| `npm run finalize` | Validate assets and capture thumbnails |
 
 ### Asset Management
 
 | Command | Purpose |
 |---------|---------|
-| `npm run audit:fonts` | Find unused fonts |
-| `npm run audit:images` | Find unused images |
-| `npm run standardize:fonts` | Fix font names |
+| `npm run audit:fonts` | Unused + non-standard font reports |
+| `npm run audit:images` | Unused image reports |
 | `npm run optimize:images` | Convert to WebP |
 
 ### Performance
@@ -132,10 +141,11 @@ npm run build
 npm run perf:analyze  # Check deps
 ```
 
-**Fonts:**
+**Fonts / images:**
 ```bash
 npm run audit:fonts
-# Check paths match /fonts/YY-MM-DD-name.[ext]
+npm run audit:images
+# Review unused-*.txt and non-standard-fonts.txt at repo root
 ```
 
 ## Deployment Checklist
@@ -145,6 +155,12 @@ npm run audit:fonts
 - [ ] `npm run build` succeeds
 - [ ] Entry added to `clockpages.json`
 - [ ] Assets follow naming conventions
+
+## Documentation
+
+- **SSOT:** `docs/DEVELOPMENT.md`
+- Backlog: `ROADMAP.md`
+- Historical survey: `docs/SITE_SURVEY.md`
 
 ---
 Cubist Heart Laboratories
