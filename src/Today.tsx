@@ -149,7 +149,6 @@ const TodayClockPage = () => {
           prevItem={prevItem}
           nextItem={nextItem}
           currentItem={currentItem}
-          items={items}
           formatTitle={formatTitle}
           formatDate={formatDateSlashes}
         />
