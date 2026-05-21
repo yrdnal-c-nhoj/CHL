@@ -27,6 +27,5 @@ coverage/
 captures/
 screen-caps/
 
-# Internal documentation (not for GitHub)
-docs/CLOCK_MODULE_CONTRACT.md
-docs/SITE_SURVEY.md
+# Internal documentation
+# docs/ is NOT gitignored — docs/README.md serves as the developer docs index
