@@ -72,8 +72,9 @@ Use the same `YY-MM-DD` string for `path` and `date`. No script will do this for
 **3. Implement**
 
 - Follow patterns in [`src/templates/ARCHITECTURE.md`](../src/templates/ARCHITECTURE.md)
-- Images: `src/assets/images/YY-MM/YY-MM-DD/` (WebP: `YY-MM-DD-name.webp`)
-- Fonts: `src/assets/fonts/YYYY/` (`YY-MM-DD-name.ext`)
+- Images: src/assets/images/YYYY/YY-MM/YY-MM-DD/ (WebP: descriptive-name.webp)
+- Fonts: src/assets/fonts/YYYY/ (descriptive-name.ext)
+- Fonts: src/assets/fonts/YYYY/ (YY-MM-DD-name.ext)
 
 **4. Quality gate**
 
