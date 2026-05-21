@@ -139,7 +139,7 @@ Earlier sprint text cited **270 unused fonts**. A fresh heuristic scan finds **7
 ### 4. Clock logic migration
 
 - **137** clock files still reference `setInterval(`.
-- Migrate to `useClockTime()` (1s) or `useSmoothClock()` (RAF) per `src/templates/ARCHITECTURE.md`.
+- Migrate to `useClockTime()` (1s) or `useSmoothClock()` (RAF) per [`ARCHITECTURE.md`](./ARCHITECTURE.md).
 - Prioritize 2026 clocks and any clocks touched for bugs.
 
 ### 5. CI / quality
