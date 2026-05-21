@@ -61,11 +61,9 @@ npm run finalize -- path/to/Clock.tsx  # Specific component
 **Usage**:
 
 ```bash
-npm run capture:daily        # Standard documentation format
-npm run capture:instagram   # Instagram square (1080x1080)
-npm run capture:twitter     # Twitter 16:9 (1200x675)
-npm run capture:facebook    # Facebook 16:9 (1200x630)
-npm run capture:thumbnails  # Generate 500x500 thumbnails
+npm run capture:daily    # Capture today (1080x1350 PNG)
+npm run capture:range    # Capture specific date or range
+npm run capture:thumbs   # Generate 500x500 gallery thumbnails
 ```
 
 **Features**:

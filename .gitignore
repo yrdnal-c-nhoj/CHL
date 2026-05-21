@@ -27,3 +27,6 @@ unused-fonts-report.txt
 non-standard-fonts.txt
 unused-images-report.txt
 unused-images-only-report.txt
+
+# Screen captures (social media exports)
+captures/
