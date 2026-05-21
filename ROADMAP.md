@@ -91,18 +91,18 @@ Phased backlog from the [site survey](./docs/SITE_SURVEY.md) (2026-05-20).
 
 ---
 
-## Quick reference — npm workflows
+## Quick reference
+
+Commands are fully documented in [`docs/DEVELOPMENT.md`](./docs/DEVELOPMENT.md). Summary:
 
 ```bash
-npm run dev
-npm run clock:new             # scaffold only (manual registry)
-npm run finalize              # validate + capture thumbnails
-npm run audit:fonts
-npm run audit:images
-npm run type-check && npm run lint && npm run test:run && npm run build
+npm run dev                      # Dev server
+npm run clock:new                # Scaffold files (manual registry required)
+npm run finalize                 # Validate + capture thumbnail
+npm run audit:fonts              # Find unused/non-standard fonts
+npm run audit:images            # Find unused images
+npm run type-check && npm run lint && npm run test:run && npm run build  # PR gate
 ```
-
-Full command reference: [`docs/DEVELOPMENT.md`](./docs/DEVELOPMENT.md).
 
 ---
 
@@ -118,4 +118,4 @@ Full command reference: [`docs/DEVELOPMENT.md`](./docs/DEVELOPMENT.md).
 
 ---
 
-_See also: [docs/DEVELOPMENT.md](./docs/DEVELOPMENT.md), [src/templates/ARCHITECTURE.md](./src/templates/ARCHITECTURE.md)_
+_See also: [docs/DEVELOPMENT.md](./docs/DEVELOPMENT.md), [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)_

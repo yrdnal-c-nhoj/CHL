@@ -2,15 +2,15 @@
 
 **This is the single source of truth** for how to work in this repository. Other docs link here for workflow, registry policy, quality gates, and commands.
 
-| Document                                                            | Role                                           |
-| ------------------------------------------------------------------- | ---------------------------------------------- |
-| **This file**                                                       | Policy, workflow, commands, CI, registry rules |
-| [`README.md`](../README.md)                                         | Project intro, stack, links                    |
-| [`src/templates/ARCHITECTURE.md`](../src/templates/ARCHITECTURE.md) | Clock component patterns, hooks, CSS           |
-| [`ROADMAP.md`](../ROADMAP.md)                                       | Future phases and backlog only                 |
-| [`docs/SITE_SURVEY.md`](./SITE_SURVEY.md)                           | Historical evaluation snapshot (2026-05-20)    |
-| [`scripts/*/README.md`](../scripts/)                                | Script-specific flags and paths                |
-| `AGENTS.md` (gitignored)                                            | Cursor agent shorthand — must match this file  |
+| Document                                        | Role                                           |
+| ---------------------------------------------- | ---------------------------------------------- |
+| **This file**                                   | Policy, workflow, commands, CI, registry rules |
+| [`README.md`](../README.md)                     | Project intro, stack, links                    |
+| [`ARCHITECTURE.md`](./ARCHITECTURE.md)           | Clock component patterns, hooks, CSS           |
+| [`ROADMAP.md`](../ROADMAP.md)                   | Future phases and backlog only                 |
+| [`SITE_SURVEY.md`](./SITE_SURVEY.md)             | Historical evaluation snapshot (2026-05-20)    |
+| [`scripts/README.md`](../scripts/README.md)    | Script commands summary                        |
+| `AGENTS.md` (gitignored)                        | Cursor agent shorthand — must match this file  |
 
 ---
 
@@ -71,7 +71,7 @@ Use the same `YY-MM-DD` string for `path` and `date`. No script will do this for
 
 **3. Implement**
 
-- Follow patterns in [`src/templates/ARCHITECTURE.md`](../src/templates/ARCHITECTURE.md)
+- Follow patterns in [`ARCHITECTURE.md`](./ARCHITECTURE.md)
 - Images: src/assets/images/YYYY/YY-MM/YY-MM-DD/ (WebP: descriptive-name.webp)
 - Fonts: src/assets/fonts/YYYY/ (descriptive-name.ext)
 - Fonts: src/assets/fonts/YYYY/ (YY-MM-DD-name.ext)
@@ -114,7 +114,7 @@ cp src/templates/BaseClock.module.css src/pages/2026/26-05/26-05-01/Clock.module
 | Cleanup     | Clear `setTimeout`, `setInterval`, `requestAnimationFrame` on unmount      |
 | PR gate     | `npm run finalize` + CI checks below                                       |
 
-Detail and examples: [`src/templates/ARCHITECTURE.md`](../src/templates/ARCHITECTURE.md).
+Detail and examples: [`ARCHITECTURE.md`](./ARCHITECTURE.md).
 
 ---
 
@@ -219,9 +219,8 @@ Node version: **24.x** (see `package.json` `engines`).
 
 - **Future work:** [`ROADMAP.md`](../ROADMAP.md)
 - **2026-05-20 audit snapshot:** [`SITE_SURVEY.md`](./SITE_SURVEY.md) — metrics may be stale; policy is this file
-- **Component deep-dive (legacy):** [`CHL_COMPONENT_SURVEY.md`](../CHL_COMPONENT_SURVEY.md) — prefer this guide + ARCHITECTURE
-- **Finalize details:** [`scripts/UploadFinalize/README.md`](../scripts/UploadFinalize/README.md)
-- **Social captures:** [`scripts/SocialMediaCap/README.md`](../scripts/SocialMediaCap/README.md)
+- **Component deep-dive (legacy):** [`COMPONENT_SURVEY.md`](./COMPONENT_SURVEY.md) — prefer this guide + ARCHITECTURE
+- **Capture scripts:** `npm run capture:daily`, `npm run capture:range last-month` (social media thumbs, requires clock in `clockpages.json`)
 
 ---
 
