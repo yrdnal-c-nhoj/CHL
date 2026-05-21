@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useMemo, useCallback, FC } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import mobyFont from '@/assets/fonts/25fonts/25-04-03-moby.ttf?url';
@@ -52,7 +52,7 @@ const MobyDickClock: FC<MobyDickClockProps> = () => {
   });
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const currentTime = useClockTime();
 
   // Calculate new clock position
   const calculateNewPosition = useCallback((): ClockPosition => {
