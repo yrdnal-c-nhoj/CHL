@@ -10,25 +10,10 @@ const __dirname = path.dirname(__filename);
 const REGISTRY_PATH = path.resolve(__dirname, '../../src/context/clockpages.json');
 const SCREENSHOT_DIR = path.resolve(__dirname, '../../screen-caps');
 
-const PLATFORMS = {
-  instagram: {
-    width: 1080,
-    height: 1080,
-    label: 'Instagram Square',
-    quality: 90
-  },
-  twitter: {
-    width: 1200,
-    height: 675,
-    label: 'Twitter 16:9',
-    quality: 85
-  },
-  facebook: {
-    width: 1200,
-    height: 630,
-    label: 'Facebook 16:9',
-    quality: 85
-  }
+const CAPTURE_CONFIG = {
+  width: 1080,
+  height: 1350,
+  label: 'Daily Portrait PNG (4:5)'
 };
 
 function parseDateRange(dateRange: string): {
@@ -98,8 +83,7 @@ async function applyUIOptimizations(page: Page) {
 }
 
 async function captureClocks(
-  dateRange: string,
-  selectedPlatforms: (keyof typeof PLATFORMS)[],
+  dateRange: string
 ) {
   if (!fs.existsSync(SCREENSHOT_DIR)) {
     fs.mkdirSync(SCREENSHOT_DIR, { recursive: true });
@@ -119,43 +103,35 @@ async function captureClocks(
 
   const browser = await chromium.launch({ headless: true });
   
-  for (const platformKey of selectedPlatforms) {
-    const config = PLATFORMS[platformKey];
-    console.log(`\n📱 Platform: ${config.label}`);
+  console.log(`\n📱 Format: ${CAPTURE_CONFIG.label}`);
 
-    for (const clock of targetClocks) {
-      const context = await browser.newContext({
-        viewport: { width: config.width, height: config.height },
-        deviceScaleFactor: 2
-      });
+  for (const clock of targetClocks) {
+    const context = await browser.newContext({
+      viewport: { width: CAPTURE_CONFIG.width, height: CAPTURE_CONFIG.height },
+      deviceScaleFactor: 2
+    });
+    
+    const page = await context.newPage();
+    const url = `http://localhost:${port}/${clock.date}`;
+    const filename = `${clock.date}.png`;
+    const outputPath = path.join(SCREENSHOT_DIR, filename);
+
+    try {
+      process.stdout.write(`📸 ${clock.date} ... `);
       
-      const page = await context.newPage();
-      const url = `http://localhost:${port}/${clock.date}`;
-      const filename = `${clock.date}-${platformKey}.webp`;
-      const outputPath = path.join(SCREENSHOT_DIR, filename);
+      await page.goto(url, { waitUntil: 'load', timeout: 30000 });
+      await applyUIOptimizations(page);
+      
+      // Wait exactly 0.9 seconds for animations/shaders to warm up
+      await page.waitForTimeout(900);
 
-      try {
-        process.stdout.write(`📸 ${clock.date} ... `);
-        
-        await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
-        await applyUIOptimizations(page);
-        
-        // Wait exactly 0.9 seconds for animations/shaders to warm up
-        await page.waitForTimeout(900);
+      await page.screenshot({ path: outputPath, type: 'png' });
 
-        const client = await page.context().newCDPSession(page);
-        const { data } = await client.send('Page.captureScreenshot', { 
-          format: 'webp',
-          quality: config.quality 
-        });
-        
-        fs.writeFileSync(outputPath, Buffer.from(data, 'base64'));
-        process.stdout.write(`Done\n`);
-      } catch (err) {
-        console.error(`\n❌ Error capturing ${clock.date}:`, err);
-      } finally {
-        await context.close();
-      }
+      process.stdout.write(`Done\n`);
+    } catch (err) {
+      console.error(`\n❌ Error capturing ${clock.date}:`, err);
+    } finally {
+      await context.close();
     }
   }
 
@@ -165,7 +141,6 @@ async function captureClocks(
 
 function parseArguments(): {
   dateRange: string;
-  platforms: (keyof typeof PLATFORMS)[];
 } {
   const args = process.argv.slice(2);
   let dateRangeArg = args.find(a => !a.startsWith('--'));
@@ -181,16 +156,10 @@ function parseArguments(): {
 
   const dateRange = dateRangeArg || new Date().toISOString().slice(2, 10);
   
-  const platforms: (keyof typeof PLATFORMS)[] = [];
-  if (args.includes('--instagram')) platforms.push('instagram');
-  if (args.includes('--twitter')) platforms.push('twitter');
-  if (args.includes('--facebook')) platforms.push('facebook');
-  
   return { 
-    dateRange, 
-    platforms: platforms.length > 0 ? platforms : ['instagram', 'twitter', 'facebook'] 
+    dateRange
   };
 }
 
-const { dateRange, platforms } = parseArguments();
-captureClocks(dateRange, platforms).catch(console.error);
+const { dateRange } = parseArguments();
+captureClocks(dateRange).catch(console.error);
