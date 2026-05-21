@@ -31,6 +31,7 @@ Online digital art project by Cubist Heart Laboratories. [See it live](https://w
 | ---------------------------------------------------------------- | ---------------------------------------- |
 | [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)                     | Workflow, policy, scripts, quality gates |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)                  | Clock component patterns and hooks       |
+| [`docs/CLOCK_MODULE_CONTRACT.md`](docs/CLOCK_MODULE_CONTRACT.md) | Clock component requirements            |
 | [`ROADMAP.md`](ROADMAP.md)                                       | Planned future work                      |
 | [`docs/SITE_SURVEY.md`](docs/SITE_SURVEY.md)                     | Historical evaluation snapshot           |
 
