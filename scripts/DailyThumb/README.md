@@ -12,12 +12,15 @@ npm run capture:daily-square
 
 ### **Yesterday's Clock**
 
-````
+```bash
+# (Manually pass yesterday's date string)
+npm run capture:daily-square 26-05-20
+```
 
 ### **January 1, 2026**
 ```bash
 npm run capture:daily-square 26-01-01
-````
+```
 
 ### **Any Specific Date**
 
@@ -67,8 +70,8 @@ tsx scripts/DailyThumb/daily-square-capture.ts [YY-MM-DD]
 ##### Thumbnail Format
 
 - **Dimensions**: 500x500px (1:1 square)
-- **Format**: PNG (Playwright-compatible)
-- **Quality**: N/A (PNG is lossless)
+  - **Format**: WebP (optimized for web)
+  - **Quality**: 90%
 - **Background**: Black
 - **Wait Time**: 2 seconds after component load
 
@@ -101,11 +104,11 @@ src/assets/thumbnails/
 | Feature          | Regular Thumbnails  | Daily Square             |
 | ---------------- | ------------------- | ------------------------ |
 | **Wait Time**    | 2 seconds           | 2 seconds (as requested) |
-| **Format**       | WebP 90%            | PNG                      |
+| **Format**       | WebP 90%            | WebP 90%                 |
 | **Dimensions**   | 500x500px           | 500x500px                |
 | **Background**   | Black               | Black                    |
 | **Optimization** | Thumbnail mode      | Thumbnail mode           |
-| **Naming**       | `{date}-thumb.webp` | `{date}-thumb.png`       |
+| **Naming**       | `{date}-thumb.webp` | `{date}-daily-square.webp` |
 
 #### Integration with Workflow
 
@@ -133,10 +136,10 @@ Checking port 5173...
 🚀 Starting capture sequence on http://localhost:5173
 📸 Capturing: Lotus Meditation Clock [26-05-09]
 ⏱️ Waiting 2 seconds for component to fully load and settle...
-✅ Square thumbnail saved to: /path/to/src/assets/thumbnails/26-05-09-daily-square.png
+✅ Square thumbnail saved to: /path/to/src/assets/thumbnails/26-05-09-daily-square.webp
 🎉 Daily square capture complete!
 📸 File saved in: /path/to/src/assets/thumbnails/
-   - 26-05-09-daily-square.png (500x500px square thumbnail)
+   - 26-05-09-daily-square.webp (500x500px square thumbnail)
 
 ```
 

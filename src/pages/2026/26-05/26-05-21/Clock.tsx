@@ -1,16 +1,15 @@
 import React, { useMemo } from 'react';
 import canisBg from '@/assets/images/2026/26-05/26-05-21/canis.webp';
 import canisComponent from '@/assets/images/2026/26-05/26-05-21/canis2.webp';
-import canisComponent3 from '@/assets/images/2026/26-05/26-05-21/canis3.webp';
 import canisComponent4 from '@/assets/images/2026/26-05/26-05-21/canis4.webp'; // // Corrected image path
 import fontUrl from '@/assets/fonts/2026/26-05-21.otf?url'; // Uses existing font file
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
 
 // BTS: Export assets and fonts for the preloading pipeline
-export const assets = [canisBg, canisComponent, canisComponent3];
+export const assets = [canisBg, canisComponent];
 
 export const fontConfigs: FontConfig[] = [
   {
@@ -34,10 +33,7 @@ const ComponentLayers: React.FC = () => (
       className={styles.componentImage1}
       style={{ backgroundImage: `url(${canisComponent})` }}
     />
-    <div
-      className={styles.componentImage2}
-      style={{ backgroundImage: `url(${canisComponent3})` }}
-    />
+  
      <div
       className={styles.componentImage3}
       style={{ backgroundImage: `url(${canisComponent4})` }}
@@ -46,7 +42,7 @@ const ComponentLayers: React.FC = () => (
 );
 
 const ClockFace: React.FC<{ fontFamily: string }> = ({ fontFamily }) => {
-  const time = useClockTime();
+  const time = useSmoothClock(50);
 
   const { hourDeg, minuteDeg, secondDeg, isoTime } = useMemo(() => {
     const s = time.getSeconds() + time.getMilliseconds() / 1000;
