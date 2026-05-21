@@ -123,6 +123,13 @@ Details and examples: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 | `npm run build` | Production build |
 | `npm run preview` | Preview `dist/` |
 
+### Shortcuts
+
+| Command | Purpose |
+|---------|---------|
+| `git config alias.save "commit -m 'chore: clock update'"` | Create a shortcut for default commits |
+| `git save` | Commit all changes with the default message |
+
 ### New Clock
 
 | Command | Purpose |
@@ -166,6 +173,18 @@ cp .env.example .env
 | `VITE_ENVIRONMENT` | `development` / `production` |
 | `VITE_GA_MEASUREMENT_ID` | Google Analytics (optional) |
 | `VITE_BASE_URL` | Canonical site URL |
+
+---
+
+## Commit Message Automation
+
+To avoid typing commit messages manually, you can use a local template:
+
+1. Create `.gitmessage` in the root with your default text.
+2. Run: `git config commit.template .gitmessage`
+
+Alternatively, use the project-standard alias for quick updates:
+`git config --global alias.up "commit -am 'chore: routine clock update'"`
 
 ---
 
