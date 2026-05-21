@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
-import cinzel20251010 from '@/assets/fonts/2025/25-10-09-d1.ttf';
-import roboto20251010 from '@/assets/fonts/2025/25-10-09-d2.ttf';
-import orbitron20251010 from '@/assets/fonts/2025/25-10-09-d3.otf';
+import cinzel20251010 from '@/assets/fonts/25fonts/25-10-09-d1.ttf';
+import roboto20251010 from '@/assets/fonts/25fonts/25-10-09-d2.ttf';
+import orbitron20251010 from '@/assets/fonts/25fonts/25-10-09-d3.otf';
 
 interface TimeState {
   h: number;

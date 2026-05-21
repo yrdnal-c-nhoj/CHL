@@ -3,7 +3,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import { formatTime } from '@/utils/clockUtils';
-import dogFontUrl from '@/assets/fonts/2025/25-12-03-dog.ttf?url';
+import dogFontUrl from '@/assets/fonts/25fonts/25-12-03-dog.ttf?url';
 import styles from './Clock.module.css';
 
 export const fontConfigs: FontConfig[] = [

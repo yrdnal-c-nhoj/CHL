@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/2025/25-11/25-11-07/birds.webp';
-import clockFontUrl from '@/assets/fonts/2025/25-11-07-twobirds.ttf?url';
+import clockFontUrl from '@/assets/fonts/25fonts/25-11-07-twobirds.ttf?url';
 import { formatTime as utilFormatTime } from '@/utils/clockUtils'; // Import the utility formatTime
 import styles from './Clock.module.css';
 

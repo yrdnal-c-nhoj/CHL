@@ -2,7 +2,7 @@ import React from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/2025/25-06/25-06-18/cis.jpg';
-import cisFont from '@/assets/fonts/2025/25-06-18-cis.ttf';
+import cisFont from '@/assets/fonts/25fonts/25-06-18-cis.ttf';
 
 const CistercianClock: React.FC = () => {
   const time = useClockTime();

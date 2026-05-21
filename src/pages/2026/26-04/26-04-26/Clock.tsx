@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgVideo from '@/assets/images/2026/26-04/26-04-26/jetson.mp4';
-import jetFont from '@/assets/fonts/2026/26-04-26-jet.ttf?url';
+import jetFont from '@/assets/fonts/26fonts/26-04-26-jet.ttf?url';
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 const Clock: React.FC = () => {
   const time = useClockTime();

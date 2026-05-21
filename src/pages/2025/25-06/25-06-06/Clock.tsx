@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import rrrrFont from '@/assets/fonts/2025/25-06-06-rrrr.ttf';
+import rrrrFont from '@/assets/fonts/25fonts/25-06-06-rrrr.ttf';
 
 const RollingClock: React.FC = () => {
   const time = useClockTime();

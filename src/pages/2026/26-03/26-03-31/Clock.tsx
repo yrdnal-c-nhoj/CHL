@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgVideo from '@/assets/images/2026/26-03/26-03-31/seafloor.mp4';
-import crabFont from '@/assets/fonts/2026/26-03-31.ttf';
+import crabFont from '@/assets/fonts/26fonts/26-03-31.ttf';
 import hourHandImg from '@/assets/images/2026/26-03/26-03-31/hour.webp';
 import minuteHandImg from '@/assets/images/2026/26-03/26-03-31/minute.webp';
 import secondHandImg from '@/assets/images/2026/26-03/26-03-31/second.webp';

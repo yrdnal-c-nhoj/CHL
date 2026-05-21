@@ -3,16 +3,16 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
 // Asset Imports
-import catFont from '@/assets/fonts/2026/26-03-09-cat.ttf';
-import SwatsFont from '@/assets/fonts/2026/26-03-09-Swats.ttf';
-import cat1Font from '@/assets/fonts/2026/26-03-09-cat1.ttf';
-import catzFont from '@/assets/fonts/2026/26-03-09-catz.otf';
-import katFont from '@/assets/fonts/2026/26-03-09-kat.ttf';
-import katzzFont from '@/assets/fonts/2026/26-03-09-katzz.ttf';
-import KittiesFont from '@/assets/fonts/2026/26-03-09-Kitties.ttf';
-import meFont from '@/assets/fonts/2026/26-03-09-me.ttf';
-import OrienightFont from '@/assets/fonts/2026/26-03-09-Orienight.otf';
-import PurrfectFont from '@/assets/fonts/2026/26-03-09-Purrfect.ttf';
+import catFont from '@/assets/fonts/26fonts/26-03-09-cat.ttf';
+import SwatsFont from '@/assets/fonts/26fonts/26-03-09-Swats.ttf';
+import cat1Font from '@/assets/fonts/26fonts/26-03-09-cat1.ttf';
+import catzFont from '@/assets/fonts/26fonts/26-03-09-catz.otf';
+import katFont from '@/assets/fonts/26fonts/26-03-09-kat.ttf';
+import katzzFont from '@/assets/fonts/26fonts/26-03-09-katzz.ttf';
+import KittiesFont from '@/assets/fonts/26fonts/26-03-09-Kitties.ttf';
+import meFont from '@/assets/fonts/26fonts/26-03-09-me.ttf';
+import OrienightFont from '@/assets/fonts/26fonts/26-03-09-Orienight.otf';
+import PurrfectFont from '@/assets/fonts/26fonts/26-03-09-Purrfect.ttf';
 
 const FONT_DATA = [
   { name: 'cat', url: catFont, maxSize: 0.4 },

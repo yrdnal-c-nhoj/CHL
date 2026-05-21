@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
-import customFont from '@/assets/fonts/2025/25-08-09-box.ttf'; // Custom font file
+import customFont from '@/assets/fonts/25fonts/25-08-09-box.ttf'; // Custom font file
 
 // Standardized font loading with font-display: swap to avoid FOUC
 export const fontConfigs = [

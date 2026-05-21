@@ -2,7 +2,7 @@
 import { useMemo, type FC } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
-import heaFontUrl from '@/assets/fonts/2025/25-08-02-hea.ttf?url';
+import heaFontUrl from '@/assets/fonts/25fonts/25-08-02-hea.ttf?url';
 import { formatTime } from '@/utils/clockUtils';
 // Standardized naming: YY-MM-DD-name.webp
 import bg2 from '@/assets/images/2025/25-08/25-08-02/25-08-02-em.webp';

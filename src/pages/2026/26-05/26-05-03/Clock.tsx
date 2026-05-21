@@ -1,7 +1,7 @@
 import React, { useMemo, FC } from 'react';
 import { useClockTime } from '@/utils/hooks';
 import styles from './Clock.module.css';
-import fontUrl from '@/assets/fonts/2026/26-05-03-dolphin.ttf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-05-03-dolphin.ttf?url';
 import boxImage from '@/assets/images/2026/26-05/26-05-03/box.webp';
 
 /* ---------------- FONT MAP ---------------- */

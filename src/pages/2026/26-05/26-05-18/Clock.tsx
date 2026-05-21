@@ -6,7 +6,7 @@ import styles from './Clock.module.css';
 
 import bellImage2 from '@/assets/images/2026/26-05/26-05-18/accordion.webp';
 import accordionBg from '@/assets/images/2026/26-05/26-05-18/accordion2.webp';
-import customFont from '@/assets/fonts/2026/26-05-18.ttf?url';
+import customFont from '@/assets/fonts/26fonts/26-05-18.ttf?url';
 
 // ======================================================
 // Config & Constants

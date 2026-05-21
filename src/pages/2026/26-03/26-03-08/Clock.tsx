@@ -7,7 +7,7 @@ import styles from './Clock.module.css';
 import hand1Img from '@/assets/images/2026/26-03/26-03-08/hand2.png';
 import hand2Img from '@/assets/images/2026/26-03/26-03-08/hand1.webp';
 import handImg from '@/assets/images/2026/26-03/26-03-08/hand.webp';
-import dragonFont from '@/assets/fonts/2026/26-03-08-dragon.ttf';
+import dragonFont from '@/assets/fonts/26fonts/26-03-08-dragon.ttf';
 import dragonVideo from '@/assets/images/2026/26-03/26-03-08/dragon1.mp4';
 
 const Clock: React.FC = () => {

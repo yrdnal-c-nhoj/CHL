@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import braiFont from '@/assets/fonts/2025/25-05-16-brai.ttf';
+import braiFont from '@/assets/fonts/25fonts/25-05-16-brai.ttf';
 
 const Clock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime, formatTime } from '@/utils/clockUtils';
 import type { FontConfig } from '@/types/clock';
-import d25090120font from '@/assets/fonts/2026/26-01-20-hairdo.ttf';
+import d25090120font from '@/assets/fonts/26fonts/26-01-20-hairdo.ttf';
 import styles from './Clock.module.css';
 
 type DigitChar = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';

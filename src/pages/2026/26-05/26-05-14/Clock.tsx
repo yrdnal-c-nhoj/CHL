@@ -10,7 +10,7 @@ import balloon from '@/assets/images/2026/26-05/26-05-14/balloon.webp';
 import balloon2 from '@/assets/images/2026/26-05/26-05-14/balloon2.webp';
 import balloon3 from '@/assets/images/2026/26-05/26-05-14/balloon3.webp';
 import balloon4 from '@/assets/images/2026/26-05/26-05-14/balloons4.webp';
-import fontUrl from '@/assets/fonts/2026/26-05-14.ttf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-05-14.ttf?url';
 
 
 const background1 = balloon;

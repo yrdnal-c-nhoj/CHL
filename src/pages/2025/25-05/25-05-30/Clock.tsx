@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import issFont from '@/assets/fonts/2025/25-05-30-iss.ttf';
+import issFont from '@/assets/fonts/25fonts/25-05-30-iss.ttf';
 import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {

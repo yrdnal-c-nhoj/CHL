@@ -11,7 +11,7 @@ import type { FontConfig } from '@/types/clock';
 
 import styles from './Clock.module.css';
 
-import fontUrl from '@/assets/fonts/2026/26-05-10.ttf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-05-10.ttf?url';
 import backgroundImage from '@/assets/images/2026/26-05/26-05-10/23.gif';
 
 const NightSky: React.FC = () => {

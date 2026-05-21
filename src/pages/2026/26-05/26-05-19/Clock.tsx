@@ -2,7 +2,7 @@ import React from 'react';
 import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import clockFont from '@/assets/fonts/2026/26-05-19.ttf?url';
+import clockFont from '@/assets/fonts/26fonts/26-05-19.ttf?url';
 import bgImage from '@/assets/images/2026/26-05/26-05-19/bliss.webp';
 import windowsImage from '@/assets/images/2026/26-05/26-05-19/windows5.webp';
 import bloowinImage from '@/assets/images/2026/26-05/26-05-19/bloowin.webp';

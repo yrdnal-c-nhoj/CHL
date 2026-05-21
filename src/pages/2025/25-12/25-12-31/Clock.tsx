@@ -3,7 +3,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/2025/25-12/25-12-31/shadow.jpg';
-import d250916font from '@/assets/fonts/2025/25-12-31-shadow.otf';
+import d250916font from '@/assets/fonts/25fonts/25-12-31-shadow.otf';
 
 // 1. LETTER MAPPING: Move outside to prevent recreation on every render
 const DIGIT_TO_LETTER: Record<string, string> = {

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 /* ---------- Font ---------- */
 const FONT_FAMILY = 'Newla';
-import FONT_PATH from '@/assets/fonts/2025/25-12-24-lapse.otf?url';
+import FONT_PATH from '@/assets/fonts/25fonts/25-12-24-lapse.otf?url';
 
 /* ---------- Timing ---------- */
 const ERASE = 60000;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import leverFont from '@/assets/fonts/2026/26-04-27-lever.ttf';
+import leverFont from '@/assets/fonts/26fonts/26-04-27-lever.ttf';
 import styles from './Clock.module.css';
 
 // Dynamically import all images from the assets folder

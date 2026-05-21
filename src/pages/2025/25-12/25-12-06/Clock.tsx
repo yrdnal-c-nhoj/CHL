@@ -11,7 +11,7 @@ import minnnuteHandImg from '@/assets/images/2025/25-12/25-12-06/hand1.gif';
 import secondHandImg from '@/assets/images/2025/25-12/25-12-06/hand2.gif';
 import tileImg from '@/assets/images/2025/25-12/25-12-06/run.webp';
 import centerImg from '@/assets/images/2025/25-12/25-12-06/walk.webp';
-import customFont_2025_1206 from '@/assets/fonts/2025/25-12-06-gir.otf?url';
+import customFont_2025_1206 from '@/assets/fonts/25fonts/25-12-06-gir.otf?url';
 
 export default function AnalogClock() {
   const time = useClockTime();

@@ -40,7 +40,7 @@ const CLOCK_CONFIG = {
 const fontConfigs = [
   {
     name: 'ClockFont',
-    url: '@/assets/fonts/2026/26-05-05-dolphin.ttf',
+    url: '@/assets/fonts/26fonts/26-05-05-dolphin.ttf',
   },
 ];
 
