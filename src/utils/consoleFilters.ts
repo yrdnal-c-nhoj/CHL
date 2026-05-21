@@ -7,7 +7,11 @@ type ConsoleMethod = 'debug' | 'info' | 'warn' | 'error' | 'log';
 
 const shouldSuppress = (msg: string) => {
   // Firefox Glean/NewTabGleanUtils spam (from browser internals, not from this app).
-  if (msg.includes('Reporting Header: invalid JSON value received. collect')) {
+  if (
+    msg.includes('Reporting Header: invalid JSON value received. collect') ||
+    msg.includes('Reporting Header: invalid JSON value received') ||
+    msg.includes('SyntaxError: JSON.parse: expected double-quoted property name')
+  ) {
     return true;
   }
   return false;

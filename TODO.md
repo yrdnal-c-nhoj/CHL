@@ -1,11 +1,6 @@
-# TODO - Documentation & Roadmap Survey (CHL)
+#c TODOanis3.webp
 
-- [x] Gather repo understanding (survey key files + scripts)
-- [x] Create `CHL_COMPONENT_SURVEY.md`
-- [x] Create `ROADMAP.md`
-- [x] Update `README.md` to point to ROADMAP
-- [x] Update `src/templates/ARCHITECTURE.md` to clarify asset preloading + current font policy wording
-- [ ] Update remaining docs/scripts READMEs to match the survey (follow-up sweep)
-- [ ] Final verification: run `npm run type-check` and `npm run lint` (optional but recommended)
-- [ ] Ensure new docs are consistent: no stale command names or conflicting contracts
+- [ ] Add `26-05-21.canis2.webp` to `src/pages/2026/26-05/26-05-21/Clock.tsx` as a new component layer above the existing background.
+- [ ] Update `Clock.module.css` with a new class for the foreground/component layer (higher z-index + pointer-events none).
+- [ ] Run `npm run build` to verify compilation.
 
