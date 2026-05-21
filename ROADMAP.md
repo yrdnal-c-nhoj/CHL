@@ -79,7 +79,7 @@ Phased backlog from the [site survey](./docs/SITE_SURVEY.md) (2026-05-20).
 - [ ] Lighthouse CI workflow (baseline scores stored in repo).
 - [ ] Optional visual regression on `/list` + 2 clock routes.
 - [ ] Optional client error reporting from `ErrorBoundary`.
-- [ ] PWA: only if product requires offline—add manifest + SW or remove claims from docs.
+- [x] PWA: only if product requires offline—add manifest + SW or remove claims from docs. (No PWA claims in current docs; product doesn't require offline)
 
 ---
 

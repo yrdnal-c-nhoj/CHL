@@ -1,6 +1,7 @@
 # Clock Architecture
 
-> **Workflow (scaffold, manual registry, finalize, CI):** [`DEVELOPMENT.md`](./DEVELOPMENT.md) — canonical.  
+> **Workflow (scaffold, manual registry, finalize, CI):** [`DEVELOPMENT.md`](./DEVELOPMENT.md) — canonical.
+> **Contract requirements:** [`CLOCK_MODULE_CONTRACT.md`](./CLOCK_MODULE_CONTRACT.md) — exports, naming, validation.
 > This file covers **component structure, hooks, and CSS patterns** only.
 
 ## Structure
