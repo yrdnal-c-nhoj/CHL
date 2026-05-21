@@ -5,21 +5,22 @@
 ## Quick Start - How to Capture Clocks
 
 ### **Today's Clock**
+
 ```bash
 npm run capture:daily-square
 ```
 
 ### **Yesterday's Clock**
-```bash
-npm run capture:daily-square 26-05-11
-```
+
+````
 
 ### **January 1, 2026**
 ```bash
 npm run capture:daily-square 26-01-01
-```
+````
 
 ### **Any Specific Date**
+
 ```bash
 npm run capture:daily-square YY-MM-DD
 # Examples:
@@ -64,19 +65,22 @@ tsx scripts/DailyThumb/daily-square-capture.ts [YY-MM-DD]
 #### Technical Specifications
 
 ##### Thumbnail Format
+
 - **Dimensions**: 500x500px (1:1 square)
-- **Format**: WebP (optimized for web)
-- **Quality**: 90%
+- **Format**: PNG (Playwright-compatible)
+- **Quality**: N/A (PNG is lossless)
 - **Background**: Black
 - **Wait Time**: 2 seconds after component load
 
 ##### Capture Optimizations
+
 - **Navigation Hiding**: Removes header, footer, and navigation elements
 - **Content Centering**: Centers clock content in 500x500 viewport
 - **Black Background**: Ensures consistent background color
 - **Error Handling**: Graceful failure handling with detailed error messages
 
 ##### Browser Settings
+
 - **Headless Mode**: Runs without UI for performance
 - **Sandbox Disabled**: Prevents hangs in complex clocks
 - **Timeout**: 15 seconds navigation, 5 seconds content wait
@@ -94,14 +98,14 @@ src/assets/thumbnails/
 
 #### Key Differences from Regular Thumbnails
 
-| Feature | Regular Thumbnails | Daily Square |
-|---------|-------------------|--------------|
-| **Wait Time** | 2 seconds | 2 seconds (as requested) |
-| **Format** | WebP 90% | WebP 90% |
-| **Dimensions** | 500x500px | 500x500px |
-| **Background** | Black | Black |
-| **Optimization** | Thumbnail mode | Thumbnail mode |
-| **Naming** | `{date}-thumb.webp` | `{date}-daily-square.webp` |
+| Feature          | Regular Thumbnails  | Daily Square             |
+| ---------------- | ------------------- | ------------------------ |
+| **Wait Time**    | 2 seconds           | 2 seconds (as requested) |
+| **Format**       | WebP 90%            | PNG                      |
+| **Dimensions**   | 500x500px           | 500x500px                |
+| **Background**   | Black               | Black                    |
+| **Optimization** | Thumbnail mode      | Thumbnail mode           |
+| **Naming**       | `{date}-thumb.webp` | `{date}-thumb.png`       |
 
 #### Integration with Workflow
 
@@ -129,10 +133,11 @@ Checking port 5173...
 🚀 Starting capture sequence on http://localhost:5173
 📸 Capturing: Lotus Meditation Clock [26-05-09]
 ⏱️ Waiting 2 seconds for component to fully load and settle...
-✅ Square thumbnail saved to: /path/to/src/assets/thumbnails/26-05-09-daily-square.webp
+✅ Square thumbnail saved to: /path/to/src/assets/thumbnails/26-05-09-daily-square.png
 🎉 Daily square capture complete!
 📸 File saved in: /path/to/src/assets/thumbnails/
-   - 26-05-09-daily-square.webp (500x500px square thumbnail)
+   - 26-05-09-daily-square.png (500x500px square thumbnail)
+
 ```
 
 #### Troubleshooting
@@ -147,6 +152,7 @@ Checking port 5173...
 ##### Debug Mode
 
 For detailed logging, run with verbose output:
+
 ```bash
 DEBUG=true npm run capture:daily-square
 ```
