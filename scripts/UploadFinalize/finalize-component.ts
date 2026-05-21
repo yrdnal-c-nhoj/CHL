@@ -55,7 +55,9 @@ class ComponentValidator {
       // Auto-detect current component based on git changes or current working directory
       const currentDir = process.cwd();
       if (currentDir.includes('pages/') && currentDir.includes('/20')) {
-        const component = this.parseComponentPath(path.join(currentDir, 'Clock.tsx'));
+        const component = this.parseComponentPath(
+          path.join(currentDir, 'Clock.tsx'),
+        );
         if (component) components.push(component);
       }
     }
@@ -68,36 +70,49 @@ class ComponentValidator {
 
     const relativePath = path.relative(SRC_DIR, filePath);
     const parts = relativePath.split(path.sep);
-    
+
     if (parts.length >= 4 && parts[0] === 'pages') {
       const year = parts[1];
       const monthFolder = parts[2];
       const date = parts[3];
-      
+
       return {
         name: `${date} Clock`,
         path: filePath,
         date: date,
         hasAssets: this.checkAssets(year, monthFolder, date),
-        hasFont: this.checkFont(year, date)
+        hasFont: this.checkFont(year, date),
       };
     }
-    
+
     return null;
   }
 
-  private checkAssets(year: string, monthFolder: string, date: string): boolean {
-    const imagePath = path.join(SRC_DIR, 'assets', 'images', year, monthFolder, date);
+  private checkAssets(
+    year: string,
+    monthFolder: string,
+    date: string,
+  ): boolean {
+    const imagePath = path.join(
+      SRC_DIR,
+      'assets',
+      'images',
+      year,
+      monthFolder,
+      date,
+    );
     return fs.existsSync(imagePath);
   }
 
   private checkFont(year: string, date: string): boolean {
     const fontDir = path.join(SRC_DIR, 'assets', 'fonts', year);
     if (!fs.existsSync(fontDir)) return false;
-    
+
     const files = fs.readdirSync(fontDir);
     // Check if any file starts with the date and ends with common font extensions
-    return files.some(file => file.startsWith(date) && /\.(ttf|woff2|woff|otf)$/i.test(file));
+    return files.some(
+      (file) => file.startsWith(date) && /\.(ttf|woff2|woff|otf)$/i.test(file),
+    );
   }
 
   async validateComponent(component: ComponentInfo): Promise<ValidationResult> {
@@ -105,7 +120,7 @@ class ComponentValidator {
       passed: true,
       errors: [],
       warnings: [],
-      fixes: []
+      fixes: [],
     };
 
     // 1. Check TypeScript compilation
@@ -135,16 +150,21 @@ class ComponentValidator {
 
     const cssPath = component.path.replace('.tsx', '.module.css');
     if (!fs.existsSync(cssPath)) {
-      result.errors.push('CRITICAL: CSS module file strictly required for component isolation');
+      result.errors.push(
+        'CRITICAL: CSS module file strictly required for component isolation',
+      );
       result.passed = false;
       result.fixes.push('Create corresponding .module.css file');
     }
 
     // 4. Check component content standards
     const content = fs.readFileSync(component.path, 'utf-8');
-    
+
     // Check for proper imports
-    if (!content.includes('useClockTime') && !content.includes('useSmoothClock')) {
+    if (
+      !content.includes('useClockTime') &&
+      !content.includes('useSmoothClock')
+    ) {
       result.warnings.push('Missing time hook import');
       result.fixes.push('Add useClockTime or useSmoothClock import');
     }
@@ -163,7 +183,9 @@ class ComponentValidator {
     }
 
     if (content.includes('style={{') && !content.includes('/* dynamic */')) {
-      result.warnings.push('Static inline styles detected. Prefer CSS Modules.');
+      result.warnings.push(
+        'Static inline styles detected. Prefer CSS Modules.',
+      );
       result.fixes.push('Move static styles to .module.css');
     }
 
@@ -174,7 +196,10 @@ class ComponentValidator {
     }
 
     // 5. Asset organization validation
-    const assetValidation = await this.validateAssetOrganization(component, content);
+    const assetValidation = await this.validateAssetOrganization(
+      component,
+      content,
+    );
     result.warnings.push(...assetValidation.warnings);
     result.fixes.push(...assetValidation.fixes);
     if (assetValidation.errors.length > 0) {
@@ -186,61 +211,96 @@ class ComponentValidator {
     const inlineStyleMatches = content.match(/style=\{[^}]*\}/g);
     if (inlineStyleMatches && inlineStyleMatches.length > 2) {
       result.warnings.push('Too many inline styles detected');
-      result.fixes.push('Move styles to CSS modules, keep only dynamic styles inline');
+      result.fixes.push(
+        'Move styles to CSS modules, keep only dynamic styles inline',
+      );
     }
 
     return result;
   }
 
-  private async validateAssetOrganization(component: ComponentInfo, content: string): Promise<{
+  private async validateAssetOrganization(
+    component: ComponentInfo,
+    content: string,
+  ): Promise<{
     errors: string[];
     warnings: string[];
     fixes: string[];
   }> {
-    const result: { errors: string[], warnings: string[], fixes: string[] } = { errors: [], warnings: [], fixes: [] };
+    const result: { errors: string[]; warnings: string[]; fixes: string[] } = {
+      errors: [],
+      warnings: [],
+      fixes: [],
+    };
     const parts = component.path.split(path.sep);
     const year = parts[parts.length - 4];
     const monthFolder = parts[parts.length - 3];
     const date = parts[parts.length - 2];
 
     // Check for image assets in component
-    const imageImports = content.match(/import.*from.*['"]@\/assets\/images\/[^'"]+['"]/g) || [];
-    const backgroundImageUrls = content.match(/background-image:\s*url\(['"]?([^'")]+)['"]?\)/g) || [];
+    const imageImports =
+      content.match(/import.*from.*['"]@\/assets\/images\/[^'"]+['"]/g) || [];
+    const backgroundImageUrls =
+      content.match(/background-image:\s*url\(['"]?([^'")]+)['"]?\)/g) || [];
     const allImageReferences = [...imageImports, ...backgroundImageUrls];
 
     if (allImageReferences.length > 0) {
-      const expectedImageDir = path.join(SRC_DIR, 'assets', 'images', monthFolder, date);
-      
+      const expectedImageDir = path.join(
+        SRC_DIR,
+        'assets',
+        'images',
+        monthFolder,
+        date,
+      );
+
       if (!fs.existsSync(expectedImageDir)) {
-        result.warnings.push('Image references found but expected asset directory missing');
+        result.warnings.push(
+          'Image references found but expected asset directory missing',
+        );
         result.fixes.push(`Create ${expectedImageDir} and move images there`);
       } else {
         // Check if images are in wrong locations
-        const misplacedImages = await this.findMisplacedImages(component, allImageReferences);
+        const misplacedImages = await this.findMisplacedImages(
+          component,
+          allImageReferences,
+        );
         if (misplacedImages.length > 0) {
-          result.warnings.push(`${misplacedImages.length} images found in incorrect locations`);
+          result.warnings.push(
+            `${misplacedImages.length} images found in incorrect locations`,
+          );
           result.fixes.push(`Move images to correct date-specific folders`);
         }
       }
     }
 
     // Check for font assets in component
-    const fontImports = content.match(/import.*from.*['"]@\/assets\/fonts\/[^'"]+['"]/g) || [];
-    const fontFaceUrls = content.match(/src:\s*url\(['"]?([^'")]+)['"]?\)/g) || [];
+    const fontImports =
+      content.match(/import.*from.*['"]@\/assets\/fonts\/[^'"]+['"]/g) || [];
+    const fontFaceUrls =
+      content.match(/src:\s*url\(['"]?([^'")]+)['"]?\)/g) || [];
     const allFontReferences = [...fontImports, ...fontFaceUrls];
 
     if (allFontReferences.length > 0) {
       const expectedFontDir = path.join(SRC_DIR, 'assets', 'fonts', year);
-      
+
       if (!fs.existsSync(expectedFontDir)) {
-        result.warnings.push('Font references found but expected font directory missing');
+        result.warnings.push(
+          'Font references found but expected font directory missing',
+        );
         result.fixes.push(`Create ${expectedFontDir} and organize fonts there`);
       } else {
         // Check if fonts are in wrong locations
-        const misplacedFonts = await this.findMisplacedFonts(component, allFontReferences);
+        const misplacedFonts = await this.findMisplacedFonts(
+          component,
+          allFontReferences,
+        );
         if (misplacedFonts.length > 0) {
-          result.warnings.push(`${misplacedFonts.length} fonts found in incorrect locations`);
-          result.fixes.push(`Move fonts to correct year-specific folders with proper naming`);
+          result.warnings.push(
+            `${misplacedFonts.length} fonts found in incorrect locations`,
+          );
+          result.fixes.push(
+            `Move fonts to correct year-specific folders with proper naming`,
+          );
         }
       }
     }
@@ -248,18 +308,25 @@ class ComponentValidator {
     // Check for orphaned assets (assets that exist but aren't referenced)
     const orphanedAssets = await this.findOrphanedAssets(component);
     if (orphanedAssets.images.length > 0) {
-      result.warnings.push(`${orphanedAssets.images.length} orphaned image assets found`);
+      result.warnings.push(
+        `${orphanedAssets.images.length} orphaned image assets found`,
+      );
       result.fixes.push('Remove unused image assets or add references to them');
     }
     if (orphanedAssets.fonts.length > 0) {
-      result.warnings.push(`${orphanedAssets.fonts.length} orphaned font assets found`);
+      result.warnings.push(
+        `${orphanedAssets.fonts.length} orphaned font assets found`,
+      );
       result.fixes.push('Remove unused font assets or add references to them');
     }
 
     return result;
   }
 
-  private async findMisplacedImages(component: ComponentInfo, references: string[]): Promise<string[]> {
+  private async findMisplacedImages(
+    component: ComponentInfo,
+    references: string[],
+  ): Promise<string[]> {
     const misplaced: string[] = [];
     const parts = component.path.split(path.sep);
     const year = parts[parts.length - 4];
@@ -270,10 +337,18 @@ class ComponentValidator {
       const pathMatch = ref.match(/@\/assets\/images\/([^'"]+)/);
       if (pathMatch) {
         const assetPath = path.join(SRC_DIR, 'assets', 'images', pathMatch[1]);
-        
+
         // Check if file exists but is in wrong location
         if (fs.existsSync(assetPath)) {
-          const expectedPath = path.join(SRC_DIR, 'assets', 'images', year, monthFolder, date, path.basename(assetPath));
+          const expectedPath = path.join(
+            SRC_DIR,
+            'assets',
+            'images',
+            year,
+            monthFolder,
+            date,
+            path.basename(assetPath),
+          );
           if (assetPath !== expectedPath) {
             misplaced.push(assetPath);
           }
@@ -284,7 +359,10 @@ class ComponentValidator {
     return misplaced;
   }
 
-  private async findMisplacedFonts(component: ComponentInfo, references: string[]): Promise<string[]> {
+  private async findMisplacedFonts(
+    component: ComponentInfo,
+    references: string[],
+  ): Promise<string[]> {
     const misplaced: string[] = [];
     const parts = component.path.split(path.sep);
     const year = parts[parts.length - 4];
@@ -294,10 +372,16 @@ class ComponentValidator {
       const pathMatch = ref.match(/@\/assets\/fonts\/([^'"]+)/);
       if (pathMatch) {
         const assetPath = path.join(SRC_DIR, 'assets', 'fonts', pathMatch[1]);
-        
+
         // Check if file exists but is in wrong location
         if (fs.existsSync(assetPath)) {
-          const expectedPath = path.join(SRC_DIR, 'assets', 'fonts', year, `${date}-${path.basename(assetPath).split('-').slice(1).join('-')}`);
+          const expectedPath = path.join(
+            SRC_DIR,
+            'assets',
+            'fonts',
+            year,
+            `${date}-${path.basename(assetPath).split('-').slice(1).join('-')}`,
+          );
           if (assetPath !== expectedPath) {
             misplaced.push(assetPath);
           }
@@ -308,26 +392,42 @@ class ComponentValidator {
     return misplaced;
   }
 
-  private async findOrphanedAssets(component: ComponentInfo): Promise<{ images: string[], fonts: string[] }> {
+  private async findOrphanedAssets(
+    component: ComponentInfo,
+  ): Promise<{ images: string[]; fonts: string[] }> {
     const parts = component.path.split(path.sep);
     const year = parts[parts.length - 4];
     const monthFolder = parts[parts.length - 3];
     const date = parts[parts.length - 2];
 
     const content = fs.readFileSync(component.path, 'utf-8');
-    
+
     const orphanedImages: string[] = [];
     const orphanedFonts: string[] = [];
 
     // Check expected image directory
-    const expectedImageDir = path.join(SRC_DIR, 'assets', 'images', year, monthFolder, date);
+    const expectedImageDir = path.join(
+      SRC_DIR,
+      'assets',
+      'images',
+      year,
+      monthFolder,
+      date,
+    );
     if (fs.existsSync(expectedImageDir)) {
-      const imageFiles = fs.readdirSync(expectedImageDir).filter(f => 
-        ['.webp', '.jpg', '.jpeg', '.png', '.gif', '.svg'].includes(path.extname(f).toLowerCase())
-      );
+      const imageFiles = fs
+        .readdirSync(expectedImageDir)
+        .filter((f) =>
+          ['.webp', '.jpg', '.jpeg', '.png', '.gif', '.svg'].includes(
+            path.extname(f).toLowerCase(),
+          ),
+        );
 
       for (const imageFile of imageFiles) {
-        if (!content.includes(imageFile) && !content.includes(path.basename(imageFile, path.extname(imageFile)))) {
+        if (
+          !content.includes(imageFile) &&
+          !content.includes(path.basename(imageFile, path.extname(imageFile)))
+        ) {
           orphanedImages.push(path.join(expectedImageDir, imageFile));
         }
       }
@@ -336,9 +436,13 @@ class ComponentValidator {
     // Check expected font directory
     const expectedFontDir = path.join(SRC_DIR, 'assets', 'fonts', year);
     if (fs.existsSync(expectedFontDir)) {
-      const fontFiles = fs.readdirSync(expectedFontDir).filter(f => 
-        ['.ttf', '.otf', '.woff', '.woff2'].includes(path.extname(f).toLowerCase())
-      );
+      const fontFiles = fs
+        .readdirSync(expectedFontDir)
+        .filter((f) =>
+          ['.ttf', '.otf', '.woff', '.woff2'].includes(
+            path.extname(f).toLowerCase(),
+          ),
+        );
 
       for (const fontFile of fontFiles) {
         if (fontFile.startsWith(date) && !content.includes(fontFile)) {
@@ -350,12 +454,18 @@ class ComponentValidator {
     return { images: orphanedImages, fonts: orphanedFonts };
   }
 
-  async autoFixComponent(component: ComponentInfo, issues: ValidationResult): Promise<void> {
+  async autoFixComponent(
+    component: ComponentInfo,
+    issues: ValidationResult,
+  ): Promise<void> {
     console.log('🔧 Applying auto-fixes...');
 
     // Create missing directories
     const cssPath = component.path.replace('.tsx', '.module.css');
-    if (!fs.existsSync(cssPath) && issues.fixes.some(f => f.includes('.module.css'))) {
+    if (
+      !fs.existsSync(cssPath) &&
+      issues.fixes.some((f) => f.includes('.module.css'))
+    ) {
       const cssContent = this.generateDefaultCSS(component.date);
       fs.writeFileSync(cssPath, cssContent);
       console.log('✅ Created CSS module file');
@@ -378,45 +488,67 @@ class ComponentValidator {
     const year = parts[parts.length - 4];
     const monthFolder = parts[parts.length - 3];
     const date = parts[parts.length - 2];
-    
+
     let content = fs.readFileSync(component.path, 'utf-8');
     let contentModified = false;
     const modifications: string[] = [];
 
     // Create expected directories
-    const expectedImageDir = path.join(SRC_DIR, 'assets', 'images', year, monthFolder, date);
+    const expectedImageDir = path.join(
+      SRC_DIR,
+      'assets',
+      'images',
+      year,
+      monthFolder,
+      date,
+    );
     const expectedFontDir = path.join(SRC_DIR, 'assets', 'fonts', year);
-    
+
     if (!fs.existsSync(expectedImageDir)) {
       fs.mkdirSync(expectedImageDir, { recursive: true });
       console.log('✅ Created image directory:', expectedImageDir);
     }
-    
+
     if (!fs.existsSync(expectedFontDir)) {
       fs.mkdirSync(expectedFontDir, { recursive: true });
       console.log('✅ Created font directory:', expectedFontDir);
     }
 
     // Find and move misplaced images
-    const imageImports = content.match(/import.*from.*['"]@\/assets\/images\/([^'"]+)['"]/g) || [];
-    const backgroundImageUrls = content.match(/background-image:\s*url\(['"]?([^'")]+)['"]?\)/g) || [];
-    
+    const imageImports =
+      content.match(/import.*from.*['"]@\/assets\/images\/([^'"]+)['"]/g) || [];
+    const backgroundImageUrls =
+      content.match(/background-image:\s*url\(['"]?([^'")]+)['"]?\)/g) || [];
+
     for (const importMatch of imageImports) {
       const pathMatch = importMatch.match(/@\/assets\/images\/([^'"]+)/);
       if (pathMatch) {
-        const currentPath = path.join(SRC_DIR, 'assets', 'images', pathMatch[1]);
+        const currentPath = path.join(
+          SRC_DIR,
+          'assets',
+          'images',
+          pathMatch[1],
+        );
         if (fs.existsSync(currentPath)) {
           const fileName = path.basename(currentPath);
           const newPath = path.join(expectedImageDir, fileName);
-          
+
           if (currentPath !== newPath) {
             // Move the file
             fs.renameSync(currentPath, newPath);
-            console.log('📁 Moved image:', fileName, '→', path.relative(SRC_DIR, newPath));
-            
+            console.log(
+              '📁 Moved image:',
+              fileName,
+              '→',
+              path.relative(SRC_DIR, newPath),
+            );
+
             // Update the import path in content
             const newImportPath = `@/assets/images/${year}/${monthFolder}/${date}/${fileName}`;
-            const updatedImport = importMatch.replace(pathMatch[1], newImportPath.replace('@/assets/images/', ''));
+            const updatedImport = importMatch.replace(
+              pathMatch[1],
+              newImportPath.replace('@/assets/images/', ''),
+            );
             content = content.replace(importMatch, updatedImport);
             contentModified = true;
             modifications.push(`Updated image import: ${fileName}`);
@@ -430,16 +562,19 @@ class ComponentValidator {
     if (fs.existsSync(cssPath)) {
       let cssContent = fs.readFileSync(cssPath, 'utf-8');
       let cssModified = false;
-      
+
       for (const bgMatch of backgroundImageUrls) {
         const urlMatch = bgMatch.match(/url\(['"]?([^'")]+)['"]?\)/);
         if (urlMatch && urlMatch[1]) {
           const imageUrl = urlMatch[1];
-          
+
           // Handle relative paths and absolute paths
           let currentImagePath: string;
           if (imageUrl.startsWith('@/assets/images/')) {
-            currentImagePath = path.join(SRC_DIR, imageUrl.replace('@/assets/', ''));
+            currentImagePath = path.join(
+              SRC_DIR,
+              imageUrl.replace('@/assets/', ''),
+            );
           } else if (imageUrl.startsWith('/src/assets/images/')) {
             currentImagePath = path.join(PROJECT_ROOT, imageUrl);
           } else if (imageUrl.startsWith('assets/images/')) {
@@ -448,16 +583,21 @@ class ComponentValidator {
             // Skip external URLs or data URLs
             continue;
           }
-          
+
           if (fs.existsSync(currentImagePath)) {
             const fileName = path.basename(currentImagePath);
             const newPath = path.join(expectedImageDir, fileName);
-            
+
             if (currentImagePath !== newPath) {
               // Move the file
               fs.renameSync(currentImagePath, newPath);
-              console.log('📁 Moved background image:', fileName, '→', path.relative(SRC_DIR, newPath));
-              
+              console.log(
+                '📁 Moved background image:',
+                fileName,
+                '→',
+                path.relative(SRC_DIR, newPath),
+              );
+
               // Update the CSS URL
               const newImageUrl = `/src/assets/images/${year}/${monthFolder}/${date}/${fileName}`;
               const updatedBg = bgMatch.replace(urlMatch[1], newImageUrl);
@@ -468,7 +608,7 @@ class ComponentValidator {
           }
         }
       }
-      
+
       if (cssModified) {
         fs.writeFileSync(cssPath, cssContent);
         console.log('✅ Updated CSS file with new image paths');
@@ -476,8 +616,9 @@ class ComponentValidator {
     }
 
     // Find and move misplaced fonts
-    const fontImports = content.match(/import.*from.*['"]@\/assets\/fonts\/([^'"]+)['"]/g) || [];
-    
+    const fontImports =
+      content.match(/import.*from.*['"]@\/assets\/fonts\/([^'"]+)['"]/g) || [];
+
     for (const fontMatch of fontImports) {
       const pathMatch = fontMatch.match(/@\/assets\/fonts\/([^'"]+)/);
       if (pathMatch) {
@@ -486,28 +627,33 @@ class ComponentValidator {
           const fileName = path.basename(currentPath);
           const fileExt = path.extname(fileName);
           const baseName = path.basename(fileName, fileExt);
-          
+
           // Create properly named font file: YY-MM-DD-name.ext
           let newFileName = fileName;
-          
+
           // If the font doesn't start with the date, prepend it
           if (!baseName.startsWith(date)) {
             newFileName = `${date}-${fileName}`;
           }
-          
+
           const newPath = path.join(expectedFontDir, newFileName);
-          
+
           if (currentPath !== newPath) {
             // Move the file
             fs.renameSync(currentPath, newPath);
             console.log('📁 Moved font:', fileName, '→', newFileName);
-            
+
             // Update the import path in content
             const newImportPath = `@/assets/fonts/${year}/${newFileName}`;
-            const updatedImport = fontMatch.replace(pathMatch[1], newImportPath.replace('@/assets/fonts/', ''));
+            const updatedImport = fontMatch.replace(
+              pathMatch[1],
+              newImportPath.replace('@/assets/fonts/', ''),
+            );
             content = content.replace(fontMatch, updatedImport);
             contentModified = true;
-            modifications.push(`Updated font import: ${fileName} → ${newFileName}`);
+            modifications.push(
+              `Updated font import: ${fileName} → ${newFileName}`,
+            );
           }
         }
       }
@@ -526,27 +672,33 @@ class ComponentValidator {
 
   private async cleanupOrphanedAssets(component: ComponentInfo): Promise<void> {
     const orphaned = await this.findOrphanedAssets(component);
-    
+
     // Remove orphaned images (with user confirmation would be better, but for automation we'll remove them)
     for (const imagePath of orphaned.images) {
       try {
         fs.unlinkSync(imagePath);
         console.log('🗑️  Removed orphaned image:', path.basename(imagePath));
       } catch (error) {
-        console.log('⚠️  Could not remove orphaned image:', path.basename(imagePath));
+        console.log(
+          '⚠️  Could not remove orphaned image:',
+          path.basename(imagePath),
+        );
       }
     }
-    
+
     // Remove orphaned fonts
     for (const fontPath of orphaned.fonts) {
       try {
         fs.unlinkSync(fontPath);
         console.log('🗑️  Removed orphaned font:', path.basename(fontPath));
       } catch (error) {
-        console.log('⚠️  Could not remove orphaned font:', path.basename(fontPath));
+        console.log(
+          '⚠️  Could not remove orphaned font:',
+          path.basename(fontPath),
+        );
       }
     }
-    
+
     if (orphaned.images.length > 0 || orphaned.fonts.length > 0) {
       console.log('✅ Cleaned up orphaned assets');
     }
@@ -597,7 +749,7 @@ class ComponentValidator {
     const browser = await chromium.launch();
     const page = await browser.newPage({
       viewport: { width: 1200, height: 800 },
-      deviceScaleFactor: 2
+      deviceScaleFactor: 2,
     });
 
     const url = `http://localhost:${port}/${component.date}`;
@@ -610,7 +762,7 @@ class ComponentValidator {
       await page.screenshot({
         path: outputPath,
         quality: 85,
-        fullPage: true
+        fullPage: true,
       });
 
       console.log(`✅ Screenshot saved: ${outputPath}`);
@@ -627,9 +779,11 @@ class ComponentValidator {
     console.log('🚀 Starting component finalization...');
 
     const components = this.findComponentFiles(targetPath);
-    
+
     if (components.length === 0) {
-      console.log('❌ No component found. Make sure you\'re in a component directory or specify a path.');
+      console.log(
+        "❌ No component found. Make sure you're in a component directory or specify a path.",
+      );
       return;
     }
 
@@ -638,27 +792,27 @@ class ComponentValidator {
 
     // Step 1: Validate
     const validation = await this.validateComponent(component);
-    
+
     console.log('\n📊 Validation Results:');
     if (validation.passed) {
       console.log('✅ All checks passed!');
     } else {
       console.log('❌ Validation failed:');
-      validation.errors.forEach(error => console.log(`   • ${error}`));
+      validation.errors.forEach((error) => console.log(`   • ${error}`));
     }
 
     if (validation.warnings.length > 0) {
       console.log('⚠️  Warnings:');
-      validation.warnings.forEach(warning => console.log(`   • ${warning}`));
+      validation.warnings.forEach((warning) => console.log(`   • ${warning}`));
     }
 
     // Step 2: Auto-fix if needed
     if (!validation.passed || validation.warnings.length > 0) {
       console.log('\n🔧 Suggested fixes:');
-      validation.fixes.forEach(fix => console.log(`   • ${fix}`));
-      
+      validation.fixes.forEach((fix) => console.log(`   • ${fix}`));
+
       await this.autoFixComponent(component, validation);
-      
+
       // Re-validate after fixes
       const revalidation = await this.validateComponent(component);
       if (revalidation.passed) {
@@ -671,7 +825,9 @@ class ComponentValidator {
       const screenshotPath = await this.captureScreenshot(component);
       console.log(`📸 Screenshot captured: ${screenshotPath}`);
     } catch (error) {
-      console.log('⚠️  Screenshot capture failed - you may need to start the dev server first');
+      console.log(
+        '⚠️  Screenshot capture failed - you may need to start the dev server first',
+      );
     }
 
     // Step 4: Final checks
@@ -681,12 +837,16 @@ class ComponentValidator {
     console.log('✅ ESLint validation passed');
     console.log('✅ Code formatted with Prettier');
     console.log('✅ Screenshot captured for documentation');
-    
+
     if (validation.passed) {
       console.log('\n🎉 Component is ready for GitHub!');
-      console.log('💡 Next steps: Commit your changes and create a pull request');
+      console.log(
+        '💡 Next steps: Commit your changes and create a pull request',
+      );
     } else {
-      console.log('\n⚠️  Component needs manual fixes before GitHub submission');
+      console.log(
+        '\n⚠️  Component needs manual fixes before GitHub submission',
+      );
     }
   }
 }

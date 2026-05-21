@@ -3,8 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
 import trocaderoFont from '@/assets/fonts/26fonts/26-02-08-eiffel.ttf?url';
-import analogBgImage from '@/assets/images/2026/26-02/26-02-08/tower.webp';
-import eifGif from '@/assets/images/2026/26-02/26-02-08/eif.gif';
+import analogBgImage from '@/assets/images/26_images/26-02/26-02-08/tower.webp';
+import eifGif from '@/assets/images/26_images/26-02/26-02-08/eif.gif';
 
 export const background = analogBgImage;
 
@@ -16,15 +16,20 @@ const STYLE_CONFIG = {
 };
 
 const TrocClock: React.FC = () => {
-  const fontConfigs = useMemo(() => [{
-      fontFamily: 'TrocaderoFont',
-      fontUrl: trocaderoFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-  }], []);
-  
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'TrocaderoFont',
+        fontUrl: trocaderoFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   const time = useSecondClock();

@@ -37,7 +37,11 @@
 .overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(95, 225, 56, 0.35) 0%, rgba(180, 156, 89, 0.38) 100%);
+  background: radial-gradient(
+    circle at center,
+    rgba(95, 225, 56, 0.35) 0%,
+    rgba(180, 156, 89, 0.38) 100%
+  );
   pointer-events: none;
   z-index: 1;
 }
@@ -73,7 +77,7 @@
   left: 50%;
   transform-origin: bottom center;
   border-radius: 50% 50% 0 0;
-  box-shadow: 0 0 8px rgba(255,255,255,0.3);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
 }
 
 .hourHand {
@@ -93,7 +97,7 @@
 .secondHand {
   width: 1%;
   height: 242%;
-  background-color: #FFFFFF6E;
+  background-color: #ffffff6e;
   z-index: 4;
 }
 

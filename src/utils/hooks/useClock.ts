@@ -11,4 +11,3 @@ export function useClock() {
 }
 
 export default useClock;
-

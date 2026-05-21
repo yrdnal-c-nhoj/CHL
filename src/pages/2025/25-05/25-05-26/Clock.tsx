@@ -1,9 +1,9 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import spr from '@/assets/images/2025/25-05/25-05-26/spr.gif';
-import sprou from '@/assets/images/2025/25-05/25-05-26/sprou.gif';
-import sprout from '@/assets/images/2025/25-05/25-05-26/sprout.gif';
+import spr from '@/assets/images/25_images/25-05/25-05-26/spr.gif';
+import sprou from '@/assets/images/25_images/25-05/25-05-26/sprou.gif';
+import sprout from '@/assets/images/25_images/25-05/25-05-26/sprout.gif';
 import sproutFontTtf from '@/assets/fonts/25fonts/25-05-26-sprout.ttf?url';
 
 const baseStyles = {
@@ -107,9 +107,9 @@ export default function SproutClock() {
       fontUrl: sproutFontTtf,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

@@ -48,7 +48,13 @@
 .numeral {
   position: absolute;
   font-size: 6vh;
-  background: linear-gradient(180deg, #24058B 0%, #3e0808 45%, #232222 50%, #062D79 100%);
+  background: linear-gradient(
+    180deg,
+    #24058b 0%,
+    #3e0808 45%,
+    #232222 50%,
+    #062d79 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(1px 1px 0px white);
@@ -72,7 +78,12 @@
   contain: layout paint;
 }
 
-
-.hourHand { background: linear-gradient(to right, #283a6f, #282727, #4D4949); }
-.minuteHand { background: linear-gradient(to right, #283a6f, #383636, #484444); }
-.secondHand { background: linear-gradient(to top, #283a6f, #4F4F52); }
+.hourHand {
+  background: linear-gradient(to right, #283a6f, #282727, #4d4949);
+}
+.minuteHand {
+  background: linear-gradient(to right, #283a6f, #383636, #484444);
+}
+.secondHand {
+  background: linear-gradient(to top, #283a6f, #4f4f52);
+}

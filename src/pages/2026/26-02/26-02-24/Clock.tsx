@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useClockTime } from '@/utils/hooks'; // Corrected import path
 // import { useSuspenseFontLoader } from '@/utils/fontLoader'; // Not suitable for external Google Fonts
-import futurBg from '@/assets/images/2026/26-02/26-02-24/futur.jpg';
+import futurBg from '@/assets/images/26_images/26-02/26-02-24/futur.jpg';
 
 interface Position {
   top: string;
@@ -11,7 +11,8 @@ interface Position {
   font: string;
 }
 
-const GOOGLE_FONTS_URL = 'https://fonts.googleapis.com/css2?family=Dancing+Script&family=Creepster&family=Oswald&family=Cinzel+Decorative&family=Metal+Mania&family=UnifrakturMaguntia&family=ZCOOL+KuaiLe&family=Press+Start+2P&family=Space+Mono&display=swap';
+const GOOGLE_FONTS_URL =
+  'https://fonts.googleapis.com/css2?family=Dancing+Script&family=Creepster&family=Oswald&family=Cinzel+Decorative&family=Metal+Mania&family=UnifrakturMaguntia&family=ZCOOL+KuaiLe&family=Press+Start+2P&family=Space+Mono&display=swap';
 
 const POSITIONS: Position[] = [
   {
@@ -69,13 +70,15 @@ const ImageDisplay = () => {
     link.href = GOOGLE_FONTS_URL;
     link.rel = 'stylesheet';
     document.head.appendChild(link);
-    return () => { document.head.removeChild(link); };
+    return () => {
+      document.head.removeChild(link);
+    };
   }, []);
 
   // Accessibility: Update time string for screen readers
-  const ariaTime = useMemo(() => 
-    time.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
-    [time.getHours(), time.getMinutes()]
+  const ariaTime = useMemo(
+    () => time.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
+    [time.getHours(), time.getMinutes()],
   );
 
   const { amPm, digits } = useMemo(() => {
@@ -146,9 +149,10 @@ const ImageDisplay = () => {
           <span
             key={index}
             style={{
-              fontFamily: index === 0 
-                ? '"UnifrakturMaguntia", cursive, serif'
-                : '"ZCOOL KuaiLe", cursive, sans-serif',
+              fontFamily:
+                index === 0
+                  ? '"UnifrakturMaguntia", cursive, serif'
+                  : '"ZCOOL KuaiLe", cursive, sans-serif',
             }}
           >
             {letter}
@@ -170,9 +174,10 @@ const ImageDisplay = () => {
           <span
             key={index}
             style={{
-              fontFamily: index === 0 
-                ? '"Press Start 2P", cursive, monospace'
-                : '"Space Mono", monospace, sans-serif',
+              fontFamily:
+                index === 0
+                  ? '"Press Start 2P", cursive, monospace'
+                  : '"Space Mono", monospace, sans-serif',
             }}
           >
             {letter}

@@ -13,12 +13,12 @@ export interface ClockTax {
 }
 
 const clockTax: ClockTax = {
-  title: "Number Toss Clock Tax Information",
-  content: "hello world",
+  title: 'Number Toss Clock Tax Information',
+  content: 'hello world',
   metadata: {
-    created: "2025-05-10",
-    version: "1.0.0"
-  }
+    created: '2025-05-10',
+    version: '1.0.0',
+  },
 };
 
 export default clockTax;

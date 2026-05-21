@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import sunGif from '@/assets/images/2025/25-05/25-05-22/sun.gif'; // Use static import
+import sunGif from '@/assets/images/25_images/25-05/25-05-22/sun.gif'; // Use static import
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import dirFontUrl from '@/assets/fonts/25fonts/25-05-22-Dir.ttf'; // Use static import
 
@@ -26,9 +26,9 @@ const Clock: React.FC = () => {
       fontUrl: dirFontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

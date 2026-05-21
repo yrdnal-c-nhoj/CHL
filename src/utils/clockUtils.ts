@@ -20,7 +20,10 @@ const pad = (num: number): string => num.toString().padStart(2, '0');
  * @param format The desired output format ('24h', '12h', '12h-stylized').
  * @returns The formatted time string.
  */
-export const formatTime = (date: Date, format: '24h' | '12h' | '12h-stylized' = '24h'): string => {
+export const formatTime = (
+  date: Date,
+  format: '24h' | '12h' | '12h-stylized' = '24h',
+): string => {
   const hours24 = date.getHours();
   const minutes = date.getMinutes();
   const seconds = date.getSeconds();
@@ -37,7 +40,9 @@ export const formatTime = (date: Date, format: '24h' | '12h' | '12h-stylized' = 
       const stylizedMinutes = date.getMinutes();
       const stylizedAmpm = stylizedHours >= 12 ? 'pm' : 'am';
       stylizedHours = stylizedHours % 12 || 12;
-      return `${stylizedHours}${stylizedMinutes.toString().padStart(2, '0')} ${stylizedAmpm}`.split('').join(' ');
+      return `${stylizedHours}${stylizedMinutes.toString().padStart(2, '0')} ${stylizedAmpm}`
+        .split('')
+        .join(' ');
     default:
       return date.toLocaleTimeString(); // Fallback for unknown formats
   }

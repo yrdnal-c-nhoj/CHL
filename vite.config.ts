@@ -50,18 +50,18 @@ export default defineConfig({
             // Use physical path segments instead of aliases which aren't expanded here
             if (id.includes('/src/utils/')) return 'utils';
             // Allow individual code-splitting for clock pages to prevent a massive single bundle
-            // if (id.includes('/src/pages/')) return 'clocks'; 
+            // if (id.includes('/src/pages/')) return 'clocks';
             if (id.includes('/src/components/')) return 'ui';
             return;
           }
-          
+
           if (id.includes('three')) return 'three';
-          
-          // More specific matching for core framework to avoid catching 
+
+          // More specific matching for core framework to avoid catching
           // every library that has "react" in the name
           if (
-            id.includes('node_modules/react/') || 
-            id.includes('node_modules/react-dom/') || 
+            id.includes('node_modules/react/') ||
+            id.includes('node_modules/react-dom/') ||
             id.includes('node_modules/scheduler/')
           ) {
             return 'framework';

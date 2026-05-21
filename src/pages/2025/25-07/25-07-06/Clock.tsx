@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import polFont from '@/assets/fonts/25fonts/25-07-06-pol.otf';
-import polarisGif from '@/assets/images/2025/25-07/25-07-06/polaris.gif';
+import polarisGif from '@/assets/images/25_images/25-07/25-07-06/polaris.gif';
 
 const CLOCK_NUMBERS = [
   { num: '12', top: '5%', left: '50%' },
@@ -29,9 +29,9 @@ const Clock: React.FC = () => {
       fontUrl: polFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

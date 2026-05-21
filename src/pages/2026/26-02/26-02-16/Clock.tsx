@@ -3,8 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
-import mazeImage from '@/assets/images/2026/26-02/26-02-16/puzzle.webp';
-import loopImage from '@/assets/images/2026/26-02/26-02-16/loop.webp';
+import mazeImage from '@/assets/images/26_images/26-02/26-02-16/puzzle.webp';
+import loopImage from '@/assets/images/26_images/26-02/26-02-16/loop.webp';
 import mazeFont from '@/assets/fonts/26fonts/26-02-16-maze.ttf';
 
 export { mazeImage };
@@ -58,14 +58,16 @@ const Digit = React.memo(({ char }: { char: string }) => {
 });
 Digit.displayName = 'Digit';
 
-export const fontConfigs = [{
-  fontFamily: 'MazeFont',
-  fontUrl: mazeFont,
-  options: {
-    weight: 'normal',
-    style: 'normal'
-  }
-}];
+export const fontConfigs = [
+  {
+    fontFamily: 'MazeFont',
+    fontUrl: mazeFont,
+    options: {
+      weight: 'normal',
+      style: 'normal',
+    },
+  },
+];
 
 const DigitalClock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);

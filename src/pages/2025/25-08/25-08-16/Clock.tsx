@@ -2,12 +2,12 @@ import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import imageLeft from '@/assets/images/2025/25-08/25-08-16/pal.webp';
-import clockFace from '@/assets/images/2025/25-08/25-08-16/palm.webp';
+import imageLeft from '@/assets/images/25_images/25-08/25-08-16/pal.webp';
+import clockFace from '@/assets/images/25_images/25-08/25-08-16/palm.webp';
 import customFontUrl from '@/assets/fonts/25fonts/25-08-16-palm.ttf';
-import hourHandImage from '@/assets/images/2025/25-08/25-08-16/p1.gif';
-import minuteHandImage from '@/assets/images/2025/25-08/25-08-16/p2.webp';
-import secondHandImage from '@/assets/images/2025/25-08/25-08-16/p3.gif';
+import hourHandImage from '@/assets/images/25_images/25-08/25-08-16/p1.gif';
+import minuteHandImage from '@/assets/images/25_images/25-08/25-08-16/p2.webp';
+import secondHandImage from '@/assets/images/25_images/25-08/25-08-16/p3.gif';
 
 const CLOCK_FONT_FAMILY = 'ClockFont__Scoped_9k2';
 
@@ -19,9 +19,9 @@ const MirroredBackground: React.FC = () => {
       fontUrl: customFontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

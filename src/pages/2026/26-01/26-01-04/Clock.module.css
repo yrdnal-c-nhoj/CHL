@@ -1,0 +1,19 @@
+/* Clock.module.css for 26-01-04 */
+
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000; /* Default to black background */
+  color: #fff; /* Default to white text */
+  font-family: monospace; /* Default font */
+  font-size: clamp(4rem, 15vw, 12rem);
+}
+
+/* Example for a time display element */
+.timeDisplay {
+  /* Add specific styles for your time display here */
+  text-shadow: 0 0 1rem rgba(0, 0, 0, 0.8);
+}

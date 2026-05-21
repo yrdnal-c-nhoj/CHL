@@ -148,25 +148,25 @@ function ModernDigitalClock() {
       fontUrl: WebFonnov25ufuf,
       options: {
         weight: '400',
-        style: 'normal'
-      }
+        style: 'normal',
+      },
     },
     {
       fontFamily: 'Poppins',
       fontUrl: Webfont2511055,
       options: {
         weight: '700',
-        style: 'normal'
-      }
+        style: 'normal',
+      },
     },
     {
       fontFamily: 'Teko',
       fontUrl: w251105font,
       options: {
         weight: '700',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

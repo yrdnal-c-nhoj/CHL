@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
-import canisBg from '@/assets/images/2026/26-05/26-05-21/canis.webp';
-import canisComponent from '@/assets/images/2026/26-05/26-05-21/canis2.webp';
-import canisComponent4 from '@/assets/images/2026/26-05/26-05-21/canis4.webp'; // // Corrected image path
+import canisBg from '@/assets/images/26_images/26-05/26-05-21/canis.webp';
+import canisComponent from '@/assets/images/26_images/26-05/26-05-21/canis2.webp';
+import canisComponent4 from '@/assets/images/26_images/26-05/26-05-21/canis4.webp'; // // Corrected image path
 import fontUrl from '@/assets/fonts/26fonts/26-05-21.otf?url'; // Uses existing font file
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
@@ -18,7 +18,6 @@ export const fontConfigs: FontConfig[] = [
   },
 ];
 
-
 // ---------------- COMPONENTS ----------------
 const BackgroundLayers: React.FC = () => (
   <div
@@ -33,8 +32,8 @@ const ComponentLayers: React.FC = () => (
       className={styles.componentImage1}
       style={{ backgroundImage: `url(${canisComponent})` }}
     />
-  
-     <div
+
+    <div
       className={styles.componentImage3}
       style={{ backgroundImage: `url(${canisComponent4})` }}
     />
@@ -74,9 +73,18 @@ const ClockFace: React.FC<{ fontFamily: string }> = ({ fontFamily }) => {
             {num}
           </span>
         ))}
-        <div className={styles.hourHand} style={{ transform: `rotate(${hourDeg}deg)` }} />
-        <div className={styles.minuteHand} style={{ transform: `rotate(${minuteDeg}deg)` }} />
-        <div className={styles.secondHand} style={{ transform: `rotate(${secondDeg}deg)` }} />
+        <div
+          className={styles.hourHand}
+          style={{ transform: `rotate(${hourDeg}deg)` }}
+        />
+        <div
+          className={styles.minuteHand}
+          style={{ transform: `rotate(${minuteDeg}deg)` }}
+        />
+        <div
+          className={styles.secondHand}
+          style={{ transform: `rotate(${secondDeg}deg)` }}
+        />
         <div className={styles.centerDot} />
       </time>
     </div>

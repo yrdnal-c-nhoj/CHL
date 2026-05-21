@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useClockTime } from '@/utils/hooks';
-import roomImage from '@/assets/images/2025/25-04/25-04-09/room.webp';
+import roomImage from '@/assets/images/25_images/25-04/25-04-09/room.webp';
 
 export { roomImage }; // Export for preloading pipeline
 

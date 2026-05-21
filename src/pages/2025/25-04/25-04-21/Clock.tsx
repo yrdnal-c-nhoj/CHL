@@ -3,13 +3,13 @@ import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 
-import hourHand from '@/assets/images/2025/25-04/25-04-21/hour.gif';
-import minuteHand from '@/assets/images/2025/25-04/25-04-21/minute.gif';
-import secondHand from '@/assets/images/2025/25-04/25-04-21/second.gif';
-import bgImage from '@/assets/images/2025/25-04/25-04-21/pp.gif'; // spinning layer
-import mainBackground from '@/assets/images/2025/25-04/25-04-21/p.jpg'; // static full-screen background
-import overlayTopLeft from '@/assets/images/2025/25-04/25-04-21/Pea.gif'; // top-left overlay
-import overlayBottomRight from '@/assets/images/2025/25-04/25-04-21/Pea2.gif'; // bottom-right overlay (different file)
+import hourHand from '@/assets/images/25_images/25-04/25-04-21/hour.gif';
+import minuteHand from '@/assets/images/25_images/25-04/25-04-21/minute.gif';
+import secondHand from '@/assets/images/25_images/25-04/25-04-21/second.gif';
+import bgImage from '@/assets/images/25_images/25-04/25-04-21/pp.gif'; // spinning layer
+import mainBackground from '@/assets/images/25_images/25-04/25-04-21/p.jpg'; // static full-screen background
+import overlayTopLeft from '@/assets/images/25_images/25-04/25-04-21/Pea.gif'; // top-left overlay
+import overlayBottomRight from '@/assets/images/25_images/25-04/25-04-21/Pea2.gif'; // bottom-right overlay (different file)
 
 // Clock refs interface
 interface ClockRefs {

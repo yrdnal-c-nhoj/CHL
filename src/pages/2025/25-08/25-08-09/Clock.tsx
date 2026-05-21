@@ -10,9 +10,9 @@ export const fontConfigs = [
     fontUrl: customFont,
     options: {
       weight: 'normal',
-      style: 'normal'
-    }
-  }
+      style: 'normal',
+    },
+  },
 ];
 
 const RectangularAnalogClock: React.FC = () => {

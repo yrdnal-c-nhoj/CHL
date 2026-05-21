@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import videoFile from '@/assets/images/2025/25-12/25-12-28/coaster.mp4';
-import fallbackImg from '@/assets/images/2025/25-12/25-12-28/coaster.webp';
+import videoFile from '@/assets/images/25_images/25-12/25-12-28/coaster.mp4';
+import fallbackImg from '@/assets/images/25_images/25-12/25-12-28/coaster.webp';
 import fontUrl_20251128 from '@/assets/fonts/25fonts/25-12-28-coaster.ttf?url';
 
 export default function Clock() {
@@ -12,9 +12,10 @@ export default function Clock() {
   const videoRef = useRef(null);
   const animationFrameId = useRef<number | null>(null);
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'CustomFont_20251128', fontUrl: fontUrl_20251128 }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'CustomFont_20251128', fontUrl: fontUrl_20251128 }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 

@@ -20,7 +20,7 @@ export const fontConfigs = [
 
 const OutwardDistortedClock: React.FC = () => {
   const time = useMillisecondClock();
-  
+
   useSuspenseFontLoader(fontConfigs);
 
   const { digits, phase } = useMemo(() => {
@@ -34,7 +34,6 @@ const OutwardDistortedClock: React.FC = () => {
       phase: (time.getTime() / 1000) * OVAL.SPEED * 2 * Math.PI,
     };
   }, [time]);
-
 
   return (
     <div

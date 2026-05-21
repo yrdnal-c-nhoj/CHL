@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import suvFont from '@/assets/fonts/25fonts/25-07-07-suv.ttf';
-import suvImage from '@/assets/images/2025/25-07/25-07-07/suv.gif';
-import suvBackground from '@/assets/images/2025/25-07/25-07-07/suvx.jpg';
+import suvImage from '@/assets/images/25_images/25-07/25-07-07/suv.gif';
+import suvBackground from '@/assets/images/25_images/25-07/25-07-07/suvx.jpg';
 
 const Clock: React.FC = () => {
   const [time, setTime] = useState<any>({
@@ -19,14 +19,13 @@ const Clock: React.FC = () => {
       fontUrl: suvFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
-
     const updateClock: React.FC = () => {
       const now = new Date();
       let hours = now.getHours();

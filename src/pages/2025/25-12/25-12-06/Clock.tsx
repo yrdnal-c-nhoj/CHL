@@ -5,12 +5,12 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // Image paths in public folder
-import bgImage from '@/assets/images/2025/25-12/25-12-06/giraffe.webp';
-import hourHandImggir from '@/assets/images/2025/25-12/25-12-06/hand3.gif';
-import minnnuteHandImg from '@/assets/images/2025/25-12/25-12-06/hand1.gif';
-import secondHandImg from '@/assets/images/2025/25-12/25-12-06/hand2.gif';
-import tileImg from '@/assets/images/2025/25-12/25-12-06/run.webp';
-import centerImg from '@/assets/images/2025/25-12/25-12-06/walk.webp';
+import bgImage from '@/assets/images/25_images/25-12/25-12-06/giraffe.webp';
+import hourHandImggir from '@/assets/images/25_images/25-12/25-12-06/hand3.gif';
+import minnnuteHandImg from '@/assets/images/25_images/25-12/25-12-06/hand1.gif';
+import secondHandImg from '@/assets/images/25_images/25-12/25-12-06/hand2.gif';
+import tileImg from '@/assets/images/25_images/25-12/25-12-06/run.webp';
+import centerImg from '@/assets/images/25_images/25-12/25-12-06/walk.webp';
 import customFont_2025_1206 from '@/assets/fonts/25fonts/25-12-06-gir.otf?url';
 
 export default function AnalogClock() {

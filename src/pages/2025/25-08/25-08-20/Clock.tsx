@@ -3,7 +3,7 @@ import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import myFontUrl from '@/assets/fonts/25fonts/25-08-20-go.otf?url';
-import bgImage from '@/assets/images/2025/25-08/25-08-20/24.webp'; // background image
+import bgImage from '@/assets/images/25_images/25-08/25-08-20/24.webp'; // background image
 import styles from './Clock.module.css';
 
 const TIMEZONES = [
@@ -34,7 +34,10 @@ const TIMEZONES = [
 ];
 
 // Analog clock component
-const AnalogClock: React.FC<{ zone: string; clockSize: number }> = ({ zone, clockSize }) => {
+const AnalogClock: React.FC<{ zone: string; clockSize: number }> = ({
+  zone,
+  clockSize,
+}) => {
   const time = useSmoothClock();
 
   const local = new Date(time.toLocaleString('en-US', { timeZone: zone }));
@@ -54,8 +57,8 @@ const AnalogClock: React.FC<{ zone: string; clockSize: number }> = ({ zone, cloc
 
   return (
     <div className={styles.clockContainer}>
-      <div 
-        className={styles.clockFace} 
+      <div
+        className={styles.clockFace}
         style={{ width: `${clockSize}px`, height: `${clockSize}px` }}
       >
         <div
@@ -111,7 +114,7 @@ const AnalogClock: React.FC<{ zone: string; clockSize: number }> = ({ zone, cloc
       </div>
     </div>
   );
-}
+};
 
 export default function WorldClockGrid() {
   const [dimensions, setDimensions] = useState({
@@ -119,9 +122,10 @@ export default function WorldClockGrid() {
     height: window.innerHeight,
   });
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'MyCustomFont', fontUrl: myFontUrl }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'MyCustomFont', fontUrl: myFontUrl }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -144,7 +148,7 @@ export default function WorldClockGrid() {
     10;
 
   return (
-    <div 
+    <div
       className={styles.container}
       style={{
         gridTemplateColumns: `repeat(${cols}, 1fr)`,
@@ -153,11 +157,7 @@ export default function WorldClockGrid() {
       }}
     >
       {TIMEZONES.map((zone) => (
-        <AnalogClock
-          key={zone}
-          zone={zone}
-          clockSize={clockSize}
-        />
+        <AnalogClock key={zone} zone={zone} clockSize={clockSize} />
       ))}
     </div>
   );

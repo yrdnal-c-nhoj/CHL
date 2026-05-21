@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useEffect } from 'react';
 
 import { useClockTime } from '@/utils/clockUtils';
-import backgroundImage from '@/assets/images/2026/26-05/26-05-01/sampson-radar-spinning-loop-1yfouy6i3iowbryl-ezgif.com-speed.webp';
+import backgroundImage from '@/assets/images/26_images/26-05/26-05-01/sampson-radar-spinning-loop-1yfouy6i3iowbryl-ezgif.com-speed.webp';
 
 import styles from './Clock.module.css';
 
@@ -13,9 +13,15 @@ interface HandProps {
   type: 'hour' | 'minute' | 'second';
 }
 
-const ClockHand: React.FC<HandProps> = ({ angle, length, width, color, type }) => {
+const ClockHand: React.FC<HandProps> = ({
+  angle,
+  length,
+  width,
+  color,
+  type,
+}) => {
   const zIndex = type === 'second' ? 30 : type === 'minute' ? 20 : 10;
-  
+
   const handStyle: React.CSSProperties = {
     position: 'absolute',
     bottom: '50%',
@@ -30,16 +36,21 @@ const ClockHand: React.FC<HandProps> = ({ angle, length, width, color, type }) =
     transition: 'none',
   };
 
-  return <div style={handStyle} className={styles.hand} data-hand-type={type} />;
+  return (
+    <div style={handStyle} className={styles.hand} data-hand-type={type} />
+  );
 };
 
 const AnalogClock: React.FC = () => {
   const time = useClockTime('ms');
   const rafRef = useRef<number | null>(null);
   const [, forceRender] = React.useReducer((x) => x + 1, 0);
-  
+
   // Get current dimensions for oval calculations
-  const [dims, setDims] = React.useState({ w: window.innerWidth, h: window.innerHeight });
+  const [dims, setDims] = React.useState({
+    w: window.innerWidth,
+    h: window.innerHeight,
+  });
   const rx = (dims.w * 0.95) / 2;
   const ry = (dims.h * 0.95) / 2;
 
@@ -50,7 +61,8 @@ const AnalogClock: React.FC = () => {
     };
     rafRef.current = requestAnimationFrame(animate);
 
-    const handleResize = () => setDims({ w: window.innerWidth, h: window.innerHeight });
+    const handleResize = () =>
+      setDims({ w: window.innerWidth, h: window.innerHeight });
     window.addEventListener('resize', handleResize);
 
     return () => {
@@ -79,7 +91,11 @@ const AnalogClock: React.FC = () => {
     const rad = (deg - 90) * (Math.PI / 180);
     const a = rx;
     const b = ry;
-    const r = (a * b) / Math.sqrt(Math.pow(b * Math.cos(rad), 2) + Math.pow(a * Math.sin(rad), 2));
+    const r =
+      (a * b) /
+      Math.sqrt(
+        Math.pow(b * Math.cos(rad), 2) + Math.pow(a * Math.sin(rad), 2),
+      );
     return r;
   };
 
@@ -88,22 +104,26 @@ const AnalogClock: React.FC = () => {
   const minuteAngle = (minutes + totalSeconds / 60) * 6;
   const hourAngle = ((hours % 12) + (minutes + totalSeconds / 60) / 60) * 30;
 
-  const tickMarks = useMemo(() => Array.from({ length: 60 }, (_, i) => {
-    const angle = i * 6;
-    const r = getOvalRadius(angle);
-    const rad = (angle - 90) * (Math.PI / 180);
-    return {
-      id: i,
-      angle,
-      isHour: i % 5 === 0,
-      x: 50 + (r / rx) * 48 * Math.cos(rad),
-      y: 50 + (r / ry) * 48 * Math.sin(rad),
-    };
-  }), [rx, ry]);
+  const tickMarks = useMemo(
+    () =>
+      Array.from({ length: 60 }, (_, i) => {
+        const angle = i * 6;
+        const r = getOvalRadius(angle);
+        const rad = (angle - 90) * (Math.PI / 180);
+        return {
+          id: i,
+          angle,
+          isHour: i % 5 === 0,
+          x: 50 + (r / rx) * 48 * Math.cos(rad),
+          y: 50 + (r / ry) * 48 * Math.sin(rad),
+        };
+      }),
+    [rx, ry],
+  );
 
   return (
-    <div 
-      className={styles.container} 
+    <div
+      className={styles.container}
       style={{ '--bg-image': `url(${backgroundImage})` } as React.CSSProperties}
     >
       <time dateTime={isoTime} className={styles.timeWrapper}>
@@ -149,8 +169,7 @@ const AnalogClock: React.FC = () => {
             width="0.5vh"
             color="#3A3A3C"
           />
-
-         </div>
+        </div>
       </time>
     </div>
   );

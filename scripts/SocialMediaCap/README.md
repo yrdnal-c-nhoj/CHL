@@ -38,6 +38,7 @@ node scripts/SocialMediaCap/capture-clocks.mjs
 #### Technical Specifications
 
 ##### Thumbnail Format
+
 - **Dimensions**: 500x500px (1:1 square)
 - **Format**: WebP (optimized for web)
 - **Quality**: 90%
@@ -45,12 +46,14 @@ node scripts/SocialMediaCap/capture-clocks.mjs
 - **Wait Time**: 2 seconds for animations to settle
 
 ##### Capture Optimizations
+
 - **Navigation Hiding**: Removes header, footer, and navigation elements
 - **Content Centering**: Centers clock content in 500x500 viewport
 - **Black Background**: Ensures consistent background color
 - **Error Handling**: Graceful failure handling with detailed error messages
 
 ##### Browser Settings
+
 - **Headless Mode**: Runs without UI for performance
 - **Sandbox Disabled**: Prevents hangs in complex clocks
 - **Timeout**: 15 seconds navigation, 5 seconds content wait
@@ -130,6 +133,7 @@ public/screenshots/
 ## Technical Specifications
 
 ### Image Quality
+
 - **Format**: WebP (optimized for web)
 - **Quality**: Platform-specific (85-90%)
 - **DPI**: 2x (for high-resolution displays)
@@ -138,24 +142,28 @@ public/screenshots/
 ### Platform Specifications
 
 #### Instagram
+
 - **Dimensions**: 1080x1080px (1:1 square)
 - **Quality**: 90%
 - **Optimizations**: Centered content with padding, hidden navigation
 - **Best for**: Instagram posts, stories
 
 #### Twitter
+
 - **Dimensions**: 1200x675px (16:9 landscape)
 - **Quality**: 85%
 - **Optimizations**: Centered content, hidden navigation
 - **Best for**: Twitter posts, cards
 
 #### Facebook
+
 - **Dimensions**: 1200x630px (16:9 landscape)
 - **Quality**: 85%
 - **Optimizations**: Centered content, hidden navigation
 - **Best for**: Facebook posts, shares
 
 ### Platform Optimizations
+
 - **Navigation Hiding**: Removes header, footer, and navigation elements
 - **Content Centering**: Optimizes layout for each platform's aspect ratio
 - **Background Control**: Ensures clean, consistent backgrounds
@@ -206,6 +214,7 @@ The social media capture scripts work in conjunction with the component finaliza
 ### Debug Mode
 
 For detailed logging, run with verbose output:
+
 ```bash
 DEBUG=true npm run capture:daily
 ```

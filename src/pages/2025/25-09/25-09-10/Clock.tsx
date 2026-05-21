@@ -4,10 +4,10 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
 // Local images
-import bgImage from '@/assets/images/2025/25-09/25-09-10/bg.webp';
-import hourHand from '@/assets/images/2025/25-09/25-09-10/hour.gif';
-import minuteHand from '@/assets/images/2025/25-09/25-09-10/min.gif';
-import secondHand from '@/assets/images/2025/25-09/25-09-10/sec.gif';
+import bgImage from '@/assets/images/25_images/25-09/25-09-10/bg.webp';
+import hourHand from '@/assets/images/25_images/25-09/25-09-10/hour.gif';
+import minuteHand from '@/assets/images/25_images/25-09/25-09-10/min.gif';
+import secondHand from '@/assets/images/25_images/25-09/25-09-10/sec.gif';
 
 // Local font
 import customLavaFont from '@/assets/fonts/25fonts/25-09-10-lava.otf?url';
@@ -20,9 +20,9 @@ const Clock: React.FC = () => {
       fontUrl: customLavaFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   const time = useSmoothClock();

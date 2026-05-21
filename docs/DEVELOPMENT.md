@@ -2,15 +2,15 @@
 
 **This is the single source of truth** for how to work in this repository. Other docs link here for workflow, registry policy, quality gates, and commands.
 
-| Document | Role |
-|----------|------|
-| **This file** | Policy, workflow, commands, CI, registry rules |
-| [`README.md`](../README.md) | Project intro, stack, links |
-| [`src/templates/ARCHITECTURE.md`](../src/templates/ARCHITECTURE.md) | Clock component patterns, hooks, CSS |
-| [`ROADMAP.md`](../ROADMAP.md) | Future phases and backlog only |
-| [`docs/SITE_SURVEY.md`](./SITE_SURVEY.md) | Historical evaluation snapshot (2026-05-20) |
-| [`scripts/*/README.md`](../scripts/) | Script-specific flags and paths |
-| `AGENTS.md` (gitignored) | Cursor agent shorthand — must match this file |
+| Document                                                            | Role                                           |
+| ------------------------------------------------------------------- | ---------------------------------------------- |
+| **This file**                                                       | Policy, workflow, commands, CI, registry rules |
+| [`README.md`](../README.md)                                         | Project intro, stack, links                    |
+| [`src/templates/ARCHITECTURE.md`](../src/templates/ARCHITECTURE.md) | Clock component patterns, hooks, CSS           |
+| [`ROADMAP.md`](../ROADMAP.md)                                       | Future phases and backlog only                 |
+| [`docs/SITE_SURVEY.md`](./SITE_SURVEY.md)                           | Historical evaluation snapshot (2026-05-20)    |
+| [`scripts/*/README.md`](../scripts/)                                | Script-specific flags and paths                |
+| `AGENTS.md` (gitignored)                                            | Cursor agent shorthand — must match this file  |
 
 ---
 
@@ -36,11 +36,11 @@ src/
 
 ### Policy: manual registry only
 
-| Tool | Touches `clockpages.json`? |
-|------|----------------------------|
-| `npm run clock:new` | **No** — files only |
-| `npm run finalize` | **No** — validate, assets, screenshots |
-| CI / scripts / agents | **No** — never auto-register |
+| Tool                  | Touches `clockpages.json`?             |
+| --------------------- | -------------------------------------- |
+| `npm run clock:new`   | **No** — files only                    |
+| `npm run finalize`    | **No** — validate, assets, screenshots |
+| CI / scripts / agents | **No** — never auto-register           |
 
 **You** add each clock to `src/context/clockpages.json` when it should appear in the site, archive, and capture scripts.
 
@@ -103,16 +103,16 @@ cp src/templates/BaseClock.module.css src/pages/2026/26-05/26-05-01/Clock.module
 
 ## BorrowedTime Standard (BTS)
 
-| Rule | Requirement |
-|------|-------------|
-| Type safety | `.tsx` for clocks; avoid `any` |
-| Styles | `.module.css` per clock; Tailwind for shared UI |
-| Markup | `<main>` wrapper; `<time dateTime={...}>` for time display |
-| Time | `useClockTime()` or `useSmoothClock()` — not raw `setInterval` in new work |
-| Fonts | `useSuspenseFontLoader()` |
-| DOM | `useRef` only — no `document.querySelector` |
-| Cleanup | Clear `setTimeout`, `setInterval`, `requestAnimationFrame` on unmount |
-| PR gate | `npm run finalize` + CI checks below |
+| Rule        | Requirement                                                                |
+| ----------- | -------------------------------------------------------------------------- |
+| Type safety | `.tsx` for clocks; avoid `any`                                             |
+| Styles      | `.module.css` per clock; Tailwind for shared UI                            |
+| Markup      | `<main>` wrapper; `<time dateTime={...}>` for time display                 |
+| Time        | `useClockTime()` or `useSmoothClock()` — not raw `setInterval` in new work |
+| Fonts       | `useSuspenseFontLoader()`                                                  |
+| DOM         | `useRef` only — no `document.querySelector`                                |
+| Cleanup     | Clear `setTimeout`, `setInterval`, `requestAnimationFrame` on unmount      |
+| PR gate     | `npm run finalize` + CI checks below                                       |
 
 Detail and examples: [`src/templates/ARCHITECTURE.md`](../src/templates/ARCHITECTURE.md).
 
@@ -122,28 +122,28 @@ Detail and examples: [`src/templates/ARCHITECTURE.md`](../src/templates/ARCHITEC
 
 ### Daily
 
-| Command | Purpose |
-|---------|---------|
-| `npm run dev` | Dev server (http://localhost:5173) |
-| `npm run build` | Production build |
-| `npm run preview` | Preview `dist/` |
+| Command           | Purpose                            |
+| ----------------- | ---------------------------------- |
+| `npm run dev`     | Dev server (http://localhost:5173) |
+| `npm run build`   | Production build                   |
+| `npm run preview` | Preview `dist/`                    |
 
 ### New clock
 
-| Command | Purpose |
-|---------|---------|
-| `npm run clock:new` | Scaffold `Clock.tsx` + CSS (**no registry**) |
-| `npm run finalize` | Validate, fix assets, capture thumbnails (**no registry**) |
+| Command             | Purpose                                                    |
+| ------------------- | ---------------------------------------------------------- |
+| `npm run clock:new` | Scaffold `Clock.tsx` + CSS (**no registry**)               |
+| `npm run finalize`  | Validate, fix assets, capture thumbnails (**no registry**) |
 
 ### Quality (matches CI)
 
-| Command | Purpose |
-|---------|---------|
-| `npm run type-check` | TypeScript — core app (`tsconfig.ci.json`, excludes `src/pages/**`) |
-| `npm run type-check:all` | Full repo including archive clock pages |
-| `npm run lint` | ESLint |
-| `npm run test:run` | Vitest single run |
-| `npm run build` | Vite production build |
+| Command                  | Purpose                                                             |
+| ------------------------ | ------------------------------------------------------------------- |
+| `npm run type-check`     | TypeScript — core app (`tsconfig.ci.json`, excludes `src/pages/**`) |
+| `npm run type-check:all` | Full repo including archive clock pages                             |
+| `npm run lint`           | ESLint                                                              |
+| `npm run test:run`       | Vitest single run                                                   |
+| `npm run build`          | Vite production build                                               |
 
 **Pre-commit / PR:**
 
@@ -153,12 +153,12 @@ npm run type-check && npm run lint && npm run test:run && npm run build
 
 ### Assets
 
-| Command | Purpose |
-|---------|---------|
-| `npm run audit:fonts` | Writes `unused-fonts-report.txt`, `non-standard-fonts.txt` (gitignored) |
-| `npm run audit:images` | Writes `unused-images-report.txt`, `unused-images-only-report.txt` (gitignored) |
-| `npm run optimize:images` | Batch WebP conversion (review diffs before commit) |
-| `npm run perf:analyze` | Bundle size analysis |
+| Command                   | Purpose                                                                         |
+| ------------------------- | ------------------------------------------------------------------------------- |
+| `npm run audit:fonts`     | Writes `unused-fonts-report.txt`, `non-standard-fonts.txt` (gitignored)         |
+| `npm run audit:images`    | Writes `unused-images-report.txt`, `unused-images-only-report.txt` (gitignored) |
+| `npm run optimize:images` | Batch WebP conversion (review diffs before commit)                              |
+| `npm run perf:analyze`    | Bundle size analysis                                                            |
 
 ### Environment
 
@@ -166,11 +166,11 @@ npm run type-check && npm run lint && npm run test:run && npm run build
 cp .env.example .env
 ```
 
-| Variable | Purpose |
-|----------|---------|
-| `VITE_ENVIRONMENT` | `development` / `production` |
-| `VITE_GA_MEASUREMENT_ID` | Google Analytics (optional) |
-| `VITE_BASE_URL` | Canonical site URL |
+| Variable                 | Purpose                      |
+| ------------------------ | ---------------------------- |
+| `VITE_ENVIRONMENT`       | `development` / `production` |
+| `VITE_GA_MEASUREMENT_ID` | Google Analytics (optional)  |
+| `VITE_BASE_URL`          | Canonical site URL           |
 
 ---
 
@@ -192,12 +192,12 @@ Node version: **24.x** (see `package.json` `engines`).
 
 ## Performance budgets
 
-| Metric | Limit |
-|--------|-------|
-| Clock bundle | 5 MB max |
-| Font assets per clock | 100 KB |
-| Image assets per clock | 2 MB |
-| Total page | 6 MB max |
+| Metric                 | Limit    |
+| ---------------------- | -------- |
+| Clock bundle           | 5 MB max |
+| Font assets per clock  | 100 KB   |
+| Image assets per clock | 2 MB     |
+| Total page             | 6 MB max |
 
 ---
 
@@ -206,9 +206,7 @@ Node version: **24.x** (see `package.json` `engines`).
 `src/context/clockpages.json` is a JSON **array**:
 
 ```json
-[
-  { "path": "25-04-02", "date": "25-04-02", "title": "Deep Space Clock" }
-]
+[{ "path": "25-04-02", "date": "25-04-02", "title": "Deep Space Clock" }]
 ```
 
 - **DEV** uses `testclocks.json` via `DataContext.tsx` when `import.meta.env.DEV` is true.
@@ -227,4 +225,4 @@ Node version: **24.x** (see `package.json` `engines`).
 
 ---
 
-*Cubist Heart Laboratories*
+_Cubist Heart Laboratories_

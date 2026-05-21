@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import highwayBg from '@/assets/images/2026/26-03/26-03-26/highway.webp';
+import highwayBg from '@/assets/images/26_images/26-03/26-03-26/highway.webp';
 import overFont from '@/assets/fonts/26fonts/26-03-26-over.otf';
 import styles from './Clock.module.css';
 
@@ -12,16 +12,19 @@ const Clock: React.FC = () => {
     {
       fontFamily: 'OverFont',
       fontUrl: overFont,
-    }
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const fontFamily = fontsLoaded ? 'OverFont, Courier New, monospace' : 'Courier New, monospace';
+  const fontFamily = fontsLoaded
+    ? 'OverFont, Courier New, monospace'
+    : 'Courier New, monospace';
 
   const timeDigits = useMemo(() => {
     const rawHours = time.getHours();
     const isPm = rawHours >= 12;
-    const hours12 = rawHours === 0 ? 12 : rawHours > 12 ? rawHours - 12 : rawHours;
+    const hours12 =
+      rawHours === 0 ? 12 : rawHours > 12 ? rawHours - 12 : rawHours;
 
     const formatTimeUnit = (unit: number) => unit.toString().padStart(2, '0');
 
@@ -36,20 +39,25 @@ const Clock: React.FC = () => {
   }, [time]);
 
   return (
-    <div className={styles.container} style={{ '--bg-image': `url(${highwayBg})` } as React.CSSProperties}>
+    <div
+      className={styles.container}
+      style={{ '--bg-image': `url(${highwayBg})` } as React.CSSProperties}
+    >
       <div className={styles.background} />
 
       <div className={styles.clockWrapper}>
         {[
           ...timeDigits.hours,
           ...timeDigits.minutes,
-          ...timeDigits.amPm.split('')
+          ...timeDigits.amPm.split(''),
         ].map((char, index) => (
-          <span 
-            key={index} 
+          <span
+            key={index}
             className={styles.digit}
             data-char={char}
-            style={{ fontFamily, '--digit-index': index } as React.CSSProperties}
+            style={
+              { fontFamily, '--digit-index': index } as React.CSSProperties
+            }
           >
             {char}
           </span>

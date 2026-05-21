@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import font_2025_11_21 from '@/assets/fonts/25fonts/25-11-18-cat.ttf?url';
-import bgImg from '@/assets/images/2025/25-11/25-11-18/eyes.webp';
+import bgImg from '@/assets/images/25_images/25-11/25-11-18/eyes.webp';
 export { bgImg }; // Export for preloading pipeline
 
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -32,10 +32,11 @@ export default function RotatedClockGrid() {
   const extraLeft = 6; // increase to show more clocks off the left edge
   const extraTop = 5; // increase to show more clocks above the top edge
   const FONT_FAMILY = 'ClockFont_2025_11_18_cat';
-  
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: FONT_FAMILY, fontUrl: font_2025_11_21 }
-  ], []);
+
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: FONT_FAMILY, fontUrl: font_2025_11_21 }],
+    [],
+  );
 
   // Suspends component rendering until the font is loaded.
   useSuspenseFontLoader(fontConfigs);
@@ -108,7 +109,8 @@ export default function RotatedClockGrid() {
       />
 
       {/* Main grid of digits, no filter applied */}
-      <time dateTime={`${hours}:${minutes}:${seconds}`}
+      <time
+        dateTime={`${hours}:${minutes}:${seconds}`}
         style={{
           position: 'relative',
           zIndex: 1,

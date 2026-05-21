@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import wobbleVideo from '@/assets/images/2026/26-04/26-04-19/wobble2.mp4';
+import wobbleVideo from '@/assets/images/26_images/26-04/26-04-19/wobble2.mp4';
 import wobbleFont from '@/assets/fonts/26fonts/26-04-19-wobble.ttf';
 import styles from './Clock.module.css';
 
@@ -32,7 +32,9 @@ const Clock: React.FC = () => {
 
       <div className={styles.clock}>
         {hours.split('').map((digit, i) => (
-          <span key={i} className={styles.digit}>{digit}</span>
+          <span key={i} className={styles.digit}>
+            {digit}
+          </span>
         ))}
         <span className={styles.digit}>:</span>
         <span className={styles.digit}>{minutes[0]}</span>

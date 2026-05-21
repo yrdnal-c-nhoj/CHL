@@ -3,7 +3,7 @@ import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import bgImage from '@/assets/images/2025/25-05/25-05-07/water.webp';
+import bgImage from '@/assets/images/25_images/25-05/25-05-07/water.webp';
 
 // Component Props interface
 interface ClockProps {

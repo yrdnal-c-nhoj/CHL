@@ -72,10 +72,16 @@ const TodayClockPage = () => {
   // Navigation
   // -------------------------------
   const { prevItem, nextItem } = useMemo(() => {
-    const idx = (currentItem && items) ? items.findIndex((i) => normalizeDate(i.date) === normalizeDate(currentItem.date)) : -1;
+    const idx =
+      currentItem && items
+        ? items.findIndex(
+            (i) => normalizeDate(i.date) === normalizeDate(currentItem.date),
+          )
+        : -1;
     return {
       prevItem: idx > 0 ? (items[idx - 1] ?? null) : null,
-      nextItem: idx !== -1 && idx < items.length - 1 ? (items[idx + 1] ?? null) : null,
+      nextItem:
+        idx !== -1 && idx < items.length - 1 ? (items[idx + 1] ?? null) : null,
     };
   }, [items, currentItem]);
 
@@ -155,12 +161,12 @@ const TodayClockPage = () => {
       )}
 
       {/* Loading overlay */}
-      <div 
+      <div
         className={styles.loadingOverlay}
-        style={{ 
+        style={{
           opacity: overlayVisible ? 1 : 0,
-          transition: `opacity ${OVERLAY_FADE_DURATION}ms ease-out`
-        }} 
+          transition: `opacity ${OVERLAY_FADE_DURATION}ms ease-out`,
+        }}
       />
     </div>
   );

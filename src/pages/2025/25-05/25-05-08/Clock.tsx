@@ -4,7 +4,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
 import shinyFont from '@/assets/fonts/25fonts/25-05-08-Shiny.ttf?url';
-import bgGif from '@/assets/images/2025/25-05/25-05-08/d7e781b32269a8a82b500c1a9dc97733-ezgif.com-optimize.gif';
+import bgGif from '@/assets/images/25_images/25-05/25-05-08/d7e781b32269a8a82b500c1a9dc97733-ezgif.com-optimize.gif';
 
 // Component Props interface
 interface GoldenHourClockProps {
@@ -13,16 +13,19 @@ interface GoldenHourClockProps {
 
 const GoldenHourClock: React.FC<GoldenHourClockProps> = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'ShinyFont',
-      fontUrl: shinyFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'ShinyFont',
+        fontUrl: shinyFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates

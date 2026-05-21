@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import myFontWoff2 from '@/assets/fonts/25fonts/25-08-01-zod.ttf';
-import bg1 from '@/assets/images/2025/25-08/25-08-01/stars.webp';
-import bg2 from '@/assets/images/2025/25-08/25-08-01/zod.gif';
-import htmlLogo from '@/assets/images/2025/25-08/25-08-01/st.gif';
+import bg1 from '@/assets/images/25_images/25-08/25-08-01/stars.webp';
+import bg2 from '@/assets/images/25_images/25-08/25-08-01/zod.gif';
+import htmlLogo from '@/assets/images/25_images/25-08/25-08-01/st.gif';
 
 const romanNumerals = [
   'l',
@@ -34,7 +34,7 @@ const AnalogClock: React.FC = () => {
 
   const numeralsRef = useRef(numerals);
   numeralsRef.current = numerals;
-  
+
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -42,9 +42,9 @@ const AnalogClock: React.FC = () => {
       fontUrl: myFontWoff2,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

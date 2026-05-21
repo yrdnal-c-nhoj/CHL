@@ -5,10 +5,23 @@ import styles from './Clock.module.css';
 import customFont from '@/assets/fonts/26fonts/26-05-12.ttf?url';
 
 // Properly import assets so Vite can resolve and hash them
-import lionVideo from '@/assets/images/2026/26-05/26-05-12/lionwalk.mp4';
-import fireImage from '@/assets/images/2026/26-05/26-05-12/fire.webp';
+import lionVideo from '@/assets/images/26_images/26-05/26-05-12/lionwalk.mp4';
+import fireImage from '@/assets/images/26_images/26-05/26-05-12/fire.webp';
 
-const ROMAN_NUMERALS = ['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'];
+const ROMAN_NUMERALS = [
+  'XII',
+  'I',
+  'II',
+  'III',
+  'IV',
+  'V',
+  'VI',
+  'VII',
+  'VIII',
+  'IX',
+  'X',
+  'XI',
+];
 
 // Export assets for the useClockPage hook to preload
 export const assets = [lionVideo, fireImage];
@@ -51,11 +64,7 @@ const BackgroundLayers: React.FC = () => (
         </video>
       </div>
     </div>
-    <img
-      src={fireImage}
-      alt=""
-      className={styles.fireOverlay}
-    />
+    <img src={fireImage} alt="" className={styles.fireOverlay} />
   </div>
 );
 
@@ -63,7 +72,8 @@ const AnalogClock: React.FC = () => {
   const currentTime = useClockTime();
 
   const rotations = useMemo(() => {
-    const seconds = currentTime.getSeconds() + currentTime.getMilliseconds() / 1000;
+    const seconds =
+      currentTime.getSeconds() + currentTime.getMilliseconds() / 1000;
     const minutes = currentTime.getMinutes() + seconds / 60;
     const hours = (currentTime.getHours() % 12) + minutes / 60;
     return {
@@ -87,7 +97,7 @@ const AnalogClock: React.FC = () => {
             key={num}
             className={styles.numeral}
             style={{
-              transform: `rotate(${i * 30}deg) translateY(-135px) rotate(-${i * 30}deg)`
+              transform: `rotate(${i * 30}deg) translateY(-135px) rotate(-${i * 30}deg)`,
             }}
           >
             {num}
@@ -95,17 +105,17 @@ const AnalogClock: React.FC = () => {
         ))}
 
         <div className={styles.centerPin} />
-        <div 
-          className={`${styles.hand} ${styles.hour}`} 
-          style={{ transform: `rotate(${rotations.hr}deg)` }} 
+        <div
+          className={`${styles.hand} ${styles.hour}`}
+          style={{ transform: `rotate(${rotations.hr}deg)` }}
         />
-        <div 
-          className={`${styles.hand} ${styles.minute}`} 
-          style={{ transform: `rotate(${rotations.min}deg)` }} 
+        <div
+          className={`${styles.hand} ${styles.minute}`}
+          style={{ transform: `rotate(${rotations.min}deg)` }}
         />
-        <div 
-          className={`${styles.hand} ${styles.second}`} 
-          style={{ transform: `rotate(${rotations.sec}deg)` }} 
+        <div
+          className={`${styles.hand} ${styles.second}`}
+          style={{ transform: `rotate(${rotations.sec}deg)` }}
         />
       </div>
     </div>

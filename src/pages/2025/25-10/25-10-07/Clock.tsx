@@ -2,8 +2,8 @@ import React, { useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 // === Local assets ===
-import backgroundVideo from '@/assets/images/2025/25-10/25-10-07/big.mp4';
-import fallbackGif from '@/assets/images/2025/25-10/25-10-07/big.webp';
+import backgroundVideo from '@/assets/images/25_images/25-10/25-10-07/big.mp4';
+import fallbackGif from '@/assets/images/25_images/25-10/25-10-07/big.webp';
 import O251007font from '@/assets/fonts/25fonts/25-10-07-str.ttf';
 
 export default function ImageAnalogClock() {
@@ -16,7 +16,7 @@ export default function ImageAnalogClock() {
         fontUrl: O251007font,
       },
     ],
-    []
+    [],
   );
 
   useSuspenseFontLoader(fontConfigs);

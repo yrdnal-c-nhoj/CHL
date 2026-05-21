@@ -3,8 +3,8 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
 import c251004font from '@/assets/fonts/25fonts/25-10-04-iss.ttf';
-import bgMp4 from '@/assets/images/2025/25-10/25-10-04/waterfall.mp4';
-import bgWebp from '@/assets/images/2025/25-10/25-10-04/waterfall.webp';
+import bgMp4 from '@/assets/images/25_images/25-10/25-10-04/waterfall.mp4';
+import bgWebp from '@/assets/images/25_images/25-10/25-10-04/waterfall.webp';
 
 const ClockVideoBackground: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -14,9 +14,9 @@ const ClockVideoBackground: React.FC = () => {
       fontUrl: c251004font,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

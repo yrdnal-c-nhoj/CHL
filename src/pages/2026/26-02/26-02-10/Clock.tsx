@@ -3,7 +3,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
 import teeVeeLoungeFont from '@/assets/fonts/26fonts/26-02-10-tv.ttf?url';
-import analogBgImage from '@/assets/images/2026/26-02/26-02-10/tv.jpg';
+import analogBgImage from '@/assets/images/26_images/26-02/26-02-10/tv.jpg';
 
 export const background = analogBgImage;
 
@@ -15,16 +15,21 @@ const CLOCK_CONFIG = {
 
 const DigitalClock: React.FC = () => {
   const now = useSecondClock();
-  
-  const fontConfigs = useMemo(() => [{
-      fontFamily: 'TeeVeeFont',
-      fontUrl: teeVeeLoungeFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-  }], []);
-  
+
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'TeeVeeFont',
+        fontUrl: teeVeeLoungeFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   // 12-hour format with no leading zeros

@@ -59,19 +59,22 @@
   position: relative;
   width: 100%;
   height: 100%;
-   z-index: 1;
+  z-index: 1;
 }
 
 .number {
   position: absolute;
   top: 50%;
   left: 50%;
-  font-family: '26-05-21', sans-serif; /* Ensure this name matches your font loader config */
+  font-family:
+    '26-05-21', sans-serif; /* Ensure this name matches your font loader config */
   font-size: 12vh;
   color: #ffffff;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(173, 216, 230, 0.3);
+  text-shadow:
+    0 0 5px rgba(255, 255, 255, 0.8),
+    0 0 10px rgba(173, 216, 230, 0.3);
   user-select: none;
-  letter-spacing: 1vh; 
+  letter-spacing: 1vh;
   /* Center the digit container on the coordinates */
   display: flex;
   align-items: center;
@@ -79,7 +82,8 @@
   z-index: 2;
   /* Set origin to center for predictable radial rotation */
   transform-origin: center center;
-  transform: translate(-50%, -50%) rotate(var(--rot)) translateY(-34vh) rotate(calc(var(--rot) * -1));
+  transform: translate(-50%, -50%) rotate(var(--rot)) translateY(-34vh)
+    rotate(calc(var(--rot) * -1));
 
   /* Shimmer effect */
   animation: starShimmer 8s infinite ease-in-out;
@@ -88,18 +92,66 @@
 }
 
 /* Randomize shimmer for each digit */
-.number:nth-child(1) { --rot: 30deg; animation-delay: -1.2s; animation-duration: 7.5s; }
-.number:nth-child(2) { --rot: 60deg; animation-delay: -4.5s; animation-duration: 9.2s; }
-.number:nth-child(3) { --rot: 90deg; animation-delay: -0.5s; animation-duration: 6.8s; }
-.number:nth-child(4) { --rot: 120deg; animation-delay: -5.1s; animation-duration: 8.5s; }
-.number:nth-child(5) { --rot: 150deg; animation-delay: -2.7s; animation-duration: 11.0s; }
-.number:nth-child(6) { --rot: 180deg; animation-delay: -6.3s; animation-duration: 7.0s; }
-.number:nth-child(7) { --rot: 210deg; animation-delay: -1.8s; animation-duration: 9.5s; }
-.number:nth-child(8) { --rot: 240deg; animation-delay: -3.9s; animation-duration: 8.1s; }
-.number:nth-child(9) { --rot: 270deg; animation-delay: -0.9s; animation-duration: 10.2s; }
-.number:nth-child(10) { --rot: 300deg; animation-delay: -3.1s; animation-duration: 7.9s; }
-.number:nth-child(11) { --rot: 330deg; animation-delay: -5.7s; animation-duration: 8.8s; }
-.number:nth-child(12) { --rot: 0deg; animation-delay: -2.4s; animation-duration: 9.7s; }
+.number:nth-child(1) {
+  --rot: 30deg;
+  animation-delay: -1.2s;
+  animation-duration: 7.5s;
+}
+.number:nth-child(2) {
+  --rot: 60deg;
+  animation-delay: -4.5s;
+  animation-duration: 9.2s;
+}
+.number:nth-child(3) {
+  --rot: 90deg;
+  animation-delay: -0.5s;
+  animation-duration: 6.8s;
+}
+.number:nth-child(4) {
+  --rot: 120deg;
+  animation-delay: -5.1s;
+  animation-duration: 8.5s;
+}
+.number:nth-child(5) {
+  --rot: 150deg;
+  animation-delay: -2.7s;
+  animation-duration: 11s;
+}
+.number:nth-child(6) {
+  --rot: 180deg;
+  animation-delay: -6.3s;
+  animation-duration: 7s;
+}
+.number:nth-child(7) {
+  --rot: 210deg;
+  animation-delay: -1.8s;
+  animation-duration: 9.5s;
+}
+.number:nth-child(8) {
+  --rot: 240deg;
+  animation-delay: -3.9s;
+  animation-duration: 8.1s;
+}
+.number:nth-child(9) {
+  --rot: 270deg;
+  animation-delay: -0.9s;
+  animation-duration: 10.2s;
+}
+.number:nth-child(10) {
+  --rot: 300deg;
+  animation-delay: -3.1s;
+  animation-duration: 7.9s;
+}
+.number:nth-child(11) {
+  --rot: 330deg;
+  animation-delay: -5.7s;
+  animation-duration: 8.8s;
+}
+.number:nth-child(12) {
+  --rot: 0deg;
+  animation-delay: -2.4s;
+  animation-duration: 9.7s;
+}
 
 /* If your clock uses spans/divs for separators (like :), offset them too */
 .number:nth-child(odd) {
@@ -107,20 +159,24 @@
 }
 
 @keyframes starShimmer {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.15;
     filter: blur(1.5px) brightness(0.8);
   }
   50% {
     opacity: 0.5;
     filter: blur(0px) brightness(1.2);
-    text-shadow: 0 0 12px rgba(255, 255, 255, 0.9), 0 0 20px rgba(255, 255, 255, 0.4);
+    text-shadow:
+      0 0 12px rgba(255, 255, 255, 0.9),
+      0 0 20px rgba(255, 255, 255, 0.4);
   }
 }
 
 /* A secondary keyframe with slightly different scales for added variety */
 @keyframes starShimmerAlt {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.1;
     filter: blur(2px) brightness(0.7);
   }
@@ -180,7 +236,8 @@
 }
 
 @keyframes starShimmerHand {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.15;
     filter: blur(1.5px) brightness(0.8);
     box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
@@ -188,6 +245,8 @@
   50% {
     opacity: 0.5;
     filter: blur(0px) brightness(1.2);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(173, 216, 230, 0.4);
+    box-shadow:
+      0 0 15px rgba(255, 255, 255, 0.8),
+      0 0 25px rgba(173, 216, 230, 0.4);
   }
 }

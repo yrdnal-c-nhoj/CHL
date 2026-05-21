@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import sys1 from '@/assets/images/2025/25-04/25-04-07/sys1.gif';
-import sys2 from '@/assets/images/2025/25-04/25-04-07/sys2.gif';
-import sys3 from '@/assets/images/2025/25-04/25-04-07/sys3.gif';
+import sys1 from '@/assets/images/25_images/25-04/25-04-07/sys1.gif';
+import sys2 from '@/assets/images/25_images/25-04/25-04-07/sys2.gif';
+import sys3 from '@/assets/images/25_images/25-04/25-04-07/sys3.gif';
 
 // Component Props interface
 interface SolarSystemClockProps {
@@ -28,7 +28,9 @@ type HourStyle = React.CSSProperties;
 type MinuteStyle = React.CSSProperties;
 type SecondStyle = React.CSSProperties;
 
-const SolarSystemClock = ({ backgroundColor = '#0C0D53FF' }: SolarSystemClockProps) => {
+const SolarSystemClock = ({
+  backgroundColor = '#0C0D53FF',
+}: SolarSystemClockProps) => {
   const clockRefs: ClockRefs = {
     hour: useRef<HTMLDivElement>(null),
     minute: useRef<HTMLDivElement>(null),
@@ -71,20 +73,23 @@ const SolarSystemClock = ({ backgroundColor = '#0C0D53FF' }: SolarSystemClockPro
     }
   }, [currentTime]);
 
-  const setBallPosition = useCallback((ball: HTMLDivElement | null, angle: number, radiusVh: number): void => {
-    if (!ball || !clockRefs.clock.current) return;
+  const setBallPosition = useCallback(
+    (ball: HTMLDivElement | null, angle: number, radiusVh: number): void => {
+      if (!ball || !clockRefs.clock.current) return;
 
-    const rad = (angle - 90) * (Math.PI / 180);
-    const clockRect = clockRefs.clock.current.getBoundingClientRect();
-    const centerX = clockRect.width / 2;
-    const centerY = clockRect.height / 2;
-    const radiusPx = (radiusVh / 100) * window.innerHeight;
-    const x = centerX + radiusPx * Math.cos(rad);
-    const y = centerY + radiusPx * Math.sin(rad);
+      const rad = (angle - 90) * (Math.PI / 180);
+      const clockRect = clockRefs.clock.current.getBoundingClientRect();
+      const centerX = clockRect.width / 2;
+      const centerY = clockRect.height / 2;
+      const radiusPx = (radiusVh / 100) * window.innerHeight;
+      const x = centerX + radiusPx * Math.cos(rad);
+      const y = centerY + radiusPx * Math.sin(rad);
 
-    ball.style.left = `${x}px`;
-    ball.style.top = `${y}px`;
-  }, [clockRefs.clock]);
+      ball.style.left = `${x}px`;
+      ball.style.top = `${y}px`;
+    },
+    [clockRefs.clock],
+  );
 
   useEffect(() => {
     updateClock();

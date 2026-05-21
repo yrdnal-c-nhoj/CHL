@@ -15,7 +15,9 @@
   font-family: 'Manrope', sans-serif;
   pointer-events: auto;
   will-change: opacity, transform;
-  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  transition:
+    opacity 0.4s ease-out,
+    transform 0.4s ease-out;
 }
 
 /* --- Visibility states --- */

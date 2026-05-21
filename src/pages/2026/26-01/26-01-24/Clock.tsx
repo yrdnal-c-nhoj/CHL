@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+  useRef,
+} from 'react';
 import { formatTime as utilFormatTime } from '@/utils/clockUtils'; // Alias to avoid conflict with local formatTime
 import { useClockTime } from '@/utils/hooks'; // Use the standardized hook
 import styles from './Clock.module.css';
@@ -139,18 +145,21 @@ const Clock: React.FC = () => {
 
   // --- DIGIT MAPPING ---
   type DigitChar = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
-  const digitToEmoji: Record<DigitChar, string> = useMemo(() => ({
-    '0': '🕳️',
-    '1': '📍',
-    '2': '🥈',
-    '3': '🔱',
-    '4': '🍀',
-    '5': '⭐',
-    '6': '🐝',
-    '7': '🎰',
-    '8': '🎱',
-    '9': '☁️',
-  }), []);
+  const digitToEmoji: Record<DigitChar, string> = useMemo(
+    () => ({
+      '0': '🕳️',
+      '1': '📍',
+      '2': '🥈',
+      '3': '🔱',
+      '4': '🍀',
+      '5': '⭐',
+      '6': '🐝',
+      '7': '🎰',
+      '8': '🎱',
+      '9': '☁️',
+    }),
+    [],
+  );
 
   // --- EMOJI CYCLING LOGIC ---
   const lastCycledSecond = useRef<number>(-1);
@@ -160,13 +169,10 @@ const Clock: React.FC = () => {
     // Accessing the state once to avoid unnecessary re-runs
     const date = new Date(time);
     const currentSecond = date.getSeconds();
-    
+
     // Only update emoji every 3 seconds
     // Ensure it only triggers once per second when the condition is met
-    if (
-      currentSecond % 3 === 0 &&
-      currentSecond !== lastCycledSecond.current
-    ) {
+    if (currentSecond % 3 === 0 && currentSecond !== lastCycledSecond.current) {
       lastCycledSecond.current = currentSecond;
 
       setEmojiIndex((prevIndex) => {
@@ -183,7 +189,7 @@ const Clock: React.FC = () => {
         return nextIndex;
       });
     }
-  }, [time, emojiCycle, activeBuffer]); 
+  }, [time, emojiCycle, activeBuffer]);
 
   // --- SCREEN RESIZE LISTENER ---
   useEffect(() => {
@@ -203,29 +209,31 @@ const Clock: React.FC = () => {
     return () => clearTimeout(t);
   }, []);
 
-  const getLayerStyle = useCallback((emoji: string, isVisible: boolean) => {
-    // Determine base size for SVG emoji based on screen size
-    const baseSvgSize = isLargeScreen ? 60 : 40; // Example: 60px for large, 40px for small
+  const getLayerStyle = useCallback(
+    (emoji: string, isVisible: boolean) => {
+      // Determine base size for SVG emoji based on screen size
+      const baseSvgSize = isLargeScreen ? 60 : 40; // Example: 60px for large, 40px for small
 
-    const svg = `
+      const svg = `
       <svg xmlns="http://www.w3.org/2000/svg" width="${baseSvgSize}" height="${baseSvgSize}">
         <text x="50%" y="55%" font-size="${baseSvgSize * 0.7}" text-anchor="middle" dominant-baseline="middle">
           ${emoji}
         </text>
       </svg>`.trim();
-    return {
-      className: styles.layer,
-      backgroundImage: `url("data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}")`, // Use baseSvgSize here
-      opacity: isVisible ? 1 : 0,
-    };
-  }, [isLargeScreen]); // Re-create if isLargeScreen changes
+      return {
+        className: styles.layer,
+        backgroundImage: `url("data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}")`, // Use baseSvgSize here
+        opacity: isVisible ? 1 : 0,
+      };
+    },
+    [isLargeScreen],
+  ); // Re-create if isLargeScreen changes
 
   const { hours, minutes, seconds } = useMemo(() => {
     const formatted = utilFormatTime(time, '24h');
     const [h, m, s] = (formatted || '00:00:00').split(':');
     return { hours: h, minutes: m, seconds: s };
   }, [time]);
-
 
   const renderDigits = (str?: string) => {
     const safeStr = str ?? '';
@@ -244,13 +252,21 @@ const Clock: React.FC = () => {
     );
   };
 
-
   return (
     <main className={styles.container} style={{ opacity: bgReady ? 1 : 0 }}>
-      <div className={styles.layer} style={getLayerStyle(buffer1Emoji, activeBuffer === 1)} />
-      <div className={styles.layer} style={getLayerStyle(buffer2Emoji, activeBuffer === 2)} />
+      <div
+        className={styles.layer}
+        style={getLayerStyle(buffer1Emoji, activeBuffer === 1)}
+      />
+      <div
+        className={styles.layer}
+        style={getLayerStyle(buffer2Emoji, activeBuffer === 2)}
+      />
 
-      <time className={styles.content} dateTime={`${hours}:${minutes}:${seconds}`}>
+      <time
+        className={styles.content}
+        dateTime={`${hours}:${minutes}:${seconds}`}
+      >
         {renderDigits(hours)}
         {renderDigits(minutes)}
         {renderDigits(seconds)}

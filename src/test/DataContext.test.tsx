@@ -66,7 +66,9 @@ describe('DataContext', () => {
   it('should have no error after load', async () => {
     const TestComponent = () => {
       const { error } = useDataContext();
-      return <div data-testid="error">{error ? error.message : 'no-error'}</div>;
+      return (
+        <div data-testid="error">{error ? error.message : 'no-error'}</div>
+      );
     };
 
     render(
@@ -102,7 +104,9 @@ describe('DataContext', () => {
     await waitFor(() => {
       expect(screen.getByTestId('first-path')).toHaveTextContent('26-03-05');
       expect(screen.getByTestId('first-date')).toHaveTextContent('26-03-05');
-      expect(screen.getByTestId('first-title')).toHaveTextContent('Retro Terminal');
+      expect(screen.getByTestId('first-title')).toHaveTextContent(
+        'Retro Terminal',
+      );
     });
   });
 

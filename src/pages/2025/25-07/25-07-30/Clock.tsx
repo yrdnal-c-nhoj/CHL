@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import clockBg from '@/assets/images/2025/25-07/25-07-30/ca.gif';
-import fullBg from '@/assets/images/2025/25-07/25-07-30/ca.gif';
+import clockBg from '@/assets/images/25_images/25-07/25-07-30/ca.gif';
+import fullBg from '@/assets/images/25_images/25-07/25-07-30/ca.gif';
 import myFont from '@/assets/fonts/25fonts/25-07-30-Cam.ttf'; // Import font
 
 const Clock: React.FC = () => {
@@ -13,9 +13,9 @@ const Clock: React.FC = () => {
       fontUrl: myFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   const time = useSmoothClock();

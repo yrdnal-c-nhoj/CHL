@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 
-import bellImage2 from '@/assets/images/2026/26-02/26-02-11/bell.webp';
-import bellImage1 from '@/assets/images/2026/26-02/26-02-11/bell.gif';
+import bellImage2 from '@/assets/images/26_images/26-02/26-02-11/bell.webp';
+import bellImage1 from '@/assets/images/26_images/26-02/26-02-11/bell.gif';
 
 const CLOCK_CONFIG = {
   NUMERAL_RADIUS: 40,
@@ -43,7 +43,8 @@ const HAND_DIMENSIONS: Record<string, HandDimensions> = {
   second: { width: '0.4vmin', height: '38vmin', zIndex: 5 },
 };
 
-const getHandRotation = (value: number, multiplier: number): number => value * multiplier;
+const getHandRotation = (value: number, multiplier: number): number =>
+  value * multiplier;
 
 const calculateNumeralPosition = (number: number) => {
   const angleRad = (number / 12) * 2 * Math.PI;

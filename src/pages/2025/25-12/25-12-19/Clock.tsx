@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import sandTexture from '@/assets/images/2025/25-12/25-12-19/sand.webp';
+import sandTexture from '@/assets/images/25_images/25-12/25-12-19/sand.webp';
 import FONT_PATH from '@/assets/fonts/25fonts/25-12-19-hour.ttf?url';
 
 const FONT_FAMILY = 'DateFont';
@@ -8,13 +8,16 @@ const FONT_FAMILY = 'DateFont';
 const HourglassTimer: React.FC = () => {
   const [percentDayPassed, setPercentDayPassed] = useState<number>(0);
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: FONT_FAMILY,
-      fontUrl: FONT_PATH,
-      options: { weight: 'normal', style: 'normal' }
-    }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: FONT_FAMILY,
+        fontUrl: FONT_PATH,
+        options: { weight: 'normal', style: 'normal' },
+      },
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 

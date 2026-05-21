@@ -3,7 +3,7 @@ import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import font_2025_12_06 from '@/assets/fonts/25fonts/25-12-05-magic.ttf?url';
-import bgImage from '@/assets/images/2025/25-12/25-12-05/magic.webp';
+import bgImage from '@/assets/images/25_images/25-12/25-12-05/magic.webp';
 import styles from './Clock.module.css';
 
 export default function BoxedDigitalClock() {
@@ -11,9 +11,10 @@ export default function BoxedDigitalClock() {
   const [visible, setVisible] = useState<boolean>(false); // Clock visibility for glitch
   const [randomOpacity, setRandomOpacity] = useState<number>(0.2); // Random opacity for glitches
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'CustomFont_2025_12_06', fontUrl: font_2025_12_06 }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'CustomFont_2025_12_06', fontUrl: font_2025_12_06 }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -50,19 +51,23 @@ export default function BoxedDigitalClock() {
   const ampm = time.getHours() >= 12 ? 'PM' : 'AM';
 
   return (
-    <div 
+    <div
       className={styles.container}
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       <div className={styles.overlay} />
 
-      <div 
+      <div
         className={styles.clock}
         style={{
           display: visible ? 'flex' : 'none',
           opacity: randomOpacity,
-          transform: visible ? `translateX(${Math.random() * 4 - 2}px)` : 'translateX(0)',
-          filter: visible ? `blur(${Math.random() * 1.5}px) brightness(${1 + Math.random() * 0.5})` : 'none',
+          transform: visible
+            ? `translateX(${Math.random() * 4 - 2}px)`
+            : 'translateX(0)',
+          filter: visible
+            ? `blur(${Math.random() * 1.5}px) brightness(${1 + Math.random() * 0.5})`
+            : 'none',
         }}
       >
         {hours.map((digit, i) => (
@@ -71,9 +76,7 @@ export default function BoxedDigitalClock() {
           </div>
         ))}
 
-        <div className={styles.separator}>
-          :
-        </div>
+        <div className={styles.separator}>:</div>
 
         {minutes.map((digit, i) => (
           <div key={`m${i}`} className={styles.digitBox}>
@@ -81,9 +84,7 @@ export default function BoxedDigitalClock() {
           </div>
         ))}
 
-        <div className={`${styles.separator} ${styles.ampm}`}>
-          {ampm}
-        </div>
+        <div className={`${styles.separator} ${styles.ampm}`}>{ampm}</div>
       </div>
     </div>
   );

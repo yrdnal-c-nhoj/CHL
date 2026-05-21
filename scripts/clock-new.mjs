@@ -65,7 +65,10 @@ function scaffold(date) {
   if (fs.existsSync(templateCss)) {
     fs.copyFileSync(templateCss, cssPath);
   } else {
-    fs.writeFileSync(cssPath, '.container {\n  width: 100%;\n  height: 100%;\n}\n');
+    fs.writeFileSync(
+      cssPath,
+      '.container {\n  width: 100%;\n  height: 100%;\n}\n',
+    );
   }
 
   console.log('Created:');
@@ -75,7 +78,9 @@ function scaffold(date) {
   console.log('Next steps (manual):');
   console.log(`  1. Edit Clock.tsx and Clock.module.css`);
   console.log(`  2. Add an entry to src/context/clockpages.json:`);
-  console.log(`     { "path": "${date}", "date": "${date}", "title": "Your Clock Title" }`);
+  console.log(
+    `     { "path": "${date}", "date": "${date}", "title": "Your Clock Title" }`,
+  );
   console.log('  3. npm run finalize');
 }
 

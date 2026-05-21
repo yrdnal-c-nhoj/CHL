@@ -2,8 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import font20251016 from '@/assets/fonts/25fonts/25-10-15-brahmi.ttf?url';
-import image1 from '@/assets/images/2025/25-10/25-10-15/palm.webp';
-import image2 from '@/assets/images/2025/25-10/25-10-15/brahmi.webp';
+import image1 from '@/assets/images/25_images/25-10/25-10-15/palm.webp';
+import image2 from '@/assets/images/25_images/25-10/25-10-15/brahmi.webp';
 
 const brahmiDigits = ['𑁦', '𑁧', '𑁨', '𑁩', '𑁪', '𑁫', '𑁬', '𑁭', '𑁮', '𑁯'];
 
@@ -17,9 +17,10 @@ function toBrahmi(num) {
 export default function BrahmiClock() {
   const [time, setTime] = useState(new Date());
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'BrahmiFont', fontUrl: font20251016 }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'BrahmiFont', fontUrl: font20251016 }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 

@@ -58,6 +58,10 @@
   line-height: 1;
   text-align: center;
   font-variant-numeric: tabular-nums;
-  text-shadow: 0 0 20px #f1c120, 0 0 40px #cb5f26, 0 0 80px #f1c120,
-    0 0 60px #f3f7f8, 0 1px 1px #d4d6e0;
+  text-shadow:
+    0 0 20px #f1c120,
+    0 0 40px #cb5f26,
+    0 0 80px #f1c120,
+    0 0 60px #f3f7f8,
+    0 1px 1px #d4d6e0;
 }

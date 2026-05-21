@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import bgVideo from '@/assets/images/2026/26-03/26-03-28/water.mp4';
-import bgImage from '@/assets/images/2026/26-03/26-03-28/h2o.webp';
+import bgVideo from '@/assets/images/26_images/26-03/26-03-28/water.mp4';
+import bgImage from '@/assets/images/26_images/26-03/26-03-28/h2o.webp';
 import clockFont from '@/assets/fonts/26fonts/26-03-28-h2o.ttf';
 import styles from './Clock.module.css';
 
@@ -11,16 +11,18 @@ const Clock: React.FC = () => {
   const time = useMillisecondClock();
 
   // Font configuration with Suspense loading
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'H2OClock',
-      fontUrl: clockFont,
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'H2OClock',
+        fontUrl: clockFont,
+      },
+    ],
+    [],
+  );
 
   // This hook suspends the component until fonts are loaded, preventing FOUC
   useSuspenseFontLoader(fontConfigs);
-
 
   const hours = time.getHours().toString().padStart(2, '0');
   const minutes = time.getMinutes().toString().padStart(2, '0');
@@ -32,13 +34,7 @@ const Clock: React.FC = () => {
   return (
     <div className={styles.container}>
       {/* Video background - bottom layer */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className={styles.videoBackground}
-      >
+      <video autoPlay muted loop playsInline className={styles.videoBackground}>
         <source src={bgVideo} type="video/mp4" />
       </video>
 

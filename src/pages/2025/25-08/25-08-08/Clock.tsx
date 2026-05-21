@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import bgImage from '@/assets/images/2025/25-08/25-08-08/q.webp';
+import bgImage from '@/assets/images/25_images/25-08/25-08-08/q.webp';
 import fontFile_2025_11_01 from '@/assets/fonts/25fonts/25-08-08-q.otf';
 
 export default function DigitalClock() {
@@ -12,9 +12,9 @@ export default function DigitalClock() {
       fontUrl: fontFile_2025_11_01,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

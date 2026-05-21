@@ -24,18 +24,24 @@ function getClockFiles(dir, files = []) {
 
 async function captureClocks() {
   const clockFiles = getClockFiles(PAGES_DIR);
-  console.log(`Found ${clockFiles.length} Clocks. Starting robust 500x500 capture...`);
+  console.log(
+    `Found ${clockFiles.length} Clocks. Starting robust 500x500 capture...`,
+  );
 
   if (!fs.existsSync(OUTPUT_DIR)) {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
   }
 
   // Launch with settings that help prevent hangs in heavy canvas/video clocks
-  const browser = await puppeteer.launch({ 
+  const browser = await puppeteer.launch({
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+    ],
   });
-  
+
   const page = await browser.newPage();
 
   await page.setViewport({
@@ -47,21 +53,21 @@ async function captureClocks() {
   for (const filePath of clockFiles) {
     const relativePath = path.relative(PAGES_DIR, filePath);
     const pathParts = path.dirname(relativePath).replace(/\\/g, '/').split('/');
-    const dateParam = pathParts[pathParts.length - 1]; 
-    
+    const dateParam = pathParts[pathParts.length - 1];
+
     const url = `${BASE_URL}/${dateParam}`;
     const outputFileName = `${dateParam}-thumb.webp`;
     const outputPath = path.join(OUTPUT_DIR, outputFileName);
 
     try {
       process.stdout.write(`📷 ${dateParam} ... `);
-      
+
       // Use a shorter timeout for navigation and 'load' instead of networkidle
       // to prevent getting stuck on persistent video/analytics streams
       await page.goto(url, { waitUntil: 'load', timeout: 15000 });
 
       // If we got redirected home, the route is wrong or the clock doesn't exist yet
-      if (page.url().replace(/\/$/, "") === BASE_URL) {
+      if (page.url().replace(/\/$/, '') === BASE_URL) {
         console.log('⏭️ (Home Redirect - check route)');
         continue;
       }
@@ -70,7 +76,7 @@ async function captureClocks() {
       // This is much more reliable than waiting for 'main' specifically
       await page.waitForFunction(
         () => document.querySelector('#root').children.length > 0,
-        { timeout: 5000 }
+        { timeout: 5000 },
       );
 
       // Force a "Thumbnail Mode" layout via CSS injection
@@ -93,11 +99,11 @@ async function captureClocks() {
             width: 100% !important; 
             transform: none !important;
           }
-        `
+        `,
       });
 
       // The requested 2-second stabilization wait
-      await new Promise(r => setTimeout(r, 2000));
+      await new Promise((r) => setTimeout(r, 2000));
 
       await page.screenshot({ path: outputPath, type: 'webp', quality: 90 });
       console.log('✅');

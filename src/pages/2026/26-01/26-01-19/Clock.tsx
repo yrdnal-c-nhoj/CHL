@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import bgImage from '@/assets/images/2026/26-01/26-01-19/hands.webp';
+import bgImage from '@/assets/images/26_images/26-01/26-01-19/hands.webp';
 import { useClockTime } from '@/utils/hooks';
 import styles from './Clock.module.css';
 

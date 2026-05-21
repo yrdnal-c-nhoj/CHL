@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import bgImage from '@/assets/images/2025/25-08/25-08-03/sta.gif';
-import overlay2 from '@/assets/images/2025/25-08/25-08-03/pro.gif';
-import overlay1 from '@/assets/images/2025/25-08/25-08-03/cur.webp';
+import bgImage from '@/assets/images/25_images/25-08/25-08-03/sta.gif';
+import overlay2 from '@/assets/images/25_images/25-08/25-08-03/pro.gif';
+import overlay1 from '@/assets/images/25_images/25-08/25-08-03/cur.webp';
 import clockFont from '@/assets/fonts/25fonts/25-08-03-st.ttf';
 
 const goldGradient =
@@ -17,9 +17,9 @@ const OrnateClock: React.FC = () => {
       fontUrl: clockFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

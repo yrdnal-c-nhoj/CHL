@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+} from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useGlobalStyles } from '@/utils/enhancedFontLoader';
@@ -6,9 +12,12 @@ import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react'; // Keep this import if CSSProperties is used elsewhere
 import clockTax from './tax';
 // Google Fonts URLs for Michroma, Economica, and Questrial
-const michromaFontUrl = 'https://fonts.gstatic.com/s/michroma/v18/PN_zRfy9qWD8fE-oB4_J_Q.woff2';
-const economicaFontUrl = 'https://fonts.gstatic.com/s/economica/v13/QwZTDPRQo_oF4RxQ_N_J_Q.woff2';
-const questrialFontUrl = 'https://fonts.gstatic.com/s/questrial/v19/Cf6gUOLrC6N_V5I_AQ.woff2';
+const michromaFontUrl =
+  'https://fonts.gstatic.com/s/michroma/v18/PN_zRfy9qWD8fE-oB4_J_Q.woff2';
+const economicaFontUrl =
+  'https://fonts.gstatic.com/s/economica/v13/QwZTDPRQo_oF4RxQ_N_J_Q.woff2';
+const questrialFontUrl =
+  'https://fonts.gstatic.com/s/questrial/v19/Cf6gUOLrC6N_V5I_AQ.woff2';
 
 const fonts = ["'michroma'", "'economica'", "'questrial'"];
 
@@ -20,7 +29,7 @@ const getTimeString = () =>
 
 const throwTimeCharacters = (timeStr, throwContainer) => {
   if (!throwContainer.current) return;
-  
+
   let letterId = 0;
   const r = getRand(90, 255);
   const g = getRand(1, 255);
@@ -65,7 +74,8 @@ const throwTimeCharacters = (timeStr, throwContainer) => {
 
 const NumberTossClock: React.FC = () => {
   // Inject animation styles globally
-  useGlobalStyles(`
+  useGlobalStyles(
+    `
     .an-1 {
       animation: throw-1-up 1200ms ease-out forwards, throw-1-down 750ms 1200ms ease-in forwards;
     }
@@ -138,7 +148,9 @@ const NumberTossClock: React.FC = () => {
       0% { transform: translateY(-523%) rotate(300deg); }
       100% { transform: translateY(0%); }
     }
-  `, 'clock-25-05-10-animations');
+  `,
+    'clock-25-05-10-animations',
+  );
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -147,25 +159,25 @@ const NumberTossClock: React.FC = () => {
       fontUrl: michromaFontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
+        style: 'normal',
+      },
     },
     {
       fontFamily: 'economica',
       fontUrl: economicaFontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
+        style: 'normal',
+      },
     },
     {
       fontFamily: 'questrial',
       fontUrl: questrialFontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   useSuspenseFontLoader(fontConfigs);
 

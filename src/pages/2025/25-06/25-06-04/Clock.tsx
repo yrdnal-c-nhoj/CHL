@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import coffeeFont from '@/assets/fonts/25fonts/25-06-04-cof.ttf';
-import bgStill from '@/assets/images/2025/25-06/25-06-04/coff.png';
-import bgAnimated from '@/assets/images/2025/25-06/25-06-04/coff.gif';
+import bgStill from '@/assets/images/25_images/25-06/25-06-04/coff.png';
+import bgAnimated from '@/assets/images/25_images/25-06/25-06-04/coff.gif';
 
 const CoffeeClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -13,12 +13,12 @@ const CoffeeClock: React.FC = () => {
       fontUrl: coffeeFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-  
+
   const jitterSettings = useRef([]);
   const numberRefs = useRef([]);
   const hourHandRef = useRef(null);

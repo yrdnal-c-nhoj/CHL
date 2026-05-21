@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import bananaGif from '@/assets/images/2025/25-06/25-06-11/banana.gif';
-import spinningBanana from '@/assets/images/2025/25-06/25-06-11/yellow-spinning-banana.gif';
-import hourHand from '@/assets/images/2025/25-06/25-06-11/ban.png';
-import minuteHand from '@/assets/images/2025/25-06/25-06-11/ban.png';
-import secondHand from '@/assets/images/2025/25-06/25-06-11/ban.png';
+import bananaGif from '@/assets/images/25_images/25-06/25-06-11/banana.gif';
+import spinningBanana from '@/assets/images/25_images/25-06/25-06-11/yellow-spinning-banana.gif';
+import hourHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
+import minuteHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
+import secondHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
 import banFont from '@/assets/fonts/25fonts/25-06-11-Ban.ttf';
 
 const BananaClock: React.FC = () => {
@@ -16,9 +16,9 @@ const BananaClock: React.FC = () => {
       fontUrl: banFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   useEffect(() => {
@@ -37,9 +37,12 @@ const BananaClock: React.FC = () => {
       const hourHand = document.getElementById('hourHand');
 
       // Add null checks before accessing style properties
-      if (secondHand) secondHand.style.transform = `translate(-50%, -100%) rotate(${secondDeg}deg)`;
-      if (minuteHand) minuteHand.style.transform = `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
-      if (hourHand) hourHand.style.transform = `translate(-50%, -100%) rotate(${hourDeg}deg)`;
+      if (secondHand)
+        secondHand.style.transform = `translate(-50%, -100%) rotate(${secondDeg}deg)`;
+      if (minuteHand)
+        minuteHand.style.transform = `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
+      if (hourHand)
+        hourHand.style.transform = `translate(-50%, -100%) rotate(${hourDeg}deg)`;
     };
 
     // Ensure DOM elements exist before starting clock
@@ -47,7 +50,7 @@ const BananaClock: React.FC = () => {
       const secondHand = document.getElementById('secondHand');
       const minuteHand = document.getElementById('minuteHand');
       const hourHand = document.getElementById('hourHand');
-      
+
       if (secondHand && minuteHand && hourHand) {
         const interval = setInterval(updateClock, 1000);
         updateClock();

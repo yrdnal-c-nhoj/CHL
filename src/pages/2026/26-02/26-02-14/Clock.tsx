@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import airportFont from '@/assets/fonts/26fonts/26-02-14-airport.ttf';
-import backgroundGif from '@/assets/images/2026/26-02/26-02-14/prop.gif';
-import backgroundGif2 from '@/assets/images/2026/26-02/26-02-14/runway.gif';
+import backgroundGif from '@/assets/images/26_images/26-02/26-02-14/prop.gif';
+import backgroundGif2 from '@/assets/images/26_images/26-02/26-02-14/runway.gif';
 
 export const background = backgroundGif;
 
@@ -14,15 +14,20 @@ interface SubstitutionMap {
 const DigitalClock: React.FC = () => {
   const time = useSecondClock();
 
-  const fontConfigs = useMemo(() => [{
-      fontFamily: 'Airport',
-      fontUrl: airportFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-  }], []);
-  
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'Airport',
+        fontUrl: airportFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   const substitutionMap: SubstitutionMap = {
@@ -142,21 +147,21 @@ const DigitalClock: React.FC = () => {
         </div>
 
         <div style={styles.digitGroup}>
-            {splitDigitsToLetters(minutes).map((letter, index) => (
-              <div key={`m-${index}`} style={styles.digitBox}>
-                <span style={styles.digit}>{letter}</span>
-              </div>
-            ))}
-          </div>
-
-          <div style={styles.digitGroup}>
-            {splitDigitsToLetters(seconds).map((letter, index) => (
-              <div key={`s-${index}`} style={styles.digitBox}>
-                <span style={styles.digit}>{letter}</span>
-              </div>
-            ))}
-          </div>
+          {splitDigitsToLetters(minutes).map((letter, index) => (
+            <div key={`m-${index}`} style={styles.digitBox}>
+              <span style={styles.digit}>{letter}</span>
+            </div>
+          ))}
         </div>
+
+        <div style={styles.digitGroup}>
+          {splitDigitsToLetters(seconds).map((letter, index) => (
+            <div key={`s-${index}`} style={styles.digitBox}>
+              <span style={styles.digit}>{letter}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

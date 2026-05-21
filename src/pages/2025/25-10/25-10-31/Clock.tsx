@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks'; // Use useMillisecondClock for millisecond precision
 import { formatTime } from '@/utils/clockUtils'; // Keep formatTime for datetime attribute
-import videoFile from '@/assets/images/2025/25-10/25-10-31/mids.mp4';
-import fallbackImg from '@/assets/images/2025/25-10/25-10-31/midsun.webp';
+import videoFile from '@/assets/images/25_images/25-10/25-10-31/mids.mp4';
+import fallbackImg from '@/assets/images/25_images/25-10/25-10-31/midsun.webp';
 import fontFile_2025_10_31 from '@/assets/fonts/25fonts/25-10-31-mi.otf?url';
 
 export default function VideoClock() {
@@ -15,7 +15,8 @@ export default function VideoClock() {
   const time = useMillisecondClock(); // Get Date object with millisecond updates
 
   // Helper to format numbers with leading zeros
-  const pad = (num: number, length: number = 2) => String(num).padStart(length, '0');
+  const pad = (num: number, length: number = 2) =>
+    String(num).padStart(length, '0');
 
   const hours = pad(time.getHours());
   const minutes = pad(time.getMinutes());
@@ -24,10 +25,11 @@ export default function VideoClock() {
   const datetime = formatTime(time, '24h'); // Use formatTime utility for the datetime attribute
   const digits = `${hours}${minutes}${seconds}${milliseconds}`.split(''); // Concatenate as string then split
 
-  const fontConfigs = useMemo(() => [
-    { fontFamily: 'CustomFont', fontUrl: fontFile_2025_10_31 }
-  ], []);
-  
+  const fontConfigs = useMemo(
+    () => [{ fontFamily: 'CustomFont', fontUrl: fontFile_2025_10_31 }],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   // Preload assets: video, fallback image

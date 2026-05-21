@@ -3,8 +3,8 @@ import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import font1 from '@/assets/fonts/25fonts/25-08-25-code.ttf';
 import font2 from '@/assets/fonts/25fonts/25-08-25-bar.ttf';
-import bgImage2 from '@/assets/images/2025/25-08/25-08-25/bgla.webp'; // Bottom background
-import bgImage from '@/assets/images/2025/25-08/25-08-25/wh.webp'; // Top background
+import bgImage2 from '@/assets/images/25_images/25-08/25-08-25/bgla.webp'; // Bottom background
+import bgImage from '@/assets/images/25_images/25-08/25-08-25/wh.webp'; // Top background
 
 export default function DigitalClock() {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -16,7 +16,7 @@ export default function DigitalClock() {
     {
       fontFamily: 'BarFont',
       fontUrl: font2,
-    }
+    },
   ]);
 
   const time = useClockTime('ms');

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import bgVideo from '@/assets/images/2025/25-11/25-11-02/swim.mp4';
-import fallbackImg from '@/assets/images/2025/25-11/25-11-02/swim.webp';
+import bgVideo from '@/assets/images/25_images/25-11/25-11-02/swim.mp4';
+import fallbackImg from '@/assets/images/25_images/25-11/25-11-02/swim.webp';
 import fontFile2025_11_04 from '@/assets/fonts/25fonts/25-11-02-sperm.ttf'; // Custom scientific font
 
 export default function MonarchScene() {
@@ -13,9 +13,9 @@ export default function MonarchScene() {
       fontUrl: fontFile2025_11_04,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

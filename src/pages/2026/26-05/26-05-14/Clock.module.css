@@ -9,7 +9,6 @@
   background-color: #000;
 }
 
-
 .backgroundImage {
   position: absolute;
   inset: 0;
@@ -29,7 +28,6 @@
   align-items: center;
   justify-content: center;
 }
-
 
 .face {
   position: relative;
@@ -67,7 +65,7 @@
 .secondHand {
   width: 1px;
   height: 50%;
-  background:#aaffff;
+  background: #aaffff;
   margin-left: -1px;
   z-index: 4;
 }

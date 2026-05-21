@@ -1,8 +1,4 @@
-import React, {
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { useClockTime } from '@/utils/hooks';
 import { formatTime } from '@/utils/clockUtils';
@@ -12,7 +8,7 @@ import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
 
 import fontUrl from '@/assets/fonts/26fonts/26-05-10.ttf?url';
-import backgroundImage from '@/assets/images/2026/26-05/26-05-10/23.gif';
+import backgroundImage from '@/assets/images/26_images/26-05/26-05-10/23.gif';
 
 const NightSky: React.FC = () => {
   const currentTime = useClockTime();
@@ -28,7 +24,7 @@ const NightSky: React.FC = () => {
         fontUrl,
       },
     ],
-    []
+    [],
   );
 
   useSuspenseFontLoader(fontConfigs);
@@ -68,7 +64,7 @@ const NightSky: React.FC = () => {
     const match = formatted.match(/^(\d{2}):(\d{2}):(\d{2})\s+(AM|PM)$/);
     if (!match) {
       const meridian = currentTime.getHours() >= 12 ? 'PM' : 'AM';
-      const hours12 = (currentTime.getHours() % 12) || 12;
+      const hours12 = currentTime.getHours() % 12 || 12;
       const hours = hours12.toString().padStart(2, '0');
       return {
         hours,
@@ -143,85 +139,73 @@ const NightSky: React.FC = () => {
     >
       <time dateTime={currentTime?.toISOString()} aria-live="polite">
         <div
-        style={{
-          position: 'absolute',
-          inset: 0,
+          style={{
+            position: 'absolute',
+            inset: 0,
 
-          width: '100%',
-          height: '100%',
+            width: '100%',
+            height: '100%',
 
-          display: 'grid',
+            display: 'grid',
 
-          gridTemplateColumns: isMobile
-            ? '1fr 1fr'
-            : '1fr 1fr 1fr 1fr',
+            gridTemplateColumns: isMobile ? '1fr 1fr' : '1fr 1fr 1fr 1fr',
 
-          gridTemplateRows: isMobile
-            ? '1fr 1fr 1fr 1fr'
-            : '1fr 1fr',
+            gridTemplateRows: isMobile ? '1fr 1fr 1fr 1fr' : '1fr 1fr',
 
-          zIndex: 20,
-        }}
-      >
-        {clockCharacters.map((char, index) => (
-          <div
-            key={index}
-            style={{
-              gridColumn: gridMap[index]?.[0] || '1',
-              gridRow: gridMap[index]?.[1] || '1',
-              position: 'relative',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              overflow: 'visible',
-            }}
-          >
+            zIndex: 20,
+          }}
+        >
+          {clockCharacters.map((char, index) => (
             <div
-              className={`
+              key={index}
+              style={{
+                gridColumn: gridMap[index]?.[0] || '1',
+                gridRow: gridMap[index]?.[1] || '1',
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'visible',
+              }}
+            >
+              <div
+                className={`
                 ${styles.timeElement}
                 ${
                   isMobile
                     ? styles.timeElementMobile
                     : styles.timeElementDesktop
                 }
-                ${
-                  index >= 6
-                    ? styles.timeElementUppercase
-                    : ''
-                }
+                ${index >= 6 ? styles.timeElementUppercase : ''}
               `}
-              style={{
-                position: 'absolute',
-                left: '50%',
-                top: '50%',
-                transform: `
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  transform: `
                   translate(-50%, -50%)
-                  translate(${index * -2}px, ${
-                  index * 1.5
-                }px)
+                  translate(${index * -2}px, ${index * 1.5}px)
                 `,
-                zIndex: index + 1,
-                pointerEvents: 'none',
-                userSelect: 'none',
-                mixBlendMode: 'screen',
-                fontFamily: 'ClockFont',
-                fontSize: isMobile
-                  ? '58vh'
-                  : '58vw',
-                lineHeight: 0.8,
-                color: '#2C2B2B52',
-                opacity: 0.6,
-                filter: `
+                  zIndex: index + 1,
+                  pointerEvents: 'none',
+                  userSelect: 'none',
+                  mixBlendMode: 'screen',
+                  fontFamily: 'ClockFont',
+                  fontSize: isMobile ? '58vh' : '58vw',
+                  lineHeight: 0.8,
+                  color: '#2C2B2B52',
+                  opacity: 0.6,
+                  filter: `
                   drop-shadow(1px 1px 0px white)
                   drop-shadow(0 1px 0px rgba(238, 107, 107, 0.96))
                   drop-shadow(1px 0 px rgba(203, 18, 236, 0.96))
                 `,
-              }}
-            >
-              {char}
+                }}
+              >
+                {char}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
         </div>
       </time>
     </div>

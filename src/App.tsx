@@ -141,7 +141,16 @@ class ErrorBoundary extends React.Component<Props, State> {
           <h1>Something went wrong</h1>
           <p>Please refresh the page and try again.</p>
           {this.state.error && (
-            <pre style={{ marginTop: '1rem', color: '#ff5555', background: '#222', padding: '10px', fontSize: '0.8rem', maxWidth: '80%' }}>
+            <pre
+              style={{
+                marginTop: '1rem',
+                color: '#ff5555',
+                background: '#222',
+                padding: '10px',
+                fontSize: '0.8rem',
+                maxWidth: '80%',
+              }}
+            >
               {this.state.error.message}
             </pre>
           )}

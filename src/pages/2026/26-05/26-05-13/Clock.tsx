@@ -4,11 +4,10 @@ import { useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 import dripFont from '@/assets/fonts/26fonts/26-05-13.otf?url';
-import analogBgImage from '@/assets/images/2026/26-05/26-05-13/klein.webp';
-import bgVideo from '@/assets/images/2026/26-05/26-05-13/26-05-13-yves.mp4?url';
+import analogBgImage from '@/assets/images/26_images/26-05/26-05-13/klein.webp';
+import bgVideo from '@/assets/images/26_images/26-05/26-05-13/26-05-13-yves.mp4?url';
 
 export const background = analogBgImage;
-
 
 const AnalogClock: React.FC = () => {
   const now = useMillisecondClock();
@@ -24,7 +23,7 @@ const AnalogClock: React.FC = () => {
         },
       },
     ],
-    []
+    [],
   );
 
   useSuspenseFontLoader(fontConfigs);
@@ -58,7 +57,10 @@ const AnalogClock: React.FC = () => {
 
       {/* Digital Time Layer */}
       <div className={styles.face}>
-        <div className={styles.digitalTime} aria-label={`Current time ${timeText}`}>
+        <div
+          className={styles.digitalTime}
+          aria-label={`Current time ${timeText}`}
+        >
           {/* fixed stable layout: HH : MM : SS */}
           <span className={styles.digitGroup} aria-hidden="true">
             <span className={styles.digitBox}>{hours[0]}</span>
@@ -75,4 +77,3 @@ const AnalogClock: React.FC = () => {
 };
 
 export default AnalogClock;
-

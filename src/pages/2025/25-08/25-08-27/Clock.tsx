@@ -1,7 +1,7 @@
 import { useEffect, useRef, useMemo, Suspense } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime, useSmoothClock } from '@/utils/hooks';
-import backgroundImage from '@/assets/images/2025/25-08/25-08-27/rootsu.gif';
+import backgroundImage from '@/assets/images/25_images/25-08/25-08-27/rootsu.gif';
 import dodecahedronFontFile from '@/assets/fonts/25fonts/25-08-27-root.ttf'; // renamed import
 import styles from './Clock.module.css';
 
@@ -10,20 +10,23 @@ export const assets = [backgroundImage];
 function ClockContent() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const clockRef = useRef<HTMLCanvasElement>(null);
-  const fontRef = useRef('sans-serif'); 
+  const fontRef = useRef('sans-serif');
   const time = useClockTime();
   const smoothTime = useSmoothClock();
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'DodecahedronFont',
-      fontUrl: dodecahedronFontFile,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'DodecahedronFont',
+        fontUrl: dodecahedronFontFile,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -134,7 +137,11 @@ function ClockContent() {
       }
     };
 
-    const drawClock = (cctx: CanvasRenderingContext2D, currentTime: Date, size: number) => {
+    const drawClock = (
+      cctx: CanvasRenderingContext2D,
+      currentTime: Date,
+      size: number,
+    ) => {
       const centerX = size / 2;
       const centerY = size / 2;
       const radius = size * 0.45;
@@ -169,7 +176,7 @@ function ClockContent() {
     const animate = () => {
       const dpr = window.devicePixelRatio || 1;
       const size = canvas.width / dpr;
-      
+
       drawRoots(ctx!, size);
       drawClock(cctx!, smoothTime, size);
       animationId = requestAnimationFrame(animate);
@@ -181,11 +188,13 @@ function ClockContent() {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationId);
     };
-  }, [smoothTime]); 
+  }, [smoothTime]);
 
   return (
     <main className={styles.container}>
-      <time dateTime={time.toISOString()} style={{ display: 'none' }}>{time.toLocaleTimeString()}</time>
+      <time dateTime={time.toISOString()} style={{ display: 'none' }}>
+        {time.toLocaleTimeString()}
+      </time>
       <div className={styles.clockWrapper}>
         <img
           decoding="async"
@@ -194,14 +203,8 @@ function ClockContent() {
           alt="Background"
           className={styles.bgImage}
         />
-        <canvas
-          ref={canvasRef}
-          className={styles.canvasLayer1}
-        />
-        <canvas
-          ref={clockRef}
-          className={styles.canvasLayer3}
-        />
+        <canvas ref={canvasRef} className={styles.canvasLayer1} />
+        <canvas ref={clockRef} className={styles.canvasLayer3} />
       </div>
     </main>
   );

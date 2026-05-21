@@ -9,9 +9,9 @@ const Clock: React.FC = () => {
       fontUrl: 'https://fonts.gstatic.com/s/vt323/v18/pxiKyp0ihIEF2isfFJA.ttf',
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

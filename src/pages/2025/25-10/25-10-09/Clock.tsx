@@ -27,20 +27,26 @@ export default function ConcentricClock() {
     return () => window.removeEventListener('resize', setVh);
   }, []);
 
-  const fontConfigs = useMemo(() => [
-    { fontFamily: 'HoursFont', fontUrl: cinzel20251010 },
-    { fontFamily: 'MinutesFont', fontUrl: roboto20251010 },
-    { fontFamily: 'SecondsFont', fontUrl: orbitron20251010 }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      { fontFamily: 'HoursFont', fontUrl: cinzel20251010 },
+      { fontFamily: 'MinutesFont', fontUrl: roboto20251010 },
+      { fontFamily: 'SecondsFont', fontUrl: orbitron20251010 },
+    ],
+    [],
+  );
 
   // Use the standardized suspense loader
   useSuspenseFontLoader(fontConfigs);
 
-  const currentTime = useMemo<TimeState>(() => ({
-    h: time.getHours() % 12 || 12,
-    m: time.getMinutes(),
-    s: time.getSeconds(),
-  }), [time]);
+  const currentTime = useMemo<TimeState>(
+    () => ({
+      h: time.getHours() % 12 || 12,
+      m: time.getMinutes(),
+      s: time.getSeconds(),
+    }),
+    [time],
+  );
 
   useEffect(() => {
     const t = setTimeout(() => setGateReady(true), 100);
@@ -53,7 +59,7 @@ export default function ConcentricClock() {
     count: number,
     radiusVh: number,
     type: keyof TimeState,
-    offset = { x: 0, y: 0 }
+    offset = { x: 0, y: 0 },
   ) => {
     const items = [];
     const current = currentTime[type];
@@ -123,35 +129,35 @@ export default function ConcentricClock() {
       style={{
         opacity: gateReady ? 1 : 0,
         transition: 'opacity 0.5s ease-in-out',
-        backgroundColor: '#530B7CFF'
-      }}
-    >
-      <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        width: '100vw',
-        height: 'calc(var(--vh, 1vh) * 100)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        background:
-          'radial-gradient(circle at center, #530B7CFF 30%, #6B11BAFF 100%)',
-        overflow: 'hidden',
+        backgroundColor: '#530B7CFF',
       }}
     >
       <div
         style={{
-          position: 'relative',
-          width: '100vh',
-          height: '100vh',
+          position: 'fixed',
+          inset: 0,
+          width: '100vw',
+          height: 'calc(var(--vh, 1vh) * 100)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          background:
+            'radial-gradient(circle at center, #530B7CFF 30%, #6B11BAFF 100%)',
+          overflow: 'hidden',
         }}
       >
-        {renderRing(12, 62, 'h', { x: -79, y: -42 })}
-        {renderRing(60, 139, 'm', { x: -149, y: -14 })}
-        {renderRing(60, 72, 's', { x: -75, y: 11 })}
-      </div>
+        <div
+          style={{
+            position: 'relative',
+            width: '100vh',
+            height: '100vh',
+          }}
+        >
+          {renderRing(12, 62, 'h', { x: -79, y: -42 })}
+          {renderRing(60, 139, 'm', { x: -149, y: -14 })}
+          {renderRing(60, 72, 's', { x: -75, y: 11 })}
+        </div>
       </div>
     </div>
   );

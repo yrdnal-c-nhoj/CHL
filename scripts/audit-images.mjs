@@ -12,7 +12,16 @@ const root = path.resolve(__dirname, '..');
 const srcDir = path.join(root, 'src');
 const imgDir = path.join(srcDir, 'assets', 'images');
 const IMG_EXT = new Set(['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg']);
-const CODE_EXT = new Set(['.ts', '.tsx', '.js', '.jsx', '.css', '.json', '.html', '.md']);
+const CODE_EXT = new Set([
+  '.ts',
+  '.tsx',
+  '.js',
+  '.jsx',
+  '.css',
+  '.json',
+  '.html',
+  '.md',
+]);
 
 function walk(dir, onFile) {
   if (!fs.existsSync(dir)) return;
@@ -72,7 +81,10 @@ const lines = [
 ];
 
 fs.writeFileSync(path.join(root, 'unused-images-report.txt'), lines.join('\n'));
-fs.writeFileSync(path.join(root, 'unused-images-only-report.txt'), unused.join('\n') + '\n');
+fs.writeFileSync(
+  path.join(root, 'unused-images-only-report.txt'),
+  unused.join('\n') + '\n',
+);
 
 console.log(`Wrote unused-images-report.txt (${unused.length} unused)`);
 console.log(`Wrote unused-images-only-report.txt`);

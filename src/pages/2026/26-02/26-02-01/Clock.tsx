@@ -4,7 +4,7 @@ import { useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 import dripFont from '@/assets/fonts/26fonts/26-02-01-26-01-31-cond.ttf?url';
-import analogBgImage from '@/assets/images/2026/26-02/26-02-01/rain.webp';
+import analogBgImage from '@/assets/images/26_images/26-02/26-02-01/rain.webp';
 
 export const background = analogBgImage;
 
@@ -21,16 +21,21 @@ const CLOCK_CONFIG = {
 
 const AnalogClock: React.FC = () => {
   const now = useMillisecondClock();
-  
-  const fontConfigs = useMemo(() => [{
-      fontFamily: 'BorrowedAnalog',
-      fontUrl: dripFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-  }], []);
-  
+
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'BorrowedAnalog',
+        fontUrl: dripFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   const msec = now.getMilliseconds();

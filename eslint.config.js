@@ -21,7 +21,7 @@ export default tseslint.config(
       'src/pages/**',
       'src/templates/**',
       'src/test/**',
-      'src/**/*.jsx'
+      'src/**/*.jsx',
     ],
   },
 
@@ -291,8 +291,9 @@ export default tseslint.config(
         {
           object: 'window',
           property: 'fullScreen',
-          message: 'window.fullScreen is deprecated. Use document.fullscreenElement instead.'
-        }
+          message:
+            'window.fullScreen is deprecated. Use document.fullscreenElement instead.',
+        },
       ],
       radix: 'error',
       yoda: 'error',

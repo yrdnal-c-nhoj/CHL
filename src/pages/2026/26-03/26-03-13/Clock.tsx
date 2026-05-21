@@ -8,11 +8,18 @@ const Clock: React.FC = () => {
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
   // The Live ID from your error message
-  const videoId = 'EO_1LWqsCNE'; 
+  const videoId = 'EO_1LWqsCNE';
 
-  const fontConfigs = useMemo(() => [
-    { fontFamily: 'VeniceFont', fontUrl: veniceFont, options: { weight: 'normal', style: 'normal' } }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'VeniceFont',
+        fontUrl: veniceFont,
+        options: { weight: 'normal', style: 'normal' },
+      },
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -58,13 +65,12 @@ const Clock: React.FC = () => {
             top: '50%',
             left: '50%',
             width: '100vw',
-            height: '56.25vw', 
+            height: '56.25vw',
             minHeight: '100dvh',
             minWidth: '177.77dvh',
             transform: 'translate(-50%, -50%)',
           }}
         />
-     
       </div>
 
       {/* Clock UI */}

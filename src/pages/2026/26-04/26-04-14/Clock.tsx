@@ -3,8 +3,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 // Asset imports
-import bgVideo from '@/assets/images/2026/26-04/26-04-14/haumeas.mp4';
-import overlayImage from '@/assets/images/2026/26-04/26-04-14/haumea.webp';
+import bgVideo from '@/assets/images/26_images/26-04/26-04-14/haumeas.mp4';
+import overlayImage from '@/assets/images/26_images/26-04/26-04-14/haumea.webp';
 
 // Export assets for preloading
 export { bgVideo, overlayImage };
@@ -29,7 +29,14 @@ const Clock: React.FC = () => {
 
   return (
     <main className={styles.container}>
-      <video src={bgVideo} autoPlay loop muted playsInline className={styles.video} />
+      <video
+        src={bgVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className={styles.video}
+      />
       <img src={overlayImage} alt="" className={styles.imageOverlay} />
       <div className={styles.overlay} />
       <time className={styles.clockFace} dateTime={time.toISOString()}>
@@ -55,9 +62,18 @@ const Clock: React.FC = () => {
           );
         })}
 
-        <div className={`${styles.hand} ${styles.hourHand}`} style={{ transform: `translateX(-50%) rotate(${hourDeg}deg)` }} />
-        <div className={`${styles.hand} ${styles.minuteHand}`} style={{ transform: `translateX(-50%) rotate(${minDeg}deg)` }} />
-        <div className={`${styles.hand} ${styles.secondHand}`} style={{ transform: `translateX(-50%) rotate(${secDeg}deg)` }} />
+        <div
+          className={`${styles.hand} ${styles.hourHand}`}
+          style={{ transform: `translateX(-50%) rotate(${hourDeg}deg)` }}
+        />
+        <div
+          className={`${styles.hand} ${styles.minuteHand}`}
+          style={{ transform: `translateX(-50%) rotate(${minDeg}deg)` }}
+        />
+        <div
+          className={`${styles.hand} ${styles.secondHand}`}
+          style={{ transform: `translateX(-50%) rotate(${secDeg}deg)` }}
+        />
         <div className={styles.centerDot} />
       </time>
     </main>

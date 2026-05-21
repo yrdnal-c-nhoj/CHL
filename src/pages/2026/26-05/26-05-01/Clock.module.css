@@ -20,7 +20,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  filter: saturate(2.0) hue-rotate(-54deg); /* Adjust saturation value as needed */
+  filter: saturate(2) hue-rotate(-54deg); /* Adjust saturation value as needed */
   z-index: 0;
 }
 
@@ -43,8 +43,7 @@
   height: 95dvh;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.391);
- }
-
+}
 
 .hourTick {
   position: absolute;
@@ -54,7 +53,6 @@
   background-color: #100f0f;
   border-radius: 50%;
 }
-
 
 .hand {
   position: absolute;

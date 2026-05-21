@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSecondClock } from '@/utils/hooks';
-import cocteauVideo from '@/assets/images/2026/26-02/26-02-25/cocteau.mp4';
-import starWebp from '@/assets/images/2026/26-02/26-02-25/star.webp';
+import cocteauVideo from '@/assets/images/26_images/26-02/26-02-25/cocteau.mp4';
+import starWebp from '@/assets/images/26_images/26-02/26-02-25/star.webp';
 
 const CocteauClock: React.FC = () => {
   const time = useSecondClock();

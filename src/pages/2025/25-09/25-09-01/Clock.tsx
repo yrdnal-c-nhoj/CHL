@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import * as DigitalClock from './ChinaClock.module.css';
-import bgImage from '@/assets/images/2025/25-09/25-09-01/clo.webp';
-import cornerImage from '@/assets/images/2025/25-09/25-09-01/seal.png';
+import bgImage from '@/assets/images/25_images/25-09/25-09-01/clo.webp';
+import cornerImage from '@/assets/images/25_images/25-09/25-09-01/seal.png';
 
 const chineseDigits = {
   0: '零',

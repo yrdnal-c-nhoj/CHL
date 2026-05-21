@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import bardImg from '@/assets/images/2025/25-07/25-07-22/bard.webp';
-import barrsImg from '@/assets/images/2025/25-07/25-07-22/barrs.webp';
+import bardImg from '@/assets/images/25_images/25-07/25-07-22/bard.webp';
+import barrsImg from '@/assets/images/25_images/25-07/25-07-22/barrs.webp';
 import berFont from '@/assets/fonts/25fonts/25-07-22-ber.otf';
 
 const BarrelrollClock: React.FC = () => {
@@ -13,9 +13,9 @@ const BarrelrollClock: React.FC = () => {
       fontUrl: berFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   useEffect(() => {

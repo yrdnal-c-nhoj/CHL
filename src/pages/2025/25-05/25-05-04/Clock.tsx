@@ -3,10 +3,10 @@ import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import tumbGif from '@/assets/images/2025/25-05/25-05-04/tumb-ezgif.com-optimize.gif';
-import spinnGif from '@/assets/images/2025/25-05/25-05-04/spinn.gif';
-import edGif from '@/assets/images/2025/25-05/25-05-04/ed-ezgif.com-optimize.gif';
-import wallpaperGif from '@/assets/images/2025/25-05/25-05-04/wallpapaer-ezgif.com-optimize.gif';
+import tumbGif from '@/assets/images/25_images/25-05/25-05-04/tumb-ezgif.com-optimize.gif';
+import spinnGif from '@/assets/images/25_images/25-05/25-05-04/spinn.gif';
+import edGif from '@/assets/images/25_images/25-05/25-05-04/ed-ezgif.com-optimize.gif';
+import wallpaperGif from '@/assets/images/25_images/25-05/25-05-04/wallpapaer-ezgif.com-optimize.gif';
 
 // Component Props interface
 interface ClockProps {

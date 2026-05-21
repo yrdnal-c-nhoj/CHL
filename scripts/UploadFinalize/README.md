@@ -10,11 +10,13 @@ The `finalize-component.ts` script validates clock components against BTS standa
 ## Usage
 
 ### Basic Usage (Auto-detect current component)
+
 ```bash
 npm run finalize
 ```
 
 ### Specific Component
+
 ```bash
 npm run finalize -- src/pages/2026/26-05/26-05-09/Clock.tsx
 ```
@@ -22,6 +24,7 @@ npm run finalize -- src/pages/2026/26-05/26-05-09/Clock.tsx
 ## What It Does
 
 ### 1. Validation Checks
+
 - ✅ **TypeScript Compilation**: Ensures no TypeScript errors
 - ✅ **ESLint Validation**: Checks against linting rules
 - ✅ **File Structure**: Verifies required files exist (Clock.tsx, .module.css)
@@ -32,6 +35,7 @@ npm run finalize -- src/pages/2026/26-05/26-05-09/Clock.tsx
 - ✅ **CSS Modules**: Validates CSS module usage over inline styles
 
 ### 2. Auto-Fixes
+
 - 📁 **Creates Missing Directories**: Asset and font directories
 - 📄 **Creates CSS Modules**: Default CSS module file if missing
 - 🎨 **Code Formatting**: Applies Prettier formatting
@@ -42,12 +46,14 @@ npm run finalize -- src/pages/2026/26-05/26-05-09/Clock.tsx
 - 📝 **Font Renaming**: Renames fonts to follow YY-MM-DD-name.ext convention
 
 ### 3. Screenshot Capture
+
 - 📸 **Standardized Screenshots**: 1200x800 with 2x DPI
 - 🎯 **Component Isolation**: Captures only the component
 - 📁 **Organized Storage**: Saves to `screen-caps/` directory
 - 🏷️ **Consistent Naming**: Uses date format (e.g., `26-05-09.webp`)
 
 ### 4. GitHub Readiness
+
 - ✅ **Pre-commit Validation**: All checks passed
 - ✅ **Code Quality**: Formatted and linted
 - ✅ **Documentation**: Screenshot for README/docs
@@ -65,6 +71,7 @@ screen-caps/
 ## Validation Details
 
 ### Technical Standards Checked
+
 - Use of `useClockTime()` or `useSmoothClock()` hooks
 - Proper font loading with `useSuspenseFontLoader()`
 - Semantic HTML with `<time dateTime={...}>`
@@ -74,21 +81,25 @@ screen-caps/
 - Asset organization and placement
 
 ### Asset Organization Validation
+
 The script now performs comprehensive asset organization checks:
 
 #### Images
+
 - **Location Check**: Ensures images are in `assets/images/YY-MM/YY-MM-DD/`
 - **Reference Validation**: Checks if imported/background images exist
 - **Path Detection**: Finds misplaced images in wrong directories
 - **Orphan Detection**: Identifies unused image assets
 
 #### Fonts
+
 - **Location Check**: Ensures fonts are in `assets/fonts/YYYY/`
 - **Naming Convention**: Validates `YY-MM-DD-name.ext` format
 - **Reference Validation**: Checks if imported fonts exist
 - **Orphan Detection**: Identifies unused font assets
 
 ### Auto-Fix Capabilities
+
 - Missing CSS module files
 - Asset directory structure
 - Font directory structure
@@ -99,6 +110,7 @@ The script now performs comprehensive asset organization checks:
 - **Orphan Cleanup**: Removes unused assets to keep repo clean
 
 ### Screenshot Specifications
+
 - **Resolution**: 1200x800px
 - **DPI**: 2x (for high-quality thumbnails)
 - **Format**: WebP (optimized for web)

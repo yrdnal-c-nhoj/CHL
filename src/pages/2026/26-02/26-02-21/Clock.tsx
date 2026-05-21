@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useRef, useMemo, memo, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  memo,
+  useCallback,
+} from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
@@ -9,14 +16,14 @@ const CONFIG = {
   FONT_FAMILY: 'ClockCustom',
 };
 
-import img1 from '@/assets/images/2026/26-02/26-02-21/123.webp';
-import img2 from '@/assets/images/2026/26-02/26-02-21/1231.gif';
-import img3 from '@/assets/images/2026/26-02/26-02-21/1232.webp';
-import img4 from '@/assets/images/2026/26-02/26-02-21/1233.webp';
-import img5 from '@/assets/images/2026/26-02/26-02-21/1234.webp';
-import img6 from '@/assets/images/2026/26-02/26-02-21/1235.webp';
-import img7 from '@/assets/images/2026/26-02/26-02-21/1236.gif';
-import img8 from '@/assets/images/2026/26-02/26-02-21/1237.webp';
+import img1 from '@/assets/images/26_images/26-02/26-02-21/123.webp';
+import img2 from '@/assets/images/26_images/26-02/26-02-21/1231.gif';
+import img3 from '@/assets/images/26_images/26-02/26-02-21/1232.webp';
+import img4 from '@/assets/images/26_images/26-02/26-02-21/1233.webp';
+import img5 from '@/assets/images/26_images/26-02/26-02-21/1234.webp';
+import img6 from '@/assets/images/26_images/26-02/26-02-21/1235.webp';
+import img7 from '@/assets/images/26_images/26-02/26-02-21/1236.gif';
+import img8 from '@/assets/images/26_images/26-02/26-02-21/1237.webp';
 import customFont from '@/assets/fonts/26fonts/26-02-21-321.otf?url';
 
 export { img1, img2, img3, img4, img5, img6, img7, img8 };
@@ -59,9 +66,9 @@ export const fontConfigs = [
     fontUrl: customFont,
     options: {
       weight: 'normal',
-      style: 'normal'
-    }
-  }
+      style: 'normal',
+    },
+  },
 ];
 
 const StaticCollage = memo<StaticCollageProps>(({ count }) => {
@@ -94,7 +101,7 @@ export default function RefactoredClock() {
   const time = useSecondClock();
   const [dynamicImages, setDynamicImages] = useState<DynamicImages[]>([]);
   const [showContent, setShowContent] = useState(false);
-  
+
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
@@ -106,7 +113,11 @@ export default function RefactoredClock() {
       const newImg = `https://picsum.photos/seed/${Math.random()}/100/100.jpg`;
       setDynamicImages((prev) => [
         ...prev.slice(-(CONFIG.MAX_DYNAMIC_IMAGES - 1)),
-        { id: Date.now().toString(), src: newImg, style: generateImageStyle(true) }
+        {
+          id: Date.now().toString(),
+          src: newImg,
+          style: generateImageStyle(true),
+        },
       ]);
     }
   }, [time]);
@@ -157,7 +168,12 @@ export default function RefactoredClock() {
       <StaticCollage count={CONFIG.COLLAGE_COUNT} />
 
       {dynamicImages.map((img, index) => (
-        <img key={`dynamic-${index}-${img.id}`} src={img.src} style={img.style} alt="" />
+        <img
+          key={`dynamic-${index}-${img.id}`}
+          src={img.src}
+          style={img.style}
+          alt=""
+        />
       ))}
 
       <div style={digitGroupStyle} aria-hidden="true">

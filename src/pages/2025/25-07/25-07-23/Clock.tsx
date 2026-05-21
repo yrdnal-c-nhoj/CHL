@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import backgroundImg from '@/assets/images/2025/25-07/25-07-23/bay01s52djxo1_400.webp';
+import backgroundImg from '@/assets/images/25_images/25-07/25-07-23/bay01s52djxo1_400.webp';
 import bayFont from '@/assets/fonts/25fonts/25-07-23-bay.ttf';
 
 const Clock: React.FC = () => {
@@ -13,9 +13,9 @@ const Clock: React.FC = () => {
       fontUrl: bayFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
