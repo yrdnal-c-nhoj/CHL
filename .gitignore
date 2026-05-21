@@ -22,11 +22,9 @@ TODO.md
 .vite/
 coverage/
 
-# Local audit reports (regenerate with npm run audit:fonts / audit:images)
-unused-fonts-report.txt
-non-standard-fonts.txt
-unused-images-report.txt
-unused-images-only-report.txt
 
 # Screen captures (social media exports)
 captures/
+screen-caps/
+
+scripts/
