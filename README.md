@@ -27,12 +27,12 @@ Online digital art project by Cubist Heart Laboratories. [See it live](https://w
 
 **Single source of truth:** [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) — new clocks, manual registry, commands, CI, BTS.
 
-| Doc | Use for |
-|-----|---------|
-| [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) | Workflow, policy, scripts, quality gates |
-| [`src/templates/ARCHITECTURE.md`](src/templates/ARCHITECTURE.md) | Clock component patterns and hooks |
-| [`ROADMAP.md`](ROADMAP.md) | Planned future work |
-| [`docs/SITE_SURVEY.md`](docs/SITE_SURVEY.md) | Historical evaluation snapshot |
+| Doc                                                              | Use for                                  |
+| ---------------------------------------------------------------- | ---------------------------------------- |
+| [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)                     | Workflow, policy, scripts, quality gates |
+| [`src/templates/ARCHITECTURE.md`](src/templates/ARCHITECTURE.md) | Clock component patterns and hooks       |
+| [`ROADMAP.md`](ROADMAP.md)                                       | Planned future work                      |
+| [`docs/SITE_SURVEY.md`](docs/SITE_SURVEY.md)                     | Historical evaluation snapshot           |
 
 ## Quick Start
 
@@ -43,7 +43,6 @@ npm run dev    # http://localhost:5173
 
 New clock (summary): `clock:new` → **you** edit `clockpages.json` → `finalize` → CI checks.  
 Full steps: [`docs/DEVELOPMENT.md#new-clock-workflow`](docs/DEVELOPMENT.md#new-clock-workflow).
-
 
 ## Deployment
 

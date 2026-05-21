@@ -18,6 +18,7 @@ npm run capture:daily-square 26-05-20
 ```
 
 ### **January 1, 2026**
+
 ```bash
 npm run capture:daily-square 26-01-01
 ```
@@ -101,13 +102,13 @@ src/assets/thumbnails/
 
 #### Key Differences from Regular Thumbnails
 
-| Feature          | Regular Thumbnails  | Daily Square             |
-| ---------------- | ------------------- | ------------------------ |
-| **Wait Time**    | 2 seconds           | 2 seconds (as requested) |
-| **Format**       | WebP 90%            | WebP 90%                 |
-| **Dimensions**   | 500x500px           | 500x500px                |
-| **Background**   | Black               | Black                    |
-| **Optimization** | Thumbnail mode      | Thumbnail mode           |
+| Feature          | Regular Thumbnails  | Daily Square               |
+| ---------------- | ------------------- | -------------------------- |
+| **Wait Time**    | 2 seconds           | 2 seconds (as requested)   |
+| **Format**       | WebP 90%            | WebP 90%                   |
+| **Dimensions**   | 500x500px           | 500x500px                  |
+| **Background**   | Black               | Black                      |
+| **Optimization** | Thumbnail mode      | Thumbnail mode             |
 | **Naming**       | `{date}-thumb.webp` | `{date}-daily-square.webp` |
 
 #### Integration with Workflow

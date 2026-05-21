@@ -1,9 +1,4 @@
-import React, {
-  useEffect,
-  useContext,
-  useMemo,
-  Suspense,
-} from 'react';
+import React, { useEffect, useContext, useMemo, Suspense } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { DataContext } from './context/DataContext';
 import Header from './components/Header';
@@ -33,7 +28,9 @@ const useClockNavigation = (items: ClockItem[] = [], date = '') => {
   const normalizedDate = useMemo(() => normalizeDate(date || ''), [date]);
 
   return useMemo(() => {
-    const idx = items.findIndex((i) => i?.date && normalizeDate(i.date) === normalizedDate);
+    const idx = items.findIndex(
+      (i) => i?.date && normalizeDate(i.date) === normalizedDate,
+    );
     const currentItem = idx !== -1 ? items[idx] : null;
     return {
       currentItem,
@@ -54,7 +51,10 @@ const getMonthFromDate = (date: string): string => {
 /**
  * Sub-component for Error UI to keep main component within line limits.
  */
-const ErrorDisplay: React.FC<{ message: string; onBack: () => void }> = ({ message, onBack }) => (
+const ErrorDisplay: React.FC<{ message: string; onBack: () => void }> = ({
+  message,
+  onBack,
+}) => (
   <div className={styles.errorContainer}>
     <h1>Error</h1>
     <p>{message}</p>
@@ -77,11 +77,20 @@ const LoadingOverlay: React.FC<{ visible: boolean }> = ({ visible }) => (
 
 const ClockPage: React.FC = () => {
   const { date } = useParams();
-  const { items, loading, error: contextError } = useContext(DataContext) as DataContextType;
+  const {
+    items,
+    loading,
+    error: contextError,
+  } = useContext(DataContext) as DataContextType;
   const navigate = useNavigate();
   const headerVisible = useAutoHeader(HEADER_FADE_DELAY);
   const { currentItem, prevItem, nextItem } = useClockNavigation(items, date);
-const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPage(currentItem ?? null);
+  const {
+    ClockComponent,
+    isReady,
+    error: pageError,
+    overlayVisible,
+  } = useClockPage(currentItem ?? null);
 
   const handleHeaderClick = () => {
     navigate(-1);
@@ -93,7 +102,11 @@ const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPa
     }
   }, [date, navigate]);
 
-  if (pageError || contextError || (!loading && !currentItem && items.length > 0)) {
+  if (
+    pageError ||
+    contextError ||
+    (!loading && !currentItem && items.length > 0)
+  ) {
     return (
       <ErrorDisplay
         message={pageError || contextError || 'Clock not found'}
@@ -101,7 +114,6 @@ const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPa
       />
     );
   }
-
 
   return (
     <div className={`${styles.container} ${isReady ? styles.loaded : ''}`}>
@@ -115,7 +127,7 @@ const { ClockComponent, isReady, error: pageError, overlayVisible } = useClockPa
               handleHeaderClick();
             }
           }}
-              aria-label="Go back"
+          aria-label="Go back"
           style={{
             cursor: 'pointer',
             minHeight: '100vh',

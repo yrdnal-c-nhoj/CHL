@@ -2,16 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 
-
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import backgroundImage from '@/assets/images/2025/25-09/25-09-17/crush.jpg';
+import backgroundImage from '@/assets/images/25_images/25-09/25-09-17/crush.jpg';
 import f250917fontt from '@/assets/fonts/25fonts/25-09-17-crush.ttf?url';
-import centerImage from '@/assets/images/2025/25-09/25-09-17/cr.gif'; // middle image
-import topImage from '@/assets/images/2025/25-09/25-09-17/crr.gif'; // top overlay image
-import overlay1 from '@/assets/images/2025/25-09/25-09-17/ccr.gif';
-import overlay2 from '@/assets/images/2025/25-09/25-09-17/cru.gif';
-import overlay3 from '@/assets/images/2025/25-09/25-09-17/crush2.gif';
+import centerImage from '@/assets/images/25_images/25-09/25-09-17/cr.gif'; // middle image
+import topImage from '@/assets/images/25_images/25-09/25-09-17/crr.gif'; // top overlay image
+import overlay1 from '@/assets/images/25_images/25-09/25-09-17/ccr.gif';
+import overlay2 from '@/assets/images/25_images/25-09/25-09-17/cru.gif';
+import overlay3 from '@/assets/images/25_images/25-09/25-09-17/crush2.gif';
 
 const pad = (n) => n.toString().padStart(2, '0');
 

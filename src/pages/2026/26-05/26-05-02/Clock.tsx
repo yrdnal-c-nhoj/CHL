@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 
-import carVideo from '@/assets/images/2026/26-05/26-05-02/car.mp4';
+import carVideo from '@/assets/images/26_images/26-05/26-05-02/car.mp4';
 // Import the corresponding font from the assets folder
 import fontUrl from '@/assets/fonts/26fonts/26-05-02-carfall.ttf?url';
 
@@ -10,9 +10,7 @@ import fontUrl from '@/assets/fonts/26fonts/26-05-02-carfall.ttf?url';
 export const assets = [carVideo];
 
 // Font configuration for the suspense loader
-const fontConfigs: FontConfig[] = [
-  { fontFamily: 'ClockFont', fontUrl },
-];
+const fontConfigs: FontConfig[] = [{ fontFamily: 'ClockFont', fontUrl }];
 
 import styles from './Clock.module.css';
 
@@ -30,7 +28,10 @@ const getHandZIndex = (type: 'hour' | 'minute' | 'second'): number => {
   return 10;
 };
 
-const getHandBorderRadius = (type: 'hour' | 'minute' | 'second', width: number): string => {
+const getHandBorderRadius = (
+  type: 'hour' | 'minute' | 'second',
+  width: number,
+): string => {
   if (type === 'second') return '1px';
   return `${width / 2}px`;
 };
@@ -40,7 +41,13 @@ const getHandTransition = (type: 'hour' | 'minute' | 'second'): string => {
   return 'transform 0.1s ease-out';
 };
 
-const ClockHand: React.FC<HandProps> = ({ angle, length, width, color, type }) => {
+const ClockHand: React.FC<HandProps> = ({
+  angle,
+  length,
+  width,
+  color,
+  type,
+}) => {
   const handStyle: React.CSSProperties = {
     position: 'absolute',
     bottom: '50%',
@@ -55,7 +62,9 @@ const ClockHand: React.FC<HandProps> = ({ angle, length, width, color, type }) =
     transition: getHandTransition(type),
   };
 
-  return <div style={handStyle} className={styles.hand} data-hand-type={type} />;
+  return (
+    <div style={handStyle} className={styles.hand} data-hand-type={type} />
+  );
 };
 
 const AnalogClock: React.FC = () => {
@@ -135,14 +144,30 @@ const AnalogClock: React.FC = () => {
       <time dateTime={isoTime} className={styles.timeWrapper}>
         <div className={styles.digitalTime}>
           <span className={styles.digitGroup}>
-            <span className={styles.digitBox}>{String(hours).padStart(2, '0')[0]}</span>
-            <span className={styles.digitBox}>{String(hours).padStart(2, '0')[1]}</span>
-            <span className={styles.digitBox}>{String(minutes).padStart(2, '0')[0]}</span>
-            <span className={styles.digitBox}>{String(minutes).padStart(2, '0')[1]}</span>
-            <span className={styles.digitBox}>{String(seconds).padStart(2, '0')[0]}</span>
-            <span className={styles.digitBox}>{String(seconds).padStart(2, '0')[1]}</span>
-            <span className={styles.digitBox}>{String(Math.floor(ms / 10)).padStart(2, '0')[0]}</span>
-            <span className={styles.digitBox}>{String(Math.floor(ms / 10)).padStart(2, '0')[1]}</span>
+            <span className={styles.digitBox}>
+              {String(hours).padStart(2, '0')[0]}
+            </span>
+            <span className={styles.digitBox}>
+              {String(hours).padStart(2, '0')[1]}
+            </span>
+            <span className={styles.digitBox}>
+              {String(minutes).padStart(2, '0')[0]}
+            </span>
+            <span className={styles.digitBox}>
+              {String(minutes).padStart(2, '0')[1]}
+            </span>
+            <span className={styles.digitBox}>
+              {String(seconds).padStart(2, '0')[0]}
+            </span>
+            <span className={styles.digitBox}>
+              {String(seconds).padStart(2, '0')[1]}
+            </span>
+            <span className={styles.digitBox}>
+              {String(Math.floor(ms / 10)).padStart(2, '0')[0]}
+            </span>
+            <span className={styles.digitBox}>
+              {String(Math.floor(ms / 10)).padStart(2, '0')[1]}
+            </span>
           </span>
         </div>
       </time>

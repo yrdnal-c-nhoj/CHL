@@ -31,7 +31,10 @@ const Clock: React.FC = () => {
   const time = useClockTime();
   useSuspenseFontLoader(fontConfigs);
 
-  const [hours, minutes, seconds] = useMemo(() => formatTime(time, '24h').split(':'), [time]);
+  const [hours, minutes, seconds] = useMemo(
+    () => formatTime(time, '24h').split(':'),
+    [time],
+  );
 
   const renderUnit = (value: string = '') => (
     <div className={styles.unitWrapper}>
@@ -46,7 +49,10 @@ const Clock: React.FC = () => {
   return (
     <main className={styles.container}>
       <div className={styles.background} aria-hidden="true" />
-      <time className={styles.content} dateTime={`${hours}:${minutes}:${seconds}`}>
+      <time
+        className={styles.content}
+        dateTime={`${hours}:${minutes}:${seconds}`}
+      >
         {renderUnit(hours)}
         {renderUnit(minutes)}
         {renderUnit(seconds)}

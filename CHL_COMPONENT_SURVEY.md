@@ -3,6 +3,7 @@
 > **Legacy reference.** Operational policy and workflow live in **[`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)**. Clock implementation patterns: **[`src/templates/ARCHITECTURE.md`](src/templates/ARCHITECTURE.md)**. This file is retained for architectural deep-dive notes only.
 
 ## Scope
+
 This document surveys the “CHL component” system: routing, registry-driven discovery, clock page rendering, asset preloading, and the submission automation pipeline.
 
 ---
@@ -10,11 +11,13 @@ This document surveys the “CHL component” system: routing, registry-driven d
 ## 1. System Architecture at a Glance
 
 ### Registry-Discovery pattern
+
 - Source of truth: `src/context/clockpages.json`
 - Loader: `src/hooks/useClockPage.ts`
 - Data hydration: `src/context/DataContext.tsx`
 
 Flow:
+
 1. `DataProvider` loads registry JSON (production uses `clockpages.json`, DEV uses `testclocks.json`).
 2. `App.tsx` routes `/:date` to `ClockPage`.
 3. `ClockPage` derives `currentItem` from the loaded registry.
@@ -27,7 +30,9 @@ Flow:
 ## 2. Entry Points & Routing
 
 ### `src/App.tsx`
+
 Responsibilities:
+
 - React Router v6 route table:
   - `/` → `Home`
   - `/:date` → `ClockPage`
@@ -41,6 +46,7 @@ Responsibilities:
   - `ErrorBoundary` catches runtime errors and renders a fallback.
 
 Documentation check:
+
 - README mentions SEO + analytics and lazy-loading; `App.tsx` matches that intent.
 
 ---
@@ -48,7 +54,9 @@ Documentation check:
 ## 3. Data Loading (Registry)
 
 ### `src/context/DataContext.tsx`
+
 Responsibilities:
+
 - Provides `DataContext` with:
   - `items`: registry of clock items
   - `loading`
@@ -58,9 +66,11 @@ Responsibilities:
   - `testclocks.json` in dev
 
 Implementation details:
+
 - `ClockItem` includes `path`, `date`, `title`, plus index signature (`[key: string]: any`).
 
 Doc gap (actionable):
+
 - The repo docs emphasize strict typing and “no any” (BTS), but the current `ClockItem` interface explicitly includes an `[key: string]: any` index signature. This is not inherently wrong, but should be called out in BTS or replaced with a narrower type.
 
 ---
@@ -68,7 +78,9 @@ Doc gap (actionable):
 ## 4. Clock Page Rendering
 
 ### `src/ClockPage.tsx`
+
 Responsibilities:
+
 - Reads `date` route param.
 - Validates `date` format (via `DATE_REGEX` from `src/utils/dateUtils`).
 - Uses `useAutoHeader` to fade the header in/out.
@@ -80,12 +92,14 @@ Responsibilities:
   - a fading `LoadingOverlay`
 
 Notable implementation details:
+
 - `ClockComponent` is loaded through `useClockPage` and mounted only when `isReady` is true.
 - The clock itself is wrapped in:
   - `<Suspense fallback={<ClockLoadingFallback />}>`
   - `<ClockComponent />`
 
 Doc alignment:
+
 - `src/templates/ARCHITECTURE.md` and README both describe font loading with Suspense; `ClockPage` is consistent with that.
 
 ---
@@ -93,7 +107,9 @@ Doc alignment:
 ## 5. Dynamic Clock Loading + Asset Preloading
 
 ### `src/hooks/useClockPage.ts`
+
 Responsibilities:
+
 - Dynamically imports the correct `Clock.tsx` under `src/pages/**/Clock.tsx` using `import.meta.glob`.
 - Preloads module-provided `assets`:
   - The imported module may export `assets?: string[]`.
@@ -104,9 +120,11 @@ Responsibilities:
   - `overlayVisible` and `isReady` govern UI transitions.
 
 Important detail:
+
 - Asset preloading currently assumes “image-like” URLs (`new Image()`), even though some clocks may export videos/audio/mp4 assets.
 
 Doc gap (actionable):
+
 - Template docs and scripts describe “export assets for preloading pipeline”. However, the current preloader implementation in `useClockPage.ts` uses `Image()` only. This means exported mp4/webm assets will not preload correctly.
 - This should be reconciled either by:
   - updating `useClockPage.ts` to preload videos/audios too, or
@@ -117,20 +135,24 @@ Doc gap (actionable):
 ## 6. Shared UI Components
 
 ### Header
+
 - `src/components/Header.tsx` uses `Header.module.css`.
 - Visibility is controlled via a `visible` prop.
 
 ### Navigation
+
 - `src/components/TopNav.tsx` implements a hamburger menu with `NavLink`.
 - `src/components/ClockPageNav.tsx` provides prev/next controls and auto-hides after inactivity.
 
 ### Thumbnails
+
 - `src/components/Thumbnail.tsx`:
   - maps `date → imageUrl` via `src/utils/thumbnailMap.ts`
   - enforces square aspect ratio using inline style `aspectRatio: '1 / 1'`
   - displays a “No Image” fallback when missing
 
 Implementation details worth documenting:
+
 - `Thumbnail` strips caller-provided `height`/`aspectRatio` so it always remains square.
 
 ---
@@ -138,7 +160,9 @@ Implementation details worth documenting:
 ## 7. Clock Template & Hook Contracts
 
 ### `src/templates/BaseClock.tsx`
+
 Contract expectations:
+
 - Exports:
   - `export const assets: string[] = []` (preloading pipeline)
 - Uses:
@@ -149,13 +173,16 @@ Contract expectations:
   - `<time dateTime={isoTime}>` with digits
 
 ### Font loading
+
 - `src/utils/fontLoader.tsx` uses a Suspense resource-style loader with `FontFace`.
 - It returns a resource `.read()` method which suspends while pending.
 
 Doc check:
+
 - `src/templates/ARCHITECTURE.md` states WOFF2-only font requirements and specific naming. The actual code supports `FontFace` with `fontUrl` and `FontFaceDescriptors`, and the file naming rules are documentation-level requirements.
 
 Mismatch to check:
+
 - Font policy is now unified in [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) and ARCHITECTURE.md.
 
 ---
@@ -163,13 +190,16 @@ Mismatch to check:
 ## 8. Time Hooks
 
 ### `src/utils/hooks/useClockTime.ts`
+
 - Provides `useClockTime()` with `setInterval(1000)`.
 - Also provides helper functions for formatting and analog calculations.
 
 ### `useSmoothClock.ts`
+
 - Provides RAF-based smooth time via `requestAnimationFrame`.
 
 Doc gap:
+
 - `AGENTS.md` says “Logic Migration: Refactor remaining setInterval clocks to useClockTime()”. But `useClockTime()` itself is setInterval-based. That statement likely intended “refactor remaining legacy clocks to use these standardized hooks”, not remove setInterval entirely.
 
 ---
@@ -177,6 +207,7 @@ Doc gap:
 ## 9. Automation Pipeline (Finalize / Captures)
 
 ### Scripts
+
 - `npm run finalize` → `tsx scripts/UploadFinalize/finalize-component.ts`
 - Thumbnail capture:
   - `npm run capture:thumbnails`
@@ -185,12 +216,15 @@ Doc gap:
   - `npm run capture:instagram/twitter/facebook`
 
 ### `scripts/UploadFinalize/README.md`
+
 Docs describe:
+
 - validation checks (TS compile, eslint, structure, standards)
 - auto-fixes (formatting, asset organization, moving, relinking, orphan cleanup, font renaming)
 - screenshot capture to `screen-caps/`
 
 Consistency check needed:
+
 - Validate that the finalize script’s actual checks match BTS/AGENTS/ARCHITECTURE docs (not fully verified in this survey pass).
 
 ---
@@ -218,6 +252,7 @@ Consistency check needed:
 ---
 
 ## 11. Suggested Documentation Next Edits (High value)
+
 - Add/adjust a “Clock Module Contract” section:
   - what a clock must export (`assets`, fontConfigs usage)
   - what asset types are supported by the preloader
@@ -231,6 +266,7 @@ Consistency check needed:
 ---
 
 ## Appendix: Key Files
+
 - Routing: `src/App.tsx`
 - Registry: `src/context/DataContext.tsx`
 - Clock page: `src/ClockPage.tsx`
@@ -244,4 +280,3 @@ Consistency check needed:
   - `scripts/UploadFinalize/*`
   - `scripts/SocialMediaCap/*`
   - `scripts/DailyThumb/*`
-

@@ -3,11 +3,11 @@ import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import pirateHook from '@/assets/images/2025/25-04/25-04-23/hook.webp';
-import pirateCutlass from '@/assets/images/2025/25-04/25-04-23/pirate_foam.gif';
-import pirateKnife from '@/assets/images/2025/25-04/25-04-23/cut.gif';
-import pirateOverlay from '@/assets/images/2025/25-04/25-04-23/sasasd.gif';
-import pirateBackground from '@/assets/images/2025/25-04/25-04-23/water.webp';
+import pirateHook from '@/assets/images/25_images/25-04/25-04-23/hook.webp';
+import pirateCutlass from '@/assets/images/25_images/25-04/25-04-23/pirate_foam.gif';
+import pirateKnife from '@/assets/images/25_images/25-04/25-04-23/cut.gif';
+import pirateOverlay from '@/assets/images/25_images/25-04/25-04-23/sasasd.gif';
+import pirateBackground from '@/assets/images/25_images/25-04/25-04-23/water.webp';
 
 // Component Props interface
 interface PirateClockProps {
@@ -16,7 +16,7 @@ interface PirateClockProps {
 
 const PirateClock: React.FC<PirateClockProps> = () => {
   const clockRef = useRef<HTMLDivElement>(null);
-  
+
   // Font loading configuration (memoized) - no custom fonts needed
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
   useSuspenseFontLoader(fontConfigs);

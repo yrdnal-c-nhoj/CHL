@@ -1,6 +1,10 @@
 @keyframes orbit {
-  0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-  100% { transform: rotateX(-360deg) rotateY(-360deg) rotateZ(-360deg); }
+  0% {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(-360deg) rotateY(-360deg) rotateZ(-360deg);
+  }
 }
 
 .clock3d {
@@ -14,7 +18,7 @@
   justify-content: center;
   align-items: center;
   perspective: 2000px;
-  font-family: "Share Tech Mono", monospace;
+  font-family: 'Share Tech Mono', monospace;
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -70,7 +74,7 @@
   .clockOrbit {
     transform: scale(0.6) rotateX(12deg);
   }
-  
+
   .glyph {
     width: 60px;
     flex: 0 0 60px;

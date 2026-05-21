@@ -10,9 +10,16 @@ const Clock: React.FC = () => {
   const time = useMillisecondClock();
   const [rotation, setRotation] = useState(0);
 
-  const fontConfigs = useMemo(() => [
-    { fontFamily: '26-03-15-shadow', fontUrl, options: { weight: 'normal', style: 'normal' } }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: '26-03-15-shadow',
+        fontUrl,
+        options: { weight: 'normal', style: 'normal' },
+      },
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -29,7 +36,7 @@ const Clock: React.FC = () => {
       <div className={styles.row}>
         {digits.map((digit, i) => (
           <div key={i} className={styles.digitBox}>
-            <div 
+            <div
               className={styles.digit}
               style={{ transform: `rotate(${rotation}deg)` }}
             >

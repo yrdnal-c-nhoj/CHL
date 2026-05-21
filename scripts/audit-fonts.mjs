@@ -13,7 +13,16 @@ const srcDir = path.join(root, 'src');
 const fontDir = path.join(srcDir, 'assets', 'fonts');
 const FONT_EXT = new Set(['.ttf', '.otf', '.woff', '.woff2']);
 const STANDARD_RE = /^\d{2}-\d{2}-\d{2}-.+\.(ttf|otf|woff2?)$/i;
-const CODE_EXT = new Set(['.ts', '.tsx', '.js', '.jsx', '.css', '.json', '.html', '.md']);
+const CODE_EXT = new Set([
+  '.ts',
+  '.tsx',
+  '.js',
+  '.jsx',
+  '.css',
+  '.json',
+  '.html',
+  '.md',
+]);
 
 function walk(dir, onFile) {
   if (!fs.existsSync(dir)) return;
@@ -41,7 +50,9 @@ function isReferenced(relPath, blob) {
   const name = path.basename(relPath);
   const stem = path.basename(relPath, path.extname(relPath));
   const posix = relPath.split(path.sep).join('/');
-  const short = posix.includes('assets/fonts/') ? posix.split('assets/fonts/')[1] : posix;
+  const short = posix.includes('assets/fonts/')
+    ? posix.split('assets/fonts/')[1]
+    : posix;
   const needles = [name, stem, posix, short].filter(Boolean);
   return needles.some((n) => blob.includes(n));
 }
@@ -77,7 +88,12 @@ const lines = [
 ];
 
 fs.writeFileSync(path.join(root, 'unused-fonts-report.txt'), lines.join('\n'));
-fs.writeFileSync(path.join(root, 'non-standard-fonts.txt'), nonStandard.join('\n') + '\n');
+fs.writeFileSync(
+  path.join(root, 'non-standard-fonts.txt'),
+  nonStandard.join('\n') + '\n',
+);
 
 console.log(`Wrote unused-fonts-report.txt (${unused.length} unused)`);
-console.log(`Wrote non-standard-fonts.txt (${nonStandard.length} non-standard)`);
+console.log(
+  `Wrote non-standard-fonts.txt (${nonStandard.length} non-standard)`,
+);

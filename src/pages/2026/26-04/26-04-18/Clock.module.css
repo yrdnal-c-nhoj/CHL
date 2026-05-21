@@ -1,18 +1,19 @@
 @keyframes radioWave {
-  0%, 100% {
-    color: #F4F1F1;
+  0%,
+  100% {
+    color: #f4f1f1;
     text-shadow: 3px 1px 0 rgba(246, 241, 241, 0.99);
   }
   25% {
-    color: #3E4638;
+    color: #3e4638;
     text-shadow: 1px 0 0 rgb(255, 0, 0);
   }
   50% {
-    color: #D0D7D0;
+    color: #d0d7d0;
     text-shadow: -1px -2px 0 rgb(255, 242, 3);
   }
   75% {
-    color: #6E596E;
+    color: #6e596e;
     text-shadow: 1px 0 0 rgb(255, 0, 0);
   }
 }
@@ -29,10 +30,18 @@
   opacity: 0.9;
 }
 
-.radioDigit:nth-child(1) { animation-delay: 0s; }
-.radioDigit:nth-child(2) { animation-delay: 2s; }
-.radioDigit:nth-child(3) { animation-delay: 12s; }
-.radioDigit:nth-child(4) { animation-delay: 28s; }
+.radioDigit:nth-child(1) {
+  animation-delay: 0s;
+}
+.radioDigit:nth-child(2) {
+  animation-delay: 2s;
+}
+.radioDigit:nth-child(3) {
+  animation-delay: 12s;
+}
+.radioDigit:nth-child(4) {
+  animation-delay: 28s;
+}
 
 .container {
   width: 100vw;
@@ -40,7 +49,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #D8E4D7;
+  background-color: #d8e4d7;
   overflow: hidden;
   position: relative;
 }
@@ -81,7 +90,12 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(135deg, rgba(0, 255, 255, 0.13) 0%, rgba(0,0,0,0) 50%, rgba(255, 0, 255, 0.17) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 255, 0.13) 0%,
+    rgba(0, 0, 0, 0) 50%,
+    rgba(255, 0, 255, 0.17) 100%
+  );
   mix-blend-mode: overlay;
   pointer-events: none;
   z-index: 1;

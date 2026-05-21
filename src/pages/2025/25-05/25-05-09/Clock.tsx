@@ -1,10 +1,16 @@
-import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+} from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
 import KinaFont from '@/assets/fonts/25fonts/25-05-09-Kina.ttf?url';
-import swurl from '@/assets/images/2025/25-05/25-05-09/swurl.gif';
+import swurl from '@/assets/images/25_images/25-05/25-05-09/swurl.gif';
 
 const importantNumbers = [12, 3, 6, 9];
 
@@ -15,16 +21,19 @@ interface ClockProps {
 
 const Clock: React.FC<ClockProps> = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'KinaFont',
-      fontUrl: KinaFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'KinaFont',
+        fontUrl: KinaFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates

@@ -12,9 +12,9 @@ const Clock: React.FC = () => {
       fontUrl: issFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
@@ -35,7 +35,10 @@ const Clock: React.FC = () => {
         className={styles.backgroundIframe}
       />
 
-      <div className={styles.clockWrapper} style={{ opacity: fontsLoaded ? 1 : 0 }}>
+      <div
+        className={styles.clockWrapper}
+        style={{ opacity: fontsLoaded ? 1 : 0 }}
+      >
         <div className={styles.clockContainer}>
           <div className={styles.digitBox}>{h1}</div>
           <div className={styles.digitBox}>{h2}</div>

@@ -3,8 +3,8 @@ import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import treeFont from '@/assets/fonts/25fonts/25-06-05-tree.ttf';
-import tree1Img from '@/assets/images/2025/25-06/25-06-05/tree1.webp';
-import tree2Img from '@/assets/images/2025/25-06/25-06-05/tree2.webp';
+import tree1Img from '@/assets/images/25_images/25-06/25-06-05/tree1.webp';
+import tree2Img from '@/assets/images/25_images/25-06/25-06-05/tree2.webp';
 
 const TreehouseClock: React.FC = () => {
   const time = useClockTime();
@@ -16,9 +16,9 @@ const TreehouseClock: React.FC = () => {
       fontUrl: treeFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

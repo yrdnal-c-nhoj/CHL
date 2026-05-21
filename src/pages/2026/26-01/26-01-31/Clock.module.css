@@ -16,17 +16,43 @@
   pointer-events: none;
 }
 
-.layerColor { background-color: #FFFB04; z-index: 0; position: absolute; inset: 0; }
-.layerTiling { background-image: url('@/assets/images/2026/26-01/26-01-31/lemons2.jpg'); background-repeat: repeat; z-index: 1; opacity: 0.8; position: absolute; inset: 0; }
-.layerLemon { background-image: url('@/assets/images/2026/26-01/26-01-31/lemon.gif'); background-position: center; z-index: 2; opacity: 0.8; position: absolute; inset: 0; }
-.layerRain { 
-  background-image: url('@/assets/images/2026/26-01/26-01-31/lu.webp'); 
-  background-size: 100% 100%; 
-  width: 100vw; height: 100vh; 
-  position: fixed; top: 0; left: 0; 
-  z-index: 3; opacity: 0.7; 
+.layerColor {
+  background-color: #fffb04;
+  z-index: 0;
+  position: absolute;
+  inset: 0;
 }
-.layerRainFlipped { transform: scale(-1, -1); z-index: 4; }
+.layerTiling {
+  background-image: url('@/assets/images/26_images/26-01/26-01-31/lemons2.jpg');
+  background-repeat: repeat;
+  z-index: 1;
+  opacity: 0.8;
+  position: absolute;
+  inset: 0;
+}
+.layerLemon {
+  background-image: url('@/assets/images/26_images/26-01/26-01-31/lemon.gif');
+  background-position: center;
+  z-index: 2;
+  opacity: 0.8;
+  position: absolute;
+  inset: 0;
+}
+.layerRain {
+  background-image: url('@/assets/images/26_images/26-01/26-01-31/lu.webp');
+  background-size: 100% 100%;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  opacity: 0.7;
+}
+.layerRainFlipped {
+  transform: scale(-1, -1);
+  z-index: 4;
+}
 
 .grid {
   position: relative;
@@ -43,14 +69,14 @@
   justify-content: center;
   font-size: 8vmin;
   font-family: 'LemonFont', monospace;
-  color: #FCDC0A;
+  color: #fcdc0a;
   position: relative;
 }
 
 .cellImage {
   position: absolute;
   inset: 0;
-  background-image: url('@/assets/images/2026/26-01/26-01-31/lemslo.gif');
+  background-image: url('@/assets/images/26_images/26-01/26-01-31/lemslo.gif');
   background-size: cover;
   background-position: center;
   z-index: -1;
@@ -59,16 +85,23 @@
 .centerImage {
   position: absolute;
   inset: 0;
-  background-image: url('@/assets/images/2026/26-01/26-01-31/lem.gif');
+  background-image: url('@/assets/images/26_images/26-01/26-01-31/lem.gif');
   background-size: cover;
   background-position: center;
   z-index: -1;
   animation: rotateCounterClockwise 15s linear infinite;
 }
 
-.char { position: relative; z-index: 1; }
+.char {
+  position: relative;
+  z-index: 1;
+}
 
 @keyframes rotateCounterClockwise {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(-360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
 }

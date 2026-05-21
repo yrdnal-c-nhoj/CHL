@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import centerImage from '@/assets/images/2025/25-09/25-09-04/sky.gif';
-import bgImage from '@/assets/images/2025/25-09/25-09-04/wood.jpeg';
+import centerImage from '@/assets/images/25_images/25-09/25-09-04/sky.gif';
+import bgImage from '@/assets/images/25_images/25-09/25-09-04/wood.jpeg';
 
 const AnalogClock: React.FC = () => {
   const time = useClockTime();

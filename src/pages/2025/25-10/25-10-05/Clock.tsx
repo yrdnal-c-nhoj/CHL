@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
-import bgImage from '@/assets/images/2025/25-10/25-10-05/16a.webp';
-import clockBgImage from '@/assets/images/2025/25-10/25-10-05/16.webp';
+import bgImage from '@/assets/images/25_images/25-10/25-10-05/16a.webp';
+import clockBgImage from '@/assets/images/25_images/25-10/25-10-05/16.webp';
 import diigi251005 from '@/assets/fonts/25fonts/25-10-05-dode.ttf';
 import ana251005font from '@/assets/fonts/25fonts/25-10-05-do.ttf';
 

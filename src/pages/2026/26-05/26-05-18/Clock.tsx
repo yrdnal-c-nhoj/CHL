@@ -4,8 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
 
-import bellImage2 from '@/assets/images/2026/26-05/26-05-18/accordion.webp';
-import accordionBg from '@/assets/images/2026/26-05/26-05-18/accordion2.webp';
+import bellImage2 from '@/assets/images/26_images/26-05/26-05-18/accordion.webp';
+import accordionBg from '@/assets/images/26_images/26-05/26-05-18/accordion2.webp';
 import customFont from '@/assets/fonts/26fonts/26-05-18.ttf?url';
 
 // ======================================================
@@ -18,7 +18,10 @@ const CLOCK_CONFIG = {
 
 type HandType = 'hour' | 'minute' | 'second';
 
-const HAND_DIMENSIONS: Record<HandType, { width: string; height: string; zIndex: number }> = {
+const HAND_DIMENSIONS: Record<
+  HandType,
+  { width: string; height: string; zIndex: number }
+> = {
   hour: { width: '0.9vmin', height: '10vmin', zIndex: 3 },
   minute: { width: '0.7vmin', height: '16vmin', zIndex: 4 },
   second: { width: '0.2vmin', height: '22vmin', zIndex: 5 },
@@ -54,7 +57,10 @@ const BackgroundLayers = memo(() => (
         zIndex: -1,
       }}
     />
-    <div className={styles.backgroundLayer} style={{ opacity: 0.12, zIndex: 0 }} />
+    <div
+      className={styles.backgroundLayer}
+      style={{ opacity: 0.12, zIndex: 0 }}
+    />
     <div
       className={styles.backgroundLayer}
       style={{

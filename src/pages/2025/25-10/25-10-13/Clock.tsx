@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import bgImage2 from '@/assets/images/2025/25-10/25-10-13/ro.jpeg';
-import bgImage from '@/assets/images/2025/25-10/25-10-13/roundhay.webp'; // second background
+import bgImage2 from '@/assets/images/25_images/25-10/25-10-13/ro.jpeg';
+import bgImage from '@/assets/images/25_images/25-10/25-10-13/roundhay.webp'; // second background
 import roundhayFont from '@/assets/fonts/25fonts/25-10-13-rou.ttf';
 import ifont25100013 from '@/assets/fonts/25fonts/25-10-13-line.otf';
 

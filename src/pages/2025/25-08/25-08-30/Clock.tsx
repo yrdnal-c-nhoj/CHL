@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import Cu250830 from '@/assets/fonts/25fonts/25-08-30-mem.ttf'; // your font file
-import bgImage from '@/assets/images/2025/25-08/25-08-30/mem.gif'; // your background image
+import bgImage from '@/assets/images/25_images/25-08/25-08-30/mem.gif'; // your background image
 
 export default function MessyClock() {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -12,9 +12,9 @@ export default function MessyClock() {
       fontUrl: Cu250830,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   const time = useClockTime();
@@ -51,9 +51,7 @@ export default function MessyClock() {
 
   return (
     <div style={clockStyle}>
-      <style>
-        {`/* Font loading handled by useMultipleFontLoader */`}
-      </style>
+      <style>{`/* Font loading handled by useMultipleFontLoader */`}</style>
       {timeString}
     </div>
   );

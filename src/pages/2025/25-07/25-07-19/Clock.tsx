@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import cunFont from '@/assets/fonts/25fonts/25-07-19-cun.ttf';
-import bgOverlay from '@/assets/images/2025/25-07/25-07-19/cun1.webp';
+import bgOverlay from '@/assets/images/25_images/25-07/25-07-19/cun1.webp';
 
 const CuneiformClock: React.FC = () => {
   const [time, setTime] = useState<any>('');
@@ -13,9 +13,9 @@ const CuneiformClock: React.FC = () => {
       fontUrl: cunFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

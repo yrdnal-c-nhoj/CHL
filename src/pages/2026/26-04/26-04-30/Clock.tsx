@@ -1,4 +1,10 @@
-import React, { useMemo, useRef, useState, useCallback, useEffect } from 'react';
+import React, {
+  useMemo,
+  useRef,
+  useState,
+  useCallback,
+  useEffect,
+} from 'react';
 
 import pleiadesFont from '@/assets/fonts/26fonts/26-04-30-pleides.otf';
 import { useClockTime } from '@/utils/hooks';
@@ -27,12 +33,12 @@ const STAR_COUNT = 150;
 const formatDigits = (num: number): string => num.toString().padStart(2, '0');
 
 const positions = [
-  { top: '35%', left: '44%' },    // 0: Hour tens - Atlas (upper left of cluster)
-  { top: '32%', left: '52%' },    // 1: Hour ones - Pleione (upper right, near Atlas)
-  { top: '50%', left: '50%' },    // 2: Minute ones - Alcyone (center, brightest)
-  { top: '45%', left: '58%' },    // 3: Minute tens - Merope (right of center)
-  { top: '65%', left: '46%' },    // 4: A/P indicator - Electra (lower left)
-  { top: '62%', left: '54%' },    // 5: M indicator - Maia (lower right)
+  { top: '35%', left: '44%' }, // 0: Hour tens - Atlas (upper left of cluster)
+  { top: '32%', left: '52%' }, // 1: Hour ones - Pleione (upper right, near Atlas)
+  { top: '50%', left: '50%' }, // 2: Minute ones - Alcyone (center, brightest)
+  { top: '45%', left: '58%' }, // 3: Minute tens - Merope (right of center)
+  { top: '65%', left: '46%' }, // 4: A/P indicator - Electra (lower left)
+  { top: '62%', left: '54%' }, // 5: M indicator - Maia (lower right)
 ] as const;
 
 // --- Helper Functions ---
@@ -89,12 +95,24 @@ const STARS = Array.from({ length: STAR_COUNT }, (_, i) => {
     opacity: rand() * 0.5 + 0.4,
     delay: rand() * 5,
     duration: rand() * 3 + 2,
-    animType: animRoll > 0.8 ? 'pulse' : animRoll > 0.6 ? 'flicker' : 'twinkle' as AnimType,
-    colorType: colorRoll > 0.9 ? 'blue' : colorRoll > 0.8 ? 'gold' : 'white' as ColorType,
+    animType:
+      animRoll > 0.8
+        ? 'pulse'
+        : animRoll > 0.6
+          ? 'flicker'
+          : ('twinkle' as AnimType),
+    colorType:
+      colorRoll > 0.9
+        ? 'blue'
+        : colorRoll > 0.8
+          ? 'gold'
+          : ('white' as ColorType),
   };
 });
 
-const fontConfigs: FontConfig[] = [{ fontFamily: 'Pleiades', fontUrl: pleiadesFont }];
+const fontConfigs: FontConfig[] = [
+  { fontFamily: 'Pleiades', fontUrl: pleiadesFont },
+];
 
 // --- Component ---
 
@@ -102,14 +120,16 @@ const PleiadesClock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useClockTime();
   const [starPairs, setStarPairs] = useState<StarPair[]>(() =>
-    Array.from({ length: 24 }, (_, i) => generateRandomPair(i, 0))
+    Array.from({ length: 24 }, (_, i) => generateRandomPair(i, 0)),
   );
   const timeoutsRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
 
   const regeneratePair = useCallback((id: number) => {
     const delay = Math.random() * 6000 + 2000;
     const timeout = setTimeout(() => {
-      setStarPairs(prev => prev.map(p => (p.id === id ? generateRandomPair(id, p.key + 1) : p)));
+      setStarPairs((prev) =>
+        prev.map((p) => (p.id === id ? generateRandomPair(id, p.key + 1) : p)),
+      );
     }, delay);
     timeoutsRef.current.add(timeout);
   }, []);
@@ -122,22 +142,34 @@ const PleiadesClock: React.FC = () => {
     };
   }, []);
 
-  const { hourTens, hourOnes, minuteTens, minuteOnes, isAM, isoTime } = useMemo(() => {
-    let h = time.getHours();
-    const isAM = h < 12;
-    h = h % 12 || 12;
-    const hStr = formatDigits(h);
-    const mStr = formatDigits(time.getMinutes());
-    const isoString = time.toISOString();
-    return { hourTens: hStr[0], hourOnes: hStr[1], minuteTens: mStr[0], minuteOnes: mStr[1], isAM, isoTime: isoString };
-  }, [time]);
+  const { hourTens, hourOnes, minuteTens, minuteOnes, isAM, isoTime } =
+    useMemo(() => {
+      let h = time.getHours();
+      const isAM = h < 12;
+      h = h % 12 || 12;
+      const hStr = formatDigits(h);
+      const mStr = formatDigits(time.getMinutes());
+      const isoString = time.toISOString();
+      return {
+        hourTens: hStr[0],
+        hourOnes: hStr[1],
+        minuteTens: mStr[0],
+        minuteOnes: mStr[1],
+        isAM,
+        isoTime: isoString,
+      };
+    }, [time]);
 
   const getStarClass = (animType: AnimType): string => {
     switch (animType) {
-      case 'twinkle': return styles.starTwinkle ?? '';
-      case 'pulse': return styles.starPulse ?? '';
-      case 'flicker': return styles.starFlicker ?? '';
-      default: return styles.starTwinkle ?? '';
+      case 'twinkle':
+        return styles.starTwinkle ?? '';
+      case 'pulse':
+        return styles.starPulse ?? '';
+      case 'flicker':
+        return styles.starFlicker ?? '';
+      default:
+        return styles.starTwinkle ?? '';
     }
   };
 
@@ -178,29 +210,95 @@ const PleiadesClock: React.FC = () => {
         <span
           key={`${star.id}-${star.key}`}
           className={styles.shootingStar}
-          style={{
-            top: star.startY,
-            left: star.startX,
-            width: `${star.length}px`,
-            '--star-angle': `${star.angle}deg`,
-            '--star-duration': `${star.duration}s`,
-            '--star-distance': `${star.distance}vw`,
-          } as React.CSSProperties}
+          style={
+            {
+              top: star.startY,
+              left: star.startX,
+              width: `${star.length}px`,
+              '--star-angle': `${star.angle}deg`,
+              '--star-duration': `${star.duration}s`,
+              '--star-distance': `${star.distance}vw`,
+            } as React.CSSProperties
+          }
           onAnimationEnd={() => regeneratePair(star.id)}
         />
       ))}
 
       {/* Digits and Indicators */}
       <time dateTime={isoTime} className={styles.timeWrapper}>
-        <span className={`${styles.digit} ${styles.digitStandard}`} style={{ top: positions[0].top, left: positions[0].left, animationDelay: '0s' }}>{hourTens}</span>
-        <span className={`${styles.digit} ${styles.digitStandard}`} style={{ top: positions[1].top, left: positions[1].left, animationDelay: '0.5s' }}>{hourOnes}</span>
-        <span className={styles.colonStar} style={{ top: '42%', left: '43%', animationDelay: '1s' }}>★</span>
-        <span className={styles.colonStar} style={{ top: '46%', left: '43%', animationDelay: '1.5s' }}>★</span>
-        <span className={`${styles.digit} ${styles.digitStandard}`} style={{ top: positions[2].top, left: positions[2].left, animationDelay: '2s' }}>{minuteTens}</span>
-        <span className={`${styles.digit} ${styles.digitCenter} ${styles.digitBright}`} style={{ top: positions[3].top, left: positions[3].left, animationDelay: '2.5s' }}>{minuteOnes}</span>
-        
-        <span className={`${styles.indicator} ${styles.indicatorActive} ${styles.indicatorTransition}`} style={{ top: positions[4].top, left: positions[4].left, animationDelay: '3s' }}>{isAM ? 'A' : 'P'}</span>
-        <span className={`${styles.indicator} ${styles.indicatorActive} ${styles.indicatorTransition}`} style={{ top: positions[5].top, left: positions[5].left, animationDelay: '3.5s' }}>M</span>
+        <span
+          className={`${styles.digit} ${styles.digitStandard}`}
+          style={{
+            top: positions[0].top,
+            left: positions[0].left,
+            animationDelay: '0s',
+          }}
+        >
+          {hourTens}
+        </span>
+        <span
+          className={`${styles.digit} ${styles.digitStandard}`}
+          style={{
+            top: positions[1].top,
+            left: positions[1].left,
+            animationDelay: '0.5s',
+          }}
+        >
+          {hourOnes}
+        </span>
+        <span
+          className={styles.colonStar}
+          style={{ top: '42%', left: '43%', animationDelay: '1s' }}
+        >
+          ★
+        </span>
+        <span
+          className={styles.colonStar}
+          style={{ top: '46%', left: '43%', animationDelay: '1.5s' }}
+        >
+          ★
+        </span>
+        <span
+          className={`${styles.digit} ${styles.digitStandard}`}
+          style={{
+            top: positions[2].top,
+            left: positions[2].left,
+            animationDelay: '2s',
+          }}
+        >
+          {minuteTens}
+        </span>
+        <span
+          className={`${styles.digit} ${styles.digitCenter} ${styles.digitBright}`}
+          style={{
+            top: positions[3].top,
+            left: positions[3].left,
+            animationDelay: '2.5s',
+          }}
+        >
+          {minuteOnes}
+        </span>
+
+        <span
+          className={`${styles.indicator} ${styles.indicatorActive} ${styles.indicatorTransition}`}
+          style={{
+            top: positions[4].top,
+            left: positions[4].left,
+            animationDelay: '3s',
+          }}
+        >
+          {isAM ? 'A' : 'P'}
+        </span>
+        <span
+          className={`${styles.indicator} ${styles.indicatorActive} ${styles.indicatorTransition}`}
+          style={{
+            top: positions[5].top,
+            left: positions[5].left,
+            animationDelay: '3.5s',
+          }}
+        >
+          M
+        </span>
       </time>
     </div>
   );

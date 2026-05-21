@@ -9,7 +9,10 @@ import styles from './styles/Home.module.css';
 import instaImg from '@/assets/icons/i.png';
 import elonImg from '@/assets/icons/x.png';
 import fbookImg from '@/assets/icons/fbook.png';
-import { isValidDate, formatDateStandard as formatDate } from './utils/dateUtils';
+import {
+  isValidDate,
+  formatDateStandard as formatDate,
+} from './utils/dateUtils';
 
 interface DataItem {
   date: string;
@@ -19,22 +22,22 @@ interface DataItem {
 }
 
 const Home: FC = () => {
-  const context = useContext(DataContext) as { 
-    items: DataItem[]; 
-    loading: boolean; 
-    error: string | null; 
+  const context = useContext(DataContext) as {
+    items: DataItem[];
+    loading: boolean;
+    error: string | null;
   };
   const { items = [], loading = false, error = null } = context || {};
   const [searchParams] = useSearchParams();
   const [fontsReady, setFontsReady] = useState<boolean>(
     sessionStorage.getItem('fontsLoaded') === 'true',
   );
-  const { 
-    saveNavigationState, 
-    restoreNavigationState, 
-    restoreScrollPosition, 
-    restoreCursorPosition, 
-    clearNavigationState 
+  const {
+    saveNavigationState,
+    restoreNavigationState,
+    restoreScrollPosition,
+    restoreCursorPosition,
+    clearNavigationState,
   } = useNavigationState();
   const [expandedMonth, setExpandedMonth] = useState<string | null>(() => {
     // Initialize expanded month from URL parameter or saved state
@@ -75,35 +78,50 @@ const Home: FC = () => {
         setTimeout(() => {
           restoreScrollPosition(savedState);
         }, 300);
-        
+
         // Restore cursor position after scroll is restored
         setTimeout(() => {
           restoreCursorPosition(savedState);
         }, 600);
-        
+
         // Clear the navigation state after restoring
         setTimeout(() => {
           clearNavigationState();
         }, 800);
       }
     }
-  }, [fontsReady, loading, restoreNavigationState, restoreScrollPosition, restoreCursorPosition, clearNavigationState]);
+  }, [
+    fontsReady,
+    loading,
+    restoreNavigationState,
+    restoreScrollPosition,
+    restoreCursorPosition,
+    clearNavigationState,
+  ]);
 
   const handleMonthToggle = (monthKey: string) => {
     setExpandedMonth(expandedMonth === monthKey ? null : monthKey);
   };
 
   const sortedItems = useMemo<DataItem[]>(() => {
-    return [...items].filter(
-      (item) => item?.date && isValidDate(item.date),
-    );
+    return [...items].filter((item) => item?.date && isValidDate(item.date));
   }, [items]);
 
   const formatMonthName = (monthKey: string): string => {
     const [yy, mm] = (monthKey || '').split('-');
     const monthNames = [
-      'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
-      'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
+      'JAN',
+      'FEB',
+      'MAR',
+      'APR',
+      'MAY',
+      'JUN',
+      'JUL',
+      'AUG',
+      'SEP',
+      'OCT',
+      'NOV',
+      'DEC',
     ];
     const monthIndex = parseInt(mm || '0', 10) - 1;
     const year = String(yy || '0');
@@ -112,8 +130,8 @@ const Home: FC = () => {
 
   const groupedByMonth = useMemo(() => {
     const groups: Record<string, DataItem[]> = {};
-    
-    sortedItems.forEach(item => {
+
+    sortedItems.forEach((item) => {
       if (item.date) {
         const [yy, mm] = (item.date || '').split('-');
         const monthKey = `${yy}-${mm}`;
@@ -126,19 +144,16 @@ const Home: FC = () => {
 
     // Sort months in descending order (newest first)
     const sortedMonths = Object.keys(groups).sort((a, b) => b.localeCompare(a));
-    
-    return sortedMonths.map(monthKey => ({
+
+    return sortedMonths.map((monthKey) => ({
       monthKey,
       monthName: formatMonthName(monthKey),
-      items: groups[monthKey] || []
+      items: groups[monthKey] || [],
     }));
   }, [sortedItems]);
 
-
   if (!fontsReady || loading) {
-    return (
-      <div className={styles.loadingContainer} />
-    );
+    return <div className={styles.loadingContainer} />;
   }
 
   if (error) return <div className={styles.error}>Error: {error}</div>;
@@ -146,7 +161,10 @@ const Home: FC = () => {
   return (
     <div
       className={styles.homeContainer}
-      style={{ opacity: fontsReady ? 1 : 0, transition: 'opacity 0.4s ease-in' }}
+      style={{
+        opacity: fontsReady ? 1 : 0,
+        transition: 'opacity 0.4s ease-in',
+      }}
     >
       <TopNav />
       <div className={styles.homeCenteredContent}>
@@ -165,49 +183,49 @@ const Home: FC = () => {
         </div>
       </div>
 
-        <div className={styles.socialContainer}>
-          <a
-            href="https://x.com/cubistheartlabs"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              decoding="async"
-              loading="lazy"
-              src={elonImg}
-              alt="X"
-              className={styles.footerIcon}
-            />
-          </a>
-          <a
-            href="https://www.instagram.com/cubist_heart_labs/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              decoding="async"
-              loading="lazy"
-              src={instaImg}
-              alt="Instagram"
-              className={styles.footerIcon}
-            />
-          </a>
-          <a
-            href="https://www.facebook.com/profile.php?id=100090369371981"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              decoding="async"
-              loading="lazy"
-              src={fbookImg}
-              alt="Facebook"
-              className={styles.footerIcon}
-            />
-          </a>
-        </div>
+      <div className={styles.socialContainer}>
+        <a
+          href="https://x.com/cubistheartlabs"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            decoding="async"
+            loading="lazy"
+            src={elonImg}
+            alt="X"
+            className={styles.footerIcon}
+          />
+        </a>
+        <a
+          href="https://www.instagram.com/cubist_heart_labs/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            decoding="async"
+            loading="lazy"
+            src={instaImg}
+            alt="Instagram"
+            className={styles.footerIcon}
+          />
+        </a>
+        <a
+          href="https://www.facebook.com/profile.php?id=100090369371981"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            decoding="async"
+            loading="lazy"
+            src={fbookImg}
+            alt="Facebook"
+            className={styles.footerIcon}
+          />
+        </a>
+      </div>
 
-        <Footer />
+      <Footer />
     </div>
   );
 };

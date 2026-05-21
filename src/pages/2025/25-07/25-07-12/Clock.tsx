@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import fibFont from '@/assets/fonts/25fonts/25-07-12-fib.otf';
-import fibImage from '@/assets/images/2025/25-07/25-07-12/fib.gif';
+import fibImage from '@/assets/images/25_images/25-07/25-07-12/fib.gif';
 
 const FibonacciClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -11,9 +11,9 @@ const FibonacciClock: React.FC = () => {
       fontUrl: fibFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

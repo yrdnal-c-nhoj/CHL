@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import bgImage from '@/assets/images/2025/25-09/25-09-07/wall.jpg'; // local background image
+import bgImage from '@/assets/images/25_images/25-09/25-09-07/wall.jpg'; // local background image
 import f250907 from '@/assets/fonts/25fonts/25-09-07-wall.ttf'; // local font file
 
 const fontVar = 'CustomFont20250908'; // custom variable name
@@ -14,9 +14,9 @@ export default function Clock() {
       fontUrl: f250907,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   const now = useClockTime();

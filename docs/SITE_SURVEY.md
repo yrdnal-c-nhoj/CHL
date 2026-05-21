@@ -22,30 +22,30 @@ Prior work ([repo audit session](8c6df15f-be3e-4e69-b45e-5271afd3640c)) fixed ru
 
 ## Where the project is today
 
-| Area | Status | Notes |
-|------|--------|-------|
-| **Product** | Strong | Daily clocks, archive navigation, live deployment |
-| **Architecture** | Strong | `clockpages.json` + `import.meta.glob` code-splitting |
-| **TypeScript** | Good / mixed | Clock pages are `.tsx`; core has type-check errors; `strict: true` in `tsconfig` |
-| **Time hooks** | In progress | ~151 clocks use `useClockTime`; ~137 still use `setInterval` in page code |
-| **Assets** | Heavy | ~40 MB fonts, ~228 MB images; 59% images not WebP |
-| **CI** | Basic → improved | *At survey time:* lint + build only; *now:* see [`DEVELOPMENT.md#ci`](./DEVELOPMENT.md#ci-github-actions) |
-| **Security** | Improved | High-severity npm advisories addressed in prior session |
-| **Mobile UX** | Known issues | Blank pages / nav clipping reported in [mobile Chrome session](8a352ebf-1d67-4c3f-bc79-b0399746c531) |
-| **PWA / offline** | Not implemented | No manifest or service worker despite historical README claims |
-| **Docs** | Consolidated | *Now:* [`DEVELOPMENT.md`](./DEVELOPMENT.md) is canonical |
+| Area              | Status           | Notes                                                                                                     |
+| ----------------- | ---------------- | --------------------------------------------------------------------------------------------------------- |
+| **Product**       | Strong           | Daily clocks, archive navigation, live deployment                                                         |
+| **Architecture**  | Strong           | `clockpages.json` + `import.meta.glob` code-splitting                                                     |
+| **TypeScript**    | Good / mixed     | Clock pages are `.tsx`; core has type-check errors; `strict: true` in `tsconfig`                          |
+| **Time hooks**    | In progress      | ~151 clocks use `useClockTime`; ~137 still use `setInterval` in page code                                 |
+| **Assets**        | Heavy            | ~40 MB fonts, ~228 MB images; 59% images not WebP                                                         |
+| **CI**            | Basic → improved | _At survey time:_ lint + build only; _now:_ see [`DEVELOPMENT.md#ci`](./DEVELOPMENT.md#ci-github-actions) |
+| **Security**      | Improved         | High-severity npm advisories addressed in prior session                                                   |
+| **Mobile UX**     | Known issues     | Blank pages / nav clipping reported in [mobile Chrome session](8a352ebf-1d67-4c3f-bc79-b0399746c531)      |
+| **PWA / offline** | Not implemented  | No manifest or service worker despite historical README claims                                            |
+| **Docs**          | Consolidated     | _Now:_ [`DEVELOPMENT.md`](./DEVELOPMENT.md) is canonical                                                  |
 
 ### Scale (2026-05-20)
 
-| Metric | Value |
-|--------|------:|
-| `Clock.tsx` modules | 425 |
-| Registry entries (`clockpages.json`) | 412 |
-| Unregistered folders (exist, not in registry) | 13 |
-| Font files | 331 (~40 MB) |
-| Image files | 1,094 (~228 MB) |
-| Production JS chunk `three` (brotli) | ~154 KB |
-| Production framework chunk (brotli) | ~39 KB |
+| Metric                                        |           Value |
+| --------------------------------------------- | --------------: |
+| `Clock.tsx` modules                           |             425 |
+| Registry entries (`clockpages.json`)          |             412 |
+| Unregistered folders (exist, not in registry) |              13 |
+| Font files                                    |    331 (~40 MB) |
+| Image files                                   | 1,094 (~228 MB) |
+| Production JS chunk `three` (brotli)          |         ~154 KB |
+| Production framework chunk (brotli)           |          ~39 KB |
 
 ### Registry integrity
 
@@ -79,11 +79,11 @@ For a daily-published creative web app at this scale, a reasonable “state-of-t
 
 ### Safe-first deletes (high confidence)
 
-| Category | Count | Action |
-|----------|------:|--------|
-| Unused fonts (heuristic) | 7 | Delete after visual grep confirm |
-| Misplaced JSX under `assets/images/` | 2 | Move or remove (`x.jsx`, `MedievalSVG.jsx`) |
-| Broken doc-only scripts | — | Removed `standardize:fonts` from `package.json` until script exists |
+| Category                             | Count | Action                                                              |
+| ------------------------------------ | ----: | ------------------------------------------------------------------- |
+| Unused fonts (heuristic)             |     7 | Delete after visual grep confirm                                    |
+| Misplaced JSX under `assets/images/` |     2 | Move or remove (`x.jsx`, `MedievalSVG.jsx`)                         |
+| Broken doc-only scripts              |     — | Removed `standardize:fonts` from `package.json` until script exists |
 
 **Unused fonts (candidate list):**
 
@@ -97,17 +97,17 @@ For a daily-published creative web app at this scale, a reasonable “state-of-t
 
 ### Review-before-delete (medium confidence)
 
-| Category | Count | Action |
-|----------|------:|--------|
-| Unused images (heuristic) | 149 | Review `unused-images-only-report.txt`; delete in batches by month |
-| Non-standard font names | 12 | Rename via manual/script to `YY-MM-DD-name.ext` (do not delete) |
+| Category                  | Count | Action                                                             |
+| ------------------------- | ----: | ------------------------------------------------------------------ |
+| Unused images (heuristic) |   149 | Review `unused-images-only-report.txt`; delete in batches by month |
+| Non-standard font names   |    12 | Rename via manual/script to `YY-MM-DD-name.ext` (do not delete)    |
 
 ### Do not delete without migration plan
 
-| Category | Count | Action |
-|----------|------:|--------|
-| Legacy JPG/PNG/GIF (still referenced) | ~446+ | Convert to WebP with `npm run optimize:images`, update imports |
-| Archive clock source under `src/pages/` | 425 | Required for site; optimize per-page bundles instead |
+| Category                                | Count | Action                                                         |
+| --------------------------------------- | ----: | -------------------------------------------------------------- |
+| Legacy JPG/PNG/GIF (still referenced)   | ~446+ | Convert to WebP with `npm run optimize:images`, update imports |
+| Archive clock source under `src/pages/` |   425 | Required for site; optimize per-page bundles instead           |
 
 ### AGENTS.md note
 
@@ -157,33 +157,33 @@ Earlier sprint text cited **270 unused fonts**. A fresh heuristic scan finds **7
 
 ## Documentation updates (this survey)
 
-| File | Change |
-|------|--------|
-| `docs/SITE_SURVEY.md` | **Created** — this survey |
-| `ROADMAP.md` | **Updated** — phased plan with asset/CI/mobile work |
-| `AGENTS.md` | **Updated** — sprint metrics from live audit |
-| `scripts/audit-fonts.mjs` | **Created** — restores `npm run audit:fonts` |
-| `scripts/audit-images.mjs` | **Created** — restores `npm run audit:images` |
-| `package.json` | **Updated** — audit script paths |
+| File                       | Change                                              |
+| -------------------------- | --------------------------------------------------- |
+| `docs/SITE_SURVEY.md`      | **Created** — this survey                           |
+| `ROADMAP.md`               | **Updated** — phased plan with asset/CI/mobile work |
+| `AGENTS.md`                | **Updated** — sprint metrics from live audit        |
+| `scripts/audit-fonts.mjs`  | **Created** — restores `npm run audit:fonts`        |
+| `scripts/audit-images.mjs` | **Created** — restores `npm run audit:images`       |
+| `package.json`             | **Updated** — audit script paths                    |
 
 ### Still missing vs README
 
-| Command | Status |
-|---------|--------|
+| Command             | Status                                                                   |
+| ------------------- | ------------------------------------------------------------------------ |
 | `npm run clock:new` | **Restored** — scaffolds files only; **does not** edit `clockpages.json` |
-| Registry | **Always manual** — see [`DEVELOPMENT.md`](./DEVELOPMENT.md) |
+| Registry            | **Always manual** — see [`DEVELOPMENT.md`](./DEVELOPMENT.md)             |
 
 ---
 
 ## Health check snapshot (at survey time)
 
-| Check | Result (2026-05-20) |
-|-------|--------|
-| `npm run build` | Pass |
-| `npm run type-check` | Fail (core errors; since fixed — run locally) |
-| `npm run lint` | Fail locally (since fixed — run locally) |
-| `npm run audit:fonts` | Restored via new script |
-| `npm run audit:images` | Restored via new script |
+| Check                  | Result (2026-05-20)                           |
+| ---------------------- | --------------------------------------------- |
+| `npm run build`        | Pass                                          |
+| `npm run type-check`   | Fail (core errors; since fixed — run locally) |
+| `npm run lint`         | Fail locally (since fixed — run locally)      |
+| `npm run audit:fonts`  | Restored via new script                       |
+| `npm run audit:images` | Restored via new script                       |
 
 **Current checks:** [`DEVELOPMENT.md#commands`](./DEVELOPMENT.md#commands)
 
@@ -191,11 +191,11 @@ Earlier sprint text cited **270 unused fonts**. A fresh heuristic scan finds **7
 
 ## Related conversations
 
-| Topic | Transcript |
-|-------|------------|
+| Topic                           | Transcript                                                                   |
+| ------------------------------- | ---------------------------------------------------------------------------- |
 | Repo/docs/tooling audit + fixes | [8c6df15f-be3e-4e69-b45e-5271afd3640c](8c6df15f-be3e-4e69-b45e-5271afd3640c) |
-| Mobile Chrome layout | [8a352ebf-1d67-4c3f-bc79-b0399746c531](8a352ebf-1d67-4c3f-bc79-b0399746c531) |
+| Mobile Chrome layout            | [8a352ebf-1d67-4c3f-bc79-b0399746c531](8a352ebf-1d67-4c3f-bc79-b0399746c531) |
 
 ---
 
-*Cubist Heart Laboratories*
+_Cubist Heart Laboratories_

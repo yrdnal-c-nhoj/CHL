@@ -4,7 +4,7 @@ import { useKeyframes } from '@/utils/enhancedFontLoader';
 import { useGlobalStyles } from '@/utils/enhancedFontLoader';
 import { useEnhancedFontLoader } from '@/utils/enhancedFontLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import bgImage from '@/assets/images/2025/25-09/25-09-19/oort.jpg';
+import bgImage from '@/assets/images/25_images/25-09/25-09-19/oort.jpg';
 
 export default function AnalogClock() {
   const [ready, setReady] = useState<boolean>(false);

@@ -22,7 +22,6 @@ import './styles/globals.css';
 import App from './App.tsx';
 import { installConsoleFilters } from './utils/consoleFilters';
 
-
 // Reduce known third-party / browser-internal console noise in production.
 if (import.meta.env.PROD) {
   try {
@@ -32,14 +31,16 @@ if (import.meta.env.PROD) {
   }
 }
 
-window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => {
-  if (import.meta.env.DEV) {
-    console.error('Unhandled Promise Rejection:', event.reason);
-  }
-});
+window.addEventListener(
+  'unhandledrejection',
+  (event: PromiseRejectionEvent) => {
+    if (import.meta.env.DEV) {
+      console.error('Unhandled Promise Rejection:', event.reason);
+    }
+  },
+);
 
 const initializeApp = () => {
-
   try {
     const rootElement = document.getElementById('root');
 
@@ -62,7 +63,7 @@ const initializeApp = () => {
   } catch (error) {
     // Log to console for debugging
     console.error('Critical initialization failure:', error);
-    
+
     // Show error on screen in production to diagnose the "blank page"
     const errorMessage = error instanceof Error ? error.message : String(error);
     document.body.innerHTML = `

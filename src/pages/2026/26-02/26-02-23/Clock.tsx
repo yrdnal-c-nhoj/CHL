@@ -2,25 +2,28 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import neptuneFont from '@/assets/fonts/26fonts/26-02-23-nep.ttf';
-import nepBg from '@/assets/images/2026/26-02/26-02-23/nept.webp';
-import loopBg from '@/assets/images/2026/26-02/26-02-23/swirl.gif';
-import triBg from '@/assets/images/2026/26-02/26-02-23/tri.webp';
+import nepBg from '@/assets/images/26_images/26-02/26-02-23/nept.webp';
+import loopBg from '@/assets/images/26_images/26-02/26-02-23/swirl.gif';
+import triBg from '@/assets/images/26_images/26-02/26-02-23/tri.webp';
 
 const DigitalClock: React.FC = () => {
   const time = useSecondClock();
   const [showContent, setShowContent] = useState(false);
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'NeptuneFont',
-      fontUrl: neptuneFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
-  
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'NeptuneFont',
+        fontUrl: neptuneFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
-import bgImg from '@/assets/images/2026/26-04/26-04-20/bstream.gif';
+import bgImg from '@/assets/images/26_images/26-04/26-04-20/bstream.gif';
 import styles from './Clock.module.css'; // Import CSS Modules
 
 export const assets = [bgImg];
@@ -13,7 +13,7 @@ const Clock: React.FC = () => {
     const m = time.getMinutes();
     const s = time.getSeconds();
     return {
-      hourDeg: (h * 30) + (m * 0.5),
+      hourDeg: h * 30 + m * 0.5,
       minuteDeg: m * 6,
       secondDeg: s * 6,
     };

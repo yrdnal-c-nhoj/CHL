@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import bg from '@/assets/images/2025/25-07/25-07-31/bay.jpeg';
+import bg from '@/assets/images/25_images/25-07/25-07-31/bay.jpeg';
 import fontUrl from '@/assets/fonts/25fonts/25-07-31-bay.ttf';
 
 const Clock: React.FC = () => {

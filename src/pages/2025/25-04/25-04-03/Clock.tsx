@@ -3,7 +3,7 @@ import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import mobyFont from '@/assets/fonts/25fonts/25-04-03-moby.ttf?url';
-import waves from '@/assets/images/2025/25-04/25-04-03/waves.gif';
+import waves from '@/assets/images/25_images/25-04/25-04-03/waves.gif';
 import styles from './Clock.module.css';
 
 // Component Props interface
@@ -26,22 +26,30 @@ export const assets: string[] = [waves];
 
 const MobyDickClock: FC<MobyDickClockProps> = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'MobyClockFont',
-      fontUrl: mobyFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'MobyClockFont',
+        fontUrl: mobyFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);
 
   const clockRef = useRef<HTMLTimeElement>(null);
-  const positionRef = useRef<ClockPosition>({ x: 0, y: 0, fontSize: 4, opacity: 1 });
+  const positionRef = useRef<ClockPosition>({
+    x: 0,
+    y: 0,
+    fontSize: 4,
+    opacity: 1,
+  });
 
   // Use the standardized hook for smooth clock updates
   const currentTime = useSecondClock();
@@ -67,7 +75,7 @@ const MobyDickClock: FC<MobyDickClockProps> = () => {
     // Apply styles with smooth transition
     clock.style.transition =
       'left 3s ease-in-out, top 3s ease-in-out, font-size 3s ease-in-out, opacity 3s ease-in-out';
-    
+
     // Using top/left avoids conflict with the CSS 'float' animation transform
     clock.style.left = `${position.x}%`;
     clock.style.top = `${position.y}%`;

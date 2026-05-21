@@ -110,7 +110,8 @@ const ClockPageNav = ({
     };
 
     document.addEventListener('mousemove', handleGlobalMouseMove);
-    return () => document.removeEventListener('mousemove', handleGlobalMouseMove);
+    return () =>
+      document.removeEventListener('mousemove', handleGlobalMouseMove);
   }, [isInHotZone, resetActivity]);
 
   if (!currentItem) return null;
@@ -130,9 +131,7 @@ const ClockPageNav = ({
         to={prevItem ? `/${prevItem.date}` : '/'}
         className={styles.navButton}
         aria-label={
-          prevItem
-            ? `Go to previous clock: ${formatTitle(prevItem.title)}`
-            : ''
+          prevItem ? `Go to previous clock: ${formatTitle(prevItem.title)}` : ''
         }
       >
         <span aria-hidden="true">⇽</span>
@@ -152,14 +151,19 @@ const ClockPageNav = ({
       >
         <div className={styles.footerCenter}>
           <span className={styles.footerDate}>
-            {formatDate(currentItem.date).replace(/^(\w+)\s*/, '$1 ').replace(/\s*'/g, " '")}
+            {formatDate(currentItem.date)
+              .replace(/^(\w+)\s*/, '$1 ')
+              .replace(/\s*'/g, " '")}
           </span>
           <span className={styles.footerTitle}>
             {formatTitle(currentItem.title)}
           </span>
-          {currentItem.clockNumber !== undefined && currentItem.clockNumber !== null && (
-            <span className={styles.footerNumber}>#{currentItem.clockNumber}</span>
-          )}
+          {currentItem.clockNumber !== undefined &&
+            currentItem.clockNumber !== null && (
+              <span className={styles.footerNumber}>
+                #{currentItem.clockNumber}
+              </span>
+            )}
         </div>
         <span className={styles.screenReaderText} />
       </button>
@@ -168,9 +172,7 @@ const ClockPageNav = ({
         to={nextItem ? `/${nextItem.date}` : '/'}
         className={styles.navButton}
         aria-label={
-          nextItem
-            ? `Go to next clock: ${formatTitle(nextItem.title)}`
-            : ''
+          nextItem ? `Go to next clock: ${formatTitle(nextItem.title)}` : ''
         }
       >
         <span aria-hidden="true">⇾</span>

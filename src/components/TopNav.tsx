@@ -22,14 +22,10 @@ const TopNav: React.FC = () => {
       </button>
 
       <div className={styles.topnavbgcolor}>
-        <div className={styles.topnavchl}>
-          Cubist Heart Laboratories
-        </div>
-        <div className={styles.topnavbt}>
-          BorrowedTime
-        </div>
+        <div className={styles.topnavchl}>Cubist Heart Laboratories</div>
+        <div className={styles.topnavbt}>BorrowedTime</div>
         <div className={styles.topnavtag}>
-            a new clock every day, made from recycled internet stuff
+          a new clock every day, made from recycled internet stuff
         </div>
       </div>
 
@@ -59,16 +55,17 @@ const TopNav: React.FC = () => {
           </li>
            */}
 
-            <li className={styles.navItem}>
+          <li className={styles.navItem}>
             <NavLink
               to="/list"
-              className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
+              className={({ isActive }) =>
+                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+              }
               onClick={() => setIsMenuOpen(false)}
             >
               LIST
             </NavLink>
           </li>
-        
 
           <li className={styles.navItem}>
             <NavLink

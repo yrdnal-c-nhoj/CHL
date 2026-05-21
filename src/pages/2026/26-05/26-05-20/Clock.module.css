@@ -2,7 +2,7 @@
   min-block-size: 100vh;
   display: grid;
   place-content: center;
-  font-family: "Google Sans", system-ui, sans-serif;
+  font-family: 'Google Sans', system-ui, sans-serif;
   background: hsl(193, 11%, 82%);
 }
 
@@ -20,7 +20,7 @@
 }
 
 .frame::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   z-index: 7;
@@ -40,7 +40,7 @@
 }
 
 .digitalClock {
-  font-family: "ClockFont", monospace;
+  font-family: 'ClockFont', monospace;
   user-select: none;
   text-shadow: 0 2px 4px #0008;
 }
@@ -48,7 +48,7 @@
 .doors {
   z-index: 5;
   display: grid;
-  grid-template: "left right" 1fr / 1fr 1fr;
+  grid-template: 'left right' 1fr / 1fr 1fr;
   position: relative;
   height: 100%;
   width: 100%;
@@ -65,7 +65,7 @@
 }
 
 .door::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background: hsl(193, 6%, 41%)

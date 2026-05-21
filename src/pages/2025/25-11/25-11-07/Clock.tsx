@@ -1,22 +1,25 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import bgImage from '@/assets/images/2025/25-11/25-11-07/birds.webp';
+import bgImage from '@/assets/images/25_images/25-11/25-11-07/birds.webp';
 import clockFontUrl from '@/assets/fonts/25fonts/25-11-07-twobirds.ttf?url';
 import { formatTime as utilFormatTime } from '@/utils/clockUtils'; // Import the utility formatTime
 import styles from './Clock.module.css';
 
 export default function PanicAnalogClock() {
   // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'CustomClockFont',
-      fontUrl: clockFontUrl,
-      options: {
-        weight: '900',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'CustomClockFont',
+        fontUrl: clockFontUrl,
+        options: {
+          weight: '900',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   const rightImageDelay = 500; // 0.5s delay for right image
@@ -26,13 +29,21 @@ export default function PanicAnalogClock() {
   const [leftSrc, setLeftSrc] = useState<string | null>(null);
   const [rightSrc, setRightSrc] = useState<string | null>(null);
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-  const [showImages, setShowImages] = useState<{ left: boolean; right: boolean }>({ left: false, right: false }); // Restore staggered image timing
+  const [showImages, setShowImages] = useState<{
+    left: boolean;
+    right: boolean;
+  }>({ left: false, right: false }); // Restore staggered image timing
   const [fadeBlack, setFadeBlack] = useState<boolean>(false); // Black overlay fade
   const [rightImageLoaded, setRightImageLoaded] = useState<boolean>(false); // Track right image load
-  const urlsRef = useRef<{ left: string | null; right: string | null }>({ left: null, right: null });
+  const urlsRef = useRef<{ left: string | null; right: string | null }>({
+    left: null,
+    right: null,
+  });
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Use the imported utility formatTime for initial state, using '12h-stylized' to match original local logic
-  const [timeStr, setTimeStr] = useState<string>(() => utilFormatTime(new Date(), '12h-stylized'));
+  const [timeStr, setTimeStr] = useState<string>(() =>
+    utilFormatTime(new Date(), '12h-stylized'),
+  );
 
   useEffect(() => {
     const update = () => setTimeStr(utilFormatTime(new Date(), '12h-stylized'));
@@ -173,9 +184,7 @@ export default function PanicAnalogClock() {
   };
 
   return (
-    <div
-      className={styles.container}
-    >
+    <div className={styles.container}>
       {/* Left background */}
       <img
         decoding="async"

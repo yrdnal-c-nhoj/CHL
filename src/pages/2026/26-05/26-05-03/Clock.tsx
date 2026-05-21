@@ -2,30 +2,204 @@ import React, { useMemo, FC } from 'react';
 import { useClockTime } from '@/utils/hooks';
 import styles from './Clock.module.css';
 import fontUrl from '@/assets/fonts/26fonts/26-05-03-dolphin.ttf?url';
-import boxImage from '@/assets/images/2026/26-05/26-05-03/box.webp';
+import boxImage from '@/assets/images/26_images/26-05/26-05-03/box.webp';
 
 /* ---------------- FONT MAP ---------------- */
 
 const FONT: Record<string, number[][]> = {
-  '0': [[1,0],[2,0],[3,0],[0,1],[4,1],[0,2],[4,2],[0,3],[4,3],[0,4],[4,4],[0,5],[4,5],[0,6],[4,6],[1,7],[2,7],[3,7]],
-  '1': [[2,0],[2,1],[2,2],[2,3],[2,4],[2,5],[2,6],[2,7]],
-  '2': [[1,0],[2,0],[3,0],[4,1],[3,2],[2,3],[1,4],[0,5],[0,6],[1,7],[2,7],[3,7],[4,7]],
-  '3': [[0,0],[1,0],[2,0],[3,0],[4,0],[4,1],[4,2],[1,3],[2,3],[3,3],[4,3],[4,4],[4,5],[4,6],[0,7],[1,7],[2,7],[3,7],[4,7]],
-  '4': [[3,0],[2,1],[1,2],[0,3],[3,3],[4,3],[3,4],[3,5],[3,6],[3,7]],
-  '5': [[0,0],[1,0],[2,0],[3,0],[4,0],[0,1],[0,2],[1,2],[2,2],[3,2],[4,3],[4,4],[0,5],[4,5],[1,6],[4,6],[1,7],[2,7],[3,7]],
-  '6': [[1,0],[2,0],[3,0],[0,1],[0,2],[0,3],[1,3],[2,3],[3,3],[0,4],[4,4],[0,5],[4,5],[0,6],[4,6],[1,7],[2,7],[3,7]],
-  '7': [[0,0],[1,0],[2,0],[3,0],[4,0],[4,1],[3,2],[2,3],[2,4],[1,5],[1,6],[1,7]],
-  '8': [[1,0],[2,0],[3,0],[0,1],[4,1],[0,2],[4,2],[1,3],[2,3],[3,3],[0,4],[4,4],[0,5],[4,5],[0,6],[4,6],[1,7],[2,7],[3,7]],
-  '9': [[1,0],[2,0],[3,0],[0,1],[4,1],[0,2],[4,2],[0,3],[4,3],[1,4],[2,4],[3,4],[4,4],[4,5],[4,6],[1,7],[2,7],[3,7]],
-  ':': [[2,2],[2,5]],
+  '0': [
+    [1, 0],
+    [2, 0],
+    [3, 0],
+    [0, 1],
+    [4, 1],
+    [0, 2],
+    [4, 2],
+    [0, 3],
+    [4, 3],
+    [0, 4],
+    [4, 4],
+    [0, 5],
+    [4, 5],
+    [0, 6],
+    [4, 6],
+    [1, 7],
+    [2, 7],
+    [3, 7],
+  ],
+  '1': [
+    [2, 0],
+    [2, 1],
+    [2, 2],
+    [2, 3],
+    [2, 4],
+    [2, 5],
+    [2, 6],
+    [2, 7],
+  ],
+  '2': [
+    [1, 0],
+    [2, 0],
+    [3, 0],
+    [4, 1],
+    [3, 2],
+    [2, 3],
+    [1, 4],
+    [0, 5],
+    [0, 6],
+    [1, 7],
+    [2, 7],
+    [3, 7],
+    [4, 7],
+  ],
+  '3': [
+    [0, 0],
+    [1, 0],
+    [2, 0],
+    [3, 0],
+    [4, 0],
+    [4, 1],
+    [4, 2],
+    [1, 3],
+    [2, 3],
+    [3, 3],
+    [4, 3],
+    [4, 4],
+    [4, 5],
+    [4, 6],
+    [0, 7],
+    [1, 7],
+    [2, 7],
+    [3, 7],
+    [4, 7],
+  ],
+  '4': [
+    [3, 0],
+    [2, 1],
+    [1, 2],
+    [0, 3],
+    [3, 3],
+    [4, 3],
+    [3, 4],
+    [3, 5],
+    [3, 6],
+    [3, 7],
+  ],
+  '5': [
+    [0, 0],
+    [1, 0],
+    [2, 0],
+    [3, 0],
+    [4, 0],
+    [0, 1],
+    [0, 2],
+    [1, 2],
+    [2, 2],
+    [3, 2],
+    [4, 3],
+    [4, 4],
+    [0, 5],
+    [4, 5],
+    [1, 6],
+    [4, 6],
+    [1, 7],
+    [2, 7],
+    [3, 7],
+  ],
+  '6': [
+    [1, 0],
+    [2, 0],
+    [3, 0],
+    [0, 1],
+    [0, 2],
+    [0, 3],
+    [1, 3],
+    [2, 3],
+    [3, 3],
+    [0, 4],
+    [4, 4],
+    [0, 5],
+    [4, 5],
+    [0, 6],
+    [4, 6],
+    [1, 7],
+    [2, 7],
+    [3, 7],
+  ],
+  '7': [
+    [0, 0],
+    [1, 0],
+    [2, 0],
+    [3, 0],
+    [4, 0],
+    [4, 1],
+    [3, 2],
+    [2, 3],
+    [2, 4],
+    [1, 5],
+    [1, 6],
+    [1, 7],
+  ],
+  '8': [
+    [1, 0],
+    [2, 0],
+    [3, 0],
+    [0, 1],
+    [4, 1],
+    [0, 2],
+    [4, 2],
+    [1, 3],
+    [2, 3],
+    [3, 3],
+    [0, 4],
+    [4, 4],
+    [0, 5],
+    [4, 5],
+    [0, 6],
+    [4, 6],
+    [1, 7],
+    [2, 7],
+    [3, 7],
+  ],
+  '9': [
+    [1, 0],
+    [2, 0],
+    [3, 0],
+    [0, 1],
+    [4, 1],
+    [0, 2],
+    [4, 2],
+    [0, 3],
+    [4, 3],
+    [1, 4],
+    [2, 4],
+    [3, 4],
+    [4, 4],
+    [4, 5],
+    [4, 6],
+    [1, 7],
+    [2, 7],
+    [3, 7],
+  ],
+  ':': [
+    [2, 2],
+    [2, 5],
+  ],
 };
 
 /* ---------------- COLORS ---------------- */
 
 const COLORS = [
-  '#0CA2D0','#06C255','#CE086E','#D89D08',
-  '#2B29D7','#CF0625','#C909B3','#D8590A',
-  '#800ADB','#3B3A3B'
+  '#0CA2D0',
+  '#06C255',
+  '#CE086E',
+  '#D89D08',
+  '#2B29D7',
+  '#CF0625',
+  '#C909B3',
+  '#D8590A',
+  '#800ADB',
+  '#3B3A3B',
 ];
 
 /* ---------------- UTILS ---------------- */
@@ -60,12 +234,48 @@ const Voxel: FC<VoxelProps> = ({ x, y, seed }) => {
   return (
     <div className={styles.voxel} style={{ left: x * size, top: y * size }}>
       <div className={styles.cube}>
-        <div className={styles.face} style={{ transform: `translateZ(${depth}px)`, background: shade(color || '#000000', 18) }} />
-        <div className={styles.face} style={{ transform: `rotateY(180deg) translateZ(${depth}px)`, background: shade(color || '#000000', -18) }} />
-        <div className={styles.face} style={{ transform: `rotateY(90deg) translateZ(${depth}px)`, background: shade(color || '#000000', -10) }} />
-        <div className={styles.face} style={{ transform: `rotateY(-90deg) translateZ(${depth}px)`, background: shade(color || '#000000', -10) }} />
-        <div className={styles.face} style={{ transform: `rotateX(90deg) translateZ(${depth}px)`, background: shade(color || '#000000', 8) }} />
-        <div className={styles.face} style={{ transform: `rotateX(-90deg) translateZ(${depth}px)`, background: shade(color || '#000000', -24) }} />
+        <div
+          className={styles.face}
+          style={{
+            transform: `translateZ(${depth}px)`,
+            background: shade(color || '#000000', 18),
+          }}
+        />
+        <div
+          className={styles.face}
+          style={{
+            transform: `rotateY(180deg) translateZ(${depth}px)`,
+            background: shade(color || '#000000', -18),
+          }}
+        />
+        <div
+          className={styles.face}
+          style={{
+            transform: `rotateY(90deg) translateZ(${depth}px)`,
+            background: shade(color || '#000000', -10),
+          }}
+        />
+        <div
+          className={styles.face}
+          style={{
+            transform: `rotateY(-90deg) translateZ(${depth}px)`,
+            background: shade(color || '#000000', -10),
+          }}
+        />
+        <div
+          className={styles.face}
+          style={{
+            transform: `rotateX(90deg) translateZ(${depth}px)`,
+            background: shade(color || '#000000', 8),
+          }}
+        />
+        <div
+          className={styles.face}
+          style={{
+            transform: `rotateX(-90deg) translateZ(${depth}px)`,
+            background: shade(color || '#000000', -24),
+          }}
+        />
       </div>
     </div>
   );

@@ -5,19 +5,21 @@ import styles from './Clock.module.css';
 
 // --- Utilities ---
 
-const formatHour = (date: Date): string => date.getHours().toString().padStart(2, '0');
-const formatMinute = (date: Date): string => date.getMinutes().toString().padStart(2, '0');
+const formatHour = (date: Date): string =>
+  date.getHours().toString().padStart(2, '0');
+const formatMinute = (date: Date): string =>
+  date.getMinutes().toString().padStart(2, '0');
 
 /**
  * Updates a canvas with text for sphere mapping.
- * Uses the 0.25 and 0.75 horizontal positions to ensure text appears 
+ * Uses the 0.25 and 0.75 horizontal positions to ensure text appears
  * on "front" and "back" of the sphere.
  */
 const updateSphereCanvas = (
   canvas: HTMLCanvasElement,
   text: string,
   bgColor: string,
-  font: string
+  font: string,
 ) => {
   const ctx = canvas.getContext('2d')!;
   ctx.fillStyle = bgColor;
@@ -33,7 +35,7 @@ const updateSphereCanvas = (
   ctx.font = font;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  
+
   // Draw twice so the number is visible from multiple angles
   ctx.fillText(text, canvas.width * 0.25, canvas.height / 2);
   ctx.fillText(text, canvas.width * 0.75, canvas.height / 2);
@@ -48,7 +50,7 @@ const updateSphereCanvas = (
 const Clock: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const time = useClockTime();
-  
+
   // Refs to Three.js objects for direct updates without re-renders
   const planetMaterialRef = useRef<THREE.MeshStandardMaterial | null>(null);
   const moonMaterialRef = useRef<THREE.MeshStandardMaterial | null>(null);
@@ -72,7 +74,7 @@ const Clock: React.FC = () => {
         55,
         window.innerWidth / window.innerHeight,
         0.1,
-        1000
+        1000,
       );
       // Pull camera back further on mobile (narrow screens)
       const isMobile = window.innerWidth / window.innerHeight < 1;
@@ -103,14 +105,14 @@ const Clock: React.FC = () => {
       const planetCanvas = document.createElement('canvas');
       planetCanvas.width = 1024; // Higher res for the big sphere
       planetCanvas.height = 512;
-      
+
       const planetTex = new THREE.CanvasTexture(planetCanvas);
-      const planetMat = new THREE.MeshStandardMaterial({ 
+      const planetMat = new THREE.MeshStandardMaterial({
         map: planetTex,
         roughness: 0.4,
-        metalness: 0.1 
+        metalness: 0.1,
       });
-      
+
       planetMaterialRef.current = planetMat;
       planet = new THREE.Mesh(planetGeo, planetMat);
       planet.position.set(0, 0, 0);
@@ -121,22 +123,32 @@ const Clock: React.FC = () => {
       const moonCanvas = document.createElement('canvas');
       moonCanvas.width = 512;
       moonCanvas.height = 256;
-      
+
       const moonTex = new THREE.CanvasTexture(moonCanvas);
-      const moonMat = new THREE.MeshStandardMaterial({ 
+      const moonMat = new THREE.MeshStandardMaterial({
         map: moonTex,
         roughness: 0.3,
-        metalness: 0.2 
+        metalness: 0.2,
       });
-      
+
       moonMaterialRef.current = moonMat;
       moon = new THREE.Mesh(moonGeo, moonMat);
       scene.add(moon);
 
       // Initial Texture Draw
       const now = new Date();
-      updateSphereCanvas(planetCanvas, formatHour(now), '#1034A6', '900 300px "Abril Fatface", serif');
-      updateSphereCanvas(moonCanvas, formatMinute(now), '#FF4500', 'bold 120px "Space Mono", monospace');
+      updateSphereCanvas(
+        planetCanvas,
+        formatHour(now),
+        '#1034A6',
+        '900 300px "Abril Fatface", serif',
+      );
+      updateSphereCanvas(
+        moonCanvas,
+        formatMinute(now),
+        '#FF4500',
+        'bold 120px "Space Mono", monospace',
+      );
       planetTex.needsUpdate = true;
       moonTex.needsUpdate = true;
     };
@@ -198,7 +210,12 @@ const Clock: React.FC = () => {
 
     if (planetMaterialRef.current?.map) {
       const tex = planetMaterialRef.current.map as THREE.CanvasTexture;
-      updateSphereCanvas(tex.image, hourStr, '#1034A6', '900 300px "Abril Fatface", serif');
+      updateSphereCanvas(
+        tex.image,
+        hourStr,
+        '#1034A6',
+        '900 300px "Abril Fatface", serif',
+      );
       // Apply silver color
       const canvas = tex.image as HTMLCanvasElement;
       const ctx = canvas.getContext('2d')!;
@@ -210,7 +227,12 @@ const Clock: React.FC = () => {
 
     if (moonMaterialRef.current?.map) {
       const tex = moonMaterialRef.current.map as THREE.CanvasTexture;
-      updateSphereCanvas(tex.image, minuteStr, '#FF4500', 'bold 120px "Space Mono", monospace');
+      updateSphereCanvas(
+        tex.image,
+        minuteStr,
+        '#FF4500',
+        'bold 120px "Space Mono", monospace',
+      );
       // Apply silver color
       const canvas = tex.image as HTMLCanvasElement;
       const ctx = canvas.getContext('2d')!;

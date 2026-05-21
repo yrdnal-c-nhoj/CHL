@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
-import bgImage from '@/assets/images/2025/25-12/25-12-09/muybridge.webp';
+import bgImage from '@/assets/images/25_images/25-12/25-12-09/muybridge.webp';
 import customFont_2025_1210 from '@/assets/fonts/25fonts/25-12-09-muy.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 

@@ -7,8 +7,8 @@ const UPDATE_INTERVAL = 1000;
 const MOBILE_BREAKPOINT = 768;
 const FONT_NAME = 'Forum';
 
-import backgroundImage from '@/assets/images/2026/26-02/26-02-20/forum2.webp';
-import topImage from '@/assets/images/2026/26-02/26-02-20/forum.webp';
+import backgroundImage from '@/assets/images/26_images/26-02/26-02-20/forum2.webp';
+import topImage from '@/assets/images/26_images/26-02/26-02-20/forum.webp';
 import forumFont from '@/assets/fonts/26fonts/26-02-20-forum.otf';
 
 export { backgroundImage, topImage };
@@ -35,15 +35,15 @@ export const fontConfigs = [
     fontUrl: forumFont,
     options: {
       weight: 'normal',
-      style: 'normal'
-    }
-  }
+      style: 'normal',
+    },
+  },
 ];
 
 export default function ClockTemplate() {
   const time = useSecondClock();
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  
+
   useSuspenseFontLoader(fontConfigs);
 
   // Handle Responsiveness

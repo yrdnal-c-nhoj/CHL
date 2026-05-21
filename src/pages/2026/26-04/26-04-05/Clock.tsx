@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import backgroundVideo from '@/assets/images/2026/26-04/26-04-05/meteor1.mp4';
-import middleVideo from '@/assets/images/2026/26-04/26-04-05/meteor2.mp4';
+import backgroundVideo from '@/assets/images/26_images/26-04/26-04-05/meteor1.mp4';
+import middleVideo from '@/assets/images/26_images/26-04/26-04-05/meteor2.mp4';
 import meteorFont from '@/assets/fonts/26fonts/26-04-05-meteor.ttf';
 import styles from './Clock.module.css';
 
@@ -11,9 +11,10 @@ const Clock: React.FC = () => {
   const time = useClockTime();
 
   // Load the meteor font using useSuspenseFontLoader
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'Meteor', fontUrl: meteorFont }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'Meteor', fontUrl: meteorFont }],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // Split time into 6 individual digits: [H, H, M, M, S, S]
@@ -26,8 +27,22 @@ const Clock: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <video className={styles.videoLayer} autoPlay loop muted playsInline src={backgroundVideo} />
-      <video className={styles.middleVideoLayer} autoPlay loop muted playsInline src={middleVideo} />
+      <video
+        className={styles.videoLayer}
+        autoPlay
+        loop
+        muted
+        playsInline
+        src={backgroundVideo}
+      />
+      <video
+        className={styles.middleVideoLayer}
+        autoPlay
+        loop
+        muted
+        playsInline
+        src={middleVideo}
+      />
 
       <div className={styles.clockWrapper}>
         <div className={styles.digitGroup}>

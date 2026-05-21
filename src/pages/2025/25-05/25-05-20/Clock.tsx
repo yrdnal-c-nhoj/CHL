@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
-import { useClockTime, formatTime as formatClockTime } from '@/utils/clockUtils';
+import {
+  useClockTime,
+  formatTime as formatClockTime,
+} from '@/utils/clockUtils';
 
 /**
  * Recycled Internet Clock (25-05-11)
- * 
+ *
  * Features:
  * - Converted to a robust React/TypeScript component.
  * - Utilizes project-standard hooks for time synchronization.
@@ -24,10 +27,12 @@ const Clock: React.FC = () => {
   }, []);
 
   // Format the current time for display, providing a fallback to prevent null rendering
-  const formatted = formatClockTime(time, '24h') || { 
-    hours: '00', minutes: '00', seconds: '00' 
+  const formatted = formatClockTime(time, '24h') || {
+    hours: '00',
+    minutes: '00',
+    seconds: '00',
   };
-  
+
   const { hours, minutes, seconds } = formatted;
   const title = 'Borrowed Time';
   const content = '';
@@ -42,7 +47,8 @@ const Clock: React.FC = () => {
     justifyContent: 'center',
     backgroundColor: '#0a0a0a',
     color: '#e0e0e0',
-    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+    fontFamily:
+      'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
     overflow: 'hidden',
     userSelect: 'none',
   };
@@ -51,7 +57,8 @@ const Clock: React.FC = () => {
     textAlign: 'center',
     padding: '3rem',
     border: '1px solid rgba(255, 255, 255, 0.1)',
-    background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 80%)',
+    background:
+      'radial-gradient(circle, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 80%)',
   };
 
   const titleStyle: React.CSSProperties = {

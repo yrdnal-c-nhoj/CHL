@@ -10,9 +10,9 @@ const BackslantClock: React.FC = () => {
       fontUrl: backFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

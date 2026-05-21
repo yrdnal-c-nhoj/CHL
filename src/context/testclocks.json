@@ -38,7 +38,11 @@
   { "path": "25-05-08", "date": "25-05-08", "title": "Golden Hour Clock" },
   { "path": "25-05-09", "date": "25-05-09", "title": "Whirlpool Clock" },
   { "path": "25-05-10", "date": "25-05-10", "title": "Number Toss" },
-  { "path": "25-05-11", "date": "25-05-11", "title": "Recycled Internet Clock" },
+  {
+    "path": "25-05-11",
+    "date": "25-05-11",
+    "title": "Recycled Internet Clock"
+  },
   { "path": "25-05-12", "date": "25-05-12", "title": "Cheetah Clock" },
   { "path": "25-05-13", "date": "25-05-13", "title": "Flat Clock" },
   { "path": "25-05-14", "date": "25-05-14", "title": "Rough Idea Clock" },
@@ -378,7 +382,7 @@
   { "path": "26-04-15", "date": "26-04-15", "title": "Meow" },
   { "path": "26-04-16", "date": "26-04-16", "title": "135° Southeast" },
   { "path": "26-04-17", "date": "26-04-17", "title": "Jacques" },
-  { "path": "26-04-18", "date": "26-04-18", "title": "Frequency" },      
+  { "path": "26-04-18", "date": "26-04-18", "title": "Frequency" },
   { "path": "26-04-19", "date": "26-04-19", "title": "Wobble" },
   { "path": "26-04-20", "date": "26-04-20", "title": "Hemoglobin" },
   { "path": "26-04-21", "date": "26-04-21", "title": "Particles" },

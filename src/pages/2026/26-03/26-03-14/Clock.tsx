@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import backgroundImage from '@/assets/images/2026/26-03/26-03-14/mother.webp';
+import backgroundImage from '@/assets/images/26_images/26-03/26-03-14/mother.webp';
 import { useMillisecondClock } from '@/utils/hooks';
 
 const ImageLayout = React.memo(() => (

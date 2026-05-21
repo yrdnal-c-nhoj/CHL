@@ -1,11 +1,17 @@
-import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+} from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import roulGif from '@/assets/images/2025/25-05/25-05-15/roul.gif';
-import rouleGif from '@/assets/images/2025/25-05/25-05-15/roule.gif';
-import rouletteSvg from '@/assets/images/2025/25-05/25-05-15/Roulette_french.svg';
+import roulGif from '@/assets/images/25_images/25-05/25-05-15/roul.gif';
+import rouleGif from '@/assets/images/25_images/25-05/25-05-15/roule.gif';
+import rouletteSvg from '@/assets/images/25_images/25-05/25-05-15/Roulette_french.svg';
 import loraFont from '@/assets/fonts/25fonts/25-05-15-lora.ttf?url';
 
 // Component Props interface
@@ -15,16 +21,19 @@ interface RouletteClockProps {
 
 const RouletteClock: React.FC<RouletteClockProps> = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'RouletteClockFont',
-      fontUrl: loraFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'RouletteClockFont',
+        fontUrl: loraFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
@@ -46,7 +55,9 @@ const RouletteClock: React.FC<RouletteClockProps> = () => {
       number.style.position = 'absolute';
       number.style.width = '100%';
       number.style.height = '100%';
-      number.style.fontFamily = fontLoaded ? `'RouletteClockFont', serif` : 'serif';
+      number.style.fontFamily = fontLoaded
+        ? `'RouletteClockFont', serif`
+        : 'serif';
       number.style.fontWeight = '900';
       number.style.textAlign = 'center';
       number.style.fontSize = '6.5vw'; // Scaled with viewport width
@@ -159,15 +170,17 @@ const RouletteClock: React.FC<RouletteClockProps> = () => {
   // Show loading state while font loads
   if (!fontLoaded) {
     return (
-      <div style={{
-        height: '100dvh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#000',
-        color: '#fff',
-        fontFamily: 'serif'
-      }}>
+      <div
+        style={{
+          height: '100dvh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#000',
+          color: '#fff',
+          fontFamily: 'serif',
+        }}
+      >
         Loading font...
       </div>
     );

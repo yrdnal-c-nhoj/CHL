@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import animalsVideo from '@/assets/images/2026/26-04/26-04-29/animals.mp4';
+import animalsVideo from '@/assets/images/26_images/26-04/26-04-29/animals.mp4';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 
 import styles from './Clock.module.css';
@@ -39,6 +39,6 @@ const Clock: React.FC = () => {
       </time>
     </div>
   );
-}
+};
 
 export default Clock;

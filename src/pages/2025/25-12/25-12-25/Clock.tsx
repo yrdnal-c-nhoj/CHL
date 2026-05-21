@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks/useClockTime';
-import topoImage from '@/assets/images/2025/25-12/25-12-25/topo.jpg';
+import topoImage from '@/assets/images/25_images/25-12/25-12-25/topo.jpg';
 
 // Constants
 const COLORS = {
@@ -335,8 +335,16 @@ const BoardingPass: React.FC = () => {
 
   // BTS Standard: suspense-based font loading
   useSuspenseFontLoader([
-    { fontFamily: 'Oxanium', fontUrl: 'https://fonts.gstatic.com/s/oxanium/v19/RrQPboN_4yJ0JmiM3N0-14HLVnA.woff2' },
-    { fontFamily: 'Roboto', fontUrl: 'https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2' }
+    {
+      fontFamily: 'Oxanium',
+      fontUrl:
+        'https://fonts.gstatic.com/s/oxanium/v19/RrQPboN_4yJ0JmiM3N0-14HLVnA.woff2',
+    },
+    {
+      fontFamily: 'Roboto',
+      fontUrl:
+        'https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2',
+    },
   ]);
 
   // BTS Standard: RAF-based time hook
@@ -414,7 +422,14 @@ const BoardingPass: React.FC = () => {
             <div style={styles.flightInfo}>
               <InfoField label="Flight" value={flightData.flightNumber} />
               <InfoField label="Date" value={formatDate(currentDate)} />
-              <InfoField label="Depart" value={<time dateTime={currentDate.toISOString()}>{formatTime(currentDate)}</time>} />
+              <InfoField
+                label="Depart"
+                value={
+                  <time dateTime={currentDate.toISOString()}>
+                    {formatTime(currentDate)}
+                  </time>
+                }
+              />
             </div>
           </div>
         </div>
@@ -424,7 +439,14 @@ const BoardingPass: React.FC = () => {
             <div style={styles.depart}>
               <InfoField label="Terminal" value={flightData.terminal} />
               <InfoField label="Gate" value={flightData.gate} />
-              <InfoField label="Boarding" value={<time dateTime={boardingTime.toISOString()}>{formatTime(boardingTime)}</time>} />
+              <InfoField
+                label="Boarding"
+                value={
+                  <time dateTime={boardingTime.toISOString()}>
+                    {formatTime(boardingTime)}
+                  </time>
+                }
+              />
             </div>
 
             <div style={styles.barcode}></div>

@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSecondClock } from '@/utils/hooks';
-import abuVideo from '@/assets/images/2026/26-02/26-02-27/abu.mp4';
+import abuVideo from '@/assets/images/26_images/26-02/26-02-27/abu.mp4';
 
 const Clock: React.FC = () => {
   const time = useSecondClock();
-
 
   const seconds = time.getSeconds();
   const minutes = time.getMinutes();
@@ -130,7 +129,6 @@ const Clock: React.FC = () => {
             </div>
           );
         })}
-
 
         <div
           style={{

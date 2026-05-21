@@ -2,7 +2,7 @@ import React from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import customFontUrl from '@/assets/fonts/25fonts/25-08-12-cubic.ttf'; // local font file
-import backgroundImage from '@/assets/images/2025/25-08/25-08-12/earth.webp'; // local background image
+import backgroundImage from '@/assets/images/25_images/25-08/25-08-12/earth.webp'; // local background image
 
 const faceColors = [
   'rgba(102, 51, 0, 0.75)',
@@ -21,9 +21,9 @@ export default function BiteviteHexahedron() {
       fontUrl: customFontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

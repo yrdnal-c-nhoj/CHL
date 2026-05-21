@@ -245,7 +245,9 @@ const App: React.FC = () => {
 
       // ---- Clock ----
       const hours =
-        (time.getHours() % 12) + time.getMinutes() / 60 + time.getSeconds() / 3600;
+        (time.getHours() % 12) +
+        time.getMinutes() / 60 +
+        time.getSeconds() / 3600;
       const minutes =
         time.getMinutes() +
         time.getSeconds() / 60 +

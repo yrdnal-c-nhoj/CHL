@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import clouds from '@/assets/images/2025/25-04/25-04-20/clouds.webp';
+import clouds from '@/assets/images/25_images/25-04/25-04-20/clouds.webp';
 import cloFont from '@/assets/fonts/25fonts/25-04-20-clo.ttf?url';
 
 // Component Props interface
@@ -12,16 +12,19 @@ interface CloudClockProps {
 
 const CloudClock = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'CloFont',
-      fontUrl: cloFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'CloFont',
+        fontUrl: cloFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);
@@ -33,14 +36,17 @@ const CloudClock = () => {
   const [minutesHTML, setMinutesHTML] = useState<string>('');
   const [ampmHTML, setAmPmHTML] = useState<string>('');
 
-  const getStyledText = useCallback((str: string): string =>
-    str
-      .split('')
-      .map((char, i) => {
-        const randomSize = (Math.random() * 11 + 1.5).toFixed(2); // 1.5rem–3.5rem
-        return `<span class="digit" style="font-size: ${randomSize}rem;" data-key="${Date.now() + i}">${char}</span>`;
-      })
-      .join(''), []);
+  const getStyledText = useCallback(
+    (str: string): string =>
+      str
+        .split('')
+        .map((char, i) => {
+          const randomSize = (Math.random() * 11 + 1.5).toFixed(2); // 1.5rem–3.5rem
+          return `<span class="digit" style="font-size: ${randomSize}rem;" data-key="${Date.now() + i}">${char}</span>`;
+        })
+        .join(''),
+    [],
+  );
 
   const updateTime = useCallback((): void => {
     let h = currentTime.getHours();

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import bluFont from '@/assets/fonts/25fonts/25-05-18-blu.otf'; // local font
-import image1 from '@/assets/images/2025/25-05/25-05-18/13966281486_Volantis_Tumblr.gif'; // bottom layer
-import image2 from '@/assets/images/2025/25-05/25-05-18/8mMt.gif'; // middle layer
-import image3 from '@/assets/images/2025/25-05/25-05-18/bloo.gif'; // top layer
+import image1 from '@/assets/images/25_images/25-05/25-05-18/13966281486_Volantis_Tumblr.gif'; // bottom layer
+import image2 from '@/assets/images/25_images/25-05/25-05-18/8mMt.gif'; // middle layer
+import image3 from '@/assets/images/25_images/25-05/25-05-18/bloo.gif'; // top layer
 
 const Clock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -14,9 +14,9 @@ const Clock: React.FC = () => {
       fontUrl: bluFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   const time = useClockTime();

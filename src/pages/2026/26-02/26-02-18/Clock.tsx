@@ -3,24 +3,27 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
 import mazeFont from '@/assets/fonts/26fonts/26-02-18-jelly.otf';
-import bg1 from '@/assets/images/2026/26-02/26-02-18/jel.webp';
-import bg3 from '@/assets/images/2026/26-02/26-02-18/jelly.webp';
+import bg1 from '@/assets/images/26_images/26-02/26-02-18/jel.webp';
+import bg3 from '@/assets/images/26_images/26-02/26-02-18/jelly.webp';
 
 const ImageDisplay: React.FC = () => {
   const time = useSecondClock();
   const [showContent, setShowContent] = useState(false);
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'MazeFont',
-      fontUrl: mazeFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
-  
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'MazeFont',
+        fontUrl: mazeFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {

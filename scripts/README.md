@@ -32,12 +32,14 @@ scripts/
 **Main Script**: `finalize-component.ts`
 
 **Usage**:
+
 ```bash
 npm run finalize                    # Auto-detect current component
 npm run finalize -- path/to/Clock.tsx  # Specific component
 ```
 
 **Features**:
+
 - ✅ Technical standards validation
 - 🔄 Asset organization and moving
 - 🔗 Path relinking after asset moves
@@ -51,11 +53,13 @@ npm run finalize -- path/to/Clock.tsx  # Specific component
 
 **Purpose**: Platform-specific screenshot generation and thumbnail creation
 
-**Main Scripts**: 
+**Main Scripts**:
+
 - `daily-screen-capture.ts` - Social media platform captures
 - `capture-clocks.mjs` - Thumbnail generation
 
 **Usage**:
+
 ```bash
 npm run capture:daily        # Standard documentation format
 npm run capture:instagram   # Instagram square (1080x1080)
@@ -65,6 +69,7 @@ npm run capture:thumbnails  # Generate 500x500 thumbnails
 ```
 
 **Features**:
+
 - 📸 Multi-platform support (Instagram, Twitter, Facebook)
 - 🎯 Batch processing with date ranges
 - 🖼️ High-quality WebP/PNG output
@@ -104,18 +109,20 @@ All scripts are accessible via npm commands:
   "finalize": "tsx scripts/UploadFinalize/finalize-component.ts",
   "capture:daily": "tsx scripts/SocialMediaCap/daily-screen-capture.ts",
   "capture:instagram": "tsx scripts/SocialMediaCap/daily-screen-capture.ts --instagram",
-  "capture:twitter": "tsx scripts/SocialMediaCap/daily-screen-capture.ts --twitter",
+  "capture:twitter": "tsx scripts/SocialMediaCap/daily-screen-capture.ts --twitter"
 }
 ```
 
 ## Requirements
 
 ### Common Dependencies
+
 - **Node.js**: 24.x
 - **Playwright**: For screenshot capture
 - **Development Server**: Must run on localhost:5173 or 5174
 
 ### Script-Specific Requirements
+
 - **Finalize Script**: Component must be in proper directory structure
 - **Capture Scripts**: Clock must already be in `clockpages.json` (manual registration)
 
@@ -131,6 +138,7 @@ All scripts are accessible via npm commands:
 ### Debug Mode
 
 Most scripts support verbose output:
+
 ```bash
 DEBUG=true npm run finalize
 DEBUG=true npm run capture:daily

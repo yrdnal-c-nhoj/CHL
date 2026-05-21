@@ -1,6 +1,10 @@
 @keyframes movePath {
-  from { offset-distance: 0%; }
-  to { offset-distance: 100%; }
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
 }
 
 .container {
@@ -8,7 +12,13 @@
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background: linear-gradient(190deg, #dbf9a8 0%, #f5e981 64%, #fce3c5 80%, #bab4a3 100%);
+  background: linear-gradient(
+    190deg,
+    #dbf9a8 0%,
+    #f5e981 64%,
+    #fce3c5 80%,
+    #bab4a3 100%
+  );
 }
 
 .clockContainer {
@@ -23,10 +33,10 @@
   top: 0;
   left: 0;
   display: inline-block;
-  color: #5A1F04;
+  color: #5a1f04;
   font-family: 'LissaFont', system-ui, sans-serif;
   font-size: 8.8vmin;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   white-space: pre;
   offset-rotate: auto;
   animation: movePath 45s linear infinite;

@@ -5,7 +5,7 @@ import { useClockTime } from '@/utils/hooks';
 import heaFontUrl from '@/assets/fonts/25fonts/25-08-02-hea.ttf?url';
 import { formatTime } from '@/utils/clockUtils';
 // Standardized naming: YY-MM-DD-name.webp
-import bg2 from '@/assets/images/2025/25-08/25-08-02/25-08-02-em.webp';
+import bg2 from '@/assets/images/25_images/25-08/25-08-02/25-08-02-em.webp';
 import styles from './Clock.module.css';
 
 // BTS: Export assets for the preloading pipeline
@@ -16,8 +16,8 @@ export const fontConfigs = [
   {
     fontFamily: 'hea',
     fontUrl: heaFontUrl,
-    options: { weight: 'normal', style: 'normal' }
-  }
+    options: { weight: 'normal', style: 'normal' },
+  },
 ];
 
 const DigitalClock: FC = () => {

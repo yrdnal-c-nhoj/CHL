@@ -2,12 +2,12 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { formatTime as formatClockTime } from '@/utils/clockUtils';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import videoFile from '@/assets/images/2025/25-10/25-10-22/bg.mp4';
-import fallbackImg from '@/assets/images/2025/25-10/25-10-22/bg.webp';
+import videoFile from '@/assets/images/25_images/25-10/25-10-22/bg.mp4';
+import fallbackImg from '@/assets/images/25_images/25-10/25-10-22/bg.webp';
 import fundyFont from '@/assets/fonts/25fonts/25-10-22-fundy.ttf?url';
 
 /**
- * Constants and Styles defined outside the component to prevent 
+ * Constants and Styles defined outside the component to prevent
  * re-creation/re-parsing on every millisecond tick.
  */
 const ANIMATION_NAME = 'colorCycle-25-10-22';
@@ -82,9 +82,10 @@ const ClockWithVideo: React.FC = () => {
   const time = useMillisecondClock();
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const fontConfigs = useMemo(() => [
-    { fontFamily: 'FundyFont', fontUrl: fundyFont }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [{ fontFamily: 'FundyFont', fontUrl: fundyFont }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -159,9 +160,7 @@ const ClockWithVideo: React.FC = () => {
           />
         )}
 
-        <div style={clockContainerStyle}>
-          {renderTimeDigits()}
-        </div>
+        <div style={clockContainerStyle}>{renderTimeDigits()}</div>
       </main>
     </>
   );

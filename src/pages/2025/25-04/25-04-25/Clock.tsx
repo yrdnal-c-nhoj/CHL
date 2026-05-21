@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useClockTime } from '@/utils/hooks';
-import backgroundImage from '@/assets/images/2025/25-04/25-04-25/bad.webp';
-import hourHandImage from '@/assets/images/2025/25-04/25-04-25/ban.webp';
-import minuteHandImage from '@/assets/images/2025/25-04/25-04-25/ba.gif';
-import secondHandImage from '@/assets/images/2025/25-04/25-04-25/band.gif';
+import backgroundImage from '@/assets/images/25_images/25-04/25-04-25/bad.webp';
+import hourHandImage from '@/assets/images/25_images/25-04/25-04-25/ban.webp';
+import minuteHandImage from '@/assets/images/25_images/25-04/25-04-25/ba.gif';
+import secondHandImage from '@/assets/images/25_images/25-04/25-04-25/band.gif';
 import styles from './Clock.module.css';
 interface ClockImages {
   hourImg: HTMLImageElement;
@@ -25,7 +25,8 @@ const MyClock: React.FC<MyClockProps> = () => {
   // Load Google Font for canvas
   useEffect(() => {
     const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap';
+    link.href =
+      'https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap';
     link.rel = 'stylesheet';
     document.head.appendChild(link);
   }, []);
@@ -66,7 +67,12 @@ const MyClock: React.FC<MyClockProps> = () => {
       const second = currentTime.getSeconds();
 
       // Updated drawImageHand function
-      const drawImageHand = (img: HTMLImageElement, angle: number, widthScale = 1, heightScale = 1): void => {
+      const drawImageHand = (
+        img: HTMLImageElement,
+        angle: number,
+        widthScale = 1,
+        heightScale = 1,
+      ): void => {
         const imgW = r * 0.1 * widthScale;
         const imgH = r * heightScale;
 
@@ -109,25 +115,34 @@ const MyClock: React.FC<MyClockProps> = () => {
       const hourImg = new Image();
       const minuteImg = new Image();
       const secondImg = new Image();
-      
+
       const loadPromises = [
-        new Promise<void>(resolve => { hourImg.onload = () => resolve(); hourImg.src = hourHandImage; }),
-        new Promise<void>(resolve => { minuteImg.onload = () => resolve(); minuteImg.src = minuteHandImage; }),
-        new Promise<void>(resolve => { secondImg.onload = () => resolve(); secondImg.src = secondHandImage; })
+        new Promise<void>((resolve) => {
+          hourImg.onload = () => resolve();
+          hourImg.src = hourHandImage;
+        }),
+        new Promise<void>((resolve) => {
+          minuteImg.onload = () => resolve();
+          minuteImg.src = minuteHandImage;
+        }),
+        new Promise<void>((resolve) => {
+          secondImg.onload = () => resolve();
+          secondImg.src = secondHandImage;
+        }),
       ];
-      
+
       await Promise.all(loadPromises);
       imagesRef.current = { hourImg, minuteImg, secondImg };
     };
-    
+
     loadImages();
   }, [hourHandImage, minuteHandImage, secondHandImage]);
 
   const isoTime = currentTime.toISOString();
 
   return (
-    <main 
-      className={styles.container} 
+    <main
+      className={styles.container}
       style={{ '--bg-image': `url(${backgroundImage})` } as React.CSSProperties}
     >
       {/* Visually hidden time for accessibility and SEO */}

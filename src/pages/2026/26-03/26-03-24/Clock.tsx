@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import arrowImg from '@/assets/images/2026/26-03/26-03-23/arrow.webp?url';
+import arrowImg from '@/assets/images/26_images/26-03/26-03-23/arrow.webp?url';
 import fontUrl from '@/assets/fonts/26fonts/26-03-24-26-03-23-arrow.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import styles from './Clock.module.css';
@@ -62,52 +62,55 @@ interface ShardProps {
   color: string;
 }
 
-const CharBox = React.memo(({ char, delay, top, bottom, color }: ShardProps) => (
-  <div className={styles.charBox}>
-    {/* Top half shard */}
-    <div
-      className={`${styles.shard} ${styles.topShard}`}
-      style={{
-        animationDelay: `${delay}s`,
-        animationDuration: `${ANIMATION_DURATION_MS}ms`,
-        '--tx': top.tx,
-        '--ty': top.ty,
-        '--tz': top.tz,
-        '--rx': top.rx,
-        '--ry': top.ry,
-        '--rz': top.rz,
-        color,
-      } as React.CSSProperties}
-    >
-      <div className={styles.shardInner}>{char}</div>
-    </div>
+const CharBox = React.memo(
+  ({ char, delay, top, bottom, color }: ShardProps) => (
+    <div className={styles.charBox}>
+      {/* Top half shard */}
+      <div
+        className={`${styles.shard} ${styles.topShard}`}
+        style={
+          {
+            animationDelay: `${delay}s`,
+            animationDuration: `${ANIMATION_DURATION_MS}ms`,
+            '--tx': top.tx,
+            '--ty': top.ty,
+            '--tz': top.tz,
+            '--rx': top.rx,
+            '--ry': top.ry,
+            '--rz': top.rz,
+            color,
+          } as React.CSSProperties
+        }
+      >
+        <div className={styles.shardInner}>{char}</div>
+      </div>
 
-    {/* Bottom half shard */}
-    <div
-      className={`${styles.shard} ${styles.bottomShard}`}
-      style={{
-        animationDelay: `${delay}s`,
-        animationDuration: `${ANIMATION_DURATION_MS}ms`,
-        '--tx': bottom.tx,
-        '--ty': bottom.ty,
-        '--tz': bottom.tz,
-        '--rx': bottom.rx,
-        '--ry': bottom.ry,
-        '--rz': bottom.rz,
-        color,
-      } as React.CSSProperties}
-    >
-      <div className={styles.shardInner}>{char}</div>
+      {/* Bottom half shard */}
+      <div
+        className={`${styles.shard} ${styles.bottomShard}`}
+        style={
+          {
+            animationDelay: `${delay}s`,
+            animationDuration: `${ANIMATION_DURATION_MS}ms`,
+            '--tx': bottom.tx,
+            '--ty': bottom.ty,
+            '--tz': bottom.tz,
+            '--rx': bottom.rx,
+            '--ry': bottom.ry,
+            '--rz': bottom.rz,
+            color,
+          } as React.CSSProperties
+        }
+      >
+        <div className={styles.shardInner}>{char}</div>
+      </div>
     </div>
-  </div>
-));
+  ),
+);
 CharBox.displayName = 'CharBox';
 
 const ExplodingClock: React.FC = () => {
-  const fontConfigs = useMemo(
-    () => [{ fontFamily: FONT_FAMILY, fontUrl }],
-    []
-  );
+  const fontConfigs = useMemo(() => [{ fontFamily: FONT_FAMILY, fontUrl }], []);
   useSuspenseFontLoader(fontConfigs);
 
   const [{ chars, flights, loopKey }, setState] = useState(() => {
@@ -134,7 +137,7 @@ const ExplodingClock: React.FC = () => {
 
       if (newLoop) nextLoop += LOOP_MS;
 
-      setState(prev => {
+      setState((prev) => {
         const newFlights = newLoop
           ? cs.map(() => ({ top: getFlight(), bottom: getFlight() }))
           : prev.flights;
@@ -152,7 +155,10 @@ const ExplodingClock: React.FC = () => {
   }, []);
 
   return (
-    <div className={styles.container} style={{ backgroundImage: `url(${arrowImg})` }}>
+    <div
+      className={styles.container}
+      style={{ backgroundImage: `url(${arrowImg})` }}
+    >
       <style>{STYLE_TAG}</style>
       <div className={styles.clock}>
         <div className={styles.digits}>

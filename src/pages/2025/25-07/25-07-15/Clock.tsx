@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import asciiFontUrl from '@/assets/fonts/25fonts/25-07-15-ascii.ttf';
-import asciiImageUrl from '@/assets/images/2025/25-07/25-07-15/ascii.jpg';
+import asciiImageUrl from '@/assets/images/25_images/25-07/25-07-15/ascii.jpg';
 
 const DIGITS = {
   0: [
@@ -157,14 +157,13 @@ const AsciiClock: React.FC = () => {
       fontUrl: asciiFontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
-
     const updateClock: React.FC = () => {
       const now = new Date();
       let h = now.getHours();

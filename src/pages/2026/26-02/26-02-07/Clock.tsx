@@ -2,21 +2,24 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import customFontUrl from '@/assets/fonts/26fonts/26-02-07-gear.ttf?url';
-import backgroundImage from '@/assets/images/2026/26-02/26-02-07/gear.gif';
+import backgroundImage from '@/assets/images/26_images/26-02/26-02-07/gear.gif';
 
 const FullscreenClock: React.FC = () => {
   const [showContent, setShowContent] = useState(false);
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'GearFont',
-      fontUrl: customFontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'GearFont',
+        fontUrl: customFontUrl,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -38,7 +41,6 @@ const FullscreenClock: React.FC = () => {
     ].join('');
     return str.split('');
   }, [time]);
-
 
   return (
     <div

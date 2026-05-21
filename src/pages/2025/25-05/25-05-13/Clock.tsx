@@ -3,8 +3,8 @@ import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import woodImg from '@/assets/images/2025/25-05/25-05-13/wood.jpg';
-import tilesImg from '@/assets/images/2025/25-05/25-05-13/tiles.jpg';
+import woodImg from '@/assets/images/25_images/25-05/25-05-13/wood.jpg';
+import tilesImg from '@/assets/images/25_images/25-05/25-05-13/tiles.jpg';
 import hydFont from '@/assets/fonts/25fonts/25-05-13-hyd.ttf?url';
 
 // Component Props interface
@@ -14,16 +14,19 @@ interface FlatClockProps {
 
 const FlatClock: React.FC<FlatClockProps> = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'hyd',
-      fontUrl: hydFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'hyd',
+        fontUrl: hydFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates

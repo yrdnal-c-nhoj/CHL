@@ -2,10 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 // Explicit module-based imports for the background
-import gifOne from '@/assets/images/2026/26-01/26-01-12/tic.webp';
-import gifTwo from '@/assets/images/2026/26-01/26-01-12/tic2.gif';
-import gifThree from '@/assets/images/2026/26-01/26-01-12/tic3.gif';
-import gifFour from '@/assets/images/2026/26-01/26-01-12/tic4.gif';
+import gifOne from '@/assets/images/26_images/26-01/26-01-12/tic.webp';
+import gifTwo from '@/assets/images/26_images/26-01/26-01-12/tic2.gif';
+import gifThree from '@/assets/images/26_images/26-01/26-01-12/tic3.gif';
+import gifFour from '@/assets/images/26_images/26-01/26-01-12/tic4.gif';
 import customFont from '@/assets/fonts/26fonts/26-01-09-26-01-12-tic.ttf?url';
 import type { FontConfig } from '@/types/clock';
 
@@ -159,7 +159,7 @@ export default function TicTacToeClock() {
   const time = useClockTime();
 
   // Font is loaded by useSuspenseFontLoader in BackgroundGrid component
-  
+
   const fontFamily = 'CustomClockFont, monospace';
   const formatTime = useCallback((date: Date) => {
     const hours = date.getHours();

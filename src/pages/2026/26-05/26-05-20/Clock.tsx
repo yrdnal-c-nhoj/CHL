@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import clockFont from "@/assets/fonts/26fonts/26-05-20.otf";
+import React, { useEffect, useRef, useState } from 'react';
+import clockFont from '@/assets/fonts/26fonts/26-05-20.otf';
 
 function formatTime(d: Date) {
-  const h = d.getHours().toString().padStart(2, "0");
-  const m = d.getMinutes().toString().padStart(2, "0");
-  const s = d.getSeconds().toString().padStart(2, "0");
+  const h = d.getHours().toString().padStart(2, '0');
+  const m = d.getMinutes().toString().padStart(2, '0');
+  const s = d.getSeconds().toString().padStart(2, '0');
   return `${h}:${m}:${s}`;
 }
 
@@ -41,13 +41,13 @@ export default function Clock() {
 
   const styles: React.CSSProperties = {
     width: 400,
-    aspectRatio: "1 / 1.32",
-    overflow: "hidden",
-    position: "relative",
-    border: "16px solid hsl(193, 6%, 41%)",
-    borderBottomColor: "hsl(193, 9%, 28%)",
-    boxShadow: "0 1.5em 2.375em -0.26em #0006",
-    borderRadius: "4px", // subtle rounding
+    aspectRatio: '1 / 1.32',
+    overflow: 'hidden',
+    position: 'relative',
+    border: '16px solid hsl(193, 6%, 41%)',
+    borderBottomColor: 'hsl(193, 9%, 28%)',
+    boxShadow: '0 1.5em 2.375em -0.26em #0006',
+    borderRadius: '4px', // subtle rounding
   };
 
   return (
@@ -181,7 +181,7 @@ export default function Clock() {
         </defs>
       </svg>
 
-      <section className={`frame${isOpen ? " is-open" : ""}`} style={styles}>
+      <section className={`frame${isOpen ? ' is-open' : ''}`} style={styles}>
         <div className="doors">
           <div className="door left-door" />
           <div className="door right-door" />

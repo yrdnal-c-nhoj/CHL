@@ -4,7 +4,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import styles from './Clock.module.css';
 
 import font from '@/assets/fonts/26fonts/26-05-15.ttf?url';
-import backgroundImage from '@/assets/images/2026/26-05/26-05-15/rings.webp';
+import backgroundImage from '@/assets/images/26_images/26-05/26-05-15/rings.webp';
 
 export const assets = [font, backgroundImage];
 
@@ -74,7 +74,9 @@ const DigitalClock: React.FC = () => {
   const isoTime = currentTime.toISOString();
   const ariaLabel = `${hours}:${minutes} ${ampm}`;
 
-  const offsets = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8];
+  const offsets = [
+    -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8,
+  ];
 
   return (
     <main className={styles.container}>
@@ -99,7 +101,11 @@ const DigitalClock: React.FC = () => {
             dateTime={isoTime}
             aria-label={ariaLabel}
           >
-            <span className={styles.timeSegment}>{hours}{minutes}{ampm}</span>
+            <span className={styles.timeSegment}>
+              {hours}
+              {minutes}
+              {ampm}
+            </span>
           </time>
         </div>
       ))}

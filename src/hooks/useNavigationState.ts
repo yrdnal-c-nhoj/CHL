@@ -1,4 +1,3 @@
-
 interface NavigationState {
   scrollX: number;
   scrollY: number;
@@ -10,7 +9,6 @@ interface NavigationState {
 const NAVIGATION_STATE_KEY = 'clockNavigationState';
 
 export const useNavigationState = () => {
-
   // Save navigation state before leaving
   const saveNavigationState = (expandedMonth?: string) => {
     const state: NavigationState = {
@@ -18,9 +16,9 @@ export const useNavigationState = () => {
       scrollY: window.scrollY,
       cursorX: 0, // Will be captured on mouse move
       cursorY: 0, // Will be captured on mouse move
-      expandedMonth
+      expandedMonth,
     };
-    
+
     sessionStorage.setItem(NAVIGATION_STATE_KEY, JSON.stringify(state));
   };
 
@@ -64,9 +62,9 @@ export const useNavigationState = () => {
       tempElement.style.pointerEvents = 'none';
       tempElement.style.zIndex = '-9999';
       tempElement.tabIndex = -1;
-      
+
       document.body.appendChild(tempElement);
-      
+
       // Focus the element and then remove it
       setTimeout(() => {
         tempElement.focus();
@@ -108,6 +106,6 @@ export const useNavigationState = () => {
     clearNavigationState,
     restoreScrollPosition,
     restoreCursorPosition,
-    trackCursorPosition
+    trackCursorPosition,
   };
 };

@@ -3,11 +3,11 @@ import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 
-import stars from '@/assets/images/2025/25-04/25-04-02/stars.webp';
-import backgroundGif from '@/assets/images/2025/25-04/25-04-02/437cb739d14912acd84d65ee853b9067.gif';
-import overlay1 from '@/assets/images/2025/25-04/25-04-02/OzJtZ3Z.gif';
-import overlay2 from '@/assets/images/2025/25-04/25-04-02/2556744_d34a4.webp';
-import pixelGif from '@/assets/images/2025/25-04/25-04-02/sdswrf.gif';
+import stars from '@/assets/images/25_images/25-04/25-04-02/stars.webp';
+import backgroundGif from '@/assets/images/25_images/25-04/25-04-02/437cb739d14912acd84d65ee853b9067.gif';
+import overlay1 from '@/assets/images/25_images/25-04/25-04-02/OzJtZ3Z.gif';
+import overlay2 from '@/assets/images/25_images/25-04/25-04-02/2556744_d34a4.webp';
+import pixelGif from '@/assets/images/25_images/25-04/25-04-02/sdswrf.gif';
 
 // Image imports from src/assets
 interface Images {
@@ -141,25 +141,31 @@ const DeepSpaceClock: React.FC = () => {
     second2: useRef<HTMLDivElement>(null),
   };
 
-  const makeDigit = useCallback((target: React.RefObject<HTMLDivElement | null>, digitMatrix: DigitMatrix): void => {
-    const container = target.current;
-    if (!container) return;
-    container.innerHTML = '';
-    digitMatrix.forEach((row: number[], i: number) =>
-      row.forEach((on: number, j: number) => {
-        if (on) {
-          const div = document.createElement('div');
-          div.style.gridRow = `${i + 1}`;
-          div.style.gridColumn = `${j + 1}`;
-          div.style.height = '4vmin';
-          div.style.width = '4vmin';
-          div.style.backgroundImage = `url(${images.pixelGif})`;
-          div.style.backgroundSize = '220% 250%';
-          container.appendChild(div);
-        }
-      }),
-    );
-  }, []);
+  const makeDigit = useCallback(
+    (
+      target: React.RefObject<HTMLDivElement | null>,
+      digitMatrix: DigitMatrix,
+    ): void => {
+      const container = target.current;
+      if (!container) return;
+      container.innerHTML = '';
+      digitMatrix.forEach((row: number[], i: number) =>
+        row.forEach((on: number, j: number) => {
+          if (on) {
+            const div = document.createElement('div');
+            div.style.gridRow = `${i + 1}`;
+            div.style.gridColumn = `${j + 1}`;
+            div.style.height = '4vmin';
+            div.style.width = '4vmin';
+            div.style.backgroundImage = `url(${images.pixelGif})`;
+            div.style.backgroundSize = '220% 250%';
+            container.appendChild(div);
+          }
+        }),
+      );
+    },
+    [],
+  );
 
   const currentTime = useSecondClock();
 
@@ -280,7 +286,7 @@ const DeepSpaceClock: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 const digitStyle: DigitStyle = {
   display: 'grid',

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useEnhancedFontLoader } from '@/utils/enhancedFontLoader';
-import backgroundImage from '@/assets/images/2026/26-01/26-01-27/pan.jpg';
+import backgroundImage from '@/assets/images/26_images/26-01/26-01-27/pan.jpg';
 import panFont from '@/assets/fonts/26fonts/26-01-27-pan.ttf';
 
 export default function PanoramaClock() {

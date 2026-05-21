@@ -1,44 +1,141 @@
-import React, { useMemo, useRef, useState, useEffect, useCallback } from 'react';
+import React, {
+  useMemo,
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
 import { useClockTime } from '@/utils/clockUtils';
 import styles from './Clock.module.css';
 
 // Asset Imports
-import hourHandImg from '@/assets/images/2026/26-04/26-04-12/hand.webp';
-import minuteHandImg from '@/assets/images/2026/26-04/26-04-12/hand2.webp';
-import secondHandImg from '@/assets/images/2026/26-04/26-04-12/hand3.gif';
-import bgImage from '@/assets/images/2026/26-04/26-04-12/background.jpeg';
-import centerImg from '@/assets/images/2026/26-04/26-04-12/center.webp';
+import hourHandImg from '@/assets/images/26_images/26-04/26-04-12/hand.webp';
+import minuteHandImg from '@/assets/images/26_images/26-04/26-04-12/hand2.webp';
+import secondHandImg from '@/assets/images/26_images/26-04/26-04-12/hand3.gif';
+import bgImage from '@/assets/images/26_images/26-04/26-04-12/background.jpeg';
+import centerImg from '@/assets/images/26_images/26-04/26-04-12/center.webp';
 
-import m1 from '@/assets/images/2026/26-04/26-04-12/1.webp';
-import m2 from '@/assets/images/2026/26-04/26-04-12/2.gif';
-import m3 from '@/assets/images/2026/26-04/26-04-12/3.gif';
-import m4 from '@/assets/images/2026/26-04/26-04-12/4.gif';
-import m5 from '@/assets/images/2026/26-04/26-04-12/5.gif';
-import m6 from '@/assets/images/2026/26-04/26-04-12/6.webp';
-import m7 from '@/assets/images/2026/26-04/26-04-12/7.webp';
-import m8 from '@/assets/images/2026/26-04/26-04-12/8.gif';
-import m9 from '@/assets/images/2026/26-04/26-04-12/9.webp';
-import m10 from '@/assets/images/2026/26-04/26-04-12/10.gif';
-import m11 from '@/assets/images/2026/26-04/26-04-12/11.gif';
-import m12 from '@/assets/images/2026/26-04/26-04-12/12.webp';
-import m13 from '@/assets/images/2026/26-04/26-04-12/13.webp';
+import m1 from '@/assets/images/26_images/26-04/26-04-12/1.webp';
+import m2 from '@/assets/images/26_images/26-04/26-04-12/2.gif';
+import m3 from '@/assets/images/26_images/26-04/26-04-12/3.gif';
+import m4 from '@/assets/images/26_images/26-04/26-04-12/4.gif';
+import m5 from '@/assets/images/26_images/26-04/26-04-12/5.gif';
+import m6 from '@/assets/images/26_images/26-04/26-04-12/6.webp';
+import m7 from '@/assets/images/26_images/26-04/26-04-12/7.webp';
+import m8 from '@/assets/images/26_images/26-04/26-04-12/8.gif';
+import m9 from '@/assets/images/26_images/26-04/26-04-12/9.webp';
+import m10 from '@/assets/images/26_images/26-04/26-04-12/10.gif';
+import m11 from '@/assets/images/26_images/26-04/26-04-12/11.gif';
+import m12 from '@/assets/images/26_images/26-04/26-04-12/12.webp';
+import m13 from '@/assets/images/26_images/26-04/26-04-12/13.webp';
 
 const allMatchImages = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13];
 
 const imageSettings = [
-  { size: '21%', opacity: 1.0, brightness: 10.5, saturation: 1.2, vignetteBlackStop: '40%', vignetteTransparentStop: '85%' },
-  { size: '21%', opacity: 0.8, brightness: 1.0, saturation: 1.5, vignetteBlackStop: '40%', vignetteTransparentStop: '85%' },
-  { size: '21%', opacity: 0.9, brightness: 1.2, saturation: 2.2, vignetteBlackStop: '100%', vignetteTransparentStop: '100%' },
-  { size: '21%', opacity: 0.8, brightness: 1.2, saturation: 1.7, vignetteBlackStop: '40%', vignetteTransparentStop: '65%' },
-  { size: '21%', opacity: 0.8, brightness: 1.0, saturation: 2.0, vignetteBlackStop: '100%', vignetteTransparentStop: '100%' },
-  { size: '22%', opacity: 0.9, brightness: 1.4, saturation: 1.5, vignetteBlackStop: '40%', vignetteTransparentStop: '75%' },
-  { size: '31%', opacity: 0.9, brightness: 0.9, saturation: 1.1, vignetteBlackStop: '40%', vignetteTransparentStop: '85%' },
-  { size: '29%', opacity: 0.8, brightness: 1.3, saturation: 1.9, vignetteBlackStop: '100%', vignetteTransparentStop: '100%' },
-  { size: '31%', opacity: 0.9, brightness: 1.3, saturation: 3.0, vignetteBlackStop: '20%', vignetteTransparentStop: '55%' },
-  { size: '31%', opacity: 0.9, brightness: 1.3, saturation: 1.6, vignetteBlackStop: '100%', vignetteTransparentStop: '100%' },
-  { size: '38%', opacity: 0.9, brightness: 0.9, saturation: 1.8, vignetteBlackStop: '40%', vignetteTransparentStop: '65%' },
-  { size: '32%', opacity: 0.8, brightness: 1.3, saturation: 1.7, vignetteBlackStop: '40%', vignetteTransparentStop: '85%' },
-  { size: '31%', opacity: 0.8, brightness: 1.4, saturation: 1.8, vignetteBlackStop: '40%', vignetteTransparentStop: '55%' },
+  {
+    size: '21%',
+    opacity: 1.0,
+    brightness: 10.5,
+    saturation: 1.2,
+    vignetteBlackStop: '40%',
+    vignetteTransparentStop: '85%',
+  },
+  {
+    size: '21%',
+    opacity: 0.8,
+    brightness: 1.0,
+    saturation: 1.5,
+    vignetteBlackStop: '40%',
+    vignetteTransparentStop: '85%',
+  },
+  {
+    size: '21%',
+    opacity: 0.9,
+    brightness: 1.2,
+    saturation: 2.2,
+    vignetteBlackStop: '100%',
+    vignetteTransparentStop: '100%',
+  },
+  {
+    size: '21%',
+    opacity: 0.8,
+    brightness: 1.2,
+    saturation: 1.7,
+    vignetteBlackStop: '40%',
+    vignetteTransparentStop: '65%',
+  },
+  {
+    size: '21%',
+    opacity: 0.8,
+    brightness: 1.0,
+    saturation: 2.0,
+    vignetteBlackStop: '100%',
+    vignetteTransparentStop: '100%',
+  },
+  {
+    size: '22%',
+    opacity: 0.9,
+    brightness: 1.4,
+    saturation: 1.5,
+    vignetteBlackStop: '40%',
+    vignetteTransparentStop: '75%',
+  },
+  {
+    size: '31%',
+    opacity: 0.9,
+    brightness: 0.9,
+    saturation: 1.1,
+    vignetteBlackStop: '40%',
+    vignetteTransparentStop: '85%',
+  },
+  {
+    size: '29%',
+    opacity: 0.8,
+    brightness: 1.3,
+    saturation: 1.9,
+    vignetteBlackStop: '100%',
+    vignetteTransparentStop: '100%',
+  },
+  {
+    size: '31%',
+    opacity: 0.9,
+    brightness: 1.3,
+    saturation: 3.0,
+    vignetteBlackStop: '20%',
+    vignetteTransparentStop: '55%',
+  },
+  {
+    size: '31%',
+    opacity: 0.9,
+    brightness: 1.3,
+    saturation: 1.6,
+    vignetteBlackStop: '100%',
+    vignetteTransparentStop: '100%',
+  },
+  {
+    size: '38%',
+    opacity: 0.9,
+    brightness: 0.9,
+    saturation: 1.8,
+    vignetteBlackStop: '40%',
+    vignetteTransparentStop: '65%',
+  },
+  {
+    size: '32%',
+    opacity: 0.8,
+    brightness: 1.3,
+    saturation: 1.7,
+    vignetteBlackStop: '40%',
+    vignetteTransparentStop: '85%',
+  },
+  {
+    size: '31%',
+    opacity: 0.8,
+    brightness: 1.4,
+    saturation: 1.8,
+    vignetteBlackStop: '40%',
+    vignetteTransparentStop: '55%',
+  },
 ];
 
 const Clock: React.FC = () => {
@@ -86,13 +183,13 @@ const Clock: React.FC = () => {
         const newFace = [...prev];
         // Ensure prev has enough elements before accessing
         if (newFace.length === 0 || activePos >= newFace.length) return prev;
-        
+
         const outgoingImage = newFace[activePos];
 
         // SWAP: Put the spare image on the face, and take the face image to the spare slot
         newFace[activePos] = spareIndex;
         setSpareIndex(outgoingImage);
-        
+
         return newFace;
       });
     }
@@ -111,7 +208,6 @@ const Clock: React.FC = () => {
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       <div className={styles.clock}>
-        
         {/* Render the 12 Positions */}
         {faceIndices.map((imgIdx, i) => {
           // Only render if imgIdx is valid (i.e., after initial shuffle in useEffect)
@@ -137,7 +233,8 @@ const Clock: React.FC = () => {
                 opacity: config.opacity,
                 filter: `brightness(${config.brightness}) saturate(${config.saturation})`,
                 ['--vignette-black' as string]: config.vignetteBlackStop,
-                ['--vignette-transparent' as string]: config.vignetteTransparentStop,
+                ['--vignette-transparent' as string]:
+                  config.vignetteTransparentStop,
               }}
               alt=""
             />
@@ -145,9 +242,29 @@ const Clock: React.FC = () => {
         })}
 
         {/* Hands */}
-        <Hand src={hourHandImg} deg={rotations.hr} width="26%" height="30%" z={2} />
-        <Hand src={minuteHandImg} deg={rotations.min} width="84%" height="60%" z={3} />
-        <Hand src={secondHandImg} deg={rotations.sec} width="72%" height="50%" z={4} isSec ms={milliseconds} />
+        <Hand
+          src={hourHandImg}
+          deg={rotations.hr}
+          width="26%"
+          height="30%"
+          z={2}
+        />
+        <Hand
+          src={minuteHandImg}
+          deg={rotations.min}
+          width="84%"
+          height="60%"
+          z={3}
+        />
+        <Hand
+          src={secondHandImg}
+          deg={rotations.sec}
+          width="72%"
+          height="50%"
+          z={4}
+          isSec
+          ms={milliseconds}
+        />
 
         {/* Center overlay */}
         <img src={centerImg} className={styles.centerOverlay} alt="" />
@@ -156,7 +273,15 @@ const Clock: React.FC = () => {
   );
 };
 
-interface HandProps { src: string; deg: number; width: string; height: string; z: number; isSec?: boolean; ms?: number; }
+interface HandProps {
+  src: string;
+  deg: number;
+  width: string;
+  height: string;
+  z: number;
+  isSec?: boolean;
+  ms?: number;
+}
 const Hand = ({ src, deg, width, height, z, isSec, ms }: HandProps) => (
   <img
     src={src}

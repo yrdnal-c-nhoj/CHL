@@ -71,7 +71,10 @@ async function captureDailySquare(targetDate?: string) {
   const page = await context.newPage();
 
   const url = `http://localhost:${port}/${targetClock.date}`;
-  const outputPath = path.join(OUTPUT_DIR, `${targetClock.date}-daily-square.webp`);
+  const outputPath = path.join(
+    OUTPUT_DIR,
+    `${targetClock.date}-daily-square.webp`,
+  );
 
   try {
     console.log(`📸 Capturing: ${targetClock.title} [${targetClock.date}]`);
@@ -116,14 +119,14 @@ async function captureDailySquare(targetDate?: string) {
     await page.waitForTimeout(2000);
 
     // Use Chrome DevTools Protocol (CDP) to capture WebP directly.
-    // This bypasses Playwright's internal 'type' validation (which limits 
+    // This bypasses Playwright's internal 'type' validation (which limits
     // older versions to png/jpeg) by talking directly to the Chromium engine.
     const client = await page.context().newCDPSession(page);
     const { data } = await client.send('Page.captureScreenshot', {
       format: 'webp',
       quality: 90,
     });
-    
+
     fs.writeFileSync(outputPath, Buffer.from(data, 'base64'));
 
     console.log(`✅ Square thumbnail saved to: ${outputPath}`);

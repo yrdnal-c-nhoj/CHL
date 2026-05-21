@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import castelImage from '@/assets/images/2025/25-08/25-08-24/castel.jpg';
+import castelImage from '@/assets/images/25_images/25-08/25-08-24/castel.jpg';
 import viaFont from '@/assets/fonts/25fonts/25-08-24-via.ttf';
 
 const toRoman = (num: number) => {
@@ -37,9 +37,9 @@ const RomanClock = () => {
       fontUrl: viaFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
@@ -96,9 +96,7 @@ const RomanClock = () => {
 
   return (
     <div style={containerStyle}>
-      <div style={timeStyle}>
-        {time}
-      </div>
+      <div style={timeStyle}>{time}</div>
     </div>
   );
 };

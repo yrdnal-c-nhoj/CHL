@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import background2 from '@/assets/images/2025/25-07/25-07-25/bb.webp'; // front
-import background1 from '@/assets/images/2025/25-07/25-07-25/bam.webp'; // back
-import background3 from '@/assets/images/2025/25-07/25-07-25/bambu.gif'; // static background
+import background2 from '@/assets/images/25_images/25-07/25-07-25/bb.webp'; // front
+import background1 from '@/assets/images/25_images/25-07/25-07-25/bam.webp'; // back
+import background3 from '@/assets/images/25_images/25-07/25-07-25/bambu.gif'; // static background
 import customFont from '@/assets/fonts/25fonts/25-07-25-bamboo.ttf';
 
 const Clock: React.FC = () => {
@@ -14,9 +14,9 @@ const Clock: React.FC = () => {
       fontUrl: customFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   const time = useClockTime();

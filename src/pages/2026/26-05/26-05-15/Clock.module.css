@@ -71,7 +71,6 @@
   transform: translate(-50%, calc(-50% - 72.5vw));
 }
 
-
 .clockRowOffsetNegative4 {
   transform: translate(-50%, calc(-50% - 58vw));
 }
@@ -124,7 +123,6 @@
   transform: translate(-50%, calc(-50% + 116vw));
 }
 
-
 .clockDisplay {
   position: relative;
   z-index: 1;
@@ -137,7 +135,7 @@
   font-size: 15.5vw;
   opacity: 1;
   /* Critical: remove any intrinsic vertical metrics that can create a visible gap */
-  background-image: url('@/assets/images/2026/26-05/26-05-15/cells.webp');
+  background-image: url('@/assets/images/26_images/26-05/26-05-15/cells.webp');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

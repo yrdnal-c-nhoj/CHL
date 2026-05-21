@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import atomicWebp from '@/assets/images/2026/26-02/26-02-28/atomic.webp';
+import atomicWebp from '@/assets/images/26_images/26-02/26-02-28/atomic.webp';
 import atomicFont from '@/assets/fonts/26fonts/26-02-28-atomic.ttf';
 
 const TILE_SIZE = 140;
@@ -36,17 +36,20 @@ const ImageGrid: React.FC = () => {
   });
   const [showContent, setShowContent] = useState(false);
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'AtomicFont',
-      fontUrl: atomicFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
-  
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'AtomicFont',
+        fontUrl: atomicFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
   useEffect(() => {
     setShowContent(true);

@@ -65,18 +65,16 @@ const calculateNumeralPosition = (number: number) => {
   };
 };
 
-const getHandRotation = (value: number, multiplier: number): number => value * multiplier;
+const getHandRotation = (value: number, multiplier: number): number =>
+  value * multiplier;
 
 // ---------------- COMPONENTS ----------------
 const BackgroundLayers: React.FC = () => (
-  <video
-    className={styles.backgroundVideo}
-    autoPlay
-    loop
-    muted
-    playsInline
-  >
-    <source src="/src/assets/images/2026/26-05/26-05-05/jump.mp4" type="video/mp4" />
+  <video className={styles.backgroundVideo} autoPlay loop muted playsInline>
+    <source
+      src="/src/assets/images/26_images/26-05/26-05-05/jump.mp4"
+      type="video/mp4"
+    />
   </video>
 );
 
@@ -121,9 +119,7 @@ const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
   );
 };
 
-const CenterDot: React.FC = () => (
-  <div className={styles.centerDot} />
-);
+const CenterDot: React.FC = () => <div className={styles.centerDot} />;
 
 // ---------------- MAIN CLOCK COMPONENT ----------------
 const AnalogClock: React.FC = () => {
@@ -136,14 +132,14 @@ const AnalogClock: React.FC = () => {
   return (
     <div className={styles.container}>
       <BackgroundLayers />
-      
+
       <time dateTime={currentTime.toISOString()} className={styles.clockFace}>
         <ClockNumerals />
-        
+
         <ClockHand type="hour" rotation={getHandRotation(hr, 30)} />
         <ClockHand type="minute" rotation={getHandRotation(min, 6)} />
         <ClockHand type="second" rotation={getHandRotation(sec, 6)} />
-        
+
         <CenterDot />
       </time>
     </div>

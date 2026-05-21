@@ -13,12 +13,12 @@ export interface ClockTax {
 }
 
 const clockTax: ClockTax = {
-  title: "Recycled Internet Clock Tax Information",
-  content: "Made from recycled internet artifacts and digital archaeology",
+  title: 'Recycled Internet Clock Tax Information',
+  content: 'Made from recycled internet artifacts and digital archaeology',
   metadata: {
-    created: "2025-05-11",
-    version: "1.0.0"
-  }
+    created: '2025-05-11',
+    version: '1.0.0',
+  },
 };
 
 export default clockTax;

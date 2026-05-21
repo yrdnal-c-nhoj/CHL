@@ -38,14 +38,25 @@ export const formatDateDots = (dateString?: string | null): string => {
   const parts = dateString.split('-');
   if (parts.length !== 3) return dateString;
   const [yy, mm, dd] = parts.map(Number);
-  
-  if (yy === undefined || mm === undefined || dd === undefined) return 'Invalid Date';
-  
+
+  if (yy === undefined || mm === undefined || dd === undefined)
+    return 'Invalid Date';
+
   const monthNames = [
-    'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
-    'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
+    'JAN',
+    'FEB',
+    'MAR',
+    'APR',
+    'MAY',
+    'JUN',
+    'JUL',
+    'AUG',
+    'SEP',
+    'OCT',
+    'NOV',
+    'DEC',
   ];
-  
+
   if (mm >= 1 && mm <= 12 && dd >= 1 && dd <= 31) {
     const month = monthNames[mm - 1];
     return `${dd} ${month} '${yy}`;
@@ -68,9 +79,10 @@ export const formatDateSlashes = (dateStr?: string | null): string => {
   const parts = dateStr.split('-');
   if (parts.length !== 3) return dateStr;
   const [yy, mm, dd] = parts.map(Number);
-  
-  if (yy === undefined || mm === undefined || dd === undefined) return 'Invalid Date';
-  
+
+  if (yy === undefined || mm === undefined || dd === undefined)
+    return 'Invalid Date';
+
   return mm >= 1 && mm <= 12 && dd >= 1 && dd <= 31
     ? `${mm}/${dd}/${yy}`
     : 'Invalid Date';
@@ -84,9 +96,9 @@ export const parseDateVal = (dateStr?: string): number => {
   const parts = dateStr.split('-');
   if (parts.length !== 3) return 0;
   const [yy, mm, dd] = parts.map(Number);
-  
+
   if (yy === undefined || mm === undefined || dd === undefined) return 0;
-  
+
   return new Date(2000 + yy, mm - 1, dd).getTime();
 };
 

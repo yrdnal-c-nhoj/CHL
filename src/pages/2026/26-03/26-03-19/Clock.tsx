@@ -28,15 +28,18 @@ interface ClockState {
 const Clock = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const currentTime = useSecondClock();
-  
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { 
-      fontFamily: 'SnowFont', 
-      fontUrl: snowFont, 
-      options: { weight: 'normal', style: 'normal' } 
-    }
-  ], []);
-  
+
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'SnowFont',
+        fontUrl: snowFont,
+        options: { weight: 'normal', style: 'normal' },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   const stateRef = useRef<ClockState>({
@@ -48,17 +51,20 @@ const Clock = () => {
     phase: 'snowing',
     canvasOpacity: 1,
     holdStartTime: 0,
-    spawnTimer: 0
+    spawnTimer: 0,
   });
 
-  const createFlake = useCallback((): Flake => ({
-    x: Math.random() * stateRef.current.width,
-    y: -20,
-    size: Math.random() * 3 + 2,
-    speed: Math.random() * 2 + 1.5,
-    drift: Math.random() * 0.5 - 0.25,
-    opacity: Math.random() * 0.5 + 0.3,
-  }), []);
+  const createFlake = useCallback(
+    (): Flake => ({
+      x: Math.random() * stateRef.current.width,
+      y: -20,
+      size: Math.random() * 3 + 2,
+      speed: Math.random() * 2 + 1.5,
+      drift: Math.random() * 0.5 - 0.25,
+      opacity: Math.random() * 0.5 + 0.3,
+    }),
+    [],
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -66,7 +72,7 @@ const Clock = () => {
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    
+
     const state = stateRef.current;
 
     const handleResize = () => {
@@ -93,7 +99,7 @@ const Clock = () => {
         state.spawnTimer += deltaTime;
         if (state.spawnTimer > 200) state.spawnTimer = 200;
 
-        if (state.spawnTimer > 60) { 
+        if (state.spawnTimer > 60) {
           for (let i = 0; i < 3; i++) state.flakes.push(createFlake());
           state.spawnTimer = 0;
         }
@@ -109,7 +115,7 @@ const Clock = () => {
 
           const groundLevel = state.height - state.snowHeight;
           if (flake.y > groundLevel) {
-            state.snowHeight += 0.4; 
+            state.snowHeight += 0.4;
             return false;
           }
           return true;
@@ -119,12 +125,10 @@ const Clock = () => {
           state.phase = 'holding';
           state.holdStartTime = timestamp;
         }
-      } 
-      else if (state.phase === 'holding') {
+      } else if (state.phase === 'holding') {
         if (timestamp - state.holdStartTime > 3000) state.phase = 'fading';
-      } 
-      else if (state.phase === 'fading') {
-        state.canvasOpacity -= 0.005; 
+      } else if (state.phase === 'fading') {
+        state.canvasOpacity -= 0.005;
         if (state.canvasOpacity <= 0) {
           state.snowHeight = 0;
           state.flakes = [];
@@ -134,8 +138,13 @@ const Clock = () => {
       }
 
       if (state.snowHeight > 0) {
-        ctx.fillStyle = '#CEE5F5',
-        ctx.fillRect(0, state.height - state.snowHeight, state.width, state.snowHeight);
+        ((ctx.fillStyle = '#CEE5F5'),
+          ctx.fillRect(
+            0,
+            state.height - state.snowHeight,
+            state.width,
+            state.snowHeight,
+          ));
       }
 
       animationId = requestAnimationFrame(animate);
@@ -156,13 +165,16 @@ const Clock = () => {
   const displayMinutes = minutes.toString().padStart(2, '0');
 
   return (
-    <div style={{ 
-      position: 'fixed', 
-      inset: 0, 
-      background: 'radial-gradient(ellipse at top, #5a6b8a 0%, #2E416C 20%, #1B2943 40%, #142542 70%, #0F2044 100%)', 
-      overflow: 'hidden' 
-    }}>
-      <div 
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        background:
+          'radial-gradient(ellipse at top, #5a6b8a 0%, #2E416C 20%, #1B2943 40%, #142542 70%, #0F2044 100%)',
+        overflow: 'hidden',
+      }}
+    >
+      <div
         style={{
           position: 'absolute',
           top: '50%',
@@ -171,38 +183,40 @@ const Clock = () => {
           fontSize: 'clamp(5rem, 19vw, 10rem)',
           color: '#CEE5F5',
           fontFamily: "'SnowFont', sans-serif",
-          zIndex: 3, 
+          zIndex: 3,
           opacity: 0.8,
           pointerEvents: 'none',
-          textAlign: 'center'
+          textAlign: 'center',
         }}
       >
-        {displayHours}:{displayMinutes} <span style={{ fontSize: '0.8em', opacity: 0.9 }}>{ampm}</span>
+        {displayHours}:{displayMinutes}{' '}
+        <span style={{ fontSize: '0.8em', opacity: 0.9 }}>{ampm}</span>
       </div>
 
-      <div 
+      <div
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
           width: '100%',
           height: '100%',
-          background: 'linear-gradient(to top, #434803 0%,#1F355B 30%, #40568ED1 100%)',
+          background:
+            'linear-gradient(to top, #434803 0%,#1F355B 30%, #40568ED1 100%)',
           opacity: 0.4,
-          zIndex: 1
+          zIndex: 1,
         }}
       />
 
-      <canvas 
-        ref={canvasRef} 
-        style={{ 
+      <canvas
+        ref={canvasRef}
+        style={{
           position: 'absolute',
           top: 0,
           left: 0,
-          width: '100%', 
+          width: '100%',
           height: '100%',
-          zIndex: 2
-        }} 
+          zIndex: 2,
+        }}
       />
     </div>
   );

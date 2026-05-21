@@ -118,4 +118,4 @@ Full command reference: [`docs/DEVELOPMENT.md`](./docs/DEVELOPMENT.md).
 
 ---
 
-*See also: [docs/DEVELOPMENT.md](./docs/DEVELOPMENT.md), [src/templates/ARCHITECTURE.md](./src/templates/ARCHITECTURE.md)*
+_See also: [docs/DEVELOPMENT.md](./docs/DEVELOPMENT.md), [src/templates/ARCHITECTURE.md](./src/templates/ARCHITECTURE.md)_
