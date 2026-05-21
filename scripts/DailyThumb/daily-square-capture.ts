@@ -17,10 +17,9 @@ function getTodayDateString(): string {
   return `${year}-${month}-${day}`;
 }
 
-
 // Parse command line arguments for optional date
 const args = process.argv.slice(2);
-const dateArg = args.find(arg => !arg.startsWith('--'));
+const dateArg = args.find((arg) => !arg.startsWith('--'));
 
 // Modified capture function that accepts optional date
 async function captureDailySquare(targetDate?: string) {
@@ -32,8 +31,10 @@ async function captureDailySquare(targetDate?: string) {
   const date = targetDate || getTodayDateString();
   console.log(`📅 Looking for clock: ${date}`);
   console.log(`📸 Capturing square thumbnail (500x500px)`);
+  console.log('🖼️ Output format: PNG (Playwright-compatible)');
 
   const clocks = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf-8'));
+
   const targetClock = clocks.find((clock: any) => clock.date === date);
 
   if (!targetClock) {
@@ -62,25 +63,28 @@ async function captureDailySquare(targetDate?: string) {
   console.log(`🚀 Starting capture sequence on http://localhost:${port}`);
 
   const browser = await chromium.launch();
-  
+
   const context = await browser.newContext({
     viewport: { width: 500, height: 500 },
-    deviceScaleFactor: 2
+    deviceScaleFactor: 2,
   });
   const page = await context.newPage();
 
   const url = `http://localhost:${port}/${targetClock.date}`;
-  const outputPath = path.join(OUTPUT_DIR, `${targetClock.date}-thumb.webp`);
+  const outputPath = path.join(OUTPUT_DIR, `${targetClock.date}-thumb.png`);
 
   try {
     console.log(`📸 Capturing: ${targetClock.title} [${targetClock.date}]`);
-    
+
     // Wait until the basic page structure is loaded
     await page.goto(url, { waitUntil: 'load', timeout: 15000 });
 
     // If we got redirected home, the route is wrong or the clock doesn't exist yet
     const currentUrl = page.url();
-    if (currentUrl && currentUrl.replace(/\/$/, "") === `http://localhost:${port}`) {
+    if (
+      currentUrl &&
+      currentUrl.replace(/\/$/, '') === `http://localhost:${port}`
+    ) {
       console.log('⏭️ (Home Redirect - check route)');
       process.exit(1);
     }
@@ -102,21 +106,22 @@ async function captureDailySquare(targetDate?: string) {
         [class*="Overlay"] { 
           display: none !important; 
         }
-      `
+      `,
     });
 
     // Wait 2 seconds after component has fully loaded (as requested)
-    console.log('⌛ Settling: Waiting 2s for animations and shaders to stabilize...');
+    console.log(
+      '⌛ Settling: Waiting 2s for animations and shaders to stabilize...',
+    );
     await page.waitForTimeout(2000);
-    
-    // Capture the entire viewport. Since we set it to 500x500 and 
+
+    // Capture the entire viewport. Since we set it to 500x500 and
     // used overflow:hidden, this captures the full component perfectly.
-    await page.screenshot({ 
+    await page.screenshot({
       path: outputPath,
-      quality: 95,
-      fullPage: false
+      fullPage: false,
     });
-    
+
     console.log(`✅ Square thumbnail saved to: ${outputPath}`);
   } catch (err: any) {
     console.error(`❌ Failed to capture ${targetClock.date}: ${err.message}`);
@@ -126,7 +131,9 @@ async function captureDailySquare(targetDate?: string) {
   await browser.close();
   console.log(`🎉 Daily square capture complete!`);
   console.log(`📸 File saved in: ${OUTPUT_DIR}`);
-  console.log(`   - ${targetClock.date}-thumb.webp (1:1 High-DPI square thumbnail)`);
+  console.log(
+    `   - ${targetClock.date}-thumb.png (1:1 High-DPI square thumbnail)`,
+  );
 }
 
 captureDailySquare(dateArg).catch((err: any) => {
