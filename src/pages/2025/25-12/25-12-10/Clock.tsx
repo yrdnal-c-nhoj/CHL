@@ -11,7 +11,7 @@ import hourHandImg from '@/assets/images/2025/25-12/25-12-10/oa.gif';
 import minuteHandImg from '@/assets/images/2025/25-12/25-12-10/oak.gif';
 import secondHandImg from '@/assets/images/2025/25-12/25-12-10/nk.gif';
 const font251211Url = new URL(
-  '@/assets/fonts/2025/25-12-10-jup.ttf',
+  '@/assets/fonts/25fonts/25-12-10-jup.ttf',
   import.meta.url,
 ).href;
 

@@ -7,7 +7,7 @@ import styles from './Clock.module.css';
 
 // Asset Imports
 // Reverting to the standard .otf extension without the extra suffix
-import clockFont from '@/assets/fonts/2026/26-05-17.otf?url';
+import clockFont from '@/assets/fonts/26fonts/26-05-17.otf?url';
 import clockVideo from '@/assets/images/2026/26-05/26-05-17/26-05-17.mp4';
 
 // ---------------- CONFIGURATION ----------------

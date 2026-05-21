@@ -4,7 +4,7 @@ import type { FontConfig } from '@/types/clock';
 
 import carVideo from '@/assets/images/2026/26-05/26-05-02/car.mp4';
 // Import the corresponding font from the assets folder
-import fontUrl from '@/assets/fonts/2026/26-05-02-carfall.ttf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-05-02-carfall.ttf?url';
 
 // Export assets for the preloading pipeline
 export const assets = [carVideo];

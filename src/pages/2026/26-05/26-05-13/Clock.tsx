@@ -3,7 +3,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
-import dripFont from '@/assets/fonts/2026/26-05-13.otf?url';
+import dripFont from '@/assets/fonts/26fonts/26-05-13.otf?url';
 import analogBgImage from '@/assets/images/2026/26-05/26-05-13/klein.webp';
 import bgVideo from '@/assets/images/2026/26-05/26-05-13/26-05-13-yves.mp4?url';
 

@@ -91,9 +91,9 @@ For a daily-published creative web app at this scale, a reasonable “state-of-t
 - `src/assets/fonts/2025/25-06-20-inde1.ttf`
 - `src/assets/fonts/2025/25-05-20-fla.ttf`
 - `src/assets/fonts/2025/25-06-20-inde2.ttf`
-- `src/assets/fonts/2026/26-03-02-ripple.ttf`
-- `src/assets/fonts/2026/26-03-01-270west.ttf`
-- `src/assets/fonts/2026/26-05-07-droplet.ttf`
+- `src/assets/fonts/26fonts/26-03-02-ripple.ttf`
+- `src/assets/fonts/26fonts/26-03-01-270west.ttf`
+- `src/assets/fonts/26fonts/26-05-07-droplet.ttf`
 
 ### Review-before-delete (medium confidence)
 

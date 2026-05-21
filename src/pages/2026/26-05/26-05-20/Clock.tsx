@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import clockFont from "@/assets/fonts/2026/26-05-20.otf";
+import clockFont from "@/assets/fonts/26fonts/26-05-20.otf";
 
 function formatTime(d: Date) {
   const h = d.getHours().toString().padStart(2, "0");

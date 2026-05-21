@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import airFontUrl from '@/assets/fonts/2025/25-06-01-air.ttf';
+import airFontUrl from '@/assets/fonts/25fonts/25-06-01-air.ttf';
 import stampImg from '@/assets/images/2025/25-06/25-06-01/stamp.png';
 import stamp2Img from '@/assets/images/2025/25-06/25-06-01/stamp2.png';
 import stamp3Img from '@/assets/images/2025/25-06/25-06-01/stamp3.png';

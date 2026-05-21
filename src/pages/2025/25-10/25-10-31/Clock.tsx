@@ -4,7 +4,7 @@ import { useMillisecondClock } from '@/utils/hooks'; // Use useMillisecondClock 
 import { formatTime } from '@/utils/clockUtils'; // Keep formatTime for datetime attribute
 import videoFile from '@/assets/images/2025/25-10/25-10-31/mids.mp4';
 import fallbackImg from '@/assets/images/2025/25-10/25-10-31/midsun.webp';
-import fontFile_2025_10_31 from '@/assets/fonts/2025/25-10-31-mi.otf?url';
+import fontFile_2025_10_31 from '@/assets/fonts/25fonts/25-10-31-mi.otf?url';
 
 export default function VideoClock() {
   const [ready, setReady] = useState<boolean>(false);

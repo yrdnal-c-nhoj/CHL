@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import origamiFont from '@/assets/fonts/2026/26-03-30-origami.ttf';
+import origamiFont from '@/assets/fonts/26fonts/26-03-30-origami.ttf';
 import craneImg from '@/assets/images/2026/26-03/26-03-30/1.webp';
 import styles from './Clock.module.css';
 

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/2025/25-12/25-12-13/roc.webp';
-import fontFile from '@/assets/fonts/2025/25-12-13-cherub.ttf?url';
+import fontFile from '@/assets/fonts/25fonts/25-12-13-cherub.ttf?url';
 import type { FontConfig } from '@/types/clock';
 
 const fontFamily = 'RococoFont';

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/clockUtils';
 import type { FontConfig } from '@/types/clock';
-import lemonFont from '@/assets/fonts/2026/26-01-31-lemon.otf';
+import lemonFont from '@/assets/fonts/26fonts/26-01-31-lemon.otf';
 import lemonBg from '@/assets/images/2026/26-01/26-01-31/lemon.gif';
 import rainBg from '@/assets/images/2026/26-01/26-01-31/lu.webp';
 import lemGif from '@/assets/images/2026/26-01/26-01-31/lemslo.gif';

@@ -1,7 +1,7 @@
 import React, { Suspense, useMemo, useEffect, useState, memo } from 'react';
 import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader, ClockLoadingFallback } from '@/utils/fontLoader';
-import clockFont from '@/assets/fonts/2026/26-05-11-stars.ttf';
+import clockFont from '@/assets/fonts/26fonts/26-05-11-stars.ttf';
 import type { FontConfig } from '@/types/clock';
 
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import DigitalClockFont from '@/assets/fonts/2025/25-09-05-swi.ttf';
+import DigitalClockFont from '@/assets/fonts/25fonts/25-09-05-swi.ttf';
 import DigitalClockBg from '@/assets/images/2025/25-09/25-09-05/swiss.jpg';
 import MovingImg from '@/assets/images/2025/25-09/25-09-05/mouse.gif';
 
