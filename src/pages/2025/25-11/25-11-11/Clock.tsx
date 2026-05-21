@@ -2,7 +2,7 @@
 import React from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime, formatTime } from '@/utils/clockUtils';
-import todayFont251125 from '@/assets/fonts/2025/25-11-11-digi.ttf?url';
+import todayFont251125 from '@/assets/fonts/25fonts/25-11-11-digi.ttf?url';
 import bgFront from '@/assets/images/2025/25-11/25-11-11/bg.webp'; // top layer
 import bgBack from '@/assets/images/2025/25-11/25-11-11/bg1.jpg'; // back layer
 

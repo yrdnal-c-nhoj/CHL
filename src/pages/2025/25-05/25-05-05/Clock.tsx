@@ -3,7 +3,7 @@ import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import mapFont from '@/assets/fonts/2025/25-05-05-Map.ttf?url';
+import mapFont from '@/assets/fonts/25fonts/25-05-05-Map.ttf?url';
 
 // Component Props interface
 interface WarholGraveCamClockProps {

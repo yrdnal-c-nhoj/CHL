@@ -3,7 +3,7 @@ import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundImage from '@/assets/images/2026/26-05/26-05-07/1gallop.webp';
-import gallopFont from '@/assets/fonts/2026/26-05-07-gallop.ttf?url';
+import gallopFont from '@/assets/fonts/26fonts/26-05-07-gallop.ttf?url';
 import styles from './Clock.module.css';
 
 export const assets = [backgroundImage, gallopFont];

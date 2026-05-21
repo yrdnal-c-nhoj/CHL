@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import styles from './Clock.module.css';
-import customFont from '@/assets/fonts/2026/26-05-12.ttf?url';
+import customFont from '@/assets/fonts/26fonts/26-05-12.ttf?url';
 
 // Properly import assets so Vite can resolve and hash them
 import lionVideo from '@/assets/images/2026/26-05/26-05-12/lionwalk.mp4';

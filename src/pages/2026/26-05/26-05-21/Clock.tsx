@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import canisBg from '@/assets/images/2026/26-05/26-05-21/canis.webp';
 import canisComponent from '@/assets/images/2026/26-05/26-05-21/canis2.webp';
 import canisComponent4 from '@/assets/images/2026/26-05/26-05-21/canis4.webp'; // // Corrected image path
-import fontUrl from '@/assets/fonts/2026/26-05-21.otf?url'; // Uses existing font file
+import fontUrl from '@/assets/fonts/26fonts/26-05-21.otf?url'; // Uses existing font file
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';

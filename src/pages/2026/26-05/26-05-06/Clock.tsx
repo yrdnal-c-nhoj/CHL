@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import * as THREE from 'three';
-import fontUrl from '@/assets/fonts/2026/26-05-06-droplet.ttf';
+import fontUrl from '@/assets/fonts/26fonts/26-05-06-droplet.ttf';
 import backgroundImage from '@/assets/images/2026/26-05/26-05-06/drops.jpg';
 
 const MAX_DROPLETS = 40;

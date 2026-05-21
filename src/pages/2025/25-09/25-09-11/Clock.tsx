@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import medievalFont from '@/assets/fonts/2025/25-09-11-ren.ttf';
+import medievalFont from '@/assets/fonts/25fonts/25-09-11-ren.ttf';
 import backgroundImage from '@/assets/images/2025/25-09/25-09-11/ren.jpg';
 import MedievalSVG from '@/assets/images/2025/25-09/25-09-11/MedievalSVG.jsx';
 

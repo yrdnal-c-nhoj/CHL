@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/hooks';
-import fontUrl from '@/assets/fonts/2026/26-05-03-dolphin.ttf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-05-03-dolphin.ttf?url';
 import jumpVideo from '@/assets/images/2026/26-05/26-05-04/jump.mp4';
 
 const CLOCK_CONFIG = {

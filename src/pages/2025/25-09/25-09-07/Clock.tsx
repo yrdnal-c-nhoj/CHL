@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/2025/25-09/25-09-07/wall.jpg'; // local background image
-import f250907 from '@/assets/fonts/2025/25-09-07-wall.ttf'; // local font file
+import f250907 from '@/assets/fonts/25fonts/25-09-07-wall.ttf'; // local font file
 
 const fontVar = 'CustomFont20250908'; // custom variable name
 

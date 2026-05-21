@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import kalFont from '@/assets/fonts/2025/25-07-04-kal.otf';
+import kalFont from '@/assets/fonts/25fonts/25-07-04-kal.otf';
 import bgImage from '@/assets/images/2025/25-07/25-07-04/7ZAx.webp';
 
 /** * CONFIGURATION 

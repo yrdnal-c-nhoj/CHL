@@ -4,7 +4,7 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 import background2 from '@/assets/images/2025/25-07/25-07-25/bb.webp'; // front
 import background1 from '@/assets/images/2025/25-07/25-07-25/bam.webp'; // back
 import background3 from '@/assets/images/2025/25-07/25-07-25/bambu.gif'; // static background
-import customFont from '@/assets/fonts/2025/25-07-25-bamboo.ttf';
+import customFont from '@/assets/fonts/25fonts/25-07-25-bamboo.ttf';
 
 const Clock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC

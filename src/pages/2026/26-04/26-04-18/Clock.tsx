@@ -3,7 +3,7 @@ import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
-import fontUrl from '@/assets/fonts/2026/26-04-18-h1.ttf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-04-18-h1.ttf?url';
 import bgImg from '@/assets/images/2026/26-04/26-04-18/radio.webp';
 
 export const assets = [bgImg];

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 
-import shapesFont from '@/assets/fonts/2026/26-05-05-dino.ttf';
+import shapesFont from '@/assets/fonts/26fonts/26-05-05-dino.ttf';
 import clockImage from '@/assets/images/2026/26-05/26-05-05/dino.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';

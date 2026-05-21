@@ -3,7 +3,7 @@ import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import styles from './Clock.module.css';
 
-import font from '@/assets/fonts/2026/26-05-15.ttf?url';
+import font from '@/assets/fonts/26fonts/26-05-15.ttf?url';
 import backgroundImage from '@/assets/images/2026/26-05/26-05-15/rings.webp';
 
 export const assets = [font, backgroundImage];

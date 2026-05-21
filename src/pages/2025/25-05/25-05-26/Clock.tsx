@@ -4,7 +4,7 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import spr from '@/assets/images/2025/25-05/25-05-26/spr.gif';
 import sprou from '@/assets/images/2025/25-05/25-05-26/sprou.gif';
 import sprout from '@/assets/images/2025/25-05/25-05-26/sprout.gif';
-import sproutFontTtf from '@/assets/fonts/2025/25-05-26-sprout.ttf?url';
+import sproutFontTtf from '@/assets/fonts/25fonts/25-05-26-sprout.ttf?url';
 
 const baseStyles = {
   container: {

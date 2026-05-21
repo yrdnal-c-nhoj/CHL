@@ -1,7 +1,7 @@
 import React from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import customFontUrl from '@/assets/fonts/2025/25-08-12-cubic.ttf'; // local font file
+import customFontUrl from '@/assets/fonts/25fonts/25-08-12-cubic.ttf'; // local font file
 import backgroundImage from '@/assets/images/2025/25-08/25-08-12/earth.webp'; // local background image
 
 const faceColors = [

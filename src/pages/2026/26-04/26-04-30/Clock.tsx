@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState, useCallback, useEffect } from 'react';
 
-import pleiadesFont from '@/assets/fonts/2026/26-04-30-pleides.otf';
+import pleiadesFont from '@/assets/fonts/26fonts/26-04-30-pleides.otf';
 import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
