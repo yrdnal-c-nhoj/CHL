@@ -32,7 +32,6 @@ Prior work ([repo audit session](8c6df15f-be3e-4e69-b45e-5271afd3640c)) fixed ru
 | **CI**            | Basic → improved | _At survey time:_ lint + build only; _now:_ see [`DEVELOPMENT.md#ci`](./DEVELOPMENT.md#ci-github-actions) |
 | **Security**      | Improved         | High-severity npm advisories addressed in prior session                                                   |
 | **Mobile UX**     | Known issues     | Blank pages / nav clipping reported in [mobile Chrome session](8a352ebf-1d67-4c3f-bc79-b0399746c531)      |
-| **PWA / offline** | Not implemented  | No manifest or service worker despite historical README claims                                            |
 | **Docs**          | Consolidated     | _Now:_ [`DEVELOPMENT.md`](./DEVELOPMENT.md) is canonical                                                  |
 
 ### Scale (2026-05-20)

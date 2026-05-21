@@ -27,8 +27,6 @@ coverage/
 captures/
 screen-caps/
 
-<<<<<<< HEAD
-scripts/
-=======
-scripts/
->>>>>>> 17752286ec16772a702f4570c6c3f8b58c849261
+# Internal documentation (not for GitHub)
+docs/CLOCK_MODULE_CONTRACT.md
+docs/SITE_SURVEY.md

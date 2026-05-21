@@ -5,6 +5,7 @@
 | Document                                        | Role                                           |
 | ---------------------------------------------- | ---------------------------------------------- |
 | **This file**                                   | Policy, workflow, commands, CI, registry rules |
+| [`CLOCK_MODULE_CONTRACT.md`](./CLOCK_MODULE_CONTRACT.md) | Clock component requirements, exports, naming |
 | [`README.md`](../README.md)                     | Project intro, stack, links                    |
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md)           | Clock component patterns, hooks, CSS           |
 | [`ROADMAP.md`](../ROADMAP.md)                   | Future phases and backlog only                 |
