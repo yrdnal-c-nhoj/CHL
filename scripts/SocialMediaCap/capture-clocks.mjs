@@ -1,13 +1,12 @@
-import puppeteer from 'puppeteer';
+import { chromium } from 'playwright';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const PROJECT_ROOT = path.resolve(__dirname, '..');
+const PROJECT_ROOT = path.resolve(__dirname, '../..');
 const PAGES_DIR = path.join(PROJECT_ROOT, 'src/pages');
 const OUTPUT_DIR = path.join(PROJECT_ROOT, 'src/assets/thumbnails');
-const BASE_URL = 'http://localhost:5173';
 
 function getClockFiles(dir, files = []) {
   const items = fs.readdirSync(dir);
@@ -23,6 +22,18 @@ function getClockFiles(dir, files = []) {
 }
 
 async function captureClocks() {
+  // Detect which port is actually running the BorrowedTime app
+  let port = 5173;
+  try {
+    const res = await fetch('http://localhost:5173');
+    const text = await res.text();
+    if (!text.includes('id="root"')) throw new Error('Not our app');
+  } catch {
+    port = 5174;
+  }
+
+  const BASE_URL = `http://localhost:${port}`;
+
   const clockFiles = getClockFiles(PAGES_DIR);
   console.log(
     `Found ${clockFiles.length} Clocks. Starting robust 500x500 capture...`,
@@ -33,20 +44,10 @@ async function captureClocks() {
   }
 
   // Launch with settings that help prevent hangs in heavy canvas/video clocks
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-    ],
-  });
+  const browser = await chromium.launch();
 
-  const page = await browser.newPage();
-
-  await page.setViewport({
-    width: 500,
-    height: 500,
+  const context = await browser.newContext({
+    viewport: { width: 500, height: 500 },
     deviceScaleFactor: 2,
   });
 
@@ -55,6 +56,7 @@ async function captureClocks() {
     const pathParts = path.dirname(relativePath).replace(/\\/g, '/').split('/');
     const dateParam = pathParts[pathParts.length - 1];
 
+    const page = await context.newPage();
     const url = `${BASE_URL}/${dateParam}`;
     const outputFileName = `${dateParam}-thumb.webp`;
     const outputPath = path.join(OUTPUT_DIR, outputFileName);
@@ -74,10 +76,9 @@ async function captureClocks() {
 
       // wait for the React root to actually have something in it (any div or main)
       // This is much more reliable than waiting for 'main' specifically
-      await page.waitForFunction(
-        () => document.querySelector('#root').children.length > 0,
-        { timeout: 5000 },
-      );
+      await page.waitForSelector('#root > *', {
+        timeout: 5000,
+      });
 
       // Force a "Thumbnail Mode" layout via CSS injection
       await page.addStyleTag({
@@ -103,13 +104,23 @@ async function captureClocks() {
       });
 
       // The requested 2-second stabilization wait
-      await new Promise((r) => setTimeout(r, 2000));
+      await page.waitForTimeout(2000);
 
-      await page.screenshot({ path: outputPath, type: 'webp', quality: 90 });
+      // Use Chrome DevTools Protocol (CDP) to capture WebP directly.
+      const client = await page.context().newCDPSession(page);
+      const { data } = await client.send('Page.captureScreenshot', {
+        format: 'webp',
+        quality: 90,
+      });
+
+      fs.writeFileSync(outputPath, Buffer.from(data, 'base64'));
+
       console.log('✅');
     } catch (err) {
       console.log(`❌ (${err.message.split('\n')[0]})`);
       // If a specific clock fails, we just move to the next one
+    } finally {
+      await page.close();
     }
   }
 
