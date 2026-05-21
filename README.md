@@ -30,7 +30,7 @@ Online digital art project by Cubist Heart Laboratories. [See it live](https://w
 | Doc                                                              | Use for                                  |
 | ---------------------------------------------------------------- | ---------------------------------------- |
 | [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)                     | Workflow, policy, scripts, quality gates |
-| [`src/templates/ARCHITECTURE.md`](src/templates/ARCHITECTURE.md) | Clock component patterns and hooks       |
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)                  | Clock component patterns and hooks       |
 | [`ROADMAP.md`](ROADMAP.md)                                       | Planned future work                      |
 | [`docs/SITE_SURVEY.md`](docs/SITE_SURVEY.md)                     | Historical evaluation snapshot           |
 

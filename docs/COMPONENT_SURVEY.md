@@ -1,6 +1,6 @@
 # CHL Component Survey (BorrowedTime)
 
-> **Legacy reference.** Operational policy and workflow live in **[`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)**. Clock implementation patterns: **[`src/templates/ARCHITECTURE.md`](src/templates/ARCHITECTURE.md)**. This file is retained for architectural deep-dive notes only.
+> **Legacy reference.** Operational policy and workflow live in **[`DEVELOPMENT.md`](./DEVELOPMENT.md)**. Clock implementation patterns: **[`ARCHITECTURE.md`](./ARCHITECTURE.md)**. This file is retained for architectural deep-dive notes only.
 
 ## Scope
 
@@ -183,7 +183,7 @@ Doc check:
 
 Mismatch to check:
 
-- Font policy is now unified in [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) and ARCHITECTURE.md.
+- Font policy is now unified in [`DEVELOPMENT.md`](./DEVELOPMENT.md) and [`ARCHITECTURE.md`](./ARCHITECTURE.md).
 
 ---
 

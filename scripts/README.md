@@ -1,161 +1,51 @@
-# Scripts Directory
+# Scripts
 
-> **Canonical workflow and registry policy:** [`docs/DEVELOPMENT.md`](../docs/DEVELOPMENT.md).  
-> Scripts do **not** add entries to `clockpages.json` — registration is always manual.
+> **Canonical workflow:** [`docs/DEVELOPMENT.md`](../docs/DEVELOPMENT.md).
+> Scripts do **not** edit `clockpages.json` — registration is always manual.
 
-Automation scripts for BorrowedTime, organized by functionality.
+## At a glance
 
-## Directory Structure
+| Command                    | What it does                                                   |
+| -------------------------- | -------------------------------------------------------------- |
+| `npm run clock:new`        | Scaffold `Clock.tsx` + `.module.css` from template (no registry)|
+| `npm run finalize`        | Validate BTS standards, fix asset paths, capture screenshot    |
+| `npm run capture:daily`    | Social-media PNG (1080×1350) for today's clock                |
+| `npm run capture:range`    | Social-media PNGs for a date or range (e.g. `26-05-01..26-05-07`)|
+| `npm run audit:fonts`      | Report unused / non-standard font files (gitignored output)   |
+| `npm run audit:images`     | Report unused image files (gitignored output)                  |
+| `npm run optimize:images`  | Convert JPG/PNG/GIF → WebP in staged folders                   |
 
-```
-scripts/
-├── README.md                    # This file - overview of all scripts
-├── UploadFinalize/              # Component finalization and GitHub preparation
-│   ├── README.md                # Detailed documentation for finalize workflow
-│   └── finalize-component.ts    # Main validation and finalization script
-├── SocialMediaCap/              # Social media screenshot capture
-│   ├── README.md                # Social media capture documentation
-│   └── daily-screen-capture.ts  # Multi-platform screenshot capture
-├── DailyThumb/                  # Daily square thumbnail capture
-│   ├── README.md                # Daily thumb documentation
-│   └── daily-square-capture.ts  # Thumbnail capture script
-├── capture-clocks.mjs           # Thumbnail generation for clocks
-└── [other utility scripts]      # Various project utilities
-```
+## Details
 
-## Script Categories
+### Finalize (`UploadFinalize/`)
 
-### 🚀 Upload & Finalize (`UploadFinalize/`)
+`npm run finalize` or `npm run finalize -- src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx`
 
-**Purpose**: Component validation, asset organization, and GitHub preparation
+Validates against BTS, auto-fixes asset organization, renames fonts to `YY-MM-DD-name.ext`, and captures a `screen-caps/YY-MM-DD.webp` thumbnail.
 
-**Main Script**: `finalize-component.ts`
+### Social captures (`SocialMediaCap/`)
 
-**Usage**:
+Requires the clock to be registered in `clockpages.json`.
 
 ```bash
-npm run finalize                    # Auto-detect current component
-npm run finalize -- path/to/Clock.tsx  # Specific component
+npm run capture:daily              # today
+npm run capture:range 26-05-01..26-05-07   # range
+npm run capture:range last-month    # last 30 days
 ```
 
-**Features**:
+Captures 1080×1350 PNG at 2× DPI with 0.9s warmup for animations.
 
-- ✅ Technical standards validation
-- 🔄 Asset organization and moving
-- 🔗 Path relinking after asset moves
-- 📸 Standardized screenshot capture
-- 🗑️ Orphaned asset cleanup
-- 🎨 Code formatting and linting
+### Audit scripts (`audit-*.mjs`)
 
-**Documentation**: See `UploadFinalize/README.md`
-
-### 📱 Social Media Capture (`SocialMediaCap/`)
-
-**Purpose**: Platform-specific screenshot generation and thumbnail creation
-
-**Main Scripts**:
-
-- `daily-screen-capture.ts` - Social media platform captures
-- `capture-clocks.mjs` - Thumbnail generation
-
-**Usage**:
+Outputs go to `scripts/unused-*report.txt` (gitignored — regenerate locally after cleanup).
 
 ```bash
-npm run capture:daily    # Capture today (1080x1350 PNG)
-npm run capture:range    # Capture specific date or range
-npm run capture:thumbs   # Generate 500x500 gallery thumbnails
-```
-
-**Features**:
-
-- 📸 Multi-platform support (Instagram, Twitter, Facebook)
-- 🎯 Batch processing with date ranges
-- 🖼️ High-quality WebP/PNG output
-- 📱 Platform-optimized dimensions
-- 🖼️ Consistent thumbnail generation
-- 🔄 Date range support
-
-**Documentation**: See `SocialMediaCap/README.md`
-
-## Workflow Integration
-
-### Development Workflow
-
-See [`docs/DEVELOPMENT.md`](../docs/DEVELOPMENT.md). Summary:
-
-1. `npm run clock:new` — scaffold files only
-2. **You** add the clock to `clockpages.json`
-3. `npm run dev` — develop and test
-4. `npm run finalize` — validate and capture standard screenshot
-5. Optional: `npm run capture:instagram` / `capture:twitter`
-6. PR with CI checks (`type-check`, `lint`, `test:run`, `build`)
-
-### Asset Organization
-
-The scripts work together to maintain proper asset organization:
-
-- **Images**: `assets/images/YY-MM/YY-MM-DD/`
-- **Fonts**: `assets/fonts/YYYY/`
-- **Screenshots**: `public/screenshots/` and `screen-caps/`
-
-## Package.json Scripts
-
-All scripts are accessible via npm commands:
-
-```json
-{
-  "finalize": "tsx scripts/UploadFinalize/finalize-component.ts",
-  "capture:daily": "tsx scripts/SocialMediaCap/daily-screen-capture.ts",
-  "capture:instagram": "tsx scripts/SocialMediaCap/daily-screen-capture.ts --instagram",
-  "capture:twitter": "tsx scripts/SocialMediaCap/daily-screen-capture.ts --twitter"
-}
+npm run audit:fonts
+npm run audit:images
 ```
 
 ## Requirements
 
-### Common Dependencies
-
-- **Node.js**: 24.x
-- **Playwright**: For screenshot capture
-- **Development Server**: Must run on localhost:5173 or 5174
-
-### Script-Specific Requirements
-
-- **Finalize Script**: Component must be in proper directory structure
-- **Capture Scripts**: Clock must already be in `clockpages.json` (manual registration)
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Port Conflicts**: Ensure dev server is running on correct port
-2. **Missing Clocks**: Verify registration in `clockpages.json`
-3. **Asset Path Issues**: Run `npm run finalize` to fix organization
-4. **TypeScript Errors**: Check imports and component structure
-
-### Debug Mode
-
-Most scripts support verbose output:
-
-```bash
-DEBUG=true npm run finalize
-DEBUG=true npm run capture:daily
-```
-
-## Contributing
-
-When adding new scripts:
-
-1. **Organize** in appropriate subdirectory
-2. **Document** with README file
-3. **Update** package.json scripts
-4. **Test** with various components
-5. **Follow** existing naming conventions
-
-## Related Documentation
-
-- **[docs/DEVELOPMENT.md](../docs/DEVELOPMENT.md)**: Technical standards and workflow (canonical)
-- **CSS_ARCHITECTURE.md**: CSS organization and best practices
-- **Project README**: Overall project documentation
-
-This organized structure ensures maintainability and makes it easy to find and use the right script for each task in the development workflow.
+- Node 24.x
+- Dev server running on `localhost:5173` or `5174` (for capture scripts)
+- For captures: clock must be in `clockpages.json`
