@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 
 import shapesFont from '@/assets/fonts/26fonts/26-05-05-dino.ttf';
-import clockImage from '@/assets/images/2026/26-05/26-05-05/dino.webp';
+import clockImage from '@/assets/images/26_images/26-05/26-05-05/dino.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
@@ -57,18 +57,24 @@ const Clock: React.FC = () => {
 
   const timeString = useMemo(() => {
     const pad = (n: number) => String(n).padStart(2, '0');
-    return pad(time.getHours()) + pad(time.getMinutes()) + pad(time.getSeconds());
+    return (
+      pad(time.getHours()) + pad(time.getMinutes()) + pad(time.getSeconds())
+    );
   }, [time]);
 
   const digits = timeString.split('');
 
-  const clockContainerStyle: React.CSSProperties = useMemo(() => ({
-    display: 'grid',
-    gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(6, 1fr)',
-    gridTemplateRows: isMobile ? 'repeat(3, 1fr)' : '1fr',
-  }), [isMobile]);
+  const clockContainerStyle: React.CSSProperties = useMemo(
+    () => ({
+      display: 'grid',
+      gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(6, 1fr)',
+      gridTemplateRows: isMobile ? 'repeat(3, 1fr)' : '1fr',
+    }),
+    [isMobile],
+  );
 
-  const digitStyle: React.CSSProperties = useMemo(() => ({
+  const digitStyle: React.CSSProperties = useMemo(
+    () => ({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -99,13 +105,15 @@ const Clock: React.FC = () => {
       maxWidth: isMobile ? '50vw' : '16.66vw',
       boxSizing: 'border-box',
       position: 'relative',
-  }), [isMobile]);
+    }),
+    [isMobile],
+  );
 
   return (
     <div style={clockWrapperStyle} aria-hidden="true">
       <div style={backgroundStyle} />
-      <time 
-        dateTime={time.toISOString()} 
+      <time
+        dateTime={time.toISOString()}
         aria-label={`Current time is ${time.toLocaleTimeString()}`}
         style={clockContainerStyle}
       >

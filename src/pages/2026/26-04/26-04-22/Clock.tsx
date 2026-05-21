@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
-import videoBg from '@/assets/images/2026/26-04/26-04-22/steamroller.mp4';
+import videoBg from '@/assets/images/26_images/26-04/26-04-22/steamroller.mp4';
 import styles from './Clock.module.css';
 
 export const assets = [videoBg];
@@ -13,7 +13,7 @@ const Clock: React.FC = () => {
     const m = time.getMinutes();
     const s = time.getSeconds();
     return {
-      hourAngle: (h * 30) + (m * 0.5),
+      hourAngle: h * 30 + m * 0.5,
       minuteAngle: m * 6,
       secondAngle: s * 6,
     };
@@ -33,9 +33,22 @@ const Clock: React.FC = () => {
         <div className={styles.clockContainer}>
           <div className={styles.clockFace}>
             <div className={styles.twelveDot} />
-            <div className={`${styles.handBase} ${styles.hourHand}`} style={{ transform: `translateX(-50%) rotate(${hourAngle}deg)` }} />
-            <div className={`${styles.handBase} ${styles.minuteHand}`} style={{ transform: `translateX(-50%) rotate(${minuteAngle}deg)` }} />
-            <div className={`${styles.handBase} ${styles.secondHand}`} style={{ transform: `translateX(-50%) rotate(${secondAngle}deg)` }} />
+            <div
+              className={`${styles.handBase} ${styles.hourHand}`}
+              style={{ transform: `translateX(-50%) rotate(${hourAngle}deg)` }}
+            />
+            <div
+              className={`${styles.handBase} ${styles.minuteHand}`}
+              style={{
+                transform: `translateX(-50%) rotate(${minuteAngle}deg)`,
+              }}
+            />
+            <div
+              className={`${styles.handBase} ${styles.secondHand}`}
+              style={{
+                transform: `translateX(-50%) rotate(${secondAngle}deg)`,
+              }}
+            />
             <div className={styles.centerDot} />
           </div>
         </div>

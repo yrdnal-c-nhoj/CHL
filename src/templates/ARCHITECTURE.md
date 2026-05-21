@@ -23,10 +23,10 @@ src/
 
 ## Hooks
 
-| Hook | Updates | Use Case |
-|------|---------|----------|
-| `useClockTime` | 1s | Static displays |
-| `useSmoothClock` | 60fps RAF | Smooth animations |
+| Hook                  | Updates   | Use Case              |
+| --------------------- | --------- | --------------------- |
+| `useClockTime`        | 1s        | Static displays       |
+| `useSmoothClock`      | 60fps RAF | Smooth animations     |
 | `useMillisecondClock` | 60fps RAF | Millisecond precision |
 
 ### Examples
@@ -65,7 +65,11 @@ export const assets = [bgImage];
 
 // 2. Font configuration
 const fontConfigs: FontConfig[] = [
-  { fontFamily: 'MyFont', fontUrl: new URL('@/assets/fonts/YYYY/YY-MM-DD-font.woff2', import.meta.url).href },
+  {
+    fontFamily: 'MyFont',
+    fontUrl: new URL('@/assets/fonts/YYYY/YY-MM-DD-font.woff2', import.meta.url)
+      .href,
+  },
 ];
 
 // 3. Component
@@ -98,17 +102,16 @@ export default Clock;
 7. **Cleanup**: Clear all timers/RAF on unmount
 8. **No Direct DOM**: Use `useRef` for canvas/animation references
 
-
 ## Font Loading Deep Dive
 
 ### FontConfig Interface
 
 ```tsx
 interface FontConfig {
-  fontFamily: string;      // CSS font-family name
-  fontUrl: string;         // Path to font file
-  fontWeight?: string;     // e.g., '400', '700'
-  fontStyle?: string;      // e.g., 'normal', 'italic'
+  fontFamily: string; // CSS font-family name
+  fontUrl: string; // Path to font file
+  fontWeight?: string; // e.g., '400', '700'
+  fontStyle?: string; // e.g., 'normal', 'italic'
 }
 ```
 
@@ -121,7 +124,6 @@ interface FontConfig {
 
 If your repo policy supports additional font formats (e.g., TTF/OTF), keep the naming convention consistent so the automation scripts can reliably organize and rename fonts.
 
-
 ### Complete Font Loading Example
 
 ```tsx
@@ -130,22 +132,18 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 
 const fontConfigs: FontConfig[] = [
-  { 
-    fontFamily: 'MyClockFont', 
+  {
+    fontFamily: 'MyClockFont',
     fontUrl: '/fonts/26-04-30-myfont.woff2',
-    fontWeight: '400'
+    fontWeight: '400',
   },
 ];
 
 const ClockContent: React.FC = () => {
   // Suspends until fonts load
   useSuspenseFontLoader(fontConfigs);
-  
-  return (
-    <div style={{ fontFamily: 'MyClockFont' }}>
-      12:00
-    </div>
-  );
+
+  return <div style={{ fontFamily: 'MyClockFont' }}>12:00</div>;
 };
 
 // Wrap in Suspense (handled by ClockPage.tsx parent)
@@ -189,12 +187,12 @@ The component must be wrapped in `<Suspense>` in the parent (handled by `ClockPa
 
 ## File Locations
 
-| File Type | Path | Required |
-|-----------|------|----------|
-| **Clock component** | `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx` | ✅ Yes |
-| **Styles** | `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.module.css` | ✅ Yes |
-| **Images** | `src/assets/images/YY-MM/YY-MM-DD/` | Optional |
-| **Fonts** | `src/assets/fonts/YYYY/YY-MM-DD-name.woff2` | Optional |
+| File Type           | Path                                             | Required |
+| ------------------- | ------------------------------------------------ | -------- |
+| **Clock component** | `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx`        | ✅ Yes   |
+| **Styles**          | `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.module.css` | ✅ Yes   |
+| **Images**          | `src/assets/images/YY-MM/YY-MM-DD/`              | Optional |
+| **Fonts**           | `src/assets/fonts/YYYY/YY-MM-DD-name.woff2`      | Optional |
 
 ## Common Patterns
 
@@ -204,12 +202,10 @@ The component must be wrapped in `<Suspense>` in the parent (handled by `ClockPa
 const ConditionalClock: React.FC = () => {
   const time = useClockTime();
   const isNight = time.getHours() < 6 || time.getHours() > 18;
-  
+
   return (
     <main className={isNight ? styles.night : styles.day}>
-      <time dateTime={time.toISOString()}>
-        {time.toLocaleTimeString()}
-      </time>
+      <time dateTime={time.toISOString()}>{time.toLocaleTimeString()}</time>
     </main>
   );
 };
@@ -222,12 +218,12 @@ const AnimatedClock: React.FC = () => {
   const time = useSmoothClock();
   const seconds = time.getSeconds();
   const ms = time.getMilliseconds();
-  
+
   // Calculate rotation for smooth second hand
   const rotation = (seconds + ms / 1000) * 6; // 6 degrees per second
-  
+
   return (
-    <div 
+    <div
       className={styles.hand}
       style={{ transform: `rotate(${rotation}deg)` }}
     />
@@ -238,14 +234,14 @@ const AnimatedClock: React.FC = () => {
 ### Pattern: Background Image Preloading
 
 ```tsx
-import bgImage from '@/assets/images/2026/26-04/26-04-30/bg.webp';
+import bgImage from '@/assets/images/26_images/26-04/26-04-30/bg.webp';
 
 // Export for ClockPage preloader
 export const assets = [bgImage];
 
 const Clock: React.FC = () => {
   return (
-    <main 
+    <main
       className={styles.container}
       style={{ backgroundImage: `url(${bgImage})` }}
     >
@@ -267,7 +263,6 @@ const Clock: React.FC = () => {
 5. **Keep bundles under 5MB** per clock
 6. **Use WebP images** for better compression
 7. **Prefer WOFF2 fonts** over TTF
-
 
 ## Adding a New Clock
 

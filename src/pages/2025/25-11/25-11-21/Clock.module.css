@@ -1,7 +1,7 @@
 .container {
   height: 100dvh;
   width: 100vw;
-  background-color: #CFCAD1FF;
+  background-color: #cfcad1ff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,8 +31,8 @@
   align-items: center;
   justify-content: center;
   font-size: 6vmin;
-  background-color: #2A0433FF;
-  color: #F9E8C8FF;
+  background-color: #2a0433ff;
+  color: #f9e8c8ff;
   transition: all 0.5s ease;
   font-family: 'ClockFont_Omission', sans-serif;
   overflow: hidden;

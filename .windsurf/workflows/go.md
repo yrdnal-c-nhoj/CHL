@@ -34,12 +34,12 @@ npm run type-check && npm run lint && npm run test:run && npm run build
 
 ## Troubleshooting
 
-| Issue | Fix |
-|-------|-----|
-| Port 5173 in use | `npm run dev -- --port 3000` |
-| Type errors | `npm run type-check` |
-| Build fails | `npm run clean && npm run build` |
-| Font issues | `npm run audit:fonts` |
+| Issue            | Fix                              |
+| ---------------- | -------------------------------- |
+| Port 5173 in use | `npm run dev -- --port 3000`     |
+| Type errors      | `npm run type-check`             |
+| Build fails      | `npm run clean && npm run build` |
+| Font issues      | `npm run audit:fonts`            |
 
 ## Docs
 

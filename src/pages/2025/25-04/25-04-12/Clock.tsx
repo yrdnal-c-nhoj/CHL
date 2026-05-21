@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+} from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -42,16 +48,19 @@ interface AngFontClockProps {
 
 const AngFontClock = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'AngFontClockFont',
-      fontUrl: angFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'AngFontClockFont',
+        fontUrl: angFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);
@@ -103,12 +112,15 @@ const AngFontClock = () => {
     return () => animationTimeouts.current.forEach(clearTimeout);
   }, [timeStr]);
 
-  const getFontSize = useCallback((digit: string): string => {
-    const n = parseInt(digit, 10);
-    return isSmallScreen
-      ? mediaQueryFontSizes[n] || '19vh'
-      : digitFontSizes[n] || '19vh';
-  }, [isSmallScreen]);
+  const getFontSize = useCallback(
+    (digit: string): string => {
+      const n = parseInt(digit, 10);
+      return isSmallScreen
+        ? mediaQueryFontSizes[n] || '19vh'
+        : digitFontSizes[n] || '19vh';
+    },
+    [isSmallScreen],
+  );
 
   const bodyStyle = {
     display: 'flex',

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import bgImage from '@/assets/images/2025/25-06/25-06-12/auth.jpg';
+import bgImage from '@/assets/images/25_images/25-06/25-06-12/auth.jpg';
 import cattleFont from '@/assets/fonts/25fonts/25-06-12-cattle.ttf';
 
 const CattleBrandClock: React.FC = () => {

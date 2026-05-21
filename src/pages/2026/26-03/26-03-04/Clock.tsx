@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import sunFont from '@/assets/fonts/26fonts/26-03-04-sun.ttf';
-import sunBg from '@/assets/images/2026/26-03/26-03-04/sun.webp';
+import sunBg from '@/assets/images/26_images/26-03/26-03-04/sun.webp';
 
 const Clock: React.FC = () => {
   const fontConfigs = [
@@ -11,9 +11,9 @@ const Clock: React.FC = () => {
       fontUrl: sunFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

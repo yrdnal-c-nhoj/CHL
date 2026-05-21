@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import bgImageUrl from '@/assets/images/2025/25-11/25-11-08/eye.gif';
+import bgImageUrl from '@/assets/images/25_images/25-11/25-11-08/eye.gif';
 import dig2511088 from '@/assets/fonts/25fonts/25-11-08-eye3.ttf';
 import ti251108 from '@/assets/fonts/25fonts/25-11-08-eye.ttf';
 import styles from './Clock.module.css';
@@ -11,21 +11,27 @@ interface ClockProps {
   imageHeight?: string;
 }
 
-const Clock: React.FC<ClockProps> = ({ imageWidth = '24vw', imageHeight = '16vw' }) => {
+const Clock: React.FC<ClockProps> = ({
+  imageWidth = '24vw',
+  imageHeight = '16vw',
+}) => {
   const [now, setNow] = useState(() => new Date());
   const [elapsedMs, setElapsedMs] = useState<number>(0);
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'DigitsFont-2025-11-10', fontUrl: dig2511088 },
-    { fontFamily: 'Ti251108-2025-11-10', fontUrl: ti251108 },
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      { fontFamily: 'DigitsFont-2025-11-10', fontUrl: dig2511088 },
+      { fontFamily: 'Ti251108-2025-11-10', fontUrl: ti251108 },
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const start = Date.now();
     let frameId: number;
-    
+
     const tick = () => {
       setNow(new Date());
       setElapsedMs(Date.now() - start);
@@ -66,12 +72,19 @@ const Clock: React.FC<ClockProps> = ({ imageWidth = '24vw', imageHeight = '16vw'
         );
       }
     }
-    return <div className={styles.bgGrid} style={{
-      gridTemplateColumns: `repeat(30, ${imageWidth})`,
-      gridAutoRows: `${imageHeight}`,
-      marginLeft: `calc(-1 * ${imageWidth} / 2)`,
-      marginTop: `calc(-1 * ${imageHeight} / 2)`,
-    }}>{tiles}</div>;
+    return (
+      <div
+        className={styles.bgGrid}
+        style={{
+          gridTemplateColumns: `repeat(30, ${imageWidth})`,
+          gridAutoRows: `${imageHeight}`,
+          marginLeft: `calc(-1 * ${imageWidth} / 2)`,
+          marginTop: `calc(-1 * ${imageHeight} / 2)`,
+        }}
+      >
+        {tiles}
+      </div>
+    );
   };
 
   const timerDigitBoxStyle = {
@@ -111,9 +124,7 @@ const Clock: React.FC<ClockProps> = ({ imageWidth = '24vw', imageHeight = '16vw'
     const timeStr = `${s}.${pad2(hundredths)}`;
 
     return (
-      <div
-        className={styles.timerContainer}
-      >
+      <div className={styles.timerContainer}>
         {timeStr.split('').map((ch, i) => (
           <span
             key={i}
@@ -132,12 +143,10 @@ const Clock: React.FC<ClockProps> = ({ imageWidth = '24vw', imageHeight = '16vw'
   return (
     <div className={styles.wrapper}>
       <div className={styles.bgLayer}>{renderCheckerboardBG()}</div>
-      <div className={styles.clock}>
-        {clock}
-      </div>
+      <div className={styles.clock}>{clock}</div>
       {renderTimerBoxed(elapsedMs)}
     </div>
   );
-}
+};
 
 export default Clock;

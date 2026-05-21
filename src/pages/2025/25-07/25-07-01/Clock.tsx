@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import bgImage from '@/assets/images/2025/25-07/25-07-01/mu.jpg';
+import bgImage from '@/assets/images/25_images/25-07/25-07-01/mu.jpg';
 import fontUrl from '@/assets/fonts/25fonts/25-07-01-mult.ttf';
 
 const CinemaClock: React.FC = () => {
@@ -13,9 +13,9 @@ const CinemaClock: React.FC = () => {
       fontUrl: fontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

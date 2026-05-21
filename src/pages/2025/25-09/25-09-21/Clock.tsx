@@ -3,18 +3,19 @@ import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import cust250921font from '@/assets/fonts/25fonts/25-09-21-ele.ttf?url';
-import stripe1 from '@/assets/images/2025/25-09/25-09-21/fire.gif?url';
-import stripe2 from '@/assets/images/2025/25-09/25-09-21/air.webp?url';
-import stripe3 from '@/assets/images/2025/25-09/25-09-21/h2o.webp?url';
-import stripe4 from '@/assets/images/2025/25-09/25-09-21/earth.webp?url';
+import stripe1 from '@/assets/images/25_images/25-09/25-09-21/fire.gif?url';
+import stripe2 from '@/assets/images/25_images/25-09/25-09-21/air.webp?url';
+import stripe3 from '@/assets/images/25_images/25-09/25-09-21/h2o.webp?url';
+import stripe4 from '@/assets/images/25_images/25-09/25-09-21/earth.webp?url';
 
 export default function AnalogClock() {
   const time = useSmoothClock();
   const fontVar = 'ElementalFont';
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: fontVar, fontUrl: cust250921font }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: fontVar, fontUrl: cust250921font }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 

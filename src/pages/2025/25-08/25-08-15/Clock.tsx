@@ -2,7 +2,7 @@ import React from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import customFontUrl from '@/assets/fonts/25fonts/25-08-15-dom.ttf';
-import backgroundImg from '@/assets/images/2025/25-08/25-08-15/tabl.webp';
+import backgroundImg from '@/assets/images/25_images/25-08/25-08-15/tabl.webp';
 
 const fontFamily = "'dom', monospace";
 
@@ -52,9 +52,9 @@ const DigitalClock: React.FC = () => {
       fontUrl: customFontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

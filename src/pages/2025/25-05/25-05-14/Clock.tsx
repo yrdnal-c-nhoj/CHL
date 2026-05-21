@@ -12,16 +12,19 @@ interface ClockProps {
 
 const Clock: React.FC<ClockProps> = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'DottedRough2025_11_01',
-      fontUrl: dottedFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'DottedRough2025_11_01',
+        fontUrl: dottedFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
@@ -224,6 +227,6 @@ const Clock: React.FC<ClockProps> = () => {
       <time id="screen-reader-time" aria-live="polite" />
     </div>
   );
-}
+};
 
 export default Clock;

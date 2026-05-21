@@ -9,9 +9,9 @@ export const fontConfigs = [
     fontUrl: cylFont,
     options: {
       weight: 'normal',
-      style: 'normal'
-    }
-  }
+      style: 'normal',
+    },
+  },
 ];
 
 const FiligreeClock: React.FC = () => {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import font20251006 from '@/assets/fonts/25fonts/25-10-06-shado.ttf';
 

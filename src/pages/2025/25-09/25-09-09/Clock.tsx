@@ -3,9 +3,9 @@ import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import font250909 from '@/assets/fonts/25fonts/25-09-09-van.ttf?url';
-import bgImage2 from '@/assets/images/2025/25-09/25-09-09/skull.jpg';
-import bgImage from '@/assets/images/2025/25-09/25-09-09/va.webp';
-import bgImage3 from '@/assets/images/2025/25-09/25-09-09/cand.webp';
+import bgImage2 from '@/assets/images/25_images/25-09/25-09-09/skull.jpg';
+import bgImage from '@/assets/images/25_images/25-09/25-09-09/va.webp';
+import bgImage3 from '@/assets/images/25_images/25-09/25-09-09/cand.webp';
 
 const CONFIG = {
   font: 'VanFont',
@@ -66,9 +66,9 @@ export default function ClockWall() {
       fontUrl: CONFIG.fontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
@@ -81,14 +81,14 @@ export default function ClockWall() {
     });
 
   const preloadAll = async () => {
-      // Font loading handled by useMultipleFontLoader
-      await Promise.all([
-        loadImage(bgImage),
-        loadImage(bgImage2),
-        loadImage(bgImage3),
-      ]);
-      setReady(true); // ✅ everything loaded
-    };
+    // Font loading handled by useMultipleFontLoader
+    await Promise.all([
+      loadImage(bgImage),
+      loadImage(bgImage2),
+      loadImage(bgImage3),
+    ]);
+    setReady(true); // ✅ everything loaded
+  };
 
   useEffect(() => {
     preloadAll();

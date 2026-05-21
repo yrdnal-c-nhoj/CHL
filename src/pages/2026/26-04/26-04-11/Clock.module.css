@@ -45,10 +45,12 @@
 }
 
 .digit {
-  color: #F81D3E;
+  color: #f81d3e;
   line-height: 1;
   font-family: 'Eyes', monospace;
-  text-shadow: 2px 0 0 black, -2px 0 0 white;
+  text-shadow:
+    2px 0 0 black,
+    -2px 0 0 white;
   z-index: 1;
   font-size: 25vh;
 }

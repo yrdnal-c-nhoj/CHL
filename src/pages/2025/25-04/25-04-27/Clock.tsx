@@ -3,8 +3,8 @@ import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import coinGif from '@/assets/images/2025/25-04/25-04-27/coin.gif';
-import spinWebp from '@/assets/images/2025/25-04/25-04-27/spin.webp';
+import coinGif from '@/assets/images/25_images/25-04/25-04-27/coin.gif';
+import spinWebp from '@/assets/images/25_images/25-04/25-04-27/spin.webp';
 
 // Component Props interface
 interface SpinningCoinClockProps {
@@ -55,7 +55,7 @@ const SpinningCoinClock: React.FC<SpinningCoinClockProps> = () => {
     // Update clock immediately and then every second
     updateClock();
     const interval = setInterval(updateClock, 1000);
-    
+
     return () => clearInterval(interval);
   }, [updateClock]);
 

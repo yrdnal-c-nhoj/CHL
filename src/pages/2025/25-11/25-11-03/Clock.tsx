@@ -8,10 +8,21 @@ const digitalFont = 'digitalFont';
 const techFont = 'techFont';
 
 export default function BinaryClockWithColumns() {
-  const fontConfigs = useMemo(() => [
-    { fontFamily: digitalFont, fontUrl: digi251103font, options: { weight: 'normal', style: 'normal' } },
-    { fontFamily: techFont, fontUrl: tec251103font, options: { weight: 'normal', style: 'normal' } }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: digitalFont,
+        fontUrl: digi251103font,
+        options: { weight: 'normal', style: 'normal' },
+      },
+      {
+        fontFamily: techFont,
+        fontUrl: tec251103font,
+        options: { weight: 'normal', style: 'normal' },
+      },
+    ],
+    [],
+  );
 
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   const [time, setTime] = useState(new Date());
@@ -30,7 +41,8 @@ export default function BinaryClockWithColumns() {
     return () => clearInterval(interval);
   }, []);
 
-  const formatBinary = (num: number) => num.toString(2).padStart(8, '0').split('');
+  const formatBinary = (num: number) =>
+    num.toString(2).padStart(8, '0').split('');
 
   const renderColumn = (val: number) => {
     const bits = formatBinary(val);
@@ -38,17 +50,15 @@ export default function BinaryClockWithColumns() {
       <div className={styles.column}>
         <div className={styles.binaryContainer}>
           {bits.map((bit, idx) => (
-            <div 
-              key={idx} 
+            <div
+              key={idx}
               className={`${styles.bitCell} ${bit === '1' ? styles.bitOn : styles.bitOff}`}
             >
               {bit}
             </div>
           ))}
         </div>
-        <div className={styles.digitBox}>
-          {val.toString().padStart(2, '0')}
-        </div>
+        <div className={styles.digitBox}>{val.toString().padStart(2, '0')}</div>
       </div>
     );
   };

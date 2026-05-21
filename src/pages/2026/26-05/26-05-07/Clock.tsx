@@ -2,7 +2,7 @@ import React, { useMemo, useEffect, useState, memo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import backgroundImage from '@/assets/images/2026/26-05/26-05-07/1gallop.webp';
+import backgroundImage from '@/assets/images/26_images/26-05/26-05-07/1gallop.webp';
 import gallopFont from '@/assets/fonts/26fonts/26-05-07-gallop.ttf?url';
 import styles from './Clock.module.css';
 
@@ -23,14 +23,20 @@ interface HandProps {
   type: 'hour' | 'minute' | 'second';
 }
 
-const ClockHand: React.FC<HandProps> = ({ angle, length, width, color, type }) => {
+const ClockHand: React.FC<HandProps> = ({
+  angle,
+  length,
+  width,
+  color,
+  type,
+}) => {
   const zIndex = type === 'second' ? 30 : type === 'minute' ? 20 : 10;
-  
+
   const widthValue = parseFloat(width);
   const scaledWidth = `calc(${widthValue} * var(--clock-radius) / 200)`;
 
   return (
-    <div 
+    <div
       className={styles.hand}
       style={{
         left: `calc(50% - (${scaledWidth} / 2))`,
@@ -48,19 +54,20 @@ const ClockHand: React.FC<HandProps> = ({ angle, length, width, color, type }) =
 
 const AnalogClock: React.FC = () => {
   const time = useClockTime();
-  
+
   const [dims, setDims] = useState({ w: 0, h: 0 });
   useEffect(() => {
-    const updateDims = () => setDims({ w: window.innerWidth, h: window.innerHeight });
+    const updateDims = () =>
+      setDims({ w: window.innerWidth, h: window.innerHeight });
     updateDims();
-    
+
     window.addEventListener('resize', updateDims);
     return () => window.removeEventListener('resize', updateDims);
   }, []);
 
   useSuspenseFontLoader(fontConfigs);
 
-  const radius = Math.min(dims.w, dims.h) * 0.95 / 2;
+  const radius = (Math.min(dims.w, dims.h) * 0.95) / 2;
 
   const { hours, minutes, seconds, ms, isoTime } = useMemo(() => {
     const h = time.getHours();
@@ -81,22 +88,26 @@ const AnalogClock: React.FC = () => {
   const minuteAngle = (minutes + seconds / 60 + ms / 60000) * 6;
   const hourAngle = ((hours % 12) + (minutes + seconds / 60) / 60) * 30;
 
-  const tickMarks = useMemo(() => Array.from({ length: 60 }, (_, i) => {
-    const angle = i * 6;
-    const rad = (angle - 90) * (Math.PI / 180);
-    return {
-      id: i,
-      angle,
-      isHour: i % 5 === 0,
-      x: 50 + 46 * Math.cos(rad), // Slightly tucked in from 48 to avoid edges
-      y: 50 + 46 * Math.sin(rad),
-    };
-  }), []);
+  const tickMarks = useMemo(
+    () =>
+      Array.from({ length: 60 }, (_, i) => {
+        const angle = i * 6;
+        const rad = (angle - 90) * (Math.PI / 180);
+        return {
+          id: i,
+          angle,
+          isHour: i % 5 === 0,
+          x: 50 + 46 * Math.cos(rad), // Slightly tucked in from 48 to avoid edges
+          y: 50 + 46 * Math.sin(rad),
+        };
+      }),
+    [],
+  );
 
   const clockNumbers = useMemo(() => {
     const numbers = [];
     for (let i = 1; i <= 12; i++) {
-      const angle = (i * 30) - 90;
+      const angle = i * 30 - 90;
       const rad = angle * (Math.PI / 180);
       const distance = 0.76; // Adjusted for a balanced layout within the frame
       numbers.push({
@@ -109,7 +120,7 @@ const AnalogClock: React.FC = () => {
   }, []);
 
   return (
-    <main 
+    <main
       className={styles.container}
       style={
         {
@@ -123,9 +134,9 @@ const AnalogClock: React.FC = () => {
           backgroundImage: `url(${backgroundImage})`,
         }}
       />
-      <time 
-        dateTime={isoTime} 
-        aria-label={`Current time: ${hours}:${minutes}`} 
+      <time
+        dateTime={isoTime}
+        aria-label={`Current time: ${hours}:${minutes}`}
         className={styles.timeWrapper}
       >
         <div className={styles.clockFace}>
@@ -193,7 +204,7 @@ const AnalogClock: React.FC = () => {
               boxShadow: '0 2px 4px rgba(0,0,0,0.5)',
             }}
           />
-         </div>
+        </div>
       </time>
     </main>
   );

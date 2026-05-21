@@ -60,8 +60,17 @@
 }
 
 @keyframes raceVibrate {
-  0%, 100% { transform: skewX(-15deg) translateX(0); }
-  25% { transform: skewX(-15deg) translateX(-3px); }
-  50% { transform: skewX(-15deg) translateX(2px); }
-  75% { transform: skewX(-15deg) translateX(-1px); }
+  0%,
+  100% {
+    transform: skewX(-15deg) translateX(0);
+  }
+  25% {
+    transform: skewX(-15deg) translateX(-3px);
+  }
+  50% {
+    transform: skewX(-15deg) translateX(2px);
+  }
+  75% {
+    transform: skewX(-15deg) translateX(-1px);
+  }
 }

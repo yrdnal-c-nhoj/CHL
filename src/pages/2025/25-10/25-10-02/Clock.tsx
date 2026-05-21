@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
-import gridImage from '@/assets/images/2025/25-10/25-10-02/lan.gif';
+import gridImage from '@/assets/images/25_images/25-10/25-10-02/lan.gif';
 
 // Counting rod digit map
 const digitMap = {

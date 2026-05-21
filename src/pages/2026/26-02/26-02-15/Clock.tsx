@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import backgroundImage from '@/assets/images/2026/26-02/26-02-15/caldera.webp';
+import backgroundImage from '@/assets/images/26_images/26-02/26-02-15/caldera.webp';
 import fontFile from '@/assets/fonts/26fonts/26-02-15-fire.ttf';
 
 const FONT_FAMILY = 'FireFont';
@@ -12,17 +12,20 @@ export default function PixelInverseClock() {
   const [assetsLoaded, setAssetsLoaded] = useState<boolean>(false);
   const imageRef = useRef(new Image());
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: FONT_FAMILY,
-      fontUrl: fontFile,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
-  
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: FONT_FAMILY,
+        fontUrl: fontFile,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
@@ -40,7 +43,10 @@ export default function PixelInverseClock() {
             imageRef.current.style.display = 'none';
             document.body.appendChild(imageRef.current);
             setTimeout(() => {
-              if (imageRef.current && document.body.contains(imageRef.current)) {
+              if (
+                imageRef.current &&
+                document.body.contains(imageRef.current)
+              ) {
                 document.body.removeChild(imageRef.current);
               }
               resolve();

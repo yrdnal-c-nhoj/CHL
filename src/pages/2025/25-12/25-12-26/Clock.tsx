@@ -3,8 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 
 // Asset imports
-import bgImage from '@/assets/images/2025/25-12/25-12-26/sat.webp';
-import overlayImage from '@/assets/images/2025/25-12/25-12-26/scythe.webp';
+import bgImage from '@/assets/images/25_images/25-12/25-12-26/sat.webp';
+import overlayImage from '@/assets/images/25_images/25-12/25-12-26/scythe.webp';
 import fontFile from '@/assets/fonts/25fonts/25-12-26-sat.ttf?url'; // ?url tells Vite to copy the file to output
 
 const FONT_FAMILY = 'SaturnFont';
@@ -58,12 +58,13 @@ function ScytheOverlay({ rotation = 0, top = '40%' }) {
 
 // Main component
 export default function SaturnClock() {
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: FONT_FAMILY, fontUrl: fontFile }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: FONT_FAMILY, fontUrl: fontFile }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
-  
+
   const now = useClock();
 
   const { hours, minutes } = formatTime(now);
@@ -90,7 +91,7 @@ export default function SaturnClock() {
           to { opacity: 1; }
         }
       `}</style>
-      
+
       {/* Background image with filters applied only to it */}
       <div
         style={{

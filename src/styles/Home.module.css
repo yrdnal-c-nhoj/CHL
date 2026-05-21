@@ -122,7 +122,6 @@
   }
 }
 
-
 .monthItem:hover {
   background-color: #c4ccdd;
   opacity: 1;
@@ -153,7 +152,7 @@
 
 .monthItemTitle {
   /* font-family: 'Roboto Slab', serif; */
-   font-family: 'Manrope', sans-serif;
+  font-family: 'Manrope', sans-serif;
   font-size: 1rem;
   text-align: center;
   margin-top: -0.15rem;

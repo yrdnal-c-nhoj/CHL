@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import backgroundImage from '@/assets/images/2026/26-01/26-01-28/three.webp';
+import backgroundImage from '@/assets/images/26_images/26-01/26-01-28/three.webp';
 // NOTE: The Google Font has been downloaded and is now hosted locally for preloading.
 // import fontUrl from '@/assets/fonts/26fonts/26-01-28-big-shoulders.ttf?url';
 

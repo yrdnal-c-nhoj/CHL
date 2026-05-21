@@ -10,7 +10,9 @@ const shouldSuppress = (msg: string) => {
   if (
     msg.includes('Reporting Header: invalid JSON value received. collect') ||
     msg.includes('Reporting Header: invalid JSON value received') ||
-    msg.includes('SyntaxError: JSON.parse: expected double-quoted property name')
+    msg.includes(
+      'SyntaxError: JSON.parse: expected double-quoted property name',
+    )
   ) {
     return true;
   }
@@ -23,27 +25,32 @@ export function installConsoleFilters() {
   if (installed) return;
   installed = true;
 
-  (['debug', 'info', 'warn', 'error', 'log'] as ConsoleMethod[]).forEach((method) => {
-    const original = console[method];
-    console[method] = (...args: unknown[]) => {
-      try {
-        const joined = args
-          .map((a) => (typeof a === 'string' ? a : (() => {
-            try {
-              return JSON.stringify(a);
-            } catch {
-              return String(a);
-            }
-          })()))
-          .join(' ');
+  (['debug', 'info', 'warn', 'error', 'log'] as ConsoleMethod[]).forEach(
+    (method) => {
+      const original = console[method];
+      console[method] = (...args: unknown[]) => {
+        try {
+          const joined = args
+            .map((a) =>
+              typeof a === 'string'
+                ? a
+                : (() => {
+                    try {
+                      return JSON.stringify(a);
+                    } catch {
+                      return String(a);
+                    }
+                  })(),
+            )
+            .join(' ');
 
-        if (shouldSuppress(joined)) return;
-      } catch {
-        // Never block logging due to filter failure.
-      }
+          if (shouldSuppress(joined)) return;
+        } catch {
+          // Never block logging due to filter failure.
+        }
 
-      original.apply(console, args as any);
-    };
-  });
+        original.apply(console, args as any);
+      };
+    },
+  );
 }
-

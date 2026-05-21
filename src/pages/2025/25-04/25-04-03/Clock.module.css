@@ -1,7 +1,9 @@
 .mobyClock {
   font-family: 'MobyClockFont', cursive;
   color: #a1b4b4;
-  text-shadow: #ced4d4 0.1rem 0.1rem 0.2rem, #000404 -0.1rem -0.1rem 0.9rem;
+  text-shadow:
+    #ced4d4 0.1rem 0.1rem 0.2rem,
+    #000404 -0.1rem -0.1rem 0.9rem;
   position: absolute;
   white-space: nowrap;
   pointer-events: none;
@@ -10,6 +12,11 @@
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-0.5rem); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.5rem);
+  }
 }

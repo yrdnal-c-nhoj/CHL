@@ -63,23 +63,28 @@
 }
 
 .bottomShard {
-  clip-path: inset(50%  0 0);
+  clip-path: inset(50% 0 0);
 }
 
 @keyframes shatter {
-  0%, 5% {
+  0%,
+  5% {
     opacity: 1;
     transform: translate3d(0, 0, 0) rotate(0deg);
     filter: blur(0px);
   }
   30% {
     transform: translate3d(var(--tx, 0), var(--ty, 0), var(--tz, 0))
-              rotateX(var(--rx, 0)) rotateY(var(--ry, 0)) rotateZ(var(--rz, 0));
+      rotateX(var(--rx, 0)) rotateY(var(--ry, 0)) rotateZ(var(--rz, 0));
     opacity: 1;
   }
   100% {
-    transform: translate3d(calc(var(--tx, 0) * 5), calc(var(--ty, 0) * 5), calc(var(--tz, 0) * 5))
-              rotateX(var(--rx, 0)) rotateY(var(--ry, 0)) rotateZ(var(--rz, 0));
+    transform: translate3d(
+        calc(var(--tx, 0) * 5),
+        calc(var(--ty, 0) * 5),
+        calc(var(--tz, 0) * 5)
+      )
+      rotateX(var(--rx, 0)) rotateY(var(--ry, 0)) rotateZ(var(--rz, 0));
     opacity: 0;
     filter: blur(20px);
   }

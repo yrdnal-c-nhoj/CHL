@@ -4,10 +4,10 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
 import fontUrl from '@/assets/fonts/25fonts/25-05-03-Petal.ttf?url';
-import bg1 from '@/assets/images/2025/25-05/25-05-03/petalos.gif';
-import bg2 from '@/assets/images/2025/25-05/25-05-03/petals.gif';
-import bg3 from '@/assets/images/2025/25-05/25-05-03/sakura-leaves.gif';
-import bg4 from '@/assets/images/2025/25-05/25-05-03/talos.gif';
+import bg1 from '@/assets/images/25_images/25-05/25-05-03/petalos.gif';
+import bg2 from '@/assets/images/25_images/25-05/25-05-03/petals.gif';
+import bg3 from '@/assets/images/25_images/25-05/25-05-03/sakura-leaves.gif';
+import bg4 from '@/assets/images/25_images/25-05/25-05-03/talos.gif';
 
 // Component Props interface
 interface FlyingPetalsClockProps {
@@ -18,16 +18,19 @@ const FlyingPetalsClock: React.FC<FlyingPetalsClockProps> = () => {
   const time = useClockTime();
 
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'Petal',
-      fontUrl: fontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'Petal',
+        fontUrl: fontUrl,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // Font loading handled by useSuspenseFontLoader

@@ -2,7 +2,9 @@
 // This file imports all thumbnail images and provides a lookup function
 
 // Import all thumbnail images
-const thumbnailModules = import.meta.glob('/src/assets/thumbnails/*.webp', { eager: true });
+const thumbnailModules = import.meta.glob('/src/assets/thumbnails/*.webp', {
+  eager: true,
+});
 
 // Create a mapping from date to image URL
 const thumbnailMap: Record<string, string> = {};

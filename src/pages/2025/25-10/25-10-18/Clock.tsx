@@ -1,8 +1,8 @@
 // MediaClock.jsx
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import bgVideo from '@/assets/images/2025/25-10/25-10-18/total.mp4';
-import fallbackImg from '@/assets/images/2025/25-10/25-10-18/tot.webp';
+import bgVideo from '@/assets/images/25_images/25-10/25-10-18/total.mp4';
+import fallbackImg from '@/assets/images/25_images/25-10/25-10-18/tot.webp';
 import font_20251018 from '@/assets/fonts/25fonts/25-10-18-tot.ttf?url';
 
 export default function MediaClock() {
@@ -14,9 +14,10 @@ export default function MediaClock() {
   const backgroundShiftX = '49%';
   const backgroundShiftY = 'center';
 
-  const fontConfigs = useMemo(() => [
-    { fontFamily: 'SereneFont', fontUrl: font_20251018 }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [{ fontFamily: 'SereneFont', fontUrl: font_20251018 }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 

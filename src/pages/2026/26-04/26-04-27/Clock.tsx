@@ -5,13 +5,16 @@ import leverFont from '@/assets/fonts/26fonts/26-04-27-lever.ttf';
 import styles from './Clock.module.css';
 
 // Dynamically import all images from the assets folder
-const imageModules = import.meta.glob('@/assets/images/2026/26-04/26-04-27/*', {
-  eager: true,
-  import: 'default',
-});
+const imageModules = import.meta.glob(
+  '@/assets/images/26_images/26-04/26-04-27/*',
+  {
+    eager: true,
+    import: 'default',
+  },
+);
 
 const IMAGES = Object.values(imageModules).filter(
-  (src): src is string => typeof src === 'string' && !src.includes('.DS_Store')
+  (src): src is string => typeof src === 'string' && !src.includes('.DS_Store'),
 );
 
 export const assets = IMAGES;
@@ -30,21 +33,26 @@ const getRandomFilter = () => {
 const Clock: React.FC = () => {
   const time = useClockTime();
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'Lever',
-      fontUrl: leverFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'Lever',
+        fontUrl: leverFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
-  
+
   // Start with all images loaded at random positions with filters
-  const [displayedImages, setDisplayedImages] = useState<Array<{ src: string; pos: React.CSSProperties; id: number; filter: string }>>(() => {
+  const [displayedImages, setDisplayedImages] = useState<
+    Array<{ src: string; pos: React.CSSProperties; id: number; filter: string }>
+  >(() => {
     return IMAGES.map((src) => ({
       src,
       pos: getRandomPosition(),
@@ -82,7 +90,6 @@ const Clock: React.FC = () => {
     setImageIndex((prev) => prev + 1);
   }, [seconds]);
 
-
   // Format digital time
   const { hours, minutes, iso } = useMemo(() => {
     const h = time.getHours().toString().padStart(2, '0');
@@ -99,7 +106,7 @@ const Clock: React.FC = () => {
           src={img.src}
           alt=""
           className={styles.baseImage}
-          style={{ ...img.pos as React.CSSProperties, filter: img.filter }}
+          style={{ ...(img.pos as React.CSSProperties), filter: img.filter }}
         />
       ))}
 

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 import { useSmoothClock } from '@/utils/hooks';
-import backgroundImage from '@/assets/images/2026/26-05/26-05-16/depart.gif';
+import backgroundImage from '@/assets/images/26_images/26-05/26-05-16/depart.gif';
 
 export const assets = [backgroundImage];
 
@@ -36,9 +36,18 @@ const AnalogClock: React.FC = () => {
       <div className={styles.analogClock}>
         <time className={styles.face} dateTime={isoTime}>
           {/* Hands */}
-          <div className={styles.hourHand} style={{ transform: `rotate(${hourDeg}deg)` }} />
-          <div className={styles.minuteHand} style={{ transform: `rotate(${minuteDeg}deg)` }} />
-          <div className={styles.secondHand} style={{ transform: `rotate(${secondDeg}deg)` }} />
+          <div
+            className={styles.hourHand}
+            style={{ transform: `rotate(${hourDeg}deg)` }}
+          />
+          <div
+            className={styles.minuteHand}
+            style={{ transform: `rotate(${minuteDeg}deg)` }}
+          />
+          <div
+            className={styles.secondHand}
+            style={{ transform: `rotate(${secondDeg}deg)` }}
+          />
 
           {/* Center axis pin */}
           <div className={styles.centerDot} />

@@ -3,9 +3,9 @@ import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import lava1 from '@/assets/images/2025/25-04/25-04-24/lava.webp';
-import lava2 from '@/assets/images/2025/25-04/25-04-24/vp2OVr.gif';
-import lava3 from '@/assets/images/2025/25-04/25-04-24/lava.webp';
+import lava1 from '@/assets/images/25_images/25-04/25-04-24/lava.webp';
+import lava2 from '@/assets/images/25_images/25-04/25-04-24/vp2OVr.gif';
+import lava3 from '@/assets/images/25_images/25-04/25-04-24/lava.webp';
 import lavaFont from '@/assets/fonts/25fonts/25-04-24-lava.ttf?url';
 
 // Time state interface
@@ -21,16 +21,19 @@ interface LavaClockProps {
 
 const LavaClock: React.FC<LavaClockProps> = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'Rubik Burned',
-      fontUrl: lavaFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'Rubik Burned',
+        fontUrl: lavaFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);

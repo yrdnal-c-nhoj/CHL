@@ -4,7 +4,7 @@
 
 /* Font Imports - Centralized */
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Cinzel+Decorative:wght@400;700;900&family=Manrope:wght@200..800&family=Nanum+Gothic&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&family=Almendra+Display&family=Metamorphous&family=Orbitron:wght@400..900&family=Libre+Baskerville&family=Monofett&family=Nanum+Gothic+Coding:wght@400;700&display=swap');
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Custom Font Faces */
 @font-face {
@@ -21,14 +21,14 @@
 
 @theme {
   /* Font Families */
-  --font-roboto: "Roboto Slab", serif;
-  --font-oxanium: "Oxanium", sans-serif;
-  --font-manrope: "Manrope", sans-serif;
-  --font-cinzel: "Cinzel", serif;
-  --font-noto: "Noto Sans", sans-serif;
-  --font-libre: "Libre Baskerville", serif;
-  --font-monofett: "Monofett", monospace;
-  --font-nanum-coding: "Nanum Gothic Coding", monospace;
+  --font-roboto: 'Roboto Slab', serif;
+  --font-oxanium: 'Oxanium', sans-serif;
+  --font-manrope: 'Manrope', sans-serif;
+  --font-cinzel: 'Cinzel', serif;
+  --font-noto: 'Noto Sans', sans-serif;
+  --font-libre: 'Libre Baskerville', serif;
+  --font-monofett: 'Monofett', monospace;
+  --font-nanum-coding: 'Nanum Gothic Coding', monospace;
 
   /* Color System */
   --color-lab-red: #850404;
@@ -45,7 +45,7 @@
   --color-lab-gray-light: #e5e7eb;
   --color-lab-gray-medium: #cac5c5;
   --color-lab-gray-dark: #343434;
-  
+
   /* Spacing Scale */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
@@ -53,7 +53,7 @@
   --space-lg: 1.5rem;
   --space-xl: 2rem;
   --space-2xl: 3rem;
-  
+
   /* Typography Scale */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
@@ -63,12 +63,12 @@
   --text-2xl: 1.5rem;
   --text-3xl: 1.875rem;
   --text-4xl: 2.25rem;
-  
+
   /* Border Radius */
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 1rem;
-  
+
   /* Transitions */
   --transition-fast: 0.15s ease;
   --transition-base: 0.2s ease;
@@ -135,11 +135,14 @@ body.clock-mode {
   border: 0;
 }
 
-
 /* --- Global Animations --- */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .fade-in {

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import origamiFont from '@/assets/fonts/26fonts/26-03-30-origami.ttf';
-import craneImg from '@/assets/images/2026/26-03/26-03-30/1.webp';
+import craneImg from '@/assets/images/26_images/26-03/26-03-30/1.webp';
 import styles from './Clock.module.css';
 
 const LETTERS = ['b', 'f', 'c', 'j', 'i', 'n', 'q', 's', 'u', 'w'];
@@ -17,17 +17,24 @@ const Digit = React.memo(({ char }: { char: string }) => (
 const Clock: React.FC = () => {
   const time = useSecondClock();
 
-  const fontConfigs = useMemo(() => [{ fontFamily: 'OrigamiFont', fontUrl: origamiFont }], []);
+  const fontConfigs = useMemo(
+    () => [{ fontFamily: 'OrigamiFont', fontUrl: origamiFont }],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   const displayTime = useMemo(() => {
-    const format = (val: number) => 
-      val.toString().padStart(2, '0').split('').map(d => LETTERS[parseInt(d, 10)]);
-    
+    const format = (val: number) =>
+      val
+        .toString()
+        .padStart(2, '0')
+        .split('')
+        .map((d) => LETTERS[parseInt(d, 10)]);
+
     return [
       ...format(time.getHours()),
       ...format(time.getMinutes()),
-      ...format(time.getSeconds())
+      ...format(time.getSeconds()),
     ];
   }, [time]);
 

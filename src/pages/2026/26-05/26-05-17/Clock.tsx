@@ -8,7 +8,7 @@ import styles from './Clock.module.css';
 // Asset Imports
 // Reverting to the standard .otf extension without the extra suffix
 import clockFont from '@/assets/fonts/26fonts/26-05-17.otf?url';
-import clockVideo from '@/assets/images/2026/26-05/26-05-17/26-05-17.mp4';
+import clockVideo from '@/assets/images/26_images/26-05/26-05-17/26-05-17.mp4';
 
 // ---------------- CONFIGURATION ----------------
 const CLOCK_CONFIG = {
@@ -25,20 +25,14 @@ export const fontConfigs: FontConfig[] = [
   {
     fontFamily: FONT_FAMILY,
     fontUrl: clockFont,
-    options: { weight: 'normal', style: 'normal' }
+    options: { weight: 'normal', style: 'normal' },
   },
 ];
 
 // ---------------- UTILITIES ----------------
 // ---------------- COMPONENTS ----------------
 const BackgroundLayers: React.FC = () => (
-  <video
-    className={styles.backgroundVideo}
-    autoPlay
-    loop
-    muted
-    playsInline
-  >
+  <video className={styles.backgroundVideo} autoPlay loop muted playsInline>
     <source src={clockVideo} type="video/mp4" />
   </video>
 );
@@ -46,7 +40,7 @@ const BackgroundLayers: React.FC = () => (
 // ---------------- MAIN CLOCK COMPONENT ----------------
 const ClockContent: React.FC = () => {
   const currentTime = useClockTime();
-  
+
   // Use direct date methods to ensure "undefined" never appears
   const timeString = useMemo(() => {
     const h = String(currentTime.getHours()).padStart(2, '0');
@@ -61,8 +55,8 @@ const ClockContent: React.FC = () => {
   return (
     <>
       <BackgroundLayers />
-      <time 
-        dateTime={currentTime.toISOString()} 
+      <time
+        dateTime={currentTime.toISOString()}
         className={styles.digitalTime}
         style={{ fontFamily: FONT_FAMILY }}
       >
@@ -79,7 +73,11 @@ const ClockContent: React.FC = () => {
 const DigitalClock: React.FC = () => {
   return (
     <div className={styles.container}>
-      <Suspense fallback={<div style={{ color: 'red', fontSize: '2rem' }}>Loading Clock...</div>}>
+      <Suspense
+        fallback={
+          <div style={{ color: 'red', fontSize: '2rem' }}>Loading Clock...</div>
+        }
+      >
         <ClockContent />
       </Suspense>
     </div>

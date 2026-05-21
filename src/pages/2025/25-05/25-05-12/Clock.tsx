@@ -3,7 +3,7 @@ import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import A3ui from '@/assets/images/2025/25-05/25-05-12/A3ui.gif';
+import A3ui from '@/assets/images/25_images/25-05/25-05-12/A3ui.gif';
 import leoFont from '@/assets/fonts/25fonts/25-05-12-leo.ttf?url';
 
 // Component Props interface
@@ -13,16 +13,19 @@ interface CheetahClockProps {
 
 const CheetahClock: React.FC<CheetahClockProps> = () => {
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'leo',
-      fontUrl: leoFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'leo',
+        fontUrl: leoFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates

@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import ionFont from '@/assets/fonts/25fonts/25-06-09-ion.ttf';
-import ionJpeg from '@/assets/images/2025/25-06/25-06-09/ion.jpeg';
-import iskyWebp from '@/assets/images/2025/25-06/25-06-09/isky.webp';
+import ionJpeg from '@/assets/images/25_images/25-06/25-06-09/ion.jpeg';
+import iskyWebp from '@/assets/images/25_images/25-06/25-06-09/isky.webp';
 
 const CLOCK_BACKGROUND = 'rgba(0, 255, 255, 0.0)';
 const CLOCK_COUNT_PER_DIRECTION = 2;
@@ -102,9 +102,9 @@ export default function IonosphereClock() {
       fontUrl: ionFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

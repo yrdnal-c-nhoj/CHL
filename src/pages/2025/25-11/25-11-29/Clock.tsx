@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import backgroundImg from '@/assets/images/2025/25-11/25-11-29/squ.webp';
+import backgroundImg from '@/assets/images/25_images/25-11/25-11-29/squ.webp';
 import fontUrl_20251128 from '@/assets/fonts/25fonts/25-11-29-roc.ttf?url';
 
 export default function RococoDigitalClock() {
@@ -10,9 +10,16 @@ export default function RococoDigitalClock() {
   const [morph, setMorph] = useState<number>(0);
   const [isVertical, setIsVertical] = useState<boolean>(false);
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'RococoBlob', fontUrl: fontUrl_20251128, options: { weight: '800' } }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'RococoBlob',
+        fontUrl: fontUrl_20251128,
+        options: { weight: '800' },
+      },
+    ],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 

@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import cus250903font from '@/assets/fonts/25fonts/25-09-03-mau.ttf';
-import cornerImage from '@/assets/images/2025/25-09/25-09-03/corner.gif';
-import backgroundImage from '@/assets/images/2025/25-09/25-09-03/mau.gif'; // <-- your background image
+import cornerImage from '@/assets/images/25_images/25-09/25-09-03/corner.gif';
+import backgroundImage from '@/assets/images/25_images/25-09/25-09-03/mau.gif'; // <-- your background image
 
 function DigitalClock() {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -13,9 +13,9 @@ function DigitalClock() {
       fontUrl: cus250903font,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   const time = useClockTime();

@@ -32,49 +32,57 @@ const SkewClock: React.FC<SkewClockProps> = () => {
     drawText(ctx, canvas, digits, colors);
   }, [currentTime, getRandomVibrantColor]);
 
-  const drawText = useCallback((ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, digits: string[], colors: string[]): void => {
-    ctx.save();
+  const drawText = useCallback(
+    (
+      ctx: CanvasRenderingContext2D,
+      canvas: HTMLCanvasElement,
+      digits: string[],
+      colors: string[],
+    ): void => {
+      ctx.save();
 
-    const fontSize = canvas.height * 0.2;
-    ctx.font = `${fontSize}px 'Stick', sans-serif`;
-    ctx.textBaseline = 'middle';
-    ctx.textAlign = 'left';
+      const fontSize = canvas.height * 0.2;
+      ctx.font = `${fontSize}px 'Stick', sans-serif`;
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'left';
 
-    // Measure widths for precise centering
-    const spacing = canvas.width * 0.015;
-    const widths = digits.map((d) => ctx.measureText(d).width);
-    const totalWidth =
-      widths.reduce((acc, w) => acc + w, 0) + spacing * (digits.length - 1);
-    let startX = (canvas.width - totalWidth) / 2;
-    const centerY = canvas.height / 2;
+      // Measure widths for precise centering
+      const spacing = canvas.width * 0.015;
+      const widths = digits.map((d) => ctx.measureText(d).width);
+      const totalWidth =
+        widths.reduce((acc, w) => acc + w, 0) + spacing * (digits.length - 1);
+      let startX = (canvas.width - totalWidth) / 2;
+      const centerY = canvas.height / 2;
 
-    digits.forEach((digit, i) => {
-      // Slight random jitter around centered position
-      const jitterX = (Math.random() - 0.5) * 30; // ±15 px horizontally
-      const jitterY = (Math.random() - 0.5) * 30; // ±15 px vertically
+      digits.forEach((digit, i) => {
+        // Slight random jitter around centered position
+        const jitterX = (Math.random() - 0.5) * 30; // ±15 px horizontally
+        const jitterY = (Math.random() - 0.5) * 30; // ±15 px vertically
 
-      const x = startX + jitterX;
-      const y = centerY + jitterY;
+        const x = startX + jitterX;
+        const y = centerY + jitterY;
 
-      // Exaggerated skew ±0.7
-      const skew = (Math.random() - 0.5) * 1.4;
+        // Exaggerated skew ±0.7
+        const skew = (Math.random() - 0.5) * 1.4;
 
-      ctx.setTransform(1, skew, skew, 1, x, y);
+        ctx.setTransform(1, skew, skew, 1, x, y);
 
-      ctx.lineWidth = 0.5 * canvas.height * 0.01;
+        ctx.lineWidth = 0.5 * canvas.height * 0.01;
 
-      ctx.strokeStyle = getRandomVibrantColor();
-      ctx.strokeText(digit, 0, 0);
+        ctx.strokeStyle = getRandomVibrantColor();
+        ctx.strokeText(digit, 0, 0);
 
-      ctx.fillStyle = colors[i];
-      ctx.fillText(digit, 0, 0);
+        ctx.fillStyle = colors[i];
+        ctx.fillText(digit, 0, 0);
 
-      ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transform
-      startX += widths[i] + spacing;
-    });
+        ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transform
+        startX += widths[i] + spacing;
+      });
 
-    ctx.restore();
-  }, [getRandomVibrantColor]);
+      ctx.restore();
+    },
+    [getRandomVibrantColor],
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -100,10 +108,7 @@ const SkewClock: React.FC<SkewClockProps> = () => {
   }, [updateClock]);
 
   return (
-    <div
-      className="skew-wrapper"
-      style={{ fontFamily: "'Stick', sans-serif" }}
-    >
+    <div className="skew-wrapper" style={{ fontFamily: "'Stick', sans-serif" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Stick&display=swap');
 

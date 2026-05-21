@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import backgroundImage from '@/assets/images/2025/25-05/25-05-23/blank.jpg';
+import backgroundImage from '@/assets/images/25_images/25-05/25-05-23/blank.jpg';
 import crossFont from '@/assets/fonts/25fonts/25-05-23-Cross.otf';
 
 const CrossClock: React.FC = () => {
@@ -15,9 +15,9 @@ const CrossClock: React.FC = () => {
       fontUrl: crossFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

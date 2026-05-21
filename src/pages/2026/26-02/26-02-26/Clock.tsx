@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import backgroundImage from '@/assets/images/2026/26-02/26-02-26/26-02-26-f.webp';
+import backgroundImage from '@/assets/images/26_images/26-02/26-02-26/26-02-26-f.webp';
 import fuFont from '@/assets/fonts/26fonts/26-02-26-fu.ttf';
 
 interface ViteModule {
@@ -26,17 +26,21 @@ interface GridSize {
 
 export const background = backgroundImage;
 
-
 const ImageGridClock: React.FC = () => {
-  const fontConfigs = useMemo(() => [{
-      fontFamily: 'DateFont',
-      fontUrl: fuFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-  }], []);
-  
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'DateFont',
+        fontUrl: fuFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   const [images, setImages] = useState<string[]>([]);
@@ -44,7 +48,9 @@ const ImageGridClock: React.FC = () => {
   const [loadedImages, setLoadedImages] = useState(new Set());
   const [imageAssignments, setImageAssignments] = useState<number[]>([]);
   const currentTime = useSecondClock();
-  const [currentImageIndex, setCurrentImageIndex] = useState<Record<string, number>>({});
+  const [currentImageIndex, setCurrentImageIndex] = useState<
+    Record<string, number>
+  >({});
 
   const changeRandomCells = () => {
     if (imageAssignments.length > 0 && images.length > 1) {
@@ -71,7 +77,7 @@ const ImageGridClock: React.FC = () => {
     const loadImages = async () => {
       try {
         const imageModules = import.meta.glob(
-          '../../../../assets/images/2026/26-02/26-02-26/bg/*.{png,jpg,jpeg,gif,svg,webp}',
+          '../../../../assets/images/26_images/26-02/26-02-26/bg/*.{png,jpg,jpeg,gif,svg,webp}',
           { eager: true },
         );
         console.log('[26-02-26] Loaded modules:', imageModules);
@@ -95,7 +101,7 @@ const ImageGridClock: React.FC = () => {
 
   useEffect(() => {
     let resizeTimeout: NodeJS.Timeout;
-    
+
     const calculateGridSize = () => {
       const squareSize = 100;
       const cols = Math.ceil(window.innerWidth / squareSize);

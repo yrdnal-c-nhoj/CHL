@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import backgroundImage from '@/assets/images/2025/25-04/25-04-14/bricks.webp';
+import backgroundImage from '@/assets/images/25_images/25-04/25-04-14/bricks.webp';
 
 // Time interface
 interface TimeState {
@@ -50,8 +50,13 @@ const BlueBrickClock = () => {
     animation: 'pop 0.6s cubic-bezier(0.28, 0.84, 0.42, 1)',
   };
 
-  const renderBalls = useCallback((count: number) =>
-    Array.from({ length: count }, (_, i) => <div key={i} style={ballStyle} />), [ballStyle]);
+  const renderBalls = useCallback(
+    (count: number) =>
+      Array.from({ length: count }, (_, i) => (
+        <div key={i} style={ballStyle} />
+      )),
+    [ballStyle],
+  );
 
   return (
     <div

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import backgroundImage from '@/assets/images/2025/25-12/25-12-29/shrine.webp';
+import backgroundImage from '@/assets/images/25_images/25-12/25-12-29/shrine.webp';
 import shrineFont from '@/assets/fonts/25fonts/25-12-29-shrine.ttf?url';
 
 const DynamicClockComponent: React.FC = () => {

@@ -2,10 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import boneFont from '@/assets/fonts/25fonts/25-06-25-bone.ttf';
-import bone from '@/assets/images/2025/25-06/25-06-25/bone.png';
-import bone1 from '@/assets/images/2025/25-06/25-06-25/bone1.png';
-import bone2 from '@/assets/images/2025/25-06/25-06-25/bone2.png';
-import bgImage from '@/assets/images/2025/25-06/25-06-25/bon.png';
+import bone from '@/assets/images/25_images/25-06/25-06-25/bone.png';
+import bone1 from '@/assets/images/25_images/25-06/25-06-25/bone1.png';
+import bone2 from '@/assets/images/25_images/25-06/25-06-25/bone2.png';
+import bgImage from '@/assets/images/25_images/25-06/25-06-25/bon.png';
 
 const BoneClock: React.FC = () => {
   const hourRef = useRef(null);

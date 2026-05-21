@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import mintFont from '@/assets/fonts/25fonts/25-07-08-mint.ttf';
-import hourImg from '@/assets/images/2025/25-07/25-07-08/mint.png';
-import minuteImg from '@/assets/images/2025/25-07/25-07-08/minty.webp';
-import secondImg from '@/assets/images/2025/25-07/25-07-08/min.png';
-import bgImage from '@/assets/images/2025/25-07/25-07-08/candy.jpg';
+import hourImg from '@/assets/images/25_images/25-07/25-07-08/mint.png';
+import minuteImg from '@/assets/images/25_images/25-07/25-07-08/minty.webp';
+import secondImg from '@/assets/images/25_images/25-07/25-07-08/min.png';
+import bgImage from '@/assets/images/25_images/25-07/25-07-08/candy.jpg';
 
 const MintClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -15,9 +15,9 @@ const MintClock: React.FC = () => {
       fontUrl: mintFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   useEffect(() => {

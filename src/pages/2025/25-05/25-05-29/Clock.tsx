@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import gearsGif from '@/assets/images/2025/25-05/25-05-29/gears-13950_128.gif';
+import gearsGif from '@/assets/images/25_images/25-05/25-05-29/gears-13950_128.gif';
 import watchFont from '@/assets/fonts/25fonts/25-05-29-watch.ttf?url';
 import { Color } from 'three';
 

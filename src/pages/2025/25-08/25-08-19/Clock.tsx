@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import fontUrl from '@/assets/fonts/25fonts/25-08-19-cas.ttf';
-import bgUrl from '@/assets/images/2025/25-08/25-08-19/ap.jpeg';
+import bgUrl from '@/assets/images/25_images/25-08/25-08-19/ap.jpeg';
 
 const Pendulum: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -11,9 +11,9 @@ const Pendulum: React.FC = () => {
       fontUrl: fontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

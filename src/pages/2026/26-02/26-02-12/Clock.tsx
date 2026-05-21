@@ -3,10 +3,10 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
 import digitalFontUrl from '@/assets/fonts/26fonts/26-02-12-disco.otf';
-import digitalBgImage from '@/assets/images/2026/26-02/26-02-12/lit.webp';
-import extraBg1 from '@/assets/images/2026/26-02/26-02-12/light.webp';
-import extraBg2 from '@/assets/images/2026/26-02/26-02-12/li.gif';
-import extraBg3 from '@/assets/images/2026/26-02/26-02-12/ball.webp';
+import digitalBgImage from '@/assets/images/26_images/26-02/26-02-12/lit.webp';
+import extraBg1 from '@/assets/images/26_images/26-02/26-02-12/light.webp';
+import extraBg2 from '@/assets/images/26_images/26-02/26-02-12/li.gif';
+import extraBg3 from '@/assets/images/26_images/26-02/26-02-12/ball.webp';
 
 const DISCO_COLORS = [
   '#FF00FF', // Neon Magenta
@@ -30,15 +30,20 @@ const CONFIG = {
 const DigitalClockTemplate: React.FC = () => {
   const time = useSecondClock();
 
-  const fontConfigs = useMemo(() => [{
-      fontFamily: 'BorrowedDigital',
-      fontUrl: digitalFontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-  }], []);
-  
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'BorrowedDigital',
+        fontUrl: digitalFontUrl,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   const { digits, rawSeconds }: TimeDigits = useMemo(() => {
@@ -55,7 +60,6 @@ const DigitalClockTemplate: React.FC = () => {
       rawSeconds: time.getSeconds(),
     };
   }, [time]);
-
 
   const getDiscoColor = (index: number): string => {
     const colorIndex = (rawSeconds + index) % DISCO_COLORS.length;
@@ -74,24 +78,24 @@ const DigitalClockTemplate: React.FC = () => {
   };
 
   return (
+    <div
+      style={{
+        position: 'relative',
+        width: '100vw',
+        height: '100dvh',
+        overflow: 'hidden',
+        backgroundColor: '#000',
+      }}
+    >
       <div
         style={{
-          position: 'relative',
-          width: '100vw',
-          height: '100dvh',
-          overflow: 'hidden',
-          backgroundColor: '#000',
+          ...layerBase,
+          backgroundImage: `url(${digitalBgImage})`,
+          opacity: 1.0,
+          filter: 'saturate(3.8) brightness(1.5)',
+          zIndex: 1,
         }}
-      >
-        <div
-          style={{
-            ...layerBase,
-            backgroundImage: `url(${digitalBgImage})`,
-            opacity: 1.0,
-            filter: 'saturate(3.8) brightness(1.5)',
-            zIndex: 1,
-          }}
-        />
+      />
       <div
         style={{
           ...layerBase,
@@ -129,7 +133,7 @@ const DigitalClockTemplate: React.FC = () => {
           alignItems: 'center',
           justifyContent: 'center',
           height: '100%',
-          fontFamily: "'BorrowedDigital', sans-serif"
+          fontFamily: "'BorrowedDigital', sans-serif",
         }}
       >
         <div style={clockWrapperStyle}>

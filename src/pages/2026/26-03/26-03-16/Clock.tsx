@@ -1,5 +1,5 @@
 import React from 'react';
-import bgImage from '@/assets/images/2026/26-03/26-03-16/metrop.webp';
+import bgImage from '@/assets/images/26_images/26-03/26-03-16/metrop.webp';
 import { useSecondClock } from '@/utils/hooks';
 
 const Clock: React.FC = () => {
@@ -15,12 +15,18 @@ const Clock: React.FC = () => {
 
   const getClockSize = () => {
     if (typeof window === 'undefined') return 380;
-    
-    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+
+    const vw = Math.max(
+      document.documentElement.clientWidth || 0,
+      window.innerWidth || 0,
+    );
+    const vh = Math.max(
+      document.documentElement.clientHeight || 0,
+      window.innerHeight || 0,
+    );
     const isMobile = vw <= 480;
     const isSmallScreen = vw <= 768;
-    
+
     if (isMobile) {
       return Math.min(vw * 0.8, vh * 0.8, 280);
     } else if (isSmallScreen) {
@@ -33,8 +39,14 @@ const Clock: React.FC = () => {
   const clockSize = getClockSize();
 
   const mobileAdjustments = {
-    padding: typeof window !== 'undefined' && window.innerWidth <= 480 ? '10px' : '0px',
-    transform: typeof window !== 'undefined' && window.innerWidth <= 480 ? 'scale(0.85)' : 'scale(1)',
+    padding:
+      typeof window !== 'undefined' && window.innerWidth <= 480
+        ? '10px'
+        : '0px',
+    transform:
+      typeof window !== 'undefined' && window.innerWidth <= 480
+        ? 'scale(0.85)'
+        : 'scale(1)',
   };
 
   return (
@@ -66,10 +78,14 @@ const Clock: React.FC = () => {
       >
         {[...Array(12)].map((_, i) => {
           const isCardinal = i % 3 === 0;
-          const markerWidth = isCardinal ? clockSize * 0.011 : clockSize * 0.005;
-          const markerHeight = isCardinal ? clockSize * 0.074 : clockSize * 0.037;
+          const markerWidth = isCardinal
+            ? clockSize * 0.011
+            : clockSize * 0.005;
+          const markerHeight = isCardinal
+            ? clockSize * 0.074
+            : clockSize * 0.037;
           const markerTop = clockSize * 0.053;
-          
+
           return (
             <div
               key={i}

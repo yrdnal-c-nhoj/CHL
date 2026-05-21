@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import * as THREE from 'three';
 import OrbitronFont20251012 from '@/assets/fonts/25fonts/25-10-14-air.ttf';
-import bgImage from '@/assets/images/2025/25-10/25-10-14/air.webp';
+import bgImage from '@/assets/images/25_images/25-10/25-10-14/air.webp';
 
 const SpinningDodecahedronClock: React.FC = () => {
   const containerRef = useRef(null);
@@ -13,13 +13,16 @@ const SpinningDodecahedronClock: React.FC = () => {
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
 
   // Use standardized font loader
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'Orbitron20251012',
-      fontUrl: OrbitronFont20251012,
-      options: { weight: 'normal', style: 'normal' }
-    }
-  ], []);
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'Orbitron20251012',
+        fontUrl: OrbitronFont20251012,
+        options: { weight: 'normal', style: 'normal' },
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
   // --- Load background image ---

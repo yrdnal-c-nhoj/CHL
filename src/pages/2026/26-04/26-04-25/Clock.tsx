@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useClockTime } from '@/utils/clockUtils';
 import styles from './Clock.module.css';
-import bgImage from '@/assets/images/2026/26-04/26-04-25/magnify.jpg';
+import bgImage from '@/assets/images/26_images/26-04/26-04-25/magnify.jpg';
 
 const Clock: React.FC = () => {
   const time = useClockTime();

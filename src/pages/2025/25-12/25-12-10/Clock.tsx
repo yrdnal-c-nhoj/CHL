@@ -4,19 +4,16 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // --- Image Imports ---
-import bg1 from '@/assets/images/2025/25-12/25-12-10/j.webp';
-import bg2 from '@/assets/images/2025/25-12/25-12-10/jj.webp';
-import portImg from '@/assets/images/2025/25-12/25-12-10/eagle.webp';
-import hourHandImg from '@/assets/images/2025/25-12/25-12-10/oa.gif';
-import minuteHandImg from '@/assets/images/2025/25-12/25-12-10/oak.gif';
-import secondHandImg from '@/assets/images/2025/25-12/25-12-10/nk.gif';
+import bg1 from '@/assets/images/25_images/25-12/25-12-10/j.webp';
+import bg2 from '@/assets/images/25_images/25-12/25-12-10/jj.webp';
+import portImg from '@/assets/images/25_images/25-12/25-12-10/eagle.webp';
+import hourHandImg from '@/assets/images/25_images/25-12/25-12-10/oa.gif';
+import minuteHandImg from '@/assets/images/25_images/25-12/25-12-10/oak.gif';
+import secondHandImg from '@/assets/images/25_images/25-12/25-12-10/nk.gif';
 const font251211Url = new URL(
   '@/assets/fonts/25fonts/25-12-10-jup.ttf',
   import.meta.url,
 ).href;
-
-
-
 
 // --- CONFIG ---
 const CONFIG = {
@@ -154,90 +151,110 @@ const TiledBackground = memo(() => {
 });
 
 // --- NUMERAL ---
-const ClockNumeral = memo(({ text, x, y }: { text: string; x: number; y: number }) => (
-  <div
-    style={{
-      position: 'absolute',
-      left: `${x}%`,
-      top: `${y}%`,
-      transform: 'translate(-50%, -50%)',
-      color: '#1D97F4FF',
-      fontFamily: 'CustomFont251211, serif',
-      fontSize: 'clamp(5rem, 8vw, 6.5rem)',
-      textShadow: '2px 2px 0px #FAC72DFF',
-      zIndex: 0,
-      pointerEvents: 'none',
-    }}
-  >
-    {text}
-  </div>
-));
+const ClockNumeral = memo(
+  ({ text, x, y }: { text: string; x: number; y: number }) => (
+    <div
+      style={{
+        position: 'absolute',
+        left: `${x}%`,
+        top: `${y}%`,
+        transform: 'translate(-50%, -50%)',
+        color: '#1D97F4FF',
+        fontFamily: 'CustomFont251211, serif',
+        fontSize: 'clamp(5rem, 8vw, 6.5rem)',
+        textShadow: '2px 2px 0px #FAC72DFF',
+        zIndex: 0,
+        pointerEvents: 'none',
+      }}
+    >
+      {text}
+    </div>
+  ),
+);
 
 // --- CLOCK HAND ---
-const ClockHand = memo(({ img, width, max, rotation }: { img: string; width: string; max: string; rotation: number }) => (
-  <img
-    decoding="async"
-    loading="lazy"
-    src={img}
-    alt=""
-    draggable={false}
-    style={{
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      width: `clamp(30px, ${width}, ${max})`,
-      transform: `translate(-50%, -100%) rotate(${rotation}deg)`,
-      transformOrigin: 'bottom center',
-      zIndex: 7,
-      pointerEvents: 'none',
-      userSelect: 'none',
-      filter:
-        'hue-rotate(20deg) saturate(2) brightness(1.2) drop-shadow(2px 2px 0px #0E63EBFF)',
-      willChange: 'transform',
-    }}
-  />
-));
-
-// --- CLOCK FACE ---
-const ClockFace = memo(({ angles }: { angles: { second: number; minute: number; hour: number } }) => (
-  <div
-    style={{
-      position: 'fixed',
-      top: '50%',
-      left: '50%',
-      width: CONFIG.clockSize,
-      height: CONFIG.clockSize,
-      transform: 'translate(-50%, -50%)',
-      borderRadius: '50%',
-      zIndex: 10,
-    }}
-  >
-    {NUMERAL_POSITIONS.map((p, i) => (
-      <ClockNumeral key={i} text={p.text} x={p.x} y={p.y} />
-    ))}
-
-    <div
+const ClockHand = memo(
+  ({
+    img,
+    width,
+    max,
+    rotation,
+  }: {
+    img: string;
+    width: string;
+    max: string;
+    rotation: number;
+  }) => (
+    <img
+      decoding="async"
+      loading="lazy"
+      src={img}
+      alt=""
+      draggable={false}
       style={{
         position: 'absolute',
         top: '50%',
         left: '50%',
+        width: `clamp(30px, ${width}, ${max})`,
+        transform: `translate(-50%, -100%) rotate(${rotation}deg)`,
+        transformOrigin: 'bottom center',
+        zIndex: 7,
+        pointerEvents: 'none',
+        userSelect: 'none',
+        filter:
+          'hue-rotate(20deg) saturate(2) brightness(1.2) drop-shadow(2px 2px 0px #0E63EBFF)',
+        willChange: 'transform',
+      }}
+    />
+  ),
+);
+
+// --- CLOCK FACE ---
+const ClockFace = memo(
+  ({
+    angles,
+  }: {
+    angles: { second: number; minute: number; hour: number };
+  }) => (
+    <div
+      style={{
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        width: CONFIG.clockSize,
+        height: CONFIG.clockSize,
         transform: 'translate(-50%, -50%)',
+        borderRadius: '50%',
+        zIndex: 10,
       }}
     >
-      {CONFIG.hands.map((h, i) => (
-        <ClockHand
-          key={i}
-          img={h.img}
-          width={h.width}
-          max={h.max}
-          rotation={
-            i === 0 ? angles.second : i === 1 ? angles.minute : angles.hour
-          }
-        />
+      {NUMERAL_POSITIONS.map((p, i) => (
+        <ClockNumeral key={i} text={p.text} x={p.x} y={p.y} />
       ))}
+
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      >
+        {CONFIG.hands.map((h, i) => (
+          <ClockHand
+            key={i}
+            img={h.img}
+            width={h.width}
+            max={h.max}
+            rotation={
+              i === 0 ? angles.second : i === 1 ? angles.minute : angles.hour
+            }
+          />
+        ))}
+      </div>
     </div>
-  </div>
-));
+  ),
+);
 
 // --- MAIN COMPONENT ---
 export default function AnalogClock() {

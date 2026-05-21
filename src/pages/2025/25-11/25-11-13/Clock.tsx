@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import styles from './Clock.module.css';
 import { useClockTime } from '@/utils/clockUtils';
-import bgImage from '@/assets/images/2025/25-11/25-11-13/bg.webp';
+import bgImage from '@/assets/images/25_images/25-11/25-11-13/bg.webp';
 
 export const assets = [bgImage];
 
@@ -95,7 +95,7 @@ function SingleSlowRollingClock({ duration, direction }: SingleClockProps) {
     minute: HTMLDivElement | null;
     second: HTMLDivElement | null;
   }>({ hour: null, minute: null, second: null });
-  
+
   const now = useClockTime(); // Standardized animation loop
 
   // Set a large distance to ensure the clock travels completely off-screen

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import morseFont from '@/assets/fonts/25fonts/25-06-27-morse.ttf';
-import birdsGif from '@/assets/images/2025/25-06/25-06-27/birds.gif';
+import birdsGif from '@/assets/images/25_images/25-06/25-06-27/birds.gif';
 
 const colors = [
   '#c0c6c7',
@@ -45,9 +45,9 @@ const MorseClock: React.FC = () => {
       fontUrl: morseFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

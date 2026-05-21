@@ -5,8 +5,8 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Html } from '@react-three/drei';
 import * as THREE from 'three';
 
-import backgroundImage from '@/assets/images/2025/25-12/25-12-07/h2o.webp';
-import backgroundImage2 from '@/assets/images/2025/25-12/25-12-07/water.gif';
+import backgroundImage from '@/assets/images/25_images/25-12/25-12-07/h2o.webp';
+import backgroundImage2 from '@/assets/images/25_images/25-12/25-12-07/water.gif';
 import font251207 from '@/assets/fonts/25fonts/25-12-07-isoca.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -93,7 +93,9 @@ function FloatingIcosahedron() {
   const time = useClockTime();
 
   const { geometry, edges } = useMemo(() => {
-    const geo = new THREE.IcosahedronGeometry(1.2, 0).index ? new THREE.IcosahedronGeometry(1.2, 0).toNonIndexed() : new THREE.IcosahedronGeometry(1.2, 0);
+    const geo = new THREE.IcosahedronGeometry(1.2, 0).index
+      ? new THREE.IcosahedronGeometry(1.2, 0).toNonIndexed()
+      : new THREE.IcosahedronGeometry(1.2, 0);
     const pos = geo.getAttribute('position');
     const colors = new Float32Array(pos.count * 3);
     const color = new THREE.Color();
@@ -148,12 +150,7 @@ function FloatingIcosahedron() {
       </mesh>
 
       <mesh geometry={geometry} scale={1.004}>
-        <meshBasicMaterial
-          wireframe
-      color="#6993E6"
-          opacity={0}
-          transparent
-        />
+        <meshBasicMaterial wireframe color="#6993E6" opacity={0} transparent />
       </mesh>
 
       <lineSegments geometry={edges}>

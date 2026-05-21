@@ -5,7 +5,7 @@ import customFont821 from '@/assets/fonts/25fonts/25-08-21-wide.ttf?url';
 import styles from './Clock.module.css';
 
 export const fontConfigs: FontConfig[] = [
-  { fontFamily: 'CustomFont', fontUrl: customFont821 }
+  { fontFamily: 'CustomFont', fontUrl: customFont821 },
 ];
 
 const NumberLineClock: React.FC = () => {
@@ -119,16 +119,17 @@ const NumberLineClock: React.FC = () => {
     return () => cancelAnimationFrame(animationFrameId);
   }, [itemWidths, containerWidth]);
 
-  const renderNumberLine = (count: number, ref: React.RefObject<HTMLDivElement>, margin: string) => (
+  const renderNumberLine = (
+    count: number,
+    ref: React.RefObject<HTMLDivElement>,
+    margin: string,
+  ) => (
     <div className={styles.numberLineContainer}>
       <div className={styles.numberLineWrapper}>
         {/* Center indicator */}
         <div className={styles.centerIndicator} />
         {/* Scrollable number line */}
-        <div
-          ref={ref}
-          className={styles.scrollable}
-        >
+        <div ref={ref} className={styles.scrollable}>
           {/* Left padding */}
           <div className={styles.padding} />
 

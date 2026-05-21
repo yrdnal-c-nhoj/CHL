@@ -7,17 +7,20 @@ const ImageDisplay: React.FC = () => {
   const time = useSecondClock();
   const [showContent, setShowContent] = useState(false);
 
-  const fontConfigs = useMemo(() => [
-    {
-      fontFamily: 'PlatFont',
-      fontUrl: platFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
-  
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'PlatFont',
+        fontUrl: platFont,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
+
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
@@ -174,7 +177,6 @@ const ImageDisplay: React.FC = () => {
           </div>
           <div className="ampm-box">{spacedAmPm}</div>
         </div>
-
         /* Analog Clock */
         <div className="analog-section">
           <div className="clock-face" style={{ backgroundColor: '#F1E9C2' }}>

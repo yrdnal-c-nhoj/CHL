@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
-import bgImage from '@/assets/images/2025/25-08/25-08-04/shrub.jpeg'; // Your background image file
+import bgImage from '@/assets/images/25_images/25-08/25-08-04/shrub.jpeg'; // Your background image file
 import myFont from '@/assets/fonts/25fonts/25-08-04-Tr.ttf'; // Your custom font file
 
 const getRandomPosition = () => ({
@@ -26,9 +26,9 @@ const DigitalClock: React.FC = () => {
       fontUrl: myFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
@@ -106,7 +106,9 @@ const DigitalClock: React.FC = () => {
           zIndex: 10,
           pointerEvents: 'none',
           backgroundColor: 'transparent',
-          fontFamily: fontLoaded ? 'Tr, Arial, sans-serif' : 'Arial, sans-serif',
+          fontFamily: fontLoaded
+            ? 'Tr, Arial, sans-serif'
+            : 'Arial, sans-serif',
         }}
       >
         {clocks.map(({ position, tilt }, index) => {

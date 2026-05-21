@@ -11,9 +11,9 @@ const SCREENSHOT_DIR = path.resolve(__dirname, '../public/screenshots');
 
 // Social media dimensions and optimizations
 const SOCIAL_DIMENSIONS = {
-  instagram: { 
-    width: 1080, 
-    height: 1080, 
+  instagram: {
+    width: 1080,
+    height: 1080,
     name: 'Instagram Square',
     quality: 90,
     format: 'png',
@@ -21,12 +21,12 @@ const SOCIAL_DIMENSIONS = {
       hideNavigation: true,
       centerContent: true,
       addPadding: true,
-      backgroundColor: '#ffffff'
-    }
+      backgroundColor: '#ffffff',
+    },
   },
-  twitter: { 
-    width: 1200, 
-    height: 675, 
+  twitter: {
+    width: 1200,
+    height: 675,
     name: 'Twitter 16:9',
     quality: 85,
     format: 'png',
@@ -34,12 +34,12 @@ const SOCIAL_DIMENSIONS = {
       hideNavigation: true,
       centerContent: true,
       addPadding: false,
-      backgroundColor: '#ffffff'
-    }
+      backgroundColor: '#ffffff',
+    },
   },
-  facebook: { 
-    width: 1200, 
-    height: 630, 
+  facebook: {
+    width: 1200,
+    height: 630,
     name: 'Facebook 16:9',
     quality: 85,
     format: 'png',
@@ -47,17 +47,20 @@ const SOCIAL_DIMENSIONS = {
       hideNavigation: true,
       centerContent: true,
       addPadding: false,
-      backgroundColor: '#ffffff'
-    }
-  }
+      backgroundColor: '#ffffff',
+    },
+  },
 };
 
-function parseDateRange(dateRange: string): { startDate: string; endDate: string } {
+function parseDateRange(dateRange: string): {
+  startDate: string;
+  endDate: string;
+} {
   // Handle single date
   if (!dateRange.includes('..')) {
     return { startDate: dateRange, endDate: dateRange };
   }
-  
+
   // Handle date range
   const [start, end] = dateRange.split('..');
   return { startDate: start.trim(), endDate: end.trim() };
@@ -67,10 +70,14 @@ function getDatesInRange(startDate: string, endDate: string): string[] {
   const dates: string[] = [];
   const startParts = startDate.split('-').map(Number);
   const endParts = endDate.split('-').map(Number);
-  
-  const start = new Date(2000 + startParts[0], startParts[1] - 1, startParts[2]);
+
+  const start = new Date(
+    2000 + startParts[0],
+    startParts[1] - 1,
+    startParts[2],
+  );
   const end = new Date(2000 + endParts[0], endParts[1] - 1, endParts[2]);
-  
+
   const current = new Date(start);
   while (current <= end) {
     const year = current.getFullYear().toString().slice(-2);
@@ -79,13 +86,16 @@ function getDatesInRange(startDate: string, endDate: string): string[] {
     dates.push(`${year}-${month}-${day}`);
     current.setDate(current.getDate() + 1);
   }
-  
+
   return dates;
 }
 
-async function applySocialMediaOptimizations(page: any, platform: keyof typeof SOCIAL_DIMENSIONS) {
+async function applySocialMediaOptimizations(
+  page: any,
+  platform: keyof typeof SOCIAL_DIMENSIONS,
+) {
   const optimizations = SOCIAL_DIMENSIONS[platform].optimizations;
-  
+
   // Hide navigation and footer elements
   if (optimizations.hideNavigation) {
     await page.addStyleTag({
@@ -93,10 +103,10 @@ async function applySocialMediaOptimizations(page: any, platform: keyof typeof S
         header, footer, nav, [class*="footerStrip"], [class*="nav"], [class*="Overlay"] { 
           display: none !important; 
         }
-      `
+      `,
     });
   }
-  
+
   // Center and optimize content
   if (optimizations.centerContent) {
     await page.addStyleTag({
@@ -120,12 +130,15 @@ async function applySocialMediaOptimizations(page: any, platform: keyof typeof S
           transform: none !important;
           ${optimizations.addPadding ? 'padding: 2rem !important;' : ''}
         }
-      `
+      `,
     });
   }
 }
 
-async function captureClocks(dateRange: string, platforms: (keyof typeof SOCIAL_DIMENSIONS)[]) {
+async function captureClocks(
+  dateRange: string,
+  platforms: (keyof typeof SOCIAL_DIMENSIONS)[],
+) {
   // Ensure the output directory exists
   if (!fs.existsSync(SCREENSHOT_DIR)) {
     fs.mkdirSync(SCREENSHOT_DIR, { recursive: true });
@@ -133,13 +146,17 @@ async function captureClocks(dateRange: string, platforms: (keyof typeof SOCIAL_
 
   const { startDate, endDate } = parseDateRange(dateRange);
   const dates = getDatesInRange(startDate, endDate);
-  
-  console.log(`📅 Date range: ${startDate} to ${endDate} (${dates.length} days)`);
-  console.log(`📱 Platforms: ${platforms.map(p => SOCIAL_DIMENSIONS[p].name).join(', ')}`);
+
+  console.log(
+    `📅 Date range: ${startDate} to ${endDate} (${dates.length} days)`,
+  );
+  console.log(
+    `📱 Platforms: ${platforms.map((p) => SOCIAL_DIMENSIONS[p].name).join(', ')}`,
+  );
 
   const clocks = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf-8'));
-  const filteredClocks = clocks.filter((clock: any) => 
-    dates.includes(clock.date)
+  const filteredClocks = clocks.filter((clock: any) =>
+    dates.includes(clock.date),
   );
 
   if (filteredClocks.length === 0) {
@@ -168,14 +185,16 @@ async function captureClocks(dateRange: string, platforms: (keyof typeof SOCIAL_
   console.log(`🚀 Starting capture sequence on http://localhost:${port}`);
 
   const browser = await chromium.launch();
-  
+
   for (const platform of platforms) {
     const dimensions = SOCIAL_DIMENSIONS[platform];
-    console.log(`\n📱 Capturing for ${dimensions.name} (${dimensions.width}x${dimensions.height})`);
-    
+    console.log(
+      `\n📱 Capturing for ${dimensions.name} (${dimensions.width}x${dimensions.height})`,
+    );
+
     const page = await browser.newPage({
       viewport: { width: dimensions.width, height: dimensions.height },
-      deviceScaleFactor: 2 // High quality for social media
+      deviceScaleFactor: 2, // High quality for social media
     });
 
     // Apply platform-specific optimizations
@@ -183,24 +202,27 @@ async function captureClocks(dateRange: string, platforms: (keyof typeof SOCIAL_
 
     for (const clock of filteredClocks) {
       const url = `http://localhost:${port}/${clock.date}`;
-      const outputPath = path.join(SCREENSHOT_DIR, `${clock.date}-${platform}.png`);
+      const outputPath = path.join(
+        SCREENSHOT_DIR,
+        `${clock.date}-${platform}.png`,
+      );
 
       try {
         console.log(`📸 Capturing: ${clock.title} [${clock.date}]`);
-        
+
         // Wait until the basic page structure is loaded
         await page.goto(url, { waitUntil: 'load', timeout: 30000 });
-        
+
         // Wait for component to load and settle
         console.log('⏱️ Waiting 1.5 seconds for component to load...');
         await page.waitForTimeout(1500);
-        
-        await page.screenshot({ 
+
+        await page.screenshot({
           path: outputPath,
           quality: dimensions.quality,
-          animations: 'allow' 
+          animations: 'allow',
         });
-        
+
         console.log(`✅ Saved: ${outputPath}`);
       } catch (err: any) {
         console.error(`❌ Failed to capture ${clock.date}: ${err.message}`);
@@ -211,10 +233,10 @@ async function captureClocks(dateRange: string, platforms: (keyof typeof SOCIAL_
   }
 
   await browser.close();
-  
+
   console.log(`\n🎉 Social media capture complete!`);
   console.log(`📸 Files saved in: ${SCREENSHOT_DIR}`);
-  
+
   for (const platform of platforms) {
     const dimensions = SOCIAL_DIMENSIONS[platform];
     console.log(`   - ${dimensions.name}: ${filteredClocks.length} files`);
@@ -222,13 +244,16 @@ async function captureClocks(dateRange: string, platforms: (keyof typeof SOCIAL_
 }
 
 // Parse command line arguments
-function parseArguments(): { dateRange: string; platforms: (keyof typeof SOCIAL_DIMENSIONS)[] } {
+function parseArguments(): {
+  dateRange: string;
+  platforms: (keyof typeof SOCIAL_DIMENSIONS)[];
+} {
   const args = process.argv.slice(2);
-  
+
   // Find date range (first non-flag argument)
-  const dateRangeArg = args.find(arg => !arg.startsWith('--'));
+  const dateRangeArg = args.find((arg) => !arg.startsWith('--'));
   let dateRange: string;
-  
+
   if (dateRangeArg) {
     dateRange = dateRangeArg;
   } else {
@@ -239,19 +264,19 @@ function parseArguments(): { dateRange: string; platforms: (keyof typeof SOCIAL_
     const day = today.getDate().toString().padStart(2, '0');
     dateRange = `${year}-${month}-${day}`;
   }
-  
+
   // Determine platforms
   const platforms: (keyof typeof SOCIAL_DIMENSIONS)[] = [];
-  
+
   if (args.includes('--instagram')) platforms.push('instagram');
   if (args.includes('--twitter')) platforms.push('twitter');
   if (args.includes('--facebook')) platforms.push('facebook');
-  
+
   // If no platforms specified, default to all
   if (platforms.length === 0) {
     platforms.push('instagram', 'twitter', 'facebook');
   }
-  
+
   return { dateRange, platforms };
 }
 

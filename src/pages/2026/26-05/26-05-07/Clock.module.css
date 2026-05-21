@@ -5,7 +5,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to bottom, #5d78b0 0%, #5d78b0 50%, #cbbdae 63%, #cbbdae 100%);
+  background: linear-gradient(
+    to bottom,
+    #5d78b0 0%,
+    #5d78b0 50%,
+    #cbbdae 63%,
+    #cbbdae 100%
+  );
   position: relative;
 }
 
@@ -64,8 +70,8 @@
   font-family: 'Gallop', 'Courier New', monospace;
   color: #8f5020f6;
   text-shadow: -1px -1px 0px rgba(245, 222, 179, 0.347);
-  WebkitUserSelect: none;
-  userSelect: none;
+  webkituserselect: none;
+  userselect: none;
   z-index: 5;
   letter-spacing: 0.05em;
 }

@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useCallback,
+} from 'react';
 import { useClockTime, formatTime as utilFormatTime } from '@/utils/clockUtils';
 
 const GRAVITY = 0.6;
@@ -7,7 +13,10 @@ const BOUNCE = -0.85;
 const Clock: React.FC = () => {
   const time = useClockTime();
 
-  const { hours, minutes, seconds } = useMemo(() => utilFormatTime(time, '24h'), [time]);
+  const { hours, minutes, seconds } = useMemo(
+    () => utilFormatTime(time, '24h'),
+    [time],
+  );
 
   // Motion state
   const [y, setY] = useState(0);
@@ -117,8 +126,8 @@ const Clock: React.FC = () => {
         }
       `}</style>
 
-      <time 
-        ref={clockRef} 
+      <time
+        ref={clockRef}
         style={clockStyle}
         dateTime={`${hours}:${minutes}:${seconds}`}
       >

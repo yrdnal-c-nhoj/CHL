@@ -49,14 +49,25 @@ const RainCanvas: React.FC = () => {
 
   // Types for classes defined inside useEffect
   type DropType = {
-    z: number; x: number; y: number; speed: number; length: number; targetY: number;
+    z: number;
+    x: number;
+    y: number;
+    speed: number;
+    length: number;
+    targetY: number;
     init(canvas: HTMLCanvasElement): void;
     update(canvas: HTMLCanvasElement, currentRipples: RippleType[]): void;
     draw(ctx: CanvasRenderingContext2D, themeColor: string): void;
   };
 
   type RippleType = {
-    x: number; y: number; z: number; r: number; opacity: number; growth: number; decay: number;
+    x: number;
+    y: number;
+    z: number;
+    r: number;
+    opacity: number;
+    growth: number;
+    decay: number;
     update(): void;
     draw(ctx: CanvasRenderingContext2D, themeColor: string): void;
   };
@@ -154,13 +165,19 @@ const RainCanvas: React.FC = () => {
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      dropsRef.current = Array.from({ length: dropCountRef.current }, () => new Drop(canvas));
+      dropsRef.current = Array.from(
+        { length: dropCountRef.current },
+        () => new Drop(canvas),
+      );
     };
 
     window.addEventListener('resize', resize);
     resize();
 
-    dropsRef.current = Array.from({ length: dropCountRef.current }, () => new Drop(canvas));
+    dropsRef.current = Array.from(
+      { length: dropCountRef.current },
+      () => new Drop(canvas),
+    );
 
     const render = () => {
       ctx.fillStyle = '#DBCC99';

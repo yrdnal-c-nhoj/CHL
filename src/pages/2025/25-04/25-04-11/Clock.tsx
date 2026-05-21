@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import hand1 from '@/assets/images/2025/25-04/25-04-11/hand1.webp';
-import hand2 from '@/assets/images/2025/25-04/25-04-11/hand2.webp';
-import hand3 from '@/assets/images/2025/25-04/25-04-11/hand3.webp';
-import inst from '@/assets/images/2025/25-04/25-04-11/inst.webp';
+import hand1 from '@/assets/images/25_images/25-04/25-04-11/hand1.webp';
+import hand2 from '@/assets/images/25_images/25-04/25-04-11/hand2.webp';
+import hand3 from '@/assets/images/25_images/25-04/25-04-11/hand3.webp';
+import inst from '@/assets/images/25_images/25-04/25-04-11/inst.webp';
 
 // Component Props interface
 interface BoringClockProps {

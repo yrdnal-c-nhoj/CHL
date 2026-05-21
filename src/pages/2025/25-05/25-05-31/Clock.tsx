@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import elWebp from '@/assets/images/2025/25-05/25-05-31/el.webp';
-import el1 from '@/assets/images/2025/25-05/25-05-31/el1.png';
-import el2 from '@/assets/images/2025/25-05/25-05-31/el2.png';
-import el3 from '@/assets/images/2025/25-05/25-05-31/el3.png';
-import eleGif from '@/assets/images/2025/25-05/25-05-31/ele.gif';
+import elWebp from '@/assets/images/25_images/25-05/25-05-31/el.webp';
+import el1 from '@/assets/images/25_images/25-05/25-05-31/el1.png';
+import el2 from '@/assets/images/25_images/25-05/25-05-31/el2.png';
+import el3 from '@/assets/images/25_images/25-05/25-05-31/el3.png';
+import eleGif from '@/assets/images/25_images/25-05/25-05-31/ele.gif';
 import fatFont from '@/assets/fonts/25fonts/25-05-31-fat.otf';
 
 const ElephantClock: React.FC = () => {
@@ -16,9 +16,9 @@ const ElephantClock: React.FC = () => {
       fontUrl: fatFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

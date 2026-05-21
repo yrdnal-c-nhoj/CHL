@@ -26,16 +26,19 @@ const TripleCactusClock = () => {
   };
 
   // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    {
-      fontFamily: 'CactusClockFont',
-      fontUrl: sageFontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: 'CactusClockFont',
+        fontUrl: sageFontUrl,
+        options: {
+          weight: 'normal',
+          style: 'normal',
+        },
+      },
+    ],
+    [],
+  );
 
   // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);
@@ -44,29 +47,41 @@ const TripleCactusClock = () => {
   const currentTime = useMillisecondClock();
   const componentId = useRef(`cactus-clock-${Date.now()}`);
 
-  const setDigits = useCallback((container: HTMLDivElement | null, text: string): void => {
-    if (!container) return;
-    container.innerHTML = '';
-    for (let char of text) {
-      const span = document.createElement('span');
-      span.textContent = char;
-      Object.assign(span.style, {
-        color: '#f3f586',
-        fontSize: '12vh',
-        lineHeight: '8vh',
-        textAlign: 'center',
-        fontVariantNumeric: 'tabular-nums',
-        fontFeatureSettings: '"tnum"',
-        fontFamily: 'CactusClockFont, sans-serif',
-      });
-      container.appendChild(span);
-    }
-  }, []);
+  const setDigits = useCallback(
+    (container: HTMLDivElement | null, text: string): void => {
+      if (!container) return;
+      container.innerHTML = '';
+      for (let char of text) {
+        const span = document.createElement('span');
+        span.textContent = char;
+        Object.assign(span.style, {
+          color: '#f3f586',
+          fontSize: '12vh',
+          lineHeight: '8vh',
+          textAlign: 'center',
+          fontVariantNumeric: 'tabular-nums',
+          fontFeatureSettings: '"tnum"',
+          fontFamily: 'CactusClockFont, sans-serif',
+        });
+        container.appendChild(span);
+      }
+    },
+    [],
+  );
 
   const updateClock = useCallback((): void => {
-    setDigits(clockRefs.hours.current, String(currentTime.getHours()).padStart(2, '0'));
-    setDigits(clockRefs.minutes.current, String(currentTime.getMinutes()).padStart(2, '0'));
-    setDigits(clockRefs.seconds.current, String(currentTime.getSeconds()).padStart(2, '0'));
+    setDigits(
+      clockRefs.hours.current,
+      String(currentTime.getHours()).padStart(2, '0'),
+    );
+    setDigits(
+      clockRefs.minutes.current,
+      String(currentTime.getMinutes()).padStart(2, '0'),
+    );
+    setDigits(
+      clockRefs.seconds.current,
+      String(currentTime.getSeconds()).padStart(2, '0'),
+    );
     setDigits(
       clockRefs.milliseconds.current,
       String(currentTime.getMilliseconds()).padStart(3, '0'),

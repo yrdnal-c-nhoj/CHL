@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import bg1 from '@/assets/images/2025/25-06/25-06-26/co.png';
-import bg2 from '@/assets/images/2025/25-06/25-06-26/cos.png';
+import bg1 from '@/assets/images/25_images/25-06/25-06-26/co.png';
+import bg2 from '@/assets/images/25_images/25-06/25-06-26/cos.png';
 import wheFont from '@/assets/fonts/25fonts/25-06-26-whe.ttf';
 
 const CosmicWheelClock: React.FC = () => {
@@ -13,9 +13,9 @@ const CosmicWheelClock: React.FC = () => {
       fontUrl: wheFont,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

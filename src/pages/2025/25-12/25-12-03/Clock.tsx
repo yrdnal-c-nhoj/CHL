@@ -7,11 +7,14 @@ import dogFontUrl from '@/assets/fonts/25fonts/25-12-03-dog.ttf?url';
 import styles from './Clock.module.css';
 
 export const fontConfigs: FontConfig[] = [
-  { fontFamily: 'CustomFont', fontUrl: dogFontUrl }
+  { fontFamily: 'CustomFont', fontUrl: dogFontUrl },
 ];
 
 const PuppyClockComponent: React.FC = () => {
-  const [images, setImages] = useState<{ current: string; next: string }>({ current: '', next: '' });
+  const [images, setImages] = useState<{ current: string; next: string }>({
+    current: '',
+    next: '',
+  });
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const transitionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const time = useClockTime();

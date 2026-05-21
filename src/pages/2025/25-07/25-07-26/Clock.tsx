@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import bg1 from '@/assets/images/2025/25-07/25-07-26/tum.gif';
-import bg2 from '@/assets/images/2025/25-07/25-07-26/tum2.gif';
+import bg1 from '@/assets/images/25_images/25-07/25-07-26/tum.gif';
+import bg2 from '@/assets/images/25_images/25-07/25-07-26/tum2.gif';
 import myFontUrl from '@/assets/fonts/25fonts/25-07-26-sec.ttf';
 
 const COLORS = ['#CB0BEDFF', '#25E90CFF', '#F58E0FFF'];
@@ -20,9 +20,9 @@ const PrimaryColorClock: React.FC = () => {
       fontUrl: myFontUrl,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 

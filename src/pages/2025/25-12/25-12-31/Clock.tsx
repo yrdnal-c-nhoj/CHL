@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
-import bgImage from '@/assets/images/2025/25-12/25-12-31/shadow.jpg';
+import bgImage from '@/assets/images/25_images/25-12/25-12-31/shadow.jpg';
 import d250916font from '@/assets/fonts/25fonts/25-12-31-shadow.otf';
 
 // 1. LETTER MAPPING: Move outside to prevent recreation on every render
@@ -21,11 +21,14 @@ const DIGIT_TO_LETTER: Record<string, string> = {
 
 const Clock: React.FC = () => {
   const time = useClockTime();
-  const [isLargeScreen, setIsLargeScreen] = useState<boolean>(window.innerWidth > 768);
+  const [isLargeScreen, setIsLargeScreen] = useState<boolean>(
+    window.innerWidth > 768,
+  );
 
-  const fontConfigs = useMemo<FontConfig[]>(() => [
-    { fontFamily: 'MyD250916font', fontUrl: d250916font }
-  ], []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: 'MyD250916font', fontUrl: d250916font }],
+    [],
+  );
 
   useSuspenseFontLoader(fontConfigs);
 

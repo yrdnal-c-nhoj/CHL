@@ -1,13 +1,13 @@
 import React, { Suspense, useMemo, useEffect, useState, memo } from 'react';
 import { useClockTime } from '@/utils/hooks';
-import { useSuspenseFontLoader, ClockLoadingFallback } from '@/utils/fontLoader';
+import {
+  useSuspenseFontLoader,
+  ClockLoadingFallback,
+} from '@/utils/fontLoader';
 import clockFont from '@/assets/fonts/26fonts/26-05-11-stars.ttf';
 import type { FontConfig } from '@/types/clock';
 
-
 import styles from './Clock.module.css';
-
-
 
 // ---------------- INTERFACES ----------------
 interface Star {
@@ -64,10 +64,19 @@ const generateRandomStar = (id: number): Star => {
     id,
     x: Math.random() * 100,
     y: Math.random() * 100, // Distribute across the screen
-    size: Math.random() * (NIGHT_SKY_CONFIG.SIZE.max - NIGHT_SKY_CONFIG.SIZE.min) + NIGHT_SKY_CONFIG.SIZE.min,
-    speed: Math.random() * (NIGHT_SKY_CONFIG.SPEED.max - NIGHT_SKY_CONFIG.SPEED.min) + NIGHT_SKY_CONFIG.SPEED.min,
+    size:
+      Math.random() * (NIGHT_SKY_CONFIG.SIZE.max - NIGHT_SKY_CONFIG.SIZE.min) +
+      NIGHT_SKY_CONFIG.SIZE.min,
+    speed:
+      Math.random() *
+        (NIGHT_SKY_CONFIG.SPEED.max - NIGHT_SKY_CONFIG.SPEED.min) +
+      NIGHT_SKY_CONFIG.SPEED.min,
     color: colors[Math.floor(Math.random() * colors.length)] || '#FFFFFF',
-    twinkleSpeed: Math.random() * (NIGHT_SKY_CONFIG.TWINKLE_DURATION.max - NIGHT_SKY_CONFIG.TWINKLE_DURATION.min) + NIGHT_SKY_CONFIG.TWINKLE_DURATION.min,
+    twinkleSpeed:
+      Math.random() *
+        (NIGHT_SKY_CONFIG.TWINKLE_DURATION.max -
+          NIGHT_SKY_CONFIG.TWINKLE_DURATION.min) +
+      NIGHT_SKY_CONFIG.TWINKLE_DURATION.min,
     delay: Math.random() * -20, // Negative delay so stars start at different positions in the cycle
     opacity: Math.random() * 0.5 + 0.5,
   };
@@ -76,19 +85,26 @@ const generateRandomStar = (id: number): Star => {
 // Custom hook for random digit opacity fading
 const useDigitOpacities = (digitCount: number) => {
   const [opacities, setOpacities] = useState<number[]>(() =>
-    Array.from({ length: digitCount }, () =>
-      Math.random() * (NIGHT_SKY_CONFIG.DIGIT_FADE.maxOpacity - NIGHT_SKY_CONFIG.DIGIT_FADE.minOpacity) +
-      NIGHT_SKY_CONFIG.DIGIT_FADE.minOpacity
-    )
+    Array.from(
+      { length: digitCount },
+      () =>
+        Math.random() *
+          (NIGHT_SKY_CONFIG.DIGIT_FADE.maxOpacity -
+            NIGHT_SKY_CONFIG.DIGIT_FADE.minOpacity) +
+        NIGHT_SKY_CONFIG.DIGIT_FADE.minOpacity,
+    ),
   );
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setOpacities(prev =>
-        prev.map(() =>
-          Math.random() * (NIGHT_SKY_CONFIG.DIGIT_FADE.maxOpacity - NIGHT_SKY_CONFIG.DIGIT_FADE.minOpacity) +
-          NIGHT_SKY_CONFIG.DIGIT_FADE.minOpacity
-        )
+      setOpacities((prev) =>
+        prev.map(
+          () =>
+            Math.random() *
+              (NIGHT_SKY_CONFIG.DIGIT_FADE.maxOpacity -
+                NIGHT_SKY_CONFIG.DIGIT_FADE.minOpacity) +
+            NIGHT_SKY_CONFIG.DIGIT_FADE.minOpacity,
+        ),
       );
     }, NIGHT_SKY_CONFIG.DIGIT_FADE.updateInterval);
 
@@ -100,25 +116,29 @@ const useDigitOpacities = (digitCount: number) => {
 
 // ---------------- COMPONENTS ----------------
 const StarField: React.FC = memo(() => {
-  const stars = useMemo(() => 
-    Array.from({ length: NIGHT_SKY_CONFIG.STAR_COUNT }, (_, i) => generateRandomStar(i)),
-  []);
+  const stars = useMemo(
+    () =>
+      Array.from({ length: NIGHT_SKY_CONFIG.STAR_COUNT }, (_, i) =>
+        generateRandomStar(i),
+      ),
+    [],
+  );
 
   return (
     <div className={styles.starField}>
-      {stars.map(star => (
+      {stars.map((star) => (
         <div
           key={star.id}
           className={styles.star}
           style={{
-            left: `${star.x}%`, 
+            left: `${star.x}%`,
             top: `${star.y}%`,
-            width: `${star.size * 0.1}vh`, 
-            height: `${star.size * 0.1}vh`, 
+            width: `${star.size * 0.1}vh`,
+            height: `${star.size * 0.1}vh`,
             color: star.color, // used by currentColor in CSS box-shadow
-            backgroundColor: star.color, 
+            backgroundColor: star.color,
             ['--twinkle-speed' as any]: `${star.twinkleSpeed}s`,
-            ['--fall-speed' as any]: `${5 / star.speed}s`, 
+            ['--fall-speed' as any]: `${5 / star.speed}s`,
             ['--fall-delay' as any]: `${star.delay}s`,
             opacity: star.opacity,
           }}
@@ -154,10 +174,7 @@ const NightSkyInner: React.FC = () => {
     <main className={styles.container}>
       <div className={styles.nightSkyGradient} />
 
-      <time
-        dateTime={currentTime.toISOString()}
-        className={styles.timeDisplay}
-      >
+      <time dateTime={currentTime.toISOString()} className={styles.timeDisplay}>
         {digits.map((char, i) => (
           <span
             key={i}

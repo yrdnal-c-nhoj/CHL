@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import fontFile from '@/assets/fonts/26fonts/26-01-02-cram.ttf';
-import backgroundImage from '@/assets/images/2026/26-01/26-01-02/brick.webp';
+import backgroundImage from '@/assets/images/26_images/26-01/26-01-02/brick.webp';
 
 const StretchedClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -11,14 +11,16 @@ const StretchedClock: React.FC = () => {
       fontUrl: fontFile,
       options: {
         weight: 'normal',
-        style: 'normal'
-      }
-    }
+        style: 'normal',
+      },
+    },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   const [time, setTime] = useState(new Date());
-  const [isLargeScreen, setIsLargeScreen] = useState<any>(window.innerWidth > 768);
+  const [isLargeScreen, setIsLargeScreen] = useState<any>(
+    window.innerWidth > 768,
+  );
   const [bgReady, setBgReady] = useState<boolean>(false);
 
   // Font loading handled by useMultipleFontLoader
