@@ -1,12 +1,12 @@
-// TimelineClock.jsx
 import React, { useEffect, useState } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import li251128font from '@/assets/fonts/25fonts/25-11-28-line.otf?url';
 import patternImg from '@/assets/images/25_images/25-11/25-11-28/line.webp';
+import styles from './Clock.module.css';
 
 // Export assets for preloading
-export { patternImg };
+export const assets = [patternImg];
 
 export const fontConfigs = [
   {
@@ -15,16 +15,6 @@ export const fontConfigs = [
     options: { weight: 'normal', style: 'normal' },
   },
 ];
-
-// 1. Keep fontStyles for global CSS injection
-const fontStyles = `
-  @font-face {
-    font-family: 'Li251128font';
-    src: url(${li251128font}) format('opentype');
-    font-display: block; 
-  }
-  html, body, #root { height: 100dvh; margin: 0; overflow: hidden; }
-`;
 
 export default function TimelineClock() {
   const now = useClockTime();
@@ -144,21 +134,20 @@ export default function TimelineClock() {
   }));
 
   return (
-    <div style={s.page}>
-      <style>{fontStyles}</style>
-      <div style={s.timeline}>
-        <div style={s.bar} />
+    <main className={styles.container} style={s.page}>
+      <div className={styles.timeline} style={s.timeline}>
+        <div className={styles.bar} style={s.bar} />
         {/* Hour ticks (now diagonal) */}
         {ticks.map((t) => (
           <div key={t.hour} style={s.tick(t.pos)}>
             {String(t.hour).padStart(2, '0')}
           </div>
         ))}
-        {/* Main glowing red line (horizontal or vertical) */}
-        <div style={s.nowLine} />
+        {/* Main glowing red line */}
+        <time className={styles.nowLine} style={s.nowLine} dateTime={now.toISOString()} />
         {/* Flying comet highlight */}
-        <div style={s.comet} />
+        <div className={styles.comet} style={s.comet} />
       </div>
-    </div>
+    </main>
   );
 }

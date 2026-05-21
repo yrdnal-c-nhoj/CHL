@@ -191,6 +191,33 @@ const AnimatedClock: React.FC = () => {
 
 ---
 
+## Time Formatting Utilities
+
+```tsx
+// Use padStart for consistent digit display
+const pad = (num: number) => num.toString().padStart(2, '0');
+
+const hours = pad(time.getHours());
+const minutes = pad(time.getMinutes());
+const seconds = pad(time.getSeconds());
+
+// ISO format for datetime attribute
+const isoString = time.toISOString();
+```
+
+---
+
+## File Locations
+
+| File Type           | Path                                             | Required |
+| ------------------- | ------------------------------------------------ | -------- |
+| **Clock component** | `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx`        | ✅ Yes   |
+| **Styles**          | `src/pages/YYYY/YY-MM/YY-MM-DD/Clock.module.css` | ✅ Yes   |
+| **Images**          | `src/assets/images/YY-MM/YY-MM-DD/`              | Optional |
+| **Fonts**           | `src/assets/fonts/YYYY/YY-MM-DD-name.woff2`      | Optional |
+
+---
+
 ## Performance
 
 - Use `useClockTime` for static displays (1s updates)
