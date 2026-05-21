@@ -121,7 +121,7 @@ Earlier sprint text cited **270 unused fonts**. A fresh heuristic scan finds **7
 
 - **648** image files are not WebP (~59% of image count).
 - Run `npm run optimize:images` on staged folders; update clock imports to `.webp`.
-- Target: align with BTS rule (`YY-MM-DD-name.webp` only for new work).
+- Target: align with BTS rule (keep descriptive names for images; prefix fonts with dates).
 - Expected repo savings: tens of MB+ depending on JPEG quality.
 
 ### 2. Fonts

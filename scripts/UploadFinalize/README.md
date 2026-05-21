@@ -69,7 +69,7 @@ screen-caps/
 - Proper font loading with `useSuspenseFontLoader()`
 - Semantic HTML with `<time dateTime={...}>`
 - CSS modules instead of inline styles (where possible)
-- Proper asset naming conventions
+- Proper asset naming conventions (Date prefix for fonts; descriptive for images)
 - Performance budget compliance
 - Asset organization and placement
 

@@ -5,136 +5,132 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-}
-
-.timeWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-.clockFace {
   position: relative;
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #f5f5f5, #e0e0e0);
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.3),
-    inset 0 2px 5px rgba(255, 255, 255, 0.5);
+  overflow: hidden;
 }
 
-.outerRing {
+.backgroundImage {
   position: absolute;
   inset: 0;
-  border-radius: 50%;
-  border: 8px solid #2c3e50;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1.02);
+  filter: saturate(120%) contrast(105%);
+  z-index: 0;
 }
 
-.innerRing {
+.componentImage1 {
   position: absolute;
-  inset: 12px;
-  border-radius: 50%;
-  border: 2px solid #34495e;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1.02);
+  z-index: 5;
+  pointer-events: none;
 }
 
-.hourTick {
+
+.componentImage2 {
   position: absolute;
-  top: 8px;
-  left: 50%;
-  width: 4px;
-  height: 16px;
-  background-color: #1a1a1a;
-  transform-origin: center 142px;
-  transform: translateX(-50%);
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(0.5) translateY(10%);
+  z-index: 3;
+  filter: contrast(170%) brightness(140%);
+  pointer-events: none;
 }
 
-.minuteTick {
+
+.componentImage3 {
   position: absolute;
-  top: 8px;
-  left: 50%;
-  width: 2px;
-  height: 8px;
-  background-color: #666;
-  transform-origin: center 142px;
-  transform: translateX(-50%);
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1.02);
+  z-index: 5;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.clockWrapper {
+  position: relative;
+  width: 80vh;
+  height: 80vh;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.face {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .number {
   position: absolute;
-  transform: translate(-50%, -50%);
-  font-family: 'Georgia', serif;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1a1a1a;
-  -webkit-user-select: none;
+  top: 50%;
+  left: 50%;
+  font-family: '26-05-21', sans-serif; /* Ensure this name matches your font loader config */
+  font-size: 12vh;
+  color: rgb(42, 145, 241);
+  text-shadow: 0 0 10px rgba(223, 206, 206, 0.5);
   user-select: none;
+  opacity: 0.4;
+  /* Center the digit container on the coordinates */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Set origin to center for predictable radial rotation */
+  transform-origin: center center;
 }
 
-.hand {
+.hourHand,
+.minuteHand,
+.secondHand {
   position: absolute;
   bottom: 50%;
   left: 50%;
   transform-origin: bottom center;
-  border-radius: 2px;
+  background: white;
+  border-radius: 4px;
+}
+
+.hourHand {
+  width: 8px;
+  height: 25%;
+  opacity: 0.6;
+  z-index: 3;
+}
+
+.minuteHand {
+  width: 4px;
+  height: 35%;
+  opacity: 0.6;
+  z-index: 2;
+}
+
+.secondHand {
+  width: 2px;
+  height: 40%;
+  background: #57d20f;
+  z-index: 4;
 }
 
 .centerDot {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 16px;
-  height: 16px;
-  background-color: #2c3e50;
+  width: 12px;
+  height: 12px;
+  background: white;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  z-index: 40;
-}
-
-.centerDotInner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  background-color: #d32f2f;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 41;
-}
-
-.digitalTime {
-  font-family: 'Courier New', monospace;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #fff;
-  letter-spacing: 0.2em;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* Mobile responsive */
-@media (max-width: 480px) {
-  .clockFace {
-    width: 250px;
-    height: 250px;
-  }
-
-  .hourTick {
-    transform-origin: center 117px;
-  }
-
-  .minuteTick {
-    transform-origin: center 117px;
-  }
-
-  .number {
-    font-size: 1.2rem;
-  }
-
-  .digitalTime {
-    font-size: 1.2rem;
-  }
+  z-index: 5;
 }
