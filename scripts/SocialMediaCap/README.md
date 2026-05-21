@@ -130,7 +130,7 @@ public/screenshots/
 ## Technical Specifications
 
 ### Image Quality
-- **Format**: PNG (for social media compatibility)
+- **Format**: WebP (optimized for web)
 - **Quality**: Platform-specific (85-90%)
 - **DPI**: 2x (for high-resolution displays)
 - **Wait Time**: 1.5 seconds for animations to settle
