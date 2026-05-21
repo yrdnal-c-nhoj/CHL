@@ -411,15 +411,5 @@
   { "path": "26-05-18", "date": "26-05-18", "title": "Accordion" },
   { "path": "26-05-19", "date": "26-05-19", "title": "Bliss" },
   { "path": "26-05-20", "date": "26-05-20", "title": "Elevator" },
-  { "path": "26-05-21", "date": "26-05-21", "title": "Sundial" },
-  { "path": "26-05-22", "date": "26-05-22", "title": "Telescope" },
-  { "path": "26-05-23", "date": "26-05-23", "title": "Pyramid" },
-  { "path": "26-05-24", "date": "26-05-24", "title": "Crescent Moon" },
-  { "path": "26-05-25", "date": "26-05-25", "title": "Dolphin" },
-  { "path": "26-05-26", "date": "26-05-26", "title": "Lighthouse" },
-  { "path": "26-05-27", "date": "26-05-27", "title": "Sphinx" },
-  { "path": "26-05-28", "date": "26-05-28", "title": "Gears" },
-  { "path": "26-05-29", "date": "26-05-29", "title": "Mosaic" },
-  { "path": "26-05-30", "date": "26-05-30", "title": "\"The\" Clock" },
-  { "path": "26-06-01", "date": "26-06-01", "title": "\"A\" Clock" }
+  { "path": "26-05-21", "date": "26-05-21", "title": "Canis Major" }
 ]
