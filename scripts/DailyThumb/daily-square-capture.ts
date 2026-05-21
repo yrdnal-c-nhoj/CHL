@@ -31,7 +31,7 @@ async function captureDailySquare(targetDate?: string) {
   const date = targetDate || getTodayDateString();
   console.log(`📅 Looking for clock: ${date}`);
   console.log(`📸 Capturing square thumbnail (500x500px)`);
-  console.log('🖼️ Output format: PNG (Playwright-compatible)');
+  console.log('🖼️ Output format: WebP (optimized for web)');
 
   const clocks = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf-8'));
 
@@ -71,7 +71,7 @@ async function captureDailySquare(targetDate?: string) {
   const page = await context.newPage();
 
   const url = `http://localhost:${port}/${targetClock.date}`;
-  const outputPath = path.join(OUTPUT_DIR, `${targetClock.date}-thumb.png`);
+  const outputPath = path.join(OUTPUT_DIR, `${targetClock.date}-daily-square.webp`);
 
   try {
     console.log(`📸 Capturing: ${targetClock.title} [${targetClock.date}]`);
@@ -115,12 +115,16 @@ async function captureDailySquare(targetDate?: string) {
     );
     await page.waitForTimeout(2000);
 
-    // Capture the entire viewport. Since we set it to 500x500 and
-    // used overflow:hidden, this captures the full component perfectly.
-    await page.screenshot({
-      path: outputPath,
-      fullPage: false,
+    // Use Chrome DevTools Protocol (CDP) to capture WebP directly.
+    // This bypasses Playwright's internal 'type' validation (which limits 
+    // older versions to png/jpeg) by talking directly to the Chromium engine.
+    const client = await page.context().newCDPSession(page);
+    const { data } = await client.send('Page.captureScreenshot', {
+      format: 'webp',
+      quality: 90,
     });
+    
+    fs.writeFileSync(outputPath, Buffer.from(data, 'base64'));
 
     console.log(`✅ Square thumbnail saved to: ${outputPath}`);
   } catch (err: any) {
@@ -132,7 +136,7 @@ async function captureDailySquare(targetDate?: string) {
   console.log(`🎉 Daily square capture complete!`);
   console.log(`📸 File saved in: ${OUTPUT_DIR}`);
   console.log(
-    `   - ${targetClock.date}-thumb.png (1:1 High-DPI square thumbnail)`,
+    `   - ${targetClock.date}-daily-square.webp (1:1 High-DPI square thumbnail)`,
   );
 }
 
