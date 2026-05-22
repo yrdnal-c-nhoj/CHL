@@ -1,2 +1,24 @@
-# Exclude local automation and maintenance scripts from the repository and deployment
-scripts/
+# OS
+.DS_Store
+
+# dependencies
+node_modules/
+
+# builds / generated output
+dist/
+
+# logs
+*.log
+
+# env files (keep example)
+.env
+.env.*
+!.env.example
+!.env.test
+
+# vercel/netlify caches (optional but common)
+.vercel/
+out/
+
+# misc
+coverage/
