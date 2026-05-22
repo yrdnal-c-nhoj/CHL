@@ -1,6 +1,21 @@
-# TODO
-- [ ] Update `src/pages/2026/26-05/26-05-22/Clock.tsx`: remove analog clock numerals/hands and render a 6-cell digital 12-hour clock (HHMM + AM/PM) with no separators.
-- [ ] Update `src/pages/2026/26-05/26-05-22/Clock.module.css`: remove analog styling usage and add zero-gap CSS grid/flex cell styling to ensure no spacing between characters.
-- [x] Run `npm test` (or `npm run build`) to ensure TypeScript/React builds (tests currently fail due to unrelated Router/mock import issues).
+# TODO (GitHub repo cleanup)
 
+## Step 1: Confirm current repo state
+- [x] Run `git status` (working tree clean)
+
+## Step 2: Identify tracked junk
+- [x] List tracked `.env*`, `.DS_Store`, and `dist/` using `git ls-files | grep -E '(\.DS_Store|dist/|node_modules/|\.env)'`
+
+## Step 3: Update `.gitignore`
+- [ ] Add ignores for `node_modules/`, `dist/`, `*.log`, `.DS_Store`, and `.env*` (keep `.env.example`)
+
+## Step 4: Untrack already-committed junk (without deleting locally)
+- [ ] Run `git rm -r --cached dist .DS_Store .env.* node_modules` (only if those paths are tracked)
+
+## Step 5: Commit cleanup
+- [ ] `git add -A && git commit -m "chore: clean up tracked generated/secret files"`
+
+## Step 6: Verify
+- [ ] Re-run `git ls-files | grep -E '(\.DS_Store|dist/|node_modules/|\.env)'` to ensure none remain tracked
+- [ ] Run `git status` to confirm clean working tree
 
