@@ -1,22 +1,35 @@
 /**
  * clockUtils.ts
  *
- * Provides utility functions for consistent time formatting across clock components.
- * This centralizes logic and ensures adherence to the BorrowedTime Standard (BTS).
+ * Provides utility functions and standardized clock hooks/formatters
+ * to support all clock pages.
  */
+
+import { useEffect, useState } from 'react';
 
 /**
  * Pads a number with a leading zero if it's a single digit.
- * @param num The number to pad.
- * @returns The padded string.
  */
 const pad = (num: number): string => num.toString().padStart(2, '0');
 
 /**
+ * useClockTime
+ * Canonical hook expected by some clock pages.
+ * Provides the current time and updates every second.
+ */
+export function useClockTime(_precision?: 'ms' | 's'): Date {
+  const [time, setTime] = useState<Date>(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return time;
+}
+
+/**
  * Formats a Date object into a string based on the specified format.
- * @param date The Date object to format.
- * @param format The desired output format ('24h', '12h', '12h-stylized').
- * @returns The formatted time string.
  */
 export const formatTime = (
   date: Date,
@@ -29,27 +42,27 @@ export const formatTime = (
   switch (format) {
     case '24h':
       return `${pad(hours24)}:${pad(minutes)}:${pad(seconds)}`;
-    case '12h':
+    case '12h': {
       const hours12 = hours24 % 12 || 12;
       const ampm = hours24 >= 12 ? 'PM' : 'AM';
       return `${hours12}:${pad(minutes)}:${pad(seconds)} ${ampm}`;
-    case '12h-stylized':
-      let stylizedHours = date.getHours();
-      const stylizedMinutes = date.getMinutes();
+    }
+    case '12h-stylized': {
+      let stylizedHours = hours24;
+      const stylizedMinutes = minutes;
       const stylizedAmpm = stylizedHours >= 12 ? 'pm' : 'am';
       stylizedHours = stylizedHours % 12 || 12;
       return `${stylizedHours}${stylizedMinutes.toString().padStart(2, '0')} ${stylizedAmpm}`
         .split('')
         .join(' ');
+    }
     default:
-      return date.toLocaleTimeString(); // Fallback for unknown formats
+      return date.toLocaleTimeString();
   }
 };
 
 /**
  * Calculates clock hand angles based on a Date object.
- * @param date The Date object to calculate angles for.
- * @returns An object containing the angles for hour, minute, and second hands.
  */
 export const calculateAngles = (date: Date) => {
   const seconds = date.getSeconds();
@@ -57,9 +70,9 @@ export const calculateAngles = (date: Date) => {
   const hours = date.getHours();
 
   return {
-    // 360 degrees / 60 units = 6 degrees per unit
     second: seconds * 6,
     minute: minutes * 6 + seconds * 0.1,
     hour: (hours % 12) * 30 + minutes * 0.5,
   };
 };
+
