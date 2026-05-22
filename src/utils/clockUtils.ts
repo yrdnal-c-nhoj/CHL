@@ -5,8 +5,6 @@
  * This centralizes logic and ensures adherence to the BorrowedTime Standard (BTS).
  */
 
-import { useState, useEffect } from 'react';
-
 /**
  * Pads a number with a leading zero if it's a single digit.
  * @param num The number to pad.
@@ -64,22 +62,4 @@ export const calculateAngles = (date: Date) => {
     minute: minutes * 6 + seconds * 0.1,
     hour: (hours % 12) * 30 + minutes * 0.5,
   };
-};
-
-/**
- * Custom hook that provides the current time, updating every second.
- * @returns The current Date object.
- */
-export const useClockTime = () => {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  return time;
 };
