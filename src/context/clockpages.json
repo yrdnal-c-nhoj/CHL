@@ -38,11 +38,6 @@
   { "path": "25-05-08", "date": "25-05-08", "title": "Golden Hour" },
   { "path": "25-05-09", "date": "25-05-09", "title": "Whirlpool" },
   { "path": "25-05-10", "date": "25-05-10", "title": "Number Toss" },
-  {
-    "path": "25-05-11",
-    "date": "25-05-11",
-    "title": "Recycled Internet"
-  },
   { "path": "25-05-12", "date": "25-05-12", "title": "Cheetah" },
   { "path": "25-05-13", "date": "25-05-13", "title": "Flat" },
   { "path": "25-05-14", "date": "25-05-14", "title": "Rough Idea" },
@@ -415,5 +410,6 @@
   { "path": "26-05-18", "date": "26-05-18", "title": "Accordion" },
   { "path": "26-05-19", "date": "26-05-19", "title": "Bliss" },
   { "path": "26-05-20", "date": "26-05-20", "title": "Elevator" },
-  { "path": "26-05-21", "date": "26-05-21", "title": "Canis Major" }
+  { "path": "26-05-21", "date": "26-05-21", "title": "Canis Major" },
+  { "path": "26-05-22", "date": "26-05-22", "title": "Subsurface" }
 ]
