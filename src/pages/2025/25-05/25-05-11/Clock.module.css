@@ -1,0 +1,40 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #0a0a0a;
+  color: #e0e0e0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  overflow: hidden;
+  user-select: none;
+}
+
+.displayBox {
+  text-align: center;
+  padding: 3rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0) 80%);
+}
+
+.title {
+  font-size: 0.8rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  opacity: 0.5;
+}
+
+.timeDisplay {
+  font-size: clamp(3rem, 18vw, 12rem);
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+}
+
+.footer {
+  margin-top: 2rem;
+  opacity: 0.3;
+  font-size: 0.9rem;
+}
