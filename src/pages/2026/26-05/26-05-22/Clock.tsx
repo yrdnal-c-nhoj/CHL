@@ -1,68 +1,75 @@
-import React from 'react';
-import { useClockTime } from '@/utils/hooks';
+import React, { useMemo } from 'react';
+import { useClockTime } from '@/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import cablesVideo from '@/assets/images/26_images/26-05/26-05-22/cables.mp4?url';
+import clockFont from '@/assets/fonts/26fonts/26-05-22.otf?url';
 import styles from './Clock.module.css';
 
-// ---------------- FONT CONFIGURATION ----------------
-const fontConfigs = [
-  {
-    name: 'ClockFont',
-    url: '@/assets/fonts/26fonts/26-05-05-dolphin.ttf',
-  },
-];
+/**
+ * Clock Component for 2026-05-22
+ * Features a 6-digit grid layout over a video background.
+ */
+export const assets = [cablesVideo, clockFont];
 
-const BackgroundLayers: React.FC = () => (
-  <video className={styles.backgroundVideo} autoPlay loop muted playsInline>
-    <source
-      src="/src/assets/images/26_images/26-05/26-05-05/jump.mp4"
-      type="video/mp4"
-    />
-  </video>
-);
+const Clock: React.FC = () => {
+  const time = useClockTime();
 
-function get12HourParts(date: Date): {
-  hh: string;
-  mm: string;
-  ampm: 'AM' | 'PM';
-} {
-  const rawHours = date.getHours();
-  const ampm: 'AM' | 'PM' = rawHours >= 12 ? 'PM' : 'AM';
-  const hours12 = rawHours % 12 || 12;
+  // Replace these with the specific characters you picked out for your font mapping
+  const numbers = useMemo(
+    () => ['b', 's', 'j', 'o', 'D', 'n', '0', 'r', 'y', 'a'],
+    []
+  );
 
-  const hh = String(hours12).padStart(2, '0');
-  const mm = String(date.getMinutes()).padStart(2, '0');
-
-  return { hh, mm, ampm };
-}
-
-// ---------------- MAIN CLOCK COMPONENT ----------------
-const DigitalClock: React.FC = () => {
-  const currentTime = useClockTime();
-
-  // Load fonts with suspense to prevent FOUC
+  // Standardized font loading to ensure 'ClockFont_26_05_22' is available
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'ClockFont_26_05_22',
+        fontUrl: clockFont,
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
-  const { hh, mm, ampm } = get12HourParts(currentTime);
-  const ariaLabel = `Current time ${hh}${mm} ${ampm}`;
+  // Format time into 6 individual digits (HHMMSS) to match the CSS grid
+  const digits = useMemo(() => {
+    const hh = time.getHours().toString().padStart(2, '0');
+    const mm = time.getMinutes().toString().padStart(2, '0');
+    const ss = time.getSeconds().toString().padStart(2, '0');
+    return (hh + mm + ss).split('').map((digit) => numbers[parseInt(digit)]);
+  }, [time, numbers]);
 
   return (
-    <div className={styles.container}>
-      <BackgroundLayers />
+    <main className={styles.container}>
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className={styles.backgroundVideo}
+      >
+        <source src={cablesVideo} type="video/mp4" />
+      </video>
 
-      <time dateTime={currentTime.toISOString()} className={styles.clockFace} aria-label={ariaLabel}>
-        {/* 6 cells total, no separators/spaces */}
-        <div className={styles.digitalGrid} aria-hidden="true">
-          <span className={styles.cell}>{hh[0]}</span>
-          <span className={styles.cell}>{hh[1]}</span>
-          <span className={styles.cell}>{mm[0]}</span>
-          <span className={styles.cell}>{mm[1]}</span>
-          <span className={styles.cell}>{ampm[0]}</span>
-          <span className={styles.cell}>{ampm[1]}</span>
-        </div>
-      </time>
-    </div>
+      <div className={styles.clockFace}>
+        <time
+          className={styles.digitalGrid}
+          dateTime={time.toISOString()}
+        >
+          {digits.map((digit, index) => (
+            <div 
+              key={index} 
+              className={styles.cell}
+              aria-hidden="true"
+            >
+              {digit}
+            </div>
+          ))}
+        </time>
+      </div>
+    </main>
   );
 };
 
-export default DigitalClock;
-
+export default Clock;
