@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
 import bgImage from '@/assets/images/25_images/25-11/25-11-07/birds.webp';
 import clockFontUrl from '@/assets/fonts/25fonts/25-11-07-twobirds.ttf?url';
 import { formatTime as utilFormatTime } from '@/utils/clockUtils'; // Import the utility formatTime
 import styles from './Clock.module.css';
+
+// Asset exports for preloading
+export const assets = [bgImage];
 
 export default function PanicAnalogClock() {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -21,6 +25,8 @@ export default function PanicAnalogClock() {
     [],
   );
   useSuspenseFontLoader(fontConfigs);
+
+  const now = useClockTime();
 
   const rightImageDelay = 500; // 0.5s delay for right image
   const bottomImageOpacity = 1.0;
@@ -40,32 +46,16 @@ export default function PanicAnalogClock() {
     right: null,
   });
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  // Use the imported utility formatTime for initial state, using '12h-stylized' to match original local logic
-  const [timeStr, setTimeStr] = useState<string>(() =>
-    utilFormatTime(new Date(), '12h-stylized'),
-  );
 
-  useEffect(() => {
-    const update = () => setTimeStr(utilFormatTime(new Date(), '12h-stylized'));
-    const now = new Date();
-    const msToNextMinute =
-      (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
-    let intervalId = null;
-    const timeoutId = setTimeout(
-      () => {
-        update();
-        intervalId = setInterval(update, 60_000);
-      },
-      Math.max(0, msToNextMinute),
-    );
-    return () => {
-      clearTimeout(timeoutId);
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, []);
+  // Standardized time formatting and ISO string for accessibility
+  const { timeStr, isoTime } = useMemo(() => ({
+    timeStr: utilFormatTime(now, '12h-stylized'),
+    isoTime: now.toISOString()
+  }), [now]);
 
   useEffect(() => {
     let aborted = false;
+    // Using async fetch to create unique ObjectURLs staggers GIF starts
     (async () => {
       try {
         const imgRes = await fetch(bgImage, { cache: 'no-store' });
@@ -219,7 +209,7 @@ export default function PanicAnalogClock() {
       />
       {/* Clock */}
       {fontLoaded && showImages.right && (
-        <div style={stoneClockStyle}>
+        <time style={stoneClockStyle} dateTime={isoTime}>
           {Array.from(timeStr || '').map((ch, idx) => {
             const isAlnum = /[0-9A-Za-z]/.test(ch);
             if (!isAlnum)
@@ -242,7 +232,7 @@ export default function PanicAnalogClock() {
               </span>
             );
           })}
-        </div>
+        </time>
       )}
       {/* Black overlay */}
       <div
