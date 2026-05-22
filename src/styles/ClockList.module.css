@@ -16,7 +16,7 @@
   justify-content: flex-start;
   margin: 0;
   padding: 0;
-  width: 100%;
+  width: 90%;
   min-height: 100vh;
   overflow-y: auto;
 }
@@ -28,16 +28,14 @@
   flex-direction: column;
   flex: 1;
   align-items: center;
-  gap: clamp(0.5rem, 1vw, 1.5rem);
+  /* gap: clamp(0.5rem, 1vw, 1.5rem); */
   width: 100%;
   max-width: 100%;
 }
 
 .sortButton {
-  padding: 0.5rem 0.5rem;
-  background: rgb(255, 254, 254);
-  /* border: 0.5px solid rgba(98, 103, 112, 0.8); */
-  color: #717170;
+  padding: 0.2rem 0.5rem; 
+    color: #717170;
   font-family: 'Manrope', sans-serif;
   cursor: pointer;
   transition:
@@ -57,21 +55,18 @@
 .simpleList {
   list-style: none;
   padding: 0;
-  margin: 0 auto 2rem auto;
+  /* margin: 0 auto 2rem auto; */
   width: 100%;
-  max-width: 40rem;
+  /* max-width: 40rem; */
   font-family: 'Manrope', sans-serif;
 }
 
 .simpleListItem {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 0.75rem;
   align-items: center;
-  padding: 0.2rem 0.1rem;
-  /* finer separator line between items (now black) */
+  justify-items: start;
   border-bottom: 0.5px solid rgba(0, 0, 0, 1);
-  font-size: 1.1rem;
   color: var(--color-lab-text, #424346);
   text-decoration: none;
   transition: background-color 0.15s ease;
@@ -105,11 +100,42 @@
  color: #3e3d3d;
   font-size: 0.9rem;
   white-space: nowrap;
+  text-align: left; /* Align date left within its cell */
+  padding-left: 1rem; /* Add padding to prevent flush left */
 }
 
 .simpleListNumber {
   color: #3e3d3d;
   font-size: 0.9rem;
-  /* text-align: right; */
   white-space: nowrap;
+  text-align: right; /* Align number right within its cell */
+  padding-right: 1rem; /* Add padding to prevent flush right */
+}
+
+.simpleListTitle {
+  color: #120000;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  justify-self: start;
+}
+
+.simpleListImage {
+  display: grid;
+  grid-template-columns: 90px 50px 1fr 70px;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 900px;
+  margin: 0 auto;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+@media (min-width: 600px) {
+  .simpleListImage {
+    grid-template-columns: 150px 80px 1fr 100px;
+    gap: 2rem;
+  }
 }
