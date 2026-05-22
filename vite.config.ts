@@ -50,7 +50,7 @@ export default defineConfig({
             // Use physical path segments instead of aliases which aren't expanded here
             if (id.includes('/src/utils/')) return 'utils';
             // Allow individual code-splitting for clock pages to prevent a massive single bundle
-            // if (id.includes('/src/pages/')) return 'clocks';
+            if (id.includes('/src/pages/')) return 'clocks';
             if (id.includes('/src/components/')) return 'ui';
             return;
           }
