@@ -1,0 +1,36 @@
+.tornadoClock {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, #8d906e 0%, #eaf5a2 100%);
+}
+
+.tornadoClockLetter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  will-change: transform;
+  font-family: 'speed', sans-serif;
+  font-size: 5vh;
+}
+
+.tornadoClockBg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+  filter: contrast(0.2) invert(1);
+  z-index: 0;
+}
+
+.flashOverlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 0.1s;
+  z-index: 100;
+  opacity: 0;
+}

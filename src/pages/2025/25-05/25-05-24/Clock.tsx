@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useState, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import torGif from '@/assets/images/25_images/25-05/25-05-24/tor.gif';
 import speedFont from '@/assets/fonts/25fonts/25-05-24-speed.ttf';
+import styles from './Clock.module.css';
 
 const NUM_PARTICLES = 100;
 
@@ -22,7 +23,6 @@ const Clock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
   const currentTime = useSecondClock();
-  const [timeString, setTimeString] = useState('');
   const flashRef = useRef<HTMLDivElement>(null);
 
   // 2. Initialize Particles (Ref-based to avoid re-renders during animation)
@@ -40,13 +40,11 @@ const Clock: React.FC = () => {
     })),
   );
 
-  // 3. Logic Helpers
-  const updateTimeText = () => {
-    const now = new Date();
-    let hours = now.getHours() % 12 || 12;
-    const mins = now.getMinutes().toString().padStart(2, '0');
-    setTimeString(`${hours}${mins}`);
-  };
+  const timeString = useMemo(() => {
+    const hours = currentTime.getHours() % 12 || 12;
+    const mins = currentTime.getMinutes().toString().padStart(2, '0');
+    return `${hours}${mins}`;
+  }, [currentTime]);
 
   const getRandColor = () => {
     const rand = Math.random();
@@ -58,9 +56,7 @@ const Clock: React.FC = () => {
   };
 
   useEffect(() => {
-    updateTimeText();
     let animationFrame: number;
-    let clockInterval = setInterval(updateTimeText, 60000);
     let startTime = Date.now();
 
     const animate = () => {
@@ -117,43 +113,17 @@ const Clock: React.FC = () => {
 
     return () => {
       cancelAnimationFrame(animationFrame);
-      clearInterval(clockInterval);
       clearTimeout(flashTimeout);
     };
   }, [timeString]);
 
   return (
-    <div className="tornado-clock">
-      <style>{`
-        @font-face { font-family: 'speed'; src: url(${speedFont}); }
-        .tornado-clock {
-          position: relative; width: 100vw; height: 100vh; overflow: hidden;
-          background: radial-gradient(ellipse at center, #8d906e 0%, #eaf5a2 100%);
-        }
-        .tornado-clock__letter {
-          position: absolute; top: 0; left: 0; pointer-events: none;
-          will-change: transform; font-family: 'speed', sans-serif;
-          font-size: 5vh;
-        }
-        .tornado-clock__bg {
-          position: absolute; width: 100%; height: 100%; object-fit: cover;
-          opacity: 0.3; filter: contrast(0.2) invert(1); z-index: 0;
-        }
-        .flash-overlay {
-          position: fixed; inset: 0; pointer-events: none; 
-          transition: opacity 0.1s; z-index: 100; opacity: 0;
-        }
-      `}</style>
-
-      <img src={torGif} className="tornado-clock__bg" alt="" />
+    <div className={styles.tornadoClock}>
+      <img src={torGif} className={styles.tornadoClockBg} alt="" />
 
       {/* React renders the spans once; the useEffect animates them via refs */}
       {particles.current.map((p, i) => (
-        <span
-          key={i}
-          ref={(el) => (p.el = el)}
-          className="tornado-clock__letter"
-        >
+        <span key={i} ref={(el) => (p.el = el)} className={styles.tornadoClockLetter}>
           {timeString[Math.floor(Math.random() * timeString.length)]}
         </span>
       ))}
