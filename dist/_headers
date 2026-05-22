@@ -1,0 +1,7 @@
+/assets/images/*.mp4
+  Content-Type: video/mp4
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/images/*.webm
+  Content-Type: video/webm
+  Cache-Control: public, max-age=31536000, immutable

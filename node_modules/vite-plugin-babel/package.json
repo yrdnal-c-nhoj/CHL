@@ -1,0 +1,61 @@
+{
+  "name": "vite-plugin-babel",
+  "version": "1.6.0",
+  "description": "Runs Babel in Vite during all commands",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "dev": "rollup -c rollup.config.ts --watch --configPlugin typescript",
+    "build": "rollup -c rollup.config.ts --configPlugin typescript",
+    "prepare": "npm run clean && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owlsdepartment/vite-plugin-babel.git"
+  },
+  "author": "Miłosz Mandowski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/owlsdepartment/vite-plugin-babel/issues"
+  },
+  "homepage": "https://github.com/owlsdepartment/vite-plugin-babel#readme",
+  "keywords": [
+    "vite-plugin",
+    "vite",
+    "babel"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.23.6",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@types/babel__core": "^7.20.5",
+    "@types/node": "^20.10.4",
+    "rollup": "^4.8.0",
+    "rollup-plugin-dts": "^6.1.0",
+    "rollup-plugin-esbuild": "^6.1.0",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3",
+    "vite": "^8.0.0"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.0.0",
+    "vite": "^2.7.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0"
+  }
+}
