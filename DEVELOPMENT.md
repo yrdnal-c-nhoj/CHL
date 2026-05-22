@@ -22,8 +22,8 @@
 src/
 ├── pages/YYYY/YY-MM/YY-MM-DD/   # Clock modules
 ├── context/clockpages.json      # Registry (manual edits only)
-├── templates/BaseClock.tsx      # Scaffold source
-└── utils/hooks/                 # useClockTime, useSmoothClock, etc.
+├── templates/BaseClock.tsx      # Scaffold source (BaseClock.tsx)
+└── hooks/                       # useClockTime, useSmoothClock, etc.
 ```
 
 ---
