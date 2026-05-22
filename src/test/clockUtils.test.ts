@@ -1,7 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useClockTime, formatTime, calculateAngles } from '../utils/clockUtils';
-
+import { useClockTime } from '../hooks/useClockTime';
+import { formatTime, calculateAngles } from '../utils/clockUtils';
+// The import for useClockTime was already correct in the test file,
+// but the actual hook definition was still in clockUtils.ts.
 describe('useClockTime', () => {
   beforeEach(() => {
     vi.useFakeTimers();
