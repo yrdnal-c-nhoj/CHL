@@ -111,16 +111,19 @@ const ClockList: FC = () => {
               key={`list-${item.date}`}
               style={index !== 0 ? { borderTop: '2px solid #ddd' } : {}}
             >
-              <a href={`/${item.date}`} className={listStyles.simpleListItem}>
-                <div className={listStyles.thumbnailWrapper}>
-                  <Thumbnail date={item.date} title={item.title || ''} />
-                </div>
+              <a
+                href={`/${item.date}`}
+                className={listStyles.simpleListImage}
+              >
                 <time
                   className={listStyles.simpleListDate}
                   dateTime={`20${item.date}`}
                 >
                   {formatDate(item.date)}
                 </time>
+                <div className={listStyles.thumbnailWrapper}>
+                  <Thumbnail date={item.date} title={item.title || ''} />
+                </div>
                 <span className={listStyles.simpleListTitle}>
                   {item.title || 'No Title'}
                 </span>
