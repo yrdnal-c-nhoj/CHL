@@ -1,8 +1,8 @@
 import { useEffect, useRef, useMemo, Suspense } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime, useSmoothClock } from '@/utils/hooks';
-import backgroundImage from '@/assets/images/2025/25-08/25-08-27/rootsu.webp';
-import dodecahedronFontFile from '@/assets/fonts/2025/25-08-27-root.ttf';
+import backgroundImage from '@/assets/images/25_images/25-08/25-08-27/rootsu.webp';
+import dodecahedronFontFile from '@/assets/fonts/25fonts/25-08-27-root.ttf?url';
 import styles from './Clock.module.css';
 
 export const assets = [backgroundImage];
@@ -14,6 +14,10 @@ function ClockContent() {
   const time = useClockTime();
   const smoothTime = useSmoothClock();
   const animState = useRef({ step: 1, alpha: 1, frameCount: 0 });
+
+  // Use a ref to track smoothTime so the animation loop doesn't use a stale closure
+  const smoothTimeRef = useRef(smoothTime);
+  smoothTimeRef.current = smoothTime;
 
   const fontConfigs = useMemo(
     () => [
@@ -181,7 +185,7 @@ function ClockContent() {
       const size = canvas.width / dpr;
 
       drawRoots(ctx!, size);
-      drawClock(cctx!, smoothTime, size);
+      drawClock(cctx!, smoothTimeRef.current, size);
       animationId = requestAnimationFrame(animate);
     };
 
