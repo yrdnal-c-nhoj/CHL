@@ -1,8 +1,8 @@
 import { useEffect, useRef, useMemo, Suspense } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime, useSmoothClock } from '@/utils/hooks';
-import backgroundImage from '@/assets/images/25_images/25-08/25-08-27/rootsu.webp';
-import dodecahedronFontFile from '@/assets/fonts/25fonts/25-08-27-root.ttf?url';
+import backgroundImage from '@/assets/images/2025/25-08/25-08-27/rootsu.webp';
+import dodecahedronFontFile from '@/assets/fonts/2025/25-08-27-root.ttf?url';
 import styles from './Clock.module.css';
 
 export const assets = [backgroundImage];
