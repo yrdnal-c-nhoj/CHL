@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import {
-  useClockTime,
   formatTime as formatClockTime,
 } from '@/utils/clockUtils';
+import { useClockTime } from '@/utils/hooks';
+
 
 /**
  * Recycled Internet Clock (25-05-11)
