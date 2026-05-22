@@ -22,3 +22,16 @@ out/
 
 # misc
 coverage/
+
+# OS / build output
+.DS_Store
+node_modules/
+dist/
+coverage/
+.vercel/
+
+# local env
+.env
+.env.*
+!.env.example
+
