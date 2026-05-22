@@ -128,7 +128,7 @@ const Clock: React.FC = () => {
         </span>
       ))}
 
-      <div ref={flashRef} className="flash-overlay" />
+      <div ref={flashRef} className={styles.flashOverlay} />
     </div>
   );
 };
