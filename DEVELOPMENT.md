@@ -115,6 +115,16 @@ Details and examples: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## Commands
 
+### Environment Setup
+
+This project requires **Node.js 24.x**. We recommend using [nvm](https://github.com/nvm-sh/nvm) to manage versions:
+
+```bash
+# Install nvm (if not present)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+nvm install 24 && nvm use 24
+```
+
 ### Daily
 
 | Command | Purpose |

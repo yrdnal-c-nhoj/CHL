@@ -24,8 +24,8 @@
     "audit:images": "node scripts/audit-images.mjs",
     "capture:thumbs": "node scripts/SocialMediaCap/capture-clocks.mjs",
     "capture:daily-square": "tsx scripts/DailyThumb/daily-square-capture.ts",
-    "capture:daily": "tsx scripts/SocialMediaCap/daily-screen-capture.ts",
-    "capture:range": "tsx scripts/SocialMediaCap/daily-screen-capture.ts",
+    "capture:daily": "tsx scripts/DailyThumb/daily-capture.ts",
+    "capture:range": "tsx scripts/DailyThumb/daily-capture.ts",
     "scaffold:may": "node scripts/scaffold-may-clocks.js",
     "scaffold:may-assets": "node scripts/scaffold_may_assets.js",
     "finalize": "tsx scripts/UploadFinalize/finalize-component.ts"
