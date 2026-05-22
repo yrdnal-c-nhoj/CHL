@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import bgImage from '@/assets/images/26_images/26-01/26-01-19/hands.webp';
-import { useClockTime } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
+
+// Asset exports for preloading pipeline
+export const assets = [bgImage];
 
 const COLORS = {
   bg: '#FFFFFF',
@@ -121,7 +124,7 @@ const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }) => {
 };
 
 const ManyHandClock: React.FC = () => {
-  const now = useClockTime();
+  const now = useSmoothClock();
   const [clockSize, setClockSize] = useState<number>(90);
   const [bgReady, setBgReady] = useState<boolean>(false);
 
