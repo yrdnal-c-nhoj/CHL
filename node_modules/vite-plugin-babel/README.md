@@ -1,0 +1,98 @@
+# Vite Plugin Babel
+
+Run Babel during any Vite command, also during serve.
+
+## Motivations
+
+Most Vite plugins runs Babel only during `build`, not `serve`, and only other possible way to do this is via [@vitejs/plugin-react](https://www.npmjs.com/package/@vitejs/plugin-react). ESBuild is awesome tool, but doesn't support some experimental features, like decorators ([issue #2349](https://github.com/vitejs/vite/issues/2349)) or class instance fields, out of box. You can use them in TypeScript, but not pure JS. This plugin was made to enable usage of such features and runs babel during `optimizeDeps`, `dev` and `build` stages, but it can be configured.
+
+## Installation
+
+```bash
+# yarn
+yarn add -D vite-plugin-babel
+
+# npm
+npm install -D vite-plugin-babel
+```
+
+## Usage
+
+Add it to your Vite config
+
+```js
+import { defineConfig } from 'vite';
+import babel from 'vite-plugin-babel';
+
+export default defineConfig({
+    plugins: [
+        // Babel will try to pick up Babel config files (.babelrc / .babelrc.* / babel.config.*)
+        babel(),
+        // ...
+    ],
+
+    // ...
+})
+```
+
+## Config
+
+Babel config can be either passed to `babelConfig` field or via Babel config file. For all babel options see: [Babel Options](https://babeljs.io/docs/en/options).
+
+By default, babel is run for JS/JSX files. You can change that vie `filter` option.
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `apply` | `'serve' \| 'build' \| (config: UserConfig, env: ConfigEnv) => boolean` | `undefined` | Limits plugin usage to only build or only serve. If not specified, will be run during both cycles. Same as [`apply` in Vite Plugins API](https://vite.dev/guide/api-plugin.html#conditional-application) |
+| `enforce` | `'pre' \| 'post'` | `pre` | Force plugin's order execution. More details: [Vite Plugin Ordering](https://vite.dev/guide/api-plugin.html#plugin-ordering) |
+| `babelConfig` | `object` | `{}` | [Babel Transform Options](https://babeljs.io/docs/en/options) |
+| `filter` | `RegExp \| (id: string) => boolean` | `/\.jsx?$/` | Which files is babel applied to. By default, it's js/jsx files. You can pass a filter function that accepts file name and returns `true \| false` |
+| `include` | `string \| RegExp \| Array<string\|RegExp>)` | `undefined` | which files to include. If omitted, all are included |
+| `exclude` | `string \| RegExp \| Array<string\|RegExp>)` | `undefined` | which files to exclude. If used with `include`, it will have higher priority and can exclude files, that match `include` pattern |
+| `loader` | `Loader` or `(path: string) => Loader` | `undefined` | This tells esbuild how to interpret the contents after babel's transformation. For example, the js loader interprets the contents as JavaScript and the css loader interprets the contents as CSS. The loader defaults to js if it's not specified. See the [Content Types](https://esbuild.github.io/content-types) page for a complete list of all built-in loaders. |
+| `optimizeOnSSR` | `boolean` | `false` | Run dependency optimization during SSR. Could be useful when running a project on a cloud workers, like `@cloudflare/vite-plugin` |
+
+## Tips
+
+Vite team didn't enable and include Babel by default, because they wanted to keep experience as fast as possible and esbuild can already do a lot of things, you would probably do with Babel. Because of that, we recommend to only include those Babel plugins you really need. You can use option `babelConfig.configFile` and omit Babel config file usage:
+
+```js
+babel({
+    babelConfig: {
+        plugins: ['@babel/plugin-proposal-decorators']
+    }
+})
+```
+
+or just use [Babel config file](https://babeljs.io/docs/config-files).
+
+__NOTE:__ Any babel plugins and presets need to be installed seperately and are not included with this package.
+
+## Troubleshooting
+
+#### [ERROR] The JSX syntax extension is not currently enabled
+
+This usually happens when you're using this plugin to only transform part of a `.jsx` file (such as decorators), and leaving the JSX syntax untouched. By default, esbuild interprets contents as `.js`, so you'll need to specify the loader esbuild should use.
+
+Example:
+
+```js
+import { extname } from 'path';
+// ...
+babel({
+    babelConfig: {
+        plugins: ['@babel/plugin-proposal-decorators'],
+
+        // uses the jsx loader for .jsx files
+        loader: path => {
+          if (extname(path) === '.jsx') {
+            return 'jsx';
+          }
+        },
+    }
+})
+```
+
+## License
+
+Library is under [MIT License](LICENSE)

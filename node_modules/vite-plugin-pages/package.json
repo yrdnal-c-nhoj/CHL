@@ -1,0 +1,116 @@
+{
+  "name": "vite-plugin-pages",
+  "type": "module",
+  "version": "0.33.3",
+  "description": "File system base vue-router plugin for Vite",
+  "author": "hannoeru <me@hanlee.co>",
+  "license": "MIT",
+  "homepage": "https://github.com/hannoeru/vite-plugin-pages",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hannoeru/vite-plugin-pages"
+  },
+  "bugs": "https://github.com/hannoeru/vite-plugin-pages/issues",
+  "keywords": [
+    "vite",
+    "vue",
+    "vue-router",
+    "react",
+    "react-router",
+    "solid-js",
+    "@solidjs/router",
+    "file-system-based",
+    "routing"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./client": {
+      "types": "./client.d.ts"
+    },
+    "./client-react": {
+      "types": "./client-react.d.ts"
+    },
+    "./client-solid": {
+      "types": "./client-solid.d.ts"
+    }
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "LICENSE",
+    "client-react.d.ts",
+    "client-solid.d.ts",
+    "client.d.ts",
+    "dist"
+  ],
+  "peerDependencies": {
+    "@vue/compiler-sfc": "^2.7.0 || ^3.0.0",
+    "vite": "^2.0.0 || ^3.0.0-0 || ^4.0.0 || ^5.0.0-0 || ^6.0.0-0 || ^7.0.0-0 || ^8.0.0-0"
+  },
+  "peerDependenciesMeta": {
+    "@solidjs/router": {
+      "optional": true
+    },
+    "@vue/compiler-sfc": {
+      "optional": true
+    },
+    "react-router": {
+      "optional": true
+    },
+    "vue-router": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@types/debug": "^4.1.12",
+    "debug": "^4.4.3",
+    "dequal": "^2.0.3",
+    "extract-comments": "^1.1.0",
+    "json5": "^2.2.3",
+    "local-pkg": "^1.1.2",
+    "micromatch": "^4.0.8",
+    "picocolors": "^1.1.1",
+    "tinyglobby": "^0.2.15",
+    "yaml": "^2.8.2"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^7.2.0",
+    "@antfu/utils": "^9.3.0",
+    "@solidjs/router": "^0.15.4",
+    "@types/micromatch": "^4.0.10",
+    "@types/node": "^25.2.0",
+    "@vitest/ui": "^4.0.18",
+    "@vue/compiler-sfc": "^3.5.27",
+    "bumpp": "^10.4.0",
+    "eslint": "^9.39.2",
+    "playwright": "^1.58.1",
+    "react": "^19.2.4",
+    "react-router": "^7.13.0",
+    "solid-js": "^1.9.11",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18",
+    "vue": "^3.5.27",
+    "vue-router": "^5.0.2"
+  },
+  "scripts": {
+    "dev": "npm run build -- --watch --ignore-watch examples",
+    "build": "tsup",
+    "play": "pnpm --filter vue dev",
+    "play:react": "pnpm --filter react dev",
+    "release": "bumpp --commit --tag --push",
+    "publish:ci": "tsx scripts/publish.ts",
+    "test": "vitest",
+    "test:e2e": "vitest -c vitest.config.e2e.ts",
+    "test:ui": "vitest --ui",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "type-check": "tsc --noEmit"
+  }
+}

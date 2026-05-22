@@ -239,9 +239,11 @@ Node version: **24.x** (see `package.json` `engines`).
 
 ## Capture Scripts
 
+> **Note:** The `scripts/` directory is excluded from version control and production deployment via `.gitignore`. These tools are intended for local development only.
+
 ```bash
 npm run capture:daily        # Today's thumbnail
-npm run capture:range last-month  # Monthly range for social
+npm run capture:range 26-01-01 26-01-31 # Date range
 ```
 
 Requires the clock to be registered in `clockpages.json`.
