@@ -1,8 +1,8 @@
 import { useEffect, useRef, useMemo, Suspense } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime, useSmoothClock } from '@/utils/hooks';
-import backgroundImage from '@/assets/images/25_images/25-08/25-08-27/rootsu.gif';
-import dodecahedronFontFile from '@/assets/fonts/25fonts/25-08-27-root.ttf'; // renamed import
+import backgroundImage from '@/assets/images/2025/25-08/25-08-27/rootsu.webp';
+import dodecahedronFontFile from '@/assets/fonts/2025/25-08-27-root.ttf';
 import styles from './Clock.module.css';
 
 export const assets = [backgroundImage];
@@ -13,6 +13,7 @@ function ClockContent() {
   const fontRef = useRef('sans-serif');
   const time = useClockTime();
   const smoothTime = useSmoothClock();
+  const animState = useRef({ step: 1, alpha: 1, frameCount: 0 });
 
   const fontConfigs = useMemo(
     () => [
@@ -37,11 +38,8 @@ function ClockContent() {
     const cctx = clock.getContext('2d');
 
     const n = 12;
-    let step = 1;
-    let alpha = 1;
     const buildSpeed = 5;
     const fadeSpeed = 0.01;
-    let frameCount = 0;
 
     // Ensure font name is ready for canvas
     fontRef.current = 'DodecahedronFont';
@@ -110,29 +108,29 @@ function ClockContent() {
         ctx.fillText(`ω^${k}`, tx, ty);
       });
 
-      ctx.strokeStyle = `rgba(255,255,0,${alpha})`;
+      ctx.strokeStyle = `rgba(255,255,0,${animState.current.alpha})`;
       ctx.lineWidth = size * 0.01;
       ctx.beginPath();
-      for (let k = 0; k < step - 1; k++) {
+      for (let k = 0; k < animState.current.step - 1; k++) {
         ctx.moveTo(roots[k].x, roots[k].y);
         ctx.lineTo(roots[k + 1].x, roots[k + 1].y);
       }
-      if (step === n) {
+      if (animState.current.step === n) {
         ctx.moveTo(roots[n - 1].x, roots[n - 1].y);
         ctx.lineTo(roots[0].x, roots[0].y);
       }
       ctx.stroke();
 
-      frameCount++;
-      if (frameCount % buildSpeed === 0) {
-        step++;
-        if (step > n) step = n;
+      animState.current.frameCount++;
+      if (animState.current.frameCount % buildSpeed === 0) {
+        animState.current.step++;
+        if (animState.current.step > n) animState.current.step = n;
       }
-      if (step === n) {
-        alpha -= fadeSpeed;
-        if (alpha <= 0) {
-          alpha = 1;
-          step = 1;
+      if (animState.current.step === n) {
+        animState.current.alpha -= fadeSpeed;
+        if (animState.current.alpha <= 0) {
+          animState.current.alpha = 1;
+          animState.current.step = 1;
         }
       }
     };
@@ -155,7 +153,12 @@ function ClockContent() {
       const minAngle = ((min + sec / 60) * 2 * Math.PI) / 60 - Math.PI / 2;
       const secAngle = (sec * 2 * Math.PI) / 60 - Math.PI / 2;
 
-      const drawHand = (angle, length, color, width) => {
+      const drawHand = (
+        angle: number,
+        length: number,
+        color: string,
+        width: number
+      ) => {
         cctx.beginPath();
         cctx.moveTo(centerX, centerY);
         cctx.lineTo(
@@ -188,7 +191,9 @@ function ClockContent() {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationId);
     };
-  }, [smoothTime]);
+    // Removed smoothTime from dependencies to prevent effect restart loop.
+    // The animate loop inside already has access to the clock logic.
+  }, []);
 
   return (
     <main className={styles.container}>
