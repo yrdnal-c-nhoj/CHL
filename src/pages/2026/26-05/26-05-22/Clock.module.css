@@ -1,4 +1,5 @@
 .container {
+  position: relative;
   width: 100vw;
   height: 100dvh;
   display: flex;
@@ -6,6 +7,19 @@
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.backgroundVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+  transform: rotate(180deg);
+  filter: contrast(0.8) invert(1);
 }
 
 .clockFace {
@@ -17,30 +31,17 @@
   justify-content: center;
 }
 
-.backgroundVideo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-}
-
 .digitalGrid {
   position: relative;
   z-index: 1;
   display: grid;
-
-  /* two rows x three columns */
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 1fr;
-
-  gap: 0;
+  grid-template-columns: repeat(6, 1.5ch);
+  gap: 1.5rem;
   padding: 0;
   margin: 0;
 
   /* ensures no stray whitespace affects layout */
-  font-size: clamp(2rem, 7vw, 5rem);
+  font-size: clamp(4rem, 14vw, 15rem);
   line-height: 1;
   letter-spacing: 0;
 }
@@ -49,23 +50,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: 'ClockFont_26_05_22', serif;
 
-  padding: 0;
-  margin: 0;
+  /* Dazzle Camouflage Pattern (Warship style) */
+  background: repeating-linear-gradient(
+    -45deg,
+    #1a1c1e 0px,
+    #1a1c1e 20px,
+    #7f8c8d 20px,
+    #7f8c8d 40px,
+    #ecf0f1 40px,
+    #ecf0f1 60px,
+    #34495e 60px,
+    #34495e 80px
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 
-  font-weight: 700;
-  color: #ffffff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
-
-  /* IMPORTANT: no spacing between cells */
-  gap: 0;
-  letter-spacing: 0;
+  /* Using filter instead of text-shadow to ensure visibility over clipped text */
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.7));
 }
 
 /* keep 0 padding/gap even on smaller screens */
-@media (max-width: 480px) {
+@media (max-width: 668px) {
   .digitalGrid {
-    font-size: clamp(1.8rem, 10vw, 4rem);
+    /* Two columns for mobile: HH / MM / SS stacked */
+    grid-template-columns: 1.3em 1.3em;
+    font-size: clamp(6rem, 30vw, 12rem);
+    line-height: 0.8;
   }
 }
-

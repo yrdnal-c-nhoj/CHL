@@ -7,13 +7,25 @@ type ConsoleMethod = 'debug' | 'info' | 'warn' | 'error' | 'log';
 
 const shouldSuppress = (msg: string) => {
   // Firefox Glean/NewTabGleanUtils spam (from browser internals, not from this app).
-  if (
-    msg.includes('Reporting Header: invalid JSON value received. collect') ||
-    msg.includes('Reporting Header: invalid JSON value received') ||
-    msg.includes(
-      'SyntaxError: JSON.parse: expected double-quoted property name',
-    )
-  ) {
+  const patterns = [
+    'Reporting Header: invalid JSON value received',
+    'SyntaxError: JSON.parse: expected double-quoted property name',
+    'NewTabGleanUtils',
+    'RemoteSettingsExperimentLoader',
+    'PurgeTrackerService',
+    'URLBar - MerinoClient',
+    'OpaqueResponseBlocking',
+    'Referrer Policy: Ignoring the less restricted referrer policy',
+    'Cookie “FPID” has been rejected',
+    'Cookie “FPLC” has been rejected',
+    'Window.fullScreen attribute is deprecated',
+    'NotFoundError: No such JSProcessActor',
+    'ly(Fast)',
+    'Multiprocess(Slower)',
+    'TypeError: Response constructor: Response body is given with a null body status',
+  ];
+
+  if (patterns.some((p) => msg.includes(p))) {
     return true;
   }
   return false;
