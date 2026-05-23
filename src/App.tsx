@@ -18,11 +18,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import {
-    Navigate,
-    Route,
-    BrowserRouter as Router,
-    Routes,
-    useLocation,
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+  useLocation,
 } from 'react-router-dom';
 import { pageview } from './analytics';
 import { DataProvider } from './context/DataContext';
@@ -192,8 +192,9 @@ const App: React.FC = () => {
                   height: '100vh',
                   fontSize: '1.5rem',
                   fontFamily: 'monospace',
-                  backgroundColor: '#ffffff',
+                  backgroundColor: '#f8f8f8',
                   color: '#000000',
+                  border: '1px solid #eee'
                 }}
               >
                 Loading...
