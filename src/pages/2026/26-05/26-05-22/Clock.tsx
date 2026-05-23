@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
+import clockFont from '@/assets/fonts/26fonts/26-05-22.otf?url';
+import cablesVideo from '@/assets/images/26_images/26-05/26-05-22/cable.mp4?url';
 import { useClockTime } from '@/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import cablesVideo from '@/assets/images/26_images/26-05/26-05-22/cables.mp4?url';
-import clockFont from '@/assets/fonts/26fonts/26-05-22.otf?url';
+import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
 /**
