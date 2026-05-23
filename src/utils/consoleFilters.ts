@@ -9,6 +9,10 @@ const shouldSuppress = (msg: string) => {
   // Firefox Glean/NewTabGleanUtils spam (from browser internals, not from this app).
   const patterns = [
     'Reporting Header: invalid JSON value received',
+    'Browser Console Mode',
+    'Parent process only(Fast)',
+    'Multiprocess(Slower)',
+    'Experiment',
     'SearchSuggestionController',
     'NewTabGleanUtils',
     'RemoteSettingsExperimentLoader',
@@ -21,6 +25,7 @@ const shouldSuppress = (msg: string) => {
     'ownerGlobal',
     'Window.fullScreen',
     'NotFoundError: No such JSProcessActor',
+    'BrowserToolboxDevToolsProcess',
     'ly(Fast)',
     'Multiprocess(Slower)',
     'TypeError: Response constructor: Response body is given with a null body status',
