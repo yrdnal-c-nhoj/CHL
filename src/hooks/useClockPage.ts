@@ -35,13 +35,15 @@ export function useClockPage(currentItem: { date: string } | null) {
 
   const preloadClockAssets = useCallback(
     async (assetUrls: string[]): Promise<void> => {
-      // Rename to avoid collision with the 'assets' export in clock modules
-      // Use an explicit mapping to avoid "src is not defined" ReferenceErrors
-      const _assetConfigs: AssetConfig[] = assetUrls.map((assetUrl) => ({ src: assetUrl }));
+      if (!assetUrls?.length) return;
+
+      // Use a completely unique name for the mapping function parameter
+      // to avoid any potential minifier collision with global 'src' identifiers
+      const configurations: AssetConfig[] = assetUrls.map((url) => ({ src: url }));
 
       // Fail open: missing/broken assets should not prevent the clock from mounting.
       try {
-        await preloadAssets(_assetConfigs);
+        await preloadAssets(configurations);
       } catch {
         // preloadAssets is already Promise-based; this catch is defensive.
       }
@@ -98,20 +100,17 @@ export function useClockPage(currentItem: { date: string } | null) {
         const [path, importFn] = match;
 
         // 2. Dynamically import the module
-        const module = (await (importFn() as Promise<ClockModule>).catch(
-          (err) => {
-            const errorDetail =
-              err instanceof Error ? err.message : String(err);
-            
-            // Log with a specific prefix to bypass some production filters
-            console.error(`CRITICAL_LOAD_ERROR: [${targetDate}]`, err);
-            
-            throw new Error(
-              `Failed to execute Clock (${targetDate}): ${errorDetail}. ` +
-              'Verify all variables (like "src") are imported or declared.'
-            );
-          },
-        )) as ClockModule;
+        // Explicitly invoke the dynamic import function.
+        // We catch errors here specifically to identify if it's a module evaluation error.
+        const module = await (importFn() as () => Promise<ClockModule>)().catch((err) => {
+          const msg = err instanceof Error ? err.message : String(err);
+          console.error(`[useClockPage] Module evaluation failed for ${targetDate}:`, err);
+          throw new Error(`Clock execution failed (${targetDate}): ${msg}`);
+        });
+
+        if (!module || !module.default) {
+          throw new Error(`Clock module at ${path} is missing a default export.`);
+        }
 
         // 3. Preload defined assets (images + video + audio)
         if (module.assets && module.assets.length > 0) {
