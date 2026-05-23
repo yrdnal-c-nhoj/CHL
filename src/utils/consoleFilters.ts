@@ -50,7 +50,9 @@ export function installConsoleFilters() {
         try {
           const joined = args
             .map((a) =>
-              typeof a === 'string'
+              a instanceof Error
+                ? `${a.name}: ${a.message}\n${a.stack}`
+                : typeof a === 'string'
                 ? a
                 : (() => {
                     try {
