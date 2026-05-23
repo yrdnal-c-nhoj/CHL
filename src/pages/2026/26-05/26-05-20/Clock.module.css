@@ -1,26 +1,25 @@
-.pageWrapper {
-  min-block-size: 100vh;
+.container {
+  min-height: 100dvh;
   display: grid;
   place-content: center;
-  font-family: 'Google Sans', system-ui, sans-serif;
-  background: hsl(193, 11%, 82%);
+  font-family: "Google Sans", system-ui, sans-serif;
 }
 
 .frame {
   width: 400px;
   aspect-ratio: 1 / 1.32;
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
+  isolation: isolate;
   border: 16px solid hsl(193, 6%, 41%);
   border-bottom-color: hsl(193, 9%, 28%);
   box-shadow: 0 1.5em 2.375em -0.26em #0006;
   border-radius: 4px;
   display: grid;
-  isolation: isolate;
 }
 
 .frame::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   z-index: 7;
@@ -33,14 +32,14 @@
   inset: 0;
   display: grid;
   place-items: center;
-  background: hsl(210, 1%, 47%);
-  color: #f3e7dd;
+  background: hsl(193, 9%, 28%);
+  color: #DBC5B3;
   font-size: 10vh;
   letter-spacing: 0.08em;
 }
 
 .digitalClock {
-  font-family: 'ClockFont', monospace;
+  font-family: "ClockFont", monospace;
   user-select: none;
   text-shadow: 0 2px 4px #0008;
 }
@@ -48,10 +47,8 @@
 .doors {
   z-index: 5;
   display: grid;
-  grid-template: 'left right' 1fr / 1fr 1fr;
+  grid-template: "left right" 1fr / 1fr 1fr;
   position: relative;
-  height: 100%;
-  width: 100%;
 }
 
 .door {
@@ -65,7 +62,7 @@
 }
 
 .door::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: hsl(193, 6%, 41%)
@@ -88,8 +85,6 @@
   transform-origin: left center;
   box-shadow: inset -3px 0 4px -1px #0007;
   border-inline-end: 1px solid hsl(193, 16%, 14%);
-  width: 50%;
-  left: 0;
 }
 
 .rightDoor {
@@ -97,14 +92,12 @@
   transform-origin: right center;
   box-shadow: inset 3px 0 4px -1px #0007;
   border-inline-start: 1px solid hsl(193, 16%, 14%);
-  width: 50%;
-  left: 50%;
 }
 
-.frame.isOpen .leftDoor {
+.isOpen .leftDoor {
   transform: translateX(-72%);
 }
 
-.frame.isOpen .rightDoor {
+.isOpen .rightDoor {
   transform: translateX(72%);
 }

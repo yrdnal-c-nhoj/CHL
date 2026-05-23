@@ -1,17 +1,35 @@
-import React, { useEffect, useRef, useState } from 'react';
 import clockFont from '@/assets/fonts/26fonts/26-05-20.otf';
+import type { FontConfig } from '@/types/clock';
+import { ClockLoadingFallback, useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
+import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import styles from './Clock.module.css';
 
-function formatTime(d: Date) {
-  const h = d.getHours().toString().padStart(2, '0');
-  const m = d.getMinutes().toString().padStart(2, '0');
-  const s = d.getSeconds().toString().padStart(2, '0');
-  return `${h}:${m}:${s}`;
-}
+// =========================
+// ASSET EXPORTS (Required)
+// =========================
+export const assets: string[] = [clockFont];
 
-export default function Clock() {
+const fontConfigs: FontConfig[] = [
+  { fontFamily: 'ClockFont', fontUrl: clockFont }
+];
+
+const ClockInner: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [now, setNow] = useState(() => new Date());
   const timeoutRef = useRef<number | null>(null);
+  
+  // Standardized hook for time management
+  const now = useClockTime();
+  
+  // Load fonts via Suspense
+  useSuspenseFontLoader(fontConfigs);
+
+  const { formattedTime, isoTime } = useMemo(() => {
+    const h = now.getHours().toString().padStart(2, '0');
+    const m = now.getMinutes().toString().padStart(2, '0');
+    const s = now.getSeconds().toString().padStart(2, '0');
+    return { formattedTime: `${h}:${m}:${s}`, isoTime: now.toISOString() };
+  }, [now]);
 
   // Door animation cycle
   useEffect(() => {
@@ -33,140 +51,16 @@ export default function Clock() {
     };
   }, []);
 
-  // Clock ticking
+  // Explicitly manage body background and cleanup
   useEffect(() => {
-    const id = window.setInterval(() => setNow(new Date()), 1000);
-    return () => window.clearInterval(id);
+    document.body.style.backgroundColor = 'hsl(193, 11%, 82%)';
+    return () => {
+      document.body.style.backgroundColor = '';
+    };
   }, []);
-
-  const styles: React.CSSProperties = {
-    width: 400,
-    aspectRatio: '1 / 1.32',
-    overflow: 'hidden',
-    position: 'relative',
-    border: '16px solid hsl(193, 6%, 41%)',
-    borderBottomColor: 'hsl(193, 9%, 28%)',
-    boxShadow: '0 1.5em 2.375em -0.26em #0006',
-    borderRadius: '4px', // subtle rounding
-  };
 
   return (
     <>
-      <style>{`
-        *, *::before, *::after {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-
-        body {
-          min-block-size: 100vh;
-          display: grid;
-          place-content: center;
-          font-family: "Google Sans", system-ui, sans-serif;
-          background: hsl(193, 11%, 82%);
-        }
-
-        @font-face {
-          font-family: "ClockFont";
-          src: url("${clockFont}") format("opentype");
-          font-display: swap;
-        }
-
-        .frame {
-          display: grid;
-          position: relative;
-          overflow: hidden;
-          isolation: isolate;
-          border-radius: 4px;
-        }
-
-        .frame::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          z-index: 7;
-          box-shadow: 0 10px 14px 8px #0005 inset;
-          pointer-events: none;
-        }
-
-        .inside {
-          position: absolute;
-          inset: 0;
-          display: grid;
-          place-items: center;
-          background: hsl(193, 9%, 28%);
-          color: #DBC5B3;
-          font-size: 10vh;
-          // font-weight: 700;
-          letter-spacing: 0.08em;
-        }
-
-        .digital-clock {
-          font-family: "ClockFont", monospace;
-          user-select: none;
-          text-shadow: 0 2px 4px #0008;
-        }
-
-        .doors {
-          z-index: 5;
-          display: grid;
-          grid-template: "left right" 1fr / 1fr 1fr;
-          position: relative;
-        }
-
-        .door {
-          position: absolute;
-          inset: 0;
-          overflow: hidden;
-          display: grid;
-          transition: transform 920ms cubic-bezier(0.77, 0, 0.18, 1);
-          will-change: transform;
-          backface-visibility: hidden;
-        }
-
-        .door::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background: hsl(193, 6%, 41%)
-            linear-gradient(
-              to bottom,
-              #0007,
-              18%,
-              hsl(193, 6%, 65%) 30% 32%,
-              hsl(193, 5%, 54%) 42%,
-              #fff2 60%,
-              hsl(193, 6%, 41%) 78% 80%,
-              #0003
-            );
-          mix-blend-mode: multiply;
-          filter: url(#brushedMetalEffect) invert(7%) contrast(105%);
-        }
-
-        .left-door {
-          grid-area: left;
-          transform-origin: left center;
-          box-shadow: inset -3px 0 4px -1px #0007;
-          border-inline-end: 1px solid hsl(193, 16%, 14%);
-        }
-
-        .right-door {
-          grid-area: right;
-          transform-origin: right center;
-          box-shadow: inset 3px 0 4px -1px #0007;
-          border-inline-start: 1px solid hsl(193, 16%, 14%);
-        }
-
-        .frame.is-open .left-door {
-          transform: translateX(-72%);
-        }
-
-        .frame.is-open .right-door {
-          transform: translateX(72%);
-        }
-      `}</style>
-
       {/* SVG Filter */}
       <svg width="0" height="0" aria-hidden="true">
         <defs>
@@ -181,18 +75,28 @@ export default function Clock() {
         </defs>
       </svg>
 
-      <section className={`frame${isOpen ? ' is-open' : ''}`} style={styles}>
-        <div className="doors">
-          <div className="door left-door" />
-          <div className="door right-door" />
-        </div>
-
-        <div className="inside">
-          <div className="digital-clock" aria-label={formatTime(now)}>
-            {formatTime(now)}
+      <main className={styles.container}>
+        <section className={`${styles.frame} ${isOpen ? styles.isOpen : ''}`}>
+          <div className={styles.doors}>
+            <div className={`${styles.door} ${styles.leftDoor}`} />
+            <div className={`${styles.door} ${styles.rightDoor}`} />
           </div>
-        </div>
-      </section>
+
+          <div className={styles.inside}>
+            <time className={styles.digitalClock} dateTime={isoTime}>
+              {formattedTime}
+            </time>
+          </div>
+        </section>
+      </main>
     </>
   );
-}
+};
+
+const Clock: React.FC = () => (
+  <Suspense fallback={<ClockLoadingFallback />}>
+    <ClockInner />
+  </Suspense>
+);
+
+export default Clock;
