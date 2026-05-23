@@ -1,19 +1,19 @@
-import React, { useEffect, useContext, useMemo, Suspense } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { DataContext } from './context/DataContext';
-import Header from './components/Header';
+import React, { Suspense, useContext, useEffect, useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import ClockPageNav from './components/ClockPageNav';
-import { ClockLoadingFallback } from './utils/fontLoader';
+import Header from './components/Header';
+import { DataContext } from './context/DataContext';
+import { useAutoHeader } from './hooks/useAutoHeader';
 import { useClockPage } from './hooks/useClockPage';
 import styles from './styles/ClockPage.module.css';
 import type { ClockItem, DataContextType } from './types/data';
-import { useAutoHeader } from './hooks/useAutoHeader';
+import { ClockLoadingFallback } from './utils/fontLoader';
 
 import {
-  DATE_REGEX,
-  normalizeDate,
-  formatTitle,
-  formatDateDots,
+    DATE_REGEX,
+    formatDateDots,
+    formatTitle,
+    normalizeDate,
 } from './utils/dateUtils';
 
 // Configuration constants
@@ -55,10 +55,31 @@ const ErrorDisplay: React.FC<{ message: string; onBack: () => void }> = ({
   message,
   onBack,
 }) => (
-  <div className={styles.errorContainer}>
-    <h1>Error</h1>
-    <p>{message}</p>
-    <button onClick={onBack} className={styles.errorButton}>
+  <div 
+    className={styles.errorContainer}
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100vh',
+      backgroundColor: '#fff',
+      color: '#000',
+      padding: '2rem',
+      textAlign: 'center'
+    }}
+  >
+    <h1 style={{ color: '#ff4444' }}>Error</h1>
+    <p style={{ margin: '1rem 0', maxWidth: '600px', fontFamily: 'monospace' }}>{message}</p>
+    <button 
+      onClick={onBack} 
+      className={styles.errorButton}
+      style={{ 
+        padding: '0.5rem 1rem', 
+        cursor: 'pointer',
+        marginTop: '1rem'
+      }}
+    >
       Back to Home
     </button>
   </div>

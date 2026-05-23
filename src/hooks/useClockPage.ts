@@ -103,13 +103,13 @@ export function useClockPage(currentItem: { date: string } | null) {
             const errorDetail =
               err instanceof Error ? err.message : String(err);
             
-            // Use an explicit prefix to ensure this isn't caught by production filters
-            console.error(`APP_ERROR: Module execution failed at ${path}:`, err);
+            // Always log the full error object to find the stack trace
+            console.error(`[useClockPage] Module Load Failure for ${targetDate}:`, err);
             
-            return Promise.reject(new Error(
-              `Module execution failed for ${targetDate}: ${errorDetail}. ` +
-              'Check if a variable (like "src") is used before being defined in the clock file.'
-            ));
+            throw new Error(
+              `Failed to execute Clock (${targetDate}): ${errorDetail}. ` +
+              'Verify all variables (like "src") are imported or declared.'
+            );
           },
         )) as ClockModule;
 
