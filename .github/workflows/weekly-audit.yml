@@ -2,7 +2,7 @@ name: Weekly Security Audit
 
 on:
   schedule:
-    # Run every Sunday at 00:00 UTC
+    # Run every Sunday at 00:01 UTC
     - cron: '0 0 * * 0'
   workflow_dispatch:
     # Allow manual trigger
