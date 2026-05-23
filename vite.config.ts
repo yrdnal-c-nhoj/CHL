@@ -88,6 +88,7 @@ export default defineConfig({
 
   // Optimize development server
   server: {
+    port: 5137,
     hmr: {
       overlay: false, // Disable error overlay for better performance
     },
