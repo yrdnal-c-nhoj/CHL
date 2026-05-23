@@ -103,8 +103,8 @@ export function useClockPage(currentItem: { date: string } | null) {
             const errorDetail =
               err instanceof Error ? err.message : String(err);
             
-            // Always log the full error object to find the stack trace
-            console.error(`[useClockPage] Module Load Failure for ${targetDate}:`, err);
+            // Log with a specific prefix to bypass some production filters
+            console.error(`CRITICAL_LOAD_ERROR: [${targetDate}]`, err);
             
             throw new Error(
               `Failed to execute Clock (${targetDate}): ${errorDetail}. ` +
