@@ -120,14 +120,35 @@ export function useClockPage(currentItem: { date: string } | null) {
         }
 
         // 3. Preload defined assets (images + video + audio)
-        // Accept either:
-        //  - assets: string[] (most clocks)
-        //  - assets: unknown (fail open)
-        if (Array.isArray(module.assets) && module.assets.length > 0) {
-          const assetUrls = module.assets.filter((v) => typeof v === 'string');
-          if (assetUrls.length > 0) {
-            await preloadClockAssets(assetUrls as string[]);
+        // Contract: most clock modules export `assets` as `string[]`.
+        // Production breakage (black screen) can happen if a particular clock
+        // exports a malformed `assets` value or if preloading hard-fails.
+        //
+        // Fail-open: asset preload must never prevent the clock from mounting.
+        try {
+          if (Array.isArray(module.assets) && module.assets.length > 0) {
+            // Keep only string URLs; ignore any other shapes.
+            const assetUrls = module.assets.filter((v) => typeof v === 'string');
+
+            if (assetUrls.length > 0) {
+              await preloadClockAssets(assetUrls as string[]);
+            }
+          } else if (module.assets !== undefined) {
+            // If assets exists but isn't a string[], log for diagnosis.
+            // Don't throw.
+            if (import.meta.env.PROD) {
+              console.warn(
+                `[useClockPage] Ignoring malformed assets for ${targetDate} from module '${path}'. Type=${typeof module.assets}`,
+                module.assets,
+              );
+            }
           }
+        } catch (assetErr) {
+          // Fail open: still mount the clock.
+          console.warn(
+            `[useClockPage] Asset preload failed for ${targetDate} from module '${path}'. Clock will still mount.`,
+            assetErr,
+          );
         }
 
         // 4. Update component state
@@ -149,6 +170,7 @@ export function useClockPage(currentItem: { date: string } | null) {
           timeoutRef.current = null;
         }
       }
+
     };
 
     loadClock();
