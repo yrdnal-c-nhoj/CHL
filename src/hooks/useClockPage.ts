@@ -35,7 +35,7 @@ export function useClockPage(currentItem: { date: string } | null) {
 
   const preloadClockAssets = useCallback(
     async (assetUrls: string[]): Promise<void> => {
-      const assets: AssetConfig[] = assetUrls.map((src) => ({ src }));
+      const assets: AssetConfig[] = assetUrls.map((url) => ({ src: url }));
 
       // Fail open: missing/broken assets should not prevent the clock from mounting.
       try {
@@ -100,8 +100,14 @@ export function useClockPage(currentItem: { date: string } | null) {
           (err) => {
             const errorDetail =
               err instanceof Error ? err.message : String(err);
-            console.error(`[useClockPage] Failed to execute module at ${path}:`, err);
-            throw new Error(`Module execution failed for ${targetDate}: ${errorDetail}`);
+            
+            // Use an explicit prefix to ensure this isn't caught by production filters
+            console.error(`APP_ERROR: Module execution failed at ${path}:`, err);
+            
+            throw new Error(
+              `Module execution failed for ${targetDate}: ${errorDetail}. ` +
+              'Check if a variable (like "src") is used before being defined in the clock file.'
+            );
           },
         )) as ClockModule;
 
