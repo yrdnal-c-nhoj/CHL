@@ -62,11 +62,11 @@ const ErrorDisplay: React.FC<{ message: string; onBack: () => void }> = ({
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      height: '100vh',
-      backgroundColor: '#fff',
+      height: '100dvh',
+      backgroundColor: '#fdfdfd',
       color: '#000',
       padding: '2rem',
-      textAlign: 'center'
+      textAlign: 'center',
     }}
   >
     <h1 style={{ color: '#ff4444' }}>Error</h1>
@@ -77,7 +77,7 @@ const ErrorDisplay: React.FC<{ message: string; onBack: () => void }> = ({
       style={{ 
         padding: '0.5rem 1rem', 
         cursor: 'pointer',
-        marginTop: '1rem'
+        marginTop: '1rem',
       }}
     >
       Back to Home
