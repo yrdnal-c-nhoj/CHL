@@ -35,7 +35,9 @@ coverage/
 .env.*
 !.env.example
 
-# scripts folder is local automation only
+
+
 scripts/
+docs/
 
 
