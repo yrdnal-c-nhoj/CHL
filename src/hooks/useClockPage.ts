@@ -35,11 +35,13 @@ export function useClockPage(currentItem: { date: string } | null) {
 
   const preloadClockAssets = useCallback(
     async (assetUrls: string[]): Promise<void> => {
-      const assets: AssetConfig[] = assetUrls.map((url) => ({ src: url }));
+      // Rename to avoid collision with the 'assets' export in clock modules
+      // Use an explicit mapping to avoid "src is not defined" ReferenceErrors
+      const _assetConfigs: AssetConfig[] = assetUrls.map((assetUrl) => ({ src: assetUrl }));
 
       // Fail open: missing/broken assets should not prevent the clock from mounting.
       try {
-        await preloadAssets(assets);
+        await preloadAssets(_assetConfigs);
       } catch {
         // preloadAssets is already Promise-based; this catch is defensive.
       }
@@ -104,10 +106,10 @@ export function useClockPage(currentItem: { date: string } | null) {
             // Use an explicit prefix to ensure this isn't caught by production filters
             console.error(`APP_ERROR: Module execution failed at ${path}:`, err);
             
-            throw new Error(
+            return Promise.reject(new Error(
               `Module execution failed for ${targetDate}: ${errorDetail}. ` +
               'Check if a variable (like "src") is used before being defined in the clock file.'
-            );
+            ));
           },
         )) as ClockModule;
 
