@@ -1,16 +1,15 @@
-import React, { Suspense, useMemo } from 'react';
-import backgroundVideo from '@/assets/images/26_images/26-04/26-04-23/sunflower.mp4';
-import fontUrl from '@/assets/fonts/26fonts/26-04-23.otf';
+import fontUrl from '@/assets/fonts/26fonts/26-05-23.ttf';
+import backgroundVideo from '@/assets/images/26_images/26-05/26-05-23/lava.mp4';
+import type { FontConfig } from '@/types/clock';
 import { useClockTime } from '@/utils/clockUtils';
 import {
-  useSuspenseFontLoader,
   ClockLoadingFallback,
+  useSuspenseFontLoader,
 } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+import React, { Suspense, useMemo } from 'react';
 import styles from './Clock.module.css';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
-const formatMs = (num: number): string => num.toString().padStart(3, '0');
 
 const ClockInner: React.FC = () => {
   const fontConfigs = useMemo<FontConfig[]>(
@@ -21,26 +20,34 @@ const ClockInner: React.FC = () => {
 
   const time = useClockTime();
 
-  const h = formatTime(time.getHours());
+  const hours24 = time.getHours();
+  const hours12 = hours24 % 12 || 12;
+  const ampm = hours24 >= 12 ? 'PM' : 'AM';
+
+  const h = formatTime(hours12);
   const m = formatTime(time.getMinutes());
   const s = formatTime(time.getSeconds());
-  const ms = formatMs(time.getMilliseconds());
 
-  // Join them to treat the milliseconds as part of the sequence
-  const allDigits = (h + m + s + ms).split('');
+  // Compose characters for the vertical sequence (Hours, Minutes, Seconds, AM/PM)
+  const allDigits = (h + m + s + ampm).split('');
 
   return (
     <div className={styles.container}>
-      <video
-        className={styles.video}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-      >
-        <source src={backgroundVideo} type="video/mp4" />
-      </video>
+      <div className={styles.backgroundContainer}>
+        {Array.from({ length: 40 }).map((_, i) => (
+          <video
+            key={i}
+            className={styles.video}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+          >
+            <source src={backgroundVideo} type="video/mp4" />
+          </video>
+        ))}
+      </div>
 
       <main className={styles.digitsContainer}>
         {allDigits.map((digit, index) => (

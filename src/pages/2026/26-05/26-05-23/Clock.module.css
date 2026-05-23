@@ -11,15 +11,28 @@
   background-color: #020202;
 }
 
-.video {
+.backgroundContainer {
   position: absolute;
   top: 50%;
   left: 50%;
+  width: 400vw;
+  height: 400dvh;
   transform: translate(-50%, -50%);
-  width: auto;
-  height: 90dvh;
-  object-fit: contain;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
   z-index: 0;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.video {
+  flex: 0 0 auto;
+  max-width: 100vw;
+  max-height: 100dvh;
+  display: block;
 }
 
 .digitsContainer {
@@ -35,11 +48,11 @@
 }
 
 .digitBox {
-  font-size: calc(100dvh / 10);
+  font-size: calc(100dvh / 8);
   font-weight: 300;
   font-family: 'Clock26-04-23', monospace;
-  color: #faea10;
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.963);
-  line-height: 0.85;
+  color: #f20a0a;
+  text-shadow: 0 3px 2px rgba(2, 46, 27, 0.963);
+  line-height: 0.9;
   font-variant-numeric: tabular-nums;
 }
