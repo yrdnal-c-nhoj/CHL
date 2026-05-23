@@ -19,6 +19,7 @@ const shouldSuppress = (msg: string) => {
     'Cookie “FPID” has been rejected',
     'Cookie “FPLC” has been rejected',
     'ownerGlobal',
+    'Window.fullScreen',
     'NotFoundError: No such JSProcessActor',
     'ly(Fast)',
     'Multiprocess(Slower)',
