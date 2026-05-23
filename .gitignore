@@ -20,8 +20,6 @@ dist/
 .vercel/
 out/
 
-# misc
-coverage/
 
 # OS / build output
 .DS_Store
@@ -36,7 +34,10 @@ coverage/
 !.env.example
 
 
-
+# misc
+coverage/
+AGENTS.md
+DEVELOPMENT.md/
 scripts/
 docs/
 
