@@ -45,7 +45,7 @@ export function useClockPage(currentItem: { date: string } | null) {
 
       // Use a completely unique name for the mapping function parameter
       // to avoid any potential minifier collision with global 'src' identifiers
-      const configurations: AssetConfig[] = assetUrls.map((url) => ({ src: url }));
+      const configurations: AssetConfig[] = assetUrls.map((assetPathString) => ({ src: assetPathString }));
 
       // Fail open: missing/broken assets should not prevent the clock from mounting.
       try {
