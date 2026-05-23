@@ -93,7 +93,7 @@ const TodayClockPage = () => {
       className={`${styles.container} ${styles.loaded}`}
       style={{
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         overflow: 'hidden',
         backgroundColor: '#fff',
       }}
@@ -107,7 +107,7 @@ const TodayClockPage = () => {
           zIndex: 10000,
           color: '#000',
           textAlign: 'center',
-          paddingTop: '40vh',
+          paddingTop: '40dvh',
         }}
       >
         {loading && <div className={styles.loading}>Loading data...</div>}
@@ -124,7 +124,7 @@ const TodayClockPage = () => {
               top: 0,
               left: 0,
               width: '100%',
-              height: '100vh',
+              height: '100dvh',
               zIndex: 1 /* Below the overlay logic if needed, but above background */,
               backgroundColor: '#fff',
             }}
@@ -135,7 +135,7 @@ const TodayClockPage = () => {
                 fontFamily: 'CustomFont, system-ui, sans-serif',
                 display: 'block',
                 width: '100%',
-                height: '100vh',
+                height: '100dvh',
               }}
             >
               <Suspense fallback={<ClockLoadingFallback />}>
