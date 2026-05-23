@@ -1,7 +1,9 @@
 import React, { Suspense, useContext, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ClockPageNav from './components/ClockPageNav';
-import Header from './components/Header';
+
+
+
 import { DataContext } from './context/DataContext';
 import { useAutoHeader } from './hooks/useAutoHeader';
 import { useClockPage } from './hooks/useClockPage';
@@ -17,7 +19,7 @@ import {
 } from './utils/dateUtils';
 
 // Configuration constants
-const HEADER_FADE_DELAY = 1500; // 1.5 seconds
+const HEADER_FADE_DELAY = 0;
 const OVERLAY_FADE_DURATION = 300; // 0.3 seconds for a smoother fade
 
 /**
@@ -162,20 +164,19 @@ const ClockPage: React.FC = () => {
             flexDirection: 'column',
           }}
         >
-          <div
-            className={styles.headerWrapper}
-            style={{
-              opacity: headerVisible ? 1 : 0,
-              pointerEvents: headerVisible ? 'auto' : 'none',
-            }}
-          >
-            <Header visible={headerVisible} />
-          </div>
+
 
           {ClockComponent && (
             <div 
               className={styles.clockWrapper}
-              style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%' }}
+              style={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+                // matches Header.module.css font sizes (safe default)
+                ['--header-h' as any]: headerVisible ? '4.5rem' : '0px',
+              }}
             >
               <Suspense fallback={<ClockLoadingFallback />}>
                 <ClockComponent />
