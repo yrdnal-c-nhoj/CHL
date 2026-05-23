@@ -4,7 +4,9 @@ import { preloadAssets } from '../utils/assetLoader';
 
 interface ClockModule {
   default: React.ComponentType;
-  assets?: string[];
+  // Many clocks export assets as `string[]`.
+  // Some legacy clocks (or future ones) may export `assets` as already-structured configs.
+  assets?: unknown;
 }
 
 // Safety timeout to prevent infinite black screen
@@ -15,7 +17,11 @@ const LOADING_TIMEOUT = 10000; // 10 seconds
  * Handles dynamic imports, asset preloading, and overlay synchronization.
  */
 
+// NOTE: Some clocks export `assets` as `string[]`, others may export as `AssetConfig[]`.
+// Production crashes like "Clock execution failed (...): src is not defined" usually happen
+// when the preload layer expects `{ src: string }` but receives a plain string.
 export function useClockPage(currentItem: { date: string } | null) {
+
   const [ClockComponent, setClockComponent] =
     useState<React.ComponentType | null>(null);
   const [isReady, setIsReady] = useState(false);
@@ -114,8 +120,14 @@ export function useClockPage(currentItem: { date: string } | null) {
         }
 
         // 3. Preload defined assets (images + video + audio)
-        if (module.assets && module.assets.length > 0) {
-          await preloadClockAssets(module.assets);
+        // Accept either:
+        //  - assets: string[] (most clocks)
+        //  - assets: unknown (fail open)
+        if (Array.isArray(module.assets) && module.assets.length > 0) {
+          const assetUrls = module.assets.filter((v) => typeof v === 'string');
+          if (assetUrls.length > 0) {
+            await preloadClockAssets(assetUrls as string[]);
+          }
         }
 
         // 4. Update component state
