@@ -159,7 +159,7 @@ const ClockPage: React.FC = () => {
           aria-label="Go back"
           style={{
             cursor: 'pointer',
-            minHeight: '100vh',
+            minHeight: '100dvh',
             display: 'flex',
             flexDirection: 'column',
           }}
@@ -185,7 +185,7 @@ const ClockPage: React.FC = () => {
           )}
         </div>
       ) : (
-        <div style={{ height: '100vh', width: '100vw', backgroundColor: '#f8f8f8' }} />
+        <div style={{ height: '100dvh', width: '100vw', backgroundColor: '#f8f8f8' }} />
       )}
 
       {isReady && ClockComponent && currentItem && (

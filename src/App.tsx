@@ -18,11 +18,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import {
-  Navigate,
-  Route,
-  BrowserRouter as Router,
-  Routes,
-  useLocation,
+    Navigate,
+    Route,
+    BrowserRouter as Router,
+    Routes,
+    useLocation,
 } from 'react-router-dom';
 import { pageview } from './analytics';
 import { DataProvider } from './context/DataContext';
@@ -133,7 +133,7 @@ class ErrorBoundary extends React.Component<Props, State> {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            height: '100vh',
+            height: '100dvh',
             flexDirection: 'column',
             fontFamily: 'monospace',
             backgroundColor: '#ffffff',
@@ -189,7 +189,7 @@ const App: React.FC = () => {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  height: '100vh',
+                  height: '100dvh',
                   fontSize: '1.5rem',
                   fontFamily: 'monospace',
                   backgroundColor: '#f8f8f8',

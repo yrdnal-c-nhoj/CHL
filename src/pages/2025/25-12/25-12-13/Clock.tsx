@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import bgImage from '@/assets/images/25_images/25-12/25-12-13/roc.webp';
 import fontFile from '@/assets/fonts/25fonts/25-12-13-cherub.ttf?url';
+import bgImage from '@/assets/images/25_images/25-12/25-12-13/roc.webp';
 import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMemo } from 'react';
 
 const fontFamily = 'RococoFont';
 
@@ -81,7 +81,7 @@ export default function RococoClock() {
                 animation: `rococoFloat ${config.duration}s infinite cubic-bezier(0.45, 0, 0.55, 1)`,
                 animationDelay: `${config.delay}s`,
                 '--rx': `${config.rangeX}vw`,
-                '--ry': `${config.rangeY}vh`,
+                '--ry': `${config.rangeY}dvh`,
                 '--rot': `${config.rotate}deg`,
                 '--sc': config.scale,
                 zIndex: i < 2 ? 30 : i >= 4 ? 5 : 15,
@@ -130,8 +130,8 @@ const baseDigitStyle = {
   pointerEvents: 'none', // Prevents interaction from breaking the immersion
   textShadow: `
     0 0 10px rgba(255, 255, 255, 0.77),
-    0.2vh 0.2vh 0.4vh rgba(169, 19, 99, 0.81),
-    -0.2vh -0.2vh 0.4vh rgba(50, 205, 50, 0.72)
+    0.2dvh 0.2dvh 0.4dvh rgba(169, 19, 99, 0.81),
+    -0.2dvh -0.2dvh 0.4dvh rgba(50, 205, 50, 0.72)
   `,
   willChange: 'transform', // Optimizes performance for constant motion
 };
