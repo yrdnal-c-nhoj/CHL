@@ -100,13 +100,14 @@ export function useClockPage(currentItem: { date: string } | null) {
         const [path, importFn] = match;
 
         // 2. Dynamically import the module
-        // Explicitly invoke the dynamic import function.
-        // We catch errors here specifically to identify if it's a module evaluation error.
-        const module = await (importFn() as () => Promise<ClockModule>)().catch((err) => {
-          const msg = err instanceof Error ? err.message : String(err);
-          console.error(`[useClockPage] Module evaluation failed for ${targetDate}:`, err);
-          throw new Error(`Clock execution failed (${targetDate}): ${msg}`);
-        });
+        // importFn is the function that returns the dynamic import promise.
+        const module = await (importFn as () => Promise<ClockModule>)().catch(
+          (err) => {
+            const msg = err instanceof Error ? err.message : String(err);
+            console.error(`[useClockPage] Module evaluation failed for ${targetDate}:`, err);
+            throw new Error(`Clock execution failed (${targetDate}): ${msg}`);
+          },
+        );
 
         if (!module || !module.default) {
           throw new Error(`Clock module at ${path} is missing a default export.`);
