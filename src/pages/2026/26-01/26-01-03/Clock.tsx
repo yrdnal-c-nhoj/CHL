@@ -135,8 +135,8 @@ const Clock: React.FC = () => {
   const minutes = time.getMinutes() + seconds / 60;
   const hours = (time.getHours() % 12) + minutes / 60;
 
-  const clockSize = '90vh';
-  const numberSize = '12vh';
+  const clockSize = '90dvh';
+  const numberSize = '12dvh';
   const radius = '32vmin';
 
   const numbers = [

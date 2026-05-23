@@ -1,11 +1,11 @@
-import React, { useState, useMemo, useEffect } from 'react';
 import font_2025_11_21 from '@/assets/fonts/25fonts/25-11-18-cat.ttf?url';
 import bgImg from '@/assets/images/25_images/25-11/25-11-18/eyes.webp';
+import { useEffect, useMemo, useState } from 'react';
 export { bgImg }; // Export for preloading pipeline
 
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime, formatTime } from '@/utils/clockUtils';
-import type { FontConfig } from '@/types/clock';
+    import type { FontConfig } from '@/types/clock';
+    import { formatTime, useClockTime } from '@/utils/clockUtils';
+    import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 export default function RotatedClockGrid() {
   // Using the standardized BTS hook
@@ -88,7 +88,7 @@ export default function RotatedClockGrid() {
     <main
       style={{
         position: 'relative',
-        height: '100vh',
+        height: '100dvh',
         width: '100vw',
         boxSizing: 'border-box',
         overflow: 'hidden',
@@ -114,11 +114,11 @@ export default function RotatedClockGrid() {
         style={{
           position: 'relative',
           zIndex: 1,
-          transform: `rotate(-10deg) translate(-${(digitSize + gap) * extraLeft}vh, -${(digitSize + gap) * extraTop}vh)`,
+          transform: `rotate(-10deg) translate(-${(digitSize + gap) * extraLeft}dvh, -${(digitSize + gap) * extraTop}dvh)`,
           display: 'grid',
-          gridTemplateColumns: `repeat(auto-fill, ${digitSize}vh)`,
-          gridAutoRows: `${digitSize}vh`,
-          gap: `${gap}vh`,
+          gridTemplateColumns: `repeat(auto-fill, ${digitSize}dvh)`,
+          gridAutoRows: `${digitSize}dvh`,
+          gap: `${gap}dvh`,
           alignItems: 'center',
           justifyItems: 'center',
         }}
@@ -139,16 +139,16 @@ export default function RotatedClockGrid() {
                   style={{
                     gridRow: rowIndex + 1,
                     gridColumn: columnPosition + 1,
-                    height: `${digitSize}vh`,
-                    width: `${digitSize}vh`,
+                    height: `${digitSize}dvh`,
+                    width: `${digitSize}dvh`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    borderRadius: '0.8vh',
+                    borderRadius: '0.8dvh',
                     fontFamily: FONT_FAMILY + ', monospace',
-                    fontSize: `12vh`,
+                    fontSize: `12dvh`,
                     lineHeight: 1,
-                    letterSpacing: '0.2vh',
+                    letterSpacing: '0.2dvh',
                     color,
                     opacity: 0.9,
                     textAlign: 'center',
