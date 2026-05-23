@@ -31,6 +31,8 @@
   ],
   "typescript.preferences.quoteStyle": "single",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "never"
-  }
+    "source.fixAll.eslint": "always",
+    "source.organizeImports": "always"
+  },
+  "editor.formatOnSave": true
 }

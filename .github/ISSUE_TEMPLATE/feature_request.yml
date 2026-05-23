@@ -7,19 +7,7 @@ body:
   - type: textarea
     id: problem
     attributes:
-      label: Problem statement
-      description: What problem are you trying to solve?
+      label: Suggestion
+      description: What would make this component even better to look at?
     validations:
       required: true
-  - type: textarea
-    id: proposal
-    attributes:
-      label: Proposed solution
-      description: Describe your preferred approach.
-    validations:
-      required: true
-  - type: textarea
-    id: alternatives
-    attributes:
-      label: Alternatives considered
-      description: Optional, but useful for context.
