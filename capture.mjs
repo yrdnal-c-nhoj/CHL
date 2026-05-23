@@ -20,28 +20,40 @@ async function captureComponent(dateRoute = '2026/26-05/26-05-23') {
 
   console.log(`📸 Launching browser to capture ${dateRoute}...`);
 
-  const browser = await chromium.launch();
-  const context = await browser.newContext({
-    viewport: { width: 300, height: 300 },
-    deviceScaleFactor: 2, // Supersample for "world-class" clarity
-  });
-  const page = await context.newPage();
-
+  let browser;
   try {
+    const browser = await chromium.launch();
+    browser = await chromium.launch();
+    const context = await browser.newContext({
+      viewport: { width: 300, height: 300 },
+      deviceScaleFactor: 2, // Supersample for "world-class" clarity
+    });
+    const page = await context.newPage();
+
+    console.log(`🔗 Navigating to http://localhost:5173/${dateRoute}...`);
     // Navigate to the local dev server (localhost:5173)
     await page.goto(`http://localhost:5173/${dateRoute}`, { 
       waitUntil: 'networkidle',
       timeout: 60000 
+      waitUntil: 'load', 
+      timeout: 30000 
     });
 
+    console.log(`⌛ Waiting for fonts and video assets...`);
     // Ensure fonts are loaded and video is playing
     await page.evaluate(() => document.fonts.ready);
     await page.waitForSelector('video', { state: 'attached' });
     await page.waitForTimeout(1000); // Brief buffer for initial render
+    await page.waitForSelector('video', { state: 'attached', timeout: 10000 });
+    
+    // Brief buffer for initial render and video playback start
+    await page.waitForTimeout(2000);
 
+    console.log(`📸 Taking screenshot...`);
     await page.screenshot({ path: tempPng });
     await browser.close();
 
+    console.log(`🎨 Optimizing image with Sharp...`);
     // Professional optimization using Sharp
     await sharp(tempPng)
       .resize(300, 300) // Downscale the 2x capture to requested 300x300
@@ -58,6 +70,8 @@ async function captureComponent(dateRoute = '2026/26-05/26-05-23') {
       console.error('❌ Error during capture:', err.message);
     }
     process.exit(1);
+  } finally {
+    if (browser) await browser.close();
   }
 }
 
