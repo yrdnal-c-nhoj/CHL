@@ -6,6 +6,10 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ visible }) => {
+  // The header overlay can interfere with the clock rendering on some mobile browsers.
+  // If it is not visible, render nothing.
+  if (!visible) return null;
+
   return (
     <div
       className={`${styles.titleContainer} ${visible ? styles.visible : styles.hidden}`}
@@ -15,5 +19,6 @@ const Header: React.FC<HeaderProps> = ({ visible }) => {
     </div>
   );
 };
+
 
 export default Header;
