@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import viteCompression from 'vite-plugin-compression';
 import path from 'path';
+import { defineConfig } from 'vite';
+import viteCompression from 'vite-plugin-compression';
 
 export default defineConfig({
   base: '/',
@@ -49,8 +49,9 @@ export default defineConfig({
           if (!id.includes('node_modules')) {
             // Use physical path segments instead of aliases which aren't expanded here
             if (id.includes('/src/utils/')) return 'utils';
-            // Allow individual code-splitting for clock pages to prevent a massive single bundle
-            if (id.includes('/src/pages/')) return 'clocks';
+            // DO NOT group all clocks into one 'clocks' chunk. 
+            // Removing this allows Vite to create individual chunks per clock,
+            // isolating errors and improving load times.
             if (id.includes('/src/components/')) return 'ui';
             return;
           }
