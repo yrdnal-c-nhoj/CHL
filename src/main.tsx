@@ -18,8 +18,8 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
-import './styles/globals.css';
 import App from './App.tsx';
+import './styles/globals.css';
 import { installConsoleFilters } from './utils/consoleFilters';
 
 // Reduce known third-party / browser-internal console noise in production.
@@ -34,9 +34,8 @@ if (import.meta.env.PROD) {
 window.addEventListener(
   'unhandledrejection',
   (event: PromiseRejectionEvent) => {
-    if (import.meta.env.DEV) {
-      console.error('Unhandled Promise Rejection:', event.reason);
-    }
+    // Always log in production to help diagnose "blank page" issues
+    console.error('Unhandled Promise Rejection:', event.reason);
   },
 );
 

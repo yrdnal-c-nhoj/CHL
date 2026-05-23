@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import React, { useEffect, useMemo, useState } from 'react';
 // Use the original fonts - they're not corrupted
 import AsteriskFont1 from '@/assets/fonts/26fonts/26-02-17-ast.otf?url';
 import AsteriskFont2 from '@/assets/fonts/26fonts/26-02-17-aster.otf?url';
@@ -218,7 +218,8 @@ const AsteriskClock: React.FC = () => {
     <div
       style={{
         width: '100vw',
-        height: '100dvh',
+        height: '100vh', // Fallback for older browsers
+        minHeight: '100dvh',
         backgroundColor: '#CFF6DA',
         position: 'relative',
         overflow: 'hidden',

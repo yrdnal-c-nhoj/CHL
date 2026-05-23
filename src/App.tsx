@@ -16,14 +16,15 @@
  */
 
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-} from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import {
+    Navigate,
+    Route,
+    BrowserRouter as Router,
+    Routes,
+    useLocation,
+} from 'react-router-dom';
+import { pageview } from './analytics';
 import { DataProvider } from './context/DataContext';
 
 // Lazy loaded components for better performance
@@ -32,7 +33,6 @@ const ClockPage = React.lazy(() => import('./ClockPage'));
 const Today = React.lazy(() => import('./Today'));
 const Contact = React.lazy(() => import('./Contact'));
 const ClockList = React.lazy(() => import('./ClockList'));
-import { pageview } from './analytics';
 
 // Configuration constants
 const BASE_URL = 'https://www.cubistheart.com';
@@ -136,6 +136,8 @@ class ErrorBoundary extends React.Component<Props, State> {
             height: '100vh',
             flexDirection: 'column',
             fontFamily: 'monospace',
+            backgroundColor: '#ffffff',
+            color: '#000000',
           }}
         >
           <h1>Something went wrong</h1>
@@ -190,6 +192,8 @@ const App: React.FC = () => {
                   height: '100vh',
                   fontSize: '1.5rem',
                   fontFamily: 'monospace',
+                  backgroundColor: '#ffffff',
+                  color: '#000000',
                 }}
               >
                 Loading...
