@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "setup": "mkdir -p public/screenshots",
+    "setup": "mkdir -p screen-caps/screen-caps && npx playwright install chromium",
     "dev": "vite",
     "build": "vite build",
     "build:with-types": "tsc && vite build",
@@ -54,7 +54,7 @@
     "three": "^0.180.0"
   },
   "engines": {
-    "node": "24.x"
+    "node": ">=22.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.28.4",
@@ -89,7 +89,7 @@
     "jsdom": "^28.1.0",
     "mongodb": "^7.0.0",
     "papaparse": "^5.5.3",
-    "playwright": "^1.60.0",
+    "playwright": "^1.52.0",
     "postcss": "^8.5.6",
     "prettier": "^3.8.1",
     "puppeteer": "^24.43.0",
