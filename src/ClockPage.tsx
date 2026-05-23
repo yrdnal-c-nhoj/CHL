@@ -167,7 +167,10 @@ const ClockPage: React.FC = () => {
           </div>
 
           {ClockComponent && (
-            <div className={styles.clockWrapper}>
+            <div 
+              className={styles.clockWrapper}
+              style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%' }}
+            >
               <Suspense fallback={<ClockLoadingFallback />}>
                 <ClockComponent />
               </Suspense>
