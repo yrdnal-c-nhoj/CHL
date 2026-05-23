@@ -52,7 +52,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  /* Prevent absolute header overlay from covering the clock on mobile */
+  padding-top: calc(var(--header-h, 0px) + env(safe-area-inset-top));
+  box-sizing: border-box;
 }
+
 
 .loaded {
   /* Scoped hook for potential entrance animations */

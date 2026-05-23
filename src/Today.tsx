@@ -1,30 +1,30 @@
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  useMemo,
-  Suspense,
-} from 'react';
-import { DataContext } from './context/DataContext';
-import Header from './components/Header';
-import ClockPageNav from './components/ClockPageNav';
-import { useClockPage } from './hooks/useClockPage';
-import { ClockLoadingFallback } from './utils/fontLoader';
-import { useAutoHeader } from './hooks/useAutoHeader';
-import styles from './styles/ClockPage.module.css';
-import { ClockItem, DataContextType } from './types/data';
 import {
-  normalizeDate,
-  formatTitle,
+  Suspense,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import ClockPageNav from './components/ClockPageNav';
+import Header from './components/Header';
+import { DataContext } from './context/DataContext';
+import { useAutoHeader } from './hooks/useAutoHeader';
+import { useClockPage } from './hooks/useClockPage';
+import styles from './styles/ClockPage.module.css';
+import type { ClockItem, DataContextType } from './types/data';
+import {
   formatDateSlashes,
-  parseDateVal,
+  formatTitle,
   getTodayDate,
+  normalizeDate,
+  parseDateVal,
 } from './utils/dateUtils';
+import { ClockLoadingFallback } from './utils/fontLoader';
 
 const TodayClockPage = () => {
   const { items, loading, error } = useContext(DataContext) as DataContextType;
   const [currentItem, setCurrentItem] = useState<ClockItem | null>(null);
-  const headerVisible = useAutoHeader(1500);
+  const headerVisible = useAutoHeader(0);
   const OVERLAY_FADE_DURATION = 300;
 
   // -------------------------------
