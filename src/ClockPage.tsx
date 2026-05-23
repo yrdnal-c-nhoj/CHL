@@ -10,10 +10,10 @@ import type { ClockItem, DataContextType } from './types/data';
 import { ClockLoadingFallback } from './utils/fontLoader';
 
 import {
-    DATE_REGEX,
-    formatDateDots,
-    formatTitle,
-    normalizeDate,
+  DATE_REGEX,
+  formatDateDots,
+  formatTitle,
+  normalizeDate,
 } from './utils/dateUtils';
 
 // Configuration constants
@@ -136,9 +136,15 @@ const ClockPage: React.FC = () => {
     );
   }
 
+  // If we have an error but the above check didn't catch it for some reason, 
+  // or if context isn't ready, show error instead of a white screen.
+  if (pageError) {
+    return <ErrorDisplay message={pageError} onBack={() => navigate('/')} />;
+  }
+
   return (
     <div className={`${styles.container} ${isReady ? styles.loaded : ''}`}>
-      {isReady && (
+      {isReady ? (
         <div
           onClick={handleHeaderClick}
           role="button"
@@ -177,6 +183,8 @@ const ClockPage: React.FC = () => {
             </div>
           )}
         </div>
+      ) : (
+        <div style={{ height: '100vh', width: '100vw', backgroundColor: '#f8f8f8' }} />
       )}
 
       {isReady && ClockComponent && currentItem && (
