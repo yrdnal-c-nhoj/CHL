@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { AssetConfig } from '../utils/assetLoader';
 import { preloadAssets } from '../utils/assetLoader';
 
@@ -80,14 +80,15 @@ export function useClockPage(currentItem: { date: string } | null) {
         // 1. Resolve the module path
         // clockModules keys come from Vite's glob and can have varying path prefixes.
         // We match only by the suffix that must always be present.
-        const match = Object.entries(clockModules).find(([p]) =>
-          p.endsWith(`/${currentItem.date}/Clock.tsx`),
+        const targetDate = currentItem.date.trim();
+        const match = Object.entries(clockModules).find(([path]) =>
+          path.toLowerCase().endsWith(`/${targetDate.toLowerCase()}/clock.tsx`),
         );
 
         if (!match) {
           throw new Error(
-            `Clock lookup failed for date: ${currentItem.date}. ` +
-              `Expected a module ending with /${currentItem.date}/Clock.tsx. ` +
+            `Clock lookup failed for date: ${targetDate}. ` +
+              `Expected a module ending with /${targetDate}/Clock.tsx. ` +
               `Check that the folder structure under src/pages matches the date.`,
           );
         }
@@ -95,15 +96,14 @@ export function useClockPage(currentItem: { date: string } | null) {
         const [path, importFn] = match;
 
         // 2. Dynamically import the module
-        const module = (await importFn().catch((err) => {
-          console.error(
-            `[useClockPage] Failed to import module at ${path}:`,
-            err,
-          );
-          throw new Error(
-            `Module execution failed. This usually means an internal import (image/font) is broken or there is a syntax error in Clock.tsx.`,
-          );
-        })) as ClockModule;
+        const module = (await (importFn() as Promise<ClockModule>).catch(
+          (err) => {
+            const errorDetail =
+              err instanceof Error ? err.message : String(err);
+            console.error(`[useClockPage] Failed to execute module at ${path}:`, err);
+            throw new Error(`Module execution failed for ${targetDate}: ${errorDetail}`);
+          },
+        )) as ClockModule;
 
         // 3. Preload defined assets (images + video + audio)
         if (module.assets && module.assets.length > 0) {
