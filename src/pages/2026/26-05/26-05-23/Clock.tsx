@@ -1,6 +1,5 @@
 import fontUrl from '@/assets/fonts/26fonts/26-05-23.ttf';
 import lavaVideoSrc from '@/assets/images/26_images/26-05/26-05-23/lava.mp4';
-
 import type { FontConfig } from '@/types/clock';
 import { useClockTime } from '@/utils/clockUtils';
 import { ClockLoadingFallback, useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -16,37 +15,22 @@ const inlineStyles: Record<string, React.CSSProperties> = {
     overflow: 'hidden',
     backgroundColor: '#000',
   },
-
-  videoStack: {
+  videoContainer: {
     position: 'absolute',
     inset: 0,
     display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
     alignItems: 'center',
-    alignContent: 'center',
+    justifyContent: 'center',
     zIndex: 0,
   },
-
-  videoSlot: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-    position: 'relative',
-    flex: '0 0 auto',
-  },
-
   video: {
-    width: 'auto',
-    height: 'auto',
+    width: '100%',
+    height: '100%',
     maxWidth: '100vw',
     maxHeight: '100dvh',
-    objectFit: 'contain',
+    objectFit: 'contain',     // No clipping - full video visible
     display: 'block',
   },
-
   digitsContainer: {
     position: 'relative',
     zIndex: 1,
@@ -58,7 +42,6 @@ const inlineStyles: Record<string, React.CSSProperties> = {
     WebkitUserSelect: 'none',
     userSelect: 'none',
   },
-
   digitBox: {
     fontSize: 'calc(100dvh / 8)',
     fontWeight: 300,
@@ -79,32 +62,27 @@ const ClockInner: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useClockTime();
   const [isReady, setIsReady] = useState(false);
-
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const videos = videoRefs.current.filter(Boolean) as HTMLVideoElement[];
+    const video = videoRef.current;
+    if (!video) return;
 
-    videos.forEach((video) => {
-      video.src = lavaVideoSrc;
-      video.muted = true;
-      video.loop = true;
-      video.playsInline = true;
-      video.preload = 'auto';
-    });
+    video.src = lavaVideoSrc;
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.preload = 'metadata';
 
     const handleCanPlay = () => setIsReady(true);
 
-    videos.forEach(v => v.addEventListener('canplay', handleCanPlay));
+    video.addEventListener('canplay', handleCanPlay);
 
-    Promise.all(videos.map(v => v.play().catch(console.log)))
-      .then(() => setIsReady(true));
+    video.play().catch(console.log);
 
     return () => {
-      videos.forEach(v => {
-        v.pause();
-        v.removeEventListener('canplay', handleCanPlay);
-      });
+      video.pause();
+      video.removeEventListener('canplay', handleCanPlay);
     };
   }, []);
 
@@ -118,18 +96,15 @@ const ClockInner: React.FC = () => {
 
   return (
     <div style={inlineStyles.container}>
-      <div style={inlineStyles.videoStack}>
-        {[...Array(20)].map((_, i) => (
-          <div key={i} style={inlineStyles.videoSlot}>
-            <video
-              ref={(el) => (videoRefs.current[i] = el)}
-              style={inlineStyles.video}
-              muted
-              loop
-              playsInline
-            />
-          </div>
-        ))}
+      {/* Single Fullscreen Video */}
+      <div style={inlineStyles.videoContainer}>
+        <video
+          ref={videoRef}
+          style={inlineStyles.video}
+          muted
+          loop
+          playsInline
+        />
       </div>
 
       {/* Clock Digits */}
@@ -143,17 +118,19 @@ const ClockInner: React.FC = () => {
 
       {/* Loading Overlay */}
       {!isReady && (
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 2,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: 'rgba(0,0,0,0.5)',
-          color: 'white',
-          fontSize: '1.2rem'
-        }}>
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(0,0,0,0.7)',
+            color: 'white',
+            fontSize: '1.2rem',
+          }}
+        >
           Loading lava atmosphere...
         </div>
       )}
