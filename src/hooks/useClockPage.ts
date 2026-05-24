@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { AssetConfig } from '../utils/assetLoader';
 import { preloadAssets } from '../utils/assetLoader';
 
@@ -8,6 +8,10 @@ interface ClockModule {
   // Some legacy clocks (or future ones) may export `assets` as already-structured configs.
   assets?: unknown;
 }
+
+// Register all clock components via Vite glob outside the hook.
+// This ensures the registry is static and correctly mapped by the build tool.
+const CLOCK_MODULES = import.meta.glob('../pages/**/Clock.tsx');
 
 // Safety timeout to prevent infinite black screen
 const LOADING_TIMEOUT = 10000; // 10 seconds
@@ -32,12 +36,6 @@ export function useClockPage(currentItem: { date: string } | null) {
 
   // Keep ref in sync with state to avoid stale closure in timeout
   isReadyRef.current = isReady;
-
-  // Register all clock components via Vite glob (memoized to prevent re-renders)
-  const clockModules = useMemo(
-    () => import.meta.glob('../pages/**/Clock.tsx'),
-    [],
-  );
 
   const preloadClockAssets = useCallback(
     async (assetUrls: string[]): Promise<void> => {
@@ -91,14 +89,15 @@ export function useClockPage(currentItem: { date: string } | null) {
         // clockModules keys come from Vite's glob and can have varying path prefixes.
         // We match only by the suffix that must always be present.
         const targetDate = currentItem.date.trim();
-        const match = Object.entries(clockModules).find(([path]) =>
-          path.toLowerCase().endsWith(`/${targetDate.toLowerCase()}/clock.tsx`),
+        const searchSuffix = `/${targetDate.toLowerCase()}/clock.tsx`;
+        const match = Object.entries(CLOCK_MODULES).find(([path]) =>
+          path.toLowerCase().endsWith(searchSuffix),
         );
 
         if (!match) {
           throw new Error(
             `Clock lookup failed for date: ${targetDate}. ` +
-              `Expected a module ending with /${targetDate}/Clock.tsx. ` +
+              `No module found ending in '${searchSuffix}'. ` +
               `Check that the folder structure under src/pages matches the date.`,
           );
         }
@@ -110,7 +109,14 @@ export function useClockPage(currentItem: { date: string } | null) {
         const module = await (importFn as () => Promise<ClockModule>)().catch(
           (err) => {
             const msg = err instanceof Error ? err.message : String(err);
-            console.error(`[useClockPage] Module evaluation failed for ${targetDate}:`, err);
+            console.error(`[useClockPage] Module load failed for ${targetDate} at path ${path}:`, err);
+            
+            if (msg.includes('Failed to fetch')) {
+              throw new Error(
+                `Clock file at ${path} could not be fetched. Check if the file exists, ` +
+                `has no syntax errors, and that the filename case matches exactly.`
+              );
+            }
             throw new Error(`Clock execution failed (${targetDate}): ${msg}`);
           },
         );
@@ -180,7 +186,7 @@ export function useClockPage(currentItem: { date: string } | null) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [currentItem, clockModules, preloadClockAssets]);
+  }, [currentItem, preloadClockAssets]);
 
   return { ClockComponent, isReady, error, overlayVisible };
 }
