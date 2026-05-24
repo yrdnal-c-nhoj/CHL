@@ -1,4 +1,5 @@
 import clockFont from '@/assets/fonts/26fonts/26-05-20.otf';
+import backgroundImage from '@/assets/images/26_images/26-05/26-05-20/bg.webp';
 import type { FontConfig } from '@/types/clock';
 import { ClockLoadingFallback, useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
@@ -8,7 +9,7 @@ import styles from './Clock.module.css';
 // =========================
 // ASSET EXPORTS (Required)
 // =========================
-export const assets: string[] = [clockFont];
+export const assets: string[] = [clockFont, backgroundImage];
 
 const fontConfigs: FontConfig[] = [
   { fontFamily: 'ClockFont', fontUrl: clockFont }
@@ -53,7 +54,7 @@ const ClockInner: React.FC = () => {
 
   // Explicitly manage body background and cleanup
   useEffect(() => {
-    document.body.style.backgroundColor = 'hsl(193, 11%, 82%)';
+    document.body.style.backgroundColor = '#000';
     return () => {
       document.body.style.backgroundColor = '';
     };
@@ -75,7 +76,10 @@ const ClockInner: React.FC = () => {
         </defs>
       </svg>
 
-      <main className={styles.container}>
+      <main 
+        className={styles.container} 
+        style={{ '--bg-image': `url(${backgroundImage})` } as React.CSSProperties}
+      >
         <section className={`${styles.frame} ${isOpen ? styles.isOpen : ''}`}>
           <div className={styles.doors}>
             <div className={`${styles.door} ${styles.leftDoor}`} />
