@@ -5,6 +5,11 @@ import { useClockTime } from '@/utils/clockUtils';
 import { ClockLoadingFallback, useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 
+// =========================
+// ASSET EXPORTS (Required)
+// =========================
+export const assets: string[] = [lavaVideoSrc];
+
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
 const inlineStyles: Record<string, React.CSSProperties> = {
@@ -15,20 +20,31 @@ const inlineStyles: Record<string, React.CSSProperties> = {
     overflow: 'hidden',
     backgroundColor: '#000',
   },
-  videoContainer: {
+  videoStack: {
     position: 'absolute',
     inset: 0,
     display: 'flex',
-    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
     zIndex: 0,
   },
+  videoSlot: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    position: 'relative',
+    flex: '0 0 auto',
+  },
   video: {
-    width: '100%',
-    height: '100%',
+    width: 'auto',
+    height: 'auto',
     maxWidth: '100vw',
     maxHeight: '100dvh',
-    objectFit: 'contain',     // No clipping - full video visible
+    objectFit: 'contain',
     display: 'block',
   },
   digitsContainer: {
@@ -62,27 +78,27 @@ const ClockInner: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useClockTime();
   const [isReady, setIsReady] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+    const videos = videoRefs.current.filter(Boolean) as HTMLVideoElement[];
+    if (videos.length === 0) return;
 
-    video.src = lavaVideoSrc;
-    video.muted = true;
-    video.loop = true;
-    video.playsInline = true;
-    video.preload = 'metadata';
+    videos.forEach((video) => {
+      video.src = lavaVideoSrc;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+      video.play().catch(() => {});
+    });
 
     const handleCanPlay = () => setIsReady(true);
-
-    video.addEventListener('canplay', handleCanPlay);
-
-    video.play().catch(console.log);
+    videos[0]?.addEventListener('canplay', handleCanPlay);
 
     return () => {
-      video.pause();
-      video.removeEventListener('canplay', handleCanPlay);
+      videos.forEach((v) => v.pause());
+      videos[0]?.removeEventListener('canplay', handleCanPlay);
     };
   }, []);
 
@@ -96,15 +112,19 @@ const ClockInner: React.FC = () => {
 
   return (
     <div style={inlineStyles.container}>
-      {/* Single Fullscreen Video */}
-      <div style={inlineStyles.videoContainer}>
-        <video
-          ref={videoRef}
-          style={inlineStyles.video}
-          muted
-          loop
-          playsInline
-        />
+      {/* Tiled Maximized Videos */}
+      <div style={inlineStyles.videoStack}>
+        {[...Array(12)].map((_, i) => (
+          <div key={i} style={inlineStyles.videoSlot}>
+            <video
+              ref={(el) => (videoRefs.current[i] = el)}
+              style={inlineStyles.video}
+              muted
+              loop
+              playsInline
+            />
+          </div>
+        ))}
       </div>
 
       {/* Clock Digits */}
