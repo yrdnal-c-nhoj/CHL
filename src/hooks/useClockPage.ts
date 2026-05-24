@@ -109,11 +109,11 @@ export function useClockPage(currentItem: { date: string } | null) {
         const module = await (importFn as () => Promise<ClockModule>)().catch(
           (err) => {
             const msg = err instanceof Error ? err.message : String(err);
-            console.error(`[useClockPage] Module load failed for ${targetDate} at path ${path}:`, err);
+            console.error(`[useClockPage] Module load failed for ${targetDate} at path ${path}. Check for syntax errors in this file.`, err);
             
             if (msg.includes('Failed to fetch')) {
               throw new Error(
-                `Clock file at ${path} could not be fetched. Check if the file exists, ` +
+                `Clock file at ${path} could not be fetched. This usually means the file has a syntax error or a broken import. Check your IDE and browser console for details, ` +
                 `has no syntax errors, and that the filename case matches exactly.`
               );
             }
