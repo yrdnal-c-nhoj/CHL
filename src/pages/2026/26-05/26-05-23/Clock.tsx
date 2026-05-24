@@ -1,14 +1,14 @@
 import fontUrl from '@/assets/fonts/26fonts/26-05-23.ttf';
 import lavaVideoSrc from '@/assets/images/26_images/26-05/26-05-23/lava.mp4';
 import type { FontConfig } from '@/types/clock';
-import { useClockTime } from '@/utils/clockUtils';
 import { ClockLoadingFallback, useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
 import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 
 // =========================
 // ASSET EXPORTS (Required)
 // =========================
-export const assets: string[] = [lavaVideoSrc];
+export const assets: string[] = [lavaVideoSrc, fontUrl];
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
@@ -61,7 +61,7 @@ const inlineStyles: Record<string, React.CSSProperties> = {
   digitBox: {
     fontSize: 'calc(100dvh / 8)',
     fontWeight: 300,
-    fontFamily: 'Clock26-04-23, monospace',
+    fontFamily: 'Clock26-05-23, monospace',
     color: '#f20a0a',
     textShadow: '0 3px 2px rgba(2, 46, 27, 0.963)',
     lineHeight: 0.9,
@@ -71,7 +71,7 @@ const inlineStyles: Record<string, React.CSSProperties> = {
 
 const ClockInner: React.FC = () => {
   const fontConfigs = useMemo<FontConfig[]>(
-    () => [{ fontFamily: 'Clock26-04-23', fontUrl }],
+    () => [{ fontFamily: 'Clock26-05-23', fontUrl }],
     []
   );
 
@@ -109,6 +109,7 @@ const ClockInner: React.FC = () => {
   const m = formatTime(time.getMinutes());
   const s = formatTime(time.getSeconds());
   const allDigits = (h + m + s + ampm).split('');
+  const isoTime = time.toISOString();
 
   return (
     <div style={inlineStyles.container}>
@@ -128,13 +129,13 @@ const ClockInner: React.FC = () => {
       </div>
 
       {/* Clock Digits */}
-      <main style={inlineStyles.digitsContainer}>
+      <time dateTime={isoTime} style={inlineStyles.digitsContainer}>
         {allDigits.map((digit, index) => (
           <span key={index} style={inlineStyles.digitBox}>
             {digit}
           </span>
         ))}
-      </main>
+      </time>
 
       {/* Loading Overlay */}
       {!isReady && (
