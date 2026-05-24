@@ -417,5 +417,8 @@
   { "path": "26-05-20", "date": "26-05-20", "title": "Elevator" },
   { "path": "26-05-21", "date": "26-05-21", "title": "Canis Major" },
   { "path": "26-05-22", "date": "26-05-22", "title": "Subsurface" },
-  { "path": "26-05-23", "date": "26-05-23", "title": "Lavafall" }
+  { "path": "26-05-23", "date": "26-05-23", "title": "Lavafall" },
+  { "path": "26-05-24", "date": "26-05-24", "title": "Pulsar" },
+  { "path": "26-05-25", "date": "26-05-25", "title": "Orbit" },
+  { "path": "26-05-26", "date": "26-05-26", "title": "Spiral" }
 ]
