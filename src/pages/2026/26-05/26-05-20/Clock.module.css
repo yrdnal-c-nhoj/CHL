@@ -1,8 +1,13 @@
 .container {
-  min-height: 100dvh;
+  width: 100vw;
+  height: 100dvh;
   display: grid;
   place-content: center;
   font-family: "Google Sans", system-ui, sans-serif;
+  background-image: var(--bg-image);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .frame {
