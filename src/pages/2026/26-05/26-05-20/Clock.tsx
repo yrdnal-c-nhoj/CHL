@@ -1,5 +1,4 @@
 import clockFont from '@/assets/fonts/26fonts/26-05-20.otf';
-import backgroundImage from '@/assets/images/26_images/26-05/26-05-20/bg.webp';
 import type { FontConfig } from '@/types/clock';
 import { ClockLoadingFallback, useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
