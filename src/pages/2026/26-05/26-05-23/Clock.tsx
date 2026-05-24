@@ -34,7 +34,7 @@ const ClockInner: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.backgroundContainer}>
-        {Array.from({ length: 40 }).map((_, i) => (
+        {Array.from({ length: 121 }).map((_, i) => (
           <video
             key={i}
             className={styles.video}
