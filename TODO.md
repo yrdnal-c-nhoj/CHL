@@ -1,7 +1,4 @@
-# TODO
-
-- [ ] Update `src/hooks/useClockPage.ts` to fail-open when `module.assets` is malformed or when `preloadAssets` fails.
-- [ ] Add defensive logging to pinpoint which clock module/date caused failures in production.
-- [ ] Ensure overlay behavior never blocks rendering due to asset preload errors.
-- [ ] Run `npm test` and `npm run type-check` (or `npm run build`) to confirm the fix.
+- [ ] Fix inline style typing in src/pages/2025/25-05/25-05-03/Clock.tsx
+- [ ] Fix TS issues in src/pages/2025/25-05/25-05-04/Clock.tsx (updateClock FC return type, getElementById null checks, implicit any)
+- [ ] Re-run TypeScript build to verify errors are resolved
 

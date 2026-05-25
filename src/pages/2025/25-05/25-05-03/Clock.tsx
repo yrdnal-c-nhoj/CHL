@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import type { CSSProperties } from 'react';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks/useClockTime';
+import React, { useMemo } from 'react';
+
 import fontUrl from '@/assets/fonts/25fonts/25-05-03-Petal.ttf?url';
+
 import bg1 from '@/assets/images/25_images/25-05/25-05-03/petalos.gif';
 import bg2 from '@/assets/images/25_images/25-05/25-05-03/petals.gif';
 import bg3 from '@/assets/images/25_images/25-05/25-05-03/sakura-leaves.gif';
@@ -44,7 +45,8 @@ const FlyingPetalsClock: React.FC<FlyingPetalsClockProps> = () => {
 
   const digits = getTimeParts();
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
+
     fontFamily: 'Petal, sans-serif',
     margin: 0,
     padding: 0,
@@ -55,7 +57,8 @@ const FlyingPetalsClock: React.FC<FlyingPetalsClockProps> = () => {
     position: 'relative',
   };
 
-  const imgStyleBase = {
+  const imgStyleBase: React.CSSProperties = {
+
     position: 'absolute',
     top: 0,
     left: 0,
@@ -63,7 +66,8 @@ const FlyingPetalsClock: React.FC<FlyingPetalsClockProps> = () => {
     height: '100vh',
   };
 
-  const imageStyles = [
+  const imageStyles: React.CSSProperties[] = [
+
     {
       ...imgStyleBase,
       transform: 'rotate(180deg)',
@@ -90,7 +94,8 @@ const FlyingPetalsClock: React.FC<FlyingPetalsClockProps> = () => {
     },
   ];
 
-  const wrapperStyle = {
+  const wrapperStyle: React.CSSProperties = {
+
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -98,7 +103,8 @@ const FlyingPetalsClock: React.FC<FlyingPetalsClockProps> = () => {
     zIndex: 10,
   };
 
-  const clockContainerStyle = {
+  const clockContainerStyle: React.CSSProperties = {
+
     display: 'flex',
     flexWrap: 'nowrap',
     gap: '2vw',
@@ -106,12 +112,14 @@ const FlyingPetalsClock: React.FC<FlyingPetalsClockProps> = () => {
     alignItems: 'center',
   };
 
-  const digitGroupStyle = {
+  const digitGroupStyle: React.CSSProperties = {
+
     display: 'flex',
     gap: '0.5vw',
   };
 
-  const digitBoxStyle = {
+  const digitBoxStyle: React.CSSProperties = {
+
     color: '#7f8431',
     textShadow:
       '#88f157 0.2rem 0.3rem 2rem, #88f157 -0.2rem 0.3rem 2rem, #88f157 0.2rem -0.3rem 2rem, #88f157 -0.2rem -0.3rem 2rem',

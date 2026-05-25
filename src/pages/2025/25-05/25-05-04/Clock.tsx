@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
-import tumbGif from '@/assets/images/25_images/25-05/25-05-04/tumb-ezgif.com-optimize.gif';
-import spinnGif from '@/assets/images/25_images/25-05/25-05-04/spinn.gif';
+import React, { useEffect, useMemo, useRef } from 'react';
+
+
 import edGif from '@/assets/images/25_images/25-05/25-05-04/ed-ezgif.com-optimize.gif';
+import spinnGif from '@/assets/images/25_images/25-05/25-05-04/spinn.gif';
+import tumbGif from '@/assets/images/25_images/25-05/25-05-04/tumb-ezgif.com-optimize.gif';
 import wallpaperGif from '@/assets/images/25_images/25-05/25-05-04/wallpapaer-ezgif.com-optimize.gif';
 
 // Component Props interface
@@ -19,11 +21,15 @@ const Clock: React.FC<ClockProps> = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+void currentTime;
+const currentTime = useSecondClock();
+
   const clockRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
+
       const now = new Date();
+
       const sec = now.getSeconds();
       const min = now.getMinutes();
       const hr = now.getHours();
@@ -32,11 +38,21 @@ const Clock: React.FC<ClockProps> = () => {
       const minDeg = min * 6 + sec * 0.1;
       const hrDeg = hr * 30 + min * 0.5;
 
-      document.getElementById('second').style.transform =
-        `rotate(${secDeg}deg)`;
-      document.getElementById('minute').style.transform =
-        `rotate(${minDeg}deg)`;
-      document.getElementById('hour').style.transform = `rotate(${hrDeg}deg)`;
+      const secondEl = document.getElementById('second');
+      if (secondEl) {
+        secondEl.style.transform = `rotate(${secDeg}deg)`;
+      }
+
+      const minuteEl = document.getElementById('minute');
+      if (minuteEl) {
+        minuteEl.style.transform = `rotate(${minDeg}deg)`;
+      }
+
+      const hourEl = document.getElementById('hour');
+      if (hourEl) {
+        hourEl.style.transform = `rotate(${hrDeg}deg)`;
+      }
+
     };
 
     const interval = setInterval(updateClock, 1000);
@@ -44,7 +60,8 @@ const Clock: React.FC<ClockProps> = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const containerStyle = {
+  const containerStyle: CSSProperties = {
+
     margin: 0,
     display: 'flex',
     justifyContent: 'center',
@@ -53,7 +70,8 @@ const Clock: React.FC<ClockProps> = () => {
     fontFamily: "'Oxanium', 'Nanum Gothic Coding', 'Roboto Slab', monospace",
   };
 
-  const slideshowStyle = {
+  const slideshowStyle: CSSProperties = {
+
     position: 'relative',
     width: '90vh',
     height: '90vh',
@@ -61,7 +79,8 @@ const Clock: React.FC<ClockProps> = () => {
     zIndex: 5,
   };
 
-  const imageStyle = (index) => ({
+  const imageStyle = (index: number): CSSProperties => ({
+
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -74,7 +93,8 @@ const Clock: React.FC<ClockProps> = () => {
     animationDelay: `${index * 3}s`,
   });
 
-  const clockStyle = {
+  const clockStyle: CSSProperties = {
+
     width: '87vh',
     height: '87vh',
     borderRadius: '50%',
@@ -85,7 +105,8 @@ const Clock: React.FC<ClockProps> = () => {
     zIndex: 9,
   };
 
-  const handStyle = {
+  const handStyle: CSSProperties = {
+
     width: '50%',
     height: '4px',
     position: 'absolute',
@@ -95,7 +116,8 @@ const Clock: React.FC<ClockProps> = () => {
     transition: 'transform 0.05s ease-in-out',
   };
 
-  const wallpaperStyle = {
+  const wallpaperStyle: CSSProperties = {
+
     position: 'absolute',
     top: 0,
     left: 0,
