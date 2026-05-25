@@ -69,13 +69,14 @@ const BackslantClock: React.FC = () => {
 
     const getNextPosition = (id: string, digit: string) => {
       const train = trains.current[id];
-      const currentPos = positions.current[id];
+      if (!train) return 0;
+      const currentPos = positions.current[id] ?? 0;
       const children = Array.from(train.children);
       for (let i = currentPos + 1; i < children.length; i++) {
-        if (children[i].textContent === digit) return i;
+        if (children[i]?.textContent === digit) return i;
       }
       for (let i = 0; i <= currentPos; i++) {
-        if (children[i].textContent === digit) return i;
+        if (children[i]?.textContent === digit) return i;
       }
       return currentPos;
     };
@@ -91,10 +92,11 @@ const BackslantClock: React.FC = () => {
       digits.forEach((digit, i) => {
         const id = ids[i];
         const train = trains.current[id];
+        if (!train) return;
 
-        if (digit !== lastDigits.current[id]) {
+        if (digit !== (lastDigits.current[id] ?? null)) {
           Array.from(train.children).forEach((span) => {
-            if (!span.classList.contains('leaving'))
+            if (span instanceof HTMLElement && !span.classList.contains('leaving'))
               span.classList.remove('active');
           });
 
@@ -109,23 +111,24 @@ const BackslantClock: React.FC = () => {
           }
 
           positions.current[id] = getNextPosition(id, digit);
-          const spanWidth = train.children[0].offsetWidth || 0;
+          const spanWidth = (train.children[0] as HTMLElement)?.offsetWidth || 0;
           targetOffsets.current[id] = positions.current[id] * spanWidth;
           lastDigits.current[id] = digit;
 
           const newSpan = train.children[positions.current[id]];
-          if (newSpan) newSpan.classList.add('active');
+          if (newSpan instanceof HTMLElement) newSpan.classList.add('active');
         }
       });
 
       ids.forEach((id) => {
         const train = trains.current[id];
+        if (!train) return;
         currentOffsets.current[id] = lerp(
-          currentOffsets.current[id],
-          targetOffsets.current[id],
+          currentOffsets.current[id] ?? 0,
+          targetOffsets.current[id] ?? 0,
           0.1,
         );
-        train.style.transform = `translateX(-${currentOffsets.current[id]}px)`;
+        train.style.transform = `translateX(-${currentOffsets.current[id] ?? 0}px)`;
       });
 
       requestAnimationFrame(updateClock);
