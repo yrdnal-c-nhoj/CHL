@@ -1,13 +1,11 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import videoFile from '@/assets/images/26_images/26-01/26-01-17/swww.mp4';
+import font112425sput from '@/assets/fonts/26fonts/26-01-17-sw.ttf?url';
 import fallbackImg from '@/assets/images/26_images/26-01/26-01-17/sw.webp';
 import overlayImage from '@/assets/images/26_images/26-01/26-01-17/sw22.webp'; // Add your overlay image path here
-import font112425sput from '@/assets/fonts/26fonts/26-01-17-sw.ttf?url';
+import videoFile from '@/assets/images/26_images/26-01/26-01-17/swww.mp4';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Clock() {
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);

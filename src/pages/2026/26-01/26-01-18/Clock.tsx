@@ -1,7 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 
+type Vec2 = { x: number; y: number };
+
 class IsoEngine {
-  constructor(canvas) {
+  ctx: CanvasRenderingContext2D;
+  canvas: HTMLCanvasElement;
+  scale: number;
+  angle: number;
+
+  constructor(canvas: HTMLCanvasElement) {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
     this.scale = 20;
