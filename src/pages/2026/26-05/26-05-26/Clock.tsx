@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
 // ---------------- INTERFACES ----------------
@@ -39,8 +39,8 @@ const CLOCK_CONFIG = {
 // ---------------- FONT CONFIGURATION ----------------
 const fontConfigs = [
   {
-    name: 'ClockFont',
-    url: '@/assets/fonts/26fonts/26-05-05-dolphin.ttf',
+    fontFamily: 'ClockFont',
+    fontUrl: '@/assets/fonts/26fonts/26-05-05-dolphin.ttf',
   },
 ];
 
