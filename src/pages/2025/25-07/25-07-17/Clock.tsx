@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
+import React from 'react';
 
 // Import font and images as modules from the same folder
 import animFont from '@/assets/fonts/25fonts/25-07-17-ani.ttf';
 
-import num1Img from '@/assets/images/25_images/25-07/25-07-17/pngtree-a-beautiful-saltwater-crocodile-png-image_13409821-ezgif.com-rotate.gif';
-import num2Img from '@/assets/images/25_images/25-07/25-07-17/nbvfghj-ezgif.com-effects.gif';
-import num3Img from '@/assets/images/25_images/25-07/25-07-17/Kodiak-Brown-Bear-PNG-Isolated-HD-ezgif.com-optimize.gif';
-import num4Img from '@/assets/images/25_images/25-07/25-07-17/jhgf.gif';
-import num5Img from '@/assets/images/25_images/25-07/25-07-17/pngtree-harpy-eagle-vulture-animal-flying-isolated-on-white-background-png-image_15617474-ezgif.com-apng-to-gif-converter.gif';
-import num6Img from '@/assets/images/25_images/25-07/25-07-17/Green-Anaconda-PNG-Photos-ezgif.com-apng-to-gif-converter.gif';
-import num7Img from '@/assets/images/25_images/25-07/25-07-17/m0149_7_cover-ezgif.com-optimize(1).gif';
-import num8Img from '@/assets/images/25_images/25-07/25-07-17/jhgfd(1).gif';
-import num9Img from '@/assets/images/25_images/25-07/25-07-17/myo.gif';
-import num10Img from '@/assets/images/25_images/25-07/25-07-17/dgffcir-93f9489c-305d-45b7-81d4-eb9622481af9-ezgif.com-apng-to-gif-converter.gif';
 import num11Img from '@/assets/images/25_images/25-07/25-07-17/African-Elephant-PNG-File-ezgif.com-optimize.gif';
+import num6Img from '@/assets/images/25_images/25-07/25-07-17/Green-Anaconda-PNG-Photos-ezgif.com-apng-to-gif-converter.gif';
+import num3Img from '@/assets/images/25_images/25-07/25-07-17/Kodiak-Brown-Bear-PNG-Isolated-HD-ezgif.com-optimize.gif';
+import num10Img from '@/assets/images/25_images/25-07/25-07-17/dgffcir-93f9489c-305d-45b7-81d4-eb9622481af9-ezgif.com-apng-to-gif-converter.gif';
 import num12Img from '@/assets/images/25_images/25-07/25-07-17/gergfeds.gif';
+import num4Img from '@/assets/images/25_images/25-07/25-07-17/jhgf.gif';
+import num8Img from '@/assets/images/25_images/25-07/25-07-17/jhgfd(1).gif';
+import num7Img from '@/assets/images/25_images/25-07/25-07-17/m0149_7_cover-ezgif.com-optimize(1).gif';
+import num9Img from '@/assets/images/25_images/25-07/25-07-17/myo.gif';
+import num2Img from '@/assets/images/25_images/25-07/25-07-17/nbvfghj-ezgif.com-effects.gif';
+import num1Img from '@/assets/images/25_images/25-07/25-07-17/pngtree-a-beautiful-saltwater-crocodile-png-image_13409821-ezgif.com-rotate.gif';
+import num5Img from '@/assets/images/25_images/25-07/25-07-17/pngtree-harpy-eagle-vulture-animal-flying-isolated-on-white-background-png-image_15617474-ezgif.com-apng-to-gif-converter.gif';
 
 import bgImage from '@/assets/images/25_images/25-07/25-07-17/anim.webp';
 
@@ -105,7 +104,7 @@ const AnimatedClock: React.FC = () => {
   const m = time.getMinutes() + s / 60;
   const h = time.getHours() + m / 60;
 
-  const globalStyle = {
+  const globalStyle: React.CSSProperties = {
     margin: 0,
     padding: 0,
     display: 'flex',
@@ -117,7 +116,7 @@ const AnimatedClock: React.FC = () => {
     position: 'relative',
   };
 
-  const clockStyle = {
+  const clockStyle: React.CSSProperties = {
     position: 'relative',
     width: '100vh',
     height: '100vh',
@@ -125,12 +124,12 @@ const AnimatedClock: React.FC = () => {
     zIndex: 10,
   };
 
-  const numberCommonStyle = {
+  const numberCommonStyle: React.CSSProperties = {
     position: 'absolute',
     transform: 'translate(-50%, -50%)',
   };
 
-  const handCommonStyle = {
+  const handCommonStyle: React.CSSProperties = {
     position: 'absolute',
     bottom: '50%',
     left: '50%',
@@ -139,7 +138,7 @@ const AnimatedClock: React.FC = () => {
     opacity: 0.9,
   };
 
-  const hourHandStyle = {
+  const hourHandStyle: React.CSSProperties = {
     ...handCommonStyle,
     width: '5vh',
     height: '25vh',
@@ -148,7 +147,7 @@ const AnimatedClock: React.FC = () => {
     opacity: 0.8,
   };
 
-  const minuteHandStyle = {
+  const minuteHandStyle: React.CSSProperties = {
     ...handCommonStyle,
     width: '2.7vh',
     height: '34vh',
@@ -157,7 +156,7 @@ const AnimatedClock: React.FC = () => {
     opacity: 0.7,
   };
 
-  const secondHandStyle = {
+  const secondHandStyle: React.CSSProperties = {
     ...handCommonStyle,
     width: '0.0vh',
     height: '0vh',
@@ -166,7 +165,7 @@ const AnimatedClock: React.FC = () => {
     opacity: 1,
   };
 
-  const textStyleBase = {
+  const textStyleBase: React.CSSProperties = {
     fontFamily: "'anim', sans-serif",
     position: 'absolute',
     top: '50%',
@@ -184,13 +183,13 @@ const AnimatedClock: React.FC = () => {
     whiteSpace: 'nowrap',
   };
 
-  const labelStyle = {
+  const labelStyle: React.CSSProperties = {
     display: 'block',
     marginTop: '0.3rem',
     whiteSpace: 'nowrap',
   };
 
-  const bgImageStyle = {
+  const bgImageStyle: React.CSSProperties = {
     position: 'absolute',
     top: '50%',
     left: '50%',
