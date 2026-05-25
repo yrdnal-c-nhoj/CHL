@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
 import backFont from '@/assets/fonts/25fonts/25-06-17-back.ttf';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import React, { useEffect, useRef } from 'react';
 
 const BackslantClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -17,11 +17,11 @@ const BackslantClock: React.FC = () => {
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   const ids = ['h0', 'h1', 'm0', 'm1', 's0', 's1'];
-  const trains = useRef({});
-  const positions = useRef({});
-  const lastDigits = useRef({});
-  const targetOffsets = useRef({});
-  const currentOffsets = useRef({});
+  const trains = useRef<Record<string, HTMLElement>>({});
+  const positions = useRef<Record<string, number>>({});
+  const lastDigits = useRef<Record<string, string | null>>({});
+  const targetOffsets = useRef<Record<string, number>>({});
+  const currentOffsets = useRef<Record<string, number>>({});
 
   // Font loading handled by useMultipleFontLoader
 
@@ -45,18 +45,18 @@ const BackslantClock: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const createDigitLine: React.FC = () => {
+    const createDigitLine = () => {
       const frag = document.createDocumentFragment();
       for (let i = 0; i < 50; i++) {
         const span = document.createElement('span');
-        span.textContent = i % 10;
+        span.textContent = String(i % 10);
         frag.appendChild(span);
       }
       return frag;
     };
 
     ids.forEach((id) => {
-      const trainEl = document.getElementById(id + 'train');
+      const trainEl = document.getElementById(id + 'train')!;
       trainEl.appendChild(createDigitLine());
       trains.current[id] = trainEl;
       positions.current[id] = 0;
@@ -65,9 +65,9 @@ const BackslantClock: React.FC = () => {
       currentOffsets.current[id] = 0;
     });
 
-    const lerp = (a, b, t) => a + (b - a) * t;
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-    const getNextPosition = (id, digit) => {
+    const getNextPosition = (id: string, digit: string) => {
       const train = trains.current[id];
       const currentPos = positions.current[id];
       const children = Array.from(train.children);
@@ -80,7 +80,7 @@ const BackslantClock: React.FC = () => {
       return currentPos;
     };
 
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const digits = [
         ...now.getHours().toString().padStart(2, '0'),
@@ -162,7 +162,7 @@ const BackslantClock: React.FC = () => {
   );
 };
 
-const styles = {
+const styles: Record<string, React.CSSProperties> = {
   body: {
     margin: 0,
     padding: 0,
