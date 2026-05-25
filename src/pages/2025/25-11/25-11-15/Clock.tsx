@@ -152,10 +152,11 @@ export default function FallClock() {
     };
 
     const digits: DigitParticle[] = Array.from({ length: INITIAL_PARTICLES }, () => {
-      const randomDigit =
-        timeDigitsRef.current[
-          Math.floor(Math.random() * timeDigitsRef.current.length)
-        ];
+      const currentDigits = timeDigitsRef.current;
+      const randomDigit = currentDigits.length > 0 
+        ? currentDigits[Math.floor(Math.random() * currentDigits.length)]
+        : '0';
+
       return new DigitParticle(
         randomDigit,
         canvas.clientWidth,
@@ -190,7 +191,7 @@ export default function FallClock() {
         d.draw(ctx);
       }
 
-      if (digits.length < 100 && Math.random() < SPAWN_CHANCE) {
+      if (digits.length < 100 && Math.random() < SPAWN_CHANCE && timeDigitsRef.current.length > 0) {
         const randomDigit =
           timeDigitsRef.current[
             Math.floor(Math.random() * timeDigitsRef.current.length)

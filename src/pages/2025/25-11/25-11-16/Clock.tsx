@@ -49,18 +49,18 @@ export default function AnalogClock() {
   const containerStyle: React.CSSProperties = {
     width: '100%',
     height: isMobile ? '100vh' : '100dvh', // Use 100vh on mobile for better compatibility
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
+    position: 'relative' as const,
+    display: 'flex' as const,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+    overflow: 'hidden' as const,
     backgroundColor: '#000',
-    minHeight: isMobile ? '-webkit-fill-available' : 'auto', // iOS Safari fix
+    minHeight: isMobile ? ('-webkit-fill-available' as any) : 'auto', // iOS Safari fix
   };
 
   // Page background
   const bgStyle: React.CSSProperties = {
-    position: 'absolute',
+    position: 'absolute' as const,
     inset: 0,
     backgroundImage: `url(${bgImg})`,
     backgroundSize: 'cover',
@@ -73,17 +73,17 @@ export default function AnalogClock() {
   const clockStyle: React.CSSProperties = {
     width: isShortScreen ? '80vmin' : isMobile ? '85vmin' : '90vmin', // Responsive sizing
     height: isShortScreen ? '80vmin' : isMobile ? '85vmin' : '90vmin', // Keeps it a perfect square
-    position: 'relative',
+    position: 'relative' as const,
     background: 'rgba(255,255,255,0.15)',
     backdropFilter: 'blur(10px)',
     borderRadius: '50%', // Standard round clock face
-    overflow: 'hidden',
+    overflow: 'hidden' as const,
     zIndex: 1,
     border: '1px solid rgba(255,255,255,0.2)',
   };
 
   const clockBackgroundStyle: React.CSSProperties = {
-    position: 'absolute',
+    position: 'absolute' as const,
     inset: 0,
     backgroundImage: `url(${clockBg})`,
     backgroundSize: 'cover',
@@ -95,10 +95,10 @@ export default function AnalogClock() {
 
   // Hand styles: Adjusted to stay within clock bounds
   const handBase: React.CSSProperties = {
-    position: 'absolute',
+    position: 'absolute' as const,
     left: '50%',
     top: '50%',
-    transformOrigin: '50% 0%', // Changed to rotate from top center
+    transformOrigin: '50% 0%' as const, // Changed to rotate from top center
     background: 'rgba(255, 255, 255, 0.8)',
     borderRadius: '10px',
     zIndex: 2,
