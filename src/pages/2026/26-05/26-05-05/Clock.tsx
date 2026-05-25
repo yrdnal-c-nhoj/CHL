@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import shapesFont from '@/assets/fonts/26fonts/26-05-05-dino.ttf';
 import clockImage from '@/assets/images/26_images/26-05/26-05-05/dino.webp';
@@ -91,7 +91,7 @@ const Clock: React.FC = () => {
         -1px 1px 0px #000,
         1px 1px 0px #000,
         0 0 20px rgba(255, 107, 53, 0.8),
-        0 0 40px rgba(255, 107, 53, 0.4),
+        0 0 40px rgba(255, 107, 53, 0.34),
         inset 0 0 20px rgba(0, 0, 0, 0.3)
       `,
       filter: `
