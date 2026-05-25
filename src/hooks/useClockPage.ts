@@ -113,8 +113,8 @@ export function useClockPage(currentItem: { date: string } | null) {
             
             if (msg.includes('Failed to fetch')) {
               throw new Error(
-                `Clock file at ${path} could not be fetched. This usually means the file has a syntax error or a broken import. Check your IDE and browser console for details, ` +
-                `has no syntax errors, and that the filename case matches exactly.`
+                `Clock file at ${path} could not be fetched. This usually indicates a syntax error in the clock file, a broken import, or a network failure during chunk loading. ` +
+                `Please check your browser's "Network" and "Console" tabs for the specific error, and ensure the file has no syntax errors.`
               );
             }
             throw new Error(`Clock execution failed (${targetDate}): ${msg}`);
