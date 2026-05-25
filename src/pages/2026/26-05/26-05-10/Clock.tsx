@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { useClockTime } from '@/utils/hooks';
+import type { FontConfig } from '@/types/clock';
 import { formatTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+import { useClockTime } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
@@ -82,14 +82,14 @@ const NightSky: React.FC = () => {
     const { hours, minutes, seconds, meridian } = formattedTime;
 
     return [
-      hours[0] || '0',
-      hours[1] || '0',
-      minutes[0] || '0',
-      minutes[1] || '0',
-      seconds[0] || '0',
-      seconds[1] || '0',
-      meridian[0] || 'A',
-      meridian[1] || 'M',
+      hours?.[0] || '0',
+      hours?.[1] || '0',
+      minutes?.[0] || '0',
+      minutes?.[1] || '0',
+      seconds?.[0] || '0',
+      seconds?.[1] || '0',
+      meridian?.[0] || 'A',
+      meridian?.[1] || 'M',
     ];
   }, [formattedTime]);
 

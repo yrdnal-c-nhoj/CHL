@@ -12,7 +12,7 @@ import styles from './Clock.module.css';
 export const assets: string[] = [clockFont];
 
 export const fontConfigs: FontConfig[] = [
-  { name: 'ClockFont', url: clockFont }
+  { fontFamily: 'ClockFont', fontUrl: clockFont }
 ];
 
 const ClockInner: React.FC = () => {

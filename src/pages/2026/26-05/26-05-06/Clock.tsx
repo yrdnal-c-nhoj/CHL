@@ -173,7 +173,7 @@ const WaterDropletsClock: React.FC = () => {
       bgImage: null as HTMLImageElement | null,
     };
 
-    const font = new FontFace('26-05-06-droplet', `url(${fontUrl})`);
+    const font = new FontFace('26-05-06-droplet', `url(${fontUrl!})`);
     font
       .load()
       .then((loadedFont) => {
@@ -486,6 +486,8 @@ const WaterDropletsClock: React.FC = () => {
 
       for (let i = 0; i < n; i++) {
         const d = dropletsRef.current[i];
+        if (!d) continue;
+
         const base = i * 4;
         buf[base] = d.x;
         buf[base + 1] = d.y;
@@ -500,7 +502,7 @@ const WaterDropletsClock: React.FC = () => {
       }
 
       dropletTex.needsUpdate = true;
-      material.uniforms.uCount.value = count;
+      if (material.uniforms.uCount) material.uniforms.uCount.value = count;
     },
     [],
   );
@@ -586,10 +588,12 @@ const WaterDropletsClock: React.FC = () => {
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
 
-        material.uniforms.uRes.value.set(
-          renderer.domElement.width,
-          renderer.domElement.height,
-        );
+        if (material.uniforms.uRes) {
+          material.uniforms.uRes.value.set(
+            renderer.domElement.width,
+            renderer.domElement.height,
+          );
+        }
         updateSize(renderer.domElement.width, renderer.domElement.height);
       }, 100);
     };

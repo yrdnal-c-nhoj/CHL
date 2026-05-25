@@ -46,8 +46,8 @@ export const assets = [];
 // ---------------- FONT CONFIGURATION ----------------
 export const fontConfigs = [
   {
-    name: 'ClockFont',
-    url: clockFont,
+    fontFamily: 'ClockFont',
+    fontUrl: clockFont,
   },
 ];
 

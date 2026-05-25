@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks';
 import fontUrl from '@/assets/fonts/26fonts/26-05-03-dolphin.ttf?url';
 import jumpVideo from '@/assets/images/26_images/26-05/26-05-04/jump.mp4';
+import { useClockTime } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 
 const CLOCK_CONFIG = {
   NUMERAL_RADIUS: 40,
@@ -18,7 +18,7 @@ const HAND_DIMENSIONS = {
   second: { width: '0.4vmin', height: '38vmin', zIndex: 5 },
 };
 
-const calculateNumeralPosition = (number) => {
+const calculateNumeralPosition = (number: number) => {
   const angleRad = (number / 12) * 2 * Math.PI;
 
   return {
@@ -27,7 +27,7 @@ const calculateNumeralPosition = (number) => {
   };
 };
 
-const calculateTimeValues = (date) => {
+const calculateTimeValues = (date: Date) => {
   const min = date.getMinutes();
   const hr = (date.getHours() % 12) + min / 60;
 
@@ -83,8 +83,8 @@ const ClockNumerals = () => {
   return numerals;
 };
 
-const ClockHand = ({ type, rotation }) => {
-  const { width, height, zIndex } = HAND_DIMENSIONS[type];
+const ClockHand = ({ type, rotation }: { type: keyof typeof HAND_DIMENSIONS; rotation: number }) => {
+  const { width, height, zIndex } = HAND_DIMENSIONS[type as keyof typeof HAND_DIMENSIONS];
 
   return (
     <div
@@ -110,7 +110,7 @@ const AnalogClock = () => {
   const { hr, min } = calculateTimeValues(currentTime);
 
   return (
-    <div style={styles.container}>
+    <div style={styles.container as React.CSSProperties}>
       <style>{`
         @font-face {
           font-family: 'ClockFont';
@@ -120,7 +120,7 @@ const AnalogClock = () => {
 
       <BackgroundLayers />
 
-      <div style={{ ...styles.clockFace, fontFamily: "'ClockFont', serif" }}>
+      <div style={{ ...styles.clockFace, fontFamily: "'ClockFont', serif" } as React.CSSProperties}>
         <ClockNumerals />
 
         <ClockHand type="hour" rotation={hr * 30} />
