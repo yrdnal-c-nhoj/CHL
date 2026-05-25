@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
  * Standardized Asset Loading System
@@ -57,13 +58,25 @@ export function useImageLoader(config: ImageAssetConfig): {
 } {
   const [state, setState] = useState<AssetLoadState>('loading');
   const [error, setError] = useState<Error | null>(null);
-  const elementRef = useRef<HTMLImageElement>(null);
+  const [element, setElement] = useState<HTMLImageElement | null>(null);
+  const elementRef = useRef<HTMLImageElement | null>(null);
+
+  const {
+    src,
+    fallback,
+    srcSet,
+    sizes,
+    crossOrigin,
+    referrerPolicy,
+    loading: loadingAttr,
+  } = config;
 
   const loadImage = useCallback(async () => {
-    if (imageRegistry.has(config.src)) {
+    if (imageRegistry.has(src)) {
       try {
-        const cachedImage = await imageRegistry.get(config.src)!;
+        const cachedImage = await imageRegistry.get(src)!;
         setState('loaded');
+        setElement(cachedImage);
         return cachedImage;
       } catch (err) {
         setError(err as Error);
@@ -77,39 +90,41 @@ export function useImageLoader(config: ImageAssetConfig): {
 
       img.onload = () => {
         setState('loaded');
+        setElement(img);
         resolve(img);
       };
 
       img.onerror = () => {
-        const err = new Error(`Failed to load image: ${config.src}`);
+        const err = new Error(`Failed to load image: ${src}`);
         setError(err);
 
         // Try fallback if available
-        if (config.fallback) {
+        if (fallback) {
           const fallbackImg = new Image();
           fallbackImg.onload = () => {
             setState('fallback');
+            setElement(fallbackImg);
             resolve(fallbackImg);
           };
           fallbackImg.onerror = () => {
             reject(err);
           };
-          fallbackImg.src = config.fallback;
+          fallbackImg.src = fallback;
         } else {
           reject(err);
         }
       };
 
       // Set image properties
-      img.src = config.src;
-      if (config.srcSet) img.srcset = config.srcSet;
-      if (config.sizes) img.sizes = config.sizes;
-      if (config.crossOrigin) img.crossOrigin = config.crossOrigin;
-      if (config.referrerPolicy) img.referrerPolicy = config.referrerPolicy;
-      if (config.loading) img.loading = config.loading;
+      img.src = src;
+      if (srcSet) img.srcset = srcSet;
+      if (sizes) img.sizes = sizes;
+      if (crossOrigin) img.crossOrigin = crossOrigin;
+      if (referrerPolicy) img.referrerPolicy = referrerPolicy;
+      if (loadingAttr) img.loading = loadingAttr;
     });
 
-    imageRegistry.set(config.src, loadPromise);
+    imageRegistry.set(src, loadPromise);
 
     try {
       return await loadPromise;
@@ -118,7 +133,7 @@ export function useImageLoader(config: ImageAssetConfig): {
       setState('error');
       return null;
     }
-  }, [config]);
+  }, [src, fallback, srcSet, sizes, crossOrigin, referrerPolicy, loadingAttr]);
 
   useEffect(() => {
     if (config.preload !== false) {
@@ -126,11 +141,16 @@ export function useImageLoader(config: ImageAssetConfig): {
     }
   }, [loadImage, config.preload]);
 
+  // Keep ref in sync for return object
+  useEffect(() => {
+    (elementRef as any).current = element;
+  }, [element]);
+
   return {
     state,
-    element: elementRef.current,
+    element,
     error,
-    ref: elementRef,
+    ref: elementRef as React.RefObject<HTMLImageElement>,
   };
 }
 

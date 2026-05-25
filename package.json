@@ -6,7 +6,7 @@
   "scripts": {
     "setup": "mkdir -p screen-caps/screen-caps && npx playwright install chromium",
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "build:with-types": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
