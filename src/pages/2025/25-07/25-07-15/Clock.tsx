@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
 import asciiFontUrl from '@/assets/fonts/25fonts/25-07-15-ascii.ttf';
 import asciiImageUrl from '@/assets/images/25_images/25-07/25-07-15/ascii.jpg';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import React, { useEffect, useState } from 'react';
 
 const DIGITS = {
   0: [
@@ -136,7 +136,7 @@ const DIGITS = {
   ],
 };
 
-const makeGroup = (str) => {
+const makeGroup = (str: string) => {
   const rows = Array(8).fill('');
   for (const char of str) {
     const glyph = DIGITS[char] || Array(8).fill('       ');
@@ -148,7 +148,7 @@ const makeGroup = (str) => {
 };
 
 const AsciiClock: React.FC = () => {
-  const [timeParts, setTimeParts] = useState<any>([]);
+  const [timeParts, setTimeParts] = useState<string[]>([]);
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -164,7 +164,7 @@ const AsciiClock: React.FC = () => {
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       let h = now.getHours();
       const m = String(now.getMinutes()).padStart(2, '0');
@@ -179,7 +179,7 @@ const AsciiClock: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     backgroundColor: 'rgb(32, 31, 31)',
     color: 'rgb(224, 250, 224)',
     whiteSpace: 'pre',
@@ -197,7 +197,7 @@ const AsciiClock: React.FC = () => {
     overflow: 'hidden',
   };
 
-  const bgStyle = {
+  const bgStyle: React.CSSProperties = {
     position: 'fixed',
     top: 0,
     left: 0,
@@ -210,7 +210,7 @@ const AsciiClock: React.FC = () => {
     zIndex: -1,
   };
 
-  const titleContainerStyle = {
+  const titleContainerStyle: React.CSSProperties = {
     color: '#a2a2a0',
     textShadow: '#100f0f 0.1vw 0',
     position: 'absolute',
@@ -223,7 +223,7 @@ const AsciiClock: React.FC = () => {
     zIndex: 6,
   };
 
-  const chltitleStyle = {
+  const chltitleStyle: React.CSSProperties = {
     fontFamily: '"Roboto Slab", serif',
     fontSize: '2.7vh',
     letterSpacing: '0.1vh',
@@ -231,7 +231,7 @@ const AsciiClock: React.FC = () => {
 
   return (
     <div style={containerStyle}>
-      {timeParts.map((group, i) => (
+      {timeParts.map((group: string, i: number) => (
         <div
           key={i}
           style={{
