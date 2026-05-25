@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useSuspenseFontLoader } from '@/utils/fontLoader'; // Asset Imports
 import clockFont from '@/assets/fonts/26fonts/26-01-30-ne.ttf';
-import bgLayer1 from '@/assets/images/26_images/26-01/26-01-30/new.webp';
 import bgLayer2 from '@/assets/images/26_images/26-01/26-01-30/nes.gif';
+import bgLayer1 from '@/assets/images/26_images/26-01/26-01-30/new.webp';
+import React, { useEffect, useRef, useState } from 'react';
 // import bgLayer3 from '@/assets/images/26_images/26-01/26-01-30/ne3.gif';
 
 const DigitalClock: React.FC = () => {
@@ -11,7 +9,7 @@ const DigitalClock: React.FC = () => {
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
   const [bgPos, setBgPos] = useState<any>({ x: 0, y: 0 });
 
-  const requestRef = useRef();
+  const requestRef = useRef<number>(0);
   const pos = useRef({ x: 0, y: 0 });
 
   const brain = useRef({
@@ -46,7 +44,7 @@ const DigitalClock: React.FC = () => {
 
     const timer = setInterval(() => setTime(new Date()), 1000);
 
-    const animate: React.FC = () => {
+    const animate = () => {
       const b = brain.current;
       b.confusionTimer--;
 

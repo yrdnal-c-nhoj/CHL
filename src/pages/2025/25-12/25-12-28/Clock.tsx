@@ -1,14 +1,20 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+import fontUrl_20251128 from '@/assets/fonts/25fonts/25-12-28-coaster.ttf?url';
 import videoFile from '@/assets/images/25_images/25-12/25-12-28/coaster.mp4';
 import fallbackImg from '@/assets/images/25_images/25-12/25-12-28/coaster.webp';
-import fontUrl_20251128 from '@/assets/fonts/25fonts/25-12-28-coaster.ttf?url';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useEffect, useMemo, useRef, useState } from 'react';
+
+interface ShakeState {
+  x: number;
+  y: number;
+  rotate: number;
+}
 
 export default function Clock() {
-  const [timeText, setTimeText] = useState<any>('');
+  const [timeText, setTimeText] = useState<string>('');
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const [shake, setShake] = useState<any>({ x: 0, y: 0, rotate: 0 });
+  const [shake, setShake] = useState<ShakeState>({ x: 0, y: 0, rotate: 0 });
   const videoRef = useRef(null);
   const animationFrameId = useRef<number | null>(null);
 
@@ -19,7 +25,7 @@ export default function Clock() {
 
   useSuspenseFontLoader(fontConfigs);
 
-  const updateTime: React.FC = () => {
+  const updateTime = () => {
     const now = new Date();
     const hours24 = now.getHours();
     const minutes = now.getMinutes();
@@ -172,7 +178,7 @@ export default function Clock() {
     transformStyle: 'preserve-3d',
   };
 
-  const digitStyle = (index) => ({
+  const digitStyle = (index: number) => ({
     display: 'inline-block',
     animation: `
       jossel 1.2s infinite 
