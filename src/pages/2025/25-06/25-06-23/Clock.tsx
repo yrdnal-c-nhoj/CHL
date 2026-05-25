@@ -1,19 +1,21 @@
-import { useEffect, useRef } from 'react';
 import squFontUrl from '@/assets/fonts/25fonts/25-06-23-squ.ttf';
+import { useEffect, useRef } from 'react';
 
 const SquigglingClock: React.FC = () => {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
     const font = new FontFace('squ', `url(${squFontUrl})`);
     font.load().then((loaded) => {
       document.fonts.add(loaded);
     });
 
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-
-    const resizeCanvas: React.FC = () => {
+    const resizeCanvas = () => {
       const size = Math.min(window.innerWidth, window.innerHeight) * 0.8;
       canvas.width = size;
       canvas.height = size;
@@ -25,7 +27,7 @@ const SquigglingClock: React.FC = () => {
     let distortionPhase = 0;
     const distortionSpeed = 0.03;
 
-    const drawClock: React.FC = () => {
+    const drawClock = () => {
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
       const radius = canvas.width * 0.46;
@@ -38,6 +40,7 @@ const SquigglingClock: React.FC = () => {
       offCanvas.width = canvas.width;
       offCanvas.height = canvas.height;
       const offCtx = offCanvas.getContext('2d');
+      if (!offCtx) return;
 
       offCtx.fillStyle = '#9D949DFF';
       offCtx.beginPath();
@@ -61,7 +64,7 @@ const SquigglingClock: React.FC = () => {
           centerX + (radius - canvas.width * 0.08) * Math.cos(angle);
         const numberY =
           centerY + (radius - canvas.width * 0.08) * Math.sin(angle);
-        offCtx.fillText(i === 0 ? 12 : i, numberX, numberY);
+        offCtx.fillText(String(i === 0 ? 12 : i), numberX, numberY);
       }
 
       // Hour hand
@@ -127,7 +130,7 @@ const SquigglingClock: React.FC = () => {
       distortionPhase += distortionSpeed;
     };
 
-    const animate: React.FC = () => {
+    const animate = () => {
       drawClock();
       requestAnimationFrame(animate);
     };

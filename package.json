@@ -6,7 +6,7 @@
   "scripts": {
     "setup": "mkdir -p screen-caps/screen-caps && npx playwright install chromium",
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "build:with-types": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
@@ -54,7 +54,7 @@
     "three": "^0.180.0"
   },
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=22.12.0"
   },
   "devDependencies": {
     "@babel/core": "^7.28.4",

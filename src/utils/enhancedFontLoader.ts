@@ -1,16 +1,7 @@
-import { useMemo, useEffect, useRef } from 'react';
-import {
-  useSuspenseFontLoader,
-  useFontLoader as baseFontLoader,
-} from './fontLoader';
-import type { FontConfig } from '../types/clock';
+import { useEffect, useMemo, useState } from 'react';
 
 // Re-export base font loader functions
-export {
-  useSuspenseFontLoader,
-  useFontLoader as useMultipleFontLoader,
-} from './fontLoader';
-export { ClockLoadingFallback } from './fontLoader';
+export { ClockLoadingFallback, useFontLoader as useMultipleFontLoader, useSuspenseFontLoader } from './fontLoader';
 
 /**
  * Enhanced font loader with loading state tracking (non-suspense)
@@ -44,9 +35,6 @@ export function useEnhancedFontLoader(
 
   return loaded;
 }
-
-// Simple useState for useEnhancedFontLoader
-import { useState } from 'react';
 
 /**
  * Inject global CSS styles with a unique identifier

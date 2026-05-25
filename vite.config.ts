@@ -41,22 +41,18 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     sourcemap: false, // Disable sourcemaps for production
-    minify: 'terser', // Use Terser for more robust minification
+    minify: 'esbuild', // Faster minification for CI/CD
     rollupOptions: {
       output: {
         // Optimize chunk splitting
         manualChunks: (id) => {
           if (!id.includes('node_modules')) {
-            // Use physical path segments instead of aliases which aren't expanded here
             if (id.includes('/src/utils/')) return 'utils';
-            // DO NOT group all clocks into one 'clocks' chunk. 
-            // Removing this allows Vite to create individual chunks per clock,
-            // isolating errors and improving load times.
             if (id.includes('/src/components/')) return 'ui';
             return;
           }
 
-          if (id.includes('three')) return 'three';
+          if (id.includes('three') || id.includes('@react-three')) return 'vendor-three';
 
           // More specific matching for core framework to avoid catching
           // every library that has "react" in the name
@@ -68,8 +64,7 @@ export default defineConfig({
             return 'framework';
           }
 
-          if (id.includes('gsap')) return 'animation';
-          if (id.includes('framer-motion')) return 'animation';
+          if (id.includes('gsap') || id.includes('framer-motion')) return 'animation';
           return 'vendor';
         },
       },

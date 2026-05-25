@@ -1,8 +1,8 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import myFont from '@/assets/fonts/25fonts/25-08-04-Tr.ttf'; // Your custom font file
+import bgImage from '@/assets/images/25_images/25-08/25-08-04/shrub.jpeg'; // Your background image file
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
-import bgImage from '@/assets/images/25_images/25-08/25-08-04/shrub.jpeg'; // Your background image file
-import myFont from '@/assets/fonts/25fonts/25-08-04-Tr.ttf'; // Your custom font file
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 const getRandomPosition = () => ({
   top: `${Math.random() * 80 + 10}%`,
@@ -54,7 +54,7 @@ const DigitalClock: React.FC = () => {
     setFadeIndex((i) => (i + 1) % clocks.length);
   }, [time, clocks.length]);
 
-  const getOpacity = (i) => {
+  const getOpacity = (i: number) => {
     const totalClocks = clocks.length;
     let diff = i - fadeIndex;
     if (diff < 0) diff += totalClocks;
