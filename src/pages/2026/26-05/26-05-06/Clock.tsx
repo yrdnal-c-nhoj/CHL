@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useCallback, useMemo } from 'react';
-import * as THREE from 'three';
 import fontUrl from '@/assets/fonts/26fonts/26-05-06-droplet.ttf';
 import backgroundImage from '@/assets/images/26_images/26-05/26-05-06/drops.jpg';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import * as THREE from 'three';
 
 const MAX_DROPLETS = 40;
 const MAX_ENTRIES = MAX_DROPLETS * 2;
@@ -307,10 +307,15 @@ const WaterDropletsClock: React.FC = () => {
     }
 
     // Surface tension (pairwise)
+    // Note: array indices are guarded to satisfy `noUncheckedIndexedAccess`.
     for (let i = 0; i < droplets.length; i++) {
       const a = droplets[i];
+      if (!a) continue;
+
       for (let j = i + 1; j < droplets.length; j++) {
         const b = droplets[j];
+        if (!b) continue;
+
         const dx = b.x - a.x;
         const dy = b.y - a.y;
         const dSq = dx * dx + dy * dy;
@@ -375,10 +380,10 @@ const WaterDropletsClock: React.FC = () => {
     const droplets = dropletsRef.current;
     for (let i = 0; i < droplets.length; i++) {
       const a = droplets[i];
-      if (!a.alive) continue;
+      if (!a || !a.alive) continue;
       for (let j = i + 1; j < droplets.length; j++) {
         const b = droplets[j];
-        if (!b.alive) continue;
+        if (!b || !b.alive) continue;
 
         if (Math.hypot(b.x - a.x, b.y - a.y) < (a.r + b.r) * MERGE_RATIO) {
           const na = a.area + b.area;
@@ -395,7 +400,8 @@ const WaterDropletsClock: React.FC = () => {
 
     // Remove dead
     for (let i = droplets.length - 1; i >= 0; i--) {
-      if (!droplets[i].alive) droplets.splice(i, 1);
+      const d = droplets[i];
+      if (!d || !d.alive) droplets.splice(i, 1);
     }
   }, []);
 
