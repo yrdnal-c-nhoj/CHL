@@ -1,12 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import fatFont from '@/assets/fonts/25fonts/25-05-31-fat.otf';
 import elWebp from '@/assets/images/25_images/25-05/25-05-31/el.webp';
 import el1 from '@/assets/images/25_images/25-05/25-05-31/el1.png';
 import el2 from '@/assets/images/25_images/25-05/25-05-31/el2.png';
 import el3 from '@/assets/images/25_images/25-05/25-05-31/el3.png';
 import eleGif from '@/assets/images/25_images/25-05/25-05-31/ele.gif';
-import fatFont from '@/assets/fonts/25fonts/25-05-31-fat.otf';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import React, { CSSProperties, useEffect, useRef } from 'react';
 
 const ElephantClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -22,10 +21,10 @@ const ElephantClock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const hourRef = useRef();
-  const minuteRef = useRef();
-  const secondRef = useRef();
-  const orbitRef = useRef();
+  const hourRef = useRef<HTMLImageElement>(null);
+  const minuteRef = useRef<HTMLImageElement>(null);
+  const secondRef = useRef<HTMLImageElement>(null);
+  const orbitRef = useRef<HTMLImageElement>(null);
 
   // Font loading handled by useMultipleFontLoader
 
@@ -49,9 +48,9 @@ const ElephantClock: React.FC = () => {
 
     let orbitAngle = 0;
     const orbitRadius = 40;
-    let frameId;
+    let frameId: number;
 
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const seconds = now.getSeconds();
       const milliseconds = now.getMilliseconds();
@@ -75,17 +74,19 @@ const ElephantClock: React.FC = () => {
         minuteDegBase +
         minuteSway.amplitude * Math.sin(t * minuteSway.frequency);
 
-      hourHand.style.transform = `translate(-50%, -50%) rotate(${hourDeg}deg)`;
-      minuteHand.style.transform = `translate(-50%, -50%) rotate(${minuteDeg}deg)`;
-      secondHand.style.transform = `translate(-50%, -50%) rotate(${secondDeg}deg)`;
+      if (hourHand) hourHand.style.transform = `translate(-50%, -50%) rotate(${hourDeg}deg)`;
+      if (minuteHand) minuteHand.style.transform = `translate(-50%, -50%) rotate(${minuteDeg}deg)`;
+      if (secondHand) secondHand.style.transform = `translate(-50%, -50%) rotate(${secondDeg}deg)`;
 
       orbitAngle -= 0.12;
       const rad = (orbitAngle * Math.PI) / 180;
       const x = 50 + orbitRadius * Math.cos(rad);
       const y = 50 + orbitRadius * Math.sin(rad);
-      orbitingImage.style.left = `${x}%`;
-      orbitingImage.style.top = `${y}%`;
-      orbitingImage.style.transform = `translate(-50%, -50%) rotate(${orbitAngle + 90}deg)`;
+      if (orbitingImage) {
+        orbitingImage.style.left = `${x}%`;
+        orbitingImage.style.top = `${y}%`;
+        orbitingImage.style.transform = `translate(-50%, -50%) rotate(${orbitAngle + 90}deg)`;
+      }
 
       frameId = requestAnimationFrame(updateClock);
     };
@@ -252,7 +253,7 @@ const ElephantClock: React.FC = () => {
   );
 };
 
-const handStyle = {
+const handStyle: CSSProperties = {
   position: 'absolute',
   width: '100%',
   height: '80%',
