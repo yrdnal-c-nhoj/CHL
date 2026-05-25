@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import font_25251115j from '@/assets/fonts/25fonts/25-11-15-rain.otf?url';
 import bgImage from '@/assets/images/25_images/25-11/25-11-15/fall.webp'; // local background image
 import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useEffect, useMemo, useRef } from 'react';
 
 export const fontConfigs: FontConfig[] = [
   {
@@ -11,29 +11,113 @@ export const fontConfigs: FontConfig[] = [
   },
 ];
 
+const GRAVITY = 9.0;
+const WIND_BASE = 0.01;
+const SPAWN_CHANCE = 0.15;
+const INITIAL_PARTICLES = 2;
+const MAX_FALL_SPEED = 2.8;
+const DRAG = 0.1;
+const HORIZONTAL_SWAY_STRENGTH = 6.5;
+
+const AUTUMN_COLORS = [
+  '#DA0E0EFF',
+  '#FE6208F2',
+  '#F81010FF',
+  '#FCD80FFF',
+  '#FFEB10FF',
+  '#F71B07FF',
+];
+
+class Vector {
+  x: number;
+  y: number;
+  constructor(x = 0, y = 0) {
+    this.x = x;
+    this.y = y;
+  }
+  add(v: Vector) {
+    this.x += v.x;
+    this.y += v.y;
+    return this;
+  }
+}
+
+class DigitParticle {
+  value: string;
+  pos: Vector;
+  vel: Vector;
+  fontSize: number;
+  alpha: number;
+  scaleX: number;
+  scaleY: number;
+  rotation: number;
+  rotationSpeed: number;
+  color: string;
+
+  constructor(value: string, width: number, height: number) {
+    this.value = value;
+    this.pos = new Vector(Math.random() * width, Math.random() * -height);
+    this.vel = new Vector(
+      (Math.random() - 0.5) * 0.05,
+      Math.random() * 0.1,
+    );
+    this.fontSize = Math.random() * 2 + 2.5;
+    this.alpha = 1;
+    this.scaleX = 1;
+    this.scaleY = 1;
+    this.rotation = Math.random() * Math.PI * 2;
+    this.rotationSpeed = (Math.random() - 0.5) * 0.02;
+    this.color =
+      AUTUMN_COLORS[Math.floor(Math.random() * AUTUMN_COLORS.length)];
+  }
+
+  update(width: number, height: number) {
+    this.vel.y += GRAVITY;
+    this.vel.x =
+      Math.sin(this.pos.y * 0.005) * HORIZONTAL_SWAY_STRENGTH +
+      (Math.random() - 0.5) * WIND_BASE;
+    this.vel.x *= DRAG;
+    this.vel.y = Math.min(this.vel.y * DRAG, MAX_FALL_SPEED);
+    this.pos.add(this.vel);
+
+    this.rotation += this.rotationSpeed;
+    this.scaleX = 0.9 + Math.sin(Date.now() * 0.002 + this.pos.y) * 0.15;
+    this.scaleY = 0.9 + Math.cos(Date.now() * 0.002 + this.pos.x) * 0.15;
+
+    if (this.pos.y > height + 10) this.pos.y = -10;
+    if (this.pos.x > width + 10) this.pos.x = -10;
+    if (this.pos.x < -10) this.pos.x = width + 10;
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    ctx.save();
+    ctx.translate(this.pos.x, this.pos.y);
+    ctx.rotate(this.rotation);
+    ctx.scale(this.scaleX, this.scaleY);
+    ctx.globalAlpha = this.alpha;
+    ctx.fillStyle = this.color;
+    ctx.font = `${this.fontSize}rem "DigitFont_25251115j"`;
+    ctx.textAlign = 'center';
+    ctx.fillText(this.value, 0, 0);
+    ctx.restore();
+  }
+}
+
 export default function FallClock() {
-  const canvasRef = useRef(null);
-  const rafRef = useRef(null);
-  const timeDigitsRef = useRef([]);
-  const bgRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const rafRef = useRef<number | null>(null);
+  const timeDigitsRef = useRef<string[]>([]);
+  const bgRef = useRef<HTMLImageElement | null>(null);
 
   // Use standardized font loader
   useSuspenseFontLoader(fontConfigs);
 
-  const GRAVITY = 9.0;
-  const WIND_BASE = 0.01;
-  const SPAWN_CHANCE = 0.15;
-  const INITIAL_PARTICLES = 2;
-  const MAX_FALL_SPEED = 2.8;
-  const DRAG = 0.1;
-  const HORIZONTAL_SWAY_STRENGTH = 6.5;
-
   // Update digits every second
   useEffect(() => {
-    const updateTimeDigits: React.FC = () => {
+    const updateTimeDigits = () => {
       const now = new Date();
-      let hours = now.getHours() % 12 || 12;
-      let minutes = now.getMinutes();
+      const hours = now.getHours() % 12 || 12;
+      const minutes = now.getMinutes();
       timeDigitsRef.current = `${hours}${minutes
         .toString()
         .padStart(2, '0')}`.split('');
@@ -47,6 +131,7 @@ export default function FallClock() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: false });
+    if (!ctx) return;
 
     // Load background image
     const bg = new Image();
@@ -55,78 +140,7 @@ export default function FallClock() {
       bgRef.current = bg;
     };
 
-    class Vector {
-      constructor(x = 0, y = 0) {
-        this.x = x;
-        this.y = y;
-      }
-      add(v) {
-        this.x += v.x;
-        this.y += v.y;
-        return this;
-      }
-    }
-
-    const AUTUMN_COLORS = [
-      '#DA0E0EFF',
-      '#FE6208F2',
-      '#F81010FF',
-      '#FCD80FFF',
-      '#FFEB10FF',
-      '#F71B07FF',
-    ];
-
-    class DigitParticle {
-      constructor(value, width, height) {
-        this.value = value;
-        this.pos = new Vector(Math.random() * width, Math.random() * -height);
-        this.vel = new Vector(
-          (Math.random() - 0.5) * 0.05,
-          Math.random() * 0.1,
-        );
-        this.fontSize = Math.random() * 2 + 2.5;
-        this.alpha = 1;
-        this.scaleX = 1;
-        this.scaleY = 1;
-        this.rotation = Math.random() * Math.PI * 2;
-        this.rotationSpeed = (Math.random() - 0.5) * 0.02;
-        this.color =
-          AUTUMN_COLORS[Math.floor(Math.random() * AUTUMN_COLORS.length)];
-      }
-
-      update(width, height) {
-        this.vel.y += GRAVITY;
-        this.vel.x =
-          Math.sin(this.pos.y * 0.005) * HORIZONTAL_SWAY_STRENGTH +
-          (Math.random() - 0.5) * WIND_BASE;
-        this.vel.x *= DRAG;
-        this.vel.y = Math.min(this.vel.y * DRAG, MAX_FALL_SPEED);
-        this.pos.add(this.vel);
-
-        this.rotation += this.rotationSpeed;
-        this.scaleX = 0.9 + Math.sin(Date.now() * 0.002 + this.pos.y) * 0.15;
-        this.scaleY = 0.9 + Math.cos(Date.now() * 0.002 + this.pos.x) * 0.15;
-
-        if (this.pos.y > height + 10) this.pos.y = -10;
-        if (this.pos.x > width + 10) this.pos.x = -10;
-        if (this.pos.x < -10) this.pos.x = width + 10;
-      }
-
-      draw(ctx) {
-        ctx.save();
-        ctx.translate(this.pos.x, this.pos.y);
-        ctx.rotate(this.rotation);
-        ctx.scale(this.scaleX, this.scaleY);
-        ctx.globalAlpha = this.alpha;
-        ctx.fillStyle = this.color;
-        ctx.font = `${this.fontSize}rem "DigitFont_25251115j"`;
-        ctx.textAlign = 'center';
-        ctx.fillText(this.value, 0, 0);
-        ctx.restore();
-      }
-    }
-
-    const resizeCanvas: React.FC = () => {
+    const resizeCanvas = () => {
       const dpr = Math.max(1, window.devicePixelRatio || 1);
       const width = canvas.clientWidth * dpr;
       const height = canvas.clientHeight * dpr;
@@ -137,7 +151,7 @@ export default function FallClock() {
       }
     };
 
-    const digits = Array.from({ length: INITIAL_PARTICLES }, () => {
+    const digits: DigitParticle[] = Array.from({ length: INITIAL_PARTICLES }, () => {
       const randomDigit =
         timeDigitsRef.current[
           Math.floor(Math.random() * timeDigitsRef.current.length)
@@ -149,7 +163,7 @@ export default function FallClock() {
       );
     });
 
-    const update: React.FC = () => {
+    const update = () => {
       const width = canvas.clientWidth;
       const height = canvas.clientHeight;
 
@@ -171,7 +185,7 @@ export default function FallClock() {
         ctx.fillRect(0, 0, width, height);
       }
 
-      for (let d of digits) {
+      for (const d of digits) {
         d.update(width, height);
         d.draw(ctx);
       }
@@ -193,7 +207,9 @@ export default function FallClock() {
     window.addEventListener('orientationchange', resizeCanvas);
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
       window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('orientationchange', resizeCanvas);
     };

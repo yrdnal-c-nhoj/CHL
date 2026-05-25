@@ -1,18 +1,17 @@
-import React, { useEffect, useRef, useCallback, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
 import bgImg from '@/assets/images/25_images/25-11/25-11-16/ray.webp';
 import clockBg from '@/assets/images/25_images/25-11/25-11-16/ray2.webp';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 export default function AnalogClock() {
-  const rafRef = useRef(null);
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
+  const rafRef = useRef<number | null>(null);
+  const hourRef = useRef<HTMLDivElement>(null);
+  const minuteRef = useRef<HTMLDivElement>(null);
+  const secondRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [isShortScreen, setIsShortScreen] = useState<boolean>(false);
 
   useEffect(() => {
-    const checkScreenSize: React.FC = () => {
+    const checkScreenSize = () => {
       setIsMobile(window.innerWidth <= 768);
       setIsShortScreen(window.innerHeight <= 600);
     };
@@ -41,11 +40,13 @@ export default function AnalogClock() {
 
   useEffect(() => {
     rafRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafRef.current);
+    return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    };
   }, [tick]);
 
   // Main container: Ensures the clock is centered and fits the screen
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     width: '100%',
     height: isMobile ? '100vh' : '100dvh', // Use 100vh on mobile for better compatibility
     position: 'relative',
@@ -58,7 +59,7 @@ export default function AnalogClock() {
   };
 
   // Page background
-  const bgStyle = {
+  const bgStyle: React.CSSProperties = {
     position: 'absolute',
     inset: 0,
     backgroundImage: `url(${bgImg})`,
@@ -69,7 +70,7 @@ export default function AnalogClock() {
   };
 
   // Clock container: Uses 'vmin' to ensure it never exceeds the screen width OR height
-  const clockStyle = {
+  const clockStyle: React.CSSProperties = {
     width: isShortScreen ? '80vmin' : isMobile ? '85vmin' : '90vmin', // Responsive sizing
     height: isShortScreen ? '80vmin' : isMobile ? '85vmin' : '90vmin', // Keeps it a perfect square
     position: 'relative',
@@ -81,7 +82,7 @@ export default function AnalogClock() {
     border: '1px solid rgba(255,255,255,0.2)',
   };
 
-  const clockBackgroundStyle = {
+  const clockBackgroundStyle: React.CSSProperties = {
     position: 'absolute',
     inset: 0,
     backgroundImage: `url(${clockBg})`,
@@ -93,7 +94,7 @@ export default function AnalogClock() {
   };
 
   // Hand styles: Adjusted to stay within clock bounds
-  const handBase = {
+  const handBase: React.CSSProperties = {
     position: 'absolute',
     left: '50%',
     top: '50%',
