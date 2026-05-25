@@ -40,9 +40,14 @@ npm run build
 
 Developer guides: `docs/`
 
+### Screen capture (thumbnails)
+
+See: `README-screen-capture.md`
+
 ---
 
 ## Scripts
+
 
 - `npm run dev` — start Vite dev server
 - `npm run build` — production build
