@@ -1,13 +1,17 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
+
+// Asset imports
+import clockFont from '@/assets/fonts/26fonts/26-05-05-dolphin.ttf?url';
 
 // ---------------- INTERFACES ----------------
 interface HandDimensions {
   width: string;
   height: string;
   zIndex: number;
+  color: string;
 }
 
 interface ClockHandProps {
@@ -30,17 +34,20 @@ const CLOCK_CONFIG = {
     shadow: 'drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8))',
   },
   HAND_DIMENSIONS: {
-    hour: { width: '1.2vmin', height: '20vmin', zIndex: 3 },
-    minute: { width: '0.8vmin', height: '32vmin', zIndex: 4 },
-    second: { width: '0.4vmin', height: '38vmin', zIndex: 5 },
+    hour: { width: '2.2vmin', height: '20vmin', zIndex: 3, color: '#1a1a1a' },
+    minute: { width: '1.4vmin', height: '32vmin', zIndex: 4, color: '#333' },
+    second: { width: '0.6vmin', height: '38vmin', zIndex: 5, color: '#d32f2f' },
   },
 } as const;
 
+// BTS: Export assets for the preloading pipeline
+export const assets = [];
+
 // ---------------- FONT CONFIGURATION ----------------
-const fontConfigs = [
+export const fontConfigs = [
   {
     name: 'ClockFont',
-    url: '@/assets/fonts/26fonts/26-05-05-dolphin.ttf',
+    url: clockFont,
   },
 ];
 
@@ -69,15 +76,6 @@ const getHandRotation = (value: number, multiplier: number): number =>
   value * multiplier;
 
 // ---------------- COMPONENTS ----------------
-const BackgroundLayers: React.FC = () => (
-  <video className={styles.backgroundVideo} autoPlay loop muted playsInline>
-    <source
-      src="/src/assets/images/26_images/26-05/26-05-05/jump.mp4"
-      type="video/mp4"
-    />
-  </video>
-);
-
 const ClockNumerals: React.FC = () => {
   const numerals = useMemo(() => {
     return Array.from({ length: 12 }, (_, i) => {
@@ -104,7 +102,7 @@ const ClockNumerals: React.FC = () => {
 };
 
 const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
-  const { width, height, zIndex } = CLOCK_CONFIG.HAND_DIMENSIONS[type];
+  const { width, height, zIndex, color } = CLOCK_CONFIG.HAND_DIMENSIONS[type];
 
   return (
     <div
@@ -113,6 +111,7 @@ const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
         width,
         height,
         zIndex,
+        backgroundColor: color,
         transform: `translate(-50%, 0) rotate(${rotation}deg)`,
       }}
     />
@@ -131,8 +130,6 @@ const AnalogClock: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <BackgroundLayers />
-
       <time dateTime={currentTime.toISOString()} className={styles.clockFace}>
         <ClockNumerals />
 
