@@ -21,12 +21,16 @@ const Clock: React.FC<ClockProps> = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
-void currentTime;
-const currentTime = useSecondClock();
+  const currentTime = useSecondClock();
+
+  // Keep reference so it’s not treated as unused; hook likely updates internal state
+  void currentTime;
+
 
   const clockRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const updateClock = () => {
+    const updateClock = (): void => {
+
 
       const now = new Date();
 
@@ -39,19 +43,20 @@ const currentTime = useSecondClock();
       const hrDeg = hr * 30 + min * 0.5;
 
       const secondEl = document.getElementById('second');
-      if (secondEl) {
+      if (secondEl instanceof HTMLElement) {
         secondEl.style.transform = `rotate(${secDeg}deg)`;
       }
 
       const minuteEl = document.getElementById('minute');
-      if (minuteEl) {
+      if (minuteEl instanceof HTMLElement) {
         minuteEl.style.transform = `rotate(${minDeg}deg)`;
       }
 
       const hourEl = document.getElementById('hour');
-      if (hourEl) {
+      if (hourEl instanceof HTMLElement) {
         hourEl.style.transform = `rotate(${hrDeg}deg)`;
       }
+
 
     };
 
