@@ -1,10 +1,5 @@
-import React, { useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import hummFont from '@/assets/fonts/25fonts/25-06-14-humm.ttf';
 import hmmGif from '@/assets/images/25_images/25-06/25-06-14/hmm.gif';
-import hummPng from '@/assets/images/25_images/25-06/25-06-14/humm.png';
 import hum1 from '@/assets/images/25_images/25-06/25-06-14/hum1.webp';
 import hum2 from '@/assets/images/25_images/25-06/25-06-14/hum2.webp';
 import hum3 from '@/assets/images/25_images/25-06/25-06-14/hum3.webp';
@@ -12,6 +7,8 @@ import hum4 from '@/assets/images/25_images/25-06/25-06-14/hum4.gif';
 import hum7 from '@/assets/images/25_images/25-06/25-06-14/hum7.webp';
 import hum8 from '@/assets/images/25_images/25-06/25-06-14/hum8.gif';
 import hum9 from '@/assets/images/25_images/25-06/25-06-14/hum9.webp';
+import hummPng from '@/assets/images/25_images/25-06/25-06-14/humm.png';
+import React, { useEffect } from 'react';
 
 const floatingImages = [
   { src: hum1, animation: 'motion1' },
@@ -77,7 +74,7 @@ const HummingbirdClock: React.FC = () => {
     `;
     document.head.appendChild(style);
 
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const s = now.getSeconds();
       const m = now.getMinutes();
@@ -86,12 +83,19 @@ const HummingbirdClock: React.FC = () => {
       const minDeg = m * 6 + s / 10;
       const hourDeg = h * 30 + m / 2;
 
-      document.getElementById('second-hand').style.transform =
-        `translateX(-50%) rotate(${secDeg}deg)`;
-      document.getElementById('minute-hand').style.transform =
-        `translateX(-50%) rotate(${minDeg}deg)`;
-      document.getElementById('hour-hand').style.transform =
-        `translateX(-50%) rotate(${hourDeg}deg)`;
+      const secondHand = document.getElementById('second-hand');
+      const minuteHand = document.getElementById('minute-hand');
+      const hourHand = document.getElementById('hour-hand');
+
+      if (secondHand) {
+        secondHand.style.transform = `translateX(-50%) rotate(${secDeg}deg)`;
+      }
+      if (minuteHand) {
+        minuteHand.style.transform = `translateX(-50%) rotate(${minDeg}deg)`;
+      }
+      if (hourHand) {
+        hourHand.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
+      }
     };
 
     const interval = setInterval(updateClock, 1000);
@@ -130,7 +134,7 @@ const HummingbirdClock: React.FC = () => {
       }, duration);
     };
 
-    const initializeImages: React.FC = () => {
+    const initializeImages = () => {
       floatingImages.forEach((_, i) => {
         const el = document.getElementById(`float-${i}`);
         if (el) {
@@ -212,7 +216,7 @@ const HummingbirdClock: React.FC = () => {
   );
 };
 
-const styles = {
+const styles: Record<string, React.CSSProperties> = {
   body: {
     margin: 0,
     height: '100dvh',

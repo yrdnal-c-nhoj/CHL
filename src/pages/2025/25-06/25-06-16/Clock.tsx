@@ -21,6 +21,11 @@ const romanNumerals = [
   'xi',
 ];
 
+interface FlashingNumberElement extends HTMLDivElement {
+  isFlashing: boolean;
+  lastPassedTime: number;
+}
+
 const KlaxonClock: React.FC = () => {
   useEffect(() => {
     const fontStyle = document.createElement('style');
@@ -33,7 +38,8 @@ const KlaxonClock: React.FC = () => {
     document.head.appendChild(fontStyle);
 
     const clock = document.getElementById('clock');
-    const numberElements = [];
+    if (!clock) return;
+    const numberElements: FlashingNumberElement[] = [];
 
     romanNumerals.forEach((num, i) => {
       const angleDeg = i * 30;
@@ -49,10 +55,10 @@ const KlaxonClock: React.FC = () => {
       el.style.top = `${y}%`;
       el.textContent = num;
       el.style.transform = `translate(-50%, -50%) rotate(${angleDeg}deg)`;
-      el.dataset.angle = angleDeg;
-      el.isFlashing = false;
-      el.lastPassedTime = 0;
-      numberElements.push(el);
+      el.dataset.angle = String(angleDeg);
+      (el as any).isFlashing = false;
+      (el as any).lastPassedTime = 0;
+      numberElements.push(el as FlashingNumberElement);
       clock.appendChild(el);
     });
 
@@ -60,7 +66,7 @@ const KlaxonClock: React.FC = () => {
     const flashEndOffset = 6;
     const lingerDuration = 300;
 
-    const updateClock: React.FC = () => {
+    const updateClock = () => {
       const now = new Date();
       const ms = now.getMilliseconds();
       const sec = now.getSeconds() + ms / 1000;
@@ -71,12 +77,19 @@ const KlaxonClock: React.FC = () => {
       const minuteDeg = min * 6 + sec * 0.1;
       const hourDeg = (hr % 12) * 30 + min * 0.5;
 
-      document.getElementById('second').style.transform =
-        `translateX(-50%) rotate(${secondDeg}deg)`;
-      document.getElementById('minute').style.transform =
-        `translateX(-50%) rotate(${minuteDeg}deg)`;
-      document.getElementById('hour').style.transform =
-        `translateX(-50%) rotate(${hourDeg}deg)`;
+      const secEl = document.getElementById('second');
+      const minEl = document.getElementById('minute');
+      const hrEl = document.getElementById('hour');
+
+      if (secEl) {
+        secEl.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
+      }
+      if (minEl) {
+        minEl.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
+      }
+      if (hrEl) {
+        hrEl.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
+      }
 
       const normalizedSecond = secondDeg % 360;
 
@@ -115,7 +128,7 @@ const KlaxonClock: React.FC = () => {
     requestAnimationFrame(updateClock);
   }, []);
 
-  const formatDate = (offset) => {
+  const formatDate = (offset: number) => {
     const d = new Date();
     d.setDate(d.getDate() + offset);
     return `${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
