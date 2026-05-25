@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
+import React, { useEffect, useState } from 'react';
 
 const Clock: React.FC = () => {
   const fontConfigs = [
@@ -52,7 +52,7 @@ const Clock: React.FC = () => {
     return () => clearInterval(typingInterval);
   }, []);
 
-  const styles = {
+  const styles: Record<string, React.CSSProperties> = {
     container: {
       background: '#050505',
       color: '#00fa00',
