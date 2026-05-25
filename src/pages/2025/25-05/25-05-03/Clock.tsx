@@ -3,6 +3,10 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks/useClockTime';
 import React, { useMemo } from 'react';
 
+// Shared clock page components in this repo rely heavily on inline styles.
+// Keep style objects explicitly typed to satisfy strict TS + JSX style checks.
+
+
 import fontUrl from '@/assets/fonts/25fonts/25-05-03-Petal.ttf?url';
 
 import bg1 from '@/assets/images/25_images/25-05/25-05-03/petalos.gif';
