@@ -1993,12 +1993,23 @@
   {
     "path": "26-03-25",
     "date": "26-03-25",
-    "title": "Ride"
+    "title": "Ride",
+    "tags": [
+      "analog",
+      "spin",
+      "gravity"
+    ]
   },
   {
     "path": "26-03-26",
     "date": "26-03-26",
-    "title": "Overpass"
+    "title": "Overpass",
+    "tags": [
+      "digital",
+      "twilight",
+      "fumes",
+      "transport"
+    ]
   },
   {
     "path": "26-03-27",
@@ -2028,12 +2039,24 @@
   {
     "path": "26-03-30",
     "date": "26-03-30",
-    "title": "Origami"
+    "title": "Origami",
+    "tags": [
+      "fold",
+      "paper",
+      "pictographic",
+      "animals"
+    ]
   },
   {
     "path": "26-03-31",
     "date": "26-03-31",
-    "title": "Lanternfish"
+    "title": "Lanternfish",
+    "tags": [
+      "analog",
+      "animals",
+      "water",
+      "ocean"
+    ]
   },
   {
     "path": "26-04-01",
@@ -2058,12 +2081,23 @@
   {
     "path": "26-04-05",
     "date": "26-04-05",
-    "title": "Bolide"
+    "title": "Bolide",
+    "tags": [
+      "digital",
+      "meteor",
+      "Russia",
+      "transport"
+    ]
   },
   {
     "path": "26-04-06",
     "date": "26-04-06",
-    "title": "Pulley"
+    "title": "Pulley",
+    "tags": [
+      "digital",
+      "6 simple machines",
+      "generative"
+    ]
   },
   {
     "path": "26-04-07",
@@ -2073,17 +2107,32 @@
   {
     "path": "26-04-08",
     "date": "26-04-08",
-    "title": "Spinning"
+    "title": "Spinning",
+    "tags": [
+      "analog",
+      "physics",
+      "image-free"
+    ]
   },
   {
     "path": "26-04-09",
     "date": "26-04-09",
-    "title": "Choppy"
+    "title": "Choppy",
+    "tags": [
+      "water",
+      "analog",
+      "ocean"
+    ]
   },
   {
     "path": "26-04-10",
     "date": "26-04-10",
-    "title": "Horseshoe Crab"
+    "title": "Horseshoe Crab",
+    "tags": [
+      "animal",
+      "analog",
+      "exoskeletal"
+    ]
   },
   {
     "path": "26-04-11",
@@ -2093,7 +2142,11 @@
   {
     "path": "26-04-12",
     "date": "26-04-12",
-    "title": "Matches"
+    "title": "Matches",
+    "tags": [
+      "analog",
+      "fire"
+    ]
   },
   {
     "path": "26-04-13",
