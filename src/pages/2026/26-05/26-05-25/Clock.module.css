@@ -7,8 +7,6 @@
   font-display: swap;
 }
 
-
-
 @import url('../../../../styles/fonts/clock-26-05-25.css');
 
 .container {
@@ -33,6 +31,7 @@
   transform: translate(-50%, -50%);
   object-fit: fill;
 }
+
 .clock {
   display: flex;
   /* gap: 0.25rem; */
@@ -42,16 +41,23 @@
   max-width: 100%;
   /* padding: 0 0.5rem; */
 }
-
 .digit {
   font-size: 16vh;
   font-family: 'ClockFont_26-05-25', 'Courier New', monospace;
   background-size: 20rem 20rem;
   display: inline-flex;
   color: #b7b5f276;
-  filter: drop-shadow(2px 4px 1px rgba(0, 0, 0, 0.7));
+
+  filter:
+    drop-shadow(2px 4px 1px rgb(0 0 0))
+    drop-shadow(1px 1px 1px rgb(253 253 253));
+
   justify-content: center;
   align-items: center;
-  width: 0.6em;
-  height: 1.2em;
+
+}
+
+.ampm {
+  font-size: 14vh;
+  transform: translateY(1vh);
 }
