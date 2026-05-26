@@ -34,8 +34,8 @@ const Clock: React.FC = () => {
         <span className={styles.digit}>{hours[1]}</span>
         <span className={styles.digit}>{minutes[0]}</span>
         <span className={styles.digit}>{minutes[1]}</span>
-        <span className={styles.digit}>{ampm[0]}</span>
-        <span className={styles.digit}>{ampm[1]}</span>
+        <span className={`${styles.digit} ${styles.ampm}`}>{ampm[0]}</span>
+        <span className={`${styles.digit} ${styles.ampm}`}>{ampm[1]}</span>
       </time>
     </div>
   );
