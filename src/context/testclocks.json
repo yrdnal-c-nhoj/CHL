@@ -939,17 +939,33 @@
   {
     "path": "25-09-07",
     "date": "25-09-07",
-    "title": "Semi-Gloss"
+    "title": "Semi-Gloss",
+    "tags": [
+      "paint",
+      "digital",
+      "interior"
+    ]
   },
   {
     "path": "25-09-08",
     "date": "25-09-08",
-    "title": "Rhymes With"
+    "title": "Rhymes With",
+    "tags": [
+      "analog",
+      "words"
+    ]
   },
   {
     "path": "25-09-09",
     "date": "25-09-09",
-    "title": "Vanitas"
+    "title": "Vanitas",
+    "tags": [
+      "digital",
+      "body",
+      "flower",
+      "light",
+      "fire"
+    ]
   },
   {
     "path": "25-09-10",
