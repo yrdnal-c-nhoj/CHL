@@ -11,9 +11,6 @@ import React, {
   useState
 } from 'react';
 
-// Import the static tags mapping from the local JSON file
-import tagsData from './tags.json';
-
 /**
  * Defines the structure of a single Clock object
  */
@@ -84,15 +81,8 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
           };
         });
 
-        // Merge in tags from tags.json using the item's date as the key
-        const withTags = withNumbers.map((item: any) => ({
-          ...item,
-          // Cast tagsData as a Record to safely access by date string
-          tags: (tagsData as Record<string, string[]>)[item.date] ?? [],
-        }));
-
         // Update the state with the fully processed items
-        setItems(withTags);
+        setItems(withNumbers);
       } catch (err) {
         // Catch and format any errors that occur during the import or processing
         setError(
