@@ -18,6 +18,7 @@ export interface ClockItem {
   path: string;      // The URL path/slug for the clock
   date: string;      // The date string (usually YY-MM-DD)
   title: string;     // The display name of the clock
+  tags?: string[];   // Optional array of tags
   [key: string]: any; // Allows for additional dynamic properties
 }
 
