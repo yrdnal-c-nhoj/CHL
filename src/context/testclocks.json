@@ -969,7 +969,13 @@
   {
     "path": "25-09-13",
     "date": "25-09-13",
-    "title": "Pawprints"
+    "title": "Pawprints",
+    "tags": [
+      "pictographic",
+      "monochrome",
+      "animals",
+      "earth"
+    ]
   },
   {
     "path": "25-09-14",
@@ -1179,12 +1185,22 @@
   {
     "path": "25-10-25",
     "date": "25-10-25",
-    "title": "Entropy"
+    "title": "Entropy",
+    "tags": [
+      "gravity",
+      "analog"
+    ]
   },
   {
     "path": "25-10-26",
     "date": "25-10-26",
-    "title": "Monarchs"
+    "title": "Monarchs",
+    "tags": [
+      "butterfly",
+      "animal",
+      "analog",
+      "migrate"
+    ]
   },
   {
     "path": "25-10-27",
@@ -1203,12 +1219,23 @@
   {
     "path": "25-10-30",
     "date": "25-10-30",
-    "title": "Turquoise"
+    "title": "Turquoise",
+    "tags": [
+      "analog",
+      "stone",
+      "silver"
+    ]
   },
   {
     "path": "25-10-31",
     "date": "25-10-31",
-    "title": "Midnight Sun"
+    "title": "Midnight Sun",
+    "tags": [
+      "digital",
+      "Antarctica",
+      "revolve",
+      "ice"
+    ]
   },
   {
     "path": "25-11-01",
@@ -1325,7 +1352,11 @@
   {
     "path": "25-11-22",
     "date": "25-11-22",
-    "title": "Sputnik"
+    "title": "Sputnik",
+    "tags": [
+      "space",
+      "digital"
+    ]
   },
   {
     "path": "25-11-23",
@@ -1340,17 +1371,30 @@
   {
     "path": "25-11-25",
     "date": "25-11-25",
-    "title": "Network Protocol"
+    "title": "Network Protocol",
+    "tags": [
+      "digital",
+      "vertical",
+      "image-free"
+    ]
   },
   {
     "path": "25-11-26",
     "date": "25-11-26",
-    "title": "Murmuration"
+    "title": "Murmuration",
+    "tags": [
+      "animal",
+      "digital"
+    ]
   },
   {
     "path": "25-11-27",
     "date": "25-11-27",
-    "title": "L'Heure Décimale"
+    "title": "L'Heure Décimale",
+    "tags": [
+      "France",
+      "analog"
+    ]
   },
   {
     "path": "25-11-28",
@@ -1365,22 +1409,39 @@
   {
     "path": "25-11-30",
     "date": "25-11-30",
-    "title": "Caution"
+    "title": "Caution",
+    "tags": [
+      "pictographic"
+    ]
   },
   {
     "path": "25-12-01",
     "date": "25-12-01",
-    "title": "Snack"
+    "title": "Snack",
+    "tags": [
+      "digital",
+      "animal",
+      "food"
+    ]
   },
   {
     "path": "25-12-02",
     "date": "25-12-02",
-    "title": "Spiral M77"
+    "title": "Spiral M77",
+    "tags": [
+      "sky",
+      "constellations",
+      "analog"
+    ]
   },
   {
     "path": "25-12-03",
     "date": "25-12-03",
-    "title": "Dogpile"
+    "title": "Dogpile",
+    "tags": [
+      "animal",
+      "digital"
+    ]
   },
   {
     "path": "25-12-04",
@@ -1414,12 +1475,22 @@
   {
     "path": "25-12-08",
     "date": "25-12-08",
-    "title": "Paper Plate"
+    "title": "Paper Plate",
+    "tags": [
+      "analog",
+      "paper"
+    ]
   },
   {
     "path": "25-12-09",
     "date": "25-12-09",
-    "title": "Muybridge"
+    "title": "Muybridge",
+    "tags": [
+      "1878",
+      "digital",
+      "animal",
+      "b+w"
+    ]
   },
   {
     "path": "25-12-10",
@@ -1444,7 +1515,11 @@
   {
     "path": "25-12-13",
     "date": "25-12-13",
-    "title": "Cherubs"
+    "title": "Cherubs",
+    "tags": [
+      "sky",
+      "digital"
+    ]
   },
   {
     "path": "25-12-14",
@@ -1469,7 +1544,11 @@
   {
     "path": "25-12-18",
     "date": "25-12-18",
-    "title": "Special Effects"
+    "title": "Special Effects",
+    "tags": [
+      "digital",
+      "film"
+    ]
   },
   {
     "path": "25-12-19",
@@ -1509,12 +1588,19 @@
   {
     "path": "25-12-25",
     "date": "25-12-25",
-    "title": "Boarding Pass"
+    "title": "Boarding Pass",
+    "tags": [
+      "digital"
+    ]
   },
   {
     "path": "25-12-26",
     "date": "25-12-26",
-    "title": "Saturn"
+    "title": "Saturn",
+    "tags": [
+      "planet",
+      "digital"
+    ]
   },
   {
     "path": "25-12-27",
@@ -1659,7 +1745,8 @@
     "date": "26-01-20",
     "title": "Acconciatura",
     "tags": [
-      "dingbat"
+      "dingbat",
+      "Italy"
     ]
   },
   {
@@ -1771,17 +1858,32 @@
   {
     "path": "26-02-10",
     "date": "26-02-10",
-    "title": "TeeVee Lounge"
+    "title": "TeeVee Lounge",
+    "tags": [
+      "digital",
+      "screen",
+      "interior"
+    ]
   },
   {
     "path": "26-02-11",
     "date": "26-02-11",
-    "title": "Bell"
+    "title": "Bell",
+    "tags": [
+      "ring",
+      "analog"
+    ]
   },
   {
     "path": "26-02-12",
     "date": "26-02-12",
-    "title": "Extended Mix"
+    "title": "Extended Mix",
+    "tags": [
+      "digital",
+      "disco",
+      "sphere",
+      "light"
+    ]
   },
   {
     "path": "26-02-13",
