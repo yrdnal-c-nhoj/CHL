@@ -1,8 +1,8 @@
 import { useContext, useMemo, useState, type FC } from 'react';
-import { DataContext } from './context/DataContext';
-import TopNav from './components/TopNav';
 import Footer from './components/Footer';
 import Thumbnail from './components/Thumbnail';
+import TopNav from './components/TopNav';
+import { DataContext } from './context/DataContext';
 import listStyles from './styles/ClockList.module.css';
 import type { ClockItem, DataContextType } from './types/data';
 import { formatDateStandard as formatDate } from './utils/dateUtils';
@@ -124,9 +124,22 @@ const ClockList: FC = () => {
                 <div className={listStyles.thumbnailWrapper}>
                   <Thumbnail date={item.date} title={item.title || ''} />
                 </div>
-                <span className={listStyles.simpleListTitle}>
-                  {item.title || 'No Title'}
-                </span>
+                <div className={listStyles.titleContainer}>
+                  <span className={listStyles.simpleListTitle}>
+                    {item.title || 'No Title'}
+                  </span>
+                  {item.tags && item.tags.length > 0 && (
+                    <div className={listStyles.tagsWrapper}>
+                      {[...item.tags]
+                        .sort((a, b) => a.localeCompare(b))
+                        .map((tag) => (
+                          <span key={tag} className={listStyles.tagBubble}>
+                            {tag}
+                          </span>
+                        ))}
+                    </div>
+                  )}
+                </div>
                 <span className={listStyles.simpleListNumber}>
                   #{item.clockNumber}
                 </span>

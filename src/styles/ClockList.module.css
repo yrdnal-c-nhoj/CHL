@@ -112,6 +112,13 @@
   padding-right: 1rem; /* Add padding to prevent flush right */
 }
 
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
 .simpleListTitle {
   color: #120000;
   font-size: 1rem;
@@ -120,6 +127,24 @@
   text-overflow: ellipsis;
   text-align: left;
   justify-self: start;
+}
+
+.tagsWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.tagBubble {
+  background-color: #f3f4f6;
+  border: 0.5px solid #d1d5db;
+  border-radius: 4px;
+  padding: 0.1rem 0.35rem;
+  font-size: 0.65rem;
+  color: #4b5563;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
 .simpleListImage {
