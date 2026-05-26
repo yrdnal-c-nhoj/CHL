@@ -164,37 +164,79 @@
   {
     "path": "25-04-30",
     "date": "25-04-30",
-    "title": "Bounce"
+    "title": "Bounce",
+    "tags": [
+      "gravity",
+      "analog",
+      "minimalist"
+    ]
   },
   {
     "path": "25-05-01",
     "date": "25-05-01",
-    "title": "Slow Lightning"
+    "title": "Slow Lightning",
+    "tags": [
+      "digital",
+      "slow",
+      "elements",
+      "sky",
+      "light"
+    ]
   },
   {
     "path": "25-05-02",
     "date": "25-05-02",
-    "title": "Scorpion"
+    "title": "Scorpion",
+    "tags": [
+      "analog",
+      "animal",
+      "sting",
+      "sand"
+    ]
   },
   {
     "path": "25-05-03",
     "date": "25-05-03",
-    "title": "Petals"
+    "title": "Petals",
+    "tags": [
+      "digital",
+      "flower",
+      "gravity",
+      "red"
+    ]
   },
   {
     "path": "25-05-04",
     "date": "25-05-04",
-    "title": "Phénakisticope"
+    "title": "Phénakisticope",
+    "tags": [
+      "spin",
+      "analog",
+      "sky",
+      "planet",
+      "animal"
+    ]
   },
   {
     "path": "25-05-05",
     "date": "25-05-05",
-    "title": "Warhol GraveCam"
+    "title": "Warhol GraveCam",
+    "tags": [
+      "digital",
+      "balloon",
+      "earth"
+    ]
   },
   {
     "path": "25-05-06",
     "date": "25-05-06",
-    "title": "Unruly"
+    "title": "Unruly",
+    "tags": [
+      "digital",
+      "typeface",
+      "dance",
+      "color"
+    ]
   },
   {
     "path": "25-05-07",
