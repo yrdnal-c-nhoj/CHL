@@ -26,33 +26,59 @@
     "title": "Heartbeat",
     "tags": [
       "analog",
-      "heart"
+      "heart",
+      "EKG"
     ]
   },
   {
     "path": "25-04-05",
     "date": "25-04-05",
-    "title": "Tall"
+    "title": "Tall",
+    "tags": [
+      "grandfather",
+      "monochrome",
+      "analog"
+    ]
   },
   {
     "path": "25-04-06",
     "date": "25-04-06",
-    "title": "Confetti"
+    "title": "Confetti",
+    "tags": [
+      "Digital",
+      "color",
+      "gravity"
+    ]
   },
   {
     "path": "25-04-07",
     "date": "25-04-07",
-    "title": "Solar System"
+    "title": "Solar System",
+    "tags": [
+      "Analog",
+      "space",
+      "planet"
+    ]
   },
   {
     "path": "25-04-08",
     "date": "25-04-08",
-    "title": "Triple Cactus"
+    "title": "Triple Cactus",
+    "tags": [
+      "Earth",
+      "digital",
+      "dry"
+    ]
   },
   {
     "path": "25-04-09",
     "date": "25-04-09",
-    "title": "Empty Room"
+    "title": "Empty Room",
+    "tags": [
+      "Interior",
+      "analog",
+      "monochrome"
+    ]
   },
   {
     "path": "25-04-10",
@@ -79,7 +105,11 @@
   {
     "path": "25-04-13",
     "date": "25-04-13",
-    "title": "Pepperoni Pizza"
+    "title": "Pepperoni Pizza",
+    "tags": [
+      "food",
+      "analog"
+    ]
   },
   {
     "path": "25-04-14",
@@ -109,27 +139,52 @@
   {
     "path": "25-04-19",
     "date": "25-04-19",
-    "title": "Sphere Drop"
+    "title": "Sphere Drop",
+    "tags": [
+      "Gravity",
+      "digital",
+      "color",
+      "sphere"
+    ]
   },
   {
     "path": "25-04-20",
     "date": "25-04-20",
-    "title": "Cloud"
+    "title": "Cloud",
+    "tags": [
+      "sky",
+      "digital",
+      "elements",
+      "monochrome"
+    ]
   },
   {
     "path": "25-04-21",
     "date": "25-04-21",
-    "title": "Peacock"
+    "title": "Peacock",
+    "tags": [
+      "analog",
+      "animal"
+    ]
   },
   {
     "path": "25-04-22",
     "date": "25-04-22",
-    "title": "Bouncing Cube"
+    "title": "Bouncing Cube",
+    "tags": [
+      "gravity",
+      "digital"
+    ]
   },
   {
     "path": "25-04-23",
     "date": "25-04-23",
-    "title": "Pirate"
+    "title": "Pirate",
+    "tags": [
+      "water",
+      "analog",
+      "ocean"
+    ]
   },
   {
     "path": "25-04-24",
