@@ -209,7 +209,12 @@
   {
     "path": "25-04-28",
     "date": "25-04-28",
-    "title": "Jackson Pollock"
+    "title": "Jackson Pollock",
+    "tags": [
+      "digital",
+      "art",
+      "b+w"
+    ]
   },
   {
     "path": "25-04-29",
@@ -301,7 +306,11 @@
   {
     "path": "25-05-08",
     "date": "25-05-08",
-    "title": "Golden Hour"
+    "title": "Golden Hour",
+    "tags": [
+      "sky",
+      "digital"
+    ]
   },
   {
     "path": "25-05-09",
@@ -451,7 +460,11 @@
   {
     "path": "25-06-08",
     "date": "25-06-08",
-    "title": "Face Card"
+    "title": "Face Card",
+    "tags": [
+      "analog",
+      "play"
+    ]
   },
   {
     "path": "25-06-09",
@@ -581,7 +594,10 @@
   {
     "path": "25-07-04",
     "date": "25-07-04",
-    "title": "Kaleidoscope"
+    "title": "Kaleidoscope",
+    "tags": [
+      "digital"
+    ]
   },
   {
     "path": "25-07-05",
@@ -665,7 +681,12 @@
   {
     "path": "25-07-20",
     "date": "25-07-20",
-    "title": "F-Stop"
+    "title": "F-Stop",
+    "tags": [
+      "analog",
+      "developer",
+      "film"
+    ]
   },
   {
     "path": "25-07-21",
@@ -1277,7 +1298,14 @@
   {
     "path": "25-11-18",
     "date": "25-11-18",
-    "title": "Eye Color"
+    "title": "Eye Color",
+    "tags": [
+      "digital",
+      "eye",
+      "color",
+      "eye color",
+      "see"
+    ]
   },
   {
     "path": "25-11-19",
@@ -1375,7 +1403,13 @@
   {
     "path": "25-12-07",
     "date": "25-12-07",
-    "title": "Icosahedron"
+    "title": "Icosahedron",
+    "tags": [
+      "platonic solid",
+      "digital",
+      "water",
+      "twenty sides"
+    ]
   },
   {
     "path": "25-12-08",
@@ -1390,7 +1424,12 @@
   {
     "path": "25-12-10",
     "date": "25-12-10",
-    "title": "Jupiter"
+    "title": "Jupiter",
+    "tags": [
+      "planet",
+      "sky",
+      "digital"
+    ]
   },
   {
     "path": "25-12-11",
@@ -1440,7 +1479,12 @@
   {
     "path": "25-12-20",
     "date": "25-12-20",
-    "title": "Feather"
+    "title": "Feather",
+    "tags": [
+      "analog",
+      "bird",
+      "animal"
+    ]
   },
   {
     "path": "25-12-21",
@@ -1485,7 +1529,13 @@
   {
     "path": "25-12-29",
     "date": "25-12-29",
-    "title": "Jingū"
+    "title": "Jingū",
+    "tags": [
+      "digital",
+      "Japan",
+      "shrine",
+      "twenty"
+    ]
   },
   {
     "path": "25-12-30",
@@ -1564,7 +1614,11 @@
   {
     "path": "26-01-13",
     "date": "26-01-13",
-    "title": "Greyscale"
+    "title": "Greyscale",
+    "tags": [
+      "analog",
+      "monochrome"
+    ]
   },
   {
     "path": "26-01-14",
