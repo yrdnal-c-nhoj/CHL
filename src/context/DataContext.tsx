@@ -1,3 +1,6 @@
+/**
+ * This file manages the global state for all clock data in the application.
+ */
 import type {
   ReactNode
 } from 'react';
@@ -8,78 +11,102 @@ import React, {
   useState
 } from 'react';
 
-// Add this import at the top, after the React imports:
+// Import the static tags mapping from the local JSON file
 import tagsData from './tags.json';
 
+/**
+ * Defines the structure of a single Clock object
+ */
 export interface ClockItem {
-  path: string;
-  date: string;
-  title: string;
-  [key: string]: any;
+  path: string;      // The URL path/slug for the clock
+  date: string;      // The date string (usually YY-MM-DD)
+  title: string;     // The display name of the clock
+  [key: string]: any; // Allows for additional dynamic properties
 }
 
+/**
+ * Defines the shape of the data shared via React Context
+ */
 export interface DataContextType {
-  items: ClockItem[];
-  loading: boolean;
-  error: Error | null;
+  items: ClockItem[];   // Array of processed clock data
+  loading: boolean;     // Whether the data is currently being fetched
+  error: Error | null;  // Holds any errors encountered during load
 }
 
+// Create the context with an initial value of undefined
 export const DataContext = createContext<DataContextType | undefined>(
   undefined,
 );
 
+// Props interface for the DataProvider wrapper
 interface DataProviderProps {
   children: ReactNode;
 }
 
+/**
+ * Provider component that wraps the app to provide clock data to all components
+ */
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
+  // State for storing the list of clocks
   const [items, setItems] = useState<ClockItem[]>([]);
+  // State to track loading status (defaults to true)
   const [loading, setLoading] = useState(true);
+  // State for error handling
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
+    /**
+     * Asynchronous function to load and process JSON data
+     */
     const loadData = async () => {
       try {
-        const clockPages = await import('./clockpages.json');
-        const testClocks = await import('./testclocks.json');
-
+        // Conditionally import the data based on the environment.
+        // This prevents test data from being loaded or bundled in production.
         const data = import.meta.env.DEV
-          ? testClocks.default
-          : clockPages.default;
+          ? (await import('./testclocks.json')).default
+          : (await import('./clockpages.json')).default;
 
-        // Add clockNumber for UI display.
-        // We number by ascending date (oldest => #1).
+        // Sort the data by date string (ascending) to determine the chronological order
         const sorted = [...data]
           .filter((d: any) => d?.date)
           .sort((a: any, b: any) =>
             String(a.date).localeCompare(String(b.date)),
           );
+
+        // Map through the original data and inject a 'clockNumber' based on its sorted index
         const withNumbers = data.map((item: any) => {
           const idx = sorted.findIndex(
             (s: any) => s?.date === item?.date && s?.path === item?.path,
           );
-          return {
+          return { 
             ...item,
             clockNumber: idx >= 0 ? idx + 1 : undefined,
           };
         });
 
+        // Merge in tags from tags.json using the item's date as the key
         const withTags = withNumbers.map((item: any) => ({
           ...item,
+          // Cast tagsData as a Record to safely access by date string
           tags: (tagsData as Record<string, string[]>)[item.date] ?? [],
         }));
+
+        // Update the state with the fully processed items
         setItems(withTags);
       } catch (err) {
+        // Catch and format any errors that occur during the import or processing
         setError(
           err instanceof Error
             ? err
             : new Error('An error occurred loading data'),
         );
       } finally {
+        // Set loading to false whether it succeeded or failed
         setLoading(false);
       }
     };
 
+    // Trigger the data loading function
     loadData();
   }, []);
 
@@ -90,6 +117,9 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   );
 };
 
+/**
+ * Custom hook to easily access the clock data from any functional component
+ */
 export const useDataContext = (): DataContextType => {
   const context = useContext(DataContext);
   if (context === undefined) {
