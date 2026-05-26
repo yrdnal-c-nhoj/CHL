@@ -1,4 +1,4 @@
-[
+V[
   {
     "path": "25-04-02",
     "date": "25-04-02",
@@ -325,7 +325,13 @@
   {
     "path": "25-05-12",
     "date": "25-05-12",
-    "title": "Cheetah"
+    "title": "Cheetah",
+    "tags": [
+      "digital",
+      "spirit animal",
+      "earth",
+      "fast"
+    ]
   },
   {
     "path": "25-05-13",
@@ -1652,7 +1658,12 @@
   {
     "path": "26-01-01",
     "date": "26-01-01",
-    "title": "Whir"
+    "title": "Whir",
+    "tags": [
+      "spin",
+      "analog",
+      "electricity"
+    ]
   },
   {
     "path": "26-01-02",
