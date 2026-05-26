@@ -3,6 +3,7 @@ export interface ClockItem {
   date: string;
   title: string;
   clockNumber?: number;
+  tags?: string[];
 }
 
 export interface DataContextType {

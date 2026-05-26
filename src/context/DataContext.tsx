@@ -1,10 +1,15 @@
+import type {
+  ReactNode
+} from 'react';
 import React, {
   createContext,
   useContext,
-  useState,
   useEffect,
-  ReactNode,
+  useState
 } from 'react';
+
+// Add this import at the top, after the React imports:
+import tagsData from './tags.json';
 
 export interface ClockItem {
   path: string;
@@ -59,7 +64,11 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
           };
         });
 
-        setItems(withNumbers);
+        const withTags = withNumbers.map((item: any) => ({
+          ...item,
+          tags: (tagsData as Record<string, string[]>)[item.date] ?? [],
+        }));
+        setItems(withTags);
       } catch (err) {
         setError(
           err instanceof Error
