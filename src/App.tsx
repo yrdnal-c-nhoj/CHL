@@ -18,11 +18,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import {
-    Navigate,
-    Route,
-    BrowserRouter as Router,
-    Routes,
-    useLocation,
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+  useLocation,
 } from 'react-router-dom';
 import { pageview } from './analytics';
 import { DataProvider } from './context/DataContext';
@@ -33,6 +33,8 @@ const ClockPage = React.lazy(() => import('./ClockPage'));
 const Today = React.lazy(() => import('./Today'));
 const Contact = React.lazy(() => import('./Contact'));
 const ClockList = React.lazy(() => import('./ClockList'));
+const Tagger = React.lazy(() => import('./pages/Tagger'));
+const TagManager = React.lazy(() => import('./pages/TagManager'));
 
 // Configuration constants
 const BASE_URL = 'https://www.cubistheart.com';
@@ -206,7 +208,9 @@ const App: React.FC = () => {
               <Route path="/:date" element={<ClockPage />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/today" element={<Today />} />
-              <Route path="/list" element={<ClockList />} />
+<Route path="/list" element={<ClockList />} />
+              <Route path="/tagger/:date" element={<Tagger />} />
+              <Route path="/tags" element={<TagManager />} />
               <Route path="/index.html" element={<Navigate to="/" replace />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
