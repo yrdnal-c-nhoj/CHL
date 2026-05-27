@@ -228,7 +228,7 @@
     "tags": [
       "gravity",
       "analog",
-      "minimalist"
+      "round"
     ]
   },
   {
@@ -301,7 +301,12 @@
   {
     "path": "25-05-07",
     "date": "25-05-07",
-    "title": "Radar"
+    "title": "Radar",
+    "tags": [
+      "water",
+      "analog",
+      "transport"
+    ]
   },
   {
     "path": "25-05-08",
@@ -315,12 +320,23 @@
   {
     "path": "25-05-09",
     "date": "25-05-09",
-    "title": "Whirlpool"
+    "title": "Whirlpool",
+    "tags": [
+      "water",
+      "spin",
+      "analog",
+      "gravity"
+    ]
   },
   {
     "path": "25-05-10",
     "date": "25-05-10",
-    "title": "Number Toss"
+    "title": "Number Toss",
+    "tags": [
+      "digital",
+      "color",
+      "gravity"
+    ]
   },
   {
     "path": "25-05-12",
@@ -346,27 +362,46 @@
   {
     "path": "25-05-15",
     "date": "25-05-15",
-    "title": "Roulette"
+    "title": "Roulette",
+    "tags": [
+      "round",
+      "wheel",
+      "analog"
+    ]
   },
   {
     "path": "25-05-16",
     "date": "25-05-16",
-    "title": "Braille"
+    "title": "Braille",
+    "tags": [
+      "pictographic"
+    ]
   },
   {
     "path": "25-05-17",
     "date": "25-05-17",
-    "title": "Primary Colors"
+    "title": "Primary Colors",
+    "tags": [
+      "color",
+      "analog"
+    ]
   },
   {
     "path": "25-05-18",
     "date": "25-05-18",
-    "title": "Blueprint"
+    "title": "Blueprint",
+    "tags": [
+      "digital"
+    ]
   },
   {
     "path": "25-05-19",
     "date": "25-05-19",
-    "title": "Ants"
+    "title": "Ants",
+    "tags": [
+      "analog",
+      "b+w"
+    ]
   },
   {
     "path": "25-05-20",
