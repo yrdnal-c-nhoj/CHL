@@ -421,7 +421,14 @@
   {
     "path": "25-05-30",
     "date": "25-05-30",
-    "title": "ISS"
+    "title": "ISS",
+    "tags": [
+      "digital",
+      "space",
+      "transport",
+      "earth",
+      "gravity"
+    ]
   },
   {
     "path": "25-05-31",
@@ -510,7 +517,12 @@
   {
     "path": "25-06-16",
     "date": "25-06-16",
-    "title": "Klaxon"
+    "title": "Klaxon",
+    "tags": [
+      "analog",
+      "transport",
+      "night"
+    ]
   },
   {
     "path": "25-06-17",
@@ -602,7 +614,8 @@
     "date": "25-07-04",
     "title": "Kaleidoscope",
     "tags": [
-      "digital"
+      "digital",
+      "spin"
     ]
   },
   {
@@ -663,7 +676,11 @@
   {
     "path": "25-07-16",
     "date": "25-07-16",
-    "title": "Möbius Strip"
+    "title": "Möbius Strip",
+    "tags": [
+      "digital",
+      "spin"
+    ]
   },
   {
     "path": "25-07-17",
@@ -782,7 +799,10 @@
   {
     "path": "25-08-06",
     "date": "25-08-06",
-    "title": "Laika"
+    "title": "Laika",
+    "tags": [
+      "animal"
+    ]
   },
   {
     "path": "25-08-07",
@@ -1381,7 +1401,13 @@
   {
     "path": "25-11-14",
     "date": "25-11-14",
-    "title": "Ice Cube"
+    "title": "Ice Cube",
+    "tags": [
+      "transparent",
+      "analog",
+      "water",
+      "ice"
+    ]
   },
   {
     "path": "25-11-15",
@@ -1460,7 +1486,9 @@
     "title": "Murmuration",
     "tags": [
       "animal",
-      "digital"
+      "digital",
+      "air",
+      "fly"
     ]
   },
   {
@@ -1565,7 +1593,8 @@
       "1878",
       "digital",
       "animal",
-      "b+w"
+      "b+w",
+      "body"
     ]
   },
   {
@@ -1575,7 +1604,9 @@
     "tags": [
       "planet",
       "sky",
-      "digital"
+      "digital",
+      "scythe",
+      "god"
     ]
   },
   {
@@ -1696,7 +1727,8 @@
       "digital",
       "Japan",
       "shrine",
-      "twenty"
+      "twenty",
+      "Ise"
     ]
   },
   {
@@ -1732,7 +1764,10 @@
   {
     "path": "26-01-04",
     "date": "26-01-04",
-    "title": "Imaged-Based"
+    "title": "Imaged-Based",
+    "tags": [
+      "digital"
+    ]
   },
   {
     "path": "26-01-05",
@@ -1746,7 +1781,12 @@
   {
     "path": "26-01-06",
     "date": "26-01-06",
-    "title": "Necropolis"
+    "title": "Necropolis",
+    "tags": [
+      "Egypt",
+      "pyramids",
+      "digital"
+    ]
   },
   {
     "path": "26-01-07",
@@ -1776,7 +1816,11 @@
   {
     "path": "26-01-12",
     "date": "26-01-12",
-    "title": "Lalarium"
+    "title": "Lalarium",
+    "tags": [
+      "Italy",
+      "digital"
+    ]
   },
   {
     "path": "26-01-13",
@@ -1994,7 +2038,13 @@
   {
     "path": "26-02-18",
     "date": "26-02-18",
-    "title": "Jellyfish"
+    "title": "Jellyfish",
+    "tags": [
+      "digital",
+      "water",
+      "animal",
+      "ocean"
+    ]
   },
   {
     "path": "26-02-19",
@@ -2019,7 +2069,12 @@
   {
     "path": "26-02-23",
     "date": "26-02-23",
-    "title": "Neptune"
+    "title": "Neptune",
+    "tags": [
+      "planet",
+      "trident",
+      "digital"
+    ]
   },
   {
     "path": "26-02-24",
@@ -2121,7 +2176,11 @@
   {
     "path": "26-03-14",
     "date": "26-03-14",
-    "title": "Motherboard"
+    "title": "Motherboard",
+    "tags": [
+      "digital",
+      "electricity"
+    ]
   },
   {
     "path": "26-03-15",
@@ -2156,7 +2215,11 @@
   {
     "path": "26-03-21",
     "date": "26-03-21",
-    "title": "Negative Space"
+    "title": "Negative Space",
+    "tags": [
+      "green",
+      "pictographic"
+    ]
   },
   {
     "path": "26-03-22",
