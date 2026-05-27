@@ -1,4 +1,4 @@
-V[
+[
   {
     "path": "25-04-02",
     "date": "25-04-02",
@@ -1042,12 +1042,24 @@ V[
   {
     "path": "25-09-22",
     "date": "25-09-22",
-    "title": "De-Extinction"
+    "title": "De-Extinction",
+    "tags": [
+      "animal",
+      "digital",
+      "slow",
+      "extinct"
+    ]
   },
   {
     "path": "25-09-23",
     "date": "25-09-23",
-    "title": "Cardio"
+    "title": "Cardio",
+    "tags": [
+      "analog",
+      "heart",
+      "body",
+      "beat"
+    ]
   },
   {
     "path": "25-09-24",
@@ -1062,22 +1074,37 @@ V[
   {
     "path": "25-09-26",
     "date": "25-09-26",
-    "title": "Context Clues"
+    "title": "Context Clues",
+    "tags": [
+      "digital"
+    ]
   },
   {
     "path": "25-09-27",
     "date": "25-09-27",
-    "title": "Tempest"
+    "title": "Tempest",
+    "tags": [
+      "analog",
+      "weather"
+    ]
   },
   {
     "path": "25-09-28",
     "date": "25-09-28",
-    "title": "Alien Abduction"
+    "title": "Alien Abduction",
+    "tags": [
+      "desert",
+      "digital"
+    ]
   },
   {
     "path": "25-09-29",
     "date": "25-09-29",
-    "title": "Comics"
+    "title": "Comics",
+    "tags": [
+      "esperanto",
+      "digital"
+    ]
   },
   {
     "path": "25-09-30",
@@ -1087,7 +1114,12 @@ V[
   {
     "path": "25-10-01",
     "date": "25-10-01",
-    "title": "Small World"
+    "title": "Small World",
+    "tags": [
+      "disney",
+      "transport",
+      "water"
+    ]
   },
   {
     "path": "25-10-02",
@@ -1147,12 +1179,21 @@ V[
   {
     "path": "25-10-13",
     "date": "25-10-13",
-    "title": "Roundhay Garden"
+    "title": "Roundhay Garden",
+    "tags": [
+      "1888",
+      "England",
+      "digital",
+      "b+w"
+    ]
   },
   {
     "path": "25-10-14",
     "date": "25-10-14",
-    "title": "Dodecahedron"
+    "title": "Dodecahedron",
+    "tags": [
+      "platonic solid"
+    ]
   },
   {
     "path": "25-10-15",
@@ -1167,17 +1208,30 @@ V[
   {
     "path": "25-10-17",
     "date": "25-10-17",
-    "title": "Polyglot"
+    "title": "Polyglot",
+    "tags": [
+      "words"
+    ]
   },
   {
     "path": "25-10-18",
     "date": "25-10-18",
-    "title": "Totality"
+    "title": "Totality",
+    "tags": [
+      "sky",
+      "sun",
+      "digital",
+      "moon"
+    ]
   },
   {
     "path": "25-10-19",
     "date": "25-10-19",
-    "title": "Delft"
+    "title": "Delft",
+    "tags": [
+      "digital",
+      "Nederland"
+    ]
   },
   {
     "path": "25-10-20",
