@@ -448,18 +448,15 @@ export function useFontLoader(config: FontAssetConfig): {
 export function useMultiFontLoader<T extends Record<string, FontAssetConfig>>(
   configs: T,
 ): {
+  states: Record<keyof T, AssetLoadState>;
+  errors: Record<keyof T, Error | null>;
   isAllLoaded: boolean;
   hasErrors: boolean;
-  states: Record<keyof T, AssetLoadState>;
+  loadedCount: number;
+  totalCount: number;
 } {
   // Re-use the logic from MultiAssetLoader which is now enhanced for fonts
-  const { isAllLoaded, hasErrors, states } = useMultiAssetLoader(configs);
-  
-  return {
-    isAllLoaded,
-    hasErrors,
-    states,
-  };
+  return useMultiAssetLoader(configs);
 }
 
 /**
@@ -486,19 +483,17 @@ export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
   const [errors, setErrors] = useState<Record<keyof T, Error | null>>(
     {} as Record<keyof T, Error | null>,
   );
+  const configRef = useRef<string>('');
 
   useEffect(() => {
+    const configKey = JSON.stringify(configs);
+    if (configRef.current === configKey) return;
+    configRef.current = configKey;
+
     const assetKeys = Object.keys(configs) as (keyof T)[];
-    const initialStates = {} as Record<keyof T, AssetLoadState>;
-    const initialErrors = {} as Record<keyof T, Error | null>;
-
-    assetKeys.forEach((key) => {
-      initialStates[key] = 'loading';
-      initialErrors[key] = null;
-    });
-
-    setStates(initialStates);
-    setErrors(initialErrors);
+    
+    setStates(assetKeys.reduce((acc, key) => ({ ...acc, [key]: 'loading' }), {} as any));
+    setErrors(assetKeys.reduce((acc, key) => ({ ...acc, [key]: null }), {} as any));
 
     // Load all assets
     const loadPromises = assetKeys.map(async (key) => {
