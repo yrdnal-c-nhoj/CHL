@@ -425,7 +425,7 @@
     "date": "25-05-10",
     "title": "Number Toss",
     "tags": [
-      "digital",
+      "digital 12h",
       "color",
       "gravity"
     ]
@@ -446,13 +446,18 @@
     "date": "25-05-13",
     "title": "Flat",
     "tags": [
-      "analog"
+      "analog",
+      "neutrals"
     ]
   },
   {
     "path": "25-05-14",
     "date": "25-05-14",
-    "title": "Rough Idea"
+    "title": "Rough Idea",
+    "tags": [
+      "color",
+      "rgb"
+    ]
   },
   {
     "path": "25-05-15",
@@ -461,7 +466,8 @@
     "tags": [
       "round",
       "wheel",
-      "analog"
+      "analog",
+      "play"
     ]
   },
   {
@@ -469,7 +475,10 @@
     "date": "25-05-16",
     "title": "Braille",
     "tags": [
-      "pictographic"
+      "pictographic",
+      "digital 24h",
+      "hands",
+      "monochrome"
     ]
   },
   {
@@ -489,7 +498,8 @@
     "tags": [
       "digital",
       "monochrome",
-      "paper"
+      "paper",
+      "blue"
     ]
   },
   {
@@ -536,7 +546,10 @@
   {
     "path": "25-05-23",
     "date": "25-05-23",
-    "title": "Cross Stitch"
+    "title": "Cross Stitch",
+    "tags": [
+      "hands"
+    ]
   },
   {
     "path": "25-05-24",
@@ -677,12 +690,22 @@
   {
     "path": "25-06-11",
     "date": "25-06-11",
-    "title": "Banana"
+    "title": "Banana",
+    "tags": [
+      "food",
+      "yellow",
+      "analog"
+    ]
   },
   {
     "path": "25-06-12",
     "date": "25-06-12",
-    "title": "Cattle Brand"
+    "title": "Cattle Brand",
+    "tags": [
+      "digital",
+      "animal",
+      "brown"
+    ]
   },
   {
     "path": "25-06-13",
@@ -1343,13 +1366,20 @@
     "title": "Comics",
     "tags": [
       "esperanto",
-      "digital"
+      "digital 24h",
+      "paper",
+      "color"
     ]
   },
   {
     "path": "25-09-30",
     "date": "25-09-30",
-    "title": "Lines"
+    "title": "Lines",
+    "tags": [
+      "digital 24h",
+      "green",
+      "parallel"
+    ]
   },
   {
     "path": "25-10-01",
@@ -1358,51 +1388,99 @@
     "tags": [
       "disney",
       "transport",
-      "water"
+      "water",
+      "flags",
+      "mechanical"
     ]
   },
   {
     "path": "25-10-02",
     "date": "25-10-02",
-    "title": "Counting Rods"
+    "title": "Counting Rods",
+    "tags": [
+      "China",
+      "digital 24h",
+      "red"
+    ]
   },
   {
     "path": "25-10-03",
     "date": "25-10-03",
     "title": "Loading",
     "tags": [
-      "analog"
+      "analog",
+      "color",
+      "spin"
     ]
   },
   {
     "path": "25-10-04",
     "date": "25-10-04",
-    "title": "Waterfall"
+    "title": "Waterfall",
+    "tags": [
+      "digital 24h",
+      "blue",
+      "gravity",
+      "water"
+    ]
   },
   {
     "path": "25-10-05",
     "date": "25-10-05",
-    "title": "Hexadecimal"
+    "title": "Hexadecimal",
+    "tags": [
+      "analog",
+      "base-16",
+      "0x",
+      "0123456789ABCDEF"
+    ]
   },
   {
     "path": "25-10-06",
     "date": "25-10-06",
-    "title": "Dots"
+    "title": "Dots",
+    "tags": [
+      "circles",
+      "digital",
+      "green",
+      "revolve"
+    ]
   },
   {
     "path": "25-10-07",
     "date": "25-10-07",
-    "title": "Hi There!"
+    "title": "Hi There!",
+    "tags": [
+      "Dr. Strangelove",
+      "1964",
+      "Kubrick",
+      "film",
+      "analog",
+      "words",
+      "b+w"
+    ]
   },
   {
     "path": "25-10-08",
     "date": "25-10-08",
-    "title": "Periodic Table"
+    "title": "Periodic Table",
+    "tags": [
+      "science",
+      "digital",
+      "elements",
+      "molecules"
+    ]
   },
   {
     "path": "25-10-09",
     "date": "25-10-09",
-    "title": "Spin"
+    "title": "Spin",
+    "tags": [
+      "typeface",
+      "digital 12h",
+      "round",
+      "purple"
+    ]
   },
   {
     "path": "25-10-10",
@@ -1410,9 +1488,11 @@
     "title": "Marcus Aurelius",
     "tags": [
       "Fellini",
+      "1972",
       "Italy",
       "film",
       "night",
+      "Roma",
       "Michelangelo"
     ]
   },
@@ -1718,7 +1798,9 @@
     "title": "Sputnik",
     "tags": [
       "space",
-      "digital"
+      "digital",
+      "mechanical",
+      "Russia"
     ]
   },
   {
@@ -2537,7 +2619,15 @@
   {
     "path": "26-03-18",
     "date": "26-03-18",
-    "title": "Walk of Stars"
+    "title": "Walk of Stars",
+    "tags": [
+      "LA",
+      "analog",
+      "move",
+      "day",
+      "stars",
+      "film"
+    ]
   },
   {
     "path": "26-03-19",
