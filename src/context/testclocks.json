@@ -2715,18 +2715,24 @@
   {
     "path": "26-04-18",
     "date": "26-04-18",
-    "title": "Frequency"
+    "title": "Frequency",
+    "tags": [
+      "tech",
+      "wavelength",
+      "digital 24h"
+    ]
   },
   {
     "path": "26-04-19",
     "date": "26-04-19",
     "title": "Wobble",
     "tags": [
-      "digital",
-      "precession",
+      "digital 12h",
       "planet",
-      "rotation",
-      "day and night:"
+      "spin",
+      "day and night",
+      "space",
+      "axis"
     ]
   },
   {
@@ -2746,7 +2752,7 @@
     "title": "Particles",
     "tags": [
       "color",
-      "digital",
+      "digital 24h",
       "circles"
     ]
   },
@@ -3082,7 +3088,7 @@
     "date": "26-05-20",
     "title": "Elevator",
     "tags": [
-      "digital",
+      "digital 24h",
       "open and shut",
       "up and down",
       "interior",
@@ -3108,8 +3114,7 @@
     "tags": [
       "camouflage",
       "tech",
-      "digital",
-      "pictographic",
+      "pictographic 24h",
       "deepwater",
       "transport"
     ]
@@ -3119,7 +3124,7 @@
     "date": "26-05-23",
     "title": "Lavafall",
     "tags": [
-      "digital",
+      "digital 12h",
       "flow",
       "vertical",
       "nature",
@@ -3136,10 +3141,10 @@
     "title": "Rhinoceros",
     "tags": [
       "spirit animal",
-      "digital",
       "odd-toed ungulate",
       "monochrome",
-      "horn"
+      "horn",
+      "analog"
     ]
   },
   {
@@ -3151,7 +3156,7 @@
       "Georges Méliès",
       "1899",
       "France",
-      "digital",
+      "digital 12h",
       "film",
       "b+w",
       "night"
