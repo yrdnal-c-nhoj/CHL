@@ -1,4 +1,6 @@
 
+@import url('../../../../styles/fonts/clock-26-05-25.css');
+
 @font-face {
   font-family: 'ClockFont_26-05-25';
   src: url('../../../../assets/fonts/26fonts/26-05-25.ttf') format('truetype');
@@ -6,8 +8,6 @@
   font-style: normal;
   font-display: swap;
 }
-
-@import url('../../../../styles/fonts/clock-26-05-25.css');
 
 .container {
   width: 100vw;
