@@ -548,7 +548,9 @@
     "date": "25-05-23",
     "title": "Cross Stitch",
     "tags": [
-      "hands"
+      "hands",
+      "digital",
+      "color"
     ]
   },
   {
@@ -568,7 +570,8 @@
     "title": "Robotic Arm",
     "tags": [
       "analog",
-      "body"
+      "body",
+      "mechanical"
     ]
   },
   {
@@ -585,12 +588,25 @@
   {
     "path": "25-05-27",
     "date": "25-05-27",
-    "title": "Dots"
+    "title": "Dots",
+    "tags": [
+      "digital",
+      "histogram",
+      "image-free",
+      "neutrals"
+    ]
   },
   {
     "path": "25-05-28",
     "date": "25-05-28",
-    "title": "Corner"
+    "title": "Corner",
+    "tags": [
+      "analog",
+      "RYB",
+      "brown",
+      "round",
+      "image-free"
+    ]
   },
   {
     "path": "25-05-29",
