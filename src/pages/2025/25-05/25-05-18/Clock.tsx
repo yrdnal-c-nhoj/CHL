@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
 import bluFont from '@/assets/fonts/25fonts/25-05-18-blu.otf'; // local font
 import image1 from '@/assets/images/25_images/25-05/25-05-18/13966281486_Volantis_Tumblr.gif'; // bottom layer
 import image2 from '@/assets/images/25_images/25-05/25-05-18/8mMt.gif'; // middle layer
 import image3 from '@/assets/images/25_images/25-05/25-05-18/bloo.gif'; // top layer
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks/useClockTime';
+import React, { useEffect } from 'react';
 
 const Clock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -18,7 +18,7 @@ const Clock: React.FC = () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  useMultipleFontLoader(fontConfigs);
   const time = useClockTime();
 
   // Format time with leading zeros
