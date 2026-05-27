@@ -1,13 +1,16 @@
-import { useEffect, useRef, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
-import backgroundImage from '@/assets/images/2025/25-08/25-08-27/rootsu.gif';
 import dodecahedronFontFile from '@/assets/fonts/2025/25-08-27-root.ttf'; // renamed import
+import backgroundImage from '@/assets/images/2025/25-08/25-08-27/rootsu.gif';
+import { useSuspenseFontLoader } from '@/utils/enhancedFontLoader';
+import { useClockTime } from '@/utils/hooks';
+import { useEffect, useMemo, useRef } from 'react';
+
+// Asset exports for preloading pipeline
+export const assets = [backgroundImage, dodecahedronFontFile];
 
 export default function TwelfthRootsOfUnityWithClock() {
-  const canvasRef = useRef(null);
-  const clockRef = useRef(null);
-  const fontRef = useRef('sans-serif'); // fallback
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const clockRef = useRef<HTMLCanvasElement>(null);
+  const fontRef = useRef<string>('sans-serif'); // fallback
   const time = useClockTime();
   const timeRef = useRef(time);
 
@@ -31,9 +34,16 @@ export default function TwelfthRootsOfUnityWithClock() {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
     const clock = clockRef.current;
+
+    // Safely exit if canvas elements are not yet available
+    if (!canvas || !clock) return;
+
+    const ctx = canvas.getContext('2d');
     const cctx = clock.getContext('2d');
+
+    // Safely exit if contexts cannot be obtained
+    if (!ctx || !cctx) return;
 
     const n = 12;
     let step = 1;
@@ -94,7 +104,7 @@ export default function TwelfthRootsOfUnityWithClock() {
       ctx.font = `${size * 0.08}px ${fontRef.current}`;
       ctx.fillStyle = '#03341F';
 
-      roots.forEach((root, k) => {
+      roots.forEach((root: { x: number; y: number }, k: number) => {
         ctx.beginPath();
         ctx.arc(root.x, root.y, pointRadius, 0, 2 * Math.PI);
         ctx.fillStyle = '#212321';
@@ -152,7 +162,7 @@ export default function TwelfthRootsOfUnityWithClock() {
       const minAngle = ((min + sec / 60) * 2 * Math.PI) / 60 - Math.PI / 2;
       const secAngle = (sec * 2 * Math.PI) / 60 - Math.PI / 2;
 
-      const drawHand = (angle, length, color, width) => {
+      const drawHand = (angle: number, length: number, color: string, width: number) => {
         cctx.beginPath();
         cctx.moveTo(centerX, centerY);
         cctx.lineTo(
@@ -169,7 +179,7 @@ export default function TwelfthRootsOfUnityWithClock() {
       drawHand(secAngle, radius * 0.9, '#1A1C1A', 0.3 * (size / 100));
     };
 
-    let animationId;
+    let animationId: number;
     const animate = () => {
       drawRoots();
       drawClock(timeRef.current);

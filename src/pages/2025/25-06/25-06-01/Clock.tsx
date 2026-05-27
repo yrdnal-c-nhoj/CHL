@@ -144,7 +144,6 @@ export default function Clock() {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
   const { isAllLoaded: fontsLoaded } = useMultipleFontLoader(fontConfigs);
   const time = useClockTime();
 
