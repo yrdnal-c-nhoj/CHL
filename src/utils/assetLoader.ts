@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
  * Standardized Asset Loading System
@@ -11,6 +12,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 const imageRegistry = new Map<string, Promise<HTMLImageElement>>();
 const videoRegistry = new Map<string, Promise<HTMLVideoElement>>();
 const audioRegistry = new Map<string, Promise<HTMLAudioElement>>();
+const fontRegistry = new Map<string, Promise<FontFace>>();
 
 // Asset loading states
 export type AssetLoadState = 'loading' | 'loaded' | 'error' | 'fallback';
@@ -44,6 +46,12 @@ export interface AudioAssetConfig extends AssetConfig {
   loop?: boolean;
   muted?: boolean;
   volume?: number;
+}
+
+export interface FontAssetConfig extends AssetConfig {
+  family?: string;
+  weight?: string;
+  style?: string;
 }
 
 /**
@@ -377,6 +385,89 @@ export function useAudioLoader(config: AudioAssetConfig): {
 }
 
 /**
+ * Standardized font loading hook
+ */
+export function useFontLoader(config: FontAssetConfig): {
+  state: AssetLoadState;
+  error: Error | null;
+} {
+  const [state, setState] = useState<AssetLoadState>('loading');
+  const [error, setError] = useState<Error | null>(null);
+
+  const loadFont = useCallback(async () => {
+    const fontKey = `${config.family || 'font'}-${config.src}`;
+    
+    if (fontRegistry.has(fontKey)) {
+      try {
+        await fontRegistry.get(fontKey);
+        setState('loaded');
+        return;
+      } catch (err) {
+        setError(err as Error);
+        setState('error');
+        return;
+      }
+    }
+
+    const loadPromise = (async () => {
+      const family = config.family || `font-${Math.random().toString(36).slice(2, 7)}`;
+      const font = new FontFace(family, `url(${config.src})`, {
+        weight: config.weight,
+        style: config.style,
+      });
+
+      const loadedFont = await font.load();
+      document.fonts.add(loadedFont);
+      return loadedFont;
+    })();
+
+    fontRegistry.set(fontKey, loadPromise);
+
+    try {
+      await loadPromise;
+      setState('loaded');
+    } catch (err) {
+      setError(err as Error);
+      setState('error');
+    }
+  }, [config]);
+
+  useEffect(() => {
+    if (config.preload !== false) {
+      loadFont();
+    }
+  }, [loadFont, config.preload]);
+
+  return { state, error };
+}
+
+/**
+ * Hook for loading multiple fonts, often used by clocks.
+ * Provides both names to satisfy different implementation styles.
+ */
+export function useMultiFontLoader<T extends Record<string, FontAssetConfig>>(
+  configs: T,
+): {
+  isAllLoaded: boolean;
+  hasErrors: boolean;
+  states: Record<keyof T, AssetLoadState>;
+} {
+  // Re-use the logic from MultiAssetLoader which is now enhanced for fonts
+  const { isAllLoaded, hasErrors, states } = useMultiAssetLoader(configs);
+  
+  return {
+    isAllLoaded,
+    hasErrors,
+    states,
+  };
+}
+
+/**
+ * Alias to fix "useMultipleFontLoader is not defined" errors in existing clocks.
+ */
+export const useMultipleFontLoader = useMultiFontLoader;
+
+/**
  * Multi-asset loading hook for clocks with multiple assets
  */
 export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
@@ -450,6 +541,17 @@ export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
             audio.src = config.src;
             audio.load();
           });
+          newState = 'loaded';
+        } else if (config.src.match(/\.(woff|woff2|ttf|otf)$/i)) {
+          // Font asset
+          const family = (config as FontAssetConfig).family || `font-${key.toString()}`;
+          const font = new FontFace(family, `url(${config.src})`, {
+            weight: (config as FontAssetConfig).weight,
+            style: (config as FontAssetConfig).style,
+          });
+          
+          const loadedFont = await font.load();
+          document.fonts.add(loadedFont);
           newState = 'loaded';
         }
       } catch (err) {
@@ -526,6 +628,15 @@ export function preloadAssets(assets: AssetConfig[]): Promise<void[]> {
         audio.src = asset.src;
         audio.load();
       });
+    } else if (asset.src.match(/\.(woff|woff2|ttf|otf)$/i)) {
+      return new Promise<void>((resolve, reject) => {
+        const font = new FontFace('temp-preload', `url(${asset.src})`);
+        font.load()
+          .then(() => resolve())
+          .catch(() => {
+            reject(new Error(`Failed to preload font: ${asset.src}`));
+          });
+      });
     }
     return Promise.resolve();
   });
@@ -590,6 +701,9 @@ export default {
   useVideoLoader,
   useAudioLoader,
   useMultiAssetLoader,
+  useFontLoader,
+  useMultiFontLoader,
+  useMultipleFontLoader,
   preloadAssets,
   AssetUtils,
 };
