@@ -396,7 +396,11 @@
   {
     "path": "25-05-25",
     "date": "25-05-25",
-    "title": "Robotic Arm"
+    "title": "Robotic Arm",
+    "tags": [
+      "analog",
+      "body"
+    ]
   },
   {
     "path": "25-05-26",
