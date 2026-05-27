@@ -2732,12 +2732,23 @@
   {
     "path": "26-04-20",
     "date": "26-04-20",
-    "title": "Hemoglobin"
+    "title": "Hemoglobin",
+    "tags": [
+      "cells",
+      "red",
+      "analog",
+      "flow"
+    ]
   },
   {
     "path": "26-04-21",
     "date": "26-04-21",
-    "title": "Particles"
+    "title": "Particles",
+    "tags": [
+      "color",
+      "digital",
+      "circles"
+    ]
   },
   {
     "path": "26-04-22",
@@ -2746,13 +2757,22 @@
     "tags": [
       "transport",
       "analog",
-      "exterior"
+      "exterior",
+      "roll"
     ]
   },
   {
     "path": "26-04-23",
     "date": "26-04-23",
-    "title": "Helianthus"
+    "title": "Helianthus",
+    "tags": [
+      "flower",
+      "grow",
+      "sun",
+      "vertical",
+      "yellow",
+      "digital"
+    ]
   },
   {
     "path": "26-04-24",
@@ -2760,7 +2780,8 @@
     "title": "Lissajous",
     "tags": [
       "digital",
-      "geometry"
+      "geometry",
+      "image-free"
     ]
   },
   {
@@ -2774,7 +2795,15 @@
   {
     "path": "26-04-26",
     "date": "26-04-26",
-    "title": "Astro"
+    "title": "Astro",
+    "tags": [
+      "film",
+      "1962",
+      "digital",
+      "The Jetsons",
+      "space",
+      "transport"
+    ]
   },
   {
     "path": "26-04-27",
@@ -2794,17 +2823,34 @@
   {
     "path": "26-04-29",
     "date": "26-04-29",
-    "title": "Cavalcade"
+    "title": "Cavalcade",
+    "tags": [
+      "digital",
+      "animals",
+      "spin",
+      "mechanical"
+    ]
   },
   {
     "path": "26-04-30",
     "date": "26-04-30",
-    "title": "Pleides"
+    "title": "Pleides",
+    "tags": [
+      "stars",
+      "constellations",
+      "myth",
+      "digital",
+      "night"
+    ]
   },
   {
     "path": "26-05-01",
     "date": "26-05-01",
-    "title": "Sampson"
+    "title": "Sampson",
+    "tags": [
+      "fast",
+      "mechanical"
+    ]
   },
   {
     "path": "26-05-02",
@@ -2813,25 +2859,44 @@
     "tags": [
       "film",
       "digital",
-      "gravity"
+      "gravity",
+      "transport",
+      "fast"
     ]
   },
   {
     "path": "26-05-03",
     "date": "26-05-03",
-    "title": "Boxes"
+    "title": "Boxes",
+    "tags": [
+      "spin",
+      "brown",
+      "digital",
+      "paper",
+      "color"
+    ]
   },
   {
     "path": "26-05-04",
     "date": "26-05-04",
-    "title": "Pod"
+    "title": "Pod",
+    "tags": [
+      "analog",
+      "ocean",
+      "move",
+      "blue",
+      "spirit animal"
+    ]
   },
   {
     "path": "26-05-05",
     "date": "26-05-05",
     "title": "Fossil",
     "tags": [
-      "nature"
+      "nature",
+      "day",
+      "animal",
+      "pictographic"
     ]
   },
   {
@@ -2840,7 +2905,9 @@
     "title": "Droplets",
     "tags": [
       "water",
-      "digital"
+      "digital",
+      "surface",
+      "move"
     ]
   },
   {
@@ -2963,7 +3030,8 @@
       "airstairs",
       "fly",
       "transport",
-      "sky"
+      "sky",
+      "day"
     ]
   },
   {
@@ -2989,7 +3057,6 @@
       "bagpipe with pleats",
       "analog",
       "dance",
-      "sound",
       "music",
       "body",
       "film",
@@ -3002,10 +3069,12 @@
     "title": "Bliss",
     "tags": [
       "wallpaper",
+      "day",
       "windows",
       "digital",
       "info tech",
-      "rip clippy"
+      "rip clippy",
+      "nature"
     ]
   },
   {
@@ -3025,11 +3094,11 @@
     "date": "26-05-21",
     "title": "Canis Major",
     "tags": [
-      "sky",
       "constellations",
       "animal",
       "monochrome",
-      "analog"
+      "analog",
+      "night"
     ]
   },
   {
@@ -3038,11 +3107,9 @@
     "title": "Subsurface",
     "tags": [
       "camouflage",
-      "cables",
-      "info tech",
+      "tech",
       "digital",
       "pictographic",
-      "earth",
       "deepwater",
       "transport"
     ]
@@ -3053,7 +3120,9 @@
     "title": "Lavafall",
     "tags": [
       "digital",
+      "flow",
       "vertical",
+      "nature",
       "The Fire Within",
       "elements",
       "Werner Herzog",
@@ -3084,7 +3153,8 @@
       "France",
       "digital",
       "film",
-      "b+w"
+      "b+w",
+      "night"
     ]
   },
   {
