@@ -108,7 +108,8 @@
     "title": "Pepperoni Pizza",
     "tags": [
       "food",
-      "analog"
+      "analog",
+      "Italy"
     ]
   },
   {
@@ -134,7 +135,14 @@
   {
     "path": "25-04-18",
     "date": "25-04-18",
-    "title": "Antarctica"
+    "title": "Antarctica",
+    "tags": [
+      "analog",
+      "cold",
+      "day and night",
+      "spin",
+      "dry"
+    ]
   },
   {
     "path": "25-04-19",
@@ -164,7 +172,9 @@
     "title": "Peacock",
     "tags": [
       "analog",
-      "animal"
+      "animal",
+      "superstition",
+      "feather"
     ]
   },
   {
@@ -189,22 +199,42 @@
   {
     "path": "25-04-24",
     "date": "25-04-24",
-    "title": "Lava"
+    "title": "Lava",
+    "tags": [
+      "hot",
+      "digital",
+      "elements",
+      "red"
+    ]
   },
   {
     "path": "25-04-25",
     "date": "25-04-25",
-    "title": "Band-Aid"
+    "title": "Band-Aid",
+    "tags": [
+      "body",
+      "analog",
+      "brown"
+    ]
   },
   {
     "path": "25-04-26",
     "date": "25-04-26",
-    "title": "Skew"
+    "title": "Skew",
+    "tags": [
+      "digital"
+    ]
   },
   {
     "path": "25-04-27",
     "date": "25-04-27",
-    "title": "Spinning Coin"
+    "title": "Spinning Coin",
+    "tags": [
+      "analog",
+      "spin",
+      "disc",
+      "shiny"
+    ]
   },
   {
     "path": "25-04-28",
@@ -213,13 +243,21 @@
     "tags": [
       "digital",
       "art",
-      "b+w"
+      "b+w",
+      "paint"
     ]
   },
   {
     "path": "25-04-29",
     "date": "25-04-29",
-    "title": "Fireworks"
+    "title": "Fireworks",
+    "tags": [
+      "sky",
+      "digital",
+      "light",
+      "night",
+      "fire"
+    ]
   },
   {
     "path": "25-04-30",
@@ -352,7 +390,10 @@
   {
     "path": "25-05-13",
     "date": "25-05-13",
-    "title": "Flat"
+    "title": "Flat",
+    "tags": [
+      "analog"
+    ]
   },
   {
     "path": "25-05-14",
@@ -383,7 +424,8 @@
     "title": "Primary Colors",
     "tags": [
       "color",
-      "analog"
+      "analog",
+      "spectrum"
     ]
   },
   {
@@ -391,7 +433,9 @@
     "date": "25-05-18",
     "title": "Blueprint",
     "tags": [
-      "digital"
+      "digital",
+      "monochrome",
+      "paper"
     ]
   },
   {
@@ -400,7 +444,8 @@
     "title": "Ants",
     "tags": [
       "analog",
-      "b+w"
+      "b+w",
+      "animal"
     ]
   },
   {
@@ -417,12 +462,22 @@
   {
     "path": "25-05-21",
     "date": "25-05-21",
-    "title": "Semaphore"
+    "title": "Semaphore",
+    "tags": [
+      "pictographic",
+      "body"
+    ]
   },
   {
     "path": "25-05-22",
     "date": "25-05-22",
-    "title": "Solar Transit"
+    "title": "Solar Transit",
+    "tags": [
+      "sun",
+      "day",
+      "planet",
+      "analog"
+    ]
   },
   {
     "path": "25-05-23",
@@ -436,7 +491,8 @@
     "tags": [
       "spin",
       "weather",
-      "wind"
+      "wind",
+      "digital"
     ]
   },
   {
@@ -451,7 +507,13 @@
   {
     "path": "25-05-26",
     "date": "25-05-26",
-    "title": "Sprout"
+    "title": "Sprout",
+    "tags": [
+      "plant",
+      "earth",
+      "digital",
+      "green"
+    ]
   },
   {
     "path": "25-05-27",
@@ -466,7 +528,13 @@
   {
     "path": "25-05-29",
     "date": "25-05-29",
-    "title": "Gear"
+    "title": "Gear",
+    "tags": [
+      "mechanical",
+      "words",
+      "digital",
+      "spin"
+    ]
   },
   {
     "path": "25-05-30",
@@ -483,12 +551,25 @@
   {
     "path": "25-05-31",
     "date": "25-05-31",
-    "title": "Elephant"
+    "title": "Elephant",
+    "tags": [
+      "analog",
+      "animal",
+      "grey",
+      "transport",
+      "move"
+    ]
   },
   {
     "path": "25-06-01",
     "date": "25-06-01",
-    "title": "Air Mail"
+    "title": "Air Mail",
+    "tags": [
+      "digital",
+      "transport",
+      "words",
+      "move"
+    ]
   },
   {
     "path": "25-06-02",
@@ -980,7 +1061,12 @@
   {
     "path": "25-08-28",
     "date": "25-08-28",
-    "title": "Goblin"
+    "title": "Goblin",
+    "tags": [
+      "Tolkien",
+      "digital",
+      "England"
+    ]
   },
   {
     "path": "25-08-29",
@@ -1005,7 +1091,12 @@
   {
     "path": "25-09-02",
     "date": "25-09-02",
-    "title": "33 1/3 RPM"
+    "title": "33 1/3 RPM",
+    "tags": [
+      "spin",
+      "analog",
+      "sound"
+    ]
   },
   {
     "path": "25-09-03",
@@ -1092,7 +1183,12 @@
   {
     "path": "25-09-14",
     "date": "25-09-14",
-    "title": "Golden Chord"
+    "title": "Golden Chord",
+    "tags": [
+      "unfinished",
+      "geometry",
+      "analog"
+    ]
   },
   {
     "path": "25-09-15",
@@ -1219,7 +1315,10 @@
   {
     "path": "25-10-03",
     "date": "25-10-03",
-    "title": "Loading"
+    "title": "Loading",
+    "tags": [
+      "analog"
+    ]
   },
   {
     "path": "25-10-04",
@@ -1254,7 +1353,14 @@
   {
     "path": "25-10-10",
     "date": "25-10-10",
-    "title": "Marcus Aurelius"
+    "title": "Marcus Aurelius",
+    "tags": [
+      "Fellini",
+      "Italy",
+      "film",
+      "night",
+      "Michelangelo"
+    ]
   },
   {
     "path": "25-10-11",
@@ -1341,7 +1447,10 @@
   {
     "path": "25-10-23",
     "date": "25-10-23",
-    "title": "Gridlines"
+    "title": "Gridlines",
+    "tags": [
+      "digital"
+    ]
   },
   {
     "path": "25-10-24",
@@ -1462,7 +1571,12 @@
   {
     "path": "25-11-09",
     "date": "25-11-09",
-    "title": "Girandola"
+    "title": "Girandola",
+    "tags": [
+      "spin",
+      "flower",
+      "digital"
+    ]
   },
   {
     "path": "25-11-10",
@@ -1650,13 +1764,24 @@
     "date": "25-12-05",
     "title": "Abracadabra",
     "tags": [
-      "digital"
+      "digital",
+      "magic",
+      "body",
+      "transport",
+      "up and down"
     ]
   },
   {
     "path": "25-12-06",
     "date": "25-12-06",
-    "title": "Giraffe"
+    "title": "Giraffe",
+    "tags": [
+      "analog",
+      "animal",
+      "brown",
+      "monochrome",
+      "Africa"
+    ]
   },
   {
     "path": "25-12-07",
@@ -1705,7 +1830,12 @@
   {
     "path": "25-12-11",
     "date": "25-12-11",
-    "title": "Geological"
+    "title": "Geological",
+    "tags": [
+      "words",
+      "numbers",
+      "digital"
+    ]
   },
   {
     "path": "25-12-12",
@@ -1877,7 +2007,12 @@
     "title": "Aardvark",
     "tags": [
       "animal",
-      "analog"
+      "analog",
+      "snout",
+      "vowels",
+      "night",
+      "digraph",
+      "Africa"
     ]
   },
   {
@@ -1969,7 +2104,9 @@
     "title": "225° Southwest",
     "tags": [
       "cardinal directions",
-      "analog"
+      "analog",
+      "water",
+      "wind"
     ]
   },
   {
@@ -1987,8 +2124,8 @@
     "date": "26-01-20",
     "title": "Acconciatura",
     "tags": [
-      "dingbat",
-      "Italy"
+      "Italy",
+      "pictographic"
     ]
   },
   {
@@ -1999,7 +2136,12 @@
   {
     "path": "26-01-22",
     "date": "26-01-22",
-    "title": "1974"
+    "title": "1974",
+    "tags": [
+      "neutrals",
+      "digital",
+      "interior"
+    ]
   },
   {
     "path": "26-01-23",
@@ -2039,13 +2181,20 @@
     "date": "26-01-30",
     "title": "45° Northeast",
     "tags": [
-      "cardinal directions"
+      "cardinal directions",
+      "wind",
+      "cold"
     ]
   },
   {
     "path": "26-01-31",
     "date": "26-01-31",
-    "title": "Lemon"
+    "title": "Lemon",
+    "tags": [
+      "food",
+      "analog",
+      "yellow"
+    ]
   },
   {
     "path": "26-02-01",
@@ -2202,7 +2351,12 @@
     "title": "1913",
     "tags": [
       "digital",
-      "Marinetti"
+      "Marinetti",
+      "interior",
+      "red",
+      "sound",
+      "Futurism",
+      "Italy"
     ]
   },
   {
@@ -2213,7 +2367,13 @@
   {
     "path": "26-02-26",
     "date": "26-02-26",
-    "title": "Fuschia"
+    "title": "Fuschia",
+    "tags": [
+      "color",
+      "plant",
+      "digital",
+      "generative"
+    ]
   },
   {
     "path": "26-02-27",
@@ -2230,7 +2390,10 @@
     "date": "26-03-01",
     "title": "270° West",
     "tags": [
-      "cardinal directions"
+      "cardinal directions",
+      "analog",
+      "sun",
+      "wind"
     ]
   },
   {
@@ -2537,7 +2700,11 @@
     "date": "26-04-16",
     "title": "135° Southeast",
     "tags": [
-      "cardinal directions"
+      "cardinal directions",
+      "wind",
+      "pomegranate",
+      "jasmine",
+      "analog"
     ]
   },
   {
@@ -2590,7 +2757,11 @@
   {
     "path": "26-04-24",
     "date": "26-04-24",
-    "title": "Lissajous"
+    "title": "Lissajous",
+    "tags": [
+      "digital",
+      "geometry"
+    ]
   },
   {
     "path": "26-04-25",
@@ -2608,7 +2779,12 @@
   {
     "path": "26-04-27",
     "date": "26-04-27",
-    "title": "Lever"
+    "title": "Lever",
+    "tags": [
+      "6 simple machines",
+      "generative",
+      "digital"
+    ]
   },
   {
     "path": "26-04-28",
@@ -2672,7 +2848,8 @@
     "title": "Gallop",
     "tags": [
       "animal",
-      "analog"
+      "analog",
+      "transport"
     ]
   },
   {
@@ -2683,7 +2860,12 @@
   {
     "path": "26-05-09",
     "date": "26-05-09",
-    "title": "Lotus"
+    "title": "Lotus",
+    "tags": [
+      "water",
+      "analog",
+      "flower"
+    ]
   },
   {
     "path": "26-05-10",
@@ -2700,7 +2882,11 @@
     "date": "26-05-12",
     "title": "180° South",
     "tags": [
-      "cardinal directions"
+      "cardinal directions",
+      "wind",
+      "lion",
+      "fire",
+      "analog"
     ]
   },
   {
