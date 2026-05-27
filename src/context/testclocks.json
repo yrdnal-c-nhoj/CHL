@@ -456,7 +456,8 @@
     "title": "Rough Idea",
     "tags": [
       "color",
-      "rgb"
+      "RGB",
+      "digital 12h"
     ]
   },
   {
@@ -520,7 +521,7 @@
       "fire",
       "four-sided",
       "platonic solid",
-      "digital"
+      "digital 12h"
     ]
   },
   {
@@ -529,7 +530,8 @@
     "title": "Semaphore",
     "tags": [
       "pictographic",
-      "body"
+      "body",
+      "flags"
     ]
   },
   {
@@ -561,7 +563,7 @@
       "spin",
       "weather",
       "wind",
-      "digital"
+      "digital 12h"
     ]
   },
   {
@@ -571,7 +573,8 @@
     "tags": [
       "analog",
       "body",
-      "mechanical"
+      "mechanical",
+      "hand"
     ]
   },
   {
@@ -581,7 +584,7 @@
     "tags": [
       "plant",
       "earth",
-      "digital",
+      "digital 12h",
       "green"
     ]
   },
@@ -615,7 +618,7 @@
     "tags": [
       "mechanical",
       "words",
-      "digital",
+      "wheel",
       "spin"
     ]
   },
@@ -640,7 +643,8 @@
       "animal",
       "grey",
       "transport",
-      "move"
+      "move",
+      "trunk"
     ]
   },
   {
@@ -657,32 +661,66 @@
   {
     "path": "25-06-02",
     "date": "25-06-02",
-    "title": "Dashboard"
+    "title": "Dashboard",
+    "tags": [
+      "drive",
+      "analog",
+      "fast",
+      "wheel"
+    ]
   },
   {
     "path": "25-06-03",
     "date": "25-06-03",
-    "title": "Filigree"
+    "title": "Filigree",
+    "tags": [
+      "digital 24h",
+      "circles",
+      "rotation",
+      "silver"
+    ]
   },
   {
     "path": "25-06-04",
     "date": "25-06-04",
-    "title": "Coffee"
+    "title": "Coffee",
+    "tags": [
+      "drink",
+      "analog",
+      "brown"
+    ]
   },
   {
     "path": "25-06-05",
     "date": "25-06-05",
-    "title": "Treehouse"
+    "title": "Treehouse",
+    "tags": [
+      "wood",
+      "digital 12h",
+      "trees"
+    ]
   },
   {
     "path": "25-06-06",
     "date": "25-06-06",
-    "title": "Rolling"
+    "title": "Rolling",
+    "tags": [
+      "roll",
+      "analog",
+      "move"
+    ]
   },
   {
     "path": "25-06-07",
     "date": "25-06-07",
-    "title": "Blizzard"
+    "title": "Blizzard",
+    "tags": [
+      "snow",
+      "wind",
+      "digital 24h",
+      "windows",
+      "glass"
+    ]
   },
   {
     "path": "25-06-08",
@@ -690,18 +728,30 @@
     "title": "Face Card",
     "tags": [
       "analog",
-      "play"
+      "play",
+      "face"
     ]
   },
   {
     "path": "25-06-09",
     "date": "25-06-09",
-    "title": "Ionosphere"
+    "title": "Ionosphere",
+    "tags": [
+      "space",
+      "fly",
+      "digital 12h",
+      "transport",
+      "fast"
+    ]
   },
   {
     "path": "25-06-10",
     "date": "25-06-10",
-    "title": "Shapes"
+    "title": "Shapes",
+    "tags": [
+      "pictographic",
+      "b+w"
+    ]
   },
   {
     "path": "25-06-11",
@@ -2256,7 +2306,10 @@
   {
     "path": "26-01-16",
     "date": "26-01-16",
-    "title": "Leap Second"
+    "title": "Leap Second",
+    "tags": [
+      "digital"
+    ]
   },
   {
     "path": "26-01-17",
@@ -2272,12 +2325,20 @@
   {
     "path": "26-01-18",
     "date": "26-01-18",
-    "title": "Orthogonal"
+    "title": "Orthogonal",
+    "tags": [
+      "digital 12h",
+      "spin"
+    ]
   },
   {
     "path": "26-01-19",
     "date": "26-01-19",
-    "title": "Handsy"
+    "title": "Handsy",
+    "tags": [
+      "analog",
+      "hands"
+    ]
   },
   {
     "path": "26-01-20",
@@ -2285,13 +2346,19 @@
     "title": "Acconciatura",
     "tags": [
       "Italy",
-      "pictographic"
+      "pictographic",
+      "landscape"
     ]
   },
   {
     "path": "26-01-21",
     "date": "26-01-21",
-    "title": "Migrate"
+    "title": "Migrate",
+    "tags": [
+      "analog",
+      "fly",
+      "birds"
+    ]
   },
   {
     "path": "26-01-22",
@@ -2299,42 +2366,76 @@
     "title": "1974",
     "tags": [
       "neutrals",
-      "digital",
-      "interior"
+      "digital 24h",
+      "interior",
+      "earth tones",
+      "chess"
     ]
   },
   {
     "path": "26-01-23",
     "date": "26-01-23",
-    "title": "Lacrimal"
+    "title": "Lacrimal",
+    "tags": [
+      "eye",
+      "analog see",
+      "body"
+    ]
   },
   {
     "path": "26-01-24",
     "date": "26-01-24",
-    "title": "Emoji Digital"
+    "title": "Emoji Digital",
+    "tags": [
+      "tech",
+      "digital 24h"
+    ]
   },
   {
     "path": "26-01-25",
     "date": "26-01-25",
-    "title": "Mirage"
+    "title": "Mirage",
+    "tags": [
+      "dry",
+      "analog",
+      "landscape",
+      "mirror",
+      "day"
+    ]
   },
   {
     "path": "26-01-27",
     "date": "26-01-27",
-    "title": "Panorama"
+    "title": "Panorama",
+    "tags": [
+      "panorama",
+      "digital 12h",
+      "landscape",
+      "spin",
+      "day"
+    ]
   },
   {
     "path": "26-01-28",
     "date": "26-01-28",
     "title": "Trifurcate",
     "tags": [
-      "analog"
+      "analog",
+      "three",
+      "RYB"
     ]
   },
   {
     "path": "26-01-29",
     "date": "26-01-29",
-    "title": "Uranus"
+    "title": "Uranus",
+    "tags": [
+      "analog",
+      "planet",
+      "sky",
+      "blue",
+      "gods"
+    ]
   },
   {
     "path": "26-01-30",
@@ -2343,7 +2444,9 @@
     "tags": [
       "cardinal directions",
       "wind",
-      "cold"
+      "cold",
+      "wet",
+      "snow"
     ]
   },
   {
@@ -2353,31 +2456,45 @@
     "tags": [
       "food",
       "analog",
-      "yellow"
+      "yellow",
+      "digital 12h",
+      "spin",
+      "grow"
     ]
   },
   {
     "path": "26-02-01",
     "date": "26-02-01",
-    "title": "Drip"
+    "title": "Drip",
+    "tags": [
+      "gravity",
+      "water",
+      "analog",
+      "bubble"
+    ]
   },
   {
     "path": "26-02-02",
     "date": "26-02-02",
     "title": "Mach 1",
     "tags": [
-      "digital",
+      "digital 24h",
       "sky",
       "transport",
-      "sonic boom",
-      "sound barrier",
-      "speed of sound"
+      "sound",
+      "fast",
+      "fly"
     ]
   },
   {
     "path": "26-02-03",
     "date": "26-02-03",
-    "title": "SMH"
+    "title": "SMH",
+    "tags": [
+      "RGB",
+      "analog",
+      "typeface"
+    ]
   },
   {
     "path": "26-02-04",
