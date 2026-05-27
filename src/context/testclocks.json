@@ -2731,28 +2731,57 @@
       "analog",
       "animals",
       "water",
-      "ocean"
+      "deepwater"
     ]
   },
   {
     "path": "26-04-01",
     "date": "26-04-01",
-    "title": "Pompadour"
+    "title": "Pompadour",
+    "tags": [
+      "digital 12h",
+      "France",
+      "rococo",
+      "pattern"
+    ]
   },
   {
     "path": "26-04-02",
     "date": "26-04-02",
-    "title": "Satellite"
+    "title": "Satellite",
+    "tags": [
+      "digital",
+      "sphere",
+      "image-free",
+      "color",
+      "revolve",
+      "shiny"
+    ]
   },
   {
     "path": "26-04-03",
     "date": "26-04-03",
-    "title": "Periodicity"
+    "title": "Periodicity",
+    "tags": [
+      "film",
+      "tick tock",
+      "digital",
+      "Cecil B. DeMille",
+      "1930",
+      "Madam Satan"
+    ]
   },
   {
     "path": "26-04-04",
     "date": "26-04-04",
-    "title": "Ishihara"
+    "title": "Ishihara",
+    "tags": [
+      "analog",
+      "eye",
+      "color",
+      "see",
+      "light"
+    ]
   },
   {
     "path": "26-04-05",
@@ -2837,7 +2866,10 @@
   {
     "path": "26-04-15",
     "date": "26-04-15",
-    "title": "Meow"
+    "title": "Meow",
+    "tags": [
+      "animal"
+    ]
   },
   {
     "path": "26-04-16",
@@ -2854,7 +2886,15 @@
   {
     "path": "26-04-17",
     "date": "26-04-17",
-    "title": "Jacques"
+    "title": "Jacques",
+    "tags": [
+      "Playtime",
+      "Tati",
+      "Paris",
+      "film",
+      "1967",
+      "digital"
+    ]
   },
   {
     "path": "26-04-18",
