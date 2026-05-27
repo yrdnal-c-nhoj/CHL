@@ -924,7 +924,12 @@
     "title": "X-Ray",
     "tags": [
       "digital",
-      "monochrome"
+      "monochrome",
+      "see",
+      "b+w",
+      "body",
+      "science",
+      "tech"
     ]
   },
   {
@@ -1007,9 +1012,11 @@
     "date": "25-08-01",
     "title": "Zodiac",
     "tags": [
-      "sky",
       "analog",
-      "superstition"
+      "superstition",
+      "constellations",
+      "night",
+      "myth"
     ]
   },
   {
@@ -2480,12 +2487,24 @@
   {
     "path": "26-02-21",
     "date": "26-02-21",
-    "title": "3-2-1"
+    "title": "3-2-1",
+    "tags": [
+      "generative",
+      "count",
+      "digital"
+    ]
   },
   {
     "path": "26-02-22",
     "date": "26-02-22",
-    "title": "Ouroboroi"
+    "title": "Ouroboroi",
+    "tags": [
+      "serpent",
+      "tail",
+      "analog",
+      "animal",
+      "myth"
+    ]
   },
   {
     "path": "26-02-23",
@@ -2530,12 +2549,23 @@
   {
     "path": "26-02-27",
     "date": "26-02-27",
-    "title": "Ramses II"
+    "title": "Ramses II",
+    "tags": [
+      "Egypt",
+      "analog",
+      "face",
+      "stone. move"
+    ]
   },
   {
     "path": "26-02-28",
     "date": "26-02-28",
-    "title": "Cesium Fountain"
+    "title": "Cesium Fountain",
+    "tags": [
+      "atomic clock",
+      "digital",
+      "tick tock"
+    ]
   },
   {
     "path": "26-03-01",
@@ -2551,27 +2581,58 @@
   {
     "path": "26-03-02",
     "date": "26-03-02",
-    "title": "Ripple"
+    "title": "Ripple",
+    "tags": [
+      "water",
+      "digital",
+      "brown"
+    ]
   },
   {
     "path": "26-03-03",
     "date": "26-03-03",
-    "title": "Paper Flowers"
+    "title": "Paper Flowers",
+    "tags": [
+      "flower",
+      "paper",
+      "hands",
+      "analog",
+      "blue",
+      "green"
+    ]
   },
   {
     "path": "26-03-04",
     "date": "26-03-04",
-    "title": "Daystar"
+    "title": "Daystar",
+    "tags": [
+      "sun",
+      "pictographic",
+      "yellow"
+    ]
   },
   {
     "path": "26-03-05",
     "date": "26-03-05",
-    "title": "CRT"
+    "title": "CRT",
+    "tags": [
+      "digital",
+      "tech",
+      "green",
+      "screen"
+    ]
   },
   {
     "path": "26-03-06",
     "date": "26-03-06",
-    "title": "Rocket"
+    "title": "Rocket",
+    "tags": [
+      "gravity",
+      "science",
+      "analog",
+      "sky",
+      "fire"
+    ]
   },
   {
     "path": "26-03-07",
@@ -2630,7 +2691,10 @@
   {
     "path": "26-03-17",
     "date": "26-03-17",
-    "title": "Pluto"
+    "title": "Pluto",
+    "tags": [
+      "planet"
+    ]
   },
   {
     "path": "26-03-18",
@@ -2852,13 +2916,19 @@
     "tags": [
       "animal",
       "analog",
-      "exoskeletal"
+      "exoskeletal",
+      "sand"
     ]
   },
   {
     "path": "26-04-11",
     "date": "26-04-11",
-    "title": "Staring"
+    "title": "Staring",
+    "tags": [
+      "eyes",
+      "pictographic 24h",
+      "see"
+    ]
   },
   {
     "path": "26-04-12",
@@ -2866,25 +2936,41 @@
     "title": "Matches",
     "tags": [
       "analog",
-      "fire"
+      "fire",
+      "paper"
     ]
   },
   {
     "path": "26-04-13",
     "date": "26-04-13",
-    "title": "Stickshift"
+    "title": "Stickshift",
+    "tags": [
+      "transport",
+      "move",
+      "night",
+      "digital"
+    ]
   },
   {
     "path": "26-04-14",
     "date": "26-04-14",
-    "title": "Haumea"
+    "title": "Haumea",
+    "tags": [
+      "myth",
+      "dwarf planet",
+      "spin",
+      "analog",
+      "Hawaii"
+    ]
   },
   {
     "path": "26-04-15",
     "date": "26-04-15",
     "title": "Meow",
     "tags": [
-      "animal"
+      "animal",
+      "digital",
+      "cat"
     ]
   },
   {
@@ -2995,7 +3081,9 @@
     "date": "26-04-25",
     "title": "Magnify",
     "tags": [
-      "analog"
+      "analog",
+      "science",
+      "white"
     ]
   },
   {
@@ -3024,7 +3112,13 @@
   {
     "path": "26-04-28",
     "date": "26-04-28",
-    "title": "Filmstrip"
+    "title": "Filmstrip",
+    "tags": [
+      "analog",
+      "brown",
+      "tech",
+      "monochrome"
+    ]
   },
   {
     "path": "26-04-29",
