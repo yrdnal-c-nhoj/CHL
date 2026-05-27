@@ -2653,53 +2653,101 @@
   {
     "path": "26-03-09",
     "date": "26-03-09",
-    "title": "Catface"
+    "title": "Catface",
+    "tags": [
+      "random",
+      "digital 24h",
+      "animal",
+      "typeface"
+    ]
   },
   {
     "path": "26-03-10",
     "date": "26-03-10",
-    "title": "Concentric"
+    "title": "Concentric",
+    "tags": [
+      "round",
+      "histogram",
+      "color",
+      "circles"
+    ]
   },
   {
     "path": "26-03-11",
     "date": "26-03-11",
-    "title": "Random Image"
+    "title": "Random Image",
+    "tags": [
+      "random",
+      "digital 24h"
+    ]
   },
   {
     "path": "26-03-12",
     "date": "26-03-12",
-    "title": "Virtual"
+    "title": "Virtual",
+    "tags": [
+      "VR",
+      "analog",
+      "tech",
+      "science"
+    ]
   },
   {
     "path": "26-03-13",
     "date": "26-03-13",
-    "title": "Boardwalk"
+    "title": "Boardwalk",
+    "tags": [
+      "LA",
+      "digital 12h",
+      "walk"
+    ]
   },
   {
     "path": "26-03-14",
     "date": "26-03-14",
     "title": "Motherboard",
     "tags": [
-      "digital",
-      "electricity"
+      "digital 12h",
+      "electricity",
+      "tech",
+      "green"
     ]
   },
   {
     "path": "26-03-15",
     "date": "26-03-15",
-    "title": "Obliquity"
+    "title": "Obliquity",
+    "tags": [
+      "image-free",
+      "parallel",
+      "spin",
+      "digital 24h"
+    ]
   },
   {
     "path": "26-03-16",
     "date": "26-03-16",
-    "title": "Fritz"
+    "title": "Fritz",
+    "tags": [
+      "Metropolis",
+      "1927",
+      "Germany",
+      "film",
+      "Fritz",
+      "analog",
+      "b+w"
+    ]
   },
   {
     "path": "26-03-17",
     "date": "26-03-17",
     "title": "Pluto",
     "tags": [
-      "planet"
+      "planet",
+      "myth",
+      "key",
+      "chthonic",
+      "gods"
     ]
   },
   {
@@ -2709,7 +2757,7 @@
     "tags": [
       "LA",
       "analog",
-      "move",
+      "walk",
       "day",
       "stars",
       "film"
@@ -2718,12 +2766,27 @@
   {
     "path": "26-03-19",
     "date": "26-03-19",
-    "title": "Blanket"
+    "title": "Blanket",
+    "tags": [
+      "digital 12h",
+      "snow",
+      "blue",
+      "monochrome",
+      "night"
+    ]
   },
   {
     "path": "26-03-20",
     "date": "26-03-20",
-    "title": "Empire"
+    "title": "Empire",
+    "tags": [
+      "NYC",
+      "analog",
+      "b+w",
+      "Warhol",
+      "fast",
+      "day and night"
+    ]
   },
   {
     "path": "26-03-21",
@@ -2731,23 +2794,42 @@
     "title": "Negative Space",
     "tags": [
       "green",
-      "pictographic"
+      "pictographic 24h"
     ]
   },
   {
     "path": "26-03-22",
     "date": "26-03-22",
-    "title": "Aloft"
+    "title": "Aloft",
+    "tags": [
+      "float",
+      "balloon",
+      "digital 24h",
+      "sky",
+      "blue",
+      "day"
+    ]
   },
   {
     "path": "26-03-23",
     "date": "26-03-23",
-    "title": "Exoplanet"
+    "title": "Exoplanet",
+    "tags": [
+      "space",
+      "b+w",
+      "analog"
+    ]
   },
   {
     "path": "26-03-24",
     "date": "26-03-24",
-    "title": "Quiver"
+    "title": "Quiver",
+    "tags": [
+      "digital 12h",
+      "aim",
+      "hands",
+      "slow"
+    ]
   },
   {
     "path": "26-03-25",
@@ -2756,7 +2838,9 @@
     "tags": [
       "analog",
       "spin",
-      "gravity"
+      "gravity",
+      "sky",
+      "fly"
     ]
   },
   {
@@ -2764,10 +2848,12 @@
     "date": "26-03-26",
     "title": "Overpass",
     "tags": [
-      "digital",
+      "digital 12h",
       "twilight",
       "fumes",
-      "transport"
+      "transport",
+      "sky",
+      "drive"
     ]
   },
   {
@@ -2775,7 +2861,8 @@
     "date": "26-03-27",
     "title": "Triangle Face",
     "tags": [
-      "analog"
+      "analog",
+      "image-free"
     ]
   },
   {
@@ -2784,7 +2871,7 @@
     "title": "h2o",
     "tags": [
       "molecules",
-      "digital",
+      "digital 24h",
       "covalent bonding",
       "water",
       "elements"
@@ -2795,7 +2882,14 @@
     "date": "26-03-29",
     "title": "90° East",
     "tags": [
-      "cardinal directions"
+      "cardinal directions",
+      "analog",
+      "wind",
+      "dawn",
+      "warm",
+      "wet",
+      "scarab",
+      "horse"
     ]
   },
   {
@@ -2816,7 +2910,7 @@
     "tags": [
       "analog",
       "animals",
-      "water",
+      "light",
       "deepwater"
     ]
   },
@@ -2836,7 +2930,7 @@
     "date": "26-04-02",
     "title": "Satellite",
     "tags": [
-      "digital",
+      "digital 24h",
       "sphere",
       "image-free",
       "color",
@@ -2851,10 +2945,9 @@
     "tags": [
       "film",
       "tick tock",
-      "digital",
+      "digital 24h",
       "Cecil B. DeMille",
-      "1930",
-      "Madam Satan"
+      "1930"
     ]
   },
   {
@@ -2874,10 +2967,12 @@
     "date": "26-04-05",
     "title": "Bolide",
     "tags": [
-      "digital",
+      "digital 24h",
       "meteor",
       "Russia",
-      "transport"
+      "transport",
+      "gravity",
+      "light"
     ]
   },
   {
@@ -2885,9 +2980,9 @@
     "date": "26-04-06",
     "title": "Pulley",
     "tags": [
-      "digital",
       "6 simple machines",
-      "generative"
+      "generative",
+      "analog"
     ]
   },
   {
