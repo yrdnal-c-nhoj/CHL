@@ -406,7 +406,13 @@
   {
     "path": "25-05-20",
     "date": "25-05-20",
-    "title": "Tetrahedron"
+    "title": "Tetrahedron",
+    "tags": [
+      "fire",
+      "four-sided",
+      "platonic solid",
+      "digital"
+    ]
   },
   {
     "path": "25-05-21",
@@ -426,7 +432,12 @@
   {
     "path": "25-05-24",
     "date": "25-05-24",
-    "title": "Tornado"
+    "title": "Tornado",
+    "tags": [
+      "spin",
+      "weather",
+      "wind"
+    ]
   },
   {
     "path": "25-05-25",
@@ -551,7 +562,11 @@
   {
     "path": "25-06-15",
     "date": "25-06-15",
-    "title": "Stitches"
+    "title": "Stitches",
+    "tags": [
+      "body",
+      "digital"
+    ]
   },
   {
     "path": "25-06-16",
@@ -596,7 +611,10 @@
   {
     "path": "25-06-23",
     "date": "25-06-23",
-    "title": "Squiggle"
+    "title": "Squiggle",
+    "tags": [
+      "analog"
+    ]
   },
   {
     "path": "25-06-24",
@@ -803,7 +821,12 @@
   {
     "path": "25-07-31",
     "date": "25-07-31",
-    "title": "Tapestry"
+    "title": "Tapestry",
+    "tags": [
+      "eye",
+      "digital",
+      "history"
+    ]
   },
   {
     "path": "25-08-01",
@@ -896,7 +919,10 @@
   {
     "path": "25-08-17",
     "date": "25-08-17",
-    "title": "Sticky Note"
+    "title": "Sticky Note",
+    "tags": [
+      "digital"
+    ]
   },
   {
     "path": "25-08-18",
@@ -994,7 +1020,12 @@
   {
     "path": "25-09-05",
     "date": "25-09-05",
-    "title": "Swiss Cheese"
+    "title": "Swiss Cheese",
+    "tags": [
+      "food",
+      "digital",
+      "animal"
+    ]
   },
   {
     "path": "25-09-06",
@@ -1349,7 +1380,12 @@
   {
     "path": "25-10-29",
     "date": "25-10-29",
-    "title": "Tilt Down"
+    "title": "Tilt Down",
+    "tags": [
+      "film",
+      "digital",
+      "b+w"
+    ]
   },
   {
     "path": "25-10-30",
@@ -1380,7 +1416,12 @@
   {
     "path": "25-11-02",
     "date": "25-11-02",
-    "title": "Swimmers"
+    "title": "Swimmers",
+    "tags": [
+      "body",
+      "digital",
+      "water"
+    ]
   },
   {
     "path": "25-11-03",
@@ -1405,7 +1446,13 @@
   {
     "path": "25-11-07",
     "date": "25-11-07",
-    "title": "Two Birds"
+    "title": "Two Birds",
+    "tags": [
+      "animal",
+      "digital",
+      "nature",
+      "one stone"
+    ]
   },
   {
     "path": "25-11-08",
@@ -1483,7 +1530,14 @@
   {
     "path": "25-11-20",
     "date": "25-11-20",
-    "title": "Trajectories"
+    "title": "Trajectories",
+    "tags": [
+      "analog",
+      "sky",
+      "sun",
+      "moon",
+      "up and down"
+    ]
   },
   {
     "path": "25-11-21",
@@ -1685,7 +1739,11 @@
   {
     "path": "25-12-17",
     "date": "25-12-17",
-    "title": "Swagger"
+    "title": "Swagger",
+    "tags": [
+      "pictographic",
+      "body"
+    ]
   },
   {
     "path": "25-12-18",
@@ -1798,7 +1856,12 @@
   {
     "path": "26-01-03",
     "date": "26-01-03",
-    "title": "Switchplate"
+    "title": "Switchplate",
+    "tags": [
+      "electricity",
+      "analog",
+      "interior"
+    ]
   },
   {
     "path": "26-01-04",
@@ -1835,12 +1898,21 @@
   {
     "path": "26-01-08",
     "date": "26-01-08",
-    "title": "Tangerine"
+    "title": "Tangerine",
+    "tags": [
+      "color",
+      "food",
+      "analog"
+    ]
   },
   {
     "path": "26-01-09",
     "date": "26-01-09",
-    "title": "Tic-Tac-Toe"
+    "title": "Tic-Tac-Toe",
+    "tags": [
+      "play",
+      "digital"
+    ]
   },
   {
     "path": "26-01-10",
@@ -1873,7 +1945,13 @@
   {
     "path": "26-01-14",
     "date": "26-01-14",
-    "title": "Tenno"
+    "title": "Tenno",
+    "tags": [
+      "Kurosawa",
+      "film",
+      "Japan",
+      "digital"
+    ]
   },
   {
     "path": "26-01-15",
@@ -1946,7 +2024,10 @@
   {
     "path": "26-01-28",
     "date": "26-01-28",
-    "title": "Trifurcate"
+    "title": "Trifurcate",
+    "tags": [
+      "analog"
+    ]
   },
   {
     "path": "26-01-29",
@@ -2299,7 +2380,10 @@
   {
     "path": "26-03-27",
     "date": "26-03-27",
-    "title": "Triangle Face"
+    "title": "Triangle Face",
+    "tags": [
+      "analog"
+    ]
   },
   {
     "path": "26-03-28",
@@ -2491,7 +2575,12 @@
   {
     "path": "26-04-22",
     "date": "26-04-22",
-    "title": "Steamroller"
+    "title": "Steamroller",
+    "tags": [
+      "transport",
+      "analog",
+      "exterior"
+    ]
   },
   {
     "path": "26-04-23",
@@ -2544,7 +2633,12 @@
   {
     "path": "26-05-02",
     "date": "26-05-02",
-    "title": "Stuntperson"
+    "title": "Stuntperson",
+    "tags": [
+      "film",
+      "digital",
+      "gravity"
+    ]
   },
   {
     "path": "26-05-03",
