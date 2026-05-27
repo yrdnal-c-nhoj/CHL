@@ -2839,7 +2839,8 @@
     "date": "26-05-06",
     "title": "Droplets",
     "tags": [
-      "water"
+      "water",
+      "digital"
     ]
   },
   {
@@ -2849,13 +2850,23 @@
     "tags": [
       "animal",
       "analog",
-      "transport"
+      "transport",
+      "day",
+      "move"
     ]
   },
   {
     "path": "26-05-08",
     "date": "26-05-08",
-    "title": "Right Ascension"
+    "title": "Right Ascension",
+    "tags": [
+      "digital",
+      "sun",
+      "space",
+      "rotation",
+      "sky",
+      "move"
+    ]
   },
   {
     "path": "26-05-09",
@@ -2864,18 +2875,34 @@
     "tags": [
       "water",
       "analog",
-      "flower"
+      "flower",
+      "day"
     ]
   },
   {
     "path": "26-05-10",
     "date": "26-05-10",
-    "title": "Weave"
+    "title": "Weave",
+    "tags": [
+      "hands",
+      "digital",
+      "monochrome",
+      "unfinished",
+      "body"
+    ]
   },
   {
     "path": "26-05-11",
     "date": "26-05-11",
-    "title": "Night Rise"
+    "title": "Night Rise",
+    "tags": [
+      "sky",
+      "stars",
+      "digital",
+      "night",
+      "air",
+      "dark"
+    ]
   },
   {
     "path": "26-05-12",
@@ -2886,7 +2913,8 @@
       "wind",
       "lion",
       "fire",
-      "analog"
+      "analog",
+      "air"
     ]
   },
   {
@@ -2897,7 +2925,9 @@
       "International Klein Blue (IKB)",
       "1957",
       "digital",
-      "Paris"
+      "Paris",
+      "blue",
+      "day"
     ]
   },
   {
@@ -2906,13 +2936,23 @@
     "title": "Balloons",
     "tags": [
       "latex",
-      "digital"
+      "up and down",
+      "analog",
+      "color",
+      "day"
     ]
   },
   {
     "path": "26-05-15",
     "date": "26-05-15",
-    "title": "Rings"
+    "title": "Rings",
+    "tags": [
+      "digital",
+      "trees",
+      "nature",
+      "cells",
+      "wood"
+    ]
   },
   {
     "path": "26-05-16",
@@ -2921,7 +2961,9 @@
     "tags": [
       "analog",
       "airstairs",
-      "fly"
+      "fly",
+      "transport",
+      "sky"
     ]
   },
   {
@@ -2933,7 +2975,9 @@
       "digital",
       "mummy",
       "body",
-      "light"
+      "light",
+      "1943",
+      "film"
     ]
   },
   {
@@ -2941,12 +2985,15 @@
     "date": "26-05-18",
     "title": "Accordion",
     "tags": [
+      "1888",
       "bagpipe with pleats",
       "analog",
       "dance",
       "sound",
       "music",
-      "body"
+      "body",
+      "film",
+      "France"
     ]
   },
   {
