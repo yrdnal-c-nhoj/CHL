@@ -2382,32 +2382,67 @@
   {
     "path": "26-02-04",
     "date": "26-02-04",
-    "title": "Flux"
+    "title": "Flux",
+    "tags": [
+      "electricity",
+      "digital 12h",
+      "landscape"
+    ]
   },
   {
     "path": "26-02-05",
     "date": "26-02-05",
-    "title": "Enigma"
+    "title": "Enigma",
+    "tags": [
+      "float",
+      "digital 12h",
+      "revolve"
+    ]
   },
   {
     "path": "26-02-06",
     "date": "26-02-06",
-    "title": "Buster"
+    "title": "Buster",
+    "tags": [
+      "1930",
+      "film",
+      "analog",
+      "Buster Keaton",
+      "b+w"
+    ]
   },
   {
     "path": "26-02-07",
     "date": "26-02-07",
-    "title": "Planetary Gear"
+    "title": "Planetary Gear",
+    "tags": [
+      "mechanical",
+      "digital 12h",
+      "rotation",
+      "wheel"
+    ]
   },
   {
     "path": "26-02-08",
     "date": "26-02-08",
-    "title": "Le Trocadéro"
+    "title": "Le Trocadéro",
+    "tags": [
+      "Paris",
+      "metal",
+      "analog",
+      "landscape"
+    ]
   },
   {
     "path": "26-02-09",
     "date": "26-02-09",
-    "title": "White Shadow"
+    "title": "White Shadow",
+    "tags": [
+      "digital 12h",
+      "b+w",
+      "spin",
+      "monochrome"
+    ]
   },
   {
     "path": "26-02-10",
@@ -2416,7 +2451,8 @@
     "tags": [
       "digital",
       "screen",
-      "interior"
+      "interior",
+      "wood"
     ]
   },
   {
@@ -2425,7 +2461,8 @@
     "title": "Bell",
     "tags": [
       "ring",
-      "analog"
+      "analog",
+      "metal"
     ]
   },
   {
@@ -2452,22 +2489,45 @@
   {
     "path": "26-02-14",
     "date": "26-02-14",
-    "title": "Concourse"
+    "title": "Concourse",
+    "tags": [
+      "fly",
+      "windows",
+      "pictographic",
+      "transport"
+    ]
   },
   {
     "path": "26-02-15",
     "date": "26-02-15",
-    "title": "Caldera"
+    "title": "Caldera",
+    "tags": [
+      "analog",
+      "earth",
+      "day and night",
+      "hot"
+    ]
   },
   {
     "path": "26-02-16",
     "date": "26-02-16",
-    "title": "Maze"
+    "title": "Maze",
+    "tags": [
+      "digital 12h",
+      "play",
+      "walk",
+      "paper"
+    ]
   },
   {
     "path": "26-02-17",
     "date": "26-02-17",
-    "title": "Asterisk"
+    "title": "Asterisk",
+    "tags": [
+      "analog",
+      "typeface",
+      "words"
+    ]
   },
   {
     "path": "26-02-18",
@@ -2477,7 +2537,8 @@
       "digital",
       "water",
       "animal",
-      "ocean"
+      "ocean",
+      "swim"
     ]
   },
   {
@@ -2488,7 +2549,8 @@
       "Germany",
       "design",
       "typeface",
-      "digital 12h"
+      "digital 12h",
+      "paper"
     ]
   },
   {
