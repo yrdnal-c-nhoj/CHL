@@ -5,8 +5,10 @@
     "title": "Deep Space",
     "tags": [
       "color",
-      "digital",
-      "space"
+      "digital 24h",
+      "space",
+      "stars",
+      "spin"
     ]
   },
   {
@@ -16,8 +18,8 @@
     "tags": [
       "animal",
       "book",
-      "water",
-      "digital"
+      "deepwater",
+      "digital 24h"
     ]
   },
   {
@@ -27,7 +29,10 @@
     "tags": [
       "analog",
       "heart",
-      "EKG"
+      "EKG",
+      "body",
+      "flow",
+      "blood"
     ]
   },
   {
@@ -37,7 +42,9 @@
     "tags": [
       "grandfather",
       "monochrome",
-      "analog"
+      "analog",
+      "brown",
+      "tick tock"
     ]
   },
   {
@@ -45,9 +52,10 @@
     "date": "25-04-06",
     "title": "Confetti",
     "tags": [
-      "Digital",
+      "Digital 24h",
       "color",
-      "gravity"
+      "gravity",
+      "play"
     ]
   },
   {
@@ -57,7 +65,8 @@
     "tags": [
       "Analog",
       "space",
-      "planet"
+      "planet",
+      "revolve"
     ]
   },
   {
@@ -65,9 +74,10 @@
     "date": "25-04-08",
     "title": "Triple Cactus",
     "tags": [
-      "Earth",
-      "digital",
-      "dry"
+      "digital 24h",
+      "dry",
+      "day and night",
+      "nature"
     ]
   },
   {
@@ -77,18 +87,31 @@
     "tags": [
       "Interior",
       "analog",
-      "monochrome"
+      "monochrome",
+      "tick tock",
+      "white"
     ]
   },
   {
     "path": "25-04-10",
     "date": "25-04-10",
-    "title": "Bar Graph"
+    "title": "Bar Graph",
+    "tags": [
+      "digital 12h",
+      "color",
+      "histogram"
+    ]
   },
   {
     "path": "25-04-11",
     "date": "25-04-11",
-    "title": "Boring"
+    "title": "Boring",
+    "tags": [
+      "brown",
+      "monochrome",
+      "analog",
+      "mechanical"
+    ]
   },
   {
     "path": "25-04-12",
@@ -97,7 +120,7 @@
     "tags": [
       "color",
       "monochrome",
-      "digital",
+      "digital 24h",
       "non-spectral",
       "subtractive primary"
     ]
@@ -109,28 +132,50 @@
     "tags": [
       "food",
       "analog",
-      "Italy"
+      "Italy",
+      "round"
     ]
   },
   {
     "path": "25-04-14",
     "date": "25-04-14",
-    "title": "Blue Brick"
+    "title": "Blue Brick",
+    "tags": [
+      "histogram",
+      "blue",
+      "monochrome"
+    ]
   },
   {
     "path": "25-04-15",
     "date": "25-04-15",
-    "title": "Horizon"
+    "title": "Horizon",
+    "tags": [
+      "digital 12h",
+      "day",
+      "nature"
+    ]
   },
   {
     "path": "25-04-16",
     "date": "25-04-16",
-    "title": "Birthday Cake"
+    "title": "Birthday Cake",
+    "tags": [
+      "round",
+      "food",
+      "play",
+      "analog",
+      "color"
+    ]
   },
   {
     "path": "25-04-17",
     "date": "25-04-17",
-    "title": "Stripe"
+    "title": "Stripe",
+    "tags": [
+      "digital 24h",
+      "color"
+    ]
   },
   {
     "path": "25-04-18",
@@ -149,10 +194,11 @@
     "date": "25-04-19",
     "title": "Sphere Drop",
     "tags": [
-      "Gravity",
-      "digital",
+      "gravity",
+      "digital 12h",
       "color",
-      "sphere"
+      "sphere",
+      "histogram"
     ]
   },
   {
@@ -161,7 +207,7 @@
     "title": "Cloud",
     "tags": [
       "sky",
-      "digital",
+      "digital 12h",
       "elements",
       "monochrome"
     ]
@@ -193,7 +239,8 @@
     "tags": [
       "water",
       "analog",
-      "ocean"
+      "ocean",
+      "sky"
     ]
   },
   {
@@ -202,7 +249,7 @@
     "title": "Lava",
     "tags": [
       "hot",
-      "digital",
+      "digital 24h",
       "elements",
       "red"
     ]
@@ -214,7 +261,8 @@
     "tags": [
       "body",
       "analog",
-      "brown"
+      "brown",
+      "blood"
     ]
   },
   {
@@ -222,7 +270,8 @@
     "date": "25-04-26",
     "title": "Skew",
     "tags": [
-      "digital"
+      "digital 12h",
+      "color"
     ]
   },
   {
@@ -253,7 +302,7 @@
     "title": "Fireworks",
     "tags": [
       "sky",
-      "digital",
+      "digital 24h",
       "light",
       "night",
       "fire"
@@ -274,7 +323,7 @@
     "date": "25-05-01",
     "title": "Slow Lightning",
     "tags": [
-      "digital",
+      "digital 24h",
       "slow",
       "elements",
       "sky",
@@ -289,7 +338,9 @@
       "analog",
       "animal",
       "sting",
-      "sand"
+      "sand",
+      "blood",
+      "brown"
     ]
   },
   {
@@ -320,9 +371,10 @@
     "date": "25-05-05",
     "title": "Warhol GraveCam",
     "tags": [
-      "digital",
+      "digital 24h",
       "balloon",
-      "earth"
+      "earth",
+      "art"
     ]
   },
   {
@@ -330,9 +382,8 @@
     "date": "25-05-06",
     "title": "Unruly",
     "tags": [
-      "digital",
+      "digital 24h",
       "typeface",
-      "dance",
       "color"
     ]
   },
@@ -341,9 +392,10 @@
     "date": "25-05-07",
     "title": "Radar",
     "tags": [
-      "water",
+      "deepwater",
       "analog",
-      "transport"
+      "transport",
+      "move"
     ]
   },
   {
@@ -352,7 +404,9 @@
     "title": "Golden Hour",
     "tags": [
       "sky",
-      "digital"
+      "digital",
+      "transport",
+      "fly"
     ]
   },
   {
