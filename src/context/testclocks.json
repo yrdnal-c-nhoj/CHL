@@ -1013,7 +1013,6 @@
     "title": "Zodiac",
     "tags": [
       "analog",
-      "superstition",
       "constellations",
       "night",
       "myth"
@@ -1640,7 +1639,9 @@
     "title": "Wishing",
     "tags": [
       "digital",
-      "words"
+      "words",
+      "day and night",
+      "color"
     ]
   },
   {
@@ -2441,7 +2442,12 @@
   {
     "path": "26-02-13",
     "date": "26-02-13",
-    "title": "Words"
+    "title": "Words",
+    "tags": [
+      "word clock",
+      "monochrome",
+      "typeface"
+    ]
   },
   {
     "path": "26-02-14",
@@ -2887,7 +2893,14 @@
   {
     "path": "26-04-07",
     "date": "26-04-07",
-    "title": "Wall"
+    "title": "Wall",
+    "tags": [
+      "China",
+      "digital 24h",
+      "walk",
+      "stone",
+      "panorama"
+    ]
   },
   {
     "path": "26-04-08",
@@ -2896,7 +2909,9 @@
     "tags": [
       "analog",
       "physics",
-      "image-free"
+      "image-free",
+      "rotation",
+      "purple"
     ]
   },
   {
@@ -2905,8 +2920,10 @@
     "title": "Choppy",
     "tags": [
       "water",
-      "analog",
-      "ocean"
+      "digital 24h",
+      "monochrome",
+      "blue",
+      "float"
     ]
   },
   {
@@ -2917,7 +2934,8 @@
       "animal",
       "analog",
       "exoskeletal",
-      "sand"
+      "sand",
+      "monochrome"
     ]
   },
   {
@@ -2937,7 +2955,9 @@
     "tags": [
       "analog",
       "fire",
-      "paper"
+      "paper",
+      "light",
+      "hot"
     ]
   },
   {
@@ -2948,7 +2968,8 @@
       "transport",
       "move",
       "night",
-      "digital"
+      "digital 24h",
+      "mechanical"
     ]
   },
   {
@@ -2968,9 +2989,10 @@
     "date": "26-04-15",
     "title": "Meow",
     "tags": [
-      "animal",
+      "animal 24h",
       "digital",
-      "cat"
+      "cat",
+      "random"
     ]
   },
   {
@@ -2982,7 +3004,7 @@
       "wind",
       "pomegranate",
       "jasmine",
-      "analog"
+      "warm analog"
     ]
   },
   {
@@ -2995,7 +3017,7 @@
       "Paris",
       "film",
       "1967",
-      "digital"
+      "digital 24h"
     ]
   },
   {
@@ -3005,7 +3027,8 @@
     "tags": [
       "tech",
       "wavelength",
-      "digital 24h"
+      "digital 24h",
+      "radio"
     ]
   },
   {
@@ -3029,7 +3052,8 @@
       "cells",
       "red",
       "analog",
-      "flow"
+      "flow",
+      "blood"
     ]
   },
   {
@@ -3039,7 +3063,8 @@
     "tags": [
       "color",
       "digital 24h",
-      "circles"
+      "circles",
+      "move"
     ]
   },
   {
@@ -3050,7 +3075,8 @@
       "transport",
       "analog",
       "exterior",
-      "roll"
+      "roll",
+      "day"
     ]
   },
   {
@@ -3063,7 +3089,7 @@
       "sun",
       "vertical",
       "yellow",
-      "digital"
+      "digital 24h"
     ]
   },
   {
@@ -3071,7 +3097,7 @@
     "date": "26-04-24",
     "title": "Lissajous",
     "tags": [
-      "digital",
+      "digital 24h",
       "geometry",
       "image-free"
     ]
@@ -3083,7 +3109,9 @@
     "tags": [
       "analog",
       "science",
-      "white"
+      "white",
+      "see",
+      "glass"
     ]
   },
   {
@@ -3093,8 +3121,8 @@
     "tags": [
       "film",
       "1962",
-      "digital",
-      "The Jetsons",
+      "digital 12h",
+      "Jetsons",
       "space",
       "transport"
     ]
@@ -3106,7 +3134,9 @@
     "tags": [
       "6 simple machines",
       "generative",
-      "digital"
+      "digital 24h",
+      "mechanical",
+      "random"
     ]
   },
   {
@@ -3125,7 +3155,7 @@
     "date": "26-04-29",
     "title": "Cavalcade",
     "tags": [
-      "digital",
+      "digital 24h",
       "animals",
       "spin",
       "mechanical"
@@ -3139,7 +3169,7 @@
       "stars",
       "constellations",
       "myth",
-      "digital",
+      "digital 12h",
       "night"
     ]
   },
@@ -3149,7 +3179,10 @@
     "title": "Sampson",
     "tags": [
       "fast",
-      "mechanical"
+      "mechanical",
+      "radar",
+      "tech",
+      "spin"
     ]
   },
   {
@@ -3161,7 +3194,8 @@
       "digital",
       "gravity",
       "transport",
-      "fast"
+      "fast",
+      "day"
     ]
   },
   {
@@ -3205,8 +3239,9 @@
     "title": "Droplets",
     "tags": [
       "water",
-      "digital",
+      "digital 24h",
       "surface",
+      "glass",
       "move"
     ]
   },
@@ -3219,7 +3254,7 @@
       "analog",
       "transport",
       "day",
-      "move"
+      "run"
     ]
   },
   {
@@ -3227,12 +3262,13 @@
     "date": "26-05-08",
     "title": "Right Ascension",
     "tags": [
-      "digital",
+      "digital 12h",
       "sun",
       "space",
       "rotation",
       "sky",
-      "move"
+      "move",
+      "map"
     ]
   },
   {
@@ -3243,7 +3279,8 @@
       "water",
       "analog",
       "flower",
-      "day"
+      "day",
+      "grow"
     ]
   },
   {
@@ -3252,7 +3289,7 @@
     "title": "Weave",
     "tags": [
       "hands",
-      "digital",
+      "digital 24h",
       "monochrome",
       "unfinished",
       "body"
@@ -3263,9 +3300,8 @@
     "date": "26-05-11",
     "title": "Night Rise",
     "tags": [
-      "sky",
       "stars",
-      "digital",
+      "digital 24h",
       "night",
       "air",
       "dark"
@@ -3280,8 +3316,7 @@
       "wind",
       "lion",
       "fire",
-      "analog",
-      "air"
+      "analog"
     ]
   },
   {
@@ -3306,7 +3341,8 @@
       "up and down",
       "analog",
       "color",
-      "day"
+      "day",
+      "round"
     ]
   },
   {
@@ -3314,11 +3350,12 @@
     "date": "26-05-15",
     "title": "Rings",
     "tags": [
-      "digital",
+      "digital 12h",
       "trees",
       "nature",
       "cells",
-      "wood"
+      "wood",
+      "grow"
     ]
   },
   {
@@ -3340,7 +3377,7 @@
     "title": "Reanimate",
     "tags": [
       "Egypt",
-      "digital",
+      "digital 24h",
       "mummy",
       "body",
       "light",
@@ -3374,7 +3411,8 @@
       "digital",
       "info tech",
       "rip clippy",
-      "nature"
+      "nature",
+      "digital 12h"
     ]
   },
   {
@@ -3386,7 +3424,8 @@
       "open and shut",
       "up and down",
       "interior",
-      "transport"
+      "transport",
+      "mechanical"
     ]
   },
   {
@@ -3438,7 +3477,8 @@
       "odd-toed ungulate",
       "monochrome",
       "horn",
-      "analog"
+      "analog",
+      "walk"
     ]
   },
   {

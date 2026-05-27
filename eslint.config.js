@@ -1,11 +1,11 @@
-import globals from 'globals';
 import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import pluginReact from 'eslint-plugin-react';
-import pluginReactHooks from 'eslint-plugin-react-hooks';
+import prettierConfig from 'eslint-config-prettier';
 import pluginImport from 'eslint-plugin-import';
 import pluginJsxA11y from 'eslint-plugin-jsx-a11y';
-import prettierConfig from 'eslint-config-prettier';
+import pluginReact from 'eslint-plugin-react';
+import pluginReactHooks from 'eslint-plugin-react-hooks';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   // Ignore build artifacts and generated files
@@ -18,7 +18,6 @@ export default tseslint.config(
       'babel.config.js',
       '*.min.js',
       'src/assets/images/**',
-      'src/pages/**',
       'src/templates/**',
       'src/test/**',
       'src/**/*.jsx',
