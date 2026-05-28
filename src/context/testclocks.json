@@ -9,7 +9,9 @@
       "space",
       "stars",
       "sky",
-      "spin"
+      "spin",
+      "light",
+      "night"
     ]
   },
   {
@@ -23,7 +25,9 @@
       "digital-24h",
       "myth",
       "white",
-      "swim"
+      "swim",
+      "ocean",
+      "water"
     ]
   },
   {
@@ -44,11 +48,11 @@
     "date": "25-04-05",
     "title": "Tall",
     "tags": [
-      "grandfather",
       "monochrome",
       "analog",
       "brown",
-      "tick tock"
+      "tick-tock",
+      "wood"
     ]
   },
   {
@@ -69,10 +73,13 @@
     "date": "25-04-07",
     "title": "Solar System",
     "tags": [
-      "Analog",
+      "analog",
       "space",
       "planet",
-      "revolve"
+      "revolve",
+      "sphere",
+      "spin",
+      "sky"
     ]
   },
   {
@@ -83,7 +90,10 @@
       "digital-24h",
       "dry",
       "day and night",
-      "nature"
+      "nature",
+      "landscape",
+      "sky",
+      "earth"
     ]
   },
   {
@@ -94,8 +104,10 @@
       "Interior",
       "analog",
       "monochrome",
-      "tick tock",
-      "white"
+      "tick-tock",
+      "white",
+      "wood",
+      "mirror"
     ]
   },
   {
@@ -105,7 +117,8 @@
     "tags": [
       "digital-12h",
       "color",
-      "histogram"
+      "histogram",
+      "image-free"
     ]
   },
   {
@@ -116,7 +129,8 @@
       "brown",
       "monochrome",
       "analog",
-      "mechanical"
+      "mechanical",
+      "earth"
     ]
   },
   {
@@ -140,7 +154,8 @@
       "analog",
       "Italy",
       "round",
-      "circle"
+      "circle",
+      "hot"
     ]
   },
   {
@@ -161,7 +176,9 @@
       "digital-12h",
       "day",
       "nature",
-      "landscape"
+      "landscape",
+      "sky",
+      "earth"
     ]
   },
   {
@@ -183,7 +200,9 @@
     "title": "Stripe",
     "tags": [
       "digital-24h",
-      "color"
+      "color",
+      "parallel",
+      "image-free"
     ]
   },
   {
@@ -207,7 +226,8 @@
       "digital-12h",
       "color",
       "sphere",
-      "histogram"
+      "histogram",
+      "image-free"
     ]
   },
   {
@@ -383,7 +403,8 @@
       "digital-24h",
       "balloon",
       "earth",
-      "art"
+      "art",
+      "underworld"
     ]
   },
   {
@@ -393,7 +414,8 @@
     "tags": [
       "digital-24h",
       "typeface",
-      "color"
+      "color",
+      "image-free"
     ]
   },
   {
@@ -716,7 +738,9 @@
     "tags": [
       "wood",
       "digital-12h",
-      "trees"
+      "trees",
+      "grow",
+      "trunk"
     ]
   },
   {
@@ -748,7 +772,9 @@
     "tags": [
       "analog",
       "play",
-      "face"
+      "face",
+      "see",
+      "hand"
     ]
   },
   {
@@ -824,7 +850,11 @@
   {
     "path": "25-06-17",
     "date": "25-06-17",
-    "title": "Backslant"
+    "title": "Backslant",
+    "tags": [
+      "image-free",
+      "digital"
+    ]
   },
   {
     "path": "25-06-18",
@@ -882,7 +912,12 @@
   {
     "path": "25-06-28",
     "date": "25-06-28",
-    "title": "Twenty-Four"
+    "title": "Twenty-Four",
+    "tags": [
+      "analog 24h",
+      "b+w",
+      "image-free"
+    ]
   },
   {
     "path": "25-06-29",
@@ -902,7 +937,11 @@
   {
     "path": "25-07-02",
     "date": "25-07-02",
-    "title": "Backwards"
+    "title": "Backwards",
+    "tags": [
+      "analog",
+      "mirror"
+    ]
   },
   {
     "path": "25-07-03",
@@ -921,7 +960,12 @@
   {
     "path": "25-07-05",
     "date": "25-07-05",
-    "title": "Vegas"
+    "title": "Vegas",
+    "tags": [
+      "digital",
+      "Las-Vegas",
+      "day and night"
+    ]
   },
   {
     "path": "25-07-06",
@@ -984,7 +1028,9 @@
     "date": "25-07-15",
     "title": "ASCII",
     "tags": [
-      "words"
+      "words",
+      "image-free",
+      "digital 12h"
     ]
   },
   {
@@ -1016,7 +1062,10 @@
       "b+w",
       "body",
       "science",
-      "tech"
+      "tech",
+      "electricity",
+      "mechanical",
+      "shadow"
     ]
   },
   {
@@ -1035,7 +1084,12 @@
       "analog",
       "developer",
       "film",
-      "camera"
+      "camera",
+      "glass",
+      "mechanical",
+      "see",
+      "hand",
+      "metal"
     ]
   },
   {
@@ -1043,7 +1097,7 @@
     "date": "25-07-21",
     "title": "Anglerfish",
     "tags": [
-      "digital",
+      "digital 24h",
       "light",
       "deepwater",
       "swim",
@@ -1072,7 +1126,14 @@
   {
     "path": "25-07-25",
     "date": "25-07-25",
-    "title": "Bamboo"
+    "title": "Bamboo",
+    "tags": [
+      "grow",
+      "earth",
+      "digital-24h",
+      "green",
+      "parallax"
+    ]
   },
   {
     "path": "25-07-26",
@@ -1124,7 +1185,10 @@
       "analog",
       "constellations",
       "night",
-      "myth"
+      "myth",
+      "stars",
+      "animals",
+      "body"
     ]
   },
   {
@@ -1200,7 +1264,10 @@
       "bubble",
       "water",
       "analog",
-      "mechanical"
+      "mechanical",
+      "electricity",
+      "metal",
+      "glass"
     ]
   },
   {
@@ -1340,8 +1407,9 @@
     "date": "25-08-27",
     "title": "X to the Enth",
     "tags": [
-      "digital",
-      "sixteen"
+      "sixteen",
+      "image-free",
+      "analog"
     ]
   },
   {
@@ -1393,7 +1461,8 @@
     "tags": [
       "spin",
       "analog",
-      "sound"
+      "sound",
+      "dance"
     ]
   },
   {
@@ -1458,7 +1527,8 @@
       "body",
       "flower",
       "light",
-      "fire"
+      "fire",
+      "underworld"
     ]
   },
   {
@@ -1603,7 +1673,16 @@
   {
     "path": "25-09-25",
     "date": "25-09-25",
-    "title": "UNIX Timestamp"
+    "title": "UNIX Timestamp",
+    "tags": [
+      "Kubrick",
+      "film",
+      "animal",
+      "digital",
+      "science",
+      "tech",
+      "info"
+    ]
   },
   {
     "path": "25-09-26",
@@ -1828,7 +1907,9 @@
       "gods",
       "planet",
       "green",
-      "shell"
+      "shell",
+      "space",
+      "transport"
     ]
   },
   {
@@ -1879,7 +1960,7 @@
     "date": "25-10-21",
     "title": "Big Ben",
     "tags": [
-      "tick tock",
+      "tick-tock",
       "England",
       "analog",
       "b+w"
@@ -1965,7 +2046,8 @@
     "tags": [
       "analog",
       "stone",
-      "silver"
+      "silver",
+      "shiny"
     ]
   },
   {
@@ -2026,9 +2108,12 @@
     "title": "Two Birds",
     "tags": [
       "animal",
-      "digital",
+      "digital 12h",
       "nature",
-      "one stone"
+      "one stone",
+      "tree",
+      "landscape",
+      "bird"
     ]
   },
   {
@@ -2053,7 +2138,9 @@
     "tags": [
       "play",
       "analog",
-      "electricity"
+      "electricity",
+      "glass",
+      "metal"
     ]
   },
   {
@@ -2073,7 +2160,7 @@
     "tags": [
       "transport",
       "analog",
-      "tick tock"
+      "tick-tock"
     ]
   },
   {
@@ -2127,7 +2214,8 @@
       "eye",
       "color",
       "eye color",
-      "see"
+      "see",
+      "face"
     ]
   },
   {
@@ -2138,7 +2226,8 @@
       "food",
       "red",
       "digital",
-      "grow"
+      "grow",
+      "apple"
     ]
   },
   {
@@ -2219,7 +2308,11 @@
   {
     "path": "25-11-28",
     "date": "25-11-28",
-    "title": "Timeline"
+    "title": "Timeline",
+    "tags": [
+      "digital 24h",
+      "color"
+    ]
   },
   {
     "path": "25-11-29",
@@ -2493,7 +2586,14 @@
   {
     "path": "25-12-27",
     "date": "25-12-27",
-    "title": "Essential"
+    "title": "Essential",
+    "tags": [
+      "RYB",
+      "analog",
+      "image-free",
+      "grey",
+      "monochrome"
+    ]
   },
   {
     "path": "25-12-28",
@@ -2563,7 +2663,10 @@
     "tags": [
       "spin",
       "analog",
-      "electricity"
+      "electricity",
+      "mechanical",
+      "air",
+      "metal"
     ]
   },
   {
@@ -2596,10 +2699,8 @@
     "tags": [
       "animal",
       "analog",
-      "snout",
-      "vowels",
+      "trunk",
       "night",
-      "digraph",
       "Africa"
     ]
   },
@@ -2621,7 +2722,8 @@
       "swim",
       "analog",
       "water",
-      "animal"
+      "animal",
+      "glass"
     ]
   },
   {
@@ -2820,7 +2922,8 @@
       "planet",
       "sky",
       "blue",
-      "gods"
+      "gods",
+      "sphere"
     ]
   },
   {
@@ -2944,7 +3047,8 @@
       "digital-12h",
       "b+w",
       "spin",
-      "monochrome"
+      "monochrome",
+      "shadow"
     ]
   },
   {
@@ -2973,10 +3077,14 @@
     "date": "26-02-12",
     "title": "Extended Mix",
     "tags": [
-      "digital",
-      "disco",
+      "digital 24h",
       "sphere",
-      "light"
+      "light",
+      "dance",
+      "spin",
+      "glass",
+      "mechanical",
+      "mirror"
     ]
   },
   {
@@ -2986,7 +3094,8 @@
     "tags": [
       "word clock",
       "monochrome",
-      "typeface"
+      "typeface",
+      "image-free"
     ]
   },
   {
@@ -3067,7 +3176,8 @@
       "words",
       "12 hour",
       "walk",
-      "transport"
+      "transport",
+      "stone"
     ]
   },
   {
@@ -3170,7 +3280,7 @@
     "tags": [
       "atomic clock",
       "digital-24h",
-      "tick tock",
+      "tick-tock",
       "science",
       "purple"
     ]
@@ -3314,7 +3424,8 @@
       "science",
       "body",
       "electricity",
-      "interior"
+      "interior",
+      "mechanical"
     ]
   },
   {
@@ -3489,7 +3600,9 @@
     "title": "Triangle Face",
     "tags": [
       "analog",
-      "image-free"
+      "image-free",
+      "triangle",
+      "three"
     ]
   },
   {
@@ -3501,7 +3614,8 @@
       "digital-24h",
       "covalent bonding",
       "water",
-      "elements"
+      "elements",
+      "ocean"
     ]
   },
   {
@@ -3573,7 +3687,7 @@
     "title": "Periodicity",
     "tags": [
       "film",
-      "tick tock",
+      "tick-tock",
       "digital-24h",
       "Cecil B. DeMille",
       "1930"
@@ -3623,7 +3737,8 @@
       "digital-24h",
       "walk",
       "stone",
-      "panorama"
+      "panorama",
+      "wall"
     ]
   },
   {
@@ -3765,7 +3880,10 @@
       "spin",
       "day and night",
       "space",
-      "axis"
+      "axis",
+      "revolve",
+      "rotation",
+      "earth"
     ]
   },
   {
@@ -3848,7 +3966,9 @@
       "digital-12h",
       "Jetsons",
       "space",
-      "transport"
+      "transport",
+      "stars",
+      "sky"
     ]
   },
   {
@@ -4042,7 +4162,8 @@
       "lion",
       "fire",
       "analog",
-      "apex-predator"
+      "apex-predator",
+      "mirror"
     ]
   },
   {
