@@ -404,7 +404,7 @@
       "deepwater",
       "analog",
       "transport",
-      "move"
+      "swim"
     ]
   },
   {
@@ -622,7 +622,8 @@
       "RYB",
       "brown",
       "round",
-      "image-free"
+      "image-free",
+      "four"
     ]
   },
   {
@@ -703,7 +704,9 @@
     "tags": [
       "drink",
       "analog",
-      "brown"
+      "brown",
+      "hot",
+      "food"
     ]
   },
   {
@@ -1086,7 +1089,11 @@
     "date": "25-07-28",
     "title": "Water Hazard",
     "tags": [
-      "play"
+      "play",
+      "digital 12h",
+      "earth",
+      "water",
+      "sphere"
     ]
   },
   {
@@ -1157,7 +1164,18 @@
   {
     "path": "25-08-07",
     "date": "25-08-07",
-    "title": "Western"
+    "title": "Western",
+    "tags": [
+      "analog",
+      "disney",
+      "odd-toed ungulate",
+      "animal",
+      "aim",
+      "horse",
+      "transport",
+      "ride",
+      "film"
+    ]
   },
   {
     "path": "25-08-08",
@@ -1177,7 +1195,13 @@
   {
     "path": "25-08-11",
     "date": "25-08-11",
-    "title": "Washing Machine"
+    "title": "Washing Machine",
+    "tags": [
+      "bubble",
+      "water",
+      "analog",
+      "mechanical"
+    ]
   },
   {
     "path": "25-08-12",
@@ -1265,7 +1289,8 @@
       "color",
       "random",
       "analog",
-      "square"
+      "square",
+      "0123456789ABCDEF"
     ]
   },
   {
@@ -1349,7 +1374,12 @@
   {
     "path": "25-08-31",
     "date": "25-08-31",
-    "title": "Comprehensive"
+    "title": "Comprehensive",
+    "tags": [
+      "image-free",
+      "analog",
+      "info"
+    ]
   },
   {
     "path": "25-09-01",
@@ -1580,7 +1610,9 @@
     "date": "25-09-26",
     "title": "Context Clues",
     "tags": [
-      "digital"
+      "digital",
+      "typeface",
+      "image-free"
     ]
   },
   {
@@ -1975,7 +2007,13 @@
   {
     "path": "25-11-05",
     "date": "25-11-05",
-    "title": "Web-Safe"
+    "title": "Web-Safe",
+    "tags": [
+      "digital 24h",
+      "0123456789ABCDEF",
+      "color",
+      "design"
+    ]
   },
   {
     "path": "25-11-06",
@@ -2324,7 +2362,8 @@
     "tags": [
       "analog",
       "RGB",
-      "color"
+      "color",
+      "0123456789ABCDEF"
     ]
   },
   {
@@ -2356,7 +2395,10 @@
   {
     "path": "25-12-16",
     "date": "25-12-16",
-    "title": "Quartile"
+    "title": "Quartile",
+    "tags": [
+      "four"
+    ]
   },
   {
     "path": "25-12-17",
@@ -3248,7 +3290,8 @@
       "round",
       "histogram",
       "color",
-      "circles"
+      "circles",
+      "image-free"
     ]
   },
   {
