@@ -79,7 +79,7 @@
   /* 3 Columns: Date | Image | Content Stack */
   grid-template-columns: 20px 68px 1fr;
   align-items: start;
-  gap: 0.1rem;
+  gap: 0.5rem; /* Increased gap for better visual separation */
   width: 100%;
   padding: 0.3rem 0.3rem;
   text-decoration: none;
@@ -100,7 +100,7 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  width: 100%;
+  width: 97%;
   gap: 1rem;
 }
 
@@ -147,7 +147,7 @@
   font-family: var(--font-barlow-condensed);
   font-weight: 400;
   letter-spacing: 0.05rem;
-  color: #0e0e0f;
+  color: #5b5b5d;
 }
 
 .simpleListTitle {
