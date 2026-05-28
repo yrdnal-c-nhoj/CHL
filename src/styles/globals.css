@@ -3,7 +3,7 @@
    ======================================== */
 
 /* Font Imports - Centralized */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Cinzel+Decorative:wght@400;700;900&family=Manrope:wght@200..800&family=Nanum+Gothic&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&family=Almendra+Display&family=Metamorphous&family=Orbitron:wght@400..900&family=Libre+Baskerville&family=Monofett&family=Nanum+Gothic+Coding:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Barlow+Condensed:wght@400;500;600;700&family=Bebas+Neue&family=Cinzel:wght@400..900&family=Cinzel+Decorative:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=Nanum+Gothic&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&family=Almendra+Display&family=Metamorphous&family=Orbitron:wght@400..900&family=Libre+Baskerville&family=Monofett&family=Nanum+Gothic+Coding:wght@400;700&display=swap');
 @import 'tailwindcss';
 
 /* Custom Font Faces */
@@ -23,12 +23,17 @@
   /* Font Families */
   --font-roboto: 'Roboto Slab', serif;
   --font-oxanium: 'Oxanium', sans-serif;
-  --font-manrope: 'Manrope', sans-serif;
+  --font-arimo: 'Arimo', sans-serif;
   --font-cinzel: 'Cinzel', serif;
   --font-noto: 'Noto Sans', sans-serif;
   --font-libre: 'Libre Baskerville', serif;
   --font-monofett: 'Monofett', monospace;
   --font-nanum-coding: 'Nanum Gothic Coding', monospace;
+  /* Added IBM Plex Mono variable */
+  --font-ibm-plex-mono: 'IBM Plex Mono', monospace;
+  /* Added Bebas Neue variable */
+  --font-bebas: 'Bebas Neue', sans-serif;
+  --font-barlow-condensed: 'Barlow Condensed', sans-serif;
 
   /* Color System */
   --color-lab-red: #850404;
@@ -103,7 +108,7 @@ body {
   overflow-y: auto;
   /* background-color: var(--color-lab-bg-gray); */
   color: var(--color-lab-text);
-  font-family: var(--font-manrope), sans-serif;
+  font-family: var(--font-arimo), sans-serif;
 }
 
 /* Clock Mode: Force viewport constraint */

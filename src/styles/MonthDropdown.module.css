@@ -29,7 +29,7 @@
     background-color 0.2s,
     color 0.2s;
   color: #424346;
-  font-family: var(--font-manrope);
+  font-family: var(--font-arimo);
   width: 100%;
   position: relative;
   z-index: 1;
@@ -67,7 +67,7 @@
     background-color 0.2s,
     color 0.2s;
   color: #858687;
-  font-family: var(--font-manrope);
+  font-family: var(--font-arimo);
 }
 
 .sortButton:hover {

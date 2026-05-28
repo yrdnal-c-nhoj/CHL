@@ -12,7 +12,7 @@
   gap: 2px;
   box-sizing: border-box;
   z-index: 10000; /* Above loading overlay */
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-arimo);
   pointer-events: auto;
   will-change: opacity, transform;
   transition:
