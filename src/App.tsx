@@ -33,6 +33,7 @@ const ClockPage = React.lazy(() => import('./ClockPage'));
 const Today = React.lazy(() => import('./Today'));
 const Contact = React.lazy(() => import('./Contact'));
 const ClockList = React.lazy(() => import('./ClockList'));
+const TagList = React.lazy(() => import('./TagList'));
 const Tagger = React.lazy(() => import('./pages/Tagger'));
 const TagManager = React.lazy(() => import('./pages/TagManager'));
 
@@ -208,7 +209,8 @@ const App: React.FC = () => {
               <Route path="/:date" element={<ClockPage />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/today" element={<Today />} />
-<Route path="/list" element={<ClockList />} />
+              <Route path="/list" element={<ClockList />} />
+              <Route path="/tag/:tag" element={<TagList />} />
               <Route path="/tagger/:date" element={<Tagger />} />
               <Route path="/tags" element={<TagManager />} />
               <Route path="/index.html" element={<Navigate to="/" replace />} />

@@ -1,95 +1,61 @@
-import { useContext, useMemo, useState, type FC, type MouseEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useContext, useMemo, type FC, type MouseEvent } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Footer from './components/Footer';
 import Thumbnail from './components/Thumbnail';
 import TopNav from './components/TopNav';
 import { DataContext } from './context/DataContext';
 import listStyles from './styles/ClockList.module.css';
-import type { DataContextType } from './types/data';
-
-type SortOption =
-  | 'date-desc'
-  | 'date-asc'
-  | 'title-asc'
-  | 'title-desc'
+import type { ClockItem, DataContextType } from './types/data';
 
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
-const ClockList: FC = () => {
+const TagList: FC = () => {
+  const { tag } = useParams<{ tag: string }>();
   const context = useContext(DataContext) as DataContextType;
-  const { items = [], loading = false, error = null } = context || {};
   const navigate = useNavigate();
-  const [sortBy, setSortBy] = useState<SortOption>('date-desc');
+  const { items = [], loading = false, error = null } = context || {};
 
-  // Memoized sorting logic to prevent unnecessary re-renders
-  const sortedItems = useMemo<ClockItem[]>(() => {
-    const filtered = items.filter((item) => item?.date);
-    switch (sortBy) {
-      case 'date-desc':
-        return [...filtered].sort((a, b) => b.date.localeCompare(a.date));
-      case 'date-asc':
-        return [...filtered].sort((a, b) => a.date.localeCompare(b.date));
-      case 'title-asc':
-        return [...filtered].sort((a, b) => (a.title || '').localeCompare(b.title || ''));
-      case 'title-desc':
-        return [...filtered].sort((a, b) => (b.title || '').localeCompare(a.title || ''));
+  // Filter by tag and sort newest first (reverse chronological)
+  const filteredItems = useMemo<ClockItem[]>(() => {
+    if (!tag) return [];
     
-      default:
-        return filtered;
-    }
-  }, [items, sortBy]);
-
-  const handleDateSort = () =>
-    setSortBy((prev) => (prev === 'date-desc' ? 'date-asc' : 'date-desc'));
-  const handleTitleSort = () =>
-    setSortBy((prev) => (prev === 'title-asc' ? 'title-desc' : 'title-asc'));
- 
-  const handleRowClick = (date: string) => {
-    navigate(`/${date}`);
-  };
+    return items
+      .filter((item) => item?.date && item.tags?.includes(tag))
+      .sort((a, b) => b.date.localeCompare(a.date));
+  }, [items, tag]);
 
   if (loading) return (
     <div className={listStyles.listPageContainer}>
       <TopNav />
-      <div className={listStyles.loadingContainer}>Loading...</div>
+      <div className={listStyles.loadingContainer}>Loading tag: {tag}...</div>
       <Footer />
     </div>
   );
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div className={listStyles.listPageContainer}>
       <TopNav />
       <div className={listStyles.centeredContent}>
-        {/* Layout Controls */}
-        <div className={listStyles.controls}>
-          <button
-            type="button"
-            onClick={handleDateSort}
-            className={listStyles.sortButton}
-          >
-            date{' '}
-            {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
-          </button>
-          <button
-            type="button"
-            onClick={handleTitleSort}
-            className={listStyles.sortButton}
-          >
-            title{' '}
-            {sortBy === 'title-asc' ? '↓' : sortBy === 'title-desc' ? '↑' : ''}
-          </button>
+        <div className={listStyles.controls} style={{ flexDirection: 'column', gap: '0.2rem' }}>
+          <h1 style={{ 
+            fontFamily: 'var(--font-arimo)', 
+            // margin: '1rem 0 0.5rem 0',
+            textTransform: 'uppercase',
+            // letterSpacing: '0.05rem'
+          }}>
+              {filteredItems.length} {filteredItems.length === 1 ? 'clock' : 'clocks'} found with "{tag}"
+          </h1>
+          
         </div>
 
         <ul className={listStyles.simpleListContainer}>
-          {sortedItems.map((item) => (
+          {filteredItems.map((item) => (
             <li key={item.date}>
               <div
                 className={listStyles.simpleListImage}
-                onClick={() => handleRowClick(item.date)}
+                onClick={() => navigate(`/${item.date}`)}
               >
                 {/* Column 1: Date */}
                 <time
@@ -101,7 +67,6 @@ const ClockList: FC = () => {
                     const monthName = MONTHS[parseInt(mm, 10) - 1] || '???';
                     return (
                       <>
-                        {/* Using padStart and removing inline font-size to ensure all digits are identical in size */}
                         <span>{dd.padStart(2, '0')}</span>
                         <span>{monthName}</span>
                         <span>'{yy}</span>
@@ -115,7 +80,7 @@ const ClockList: FC = () => {
                   <Thumbnail date={item.date} title={item.title || ''} />
                 </div>
 
-                {/* Column 3: Content Stack (Title/Number Row + Tags Row) */}
+                {/* Column 3: Content Stack */}
                 <div className={listStyles.contentStack}>
                   <div className={listStyles.titleNumberRow}>
                     <span className={listStyles.simpleListTitle}>
@@ -128,14 +93,17 @@ const ClockList: FC = () => {
                   <div className={listStyles.tagsWrapper}>
                     {[...(item.tags || [])]
                       .sort((a, b) => a.localeCompare(b))
-                      .map((tag) => (
+                      .map((t) => (
                         <Link 
-                          key={tag} 
-                          to={`/tag/${tag}`} 
+                          key={t} 
+                          to={`/tag/${t}`}
                           className={listStyles.tagBubble}
                           onClick={(e: MouseEvent) => e.stopPropagation()}
-                        >
-                          {tag}
+                          style={{ 
+                          backgroundColor: t === tag ? 'var(--color-lab-blue-deep)' : '#d4d5d7',
+                          color: t === tag ? 'white' : '#393a3b'
+                        }}>
+                          {t}
                         </Link>
                       ))}
                   </div>
@@ -150,4 +118,4 @@ const ClockList: FC = () => {
   );
 };
 
-export default ClockList;
+export default TagList;

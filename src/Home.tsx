@@ -20,6 +20,7 @@ interface DataItem {
   title?: string;
   clockNumber?: string | number;
   path: string;
+  tags?: string[];
 }
 
 const Home: FC = () => {
