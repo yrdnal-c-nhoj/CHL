@@ -8,6 +8,7 @@
       "digital 24h",
       "space",
       "stars",
+      "sky",
       "spin"
     ]
   },
@@ -19,7 +20,10 @@
       "animal",
       "book",
       "deepwater",
-      "digital 24h"
+      "digital 24h",
+      "myth",
+      "white",
+      "swim"
     ]
   },
   {
@@ -55,7 +59,9 @@
       "Digital 24h",
       "color",
       "gravity",
-      "play"
+      "play",
+      "image-free",
+      "cake"
     ]
   },
   {
@@ -133,7 +139,8 @@
       "food",
       "analog",
       "Italy",
-      "round"
+      "round",
+      "circle"
     ]
   },
   {
@@ -153,7 +160,8 @@
     "tags": [
       "digital 12h",
       "day",
-      "nature"
+      "nature",
+      "landscape"
     ]
   },
   {
@@ -165,7 +173,8 @@
       "food",
       "play",
       "analog",
-      "color"
+      "color",
+      "cake"
     ]
   },
   {
@@ -489,7 +498,8 @@
     "tags": [
       "color",
       "analog",
-      "spectrum"
+      "spectrum",
+      "RYB"
     ]
   },
   {
@@ -500,7 +510,8 @@
       "digital",
       "monochrome",
       "paper",
-      "blue"
+      "blue",
+      "map"
     ]
   },
   {
@@ -510,7 +521,9 @@
     "tags": [
       "analog",
       "b+w",
-      "animal"
+      "animal",
+      "walk",
+      "food"
     ]
   },
   {
@@ -542,7 +555,8 @@
       "sun",
       "day",
       "planet",
-      "analog"
+      "analog",
+      "sphere"
     ]
   },
   {
@@ -3282,7 +3296,8 @@
       "warm",
       "wet",
       "scarab",
-      "horse"
+      "horse",
+      "odd-toed ungulate"
     ]
   },
   {
@@ -3742,7 +3757,8 @@
       "analog",
       "transport",
       "day",
-      "run"
+      "run",
+      "odd-toed ungulate"
     ]
   },
   {
