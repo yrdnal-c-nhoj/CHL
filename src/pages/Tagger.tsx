@@ -1,5 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import Thumbnail from '../components/Thumbnail';
 import { DataContext } from '../context/DataContext';
 import styles from '../styles/Tagger.module.css';
 import type { ClockItem, DataContextType } from '../types/data';
@@ -33,6 +34,20 @@ export default function Tagger() {
 
   const [tagInput, setTagInput] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+
+  const allExistingTags = useMemo(() => {
+    if (!items.length) return [];
+    const tags = new Set<string>();
+    items.forEach(item => {
+      (item.tags ?? []).forEach(tag => tags.add(tag));
+    });
+
+    const sorted = Array.from(tags).sort();
+    const priority = ['analog', 'digital'];
+    const head = priority.filter((p) => tags.has(p));
+    const tail = sorted.filter((s) => !priority.includes(s));
+    return [...head, ...tail];
+  }, [items]);
 
   useEffect(() => {
     if (!date || !DATE_REGEX.test(date)) return;
@@ -142,16 +157,26 @@ export default function Tagger() {
           </button>
         </div>
 
-        <div className={styles.metaRow}>
-          <div>
-            <div className={styles.label}>Date</div>
-            <div className={styles.value}>
-              <code>{currentItem.date}</code>
+      <div style={{ display: 'flex', gap: '2rem', marginBottom: '2rem', alignItems: 'flex-start' }}>
+        <Thumbnail 
+          date={currentItem.date} 
+          title={currentItem.title} 
+          style={{ width: '200px', borderRadius: '8px', flexShrink: 0 }} 
+        />
+
+        <div style={{ flex: 1 }}>
+          <div className={styles.metaRow}>
+            <div>
+              <div className={styles.label}>Date</div>
+              <div className={styles.value}>
+                <code>{currentItem.date}</code>
+              </div>
+            </div>
+            <div>
+              <div className={styles.label}>Title</div>
+              <div className={styles.value}>{currentItem.title}</div>
             </div>
           </div>
-          <div>
-            <div className={styles.label}>Title</div>
-            <div className={styles.value}>{currentItem.title}</div>
           </div>
         </div>
 
@@ -163,13 +188,33 @@ export default function Tagger() {
           <label className={styles.srOnly} htmlFor="tagInput">
             Tags input
           </label>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
           <input
             id="tagInput"
             className={styles.input}
+            style={{ flex: 1, margin: 0 }}
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
             placeholder="tag1, tag2"
           />
+          <select
+            className={styles.select}
+            value=""
+            onChange={(e) => {
+              const selectedTag = e.target.value;
+              if (selectedTag) {
+                const currentTags = tagInput.trim();
+                const newTags = currentTags ? `${currentTags}, ${selectedTag}` : selectedTag;
+                setTagInput(newTags);
+              }
+              e.target.value = '';
+            }}
+            style={{ width: 'auto', minWidth: '150px' }}
+          >
+            <option value="" disabled>Add existing...</option>
+            {allExistingTags.map(tag => (<option key={tag} value={tag}>{tag}</option>))}
+          </select>
+        </div>
         </div>
 
         <div className={styles.actions}>
@@ -230,4 +275,3 @@ export default function Tagger() {
     </div>
   );
 }
-
