@@ -629,7 +629,6 @@
       "four",
       "platonic-solid",
       "digital-12h",
-      "triangle",
       "red",
       "pyramid"
     ]
@@ -2648,7 +2647,6 @@
       "eight",
       "platonic-solid",
       "air",
-      "triangle",
       "digital"
     ]
   },
@@ -2934,8 +2932,8 @@
       "platonic-solid",
       "digital",
       "water",
-      "twenty"
-      "triangle"
+      "twenty",
+     "triangle"
     ]
   },
   {
