@@ -1193,7 +1193,7 @@
       "sky",
       "stars",
       "constellations",
-      "cardinal directions",
+      "cardinal-directions",
       "night"
     ]
   },
@@ -2277,7 +2277,7 @@
     "date": "25-10-11",
     "title": "Prise En Passant",
     "tags": [
-      "Marcel Duchamp",
+      "Marcel-Duchamp",
       "chess",
       "digital-12h",
       "b+w",
@@ -2570,7 +2570,7 @@
       "animal",
       "digital-12h",
       "nature",
-      "one stone",
+      "one-stone",
       "tree",
       "landscape",
       "bird",
@@ -2944,7 +2944,7 @@
       "body",
       "film",
       "odd-toed-ungulate",
-      "Eadweard Muybridge",
+      "Eadweard-Muybridge",
       "England"
     ]
   },
@@ -3363,7 +3363,7 @@
     "date": "26-01-17",
     "title": "225° Southwest",
     "tags": [
-      "cardinal directions",
+      "cardinal-directions",
       "analog",
       "water",
       "wind"
@@ -3502,7 +3502,7 @@
     "date": "26-01-30",
     "title": "45° Northeast",
     "tags": [
-      "cardinal directions",
+      "cardinal-directions",
       "wind",
       "cold",
       "wet",
@@ -3821,7 +3821,7 @@
       "Orpheus",
       "1950",
       "film",
-      "Jean Cocteau",
+      "Jean-Cocteau",
       "underworld",
       "book",
       "analog",
@@ -3872,7 +3872,7 @@
     "date": "26-03-01",
     "title": "270° West",
     "tags": [
-      "cardinal directions",
+      "cardinal-directions",
       "analog",
       "sun",
       "wind",
@@ -4224,7 +4224,7 @@
     "date": "26-03-29",
     "title": "90° East",
     "tags": [
-      "cardinal directions",
+      "cardinal-directions",
       "analog",
       "wind",
       "dawn",
@@ -4293,7 +4293,7 @@
       "film",
       "tick-tock",
       "digital-24h",
-      "Cecil B. DeMille",
+      "Cecil-B-DeMille",
       "1930"
     ]
   },
@@ -4454,7 +4454,7 @@
     "date": "26-04-16",
     "title": "135° Southeast",
     "tags": [
-      "cardinal directions",
+      "cardinal-directions",
       "wind",
       "pomegranate",
       "jasmine",
@@ -4797,7 +4797,7 @@
     "date": "26-05-12",
     "title": "180° South",
     "tags": [
-      "cardinal directions",
+      "cardinal-directions",
       "wind",
       "lion",
       "fire",
