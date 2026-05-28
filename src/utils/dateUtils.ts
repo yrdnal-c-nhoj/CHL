@@ -59,7 +59,7 @@ export const formatDateDots = (dateString?: string | null): string => {
 
   if (mm >= 1 && mm <= 12 && dd >= 1 && dd <= 31) {
     const month = monthNames[mm - 1];
-    return `${dd} ${month} '${yy}`;
+    return `${dd} ${month}'${yy}`;
   }
   return 'Invalid Date';
 };

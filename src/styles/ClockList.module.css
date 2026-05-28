@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-arimo);
 }
 
 .listPageContainer {
@@ -16,9 +16,9 @@
   justify-content: flex-start;
   margin: 0;
   padding: 0;
-  width: 90%;
+  width: 100%; /* Ensures horizontal span */
   min-height: 100vh;
-  overflow-y: auto;
+  overflow-x: hidden; /* Prevents unwanted horizontal scroll */
 }
 
 .centeredContent {
@@ -27,101 +27,133 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  align-items: center;
-  /* gap: clamp(0.5rem, 1vw, 1.5rem); */
+  align-items: stretch;
   width: 100%;
   max-width: 100%;
 }
 
+/* Centering the sort buttons */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem; /* Space between the two buttons */
+  padding: 0.5rem 0;
+  width: 100%;
+}
+
 .sortButton {
   padding: 0.2rem 0.5rem; 
-    color: #717170;
-  font-family: 'Manrope', sans-serif;
+  color: #717170;
+  font-family: var(--font-arimo);
   cursor: pointer;
   transition:
     background 0.4s ease,
     color 0.4s ease,
     border-color 0.4s ease;
   border-radius: 4px; /* Slightly rounded corners for consistency */
-  font-size: 0.8rem; /* Adjust font size for buttons */
+  font-size: 0.9rem; /* Adjust font size for buttons */
   white-space: nowrap; /* Prevent text wrapping */
 }
 
 .sortButton:hover {
   background: rgb(187, 187, 188);
-  color: #272726;
+  color: #090909;
 }
 
-.simpleList {
+.simpleListContainer {
   list-style: none;
   padding: 0;
-  /* margin: 0 auto 2rem auto; */
+  margin: 0;
+  width: 100%; /* Takes full width of parent */
+  font-family: var(--font-arimo);
+}
+
+.simpleListContainer li {
+  border-bottom: 0.5px solid #454545;
   width: 100%;
-  /* max-width: 40rem; */
-  font-family: 'Manrope', sans-serif;
 }
 
-.simpleListItem {
+.simpleListImage {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  align-items: center;
-  justify-items: start;
-  border-bottom: 0.5px solid rgba(0, 0, 0, 1);
-  color: var(--color-lab-text, #424346);
+  /* 3 Columns: Date | Image | Content Stack */
+  grid-template-columns: 20px 68px 1fr;
+  align-items: start;
+  gap: 0.1rem;
+  width: 100%;
+  padding: 0.3rem 0.3rem;
   text-decoration: none;
-  transition: background-color 0.15s ease;
+  color: inherit;
+  box-sizing: border-box;
+  transition: background-color 0.2s;
 }
 
-.simpleListItem:hover {
-  background-color: #e5e7eb;
+.contentStack {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0; /* Important for ellipsis on Title */
+  gap: 0.1rem;
 }
 
-.simpleListItem:last-child {
-  border-bottom: none;
+.titleNumberRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
+  gap: 1rem;
+}
+
+.simpleListImage:hover {
+  /* Making the hover color more distinct and using a theme-consistent gray */
+  background-color: var(--color-lab-gray-light, #929294);
 }
 
 .thumbnailWrapper {
-  width: 3rem;
-  height: 3rem;
+  width: 70px;
+  height: 70px;
   border-radius: 1px;
   overflow: hidden;
   box-sizing: border-box; /* include border in sizing to avoid layout shift */
-  border: 0.5px solid rgba(0, 0, 0, 1); /* 0.5px black border around thumbnails */
+  border: 0.5px solid rgba(0, 0, 0, 0.572); 
 }
 
 .thumbnailWrapper > img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover;  
 }
 
 .simpleListDate {
- color: #3e3d3d;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  text-align: left; /* Align date left within its cell */
-  padding-left: 1rem; /* Add padding to prevent flush left */
+  display: flex;
+  flex-direction: column;
+  /* Flush right, ragged left alignment */
+  align-items: flex-end;
+  line-height: 1;
+  font-size: 0.8rem;
+  font-family: var(--font-barlow-condensed);
+  font-variant-numeric: tabular-nums; /* Ensures all digits have equal width */
+  font-weight: 400;
+  letter-spacing: 0.09rem;
+  color: #5b5b5d;
+  text-align: right;
 }
 
 .simpleListNumber {
-  color: #3e3d3d;
-  font-size: 0.9rem;
   white-space: nowrap;
-  text-align: right; /* Align number right within its cell */
-  padding-right: 1rem; /* Add padding to prevent flush right */
-}
-
-.titleContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  overflow: hidden;
+  text-align: left;
+  font-size: 0.8rem;
+  font-family: var(--font-barlow-condensed);
+  font-weight: 400;
+  letter-spacing: 0.05rem;
+  color: #0e0e0f;
 }
 
 .simpleListTitle {
-  color: #120000;
-  font-size: 1rem;
+  flex: 1;
+  font-size: 1.1rem;
+  font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -132,35 +164,44 @@
 .tagsWrapper {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
-  margin-top: 0.25rem;
+  gap: 0.1rem;
+  margin-top: 0.05rem;
+  margin-bottom: 0.05rem;  /* overflow-y: auto;   Allows scrolling within the tag cell if there are dozens */
 }
 
 .tagBubble {
-  background-color: #f3f4f6;
-  border: 0.5px solid #d1d5db;
+  background-color: #d4d5d7;
   border-radius: 4px;
-  padding: 0.1rem 0.35rem;
+  border: 1px solid #c8c9cc;
+  padding: 0px 3px;
   font-size: 0.65rem;
-  color: #4b5563;
-  line-height: 1.2;
+  color: #393a3b;
   white-space: nowrap;
 }
 
-.simpleListImage {
-  display: grid;
-  grid-template-columns: 90px 50px 1fr 70px;
-  align-items: center;
-  gap: 0.75rem;
-  max-width: 900px;
-  margin: 0 auto;
-  white-space: nowrap;
-  text-decoration: none;
+/* DESKTOP ADJUSTMENTS */
+@media (min-width: 768px) {
+
+
+.centeredContent {
+  z-index: 5;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: stretch;
+  width: 90%;
+  max-width: 90%;
 }
 
-@media (min-width: 600px) {
   .simpleListImage {
-    grid-template-columns: 150px 80px 1fr 100px;
-    gap: 2rem;
+    /* Desktop: Date | Image | Content Stack */
+    grid-template-columns: 110px 70px 1fr;
+    gap: 1.5rem;
+  }
+
+  .thumbnailWrapper {
+    width: 60px;
+    height: 60px;
   }
 }

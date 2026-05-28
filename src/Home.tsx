@@ -1,17 +1,18 @@
-import React, { useState, useContext, useEffect, useMemo, FC } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { DataContext } from './context/DataContext';
-import TopNav from './components/TopNav';
-import Footer from './components/Footer';
-import MonthDropdown from './components/MonthDropdown';
-import { useNavigationState } from './hooks/useNavigationState';
-import styles from './styles/Home.module.css';
+import fbookImg from '@/assets/icons/fbook.png';
 import instaImg from '@/assets/icons/i.png';
 import elonImg from '@/assets/icons/x.png';
-import fbookImg from '@/assets/icons/fbook.png';
+import type { FC } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import Footer from './components/Footer';
+import MonthDropdown from './components/MonthDropdown';
+import TopNav from './components/TopNav';
+import { DataContext } from './context/DataContext';
+import { useNavigationState } from './hooks/useNavigationState';
+import styles from './styles/Home.module.css';
 import {
-  isValidDate,
   formatDateStandard as formatDate,
+  isValidDate,
 } from './utils/dateUtils';
 
 interface DataItem {
@@ -125,7 +126,7 @@ const Home: FC = () => {
     ];
     const monthIndex = parseInt(mm || '0', 10) - 1;
     const year = String(yy || '0');
-    return `${monthNames[monthIndex]}   '${year}`;
+    return `${monthNames[monthIndex]}'${year}`;
   };
 
   const groupedByMonth = useMemo(() => {

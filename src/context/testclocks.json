@@ -2154,29 +2154,63 @@
   {
     "path": "25-12-28",
     "date": "25-12-28",
-    "title": "Coaster"
+    "title": "Coaster",
+    "tags": [
+      "physics",
+      "gravity",
+      "transport",
+      "digital",
+      "up and down",
+      "wood",
+      "air",
+      "fast",
+      "body",
+      "move"
+    ]
   },
   {
     "path": "25-12-29",
     "date": "25-12-29",
     "title": "Jingū",
     "tags": [
-      "digital",
+      "digital 12h",
       "Japan",
       "shrine",
       "twenty",
-      "Ise"
+      "Ise",
+      "wood",
+      "build"
     ]
   },
   {
     "path": "25-12-30",
     "date": "25-12-30",
-    "title": "Analemma"
+    "title": "Analemma",
+    "tags": [
+      "digital 12h",
+      "sky",
+      "sun",
+      "move",
+      "space",
+      "day",
+      "geometry",
+      "path"
+    ]
   },
   {
     "path": "25-12-31",
     "date": "25-12-31",
-    "title": "Projection"
+    "title": "Projection",
+    "tags": [
+      "wall",
+      "hands",
+      "body",
+      "light",
+      "pictographic",
+      "monochrome",
+      "shadow",
+      "animal"
+    ]
   },
   {
     "path": "26-01-01",
@@ -3219,7 +3253,7 @@
     "date": "26-04-06",
     "title": "Pulley",
     "tags": [
-      "6 simple machines",
+      "six simplemachines",
       "generative",
       "analog"
     ]
@@ -3466,7 +3500,7 @@
     "date": "26-04-27",
     "title": "Lever",
     "tags": [
-      "6 simple machines",
+      "six simplemachines",
       "generative",
       "digital 24h",
       "mechanical",
