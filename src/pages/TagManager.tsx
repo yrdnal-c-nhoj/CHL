@@ -4,17 +4,7 @@ import Thumbnail from '../components/Thumbnail';
 import { DataContext } from '../context/DataContext';
 import styles from '../styles/Tagger.module.css'; // Reusing Tagger styles for consistency
 import type { DataContextType } from '../types/data';
-
-function normalizeTags(input: string): string[] {
-  return Array.from(
-    new Set(
-      input
-        .split(',')
-        .map((t) => t.trim())
-        .filter(Boolean),
-    ),
-  );
-}
+import { normalizeTags, sortTags } from '../utils/tagUtils';
 
 export default function TagManager() {
   const navigate = useNavigate();
@@ -69,12 +59,7 @@ export default function TagManager() {
     items.forEach(item => {
       (item.tags ?? []).forEach(tag => tags.add(tag));
     });
-
-    const sorted = Array.from(tags).sort();
-    const priority = ['analog', 'digital'];
-    const head = priority.filter((p) => tags.has(p));
-    const tail = sorted.filter((s) => !priority.includes(s));
-    return [...head, ...tail];
+    return sortTags(tags);
   }, [items]);
 
   const editedClockPagesJson = useMemo(() => {
@@ -82,10 +67,12 @@ export default function TagManager() {
       const tagsInput = localTags[it.date] ?? '';
       const parsedTags = normalizeTags(tagsInput);
       
-      // Remove clockNumber injected by DataContext and update tags
-      const { clockNumber, ...cleanItem } = it as any;
+      // Ensure we only export keys that belong in the JSON
+      // and strip runtime injections like clockNumber
       return {
-        ...cleanItem,
+        path: it.path,
+        date: it.date,
+        title: it.title,
         tags: parsedTags.length ? parsedTags : undefined,
       };
     });

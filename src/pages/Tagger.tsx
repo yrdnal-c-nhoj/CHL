@@ -4,19 +4,9 @@ import Thumbnail from '../components/Thumbnail';
 import { DataContext } from '../context/DataContext';
 import styles from '../styles/Tagger.module.css';
 import type { ClockItem, DataContextType } from '../types/data';
+import { normalizeTags, sortTags } from '../utils/tagUtils';
 
 const DATE_REGEX = /^\d{2}-\d{2}-\d{2}$/;
-
-function normalizeTags(input: string): string[] {
-  return Array.from(
-    new Set(
-      input
-        .split(',')
-        .map((t) => t.trim())
-        .filter(Boolean),
-    ),
-  );
-}
 
 export default function Tagger() {
   const { date } = useParams();
@@ -41,12 +31,7 @@ export default function Tagger() {
     items.forEach(item => {
       (item.tags ?? []).forEach(tag => tags.add(tag));
     });
-
-    const sorted = Array.from(tags).sort();
-    const priority = ['analog', 'digital'];
-    const head = priority.filter((p) => tags.has(p));
-    const tail = sorted.filter((s) => !priority.includes(s));
-    return [...head, ...tail];
+    return sortTags(tags);
   }, [items]);
 
   useEffect(() => {

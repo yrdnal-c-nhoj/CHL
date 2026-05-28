@@ -1,5 +1,5 @@
 import React, { Suspense, useContext, useEffect, useMemo } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ClockPageNav from './components/ClockPageNav';
 
 
@@ -9,7 +9,6 @@ import { DataContext } from './context/DataContext';
 import { useAutoHeader } from './hooks/useAutoHeader';
 import { useClockPage } from './hooks/useClockPage';
 import styles from './styles/ClockPage.module.css';
-import titleTagsStyles from './styles/ClockTitleTags.module.css';
 import type { ClockItem, DataContextType } from './types/data';
 import { ClockLoadingFallback } from './utils/fontLoader';
 
@@ -166,35 +165,6 @@ const ClockPage: React.FC = () => {
             flexDirection: 'column',
           }}
         >
-          {/* Title + tags under it (above the clock) */}
-          {currentItem && currentItem.title && (
-            <div className={titleTagsStyles.wrapper}>
-              <div className={titleTagsStyles.inner}>
-                <div className={titleTagsStyles.titleRow}>
-                  <h1 className={titleTagsStyles.title}>{currentItem.title}</h1>
-                  {(currentItem as any).tags?.length ? (
-                    <div className={titleTagsStyles.tagsWrapper}>
-                      {([...(currentItem as any).tags] as string[])
-                        .sort((a, b) => a.localeCompare(b))
-                        .map((t) => (
-                          <Link
-                            key={t}
-                            to={`/tag/${t}`}
-                            className={titleTagsStyles.tagBubble}
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            {t}
-                          </Link>
-                        ))}
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-            </div>
-          )}
-
-
-
           {ClockComponent && (
             <div 
               className={styles.clockWrapper}
