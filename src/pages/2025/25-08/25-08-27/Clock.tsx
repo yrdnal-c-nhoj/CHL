@@ -1,5 +1,5 @@
-import dodecahedronFontFile from '@/assets/fonts/2025/25-08-27-root.ttf'; // renamed import
-import backgroundImage from '@/assets/images/2025/25-08/25-08-27/rootsu.gif';
+import dodecahedronFontFile from '@/assets/fonts/25fonts/25-08-27-root.ttf'; // fixed path for existing asset
+import backgroundImage from '@/assets/images/25_images/25-08/25-08-27/rootsu.gif';
 import { useSuspenseFontLoader } from '@/utils/enhancedFontLoader';
 import { useClockTime } from '@/utils/hooks';
 import { useEffect, useMemo, useRef } from 'react';
