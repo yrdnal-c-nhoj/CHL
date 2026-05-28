@@ -1,5 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Thumbnail from '../components/Thumbnail';
 import { DataContext } from '../context/DataContext';
 import styles from '../styles/Tagger.module.css'; // Reusing Tagger styles for consistency
 import type { DataContextType } from '../types/data';
@@ -116,6 +117,7 @@ export default function TagManager() {
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead style={{ position: 'sticky', top: 0, background: '#fff', zIndex: 1 }}>
               <tr>
+                <th style={{ padding: '0.5rem', borderBottom: '2px solid #eee' }}>Preview</th>
                 <th
                   style={{ padding: '0.5rem', borderBottom: '2px solid #eee', cursor: 'pointer', userSelect: 'none' }}
                   onClick={() => handleSort('date')}
@@ -134,6 +136,13 @@ export default function TagManager() {
             <tbody>
               {sortedItems.map((item) => (
                 <tr key={item.date} style={{ borderBottom: '1px solid #f9f9f9' }}>
+                  <td style={{ padding: '0.5rem' }}>
+                    <Thumbnail 
+                      date={item.date} 
+                      title={item.title} 
+                      style={{ width: '60px', borderRadius: '4px' }} 
+                    />
+                  </td>
                   <td style={{ padding: '0.5rem', fontFamily: 'monospace' }}>{item.date}</td>
                   <td style={{ padding: '0.5rem' }}>{item.title}</td>
                   <td style={{ padding: '0.5rem' }}>
