@@ -12,6 +12,7 @@ export default function TagManager() {
   const items = ctx?.items ?? [];
   const loading = ctx?.loading ?? true;
 
+  const [searchTerm, setSearchTerm] = useState('');
   const [sortConfig, setSortConfig] = useState<{
     key: 'date' | 'title';
     direction: 'asc' | 'desc';
@@ -43,7 +44,12 @@ export default function TagManager() {
   };
 
   const sortedItems = useMemo(() => {
-    return [...items].sort((a, b) => {
+    const filtered = items.filter(item => 
+      item.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      item.date.includes(searchTerm)
+    );
+
+    return filtered.sort((a, b) => {
       const valA = (a[sortConfig.key] || '').toString();
       const valB = (b[sortConfig.key] || '').toString();
 
@@ -51,7 +57,7 @@ export default function TagManager() {
       if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1;
       return 0;
     });
-  }, [items, sortConfig]);
+  }, [items, sortConfig, searchTerm]);
 
   // Extract all unique tags from all items for the dropdown
   const allExistingTags = useMemo(() => {
@@ -100,7 +106,16 @@ export default function TagManager() {
           </button>
         </div>
 
-        <div style={{ maxHeight: '60vh', overflowY: 'auto', marginBottom: '2rem', border: '1px solid #eee' }}>
+        <div className={styles.field} style={{ marginBottom: '1rem' }}>
+          <input 
+            className={styles.input}
+            placeholder="Search by title or date (YY-MM-DD)..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
+        <div style={{ maxHeight: '50vh', overflowY: 'auto', marginBottom: '2rem', border: '1px solid #eee' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead style={{ position: 'sticky', top: 0, background: '#fff', zIndex: 1 }}>
               <tr>

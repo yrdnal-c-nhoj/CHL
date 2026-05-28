@@ -2,13 +2,13 @@
  * This file manages the global state for all clock data in the application.
  */
 import type {
-  ReactNode
+    ReactNode
 } from 'react';
 import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState
+    createContext,
+    useContext,
+    useEffect,
+    useState
 } from 'react';
 
 /**
@@ -19,7 +19,7 @@ export interface ClockItem {
   date: string;      // The date string (usually YY-MM-DD)
   title: string;     // The display name of the clock
   tags?: string[];   // Optional array of tags
-  [key: string]: any; // Allows for additional dynamic properties
+  clockNumber?: number; // Injected during initialization
 }
 
 /**
@@ -65,25 +65,16 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
           : (await import('./clockpages.json')).default;
 
         // Sort the data by date string (ascending) to determine the chronological order
-        const sorted = [...data]
+        // We process this once and use it as our primary source of truth
+        const processedItems: ClockItem[] = [...data]
           .filter((d: any) => d?.date)
           .sort((a: any, b: any) =>
             String(a.date).localeCompare(String(b.date)),
-          );
-
-        // Map through the original data and inject a 'clockNumber' based on its sorted index
-        const withNumbers = data.map((item: any) => {
-          const idx = sorted.findIndex(
-            (s: any) => s?.date === item?.date && s?.path === item?.path,
-          );
-          return { 
-            ...item,
-            clockNumber: idx >= 0 ? idx + 1 : undefined,
-          };
-        });
+          )
+          .map((item, idx) => ({ ...item, clockNumber: idx + 1 }));
 
         // Update the state with the fully processed items
-        setItems(withNumbers);
+        setItems(processedItems);
       } catch (err) {
         // Catch and format any errors that occur during the import or processing
         setError(
