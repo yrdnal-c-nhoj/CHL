@@ -1804,7 +1804,12 @@
   {
     "path": "25-11-13",
     "date": "25-11-13",
-    "title": "Commute"
+    "title": "Commute",
+    "tags": [
+      "transport",
+      "analog",
+      "tick tock"
+    ]
   },
   {
     "path": "25-11-14",
@@ -1820,7 +1825,12 @@
   {
     "path": "25-11-15",
     "date": "25-11-15",
-    "title": "Fall"
+    "title": "Fall",
+    "tags": [
+      "trees",
+      "trunk",
+      "digital"
+    ]
   },
   {
     "path": "25-11-16",
@@ -1830,7 +1840,13 @@
   {
     "path": "25-11-17",
     "date": "25-11-17",
-    "title": "Mars"
+    "title": "Mars",
+    "tags": [
+      "planet",
+      "myth",
+      "gods",
+      "red"
+    ]
   },
   {
     "path": "25-11-18",
@@ -1847,7 +1863,13 @@
   {
     "path": "25-11-19",
     "date": "25-11-19",
-    "title": "Apple"
+    "title": "Apple",
+    "tags": [
+      "food",
+      "red",
+      "digital",
+      "grow"
+    ]
   },
   {
     "path": "25-11-20",
@@ -1885,7 +1907,13 @@
   {
     "path": "25-11-24",
     "date": "25-11-24",
-    "title": "Coil"
+    "title": "Coil",
+    "tags": [
+      "animal",
+      "analog",
+      "serpent",
+      "earth"
+    ]
   },
   {
     "path": "25-11-25",
@@ -1905,7 +1933,8 @@
       "animal",
       "digital",
       "air",
-      "fly"
+      "fly",
+      "birds"
     ]
   },
   {
@@ -1942,7 +1971,9 @@
     "tags": [
       "digital",
       "animal",
-      "food"
+      "food",
+      "ocean",
+      "swim"
     ]
   },
   {
@@ -2050,7 +2081,12 @@
   {
     "path": "25-12-12",
     "date": "25-12-12",
-    "title": "RGB"
+    "title": "RGB",
+    "tags": [
+      "analog",
+      "RGB",
+      "color"
+    ]
   },
   {
     "path": "25-12-13",
@@ -2058,7 +2094,11 @@
     "title": "Cherubs",
     "tags": [
       "sky",
-      "digital"
+      "digital",
+      "rococo",
+      "paint",
+      "art",
+      "fly"
     ]
   },
   {
@@ -2069,7 +2109,10 @@
   {
     "path": "25-12-15",
     "date": "25-12-15",
-    "title": "Froze"
+    "title": "Froze",
+    "tags": [
+      "vertical"
+    ]
   },
   {
     "path": "25-12-16",
@@ -2112,12 +2155,24 @@
   {
     "path": "25-12-21",
     "date": "25-12-21",
-    "title": "Cassette"
+    "title": "Cassette",
+    "tags": [
+      "sound",
+      "tech",
+      "pictographic",
+      "spin",
+      "dance"
+    ]
   },
   {
     "path": "25-12-22",
     "date": "25-12-22",
-    "title": "Flicker"
+    "title": "Flicker",
+    "tags": [
+      "fire",
+      "light",
+      "analog"
+    ]
   },
   {
     "path": "25-12-23",
@@ -2134,7 +2189,12 @@
     "date": "25-12-25",
     "title": "Boarding Pass",
     "tags": [
-      "digital"
+      "digital 12h",
+      "fly",
+      "earth",
+      "air",
+      "airstairs",
+      "paper"
     ]
   },
   {
