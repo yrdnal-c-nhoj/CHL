@@ -146,7 +146,7 @@ export default function Tagger() {
         <Thumbnail 
           date={currentItem.date} 
           title={currentItem.title} 
-          style={{ width: '200px', borderRadius: '8px', flexShrink: 0 }} 
+          style={{ flexShrink: 0 }} 
         />
 
         <div style={{ flex: 1 }}>
