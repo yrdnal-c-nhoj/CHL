@@ -19,6 +19,7 @@
     "date": "25-04-03",
     "title": "Moby-Dick",
     "tags": [
+      "1851",
       "animal",
       "book",
       "deepwater",
@@ -92,11 +93,14 @@
       "digital-24h",
       "dry",
       "day and night",
+      "three",
       "nature",
       "landscape",
       "sky",
       "earth",
-      "horizon"
+      "horizon",
+      "vertical",
+      "up-and-down"
     ]
   },
   {
@@ -121,7 +125,8 @@
       "digital-12h",
       "color",
       "histogram",
-      "image-free"
+      "image-free",
+      "up-and-down"
     ]
   },
   {
@@ -181,7 +186,8 @@
       "nature",
       "landscape",
       "sky",
-      "earth"
+      "earth",
+      "horizon"
     ]
   },
   {
@@ -241,7 +247,8 @@
       "sky",
       "digital-12h",
       "elements",
-      "monochrome"
+      "monochrome",
+      "blue"
     ]
   },
   {
@@ -252,7 +259,9 @@
       "analog",
       "animal",
       "superstition",
-      "feather"
+      "feather",
+      "fly",
+      "alk"
     ]
   },
   {
@@ -261,7 +270,9 @@
     "title": "Bouncing Cube",
     "tags": [
       "gravity",
-      "digital"
+      "digital",
+      "fly",
+      "six"
     ]
   },
   {
@@ -284,7 +295,8 @@
       "hot",
       "digital-24h",
       "elements",
-      "red"
+      "red",
+      "lava"
     ]
   },
   {
@@ -315,7 +327,8 @@
       "analog",
       "spin",
       "disc",
-      "shiny"
+      "shiny",
+      "meatl"
     ]
   },
   {
@@ -338,7 +351,8 @@
       "digital-24h",
       "light",
       "night",
-      "fire"
+      "fire",
+      "up-and-down"
     ]
   },
   {
@@ -348,7 +362,8 @@
     "tags": [
       "gravity",
       "analog",
-      "round"
+      "round",
+      "up-and-down"
     ]
   },
   {
@@ -360,7 +375,8 @@
       "slow",
       "elements",
       "sky",
-      "light"
+      "light",
+      "sound"
     ]
   },
   {
@@ -387,7 +403,8 @@
       "flower",
       "gravity",
       "red",
-      "grow"
+      "grow",
+      "up-and-down"
     ]
   },
   {
@@ -435,7 +452,8 @@
       "analog",
       "transport",
       "swim",
-      "mechanical"
+      "mechanical",
+      "see"
     ]
   },
   {
@@ -446,7 +464,8 @@
       "sky",
       "digital",
       "transport",
-      "fly"
+      "fly",
+      "yellow"
     ]
   },
   {
@@ -468,7 +487,9 @@
       "digital-12h",
       "color",
       "gravity",
-      "up-and-down"
+      "up-and-down",
+      "orance",
+      "pink"
     ]
   },
   {
@@ -480,7 +501,9 @@
       "spirit-animal",
       "earth",
       "fast",
-      "apex-predator"
+      "predator",
+      "camouflage",
+      "cat"
     ]
   },
   {
@@ -489,7 +512,8 @@
     "title": "Flat",
     "tags": [
       "analog",
-      "neutrals"
+      "neutrals",
+      "tick-tock"
     ]
   },
   {
@@ -512,7 +536,8 @@
       "round",
       "wheel",
       "analog",
-      "play"
+      "play",
+      "spin"
     ]
   },
   {
@@ -567,9 +592,10 @@
     "title": "Tetrahedron",
     "tags": [
       "fire",
-      "four-sided",
+      "four",
       "platonic-solid",
-      "digital-12h"
+      "digital-12h",
+      "red"
     ]
   },
   {
@@ -591,7 +617,8 @@
       "day",
       "planet",
       "analog",
-      "sphere"
+      "sphere",
+      "space"
     ]
   },
   {
@@ -601,7 +628,8 @@
     "tags": [
       "hands",
       "digital",
-      "color"
+      "color",
+      "cloth"
     ]
   },
   {
@@ -637,7 +665,8 @@
       "plant",
       "earth",
       "digital-12h",
-      "green"
+      "green",
+      "grow"
     ]
   },
   {
@@ -672,7 +701,8 @@
       "mechanical",
       "words",
       "wheel",
-      "spin"
+      "spin",
+      "grid"
     ]
   },
   {
@@ -684,7 +714,8 @@
       "space",
       "transport",
       "earth",
-      "gravity"
+      "gravity",
+      "fly"
     ]
   },
   {
@@ -693,7 +724,7 @@
     "title": "Elephant",
     "tags": [
       "analog",
-      "animal",
+      "spirit animal",
       "grey",
       "transport",
       "move",
@@ -721,7 +752,9 @@
       "drive",
       "analog",
       "fast",
-      "wheel"
+      "wheel",
+      "metal glass",
+      "transport"
     ]
   },
   {
@@ -732,7 +765,8 @@
       "digital-24h",
       "circles",
       "rotation",
-      "silver"
+      "silver",
+      "spin"
     ]
   },
   {
@@ -780,7 +814,8 @@
       "wind",
       "digital-24h",
       "windows",
-      "glass"
+      "glass",
+      "interior"
     ]
   },
   {
@@ -792,7 +827,8 @@
       "play",
       "face",
       "see",
-      "hand"
+      "hand",
+      "interior"
     ]
   },
   {
@@ -804,7 +840,8 @@
       "fly",
       "digital-12h",
       "transport",
-      "fast"
+      "fast",
+      "sky"
     ]
   },
   {
@@ -840,12 +877,28 @@
   {
     "path": "25-06-13",
     "date": "25-06-13",
-    "title": "Cloudy Night"
+    "title": "Cloudy Night",
+    "tags": [
+      "landscape",
+      "night",
+      "digital",
+      "up-and-down",
+      "black"
+    ]
   },
   {
     "path": "25-06-14",
     "date": "25-06-14",
-    "title": "Hummingbird"
+    "title": "Hummingbird",
+    "tags": [
+      "analog",
+      "bird",
+      "color",
+      "animal",
+      "green",
+      "pink grow",
+      "fly"
+    ]
   },
   {
     "path": "25-06-15",
@@ -873,7 +926,8 @@
     "title": "Backslant",
     "tags": [
       "image-free",
-      "digital"
+      "digital",
+      "parallel"
     ]
   },
   {
@@ -881,7 +935,10 @@
     "date": "25-06-18",
     "title": "Cistercian",
     "tags": [
-      "digital-24h"
+      "digital-24h",
+      "cloth",
+      "interior",
+      "typeface"
     ]
   },
   {
@@ -935,13 +992,18 @@
     "tags": [
       "digital-24h",
       "monochrome",
-      "air"
+      "air",
+      "sound"
     ]
   },
   {
     "path": "25-06-25",
     "date": "25-06-25",
-    "title": "Bone"
+    "title": "Bone",
+    "tags": [
+      "body",
+      "analog"
+    ]
   },
   {
     "path": "25-06-26",
@@ -988,7 +1050,9 @@
     "title": "Cinema",
     "tags": [
       "night",
-      "digital"
+      "digital",
+      "film",
+      "electricity"
     ]
   },
   {
@@ -1061,7 +1125,12 @@
   {
     "path": "25-07-09",
     "date": "25-07-09",
-    "title": "Blob"
+    "title": "Blob",
+    "tags": [
+      "blob",
+      "digital",
+      "image-free"
+    ]
   },
   {
     "path": "25-07-10",
@@ -1087,7 +1156,11 @@
   {
     "path": "25-07-12",
     "date": "25-07-12",
-    "title": "Fibonacci"
+    "title": "Fibonacci",
+    "tags": [
+      "shell",
+      "analog"
+    ]
   },
   {
     "path": "25-07-13",
@@ -1112,7 +1185,8 @@
     "tags": [
       "words",
       "image-free",
-      "digital 12h"
+      "digital 12h",
+      "black"
     ]
   },
   {
@@ -1130,7 +1204,8 @@
     "title": "Animals",
     "tags": [
       "animal",
-      "analog"
+      "analog",
+      "molecules"
     ]
   },
   {
@@ -1192,7 +1267,9 @@
     "title": "Barrelroll",
     "tags": [
       "spin",
-      "fly"
+      "fly",
+      "horizon",
+      "analog"
     ]
   },
   {
@@ -1257,7 +1334,11 @@
   {
     "path": "25-07-30",
     "date": "25-07-30",
-    "title": "Camouflage"
+    "title": "Camouflage",
+    "tags": [
+      "camouflage",
+      "digital"
+    ]
   },
   {
     "path": "25-07-31",
@@ -1266,7 +1347,8 @@
     "tags": [
       "eye",
       "digital",
-      "history"
+      "history",
+      "cloth"
     ]
   },
   {
@@ -1348,7 +1430,8 @@
       "fast",
       "digital",
       "white",
-      "monochrome"
+      "monochrome",
+      "stone"
     ]
   },
   {
@@ -1365,7 +1448,13 @@
   {
     "path": "25-08-10",
     "date": "25-08-10",
-    "title": "Bonfire"
+    "title": "Bonfire",
+    "tags": [
+      "fire",
+      "digital",
+      "night",
+      "landscape"
+    ]
   },
   {
     "path": "25-08-11",
@@ -1373,6 +1462,7 @@
     "title": "Washing Machine",
     "tags": [
       "bubble",
+      "cloth",
       "water",
       "analog",
       "mechanical",
@@ -1603,7 +1693,8 @@
       "spin",
       "analog",
       "sound",
-      "dance"
+      "dance",
+      "mechanical"
     ]
   },
   {
@@ -1689,7 +1780,8 @@
       "interior",
       "analog",
       "electricity",
-      "color"
+      "color",
+      "lava"
     ]
   },
   {
@@ -1700,7 +1792,8 @@
       "digital",
       "play",
       "purple",
-      "tree"
+      "tree",
+      "cloth"
     ]
   },
   {
@@ -1883,7 +1976,8 @@
       "animal",
       "night",
       "landscape",
-      "fly"
+      "fly",
+      "cow"
     ]
   },
   {
@@ -2154,7 +2248,8 @@
       "ocean",
       "float",
       "fast",
-      "day"
+      "day",
+      "up-and-down"
     ]
   },
   {
@@ -2261,12 +2356,24 @@
   {
     "path": "25-11-03",
     "date": "25-11-03",
-    "title": "Binary"
+    "title": "Binary",
+    "tags": [
+      "grid",
+      "yellow",
+      "blue",
+      "histogram"
+    ]
   },
   {
     "path": "25-11-04",
     "date": "25-11-04",
-    "title": "Churn"
+    "title": "Churn",
+    "tags": [
+      "waves",
+      "ocean",
+      "night",
+      "analog"
+    ]
   },
   {
     "path": "25-11-05",
@@ -2334,7 +2441,8 @@
       "analog",
       "electricity",
       "glass",
-      "metal"
+      "metal",
+      "mechanical"
     ]
   },
   {
@@ -2354,7 +2462,7 @@
     "date": "25-11-12",
     "title": "Octahedron",
     "tags": [
-      "pyramids",
+      "pyramid",
       "eight",
       "platonic-solid",
       "air",
@@ -2437,7 +2545,7 @@
     "tags": [
       "food",
       "red",
-      "digital",
+      "digital 24h",
       "grow",
       "apple"
     ]
@@ -2545,7 +2653,8 @@
       "paint",
       "rococo",
       "art",
-      "digital"
+      "digital",
+      "color"
     ]
   },
   {
@@ -2553,7 +2662,8 @@
     "date": "25-11-30",
     "title": "Caution",
     "tags": [
-      "pictographic"
+      "pictographic",
+      "b+w"
     ]
   },
   {
@@ -2610,7 +2720,8 @@
       "magic",
       "body",
       "transport",
-      "up-and-down"
+      "up-and-down",
+      "silver"
     ]
   },
   {
@@ -2706,7 +2817,8 @@
       "rococo",
       "paint",
       "art",
-      "fly"
+      "fly",
+      "body"
     ]
   },
   {
@@ -2729,7 +2841,8 @@
     "tags": [
       "four",
       "analog",
-      "green"
+      "green",
+      "image-free"
     ]
   },
   {
@@ -2747,7 +2860,8 @@
     "title": "Special Effects",
     "tags": [
       "digital",
-      "film"
+      "film",
+      "body"
     ]
   },
   {
@@ -2762,7 +2876,8 @@
     "tags": [
       "analog",
       "bird",
-      "animal"
+      "animal",
+      "feather"
     ]
   },
   {
@@ -2774,7 +2889,8 @@
       "tech",
       "pictographic",
       "spin",
-      "dance"
+      "dance",
+      "electricity"
     ]
   },
   {
@@ -2792,7 +2908,9 @@
     "date": "25-12-23",
     "title": "Bilateral Symmetry",
     "tags": [
-      "digital"
+      "digital",
+      "mirror",
+      "grid"
     ]
   },
   {
@@ -2810,7 +2928,8 @@
       "earth",
       "air",
       "airstairs",
-      "paper"
+      "paper",
+      "map"
     ]
   },
   {
@@ -2942,7 +3061,8 @@
       "analog",
       "trunk",
       "night",
-      "Africa"
+      "Africa",
+      "orange"
     ]
   },
   {
@@ -3084,7 +3204,8 @@
       "Italy",
       "pictographic",
       "landscape",
-      "body"
+      "body",
+      "day"
     ]
   },
   {
@@ -3107,6 +3228,7 @@
     "tags": [
       "neutrals",
       "digital-24h",
+      "1974",
       "interior",
       "earth tones",
       "chess",
@@ -3293,7 +3415,8 @@
       "Paris",
       "metal",
       "analog",
-      "landscape"
+      "landscape",
+      "design"
     ]
   },
   {
@@ -3376,7 +3499,8 @@
       "analog",
       "earth",
       "day and night",
-      "hot"
+      "hot",
+      "lava"
     ]
   },
   {
@@ -3397,7 +3521,8 @@
     "tags": [
       "analog",
       "typeface",
-      "words"
+      "words",
+      "up-and-down"
     ]
   },
   {
@@ -3485,6 +3610,7 @@
     "tags": [
       "digital",
       "Marinetti",
+      "1913",
       "interior",
       "art",
       "red",
@@ -3531,7 +3657,7 @@
       "face",
       "stone",
       "move",
-      "pyramids"
+      "pyramid"
     ]
   },
   {
@@ -3605,7 +3731,8 @@
       "digital",
       "tech",
       "green",
-      "screen"
+      "screen",
+      "electricity"
     ]
   },
   {
@@ -3654,7 +3781,9 @@
       "random",
       "digital-24h",
       "animal",
-      "typeface"
+      "typeface",
+      "cat",
+      "predator"
     ]
   },
   {
@@ -3833,7 +3962,8 @@
       "digital-12h",
       "aim",
       "hands",
-      "slow"
+      "slow",
+      "feather"
     ]
   },
   {
@@ -3841,6 +3971,7 @@
     "date": "26-03-25",
     "title": "Ride",
     "tags": [
+      "grid",
       "analog",
       "spin",
       "gravity",
@@ -3986,7 +4117,9 @@
       "Russia",
       "transport",
       "gravity",
-      "light"
+      "light",
+      "sky",
+      "sound"
     ]
   },
   {
@@ -3994,7 +4127,7 @@
     "date": "26-04-06",
     "title": "Pulley",
     "tags": [
-      "six simple machines",
+      "six-simple-machines",
       "generative",
       "analog",
       "random"
@@ -4393,6 +4526,7 @@
     "date": "26-05-08",
     "title": "Right Ascension",
     "tags": [
+      "grid",
       "digital-12h",
       "sun",
       "space",
@@ -4421,6 +4555,7 @@
     "tags": [
       "hands",
       "digital-24h",
+      "cloth",
       "monochrome",
       "unfinished",
       "body",
@@ -4479,7 +4614,8 @@
       "analog",
       "color",
       "day",
-      "round"
+      "round",
+      "cake"
     ]
   },
   {
@@ -4516,6 +4652,8 @@
     "title": "Reanimate",
     "tags": [
       "Egypt",
+      "predator",
+      "pyramid",
       "digital-24h",
       "mummy",
       "body",
@@ -4607,6 +4745,7 @@
       "flow",
       "vertical",
       "nature",
+      "lava",
       "The-Fire-Within",
       "elements",
       "Werner-Herzog",
