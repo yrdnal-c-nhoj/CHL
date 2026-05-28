@@ -161,7 +161,7 @@
 .monthItemTags {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 4px;
   margin-top: 0.4rem;
   padding-bottom: 0.2rem;
@@ -171,11 +171,12 @@
   font-family: var(--font-arimo);
   font-size: 0.6rem;
   background-color: #d4d5d7;
+  border-radius: 4px;
+  border: 1px solid #c8c9cc;
+  padding: 0px 3px;
   color: #393a3b;
-  padding: 1px 6px;
-  border-radius: 10px;
+  white-space: nowrap;
   text-decoration: none;
-  text-transform: uppercase;
   transition: background-color 0.2s, color 0.2s;
 }
 
@@ -183,3 +184,5 @@
   background-color: var(--color-lab-blue-deep);
   color: white;
 }
+
+
