@@ -93,7 +93,8 @@
       "nature",
       "landscape",
       "sky",
-      "earth"
+      "earth",
+      "horizon"
     ]
   },
   {
@@ -599,7 +600,8 @@
       "spin",
       "weather",
       "wind",
-      "digital-12h"
+      "digital-12h",
+      "air"
     ]
   },
   {
@@ -740,7 +742,8 @@
       "digital-12h",
       "trees",
       "grow",
-      "trunk"
+      "trunk",
+      "earth"
     ]
   },
   {
@@ -834,7 +837,8 @@
     "title": "Stitches",
     "tags": [
       "body",
-      "digital"
+      "digital",
+      "thread"
     ]
   },
   {
@@ -886,13 +890,19 @@
     "date": "25-06-23",
     "title": "Squiggle",
     "tags": [
-      "analog"
+      "analog",
+      "image-free"
     ]
   },
   {
     "path": "25-06-24",
     "date": "25-06-24",
-    "title": "Thought Balloon"
+    "title": "Thought Balloon",
+    "tags": [
+      "digital 24h",
+      "monochrome",
+      "air"
+    ]
   },
   {
     "path": "25-06-25",
@@ -922,7 +932,10 @@
   {
     "path": "25-06-29",
     "date": "25-06-29",
-    "title": "Stretch"
+    "title": "Stretch",
+    "tags": [
+      "digital"
+    ]
   },
   {
     "path": "25-06-30",
@@ -1154,7 +1167,8 @@
       "digital-12h",
       "earth",
       "water",
-      "sphere"
+      "sphere",
+      "grow"
     ]
   },
   {
@@ -1238,7 +1252,8 @@
       "horse",
       "transport",
       "ride",
-      "film"
+      "film",
+      "horizon"
     ]
   },
   {
@@ -1290,7 +1305,8 @@
       "earth",
       "analog",
       "color",
-      "space"
+      "space",
+      "horizon"
     ]
   },
   {
@@ -1318,7 +1334,9 @@
     "date": "25-08-17",
     "title": "Sticky Note",
     "tags": [
-      "digital"
+      "digital",
+      "paper",
+      "book"
     ]
   },
   {
@@ -1334,7 +1352,14 @@
   {
     "path": "25-08-20",
     "date": "25-08-20",
-    "title": "Time Zone"
+    "title": "Time Zone",
+    "tags": [
+      "air",
+      "analog",
+      "twenty-four",
+      "grid",
+      "horizon"
+    ]
   },
   {
     "path": "25-08-21",
@@ -1425,7 +1450,13 @@
   {
     "path": "25-08-29",
     "date": "25-08-29",
-    "title": "Sunflower"
+    "title": "Sunflower",
+    "tags": [
+      "grow",
+      "flower",
+      "analog",
+      "yellow"
+    ]
   },
   {
     "path": "25-08-30",
@@ -1486,7 +1517,7 @@
     "tags": [
       "food",
       "digital",
-      "animal"
+      "animal round"
     ]
   },
   {
@@ -1681,7 +1712,8 @@
       "digital",
       "science",
       "tech",
-      "info"
+      "info",
+      "horizon"
     ]
   },
   {
@@ -1700,7 +1732,10 @@
     "title": "Tempest",
     "tags": [
       "analog",
-      "weather"
+      "weather",
+      "spin",
+      "wind",
+      "water"
     ]
   },
   {
@@ -2036,7 +2071,8 @@
     "tags": [
       "film",
       "digital",
-      "b+w"
+      "b+w",
+      "horizon"
     ]
   },
   {
@@ -2073,7 +2109,8 @@
     "tags": [
       "body",
       "digital",
-      "water"
+      "water",
+      "horizon"
     ]
   },
   {
@@ -2094,7 +2131,8 @@
       "digital-24h",
       "0123456789ABCDEF",
       "color",
-      "design"
+      "design",
+      "grid"
     ]
   },
   {
@@ -2239,7 +2277,8 @@
       "sky",
       "sun",
       "moon",
-      "up-and-down"
+      "up-and-down",
+      "horizon"
     ]
   },
   {
@@ -2255,7 +2294,9 @@
       "space",
       "digital",
       "mechanical",
-      "Russia"
+      "Russia",
+      "sky",
+      "metal"
     ]
   },
   {
@@ -2311,13 +2352,20 @@
     "title": "Timeline",
     "tags": [
       "digital 24h",
-      "color"
+      "color",
+      "grid"
     ]
   },
   {
     "path": "25-11-29",
     "date": "25-11-29",
-    "title": "Squiggle"
+    "title": "Squiggle",
+    "tags": [
+      "paint",
+      "rococo",
+      "art",
+      "digital"
+    ]
   },
   {
     "path": "25-11-30",
@@ -2733,7 +2781,8 @@
     "tags": [
       "color",
       "food",
-      "analog"
+      "analog",
+      "grow"
     ]
   },
   {
@@ -2742,7 +2791,8 @@
     "title": "Tic-Tac-Toe",
     "tags": [
       "play",
-      "digital"
+      "digital",
+      "grid"
     ]
   },
   {
@@ -3059,7 +3109,8 @@
       "digital",
       "screen",
       "interior",
-      "wood"
+      "wood",
+      "glass"
     ]
   },
   {
@@ -3095,7 +3146,8 @@
       "word clock",
       "monochrome",
       "typeface",
-      "image-free"
+      "image-free",
+      "grid"
     ]
   },
   {
@@ -3545,7 +3597,9 @@
       "digital-24h",
       "sky",
       "blue",
-      "day"
+      "day",
+      "parallax",
+      "latex"
     ]
   },
   {
@@ -3602,7 +3656,8 @@
       "analog",
       "image-free",
       "triangle",
-      "three"
+      "three",
+      "face"
     ]
   },
   {
@@ -3738,7 +3793,8 @@
       "walk",
       "stone",
       "panorama",
-      "wall"
+      "wall",
+      "horizon"
     ]
   },
   {
@@ -3762,7 +3818,8 @@
       "digital-24h",
       "monochrome",
       "blue",
-      "float"
+      "float",
+      "waves"
     ]
   },
   {
@@ -3784,7 +3841,8 @@
     "tags": [
       "eyes",
       "pictographic 24h",
-      "see"
+      "see",
+      "face"
     ]
   },
   {
@@ -3808,7 +3866,8 @@
       "move",
       "night",
       "digital-24h",
-      "mechanical"
+      "mechanical",
+      "drive"
     ]
   },
   {
@@ -3828,8 +3887,8 @@
     "date": "26-04-15",
     "title": "Meow",
     "tags": [
-      "animal-24h",
-      "digital",
+      "animal",
+      "digital 24h",
       "cat",
       "random"
     ]
@@ -3856,7 +3915,8 @@
       "Paris",
       "film",
       "1967",
-      "digital-24h"
+      "digital-24h",
+      "glass"
     ]
   },
   {
@@ -3867,7 +3927,8 @@
       "tech",
       "wavelength",
       "digital-24h",
-      "radio"
+      "radio",
+      "waves"
     ]
   },
   {
@@ -3918,7 +3979,8 @@
       "analog",
       "exterior",
       "roll",
-      "day"
+      "day",
+      "drive"
     ]
   },
   {
@@ -4026,7 +4088,9 @@
       "mechanical",
       "radar",
       "tech",
-      "spin"
+      "spin",
+      "metal",
+      "waves"
     ]
   },
   {
@@ -4039,7 +4103,9 @@
       "gravity",
       "transport",
       "fast",
-      "day"
+      "day",
+      "metal",
+      "glass"
     ]
   },
   {
@@ -4063,7 +4129,8 @@
       "ocean",
       "move",
       "blue",
-      "spirit animal"
+      "spirit animal",
+      "waves"
     ]
   },
   {
@@ -4137,7 +4204,8 @@
       "digital-24h",
       "monochrome",
       "unfinished",
-      "body"
+      "body",
+      "grid"
     ]
   },
   {
@@ -4149,7 +4217,8 @@
       "digital-24h",
       "night",
       "air",
-      "dark"
+      "dark",
+      "parallax"
     ]
   },
   {
@@ -4176,7 +4245,8 @@
       "digital",
       "Paris",
       "blue",
-      "day"
+      "day",
+      "screen"
     ]
   },
   {
@@ -4259,7 +4329,8 @@
       "info-tech",
       "rip-clippy",
       "nature",
-      "digital-12h"
+      "digital-12h",
+      "landscape"
     ]
   },
   {
@@ -4268,6 +4339,8 @@
     "title": "Elevator",
     "tags": [
       "digital-24h",
+      "door",
+      "metal",
       "open-and-shut",
       "up-and-down",
       "interior",
@@ -4284,7 +4357,8 @@
       "animal",
       "monochrome",
       "analog",
-      "night"
+      "night",
+      "dog"
     ]
   },
   {
@@ -4296,7 +4370,9 @@
       "tech",
       "pictographic-24h",
       "deepwater",
-      "transport"
+      "transport",
+      "float",
+      "swim"
     ]
   },
   {
