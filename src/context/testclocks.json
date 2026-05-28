@@ -11,7 +11,8 @@
       "sky",
       "spin",
       "light",
-      "night"
+      "night",
+      "black"
     ]
   },
   {
@@ -25,12 +26,14 @@
       "deepwater",
       "digital-24h",
       "predator",
+      "grey",
       "myth",
       "white",
       "swim",
       "ocean",
       "mirror",
-      "water"
+      "water",
+      "paper"
     ]
   },
   {
@@ -43,7 +46,8 @@
       "EKG",
       "body",
       "flow",
-      "blood"
+      "blood",
+      "red"
     ]
   },
   {
@@ -126,7 +130,8 @@
       "color",
       "histogram",
       "image-free",
-      "up-and-down"
+      "up-and-down",
+      "three"
     ]
   },
   {
@@ -137,6 +142,7 @@
       "brown",
       "monochrome",
       "analog",
+      "map",
       "mechanical",
       "earth"
     ]
@@ -150,6 +156,7 @@
       "monochrome",
       "digital-24h",
       "non-spectral",
+      "magenta",
       "subtractive primary"
     ]
   },
@@ -173,7 +180,8 @@
     "tags": [
       "histogram",
       "blue",
-      "monochrome"
+      "monochrome",
+      "three"
     ]
   },
   {
@@ -236,7 +244,8 @@
       "color",
       "sphere",
       "histogram",
-      "image-free"
+      "image-free",
+      "thre"
     ]
   },
   {
@@ -248,7 +257,8 @@
       "digital-12h",
       "elements",
       "monochrome",
-      "blue"
+      "blue",
+      "air"
     ]
   },
   {
@@ -261,7 +271,9 @@
       "superstition",
       "feather",
       "fly",
-      "alk"
+      "bird",
+      "walk",
+      "sound"
     ]
   },
   {
@@ -284,7 +296,8 @@
       "analog",
       "ocean",
       "sky",
-      "waves"
+      "waves",
+      "horizon"
     ]
   },
   {
@@ -296,7 +309,8 @@
       "digital-24h",
       "elements",
       "red",
-      "lava"
+      "lava",
+      "orange"
     ]
   },
   {
@@ -316,7 +330,8 @@
     "title": "Skew",
     "tags": [
       "digital-12h",
-      "color"
+      "color",
+      "black"
     ]
   },
   {
@@ -351,8 +366,7 @@
       "digital-24h",
       "light",
       "night",
-      "fire",
-      "up-and-down"
+      "fire"
     ]
   },
   {
@@ -363,7 +377,8 @@
       "gravity",
       "analog",
       "round",
-      "up-and-down"
+      "up-and-down",
+      "physics"
     ]
   },
   {
@@ -376,7 +391,8 @@
       "elements",
       "sky",
       "light",
-      "sound"
+      "sound",
+      "weather"
     ]
   },
   {
@@ -427,6 +443,7 @@
     "tags": [
       "digital-24h",
       "balloon",
+      "bone",
       "earth",
       "art",
       "underworld"
@@ -595,7 +612,8 @@
       "four",
       "platonic-solid",
       "digital-12h",
-      "red"
+      "red",
+      "pyramid"
     ]
   },
   {
@@ -715,7 +733,8 @@
       "transport",
       "earth",
       "gravity",
-      "fly"
+      "fly",
+      "mechanical"
     ]
   },
   {
@@ -724,10 +743,11 @@
     "title": "Elephant",
     "tags": [
       "analog",
-      "spirit animal",
+      "animal",
+      "silver",
       "grey",
       "transport",
-      "move",
+      "walk",
       "trunk"
     ]
   },
@@ -741,7 +761,8 @@
       "words",
       "move",
       "fly",
-      "paper"
+      "paper",
+      "UPC"
     ]
   },
   {
@@ -753,8 +774,10 @@
       "analog",
       "fast",
       "wheel",
-      "metal glass",
-      "transport"
+      "metal",
+      "glass",
+      "transport",
+      "mechanical"
     ]
   },
   {
@@ -766,7 +789,9 @@
       "circles",
       "rotation",
       "silver",
-      "spin"
+      "spin",
+      "metal",
+      "purple"
     ]
   },
   {
@@ -802,7 +827,8 @@
       "roll",
       "analog",
       "move",
-      "purple"
+      "purple",
+      "side-to-side"
     ]
   },
   {
@@ -814,6 +840,7 @@
       "wind",
       "digital-24h",
       "windows",
+      "weather",
       "glass",
       "interior"
     ]
@@ -871,7 +898,9 @@
       "digital",
       "animal",
       "brown",
-      "cow"
+      "cow",
+      "white",
+      "camouflage"
     ]
   },
   {
@@ -883,7 +912,8 @@
       "night",
       "digital",
       "up-and-down",
-      "black"
+      "black",
+      "fast"
     ]
   },
   {
@@ -896,8 +926,10 @@
       "color",
       "animal",
       "green",
-      "pink grow",
-      "fly"
+      "pink",
+      "grow",
+      "fly",
+      "fast"
     ]
   },
   {
@@ -907,7 +939,8 @@
     "tags": [
       "body",
       "digital",
-      "thread"
+      "thread",
+      "bone"
     ]
   },
   {
@@ -917,7 +950,8 @@
     "tags": [
       "analog",
       "transport",
-      "night"
+      "night",
+      "fast"
     ]
   },
   {
@@ -944,7 +978,15 @@
   {
     "path": "25-06-19",
     "date": "25-06-19",
-    "title": "CMYK"
+    "title": "CMYK",
+    "tags": [
+      "CMYK",
+      "analog",
+      "magenta",
+      "black",
+      "yellow",
+      "cyan"
+    ]
   },
   {
     "path": "25-06-20",
@@ -973,7 +1015,8 @@
       "parallel",
       "red",
       "image-free",
-      "pictographic"
+      "histogram",
+      "pattern"
     ]
   },
   {
@@ -982,7 +1025,9 @@
     "title": "Squiggle",
     "tags": [
       "analog",
-      "image-free"
+      "image-free",
+      "green",
+      "grey"
     ]
   },
   {
@@ -1002,7 +1047,9 @@
     "title": "Bone",
     "tags": [
       "body",
-      "analog"
+      "analog",
+      "shell",
+      "bone"
     ]
   },
   {
@@ -1028,7 +1075,8 @@
     "tags": [
       "analog 24h",
       "b+w",
-      "image-free"
+      "image-free",
+      "twenty-four"
     ]
   },
   {
@@ -1159,7 +1207,9 @@
     "title": "Fibonacci",
     "tags": [
       "shell",
-      "analog"
+      "analog",
+      "b+w",
+      "bone"
     ]
   },
   {
@@ -1215,6 +1265,7 @@
     "tags": [
       "digital",
       "monochrome",
+      "bone",
       "see",
       "b+w",
       "body",
@@ -1337,7 +1388,9 @@
     "title": "Camouflage",
     "tags": [
       "camouflage",
-      "digital"
+      "digital",
+      "green",
+      "brown"
     ]
   },
   {
@@ -1348,7 +1401,8 @@
       "eye",
       "digital",
       "history",
-      "cloth"
+      "cloth",
+      "thread"
     ]
   },
   {
@@ -1359,6 +1413,7 @@
       "analog",
       "constellations",
       "night",
+      "gods",
       "myth",
       "stars",
       "animals",
@@ -1541,18 +1596,21 @@
   {
     "path": "25-08-19",
     "date": "25-08-19",
-    "title": "Newton's Cradle"
+    "title": "Newton's Cradle",
+    "tags": [
+      "apple"
+    ]
   },
   {
     "path": "25-08-20",
     "date": "25-08-20",
     "title": "Time Zone",
     "tags": [
-      "air",
       "analog",
       "twenty-four",
       "grid",
-      "horizon"
+      "horizon",
+      "twilight"
     ]
   },
   {
@@ -1589,7 +1647,8 @@
       "water",
       "pictographic",
       "triangle",
-      "waves"
+      "waves",
+      "weather"
     ]
   },
   {
@@ -1630,7 +1689,8 @@
     "tags": [
       "sixteen",
       "image-free",
-      "analog"
+      "analog",
+      "geometry"
     ]
   },
   {
@@ -1765,10 +1825,13 @@
     "tags": [
       "digital",
       "body",
+      "gods",
+      "bone",
       "flower",
       "light",
       "fire",
-      "underworld"
+      "underworld",
+      "shadow"
     ]
   },
   {
@@ -1816,6 +1879,9 @@
       "pictographic",
       "monochrome",
       "animals",
+      "feather",
+      "shell",
+      "bone",
       "earth",
       "snow"
     ]
@@ -2203,7 +2269,8 @@
       "sun",
       "digital",
       "moon",
-      "shadow"
+      "shadow",
+      "light"
     ]
   },
   {
@@ -2246,6 +2313,7 @@
       "Maine",
       "digital",
       "ocean",
+      "weather",
       "float",
       "fast",
       "day",
@@ -2311,7 +2379,8 @@
       "film",
       "digital",
       "b+w",
-      "horizon"
+      "horizon",
+      "mechanical"
     ]
   },
   {
@@ -2350,7 +2419,10 @@
       "body",
       "digital",
       "water",
-      "horizon"
+      "horizon",
+      "shell",
+      "swim",
+      "grow"
     ]
   },
   {
@@ -2408,7 +2480,9 @@
       "one stone",
       "tree",
       "landscape",
-      "bird"
+      "bird",
+      "feather",
+      "two"
     ]
   },
   {
@@ -2497,7 +2571,10 @@
     "tags": [
       "trees",
       "trunk",
-      "digital"
+      "digital",
+      "grow",
+      "gravity",
+      "orange"
     ]
   },
   {
@@ -2508,7 +2585,9 @@
       "water",
       "ocean",
       "animal",
-      "analog"
+      "analog",
+      "deepwater",
+      "shell"
     ]
   },
   {
@@ -2877,7 +2956,8 @@
       "analog",
       "bird",
       "animal",
-      "feather"
+      "feather",
+      "b+w"
     ]
   },
   {
@@ -2929,7 +3009,8 @@
       "air",
       "airstairs",
       "paper",
-      "map"
+      "map",
+      "UPC"
     ]
   },
   {
@@ -3105,7 +3186,8 @@
     "tags": [
       "play",
       "digital",
-      "grid"
+      "grid",
+      "b+w"
     ]
   },
   {
@@ -3116,7 +3198,14 @@
   {
     "path": "26-01-11",
     "date": "26-01-11",
-    "title": "Flamingo"
+    "title": "Flamingo",
+    "tags": [
+      "animal",
+      "bird",
+      "Las-Vegas",
+      "pink",
+      "analog"
+    ]
   },
   {
     "path": "26-01-12",
@@ -4013,6 +4102,7 @@
     "title": "h2o",
     "tags": [
       "molecules",
+      "blue",
       "digital-24h",
       "covalent bonding",
       "water",
@@ -4067,7 +4157,9 @@
       "digital-12h",
       "France",
       "rococo",
-      "pattern"
+      "pattern",
+      "shell",
+      "cloth"
     ]
   },
   {
@@ -4332,7 +4424,9 @@
       "exterior",
       "roll",
       "day",
-      "drive"
+      "drive",
+      "mechanical",
+      "metal"
     ]
   },
   {
@@ -4390,7 +4484,7 @@
     "date": "26-04-27",
     "title": "Lever",
     "tags": [
-      "six simplemachines",
+      "six-simple-machines",
       "generative",
       "digital-24h",
       "mechanical",
@@ -4405,7 +4499,8 @@
       "analog",
       "brown",
       "tech",
-      "monochrome"
+      "monochrome",
+      "info"
     ]
   },
   {
@@ -4442,7 +4537,8 @@
       "tech",
       "spin",
       "metal",
-      "waves"
+      "waves",
+      "weather"
     ]
   },
   {
@@ -4469,7 +4565,8 @@
       "brown",
       "digital",
       "paper",
-      "color"
+      "color",
+      "UPC"
     ]
   },
   {
@@ -4554,8 +4651,9 @@
     "title": "Weave",
     "tags": [
       "hands",
-      "digital-24h",
+      "thread",
       "cloth",
+      "digital-24h",
       "monochrome",
       "unfinished",
       "body",
@@ -4656,11 +4754,13 @@
       "pyramid",
       "digital-24h",
       "mummy",
+      "cloth",
+      "stone",
+      "bone",
       "body",
       "light",
       "1943",
-      "film",
-      "wood"
+      "film"
     ]
   },
   {
@@ -4686,6 +4786,7 @@
       "wallpaper",
       "day",
       "windows",
+      "weather",
       "digital",
       "info-tech",
       "rip-clippy",
