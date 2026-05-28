@@ -11,7 +11,14 @@ interface ClockModule {
 
 // Register all clock components via Vite glob outside the hook.
 // This ensures the registry is static and correctly mapped by the build tool.
-const CLOCK_MODULES = import.meta.glob('../pages/**/Clock.tsx');
+const CLOCK_MODULES = import.meta.glob('../pages/**/Clock.tsx') as Record<string, () => Promise<ClockModule>>;
+
+// Build a static lookup map once for O(1) access
+const CLOCK_LOOKUP = Object.entries(CLOCK_MODULES).reduce((acc, [path, importFn]) => {
+  const dateMatch = path.match(/\/(\d{2}-\d{2}-\d{2})\//i);
+  if (dateMatch) acc[dateMatch[1]] = importFn;
+  return acc;
+}, {} as Record<string, () => Promise<ClockModule>>);
 
 // Safety timeout to prevent infinite black screen
 const LOADING_TIMEOUT = 10000; // 10 seconds
@@ -85,28 +92,17 @@ export function useClockPage(currentItem: { date: string } | null) {
       }, LOADING_TIMEOUT);
 
       try {
-        // 1. Resolve the module path
-        // clockModules keys come from Vite's glob and can have varying path prefixes.
-        // We match only by the suffix that must always be present.
         const targetDate = currentItem.date.trim();
-        const searchSuffix = `/${targetDate.toLowerCase()}/clock.tsx`;
-        const match = Object.entries(CLOCK_MODULES).find(([path]) =>
-          path.toLowerCase().endsWith(searchSuffix),
-        );
+        const importFn = CLOCK_LOOKUP[targetDate];
 
-        if (!match) {
+        if (!importFn) {
           throw new Error(
-            `Clock lookup failed for date: ${targetDate}. ` +
-              `No module found ending in '${searchSuffix}'. ` +
-              `Check that the folder structure under src/pages matches the date.`,
+            `Clock lookup failed for date: ${targetDate}. Ensure the folder src/pages/${targetDate}/ exists.`
           );
         }
 
-        const [path, importFn] = match;
-
         // 2. Dynamically import the module
-        // importFn is the function that returns the dynamic import promise.
-        const module = await (importFn as () => Promise<ClockModule>)().catch(
+        const module = await importFn().catch(
           (err) => {
             const msg = err instanceof Error ? err.message : String(err);
             console.error(`[useClockPage] Module load failed for ${targetDate} at path ${path}. Check for syntax errors in this file.`, err);
