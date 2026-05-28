@@ -1,7 +1,5 @@
-# TODO
+- [x] Update ClockList.tsx to split tags into their own dedicated grid cell (5 cells total: date, image, title, tags, number)
+- [x] Update ClockList.module.css to change list row grid to 5 columns and align each cell
+- [ ] Verify visually / run tests (npm run dev / npm test)
 
-- [ ] Update `src/hooks/useClockPage.ts` to fail-open when `module.assets` is malformed or when `preloadAssets` fails.
-- [ ] Add defensive logging to pinpoint which clock module/date caused failures in production.
-- [ ] Ensure overlay behavior never blocks rendering due to asset preload errors.
-- [ ] Run `npm test` and `npm run type-check` (or `npm run build`) to confirm the fix.
 

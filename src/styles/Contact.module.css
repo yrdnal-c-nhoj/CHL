@@ -60,7 +60,7 @@
 .input {
   padding: 0.5rem;
   font-size: 1rem;
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-arimo);
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 100%;
@@ -71,7 +71,7 @@
   background-color: #8e8c8c;
   color: white;
   font-weight: bold;
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-arimo);
   padding: 0.75rem 1.5rem;
   transition: background-color 0.2s;
 }

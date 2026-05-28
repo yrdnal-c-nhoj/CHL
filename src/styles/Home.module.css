@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
   /* background-color: var(--color-lab-bg-gray); */
-  font-family: var(--font-manrope);
+  font-family: var(--font-arimo);
 }
 
 /* Home Page Layout */
@@ -144,7 +144,7 @@
 .monthItemInfo {
   display: flex;
   justify-content: space-between;
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-arimo);
   font-size: 0.65rem;
   color: #888;
   margin-bottom: 0;
@@ -152,7 +152,7 @@
 
 .monthItemTitle {
   /* font-family: 'Roboto Slab', serif; */
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-arimo);
   font-size: 1rem;
   text-align: center;
   margin-top: -0.15rem;

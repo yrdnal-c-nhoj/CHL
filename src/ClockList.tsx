@@ -4,22 +4,22 @@ import Thumbnail from './components/Thumbnail';
 import TopNav from './components/TopNav';
 import { DataContext } from './context/DataContext';
 import listStyles from './styles/ClockList.module.css';
-import type { ClockItem, DataContextType } from './types/data';
-import { formatDateStandard as formatDate } from './utils/dateUtils';
+import type { DataContextType } from './types/data';
 
 type SortOption =
   | 'date-desc'
   | 'date-asc'
   | 'title-asc'
   | 'title-desc'
-  | 'number-asc'
-  | 'number-desc';
+
+const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
 const ClockList: FC = () => {
   const context = useContext(DataContext) as DataContextType;
   const { items = [], loading = false, error = null } = context || {};
   const [sortBy, setSortBy] = useState<SortOption>('date-desc');
 
+  // Memoized sorting logic to prevent unnecessary re-renders
   const sortedItems = useMemo<ClockItem[]>(() => {
     const filtered = items.filter((item) => item?.date);
     switch (sortBy) {
@@ -28,21 +28,10 @@ const ClockList: FC = () => {
       case 'date-asc':
         return [...filtered].sort((a, b) => a.date.localeCompare(b.date));
       case 'title-asc':
-        return [...filtered].sort((a, b) =>
-          (a.title || '').localeCompare(b.title || ''),
-        );
+        return [...filtered].sort((a, b) => (a.title || '').localeCompare(b.title || ''));
       case 'title-desc':
-        return [...filtered].sort((a, b) =>
-          (b.title || '').localeCompare(a.title || ''),
-        );
-      case 'number-asc':
-        return [...filtered].sort(
-          (a, b) => Number(a.clockNumber || 0) - Number(b.clockNumber || 0),
-        );
-      case 'number-desc':
-        return [...filtered].sort(
-          (a, b) => Number(b.clockNumber || 0) - Number(a.clockNumber || 0),
-        );
+        return [...filtered].sort((a, b) => (b.title || '').localeCompare(a.title || ''));
+    
       default:
         return filtered;
     }
@@ -52,20 +41,15 @@ const ClockList: FC = () => {
     setSortBy((prev) => (prev === 'date-desc' ? 'date-asc' : 'date-desc'));
   const handleTitleSort = () =>
     setSortBy((prev) => (prev === 'title-asc' ? 'title-desc' : 'title-asc'));
-  const handleNumberSort = () =>
-    setSortBy((prev) =>
-      prev === 'number-desc' ? 'number-asc' : 'number-desc',
-    );
+ 
+  if (loading) return (
+    <div className={listStyles.listPageContainer}>
+      <TopNav />
+      <div className={listStyles.loadingContainer}>Loading...</div>
+      <Footer />
+    </div>
+  );
 
-  if (loading) {
-    return (
-      <div className={listStyles.listPageContainer}>
-        <TopNav />
-        <div className={listStyles.loadingContainer} />
-        <Footer />
-      </div>
-    );
-  }
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -74,6 +58,7 @@ const ClockList: FC = () => {
     <div className={listStyles.listPageContainer}>
       <TopNav />
       <div className={listStyles.centeredContent}>
+        {/* Layout Controls */}
         <div className={listStyles.controls}>
           <button
             type="button"
@@ -91,58 +76,57 @@ const ClockList: FC = () => {
             title{' '}
             {sortBy === 'title-asc' ? '↓' : sortBy === 'title-desc' ? '↑' : ''}
           </button>
-          <button
-            type="button"
-            onClick={handleNumberSort}
-            className={listStyles.sortButton}
-          >
-            number{' '}
-            {sortBy === 'number-asc'
-              ? '↓'
-              : sortBy === 'number-desc'
-                ? '↑'
-                : ''}
-          </button>
         </div>
 
-        <ul className={listStyles.simpleList}>
-          {sortedItems.map((item, index) => (
-            <li
-              key={`list-${item.date}`}
-              style={index !== 0 ? { borderTop: '2px solid #ddd' } : {}}
-            >
+        <ul className={listStyles.simpleListContainer}>
+          {sortedItems.map((item) => (
+            <li key={item.date}>
               <a
                 href={`/${item.date}`}
                 className={listStyles.simpleListImage}
               >
+                {/* Column 1: Date */}
                 <time
                   className={listStyles.simpleListDate}
                   dateTime={`20${item.date}`}
                 >
-                  {formatDate(item.date)}
+                  {(() => {
+                    const [yy, mm, dd] = item.date.split('-');
+                    const monthName = MONTHS[parseInt(mm, 10) - 1] || '???';
+                    return (
+                      <>
+                        {/* Using padStart and removing inline font-size to ensure all digits are identical in size */}
+                        <span>{dd.padStart(2, '0')}</span>
+                        <span>{monthName}</span>
+                        <span>'{yy}</span>
+                      </>
+                    );
+                  })()}
                 </time>
+
+                {/* Column 2: Image */}
                 <div className={listStyles.thumbnailWrapper}>
                   <Thumbnail date={item.date} title={item.title || ''} />
                 </div>
-                <div className={listStyles.titleContainer}>
-                  <span className={listStyles.simpleListTitle}>
-                    {item.title || 'No Title'}
-                  </span>
-                  {item.tags && item.tags.length > 0 && (
-                    <div className={listStyles.tagsWrapper}>
-                      {[...item.tags]
-                        .sort((a, b) => a.localeCompare(b))
-                        .map((tag) => (
-                          <span key={tag} className={listStyles.tagBubble}>
-                            {tag}
-                          </span>
-                        ))}
-                    </div>
-                  )}
+
+                {/* Column 3: Content Stack (Title/Number Row + Tags Row) */}
+                <div className={listStyles.contentStack}>
+                  <div className={listStyles.titleNumberRow}>
+                    <span className={listStyles.simpleListTitle}>
+                      {item.title || 'No Title'}
+                    </span>
+                    <span className={listStyles.simpleListNumber}>
+                      #{item.clockNumber}
+                    </span>
+                  </div>
+                  <div className={listStyles.tagsWrapper}>
+                    {[...(item.tags || [])]
+                      .sort((a, b) => a.localeCompare(b))
+                      .map((tag) => (
+                        <span key={tag} className={listStyles.tagBubble}>{tag}</span>
+                      ))}
+                  </div>
                 </div>
-                <span className={listStyles.simpleListNumber}>
-                  #{item.clockNumber}
-                </span>
               </a>
             </li>
           ))}
