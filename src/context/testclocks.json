@@ -98,7 +98,7 @@
       "digital-24h",
       "nature",
       "dry",
-      "day and night",
+      "day-and-night",
       "three",
       "landscape",
       "sky",
@@ -232,7 +232,7 @@
       "analog",
       "cold",
       "nature",
-      "day and night",
+      "day-and-night",
       "spin",
       "dry",
       "aerial",
@@ -629,6 +629,7 @@
       "four",
       "platonic-solid",
       "digital-12h",
+      "triangle",
       "red",
       "pyramid"
     ]
@@ -1094,6 +1095,7 @@
     "title": "Morse Code",
     "tags": [
       "pictographic",
+      "thread",
       "birds",
       "metal",
       "sky"
@@ -1182,7 +1184,7 @@
     "tags": [
       "digital",
       "Las-Vegas",
-      "day and night"
+      "day-and-night"
     ]
   },
   {
@@ -1414,7 +1416,7 @@
     "title": "Metallic",
     "tags": [
       "metal",
-      "word clock",
+      "word-clock",
       "silver",
       "gold",
       "slide-to-side"
@@ -1727,7 +1729,8 @@
     "tags": [
       "gold",
       "digital",
-      "Rome"
+      "Rome",
+      "stone"
     ]
   },
   {
@@ -1817,7 +1820,10 @@
     "title": "Mandarin",
     "tags": [
       "China",
-      "digital"
+      "digital",
+      "sky",
+      "gold",
+      "typeface"
     ]
   },
   {
@@ -1944,6 +1950,7 @@
     "tags": [
       "moon",
       "night",
+      "silver",
       "analog",
       "b+w",
       "sky"
@@ -2226,7 +2233,7 @@
     "date": "25-10-07",
     "title": "Hi There!",
     "tags": [
-      "Dr. Strangelove",
+      "Dr-Strangelove",
       "1964",
       "Kubrick",
       "film",
@@ -2268,7 +2275,7 @@
       "Italy",
       "film",
       "night",
-      "Roma",
+      "Rome",
       "Michelangelo"
     ]
   },
@@ -2317,7 +2324,12 @@
     "date": "25-10-14",
     "title": "Dodecahedron",
     "tags": [
-      "platonic-solid"
+      "platonic-solid",
+      "twelve",
+      "pentagon",
+      "universe",
+      "aether",
+      "digital"
     ]
   },
   {
@@ -2419,7 +2431,8 @@
     "title": "Gridlines",
     "tags": [
       "digital",
-      "square"
+      "square",
+      "grid"
     ]
   },
   {
@@ -2427,7 +2440,7 @@
     "date": "25-10-24",
     "title": "Esperanto",
     "tags": [
-      "word clock",
+      "word-clock",
       "esperanto",
       "landscape"
     ]
@@ -2460,7 +2473,7 @@
     "tags": [
       "digital",
       "words",
-      "day and night",
+      "day-and-night",
       "color"
     ]
   },
@@ -2494,7 +2507,9 @@
     "tags": [
       "digital",
       "Antarctica",
+      "axis",
       "revolve",
+      "snow",
       "ice",
       "panorama"
     ]
@@ -2633,6 +2648,7 @@
       "eight",
       "platonic-solid",
       "air",
+      "triangle",
       "digital"
     ]
   },
@@ -2918,7 +2934,8 @@
       "platonic-solid",
       "digital",
       "water",
-      "twenty sides"
+      "twenty"
+      "triangle"
     ]
   },
   {
@@ -3407,6 +3424,7 @@
     "title": "Migrate",
     "tags": [
       "analog",
+      "map",
       "fly",
       "birds",
       "anmal",
@@ -3667,7 +3685,7 @@
     "date": "26-02-13",
     "title": "Words",
     "tags": [
-      "word clock",
+      "word-clock",
       "monochrome",
       "typeface",
       "image-free",
@@ -3692,7 +3710,7 @@
     "tags": [
       "analog",
       "earth",
-      "day and night",
+      "day-and-night",
       "hot",
       "lava"
     ]
@@ -4113,7 +4131,7 @@
       "b+w",
       "Warhol",
       "fast",
-      "day and night"
+      "day-and-night"
     ]
   },
   {
@@ -4495,7 +4513,7 @@
       "digital-12h",
       "planet",
       "spin",
-      "day and night",
+      "day-and-night",
       "space",
       "axis",
       "revolve",
