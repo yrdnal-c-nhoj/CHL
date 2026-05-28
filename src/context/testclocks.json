@@ -23,10 +23,12 @@
       "book",
       "deepwater",
       "digital-24h",
+      "predator",
       "myth",
       "white",
       "swim",
       "ocean",
+      "mirror",
       "water"
     ]
   },
@@ -372,7 +374,8 @@
       "sand",
       "blood",
       "brown",
-      "exoskeletal"
+      "exoskeletal",
+      "predator"
     ]
   },
   {
@@ -464,7 +467,8 @@
     "tags": [
       "digital-12h",
       "color",
-      "gravity"
+      "gravity",
+      "up-and-down"
     ]
   },
   {
@@ -473,9 +477,10 @@
     "title": "Cheetah",
     "tags": [
       "digital",
-      "spirit animal",
+      "spirit-animal",
       "earth",
-      "fast"
+      "fast",
+      "apex-predator"
     ]
   },
   {
@@ -563,7 +568,7 @@
     "tags": [
       "fire",
       "four-sided",
-      "platonic solid",
+      "platonic-solid",
       "digital-12h"
     ]
   },
@@ -828,7 +833,8 @@
     "tags": [
       "digital",
       "animal",
-      "brown"
+      "brown",
+      "cow"
     ]
   },
   {
@@ -873,7 +879,10 @@
   {
     "path": "25-06-18",
     "date": "25-06-18",
-    "title": "Cistercian"
+    "title": "Cistercian",
+    "tags": [
+      "digital-24h"
+    ]
   },
   {
     "path": "25-06-19",
@@ -888,7 +897,16 @@
   {
     "path": "25-06-21",
     "date": "25-06-21",
-    "title": "Mercury"
+    "title": "Mercury",
+    "tags": [
+      "planet",
+      "myth",
+      "gods",
+      "silver",
+      "sphere",
+      "space",
+      "sky"
+    ]
   },
   {
     "path": "25-06-22",
@@ -897,7 +915,8 @@
     "tags": [
       "parallel",
       "red",
-      "image-free"
+      "image-free",
+      "pictographic"
     ]
   },
   {
@@ -914,7 +933,7 @@
     "date": "25-06-24",
     "title": "Thought Balloon",
     "tags": [
-      "digital 24h",
+      "digital-24h",
       "monochrome",
       "air"
     ]
@@ -932,7 +951,13 @@
   {
     "path": "25-06-27",
     "date": "25-06-27",
-    "title": "Morse Code"
+    "title": "Morse Code",
+    "tags": [
+      "pictographic",
+      "birds",
+      "metal",
+      "sky"
+    ]
   },
   {
     "path": "25-06-28",
@@ -960,7 +985,11 @@
   {
     "path": "25-07-01",
     "date": "25-07-01",
-    "title": "Cinema"
+    "title": "Cinema",
+    "tags": [
+      "night",
+      "digital"
+    ]
   },
   {
     "path": "25-07-02",
@@ -1021,7 +1050,13 @@
   {
     "path": "25-07-08",
     "date": "25-07-08",
-    "title": "Mint"
+    "title": "Mint",
+    "tags": [
+      "green",
+      "grow",
+      "analog",
+      "food"
+    ]
   },
   {
     "path": "25-07-09",
@@ -1144,7 +1179,7 @@
     "date": "25-07-21",
     "title": "Anglerfish",
     "tags": [
-      "digital 24h",
+      "digital-24h",
       "light",
       "deepwater",
       "swim",
@@ -1193,7 +1228,13 @@
   {
     "path": "25-07-27",
     "date": "25-07-27",
-    "title": "Metallic"
+    "title": "Metallic",
+    "tags": [
+      "metal",
+      "word clock",
+      "silver",
+      "slide-to-side"
+    ]
   },
   {
     "path": "25-07-28",
@@ -1265,7 +1306,8 @@
       "analog",
       "pattern",
       "color",
-      "square"
+      "square",
+      "grid"
     ]
   },
   {
@@ -1273,7 +1315,12 @@
     "date": "25-08-06",
     "title": "Laika",
     "tags": [
-      "animal"
+      "animal",
+      "dog",
+      "digital-24h",
+      "space",
+      "metal",
+      "face"
     ]
   },
   {
@@ -1342,7 +1389,7 @@
       "square",
       "brown",
       "earth",
-      "platonic solids",
+      "platonic-solids",
       "six"
     ]
   },
@@ -1376,7 +1423,15 @@
   {
     "path": "25-08-16",
     "date": "25-08-16",
-    "title": "Palm Trees"
+    "title": "Palm Trees",
+    "tags": [
+      "landscape",
+      "tree",
+      "transport",
+      "twilight",
+      "grid",
+      "analog"
+    ]
   },
   {
     "path": "25-08-17",
@@ -1534,7 +1589,11 @@
   {
     "path": "25-09-01",
     "date": "25-09-01",
-    "title": "Mandarin"
+    "title": "Mandarin",
+    "tags": [
+      "China",
+      "digital"
+    ]
   },
   {
     "path": "25-09-02",
@@ -1553,13 +1612,19 @@
     "title": "Mauve",
     "tags": [
       "color",
-      "digital"
+      "digital purple"
     ]
   },
   {
     "path": "25-09-04",
     "date": "25-09-04",
-    "title": "Inside Out"
+    "title": "Inside Out",
+    "tags": [
+      "wood",
+      "interior",
+      "analog",
+      "sky"
+    ]
   },
   {
     "path": "25-09-05",
@@ -1568,7 +1633,8 @@
     "tags": [
       "food",
       "digital",
-      "animal round"
+      "animal",
+      "round"
     ]
   },
   {
@@ -1621,7 +1687,9 @@
     "tags": [
       "light",
       "interior",
-      "analog"
+      "analog",
+      "electricity",
+      "color"
     ]
   },
   {
@@ -1706,13 +1774,20 @@
     "title": "Oort Cloud",
     "tags": [
       "space",
-      "analog"
+      "analog",
+      "blue",
+      "spin",
+      "sky"
     ]
   },
   {
     "path": "25-09-20",
     "date": "25-09-20",
-    "title": "Neon"
+    "title": "Neon",
+    "tags": [
+      "analog",
+      "light"
+    ]
   },
   {
     "path": "25-09-21",
@@ -1993,7 +2068,7 @@
     "date": "25-10-14",
     "title": "Dodecahedron",
     "tags": [
-      "platonic solid"
+      "platonic-solid"
     ]
   },
   {
@@ -2118,7 +2193,8 @@
       "butterfly",
       "animal",
       "analog",
-      "migrate"
+      "migrate",
+      "camouflage"
     ]
   },
   {
@@ -2162,7 +2238,8 @@
       "digital",
       "Antarctica",
       "revolve",
-      "ice"
+      "ice",
+      "panorama"
     ]
   },
   {
@@ -2230,7 +2307,13 @@
   {
     "path": "25-11-08",
     "date": "25-11-08",
-    "title": "Oversight"
+    "title": "Oversight",
+    "tags": [
+      "eye",
+      "digital",
+      "face",
+      "grid"
+    ]
   },
   {
     "path": "25-11-09",
@@ -2269,7 +2352,14 @@
   {
     "path": "25-11-12",
     "date": "25-11-12",
-    "title": "Octahedron"
+    "title": "Octahedron",
+    "tags": [
+      "pyramids",
+      "eight",
+      "platonic-solid",
+      "air",
+      "digital"
+    ]
   },
   {
     "path": "25-11-13",
@@ -2321,7 +2411,10 @@
       "planet",
       "myth",
       "gods",
-      "red"
+      "red",
+      "sphere",
+      "space",
+      "sky"
     ]
   },
   {
@@ -2365,7 +2458,12 @@
   {
     "path": "25-11-21",
     "date": "25-11-21",
-    "title": "Liminal"
+    "title": "Liminal",
+    "tags": [
+      "digital-24h",
+      "grid",
+      "interior"
+    ]
   },
   {
     "path": "25-11-22",
@@ -2403,7 +2501,8 @@
     "tags": [
       "digital",
       "vertical",
-      "image-free"
+      "image-free",
+      "grid"
     ]
   },
   {
@@ -2415,7 +2514,8 @@
       "digital",
       "air",
       "fly",
-      "birds"
+      "birds",
+      "brown"
     ]
   },
   {
@@ -2432,7 +2532,7 @@
     "date": "25-11-28",
     "title": "Timeline",
     "tags": [
-      "digital 24h",
+      "digital-24h",
       "color",
       "grid"
     ]
@@ -2440,7 +2540,7 @@
   {
     "path": "25-11-29",
     "date": "25-11-29",
-    "title": "Squiggle",
+    "title": "Splotches",
     "tags": [
       "paint",
       "rococo",
@@ -2465,7 +2565,8 @@
       "animal",
       "food",
       "ocean",
-      "swim"
+      "swim",
+      "predator"
     ]
   },
   {
@@ -2496,7 +2597,8 @@
       "see",
       "words",
       "digital-12h",
-      "b+w"
+      "b+w",
+      "paper"
     ]
   },
   {
@@ -2528,7 +2630,7 @@
     "date": "25-12-07",
     "title": "Icosahedron",
     "tags": [
-      "platonic solid",
+      "platonic-solid",
       "digital",
       "water",
       "twenty sides"
@@ -2540,7 +2642,9 @@
     "title": "Paper Plate",
     "tags": [
       "analog",
-      "paper"
+      "paper",
+      "food",
+      "interior"
     ]
   },
   {
@@ -2552,7 +2656,11 @@
       "digital",
       "animal",
       "b+w",
-      "body"
+      "body",
+      "film",
+      "odd-toed-ungulate",
+      "Eadweard Muybridge",
+      "England"
     ]
   },
   {
@@ -2954,7 +3062,9 @@
     "title": "Orthogonal",
     "tags": [
       "digital-12h",
-      "spin"
+      "spin",
+      "orange",
+      "purple"
     ]
   },
   {
@@ -2984,7 +3094,10 @@
     "tags": [
       "analog",
       "fly",
-      "birds"
+      "birds",
+      "anmal",
+      "sky",
+      "blue"
     ]
   },
   {
@@ -3007,7 +3120,9 @@
     "tags": [
       "eye",
       "analog see",
-      "body"
+      "body",
+      "see",
+      "face"
     ]
   },
   {
@@ -3112,7 +3227,8 @@
       "transport",
       "sound",
       "fast",
-      "fly"
+      "fly",
+      "metal"
     ]
   },
   {
@@ -3219,7 +3335,7 @@
     "date": "26-02-12",
     "title": "Extended Mix",
     "tags": [
-      "digital 24h",
+      "digital-24h",
       "sphere",
       "light",
       "dance",
@@ -3359,7 +3475,7 @@
       "myth",
       "gods",
       "space",
-      "blue"
+      "sky. blue"
     ]
   },
   {
@@ -3387,6 +3503,7 @@
       "film",
       "Jean Cocteau",
       "underworld",
+      "book",
       "analog",
       "France",
       "b+w"
@@ -3460,6 +3577,7 @@
     "title": "Paper Flowers",
     "tags": [
       "flower",
+      "interior",
       "paper",
       "hands",
       "analog",
@@ -3742,7 +3860,8 @@
       "fumes",
       "transport",
       "sky",
-      "drive"
+      "drive",
+      "landscape"
     ]
   },
   {
@@ -3986,9 +4105,10 @@
     "title": "Meow",
     "tags": [
       "animal",
-      "digital 24h",
+      "digital-24h",
       "cat",
-      "random"
+      "random",
+      "predator"
     ]
   },
   {
@@ -4228,7 +4348,7 @@
       "ocean",
       "move",
       "blue",
-      "spirit animal",
+      "spirit-animal",
       "waves"
     ]
   },
@@ -4315,6 +4435,7 @@
       "stars",
       "digital-24h",
       "night",
+      "sky",
       "air",
       "dark",
       "parallax"
@@ -4518,7 +4639,8 @@
       "digital-12h",
       "film",
       "b+w",
-      "night"
+      "night",
+      "interior"
     ]
   }
 ]
