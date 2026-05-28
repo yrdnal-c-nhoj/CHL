@@ -84,6 +84,7 @@
   padding: 0.3rem 0.3rem;
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
   box-sizing: border-box;
   transition: background-color 0.2s;
 }
@@ -177,6 +178,7 @@
   font-size: 0.65rem;
   color: #393a3b;
   white-space: nowrap;
+  text-decoration: none;
 }
 
 /* DESKTOP ADJUSTMENTS */

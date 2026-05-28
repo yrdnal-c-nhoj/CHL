@@ -1,13 +1,15 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
-import Thumbnail from './Thumbnail';
-import styles from '../styles/MonthDropdown.module.css';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import homeStyles from '../styles/Home.module.css';
+import styles from '../styles/MonthDropdown.module.css';
+import Thumbnail from './Thumbnail';
 
 interface DataItem {
   date: string;
   title?: string;
   clockNumber?: string | number;
   path: string;
+  tags?: string[];
 }
 
 interface MonthDropdownProps {
@@ -33,6 +35,7 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
   const [sortBy, setSortBy] = useState<SortOption>('date-desc');
   const [isHovered, setIsHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const isExpanded =
     propExpanded !== undefined ? propExpanded : internalExpanded;
@@ -135,10 +138,16 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
           <div>
             <div className={homeStyles.monthGrid}>
               {sortedItems.map((item) => (
-                <a
+                <div
                   key={item.date}
-                  href={`/${item.date}`}
                   className={homeStyles.monthItem}
+                  onClick={() => navigate(`/${item.date}`)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') navigate(`/${item.date}`);
+                  }}
+                  style={{ cursor: 'pointer' }}
                 >
                   {/* Image at top */}
                   <div className={homeStyles.monthItemImage}>
@@ -164,7 +173,25 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
                   <div className={homeStyles.monthItemTitle}>
                     {item.title || 'No Title'}
                   </div>
-                </a>
+
+                  {/* Tags row */}
+                  <div className={homeStyles.monthItemTags}>
+                    {(item.tags || [])
+                      .sort((a, b) => a.localeCompare(b))
+                      .map((tag) => (
+                        <Link
+                          key={tag}
+                          to={`/tag/${tag}`}
+                          className={homeStyles.tagBubble}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                        >
+                          {tag}
+                        </Link>
+                      ))}
+                  </div>
+                </div>
               ))}
             </div>
           </div>

@@ -1,4 +1,5 @@
-import { useContext, useMemo, useState, type FC } from 'react';
+import { useContext, useMemo, useState, type FC, type MouseEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Footer from './components/Footer';
 import Thumbnail from './components/Thumbnail';
 import TopNav from './components/TopNav';
@@ -17,6 +18,7 @@ const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', '
 const ClockList: FC = () => {
   const context = useContext(DataContext) as DataContextType;
   const { items = [], loading = false, error = null } = context || {};
+  const navigate = useNavigate();
   const [sortBy, setSortBy] = useState<SortOption>('date-desc');
 
   // Memoized sorting logic to prevent unnecessary re-renders
@@ -42,6 +44,10 @@ const ClockList: FC = () => {
   const handleTitleSort = () =>
     setSortBy((prev) => (prev === 'title-asc' ? 'title-desc' : 'title-asc'));
  
+  const handleRowClick = (date: string) => {
+    navigate(`/${date}`);
+  };
+
   if (loading) return (
     <div className={listStyles.listPageContainer}>
       <TopNav />
@@ -81,9 +87,9 @@ const ClockList: FC = () => {
         <ul className={listStyles.simpleListContainer}>
           {sortedItems.map((item) => (
             <li key={item.date}>
-              <a
-                href={`/${item.date}`}
+              <div
                 className={listStyles.simpleListImage}
+                onClick={() => handleRowClick(item.date)}
               >
                 {/* Column 1: Date */}
                 <time
@@ -123,11 +129,18 @@ const ClockList: FC = () => {
                     {[...(item.tags || [])]
                       .sort((a, b) => a.localeCompare(b))
                       .map((tag) => (
-                        <span key={tag} className={listStyles.tagBubble}>{tag}</span>
+                        <Link 
+                          key={tag} 
+                          to={`/tag/${tag}`} 
+                          className={listStyles.tagBubble}
+                          onClick={(e: MouseEvent) => e.stopPropagation()}
+                        >
+                          {tag}
+                        </Link>
                       ))}
                   </div>
                 </div>
-              </a>
+              </div>
             </li>
           ))}
         </ul>
