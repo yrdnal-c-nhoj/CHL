@@ -59,7 +59,8 @@
       "analog",
       "brown",
       "tick-tock",
-      "wood"
+      "wood",
+      "interior"
     ]
   },
   {
@@ -95,10 +96,10 @@
     "title": "Triple Cactus",
     "tags": [
       "digital-24h",
+      "nature",
       "dry",
       "day and night",
       "three",
-      "nature",
       "landscape",
       "sky",
       "earth",
@@ -181,7 +182,8 @@
       "histogram",
       "blue",
       "monochrome",
-      "three"
+      "three",
+      "parallel"
     ]
   },
   {
@@ -229,9 +231,14 @@
     "tags": [
       "analog",
       "cold",
+      "nature",
       "day and night",
       "spin",
-      "dry"
+      "dry",
+      "aerial",
+      "earth",
+      "ice",
+      "snow"
     ]
   },
   {
@@ -255,6 +262,8 @@
     "tags": [
       "sky",
       "digital-12h",
+      "nature",
+      "weather",
       "elements",
       "monochrome",
       "blue",
@@ -268,6 +277,7 @@
     "tags": [
       "analog",
       "animal",
+      "two",
       "superstition",
       "feather",
       "fly",
@@ -307,6 +317,7 @@
     "tags": [
       "hot",
       "digital-24h",
+      "nature",
       "elements",
       "red",
       "lava",
@@ -352,7 +363,6 @@
     "title": "Jackson Pollock",
     "tags": [
       "digital",
-      "art",
       "b+w",
       "paint"
     ]
@@ -366,7 +376,8 @@
       "digital-24h",
       "light",
       "night",
-      "fire"
+      "fire",
+      "color"
     ]
   },
   {
@@ -388,6 +399,7 @@
     "tags": [
       "digital-24h",
       "slow",
+      "nature",
       "elements",
       "sky",
       "light",
@@ -402,6 +414,7 @@
     "tags": [
       "analog",
       "animal",
+      "nature",
       "sting",
       "sand",
       "blood",
@@ -417,6 +430,7 @@
     "tags": [
       "digital",
       "flower",
+      "nature",
       "gravity",
       "red",
       "grow",
@@ -480,6 +494,7 @@
     "tags": [
       "sky",
       "digital",
+      "gold",
       "transport",
       "fly",
       "yellow"
@@ -515,7 +530,8 @@
     "title": "Cheetah",
     "tags": [
       "digital",
-      "spirit-animal",
+      "nature",
+      "animal",
       "earth",
       "fast",
       "predator",
@@ -551,6 +567,7 @@
     "title": "Roulette",
     "tags": [
       "round",
+      "gold",
       "wheel",
       "analog",
       "play",
@@ -668,6 +685,7 @@
     "title": "Robotic Arm",
     "tags": [
       "analog",
+      "gold",
       "body",
       "mechanical",
       "hand",
@@ -682,6 +700,7 @@
     "tags": [
       "plant",
       "earth",
+      "nature",
       "digital-12h",
       "green",
       "grow"
@@ -743,6 +762,7 @@
     "title": "Elephant",
     "tags": [
       "analog",
+      "nature",
       "animal",
       "silver",
       "grey",
@@ -991,7 +1011,11 @@
   {
     "path": "25-06-20",
     "date": "25-06-20",
-    "title": "Indecisive"
+    "title": "Indecisive",
+    "tags": [
+      "digital",
+      "typeface"
+    ]
   },
   {
     "path": "25-06-21",
@@ -1055,7 +1079,14 @@
   {
     "path": "25-06-26",
     "date": "25-06-26",
-    "title": "Cosmic Wheels"
+    "title": "Cosmic Wheels",
+    "tags": [
+      "digital",
+      "revolve",
+      "b+w",
+      "sky",
+      "stars"
+    ]
   },
   {
     "path": "25-06-27",
@@ -1084,13 +1115,24 @@
     "date": "25-06-29",
     "title": "Stretch",
     "tags": [
-      "digital"
+      "digital",
+      "green.  yellow",
+      "typeface",
+      "slant"
     ]
   },
   {
     "path": "25-06-30",
     "date": "25-06-30",
-    "title": "Egg"
+    "title": "Egg",
+    "tags": [
+      "gold",
+      "food",
+      "analog",
+      "white",
+      "yellow",
+      "shell"
+    ]
   },
   {
     "path": "25-07-01",
@@ -1115,7 +1157,14 @@
   {
     "path": "25-07-03",
     "date": "25-07-03",
-    "title": "Launchpad"
+    "title": "Launchpad",
+    "tags": [
+      "digital",
+      "gravity",
+      "up-and-down",
+      "sky",
+      "space"
+    ]
   },
   {
     "path": "25-07-04",
@@ -1207,9 +1256,11 @@
     "title": "Fibonacci",
     "tags": [
       "shell",
+      "nature",
       "analog",
       "b+w",
-      "bone"
+      "bone",
+      "golden ratio"
     ]
   },
   {
@@ -1245,7 +1296,9 @@
     "title": "Möbius Strip",
     "tags": [
       "digital",
-      "spin"
+      "spin",
+      "Fibonacci",
+      "geometry"
     ]
   },
   {
@@ -1254,6 +1307,7 @@
     "title": "Animals",
     "tags": [
       "animal",
+      "nature",
       "analog",
       "molecules"
     ]
@@ -1306,6 +1360,7 @@
     "title": "Anglerfish",
     "tags": [
       "digital-24h",
+      "nature",
       "light",
       "deepwater",
       "swim",
@@ -1361,6 +1416,7 @@
       "metal",
       "word clock",
       "silver",
+      "gold",
       "slide-to-side"
     ]
   },
@@ -1380,7 +1436,10 @@
   {
     "path": "25-07-29",
     "date": "25-07-29",
-    "title": "Slot Machine"
+    "title": "Slot Machine",
+    "tags": [
+      "gold"
+    ]
   },
   {
     "path": "25-07-30",
@@ -1428,12 +1487,18 @@
   {
     "path": "25-08-03",
     "date": "25-08-03",
-    "title": "Curtain Call"
+    "title": "Curtain Call",
+    "tags": [
+      "gold"
+    ]
   },
   {
     "path": "25-08-04",
     "date": "25-08-04",
-    "title": "Fireflies"
+    "title": "Fireflies",
+    "tags": [
+      "nature"
+    ]
   },
   {
     "path": "25-08-05",
@@ -1598,7 +1663,11 @@
     "date": "25-08-19",
     "title": "Newton's Cradle",
     "tags": [
-      "apple"
+      "apple",
+      "digital",
+      "gravity",
+      "physics",
+      "side-to-side"
     ]
   },
   {
@@ -1654,7 +1723,12 @@
   {
     "path": "25-08-24",
     "date": "25-08-24",
-    "title": "Digital Roman"
+    "title": "Digital Roman",
+    "tags": [
+      "gold",
+      "digital",
+      "Rome"
+    ]
   },
   {
     "path": "25-08-25",
@@ -1699,6 +1773,7 @@
     "title": "Goblin",
     "tags": [
       "Tolkien",
+      "gold",
       "digital",
       "England"
     ]
@@ -1763,7 +1838,9 @@
     "title": "Mauve",
     "tags": [
       "color",
-      "digital purple"
+      "digital",
+      "24h",
+      "purple"
     ]
   },
   {
@@ -1815,7 +1892,8 @@
     "tags": [
       "analog",
       "words",
-      "orange"
+      "orange",
+      "sound"
     ]
   },
   {
@@ -1892,8 +1970,11 @@
     "title": "Golden Chord",
     "tags": [
       "unfinished",
+      "gold",
       "geometry",
-      "analog"
+      "analog",
+      "golden ratio",
+      "Fibonacci"
     ]
   },
   {
@@ -1925,7 +2006,13 @@
   {
     "path": "25-09-18",
     "date": "25-09-18",
-    "title": "Neo"
+    "title": "Neo",
+    "tags": [
+      "digital 12h",
+      "film",
+      "gravity",
+      "green"
+    ]
   },
   {
     "path": "25-09-19",
@@ -1945,7 +2032,8 @@
     "title": "Neon",
     "tags": [
       "analog",
-      "light"
+      "light",
+      "color"
     ]
   },
   {
@@ -2085,6 +2173,7 @@
     "title": "Counting Rods",
     "tags": [
       "China",
+      "gold",
       "digital-24h",
       "red"
     ]
@@ -2234,7 +2323,10 @@
   {
     "path": "25-10-15",
     "date": "25-10-15",
-    "title": "Brahmi"
+    "title": "Brahmi",
+    "tags": [
+      "gold"
+    ]
   },
   {
     "path": "25-10-16",
@@ -2291,7 +2383,8 @@
       "tree",
       "trunk",
       "earth",
-      "grow"
+      "grow",
+      "analog"
     ]
   },
   {
@@ -2571,7 +2664,7 @@
     "tags": [
       "trees",
       "trunk",
-      "digital",
+      "digital 12h",
       "grow",
       "gravity",
       "orange"
@@ -2689,7 +2782,8 @@
       "digital",
       "vertical",
       "image-free",
-      "grid"
+      "grid",
+      "pattern"
     ]
   },
   {
@@ -2774,7 +2868,8 @@
     "title": "Dogpile",
     "tags": [
       "animal",
-      "digital"
+      "digital",
+      "dog"
     ]
   },
   {
@@ -2893,6 +2988,7 @@
     "tags": [
       "sky",
       "digital",
+      "gold",
       "rococo",
       "paint",
       "art",
@@ -3064,7 +3160,8 @@
       "twenty",
       "Ise",
       "wood",
-      "build"
+      "build",
+      "aerial"
     ]
   },
   {
@@ -3113,7 +3210,10 @@
   {
     "path": "26-01-02",
     "date": "26-01-02",
-    "title": "Cramped"
+    "title": "Cramped",
+    "tags": [
+      "gold"
+    ]
   },
   {
     "path": "26-01-03",
@@ -3130,7 +3230,9 @@
     "date": "26-01-04",
     "title": "Imaged-Based",
     "tags": [
-      "digital"
+      "digital 24h",
+      "random",
+      "generative"
     ]
   },
   {
@@ -3152,8 +3254,10 @@
     "title": "Necropolis",
     "tags": [
       "Egypt",
-      "pyramids",
-      "digital"
+      "pyramid",
+      "digital",
+      "aerial",
+      "desert"
     ]
   },
   {
@@ -3354,7 +3458,8 @@
       "analog",
       "landscape",
       "mirror",
-      "day"
+      "day",
+      "desert"
     ]
   },
   {
@@ -3746,7 +3851,8 @@
       "face",
       "stone",
       "move",
-      "pyramid"
+      "pyramid",
+      "desert"
     ]
   },
   {
@@ -3806,6 +3912,7 @@
     "title": "Daystar",
     "tags": [
       "sun",
+      "gold",
       "pictographic",
       "yellow",
       "space",
@@ -4015,7 +4122,8 @@
     "title": "Negative Space",
     "tags": [
       "green",
-      "pictographic 24h"
+      "pictographic 24h",
+      "pattern"
     ]
   },
   {
@@ -4067,7 +4175,8 @@
       "sky",
       "fly",
       "metal",
-      "ride"
+      "ride",
+      "bonding"
     ]
   },
   {
@@ -4104,7 +4213,7 @@
       "molecules",
       "blue",
       "digital-24h",
-      "covalent bonding",
+      "bonding",
       "water",
       "elements",
       "ocean"
@@ -4146,7 +4255,8 @@
       "analog",
       "animals",
       "light",
-      "deepwater"
+      "deepwater swim",
+      "ocean"
     ]
   },
   {
@@ -4271,6 +4381,8 @@
     "tags": [
       "animal",
       "analog",
+      "nature",
+      "shell",
       "exoskeletal",
       "sand",
       "monochrome"
@@ -4321,7 +4433,8 @@
       "dwarf planet",
       "spin",
       "analog",
-      "Hawaii"
+      "Hawaii",
+      "gods"
     ]
   },
   {
@@ -4461,7 +4574,8 @@
       "science",
       "white",
       "see",
-      "glass"
+      "glass",
+      "interior"
     ]
   },
   {
@@ -4575,6 +4689,7 @@
     "title": "Pod",
     "tags": [
       "analog",
+      "nature",
       "ocean",
       "move",
       "blue",
@@ -4590,7 +4705,9 @@
       "nature",
       "day",
       "animal",
-      "pictographic"
+      "pictographic",
+      "shell",
+      "bone"
     ]
   },
   {
@@ -4615,6 +4732,7 @@
       "transport",
       "day",
       "run",
+      "bone",
       "odd-toed ungulate"
     ]
   },
@@ -4758,6 +4876,7 @@
       "stone",
       "bone",
       "body",
+      "desert",
       "light",
       "1943",
       "film"
@@ -4816,6 +4935,7 @@
     "title": "Canis Major",
     "tags": [
       "constellations",
+      "map",
       "animal",
       "monochrome",
       "analog",
@@ -4859,7 +4979,7 @@
     "date": "26-05-24",
     "title": "Rhinoceros",
     "tags": [
-      "spirit-animal",
+      "animal",
       "odd-toed-ungulate",
       "monochrome",
       "horn",
