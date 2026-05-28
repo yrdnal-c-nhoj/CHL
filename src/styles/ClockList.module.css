@@ -179,6 +179,13 @@
   color: #393a3b;
   white-space: nowrap;
   text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.tagBubble:hover {
+  background-color: #4a4b4c;
+  color: #ffffff;
+  border-color: #333333;
 }
 
 /* DESKTOP ADJUSTMENTS */
