@@ -167,7 +167,7 @@ export default function TagManager() {
                         }
                         e.target.value = ''; // Reset the select to the default option
                       }}
-                      style={{ marginLeft: '0.5rem', minWidth: '150px' }} // Basic inline style for spacing
+                      style={{ width: 'auto', minWidth: '150px' }}
                     >
                       <option value="" disabled>Add existing tag...</option>
                       {allExistingTags.map(tag => (<option key={tag} value={tag}>{tag}</option>))}
