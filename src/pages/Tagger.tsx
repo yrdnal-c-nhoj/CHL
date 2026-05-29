@@ -194,7 +194,7 @@ export default function Tagger() {
               }
               e.target.value = '';
             }}
-            style={{ width: 'auto', minWidth: '150px' }}
+            style={{ width: 'auto', minWidth: '150px' }} // Unified with TagManager
           >
             <option value="" disabled>Add existing...</option>
             {allExistingTags.map(tag => (<option key={tag} value={tag}>{tag}</option>))}
