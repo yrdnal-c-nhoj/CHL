@@ -140,7 +140,7 @@ export default function TagManager() {
                 <tr key={item.date} style={{ borderBottom: '1px solid #f9f9f9' }}>
                   <td style={{ padding: '0.5rem' }}>
                     <Thumbnail 
-                      date={item.date} 
+                      date="XX-XX-XX" // Display a generic "No Image" thumbnail for uniformity
                       title={item.title} 
                       style={{ width: '60px', borderRadius: '4px' }} 
                     />

@@ -76,9 +76,10 @@
 
 .simpleListImage {
   display: grid;
-  /* 3 Columns: Date | Image | Content Stack */
+  /* Strict 3-column row: Date | Thumbnail | Content */
   grid-template-columns: 20px 68px 1fr;
   align-items: start;
+  justify-items: start;
   gap: 0.5rem; /* Increased gap for better visual separation */
   width: 100%;
   padding: 0.3rem 0.3rem;
@@ -88,6 +89,27 @@
   box-sizing: border-box;
   transition: background-color 0.2s;
 }
+
+/* Prevent left column expansion caused by right content sizing */
+.simpleListImage > :nth-child(1) {
+  min-width: 0;
+  align-self: start;
+}
+
+/* Keep thumbnail cell perfectly constrained so it can't affect grid sizing */
+.simpleListImage > :nth-child(2) {
+  width: 68px;
+  min-width: 68px;
+  max-width: 68px;
+  align-self: start;
+}
+
+/* Allow the right content stack to shrink instead of pushing columns */
+.simpleListImage > :nth-child(3) {
+  min-width: 0;
+  align-self: start;
+}
+
 
 .contentStack {
   display: flex;

@@ -144,7 +144,7 @@ export default function Tagger() {
 
       <div style={{ display: 'flex', gap: '2rem', marginBottom: '2rem', alignItems: 'flex-start' }}>
         <Thumbnail 
-          date={currentItem.date} 
+          date="XX-XX-XX" // Display a generic "No Image" thumbnail for uniformity
           title={currentItem.title} 
           style={{ flexShrink: 0 }} 
         />
