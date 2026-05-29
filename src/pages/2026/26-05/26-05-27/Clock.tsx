@@ -1,149 +1,126 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { useClockTime } from '@/utils/hooks';
+import tireFont from '@/assets/fonts/26fonts/26-05-27-tire.otf';
+import tire from '@/assets/images/26_images/26-05/26-05-27/tire.webp';
+import tireImage from '@/assets/images/26_images/26-05/26-05-27/tire2.webp';
+import tireFlipImage from '@/assets/images/26_images/26-05/26-05-27/tireflip.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
+import { useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
-// ---------------- INTERFACES ----------------
-interface HandDimensions {
-  width: string;
-  height: string;
-  zIndex: number;
-}
+// BTS: Export assets for the preloading pipeline
+export const assets = [tire, tireImage, tireFlipImage, tireFont];
 
-interface ClockHandProps {
-  type: 'hour' | 'minute' | 'second';
-  rotation: number;
-}
+export default function TireTilingClock() {
+  const time = useClockTime();
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 0,
+    height: typeof window !== 'undefined' ? window.innerHeight : 0
+  });
 
-interface TimeValues {
-  hr: number;
-  min: number;
-  sec: number;
-}
+  const LAYER_CONFIGS = useMemo(() => [
+    { image: tireImage, size: 180, filter: 'brightness(1.2) contrast(1.7) saturation(5.0)' },
+    { image: tireFlipImage, size: 100, filter: 'brightness(1.2) contrast(1.7) saturation(5.0)' },
+    { image: tire, size: 37, filter: 'contrast(22.5)' },
+  ], []);
 
-// ---------------- CONFIGURATION ----------------
-const CLOCK_CONFIG = {
-  NUMERAL_RADIUS: 40,
-  COLORS: {
-    background: '#000000',
-    primary: '#FFFFFF',
-    shadow: 'drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8))',
-  },
-  HAND_DIMENSIONS: {
-    hour: { width: '1.2vmin', height: '20vmin', zIndex: 3 },
-    minute: { width: '0.8vmin', height: '32vmin', zIndex: 4 },
-    second: { width: '0.4vmin', height: '38vmin', zIndex: 5 },
-  },
-} as const;
+  // Horizontal stripe configuration based on the requested layout
+  const STRIPES = useMemo(() => [
+    LAYER_CONFIGS[1], // Top 2: Small
+    LAYER_CONFIGS[0], // Top 2: Small
+    LAYER_CONFIGS[2], // Middle: Different (Medium)
+    LAYER_CONFIGS[0], // Bottom 2: One image (Large)
+    LAYER_CONFIGS[1], // Bottom 2: One image (Large)
+  ], [LAYER_CONFIGS]);
 
-// ---------------- FONT CONFIGURATION ----------------
-const fontConfigs = [
-  {
-    name: 'ClockFont',
-    url: '@/assets/fonts/26fonts/26-05-05-dolphin.ttf',
-  },
-];
-
-// ---------------- UTILITIES ----------------
-const calculateTimeValues = (date: Date): TimeValues => {
-  const msec = date.getMilliseconds();
-  const sec = date.getSeconds() + msec / 1000;
-  const min = date.getMinutes() + sec / 60;
-  const hr = (date.getHours() % 12) + min / 60;
-
-  return { hr, min, sec };
-};
-
-const calculateNumeralPosition = (number: number) => {
-  const angleRad = (number / 12) * 2 * Math.PI;
-  const angleDeg = (number / 12) * 360;
-
-  return {
-    x: 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angleRad),
-    y: 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angleRad),
-    angle: angleDeg,
-  };
-};
-
-const getHandRotation = (value: number, multiplier: number): number =>
-  value * multiplier;
-
-// ---------------- COMPONENTS ----------------
-const BackgroundLayers: React.FC = () => (
-  <video className={styles.backgroundVideo} autoPlay loop muted playsInline>
-    <source
-      src="/src/assets/images/26_images/26-05/26-05-05/jump.mp4"
-      type="video/mp4"
-    />
-  </video>
-);
-
-const ClockNumerals: React.FC = () => {
-  const numerals = useMemo(() => {
-    return Array.from({ length: 12 }, (_, i) => {
-      const num = i + 1;
-      const { x, y, angle } = calculateNumeralPosition(num);
-
-      return (
-        <div
-          key={num}
-          className={styles.numeral}
-          style={{
-            left: `${x}%`,
-            top: `${y}%`,
-            transform: `translate(-50%, -50%) rotate(${angle}deg)`,
-          }}
-        >
-          {num}
-        </div>
-      );
-    });
-  }, []);
-
-  return <>{numerals}</>;
-};
-
-const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
-  const { width, height, zIndex } = CLOCK_CONFIG.HAND_DIMENSIONS[type];
-
-  return (
-    <div
-      className={styles.hand}
-      style={{
-        width,
-        height,
-        zIndex,
-        transform: `translate(-50%, 0) rotate(${rotation}deg)`,
-      }}
-    />
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'TireTrackFont',
+        fontUrl: tireFont
+      }
+    ],
+    []
   );
-};
 
-const CenterDot: React.FC = () => <div className={styles.centerDot} />;
-
-// ---------------- MAIN CLOCK COMPONENT ----------------
-const AnalogClock: React.FC = () => {
-  const currentTime = useClockTime();
-  const { hr, min, sec } = calculateTimeValues(currentTime);
-
-  // Load fonts with suspense to prevent FOUC
   useSuspenseFontLoader(fontConfigs);
 
+  // Memoize ISO time for the semantic <time> element as per technical standards
+  const isoTime = useMemo(() => time.toISOString(), [time]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
-    <div className={styles.container}>
-      <BackgroundLayers />
+    <main className={styles.container}>
+      {/* Animated Background Grids */}
+      {STRIPES.map((layer, idx) => {
+        const stripeHeight = windowSize.height / 5;
+        const cols = Math.ceil(windowSize.width / layer.size) + 2;
+        const rows = Math.ceil(stripeHeight / layer.size) + 2;
 
-      <time dateTime={currentTime.toISOString()} className={styles.clockFace}>
-        <ClockNumerals />
+        return (
+          <div
+            key={idx}
+            style={{
+              position: 'absolute',
+              top: `${idx * 20}%`,
+              left: 0,
+              width: '100vw',
+              height: '20dvh',
+              transform: 'none',
+              overflow: 'hidden',
+              display: 'grid',
+              gridTemplateColumns: `repeat(${cols}, ${layer.size}px)`,
+              justifyContent: 'center',
+              alignContent: 'center',
+              zIndex: 1
+            }}
+          >
+            {Array.from({ length: cols * rows }).map((_, i) => {
+              const row = Math.floor(i / cols);
+              const col = i % cols;
+              const isFlipped = (row + col) % 2 !== 0;
+              return (
+                <div
+                  key={i}
+                  style={{
+                    width: layer.size,
+                    height: layer.size,
+                    backgroundImage: `url(${layer.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                    transform: isFlipped ? 'scaleX(-1)' : 'none',
+                    filter: layer.filter
+                  }}
+                />
+              );
+            })}
+          </div>
+        );
+      })}
 
-        <ClockHand type="hour" rotation={getHandRotation(hr, 30)} />
-        <ClockHand type="minute" rotation={getHandRotation(min, 6)} />
-        <ClockHand type="second" rotation={getHandRotation(sec, 6)} />
-
-        <CenterDot />
+      {/* Digital Readout */}
+      <time dateTime={isoTime} className={styles.timeDisplay}>
+        {time
+          .toLocaleTimeString('en-GB', { hour12: false })
+          .split('')
+          .map((char, i) => (
+            <div key={i} className={styles.digit}>
+              {char}
+            </div>
+          ))}
       </time>
-    </div>
+    </main>
   );
-};
-
-export default AnalogClock;
+}
