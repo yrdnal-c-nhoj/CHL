@@ -213,17 +213,11 @@
 /* DESKTOP ADJUSTMENTS */
 @media (min-width: 768px) {
 
-
 .centeredContent {
-  z-index: 5;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  align-items: stretch;
   width: 90%;
   max-width: 90%;
 }
+
 
   .simpleListImage {
     /* Desktop: Date | Image | Content Stack */

@@ -37,6 +37,7 @@ const TagList = React.lazy(() => import('./TagList'));
 const Tagger = React.lazy(() => import('./pages/Tagger'));
 const TagManager = React.lazy(() => import('./pages/TagManager'));
 
+
 // Configuration constants
 const BASE_URL = 'https://www.cubistheart.com';
 const DYNAMIC_CLOCK_REGEX = /^\/\d{2}-\d{2}-\d{2}$/;
