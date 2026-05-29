@@ -5038,5 +5038,20 @@
       "interior",
       "night"
     ]
+  },
+
+  {
+    "path": "26-05-26",
+    "date": "26-05-26",
+    "title": "Jetting",
+    "tags": [
+      "physics",
+      "water",
+      "blue",
+      "analog",
+      "slow", 
+      "mirror",
+      "gravity"
+    ]
   }
 ]
