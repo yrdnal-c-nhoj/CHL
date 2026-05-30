@@ -210,7 +210,8 @@ body.clock-mode {
 .tag-bubble.active {
   background-color: var(--color-lab-blue-deep) !important;
   color: white;
-  border-color: var(--color-lab-blue-deep);
+  /* border-color: var(--color-lab-blue-deep); */
+   color: #e0e0e2 !important;
 }
 
 .sort-container {
