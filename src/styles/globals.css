@@ -109,6 +109,18 @@ body {
   /* background-color: var(--color-lab-bg-gray); */
   color: var(--color-lab-text);
   font-family: var(--font-arimo), sans-serif;
+  /* Remove the blue highlight/flash that appears when tapping links on mobile */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Remove default browser focus outlines ("blue boxes") across all interactive elements */
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 /* Clock Mode: Force viewport constraint */
