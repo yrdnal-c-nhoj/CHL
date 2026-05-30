@@ -11,6 +11,7 @@ export default function TagManager() {
   const ctx = useContext(DataContext) as DataContextType | undefined;
   const items = ctx?.items ?? [];
   const loading = ctx?.loading ?? true;
+  const error = ctx?.error;
 
   const [searchTerm, setSearchTerm] = useState('');
   const [sortConfig, setSortConfig] = useState<{
@@ -50,14 +51,20 @@ export default function TagManager() {
     );
 
     return filtered.sort((a, b) => {
-      const valA = (a[sortConfig.key] || '').toString();
-      const valB = (b[sortConfig.key] || '').toString();
+      // Use a type-safe key access
+      const key = sortConfig.key;
+      const valA = (a[key] || '').toString();
+      const valB = (b[key] || '').toString();
 
       if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1;
       if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1;
       return 0;
     });
   }, [items, sortConfig, searchTerm]);
+
+  if (error) {
+    return <div className={styles.container}><div className={styles.card}>Error: {error.message}</div></div>;
+  }
 
   // Extract all unique tags from all items for the dropdown
   const allExistingTags = useMemo(() => {

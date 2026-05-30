@@ -784,7 +784,7 @@
       "move",
       "paper",
       "transport",
-      "upc",
+      "UPC",
       "words"
     ]
   },
@@ -1756,7 +1756,7 @@
       "interior",
       "paper",
       "parallel",
-      "upc"
+      "UPC"
     ]
   },
   {
@@ -3137,7 +3137,7 @@
       "fly",
       "map",
       "paper",
-      "upc"
+      "UPC"
     ]
   },
   {
@@ -3621,7 +3621,7 @@
       "1930",
       "analog",
       "b+w",
-      "buster keaton",
+      "Buster-Keaton",
       "film"
     ]
   },
@@ -4050,7 +4050,7 @@
       "mechanical",
       "science",
       "tech",
-      "vr"
+      "VR"
     ]
   },
   {
@@ -4716,7 +4716,7 @@
       "digital",
       "paper",
       "spin",
-      "upc"
+      "UPC"
     ]
   },
   {
@@ -4834,7 +4834,7 @@
     "title": "180° South",
     "tags": [
       "analog",
-      "apex-predator",
+      "predator",
       "cardinal-directions",
       "fire",
       "lion",
