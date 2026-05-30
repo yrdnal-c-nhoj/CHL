@@ -226,3 +226,10 @@ body.clock-mode {
    color: #e0e0e2 !important;
 }
 
+.sort-title {
+  font-family: var(--font-roboto), serif;
+  font-size: 0.8rem;
+  color: #888787;
+  text-transform: uppercase; 
+  text-align: center;
+}
