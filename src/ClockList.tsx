@@ -70,7 +70,6 @@ const ClockList: FC = () => {
       <div className={listStyles.centeredContent}>
         {/* Layout Controls */}
         <div className={sortStyles.sortContainer}>
-          <span className={sortStyles.sortLabel}>Sort:</span>
           <button
             type="button"
             onClick={handleDateSort}
@@ -155,4 +154,4 @@ const ClockList: FC = () => {
   );
 };
 
-export default ClockL
+export default ClockList;

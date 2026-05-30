@@ -8,20 +8,12 @@
   font-family: var(--font-arimo, sans-serif);
 }
 
-.sortLabel {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #666;
-}
-
 .sortButton {
   font-family: inherit;
   background: #ffffff;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #727070;
   padding: 6px 16px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -30,16 +22,17 @@
   justify-content: center;
   align-items: center;
   gap: 4px;
-  color: #333;
+  color: #595757;
 }
 
 .sortButton:hover {
-  border-color: #999;
-  background-color: #f9f9f9;
+  border-color: #072e46;
+  color: #000000 !important;
+  background-color: #ced4d8;
 }
 
 .active {
-  background-color: #333;
-  color: #fff !important;
-  border-color: #333;
+  background-color: #d0cece;
+  color: #000000 !important;
+  border-color: #000000;
 }

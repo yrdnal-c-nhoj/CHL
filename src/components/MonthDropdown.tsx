@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import homeStyles from '../styles/Home.module.css';
 import styles from '../styles/MonthDropdown.module.css';
+import sortStyles from '../styles/SortControls.module.css';
 import Thumbnail from './Thumbnail';
 
 interface DataItem {
@@ -75,14 +76,9 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
   }, [items, sortBy]);
 
   const handleDateSort = () =>
-    setSortBy(
-      (prev) => (prev === 'date-desc' ? 'date-asc' : 'date-desc') as SortOption,
-    );
+    setSortBy((prev) => (prev === 'date-desc' ? 'date-asc' : 'date-desc'));
   const handleTitleSort = () =>
-    setSortBy(
-      (prev) =>
-        (prev === 'title-asc' ? 'title-desc' : 'title-asc') as SortOption,
-    );
+    setSortBy((prev) => (prev === 'title-asc' ? 'title-desc' : 'title-asc'));
 
   return (
     <div ref={containerRef} className={styles.monthDropdownContainer}>
@@ -112,18 +108,22 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
 
       {isExpanded && (
         <>
-          <div className="sort-controls">
-            <button onClick={handleDateSort} className="sort-button">
-              date{' '}
+          <div className={sortStyles.sortContainer}>
+                 <button
+              type="button"
+              onClick={handleDateSort}
+              className={`${sortStyles.sortButton} ${sortBy.startsWith('date') ? sortStyles.active : ''}`}
+            >
+              date
               {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
             </button>
-            <button onClick={handleTitleSort} className="sort-button">
-              title{' '}
-              {sortBy === 'title-asc'
-                ? '↓'
-                : sortBy === 'title-desc'
-                  ? '↑'
-                  : ''}
+            <button
+              type="button"
+              onClick={handleTitleSort}
+              className={`${sortStyles.sortButton} ${sortBy.startsWith('title') ? sortStyles.active : ''}`}
+            >
+              title
+              {sortBy === 'title-asc' ? '↓' : sortBy === 'title-desc' ? '↑' : ''}
             </button>
           </div>
           <div>
