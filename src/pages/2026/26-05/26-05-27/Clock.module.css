@@ -41,6 +41,4 @@
   background-image: var(--tile-img);
   background-size: cover;
   background-position: center;
-  filter: hue-rotate(180deg) var(--tile-filter, );
-  transform: var(--tile-transform, none);
-}
+  filter: var(--tile-filter, none);
