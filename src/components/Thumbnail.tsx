@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { getThumbnailByDate } from '@/utils/thumbnailMap';
+import React, { useState } from 'react';
 
 interface ThumbnailProps {
   date: string;
@@ -26,20 +26,19 @@ const Thumbnail = ({ date, title, className, style }: ThumbnailProps) => {
 
   // Strip any caller-supplied sizing that would break the 1:1 ratio.
   const {
-    height: _height,
-    aspectRatio: _aspectRatio,
+    height: _,
+    aspectRatio: __,
+    width: ___,
     ...restStyle
   } = (style ?? {}) as React.CSSProperties;
-  void _height;
-  void _aspectRatio;
 
   const wrapperStyle: React.CSSProperties = {
-    width: '100%',
+    display: 'block',
     ...restStyle,
-    // Enforced after spread so callers cannot override squareness.
+    // Enforced after spread so callers cannot override squareness or responsive width.
+    width: '100%',
     aspectRatio: '1 / 1',
     overflow: 'hidden',
-    display: 'block',
   };
 
   if (imageError || !imageUrl) {
