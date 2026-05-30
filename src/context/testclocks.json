@@ -3287,10 +3287,14 @@
     "title": "Necropolis",
     "tags": [
       "aerial",
+      "bone",
       "desert",
       "digital",
       "egypt",
-      "pyramid"
+      "mummy",
+      "pyramid",
+      "scarab",
+      "stone"
     ]
   },
   {
@@ -3883,10 +3887,12 @@
     "title": "Ramses II",
     "tags": [
       "analog",
+      "body",
       "desert",
       "egypt",
       "face",
       "move",
+      "mummy",
       "pyramid",
       "stone"
     ]
@@ -4264,6 +4270,7 @@
       "analog",
       "cardinal-directions",
       "dawn",
+      "feather",
       "horse",
       "odd-toed-ungulate",
       "scarab",
