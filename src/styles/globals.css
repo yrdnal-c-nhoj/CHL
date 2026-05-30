@@ -218,6 +218,7 @@ body.clock-mode {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
   padding: 0.8rem 1rem;
   margin: 0;
@@ -249,7 +250,6 @@ body.clock-mode {
   color: #999;
   text-transform: uppercase;
   letter-spacing: 0.05rem;
-  margin-left: auto; /* Pushes sort buttons to the right consistently */
 }
 
 .sort-title {

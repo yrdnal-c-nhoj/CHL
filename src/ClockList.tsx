@@ -66,9 +66,6 @@ const ClockList: FC = () => {
       <div className={listStyles.centeredContent}>
         {/* Layout Controls */}
         <div className="sort-container">
-          <h1 className="sort-title">
-            {sortedItems.length} {sortedItems.length === 1 ? 'clock' : 'clocks'}
-          </h1>
           <span className="sort-label">Sort:</span>
           <button
             type="button"
