@@ -38,16 +38,10 @@ const TagList: FC = () => {
     <div className={listStyles.listPageContainer}>
       <TopNav />
       <div className={listStyles.centeredContent}>
-        <div className={listStyles.controls} style={{ flexDirection: 'column', gap: '0.2rem' }}>
-          <h1 style={{ 
-            fontFamily: 'var(--font-arimo)', 
-            // margin: '1rem 0 0.5rem 0',
-            textTransform: 'uppercase',
-            // letterSpacing: '0.05rem'
-          }}>
+        <div className="sort-container">
+          <h1 className="sort-title">
               {filteredItems.length} {filteredItems.length === 1 ? 'clock' : 'clocks'} found with "{tag}"
           </h1>
-          
         </div>
 
         <ul className={listStyles.simpleListContainer}>
@@ -90,19 +84,16 @@ const TagList: FC = () => {
                       #{item.clockNumber}
                     </span>
                   </div>
-                  <div className={listStyles.tagsWrapper}>
+                  <div className="tag-wrapper">
                     {[...(item.tags || [])]
                       .sort((a, b) => a.localeCompare(b))
                       .map((t) => (
                         <Link 
                           key={t} 
                           to={`/tag/${t}`}
-                          className={listStyles.tagBubble}
+                          className={`tag-bubble ${t === tag ? 'active' : ''}`}
                           onClick={(e: MouseEvent) => e.stopPropagation()}
-                          style={{ 
-                          backgroundColor: t === tag ? 'var(--color-lab-blue-deep)' : '#d4d5d7',
-                          color: t === tag ? 'white' : '#393a3b'
-                        }}>
+                        >
                           {t}
                         </Link>
                       ))}
