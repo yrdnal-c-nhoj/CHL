@@ -185,7 +185,7 @@ body.clock-mode {
 .tag-wrapper {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.15rem;
+  gap: 0.2rem;
   justify-content: flex-start;
   align-items: center;
   width: 97%;
@@ -196,7 +196,7 @@ body.clock-mode {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.15rem 0.45rem;
+  padding: 0.15rem 0.25rem;
   border-radius: 9999px;
   font-size: 0.9rem;
   line-height: 1;
@@ -215,7 +215,7 @@ body.clock-mode {
 .tag-bubble:hover {
   transform: translateY(-1px);
   background-color: rgba(0, 0, 0, 0.05) !important;
-  border-color: rgba(0, 0, 0, 0.3) !important;
+  border-color: rgba(0, 0, 0, 0.816) !important;
   color: var(--color-lab-black) !important;
 }
 
