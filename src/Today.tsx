@@ -5,6 +5,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ClockPageNav from './components/ClockPageNav';
 import Header from './components/Header';
 import { DataContext } from './context/DataContext';
@@ -23,6 +24,7 @@ import { ClockLoadingFallback } from './utils/fontLoader';
 
 const TodayClockPage = () => {
   const { items, loading, error } = useContext(DataContext) as DataContextType;
+  const navigate = useNavigate();
   const [currentItem, setCurrentItem] = useState<ClockItem | null>(null);
   const headerVisible = useAutoHeader(0);
   const OVERLAY_FADE_DURATION = 300;
@@ -49,6 +51,10 @@ const TodayClockPage = () => {
 
     setCurrentItem(item ?? null);
   }, [items, loading]);
+
+  const handleGoHome = () => {
+    navigate('/');
+  };
 
   // Use the hook to load the clock
   const {
@@ -119,14 +125,23 @@ const TodayClockPage = () => {
         ) : isReady && ClockComponent ? (
           /* Reset positioning for the clock component */
           <div
+            onClick={handleGoHome}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                handleGoHome();
+              }
+            }}
             style={{
               position: 'fixed',
               top: 0,
               left: 0,
               width: '100%',
               height: '100dvh',
-              zIndex: 1 /* Below the overlay logic if needed, but above background */,
+              zIndex: 1,
               backgroundColor: '#fff',
+              cursor: 'pointer',
             }}
           >
             <div
