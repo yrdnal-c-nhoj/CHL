@@ -138,7 +138,7 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') navigate(`/${item.date}`);
                   }}
-                  style={{ cursor: 'pointer' }}
+                  style={{ cursor: 'pointer', minWidth: 0 }}
                 >
                   {/* Image at top */}
                   <div className={homeStyles.monthItemImage}>
@@ -146,9 +146,6 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
                       date={item.date}
                       title={item.title || ''}
                       style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
                         opacity: 0.8,
                       }}
                     />
