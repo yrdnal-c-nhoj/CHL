@@ -33,22 +33,3 @@
   text-shadow:0 1px 0 rgba(255,255,255,0.6);
   font-size:1.35rem;
 }
-
-.tagsWrapper{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-  pointer-events:auto;
-}
-
-tagBubble{
-  background-color:#d4d5d7;
-  border-radius:4px;
-  border:1px solid #c8c9cc;
-  padding:2px 6px;
-  font-size:0.75rem;
-  color:#393a3b;
-  white-space:nowrap;
-  text-decoration:none;
-}
-

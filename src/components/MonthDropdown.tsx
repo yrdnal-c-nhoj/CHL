@@ -112,12 +112,12 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
 
       {isExpanded && (
         <>
-          <div className={styles.controls}>
-            <button onClick={handleDateSort} className={styles.sortButton}>
+          <div className="sort-controls">
+            <button onClick={handleDateSort} className="sort-button">
               date{' '}
               {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
             </button>
-            <button onClick={handleTitleSort} className={styles.sortButton}>
+            <button onClick={handleTitleSort} className="sort-button">
               title{' '}
               {sortBy === 'title-asc'
                 ? '↓'
@@ -166,14 +166,14 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
                   </div>
 
                   {/* Tags row */}
-                  <div className={homeStyles.monthItemTags}>
+                  <div className="tags-wrapper">
                     {(item.tags || [])
                       .sort((a, b) => a.localeCompare(b))
                       .map((tag) => (
                         <Link
                           key={tag}
                           to={`/tag/${tag}`}
-                          className={homeStyles.tagBubble}
+                          className="tag-bubble"
                           onClick={(e) => {
                             e.stopPropagation();
                           }}

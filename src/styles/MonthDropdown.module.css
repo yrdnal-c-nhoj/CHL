@@ -48,31 +48,3 @@
   color: #060200;
   background-color: rgb(235, 233, 235);
 }
-
-
-.controls {
-  display: flex;
-  gap: 0.75rem;
-  margin: 0.2rem 0 0.5rem 0;
-  justify-content: center;
-  width: 100%;
-}
-
-.sortButton {
-  background-color: transparent;
-  font-size: clamp(0.8rem, 1.2vw, 1.2rem);
-  padding: clamp(0.1rem, 0.3vw, 0.4rem) clamp(0.5rem, 1vw, 1rem);
-  border: 1px solid transparent;
-  border-radius: 3px;
-  cursor: pointer;
-  transition:
-    background-color 0.2s,
-    color 0.2s;
-  color: #858687;
-  font-family: var(--font-arimo);
-}
-
-.sortButton:hover {
-  background-color: #c0d3ec;
-  color: var(--color-lab-gray-dark);
-}
