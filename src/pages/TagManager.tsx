@@ -116,7 +116,7 @@ export default function TagManager() {
         </div>
 
         <div style={{ maxHeight: '50vh', overflowY: 'auto', marginBottom: '2rem', border: '1px solid #eee' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'center' }}>
             <thead style={{ position: 'sticky', top: 0, background: '#fff', zIndex: 1 }}>
               <tr>
                 <th style={{ padding: '0.5rem', borderBottom: '2px solid #eee' }}>Preview</th>
