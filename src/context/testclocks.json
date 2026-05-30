@@ -784,7 +784,7 @@
       "move",
       "paper",
       "transport",
-      "UPC",
+      "upc",
       "words"
     ]
   },
@@ -1756,7 +1756,7 @@
       "interior",
       "paper",
       "parallel",
-      "UPC"
+      "upc"
     ]
   },
   {
@@ -1764,6 +1764,7 @@
     "date": "25-08-26",
     "title": "Rooted",
     "tags": [
+      "chthonic",
       "digital",
       "earth",
       "grow",
@@ -3137,7 +3138,7 @@
       "fly",
       "map",
       "paper",
-      "UPC"
+      "upc"
     ]
   },
   {
@@ -3621,7 +3622,7 @@
       "1930",
       "analog",
       "b+w",
-      "Buster-Keaton",
+      "buster-keaton",
       "film"
     ]
   },
@@ -4050,7 +4051,7 @@
       "mechanical",
       "science",
       "tech",
-      "VR"
+      "vr"
     ]
   },
   {
@@ -4716,7 +4717,7 @@
       "digital",
       "paper",
       "spin",
-      "UPC"
+      "upc"
     ]
   },
   {
@@ -4834,11 +4835,11 @@
     "title": "180° South",
     "tags": [
       "analog",
-      "predator",
       "cardinal-directions",
       "fire",
       "lion",
       "mirror",
+      "predator",
       "wind"
     ]
   },
@@ -5039,31 +5040,30 @@
       "night"
     ]
   },
-
   {
     "path": "26-05-26",
     "date": "26-05-26",
     "title": "Jetting",
     "tags": [
-      "physics",
-      "water",
-      "blue",
       "analog",
-      "slow", 
+      "blue",
+      "gravity",
       "mirror",
-      "gravity"
+      "physics",
+      "slow",
+      "water"
     ]
-  }
-  ,
+  },
   {
     "path": "26-05-27",
     "date": "26-05-27",
     "title": "Tire Flip",
     "tags": [
       "digital-24h",
-      "wheel",
+      "round",
       "spin",
-      "transport"
+      "transport",
+      "wheel"
     ]
   },
   {
@@ -5072,9 +5072,10 @@
     "title": "Ka-Boom",
     "tags": [
       "analog",
+      "dawn",
+      "fire",
       "sound",
-      "wind",
-      "fire"
+      "wind"
     ]
   },
   {
@@ -5083,8 +5084,10 @@
     "title": "Tire Flip",
     "tags": [
       "digital-24h",
-      "wheel",
-      "spin"
+      "round",
+      "spin",
+      "transport",
+      "wheel"
     ]
-    }
+  }
 ]
