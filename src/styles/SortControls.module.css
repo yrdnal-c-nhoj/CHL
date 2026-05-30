@@ -3,17 +3,15 @@
   justify-content: center;
   align-items: center;
   gap: 12px;
-  margin: 24px 0;
   width: 100%;
   font-family: var(--font-arimo, sans-serif);
+  font-size: 0.8rem;
 }
 
 .sortButton {
-  font-family: inherit;
   background: #ffffff;
+  text-transform: uppercase;
   border: 1px solid #727070;
-  padding: 6px 16px;
-  font-size: 0.9rem;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
