@@ -1,9 +1,9 @@
 import {
-  Suspense,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
+    Suspense,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ClockPageNav from './components/ClockPageNav';
@@ -14,11 +14,11 @@ import { useClockPage } from './hooks/useClockPage';
 import styles from './styles/ClockPage.module.css';
 import type { ClockItem, DataContextType } from './types/data';
 import {
-  formatDateSlashes,
-  formatTitle,
-  getTodayDate,
-  normalizeDate,
-  parseDateVal,
+    formatDateSlashes,
+    formatTitle,
+    getTodayDate,
+    normalizeDate,
+    parseDateVal,
 } from './utils/dateUtils';
 import { ClockLoadingFallback } from './utils/fontLoader';
 
@@ -120,7 +120,7 @@ const TodayClockPage = () => {
 
         {error || pageError ? (
           <div className={styles.sheet}>
-            <div className={styles.error}>{error || pageError}</div>
+            <div className={styles.error}>{pageError || (error instanceof Error ? error.message : String(error))}</div>
           </div>
         ) : isReady && ClockComponent ? (
           /* Reset positioning for the clock component */

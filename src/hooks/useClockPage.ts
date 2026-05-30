@@ -105,11 +105,11 @@ export function useClockPage(currentItem: { date: string } | null) {
         const module = await importFn().catch(
           (err) => {
             const msg = err instanceof Error ? err.message : String(err);
-            console.error(`[useClockPage] Module load failed for ${targetDate} at path ${path}. Check for syntax errors in this file.`, err);
+            console.error(`[useClockPage] Module load failed for ${targetDate}. Check for syntax errors in this file.`, err);
             
             if (msg.includes('Failed to fetch')) {
               throw new Error(
-                `Clock file at ${path} could not be fetched. This usually indicates a syntax error in the clock file, a broken import, or a network failure during chunk loading. ` +
+                `Clock file for ${targetDate} could not be fetched. This usually indicates a syntax error in the clock file, a broken import, or a network failure during chunk loading. ` +
                 `Please check your browser's "Network" and "Console" tabs for the specific error, and ensure the file has no syntax errors.`
               );
             }
@@ -118,7 +118,7 @@ export function useClockPage(currentItem: { date: string } | null) {
         );
 
         if (!module || !module.default) {
-          throw new Error(`Clock module at ${path} is missing a default export.`);
+          throw new Error(`Clock module for ${targetDate} is missing a default export.`);
         }
 
         // 3. Preload defined assets (images + video + audio)
@@ -140,7 +140,7 @@ export function useClockPage(currentItem: { date: string } | null) {
             // Don't throw.
             if (import.meta.env.PROD) {
               console.warn(
-                `[useClockPage] Ignoring malformed assets for ${targetDate} from module '${path}'. Type=${typeof module.assets}`,
+                `[useClockPage] Ignoring malformed assets for ${targetDate}. Type=${typeof module.assets}`,
                 module.assets,
               );
             }
@@ -148,7 +148,7 @@ export function useClockPage(currentItem: { date: string } | null) {
         } catch (assetErr) {
           // Fail open: still mount the clock.
           console.warn(
-            `[useClockPage] Asset preload failed for ${targetDate} from module '${path}'. Clock will still mount.`,
+            `[useClockPage] Asset preload failed for ${targetDate}. Clock will still mount.`,
             assetErr,
           );
         }

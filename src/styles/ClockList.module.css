@@ -123,8 +123,7 @@
 .simpleListDate {
   display: flex;
   flex-direction: column;
-  /* Flush right, ragged left alignment */
-  align-items: flex-end;
+  align-items: center;
   line-height: 1;
   font-size: 1rem;
   font-family: var(--font-barlow-condensed);
@@ -132,7 +131,7 @@
   font-weight: 400;
   letter-spacing: 0.09rem;
   color: #5b5b5d;
-  text-align: right;
+  text-align: center;
 }
 
 .simpleListNumber {
@@ -153,8 +152,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-align: left;
-  justify-self: start;
+  text-align: center;
 }
 
 

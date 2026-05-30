@@ -5,13 +5,14 @@ import Thumbnail from './components/Thumbnail';
 import TopNav from './components/TopNav';
 import { DataContext } from './context/DataContext';
 import listStyles from './styles/ClockList.module.css';
+import sortStyles from './styles/SortControls.module.css';
 import type { ClockItem, DataContextType } from './types/data';
 
 type SortOption =
   | 'date-desc'
   | 'date-asc'
   | 'title-asc'
-  | 'title-desc'
+  | 'title-desc';
 
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
@@ -21,6 +22,9 @@ const ClockList: FC = () => {
   const navigate = useNavigate();
   const [sortBy, setSortBy] = useState<SortOption>('date-desc');
 
+
+
+  
   // Memoized sorting logic to prevent unnecessary re-renders
   const sortedItems = useMemo<ClockItem[]>(() => {
     const filtered = items.filter((item) => item?.date);
@@ -65,22 +69,22 @@ const ClockList: FC = () => {
       <TopNav />
       <div className={listStyles.centeredContent}>
         {/* Layout Controls */}
-        <div className="sort-container">
-          <span className="sort-label">Sort:</span>
+        <div className={sortStyles.sortContainer}>
+          <span className={sortStyles.sortLabel}>Sort:</span>
           <button
             type="button"
             onClick={handleDateSort}
-            className="sort-button"
+            className={`${sortStyles.sortButton} ${sortBy.startsWith('date') ? sortStyles.active : ''}`}
           >
-            date{' '}
+            date
             {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
           </button>
           <button
             type="button"
             onClick={handleTitleSort}
-            className="sort-button"
+            className={`${sortStyles.sortButton} ${sortBy.startsWith('title') ? sortStyles.active : ''}`}
           >
-            title{' '}
+            title
             {sortBy === 'title-asc' ? '↓' : sortBy === 'title-desc' ? '↑' : ''}
           </button>
         </div>
@@ -151,4 +155,4 @@ const ClockList: FC = () => {
   );
 };
 
-export default ClockList;
+export default ClockL
