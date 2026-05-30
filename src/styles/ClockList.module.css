@@ -32,34 +32,35 @@
   max-width: 100%;
 }
 
-/* Centering the sort buttons */
+
 .controls {
   display: flex;
+  gap: 0.75rem;
+  margin: 0.2rem 0 0.5rem 0;
   justify-content: center;
-  align-items: center;
-  gap: 1rem; /* Space between the two buttons */
-  padding: 0.5rem 0;
   width: 100%;
 }
 
+
 .sortButton {
-  padding: 0.2rem 0.5rem; 
-  color: #717170;
-  font-family: var(--font-arimo);
+  background-color: transparent;
+  font-size: clamp(0.8rem, 1.2vw, 1.2rem);
+  padding: clamp(0.1rem, 0.3vw, 0.4rem) clamp(0.5rem, 1vw, 1rem);
+  border: 1px solid transparent;
+  border-radius: 3px;
   cursor: pointer;
   transition:
-    background 0.4s ease,
-    color 0.4s ease,
-    border-color 0.4s ease;
-  border-radius: 4px; /* Slightly rounded corners for consistency */
-  font-size: 0.9rem; /* Adjust font size for buttons */
-  white-space: nowrap; /* Prevent text wrapping */
+    background-color 0.2s,
+    color 0.2s;
+  color: #858687;
+  font-family: var(--font-arimo);
 }
 
 .sortButton:hover {
-  background: rgb(187, 187, 188);
-  color: #090909;
+  background-color: #c0d3ec;
+  color: var(--color-lab-gray-dark);
 }
+
 
 .simpleListContainer {
   list-style: none;
@@ -70,14 +71,14 @@
 }
 
 .simpleListContainer li {
-  border-bottom: 0.5px solid #454545;
+  border-bottom: 2px solid #c1bebe;
   width: 100%;
 }
 
 .simpleListImage {
   display: grid;
   /* Strict 3-column row: Date | Thumbnail | Content */
-  grid-template-columns: 20px 68px 1fr;
+  grid-template-columns: 20px 80px 1fr;
   align-items: start;
   justify-items: start;
   gap: 0.5rem; /* Increased gap for better visual separation */
@@ -98,9 +99,10 @@
 
 /* Keep thumbnail cell perfectly constrained so it can't affect grid sizing */
 .simpleListImage > :nth-child(2) {
-  width: 68px;
-  min-width: 68px;
-  max-width: 68px;
+  width: 80px;
+  height: 80px;
+  min-width: 80px;
+  max-width: 80px;
   align-self: start;
 }
 
@@ -154,7 +156,7 @@
   /* Flush right, ragged left alignment */
   align-items: flex-end;
   line-height: 1;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-family: var(--font-barlow-condensed);
   font-variant-numeric: tabular-nums; /* Ensures all digits have equal width */
   font-weight: 400;
@@ -166,7 +168,7 @@
 .simpleListNumber {
   white-space: nowrap;
   text-align: left;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-family: var(--font-barlow-condensed);
   font-weight: 400;
   letter-spacing: 0.05rem;
@@ -175,7 +177,8 @@
 
 .simpleListTitle {
   flex: 1;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.02rem;
   font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
@@ -193,22 +196,26 @@
 }
 
 .tagBubble {
+  font-family: var(--font-arimo);
+  font-size: 0.9rem;
+  letter-spacing: 0.01rem;
   background-color: #d4d5d7;
   border-radius: 4px;
   border: 1px solid #c8c9cc;
   padding: 0px 3px;
-  font-size: 0.65rem;
   color: #393a3b;
   white-space: nowrap;
   text-decoration: none;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .tagBubble:hover {
-  background-color: #4a4b4c;
-  color: #ffffff;
-  border-color: #333333;
+  background-color: var(--color-lab-blue-deep);
+  color: white;
 }
+
+
+
 
 /* DESKTOP ADJUSTMENTS */
 @media (min-width: 768px) {

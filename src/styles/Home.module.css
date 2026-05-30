@@ -153,7 +153,8 @@
 .monthItemTitle {
   /* font-family: 'Roboto Slab', serif; */
   font-family: var(--font-arimo);
-  font-size: 1rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.02rem;
   text-align: center;
   margin-top: -0.15rem;
 }
@@ -169,7 +170,8 @@
 
 .tagBubble {
   font-family: var(--font-arimo);
-  font-size: 0.6rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.01rem;
   background-color: #d4d5d7;
   border-radius: 4px;
   border: 1px solid #c8c9cc;
