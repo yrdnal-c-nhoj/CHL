@@ -5,7 +5,7 @@ import Thumbnail from './components/Thumbnail';
 import TopNav from './components/TopNav';
 import { DataContext } from './context/DataContext';
 import listStyles from './styles/ClockList.module.css';
-import type { DataContextType } from './types/data';
+import type { ClockItem, DataContextType } from './types/data';
 
 type SortOption =
   | 'date-desc'
@@ -65,11 +65,15 @@ const ClockList: FC = () => {
       <TopNav />
       <div className={listStyles.centeredContent}>
         {/* Layout Controls */}
-        <div className={listStyles.controls}>
+        <div className="sort-container">
+          <h1 className="sort-title">
+            {sortedItems.length} {sortedItems.length === 1 ? 'clock' : 'clocks'}
+          </h1>
+          <span className="sort-label">Sort:</span>
           <button
             type="button"
             onClick={handleDateSort}
-            className={listStyles.sortButton}
+            className="sort-button"
           >
             date{' '}
             {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
@@ -77,7 +81,7 @@ const ClockList: FC = () => {
           <button
             type="button"
             onClick={handleTitleSort}
-            className={listStyles.sortButton}
+            className="sort-button"
           >
             title{' '}
             {sortBy === 'title-asc' ? '↓' : sortBy === 'title-desc' ? '↑' : ''}
@@ -125,14 +129,14 @@ const ClockList: FC = () => {
                       #{item.clockNumber}
                     </span>
                   </div>
-                  <div className={listStyles.tagsWrapper}>
+                  <div className="tag-wrapper">
                     {[...(item.tags || [])]
                       .sort((a, b) => a.localeCompare(b))
                       .map((tag) => (
                         <Link 
                           key={tag} 
                           to={`/tag/${tag}`} 
-                          className={listStyles.tagBubble}
+                          className="tag-bubble"
                           onClick={(e: MouseEvent) => e.stopPropagation()}
                         >
                           {tag}
