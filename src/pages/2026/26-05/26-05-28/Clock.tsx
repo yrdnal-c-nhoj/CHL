@@ -1,149 +1,309 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { useClockTime } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/clockUtils';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import styles from './Clock.module.css';
 
-// ---------------- INTERFACES ----------------
-interface HandDimensions {
-  width: string;
-  height: string;
-  zIndex: number;
-}
+// Asset Imports
+import bgImage from '@/assets/images/26_images/26-05/26-05-28/boom.webp';
+import centerImg from '@/assets/images/26_images/26-05/26-05-28/sparkle.webp';
 
-interface ClockHandProps {
-  type: 'hour' | 'minute' | 'second';
-  rotation: number;
-}
 
-interface TimeValues {
-  hr: number;
-  min: number;
-  sec: number;
-}
+import m1 from '@/assets/images/26_images/26-05/26-05-28/1.webp';
+import m10 from '@/assets/images/26_images/26-05/26-05-28/10.webp';
+import m11 from '@/assets/images/26_images/26-05/26-05-28/11.webp';
+import m12 from '@/assets/images/26_images/26-05/26-05-28/12.webp';
+import m13 from '@/assets/images/26_images/26-05/26-05-28/13.webp';
+import m2 from '@/assets/images/26_images/26-05/26-05-28/2.webp';
+import m3 from '@/assets/images/26_images/26-05/26-05-28/3.webp';
+import m4 from '@/assets/images/26_images/26-05/26-05-28/4.webp';
+import m5 from '@/assets/images/26_images/26-05/26-05-28/5.webp';
+import m6 from '@/assets/images/26_images/26-05/26-05-28/6.webp';
+import m7 from '@/assets/images/26_images/26-05/26-05-28/7.webp';
+import m8 from '@/assets/images/26_images/26-05/26-05-28/8.webp';
+import m9 from '@/assets/images/26_images/26-05/26-05-28/9.webp';
 
-// ---------------- CONFIGURATION ----------------
-const CLOCK_CONFIG = {
-  NUMERAL_RADIUS: 40,
-  COLORS: {
-    background: '#000000',
-    primary: '#FFFFFF',
-    shadow: 'drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8))',
-  },
-  HAND_DIMENSIONS: {
-    hour: { width: '1.2vmin', height: '20vmin', zIndex: 3 },
-    minute: { width: '0.8vmin', height: '32vmin', zIndex: 4 },
-    second: { width: '0.4vmin', height: '38vmin', zIndex: 5 },
-  },
-} as const;
+const allMatchImages = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13];
 
-// ---------------- FONT CONFIGURATION ----------------
-const fontConfigs = [
+const imageSettings = [
   {
-    name: 'ClockFont',
-    url: '@/assets/fonts/26fonts/26-05-05-dolphin.ttf',
+    size: '21%',
+    opacity: 1.0,
+    brightness: 10.5,
+    saturation: 1.2,
+    vignetteBlackStop: '40%',
+    vignetteTransparentStop: '85%',
+  },
+  {
+    size: '21%',
+    opacity: 0.8,
+    brightness: 1.0,
+    saturation: 1.5,
+    vignetteBlackStop: '40%',
+    vignetteTransparentStop: '85%',
+  },
+  {
+    size: '21%',
+    opacity: 0.9,
+    brightness: 1.2,
+    saturation: 2.2,
+    vignetteBlackStop: '100%',
+    vignetteTransparentStop: '100%',
+  },
+  {
+    size: '21%',
+    opacity: 0.8,
+    brightness: 1.2,
+    saturation: 1.7,
+    vignetteBlackStop: '40%',
+    vignetteTransparentStop: '65%',
+  },
+  {
+    size: '21%',
+    opacity: 0.8,
+    brightness: 1.0,
+    saturation: 2.0,
+    vignetteBlackStop: '100%',
+    vignetteTransparentStop: '100%',
+  },
+  {
+    size: '22%',
+    opacity: 0.9,
+    brightness: 1.4,
+    saturation: 1.5,
+    vignetteBlackStop: '40%',
+    vignetteTransparentStop: '75%',
+  },
+  {
+    size: '31%',
+    opacity: 0.9,
+    brightness: 0.9,
+    saturation: 1.1,
+    vignetteBlackStop: '40%',
+    vignetteTransparentStop: '85%',
+  },
+  {
+    size: '29%',
+    opacity: 0.8,
+    brightness: 1.3,
+    saturation: 1.9,
+    vignetteBlackStop: '100%',
+    vignetteTransparentStop: '100%',
+  },
+  {
+    size: '31%',
+    opacity: 0.9,
+    brightness: 1.3,
+    saturation: 3.0,
+    vignetteBlackStop: '20%',
+    vignetteTransparentStop: '55%',
+  },
+  {
+    size: '31%',
+    opacity: 0.9,
+    brightness: 1.3,
+    saturation: 1.6,
+    vignetteBlackStop: '100%',
+    vignetteTransparentStop: '100%',
+  },
+  {
+    size: '38%',
+    opacity: 0.9,
+    brightness: 0.9,
+    saturation: 1.8,
+    vignetteBlackStop: '40%',
+    vignetteTransparentStop: '65%',
+  },
+  {
+    size: '32%',
+    opacity: 0.8,
+    brightness: 1.3,
+    saturation: 1.7,
+    vignetteBlackStop: '40%',
+    vignetteTransparentStop: '85%',
+  },
+  {
+    size: '31%',
+    opacity: 0.8,
+    brightness: 1.4,
+    saturation: 1.8,
+    vignetteBlackStop: '40%',
+    vignetteTransparentStop: '55%',
   },
 ];
 
-// ---------------- UTILITIES ----------------
-const calculateTimeValues = (date: Date): TimeValues => {
-  const msec = date.getMilliseconds();
-  const sec = date.getSeconds() + msec / 1000;
-  const min = date.getMinutes() + sec / 60;
-  const hr = (date.getHours() % 12) + min / 60;
+const Clock: React.FC = () => {
+  const time = useClockTime();
 
-  return { hr, min, sec };
-};
+  // Initialize state for face indices and spare index
+  const [faceIndices, setFaceIndices] = useState<number[]>([]);
+  const [spareIndex, setSpareIndex] = useState<number>(-1); // Use -1 as an initial invalid state
 
-const calculateNumeralPosition = (number: number) => {
-  const angleRad = (number / 12) * 2 * Math.PI;
-  const angleDeg = (number / 12) * 360;
-
-  return {
-    x: 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angleRad),
-    y: 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angleRad),
-    angle: angleDeg,
-  };
-};
-
-const getHandRotation = (value: number, multiplier: number): number =>
-  value * multiplier;
-
-// ---------------- COMPONENTS ----------------
-const BackgroundLayers: React.FC = () => (
-  <video className={styles.backgroundVideo} autoPlay loop muted playsInline>
-    <source
-      src="/src/assets/images/26_images/26-05/26-05-05/jump.mp4"
-      type="video/mp4"
-    />
-  </video>
-);
-
-const ClockNumerals: React.FC = () => {
-  const numerals = useMemo(() => {
-    return Array.from({ length: 12 }, (_, i) => {
-      const num = i + 1;
-      const { x, y, angle } = calculateNumeralPosition(num);
-
-      return (
-        <div
-          key={num}
-          className={styles.numeral}
-          style={{
-            left: `${x}%`,
-            top: `${y}%`,
-            transform: `translate(-50%, -50%) rotate(${angle}deg)`,
-          }}
-        >
-          {num}
-        </div>
-      );
-    });
+  const randomizeImages = useCallback(() => {
+    const indices = Array.from({ length: allMatchImages.length }, (_, i) => i);
+    // Fisher-Yates shuffle
+    for (let i = indices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+    setFaceIndices(indices.slice(0, 12));
+    setSpareIndex(indices[12]);
   }, []);
 
-  return <>{numerals}</>;
-};
+  // Effect to perform randomization on component mount
+  useEffect(() => {
+    randomizeImages();
+  }, [randomizeImages]);
 
-const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
-  const { width, height, zIndex } = CLOCK_CONFIG.HAND_DIMENSIONS[type];
+  const lastProcessedSec = useRef<number>(-1);
+  const seconds = time.getSeconds();
+  const milliseconds = time.getMilliseconds();
+
+  useEffect(() => {
+    // Only trigger once per second change and if faceIndices has been initialized
+    if (seconds !== lastProcessedSec.current && faceIndices.length > 0) {
+      lastProcessedSec.current = seconds;
+
+      // Every 12 seconds, when a new full cycle begins, reshuffle the entire list
+      if (seconds % 12 === 0) {
+        randomizeImages();
+        return;
+      }
+
+      // Identify which clock position counter-clockwise from 12 o'clock (0-11)
+      const activePos = (12 - (seconds % 12)) % 12;
+
+      setFaceIndices((prev) => {
+        const newFace = [...prev];
+        // Ensure prev has enough elements before accessing
+        if (newFace.length === 0 || activePos >= newFace.length) return prev;
+
+        const outgoingImage = newFace[activePos];
+
+        // SWAP: Put the spare image on the face, and take the face image to the spare slot
+        newFace[activePos] = spareIndex;
+        setSpareIndex(outgoingImage);
+
+        return newFace;
+      });
+    }
+  }, [seconds, spareIndex, faceIndices, randomizeImages]);
+
+  const rotations = useMemo(() => {
+    const s = seconds + milliseconds / 1000;
+    const m = time.getMinutes() + s / 60;
+    const h = (time.getHours() % 12) + m / 60;
+    return { sec: s * 6, min: m * 6, hr: h * 30 };
+  }, [seconds, milliseconds, time]);
 
   return (
     <div
-      className={styles.hand}
-      style={{
-        width,
-        height,
-        zIndex,
-        transform: `translate(-50%, 0) rotate(${rotation}deg)`,
-      }}
-    />
-  );
-};
+      className={styles.container}
+      style={{ backgroundImage: `url(${bgImage})` }}
+    >
+      <div className={styles.clock}>
+        {/* Render the 12 Positions */}
+        {faceIndices.map((imgIdx, i) => {
+          // Only render if imgIdx is valid (i.e., after initial shuffle in useEffect)
+          if (imgIdx === -1) return null;
 
-const CenterDot: React.FC = () => <div className={styles.centerDot} />;
+          const hour = i + 1;
+          const angle = hour * 30 - 90;
+          const rad = (angle * Math.PI) / 180;
+          const x = 50 + 40 * Math.cos(rad);
+          const y = 50 + 40 * Math.sin(rad);
+          const config = imageSettings[imgIdx];
 
-// ---------------- MAIN CLOCK COMPONENT ----------------
-const AnalogClock: React.FC = () => {
-  const currentTime = useClockTime();
-  const { hr, min, sec } = calculateTimeValues(currentTime);
+          return (
+            <img
+              key={`pos-${i}`}
+              src={allMatchImages[imgIdx]}
+              className={styles.faceImage}
+              style={{
+                width: config.size,
+                height: config.size,
+                left: `${x}%`,
+                top: `${y}%`,
+                opacity: config.opacity,
+                filter: `brightness(${config.brightness}) saturate(${config.saturation})`,
+                ['--vignette-black' as string]: config.vignetteBlackStop,
+                ['--vignette-transparent' as string]:
+                  config.vignetteTransparentStop,
+              }}
+              alt=""
+            />
+          );
+        })}
 
-  // Load fonts with suspense to prevent FOUC
-  useSuspenseFontLoader(fontConfigs);
+        {/* Hands (CSS-based, no image assets) */}
+        <Hand deg={rotations.hr} width="26%" height="30%" z={2} variant="hour" />
+        <Hand deg={rotations.min} width="84%" height="60%" z={3} variant="minute" />
+        <Hand
+          deg={rotations.sec}
+          width="72%"
+          height="50%"
+          z={4}
+          isSec
+          ms={milliseconds}
+          variant="second"
+        />
 
-  return (
-    <div className={styles.container}>
-      <BackgroundLayers />
 
-      <time dateTime={currentTime.toISOString()} className={styles.clockFace}>
-        <ClockNumerals />
+        {/* Center overlay */}
+        <img src={centerImg} className={styles.centerOverlay} alt="" />
 
-        <ClockHand type="hour" rotation={getHandRotation(hr, 30)} />
-        <ClockHand type="minute" rotation={getHandRotation(min, 6)} />
-        <ClockHand type="second" rotation={getHandRotation(sec, 6)} />
-
-        <CenterDot />
-      </time>
+        {/* SVG Filter for ripped/destroyed effect */}
+        <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+          <filter id="ripped-effect">
+            <feTurbulence 
+              type="fractalNoise" 
+              baseFrequency="0.4" 
+              numOctaves="3" 
+              result="noise" 
+            />
+            <feDisplacementMap 
+              in="SourceGraphic" 
+              in2="noise" 
+              scale="12" 
+            />
+          </filter>
+        </svg>
+      </div>
     </div>
   );
 };
 
-export default AnalogClock;
+interface HandProps {
+  deg: number;
+  width: string;
+  height: string;
+  z: number;
+  isSec?: boolean;
+  ms?: number;
+  variant: 'hour' | 'minute' | 'second';
+}
+
+const Hand = ({ deg, width, height, z, isSec, ms, variant }: HandProps) => (
+  <div
+    className={`${styles.hand} ${styles[`hand_${variant}`]}`}
+    style={{
+      width,
+      height,
+      zIndex: z,
+      transform: `translateX(-50%) rotate(${deg}deg)`,
+      transition: isSec && ms! >= 100 ? 'transform 0.1s linear' : 'none',
+      background: 'linear-gradient(90deg, #1a1a1b 0%, #3a3a3c 45%, #606063 50%, #3a3a3c 55%, #1a1a1b 100%)',
+      boxShadow: 'inset 0 0 10px rgba(0,0,0,0.9), 2px 4px 8px rgba(0,0,0,0.7)',
+      border: '1px solid #0a0a0a',
+      filter: 'url(#ripped-effect) contrast(1.5) brightness(0.6) grayscale(0.3)',
+    }}
+    aria-hidden="true"
+  />
+);
+
+
+export default Clock;
