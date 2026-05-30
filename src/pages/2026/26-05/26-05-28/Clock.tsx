@@ -29,6 +29,9 @@ import m9 from '@/assets/images/26_images/26-05/26-05-28/9.webp';
 
 const allMatchImages = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13];
 
+// Export assets for the preloading pipeline
+export const assets = [bgImage, centerImg, ...allMatchImages];
+
 const imageSettings = [
   {
     size: '21%',
@@ -203,8 +206,10 @@ const Clock: React.FC = () => {
   return (
     <div
       className={styles.container}
-      style={{ backgroundImage: `url(${bgImage})` }}
     >
+      {/* Background layer with hue filter */}
+      <div className={styles.backgroundLayer} style={{ backgroundImage: `url(${bgImage})` }} />
+
       <div className={styles.clock}>
         {/* Render the 12 Positions */}
         {faceIndices.map((imgIdx, i) => {
@@ -255,23 +260,6 @@ const Clock: React.FC = () => {
 
         {/* Center overlay */}
         <img src={centerImg} className={styles.centerOverlay} alt="" />
-
-        {/* SVG Filter for ripped/destroyed effect */}
-        <svg style={{ position: 'absolute', width: 0, height: 0 }}>
-          <filter id="ripped-effect">
-            <feTurbulence 
-              type="fractalNoise" 
-              baseFrequency="0.4" 
-              numOctaves="3" 
-              result="noise" 
-            />
-            <feDisplacementMap 
-              in="SourceGraphic" 
-              in2="noise" 
-              scale="12" 
-            />
-          </filter>
-        </svg>
       </div>
     </div>
   );
@@ -296,10 +284,6 @@ const Hand = ({ deg, width, height, z, isSec, ms, variant }: HandProps) => (
       zIndex: z,
       transform: `translateX(-50%) rotate(${deg}deg)`,
       transition: isSec && ms! >= 100 ? 'transform 0.1s linear' : 'none',
-      background: 'linear-gradient(90deg, #1a1a1b 0%, #3a3a3c 45%, #606063 50%, #3a3a3c 55%, #1a1a1b 100%)',
-      boxShadow: 'inset 0 0 10px rgba(0,0,0,0.9), 2px 4px 8px rgba(0,0,0,0.7)',
-      border: '1px solid #0a0a0a',
-      filter: 'url(#ripped-effect) contrast(1.5) brightness(0.6) grayscale(0.3)',
     }}
     aria-hidden="true"
   />
