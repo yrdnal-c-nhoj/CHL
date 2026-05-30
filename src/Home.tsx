@@ -10,6 +10,7 @@ import TopNav from './components/TopNav';
 import { DataContext } from './context/DataContext';
 import { useNavigationState } from './hooks/useNavigationState';
 import styles from './styles/Home.module.css';
+import sortStyles from './styles/SortControls.module.css';
 import {
   formatDateStandard as formatDate,
   isValidDate,
@@ -23,6 +24,12 @@ interface DataItem {
   tags?: string[];
 }
 
+type SortOption =
+  | 'date-desc'
+  | 'date-asc'
+  | 'title-asc'
+  | 'title-desc';
+
 const Home: FC = () => {
   const context = useContext(DataContext) as {
     items: DataItem[];
@@ -31,6 +38,7 @@ const Home: FC = () => {
   };
   const { items = [], loading = false, error = null } = context || {};
   const [searchParams] = useSearchParams();
+  const [sortBy, setSortBy] = useState<SortOption>('date-desc');
   const [fontsReady, setFontsReady] = useState<boolean>(
     sessionStorage.getItem('fontsLoaded') === 'true',
   );
@@ -105,9 +113,34 @@ const Home: FC = () => {
     setExpandedMonth(expandedMonth === monthKey ? null : monthKey);
   };
 
+  const handleDateSort = () =>
+    setSortBy((prev) => (prev === 'date-desc' ? 'date-asc' : 'date-desc'));
+
+  const handleTitleSort = () =>
+    setSortBy((prev) => (prev === 'title-asc' ? 'title-desc' : 'title-asc'));
+
   const sortedItems = useMemo<DataItem[]>(() => {
-    return [...items].filter((item) => item?.date && isValidDate(item.date));
-  }, [items]);
+    const filtered = [...items].filter(
+      (item) => item?.date && isValidDate(item.date),
+    );
+
+    switch (sortBy) {
+      case 'date-desc':
+        return filtered.sort((a, b) => b.date.localeCompare(a.date));
+      case 'date-asc':
+        return filtered.sort((a, b) => a.date.localeCompare(b.date));
+      case 'title-asc':
+        return filtered.sort((a, b) =>
+          (a.title || '').localeCompare(b.title || ''),
+        );
+      case 'title-desc':
+        return filtered.sort((a, b) =>
+          (b.title || '').localeCompare(a.title || ''),
+        );
+      default:
+        return filtered;
+    }
+  }, [items, sortBy]);
 
   const formatMonthName = (monthKey: string): string => {
     const [yy, mm] = (monthKey || '').split('-');
@@ -144,21 +177,23 @@ const Home: FC = () => {
       }
     });
 
-    // Sort months in descending order (newest first)
-    const sortedMonths = Object.keys(groups).sort((a, b) => b.localeCompare(a));
+    // Sort months based on date sort selection
+    const sortedMonths = Object.keys(groups).sort((a, b) => {
+      return sortBy === 'date-asc' ? a.localeCompare(b) : b.localeCompare(a);
+    });
 
     return sortedMonths.map((monthKey) => ({
       monthKey,
       monthName: formatMonthName(monthKey),
       items: groups[monthKey] || [],
     }));
-  }, [sortedItems]);
+  }, [sortedItems, sortBy]);
 
   if (!fontsReady || loading) {
     return <div className={styles.loadingContainer} />;
   }
 
-  if (error) return <div className={styles.error}>Error: {error}</div>;
+  if (error) return <div className={styles.error}>Error: {typeof error === 'string' ? error : error.message}</div>;
 
   return (
     <div
@@ -170,6 +205,27 @@ const Home: FC = () => {
     >
       <TopNav />
       <div className={styles.homeCenteredContent}>
+        {/* Shared Sorting Controls */}
+        <div className={sortStyles.sortContainer}>
+          <span className={sortStyles.sortLabel}>Sort:</span>
+          <button
+            type="button"
+            onClick={handleDateSort}
+            className={`${sortStyles.sortButton} ${sortBy.startsWith('date') ? sortStyles.active : ''}`}
+          >
+            date
+            {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
+          </button>
+          <button
+            type="button"
+            onClick={handleTitleSort}
+            className={`${sortStyles.sortButton} ${sortBy.startsWith('title') ? sortStyles.active : ''}`}
+          >
+            title
+            {sortBy === 'title-asc' ? '↓' : sortBy === 'title-desc' ? '↑' : ''}
+          </button>
+        </div>
+
         <div className={styles.monthList}>
           {groupedByMonth.map((month) => (
             <MonthDropdown

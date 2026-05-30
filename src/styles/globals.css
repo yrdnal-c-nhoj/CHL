@@ -251,9 +251,11 @@ body.clock-mode {
   transition: all 0.2s;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.4rem;
   border-radius: 2px;
   color: #666;
+  text-align: center;
 }
 
 .sort-label {
@@ -262,6 +264,8 @@ body.clock-mode {
   color: #999;
   text-transform: uppercase;
   letter-spacing: 0.05rem;
+  text-align: center;
+  display: block;
 }
 
 .sort-title {
@@ -272,6 +276,7 @@ body.clock-mode {
   padding: 0;
   color: var(--color-lab-text) !important;
   letter-spacing: 0.02rem;
+  text-align: center;
 }
 
 .sort-button:hover {
