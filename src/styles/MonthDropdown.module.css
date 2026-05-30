@@ -2,7 +2,7 @@
   margin-bottom: 0;
   position: relative;
   /* scroll-margin-top: 12rem; */
-  border-bottom: 1px solid var(--color-lab-gray-medium);
+  border-bottom: 2px solid var(--color-lab-gray-medium);
   width: 100%;
 }
 
@@ -11,7 +11,7 @@
 }
 
 .monthDropdownContainer:first-child {
-  border-top: 1px solid var(--color-lab-gray-medium);
+  border-top: 3px solid var(--color-lab-gray-medium);
 }
 
 .dropdownButton {
@@ -31,6 +31,7 @@
   color: #424346;
   font-family: var(--font-arimo);
   width: 100%;
+  letter-spacing: 0.13rem;
   position: relative;
   z-index: 1;
 }
@@ -40,13 +41,14 @@
 }
 
 .dropdownButtonHovered {
-  color: #014c63;
+  color: #040405;
 }
 
 .dropdownButtonExpanded {
-  color: #351101;
-  font-weight: 700;
+  color: #060200;
+  background-color: rgb(235, 233, 235);
 }
+
 
 .controls {
   display: flex;

@@ -20,7 +20,7 @@
 
 .divider {
   border: none;
-  border-top: 1px solid var(--color-lab-divider);
+  border-top: 2px solid var(--color-lab-divider);
   /* margin: 1rem 0; */
   width: 100%;
   max-width: 400px;
