@@ -9,6 +9,32 @@
   overflow: hidden;
 }
 
+.stripe {
+  position: absolute;
+  top: var(--stripe-top);
+  left: 0;
+  width: 100vw;
+  height: 20dvh;
+  transform: none;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), var(--grid-size));
+  justify-content: center;
+  align-content: center;
+  z-index: 1;
+}
+
+.tile {
+  width: var(--tile-size);
+  height: var(--tile-size);
+  background-image: var(--tile-img);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: var(--tile-transform);
+  filter: var(--tile-filter);
+}
+
 .timeDisplay {
   position: relative;
   z-index: 10;

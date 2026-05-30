@@ -71,38 +71,28 @@ export default function TireTilingClock() {
         return (
           <div
             key={idx}
+            className={styles.stripe}
             style={{
-              position: 'absolute',
-              top: `${idx * 20}%`,
-              left: 0,
-              width: '100vw',
-              height: '20dvh',
-              transform: 'none',
-              overflow: 'hidden',
-              display: 'grid',
-              gridTemplateColumns: `repeat(${cols}, ${layer.size}px)`,
-              justifyContent: 'center',
-              alignContent: 'center',
-              zIndex: 1
-            }}
+              '--stripe-top': `${idx * 20}%`,
+              '--grid-cols': cols,
+              '--grid-size': `${layer.size}px`,
+            } as React.CSSProperties}
           >
             {Array.from({ length: cols * rows }).map((_, i) => {
               const row = Math.floor(i / cols);
               const col = i % cols;
               const isFlipped = (row + col) % 2 !== 0;
+
               return (
                 <div
                   key={i}
+                  className={styles.tile}
                   style={{
-                    width: layer.size,
-                    height: layer.size,
-                    backgroundImage: `url(${layer.image})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                    transform: isFlipped ? 'scaleX(-1)' : 'none',
-                    filter: layer.filter
-                  }}
+                    '--tile-size': `${layer.size}px`,
+                    '--tile-img': `url(${layer.image})`,
+                    '--tile-filter': layer.filter,
+                    '--tile-transform': isFlipped ? 'scaleX(-1)' : 'none',
+                  } as React.CSSProperties}
                 />
               );
             })}
