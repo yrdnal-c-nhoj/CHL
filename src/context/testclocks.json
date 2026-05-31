@@ -1653,7 +1653,7 @@
     "tags": [
       "brown",
       "earth",
-      "Platonic-Solidslids",
+      "Platonic-Solids",
       "six",
       "square"
     ]
@@ -2091,7 +2091,7 @@
     "tags": [
       "digital-12h",
       "film",
-        "screen",
+      "screen",
       "gravity",
       "green"
     ]
@@ -2177,7 +2177,7 @@
       "digital",
       "extinct",
       "film",
-        "screen",
+      "screen",
       "horizon",
       "info",
       "kubrick",
@@ -2228,7 +2228,7 @@
     "tags": [
       "color",
       "digital-24h",
-      "esperanto",
+      "Esperanto",
       "paper"
     ]
   },
@@ -2303,7 +2303,7 @@
     "title": "Dots",
     "tags": [
       "circle",
-      "digital",
+      "digital-12h",
       "green",
       "revolve"
     ]
@@ -2318,7 +2318,7 @@
       "b+w",
       "Dr-Strangelove",
       "film",
-        "screen",
+      "screen",
       "Kubrick",
       "words"
     ]
@@ -2354,7 +2354,7 @@
       "1972",
       "Fellini",
       "film",
-        "screen",
+      "screen",
       "Italy",
       "Mars",
       "Michelangelo",
@@ -2371,7 +2371,7 @@
       "b+w",
       "chess",
       "digital-12h",
-      "marcel-duchamp",
+      "Marcel-Duchamp",
       "play",
       "square",
       "wood"
@@ -2401,7 +2401,7 @@
       "digital",
       "England",
       "film",
-        "screen",
+      "screen",
       "walk"
     ]
   },
@@ -2413,7 +2413,7 @@
       "aether",
       "digital",
       "pentagon",
-      "Platonic-Solidslids",
+      "Platonic-Solids",
       "twelve",
       "universe"
     ]
@@ -2472,7 +2472,7 @@
     "tags": [
       "digital",
       "grid",
-      "nederland",
+      "Nederland",
       "square"
     ]
   },
@@ -2508,7 +2508,7 @@
       "digital",
       "fast",
       "float",
-      "maine",
+      "Maine",
       "ocean",
       "up-and-down",
       "weather"
@@ -2529,7 +2529,7 @@
     "date": "25-10-24",
     "title": "Esperanto",
     "tags": [
-      "esperanto",
+      "Esperanto",
       "landscape",
       "word-clock"
     ]
@@ -2574,7 +2574,7 @@
       "b+w",
       "digital",
       "film",
-        "screen",
+      "screen",
       "horizon",
       "mechanical"
     ]
@@ -2595,7 +2595,7 @@
     "date": "25-10-31",
     "title": "Midnight Sun",
     "tags": [
-      "antarctica",
+      "Antarctica",
       "axis",
       "digital",
       "ice",
@@ -2664,7 +2664,7 @@
     "tags": [
       "analog",
       "blue",
-      "esperanto"
+      "Esperanto"
     ]
   },
   {
@@ -2726,7 +2726,7 @@
       "glass",
       "interior",
       "mirror",
-      "rococo"
+      "Rococo"
     ]
   },
   {
@@ -2737,7 +2737,7 @@
       "air",
       "digital",
       "eight",
-      "Platonic-Solidslids",
+      "Platonic-Solids",
       "pyramid"
     ]
   },
@@ -2936,7 +2936,7 @@
       "color",
       "digital",
       "paint",
-      "rococo"
+      "Rococo"
     ]
   },
   {
@@ -3028,7 +3028,7 @@
     "title": "Icosahedron",
     "tags": [
       "digital",
-      "Platonic-Solidslids",
+      "Platonic-Solids",
       "triangle",
       "twenty",
       "water"
@@ -3106,7 +3106,7 @@
       "gold",
       "Mars",
       "paint",
-      "rococo",
+      "Rococo",
       "sky",
       "Venus"
     ]
@@ -4420,7 +4420,7 @@
       "digital-12h",
       "France",
       "pattern",
-      "rococo",
+      "Rococo",
       "shell",
       "Venus"
     ]
