@@ -32,6 +32,7 @@
       "paper",
       "predator",
       "swim",
+      "underworld",
       "water",
       "white"
     ]
@@ -177,7 +178,7 @@
   {
     "path": "25-04-14",
     "date": "25-04-14",
-    "title": "Blue Brick",
+    "title": "Blue Bricks",
     "tags": [
       "blue",
       "histogram",
@@ -231,6 +232,7 @@
     "tags": [
       "aerial",
       "analog",
+      "antarctica",
       "cold",
       "day-and-night",
       "dry",
@@ -304,6 +306,7 @@
     "tags": [
       "analog",
       "horizon",
+      "mars",
       "ocean",
       "sky",
       "water",
@@ -321,7 +324,8 @@
       "lava",
       "nature",
       "orange",
-      "red"
+      "red",
+      "underworld"
     ]
   },
   {
@@ -332,6 +336,7 @@
       "analog",
       "blood",
       "body",
+      "bone",
       "brown"
     ]
   },
@@ -352,7 +357,7 @@
     "tags": [
       "analog",
       "disc",
-      "meatl",
+      "metal",
       "shiny",
       "spin"
     ]
@@ -461,7 +466,8 @@
       "bone",
       "digital-24h",
       "earth",
-      "underworld"
+      "underworld",
+      "warhol"
     ]
   },
   {
@@ -519,8 +525,8 @@
     "tags": [
       "color",
       "digital-12h",
+      "france",
       "gravity",
-      "orance",
       "pink",
       "up-and-down"
     ]
@@ -630,7 +636,7 @@
       "digital-12h",
       "fire",
       "four",
-      "platonic-solid",
+      "platonic-solids",
       "pyramid",
       "red"
     ]
@@ -808,7 +814,7 @@
     "date": "25-06-03",
     "title": "Filigree",
     "tags": [
-      "circles",
+      "circle",
       "digital-24h",
       "metal",
       "purple",
@@ -838,7 +844,7 @@
       "earth",
       "green",
       "grow",
-      "trees",
+      "tree",
       "trunk",
       "wood"
     ]
@@ -976,6 +982,7 @@
       "analog",
       "black",
       "fast",
+      "horn",
       "night",
       "sound",
       "transport"
@@ -988,8 +995,9 @@
     "tags": [
       "digital",
       "image-free",
+      "orange",
       "parallel",
-      "slant. orange"
+      "slant"
     ]
   },
   {
@@ -1104,7 +1112,8 @@
     "date": "25-06-27",
     "title": "Morse Code",
     "tags": [
-      "birds",
+      "bird",
+      "info",
       "metal",
       "pictographic",
       "sky",
@@ -1116,7 +1125,7 @@
     "date": "25-06-28",
     "title": "Twenty-Four",
     "tags": [
-      "analog 24h",
+      "analog-24h",
       "b+w",
       "image-free",
       "twenty-four"
@@ -1127,10 +1136,11 @@
     "date": "25-06-29",
     "title": "Stretch",
     "tags": [
-      "digital",
-      "green.  yellow",
+      "digital-12h",
+      "green",
       "slant",
-      "typeface"
+      "typeface",
+      "yellow"
     ]
   },
   {
@@ -1154,7 +1164,8 @@
       "digital",
       "electricity",
       "film",
-      "night"
+      "night",
+      "screen"
     ]
   },
   {
@@ -1184,6 +1195,7 @@
     "title": "Kaleidoscope",
     "tags": [
       "digital",
+      "round",
       "spin"
     ]
   },
@@ -1259,7 +1271,8 @@
     "tags": [
       "digital",
       "hand",
-      "paper"
+      "paper",
+      "yellow"
     ]
   },
   {
@@ -1270,6 +1283,7 @@
       "analog",
       "b+w",
       "bone",
+      "fibonacci",
       "golden ratio",
       "nature",
       "shell"
@@ -1401,7 +1415,13 @@
   {
     "path": "25-07-24",
     "date": "25-07-24",
-    "title": "Emoji Analog"
+    "title": "Emoji Analog",
+    "tags": [
+      "analog",
+      "emoji",
+      "info",
+      "tech"
+    ]
   },
   {
     "path": "25-07-25",
@@ -1420,7 +1440,11 @@
     "date": "25-07-26",
     "title": "Secondary Colors",
     "tags": [
-      "analog"
+      "analog",
+      "color",
+      "green",
+      "orange",
+      "purple"
     ]
   },
   {
@@ -1464,7 +1488,8 @@
       "brown",
       "camouflage",
       "digital",
-      "green"
+      "green",
+      "mars"
     ]
   },
   {
@@ -1476,7 +1501,9 @@
       "digital",
       "eye",
       "history",
-      "thread"
+      "mars",
+      "thread",
+      "underworld"
     ]
   },
   {
@@ -1485,7 +1512,7 @@
     "title": "Zodiac",
     "tags": [
       "analog",
-      "animals",
+      "animal",
       "body",
       "constellations",
       "gods",
@@ -1497,14 +1524,20 @@
   {
     "path": "25-08-02",
     "date": "25-08-02",
-    "title": "Decorum"
+    "title": "Decorum",
+    "tags": [
+      "b+w"
+    ]
   },
   {
     "path": "25-08-03",
     "date": "25-08-03",
     "title": "Curtain Call",
     "tags": [
-      "gold"
+      "analog",
+      "gold",
+      "red",
+      "sound"
     ]
   },
   {
@@ -1512,7 +1545,11 @@
     "date": "25-08-04",
     "title": "Fireflies",
     "tags": [
-      "nature"
+      "digital-24h",
+      "light",
+      "nature",
+      "night",
+      "tree"
     ]
   },
   {
@@ -1536,7 +1573,9 @@
       "digital-24h",
       "dog",
       "face",
+      "fly",
       "metal",
+      "russia",
       "space"
     ]
   },
@@ -1627,7 +1666,8 @@
       "color",
       "earth",
       "horizon",
-      "space"
+      "space",
+      "universe"
     ]
   },
   {
@@ -1644,12 +1684,17 @@
   {
     "path": "25-08-15",
     "date": "25-08-15",
-    "title": "Dominoes"
+    "title": "Dominoes",
+    "tags": [
+      "b+w",
+      "digital-24h",
+      "play"
+    ]
   },
   {
     "path": "25-08-16",
     "date": "25-08-16",
-    "title": "Palm Trees",
+    "title": "Palm tree",
     "tags": [
       "analog",
       "grid",
@@ -1672,7 +1717,11 @@
   {
     "path": "25-08-18",
     "date": "25-08-18",
-    "title": "Bull's-Eye"
+    "title": "Bull's-Eye",
+    "tags": [
+      "aim",
+      "analog"
+    ]
   },
   {
     "path": "25-08-19",
@@ -1692,6 +1741,7 @@
     "title": "Time Zone",
     "tags": [
       "analog",
+      "earth",
       "grid",
       "horizon",
       "twenty-four",
@@ -1764,14 +1814,14 @@
     "date": "25-08-26",
     "title": "Rooted",
     "tags": [
-      "chthonic",
       "digital",
       "earth",
       "grow",
       "landscape",
       "monochrome",
       "tree",
-      "trunk"
+      "trunk",
+      "underworld"
     ]
   },
   {
@@ -1791,7 +1841,7 @@
     "title": "Goblin",
     "tags": [
       "digital",
-      "england",
+      "England",
       "gold",
       "tolkien"
     ]
@@ -1965,6 +2015,7 @@
     "tags": [
       "analog",
       "b+w",
+      "emoji",
       "moon",
       "night",
       "silver",
@@ -1976,7 +2027,7 @@
     "date": "25-09-13",
     "title": "Pawprints",
     "tags": [
-      "animals",
+      "animal",
       "bone",
       "earth",
       "feather",
@@ -2023,7 +2074,14 @@
   {
     "path": "25-09-17",
     "date": "25-09-17",
-    "title": "Crush"
+    "title": "Crush",
+    "tags": [
+      "digital-12h",
+      "disney",
+      "hand",
+      "heart",
+      "venus"
+    ]
   },
   {
     "path": "25-09-18",
@@ -2045,7 +2103,8 @@
       "blue",
       "sky",
       "space",
-      "spin"
+      "spin",
+      "universe"
     ]
   },
   {
@@ -2066,6 +2125,7 @@
       "air",
       "analog",
       "earth",
+      "elements",
       "fire",
       "water"
     ]
@@ -2113,6 +2173,7 @@
     "tags": [
       "animal",
       "digital",
+      "extinct",
       "film",
       "horizon",
       "info",
@@ -2238,7 +2299,7 @@
     "date": "25-10-06",
     "title": "Dots",
     "tags": [
-      "circles",
+      "circle",
       "digital",
       "green",
       "revolve"
@@ -2290,9 +2351,11 @@
       "fellini",
       "film",
       "italy",
+      "mars",
       "michelangelo",
       "night",
-      "rome"
+      "rome",
+      "venus"
     ]
   },
   {
@@ -2318,7 +2381,8 @@
       "fast",
       "flower",
       "grow",
-      "pink"
+      "pink",
+      "venus"
     ]
   },
   {
@@ -2330,7 +2394,7 @@
       "b+w",
       "dance",
       "digital",
-      "england",
+      "England",
       "film",
       "walk"
     ]
@@ -2343,7 +2407,7 @@
       "aether",
       "digital",
       "pentagon",
-      "platonic-solid",
+      "platonic-solids",
       "twelve",
       "universe"
     ]
@@ -2367,7 +2431,8 @@
       "planet",
       "shell",
       "space",
-      "transport"
+      "transport",
+      "venus"
     ]
   },
   {
@@ -2390,7 +2455,8 @@
       "moon",
       "shadow",
       "sky",
-      "sun"
+      "sun",
+      "universe"
     ]
   },
   {
@@ -2399,6 +2465,7 @@
     "title": "Delft",
     "tags": [
       "digital",
+      "grid",
       "nederland",
       "square"
     ]
@@ -2422,7 +2489,7 @@
     "tags": [
       "analog",
       "b+w",
-      "england",
+      "England",
       "tick-tock"
     ]
   },
@@ -2663,7 +2730,7 @@
       "air",
       "digital",
       "eight",
-      "platonic-solid",
+      "platonic-solids",
       "pyramid"
     ]
   },
@@ -2696,8 +2763,9 @@
       "digital-12h",
       "gravity",
       "grow",
+      "mars",
       "orange",
-      "trees",
+      "tree",
       "trunk"
     ]
   },
@@ -2720,6 +2788,7 @@
     "title": "Mars",
     "tags": [
       "gods",
+      "mars",
       "myth",
       "planet",
       "red",
@@ -2801,6 +2870,7 @@
     "tags": [
       "analog",
       "animal",
+      "apple",
       "earth",
       "serpent"
     ]
@@ -2808,7 +2878,7 @@
   {
     "path": "25-11-25",
     "date": "25-11-25",
-    "title": "Network Protocol",
+    "title": "Network ProRocol",
     "tags": [
       "digital",
       "grid",
@@ -2824,10 +2894,11 @@
     "tags": [
       "air",
       "animal",
-      "birds",
+      "bird",
       "brown",
       "digital",
-      "fly"
+      "fly",
+      "landscape"
     ]
   },
   {
@@ -2867,7 +2938,10 @@
     "title": "Caution",
     "tags": [
       "b+w",
-      "pictographic"
+      "blood",
+      "bone",
+      "pictographic",
+      "underworld"
     ]
   },
   {
@@ -2947,7 +3021,7 @@
     "title": "Icosahedron",
     "tags": [
       "digital",
-      "platonic-solid",
+      "platonic-solids",
       "triangle",
       "twenty",
       "water"
@@ -2975,7 +3049,7 @@
       "body",
       "digital",
       "eadweard-muybridge",
-      "england",
+      "England",
       "film",
       "odd-toed-ungulate"
     ]
@@ -2986,7 +3060,7 @@
     "title": "Jupiter",
     "tags": [
       "digital",
-      "god",
+      "gods",
       "planet",
       "scythe",
       "sky"
@@ -3023,9 +3097,11 @@
       "digital",
       "fly",
       "gold",
+      "mars",
       "paint",
       "rococo",
-      "sky"
+      "sky",
+      "venus"
     ]
   },
   {
@@ -3058,6 +3134,7 @@
     "title": "Swagger",
     "tags": [
       "body",
+      "mars",
       "pictographic"
     ]
   },
@@ -3085,7 +3162,8 @@
       "animal",
       "b+w",
       "bird",
-      "feather"
+      "feather",
+      "venus"
     ]
   },
   {
@@ -3245,7 +3323,9 @@
     "date": "26-01-02",
     "title": "Cramped",
     "tags": [
-      "gold"
+      "digital-24h",
+      "gold",
+      "typeface"
     ]
   },
   {
@@ -3294,7 +3374,8 @@
       "mummy",
       "pyramid",
       "scarab",
-      "stone"
+      "stone",
+      "underworld"
     ]
   },
   {
@@ -3328,6 +3409,7 @@
       "b+w",
       "digital",
       "grid",
+      "nine",
       "play"
     ]
   },
@@ -3354,8 +3436,10 @@
     "title": "Lalarium",
     "tags": [
       "digital",
+      "gods",
       "italy",
       "shrine",
+      "underworld",
       "wall"
     ]
   },
@@ -3437,7 +3521,8 @@
       "day",
       "italy",
       "landscape",
-      "pictographic"
+      "pictographic",
+      "venus"
     ]
   },
   {
@@ -3446,8 +3531,8 @@
     "title": "Migrate",
     "tags": [
       "analog",
-      "anmal",
-      "birds",
+      "animal",
+      "bird",
       "blue",
       "fly",
       "map",
@@ -3473,7 +3558,7 @@
     "date": "26-01-23",
     "title": "Lacrimal",
     "tags": [
-      "analog see",
+      "analog",
       "body",
       "eye",
       "face",
@@ -3486,6 +3571,8 @@
     "title": "Emoji Digital",
     "tags": [
       "digital-24h",
+      "emoji",
+      "info",
       "tech"
     ]
   },
@@ -3789,8 +3876,9 @@
     "title": "Tribute",
     "tags": [
       "12 hour",
-      "d.c.",
+      "dc",
       "film",
+      "mars",
       "rome",
       "stone",
       "transport",
@@ -3817,10 +3905,11 @@
     "tags": [
       "analog",
       "animal",
-      "circles",
+      "circle",
       "myth",
       "serpent",
-      "tail"
+      "tail",
+      "underworld"
     ]
   },
   {
@@ -3828,11 +3917,12 @@
     "date": "26-02-23",
     "title": "Neptune",
     "tags": [
+      "blue",
       "digital-24h",
       "gods",
       "myth",
       "planet",
-      "sky. blue",
+      "sky",
       "space",
       "trident"
     ]
@@ -3894,7 +3984,9 @@
       "move",
       "mummy",
       "pyramid",
-      "stone"
+      "scarab",
+      "stone",
+      "underworld"
     ]
   },
   {
@@ -4029,7 +4121,7 @@
     "date": "26-03-10",
     "title": "Concentric",
     "tags": [
-      "circles",
+      "circle",
       "color",
       "histogram",
       "image-free",
@@ -4103,9 +4195,9 @@
       "analog",
       "b+w",
       "film",
-      "fritz",
+      "fritz-lang",
       "germany",
-      "metropolis"
+      "marcel-duchamp"
     ]
   },
   {
@@ -4113,11 +4205,11 @@
     "date": "26-03-17",
     "title": "Pluto",
     "tags": [
-      "chthonic",
       "gods",
       "key",
       "myth",
-      "planet"
+      "planet",
+      "underworld"
     ]
   },
   {
@@ -4129,6 +4221,7 @@
       "day",
       "film",
       "la",
+      "screen",
       "stars",
       "walk"
     ]
@@ -4284,7 +4377,7 @@
     "date": "26-03-30",
     "title": "Origami",
     "tags": [
-      "animals",
+      "animal",
       "fold",
       "paper",
       "pictographic",
@@ -4297,10 +4390,11 @@
     "title": "Lanternfish",
     "tags": [
       "analog",
-      "animals",
-      "deepwater swim",
+      "animal",
+      "deepwater",
       "light",
-      "ocean"
+      "ocean",
+      "swim"
     ]
   },
   {
@@ -4313,7 +4407,8 @@
       "france",
       "pattern",
       "rococo",
-      "shell"
+      "shell",
+      "venus"
     ]
   },
   {
@@ -4362,6 +4457,7 @@
       "gravity",
       "light",
       "meteor",
+      "planet",
       "russia",
       "sky",
       "sound",
@@ -4439,7 +4535,7 @@
     "tags": [
       "eyes",
       "face",
-      "pictographic 24h",
+      "pictographic-24h",
       "see"
     ]
   },
@@ -4498,10 +4594,11 @@
     "date": "26-04-16",
     "title": "135° Southeast",
     "tags": [
+      "analog",
       "cardinal-directions",
       "jasmine",
       "pomegranate",
-      "warm analog",
+      "warm",
       "wind"
     ]
   },
@@ -4564,7 +4661,7 @@
     "date": "26-04-21",
     "title": "Particles",
     "tags": [
-      "circles",
+      "circle",
       "color",
       "digital-24h",
       "image-free",
@@ -4631,6 +4728,7 @@
       "digital-12h",
       "film",
       "jetsons",
+      "screen",
       "sky",
       "space",
       "stars",
@@ -4666,7 +4764,7 @@
     "date": "26-04-29",
     "title": "Cavalcade",
     "tags": [
-      "animals",
+      "animal",
       "digital-24h",
       "mechanical",
       "spin"
@@ -4733,11 +4831,11 @@
     "title": "Pod",
     "tags": [
       "analog",
+      "animal",
       "blue",
       "move",
       "nature",
       "ocean",
-      "spirit-animal",
       "waves"
     ]
   },
@@ -4749,6 +4847,7 @@
       "animal",
       "bone",
       "day",
+      "extinct",
       "nature",
       "pictographic",
       "shell"
@@ -4856,10 +4955,11 @@
     "title": "Klein Blue",
     "tags": [
       "1957",
+      "air",
       "blue",
+      "color",
       "day",
       "digital",
-      "international-klein-blue-(ikb)",
       "paris",
       "screen"
     ]
@@ -4889,7 +4989,7 @@
       "green",
       "grow",
       "nature",
-      "trees",
+      "tree",
       "wood"
     ]
   },
@@ -4923,6 +5023,7 @@
       "mummy",
       "predator",
       "pyramid",
+      "scarab",
       "stone"
     ]
   },
@@ -4933,7 +5034,6 @@
     "tags": [
       "1888",
       "analog",
-      "bagpipe-with-pleats",
       "body",
       "dance",
       "film",
@@ -4946,13 +5046,13 @@
     "date": "26-05-19",
     "title": "Bliss",
     "tags": [
+      "clippy",
       "day",
       "digital",
       "digital-12h",
       "info-tech",
       "landscape",
       "nature",
-      "rip-clippy",
       "wallpaper",
       "weather",
       "windows"
@@ -5025,9 +5125,11 @@
     "tags": [
       "analog",
       "animal",
+      "grey",
       "horn",
       "monochrome",
       "odd-toed-ungulate",
+      "silver",
       "walk"
     ]
   },
@@ -5066,6 +5168,7 @@
     "date": "26-05-27",
     "title": "Tire Flip",
     "tags": [
+      "body",
       "digital-24h",
       "round",
       "spin",
