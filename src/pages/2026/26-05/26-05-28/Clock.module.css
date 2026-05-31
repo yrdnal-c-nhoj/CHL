@@ -1,3 +1,4 @@
+/* Container and Layout */
 .container {
   width: 100vw;
   height: 100dvh;
@@ -14,18 +15,24 @@
   left: 0;
   width: 100%;
   height: 100%;
+  
   background-size: cover;
   background-position: center;
-  filter: hue-rotate(180deg);
   z-index: -1; /* Ensure it stays behind the clock content */
+  z-index: -1;
+  background-repeat: no-repeat;
 }
 
 .clock {
   position: relative;
   width: 99vmin;
   height: 99vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Clock Face Numbers/Images */
 .faceImage {
   position: absolute;
   transform: translate(-50%, -50%);
@@ -43,6 +50,7 @@
   );
 }
 
+/* Clock Hands */
 .hand {
   position: absolute;
   bottom: 50%;
@@ -50,6 +58,8 @@
   transform-origin: bottom center;
   pointer-events: none;
   opacity: 0.3;
+  display: flex;
+  justify-content: center;
 }
 
 /* Base shape */

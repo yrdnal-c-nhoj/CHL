@@ -1,15 +1,7 @@
-import { useClockTime } from '@/utils/clockUtils';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import styles from './Clock.module.css';
-
-// Asset Imports
 import bgImage from '@/assets/images/26_images/26-05/26-05-28/boom.webp';
+import { useClockTime } from '@/utils/clockUtils';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import styles from './Clock.module.css';
 
 import m1 from '@/assets/images/26_images/26-05/26-05-28/1.webp';
 import m10 from '@/assets/images/26_images/26-05/26-05-28/10.webp';
@@ -137,62 +129,112 @@ const imageSettings = [
   },
 ];
 
+interface HandProps {
+  deg: number;
+  width: string;
+  height: string;
+  z: number;
+  isSec?: boolean;
+  ms?: number;
+  variant: 'hour' | 'minute' | 'second';
+}
+
+/**
+ * Memoized Hand component to prevent re-renders on the 12 clock face images
+ * when the high-frequency clock hands move.
+ */
+const Hand = React.memo(({ deg, width, height, z, isSec, ms, variant }: HandProps) => (
+  <div
+    className={`${styles.hand} ${styles[`hand_${variant}`]}`}
+    style={{
+      width,
+      height,
+      zIndex: z,
+      transform: `translateX(-50%) rotate(${deg}deg)`,
+      transition: isSec && ms !== undefined && ms >= 100 ? 'transform 0.1s linear' : 'none',
+    }}
+    aria-hidden="true"
+  />
+));
+
+/**
+ * Sub-component to isolate the 12 face images, ensuring they only 
+ * re-render once per second rather than every frame.
+ */
+const ClockFace = React.memo(({ faceIndices }: { faceIndices: number[] }) => (
+  <>
+    {faceIndices.map((imgIdx, i) => {
+      if (imgIdx === -1) return null;
+
+      const angle = (i + 1) * 30 - 90;
+      const rad = (angle * Math.PI) / 180;
+      const x = 50 + 40 * Math.cos(rad);
+      const y = 50 + 40 * Math.sin(rad);
+      const config = imageSettings[imgIdx];
+
+      return (
+        <img
+          key={`pos-${i}`}
+          src={allMatchImages[imgIdx]}
+          className={styles.faceImage}
+          style={{
+            width: config.size,
+            height: config.size,
+            left: `${x}%`,
+            top: `${y}%`,
+            opacity: config.opacity,
+            filter: `brightness(${config.brightness}) saturate(${config.saturation})`,
+            ['--vignette-black' as string]: config.vignetteBlackStop,
+            ['--vignette-transparent' as string]: config.vignetteTransparentStop,
+          }}
+          alt=""
+        />
+      );
+    })}
+  </>
+));
+
 const Clock: React.FC = () => {
   const time = useClockTime();
+  const [gameState, setGameState] = useState<{ face: number[]; spare: number }>({
+    face: [],
+    spare: -1,
+  });
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Initialize state for face indices and spare index
-  const [faceIndices, setFaceIndices] = useState<number[]>([]);
-  const [spareIndex, setSpareIndex] = useState<number>(-1); // Use -1 as an initial invalid state
-
-  const randomizeImages = useCallback(() => {
+  const randomize = useCallback(() => {
     const indices = Array.from({ length: allMatchImages.length }, (_, i) => i);
-    // Fisher-Yates shuffle
     for (let i = indices.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [indices[i], indices[j]] = [indices[j], indices[i]];
     }
-    setFaceIndices(indices.slice(0, 12));
-    setSpareIndex(indices[12]);
+    return { face: indices.slice(0, 12), spare: indices[12] };
   }, []);
-
-  // Effect to perform randomization on component mount
-  useEffect(() => {
-    randomizeImages();
-  }, [randomizeImages]);
 
   const lastProcessedSec = useRef<number>(-1);
   const seconds = time.getSeconds();
   const milliseconds = time.getMilliseconds();
 
   useEffect(() => {
-    // Only trigger once per second change and if faceIndices has been initialized
-    if (seconds !== lastProcessedSec.current && faceIndices.length > 0) {
+    if (seconds !== lastProcessedSec.current) {
       lastProcessedSec.current = seconds;
-
-      // Every 12 seconds, when a new full cycle begins, reshuffle the entire list
-      if (seconds % 12 === 0) {
-        randomizeImages();
-        return;
-      }
-
-      // Identify which clock position counter-clockwise from 12 o'clock (0-11)
-      const activePos = (12 - (seconds % 12)) % 12;
-
-      setFaceIndices((prev) => {
-        const newFace = [...prev];
-        // Ensure prev has enough elements before accessing
-        if (newFace.length === 0 || activePos >= newFace.length) return prev;
-
-        const outgoingImage = newFace[activePos];
-
-        // SWAP: Put the spare image on the face, and take the face image to the spare slot
-        newFace[activePos] = spareIndex;
-        setSpareIndex(outgoingImage);
-
-        return newFace;
+      setGameState((prev) => {
+        if (prev.face.length === 0 || seconds % 12 === 0) {
+          return randomize();
+        }
+        const activePos = (12 - (seconds % 12)) % 12;
+        const newFace = [...prev.face];
+        const outgoing = newFace[activePos];
+        newFace[activePos] = prev.spare;
+        return { face: newFace, spare: outgoing };
       });
     }
-  }, [seconds, spareIndex, faceIndices, randomizeImages]);
+  }, [seconds, randomize]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoaded(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const rotations = useMemo(() => {
     const s = seconds + milliseconds / 1000;
@@ -202,61 +244,19 @@ const Clock: React.FC = () => {
   }, [seconds, milliseconds, time]);
 
   return (
-    <div
-      className={styles.container}
-    >
-      <style>{`
-        @keyframes slideBackground {
-          from { background-position: 0 0; }
-          to { background-position: -100vw 0; }
-        }
-      `}</style>
-
-      {/* Background layer with hue filter */}
-      <div 
-        className={styles.backgroundLayer} 
-        style={{ 
+    <div className={styles.container}>
+      <div
+        className={styles.backgroundLayer}
+        style={{
           backgroundImage: `url(${bgImage})`,
-          backgroundSize: 'cover',
-          backgroundRepeat: 'repeat-x',
-          animation: 'slideBackground 60s linear infinite'
-        }} 
+          backgroundPosition: isLoaded ? '40% 50%' : '30% 50%',
+          transition: 'background-position 2s ease-out',
+        }}
       />
 
       <div className={styles.clock}>
-        {/* Render the 12 Positions */}
-        {faceIndices.map((imgIdx, i) => {
-          // Only render if imgIdx is valid (i.e., after initial shuffle in useEffect)
-          if (imgIdx === -1) return null;
-
-          const hour = i + 1;
-          const angle = hour * 30 - 90;
-          const rad = (angle * Math.PI) / 180;
-          const x = 50 + 40 * Math.cos(rad);
-          const y = 50 + 40 * Math.sin(rad);
-          const config = imageSettings[imgIdx];
-
-          return (
-            <img
-              key={`pos-${i}`}
-              src={allMatchImages[imgIdx]}
-              className={styles.faceImage}
-              style={{
-                width: config.size,
-                height: config.size,
-                left: `${x}%`,
-                top: `${y}%`,
-                opacity: config.opacity,
-                filter: `brightness(${config.brightness}) saturate(${config.saturation})`,
-                ['--vignette-black' as string]: config.vignetteBlackStop,
-                ['--vignette-transparent' as string]:
-                  config.vignetteTransparentStop,
-              }}
-              alt=""
-            />
-          );
-        })}
-
+        <ClockFace faceIndices={gameState.face} />
+        
         {/* Hands (CSS-based, no image assets) */}
         <Hand deg={rotations.hr} width="26%" height="30%" z={2} variant="hour" />
         <Hand deg={rotations.min} width="84%" height="60%" z={3} variant="minute" />
@@ -269,36 +269,9 @@ const Clock: React.FC = () => {
           ms={milliseconds}
           variant="second"
         />
-
-
       </div>
     </div>
   );
 };
-
-interface HandProps {
-  deg: number;
-  width: string;
-  height: string;
-  z: number;
-  isSec?: boolean;
-  ms?: number;
-  variant: 'hour' | 'minute' | 'second';
-}
-
-const Hand = ({ deg, width, height, z, isSec, ms, variant }: HandProps) => (
-  <div
-    className={`${styles.hand} ${styles[`hand_${variant}`]}`}
-    style={{
-      width,
-      height,
-      zIndex: z,
-      transform: `translateX(-50%) rotate(${deg}deg)`,
-      transition: isSec && ms! >= 100 ? 'transform 0.1s linear' : 'none',
-    }}
-    aria-hidden="true"
-  />
-);
-
 
 export default Clock;

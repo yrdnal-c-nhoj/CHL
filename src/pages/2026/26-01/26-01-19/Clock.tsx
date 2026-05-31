@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
 import bgImage from '@/assets/images/26_images/26-01/26-01-19/hands.webp';
 import { useSmoothClock } from '@/utils/hooks';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
 // Asset exports for preloading pipeline
@@ -13,6 +13,12 @@ const COLORS = {
   border: '#330202', // Darker border for contrast
 };
 
+const STYLE_VARS = {
+  handTransition: 'transform 0.1s ease-out',
+  sleepyTransition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+  panicTransition: 'transform 0.4s cubic-bezier(0.17, 0.67, 0.6, 1.3)',
+};
+
 // --- Physics deviation functions ---
 const getJumpOvershoot = (f) => (f < 0.2 ? f * 10 : f < 0.5 ? 2 : 0);
 const getSlowWiggle = (f) => Math.sin(f * Math.PI * 2) * 12;
@@ -21,104 +27,58 @@ const getHeavyTwitch = (f) => (f > 0.4 && f < 0.6 ? 6 : 0);
 const getDelayedRush = (f) => (f < 0.6 ? -10 : (f - 0.6) * 25);
 
 const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }) => {
-  const radius = size / 2;
+  const r = size / 2;
   const handWidth = size * 0.008;
   const outlineWidth = `${size * 0.0015}vh`;
+  const arrowBase = {
+    width: 0, height: 0, position: 'absolute', left: '50%', transform: 'translateX(-50%)', bottom: `${r * 0.9}vh`
+  };
 
   return (
-    <div
-      style={{
-        position: 'absolute',
-        bottom: '50%',
-        left: '50%',
-        width: handWidth,
-        height: 0,
-        transformOrigin: 'bottom center',
-        transform: `translateX(-50%) rotate(${rotation}deg)`,
-        zIndex,
-        transition,
-      }}
-    >
-      {/* Arrow head (Black Border Layer) */}
-      <div
-        style={{
-          width: 0,
-          height: 0,
-          borderLeft: `${size * 0.09}vh solid transparent`,
-          borderRight: `${size * 0.09}vh solid transparent`,
-          borderBottom: `${size * 0.08}vh solid ${COLORS.border}`,
-          position: 'absolute',
-          bottom: `${radius * 0.9}vh`,
-          left: '50%',
-          transform: 'translateX(-50%)',
-        }}
-      />
+    <div style={{
+      position: 'absolute', bottom: '50%', left: '50%', width: handWidth, height: 0,
+      transformOrigin: 'bottom center', transform: `translateX(-50%) rotate(${rotation}deg)`,
+      zIndex, transition
+    }}>
+      {/* Arrow Heads */}
+      <div style={{
+        ...arrowBase,
+        borderLeft: `${size * 0.09}vh solid transparent`,
+        borderRight: `${size * 0.09}vh solid transparent`,
+        borderBottom: `${size * 0.08}vh solid ${COLORS.border}`,
+      }} />
+      <div style={{
+        ...arrowBase, zIndex: 1,
+        borderLeft: `${size * 0.08}vh solid transparent`,
+        borderRight: `${size * 0.08}vh solid transparent`,
+        borderBottom: `${size * 0.074}vh solid ${COLORS.secondHand}`,
+      }} />
 
-      {/* Arrow head (Yellow Fill Layer) */}
-      <div
-        style={{
-          width: 0,
-          height: 0,
-          borderLeft: `${size * 0.08}vh solid transparent`,
-          borderRight: `${size * 0.08}vh solid transparent`,
-          borderBottom: `${size * 0.074}vh solid ${COLORS.secondHand}`,
-          position: 'absolute',
-          bottom: `${radius * 0.9}vh`,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 1,
-        }}
-      />
-
-      {/* Main blade */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          width: '100%',
-          height: `${radius * 0.8}vh`,
-          background: COLORS.secondHand,
-          borderTop: `${outlineWidth} solid ${COLORS.border}`,
-          borderLeft: `${outlineWidth} solid ${COLORS.border}`,
-          borderRight: `${outlineWidth} solid ${COLORS.border}`,
-          borderBottom: 'none', // Explicitly set to avoid shorthand conflict
-          boxSizing: 'border-box',
-        }}
-      />
+      {/* Main Blade */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, width: '100%', height: `${r * 0.8}vh`,
+        background: COLORS.secondHand, boxSizing: 'border-box',
+        borderTop: `${outlineWidth} solid ${COLORS.border}`,
+        borderLeft: `${outlineWidth} solid ${COLORS.border}`,
+        borderRight: `${outlineWidth} solid ${COLORS.border}`,
+      }} />
 
       {/* Tail */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: `${radius * 0.3}vh`,
-          background: COLORS.secondHand,
-          borderBottom: `${outlineWidth} solid ${COLORS.border}`,
-          borderLeft: `${outlineWidth} solid ${COLORS.border}`,
-          borderRight: `${outlineWidth} solid ${COLORS.border}`,
-          borderTop: 'none', // Explicitly set to avoid shorthand conflict
-          boxSizing: 'border-box',
-        }}
-      />
+      <div style={{
+        position: 'absolute', top: 0, left: 0, width: '100%', height: `${r * 0.3}vh`,
+        background: COLORS.secondHand, boxSizing: 'border-box',
+        borderBottom: `${outlineWidth} solid ${COLORS.border}`,
+        borderLeft: `${outlineWidth} solid ${COLORS.border}`,
+        borderRight: `${outlineWidth} solid ${COLORS.border}`,
+      }} />
 
-      {/* Tail ball */}
-      <div
-        style={{
-          position: 'absolute',
-          top: `${radius * 0.4}vh`,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: `${size * 0.08}vh`,
-          height: `${size * 0.08}vh`,
-          borderRadius: '50%',
-          background: COLORS.secondHand,
-          border: `${outlineWidth} solid ${COLORS.border}`,
-          boxSizing: 'border-box',
-        }}
-      />
+      {/* Tail Ball */}
+      <div style={{
+        position: 'absolute', top: `${r * 0.4}vh`, left: '50%', transform: 'translateX(-50%)',
+        width: `${size * 0.08}vh`, height: `${size * 0.08}vh`,
+        borderRadius: '50%', background: COLORS.secondHand, boxSizing: 'border-box',
+        border: `${outlineWidth} solid ${COLORS.border}`,
+      }} />
     </div>
   );
 };
