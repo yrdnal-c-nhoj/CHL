@@ -171,7 +171,7 @@
       "circle",
       "food",
       "hot",
-      "italy",
+      "Italy",
       "round"
     ]
   },
@@ -467,7 +467,7 @@
       "digital-24h",
       "earth",
       "underworld",
-      "warhol"
+      "Warhol"
     ]
   },
   {
@@ -1589,6 +1589,7 @@
       "animal",
       "disney",
       "film",
+        "screen",
       "horizon",
       "horse",
       "odd-toed-ungulate",
@@ -2090,6 +2091,7 @@
     "tags": [
       "digital-12h",
       "film",
+        "screen",
       "gravity",
       "green"
     ]
@@ -2175,6 +2177,7 @@
       "digital",
       "extinct",
       "film",
+        "screen",
       "horizon",
       "info",
       "kubrick",
@@ -2313,9 +2316,10 @@
       "1964",
       "analog",
       "b+w",
-      "dr-strangelove",
+      "Dr-Strangelove",
       "film",
-      "kubrick",
+        "screen",
+      "Kubrick",
       "words"
     ]
   },
@@ -2348,11 +2352,12 @@
     "title": "Marcus Aurelius",
     "tags": [
       "1972",
-      "fellini",
+      "Fellini",
       "film",
-      "italy",
+        "screen",
+      "Italy",
       "mars",
-      "michelangelo",
+      "Michelangelo",
       "night",
       "rome",
       "venus"
@@ -2396,6 +2401,7 @@
       "digital",
       "England",
       "film",
+        "screen",
       "walk"
     ]
   },
@@ -2568,6 +2574,7 @@
       "b+w",
       "digital",
       "film",
+        "screen",
       "horizon",
       "mechanical"
     ]
@@ -3145,6 +3152,8 @@
     "tags": [
       "body",
       "digital",
+        "screen",
+        "light",
       "film"
     ]
   },
@@ -3370,7 +3379,7 @@
       "bone",
       "desert",
       "digital",
-      "egypt",
+      "Egypt",
       "mummy",
       "pyramid",
       "scarab",
@@ -3437,7 +3446,7 @@
     "tags": [
       "digital",
       "gods",
-      "italy",
+      "Italy",
       "shrine",
       "underworld",
       "wall"
@@ -3459,8 +3468,9 @@
     "tags": [
       "digital",
       "film",
+        "screen",
       "japan",
-      "kurosawa"
+      "Kurosawa"
     ]
   },
   {
@@ -3519,7 +3529,7 @@
     "tags": [
       "body",
       "day",
-      "italy",
+      "Italy",
       "landscape",
       "pictographic",
       "venus"
@@ -3713,7 +3723,8 @@
       "1930",
       "analog",
       "b+w",
-      "buster-keaton",
+        "screen",
+      "Buster-Keaton",
       "film"
     ]
   },
@@ -3875,15 +3886,15 @@
     "date": "26-02-20",
     "title": "Tribute",
     "tags": [
-      "12 hour",
       "dc",
       "film",
+      "screen",
       "mars",
-      "rome",
+      "Rome",
       "stone",
       "transport",
       "walk",
-      "words"
+      "word-clock-12h"
     ]
   },
   {
@@ -3937,7 +3948,7 @@
       "digital",
       "futurism",
       "interior",
-      "italy",
+      "Italy",
       "marinetti",
       "red",
       "sound"
@@ -3953,9 +3964,10 @@
       "b+w",
       "book",
       "film",
+        "screen",
       "France",
-      "jean-cocteau",
-      "orpheus",
+      "Jean-Cocteau",
+      "Orpheus",
       "underworld"
     ]
   },
@@ -3979,7 +3991,7 @@
       "analog",
       "body",
       "desert",
-      "egypt",
+      "Egypt",
       "face",
       "move",
       "mummy",
@@ -4195,9 +4207,10 @@
       "analog",
       "b+w",
       "film",
-      "fritz-lang",
-      "germany",
-      "marcel-duchamp"
+        "screen",
+      "Fritz-Lang",
+      "Germany"
+      "Metropolis"
     ]
   },
   {
@@ -4220,7 +4233,7 @@
       "analog",
       "day",
       "film",
-      "la",
+      "LA",
       "screen",
       "stars",
       "walk"
@@ -4248,8 +4261,8 @@
       "b+w",
       "day-and-night",
       "fast",
-      "nyc",
-      "warhol"
+      "NYC",
+      "Warhol"
     ]
   },
   {
@@ -4259,6 +4272,7 @@
     "tags": [
       "green",
       "pattern",
+      "typeface",
       "pictographic 24h"
     ]
   },
@@ -4430,9 +4444,10 @@
     "title": "Periodicity",
     "tags": [
       "1930",
-      "cecil-b-demille",
+      "Cecil-B-Demille",
       "digital-24h",
-      "film",
+      "film",  
+      "screen",
       "tick-tock"
     ]
   },
@@ -4458,7 +4473,7 @@
       "light",
       "meteor",
       "planet",
-      "russia",
+      "Russia",
       "sky",
       "sound",
       "transport"
@@ -4480,7 +4495,7 @@
     "date": "26-04-07",
     "title": "Wall",
     "tags": [
-      "china",
+      "China",
       "digital-24h",
       "horizon",
       "panorama",
@@ -4609,11 +4624,12 @@
     "tags": [
       "1967",
       "digital-24h",
-      "film",
+      "film",  
+      "screen",
       "glass",
       "Paris",
-      "playtime",
-      "tati"
+      "Playtime",
+      "Tati"
     ]
   },
   {
@@ -4753,6 +4769,7 @@
     "title": "Filmstrip",
     "tags": [
       "analog",
+        "screen",
       "brown",
       "info",
       "monochrome",
@@ -4806,6 +4823,7 @@
       "digital",
       "fast",
       "film",
+        "screen",
       "glass",
       "gravity",
       "metal",
@@ -5012,12 +5030,13 @@
     "title": "Reanimate",
     "tags": [
       "1943",
+      "screen",
       "body",
       "bone",
       "cloth",
       "desert",
       "digital-24h",
-      "egypt",
+      "Egypt",
       "film",
       "light",
       "mummy",
@@ -5034,6 +5053,7 @@
     "tags": [
       "1888",
       "analog",
+        "screen",
       "body",
       "dance",
       "film",
@@ -5109,6 +5129,7 @@
       "digital-12h",
       "elements",
       "film",
+        "screen",
       "fire",
       "flow",
       "lava",
@@ -5140,11 +5161,12 @@
     "tags": [
       "1899",
       "b+w",
-      "cinderella",
+      "Cinderella",
       "digital-12h",
       "film",
+        "screen",
       "France",
-      "georges-méliès",
+      "Georges-Méliès",
       "interior",
       "night"
     ]
