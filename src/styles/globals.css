@@ -198,7 +198,7 @@ body.clock-mode {
   justify-content: center;
   padding: 0.15rem 0.25rem;
   border-radius: 9999px;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   line-height: 1;
   font-family: var(--font-arimo);
   font-weight: 500;
@@ -208,7 +208,7 @@ body.clock-mode {
   border: 1px solid rgba(0, 0, 0, 0.44) !important;
   background-color: transparent !important;
   text-decoration: none;
-  white-space: nowrap;
+  /* white-space: nowrap; */
   transition: transform 0.08s ease, background-color 0.15s ease, border-color 0.15s ease;
 }
 
