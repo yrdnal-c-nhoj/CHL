@@ -10,7 +10,7 @@ import styles from './Clock.module.css';
 
 // Asset Imports
 import bgImage from '@/assets/images/26_images/26-05/26-05-28/boom.webp';
-import centerImg from '@/assets/images/26_images/26-05/26-05-28/sparkle.webp';
+// import centerImg from '@/assets/images/26_images/26-05/26-05-28/sparkle.webp';
 
 
 import m1 from '@/assets/images/26_images/26-05/26-05-28/1.webp';
@@ -30,7 +30,7 @@ import m9 from '@/assets/images/26_images/26-05/26-05-28/9.webp';
 const allMatchImages = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13];
 
 // Export assets for the preloading pipeline
-export const assets = [bgImage, centerImg, ...allMatchImages];
+export const assets = [bgImage, ...allMatchImages];
 
 const imageSettings = [
   {
@@ -258,8 +258,6 @@ const Clock: React.FC = () => {
         />
 
 
-        {/* Center overlay */}
-        <img src={centerImg} className={styles.centerOverlay} alt="" />
       </div>
     </div>
   );
