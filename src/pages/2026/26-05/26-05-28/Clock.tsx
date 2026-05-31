@@ -10,8 +10,6 @@ import styles from './Clock.module.css';
 
 // Asset Imports
 import bgImage from '@/assets/images/26_images/26-05/26-05-28/boom.webp';
-// import centerImg from '@/assets/images/26_images/26-05/26-05-28/sparkle.webp';
-
 
 import m1 from '@/assets/images/26_images/26-05/26-05-28/1.webp';
 import m10 from '@/assets/images/26_images/26-05/26-05-28/10.webp';
@@ -35,7 +33,7 @@ export const assets = [bgImage, ...allMatchImages];
 const imageSettings = [
   {
     size: '21%',
-    opacity: 1.0,
+    opacity: 0.6,
     brightness: 10.5,
     saturation: 1.2,
     vignetteBlackStop: '40%',
@@ -43,7 +41,7 @@ const imageSettings = [
   },
   {
     size: '21%',
-    opacity: 0.8,
+    opacity: 0.6,
     brightness: 1.0,
     saturation: 1.5,
     vignetteBlackStop: '40%',
@@ -51,7 +49,7 @@ const imageSettings = [
   },
   {
     size: '21%',
-    opacity: 0.9,
+    opacity: 0.6,
     brightness: 1.2,
     saturation: 2.2,
     vignetteBlackStop: '100%',
@@ -59,7 +57,7 @@ const imageSettings = [
   },
   {
     size: '21%',
-    opacity: 0.8,
+    opacity: 0.6,
     brightness: 1.2,
     saturation: 1.7,
     vignetteBlackStop: '40%',
@@ -67,7 +65,7 @@ const imageSettings = [
   },
   {
     size: '21%',
-    opacity: 0.8,
+    opacity: 0.6,
     brightness: 1.0,
     saturation: 2.0,
     vignetteBlackStop: '100%',
@@ -75,7 +73,7 @@ const imageSettings = [
   },
   {
     size: '22%',
-    opacity: 0.9,
+    opacity: 0.6,
     brightness: 1.4,
     saturation: 1.5,
     vignetteBlackStop: '40%',
@@ -83,7 +81,7 @@ const imageSettings = [
   },
   {
     size: '31%',
-    opacity: 0.9,
+    opacity: 0.6,
     brightness: 0.9,
     saturation: 1.1,
     vignetteBlackStop: '40%',
@@ -91,7 +89,7 @@ const imageSettings = [
   },
   {
     size: '29%',
-    opacity: 0.8,
+    opacity: 0.6,
     brightness: 1.3,
     saturation: 1.9,
     vignetteBlackStop: '100%',
@@ -99,7 +97,7 @@ const imageSettings = [
   },
   {
     size: '31%',
-    opacity: 0.9,
+    opacity: 0.6,
     brightness: 1.3,
     saturation: 3.0,
     vignetteBlackStop: '20%',
@@ -107,7 +105,7 @@ const imageSettings = [
   },
   {
     size: '31%',
-    opacity: 0.9,
+    opacity: 0.6,
     brightness: 1.3,
     saturation: 1.6,
     vignetteBlackStop: '100%',
@@ -115,7 +113,7 @@ const imageSettings = [
   },
   {
     size: '38%',
-    opacity: 0.9,
+    opacity: 0.6,
     brightness: 0.9,
     saturation: 1.8,
     vignetteBlackStop: '40%',
@@ -123,7 +121,7 @@ const imageSettings = [
   },
   {
     size: '32%',
-    opacity: 0.8,
+    opacity: 0.6,
     brightness: 1.3,
     saturation: 1.7,
     vignetteBlackStop: '40%',
@@ -131,7 +129,7 @@ const imageSettings = [
   },
   {
     size: '31%',
-    opacity: 0.8,
+    opacity: 0.6,
     brightness: 1.4,
     saturation: 1.8,
     vignetteBlackStop: '40%',
@@ -207,8 +205,23 @@ const Clock: React.FC = () => {
     <div
       className={styles.container}
     >
+      <style>{`
+        @keyframes slideBackground {
+          from { background-position: 0 0; }
+          to { background-position: -100vw 0; }
+        }
+      `}</style>
+
       {/* Background layer with hue filter */}
-      <div className={styles.backgroundLayer} style={{ backgroundImage: `url(${bgImage})` }} />
+      <div 
+        className={styles.backgroundLayer} 
+        style={{ 
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: 'cover',
+          backgroundRepeat: 'repeat-x',
+          animation: 'slideBackground 60s linear infinite'
+        }} 
+      />
 
       <div className={styles.clock}>
         {/* Render the 12 Positions */}
