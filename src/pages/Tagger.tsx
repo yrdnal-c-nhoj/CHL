@@ -143,10 +143,10 @@ export default function Tagger() {
         </div>
 
       <div style={{ display: 'flex', gap: '2rem', marginBottom: '2rem', alignItems: 'flex-start' }}>
-        <Thumbnail 
-          date="XX-XX-XX" // Display a generic "No Image" thumbnail for uniformity
+          <Thumbnail 
+          date={currentItem.date}
           title={currentItem.title} 
-          style={{ flexShrink: 0 }} 
+          style={{ flexShrink: 0, width: '110px' }}
         />
 
         <div style={{ flex: 1 }}>

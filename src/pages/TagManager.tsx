@@ -69,11 +69,12 @@ export default function TagManager() {
   // Extract all unique tags from all items for the dropdown
   const allExistingTags = useMemo(() => {
     const tags = new Set<string>();
-    items.forEach(item => {
-      (item.tags ?? []).forEach(tag => tags.add(tag));
+    items.forEach((item) => {
+      (item.tags ?? []).forEach((tag) => tags.add(tag));
     });
     return sortTags(tags);
   }, [items]);
+
 
   const editedClockPagesJson = useMemo(() => {
     const updated = items.map((it) => {
@@ -146,10 +147,10 @@ export default function TagManager() {
               {sortedItems.map((item) => (
                 <tr key={item.date} style={{ borderBottom: '1px solid #f9f9f9' }}>
                   <td style={{ padding: '0.5rem' }}>
-                    <Thumbnail 
-                      date="XX-XX-XX" // Display a generic "No Image" thumbnail for uniformity
+                      <Thumbnail 
+                      date={item.date}
                       title={item.title} 
-                      style={{ width: '60px', borderRadius: '4px' }} 
+                      style={{ width: '48px', borderRadius: '4px' }} 
                     />
                   </td>
                   <td style={{ padding: '0.5rem', fontFamily: 'monospace' }}>{item.date}</td>
