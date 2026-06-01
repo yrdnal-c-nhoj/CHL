@@ -588,7 +588,7 @@
     "title": "Braille",
     "tags": [
       "digital-24h",
-      "hands",
+      "hand",
       "monochrome",
       "pictographic"
     ]
@@ -673,7 +673,7 @@
       "cloth",
       "color",
       "digital",
-      "hands"
+      "hand"
     ]
   },
   {
@@ -1304,7 +1304,12 @@
   {
     "path": "25-07-14",
     "date": "25-07-14",
-    "title": "Cartoon"
+    "title": "Cartoon",
+    "tags": [
+      "under-repair",
+      "hands",
+      "broken_clock"
+    ]
   },
   {
     "path": "25-07-15",
@@ -3016,7 +3021,7 @@
     "date": "25-12-06",
     "title": "Giraffe",
     "tags": [
-      "africa",
+      "Africa",
       "analog",
       "animal",
       "brown",
@@ -3307,7 +3312,7 @@
     "tags": [
       "animal",
       "body",
-      "hands",
+      "hand",
       "light",
       "monochrome",
       "pictographic",
@@ -3363,7 +3368,7 @@
     "date": "26-01-05",
     "title": "Aardvark",
     "tags": [
-      "africa",
+      "Africa",
       "analog",
       "animal",
       "night",
@@ -3520,7 +3525,7 @@
     "title": "Handsy",
     "tags": [
       "analog",
-      "hands"
+      "hand"
     ]
   },
   {
@@ -3906,7 +3911,7 @@
       "count",
       "digital-12h",
       "generative",
-      "hands",
+      "hand",
       "random"
     ]
   },
@@ -4048,7 +4053,7 @@
       "blue",
       "flower",
       "green",
-      "hands",
+      "hand",
       "interior",
       "paper"
     ]
@@ -4311,7 +4316,7 @@
       "aim",
       "digital-12h",
       "feather",
-      "hands",
+      "hand",
       "slow"
     ]
   },
@@ -4935,7 +4940,7 @@
       "cloth",
       "digital-24h",
       "grid",
-      "hands",
+      "hand",
       "monochrome",
       "thread",
       "unfinished"
