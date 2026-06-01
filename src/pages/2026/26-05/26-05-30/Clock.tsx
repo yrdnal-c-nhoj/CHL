@@ -19,17 +19,65 @@ import minuteHandImg from '@/assets/images/26_images/26-05/26-05-30/minute.webp'
 import secondHandImg from '@/assets/images/26_images/26-05/26-05-30/second.webp';
 // Export assets for the preloading pipeline
 const CLOCK_LABELS = [num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, num12];
+
+export const assets = [...CLOCK_LABELS, hourHandImg, minuteHandImg, secondHandImg];
+
 const PEACH_COLOR = '#FFDAB9';
 const SHADOW_FILTER =
   'drop-shadow(0 0 6px rgba(45, 18, 3, 0.9)) drop-shadow(0 0 12px rgba(236, 10, 10, 0.7))';
 
-const CONFIG = {
+const HOUR_HAND_FILTER = `brightness(0.9) contrast(1.2) hue-rotate(-20deg) saturate(0.9) ${SHADOW_FILTER}`;
+
+const HAND_CONFIG = {
   sizes: {
-    hourHand: { width: 0.42, height: 0.4, z: 10 },
+    hourHand: { width: 0.42, height: 0.8, z: 10 },
     minuteHand: { width: 0.4, height: 0.8, z: 20 },
-    secondHand: { width: 0.68, height: 1.0, z: 30 },
+    secondHand: { width: 0.68, height: 0.6, z: 30 },
   },
 };
+
+/**
+ * Memoized ClockFace to prevent expensive re-renders of static elements
+ * on every millisecond tick.
+ */
+const ClockFace = React.memo(({ clockSize, radius, ready }: { clockSize: number; radius: number; ready: boolean }) => (
+  <div
+    style={{
+      position: 'relative',
+      width: clockSize,
+      height: clockSize,
+      zIndex: 10,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      transform: ready ? 'scale(1)' : 'scale(0.95)',
+      transition: 'transform 0.5s ease-out',
+    }}
+  >
+    {CLOCK_LABELS.map((label, i) => {
+      const angle = (i + 1) * 30;
+      const x = Math.sin((angle * Math.PI) / 180) * radius;
+      const y = -Math.cos((angle * Math.PI) / 180) * radius;
+      return (
+        <img
+          key={i}
+          src={label}
+          alt=""
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`,
+            width: clockSize * 0.22,
+            height: clockSize * 0.22,
+            objectFit: 'contain',
+            filter: SHADOW_FILTER,
+          }}
+        />
+      );
+    })}
+  </div>
+));
 
 const TangerineClock: React.FC = () => {
   const time = useClockTime('ms'); // High-precision time hook
@@ -131,59 +179,25 @@ const TangerineClock: React.FC = () => {
         userSelect: 'none',
         opacity: isClient ? 1 : 0,
       }}
-    >    
-      {/* Clock Face */}
-      <div
-        style={{
-          position: 'relative',
-          width: clockSize,
-          height: clockSize,
-          zIndex: 10,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          transform: ready ? 'scale(1)' : 'scale(0.95)',
-          transition: 'transform 0.5s ease-out',
-        }}
-      >
-        {/* Numbers */}
-        {CLOCK_LABELS.map((_, i) => {
-          const angle = (i + 1) * 30;
-          const x = Math.sin((angle * Math.PI) / 180) * radius;
-          const y = -Math.cos((angle * Math.PI) / 180) * radius;
-          return (
-            <img
-              key={i}
-              src={assets[`num${i + 1}`]?.src}
-              alt=""
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`,
-                width: clockSize * 0.22,
-                height: clockSize * 0.22,
-                objectFit: 'contain',
-                filter: SHADOW_FILTER,
-              }}
-            />
-          );
-        })}
+    >
+      <div style={{ position: 'relative', width: clockSize, height: clockSize }}>
+        <ClockFace clockSize={clockSize} radius={radius} ready={ready} />
+
         {/* Hour Hand */}
-        <div style={getHandStyle(hourDeg, CONFIG.sizes.hourHand)}>
+        <div style={getHandStyle(hourDeg, HAND_CONFIG.sizes.hourHand)}>
           <img
             src={hourHandImg}
             style={{
               width: '100%',
               height: '50%',
               objectFit: 'contain',
-              filter: `brightness(0.9) contrast(1.2) hue-rotate(-20deg) saturate(0.9) ${SHADOW_FILTER}`,
+              filter: HOUR_HAND_FILTER,
             }}
             alt=""
           />
         </div>
         {/* Minute Hand */}
-        <div style={getHandStyle(minDeg, CONFIG.sizes.minuteHand)}>
+        <div style={getHandStyle(minDeg, HAND_CONFIG.sizes.minuteHand)}>
           <img
             src={minuteHandImg}
             style={{
@@ -196,7 +210,7 @@ const TangerineClock: React.FC = () => {
           />
         </div>
         {/* Second Hand */}
-        <div style={getHandStyle(secDeg, CONFIG.sizes.secondHand)}>
+        <div style={getHandStyle(secDeg, HAND_CONFIG.sizes.secondHand)}>
           <img
             src={secondHandImg}
             style={{
