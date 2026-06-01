@@ -3,7 +3,7 @@
    ======================================== */
 
 /* Font Imports - Centralized */
-@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Barlow+Condensed:wght@400;500;600;700&family=Bebas+Neue&family=Cinzel:wght@400..900&family=Cinzel+Decorative:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=Nanum+Gothic&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&family=Almendra+Display&family=Metamorphous&family=Orbitron:wght@400..900&family=Libre+Baskerville&family=Monofett&family=Nanum+Gothic+Coding:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Barlow+Condensed:wght@400;500;600;700&family=Bebas+Neue&family=Bentham&family=Cinzel:wght@400..900&family=Cinzel+Decorative:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=Nanum+Gothic&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&family=Almendra+Display&family=Metamorphous&family=Orbitron:wght@400..900&family=Libre+Baskerville&family=Monofett&family=Nanum+Gothic+Coding:wght@400;700&display=swap');
 @import 'tailwindcss';
 
 /* Custom Font Faces */
@@ -29,6 +29,7 @@
   --font-libre: 'Libre Baskerville', serif;
   --font-monofett: 'Monofett', monospace;
   --font-nanum-coding: 'Nanum Gothic Coding', monospace;
+  --font-bentham: 'Bentham', serif;
   /* Added IBM Plex Mono variable */
   --font-ibm-plex-mono: 'IBM Plex Mono', monospace;
   /* Added Bebas Neue variable */
