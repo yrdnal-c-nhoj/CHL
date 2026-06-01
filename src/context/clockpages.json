@@ -171,7 +171,7 @@
       "circle",
       "food",
       "hot",
-      "Italy",
+      "italy",
       "round"
     ]
   },
@@ -306,7 +306,7 @@
     "tags": [
       "analog",
       "horizon",
-      "Mars",
+      "mars",
       "ocean",
       "sky",
       "water",
@@ -467,7 +467,7 @@
       "digital-24h",
       "earth",
       "underworld",
-      "Warhol"
+      "warhol"
     ]
   },
   {
@@ -525,7 +525,7 @@
     "tags": [
       "color",
       "digital-12h",
-      "France",
+      "france",
       "gravity",
       "pink",
       "up-and-down"
@@ -565,7 +565,7 @@
       "digital-12h",
       "generative",
       "grey",
-      "RGB"
+      "rgb"
     ]
   },
   {
@@ -599,7 +599,7 @@
     "tags": [
       "analog",
       "color",
-      "RYB",
+      "ryb",
       "spectrum"
     ]
   },
@@ -636,7 +636,7 @@
       "digital-12h",
       "fire",
       "four",
-      "Platonic-Solids",
+      "platonic-solids",
       "pyramid",
       "red"
     ]
@@ -736,7 +736,7 @@
       "four",
       "image-free",
       "round",
-      "RYB"
+      "ryb"
     ]
   },
   {
@@ -1489,7 +1489,7 @@
       "camouflage",
       "digital",
       "green",
-      "Mars"
+      "mars"
     ]
   },
   {
@@ -1501,7 +1501,7 @@
       "digital",
       "eye",
       "history",
-      "Mars",
+      "mars",
       "thread",
       "underworld"
     ]
@@ -1587,13 +1587,13 @@
       "aim",
       "analog",
       "animal",
-      "Disney",
+      "disney",
       "film",
-        "screen",
       "horizon",
       "horse",
       "odd-toed-ungulate",
       "ride",
+      "screen",
       "transport"
     ]
   },
@@ -1653,7 +1653,7 @@
     "tags": [
       "brown",
       "earth",
-      "Platonic-Solids",
+      "platonic-solids",
       "six",
       "square"
     ]
@@ -1794,7 +1794,7 @@
     "tags": [
       "digital",
       "gold",
-      "Rome",
+      "rome",
       "stone"
     ]
   },
@@ -1842,9 +1842,9 @@
     "title": "Goblin",
     "tags": [
       "digital",
-      "England",
+      "england",
       "gold",
-      "Tolkien"
+      "tolkien"
     ]
   },
   {
@@ -2078,10 +2078,10 @@
     "title": "Crush",
     "tags": [
       "digital-12h",
-      "Disney",
+      "disney",
       "hand",
       "heart",
-      "Venus"
+      "venus"
     ]
   },
   {
@@ -2091,9 +2091,9 @@
     "tags": [
       "digital-12h",
       "film",
-      "screen",
       "gravity",
-      "green"
+      "green",
+      "screen"
     ]
   },
   {
@@ -2139,7 +2139,7 @@
     "tags": [
       "animal",
       "digital",
-      "Disney",
+      "disney",
       "extinct",
       "slow"
     ]
@@ -2177,11 +2177,11 @@
       "digital",
       "extinct",
       "film",
-      "screen",
       "horizon",
       "info",
       "kubrick",
       "science",
+      "screen",
       "tech"
     ]
   },
@@ -2228,7 +2228,7 @@
     "tags": [
       "color",
       "digital-24h",
-      "Esperanto",
+      "esperanto",
       "paper"
     ]
   },
@@ -2247,7 +2247,7 @@
     "date": "25-10-01",
     "title": "Small World",
     "tags": [
-      "Disney",
+      "disney",
       "flags",
       "mechanical",
       "transport",
@@ -2316,10 +2316,10 @@
       "1964",
       "analog",
       "b+w",
-      "Dr-Strangelove",
+      "dr-strangelove",
       "film",
+      "kubrick",
       "screen",
-      "Kubrick",
       "words"
     ]
   },
@@ -2352,15 +2352,15 @@
     "title": "Marcus Aurelius",
     "tags": [
       "1972",
-      "Fellini",
+      "fellini",
       "film",
-      "screen",
-      "Italy",
-      "Mars",
-      "Michelangelo",
+      "italy",
+      "mars",
+      "michelangelo",
       "night",
-      "Rome",
-      "Venus"
+      "rome",
+      "screen",
+      "venus"
     ]
   },
   {
@@ -2371,7 +2371,7 @@
       "b+w",
       "chess",
       "digital-12h",
-      "Marcel-Duchamp",
+      "marcel-duchamp",
       "play",
       "square",
       "wood"
@@ -2387,7 +2387,7 @@
       "flower",
       "grow",
       "pink",
-      "Venus"
+      "venus"
     ]
   },
   {
@@ -2399,7 +2399,7 @@
       "b+w",
       "dance",
       "digital",
-      "England",
+      "england",
       "film",
       "screen",
       "walk"
@@ -2413,7 +2413,7 @@
       "aether",
       "digital",
       "pentagon",
-      "Platonic-Solids",
+      "platonic-solids",
       "twelve",
       "universe"
     ]
@@ -2438,7 +2438,7 @@
       "shell",
       "space",
       "transport",
-      "Venus"
+      "venus"
     ]
   },
   {
@@ -2472,7 +2472,7 @@
     "tags": [
       "digital",
       "grid",
-      "Nederland",
+      "nederland",
       "square"
     ]
   },
@@ -2495,7 +2495,7 @@
     "tags": [
       "analog",
       "b+w",
-      "England",
+      "england",
       "tick-tock"
     ]
   },
@@ -2508,7 +2508,7 @@
       "digital",
       "fast",
       "float",
-      "Maine",
+      "maine",
       "ocean",
       "up-and-down",
       "weather"
@@ -2529,7 +2529,7 @@
     "date": "25-10-24",
     "title": "Esperanto",
     "tags": [
-      "Esperanto",
+      "esperanto",
       "landscape",
       "word-clock"
     ]
@@ -2574,9 +2574,9 @@
       "b+w",
       "digital",
       "film",
-      "screen",
       "horizon",
-      "mechanical"
+      "mechanical",
+      "screen"
     ]
   },
   {
@@ -2595,7 +2595,7 @@
     "date": "25-10-31",
     "title": "Midnight Sun",
     "tags": [
-      "Antarctica",
+      "antarctica",
       "axis",
       "digital",
       "ice",
@@ -2664,7 +2664,7 @@
     "tags": [
       "analog",
       "blue",
-      "Esperanto"
+      "esperanto"
     ]
   },
   {
@@ -2726,7 +2726,7 @@
       "glass",
       "interior",
       "mirror",
-      "Rococo"
+      "rococo"
     ]
   },
   {
@@ -2737,7 +2737,7 @@
       "air",
       "digital",
       "eight",
-      "Platonic-Solids",
+      "platonic-solids",
       "pyramid"
     ]
   },
@@ -2770,7 +2770,7 @@
       "digital-12h",
       "gravity",
       "grow",
-      "Mars",
+      "mars",
       "orange",
       "tree",
       "trunk"
@@ -2795,7 +2795,7 @@
     "title": "Mars",
     "tags": [
       "gods",
-      "Mars",
+      "mars",
       "myth",
       "planet",
       "red",
@@ -2914,7 +2914,7 @@
     "title": "L'Heure Décimale",
     "tags": [
       "analog",
-      "France"
+      "france"
     ]
   },
   {
@@ -2936,7 +2936,7 @@
       "color",
       "digital",
       "paint",
-      "Rococo"
+      "rococo"
     ]
   },
   {
@@ -3028,7 +3028,7 @@
     "title": "Icosahedron",
     "tags": [
       "digital",
-      "Platonic-Solids",
+      "platonic-solids",
       "triangle",
       "twenty",
       "water"
@@ -3056,7 +3056,7 @@
       "body",
       "digital",
       "eadweard-muybridge",
-      "England",
+      "england",
       "film",
       "odd-toed-ungulate"
     ]
@@ -3104,11 +3104,11 @@
       "digital",
       "fly",
       "gold",
-      "Mars",
+      "mars",
       "paint",
-      "Rococo",
+      "rococo",
       "sky",
-      "Venus"
+      "venus"
     ]
   },
   {
@@ -3141,7 +3141,7 @@
     "title": "Swagger",
     "tags": [
       "body",
-      "Mars",
+      "mars",
       "pictographic"
     ]
   },
@@ -3152,9 +3152,9 @@
     "tags": [
       "body",
       "digital",
-        "screen",
-        "light",
-      "film"
+      "film",
+      "light",
+      "screen"
     ]
   },
   {
@@ -3172,7 +3172,7 @@
       "b+w",
       "bird",
       "feather",
-      "Venus"
+      "venus"
     ]
   },
   {
@@ -3248,7 +3248,7 @@
       "grey",
       "image-free",
       "monochrome",
-      "RYB"
+      "ryb"
     ]
   },
   {
@@ -3379,7 +3379,7 @@
       "bone",
       "desert",
       "digital",
-      "Egypt",
+      "egypt",
       "mummy",
       "pyramid",
       "scarab",
@@ -3446,7 +3446,7 @@
     "tags": [
       "digital",
       "gods",
-      "Italy",
+      "italy",
       "shrine",
       "underworld",
       "wall"
@@ -3468,9 +3468,9 @@
     "tags": [
       "digital",
       "film",
-        "screen",
       "japan",
-      "Kurosawa"
+      "kurosawa",
+      "screen"
     ]
   },
   {
@@ -3529,10 +3529,10 @@
     "tags": [
       "body",
       "day",
-      "Italy",
+      "italy",
       "landscape",
       "pictographic",
-      "Venus"
+      "venus"
     ]
   },
   {
@@ -3617,7 +3617,7 @@
     "title": "Trifurcate",
     "tags": [
       "analog",
-      "RYB",
+      "ryb",
       "three"
     ]
   },
@@ -3723,9 +3723,9 @@
       "1930",
       "analog",
       "b+w",
-        "screen",
-      "Buster-Keaton",
-      "film"
+      "buster-keaton",
+      "film",
+      "screen"
     ]
   },
   {
@@ -3748,7 +3748,7 @@
       "design",
       "landscape",
       "metal",
-      "Paris"
+      "paris"
     ]
   },
   {
@@ -3888,9 +3888,9 @@
     "tags": [
       "dc",
       "film",
+      "mars",
+      "rome",
       "screen",
-      "Mars",
-      "Rome",
       "stone",
       "transport",
       "walk",
@@ -3948,7 +3948,7 @@
       "digital",
       "futurism",
       "interior",
-      "Italy",
+      "italy",
       "marinetti",
       "red",
       "sound"
@@ -3964,10 +3964,10 @@
       "b+w",
       "book",
       "film",
-        "screen",
-      "France",
-      "Jean-Cocteau",
-      "Orpheus",
+      "france",
+      "jean-cocteau",
+      "orpheus",
+      "screen",
       "underworld"
     ]
   },
@@ -3991,7 +3991,7 @@
       "analog",
       "body",
       "desert",
-      "Egypt",
+      "egypt",
       "face",
       "move",
       "mummy",
@@ -4207,10 +4207,10 @@
       "analog",
       "b+w",
       "film",
-      "screen",
-      "Fritz-Lang",
-      "Germany",
-      "Metropolis"
+      "fritz-lang",
+      "germany",
+      "metropolis",
+      "screen"
     ]
   },
   {
@@ -4233,7 +4233,7 @@
       "analog",
       "day",
       "film",
-      "LA",
+      "la",
       "screen",
       "stars",
       "walk"
@@ -4261,8 +4261,8 @@
       "b+w",
       "day-and-night",
       "fast",
-      "NYC",
-      "Warhol"
+      "nyc",
+      "warhol"
     ]
   },
   {
@@ -4272,8 +4272,8 @@
     "tags": [
       "green",
       "pattern",
-      "typeface",
-      "pictographic 24h"
+      "pictographic 24h",
+      "typeface"
     ]
   },
   {
@@ -4418,11 +4418,11 @@
     "tags": [
       "cloth",
       "digital-12h",
-      "France",
+      "france",
       "pattern",
-      "Rococo",
+      "rococo",
       "shell",
-      "Venus"
+      "venus"
     ]
   },
   {
@@ -4444,9 +4444,9 @@
     "title": "Periodicity",
     "tags": [
       "1930",
-      "Cecil-B-Demille",
+      "cecil-b-demille",
       "digital-24h",
-      "film",  
+      "film",
       "screen",
       "tick-tock"
     ]
@@ -4473,7 +4473,7 @@
       "light",
       "meteor",
       "planet",
-      "Russia",
+      "russia",
       "sky",
       "sound",
       "transport"
@@ -4495,7 +4495,7 @@
     "date": "26-04-07",
     "title": "Wall",
     "tags": [
-      "China",
+      "china",
       "digital-24h",
       "horizon",
       "panorama",
@@ -4624,12 +4624,12 @@
     "tags": [
       "1967",
       "digital-24h",
-      "film",  
-      "screen",
+      "film",
       "glass",
-      "Paris",
-      "Playtime",
-      "Tati"
+      "paris",
+      "playtime",
+      "screen",
+      "tati"
     ]
   },
   {
@@ -4769,10 +4769,10 @@
     "title": "Filmstrip",
     "tags": [
       "analog",
-        "screen",
       "brown",
       "info",
       "monochrome",
+      "screen",
       "tech"
     ]
   },
@@ -4823,10 +4823,10 @@
       "digital",
       "fast",
       "film",
-        "screen",
       "glass",
       "gravity",
       "metal",
+      "screen",
       "transport"
     ]
   },
@@ -4978,7 +4978,7 @@
       "color",
       "day",
       "digital",
-      "Paris",
+      "paris",
       "screen"
     ]
   },
@@ -5030,19 +5030,19 @@
     "title": "Reanimate",
     "tags": [
       "1943",
-      "screen",
       "body",
       "bone",
       "cloth",
       "desert",
       "digital-24h",
-      "Egypt",
+      "egypt",
       "film",
       "light",
       "mummy",
       "predator",
       "pyramid",
       "scarab",
+      "screen",
       "stone"
     ]
   },
@@ -5053,12 +5053,12 @@
     "tags": [
       "1888",
       "analog",
-        "screen",
       "body",
       "dance",
       "film",
-      "France",
-      "music"
+      "france",
+      "music",
+      "screen"
     ]
   },
   {
@@ -5129,11 +5129,11 @@
       "digital-12h",
       "elements",
       "film",
-        "screen",
       "fire",
       "flow",
       "lava",
       "nature",
+      "screen",
       "the-fire-within",
       "vertical",
       "werner-herzog"
@@ -5161,14 +5161,14 @@
     "tags": [
       "1899",
       "b+w",
-      "Cinderella",
+      "cinderella",
       "digital-12h",
       "film",
-        "screen",
-      "France",
-      "Georges-Méliès",
+      "france",
+      "georges-méliès",
       "interior",
-      "night"
+      "night",
+      "screen"
     ]
   },
   {
@@ -5204,11 +5204,10 @@
     "title": "Ka-Boom",
     "tags": [
       "analog",
-      "dawn",
       "fire",
+      "food",
       "sound",
-      "wind",
-      "food"
+      "wind"
     ]
   },
   {
@@ -5216,9 +5215,9 @@
     "date": "26-05-29",
     "title": "Monument",
     "tags": [
+      "b+w",
       "digital-12h",
-      "stone",
-      "b+w"
+      "stone"
     ]
   }
 ]
