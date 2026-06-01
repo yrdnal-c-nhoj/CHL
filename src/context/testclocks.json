@@ -42,6 +42,7 @@
     "date": "25-04-04",
     "title": "Heartbeat",
     "tags": [
+      "BPM",
       "analog",
       "blood",
       "body",
@@ -167,11 +168,11 @@
     "date": "25-04-13",
     "title": "Pepperoni Pizza",
     "tags": [
+      "Italy",
       "analog",
       "circle",
       "food",
       "hot",
-      "Italy",
       "round"
     ]
   },
@@ -304,9 +305,9 @@
     "date": "25-04-23",
     "title": "Pirate",
     "tags": [
+      "Mars",
       "analog",
       "horizon",
-      "Mars",
       "ocean",
       "sky",
       "water",
@@ -461,13 +462,13 @@
     "date": "25-05-05",
     "title": "Warhol GraveCam",
     "tags": [
+      "Warhol",
       "art",
       "balloon",
       "bone",
       "digital-24h",
       "earth",
-      "underworld",
-      "Warhol"
+      "underworld"
     ]
   },
   {
@@ -523,9 +524,9 @@
     "date": "25-05-10",
     "title": "Number Toss",
     "tags": [
+      "France",
       "color",
       "digital-12h",
-      "France",
       "gravity",
       "pink",
       "up-and-down"
@@ -565,7 +566,7 @@
       "digital-12h",
       "generative",
       "grey",
-      "rgb"
+      "RGB"
     ]
   },
   {
@@ -599,7 +600,7 @@
     "tags": [
       "analog",
       "color",
-      "ryb",
+      "RYB",
       "spectrum"
     ]
   },
@@ -633,10 +634,10 @@
     "date": "25-05-20",
     "title": "Tetrahedron",
     "tags": [
+      "Platonic-Solids",
       "digital-12h",
       "fire",
       "four",
-      "Platonic-Solids",
       "pyramid",
       "red"
     ]
@@ -736,7 +737,7 @@
       "four",
       "image-free",
       "round",
-      "ryb"
+      "RYB"
     ]
   },
   {
@@ -790,7 +791,7 @@
       "move",
       "paper",
       "transport",
-      "upc",
+      "UPC",
       "words"
     ]
   },
@@ -1280,10 +1281,10 @@
     "date": "25-07-12",
     "title": "Fibonacci",
     "tags": [
+      "Fibonacci",
       "analog",
       "b+w",
       "bone",
-      "Fibonacci",
       "golden ratio",
       "nature",
       "shell"
@@ -1485,11 +1486,11 @@
     "date": "25-07-30",
     "title": "Camouflage",
     "tags": [
+      "Mars",
       "brown",
       "camouflage",
       "digital",
-      "green",
-      "Mars"
+      "green"
     ]
   },
   {
@@ -1497,11 +1498,11 @@
     "date": "25-07-31",
     "title": "Tapestry",
     "tags": [
+      "Mars",
       "cloth",
       "digital",
       "eye",
       "history",
-      "Mars",
       "thread",
       "underworld"
     ]
@@ -1575,7 +1576,7 @@
       "face",
       "fly",
       "metal",
-      "Russia",
+      "russia",
       "space"
     ]
   },
@@ -1584,10 +1585,10 @@
     "date": "25-08-07",
     "title": "Western",
     "tags": [
+      "Disney",
       "aim",
       "analog",
       "animal",
-      "Disney",
       "film",
       "horizon",
       "horse",
@@ -1651,9 +1652,9 @@
     "date": "25-08-12",
     "title": "Hexahedron",
     "tags": [
+      "Platonic-Solids",
       "brown",
       "earth",
-      "Platonic-Solids",
       "six",
       "square"
     ]
@@ -1792,9 +1793,9 @@
     "date": "25-08-24",
     "title": "Digital Roman",
     "tags": [
+      "Rome",
       "digital",
       "gold",
-      "Rome",
       "stone"
     ]
   },
@@ -1807,7 +1808,7 @@
       "interior",
       "paper",
       "parallel",
-      "upc"
+      "UPC"
     ]
   },
   {
@@ -1841,8 +1842,8 @@
     "date": "25-08-28",
     "title": "Goblin",
     "tags": [
-      "digital",
       "England",
+      "digital",
       "gold",
       "tolkien"
     ]
@@ -2077,11 +2078,11 @@
     "date": "25-09-17",
     "title": "Crush",
     "tags": [
-      "digital-12h",
       "Disney",
+      "Venus",
+      "digital-12h",
       "hand",
-      "heart",
-      "Venus"
+      "heart"
     ]
   },
   {
@@ -2137,9 +2138,9 @@
     "date": "25-09-22",
     "title": "De-Extinction",
     "tags": [
+      "Disney",
       "animal",
       "digital",
-      "Disney",
       "extinct",
       "slow"
     ]
@@ -2173,13 +2174,13 @@
     "date": "25-09-25",
     "title": "UNIX Timestamp",
     "tags": [
+      "Kubrick",
       "animal",
       "digital",
       "extinct",
       "film",
       "horizon",
       "info",
-      "Kubrick",
       "science",
       "screen",
       "tech"
@@ -2314,11 +2315,11 @@
     "title": "Hi There!",
     "tags": [
       "1964",
+      "Dr-Strangelove",
+      "Kubrick",
       "analog",
       "b+w",
-      "Dr-Strangelove",
       "film",
-      "Kubrick",
       "screen",
       "words"
     ]
@@ -2353,14 +2354,14 @@
     "tags": [
       "1972",
       "Fellini",
-      "film",
       "Italy",
       "Mars",
       "Michelangelo",
-      "night",
       "Rome",
-      "screen",
-      "Venus"
+      "Venus",
+      "film",
+      "night",
+      "screen"
     ]
   },
   {
@@ -2368,10 +2369,10 @@
     "date": "25-10-11",
     "title": "Prise En Passant",
     "tags": [
+      "Marcel-Duchamp",
       "b+w",
       "chess",
       "digital-12h",
-      "Marcel-Duchamp",
       "play",
       "square",
       "wood"
@@ -2382,12 +2383,12 @@
     "date": "25-10-12",
     "title": "Roses",
     "tags": [
+      "Venus",
       "analog",
       "fast",
       "flower",
       "grow",
-      "pink",
-      "Venus"
+      "pink"
     ]
   },
   {
@@ -2396,10 +2397,10 @@
     "title": "Roundhay Garden",
     "tags": [
       "1888",
+      "England",
       "b+w",
       "dance",
       "digital",
-      "England",
       "film",
       "screen",
       "walk"
@@ -2410,10 +2411,10 @@
     "date": "25-10-14",
     "title": "Dodecahedron",
     "tags": [
+      "Platonic-Solids",
       "aether",
       "digital",
       "pentagon",
-      "Platonic-Solids",
       "twelve",
       "universe"
     ]
@@ -2431,14 +2432,14 @@
     "date": "25-10-16",
     "title": "Venus",
     "tags": [
+      "Venus",
       "gods",
       "green",
       "ocean",
       "planet",
       "shell",
       "space",
-      "transport",
-      "Venus"
+      "transport"
     ]
   },
   {
@@ -2493,9 +2494,9 @@
     "date": "25-10-21",
     "title": "Big Ben",
     "tags": [
+      "England",
       "analog",
       "b+w",
-      "England",
       "tick-tock"
     ]
   },
@@ -2734,10 +2735,10 @@
     "date": "25-11-12",
     "title": "Octahedron",
     "tags": [
+      "Platonic-Solids",
       "air",
       "digital",
       "eight",
-      "Platonic-Solids",
       "pyramid"
     ]
   },
@@ -2767,10 +2768,10 @@
     "date": "25-11-15",
     "title": "Fall",
     "tags": [
+      "Mars",
       "digital-12h",
       "gravity",
       "grow",
-      "Mars",
       "orange",
       "tree",
       "trunk"
@@ -2794,8 +2795,8 @@
     "date": "25-11-17",
     "title": "Mars",
     "tags": [
-      "gods",
       "Mars",
+      "gods",
       "myth",
       "planet",
       "red",
@@ -2860,7 +2861,7 @@
       "digital",
       "mechanical",
       "metal",
-      "Russia",
+      "russia",
       "sky",
       "space"
     ]
@@ -2913,8 +2914,8 @@
     "date": "25-11-27",
     "title": "L'Heure Décimale",
     "tags": [
-      "analog",
-      "France"
+      "France",
+      "analog"
     ]
   },
   {
@@ -3027,8 +3028,8 @@
     "date": "25-12-07",
     "title": "Icosahedron",
     "tags": [
-      "digital",
       "Platonic-Solids",
+      "digital",
       "triangle",
       "twenty",
       "water"
@@ -3051,12 +3052,12 @@
     "title": "Muybridge",
     "tags": [
       "1878",
+      "Eadweard-Muybridge",
+      "England",
       "animal",
       "b+w",
       "body",
       "digital",
-      "Eadweard-Muybridge",
-      "England",
       "film",
       "odd-toed-ungulate"
     ]
@@ -3091,7 +3092,7 @@
       "0123456789abcdef",
       "analog",
       "color",
-      "rgb"
+      "RGB"
     ]
   },
   {
@@ -3099,16 +3100,16 @@
     "date": "25-12-13",
     "title": "Cherubs",
     "tags": [
+      "Mars",
+      "Venus",
       "art",
       "body",
       "digital",
       "fly",
       "gold",
-      "Mars",
       "paint",
-      "rococo",
-      "sky",
-      "Venus"
+      "Rococo",
+      "sky"
     ]
   },
   {
@@ -3140,8 +3141,8 @@
     "date": "25-12-17",
     "title": "Swagger",
     "tags": [
-      "body",
       "Mars",
+      "body",
       "pictographic"
     ]
   },
@@ -3167,12 +3168,12 @@
     "date": "25-12-20",
     "title": "Feather",
     "tags": [
+      "Venus",
       "analog",
       "animal",
       "b+w",
       "bird",
-      "feather",
-      "Venus"
+      "feather"
     ]
   },
   {
@@ -3225,7 +3226,7 @@
       "fly",
       "map",
       "paper",
-      "upc"
+      "UPC"
     ]
   },
   {
@@ -3248,7 +3249,7 @@
       "grey",
       "image-free",
       "monochrome",
-      "ryb"
+      "RYB"
     ]
   },
   {
@@ -3273,13 +3274,13 @@
     "date": "25-12-29",
     "title": "Jingū",
     "tags": [
+      "Japan",
+      "Khrine",
       "aerial",
       "build",
       "digital-12h",
       "gods",
       "ise",
-      "Japan",
-      "Khrine",
       "twenty",
       "wood"
     ]
@@ -3444,9 +3445,9 @@
     "date": "26-01-12",
     "title": "Lalarium",
     "tags": [
+      "Italy",
       "digital",
       "gods",
-      "Italy",
       "shrine",
       "underworld",
       "wall"
@@ -3466,10 +3467,10 @@
     "date": "26-01-14",
     "title": "Tenno",
     "tags": [
-      "digital",
-      "film",
       "Japan",
       "Kurosawa",
+      "digital",
+      "film",
       "screen"
     ]
   },
@@ -3527,12 +3528,12 @@
     "date": "26-01-20",
     "title": "Acconciatura",
     "tags": [
+      "Italy",
+      "Venus",
       "body",
       "day",
-      "Italy",
       "landscape",
-      "pictographic",
-      "Venus"
+      "pictographic"
     ]
   },
   {
@@ -3617,7 +3618,7 @@
     "title": "Trifurcate",
     "tags": [
       "analog",
-      "ryb",
+      "RYB",
       "three"
     ]
   },
@@ -3690,7 +3691,7 @@
     "title": "SMH",
     "tags": [
       "analog",
-      "rgb",
+      "RGB",
       "typeface",
       "yellow"
     ]
@@ -3721,9 +3722,9 @@
     "title": "Buster",
     "tags": [
       "1930",
+      "Buster-Keaton",
       "analog",
       "b+w",
-      "Buster-Keaton",
       "film",
       "screen"
     ]
@@ -3744,11 +3745,11 @@
     "date": "26-02-08",
     "title": "Le Trocadéro",
     "tags": [
+      "Paris",
       "analog",
       "design",
       "landscape",
-      "metal",
-      "Paris"
+      "metal"
     ]
   },
   {
@@ -3874,9 +3875,9 @@
     "date": "26-02-19",
     "title": "Sachplakat",
     "tags": [
-      "design",
       "FigitaL-12h",
       "Germany",
+      "design",
       "paper",
       "typeface"
     ]
@@ -3887,9 +3888,9 @@
     "title": "Tribute",
     "tags": [
       "DC",
-      "film",
       "Mars",
       "Rome",
+      "film",
       "screen",
       "stone",
       "transport",
@@ -3944,11 +3945,11 @@
     "title": "1913",
     "tags": [
       "1913",
+      "Italy",
       "art",
       "digital",
       "futurism",
       "interior",
-      "Italy",
       "marinetti",
       "red",
       "sound"
@@ -3960,13 +3961,13 @@
     "title": "Orpheus",
     "tags": [
       "1950",
+      "France",
+      "Jean-Cocteau",
+      "Orpheus",
       "analog",
       "b+w",
       "book",
       "film",
-      "France",
-      "Jean-Cocteau",
-      "Orpheus",
       "screen",
       "underworld"
     ]
@@ -4154,14 +4155,14 @@
     "date": "26-03-12",
     "title": "Virtual",
     "tags": [
+      "VR",
       "analog",
       "body",
       "electricity",
       "interior",
       "mechanical",
       "science",
-      "tech",
-      "VR"
+      "tech"
     ]
   },
   {
@@ -4204,12 +4205,12 @@
     "title": "Fritz",
     "tags": [
       "1927",
-      "analog",
-      "b+w",
-      "film",
       "Fritz-Lang",
       "Germany",
       "Metropolis",
+      "analog",
+      "b+w",
+      "film",
       "screen"
     ]
   },
@@ -4218,6 +4219,7 @@
     "date": "26-03-17",
     "title": "Pluto",
     "tags": [
+      "dwarf planet",
       "gods",
       "key",
       "myth",
@@ -4257,12 +4259,12 @@
     "date": "26-03-20",
     "title": "Empire",
     "tags": [
+      "NYC",
+      "Warhol",
       "analog",
       "b+w",
       "day-and-night",
-      "fast",
-      "NYC",
-      "Warhol"
+      "fast"
     ]
   },
   {
@@ -4416,13 +4418,13 @@
     "date": "26-04-01",
     "title": "Pompadour",
     "tags": [
+      "France",
+      "Venus",
       "cloth",
       "digital-12h",
-      "France",
       "pattern",
       "rococo",
-      "shell",
-      "Venus"
+      "shell"
     ]
   },
   {
@@ -4473,7 +4475,7 @@
       "light",
       "meteor",
       "planet",
-      "Russia",
+      "russia",
       "sky",
       "sound",
       "transport"
@@ -4584,10 +4586,10 @@
     "date": "26-04-14",
     "title": "Haumea",
     "tags": [
+      "Hawaii",
       "analog",
       "dwarf planet",
       "gods",
-      "hawaii",
       "myth",
       "spin"
     ]
@@ -4623,13 +4625,13 @@
     "title": "Jacques",
     "tags": [
       "1967",
+      "Paris",
+      "Playtime",
+      "Tati",
       "digital-24h",
       "film",
       "glass",
-      "Paris",
-      "Playtime",
-      "screen",
-      "Tati"
+      "screen"
     ]
   },
   {
@@ -4840,7 +4842,7 @@
       "digital",
       "paper",
       "spin",
-      "upc"
+      "UPC"
     ]
   },
   {
@@ -4973,12 +4975,13 @@
     "title": "Klein Blue",
     "tags": [
       "1957",
+      "Paris",
       "air",
       "blue",
       "color",
       "day",
+      "International-Klein-Blue-(IKB)",
       "digital",
-      "Paris",
       "screen"
     ]
   },
@@ -5052,11 +5055,11 @@
     "title": "Accordion",
     "tags": [
       "1888",
+      "France",
       "analog",
       "body",
       "dance",
       "film",
-      "France",
       "music",
       "screen"
     ]
@@ -5160,12 +5163,12 @@
     "title": "Outfit Panic",
     "tags": [
       "1899",
-      "b+w",
       "Cinderella",
-      "digital-12h",
-      "film",
       "France",
       "Georges-Méliès",
+      "b+w",
+      "digital-12h",
+      "film",
       "interior",
       "night",
       "screen"
@@ -5206,8 +5209,7 @@
       "analog",
       "fire",
       "food",
-      "sound",
-      "wind"
+      "sound"
     ]
   },
   {
