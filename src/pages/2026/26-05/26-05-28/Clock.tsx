@@ -22,7 +22,16 @@ const allMatchImages = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13];
 // Export assets for the preloading pipeline
 export const assets = [bgImage, ...allMatchImages];
 
-const imageSettings = [
+interface ImageSetting {
+  size: string;
+  opacity: number;
+  brightness: number;
+  saturation: number;
+  vignetteBlackStop: string;
+  vignetteTransparentStop: string;
+}
+
+const imageSettings: ImageSetting[] = [
   {
     size: '21%',
     opacity: 0.6,
@@ -151,11 +160,12 @@ const Hand = React.memo(({ deg, width, height, z, isSec, ms, variant }: HandProp
       height,
       zIndex: z,
       transform: `translateX(-50%) rotate(${deg}deg)`,
-      transition: isSec && ms !== undefined && ms >= 100 ? 'transform 0.1s linear' : 'none',
-    }}
+      transition: 'none',
+    } as React.CSSProperties}
     aria-hidden="true"
   />
 ));
+Hand.displayName = 'Hand';
 
 /**
  * Sub-component to isolate the 12 face images, ensuring they only 
@@ -184,15 +194,16 @@ const ClockFace = React.memo(({ faceIndices }: { faceIndices: number[] }) => (
             top: `${y}%`,
             opacity: config.opacity,
             filter: `brightness(${config.brightness}) saturate(${config.saturation})`,
-            ['--vignette-black' as string]: config.vignetteBlackStop,
-            ['--vignette-transparent' as string]: config.vignetteTransparentStop,
-          }}
+            '--vignette-black': config.vignetteBlackStop,
+            '--vignette-transparent': config.vignetteTransparentStop,
+          } as React.CSSProperties}
           alt=""
         />
       );
     })}
   </>
 ));
+ClockFace.displayName = 'ClockFace';
 
 const Clock: React.FC = () => {
   const time = useClockTime();
@@ -200,7 +211,6 @@ const Clock: React.FC = () => {
     face: [],
     spare: -1,
   });
-  const [isLoaded, setIsLoaded] = useState(false);
 
   const randomize = useCallback(() => {
     const indices = Array.from({ length: allMatchImages.length }, (_, i) => i);
@@ -231,11 +241,6 @@ const Clock: React.FC = () => {
     }
   }, [seconds, randomize]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoaded(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
-
   const rotations = useMemo(() => {
     const s = seconds + milliseconds / 1000;
     const m = time.getMinutes() + s / 60;
@@ -249,8 +254,8 @@ const Clock: React.FC = () => {
         className={styles.backgroundLayer}
         style={{
           backgroundImage: `url(${bgImage})`,
-          backgroundPosition: isLoaded ? '40% 50%' : '30% 50%',
-          transition: 'background-position 2s ease-out',
+          /* Change the first value (X) to move horizontally: 0% (Left) to 100% (Right) */
+          backgroundPosition: '60% 50%', // Current: 90% (Right-aligned), 50% (Centered vertically)
         }}
       />
 
@@ -258,12 +263,12 @@ const Clock: React.FC = () => {
         <ClockFace faceIndices={gameState.face} />
         
         {/* Hands (CSS-based, no image assets) */}
-        <Hand deg={rotations.hr} width="26%" height="30%" z={2} variant="hour" />
-        <Hand deg={rotations.min} width="84%" height="60%" z={3} variant="minute" />
+        <Hand deg={rotations.hr} width="12%" height="28%" z={2} variant="hour" />
+        <Hand deg={rotations.min} width="8%" height="42%" z={3} variant="minute" />
         <Hand
           deg={rotations.sec}
-          width="72%"
-          height="50%"
+          width="4%"
+          height="46%"
           z={4}
           isSec
           ms={milliseconds}
