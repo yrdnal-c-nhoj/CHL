@@ -147,15 +147,31 @@ export default function TagManager() {
               {sortedItems.map((item) => (
                 <tr key={item.date} style={{ borderBottom: '1px solid #f9f9f9' }}>
                   <td style={{ padding: '0.5rem' }}>
+                    <div style={{ width: '32px', margin: '0 auto' }}>
                       <Thumbnail 
-                      date={item.date}
-                      title={item.title} 
-                      style={{ width: '48px', borderRadius: '4px' }} 
-                    />
+                        date={item.date}
+                        title={item.title} 
+                        style={{ borderRadius: '4px' }} 
+                      />
+                    </div>
                   </td>
                   <td style={{ padding: '0.5rem', fontFamily: 'monospace' }}>{item.date}</td>
                   <td style={{ padding: '0.5rem' }}>{item.title}</td>
                   <td style={{ padding: '0.5rem' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '6px', justifyContent: 'center' }}>
+                      {normalizeTags(localTags[item.date] ?? '').map(tag => (
+                        <span key={tag} style={{ 
+                          backgroundColor: '#f1f3f5', 
+                          color: '#495057', 
+                          fontSize: '10px', 
+                          padding: '1px 5px', 
+                          borderRadius: '3px',
+                          border: '1px solid #dee2e6'
+                        }}>
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                     <input
                       className={styles.input}
                       style={{ margin: 0, width: '100%' }}
