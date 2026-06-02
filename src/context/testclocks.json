@@ -89,7 +89,8 @@
       "sky",
       "space",
       "sphere",
-      "spin"
+      "spin",
+      "year"
     ]
   },
   {
@@ -405,6 +406,7 @@
     "title": "Slow Lightning",
     "tags": [
       "digital-24h",
+      "electricity",
       "elements",
       "light",
       "nature",
@@ -468,6 +470,7 @@
       "bone",
       "digital-24h",
       "earth",
+      "shrine",
       "underworld"
     ]
   },
@@ -489,6 +492,7 @@
     "tags": [
       "analog",
       "deepwater",
+      "green",
       "mechanical",
       "see",
       "swim",
@@ -524,7 +528,6 @@
     "date": "25-05-10",
     "title": "Number Toss",
     "tags": [
-      "France",
       "color",
       "digital-12h",
       "gravity",
@@ -590,6 +593,7 @@
       "digital-24h",
       "hand",
       "monochrome",
+      "paper",
       "pictographic"
     ]
   },
@@ -673,7 +677,8 @@
       "cloth",
       "color",
       "digital",
-      "hand"
+      "hand",
+      "thread"
     ]
   },
   {
@@ -835,6 +840,7 @@
       "cow",
       "drink",
       "food",
+      "grow",
       "hot"
     ]
   },
@@ -858,6 +864,7 @@
     "title": "Rolling",
     "tags": [
       "analog",
+      "image-free",
       "move",
       "purple",
       "roll",
@@ -887,6 +894,7 @@
       "face",
       "hand",
       "interior",
+      "paper",
       "play",
       "see"
     ]
@@ -901,6 +909,7 @@
       "fly",
       "sky",
       "space",
+      "stars",
       "transport"
     ]
   },
@@ -910,7 +919,7 @@
     "title": "Shapes",
     "tags": [
       "b+w",
-      "cirle",
+      "circle",
       "pictographic",
       "square",
       "triangle"
@@ -1100,6 +1109,7 @@
     "title": "Bone",
     "tags": [
       "analog",
+      "blood",
       "body",
       "bone",
       "shell"
@@ -1174,8 +1184,10 @@
       "digital",
       "electricity",
       "film",
+      "light",
       "night",
-      "screen"
+      "screen",
+      "see"
     ]
   },
   {
@@ -1184,7 +1196,8 @@
     "title": "Backwards",
     "tags": [
       "analog",
-      "mirror"
+      "mirror",
+      "tick-tock"
     ]
   },
   {
@@ -1192,6 +1205,7 @@
     "date": "25-07-03",
     "title": "Launchpad",
     "tags": [
+      "count",
       "digital",
       "gravity",
       "sky",
@@ -1204,7 +1218,9 @@
     "date": "25-07-04",
     "title": "Kaleidoscope",
     "tags": [
+      "circle",
       "digital",
+      "image-free",
       "round",
       "spin"
     ]
@@ -1250,7 +1266,8 @@
       "analog",
       "food",
       "green",
-      "grow"
+      "grow",
+      "smell"
     ]
   },
   {
@@ -1492,7 +1509,10 @@
     "date": "25-07-29",
     "title": "Slot Machine",
     "tags": [
-      "gold"
+      "gold",
+      "mechanical",
+      "play",
+      "spin"
     ]
   },
   {
@@ -1510,15 +1530,18 @@
   {
     "path": "25-07-31",
     "date": "25-07-31",
-    "title": "Tapestry",
+    "title": "1066",
     "tags": [
+      "England",
+      "France",
       "Mars",
       "cloth",
       "digital",
       "eye",
       "history",
       "thread",
-      "underworld"
+      "underworld",
+      "year"
     ]
   },
   {
@@ -1541,7 +1564,10 @@
     "date": "25-08-02",
     "title": "Decorum",
     "tags": [
-      "b+w"
+      "b+w",
+      "glass",
+      "heart",
+      "mirror"
     ]
   },
   {
@@ -1552,6 +1578,7 @@
       "analog",
       "gold",
       "red",
+      "screen",
       "sound"
     ]
   },
@@ -1561,6 +1588,7 @@
     "title": "Fireflies",
     "tags": [
       "digital-24h",
+      "landscape",
       "light",
       "nature",
       "night",
@@ -1621,6 +1649,7 @@
       "fast",
       "monochrome",
       "stone",
+      "tick-tock",
       "white"
     ]
   },
@@ -1643,7 +1672,9 @@
       "digital",
       "fire",
       "landscape",
-      "night"
+      "night",
+      "paper",
+      "smell"
     ]
   },
   {
@@ -1658,6 +1689,7 @@
       "glass",
       "mechanical",
       "metal",
+      "smell",
       "water"
     ]
   },
@@ -1704,7 +1736,8 @@
     "tags": [
       "b+w",
       "digital-24h",
-      "play"
+      "play",
+      "wood"
     ]
   },
   {
@@ -1736,7 +1769,8 @@
     "title": "Bull's-Eye",
     "tags": [
       "aim",
-      "analog"
+      "analog",
+      "play"
     ]
   },
   {
@@ -1793,6 +1827,7 @@
     "date": "25-08-23",
     "title": "Signal Pennants",
     "tags": [
+      "cloth",
       "digital-24h",
       "flags",
       "pictographic",
@@ -1857,8 +1892,11 @@
     "title": "Goblin",
     "tags": [
       "England",
+      "book",
       "digital",
+      "earth",
       "gold",
+      "paper",
       "tolkien"
     ]
   },
@@ -1914,6 +1952,7 @@
     "tags": [
       "analog",
       "dance",
+      "electricity",
       "mechanical",
       "sound",
       "spin"
@@ -1925,6 +1964,7 @@
     "title": "Mauve",
     "tags": [
       "24h",
+      "cloth",
       "color",
       "digital",
       "purple"
@@ -1936,6 +1976,8 @@
     "title": "Inside Out",
     "tags": [
       "analog",
+      "circle",
+      "glass",
       "interior",
       "sky",
       "wood"
@@ -1947,9 +1989,12 @@
     "title": "Swiss Cheese",
     "tags": [
       "animal",
+      "cow",
       "digital",
       "food",
-      "round"
+      "round",
+      "smell",
+      "yellow"
     ]
   },
   {
@@ -1959,6 +2004,7 @@
     "tags": [
       "analog",
       "fly",
+      "sky",
       "wood"
     ]
   },
@@ -1969,7 +2015,9 @@
     "tags": [
       "digital",
       "interior",
-      "paint"
+      "paint",
+      "smell",
+      "wall"
     ]
   },
   {
@@ -1996,6 +2044,7 @@
       "gods",
       "light",
       "shadow",
+      "shrine",
       "underworld"
     ]
   },
@@ -2019,8 +2068,10 @@
     "tags": [
       "cloth",
       "digital",
+      "food",
       "play",
       "purple",
+      "smell",
       "tree"
     ]
   },
@@ -2050,6 +2101,7 @@
       "monochrome",
       "pictographic",
       "shell",
+      "smell",
       "snow"
     ]
   },
@@ -2084,6 +2136,7 @@
       "digital",
       "info",
       "mechanical",
+      "paper",
       "tech"
     ]
   },
@@ -2096,7 +2149,8 @@
       "Venus",
       "digital-12h",
       "hand",
-      "heart"
+      "heart",
+      "paper"
     ]
   },
   {
@@ -2118,6 +2172,7 @@
     "tags": [
       "analog",
       "blue",
+      "dwarf-planet",
       "sky",
       "space",
       "spin",
@@ -2131,6 +2186,7 @@
     "tags": [
       "analog",
       "color",
+      "image-free",
       "light"
     ]
   },
@@ -2169,7 +2225,9 @@
       "beat",
       "blood",
       "body",
-      "heart"
+      "fast",
+      "heart",
+      "slow"
     ]
   },
   {
@@ -2179,6 +2237,7 @@
     "tags": [
       "b+w",
       "digital",
+      "image-free",
       "parallel",
       "typeface"
     ]
@@ -2241,9 +2300,9 @@
     "date": "25-09-29",
     "title": "Comics",
     "tags": [
+      "Esperanto",
       "color",
       "digital-24h",
-      "esperanto",
       "paper"
     ]
   },
@@ -2254,7 +2313,9 @@
     "tags": [
       "digital-24h",
       "green",
-      "parallel"
+      "image-free",
+      "parallel",
+      "typeface"
     ]
   },
   {
@@ -2301,6 +2362,7 @@
       "blue",
       "digital-24h",
       "gravity",
+      "sound",
       "water"
     ]
   },
@@ -2386,7 +2448,9 @@
     "date": "25-10-11",
     "title": "Prise En Passant",
     "tags": [
+      "France",
       "Marcel-Duchamp",
+      "Paris",
       "b+w",
       "chess",
       "digital-12h",
@@ -2405,7 +2469,8 @@
       "fast",
       "flower",
       "grow",
-      "pink"
+      "pink",
+      "smell"
     ]
   },
   {
@@ -2547,7 +2612,7 @@
     "date": "25-10-24",
     "title": "Esperanto",
     "tags": [
-      "esperanto",
+      "Esperanto",
       "landscape",
       "word-clock"
     ]
@@ -2692,9 +2757,9 @@
     "date": "25-11-06",
     "title": "Punctuation",
     "tags": [
+      "Esperanto",
       "analog",
       "blue",
-      "esperanto",
       "image-free"
     ]
   },
@@ -2875,6 +2940,7 @@
     "title": "Trajectories",
     "tags": [
       "analog",
+      "day-and-night",
       "horizon",
       "moon",
       "sky",
@@ -2908,7 +2974,14 @@
   {
     "path": "25-11-23",
     "date": "25-11-23",
-    "title": "Hands"
+    "title": "Hands",
+    "tags": [
+      "body",
+      "count",
+      "gold",
+      "hand",
+      "silver"
+    ]
   },
   {
     "path": "25-11-24",
@@ -3316,13 +3389,13 @@
     "date": "25-12-29",
     "title": "Jingū",
     "tags": [
+      "Ise",
       "Japan",
-      "Khrine",
       "aerial",
       "build",
       "digital-12h",
       "gods",
-      "ise",
+      "shrine",
       "twenty",
       "wood"
     ]
@@ -3339,7 +3412,8 @@
       "path",
       "sky",
       "space",
-      "sun"
+      "sun",
+      "year"
     ]
   },
   {
@@ -3377,6 +3451,7 @@
     "tags": [
       "digital-24h",
       "gold",
+      "image-free",
       "typeface"
     ]
   },
@@ -3387,7 +3462,8 @@
     "tags": [
       "analog",
       "electricity",
-      "interior"
+      "interior",
+      "up-and-down"
     ]
   },
   {
@@ -3450,7 +3526,8 @@
       "analog",
       "color",
       "food",
-      "grow"
+      "grow",
+      "smell"
     ]
   },
   {
@@ -3601,9 +3678,10 @@
       "brown",
       "chess",
       "digital-24h",
-      "earth tones",
+      "earth-tones",
       "interior",
-      "neutrals"
+      "neutrals",
+      "year"
     ]
   },
   {
@@ -3787,6 +3865,7 @@
     "date": "26-02-08",
     "title": "Le Trocadéro",
     "tags": [
+      "France",
       "Paris",
       "analog",
       "design",
@@ -3812,9 +3891,12 @@
     "title": "TeeVee Lounge",
     "tags": [
       "digital",
+      "electricity",
       "glass",
       "interior",
+      "light",
       "screen",
+      "sound",
       "wood"
     ]
   },
@@ -3825,7 +3907,9 @@
     "tags": [
       "analog",
       "metal",
-      "ring"
+      "ring",
+      "side-to-side",
+      "sound"
     ]
   },
   {
@@ -3839,6 +3923,7 @@
       "light",
       "mechanical",
       "mirror",
+      "sound",
       "sphere",
       "spin"
     ]
@@ -3987,14 +4072,15 @@
     "title": "1913",
     "tags": [
       "1913",
+      "Futurism",
       "Italy",
+      "Marinetti",
       "art",
       "digital",
-      "futurism",
       "interior",
-      "marinetti",
       "red",
-      "sound"
+      "sound",
+      "year"
     ]
   },
   {
@@ -4023,6 +4109,8 @@
       "digital-12h",
       "generative",
       "grow",
+      "magenta",
+      "non-spectral",
       "plant"
     ]
   },
@@ -4074,9 +4162,11 @@
     "title": "Ripple",
     "tags": [
       "brown",
+      "circle",
       "digital",
       "gravity",
       "monochrome",
+      "round",
       "water",
       "waves"
     ]
@@ -4104,6 +4194,7 @@
       "pictographic",
       "revolve",
       "space",
+      "sphere",
       "sun",
       "yellow"
     ]
@@ -4141,6 +4232,7 @@
     "tags": [
       "b+w",
       "digital-24h",
+      "image-free",
       "parallel"
     ]
   },
@@ -4155,7 +4247,8 @@
       "light",
       "move",
       "myth",
-      "night"
+      "night",
+      "predator"
     ]
   },
   {
@@ -4204,6 +4297,7 @@
       "interior",
       "mechanical",
       "science",
+      "screen",
       "tech"
     ]
   },
@@ -4252,6 +4346,8 @@
       "Metropolis",
       "analog",
       "b+w",
+      "body",
+      "electricity",
       "film",
       "screen"
     ]
@@ -4261,7 +4357,7 @@
     "date": "26-03-17",
     "title": "Pluto",
     "tags": [
-      "dwarf planet",
+      "dwarf-planet",
       "gods",
       "key",
       "myth",
@@ -4291,6 +4387,7 @@
       "blue",
       "cold",
       "digital-12h",
+      "gravity",
       "monochrome",
       "night",
       "snow"
@@ -4306,7 +4403,11 @@
       "analog",
       "b+w",
       "day-and-night",
-      "fast"
+      "fast",
+      "light",
+      "metal",
+      "screen",
+      "stone"
     ]
   },
   {
@@ -4632,7 +4733,7 @@
     "tags": [
       "Hawaii",
       "analog",
-      "dwarf planet",
+      "dwarf-planet",
       "gods",
       "myth",
       "spin"
@@ -4901,6 +5002,7 @@
       "move",
       "nature",
       "ocean",
+      "swim",
       "waves"
     ]
   },
@@ -4939,6 +5041,7 @@
       "animal",
       "bone",
       "day",
+      "desert",
       "odd-toed-ungulate",
       "run",
       "transport"
@@ -4956,7 +5059,8 @@
       "rotation",
       "sky",
       "space",
-      "sun"
+      "sun",
+      "year"
     ]
   },
   {
@@ -4968,6 +5072,7 @@
       "day",
       "flower",
       "grow",
+      "pink",
       "water"
     ]
   },
@@ -5009,6 +5114,7 @@
       "cardinal-directions",
       "fire",
       "lion",
+      "magenta",
       "mirror",
       "predator",
       "wind"
@@ -5039,6 +5145,7 @@
       "cake",
       "color",
       "day",
+      "float",
       "latex",
       "round",
       "up-and-down"
@@ -5114,7 +5221,7 @@
     "date": "26-05-19",
     "title": "Bliss",
     "tags": [
-      "clippy",
+      "Clippy",
       "day",
       "digital",
       "digital-12h",
@@ -5254,6 +5361,7 @@
       "analog",
       "fire",
       "food",
+      "smell",
       "sound"
     ]
   },
@@ -5264,6 +5372,7 @@
     "tags": [
       "b+w",
       "digital-12h",
+      "hand",
       "stone"
     ]
   },
@@ -5274,7 +5383,8 @@
     "tags": [
       "analog",
       "color",
-      "food"
+      "food",
+      "smell"
     ]
   },
   {
@@ -5284,7 +5394,6 @@
     "tags": [
       "color",
       "electricity",
-      "food",
       "hot",
       "water"
     ]
