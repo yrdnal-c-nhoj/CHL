@@ -1,93 +1,50 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styles from '../styles/TopNav.module.css';
 
 const TopNav: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
-  const toggleMenu = (): void => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = () => setIsOpen(!isOpen);
+  const closeMenu = () => setIsOpen(false);
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <div className={styles.topnavContainer}>
-      <button
-        className={`${styles.hamburger} ${isMenuOpen ? styles.active : ''}`}
-        onClick={toggleMenu}
-        aria-label="Toggle menu"
-      >
-        <span />
-        <span />
-        <span />
-      </button>
-
       <div className={styles.topnavbgcolor}>
         <div className={styles.topnavchl}>Cubist Heart Laboratories</div>
         <div className={styles.topnavbt}>BorrowedTime</div>
-        <div className={styles.topnavtag}>
-          a new clock every day, made from recycled internet stuff
-        </div>
+        <div className={styles.topnavtag}>A new clock every day</div>
       </div>
 
       <nav className={styles.navbar}>
-        <ul className={`${styles.navMenu} ${isMenuOpen ? styles.active : ''}`}>
-          <li className={styles.navItem}>
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-              }
-              onClick={() => setIsMenuOpen(false)}
-            >
-              HOME
-            </NavLink>
-          </li>
+        <button 
+          className={`${styles.hamburger} ${isOpen ? styles.active : ''}`}
+          onClick={toggleMenu}
+          aria-label="Menu"
+        >
+          <span />
+          <span />
+          <span />
+        </button>
 
-          {/* 
+        <ul className={`${styles.navMenu} ${isOpen ? styles.active : ''}`}>
           <li className={styles.navItem}>
-            <NavLink
-              to="/manifesto"
-              className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              MANIFESTO
-            </NavLink>
-          </li>
-           */}
-
-          <li className={styles.navItem}>
-            <NavLink
-              to="/list"
-              className={({ isActive }) =>
-                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-              }
-              onClick={() => setIsMenuOpen(false)}
-            >
-              LIST
-            </NavLink>
-          </li>
-
-          <li className={styles.navItem}>
-            <NavLink
-              to="/contact"
-              className={({ isActive }) =>
-                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-              }
-              onClick={() => setIsMenuOpen(false)}
-            >
-              CONTACT
-            </NavLink>
+            <Link to="/" className={`${styles.navLink} ${isActive('/') ? styles.active : ''}`} onClick={closeMenu}>Home</Link>
           </li>
           <li className={styles.navItem}>
-            <NavLink
-              to="/today"
-              className={({ isActive }) =>
-                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-              }
-              onClick={() => setIsMenuOpen(false)}
-            >
-              TODAY
-            </NavLink>
+            <Link to="/list" className={`${styles.navLink} ${isActive('/list') ? styles.active : ''}`} onClick={closeMenu}>List</Link>
+          </li>
+          <li className={styles.navItem}>
+            <Link to="/tags" className={`${styles.navLink} ${isActive('/tags') ? styles.active : ''}`} onClick={closeMenu}>Tags</Link>
+          </li>
+          <li className={styles.navItem}>
+            <Link to="/contact" className={`${styles.navLink} ${isActive('/contact') ? styles.active : ''}`} onClick={closeMenu}>Contact</Link>
+          </li>
+          <li className={styles.navItem}>
+            <Link to="/today" className={`${styles.navLink} ${isActive('/today') ? styles.active : ''}`} onClick={closeMenu}>Today</Link>
           </li>
         </ul>
       </nav>
