@@ -382,6 +382,7 @@
     "tags": [
       "color",
       "digital-24h",
+      "fast",
       "fire",
       "light",
       "night",
@@ -408,6 +409,7 @@
       "digital-24h",
       "electricity",
       "elements",
+      "fast",
       "light",
       "nature",
       "sky",
@@ -678,6 +680,7 @@
       "cloth",
       "color",
       "hand",
+      "slow",
       "thread"
     ]
   },
@@ -688,6 +691,7 @@
     "tags": [
       "air",
       "digital-12h",
+      "fast",
       "spin",
       "weather",
       "wind"
@@ -764,6 +768,7 @@
     "tags": [
       "digital",
       "earth",
+      "fast",
       "fly",
       "gravity",
       "mechanical",
@@ -1124,6 +1129,7 @@
       "b+w",
       "revolve",
       "sky",
+      "slow",
       "stars"
     ]
   },
@@ -1207,6 +1213,7 @@
     "tags": [
       "digital",
       "count",
+      "fast",
       "gravity",
       "sky",
       "space",
@@ -1253,6 +1260,7 @@
     "title": "SUV",
     "tags": [
       "digital-12h",
+      "fast",
       "mechanical",
       "metal",
       "transport"
@@ -1596,6 +1604,7 @@
       "light",
       "nature",
       "night",
+      "slow",
       "tree"
     ]
   },
@@ -1717,6 +1726,7 @@
       "analog",
       "color",
       "earth",
+      "fast",
       "horizon",
       "space",
       "universe"
@@ -1750,6 +1760,7 @@
     "title": "Palm tree",
     "tags": [
       "analog",
+      "fast",
       "grid",
       "landscape",
       "transport",
@@ -1796,6 +1807,7 @@
     "tags": [
       "analog",
       "earth",
+      "fast",
       "grid",
       "horizon",
       "twenty-four",
@@ -1849,6 +1861,7 @@
       "digital",
       "Rome",
       "gold",
+      "slow",
       "stone"
     ]
   },
@@ -1924,6 +1937,7 @@
       "fast",
       "monochrome",
       "sky",
+      "slow",
       "twilight"
     ]
   },
@@ -2062,7 +2076,8 @@
       "electricity",
       "interior",
       "lava",
-      "light"
+      "light",
+      "slow"
     ]
   },
   {
@@ -2294,6 +2309,7 @@
       "animal",
       "cow",
       "desert",
+      "fast",
       "fly",
       "landscape",
       "night"
@@ -2355,6 +2371,7 @@
       "color",
       "design",
       "emoji",
+      "slow",
       "spin"
     ]
   },
@@ -2402,6 +2419,7 @@
       "Dr-Strangelove",
       "Kubrick",
       "b+w",
+      "fast",
       "film",
       "screen",
       "words"
@@ -2442,6 +2460,7 @@
       "Michelangelo",
       "Rome",
       "Venus",
+      "fast",
       "film",
       "night",
       "screen"
@@ -2459,6 +2478,7 @@
       "chess",
       "digital-12h",
       "play",
+      "slow",
       "square",
       "wood"
     ]
@@ -2544,6 +2564,7 @@
     "title": "Totality",
     "tags": [
       "digital",
+      "fast",
       "light",
       "moon",
       "shadow",
@@ -2570,6 +2591,7 @@
     "tags": [
       "analog",
       "earth",
+      "fast",
       "grow",
       "tree",
       "trunk"
@@ -2639,6 +2661,7 @@
       "animal",
       "butterfly",
       "camouflage",
+      "fast",
       "migrate"
     ]
   },
@@ -2685,6 +2708,7 @@
       "digital",
       "Antarctica",
       "axis",
+      "fast",
       "ice",
       "panorama",
       "revolve",
@@ -2709,6 +2733,7 @@
     "tags": [
       "digital",
       "body",
+      "fast",
       "float",
       "grow",
       "horizon",
@@ -2853,6 +2878,7 @@
     "tags": [
       "analog",
       "landscape",
+      "slow",
       "tick-tock",
       "transport",
       "walk"
@@ -2865,6 +2891,7 @@
     "tags": [
       "analog",
       "ice",
+      "slow",
       "transparent",
       "water"
     ]
@@ -2879,6 +2906,7 @@
       "gravity",
       "grow",
       "orange",
+      "slow",
       "tree",
       "trunk"
     ]
@@ -2945,6 +2973,7 @@
     "tags": [
       "analog",
       "day-and-night",
+      "fast",
       "horizon",
       "moon",
       "sky",
@@ -2969,6 +2998,7 @@
     "tags": [
       "digital",
       "Russia",
+      "fast",
       "mechanical",
       "metal",
       "sky",
@@ -3021,6 +3051,7 @@
       "animal",
       "bird",
       "brown",
+      "fast",
       "fly",
       "landscape"
     ]
@@ -3078,6 +3109,7 @@
     "tags": [
       "digital",
       "animal",
+      "fast",
       "food",
       "ocean",
       "predator",
@@ -3199,6 +3231,7 @@
     "title": "Geological",
     "tags": [
       "digital",
+      "fast",
       "numbers",
       "words"
     ]
@@ -3280,7 +3313,11 @@
   {
     "path": "25-12-19",
     "date": "25-12-19",
-    "title": "Hourglass"
+    "title": "Hourglass",
+    "tags": [
+      "fast",
+      "slow"
+    ]
   },
   {
     "path": "25-12-20",
@@ -3343,6 +3380,7 @@
       "airstairs",
       "digital-12h",
       "earth",
+      "fast",
       "fly",
       "map",
       "paper"
@@ -3411,6 +3449,7 @@
     "tags": [
       "day",
       "digital-12h",
+      "fast",
       "geometry",
       "move",
       "path",
@@ -3612,7 +3651,9 @@
     "date": "26-01-16",
     "title": "Leap Second",
     "tags": [
-      "digital"
+      "digital",
+      "fast",
+      "slow"
     ]
   },
   {
@@ -3827,6 +3868,7 @@
     "tags": [
       "digital-12h",
       "electricity",
+      "fast",
       "landscape"
     ]
   },
@@ -3923,6 +3965,7 @@
     "tags": [
       "dance",
       "digital-24h",
+      "fast",
       "glass",
       "light",
       "mechanical",
@@ -3949,6 +3992,7 @@
     "date": "26-02-14",
     "title": "Concourse",
     "tags": [
+      "fast",
       "fly",
       "pictographic",
       "transport",
@@ -3963,6 +4007,7 @@
       "analog",
       "day-and-night",
       "earth",
+      "fast",
       "hot",
       "lava"
     ]
@@ -4081,6 +4126,7 @@
       "Italy",
       "Marinetti",
       "art",
+      "fast",
       "interior",
       "red",
       "sound",
@@ -4132,6 +4178,7 @@
       "mummy",
       "pyramid",
       "scarab",
+      "slow",
       "stone",
       "underworld"
     ]
@@ -4222,6 +4269,7 @@
     "tags": [
       "analog",
       "blue",
+      "fast",
       "fire",
       "gravity",
       "metal",
@@ -4248,6 +4296,7 @@
       "analog",
       "animal",
       "exterior",
+      "fast",
       "light",
       "move",
       "myth",
@@ -4394,6 +4443,7 @@
       "gravity",
       "monochrome",
       "night",
+      "slow",
       "snow"
     ]
   },
@@ -4469,6 +4519,7 @@
     "tags": [
       "analog",
       "bonding",
+      "fast",
       "fly",
       "gravity",
       "grid",
@@ -4621,6 +4672,7 @@
     "tags": [
       "Russia",
       "digital-24h",
+      "fast",
       "gravity",
       "light",
       "meteor",
@@ -4738,6 +4790,7 @@
       "analog",
       "Hawaii",
       "dwarf-planet",
+      "fast",
       "gods",
       "myth",
       "spin"
@@ -4805,6 +4858,7 @@
       "day-and-night",
       "digital-12h",
       "earth",
+      "fast",
       "planet",
       "revolve",
       "rotation",
@@ -4871,7 +4925,8 @@
     "tags": [
       "digital-24h",
       "geometry",
-      "image-free"
+      "image-free",
+      "slow"
     ]
   },
   {
@@ -4894,6 +4949,7 @@
     "tags": [
       "1962",
       "digital-12h",
+      "fast",
       "film",
       "jetsons",
       "screen",
@@ -5021,7 +5077,8 @@
       "extinct",
       "nature",
       "pictographic",
-      "shell"
+      "shell",
+      "slow"
     ]
   },
   {
@@ -5046,6 +5103,7 @@
       "bone",
       "day",
       "desert",
+      "fast",
       "odd-toed-ungulate",
       "run",
       "transport"
@@ -5057,6 +5115,7 @@
     "title": "Right Ascension",
     "tags": [
       "digital-12h",
+      "fast",
       "grid",
       "map",
       "move",
@@ -5167,6 +5226,7 @@
       "green",
       "grow",
       "nature",
+      "slow",
       "tree",
       "wood"
     ]
@@ -5179,8 +5239,10 @@
       "analog",
       "airstairs",
       "day",
+      "fast",
       "fly",
       "sky",
+      "slow",
       "transport"
     ]
   },
@@ -5274,6 +5336,7 @@
     "tags": [
       "camouflage",
       "deepwater",
+      "fast",
       "float",
       "pictographic-24h",
       "swim",
@@ -5364,6 +5427,7 @@
     "title": "Pop",
     "tags": [
       "analog",
+      "fast",
       "fire",
       "food",
       "smell",
@@ -5399,6 +5463,7 @@
     "tags": [
       "color",
       "electricity",
+      "fast",
       "hot",
       "water"
     ]
