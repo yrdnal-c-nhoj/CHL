@@ -655,7 +655,8 @@
     "tags": [
       "body",
       "flags",
-      "pictographic"
+      "pictographic",
+      "thread"
     ]
   },
   {
@@ -1703,6 +1704,7 @@
       "mechanical",
       "metal",
       "smell",
+      "thread",
       "water"
     ]
   },
@@ -2144,7 +2146,8 @@
     "tags": [
       "digital",
       "cloth",
-      "pattern"
+      "pattern",
+      "thread"
     ]
   },
   {
@@ -4624,7 +4627,8 @@
       "digital-12h",
       "pattern",
       "rococo",
-      "shell"
+      "shell",
+      "thread"
     ]
   },
   {
