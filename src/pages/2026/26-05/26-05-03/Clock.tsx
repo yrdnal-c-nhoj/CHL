@@ -1,8 +1,8 @@
-import React, { useMemo, FC } from 'react';
-import { useClockTime } from '@/utils/hooks';
-import styles from './Clock.module.css';
-import fontUrl from '@/assets/fonts/26fonts/26-05-03-dolphin.ttf?url';
 import boxImage from '@/assets/images/26_images/26-05/26-05-03/box.webp';
+import { useClockTime } from '@/utils/hooks';
+import type { FC } from 'react';
+import React, { useMemo } from 'react';
+import styles from './Clock.module.css';
 
 /* ---------------- FONT MAP ---------------- */
 
@@ -238,7 +238,7 @@ const Voxel: FC<VoxelProps> = ({ x, y, seed }) => {
           className={styles.face}
           style={{
             transform: `translateZ(${depth}px)`,
-            background: shade(color || '#000000', 18),
+            background: shade(color || '#100202', 18),
           }}
         />
         <div
