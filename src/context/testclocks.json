@@ -562,11 +562,11 @@
     "date": "25-05-14",
     "title": "Rough Idea",
     "tags": [
+      "RGB",
       "color",
       "digital-12h",
       "generative",
-      "grey",
-      "RGB"
+      "grey"
     ]
   },
   {
@@ -598,9 +598,9 @@
     "date": "25-05-17",
     "title": "Primary Colors",
     "tags": [
+      "RYB",
       "analog",
       "color",
-      "RYB",
       "spectrum"
     ]
   },
@@ -732,12 +732,12 @@
     "date": "25-05-28",
     "title": "Corner",
     "tags": [
+      "RYB",
       "analog",
       "brown",
       "four",
       "image-free",
-      "round",
-      "RYB"
+      "round"
     ]
   },
   {
@@ -786,12 +786,12 @@
     "date": "25-06-01",
     "title": "Air Mail",
     "tags": [
+      "UPC",
       "digital-24h",
       "fly",
       "move",
       "paper",
       "transport",
-      "UPC",
       "words"
     ]
   },
@@ -1205,9 +1205,9 @@
     "date": "25-07-05",
     "title": "Vegas",
     "tags": [
+      "Las-Vegas",
       "day-and-night",
-      "digital",
-      "las-vegas"
+      "digital"
     ]
   },
   {
@@ -1306,9 +1306,9 @@
     "date": "25-07-14",
     "title": "Cartoon",
     "tags": [
-      "under-repair",
-      "hands",
-      "broken_clock"
+      "broken_clock",
+      "hand",
+      "under-repair"
     ]
   },
   {
@@ -1327,8 +1327,8 @@
     "date": "25-07-16",
     "title": "Möbius Strip",
     "tags": [
+      "Fibonacci",
       "digital",
-      "fibonacci",
       "geometry",
       "spin"
     ]
@@ -1575,13 +1575,13 @@
     "date": "25-08-06",
     "title": "Laika",
     "tags": [
+      "Russia",
       "animal",
       "digital-24h",
       "dog",
       "face",
       "fly",
       "metal",
-      "Russia",
       "space"
     ]
   },
@@ -1809,11 +1809,11 @@
     "date": "25-08-25",
     "title": "Barcode",
     "tags": [
+      "UPC",
       "digital-12h",
       "interior",
       "paper",
-      "parallel",
-      "UPC"
+      "parallel"
     ]
   },
   {
@@ -2049,8 +2049,8 @@
     "date": "25-09-14",
     "title": "Golden Chord",
     "tags": [
+      "Fibonacci",
       "analog",
-      "fibonacci",
       "geometry",
       "gold",
       "golden ratio",
@@ -2613,7 +2613,13 @@
   {
     "path": "25-11-01",
     "date": "25-11-01",
-    "title": "Edge Case"
+    "title": "Edge Case",
+    "tags": [
+      "analog",
+      "green",
+      "image-free",
+      "square"
+    ]
   },
   {
     "path": "25-11-02",
@@ -2622,6 +2628,7 @@
     "tags": [
       "body",
       "digital",
+      "float",
       "grow",
       "horizon",
       "shell",
@@ -2635,8 +2642,10 @@
     "title": "Binary",
     "tags": [
       "blue",
+      "color",
       "grid",
       "histogram",
+      "image-free",
       "yellow"
     ]
   },
@@ -2646,8 +2655,10 @@
     "title": "Churn",
     "tags": [
       "analog",
+      "float",
       "night",
       "ocean",
+      "swim",
       "waves"
     ]
   },
@@ -2660,7 +2671,8 @@
       "color",
       "design",
       "digital-24h",
-      "grid"
+      "grid",
+      "image-free"
     ]
   },
   {
@@ -2670,7 +2682,8 @@
     "tags": [
       "analog",
       "blue",
-      "esperanto"
+      "esperanto",
+      "image-free"
     ]
   },
   {
@@ -2682,6 +2695,7 @@
       "bird",
       "digital-12h",
       "feather",
+      "fly",
       "landscape",
       "nature",
       "one-stone",
@@ -2697,7 +2711,9 @@
       "digital",
       "eye",
       "face",
-      "grid"
+      "grid",
+      "screen",
+      "see"
     ]
   },
   {
@@ -2707,7 +2723,9 @@
     "tags": [
       "digital",
       "flower",
-      "spin"
+      "image-free",
+      "spin",
+      "wheel"
     ]
   },
   {
@@ -2753,8 +2771,10 @@
     "title": "Commute",
     "tags": [
       "analog",
+      "landscape",
       "tick-tock",
-      "transport"
+      "transport",
+      "walk"
     ]
   },
   {
@@ -2790,8 +2810,10 @@
       "analog",
       "animal",
       "deepwater",
+      "float",
       "ocean",
       "shell",
+      "swim",
       "water"
     ]
   },
@@ -2863,10 +2885,10 @@
     "date": "25-11-22",
     "title": "Sputnik",
     "tags": [
+      "Russia",
       "digital",
       "mechanical",
       "metal",
-      "Russia",
       "sky",
       "space"
     ]
@@ -2891,7 +2913,7 @@
   {
     "path": "25-11-25",
     "date": "25-11-25",
-    "title": "Network ProRocol",
+    "title": "Network Protocol",
     "tags": [
       "digital",
       "grid",
@@ -2920,7 +2942,10 @@
     "title": "L'Heure Décimale",
     "tags": [
       "France",
-      "analog"
+      "Paris",
+      "analog",
+      "blood",
+      "flag"
     ]
   },
   {
@@ -2930,7 +2955,7 @@
     "tags": [
       "color",
       "digital-24h",
-      "grid"
+      "grid  image-free"
     ]
   },
   {
@@ -3095,9 +3120,9 @@
     "title": "RGB",
     "tags": [
       "0123456789abcdef",
+      "RGB",
       "analog",
-      "color",
-      "RGB"
+      "color"
     ]
   },
   {
@@ -3106,6 +3131,7 @@
     "title": "Cherubs",
     "tags": [
       "Mars",
+      "Rococo",
       "Venus",
       "art",
       "body",
@@ -3113,7 +3139,6 @@
       "fly",
       "gold",
       "paint",
-      "Rococo",
       "sky"
     ]
   },
@@ -3224,14 +3249,14 @@
     "date": "25-12-25",
     "title": "Boarding Pass",
     "tags": [
+      "UPC",
       "air",
       "airstairs",
       "digital-12h",
       "earth",
       "fly",
       "map",
-      "paper",
-      "UPC"
+      "paper"
     ]
   },
   {
@@ -3250,11 +3275,11 @@
     "date": "25-12-27",
     "title": "Essential",
     "tags": [
+      "RYB",
       "analog",
       "grey",
       "image-free",
-      "monochrome",
-      "RYB"
+      "monochrome"
     ]
   },
   {
@@ -3381,11 +3406,11 @@
     "date": "26-01-06",
     "title": "Necropolis",
     "tags": [
+      "Egypt",
       "aerial",
       "bone",
       "desert",
       "digital",
-      "Egypt",
       "mummy",
       "pyramid",
       "scarab",
@@ -3438,10 +3463,10 @@
     "date": "26-01-11",
     "title": "Flamingo",
     "tags": [
+      "Las-Vegas",
       "analog",
       "animal",
       "bird",
-      "las-vegas",
       "pink"
     ]
   },
@@ -3622,8 +3647,8 @@
     "date": "26-01-28",
     "title": "Trifurcate",
     "tags": [
-      "analog",
       "RYB",
+      "analog",
       "three"
     ]
   },
@@ -3695,8 +3720,8 @@
     "date": "26-02-03",
     "title": "SMH",
     "tags": [
-      "analog",
       "RGB",
+      "analog",
       "typeface",
       "yellow"
     ]
@@ -3994,10 +4019,10 @@
     "date": "26-02-27",
     "title": "Ramses II",
     "tags": [
+      "Egypt",
       "analog",
       "body",
       "desert",
-      "Egypt",
       "face",
       "move",
       "mummy",
@@ -4175,9 +4200,9 @@
     "date": "26-03-13",
     "title": "Boardwalk",
     "tags": [
+      "LA",
       "body",
       "digital-12h",
-      "la",
       "ocean",
       "walk"
     ]
@@ -4237,10 +4262,10 @@
     "date": "26-03-18",
     "title": "Walk of Stars",
     "tags": [
+      "LA",
       "analog",
       "day",
       "film",
-      "la",
       "screen",
       "stars",
       "walk"
@@ -4369,10 +4394,12 @@
     "tags": [
       "blue",
       "bonding",
+      "deepwater",
       "digital-24h",
       "elements",
       "molecules",
       "ocean",
+      "three",
       "water"
     ]
   },
@@ -4475,12 +4502,12 @@
     "date": "26-04-05",
     "title": "Bolide",
     "tags": [
+      "Russia",
       "digital-24h",
       "gravity",
       "light",
       "meteor",
       "planet",
-      "Russia",
       "sky",
       "sound",
       "transport"
@@ -4842,12 +4869,12 @@
     "date": "26-05-03",
     "title": "Boxes",
     "tags": [
+      "UPC",
       "brown",
       "color",
       "digital",
       "paper",
-      "spin",
-      "UPC"
+      "spin"
     ]
   },
   {
@@ -4980,12 +5007,12 @@
     "title": "Klein Blue",
     "tags": [
       "1957",
+      "International-Klein-Blue-(IKB)",
       "Paris",
       "air",
       "blue",
       "color",
       "day",
-      "International-Klein-Blue-(IKB)",
       "digital",
       "screen"
     ]
@@ -5038,12 +5065,12 @@
     "title": "Reanimate",
     "tags": [
       "1943",
+      "Egypt",
       "body",
       "bone",
       "cloth",
       "desert",
       "digital-24h",
-      "Egypt",
       "film",
       "light",
       "mummy",
@@ -5134,6 +5161,8 @@
     "date": "26-05-23",
     "title": "Lavafall",
     "tags": [
+      "The-Fire-Within",
+      "Werner-Herzog",
       "digital-12h",
       "elements",
       "film",
@@ -5142,9 +5171,7 @@
       "lava",
       "nature",
       "screen",
-      "The-Fire-Within",
-      "vertical",
-      "Werner-Herzog"
+      "vertical"
     ]
   },
   {
@@ -5235,6 +5262,18 @@
       "analog",
       "color",
       "food"
+    ]
+  },
+  {
+    "path": "26-05-31",
+    "date": "26-05-31",
+    "title": "Thermal",
+    "tags": [
+      "color",
+      "electricity",
+      "food",
+      "hot",
+      "water"
     ]
   }
 ]

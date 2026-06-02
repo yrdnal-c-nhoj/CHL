@@ -19,6 +19,18 @@ export default function TagManager() {
     direction: 'asc' | 'desc';
   }>({ key: 'date', direction: 'asc' });
 
+  // State to track which months are expanded/open
+  const [expandedMonths, setExpandedMonths] = useState<Record<string, boolean>>({});
+
+  const toggleMonth = (monthKey: string) => {
+    setExpandedMonths(prev => ({ ...prev, [monthKey]: !prev[monthKey] }));
+  };
+
+  const expandAll = () => {
+    const allOpen = Object.fromEntries(groupedByMonth.map(([key]) => [key, true]));
+    setExpandedMonths(allOpen);
+  };
+
   // Local state to store edited tags, keyed by the clock's date
   const [localTags, setLocalTags] = useState<Record<string, string>>({});
 
@@ -44,22 +56,29 @@ export default function TagManager() {
     }));
   };
 
-  const sortedItems = useMemo(() => {
+  const groupedByMonth = useMemo(() => {
     const filtered = items.filter(item => 
       item.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
       item.date.includes(searchTerm)
     );
 
-    return filtered.sort((a, b) => {
-      // Use a type-safe key access
-      const key = sortConfig.key;
-      const valA = (a[key] || '').toString();
-      const valB = (b[key] || '').toString();
+    const sorted = [...filtered].sort((a, b) => {
+      const valA = String(a[sortConfig.key] || '');
+      const valB = String(b[sortConfig.key] || '');
 
       if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1;
       if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1;
       return 0;
     });
+
+    const groups: Record<string, typeof sorted> = {};
+    sorted.forEach(item => {
+      const monthKey = item.date.substring(0, 5); // Grabs "YY-MM"
+      if (!groups[monthKey]) groups[monthKey] = [];
+      groups[monthKey].push(item);
+    });
+
+    return Object.entries(groups).sort(([a], [b]) => b.localeCompare(a));
   }, [items, sortConfig, searchTerm]);
 
   if (error) {
@@ -114,93 +133,95 @@ export default function TagManager() {
           </button>
         </div>
 
-        <div className={styles.field} style={{ marginBottom: '1rem' }}>
+        <div className={styles.field} style={{ marginBottom: '1rem', display: 'flex', gap: '1rem' }}>
           <input 
             className={styles.input}
+            style={{ flex: 1 }}
             placeholder="Search by title or date (YY-MM-DD)..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+          <button className={styles.buttonSecondary} onClick={expandAll} style={{ whiteSpace: 'nowrap' }}>
+            Expand All
+          </button>
         </div>
 
-        <div style={{ maxHeight: '50vh', overflowY: 'auto', marginBottom: '2rem', border: '1px solid #eee' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'center' }}>
-            <thead style={{ position: 'sticky', top: 0, background: '#fff', zIndex: 1 }}>
-              <tr>
-                <th style={{ padding: '0.5rem', borderBottom: '2px solid #eee' }}>Preview</th>
-                <th
-                  style={{ padding: '0.5rem', borderBottom: '2px solid #eee', cursor: 'pointer', userSelect: 'none' }}
-                  onClick={() => handleSort('date')}
-                >
-                  Date {sortConfig.key === 'date' && (sortConfig.direction === 'asc' ? ' ↑' : ' ↓')}
-                </th>
-                <th
-                  style={{ padding: '0.5rem', borderBottom: '2px solid #eee', cursor: 'pointer', userSelect: 'none' }}
-                  onClick={() => handleSort('title')}
-                >
-                  Title {sortConfig.key === 'title' && (sortConfig.direction === 'asc' ? ' ↑' : ' ↓')}
-                </th>
-                <th style={{ padding: '0.5rem', borderBottom: '2px solid #eee' }}>Tags (comma separated)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sortedItems.map((item) => (
-                <tr key={item.date} style={{ borderBottom: '1px solid #f9f9f9' }}>
-                  <td style={{ padding: '0.5rem' }}>
-                    <div style={{ width: '32px', margin: '0 auto' }}>
-                      <Thumbnail 
-                        date={item.date}
-                        title={item.title} 
-                        style={{ borderRadius: '4px' }} 
-                      />
-                    </div>
-                  </td>
-                  <td style={{ padding: '0.5rem', fontFamily: 'monospace' }}>{item.date}</td>
-                  <td style={{ padding: '0.5rem' }}>{item.title}</td>
-                  <td style={{ padding: '0.5rem' }}>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '6px', justifyContent: 'center' }}>
-                      {normalizeTags(localTags[item.date] ?? '').map(tag => (
-                        <span key={tag} style={{ 
-                          backgroundColor: '#f1f3f5', 
-                          color: '#495057', 
-                          fontSize: '10px', 
-                          padding: '1px 5px', 
-                          borderRadius: '3px',
-                          border: '1px solid #dee2e6'
-                        }}>
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <input
-                      className={styles.input}
-                      style={{ margin: 0, width: '100%' }}
-                      value={localTags[item.date] ?? ''}
-                      onChange={(e) => handleTagChange(item.date, e.target.value)}
-                      placeholder="neon, geometry..."
-                    />
-                    <select
-                      className={styles.select} // Add this class to Tagger.module.css
-                      value="" // Controlled component, but we want it to reset after selection
-                      onChange={(e) => {
-                        const selectedTag = e.target.value;
-                        if (selectedTag) {
-                          const currentTags = localTags[item.date] ?? '';
-                          const newTags = currentTags ? `${currentTags}, ${selectedTag}` : selectedTag;
-                          handleTagChange(item.date, newTags);
-                        }
-                        e.target.value = ''; // Reset the select to the default option
-                      }}
-                      style={{ width: 'auto', minWidth: '150px' }}
-                    >
-                      <option value="" disabled>Add existing tag...</option>
-                      {allExistingTags.map(tag => (<option key={tag} value={tag}>{tag}</option>))}
-                    </select>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div style={{ maxHeight: '60vh', overflowY: 'auto', marginBottom: '2rem', paddingRight: '10px' }}>
+          {groupedByMonth.map(([monthKey, monthItems]) => (
+            <div key={monthKey} style={{ marginBottom: '1rem', border: '1px solid #eee', borderRadius: '8px', overflow: 'hidden' }}>
+              <button 
+                onClick={() => toggleMonth(monthKey)}
+                style={{
+                  width: '100%', padding: '0.75rem 1.25rem', background: '#fcfcfc', border: 'none',
+                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                  cursor: 'pointer', fontWeight: 'bold', borderBottom: expandedMonths[monthKey] ? '1px solid #eee' : 'none'
+                }}
+              >
+                <span style={{ fontSize: '1.1rem', color: '#333' }}>{monthKey} ({monthItems.length} clocks)</span>
+                <span style={{ fontSize: '1.4rem' }}>{expandedMonths[monthKey] ? '−' : '+'}</span>
+              </button>
+              
+              {expandedMonths[monthKey] && (
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'center' }}>
+                  <thead>
+                    <tr style={{ background: '#fafafa', fontSize: '0.85rem' }}>
+                      <th style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>Preview</th>
+                      <th style={{ padding: '0.5rem', borderBottom: '1px solid #eee', cursor: 'pointer' }} onClick={() => handleSort('date')}>Date</th>
+                      <th style={{ padding: '0.5rem', borderBottom: '1px solid #eee', cursor: 'pointer' }} onClick={() => handleSort('title')}>Title</th>
+                      <th style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>Tags</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {monthItems.map((item) => (
+                      <tr key={item.date} style={{ borderBottom: '1px solid #f9f9f9' }}>
+                        <td style={{ padding: '0.5rem' }}>
+                          <div style={{ width: '32px', margin: '0 auto' }}>
+                            <Thumbnail date={item.date} title={item.title} style={{ borderRadius: '4px' }} />
+                          </div>
+                        </td>
+                        <td style={{ padding: '0.5rem', fontFamily: 'monospace', fontSize: '0.9rem' }}>{item.date}</td>
+                        <td style={{ padding: '0.5rem', fontSize: '0.9rem' }}>{item.title}</td>
+                        <td style={{ padding: '0.5rem' }}>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '6px', justifyContent: 'center' }}>
+                            {normalizeTags(localTags[item.date] ?? '').map(tag => (
+                              <span key={tag} style={{ 
+                                backgroundColor: '#f1f3f5', color: '#495057', fontSize: '10px', 
+                                padding: '1px 5px', borderRadius: '3px', border: '1px solid #dee2e6' 
+                              }}>{tag}</span>
+                            ))}
+                          </div>
+                          <input
+                            className={styles.input}
+                            style={{ margin: '0 0 4px 0', width: '100%', fontSize: '0.85rem' }}
+                            value={localTags[item.date] ?? ''}
+                            onChange={(e) => handleTagChange(item.date, e.target.value)}
+                            placeholder="Add tags..."
+                          />
+                          <select
+                            className={styles.select}
+                            value=""
+                            onChange={(e) => {
+                              const selectedTag = e.target.value;
+                              if (selectedTag) {
+                                const currentTags = localTags[item.date] ?? '';
+                                const newTags = currentTags ? `${currentTags}, ${selectedTag}` : selectedTag;
+                                handleTagChange(item.date, newTags);
+                              }
+                              e.target.value = '';
+                            }}
+                            style={{ width: '100%', fontSize: '0.8rem' }}
+                          >
+                            <option value="" disabled>Existing tags...</option>
+                            {allExistingTags.map(tag => (<option key={tag} value={tag}>{tag}</option>))}
+                          </select>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          ))}
         </div>
 
         <div className={styles.actions}>
