@@ -21,10 +21,12 @@ export default function TagManager() {
   const [sortConfig, setSortConfig] = useState<{
     key: 'date' | 'title';
     direction: 'asc' | 'desc';
-  }>({ key: 'date', direction: 'asc' });
+  }>({ key: 'date', direction: 'desc' });
 
   // State to track which months are expanded/open
-  const [expandedMonths, setExpandedMonths] = useState<Record<string, boolean>>({});
+  const [expandedMonths, setExpandedMonths] = useState<Record<string, boolean>>({
+    // Default the first month to open if it exists
+  });
 
   const toggleMonth = (monthKey: string) => {
     setExpandedMonths(prev => ({ ...prev, [monthKey]: !prev[monthKey] }));
@@ -34,6 +36,11 @@ export default function TagManager() {
     const allOpen = Object.fromEntries(groupedByMonth.map(([key]) => [key, true]));
     setExpandedMonths(allOpen);
   };
+
+  const collapseAll = () => {
+    setExpandedMonths({});
+  };
+
 
   // Local state to store edited tags, keyed by the clock's date
   const [localTags, setLocalTags] = useState<Record<string, string>>({});
@@ -51,6 +58,19 @@ export default function TagManager() {
 
   const handleTagChange = (date: string, value: string) => {
     setLocalTags((prev) => ({ ...prev, [date]: value }));
+  };
+
+  const toggleTag = (date: string, tag: string) => {
+    const currentTags = normalizeTags(localTags[date] ?? '');
+    let nextTags: string[];
+    
+    if (currentTags.includes(tag)) {
+      nextTags = currentTags.filter(t => t !== tag);
+    } else {
+      nextTags = [...currentTags, tag];
+    }
+    
+    setLocalTags(prev => ({ ...prev, [date]: nextTags.join(', ') }));
   };
 
   const handleSort = (key: 'date' | 'title') => {
@@ -113,10 +133,10 @@ export default function TagManager() {
   const editedClockPagesJson = useMemo(() => {
     const updated = items.map((it) => {
       const tagsInput = localTags[it.date] ?? '';
-      const parsedTags = normalizeTags(tagsInput);
+      const parsedTags = sortTags(new Set(normalizeTags(tagsInput)));
       
       // Ensure we only export keys that belong in the JSON
-      // and strip runtime injections like clockNumber
+      // and strip runtime injections like clockNumber for the final blob
       return {
         path: it.path,
         date: it.date,
@@ -176,9 +196,14 @@ export default function TagManager() {
             </button>
           </div>
 
-          <button className={styles.buttonSecondary} onClick={expandAll} style={{ whiteSpace: 'nowrap' }}>
-            Expand All
-          </button>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <button className={styles.buttonSecondary} onClick={expandAll} style={{ whiteSpace: 'nowrap', padding: '0.5rem' }}>
+              Expand All
+            </button>
+            <button className={styles.buttonSecondary} onClick={collapseAll} style={{ whiteSpace: 'nowrap', padding: '0.5rem' }}>
+              Collapse All
+            </button>
+          </div>
         </div>
 
         <div style={{ maxHeight: '60vh', overflowY: 'auto', marginBottom: '2rem', paddingRight: '10px' }}>
@@ -192,77 +217,117 @@ export default function TagManager() {
                   cursor: 'pointer', fontWeight: 'bold', borderBottom: expandedMonths[monthKey] ? '1px solid #eee' : 'none'
                 }}
               >
-                <span style={{ fontSize: '1.1rem', color: '#333' }}>{monthKey} ({monthItems.length} clocks)</span>
+                <span style={{ fontSize: '1.1rem', color: '#333' }}>
+                  {sortConfig.key === 'date' ? `Month: ${monthKey}` : `Starting with: ${monthKey}`} 
+                  <small style={{ marginLeft: '10px', color: '#888', fontWeight: 'normal' }}>({monthItems.length} clocks)</small>
+                </span>
                 <span style={{ fontSize: '1.4rem' }}>{expandedMonths[monthKey] ? '−' : '+'}</span>
               </button>
               
               {expandedMonths[monthKey] && (
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'center' }}>
-                  <thead>
-                    <tr style={{ background: '#fafafa', fontSize: '0.85rem' }}>
-                      <th style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>Preview</th>
-                      <th style={{ padding: '0.5rem', borderBottom: '1px solid #eee', cursor: 'pointer' }} onClick={() => handleSort('date')}>Date</th>
-                      <th style={{ padding: '0.5rem', borderBottom: '1px solid #eee', cursor: 'pointer' }} onClick={() => handleSort('title')}>Title</th>
-                      <th style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>Tags</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {monthItems.map((item) => (
-                      <tr key={item.date} style={{ borderBottom: '1px solid #f9f9f9' }}>
-                        <td style={{ padding: '0.5rem' }}>
-                          <div style={{ width: '32px', margin: '0 auto' }}>
-                            <Thumbnail date={item.date} title={item.title} style={{ borderRadius: '4px' }} />
+                <div style={{ padding: '0.5rem' }}>
+                  {monthItems.map((item) => (
+                    <div key={item.date} style={{ 
+                      display: 'flex', 
+                      gap: '1.5rem', 
+                      padding: '1rem', 
+                      borderBottom: '1px solid #f0f0f0',
+                      alignItems: 'flex-start'
+                    }}>
+                      {/* Left: Thumbnail Link */}
+                      <a 
+                        href={`/${item.date}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        style={{ width: '100px', flexShrink: 0, display: 'block' }}
+                        title="View clock in new window"
+                      >
+                        <Thumbnail date={item.date} title={item.title} style={{ borderRadius: '6px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />
+                      </a>
+
+                      {/* Right: Info and Tagging */}
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                          <span style={{ fontWeight: 'bold', color: '#333' }}>{item.title}</span>
+                          <code style={{ fontSize: '0.85rem', color: '#666' }}>{item.date}</code>
+                        </div>
+
+                        <div className={styles.field} style={{ margin: 0 }}>
+                          {/* Active Tags */}
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '10px' }}>
+                            {normalizeTags(localTags[item.date] ?? '').length > 0 ? (
+                              normalizeTags(localTags[item.date] ?? '').map(tag => (
+                                <button 
+                                  key={tag} 
+                                  onClick={() => toggleTag(item.date, tag)}
+                                  className="tag-bubble"
+                                  style={{ border: '1px solid #222', cursor: 'pointer', fontSize: '11px' }}
+                                  title="Click to remove"
+                                >
+                                  {tag} ×
+                                </button>
+                              ))
+                            ) : (
+                              <span style={{ fontSize: '11px', color: '#999', fontStyle: 'italic' }}>No tags selected</span>
+                            )}
                           </div>
-                        </td>
-                        <td style={{ padding: '0.5rem', fontFamily: 'monospace', fontSize: '0.9rem' }}>{item.date}</td>
-                        <td style={{ padding: '0.5rem', fontSize: '0.9rem' }}>{item.title}</td>
-                        <td style={{ padding: '0.5rem' }}>
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '6px', justifyContent: 'center' }}>
-                            {normalizeTags(localTags[item.date] ?? '').map(tag => (
-                              <span key={tag} style={{ 
-                                backgroundColor: '#f1f3f5', color: '#495057', fontSize: '10px', 
-                                padding: '1px 5px', borderRadius: '3px', border: '1px solid #dee2e6' 
-                              }}>{tag}</span>
-                            ))}
+
+                          {/* Input and Selection */}
+                          <div style={{ display: 'flex', gap: '0.5rem' }}>
+                            <input
+                              className={styles.input}
+                              style={{ flex: 1, margin: 0, fontSize: '0.9rem' }}
+                              value={localTags[item.date] ?? ''}
+                              onChange={(e) => handleTagChange(item.date, e.target.value)}
+                              placeholder="Type tags (comma separated)..."
+                            />
+                            
+                            <select
+                              className={styles.select}
+                              value=""
+                              onChange={(e) => {
+                                const tag = e.target.value;
+                                if (tag) toggleTag(item.date, tag);
+                                e.target.value = '';
+                              }}
+                              style={{ width: 'auto', minWidth: '140px' }}
+                            >
+                              <option value="" disabled>Add existing...</option>
+                              {allExistingTags.map(tag => (
+                                <option key={tag} value={tag}>{tag}</option>
+                              ))}
+                            </select>
                           </div>
-                          <input
-                            className={styles.input}
-                            style={{ margin: '0 0 4px 0', width: '100%', fontSize: '0.85rem' }}
-                            value={localTags[item.date] ?? ''}
-                            onChange={(e) => handleTagChange(item.date, e.target.value)}
-                            placeholder="Add tags..."
-                          />
-                          <select
-                            className={styles.select}
-                            value=""
-                            onChange={(e) => {
-                              const selectedTag = e.target.value;
-                              if (selectedTag) {
-                                const current = normalizeTags(localTags[item.date] ?? '');
-                                if (!current.includes(selectedTag)) {
-                                  const next = [...current, selectedTag];
-                                  setLocalTags((prev) => ({
-                                    ...prev,
-                                    [item.date]: next.join(', '),
-                                  }));
-                                }
-                              }
-                            }}
-                          >
-                            <option value="" disabled>
-                              Add existing tag...
-                            </option>
-                            {allExistingTags.map((tag) => (
-                              <option key={tag} value={tag}>
+
+                          {/* Quick Select Panel (Optional/Suggested) */}
+                          <div style={{ 
+                            marginTop: '8px', 
+                            maxHeight: '40px', 
+                            overflowY: 'auto', 
+                            display: 'flex', 
+                            flexWrap: 'wrap', 
+                            gap: '4px' 
+                          }}>
+                            {allExistingTags.slice(0, 15).map(tag => (
+                              <button
+                                key={tag}
+                                onClick={() => toggleTag(item.date, tag)}
+                                style={{ 
+                                  fontSize: '10px', padding: '2px 6px', borderRadius: '4px', 
+                                  background: 'none', border: '1px solid #ddd', cursor: 'pointer',
+                                  color: normalizeTags(localTags[item.date] ?? '').includes(tag) ? '#000' : '#888',
+                                  backgroundColor: normalizeTags(localTags[item.date] ?? '').includes(tag) ? '#eee' : 'transparent'
+                                }}
+                              >
                                 {tag}
-                              </option>
+                              </button>
                             ))}
-                          </select>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
           ))}
@@ -284,10 +349,42 @@ export default function TagManager() {
               }}
             />
           </div>
+
+          <div className={styles.actions} style={{ marginTop: '1rem' }}>
+            <button
+              className={styles.button}
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(editedClockPagesJson);
+                  alert('JSON copied to clipboard!');
+                } catch (e) {
+                  console.error('Copy failed', e);
+                }
+              }}
+            >
+              Copy updated clockpages.json
+            </button>
+
+            <button
+              className={styles.buttonSecondary}
+              onClick={() => {
+                const blob = new Blob([editedClockPagesJson], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'clockpages.updated.json';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+              }}
+            >
+              Download JSON
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
-            
+           
