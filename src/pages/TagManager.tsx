@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Thumbnail from '../components/Thumbnail';
 import { DataContext } from '../context/DataContext';
 import styles from '../styles/Tagger.module.css'; // Reusing Tagger styles for consistency
+import sortStyles from '../styles/SortControls.module.css';
 import type { DataContextType } from '../types/data';
 import { normalizeTags, sortTags } from '../utils/tagUtils';
 
@@ -73,12 +74,18 @@ export default function TagManager() {
 
     const groups: Record<string, typeof sorted> = {};
     sorted.forEach(item => {
-      const monthKey = item.date.substring(0, 5); // Grabs "YY-MM"
-      if (!groups[monthKey]) groups[monthKey] = [];
-      groups[monthKey].push(item);
+      // Group by month for dates, or by first letter for titles
+      const groupKey = sortConfig.key === 'date' 
+        ? item.date.substring(0, 5) 
+        : item.title.charAt(0).toUpperCase() || '#';
+        
+      if (!groups[groupKey]) groups[groupKey] = [];
+      groups[groupKey].push(item);
     });
 
-    return Object.entries(groups).sort(([a], [b]) => b.localeCompare(a));
+    return Object.entries(groups).sort(([a], [b]) => {
+      return sortConfig.direction === 'asc' ? a.localeCompare(b) : b.localeCompare(a);
+    });
   }, [items, sortConfig, searchTerm]);
 
   if (error) {
@@ -133,7 +140,7 @@ export default function TagManager() {
           </button>
         </div>
 
-        <div className={styles.field} style={{ marginBottom: '1rem', display: 'flex', gap: '1rem' }}>
+        <div className={styles.field} style={{ marginBottom: '1rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
           <input 
             className={styles.input}
             style={{ flex: 1 }}
@@ -141,6 +148,26 @@ export default function TagManager() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+          
+          <div className={sortStyles.sortContainer} style={{ margin: 0 }}>
+            <button
+              type="button"
+              onClick={() => handleSort('date')}
+              className={`${sortStyles.sortButton} ${sortConfig.key === 'date' ? sortStyles.active : ''}`}
+            >
+              date
+              {sortConfig.key === 'date' ? (sortConfig.direction === 'asc' ? ' ↓' : ' ↑') : ''}
+            </button>
+            <button
+              type="button"
+              onClick={() => handleSort('title')}
+              className={`${sortStyles.sortButton} ${sortConfig.key === 'title' ? sortStyles.active : ''}`}
+            >
+              title
+              {sortConfig.key === 'title' ? (sortConfig.direction === 'asc' ? ' ↓' : ' ↑') : ''}
+            </button>
+          </div>
+
           <button className={styles.buttonSecondary} onClick={expandAll} style={{ whiteSpace: 'nowrap' }}>
             Expand All
           </button>
@@ -203,69 +230,4 @@ export default function TagManager() {
                             onChange={(e) => {
                               const selectedTag = e.target.value;
                               if (selectedTag) {
-                                const currentTags = localTags[item.date] ?? '';
-                                const newTags = currentTags ? `${currentTags}, ${selectedTag}` : selectedTag;
-                                handleTagChange(item.date, newTags);
-                              }
-                              e.target.value = '';
-                            }}
-                            style={{ width: '100%', fontSize: '0.8rem' }}
-                          >
-                            <option value="" disabled>Existing tags...</option>
-                            {allExistingTags.map(tag => (<option key={tag} value={tag}>{tag}</option>))}
-                          </select>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-          ))}
-        </div>
-
-        <div className={styles.actions}>
-          <button
-            className={styles.button}
-            onClick={async () => {
-              await navigator.clipboard.writeText(editedClockPagesJson);
-              alert('Copied to clipboard!');
-            }}
-          >
-            Copy Updated JSON
-          </button>
-
-          <button
-            className={styles.buttonSecondary}
-            onClick={() => {
-              const blob = new Blob([editedClockPagesJson], { type: 'application/json' });
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement('a');
-              a.href = url;
-              a.download = 'clockpages.json';
-              a.click();
-              URL.revokeObjectURL(url);
-            }}
-          >
-            Download JSON
-          </button>
-        </div>
-
-        <div className={styles.field}>
-          <div className={styles.label}>JSON Output</div>
-          <textarea
-            className={styles.textarea}
-            style={{ height: '200px', fontSize: '11px' }}
-            value={editedClockPagesJson}
-            readOnly
-          />
-        </div>
-
-        <p className={styles.notice}>
-          Edit tags in the list above. When finished, copy or download the JSON and 
-          paste it into <code>src/context/clockpages.json</code>.
-        </p>
-      </div>
-    </div>
-  );
-}
+            
