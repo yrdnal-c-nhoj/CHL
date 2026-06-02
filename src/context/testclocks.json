@@ -43,10 +43,10 @@
     "title": "Heartbeat",
     "tags": [
       "BPM",
+      "EKG",
       "analog",
       "blood",
       "body",
-      "ekg",
       "flow",
       "heart",
       "red"
@@ -231,9 +231,9 @@
     "date": "25-04-18",
     "title": "Antarctica",
     "tags": [
+      "Antarctica",
       "aerial",
       "analog",
-      "antarctica",
       "cold",
       "day-and-night",
       "dry",
@@ -830,7 +830,9 @@
     "title": "Coffee",
     "tags": [
       "analog",
+      "black",
       "brown",
+      "cow",
       "drink",
       "food",
       "hot"
@@ -908,7 +910,10 @@
     "title": "Shapes",
     "tags": [
       "b+w",
-      "pictographic"
+      "cirle",
+      "pictographic",
+      "square",
+      "triangle"
     ]
   },
   {
@@ -918,6 +923,7 @@
     "tags": [
       "analog",
       "food",
+      "grow",
       "yellow"
     ]
   },
@@ -931,6 +937,8 @@
       "camouflage",
       "cow",
       "digital",
+      "hot",
+      "metal",
       "white"
     ]
   },
@@ -957,6 +965,7 @@
       "bird",
       "color",
       "fast",
+      "feather",
       "fly",
       "green",
       "grow",
@@ -2155,11 +2164,11 @@
     "date": "25-09-23",
     "title": "Cardio",
     "tags": [
+      "EKG",
       "analog",
       "beat",
       "blood",
       "body",
-      "ekg",
       "heart"
     ]
   },
@@ -2256,6 +2265,7 @@
       "Disney",
       "flags",
       "mechanical",
+      "music",
       "transport",
       "water"
     ]
@@ -2278,6 +2288,8 @@
     "tags": [
       "analog",
       "color",
+      "design",
+      "emoji",
       "spin"
     ]
   },
@@ -2601,7 +2613,7 @@
     "date": "25-10-31",
     "title": "Midnight Sun",
     "tags": [
-      "antarctica",
+      "Antarctica",
       "axis",
       "digital",
       "ice",
@@ -4683,6 +4695,7 @@
     "date": "26-04-19",
     "title": "Wobble",
     "tags": [
+      "Antarctica",
       "axis",
       "day-and-night",
       "digital-12h",
