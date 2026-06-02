@@ -36,6 +36,7 @@ const ClockList = React.lazy(() => import('./ClockList'));
 const TagList = React.lazy(() => import('./TagList'));
 const Tagger = React.lazy(() => import('./pages/Tagger'));
 const TagManager = React.lazy(() => import('./pages/TagManager'));
+const TagByImage = React.lazy(() => import('./pages/TagByImage'));
 const AllTagsPage = React.lazy(() => import('./pages/AllTagsPage'));
 
 
@@ -215,6 +216,7 @@ const App: React.FC = () => {
               <Route path="/tag/:tag" element={<TagList />} />
               <Route path="/tagger/:date" element={<Tagger />} />
               <Route path="/admin/tags" element={<TagManager />} />
+              <Route path="/admin/tag-by-image" element={<TagByImage />} />
               <Route path="/tags" element={<AllTagsPage />} />
               <Route path="/index.html" element={<Navigate to="/" replace />} />
               <Route path="*" element={<Navigate to="/" replace />} />
