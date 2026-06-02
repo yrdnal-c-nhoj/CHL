@@ -339,7 +339,8 @@
       "blood",
       "body",
       "bone",
-      "brown"
+      "brown",
+      "cloth"
     ]
   },
   {
@@ -951,6 +952,7 @@
       "animal",
       "brown",
       "camouflage",
+      "cloth",
       "cow",
       "hot",
       "metal",
@@ -1118,6 +1120,7 @@
       "blood",
       "body",
       "bone",
+      "cloth",
       "shell"
     ]
   },
@@ -1537,6 +1540,7 @@
       "Mars",
       "brown",
       "camouflage",
+      "cloth",
       "green"
     ]
   },
@@ -3261,6 +3265,7 @@
       "Venus",
       "art",
       "body",
+      "cloth",
       "fly",
       "gold",
       "paint",
@@ -4441,6 +4446,7 @@
     "title": "Blanket",
     "tags": [
       "blue",
+      "cloth",
       "cold",
       "digital-12h",
       "gravity",
