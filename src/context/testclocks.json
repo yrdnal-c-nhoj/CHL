@@ -42,9 +42,9 @@
     "date": "25-04-04",
     "title": "Heartbeat",
     "tags": [
+      "analog",
       "BPM",
       "EKG",
-      "analog",
       "blood",
       "body",
       "flow",
@@ -169,8 +169,8 @@
     "date": "25-04-13",
     "title": "Pepperoni Pizza",
     "tags": [
-      "Italy",
       "analog",
+      "Italy",
       "circle",
       "food",
       "hot",
@@ -232,9 +232,9 @@
     "date": "25-04-18",
     "title": "Antarctica",
     "tags": [
+      "analog",
       "Antarctica",
       "aerial",
-      "analog",
       "cold",
       "day-and-night",
       "dry",
@@ -306,8 +306,8 @@
     "date": "25-04-23",
     "title": "Pirate",
     "tags": [
-      "Mars",
       "analog",
+      "Mars",
       "horizon",
       "ocean",
       "sky",
@@ -369,8 +369,8 @@
     "date": "25-04-28",
     "title": "Jackson Pollock",
     "tags": [
-      "b+w",
       "digital",
+      "b+w",
       "gravity",
       "paint"
     ]
@@ -540,10 +540,10 @@
     "date": "25-05-12",
     "title": "Cheetah",
     "tags": [
+      "digital",
       "animal",
       "camouflage",
       "cat",
-      "digital",
       "earth",
       "fast",
       "nature",
@@ -602,8 +602,8 @@
     "date": "25-05-17",
     "title": "Primary Colors",
     "tags": [
-      "RYB",
       "analog",
+      "RYB",
       "color",
       "spectrum"
     ]
@@ -613,8 +613,8 @@
     "date": "25-05-18",
     "title": "Blueprint",
     "tags": [
-      "blue",
       "digital",
+      "blue",
       "map",
       "monochrome",
       "paper"
@@ -674,9 +674,9 @@
     "date": "25-05-23",
     "title": "Cross Stitch",
     "tags": [
+      "digital",
       "cloth",
       "color",
-      "digital",
       "hand",
       "thread"
     ]
@@ -737,8 +737,8 @@
     "date": "25-05-28",
     "title": "Corner",
     "tags": [
-      "RYB",
       "analog",
+      "RYB",
       "brown",
       "four",
       "image-free",
@@ -941,11 +941,11 @@
     "date": "25-06-12",
     "title": "Cattle Brand",
     "tags": [
+      "digital",
       "animal",
       "brown",
       "camouflage",
       "cow",
-      "digital",
       "hot",
       "metal",
       "white"
@@ -956,8 +956,8 @@
     "date": "25-06-13",
     "title": "Cloudy Night",
     "tags": [
-      "black",
       "digital",
+      "black",
       "fast",
       "landscape",
       "night",
@@ -986,9 +986,9 @@
     "date": "25-06-15",
     "title": "Stitches",
     "tags": [
+      "digital",
       "body",
       "bone",
-      "digital",
       "pink",
       "thread"
     ]
@@ -1120,8 +1120,8 @@
     "date": "25-06-26",
     "title": "Cosmic Wheels",
     "tags": [
-      "b+w",
       "digital",
+      "b+w",
       "revolve",
       "sky",
       "stars"
@@ -1205,8 +1205,8 @@
     "date": "25-07-03",
     "title": "Launchpad",
     "tags": [
-      "count",
       "digital",
+      "count",
       "gravity",
       "sky",
       "space",
@@ -1218,8 +1218,8 @@
     "date": "25-07-04",
     "title": "Kaleidoscope",
     "tags": [
-      "circle",
       "digital",
+      "circle",
       "image-free",
       "round",
       "spin"
@@ -1230,9 +1230,9 @@
     "date": "25-07-05",
     "title": "Vegas",
     "tags": [
+      "digital",
       "Las-Vegas",
-      "day-and-night",
-      "digital"
+      "day-and-night"
     ]
   },
   {
@@ -1275,8 +1275,8 @@
     "date": "25-07-09",
     "title": "Blob",
     "tags": [
-      "blob",
       "digital",
+      "blob",
       "image-free"
     ]
   },
@@ -1307,8 +1307,8 @@
     "date": "25-07-12",
     "title": "Fibonacci",
     "tags": [
-      "Fibonacci",
       "analog",
+      "Fibonacci",
       "b+w",
       "bone",
       "golden ratio",
@@ -1321,8 +1321,8 @@
     "date": "25-07-13",
     "title": "Rorschach",
     "tags": [
-      "b+w",
       "digital",
+      "b+w",
       "eye",
       "see"
     ]
@@ -1353,8 +1353,8 @@
     "date": "25-07-16",
     "title": "Möbius Strip",
     "tags": [
-      "Fibonacci",
       "digital",
+      "Fibonacci",
       "geometry",
       "spin"
     ]
@@ -1375,10 +1375,10 @@
     "date": "25-07-18",
     "title": "X-Ray",
     "tags": [
+      "digital",
       "b+w",
       "body",
       "bone",
-      "digital",
       "electricity",
       "mechanical",
       "monochrome",
@@ -1393,8 +1393,8 @@
     "date": "25-07-19",
     "title": "Cuneiform",
     "tags": [
-      "blue",
       "digital",
+      "blue",
       "mesopotamia",
       "stone"
     ]
@@ -1442,7 +1442,11 @@
   {
     "path": "25-07-23",
     "date": "25-07-23",
-    "title": "Baybayin"
+    "title": "Baybayin",
+    "tags": [
+      "Tagalog",
+      "digital-24h"
+    ]
   },
   {
     "path": "25-07-24",
@@ -1520,10 +1524,10 @@
     "date": "25-07-30",
     "title": "Camouflage",
     "tags": [
+      "digital",
       "Mars",
       "brown",
       "camouflage",
-      "digital",
       "green"
     ]
   },
@@ -1532,11 +1536,11 @@
     "date": "25-07-31",
     "title": "1066",
     "tags": [
+      "digital",
       "England",
       "France",
       "Mars",
       "cloth",
-      "digital",
       "eye",
       "history",
       "thread",
@@ -1627,9 +1631,9 @@
     "date": "25-08-07",
     "title": "Western",
     "tags": [
+      "analog",
       "Disney",
       "aim",
-      "analog",
       "animal",
       "film",
       "horizon",
@@ -1758,8 +1762,8 @@
     "date": "25-08-17",
     "title": "Sticky Note",
     "tags": [
-      "book",
       "digital",
+      "book",
       "paper"
     ]
   },
@@ -1768,8 +1772,8 @@
     "date": "25-08-18",
     "title": "Bull's-Eye",
     "tags": [
-      "aim",
       "analog",
+      "aim",
       "play"
     ]
   },
@@ -1778,8 +1782,8 @@
     "date": "25-08-19",
     "title": "Newton's Cradle",
     "tags": [
-      "apple",
       "digital",
+      "apple",
       "gravity",
       "physics",
       "side-to-side"
@@ -1815,8 +1819,8 @@
     "date": "25-08-22",
     "title": "Random Color",
     "tags": [
-      "0123456789abcdef",
       "analog",
+      "0123456789abcdef",
       "color",
       "random",
       "square"
@@ -1842,8 +1846,8 @@
     "date": "25-08-24",
     "title": "Digital Roman",
     "tags": [
-      "Rome",
       "digital",
+      "Rome",
       "gold",
       "stone"
     ]
@@ -1891,9 +1895,9 @@
     "date": "25-08-28",
     "title": "Goblin",
     "tags": [
+      "digital",
       "England",
       "book",
-      "digital",
       "earth",
       "gold",
       "paper",
@@ -1938,8 +1942,8 @@
     "date": "25-09-01",
     "title": "Mandarin",
     "tags": [
-      "China",
       "digital",
+      "China",
       "gold",
       "sky",
       "typeface"
@@ -1963,10 +1967,10 @@
     "date": "25-09-03",
     "title": "Mauve",
     "tags": [
+      "digital",
       "24h",
       "cloth",
       "color",
-      "digital",
       "purple"
     ]
   },
@@ -1988,9 +1992,9 @@
     "date": "25-09-05",
     "title": "Swiss Cheese",
     "tags": [
+      "digital",
       "animal",
       "cow",
-      "digital",
       "food",
       "round",
       "smell",
@@ -2036,9 +2040,9 @@
     "date": "25-09-09",
     "title": "Vanitas",
     "tags": [
+      "digital",
       "body",
       "bone",
-      "digital",
       "fire",
       "flower",
       "gods",
@@ -2066,8 +2070,8 @@
     "date": "25-09-11",
     "title": "Renaissance Faire",
     "tags": [
-      "cloth",
       "digital",
+      "cloth",
       "food",
       "play",
       "purple",
@@ -2110,8 +2114,8 @@
     "date": "25-09-14",
     "title": "Golden Chord",
     "tags": [
-      "Fibonacci",
       "analog",
+      "Fibonacci",
       "geometry",
       "gold",
       "golden ratio",
@@ -2123,8 +2127,8 @@
     "date": "25-09-15",
     "title": "Plaid",
     "tags": [
-      "cloth",
       "digital",
+      "cloth",
       "pattern"
     ]
   },
@@ -2195,8 +2199,8 @@
     "date": "25-09-21",
     "title": "Four Elements",
     "tags": [
-      "air",
       "analog",
+      "air",
       "earth",
       "elements",
       "fire",
@@ -2208,9 +2212,9 @@
     "date": "25-09-22",
     "title": "De-Extinction",
     "tags": [
+      "digital",
       "Disney",
       "animal",
-      "digital",
       "extinct",
       "slow"
     ]
@@ -2220,8 +2224,8 @@
     "date": "25-09-23",
     "title": "Cardio",
     "tags": [
-      "EKG",
       "analog",
+      "EKG",
       "beat",
       "blood",
       "body",
@@ -2235,8 +2239,8 @@
     "date": "25-09-24",
     "title": "Proportion",
     "tags": [
-      "b+w",
       "digital",
+      "b+w",
       "image-free",
       "parallel",
       "typeface"
@@ -2247,9 +2251,9 @@
     "date": "25-09-25",
     "title": "UNIX Timestamp",
     "tags": [
+      "digital",
       "Kubrick",
       "animal",
-      "digital",
       "extinct",
       "film",
       "horizon",
@@ -2286,10 +2290,10 @@
     "date": "25-09-28",
     "title": "Alien Abduction",
     "tags": [
+      "digital",
       "animal",
       "cow",
       "desert",
-      "digital",
       "fly",
       "landscape",
       "night"
@@ -2371,9 +2375,9 @@
     "date": "25-10-05",
     "title": "Hexadecimal",
     "tags": [
+      "analog",
       "0123456789abcdef",
       "0x",
-      "analog",
       "base-16"
     ]
   },
@@ -2393,10 +2397,10 @@
     "date": "25-10-07",
     "title": "Hi There!",
     "tags": [
+      "analog",
       "1964",
       "Dr-Strangelove",
       "Kubrick",
-      "analog",
       "b+w",
       "film",
       "screen",
@@ -2464,8 +2468,8 @@
     "date": "25-10-12",
     "title": "Roses",
     "tags": [
-      "Venus",
       "analog",
+      "Venus",
       "fast",
       "flower",
       "grow",
@@ -2478,11 +2482,11 @@
     "date": "25-10-13",
     "title": "Roundhay Garden",
     "tags": [
+      "digital",
       "1888",
       "England",
       "b+w",
       "dance",
-      "digital",
       "film",
       "screen",
       "walk"
@@ -2493,9 +2497,9 @@
     "date": "25-10-14",
     "title": "Dodecahedron",
     "tags": [
+      "digital",
       "Platonic-Solids",
       "aether",
-      "digital",
       "pentagon",
       "twelve",
       "universe"
@@ -2576,8 +2580,8 @@
     "date": "25-10-21",
     "title": "Big Ben",
     "tags": [
-      "England",
       "analog",
+      "England",
       "b+w",
       "tick-tock"
     ]
@@ -2587,8 +2591,8 @@
     "date": "25-10-22",
     "title": "Bay of Fundy",
     "tags": [
-      "day",
       "digital",
+      "day",
       "fast",
       "float",
       "maine",
@@ -2643,9 +2647,9 @@
     "date": "25-10-27",
     "title": "Wishing",
     "tags": [
+      "digital",
       "color",
       "day-and-night",
-      "digital",
       "words"
     ]
   },
@@ -2654,8 +2658,8 @@
     "date": "25-10-29",
     "title": "Tilt Down",
     "tags": [
-      "b+w",
       "digital",
+      "b+w",
       "film",
       "horizon",
       "mechanical",
@@ -2678,9 +2682,9 @@
     "date": "25-10-31",
     "title": "Midnight Sun",
     "tags": [
+      "digital",
       "Antarctica",
       "axis",
-      "digital",
       "ice",
       "panorama",
       "revolve",
@@ -2703,8 +2707,8 @@
     "date": "25-11-02",
     "title": "Swimmers",
     "tags": [
-      "body",
       "digital",
+      "body",
       "float",
       "grow",
       "horizon",
@@ -2757,8 +2761,8 @@
     "date": "25-11-06",
     "title": "Punctuation",
     "tags": [
-      "Esperanto",
       "analog",
+      "Esperanto",
       "blue",
       "image-free"
     ]
@@ -2835,9 +2839,9 @@
     "date": "25-11-12",
     "title": "Octahedron",
     "tags": [
+      "digital",
       "Platonic-Solids",
       "air",
-      "digital",
       "eight",
       "pyramid"
     ]
@@ -2914,8 +2918,8 @@
     "date": "25-11-18",
     "title": "Eye Color",
     "tags": [
-      "color",
       "digital",
+      "color",
       "eye",
       "eye color",
       "face",
@@ -2963,8 +2967,8 @@
     "date": "25-11-22",
     "title": "Sputnik",
     "tags": [
-      "Russia",
       "digital",
+      "Russia",
       "mechanical",
       "metal",
       "sky",
@@ -3012,11 +3016,11 @@
     "date": "25-11-26",
     "title": "Murmuration",
     "tags": [
+      "digital",
       "air",
       "animal",
       "bird",
       "brown",
-      "digital",
       "fly",
       "landscape"
     ]
@@ -3026,9 +3030,9 @@
     "date": "25-11-27",
     "title": "L'Heure Décimale",
     "tags": [
+      "analog",
       "France",
       "Paris",
-      "analog",
       "blood",
       "flag"
     ]
@@ -3048,9 +3052,9 @@
     "date": "25-11-29",
     "title": "Splotches",
     "tags": [
+      "digital",
       "art",
       "color",
-      "digital",
       "paint",
       "rococo"
     ]
@@ -3072,8 +3076,8 @@
     "date": "25-12-01",
     "title": "Snack",
     "tags": [
-      "animal",
       "digital",
+      "animal",
       "food",
       "ocean",
       "predator",
@@ -3095,8 +3099,8 @@
     "date": "25-12-03",
     "title": "Dogpile",
     "tags": [
-      "animal",
       "digital",
+      "animal",
       "dog"
     ]
   },
@@ -3118,8 +3122,8 @@
     "date": "25-12-05",
     "title": "Abracadabra",
     "tags": [
-      "body",
       "digital",
+      "body",
       "magic",
       "silver",
       "transport",
@@ -3131,8 +3135,8 @@
     "date": "25-12-06",
     "title": "Giraffe",
     "tags": [
-      "Africa",
       "analog",
+      "Africa",
       "animal",
       "brown",
       "monochrome"
@@ -3143,8 +3147,8 @@
     "date": "25-12-07",
     "title": "Icosahedron",
     "tags": [
-      "Platonic-Solids",
       "digital",
+      "Platonic-Solids",
       "triangle",
       "twenty",
       "water"
@@ -3166,13 +3170,13 @@
     "date": "25-12-09",
     "title": "Muybridge",
     "tags": [
+      "digital",
       "1878",
       "Eadweard-Muybridge",
       "England",
       "animal",
       "b+w",
       "body",
-      "digital",
       "film",
       "odd-toed-ungulate"
     ]
@@ -3204,9 +3208,9 @@
     "date": "25-12-12",
     "title": "RGB",
     "tags": [
+      "analog",
       "0123456789abcdef",
       "RGB",
-      "analog",
       "color"
     ]
   },
@@ -3215,12 +3219,12 @@
     "date": "25-12-13",
     "title": "Cherubs",
     "tags": [
+      "digital",
       "Mars",
       "Rococo",
       "Venus",
       "art",
       "body",
-      "digital",
       "fly",
       "gold",
       "paint",
@@ -3266,8 +3270,8 @@
     "date": "25-12-18",
     "title": "Special Effects",
     "tags": [
-      "body",
       "digital",
+      "body",
       "film",
       "light",
       "screen"
@@ -3283,8 +3287,8 @@
     "date": "25-12-20",
     "title": "Feather",
     "tags": [
-      "Venus",
       "analog",
+      "Venus",
       "animal",
       "b+w",
       "bird",
@@ -3360,8 +3364,8 @@
     "date": "25-12-27",
     "title": "Essential",
     "tags": [
-      "RYB",
       "analog",
+      "RYB",
       "grey",
       "image-free",
       "monochrome"
@@ -3372,9 +3376,9 @@
     "date": "25-12-28",
     "title": "Coaster",
     "tags": [
+      "digital",
       "air",
       "body",
-      "digital",
       "fast",
       "gravity",
       "move",
@@ -3436,8 +3440,8 @@
     "date": "26-01-01",
     "title": "Whir",
     "tags": [
-      "air",
       "analog",
+      "air",
       "electricity",
       "mechanical",
       "metal",
@@ -3481,8 +3485,8 @@
     "date": "26-01-05",
     "title": "Aardvark",
     "tags": [
-      "Africa",
       "analog",
+      "Africa",
       "animal",
       "night",
       "orange",
@@ -3494,11 +3498,11 @@
     "date": "26-01-06",
     "title": "Necropolis",
     "tags": [
+      "digital",
       "Egypt",
       "aerial",
       "bone",
       "desert",
-      "digital",
       "mummy",
       "pyramid",
       "scarab",
@@ -3535,8 +3539,8 @@
     "date": "26-01-09",
     "title": "Tic-Tac-Toe",
     "tags": [
-      "b+w",
       "digital",
+      "b+w",
       "grid",
       "nine",
       "play"
@@ -3552,8 +3556,8 @@
     "date": "26-01-11",
     "title": "Flamingo",
     "tags": [
-      "Las-Vegas",
       "analog",
+      "Las-Vegas",
       "animal",
       "bird",
       "pink"
@@ -3564,8 +3568,8 @@
     "date": "26-01-12",
     "title": "Lalarium",
     "tags": [
-      "Italy",
       "digital",
+      "Italy",
       "gods",
       "shrine",
       "underworld",
@@ -3586,9 +3590,9 @@
     "date": "26-01-14",
     "title": "Tenno",
     "tags": [
+      "digital",
       "Japan",
       "Kurosawa",
-      "digital",
       "film",
       "screen"
     ]
@@ -3737,8 +3741,8 @@
     "date": "26-01-28",
     "title": "Trifurcate",
     "tags": [
-      "RYB",
       "analog",
+      "RYB",
       "three"
     ]
   },
@@ -3810,8 +3814,8 @@
     "date": "26-02-03",
     "title": "SMH",
     "tags": [
-      "RGB",
       "analog",
+      "RGB",
       "typeface",
       "yellow"
     ]
@@ -3841,9 +3845,9 @@
     "date": "26-02-06",
     "title": "Buster",
     "tags": [
+      "analog",
       "1930",
       "Buster-Keaton",
-      "analog",
       "b+w",
       "film",
       "screen"
@@ -3865,9 +3869,9 @@
     "date": "26-02-08",
     "title": "Le Trocadéro",
     "tags": [
+      "analog",
       "France",
       "Paris",
-      "analog",
       "design",
       "landscape",
       "metal"
@@ -3990,8 +3994,8 @@
     "date": "26-02-18",
     "title": "Jellyfish",
     "tags": [
-      "animal",
       "digital",
+      "animal",
       "ocean",
       "swim",
       "water"
@@ -4071,12 +4075,12 @@
     "date": "26-02-24",
     "title": "1913",
     "tags": [
+      "digital",
       "1913",
       "Futurism",
       "Italy",
       "Marinetti",
       "art",
-      "digital",
       "interior",
       "red",
       "sound",
@@ -4088,11 +4092,11 @@
     "date": "26-02-25",
     "title": "Orpheus",
     "tags": [
+      "analog",
       "1950",
       "France",
       "Jean-Cocteau",
       "Orpheus",
-      "analog",
       "b+w",
       "book",
       "film",
@@ -4119,8 +4123,8 @@
     "date": "26-02-27",
     "title": "Ramses II",
     "tags": [
-      "Egypt",
       "analog",
+      "Egypt",
       "body",
       "desert",
       "face",
@@ -4161,9 +4165,9 @@
     "date": "26-03-02",
     "title": "Ripple",
     "tags": [
+      "digital",
       "brown",
       "circle",
-      "digital",
       "gravity",
       "monochrome",
       "round",
@@ -4290,8 +4294,8 @@
     "date": "26-03-12",
     "title": "Virtual",
     "tags": [
-      "VR",
       "analog",
+      "VR",
       "body",
       "electricity",
       "interior",
@@ -4340,11 +4344,11 @@
     "date": "26-03-16",
     "title": "Fritz",
     "tags": [
+      "analog",
       "1927",
       "Fritz-Lang",
       "Germany",
       "Metropolis",
-      "analog",
       "b+w",
       "body",
       "electricity",
@@ -4370,8 +4374,8 @@
     "date": "26-03-18",
     "title": "Walk of Stars",
     "tags": [
-      "LA",
       "analog",
+      "LA",
       "day",
       "film",
       "screen",
@@ -4398,9 +4402,9 @@
     "date": "26-03-20",
     "title": "Empire",
     "tags": [
+      "analog",
       "NYC",
       "Warhol",
-      "analog",
       "b+w",
       "day-and-night",
       "fast",
@@ -4731,8 +4735,8 @@
     "date": "26-04-14",
     "title": "Haumea",
     "tags": [
-      "Hawaii",
       "analog",
+      "Hawaii",
       "dwarf-planet",
       "gods",
       "myth",
@@ -4967,8 +4971,8 @@
     "date": "26-05-02",
     "title": "Stuntperson",
     "tags": [
-      "day",
       "digital",
+      "day",
       "fast",
       "film",
       "glass",
@@ -4983,10 +4987,10 @@
     "date": "26-05-03",
     "title": "Boxes",
     "tags": [
+      "digital",
       "UPC",
       "brown",
       "color",
-      "digital",
       "paper",
       "spin"
     ]
@@ -5125,6 +5129,7 @@
     "date": "26-05-13",
     "title": "Klein Blue",
     "tags": [
+      "digital",
       "1957",
       "International-Klein-Blue-(IKB)",
       "Paris",
@@ -5132,7 +5137,6 @@
       "blue",
       "color",
       "day",
-      "digital",
       "screen"
     ]
   },
@@ -5142,6 +5146,7 @@
     "title": "Balloons",
     "tags": [
       "analog",
+      "balloon",
       "cake",
       "color",
       "day",
@@ -5171,8 +5176,8 @@
     "date": "26-05-16",
     "title": "Departure",
     "tags": [
-      "airstairs",
       "analog",
+      "airstairs",
       "day",
       "fly",
       "sky",
@@ -5206,9 +5211,9 @@
     "date": "26-05-18",
     "title": "Accordion",
     "tags": [
+      "analog",
       "1888",
       "France",
-      "analog",
       "body",
       "dance",
       "film",
@@ -5221,9 +5226,9 @@
     "date": "26-05-19",
     "title": "Bliss",
     "tags": [
+      "digital",
       "Clippy",
       "day",
-      "digital",
       "digital-12h",
       "info-tech",
       "landscape",
