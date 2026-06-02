@@ -2,8 +2,8 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Thumbnail from '../components/Thumbnail';
 import { DataContext } from '../context/DataContext';
-import styles from '../styles/Tagger.module.css'; // Reusing Tagger styles for consistency
 import sortStyles from '../styles/SortControls.module.css';
+import styles from '../styles/Tagger.module.css'; // Reusing Tagger styles for consistency
 import type { DataContextType } from '../types/data';
 import { normalizeTags, sortTags } from '../utils/tagUtils';
 
@@ -13,6 +13,9 @@ export default function TagManager() {
   const items = ctx?.items ?? [];
   const loading = ctx?.loading ?? true;
   const error = ctx?.error;
+
+  const errorMessage = typeof error === 'string' ? error : error?.message;
+
 
   const [searchTerm, setSearchTerm] = useState('');
   const [sortConfig, setSortConfig] = useState<{
@@ -88,9 +91,14 @@ export default function TagManager() {
     });
   }, [items, sortConfig, searchTerm]);
 
-  if (error) {
-    return <div className={styles.container}><div className={styles.card}>Error: {error.message}</div></div>;
+  if (errorMessage) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.card}>Error: {errorMessage}</div>
+      </div>
+    );
   }
+
 
   // Extract all unique tags from all items for the dropdown
   const allExistingTags = useMemo(() => {
@@ -230,4 +238,56 @@ export default function TagManager() {
                             onChange={(e) => {
                               const selectedTag = e.target.value;
                               if (selectedTag) {
+                                const current = normalizeTags(localTags[item.date] ?? '');
+                                if (!current.includes(selectedTag)) {
+                                  const next = [...current, selectedTag];
+                                  setLocalTags((prev) => ({
+                                    ...prev,
+                                    [item.date]: next.join(', '),
+                                  }));
+                                }
+                              }
+                            }}
+                          >
+                            <option value="" disabled>
+                              Add existing tag...
+                            </option>
+                            {allExistingTags.map((tag) => (
+                              <option key={tag} value={tag}>
+                                {tag}
+                              </option>
+                            ))}
+                          </select>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          ))}
+
+          <div style={{ marginTop: '2rem' }}>
+            <h2 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>Generated JSON (preview only)</h2>
+            <textarea
+              readOnly
+              value={editedClockPagesJson}
+              style={{
+                width: '100%',
+                minHeight: '160px',
+                fontFamily: 'monospace',
+                fontSize: '0.8rem',
+                padding: '0.75rem',
+                border: '1px solid #e5e7eb',
+                borderRadius: '8px',
+                resize: 'vertical',
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
             
