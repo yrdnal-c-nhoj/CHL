@@ -1,0 +1,58 @@
+.container {
+  min-height: 100dvh;
+  background-color: #f8f8f8;
+  color: #1a1a1a;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.mainContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.25rem 2rem;
+}
+
+.header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+
+.tagContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.tagItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.2s ease-in-out; /* Add transition for smooth hover */
+}
+
+.tagItem:hover {
+  transform: translateY(-3px); /* Apply hover effect to the parent */
+}
+
+.externalCount {
+  font-size: 0.9rem;
+  color: #888;
+  font-weight: 500;
+}
+
+.largeBubble {
+  padding: 0.35rem 0.7rem !important;
+  font-size: 0.85rem !important;
+  line-height: 1 !important;
+}
+
+
+.footer {
+  text-align: center;
+  margin-top: 4rem;
+  color: #999;
+  font-size: 0.9rem;
+}
