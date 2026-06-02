@@ -11,7 +11,6 @@
 .backgroundLayer {
   position: absolute;
   inset: 0;
-
   background-repeat: no-repeat;
   background-position: center;
   pointer-events: none;
@@ -39,9 +38,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 7vh;
+  width: 5vh;
   border-radius: 1.5vmin;
-  font-size: 12vh;
+  font-size: 10vh;
   /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); */
   backdrop-filter: blur(4px);
   /* Fixed width prevents layout jumping when numbers change */

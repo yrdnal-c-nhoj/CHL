@@ -39,7 +39,7 @@ const BackgroundLayers = memo(() => (
       className={styles.backgroundLayer}
       style={{
         backgroundImage: `url(${bellImage2})`,
-        backgroundSize: '90vmin',
+        backgroundSize: '100vmin',
         zIndex: 1,
       }}
     />
