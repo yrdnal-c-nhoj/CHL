@@ -4060,6 +4060,7 @@
       "fast",
       "fly",
       "pictographic",
+      "airstairs",
       "transport",
       "windows"
     ]
@@ -4497,6 +4498,7 @@
       "LA",
       "day",
       "film",
+      "shrine",
       "screen",
       "stars",
       "walk"
@@ -5560,6 +5562,18 @@
       "hot",
       "physics",
       "water"
+    ]
+  },
+  {
+    "path": "26-06-01",
+    "date": "26-06-01",
+    "title": "Sew",
+    "tags": [
+      "color",
+      "electricity",
+      "thread",
+      "cloth",
+      "hand"
     ]
   }
 ]
