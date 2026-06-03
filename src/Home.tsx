@@ -1,3 +1,5 @@
+//Home page component that displays a list of items grouped by month, with navigation and social media links. It also handles font loading and navigation state restoration when returning from the clock page.
+
 import fbookImg from '@/assets/icons/fbook.png';
 import instaImg from '@/assets/icons/i.png';
 import elonImg from '@/assets/icons/x.png';

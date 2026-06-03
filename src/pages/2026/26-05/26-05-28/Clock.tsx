@@ -249,13 +249,13 @@ const Clock: React.FC = () => {
   }, [seconds, milliseconds, time]);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} role="timer" aria-label="Clock for May 28">
       <div
         className={styles.backgroundLayer}
         style={{
           backgroundImage: `url(${bgImage})`,
           /* Change the first value (X) to move horizontally: 0% (Left) to 100% (Right) */
-          backgroundPosition: '60% 50%', // Current: 90% (Right-aligned), 50% (Centered vertically)
+          backgroundPosition: '90% 50%', // Current: 90% (Right-aligned), 50% (Centered vertically)
         }}
       />
 
