@@ -4060,6 +4060,7 @@
       "fast",
       "fly",
       "pictographic",
+      "airstairs",
       "transport",
       "windows"
     ]
@@ -4497,6 +4498,7 @@
       "LA",
       "day",
       "film",
+      "shrine",
       "screen",
       "stars",
       "walk"
@@ -5553,6 +5555,19 @@
     "path": "26-05-31",
     "date": "26-05-31",
     "title": "Thermal",
+    "tags": [
+      "color",
+      "electricity",
+      "fast",
+      "hot",
+      "physics",
+      "water"
+    ]
+  },
+  {
+    "path": "26-06-01",
+    "date": "26-06-01",
+    "title": "Sew",
     "tags": [
       "color",
       "electricity",
