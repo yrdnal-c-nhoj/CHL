@@ -8,16 +8,17 @@
 //
 // If a thumbnail can’t be found, Thumbnail will render its fallback UI.
 
+import { normalizeDate } from './dateUtils';
+
 // Build thumbnail mapping from the pre-generated thumbnails folder:
 //   /src/assets/thumbnails/YY-MM-DD-thumb.webp
 // (and possibly other extensions for the same naming convention)
 type AnyModule = { default?: string };
 
-const modules = import.meta.glob(
-  '/src/assets/thumbnails/*-thumb.{webp,gif,jpg,jpeg,png}',
+const modules = import.meta.glob( // This function dynamically imports modules matching a pattern.
+  '/src/assets/thumbnails/*.{webp,gif,jpg,jpeg,png}',
   { eager: true },
 ) as Record<string, AnyModule>;
-
 
 
 const thumbnailMap: Record<string, string> = {};
@@ -25,13 +26,12 @@ const thumbnailMap: Record<string, string> = {};
 for (const [filePath, mod] of Object.entries(modules)) {
   const imageUrl = (mod as AnyModule).default;
   if (!imageUrl) continue;
+  
+  // Matches date pattern with optional -thumb suffix (e.g., 26-06-01.webp or 26-6-1-thumb.jpg)
+  const match = filePath.match(/\/src\/assets\/thumbnails\/(\d{1,2}-\d{1,2}-\d{1,2})(?:-thumb)?\./);
+  if (!match) continue;
 
-  // Example path:
-  //   /src/assets/thumbnails/25-04-12-thumb.webp
-  const fileName = filePath.split('/').pop() || '';
-  const m = fileName.match(/^(\d{2}-\d{2}-\d{2})-thumb\./);
-  const date = m?.[1];
-  if (!date) continue;
+  const date = normalizeDate(match[1]);
 
   // Keep first discovered asset for the date.
   if (!thumbnailMap[date]) {
@@ -39,12 +39,11 @@ for (const [filePath, mod] of Object.entries(modules)) {
   }
 }
 
-
-export const getThumbnailByDate = (date: string): string | null => {
-  return thumbnailMap[date] || null;
+/**
+ * Returns the thumbnail URL for a given date (YY-MM-DD).
+ */
+export const getThumbnailByDate = (date: string): string | undefined => {
+  return thumbnailMap[date];
 };
 
-export const getAvailableThumbnailDates = (): string[] => {
-  return Object.keys(thumbnailMap);
-};
-
+export { thumbnailMap };
