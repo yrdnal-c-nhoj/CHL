@@ -943,6 +943,7 @@
     "tags": [
       "analog",
       "food",
+      "fruit",
       "grow",
       "yellow"
     ]
@@ -1613,10 +1614,10 @@
     "tags": [
       "animal",
       "digital-24h",
+      "exoskeletal",
       "landscape",
       "light",
       "nature",
-      "exoskeletal",
       "night",
       "slow",
       "tree"
@@ -2982,6 +2983,7 @@
       "apple",
       "digital-24h",
       "food",
+      "fruit",
       "grow",
       "red"
     ]
@@ -3594,6 +3596,7 @@
       "analog",
       "color",
       "food",
+      "fruit",
       "grow",
       "smell"
     ]
@@ -3845,6 +3848,7 @@
       "analog",
       "digital-12h",
       "food",
+      "fruit",
       "grow",
       "spin",
       "yellow"
@@ -4845,6 +4849,7 @@
     "tags": [
       "analog",
       "cardinal-directions",
+      "fruit",
       "jasmine",
       "pomegranate",
       "roman-numeral",
@@ -5488,6 +5493,7 @@
       "analog",
       "color",
       "food",
+      "fruit",
       "smell"
     ]
   },
@@ -5499,6 +5505,7 @@
       "color",
       "electricity",
       "fast",
+      "physics",
       "hot",
       "water"
     ]
