@@ -13,6 +13,10 @@ const shouldSuppress = (msg: string) => {
     'Parent process only(Fast)',
     'Multiprocess(Slower)',
     'Experiment',
+    'unknown featureId',
+    'purgeTrackingCookieJars',
+    'nsIScriptSecurityManager',
+    'createContentPrincipalFromOrigin',
     'SearchSuggestionController',
     'NewTabGleanUtils',
     'RemoteSettingsExperimentLoader',
@@ -37,9 +41,14 @@ const shouldSuppress = (msg: string) => {
     'NS_ERROR_NOT_AVAILABLE',
     'NS_ERROR_FAILURE',
     'DataCloneError',
+    'Cross-Origin Request Blocked',
+    'Same Origin Policy',
+    'izooto.com',
+    'decide.dev',
   ];
 
-  if (patterns.some((p) => msg.includes(p))) {
+  const lowerMsg = msg.toLowerCase();
+  if (patterns.some((p) => lowerMsg.includes(p.toLowerCase()))) {
     return true;
   }
   return false;
