@@ -5574,7 +5574,8 @@
       "mechanical",
       "thread",
       "cloth",
-      "hand"
+      "hand",
+      "slow"
     ]
   }
 ]
