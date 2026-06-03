@@ -3,10 +3,10 @@ import styles from './Clock.module.css';
 
 // Asset Imports from the matching date folder (26-06-02)
 import m1 from '@/assets/images/26_images/26-06/26-06-02/1.webp';
-import m2 from '@/assets/images/26_images/26-06/26-06-02/2.gif';
-import m3 from '@/assets/images/26_images/26-06/26-06-02/3.gif';
-import m4 from '@/assets/images/26_images/26-06/26-06-02/4.gif';
-import m5 from '@/assets/images/26_images/26-06/26-06-02/5.gif';
+import m2 from '@/assets/images/26_images/26-06/26-06-02/2.webp';
+import m3 from '@/assets/images/26_images/26-06/26-06-02/3.webp';
+import m4 from '@/assets/images/26_images/26-06/26-06-02/4.webp';
+import m5 from '@/assets/images/26_images/26-06/26-06-02/5.webp';
 import m6 from '@/assets/images/26_images/26-06/26-06-02/6.webp';
 
 const ALL_IMAGES = [m1, m2, m3, m4, m5, m6];
