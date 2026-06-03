@@ -6,6 +6,9 @@
   height: 100dvh;
   overflow: hidden;
   pointer-events: none;
+  background-repeat: repeat;
+  background-position: center;
+  background-size: 8vh;
   z-index: 5;
 }
 
@@ -19,4 +22,17 @@
 @keyframes popIn {
   from { opacity: 0; scale: 0.5; }
   to { opacity: 1; scale: 1; }
+}
+
+.digitalClock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-24deg);
+  font-size: 18vmin;
+  font-weight: 900;
+  color: white;
+  text-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  white-space: nowrap;
 }
