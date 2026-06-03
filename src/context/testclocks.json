@@ -5577,5 +5577,49 @@
       "hand",
       "slow"
     ]
+  },
+  {
+    "path": "26-06-02",
+    "date": "26-06-02",
+    "title": "Pulsar",
+    "tags": [
+      "analog",
+      "fast",
+      "light",
+      "map",
+      "night",
+      "radio",
+      "space",
+      "stars"
+    ]
+  },
+  {
+    "path": "26-06-03",
+    "date": "26-06-03",
+    "title": "Tornado",
+    "tags": [
+      "analog",
+      "air",
+      "dark",
+      "fast",
+      "nature",
+      "parallax",
+      "sky",
+      "spin"
+    ]
+  },
+  {
+    "path": "26-06-04",
+    "date": "26-06-04",
+    "title": "Sphinx",
+    "tags": [
+      "analog",
+      "Egypt",
+      "face",
+      "myth",
+      "pyramid",
+      "scarab",
+      "stone"
+    ]
   }
 ]
