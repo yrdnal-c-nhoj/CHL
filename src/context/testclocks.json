@@ -148,7 +148,8 @@
       "earth",
       "map",
       "mechanical",
-      "monochrome"
+      "monochrome",
+      "slow"
     ]
   },
   {
@@ -864,6 +865,7 @@
       "earth",
       "green",
       "grow",
+      "slow",
       "tree",
       "trunk",
       "wood"
@@ -879,7 +881,8 @@
       "move",
       "purple",
       "roll",
-      "side-to-side"
+      "side-to-side",
+      "slow"
     ]
   },
   {
@@ -890,6 +893,7 @@
       "digital-24h",
       "glass",
       "interior",
+      "slow",
       "snow",
       "weather",
       "wind",
@@ -1042,6 +1046,7 @@
       "digital-24h",
       "gods",
       "interior",
+      "slow",
       "typeface"
     ]
   },
@@ -1415,6 +1420,7 @@
       "digital",
       "blue",
       "mesopotamia",
+      "slow",
       "stone"
     ]
   },
@@ -1563,6 +1569,7 @@
       "cloth",
       "eye",
       "history",
+      "slow",
       "thread",
       "underworld",
       "year"
@@ -2174,6 +2181,7 @@
       "info",
       "mechanical",
       "paper",
+      "slow",
       "tech"
     ]
   },
@@ -2303,6 +2311,7 @@
     "tags": [
       "digital",
       "image-free",
+      "slow",
       "typeface"
     ]
   },
@@ -2353,6 +2362,7 @@
       "green",
       "image-free",
       "parallel",
+      "slow",
       "typeface"
     ]
   },
@@ -2365,6 +2375,7 @@
       "flags",
       "mechanical",
       "music",
+      "slow",
       "transport",
       "water"
     ]
@@ -3572,6 +3583,7 @@
       "mummy",
       "pyramid",
       "scarab",
+      "slow",
       "stone",
       "underworld"
     ]
@@ -3790,7 +3802,8 @@
       "desert",
       "dry",
       "landscape",
-      "mirror"
+      "mirror",
+      "slow"
     ]
   },
   {
@@ -4519,7 +4532,8 @@
       "float",
       "latex",
       "parallax",
-      "sky"
+      "sky",
+      "slow"
     ]
   },
   {
@@ -5305,6 +5319,7 @@
       "pyramid",
       "scarab",
       "screen",
+      "slow",
       "stone"
     ]
   },
@@ -5399,6 +5414,7 @@
       "lava",
       "nature",
       "screen",
+      "slow",
       "vertical"
     ]
   },
@@ -5414,6 +5430,7 @@
       "monochrome",
       "odd-toed-ungulate",
       "silver",
+      "slow",
       "walk"
     ]
   },
@@ -5505,8 +5522,8 @@
       "color",
       "electricity",
       "fast",
-      "physics",
       "hot",
+      "physics",
       "water"
     ]
   }
