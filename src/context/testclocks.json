@@ -345,6 +345,7 @@
       "bone",
       "brown",
       "cloth",
+      "hand",
       "smell"
     ]
   },
@@ -663,6 +664,7 @@
       "body",
       "cloth",
       "flags",
+      "hand",
       "pictographic",
       "thread"
     ]
@@ -858,6 +860,7 @@
       "drink",
       "food",
       "grow",
+      "hand",
       "hot",
       "smell"
     ]
@@ -1414,6 +1417,7 @@
       "body",
       "bone",
       "electricity",
+      "hand",
       "mechanical",
       "monochrome",
       "science",
@@ -1549,6 +1553,7 @@
     "title": "Slot Machine",
     "tags": [
       "gold",
+      "hand",
       "mechanical",
       "play",
       "spin"
@@ -2189,6 +2194,7 @@
     "title": "Baudot",
     "tags": [
       "digital",
+      "hand",
       "info",
       "mechanical",
       "paper",
@@ -3208,6 +3214,7 @@
     "tags": [
       "digital",
       "body",
+      "hand",
       "magic",
       "silver",
       "transport",
@@ -4057,10 +4064,10 @@
     "date": "26-02-14",
     "title": "Concourse",
     "tags": [
+      "airstairs",
       "fast",
       "fly",
       "pictographic",
-      "airstairs",
       "transport",
       "windows"
     ]
@@ -4214,6 +4221,7 @@
       "b+w",
       "book",
       "film",
+      "hand",
       "mirror",
       "screen",
       "underworld"
@@ -4364,9 +4372,9 @@
     "title": "Dragon",
     "tags": [
       "analog",
+      "Disney",
       "animal",
       "exterior",
-      "Disney",
       "fast",
       "light",
       "move",
@@ -4498,8 +4506,8 @@
       "LA",
       "day",
       "film",
-      "shrine",
       "screen",
+      "shrine",
       "stars",
       "walk"
     ]
@@ -4842,6 +4850,7 @@
     "tags": [
       "analog",
       "fire",
+      "hand",
       "hot",
       "light",
       "paper",
@@ -5020,6 +5029,7 @@
     "tags": [
       "analog",
       "glass",
+      "hand",
       "interior",
       "science",
       "see",
@@ -5183,12 +5193,12 @@
     "title": "Gallop",
     "tags": [
       "analog",
+      "Disney",
       "animal",
       "bone",
       "day",
       "desert",
       "fast",
-      "Disney",
       "odd-toed-ungulate",
       "run",
       "transport"
@@ -5371,6 +5381,7 @@
       "body",
       "dance",
       "film",
+      "hand",
       "music",
       "screen"
     ]
@@ -5569,13 +5580,13 @@
     "date": "26-06-01",
     "title": "Sew",
     "tags": [
+      "cloth",
       "color",
       "electricity",
-      "mechanical",
-      "thread",
-      "cloth",
       "hand",
-      "slow"
+      "mechanical",
+      "slow",
+      "thread"
     ]
   },
   {
