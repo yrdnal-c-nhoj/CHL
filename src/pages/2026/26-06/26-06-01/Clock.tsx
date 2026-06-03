@@ -12,14 +12,14 @@ const FONT_FAMILY = 'ClockFont_26_05_26';
 const CLOCK_CONFIG = {
   COLORS: {
     background: '#000000',
-    primary: '#E77912DB',
-    shadow: 'drop-shadow(2px 2px 0px rgba(250, 249, 249, 0.8))',
+    primary: '#DCE7F2DB',
+    // shadow: 'drop-shadow(2px 2px 0px rgba(250, 249, 249, 0.8))',
   },
 };
 
 const HAND_DIMENSIONS = {
-  hour: { width: '1.2vmin', height: '20vmin', zIndex: 3 },
-  minute: { width: '0.8vmin', height: '32vmin', zIndex: 4 },
+  hour: { width: '0.4vh', height: '20vmin', zIndex: 3 },
+  minute: { width: '0.3vh', height: '32vmin', zIndex: 4 },
 };
 
 const BackgroundLayers = memo(() => (
