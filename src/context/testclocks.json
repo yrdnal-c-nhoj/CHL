@@ -1425,6 +1425,7 @@
       "electricity",
       "hand",
       "mechanical",
+      "milliseconds",
       "monochrome",
       "science",
       "see",
@@ -1677,6 +1678,7 @@
       "face",
       "fly",
       "metal",
+      "milliseconds",
       "space"
     ]
   },
@@ -2109,6 +2111,7 @@
       "flower",
       "gods",
       "light",
+      "milliseconds",
       "shadow",
       "shrine",
       "underworld"
@@ -2282,6 +2285,7 @@
       "Disney",
       "animal",
       "extinct",
+      "milliseconds",
       "slow"
     ]
   },
@@ -2325,6 +2329,7 @@
       "film",
       "horizon",
       "info",
+      "milliseconds",
       "science",
       "screen",
       "tech"
@@ -2675,6 +2680,7 @@
       "fast",
       "float",
       "maine",
+      "milliseconds",
       "ocean",
       "smell",
       "up-and-down",
@@ -2770,6 +2776,7 @@
       "axis",
       "fast",
       "ice",
+      "milliseconds",
       "panorama",
       "revolve",
       "snow"
@@ -2798,6 +2805,7 @@
       "float",
       "grow",
       "horizon",
+      "milliseconds",
       "shell",
       "swim",
       "water"
@@ -3102,6 +3110,7 @@
       "digital",
       "grid",
       "image-free",
+      "milliseconds",
       "pattern",
       "vertical"
     ]
@@ -3304,6 +3313,7 @@
     "tags": [
       "digital",
       "fast",
+      "milliseconds",
       "numbers",
       "words"
     ]
@@ -3738,6 +3748,7 @@
     "tags": [
       "digital",
       "fast",
+      "milliseconds",
       "slow"
     ]
   },
@@ -4289,6 +4300,7 @@
     "tags": [
       "atomic clock",
       "digital-24h",
+      "milliseconds",
       "purple",
       "science",
       "tick-tock"
@@ -4515,6 +4527,7 @@
       "dwarf-planet",
       "gods",
       "key",
+      "milliseconds",
       "myth",
       "planet",
       "underworld"
@@ -4672,6 +4685,7 @@
       "deepwater",
       "digital-24h",
       "elements",
+      "milliseconds",
       "molecules",
       "ocean",
       "three",
@@ -4891,6 +4905,7 @@
       "digital-24h",
       "drive",
       "mechanical",
+      "milliseconds",
       "move",
       "night",
       "transport"
@@ -5032,6 +5047,7 @@
       "digital-24h",
       "flower",
       "grow",
+      "milliseconds",
       "sun",
       "vertical",
       "yellow"
