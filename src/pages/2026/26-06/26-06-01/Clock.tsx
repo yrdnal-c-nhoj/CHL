@@ -1,4 +1,5 @@
 import fontUrl from '@/assets/fonts/26fonts/26-05-03-dolphin.ttf?url';
+import needleImage from '@/assets/images/26_images/26-06/26-06-01/needle.webp';
 import jumpVideo from '@/assets/images/26_images/26-06/26-06-01/sew.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -19,7 +20,6 @@ const CLOCK_CONFIG = {
 const HAND_DIMENSIONS = {
   hour: { width: '1.2vmin', height: '20vmin', zIndex: 3 },
   minute: { width: '0.8vmin', height: '32vmin', zIndex: 4 },
-  second: { width: '0.4vmin', height: '38vmin', zIndex: 5 },
 };
 
 const BackgroundLayers = memo(() => (
@@ -59,11 +59,11 @@ const AnalogClock = () => {
   );
   useSuspenseFontLoader(fontConfigs);
 
-  const { hr, min, sec } = useMemo(() => {
+  const { hr, min } = useMemo(() => {
     const s = currentTime.getSeconds();
     const m = currentTime.getMinutes() + s / 60;
     const h = (currentTime.getHours() % 12) + m / 60;
-    return { hr: h, min: m, sec: s };
+    return { hr: h, min: m };
   }, [currentTime]);
 
   return (
@@ -81,7 +81,7 @@ const AnalogClock = () => {
       <div className={styles.clockFace} style={{ fontFamily: `${FONT_FAMILY}, serif` }}>
         <ClockHand type="hour" rotation={hr * 30} />
         <ClockHand type="minute" rotation={min * 6} />
-        <ClockHand type="second" rotation={sec * 6} />
+        <img src={needleImage} className={styles.needleOverlay} alt="" />
       </div>
     </div>
   );
