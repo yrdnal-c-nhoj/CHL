@@ -310,6 +310,7 @@
       "Mars",
       "horizon",
       "ocean",
+      "roman-numeral",
       "sky",
       "water",
       "waves"
@@ -523,6 +524,7 @@
       "analog",
       "gravity",
       "spin",
+      "swim",
       "water"
     ]
   },
@@ -655,6 +657,7 @@
     "title": "Semaphore",
     "tags": [
       "body",
+      "cloth",
       "flags",
       "pictographic",
       "thread"
@@ -668,6 +671,7 @@
       "analog",
       "day",
       "planet",
+      "roman-numeral",
       "space",
       "sphere",
       "sun"
@@ -1011,6 +1015,7 @@
       "fast",
       "horn",
       "night",
+      "roman-numeral",
       "sound",
       "transport"
     ]
@@ -1142,6 +1147,7 @@
     "date": "25-06-27",
     "title": "Morse Code",
     "tags": [
+      "animal",
       "bird",
       "info",
       "metal",
@@ -1595,6 +1601,7 @@
       "analog",
       "gold",
       "red",
+      "roman-numeral",
       "screen",
       "sound"
     ]
@@ -1604,10 +1611,12 @@
     "date": "25-08-04",
     "title": "Fireflies",
     "tags": [
+      "animal",
       "digital-24h",
       "landscape",
       "light",
       "nature",
+      "exoskeletal",
       "night",
       "slow",
       "tree"
@@ -1867,6 +1876,7 @@
       "digital",
       "Rome",
       "gold",
+      "roman-numeral",
       "slow",
       "stone"
     ]
@@ -2668,8 +2678,10 @@
       "animal",
       "butterfly",
       "camouflage",
+      "exoskeletal",
       "fast",
-      "migrate"
+      "migrate",
+      "roman-numeral"
     ]
   },
   {
@@ -2739,6 +2751,7 @@
     "title": "Swimmers",
     "tags": [
       "digital",
+      "animal",
       "body",
       "fast",
       "float",
@@ -3072,7 +3085,8 @@
       "France",
       "Paris",
       "blood",
-      "flag"
+      "flag",
+      "paper"
     ]
   },
   {
@@ -3228,6 +3242,7 @@
       "digital",
       "gods",
       "planet",
+      "roman-numeral",
       "scythe",
       "sky"
     ]
@@ -3302,6 +3317,7 @@
     "title": "Swagger",
     "tags": [
       "Mars",
+      "animal",
       "body",
       "pictographic"
     ]
@@ -3324,6 +3340,7 @@
     "title": "Hourglass",
     "tags": [
       "fast",
+      "glass",
       "slow"
     ]
   },
@@ -3924,7 +3941,8 @@
       "Paris",
       "design",
       "landscape",
-      "metal"
+      "metal",
+      "roman-numeral"
     ]
   },
   {
@@ -4154,6 +4172,7 @@
       "b+w",
       "book",
       "film",
+      "mirror",
       "screen",
       "underworld"
     ]
@@ -4591,6 +4610,7 @@
       "feather",
       "horse",
       "odd-toed-ungulate",
+      "roman-numeral",
       "scarab",
       "warm",
       "wet",
@@ -4827,6 +4847,7 @@
       "cardinal-directions",
       "jasmine",
       "pomegranate",
+      "roman-numeral",
       "warm",
       "wind"
     ]
@@ -4882,10 +4903,12 @@
     "title": "Hemoglobin",
     "tags": [
       "analog",
+      "animal",
       "blood",
       "cells",
       "flow",
-      "red"
+      "red",
+      "swim"
     ]
   },
   {
@@ -5184,12 +5207,14 @@
     "title": "180° South",
     "tags": [
       "analog",
+      "animal",
       "cardinal-directions",
       "fire",
       "lion",
       "magenta",
       "mirror",
       "predator",
+      "roman-numeral",
       "wind"
     ]
   },
@@ -5434,7 +5459,7 @@
   {
     "path": "26-05-28",
     "date": "26-05-28",
-    "title": "Pop",
+    "title": "Popcorn",
     "tags": [
       "analog",
       "fast",

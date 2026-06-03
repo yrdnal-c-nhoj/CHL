@@ -1147,6 +1147,7 @@
     "date": "25-06-27",
     "title": "Morse Code",
     "tags": [
+      "animal",
       "bird",
       "info",
       "metal",
@@ -1610,10 +1611,12 @@
     "date": "25-08-04",
     "title": "Fireflies",
     "tags": [
+      "animal",
       "digital-24h",
       "landscape",
       "light",
       "nature",
+      "exoskeletal",
       "night",
       "slow",
       "tree"
@@ -2675,6 +2678,7 @@
       "animal",
       "butterfly",
       "camouflage",
+      "exoskeletal",
       "fast",
       "migrate",
       "roman-numeral"
@@ -2747,6 +2751,7 @@
     "title": "Swimmers",
     "tags": [
       "digital",
+      "animal",
       "body",
       "fast",
       "float",
@@ -3312,6 +3317,7 @@
     "title": "Swagger",
     "tags": [
       "Mars",
+      "animal",
       "body",
       "pictographic"
     ]
@@ -4897,6 +4903,7 @@
     "title": "Hemoglobin",
     "tags": [
       "analog",
+      "animal",
       "blood",
       "cells",
       "flow",
@@ -5200,6 +5207,7 @@
     "title": "180° South",
     "tags": [
       "analog",
+      "animal",
       "cardinal-directions",
       "fire",
       "lion",
