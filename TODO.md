@@ -1,5 +1,5 @@
-- [ ] Inspect repo files related to TagManager build error
-- [ ] Fix src/pages/TagManager.tsx syntax error (unexpected EOF)
-- [ ] Remove/complete incomplete JSX/select handler and close component properly
-- [ ] Run local build (vite build) to confirm fix
+- [ ] Inspect thumbnail rendering pipeline (Thumbnail component + thumbnailMap)
+- [ ] Update src/utils/thumbnailMap.ts to build mapping from src/assets/thumbnails/*-thumb.webp by date
+- [ ] Ensure getThumbnailByDate returns correct URLs for all dates in clockpages.json
+- [ ] Run unit tests / typecheck and verify Home + /list (ClockList) thumbnails render
 
