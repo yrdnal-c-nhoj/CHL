@@ -175,7 +175,8 @@
       "circle",
       "food",
       "hot",
-      "round"
+      "round",
+      "smell"
     ]
   },
   {
@@ -214,7 +215,8 @@
       "color",
       "food",
       "play",
-      "round"
+      "round",
+      "smell"
     ]
   },
   {
@@ -342,7 +344,8 @@
       "body",
       "bone",
       "brown",
-      "cloth"
+      "cloth",
+      "smell"
     ]
   },
   {
@@ -729,7 +732,8 @@
       "green",
       "grow",
       "nature",
-      "plant"
+      "plant",
+      "smell"
     ]
   },
   {
@@ -793,6 +797,7 @@
       "grey",
       "nature",
       "silver",
+      "smell",
       "transport",
       "trunk",
       "walk"
@@ -853,7 +858,8 @@
       "drink",
       "food",
       "grow",
-      "hot"
+      "hot",
+      "smell"
     ]
   },
   {
@@ -949,6 +955,7 @@
       "food",
       "fruit",
       "grow",
+      "smell",
       "yellow"
     ]
   },
@@ -965,6 +972,7 @@
       "cow",
       "hot",
       "metal",
+      "smell",
       "white"
     ]
   },
@@ -1194,6 +1202,7 @@
       "food",
       "gold",
       "shell",
+      "smell",
       "white",
       "yellow"
     ]
@@ -1391,7 +1400,8 @@
       "analog",
       "animal",
       "molecules",
-      "nature"
+      "nature",
+      "smell"
     ]
   },
   {
@@ -1911,6 +1921,7 @@
       "grow",
       "landscape",
       "monochrome",
+      "smell",
       "tree",
       "trunk",
       "underworld"
@@ -2622,6 +2633,7 @@
       "earth",
       "fast",
       "grow",
+      "smell",
       "tree",
       "trunk"
     ]
@@ -2648,6 +2660,7 @@
       "float",
       "maine",
       "ocean",
+      "smell",
       "up-and-down",
       "weather"
     ]
@@ -2796,6 +2809,7 @@
       "float",
       "night",
       "ocean",
+      "smell",
       "swim",
       "waves"
     ]
@@ -2939,6 +2953,7 @@
       "grow",
       "orange",
       "slow",
+      "smell",
       "tree",
       "trunk"
     ]
@@ -2996,7 +3011,8 @@
       "food",
       "fruit",
       "grow",
-      "red"
+      "red",
+      "smell"
     ]
   },
   {
@@ -3147,6 +3163,7 @@
       "food",
       "ocean",
       "predator",
+      "smell",
       "swim"
     ]
   },
@@ -3167,7 +3184,8 @@
     "tags": [
       "digital",
       "animal",
-      "dog"
+      "dog",
+      "smell"
     ]
   },
   {
@@ -3390,7 +3408,8 @@
     "tags": [
       "analog",
       "fire",
-      "light"
+      "light",
+      "smell"
     ]
   },
   {
@@ -3567,6 +3586,7 @@
       "animal",
       "night",
       "orange",
+      "smell",
       "trunk"
     ]
   },
@@ -3596,6 +3616,7 @@
       "analog",
       "animal",
       "glass",
+      "smell",
       "swim",
       "water"
     ]
@@ -3863,6 +3884,7 @@
       "food",
       "fruit",
       "grow",
+      "smell",
       "spin",
       "yellow"
     ]
@@ -4052,7 +4074,8 @@
       "earth",
       "fast",
       "hot",
-      "lava"
+      "lava",
+      "smell"
     ]
   },
   {
@@ -4085,6 +4108,7 @@
       "digital",
       "animal",
       "ocean",
+      "smell",
       "swim",
       "water"
     ]
@@ -4205,7 +4229,8 @@
       "grow",
       "magenta",
       "non-spectral",
-      "plant"
+      "plant",
+      "smell"
     ]
   },
   {
@@ -4776,6 +4801,7 @@
       "digital-24h",
       "float",
       "monochrome",
+      "smell",
       "water",
       "waves"
     ]
@@ -4791,7 +4817,8 @@
       "monochrome",
       "nature",
       "sand",
-      "shell"
+      "shell",
+      "smell"
     ]
   },
   {
@@ -4814,7 +4841,8 @@
       "fire",
       "hot",
       "light",
-      "paper"
+      "paper",
+      "smell"
     ]
   },
   {
@@ -4853,7 +4881,8 @@
       "cat",
       "digital-24h",
       "predator",
-      "random"
+      "random",
+      "smell"
     ]
   },
   {
@@ -5188,6 +5217,7 @@
       "flower",
       "grow",
       "pink",
+      "smell",
       "water"
     ]
   },
@@ -5266,6 +5296,7 @@
       "float",
       "latex",
       "round",
+      "smell",
       "up-and-down"
     ]
   },
@@ -5281,6 +5312,7 @@
       "grow",
       "nature",
       "slow",
+      "smell",
       "tree",
       "wood"
     ]
@@ -5320,6 +5352,7 @@
       "scarab",
       "screen",
       "slow",
+      "smell",
       "stone"
     ]
   },
