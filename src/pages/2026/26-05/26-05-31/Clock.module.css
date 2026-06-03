@@ -40,11 +40,7 @@
   justify-content: center;
   width: 8vh; /* Increased width to accommodate digits comfortably */
   height: 12vh;
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1.5vmin;
   font-size: 10vh;
-  backdrop-filter: blur(4px);
   /* Fixed width prevents layout jumping when numbers change */
   flex-shrink: 0;
   text-align: center;
