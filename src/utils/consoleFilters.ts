@@ -34,6 +34,9 @@ const shouldSuppress = (msg: string) => {
     'ly(Fast)',
     'Multiprocess(Slower)',
     'TypeError: Response constructor: Response body is given with a null body status',
+    'NS_ERROR_NOT_AVAILABLE',
+    'NS_ERROR_FAILURE',
+    'DataCloneError',
   ];
 
   if (patterns.some((p) => msg.includes(p))) {
