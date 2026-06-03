@@ -60,6 +60,7 @@
       "analog",
       "brown",
       "interior",
+      "mechanical",
       "monochrome",
       "tick-tock",
       "wood"
@@ -591,6 +592,7 @@
     "tags": [
       "analog",
       "gold",
+      "mechanical",
       "play",
       "round",
       "spin",
@@ -934,6 +936,7 @@
       "digital-12h",
       "fast",
       "fly",
+      "mechanical",
       "sky",
       "space",
       "stars",
@@ -1531,6 +1534,7 @@
     "title": "Metallic",
     "tags": [
       "gold",
+      "mechanical",
       "metal",
       "silver",
       "slide-to-side",
@@ -2472,6 +2476,7 @@
       "b+w",
       "fast",
       "film",
+      "mechanical",
       "screen",
       "words"
     ]
@@ -3259,6 +3264,7 @@
       "analog",
       "food",
       "interior",
+      "mechanical",
       "paper"
     ]
   },
@@ -3364,6 +3370,7 @@
       "Mars",
       "animal",
       "body",
+      "mechanical",
       "pictographic"
     ]
   },
@@ -3409,6 +3416,7 @@
     "tags": [
       "dance",
       "electricity",
+      "mechanical",
       "pictographic",
       "sound",
       "spin",
@@ -3490,6 +3498,7 @@
       "body",
       "fast",
       "gravity",
+      "mechanical",
       "move",
       "physics",
       "transport",
@@ -4077,6 +4086,7 @@
       "airstairs",
       "fast",
       "fly",
+      "mechanical",
       "pictographic",
       "transport",
       "windows"
@@ -4361,6 +4371,7 @@
       "fast",
       "fire",
       "gravity",
+      "mechanical",
       "metal",
       "science",
       "sky"
@@ -4492,6 +4503,7 @@
       "body",
       "electricity",
       "film",
+      "mechanical",
       "screen"
     ]
   },
@@ -4617,6 +4629,7 @@
       "fly",
       "gravity",
       "grid",
+      "mechanical",
       "metal",
       "ride",
       "sky",
@@ -4745,6 +4758,7 @@
       "Cecil-B-Demille",
       "digital-24h",
       "film",
+      "mechanical",
       "screen",
       "tick-tock"
     ]
@@ -5086,6 +5100,7 @@
       "analog",
       "brown",
       "info",
+      "mechanical",
       "monochrome",
       "screen",
       "tech"
@@ -5140,6 +5155,7 @@
       "film",
       "glass",
       "gravity",
+      "mechanical",
       "metal",
       "screen",
       "transport"
@@ -5355,6 +5371,7 @@
       "day",
       "fast",
       "fly",
+      "mechanical",
       "sky",
       "slow",
       "transport"
@@ -5536,6 +5553,7 @@
     "tags": [
       "body",
       "digital-24h",
+      "mechanical",
       "round",
       "spin",
       "transport",
