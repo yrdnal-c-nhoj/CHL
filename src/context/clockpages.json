@@ -345,6 +345,7 @@
       "bone",
       "brown",
       "cloth",
+      "hand",
       "smell"
     ]
   },
@@ -513,6 +514,7 @@
     "title": "Golden Hour",
     "tags": [
       "digital",
+      "aerial",
       "fly",
       "gold",
       "sky",
@@ -565,6 +567,7 @@
     "title": "Flat",
     "tags": [
       "analog",
+      "aerial",
       "neutrals",
       "tick-tock"
     ]
@@ -663,6 +666,7 @@
       "body",
       "cloth",
       "flags",
+      "hand",
       "pictographic",
       "thread"
     ]
@@ -793,6 +797,7 @@
     "title": "Elephant",
     "tags": [
       "analog",
+      "africa",
       "animal",
       "grey",
       "nature",
@@ -858,6 +863,7 @@
       "drink",
       "food",
       "grow",
+      "hand",
       "hot",
       "smell"
     ]
@@ -1414,6 +1420,7 @@
       "body",
       "bone",
       "electricity",
+      "hand",
       "mechanical",
       "monochrome",
       "science",
@@ -1549,6 +1556,7 @@
     "title": "Slot Machine",
     "tags": [
       "gold",
+      "hand",
       "mechanical",
       "play",
       "spin"
@@ -1561,6 +1569,7 @@
     "tags": [
       "digital",
       "Mars",
+      "aerial",
       "brown",
       "camouflage",
       "cloth",
@@ -2189,6 +2198,7 @@
     "title": "Baudot",
     "tags": [
       "digital",
+      "hand",
       "info",
       "mechanical",
       "paper",
@@ -2305,6 +2315,7 @@
     "tags": [
       "digital",
       "Kubrick",
+      "africa",
       "animal",
       "extinct",
       "film",
@@ -3208,6 +3219,7 @@
     "tags": [
       "digital",
       "body",
+      "hand",
       "magic",
       "silver",
       "transport",
@@ -3221,6 +3233,7 @@
     "tags": [
       "analog",
       "Africa",
+      "africa",
       "animal",
       "brown",
       "monochrome"
@@ -3309,6 +3322,7 @@
       "Mars",
       "Rococo",
       "Venus",
+      "aerial",
       "art",
       "body",
       "cloth",
@@ -3598,6 +3612,7 @@
       "digital",
       "Egypt",
       "aerial",
+      "africa",
       "bone",
       "desert",
       "mummy",
@@ -3767,6 +3782,7 @@
     "title": "Migrate",
     "tags": [
       "analog",
+      "aerial",
       "animal",
       "bird",
       "blue",
@@ -4057,10 +4073,11 @@
     "date": "26-02-14",
     "title": "Concourse",
     "tags": [
+      "aerial",
+      "airstairs",
       "fast",
       "fly",
       "pictographic",
-      "airstairs",
       "transport",
       "windows"
     ]
@@ -4214,6 +4231,7 @@
       "b+w",
       "book",
       "film",
+      "hand",
       "mirror",
       "screen",
       "underworld"
@@ -4241,6 +4259,7 @@
     "tags": [
       "analog",
       "Egypt",
+      "africa",
       "body",
       "desert",
       "face",
@@ -4364,9 +4383,9 @@
     "title": "Dragon",
     "tags": [
       "analog",
+      "Disney",
       "animal",
       "exterior",
-      "Disney",
       "fast",
       "light",
       "move",
@@ -4498,8 +4517,8 @@
       "LA",
       "day",
       "film",
-      "shrine",
       "screen",
+      "shrine",
       "stars",
       "walk"
     ]
@@ -4570,6 +4589,7 @@
     "title": "Exoplanet",
     "tags": [
       "analog",
+      "aerial",
       "b+w",
       "space"
     ]
@@ -4842,6 +4862,7 @@
     "tags": [
       "analog",
       "fire",
+      "hand",
       "hot",
       "light",
       "paper",
@@ -5020,6 +5041,7 @@
     "tags": [
       "analog",
       "glass",
+      "hand",
       "interior",
       "science",
       "see",
@@ -5032,6 +5054,7 @@
     "title": "Astro",
     "tags": [
       "1962",
+      "aerial",
       "digital-12h",
       "fast",
       "film",
@@ -5141,6 +5164,7 @@
     "title": "Pod",
     "tags": [
       "analog",
+      "aerial",
       "animal",
       "blue",
       "move",
@@ -5183,12 +5207,12 @@
     "title": "Gallop",
     "tags": [
       "analog",
+      "Disney",
       "animal",
       "bone",
       "day",
       "desert",
       "fast",
-      "Disney",
       "odd-toed-ungulate",
       "run",
       "transport"
@@ -5343,6 +5367,7 @@
     "tags": [
       "1943",
       "Egypt",
+      "africa",
       "body",
       "bone",
       "cloth",
@@ -5371,6 +5396,7 @@
       "body",
       "dance",
       "film",
+      "hand",
       "music",
       "screen"
     ]
@@ -5461,6 +5487,7 @@
     "title": "Rhinoceros",
     "tags": [
       "analog",
+      "africa",
       "animal",
       "grey",
       "horn",
@@ -5569,11 +5596,58 @@
     "date": "26-06-01",
     "title": "Sew",
     "tags": [
+      "cloth",
       "color",
       "electricity",
-      "thread",
-      "cloth",
-      "hand"
+      "hand",
+      "mechanical",
+      "slow",
+      "thread"
+    ]
+  },
+  {
+    "path": "26-06-02",
+    "date": "26-06-02",
+    "title": "Inclined Plane",
+    "tags": [
+      "analog",
+      "fast",
+      "light",
+      "map",
+      "night",
+      "radio",
+      "space",
+      "stars"
+    ]
+  },
+  {
+    "path": "26-06-03",
+    "date": "26-06-03",
+    "title": "Tornado",
+    "tags": [
+      "analog",
+      "air",
+      "dark",
+      "fast",
+      "nature",
+      "parallax",
+      "sky",
+      "spin"
+    ]
+  },
+  {
+    "path": "26-06-04",
+    "date": "26-06-04",
+    "title": "Sphinx",
+    "tags": [
+      "analog",
+      "Egypt",
+      "africa",
+      "face",
+      "myth",
+      "pyramid",
+      "scarab",
+      "stone"
     ]
   }
 ]
