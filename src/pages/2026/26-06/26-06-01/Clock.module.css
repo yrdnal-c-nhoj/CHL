@@ -16,11 +16,11 @@
   filter: saturate(60%) contrast(1.8) brightness(1.2);
   width: 100vw;
   height: 100%;
-  object-fit: cover;
+  object-fit: fill;
   z-index: 1;
   transform-origin: 50% 50%;
   /* Static shift: move the background to the right */
-  transform:  scaleX(-1) scaleY(-1);
+  /* transform:  scaleX(-1) scaleY(-1); */
 
 
   will-change: transform;
