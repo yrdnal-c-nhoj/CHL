@@ -56,6 +56,9 @@ const shouldSuppress = (msg: string) => {
     'addons.update-checker',
     'browser-customtitlebar.js',
     'js.stripe.com',
+    'WebRequestUpload',
+    'nsIHttpChannel',
+    'ObliviousHTTP',
   ];
 
   const lowerMsg = msg.toLowerCase();
