@@ -1616,6 +1616,7 @@
       "aim",
       "cloth",
       "eye",
+      "meteor",
       "slow",
       "thread",
       "underworld",
@@ -4779,7 +4780,6 @@
     "title": "Origami",
     "tags": [
       "animal",
-      "fold",
       "paper",
       "pictographic",
       "red"
@@ -5157,7 +5157,7 @@
       "digital-12h",
       "fast",
       "film",
-      "jetsons",
+      "Jetsons",
       "screen",
       "sky",
       "space",
