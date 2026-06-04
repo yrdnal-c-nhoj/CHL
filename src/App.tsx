@@ -1,4 +1,4 @@
-/**
+x/**
  * Main Application Component
  *
  * This is the root component of the BorrowedTime application that handles:
@@ -18,11 +18,10 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import {
-  BrowserRouter,
   Navigate,
   Route,
   Routes,
-  useLocation,
+  useLocation
 } from 'react-router-dom';
 import { pageview } from './analytics';
 import { DataProvider } from './context/DataContext';
@@ -180,11 +179,9 @@ const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <DataProvider>
-        {/* In production, the app should be mounted at the router root.
-            In unit tests we wrap <App /> with a MemoryRouter, so avoid nesting. */}
-          <AnalyticsAndSEO />
+        <AnalyticsAndSEO />
 
-          <React.Suspense
+        <React.Suspense
             fallback={
               <div
                 style={{
@@ -218,7 +215,6 @@ const App: React.FC = () => {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </React.Suspense>
-        </BrowserRouter>
       </DataProvider>
     </ErrorBoundary>
   );
