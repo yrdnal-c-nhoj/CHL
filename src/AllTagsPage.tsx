@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import TopNav from '../components/TopNav'; // Import the shared TopNav component
-import { useDataContext } from '../context/DataContext';
-import styles from '../styles/AllTagsPage.module.css';
-import sortStyles from '../styles/SortControls.module.css';
+import TopNav from './components/TopNav'; // Import the shared TopNav component
+import { useDataContext } from './context/DataContext';
+import styles from './styles/AllTagsPage.module.css';
+import sortStyles from './styles/SortControls.module.css';
 
 type SortOption = 'name-asc' | 'name-desc' | 'count-desc' | 'count-asc';
 
