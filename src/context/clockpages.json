@@ -5643,44 +5643,11 @@
     "date": "26-06-02",
     "title": "Inclined Plane",
     "tags": [
-      "analog",
-      "fast",
-      "light",
-      "map",
-      "night",
-      "radio",
-      "space",
-      "stars"
-    ]
-  },
-  {
-    "path": "26-06-03",
-    "date": "26-06-03",
-    "title": "Tornado",
-    "tags": [
-      "analog",
-      "air",
-      "dark",
-      "fast",
-      "nature",
-      "parallax",
-      "sky",
-      "spin"
-    ]
-  },
-  {
-    "path": "26-06-04",
-    "date": "26-06-04",
-    "title": "Sphinx",
-    "tags": [
-      "analog",
-      "Egypt",
-      "africa",
-      "face",
-      "myth",
-      "pyramid",
-      "scarab",
-      "stone"
+      "digital-24h",
+      "generative",
+      "mechanical",
+      "random",
+      "six-simple-machines"
     ]
   }
 ]
