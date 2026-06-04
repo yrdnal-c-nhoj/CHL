@@ -34,6 +34,7 @@
 }
 
 .tagItem:hover {
+    background-color: #c2bfbf;
   transform: translateY(-3px); /* Apply hover effect to the parent */
 }
 
