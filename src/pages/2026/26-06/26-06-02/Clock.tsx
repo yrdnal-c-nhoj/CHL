@@ -93,22 +93,22 @@ const VTEC: React.FC = () => {
         backgroundPosition: 'center',
       }}
     >
-      <div
+      <time
         className={styles.digitalClock}
+        dateTime={time.toISOString()}
         style={{ fontFamily: 'ClockFont_26_06_02' }}
       >
-        {String(time.getHours()).padStart(2, '0').split('').map((char, i) => (
-          <span key={`h-${i}`} className={styles.digitBox}>{char}</span>
+        {[
+          time.getHours(),
+          time.getMinutes(),
+          time.getSeconds(),
+        ].map(unit => String(unit).padStart(2, '0'))
+         .join('')
+         .split('')
+         .map((char, i) => (
+          <span key={i} className={styles.digitBox}>{char}</span>
         ))}
-        <span className={styles.separator}>:</span>
-        {String(time.getMinutes()).padStart(2, '0').split('').map((char, i) => (
-          <span key={`m-${i}`} className={styles.digitBox}>{char}</span>
-        ))}
-        <span className={styles.separator}>:</span>
-        {String(time.getSeconds()).padStart(2, '0').split('').map((char, i) => (
-          <span key={`s-${i}`} className={styles.digitBox}>{char}</span>
-        ))}
-      </div>
+      </time>
 
       {visibleImages.map((img) => (
         <img
