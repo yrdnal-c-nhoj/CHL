@@ -32,7 +32,10 @@ export default defineConfig({
   },
 
   esbuild: {
-    drop: ['console', 'debugger'], // Drop console and debugger statements for production
+    // Only drop logs and debuggers, but keep warn/error so your 
+    // consoleFilters.ts can still report critical issues in production.
+    drop: ['debugger'],
+    pure: ['console.log', 'console.info', 'console.debug'],
   },
 
   build: {
