@@ -105,7 +105,7 @@ export function useClockPage(currentItem: { date: string } | null) {
         const module = await importFn().catch(
           (err) => {
             const msg = err instanceof Error ? err.message : String(err);
-            console.error(`[useClockPage] Critical: Failed to load module for ${targetDate}. Path: src/pages/${targetDate}/Clock.tsx. Original error:`, err);
+            console.error(`[useClockPage] Critical: Failed to load module for ${targetDate}. Ensure the file exists in src/pages/ and has no syntax/import errors. Original error:`, err);
             
             if (msg.includes('Failed to fetch') || msg.includes('error loading dynamically imported module')) {
               throw new Error(
