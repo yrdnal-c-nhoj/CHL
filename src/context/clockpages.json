@@ -1103,6 +1103,7 @@
     "date": "25-06-21",
     "title": "Mercury",
     "tags": [
+      "aether",
       "gods",
       "myth",
       "planet",
@@ -2287,6 +2288,7 @@
     "title": "Four Elements",
     "tags": [
       "analog",
+      "aether",
       "air",
       "earth",
       "elements",
@@ -2620,6 +2622,7 @@
     "title": "Venus",
     "tags": [
       "Venus",
+      "aether",
       "gods",
       "green",
       "ocean",
@@ -3026,6 +3029,7 @@
     "title": "Mars",
     "tags": [
       "Mars",
+      "aether",
       "gods",
       "myth",
       "planet",
@@ -3324,6 +3328,7 @@
     "title": "Jupiter",
     "tags": [
       "digital",
+      "aether",
       "gods",
       "planet",
       "roman-numeral",
@@ -3509,6 +3514,7 @@
     "title": "Saturn",
     "tags": [
       "digital",
+      "aether",
       "gods",
       "myth",
       "planet",
@@ -3923,6 +3929,7 @@
     "title": "Uranus",
     "tags": [
       "analog",
+      "aether",
       "blue",
       "gods",
       "planet",
@@ -4047,6 +4054,7 @@
     "title": "Le Trocadéro",
     "tags": [
       "analog",
+      "aerial",
       "France",
       "Paris",
       "design",
@@ -4247,6 +4255,7 @@
     "date": "26-02-23",
     "title": "Neptune",
     "tags": [
+      "aether",
       "blue",
       "digital-24h",
       "gods",
@@ -5704,6 +5713,36 @@
       "mechanical",
       "random",
       "six-simple-machines"
+    ]
+  },
+  {
+    "path": "26-06-03",
+    "date": "26-06-03",
+    "title": "Tornado",
+    "tags": [
+      "analog",
+      "air",
+      "dark",
+      "fast",
+      "nature",
+      "parallax",
+      "sky",
+      "spin"
+    ]
+  },
+  {
+    "path": "26-06-04",
+    "date": "26-06-04",
+    "title": "Sphinx",
+    "tags": [
+      "analog",
+      "Africa",
+      "Egypt",
+      "face",
+      "myth",
+      "pyramid",
+      "scarab",
+      "stone"
     ]
   }
 ]
