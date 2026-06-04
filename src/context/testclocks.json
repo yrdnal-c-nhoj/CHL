@@ -261,7 +261,7 @@
       "histogram",
       "image-free",
       "sphere",
-      "thre"
+      "three"
     ]
   },
   {
@@ -291,7 +291,6 @@
       "feather",
       "fly",
       "sound",
-      "superstition",
       "two",
       "walk"
     ]
@@ -369,7 +368,6 @@
     "title": "Spinning Coin",
     "tags": [
       "analog",
-      "disc",
       "metal",
       "shiny",
       "spin"
@@ -442,8 +440,7 @@
       "exoskeletal",
       "nature",
       "predator",
-      "sand",
-      "sting"
+      "sand"
     ]
   },
   {
@@ -625,8 +622,10 @@
     "tags": [
       "analog",
       "RYB",
+      "blue",
       "color",
-      "spectrum"
+      "red",
+      "yellow"
     ]
   },
   {
@@ -872,7 +871,6 @@
       "black",
       "brown",
       "cow",
-      "drink",
       "food",
       "grow",
       "hand",
@@ -1091,8 +1089,8 @@
     "title": "CMYK",
     "tags": [
       "analog",
+      "CMYK",
       "black",
-      "cmyk",
       "color",
       "cyan",
       "image-free",
@@ -1397,8 +1395,7 @@
     "title": "Cartoon",
     "tags": [
       "broken_clock",
-      "hand",
-      "under-repair"
+      "hand"
     ]
   },
   {
@@ -1462,7 +1459,7 @@
     "tags": [
       "digital",
       "blue",
-      "mesopotamia",
+      "desert",
       "slow",
       "stone"
     ]
@@ -1473,8 +1470,6 @@
     "title": "F-Stop",
     "tags": [
       "analog",
-      "camera",
-      "developer",
       "film",
       "glass",
       "hand",
@@ -1619,7 +1614,6 @@
       "aim",
       "cloth",
       "eye",
-      "history",
       "slow",
       "thread",
       "underworld",
@@ -1994,7 +1988,7 @@
       "earth",
       "gold",
       "paper",
-      "tolkien"
+      "Tolkien"
     ]
   },
   {
