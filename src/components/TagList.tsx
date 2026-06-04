@@ -2,13 +2,13 @@
 
 import { useContext, useMemo, type FC, type MouseEvent } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import Footer from './components/Footer';
-import Thumbnail from './components/Thumbnail';
-import TopNav from './components/TopNav';
-import { DataContext } from './context/DataContext';
-import listStyles from './styles/ClockList.module.css';
+import { DataContext } from '../context/DataContext';
+import listStyles from '../styles/ClockList.module.css';
+import { sortTags } from '../utils/tagUtils';
+import Footer from './Footer';
+import Thumbnail from './Thumbnail';
+import TopNav from './TopNav';
 import type { ClockItem, DataContextType } from './types/data';
-import { sortTags } from './utils/tagUtils';
 
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 

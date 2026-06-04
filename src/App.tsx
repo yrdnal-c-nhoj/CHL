@@ -32,11 +32,11 @@ const ClockPage = React.lazy(() => import('./ClockPage'));
 const Today = React.lazy(() => import('./Today'));
 const Contact = React.lazy(() => import('./Contact'));
 const ClockList = React.lazy(() => import('./ClockList'));
-const TagList = React.lazy(() => import('./TagList'));
-const Tagger = React.lazy(() => import('./components/Tagger'));
-const TagManager = React.lazy(() => import('./components/TagManager'));
-const TagByImage = React.lazy(() => import('./components/TagByImage'));
-const AllTagsPage = React.lazy(() => import('./components/AllTagsPage'));
+const TagList = React.lazy(() => import('./components/TagList'));
+const Tagger = React.lazy(() => import('./components/admin/Tagger'));
+const TagManager = React.lazy(() => import('./components/admin/TagManager'));
+const TagByImage = React.lazy(() => import('./components/admin/TagByImage'));
+const AllTagsPage = React.lazy(() => import('./AllTagsPage'));
 
 
 // Configuration constants
