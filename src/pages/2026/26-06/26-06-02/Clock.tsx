@@ -5,7 +5,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
 import m1 from '@/assets/images/26_images/26-06/26-06-02/1.webp';
-// import m2 from '@/assets/images/26_images/26-06/26-06-02/2.webp';
 import m3 from '@/assets/images/26_images/26-06/26-06-02/3.webp';
 import m4 from '@/assets/images/26_images/26-06/26-06-02/4.webp';
 import m5 from '@/assets/images/26_images/26-06/26-06-02/5.webp';
@@ -74,8 +73,17 @@ const VTEC: React.FC = () => {
   }, [createRandomImage]);
 
   useEffect(() => {
-    // Display all 4 images initially with randomized placement/angles
-    const initialSet = ALL_IMAGES.map((src) => createRandomImage(src));
+    // Create the initial pool: m1 (1.webp) 6 times, others 3 times
+    const initialPool: string[] = [];
+    ALL_IMAGES.forEach((src) => {
+      const count = src === m1 ? 6 : 3;
+      for (let i = 0; i < count; i++) {
+        initialPool.push(src);
+      }
+    });
+
+    const initialSet = initialPool.map((src) => createRandomImage(src));
+
     setVisibleImages(initialSet);
     setHasMounted(true);
 
@@ -90,6 +98,7 @@ const VTEC: React.FC = () => {
       style={{
         backgroundImage: `url(${tile})`,
         backgroundPosition: 'center',
+        backgroundSize: '15vh',
       }}
     >
       <time
