@@ -120,13 +120,16 @@ export default function TagManager() {
   }
 
 
-  // Extract all unique tags from all items for the dropdown
+  // Extract all unique tags with counts for the selection elements
   const allExistingTags = useMemo(() => {
-    const tags = new Set<string>();
+    const counts: Record<string, number> = {};
     items.forEach((item) => {
-      (item.tags ?? []).forEach((tag) => tags.add(tag));
+      (item.tags ?? []).forEach((tag) => {
+        counts[tag] = (counts[tag] || 0) + 1;
+      });
     });
-    return sortTags(tags);
+    const sorted = sortTags(new Set(Object.keys(counts)));
+    return sorted.map(name => ({ name, count: counts[name] }));
   }, [items]);
 
 
@@ -248,7 +251,10 @@ export default function TagManager() {
                       {/* Right: Info and Tagging */}
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                          <span style={{ fontWeight: 'bold', color: '#333' }}>{item.title}</span>
+                          <span style={{ fontWeight: 'bold', color: '#333' }}>
+                            {item.title}{' '}
+                            <small style={{ color: '#888', fontWeight: 'normal' }}>#{item.clockNumber}</small>
+                          </span>
                           <code style={{ fontSize: '0.85rem', color: '#666' }}>{item.date}</code>
                         </div>
 
@@ -293,8 +299,8 @@ export default function TagManager() {
                               style={{ width: 'auto', minWidth: '140px' }}
                             >
                               <option value="" disabled>Add existing...</option>
-                              {allExistingTags.map(tag => (
-                                <option key={tag} value={tag}>{tag}</option>
+                              {allExistingTags.map(({ name, count }) => (
+                                <option key={name} value={name}>{name} ({count})</option>
                               ))}
                             </select>
                           </div>
@@ -308,18 +314,18 @@ export default function TagManager() {
                             flexWrap: 'wrap', 
                             gap: '4px' 
                           }}>
-                            {allExistingTags.slice(0, 15).map(tag => (
+                            {allExistingTags.slice(0, 15).map(({ name, count }) => (
                               <button
-                                key={tag}
-                                onClick={() => toggleTag(item.date, tag)}
+                                key={name}
+                                onClick={() => toggleTag(item.date, name)}
                                 style={{ 
                                   fontSize: '10px', padding: '2px 6px', borderRadius: '4px', 
                                   background: 'none', border: '1px solid #ddd', cursor: 'pointer',
-                                  color: normalizeTags(localTags[item.date] ?? '').includes(tag) ? '#000' : '#888',
-                                  backgroundColor: normalizeTags(localTags[item.date] ?? '').includes(tag) ? '#eee' : 'transparent'
+                                  color: normalizeTags(localTags[item.date] ?? '').includes(name) ? '#000' : '#888',
+                                  backgroundColor: normalizeTags(localTags[item.date] ?? '').includes(name) ? '#eee' : 'transparent'
                                 }}
                               >
-                                {tag}
+                                {name} ({count})
                               </button>
                             ))}
                           </div>
