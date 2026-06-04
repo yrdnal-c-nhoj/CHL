@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
-import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -14,9 +14,14 @@ import { default as m5, default as m6, default as m7 } from '@/assets/images/26_
 import tile from '@/assets/images/26_images/26-06/26-06-02/tile.webp';
 
 // Import the font with the corresponding date from the assets folder
-import fontUrl from '@/assets/fonts/26fonts/26-06-02.ttf?url';
+// Import the font URL for runtime FontFace.
+// (Using ?url keeps it consistent with other clock pages in this repo.)
+const fontUrl = new URL(
+  '@/assets/fonts/26fonts/26-06-02.ttf',
+  import.meta.url,
+).href;
 
-const ALL_IMAGES = [m1, m2, m3, m4, m5, m6, m7];
+const ALL_IMAGES = [m1, m2, m3, m4, m5, m6, m7] as const;
 
 interface ImageData {
   id: number;
@@ -25,13 +30,20 @@ interface ImageData {
 }
 
 const fontConfigs: FontConfig[] = [
-  { fontFamily: 'ClockFont_26_06_02', fontUrl },
+  {
+    fontFamily: 'ClockFont_26_06_02',
+    // eslint tooling may not understand the ?url import; runtime font loader still expects a string.
+    fontUrl: fontUrl ?? '',
+  },
 ];
 
 const VTEC: React.FC = () => {
-  const time = useClockTime();
+  const time = useSecondClock();
+
   const [visibleImages, setVisibleImages] = useState<ImageData[]>([]);
   const idCounter = useRef(0);
+  const [hasMounted, setHasMounted] = useState(false);
+
 
   // Load and suspend rendering until the custom font is ready
   useSuspenseFontLoader(fontConfigs);
@@ -54,20 +66,20 @@ const VTEC: React.FC = () => {
   }, []);
 
   const cycleImage = useCallback(() => {
-    const randomImg = ALL_IMAGES[Math.floor(Math.random() * ALL_IMAGES.length)];
-    const newImage = createRandomImage(randomImg);
+    const randomImg =
+      ALL_IMAGES[Math.floor(Math.random() * ALL_IMAGES.length)] as string;
+    const nextImage = createRandomImage(randomImg);
 
+    // Keep a constant array length to avoid per-tick allocations/growth.
     setVisibleImages((prev) => {
-      const next = [...prev, newImage];
-      // "Paste in the first one and delete the last one"
-      // We maintain the double-set count (10 images if using 5 source files)
+      if (prev.length === 0) return prev;
       const limit = ALL_IMAGES.length * 2;
-      if (next.length > limit) {
-        return next.slice(1);
-      }
+      const next = prev.slice();
+      const rotateIndex = (next.length - 1) % limit;
+      next[rotateIndex] = nextImage;
       return next;
     });
-  }, []);
+  }, [createRandomImage]);
 
   useEffect(() => {
     // Display all images twice initially with randomized placement/angles
@@ -75,6 +87,7 @@ const VTEC: React.FC = () => {
       createRandomImage(src)
     );
     setVisibleImages(initialSet);
+    setHasMounted(true);
 
     // Start cycling every 1 second
     const interval = setInterval(cycleImage, 1000);
@@ -83,8 +96,8 @@ const VTEC: React.FC = () => {
 
   return (
     <div className={styles.container} style={{ backgroundImage: `url(${tile})` }}>
-      <div 
-        className={styles.digitalClock} 
+      <div
+        className={styles.digitalClock}
         style={{ fontFamily: 'ClockFont_26_06_02' }}
       >
         {String(time.getHours()).padStart(2, '0')}:
@@ -96,7 +109,9 @@ const VTEC: React.FC = () => {
         <img
           key={img.id}
           src={img.src}
-          className={styles.vtecImage}
+          className={
+            hasMounted ? styles.vtecImageNoPopIn : styles.vtecImage
+          }
           style={img.style}
           alt=""
         />
