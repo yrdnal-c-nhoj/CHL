@@ -79,9 +79,8 @@ const AllTagsPage: React.FC = () => {
                 to={`/tag/${name}`} 
                 className={`tag-bubble ${styles.largeBubble}`}
               >
-                {name}
+                {name} ({count})
               </Link>
-              <span className={styles.externalCount}>{count}</span>
             </div>
           ))}
         </div>

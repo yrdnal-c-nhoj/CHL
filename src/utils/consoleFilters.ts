@@ -52,6 +52,10 @@ const shouldSuppress = (msg: string) => {
     'Same Origin Policy',
     'izooto.com',
     'decide.dev',
+    'addons.webextension',
+    'addons.update-checker',
+    'browser-customtitlebar.js',
+    'js.stripe.com',
   ];
 
   const lowerMsg = msg.toLowerCase();
