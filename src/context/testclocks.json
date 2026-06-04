@@ -1393,7 +1393,8 @@
     "date": "25-07-14",
     "title": "Cartoon",
     "tags": [
-      "broken_clock",
+      "broken-clock",
+      "unfinished",
       "hand"
     ]
   },
