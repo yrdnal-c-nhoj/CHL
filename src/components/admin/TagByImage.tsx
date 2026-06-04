@@ -1,11 +1,11 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Thumbnail from '../components/Thumbnail';
-import { DataContext } from '../context/DataContext';
-import sortStyles from '../styles/SortControls.module.css';
-import styles from '../styles/Tagger.module.css';
-import type { DataContextType } from '../types/data';
-import { normalizeTags, sortTags } from '../utils/tagUtils';
+import { DataContext } from '../../context/DataContext';
+import sortStyles from '../../styles/SortControls.module.css';
+import styles from '../../styles/Tagger.module.css';
+import type { DataContextType } from '../../types/data';
+import { normalizeTags, sortTags } from '../../utils/tagUtils';
+import Thumbnail from '../Thumbnail';
 
 export default function TagByImage() {
   const navigate = useNavigate();
