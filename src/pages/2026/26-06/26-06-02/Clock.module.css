@@ -39,7 +39,8 @@
 .digitBox {
   display: inline-flex;
   justify-content: center;
-  width: 8vh; /* Fixed width prevents jittering/jumping */
+  /* Proportionally sized to the 26vh font-size to ensure digits don't overlap */
+  width: 16vh; 
 }
 
 .vtecImage {
