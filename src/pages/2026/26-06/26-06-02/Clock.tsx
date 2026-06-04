@@ -4,7 +4,6 @@ import { useClockTime } from '@/utils/hooks';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
-// Asset Imports from the matching date folder (26-06-02)
 import m1 from '@/assets/images/26_images/26-06/26-06-02/1.webp';
 // import m2 from '@/assets/images/26_images/26-06/26-06-02/2.webp';
 import m3 from '@/assets/images/26_images/26-06/26-06-02/3.webp';
@@ -18,7 +17,7 @@ const fontUrl = new URL(
   import.meta.url,
 ).href;
 
-const ALL_IMAGES = [m1,  m3, m4, m5] as const;
+const ALL_IMAGES = [m1, m3, m4, m5] as const; // Explicitly list the 4 imported images
 export const assets = [...ALL_IMAGES, tile];
 
 interface ImageData {
@@ -31,7 +30,7 @@ const fontConfigs: FontConfig[] = [
   {
     fontFamily: 'ClockFont_26_06_02',
     // eslint tooling may not understand the ?url import; runtime font loader still expects a string.
-    fontUrl: fontUrl ?? '',
+    fontUrl, // fontUrl is always a string from new URL().href
   },
 ];
 
@@ -75,7 +74,7 @@ const VTEC: React.FC = () => {
   }, [createRandomImage]);
 
   useEffect(() => {
-    // Display all six images initially with randomized placement/angles
+    // Display all 4 images initially with randomized placement/angles
     const initialSet = ALL_IMAGES.map((src) => createRandomImage(src));
     setVisibleImages(initialSet);
     setHasMounted(true);
