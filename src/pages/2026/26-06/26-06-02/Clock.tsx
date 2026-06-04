@@ -1,4 +1,6 @@
+import type { FontConfig } from '@/types/clock';
 import { useClockTime } from '@/utils/clockUtils';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -11,6 +13,9 @@ import { default as m5, default as m6, default as m7 } from '@/assets/images/26_
 
 import tile from '@/assets/images/26_images/26-06/26-06-02/tile.webp';
 
+// Import the font with the corresponding date from the assets folder
+import fontUrl from '@/assets/fonts/26fonts/26-06-02.ttf?url';
+
 const ALL_IMAGES = [m1, m2, m3, m4, m5, m6, m7];
 
 interface ImageData {
@@ -19,10 +24,17 @@ interface ImageData {
   style: React.CSSProperties;
 }
 
+const fontConfigs: FontConfig[] = [
+  { fontFamily: 'ClockFont_26_06_02', fontUrl },
+];
+
 const VTEC: React.FC = () => {
   const time = useClockTime();
   const [visibleImages, setVisibleImages] = useState<ImageData[]>([]);
   const idCounter = useRef(0);
+
+  // Load and suspend rendering until the custom font is ready
+  useSuspenseFontLoader(fontConfigs);
 
   const createRandomImage = useCallback((src: string): ImageData => {
     const size = Math.random() * 25 + 15; // Random size between 15% and 40% of viewport
@@ -71,7 +83,10 @@ const VTEC: React.FC = () => {
 
   return (
     <div className={styles.container} style={{ backgroundImage: `url(${tile})` }}>
-      <div className={styles.digitalClock}>
+      <div 
+        className={styles.digitalClock} 
+        style={{ fontFamily: 'ClockFont_26_06_02' }}
+      >
         {String(time.getHours()).padStart(2, '0')}:
         {String(time.getMinutes()).padStart(2, '0')}:
         {String(time.getSeconds()).padStart(2, '0')}
