@@ -74,15 +74,10 @@ const VTEC: React.FC = () => {
 
   useEffect(() => {
     // Create the initial pool: m1 (1.webp) 6 times, others 3 times
-    const initialPool: string[] = [];
-    ALL_IMAGES.forEach((src) => {
+    const initialSet = ALL_IMAGES.flatMap((src) => {
       const count = src === m1 ? 6 : 3;
-      for (let i = 0; i < count; i++) {
-        initialPool.push(src);
-      }
+      return Array.from({ length: count }, () => createRandomImage(src));
     });
-
-    const initialSet = initialPool.map((src) => createRandomImage(src));
 
     setVisibleImages(initialSet);
     setHasMounted(true);
@@ -110,9 +105,7 @@ const VTEC: React.FC = () => {
           time.getHours(),
           time.getMinutes(),
           time.getSeconds(),
-        ].map(unit => String(unit).padStart(2, '0'))
-         .join('')
-         .split('')
+        ].flatMap(unit => String(unit).padStart(2, '0').split(''))
          .map((char, i) => (
           <span key={i} className={styles.digitBox}>{char}</span>
         ))}
