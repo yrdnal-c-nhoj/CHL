@@ -1556,7 +1556,7 @@
       "mechanical",
       "metal",
       "silver",
-      "slide-to-side",
+      "side-to-side",
       "word-clock"
     ]
   },
@@ -1808,7 +1808,6 @@
     "tags": [
       "analog",
       "cake",
-      "month",
       "stone"
     ]
   },
@@ -1890,10 +1889,9 @@
     "title": "Lateral",
     "tags": [
       "digital-24h",
-      "horizontal",
       "monochrome",
       "parallel",
-      "slide-to-side"
+      "side-to-side"
     ]
   },
   {
@@ -2322,7 +2320,6 @@
     "tags": [
       "analog",
       "EKG",
-      "beat",
       "blood",
       "body",
       "fast",
@@ -2483,7 +2480,7 @@
     "tags": [
       "analog",
       "0123456789abcdef",
-      "base-16"
+      "color"
     ]
   },
   {
@@ -2672,7 +2669,7 @@
     "tags": [
       "digital",
       "grid",
-      "nederland",
+      "Nederland",
       "square"
     ]
   },
@@ -2711,7 +2708,7 @@
       "day",
       "fast",
       "float",
-      "maine",
+      "Maine",
       "milliseconds",
       "ocean",
       "smell",
@@ -4221,7 +4218,7 @@
     "date": "26-02-19",
     "title": "Sachplakat",
     "tags": [
-      "FigitaL-12h",
+      "DigitaL-12h",
       "Germany",
       "design",
       "paper",
