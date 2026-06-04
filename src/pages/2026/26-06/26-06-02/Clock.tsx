@@ -14,7 +14,7 @@ import tile from '@/assets/images/26_images/26-06/26-06-02/tile.webp';
 
 // Import the font with the corresponding date from the assets folder
 const fontUrl = new URL(
-  '../../../../assets/fonts/26fonts/26-06-02.ttf',
+  '../../../../assets/fonts/26fonts/26-06-02.otf',
   import.meta.url,
 ).href;
 
@@ -97,9 +97,17 @@ const VTEC: React.FC = () => {
         className={styles.digitalClock}
         style={{ fontFamily: 'ClockFont_26_06_02' }}
       >
-        {String(time.getHours()).padStart(2, '0')}:
-        {String(time.getMinutes()).padStart(2, '0')}:
-        {String(time.getSeconds()).padStart(2, '0')}
+        {String(time.getHours()).padStart(2, '0').split('').map((char, i) => (
+          <span key={`h-${i}`} className={styles.digitBox}>{char}</span>
+        ))}
+        <span className={styles.separator}>:</span>
+        {String(time.getMinutes()).padStart(2, '0').split('').map((char, i) => (
+          <span key={`m-${i}`} className={styles.digitBox}>{char}</span>
+        ))}
+        <span className={styles.separator}>:</span>
+        {String(time.getSeconds()).padStart(2, '0').split('').map((char, i) => (
+          <span key={`s-${i}`} className={styles.digitBox}>{char}</span>
+        ))}
       </div>
 
       {visibleImages.map((img) => (
