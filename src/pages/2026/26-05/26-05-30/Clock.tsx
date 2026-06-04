@@ -1,5 +1,4 @@
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useClockTime } from '@/utils/hooks';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // Background & Assets
@@ -49,8 +48,8 @@ interface HandSize {
 // ─── Hand config ──────────────────────────────────────────────────────────────
 
 const HAND_CONFIG: Record<'hourHand' | 'minuteHand' | 'secondHand', HandSize> = {
-  hourHand:   { width: 0.42, height: 0.8, z: 10 },
-  minuteHand: { width: 0.40, height: 0.8, z: 20 },
+  hourHand:   { width: 0.42, height: 0.8, z: 20 },
+  minuteHand: { width: 0.40, height: 0.8, z: 10 },
   secondHand: { width: 0.68, height: 0.6, z: 30 },
 };
 
@@ -109,9 +108,22 @@ ClockFace.displayName = 'ClockFace';
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 const TangerineClock: React.FC = () => {
-  const time = useClockTime('ms'); // high-precision tick
+  const [time, setTime] = useState(new Date());
   const [clockSize, setClockSize] = useState<number>(300);
   const [isClient, setIsClient] = useState<boolean>(false);
+
+  // Implement a high-frequency update loop using requestAnimationFrame.
+  // This ensures the second hand moves in a continuous "sweep" motion at the
+  // display's refresh rate (typically 60fps) rather than ticking every second.
+  useEffect(() => {
+    let rafId: number;
+    const updateClock = () => {
+      setTime(new Date());
+      rafId = requestAnimationFrame(updateClock);
+    };
+    rafId = requestAnimationFrame(updateClock);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
 
   // ── Asset loading ──────────────────────────────────────────────────────────
 
@@ -163,19 +175,24 @@ const TangerineClock: React.FC = () => {
 
   // ── Angle calculations ─────────────────────────────────────────────────────
 
-  const { secDeg, minDeg, hourDeg, radius } = useMemo(() => {
+  const radius = useMemo(() => clockSize * 0.42, [clockSize]);
+
+  const { secDeg, minDeg, hourDeg } = useMemo(() => {
     const ms = time.getMilliseconds();
     const s  = time.getSeconds();
     const m  = time.getMinutes();
     const h  = time.getHours();
 
+    const totalSeconds = s + ms / 1000;
+    const totalMinutes = m + totalSeconds / 60;
+    const totalHours   = (h % 12) + totalMinutes / 60;
+
     return {
-      secDeg:  ((s + ms / 1000) / 60) * 360,
-      minDeg:  ((m + s  / 60)  / 60) * 360,
-      hourDeg: (((h % 12) + m / 60) / 12) * 360,
-      radius:  clockSize * 0.42,
+      secDeg:  (totalSeconds / 60) * 360,
+      minDeg:  (totalMinutes / 60) * 360,
+      hourDeg: (totalHours / 12) * 360,
     };
-  }, [time, clockSize]);
+  }, [time]);
 
   // ── Hand style factory ─────────────────────────────────────────────────────
 
