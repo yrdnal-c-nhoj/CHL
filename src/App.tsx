@@ -27,16 +27,16 @@ import { pageview } from './analytics';
 import { DataProvider } from './context/DataContext';
 
 // Lazy loaded components for better performance
-const Home = React.lazy(() => import('./Home'));
-const ClockPage = React.lazy(() => import('./ClockPage'));
-const Today = React.lazy(() => import('./Today'));
-const Contact = React.lazy(() => import('./Contact'));
-const ClockList = React.lazy(() => import('./ClockList'));
+const Home = React.lazy(() => import('./pages/Home'));
+const ClockPage = React.lazy(() => import('./pages/ClockPage'));
+const Today = React.lazy(() => import('./pages/Today'));
+const Contact = React.lazy(() => import('./pages/Contact'));
+const ClockList = React.lazy(() => import('./pages/ClockList'));
 const TagList = React.lazy(() => import('./components/TagList'));
 const Tagger = React.lazy(() => import('./components/admin/Tagger'));
 const TagManager = React.lazy(() => import('./components/admin/TagManager'));
 const TagByImage = React.lazy(() => import('./components/admin/TagByImage'));
-const AllTagsPage = React.lazy(() => import('./AllTagsPage'));
+const AllTagsPage = React.lazy(() => import('./pages/AllTagsPage'));
 
 
 // Configuration constants
