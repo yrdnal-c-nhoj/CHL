@@ -47,6 +47,7 @@ const Clock: React.FC = () => {
         loop
         muted
         playsInline
+        preload="auto"
         className={styles.backgroundVideo}
       >
         <source src={cablesVideo} type="video/mp4" />

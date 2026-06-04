@@ -29,7 +29,7 @@ const LOADING_TIMEOUT = 10000; // 10 seconds
  */
 
 // NOTE: Some clocks export `assets` as `string[]`, others may export as `AssetConfig[]`.
-// Production crashes like "Clock execution failed (...): src is not defined" usually happen
+// Production crashes like "Clock execution failed (...): assetPathString is not defined" usually happen
 // when the preload layer expects `{ src: string }` but receives a plain string.
 export function useClockPage(currentItem: { date: string } | null) {
 
@@ -51,11 +51,20 @@ export function useClockPage(currentItem: { date: string } | null) {
       // Use a completely unique name for the mapping function parameter
       // to avoid any potential minifier collision with global 'src' identifiers
       const configurations: AssetConfig[] = assetUrls.map((assetPathString) => ({ src: assetPathString }));
+      
+      // Create a timeout for asset preloading to prevent infinite hangs on broken resources
+      const assetTimeout = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Asset preloading timed out')), 5000)
+      );
 
       // Fail open: missing/broken assets should not prevent the clock from mounting.
       try {
-        await preloadAssets(configurations);
-      } catch {
+        await Promise.race([
+          preloadAssets(configurations),
+          assetTimeout
+        ]);
+      } catch (e) {
+        console.warn(`[useClockPage] Preload interrupted for ${currentItem?.date}:`, e);
         // preloadAssets is already Promise-based; this catch is defensive.
       }
     },
@@ -130,7 +139,10 @@ export function useClockPage(currentItem: { date: string } | null) {
         try {
           if (Array.isArray(module.assets) && module.assets.length > 0) {
             // Keep only string URLs; ignore any other shapes.
-            const assetUrls = module.assets.filter((v) => typeof v === 'string');
+            // Filter out videos (.mp4, .webm) from preloading, as they cause networkidle hangs.
+            const assetUrls = module.assets.filter((v) => 
+              typeof v === 'string' && !/\.(mp4|webm|ogg)$/i.test(v)
+            );
 
             if (assetUrls.length > 0) {
               await preloadClockAssets(assetUrls as string[]);
@@ -154,6 +166,13 @@ export function useClockPage(currentItem: { date: string } | null) {
         }
 
         // 4. Update component state
+        if (!module.default) {
+          // This check is redundant but helps with HMR edge cases
+          throw new Error('Module loaded but default export is missing.');
+        }
+        
+        console.log(`[useClockPage] Successfully prepared ${targetDate}`);
+
         setClockComponent(() => module.default);
 
         // 5. Short delay for React to mount before fading overlay
