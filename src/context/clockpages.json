@@ -504,6 +504,7 @@
       "deepwater",
       "green",
       "mechanical",
+      "radar",
       "see",
       "swim",
       "transport"
@@ -961,10 +962,10 @@
     "tags": [
       "b+w",
       "circle",
+      "pentagon",
       "pictographic",
       "square",
-      "triangle",
-      "pentagon"
+      "triangle"
     ]
   },
   {
@@ -1395,8 +1396,8 @@
     "title": "Cartoon",
     "tags": [
       "broken-clock",
-      "unfinished",
-      "hand"
+      "hand",
+      "unfinished"
     ]
   },
   {
@@ -1556,8 +1557,8 @@
       "gold",
       "mechanical",
       "metal",
-      "silver",
       "side-to-side",
+      "silver",
       "word-clock"
     ]
   },
@@ -1983,11 +1984,11 @@
     "tags": [
       "digital",
       "England",
+      "Tolkien",
       "book",
       "earth",
       "gold",
-      "paper",
-      "Tolkien"
+      "paper"
     ]
   },
   {
@@ -2669,8 +2670,8 @@
     "title": "Delft",
     "tags": [
       "digital",
-      "grid",
       "Nederland",
+      "grid",
       "square"
     ]
   },
@@ -2706,10 +2707,10 @@
     "title": "Bay of Fundy",
     "tags": [
       "digital",
+      "Maine",
       "day",
       "fast",
       "float",
-      "Maine",
       "milliseconds",
       "ocean",
       "smell",
@@ -4134,7 +4135,8 @@
       "image-free",
       "monochrome",
       "typeface",
-      "word-clock"
+      "word-clock",
+      "words"
     ]
   },
   {
@@ -4209,9 +4211,9 @@
     "date": "26-02-19",
     "title": "Sachplakat",
     "tags": [
-      "digital-12h",
       "Germany",
       "design",
+      "digital-12h",
       "paper",
       "typeface"
     ]
@@ -4366,9 +4368,9 @@
       "analog",
       "air",
       "cardinal-directions",
-      "dusk",
       "myth",
       "sun",
+      "twilight",
       "wind"
     ]
   },
@@ -4716,7 +4718,6 @@
     "tags": [
       "digital-12h",
       "drive",
-      "fumes",
       "landscape",
       "sky",
       "transport",
@@ -4760,13 +4761,13 @@
       "analog",
       "air",
       "cardinal-directions",
-      "dawn",
       "feather",
       "horse",
       "myth",
       "odd-toed-ungulate",
       "roman-numeral",
       "scarab",
+      "twilight",
       "warm",
       "wet",
       "wind"
@@ -4942,7 +4943,7 @@
     "date": "26-04-11",
     "title": "Staring",
     "tags": [
-      "eyes",
+      "eye",
       "face",
       "pictographic-24h",
       "see"
@@ -5042,9 +5043,7 @@
     "title": "Frequency",
     "tags": [
       "digital-24h",
-      "radio",
       "tech",
-      "wavelength",
       "waves"
     ]
   },
@@ -5541,7 +5540,6 @@
     "title": "Elevator",
     "tags": [
       "digital-24h",
-      "door",
       "interior",
       "mechanical",
       "metal",
@@ -5575,6 +5573,7 @@
       "fast",
       "float",
       "pictographic-24h",
+      "radar",
       "swim",
       "tech",
       "transport"
