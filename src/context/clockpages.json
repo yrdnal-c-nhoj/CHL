@@ -438,6 +438,7 @@
       "blood",
       "brown",
       "exoskeletal",
+      "horn",
       "nature",
       "predator",
       "sand"
@@ -996,6 +997,7 @@
       "camouflage",
       "cloth",
       "cow",
+      "horn",
       "hot",
       "metal",
       "run",
@@ -3291,6 +3293,7 @@
       "Africa",
       "animal",
       "brown",
+      "horn",
       "monochrome",
       "run"
     ]
@@ -4480,6 +4483,7 @@
       "animal",
       "exterior",
       "fast",
+      "horn",
       "light",
       "move",
       "myth",
@@ -4981,6 +4985,7 @@
     "tags": [
       "digital-24h",
       "drive",
+      "horn",
       "mechanical",
       "milliseconds",
       "move",
@@ -5209,6 +5214,7 @@
     "tags": [
       "animal",
       "digital-24h",
+      "horn",
       "mechanical",
       "run",
       "spin"
@@ -5537,9 +5543,9 @@
       "Clippy",
       "day",
       "digital-12h",
-      "tech",
       "landscape",
       "nature",
+      "tech",
       "weather",
       "windows"
     ]
@@ -5553,6 +5559,7 @@
       "interior",
       "mechanical",
       "metal",
+      "open-and-shut",
       "transport",
       "up-and-down"
     ]
