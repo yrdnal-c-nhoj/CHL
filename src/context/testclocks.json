@@ -963,7 +963,8 @@
       "circle",
       "pictographic",
       "square",
-      "triangle"
+      "triangle",
+      "pentagon"
     ]
   },
   {
@@ -2752,11 +2753,9 @@
     "tags": [
       "analog",
       "animal",
-      "butterfly",
       "camouflage",
       "exoskeletal",
       "fast",
-      "migrate",
       "roman-numeral"
     ]
   },
@@ -2994,7 +2993,6 @@
       "analog",
       "ice",
       "slow",
-      "transparent",
       "water"
     ]
   },
@@ -3177,7 +3175,7 @@
       "Paris",
       "aim",
       "blood",
-      "flag",
+      "flags",
       "paper"
     ]
   },
@@ -3187,8 +3185,7 @@
     "title": "Timeline",
     "tags": [
       "color",
-      "digital-24h",
-      "grid  image-free"
+      "digital-24h"
     ]
   },
   {
@@ -3353,7 +3350,6 @@
       "digital",
       "fast",
       "milliseconds",
-      "numbers",
       "words"
     ]
   },
