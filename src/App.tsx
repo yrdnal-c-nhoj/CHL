@@ -1,4 +1,4 @@
-x/**
+/**
  * Main Application Component
  *
  * This is the root component of the BorrowedTime application that handles:
