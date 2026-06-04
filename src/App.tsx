@@ -18,9 +18,9 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import {
+  BrowserRouter,
   Navigate,
   Route,
-  BrowserRouter as Router,
   Routes,
   useLocation,
 } from 'react-router-dom';
@@ -180,12 +180,8 @@ const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <DataProvider>
-        <Router
-          future={{
-            v7_startTransition: true,
-            v7_relativeSplatPath: true,
-          }}
-        >
+        {/* In production, the app should be mounted at the router root.
+            In unit tests we wrap <App /> with a MemoryRouter, so avoid nesting. */}
           <AnalyticsAndSEO />
 
           <React.Suspense
@@ -222,7 +218,7 @@ const App: React.FC = () => {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </React.Suspense>
-        </Router>
+        </BrowserRouter>
       </DataProvider>
     </ErrorBoundary>
   );
