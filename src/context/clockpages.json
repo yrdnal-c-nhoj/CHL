@@ -517,6 +517,7 @@
     "tags": [
       "digital",
       "aerial",
+      "air",
       "fly",
       "gold",
       "sky",
@@ -819,6 +820,7 @@
     "title": "Air Mail",
     "tags": [
       "UPC",
+      "air",
       "digital-24h",
       "fly",
       "move",
@@ -938,6 +940,7 @@
     "date": "25-06-09",
     "title": "Ionosphere",
     "tags": [
+      "air",
       "digital-12h",
       "fast",
       "fly",
@@ -998,6 +1001,7 @@
     "title": "Cloudy Night",
     "tags": [
       "digital",
+      "air",
       "black",
       "fast",
       "landscape",
@@ -3369,6 +3373,7 @@
       "Rococo",
       "Venus",
       "aerial",
+      "air",
       "art",
       "body",
       "cloth",
@@ -3795,6 +3800,7 @@
     "title": "225° Southwest",
     "tags": [
       "analog",
+      "air",
       "cardinal-directions",
       "myth",
       "water",
@@ -3841,6 +3847,7 @@
     "tags": [
       "analog",
       "aerial",
+      "air",
       "animal",
       "bird",
       "blue",
@@ -3942,6 +3949,7 @@
     "date": "26-01-30",
     "title": "45° Northeast",
     "tags": [
+      "air",
       "cardinal-directions",
       "cold",
       "myth",
@@ -4054,9 +4062,9 @@
     "title": "Le Trocadéro",
     "tags": [
       "analog",
-      "aerial",
       "France",
       "Paris",
+      "aerial",
       "design",
       "landscape",
       "metal",
@@ -4137,6 +4145,7 @@
     "title": "Concourse",
     "tags": [
       "aerial",
+      "air",
       "airstairs",
       "fast",
       "fly",
@@ -4358,6 +4367,7 @@
     "title": "270° West",
     "tags": [
       "analog",
+      "air",
       "cardinal-directions",
       "dusk",
       "myth",
@@ -4590,6 +4600,7 @@
     "tags": [
       "analog",
       "LA",
+      "airstairs",
       "day",
       "film",
       "screen",
@@ -4647,6 +4658,7 @@
     "date": "26-03-22",
     "title": "Aloft",
     "tags": [
+      "air",
       "balloon",
       "blue",
       "day",
@@ -4675,6 +4687,7 @@
     "title": "Quiver",
     "tags": [
       "aim",
+      "air",
       "digital-12h",
       "feather",
       "hand",
@@ -4748,6 +4761,7 @@
     "title": "90° East",
     "tags": [
       "analog",
+      "air",
       "cardinal-directions",
       "dawn",
       "feather",
@@ -4996,6 +5010,7 @@
     "title": "135° Southeast",
     "tags": [
       "analog",
+      "air",
       "cardinal-directions",
       "fruit",
       "jasmine",
@@ -5015,6 +5030,7 @@
       "Paris",
       "Playtime",
       "Tati",
+      "airstairs",
       "digital-24h",
       "film",
       "glass",
@@ -5374,6 +5390,7 @@
     "title": "180° South",
     "tags": [
       "analog",
+      "air",
       "animal",
       "cardinal-directions",
       "fire",
@@ -5408,6 +5425,7 @@
     "title": "Balloons",
     "tags": [
       "analog",
+      "air",
       "balloon",
       "cake",
       "color",
@@ -5443,6 +5461,7 @@
     "title": "Departure",
     "tags": [
       "analog",
+      "air",
       "airstairs",
       "day",
       "fast",
@@ -5487,6 +5506,7 @@
       "analog",
       "1888",
       "France",
+      "air",
       "body",
       "dance",
       "film",
