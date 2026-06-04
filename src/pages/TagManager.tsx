@@ -121,7 +121,7 @@ export default function TagManager() {
 
 
   // Extract all unique tags with counts for the selection elements
-  const allExistingTags = useMemo(() => {
+  const { allExistingTags, tagCounts } = useMemo(() => {
     const counts: Record<string, number> = {};
     items.forEach((item) => {
       (item.tags ?? []).forEach((tag) => {
@@ -129,7 +129,10 @@ export default function TagManager() {
       });
     });
     const sorted = sortTags(new Set(Object.keys(counts)));
-    return sorted.map(name => ({ name, count: counts[name] }));
+    return {
+      allExistingTags: sorted.map(name => ({ name, count: counts[name] })),
+      tagCounts: counts
+    };
   }, [items]);
 
 
@@ -270,7 +273,7 @@ export default function TagManager() {
                                   style={{ border: '1px solid #222', cursor: 'pointer', fontSize: '11px' }}
                                   title="Click to remove"
                                 >
-                                  {tag} ×
+                                  {tag} ({tagCounts[tag] ?? 0}) ×
                                 </button>
                               ))
                             ) : (

@@ -25,13 +25,18 @@ export default function Tagger() {
   const [tagInput, setTagInput] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
 
-  const allExistingTags = useMemo(() => {
-    if (!items.length) return [];
-    const tags = new Set<string>();
-    items.forEach(item => {
-      (item.tags ?? []).forEach(tag => tags.add(tag));
+  const { allExistingTags, tagCounts } = useMemo(() => {
+    const counts: Record<string, number> = {};
+    items.forEach((item) => {
+      (item.tags ?? []).forEach((tag) => {
+        counts[tag] = (counts[tag] || 0) + 1;
+      });
     });
-    return sortTags(tags);
+    const sorted = sortTags(new Set(Object.keys(counts)));
+    return {
+      allExistingTags: sorted.map(name => ({ name, count: counts[name] })),
+      tagCounts: counts
+    };
   }, [items]);
 
   useEffect(() => {

@@ -25,6 +25,16 @@ const ClockList: FC = () => {
   const navigate = useNavigate();
   const [sortBy, setSortBy] = useState<SortOption>('date-desc');
 
+  // Calculate global frequency counts for all tags to display counts in bubbles
+  const tagCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    items.forEach((item) => {
+      (item.tags ?? []).forEach((t) => {
+        counts[t] = (counts[t] || 0) + 1;
+      });
+    });
+    return counts;
+  }, [items]);
 
 
   
@@ -141,7 +151,7 @@ const ClockList: FC = () => {
                           className="tag-bubble"
                           onClick={(e: MouseEvent) => e.stopPropagation()}
                         >
-                          {tag}
+                          {tag} ({tagCounts[tag] ?? 0})
                         </Link>
                       ))}
                   </div>
