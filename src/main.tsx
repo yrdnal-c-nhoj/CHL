@@ -22,8 +22,9 @@ import App from './App.tsx';
 import './styles/globals.css';
 import { installConsoleFilters } from './utils/consoleFilters';
 
-// Reduce known third-party / browser-internal console noise in production.
-if (import.meta.env.PROD) {
+// Reduce known third-party / browser-internal console noise.
+// Enabled in PROD or if explicitly requested via a query param/env (useful for capture scripts).
+if (import.meta.env.PROD || window.location.search.includes('filter_console=true')) {
   try {
     installConsoleFilters();
   } catch {
