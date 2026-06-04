@@ -25,6 +25,7 @@
       "book",
       "deepwater",
       "digital-24h",
+      "float",
       "grey",
       "mirror",
       "ocean",
@@ -272,6 +273,7 @@
       "blue",
       "digital-12h",
       "elements",
+      "float",
       "monochrome",
       "nature",
       "sky",
@@ -312,6 +314,7 @@
     "tags": [
       "analog",
       "Mars",
+      "float",
       "horizon",
       "ocean",
       "roman-numeral",
@@ -517,6 +520,7 @@
       "digital",
       "aerial",
       "air",
+      "float",
       "fly",
       "gold",
       "sky",
@@ -530,6 +534,7 @@
     "title": "Whirlpool",
     "tags": [
       "analog",
+      "float",
       "gravity",
       "spin",
       "swim",
@@ -821,6 +826,7 @@
       "UPC",
       "air",
       "digital-24h",
+      "float",
       "fly",
       "move",
       "paper",
@@ -1003,6 +1009,7 @@
       "air",
       "black",
       "fast",
+      "float",
       "landscape",
       "night",
       "up-and-down"
@@ -1019,6 +1026,7 @@
       "color",
       "fast",
       "feather",
+      "float",
       "fly",
       "green",
       "grow",
@@ -2443,6 +2451,7 @@
     "tags": [
       "China",
       "digital-24h",
+      "float",
       "gold",
       "red"
     ]
@@ -2467,6 +2476,7 @@
     "tags": [
       "blue",
       "digital-24h",
+      "float",
       "gravity",
       "sound",
       "water"
@@ -2968,6 +2978,7 @@
       "Platonic-Solids",
       "air",
       "eight",
+      "float",
       "pyramid"
     ]
   },
@@ -3001,6 +3012,7 @@
     "date": "25-11-15",
     "title": "Fall",
     "tags": [
+      "apple",
       "digital-12h",
       "gravity",
       "grow",
@@ -3105,6 +3117,7 @@
       "Russia",
       "aim",
       "fast",
+      "float",
       "mechanical",
       "metal",
       "sky",
@@ -3218,6 +3231,7 @@
       "digital",
       "animal",
       "fast",
+      "float",
       "food",
       "ocean",
       "predator",
@@ -3292,6 +3306,7 @@
     "tags": [
       "digital",
       "Platonic-Solids",
+      "float",
       "triangle",
       "twenty",
       "water"
@@ -3375,6 +3390,7 @@
       "air",
       "body",
       "cloth",
+      "float",
       "fly",
       "gold",
       "myth",
@@ -3687,6 +3703,7 @@
     "tags": [
       "analog",
       "animal",
+      "float",
       "glass",
       "smell",
       "swim",
@@ -3849,6 +3866,7 @@
       "animal",
       "bird",
       "blue",
+      "float",
       "fly",
       "map",
       "sky"
@@ -4146,6 +4164,7 @@
       "air",
       "airstairs",
       "fast",
+      "float",
       "fly",
       "mechanical",
       "pictographic",
@@ -4196,6 +4215,7 @@
     "tags": [
       "digital",
       "animal",
+      "float",
       "ocean",
       "smell",
       "swim",
@@ -4283,7 +4303,6 @@
       "Futurism",
       "Italy",
       "Marinetti",
-      "art",
       "fast",
       "interior",
       "red",
@@ -4631,6 +4650,7 @@
       "analog",
       "NYC",
       "Warhol",
+      "apple",
       "b+w",
       "day-and-night",
       "fast",
@@ -4793,6 +4813,7 @@
       "analog",
       "animal",
       "deepwater",
+      "float",
       "light",
       "ocean",
       "swim"
@@ -4929,6 +4950,7 @@
       "analog",
       "animal",
       "exoskeletal",
+      "float",
       "monochrome",
       "nature",
       "sand",
@@ -5074,6 +5096,7 @@
       "animal",
       "blood",
       "cells",
+      "float",
       "flow",
       "red",
       "swim"
@@ -5269,6 +5292,7 @@
       "aerial",
       "animal",
       "blue",
+      "float",
       "move",
       "nature",
       "ocean",
@@ -5311,6 +5335,7 @@
       "analog",
       "Disney",
       "animal",
+      "apple",
       "bone",
       "day",
       "desert",
@@ -5344,6 +5369,7 @@
     "tags": [
       "analog",
       "day",
+      "float",
       "flower",
       "grow",
       "myth",
@@ -5635,6 +5661,7 @@
     "tags": [
       "analog",
       "blue",
+      "float",
       "gravity",
       "mirror",
       "physics",
