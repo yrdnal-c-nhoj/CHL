@@ -1,4 +1,4 @@
-import westVideo from '@/assets/images/26_images/26-06/26-06-03/timbrr.mp4';
+import westVideo from '@/assets/images/26_images/26-06/26-06-03/tre.mp4';
 import westtImage from '@/assets/images/26_images/26-06/26-06-03/trees.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -86,8 +86,7 @@ const AnalogClock: React.FC = () => {
       <div style={getHandStyle('5px', '28%', angles.hr, 3)} />
       <div style={getHandStyle('3.5px', '42%', angles.min, 4)} />
       <div style={getHandStyle('1.5px', '48%', angles.sec, 5)} />
-
-      
+    </div>
   );
 };
 
