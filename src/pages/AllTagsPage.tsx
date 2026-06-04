@@ -25,6 +25,13 @@ const AllTagsPage: React.FC = () => {
     }));
 
     return tagData.sort((a, b) => {
+      const aIsAlpha = /^[a-zA-Z]/.test(a.name);
+      const bIsAlpha = /^[a-zA-Z]/.test(b.name);
+
+      // Group tags starting with letters first, then numbers/others
+      if (aIsAlpha && !bIsAlpha) return -1;
+      if (!aIsAlpha && bIsAlpha) return 1;
+
       if (sortBy === 'name-asc') return a.name.localeCompare(b.name);
       if (sortBy === 'name-desc') return b.name.localeCompare(a.name);
       if (sortBy === 'count-desc') return b.count - a.count;
