@@ -27,7 +27,6 @@
       "digital-24h",
       "grey",
       "mirror",
-      "myth",
       "ocean",
       "paper",
       "predator",
@@ -801,7 +800,7 @@
     "title": "Elephant",
     "tags": [
       "analog",
-      "africa",
+      "Africa",
       "animal",
       "grey",
       "nature",
@@ -1286,6 +1285,7 @@
     "tags": [
       "cardinal-directions",
       "constellations",
+      "myth",
       "night",
       "sky",
       "stars"
@@ -1913,6 +1913,7 @@
       "digital",
       "Rome",
       "gold",
+      "myth",
       "roman-numeral",
       "slow",
       "stone"
@@ -2115,6 +2116,7 @@
       "flower",
       "gods",
       "light",
+      "myth",
       "shadow",
       "shrine",
       "underworld"
@@ -2276,6 +2278,7 @@
       "earth",
       "elements",
       "fire",
+      "myth",
       "water"
     ]
   },
@@ -2326,7 +2329,7 @@
     "tags": [
       "digital",
       "Kubrick",
-      "africa",
+      "Africa",
       "animal",
       "extinct",
       "film",
@@ -2977,7 +2980,6 @@
     "date": "25-11-15",
     "title": "Fall",
     "tags": [
-      "Mars",
       "digital-12h",
       "gravity",
       "grow",
@@ -3255,7 +3257,7 @@
     "tags": [
       "analog",
       "Africa",
-      "africa",
+      "Africa",
       "animal",
       "brown",
       "monochrome"
@@ -3352,6 +3354,7 @@
       "cloth",
       "fly",
       "gold",
+      "myth",
       "paint",
       "sky"
     ]
@@ -3491,6 +3494,7 @@
     "tags": [
       "digital",
       "gods",
+      "myth",
       "planet",
       "scythe"
     ]
@@ -3640,7 +3644,7 @@
       "digital",
       "Egypt",
       "aerial",
-      "africa",
+      "Africa",
       "bone",
       "desert",
       "mummy",
@@ -3769,6 +3773,7 @@
     "tags": [
       "analog",
       "cardinal-directions",
+      "myth",
       "water",
       "wind"
     ]
@@ -3915,6 +3920,7 @@
     "tags": [
       "cardinal-directions",
       "cold",
+      "myth",
       "snow",
       "wet",
       "wind"
@@ -4266,6 +4272,7 @@
       "film",
       "hand",
       "mirror",
+      "myth",
       "screen",
       "underworld"
     ]
@@ -4292,7 +4299,7 @@
     "tags": [
       "analog",
       "Egypt",
-      "africa",
+      "Africa",
       "body",
       "desert",
       "face",
@@ -4326,6 +4333,7 @@
       "analog",
       "cardinal-directions",
       "dusk",
+      "myth",
       "sun",
       "wind"
     ]
@@ -4365,6 +4373,7 @@
     "title": "Daystar",
     "tags": [
       "gold",
+      "myth",
       "pictographic",
       "revolve",
       "space",
@@ -4715,6 +4724,7 @@
       "dawn",
       "feather",
       "horse",
+      "myth",
       "odd-toed-ungulate",
       "roman-numeral",
       "scarab",
@@ -4960,6 +4970,7 @@
       "cardinal-directions",
       "fruit",
       "jasmine",
+      "myth",
       "pomegranate",
       "roman-numeral",
       "warm",
@@ -5291,6 +5302,7 @@
       "day",
       "flower",
       "grow",
+      "myth",
       "pink",
       "smell",
       "water"
@@ -5337,6 +5349,7 @@
       "lion",
       "magenta",
       "mirror",
+      "myth",
       "predator",
       "roman-numeral",
       "wind"
@@ -5415,7 +5428,7 @@
     "tags": [
       "1943",
       "Egypt",
-      "africa",
+      "Africa",
       "body",
       "bone",
       "cloth",
@@ -5424,6 +5437,7 @@
       "film",
       "light",
       "mummy",
+      "myth",
       "predator",
       "pyramid",
       "scarab",
@@ -5492,6 +5506,7 @@
       "dog",
       "map",
       "monochrome",
+      "myth",
       "night"
     ]
   },
@@ -5535,7 +5550,7 @@
     "title": "Rhinoceros",
     "tags": [
       "analog",
-      "africa",
+      "Africa",
       "animal",
       "grey",
       "horn",
@@ -5693,7 +5708,7 @@
     "tags": [
       "analog",
       "Egypt",
-      "africa",
+      "Africa",
       "face",
       "myth",
       "pyramid",

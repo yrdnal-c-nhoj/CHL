@@ -8,6 +8,7 @@ import TopNav from './components/TopNav';
 import { DataContext } from './context/DataContext';
 import listStyles from './styles/ClockList.module.css';
 import type { ClockItem, DataContextType } from './types/data';
+import { sortTags } from './utils/tagUtils';
 
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
@@ -26,6 +27,17 @@ const TagList: FC = () => {
       .sort((a, b) => b.date.localeCompare(a.date));
   }, [items, tag]);
 
+  // Calculate global frequency counts for all tags to display "digits after words"
+  const tagCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    items.forEach((item) => {
+      (item.tags ?? []).forEach((t) => {
+        counts[t] = (counts[t] || 0) + 1;
+      });
+    });
+    return counts;
+  }, [items]);
+
   if (loading) return (
     <div className={listStyles.listPageContainer}>
       <TopNav />
@@ -42,7 +54,7 @@ const TagList: FC = () => {
       <div className={listStyles.centeredContent}>
         <div className="sort-container">
           <h1 className="sort-title">
-              {filteredItems.length} {filteredItems.length === 1 ? 'clock' : 'clocks'} found with "{tag}"
+              Clocks matching "{tag}": {filteredItems.length}
           </h1>
         </div>
 
@@ -87,8 +99,7 @@ const TagList: FC = () => {
                     </span>
                   </div>
                   <div className="tag-wrapper">
-                    {[...(item.tags || [])]
-                      .sort((a, b) => a.localeCompare(b))
+                    {sortTags(item.tags || [])
                       .map((t) => (
                         <Link 
                           key={t} 
@@ -96,7 +107,7 @@ const TagList: FC = () => {
                           className={`tag-bubble ${t === tag ? 'active' : ''}`}
                           onClick={(e: MouseEvent) => e.stopPropagation()}
                         >
-                          {t}
+                          {t} ({tagCounts[t] ?? 0})
                         </Link>
                       ))}
                   </div>

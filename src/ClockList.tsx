@@ -9,6 +9,7 @@ import { DataContext } from './context/DataContext';
 import listStyles from './styles/ClockList.module.css';
 import sortStyles from './styles/SortControls.module.css';
 import type { ClockItem, DataContextType } from './types/data';
+import { sortTags } from './utils/tagUtils';
 
 type SortOption =
   | 'date-desc'
@@ -132,8 +133,7 @@ const ClockList: FC = () => {
                     </span>
                   </div>
                   <div className="tag-wrapper">
-                    {[...(item.tags || [])]
-                      .sort((a, b) => a.localeCompare(b))
+                    {sortTags(item.tags || [])
                       .map((tag) => (
                         <Link 
                           key={tag} 
