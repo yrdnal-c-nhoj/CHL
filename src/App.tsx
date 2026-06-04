@@ -37,6 +37,7 @@ const Tagger = React.lazy(() => import('./components/admin/Tagger'));
 const TagManager = React.lazy(() => import('./components/admin/TagManager'));
 const TagByImage = React.lazy(() => import('./components/admin/TagByImage'));
 const AllTagsPage = React.lazy(() => import('./pages/AllTagsPage'));
+const AdminDashboard = React.lazy(() => import('./components/admin/AdminDashboard'));
 
 
 // Configuration constants
@@ -209,6 +210,7 @@ const App: React.FC = () => {
               <Route path="/tag/:tag" element={<TagList />} />
               <Route path="/tagger/:date" element={<Tagger />} />
               <Route path="/admin/tags" element={<TagManager />} />
+              <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/tag-by-image" element={<TagByImage />} />
               <Route path="/tags" element={<AllTagsPage />} />
               <Route path="/index.html" element={<Navigate to="/" replace />} />

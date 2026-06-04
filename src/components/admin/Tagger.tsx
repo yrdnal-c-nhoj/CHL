@@ -1,10 +1,10 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Thumbnail from '../components/Thumbnail';
-import { DataContext } from '../context/DataContext';
-import styles from '../styles/Tagger.module.css';
-import type { ClockItem, DataContextType } from '../types/data';
-import { normalizeTags, sortTags } from '../utils/tagUtils';
+import { DataContext } from '../../context/DataContext';
+import styles from '../../styles/Tagger.module.css';
+import type { ClockItem, DataContextType } from '../../types/data';
+import { normalizeTags, sortTags } from '../../utils/tagUtils';
+import Thumbnail from '../Thumbnail';
 
 const DATE_REGEX = /^\d{2}-\d{2}-\d{2}$/;
 
