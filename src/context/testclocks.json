@@ -388,6 +388,7 @@
     "date": "25-04-29",
     "title": "Fireworks",
     "tags": [
+      "aim",
       "color",
       "digital-24h",
       "fast",
@@ -705,6 +706,7 @@
     "date": "25-05-24",
     "title": "Tornado",
     "tags": [
+      "aim",
       "air",
       "digital-12h",
       "fast",
@@ -1246,6 +1248,7 @@
     "title": "Launchpad",
     "tags": [
       "digital",
+      "aim",
       "count",
       "fast",
       "gravity",
@@ -1590,6 +1593,7 @@
       "England",
       "France",
       "Mars",
+      "aim",
       "cloth",
       "eye",
       "history",
@@ -2363,6 +2367,7 @@
     "title": "Alien Abduction",
     "tags": [
       "digital",
+      "aim",
       "animal",
       "cow",
       "desert",
@@ -2453,7 +2458,6 @@
     "tags": [
       "analog",
       "0123456789abcdef",
-      "0x",
       "base-16"
     ]
   },
@@ -2477,6 +2481,7 @@
       "1964",
       "Dr-Strangelove",
       "Kubrick",
+      "aim",
       "b+w",
       "fast",
       "film",
@@ -2747,6 +2752,7 @@
     "title": "Tilt Down",
     "tags": [
       "digital",
+      "aim",
       "b+w",
       "film",
       "horizon",
@@ -2798,6 +2804,7 @@
     "title": "Swimmers",
     "tags": [
       "digital",
+      "aim",
       "animal",
       "body",
       "fast",
@@ -3070,6 +3077,7 @@
     "tags": [
       "digital",
       "Russia",
+      "aim",
       "fast",
       "mechanical",
       "metal",
@@ -3137,6 +3145,7 @@
       "analog",
       "France",
       "Paris",
+      "aim",
       "blood",
       "flag",
       "paper"
@@ -3377,6 +3386,7 @@
     "title": "Swagger",
     "tags": [
       "Mars",
+      "aim",
       "animal",
       "body",
       "mechanical",
@@ -3726,6 +3736,7 @@
       "digital",
       "Japan",
       "Kurosawa",
+      "aim",
       "film",
       "screen"
     ]
@@ -3989,6 +4000,7 @@
       "analog",
       "1930",
       "Buster-Keaton",
+      "aim",
       "b+w",
       "film",
       "screen"
@@ -4171,6 +4183,7 @@
       "DC",
       "Mars",
       "Rome",
+      "aim",
       "film",
       "screen",
       "stone",
@@ -4378,6 +4391,7 @@
     "title": "Rocket",
     "tags": [
       "analog",
+      "aim",
       "blue",
       "fast",
       "fire",
@@ -5165,6 +5179,7 @@
     "title": "Stuntperson",
     "tags": [
       "digital",
+      "aim",
       "day",
       "fast",
       "film",

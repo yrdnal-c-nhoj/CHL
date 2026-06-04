@@ -159,7 +159,10 @@ export default function Tagger() {
             </div>
             <div>
               <div className={styles.label}>Title</div>
-              <div className={styles.value}>{currentItem.title}</div>
+              <div className={styles.value}>
+                {currentItem.title}{' '}
+                <small style={{ color: '#888', fontWeight: 'normal' }}>#{currentItem.clockNumber}</small>
+              </div>
             </div>
           </div>
           </div>
@@ -197,7 +200,9 @@ export default function Tagger() {
             style={{ width: 'auto', minWidth: '150px' }} // Unified with TagManager
           >
             <option value="" disabled>Add existing...</option>
-            {allExistingTags.map(tag => (<option key={tag} value={tag}>{tag}</option>))}
+            {allExistingTags.map(({ name, count }) => (
+              <option key={name} value={name}>{name} ({count})</option>
+            ))}
           </select>
         </div>
         </div>
