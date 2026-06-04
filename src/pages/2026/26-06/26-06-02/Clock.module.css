@@ -8,7 +8,7 @@
   pointer-events: none;
   z-index: 5;
 }
-
+/* 
 .backgroundLayer {
   position: absolute;
   top: 0;
@@ -18,19 +18,34 @@
   background-size: cover;
   background-repeat: no-repeat;
   z-index: 1;
-}
+} */
 
 .digitalClock {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 15vmin;
-  color: white;
+  color: rgb(163, 10, 10);
   text-shadow: 0 0 20px rgba(0,0,0,0.8);
   z-index: 100;
   white-space: nowrap;
   pointer-events: none;
+}
+
+.digitBox {
+  display: inline-flex;
+  justify-content: center;
+  width: 10vmin; /* Fixed width prevents jittering/jumping */
+}
+
+.separator {
+  display: inline-flex;
+  justify-content: center;
+  width: 4vmin;
 }
 
 .vtecImage {
