@@ -1,4 +1,4 @@
-import westVideo from '@/assets/images/26_images/26-06/26-06-03/timbr.mp4';
+import westVideo from '@/assets/images/26_images/26-06/26-06-03/timbrr.mp4';
 import westtImage from '@/assets/images/26_images/26-06/26-06-03/trees.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -42,11 +42,10 @@ const AnalogClock: React.FC = () => {
     left: '50%',
     width,
     height,
-    backgroundColor: '#0933EE',
+    backgroundColor: '#5B6C5F88',
     borderRadius: '10px',
     transformOrigin: 'bottom center',
     transform: `translateX(-50%) rotate(${angle}deg)`,
-    boxShadow: '0 0 12px rgba(9, 51, 238, 0.6)',
     zIndex,
     willChange: 'transform',
   });
@@ -69,12 +68,12 @@ const AnalogClock: React.FC = () => {
       left: `${x}%`,
       top: `${y}%`,
       transform: `translate(-50%, -50%) rotate(${num * 30}deg)`, // Rotate numbers to align radially with the perimeter
-      fontSize: '2.5vw', // Responsive font size based on viewport width
+      fontSize: '15.5vh', // Responsive font size based on viewport width
       fontFamily: 'ClockFont_26_06_03',
       fontWeight: 'bold',
-      color: '#0933EE', // Matching the hand color for consistency
+      color: '#023315', // Matching the hand color for consistency
       zIndex: 2, // Ensures numbers are below the hands but above the background
-      textShadow: '0 0 8px rgba(9, 51, 238, 0.4)', // Subtle glow for visibility
+      textShadow: '0 1px 1px rgba(232, 233, 238, 0.4)', // Subtle glow for visibility
     };
   };
 
@@ -88,21 +87,7 @@ const AnalogClock: React.FC = () => {
       <div style={getHandStyle('3.5px', '42%', angles.min, 4)} />
       <div style={getHandStyle('1.5px', '48%', angles.sec, 5)} />
 
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: '12px',
-          height: '12px',
-          backgroundColor: '#0933EE',
-          borderRadius: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 10,
-          boxShadow: '0 0 10px rgba(158, 174, 246, 0.8)',
-        }}
-      />
-    </div>
+      
   );
 };
 
