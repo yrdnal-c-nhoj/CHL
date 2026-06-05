@@ -1,14 +1,17 @@
+import westtImage from '@/assets/images/26_images/26-06/26-06-03/timbrr.webp';
 import westVideo from '@/assets/images/26_images/26-06/26-06-03/tre.mp4';
-import westtImage from '@/assets/images/26_images/26-06/26-06-03/trees.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
+// Export assets for the dynamic loader (useClockPage.ts) to preload
+export const assets = [westtImage, westVideo];
+
 // Import the font with the corresponding date from the assets folder
 const fontUrl = new URL(
-  '../../../../assets/fonts/26fonts/26-06-03.otf',
+  '../../../../assets/fonts/26fonts/26-06-03.ttf',
   import.meta.url,
 ).href;
 
@@ -36,57 +39,59 @@ const AnalogClock: React.FC = () => {
     };
   }, [time]);
 
-  const getHandStyle = (width, height, angle, zIndex) => ({
+  const getHandStyle = (width: string, height: string, angle: number, zIndex: number): React.CSSProperties => ({
     position: 'absolute',
     bottom: '50%',
     left: '50%',
     width,
     height,
-    backgroundColor: '#5B6C5F88',
+    backgroundColor: '#02331588',
     borderRadius: '10px',
     transformOrigin: 'bottom center',
     transform: `translateX(-50%) rotate(${angle}deg)`,
     zIndex,
-    willChange: 'transform',
+    willChange: 'transform'
   });
 
-  const getNumberStyle = (num: number): React.CSSProperties => {
-    // Calculate angle for each number (1-12).
-    // -90 degrees offset to make 12 o'clock point upwards (0 degrees in standard trig).
-    const angle = (num * 30) - 90;
-    const rad = (angle * Math.PI) / 180;
-    // Radius for number placement, as a percentage of the clock's container size.
-    // Adjust this value to move numbers closer or further from the center.
-    const radius = 40;
-
-    // Calculate x and y coordinates using trigonometry, relative to the center (50%, 50%).
-    const x = 50 + radius * Math.cos(rad);
-    const y = 50 + radius * Math.sin(rad);
-
-    return {
-      position: 'absolute',
-      left: `${x}%`,
-      top: `${y}%`,
-      transform: `translate(-50%, -50%) rotate(${num * 30}deg)`, // Rotate numbers to align radially with the perimeter
-      fontSize: '15.5vh', // Responsive font size based on viewport width
-      fontFamily: 'ClockFont_26_06_03',
-      fontWeight: 'bold',
-      color: '#023315', // Matching the hand color for consistency
-      zIndex: 2, // Ensures numbers are below the hands but above the background
-      textShadow: '0 1px 1px rgba(232, 233, 238, 0.4)', // Subtle glow for visibility
-    };
-  };
+  // Memoize static number positions so we don't recalculate trig every millisecond
+  const clockNumbers = useMemo(() => {
+    return Array.from({ length: 12 }, (_, i) => {
+      const num = i + 1;
+      const angle = (num * 30) - 90;
+      const rad = (angle * Math.PI) / 180;
+      const radius = 40; // % of container
+      
+      return {
+        num,
+        style: {
+          position: 'absolute' as const,
+          left: `${50 + radius * Math.cos(rad)}%`,
+          top: `${50 + radius * Math.sin(rad)}%`,
+          transform: `translate(-50%, -50%) rotate(${num * 30}deg)`,
+          fontSize: '12vh',
+          fontFamily: 'ClockFont_26_06_03',
+          color: '#3A5434',
+          zIndex: 2,
+          textShadow: '0 1px 1px rgba(232, 233, 238, 0.94)',
+          userSelect: 'none' as const
+        }
+      };
+    });
+  }, []);
 
   return (
-    <div style={{ width: '45vw', height: '45vw', position: 'relative' }}>
-      {/* Render clock numbers 1 through 12 */}
-      {Array.from({ length: 12 }, (_, i) => i + 1).map((num) => (
-        <div key={num} style={getNumberStyle(num)}>{num}</div>
+    <time 
+      dateTime={time.toISOString()} 
+      style={{ width: '85vh', height: '85vh', position: 'relative', display: 'block' }}
+    >
+      {clockNumbers.map(({ num, style }) => (
+        <div key={num} style={style}>{num}</div>
       ))}
-      <div style={getHandStyle('5px', '28%', angles.hr, 3)} />
-      <div style={getHandStyle('3.5px', '42%', angles.min, 4)} />
-      <div style={getHandStyle('1.5px', '48%', angles.sec, 5)} />
-    </div>
+      {/* Hands */}
+      <div style={getHandStyle('1.2vw', '28%', angles.hr, 3)} />
+      <div style={getHandStyle('0.8vw', '42%', angles.min, 4)} />
+      <div style={getHandStyle('0.3vw', '48%', angles.sec, 5)} />
+    </time>
   );
 };
 
