@@ -1,14 +1,17 @@
 import React, { useMemo } from 'react';
 
+import northImage from '@/assets/images/26_images/26-06/26-06-04/nort.webp';
 import animalsVideo from '@/assets/images/26_images/26-06/26-06-04/north.mp4';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
+
+export const assets = [animalsVideo, northImage];
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
 const Clock: React.FC = () => {
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   const { hours, minutes, ampm } = useMemo(() => {
     const h24 = time.getHours();
@@ -28,6 +31,12 @@ const Clock: React.FC = () => {
         muted
         playsInline
         src={animalsVideo}
+      />
+      <img
+        src={northImage}
+        alt=""
+        className={styles.backgroundImage}
+        decoding="sync"
       />
       <time dateTime={time.toISOString()} className={styles.clock}>
         <span className={styles.digit}>{hours[0]}</span>
