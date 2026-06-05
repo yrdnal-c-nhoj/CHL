@@ -2,7 +2,7 @@
 /* @import url('../../../clock-26-05-25.css'); */
 
 @font-face {
-  font-family: 'ClockFont_26-05-25';
+  font-family: 'ClockFont_26_06_04';
   src: url('../../../../assets/fonts/26fonts/26-06-04-north.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
@@ -29,7 +29,20 @@
   width: 100%;
   height: 100%;
   transform: translate(-50%, -50%);
-  object-fit: fill;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.backgroundImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 2;
+  opacity: 0.2;
+  pointer-events: none;
+  transform: translateZ(0); /* Hardware acceleration for smooth animation */
 }
 
 .clock {
@@ -37,14 +50,14 @@
   /* gap: 0.25rem; */
   align-items: center;
   position: relative;
-  z-index: 1;
+  z-index: 3;
   opacity: 0.4;
   max-width: 100%;
   /* padding: 0 0.5rem; */
 }
 .digit {
   font-size: 16vh;
-  font-family: 'ClockFont_26-05-25', 'Courier New', monospace;
+  font-family: 'ClockFont_26_06_04', 'Courier New', monospace;
   background-size: 20rem 20rem;
   display: inline-flex;
   color: #c9c9efc0;
