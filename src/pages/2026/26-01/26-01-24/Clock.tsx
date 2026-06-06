@@ -1,17 +1,19 @@
-import React, {
-  useEffect,
-  useState,
-  useMemo,
-  useCallback,
-  useRef,
-} from 'react';
 import { formatTime as utilFormatTime } from '@/utils/clockUtils'; // Alias to avoid conflict with local formatTime
-import { useClockTime } from '@/utils/hooks'; // Use the standardized hook
+import { useMillisecondClock } from '@/utils/hooks'; // Use the standardized hook
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import styles from './Clock.module.css';
+
+export const assets = [];
 
 const Clock: React.FC = () => {
   // --- STATE MANAGEMENT ---
-  const time = useClockTime(); // Centralized time source
+  const time = useMillisecondClock(); // Centralized time source
   const [isLargeScreen, setIsLargeScreen] = useState(true);
   const [bgReady, setBgReady] = useState<boolean>(false);
 
@@ -266,7 +268,9 @@ const Clock: React.FC = () => {
       <time
         className={styles.content}
         dateTime={`${hours}:${minutes}:${seconds}`}
+        aria-label={time.toLocaleTimeString()}
       >
+        <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
         {renderDigits(hours)}
         {renderDigits(minutes)}
         {renderDigits(seconds)}
