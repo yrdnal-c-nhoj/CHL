@@ -26,6 +26,12 @@ const LOADING_TIMEOUT = 10000; // 10 seconds
 /**
  * State-of-the-art dynamic clock loader.
  * Handles dynamic imports, asset preloading, and overlay synchronization.
+ * 
+ * Tactical Standards:
+ * 1. Fail-Open Preloading: Asset failures or timeouts must never block the clock mount.
+ * 2. Video Filtering: Large media (.mp4, .webm) are excluded from the preload queue to prevent network-idle hangs.
+ * 3. HMR Safety: Component mapping is static to support Vite's hot module replacement.
+ * 4. Resource Safety: Enforces a 10s hard timeout to prevent permanent white/black screens.
  */
 
 // NOTE: Some clocks export `assets` as `string[]`, others may export as `AssetConfig[]`.
@@ -50,7 +56,7 @@ export function useClockPage(currentItem: { date: string } | null) {
 
       // Use a completely unique name for the mapping function parameter
       // to avoid any potential minifier collision with global 'src' identifiers
-      const configurations: AssetConfig[] = assetUrls.map((assetPathString) => ({ src: assetPathString }));
+      const configurations: AssetConfig[] = assetUrls.map((src) => ({ src }));
       
       // Create a timeout for asset preloading to prevent infinite hangs on broken resources
       const assetTimeout = new Promise((_, reject) => 
@@ -171,11 +177,8 @@ export function useClockPage(currentItem: { date: string } | null) {
           throw new Error('Module loaded but default export is missing.');
         }
         
-        console.log(`[useClockPage] Successfully prepared ${targetDate}`);
-
         setClockComponent(() => module.default);
 
-        // 5. Short delay for React to mount before fading overlay
         requestAnimationFrame(() => {
           setIsReady(true);
           // Fade out overlay after a tiny buffer to ensure layout is stable
