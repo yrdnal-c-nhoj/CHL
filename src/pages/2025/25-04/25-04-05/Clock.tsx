@@ -1,7 +1,7 @@
-import React, { useMemo, useCallback } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 
 import overlayImg from '@/assets/images/25_images/25-04/25-04-05/gfccc.gif';
 import hourHandSource from '@/assets/images/25_images/25-04/25-04-05/gr4.gif';
@@ -144,7 +144,7 @@ const styles: {
     margin: 0,
     padding: 0,
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     overflow: 'hidden',
     position: 'fixed',
     top: 0,
@@ -196,7 +196,7 @@ const styles: {
   },
   minuteHand: {
     width: '38%',
-    height: '49%',
+    height: '45%',
     top: '5%',
     zIndex: 9,
     transition: 'transform 0.12s cubic-bezier(0, 0, 0.58, 1)',
