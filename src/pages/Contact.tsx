@@ -49,15 +49,15 @@ const Contact: FC = () => {
           </a>
         </div>
 
-        <hr className={styles.divider} />
+      
 
+          <hr className={styles.divider} style={{ margin: '32px 0', border: 'none', borderTop: '2px solid #ccc' }} />
+     
         <section className="w-full">
           <span className={styles.hat}>Get the Lab's Monthly Newsletter</span>
-          <p className="mt-8 font-manrope text-[clamp(0.9rem,1.2vw,1.1rem)] text-left leading-relaxed">
+          <p className="mt-2 font-manrope text-[clamp(0.9rem,1.2vw,1.1rem)] text-left leading-relaxed">
             <span className="font-manrope font-bold text-[0.75rem] uppercase tracking-wider">
-              Subscribe
-            </span>{' '}
-            to receive the lab's monthly newsletter.
+              Subscribe to receive </span>{' '}the lab's monthly newsletter.
             <br />
             We will never sell or release your email address.
           </p>
@@ -65,7 +65,7 @@ const Contact: FC = () => {
             action="https://buttondown.email/api/emails/embed-subscribe/borrowed"
             method="post"
             target="popupwindow"
-            className="flex flex-col gap-2 mt-2 w-full"
+            className="flex flex-col w-full gap-2 mt-2"
           >
             <input
               type="email"
@@ -81,21 +81,21 @@ const Contact: FC = () => {
               className={`${styles.button} rounded py-3 px-6 cursor-pointer border-none w-40 h-12 self-start`}
             />
           </form>
+          <hr className={styles.divider} style={{ margin: '32px 0', border: 'none', borderTop: '2px solid #ccc' }} />
         </section>
 
-        <section className="mt-4 w-full">
-          <hr className={styles.divider} />
+        <section className="w-full mt-0">
           <span className={styles.hat}>Send a Message to the Lab</span>
-          <p className="mt-8 font-manrope text-[clamp(0.9rem,1.2vw,1.1rem)] text-lefy leading-relaxed">
+          <p className="mt-2 font-manrope text-[clamp(0.9rem,1.2vw,1.1rem)] text-lefy leading-relaxed">
             <span className="font-manrope font-bold text-[0.75rem] uppercase tracking-wider">
               Questions?
-            </span>{' '}
-            Comments? Suggestions?
+            
+            Comments? Suggestions?</span>{' '}
           </p>
           <form
             action="https://formspree.io/f/xnjobvva"
             method="POST"
-            className="flex flex-col gap-3 mt-4 w-full"
+            className="flex flex-col w-full gap-3 mt-4"
           >
             <input
               type="text"
@@ -124,11 +124,10 @@ const Contact: FC = () => {
               className={`${styles.button} rounded py-3 px-6 cursor-pointer border-none w-40 h-12 self-start`}
             />
           </form>
-
           <p className="mt-4 font-manrope text-[#666] text-[0.85rem] text-left">
             Or email directly:{' '}
             <a
-              className="font-bold text-lab-blue-deep hover:underline no-underline"
+              className="font-bold no-underline text-lab-blue-deep hover:underline"
               href="mailto:cubistheart@gmail.com?subject=🧊🫀🔭"
             >
               cubistheart@gmail.com
