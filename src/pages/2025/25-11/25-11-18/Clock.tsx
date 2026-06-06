@@ -1,16 +1,19 @@
 import font_2025_11_21 from '@/assets/fonts/25fonts/25-11-18-cat.ttf?url';
 import bgImg from '@/assets/images/25_images/25-11/25-11-18/eyes.webp';
 import { useEffect, useMemo, useState } from 'react';
-export { bgImg }; // Export for preloading pipeline
 
-    import type { FontConfig } from '@/types/clock';
-    import { formatTime, useClockTime } from '@/utils/clockUtils';
-    import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+import styles from './Clock.module.css';
+
+export const assets = [bgImg];
 
 export default function RotatedClockGrid() {
   // Using the standardized BTS hook
-  const time = useClockTime(); // useClockTime returns a Date object
-  const timeStr = formatTime(time, '24h') || '00:00:00';
+  const time = useMillisecondClock();
+  const timeStr = time.toLocaleTimeString('en-GB', { hour12: false });
+  
   // Ensure each part is a two-digit string, even if split returns fewer parts
   const [h = '00', m = '00', s = '00'] = timeStr.split(':');
   const hours = h.padStart(2, '0');
@@ -85,44 +88,26 @@ export default function RotatedClockGrid() {
   const clocksPerRow = Math.ceil(100 / ((digitSize + gap) * 3)) + 4 + extraLeft;
 
   return (
-    <main
-      style={{
-        position: 'relative',
-        height: '100dvh',
-        width: '100vw',
-        boxSizing: 'border-box',
-        overflow: 'hidden',
-      }}
-    >
+    <main className={styles.container}>
       {/* Background image with filter applied only to this layer */}
       <div
-        style={{
-          position: 'absolute',
-          inset: 0, // top:0; right:0; bottom:0; left:0
-          backgroundImage: `url(${bgImg})`,
-          backgroundSize: 'cover', // covers entire viewport
-          backgroundPosition: 'right', // center the image
-          backgroundRepeat: 'no-repeat',
-          filter: 'saturate(0.01) contrast(1.4) brightness(0.4)', // subtle enhancement
-          zIndex: 0, // make sure clock is above
-        }}
+        className={styles.background}
+        style={{ backgroundImage: `url(${bgImg})` }}
       />
 
       {/* Main grid of digits, no filter applied */}
       <time
         dateTime={`${hours}:${minutes}:${seconds}`}
+        className={styles.grid}
+        aria-label={time.toLocaleTimeString()}
         style={{
-          position: 'relative',
-          zIndex: 1,
           transform: `rotate(-10deg) translate(-${(digitSize + gap) * extraLeft}dvh, -${(digitSize + gap) * extraTop}dvh)`,
-          display: 'grid',
           gridTemplateColumns: `repeat(auto-fill, ${digitSize}dvh)`,
           gridAutoRows: `${digitSize}dvh`,
           gap: `${gap}dvh`,
-          alignItems: 'center',
-          justifyItems: 'center',
         }}
       >
+        <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
         {Array.from({ length: rowsNeeded }).map((_, rowIndex) => {
           const startOffset = (rowIndex * 3) % 6;
           return Array.from({ length: clocksPerRow }).map((_, clockIndex) =>
@@ -136,25 +121,14 @@ export default function RotatedClockGrid() {
               return (
                 <div
                   key={`${rowIndex}-${clockIndex}-${digitIndex}`}
+                  className={styles.digit}
                   style={{
                     gridRow: rowIndex + 1,
                     gridColumn: columnPosition + 1,
                     height: `${digitSize}dvh`,
                     width: `${digitSize}dvh`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: '0.8dvh',
                     fontFamily: FONT_FAMILY + ', monospace',
-                    fontSize: `12dvh`,
-                    lineHeight: 1,
-                    letterSpacing: '0.2dvh',
                     color,
-                    opacity: 0.9,
-                    textAlign: 'center',
-                    userSelect: 'none',
-                    WebkitFontSmoothing: 'antialiased',
-                    MozOsxFontSmoothing: 'grayscale',
                   }}
                 >
                   {ch}
