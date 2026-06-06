@@ -40,7 +40,7 @@
   display: inline-flex;
   justify-content: center;
   /* Proportionally sized to the 26vh font-size to ensure digits don't overlap */
-  width: 16vh; 
+  width: 6vh; 
 }
 
 .vtecImage {
