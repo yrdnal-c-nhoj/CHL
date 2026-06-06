@@ -3,11 +3,11 @@ import westVideo from '@/assets/images/26_images/26-06/26-06-03/tre.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
 // Export assets for the dynamic loader (useClockPage.ts) to preload
-export const assets = [westtImage, westVideo];
+export const assets = [westtImage];
 
 // Import the font with the corresponding date from the assets folder
 const fontUrl = new URL(
@@ -39,20 +39,6 @@ const AnalogClock: React.FC = () => {
     };
   }, [time]);
 
-  const getHandStyle = (width: string, height: string, angle: number, zIndex: number): React.CSSProperties => ({
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    width,
-    height,
-    backgroundColor: '#02331588',
-    borderRadius: '10px',
-    transformOrigin: 'bottom center',
-    transform: `translateX(-50%) rotate(${angle}deg)`,
-    zIndex,
-    willChange: 'transform'
-  });
-
   // Memoize static number positions so we don't recalculate trig every millisecond
   const clockNumbers = useMemo(() => {
     return Array.from({ length: 12 }, (_, i) => {
@@ -63,59 +49,54 @@ const AnalogClock: React.FC = () => {
       
       return {
         num,
-        style: {
-          position: 'absolute' as const,
-          left: `${50 + radius * Math.cos(rad)}%`,
-          top: `${50 + radius * Math.sin(rad)}%`,
-          transform: `translate(-50%, -50%) rotate(${num * 30}deg)`,
-          fontSize: '12vh',
-          fontFamily: 'ClockFont_26_06_03',
-          color: '#3A5434',
-          zIndex: 2,
-          textShadow: '0 1px 1px rgba(232, 233, 238, 0.94)',
-          userSelect: 'none' as const
-        }
+        left: `${50 + radius * Math.cos(rad)}%`,
+        top: `${50 + radius * Math.sin(rad)}%`,
+        rotate: `${num * 30}deg`
       };
     });
   }, []);
 
   return (
-    <time 
-      dateTime={time.toISOString()} 
-      style={{ width: '85vh', height: '85vh', position: 'relative', display: 'block' }}
-    >
-      {clockNumbers.map(({ num, style }) => (
-        <div key={num} style={style}>{num}</div>
+    <time dateTime={time.toISOString()} className={styles.time} aria-label={time.toLocaleTimeString()}>
+      <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
+      
+      {clockNumbers.map(({ num, left, top, rotate }) => (
+        <div 
+          key={num} 
+          className={styles.number} 
+          style={{ left, top, transform: `translate(-50%, -50%) rotate(${rotate})` }}
+          aria-hidden="true"
+        >
+          {num}
+        </div>
       ))}
-      {/* Hands */}
-      <div style={getHandStyle('1.2vw', '28%', angles.hr, 3)} />
-      <div style={getHandStyle('0.8vw', '42%', angles.min, 4)} />
-      <div style={getHandStyle('0.3vw', '48%', angles.sec, 5)} />
+
+      <div 
+        className={`${styles.hand} ${styles.hourHand}`} 
+        style={{ transform: `translateX(-50%) rotate(${angles.hr}deg)` }} 
+      />
+      <div 
+        className={`${styles.hand} ${styles.minHand}`} 
+        style={{ transform: `translateX(-50%) rotate(${angles.min}deg)` }} 
+      />
+      <div 
+        className={`${styles.hand} ${styles.secHand}`} 
+        style={{ transform: `translateX(-50%) rotate(${angles.sec}deg)` }} 
+      />
     </time>
   );
 };
 
 const Clock: React.FC = () => {
-  const [dimensions, setDimensions] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
-  useEffect(() => {
-    const handleResize = () => {
-      setDimensions({ width: window.innerWidth, height: window.innerHeight });
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   return (
     <main className={styles.container}>
       <video autoPlay loop muted playsInline className={styles.video}>
         <source src={westVideo} type="video/mp4" />
       </video>
 
-      <img src={westtImage} alt="" className={styles.westtImage} decoding="sync" />
+      <img src={westtImage} alt="" className={styles.westtImage} decoding="async" />
+
+      <img src={westtImage} alt="" className={styles.westtImage2} decoding="async" />
 
       <section className={styles.analogClockSection}>
         <AnalogClock />
