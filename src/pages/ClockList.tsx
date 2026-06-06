@@ -149,7 +149,7 @@ const ClockList: FC = () => {
                           className="tag-bubble"
                           onClick={(e: MouseEvent) => e.stopPropagation()}
                         >
-                          {tag} ({tagCounts[tag] ?? 0})
+                          {tag} 
                         </Link>
                       ))}
                   </div>
