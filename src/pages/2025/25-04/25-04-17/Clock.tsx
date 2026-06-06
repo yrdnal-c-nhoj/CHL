@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import styles from './Clock.module.css';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+import React, { useEffect, useMemo } from 'react';
 
 // Digit style interface
 interface DigitStyle {
@@ -42,24 +41,26 @@ export default function StripeClock() {
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
   useSuspenseFontLoader(fontConfigs);
 
-  // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
-  const [time, setTime] = useState<Date>(currentTime);
+  const time = useSecondClock();
 
   useEffect(() => {
-    setTime(currentTime);
-  }, [currentTime]);
+    loadFont();
+  }, []);
 
   const timeStr = time
     .toLocaleTimeString('en-GB', { hour12: false })
     .replace(/:/g, '');
 
   // Container style
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column', // stack stripes vertically
     width: '100vw',
     height: '100dvh',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    overflow: 'hidden',
     margin: 0,
     padding: 0,
     fontFamily: "'Asset', monospace",
@@ -67,35 +68,26 @@ export default function StripeClock() {
   };
 
   // Stripe style function
-  const getStripeStyle = (char) => ({
+  const getStripeStyle = (char: string): React.CSSProperties => ({
     flex: 1, // each stripe takes equal vertical space
     width: '100vw', // full viewport width
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: '8vh',
+    fontSize: '12vh',
     fontWeight: 'bold',
-    transition: 'all 0.5s ease',
     backgroundColor: digitStyles[char].bg,
     color: digitStyles[char].color,
+    transition: 'all 0.5s ease',
   });
 
   return (
-    <div className={styles.container}>
-      <div className={styles.clock}>
-        {timeStr.split('').map((char, idx) => (
-          <div
-            key={idx}
-            className={styles.stripe}
-            style={{
-              backgroundColor: digitStyles[char].bg,
-              color: digitStyles[char].color,
-            }}
-          >
-            {char}
-          </div>
-        ))}
-      </div>
+    <div style={containerStyle}>
+      {timeStr.split('').map((char, idx) => (
+        <div key={idx} style={getStripeStyle(char)}>
+          {char}
+        </div>
+      ))}
     </div>
   );
 }
