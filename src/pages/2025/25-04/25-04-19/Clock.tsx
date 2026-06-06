@@ -1,358 +1,276 @@
-import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import permanentMarkerFont from '@/assets/fonts/25fonts/25-04-19-sph.ttf?url';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import styles from './Clock.module.css';
 
-const BALL_SIZES = {
-  hours: 19,
-  minutes: 12,
-  seconds: 8,
-};
-
-const GRAVITIES = {
-  hours: 6,
-  minutes: 7,
-  seconds: 8,
-};
-
-const BALL_PROPERTIES = {
-  hours: { bounce: 0.7, friction: 0.1 },
-  minutes: { bounce: 0.6, friction: 0.8 },
-  seconds: { bounce: 0.4, friction: 0.999 },
-};
-
-const roomTypes = [
-  {
-    name: 'hours',
-    colorClass: 'hour-ball',
-    countFn: () => {
-      const h = new Date().getHours();
-      return h % 12 === 0 ? 12 : h % 12;
-    },
-    max: 12,
-    size: BALL_SIZES.hours,
-    gravity: GRAVITIES.hours,
-    properties: BALL_PROPERTIES.hours,
-    width: 100,
-    height: 20,
-  },
-  {
-    name: 'minutes',
-    colorClass: 'minute-ball',
-    countFn: () => new Date().getMinutes(),
-    max: 60,
-    size: BALL_SIZES.minutes,
-    gravity: GRAVITIES.minutes,
-    properties: BALL_PROPERTIES.minutes,
-    width: 100,
-    height: 35,
-  },
-  {
-    name: 'seconds',
-    colorClass: 'second-ball',
-    countFn: () => new Date().getSeconds(),
-    max: 60,
-    size: BALL_SIZES.seconds,
-    gravity: GRAVITIES.seconds,
-    properties: BALL_PROPERTIES.seconds,
-    width: 100,
-    height: 35,
-  },
-];
-
-// Ball properties interface
+// --- Configuration & Types ---
 interface BallProperties {
   bounce: number;
   friction: number;
 }
 
-// Room type interface
-interface RoomType {
-  name: string;
-  colorClass: string;
-  countFn: () => number;
+interface RoomConfig {
+  name: 'hours' | 'minutes' | 'seconds';
   max: number;
-  size: number;
+  baseSize: number; 
   gravity: number;
   properties: BallProperties;
-  width: number;
-  height: number;
+  baseWidth: number; 
+  baseHeight: number; 
+  gradient: string;
 }
 
-// Component Props interface
-interface SphereDropClockProps {
-  // No props required for this component
+interface BallInstance {
+  id: string;
+  label: number;
+  posX: number;
+  posY: number;
+  posZ: number;
+  velocityX: number;
+  velocityY: number;
+  velocityZ: number;
+  bouncing: boolean;
+  element?: HTMLDivElement;
 }
 
-const SphereDropClock = () => {
-  // Font loading configuration (memoized)
+const ROOM_CONFIGS: RoomConfig[] = [
+  {
+    name: 'hours',
+    max: 12,
+    baseSize: 15,
+    gravity: 6,
+    properties: { bounce: 0.7, friction: 0.1 },
+    baseWidth: 75,
+    baseHeight: 20,
+    gradient: 'radial-gradient(circle at 30%, #0dcaec, #056d7b)',
+  },
+  {
+    name: 'minutes',
+    max: 60,
+    baseSize: 9,
+    gravity: 7,
+    properties: { bounce: 0.6, friction: 0.8 },
+    baseWidth: 75,
+    baseHeight: 35,
+    gradient: 'radial-gradient(circle at 30%, #dce30b, #c2b30c)',
+  },
+  {
+    name: 'seconds',
+    max: 60,
+    baseSize: 6.5,
+    gravity: 8,
+    properties: { bounce: 0.4, friction: 0.999 },
+    baseWidth: 75,
+    baseHeight: 35,
+    gradient: 'radial-gradient(circle at 30%, #f80, #c50)',
+  },
+];
+
+// --- Dynamic Styles ---
+export default function SphereDropClock(): JSX.Element {
   const fontConfigs = useMemo<FontConfig[]>(
-    () => [
-      {
-        fontFamily: 'SphFont',
-        fontUrl: permanentMarkerFont,
-        options: {
-          weight: 'normal',
-          style: 'normal',
-        },
-      },
-    ],
-    [],
+    () => [{ fontFamily: 'SphFont', fontUrl: permanentMarkerFont, options: { weight: 'normal', style: 'normal' } }],
+    []
   );
-
-  // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);
 
-  // Use the standardized hook for smooth clock updates
   const currentTime = useSecondClock();
-
-  const towerRef = useRef(null);
-  const latestBalls = useRef({ hours: null, minutes: null });
-  const state = useRef({ hours: 0, minutes: 0, seconds: 0 });
+  const [isMobile, setIsMobile] = useState(false);
+  
+  const ballsMapRef = useRef<Record<string, BallInstance[]>>({ hours: [], minutes: [], seconds: [] });
+  const latestBallRef = useRef<Record<string, BallInstance | null>>({ hours: null, minutes: null, seconds: null });
+  const requestRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const tower = towerRef.current;
-
-    // Create rooms
-    roomTypes.forEach((type, i) => {
-      let room = document.createElement('div');
-      room.className = 'room';
-      room.id = `${type.name}-room`;
-      room.style.width = `${type.width}vw`;
-      room.style.height = `${type.height}vh`;
-      const yTranslate = roomTypes
-        .slice(0, i)
-        .reduce((sum, r) => sum + r.height, 0);
-      room.style.transform = `translateY(${yTranslate}vh)`;
-      tower.appendChild(room);
-    });
-
-    function getNextNumber(room) {
-      return room.childElementCount + 1;
-    }
-
-    function dropBall(
-      room,
-      colorClass,
-      size,
-      gravity,
-      bounce,
-      friction,
-      roomHeight,
-      roomWidth,
-      typeName,
-    ) {
-      const ball = document.createElement('div');
-      ball.className = `ball ${colorClass}`;
-      ball.innerText = getNextNumber(room);
-      ball.style.width = `${size}vh`;
-      ball.style.height = `${size}vh`;
-      ball.style.fontSize = `${size / 1.5}vh`;
-
-      let posX = Math.random() * (roomWidth - size);
-      let posY = -30;
-      let posZ = Math.random() * (roomWidth - size);
-      let velocityY = 0;
-      let velocityX = (Math.random() - 0.5) * 100;
-      let velocityZ = (Math.random() - 0.5) * 100;
-      const bounceFactor = bounce;
-      const frictionFactor = friction;
-      let bouncing = true;
-
-      if (typeName === 'hours' || typeName === 'minutes') {
-        latestBalls.current[typeName] = ball;
-      }
-
-      room.appendChild(ball);
-
-      function animate() {
-        if (bouncing) {
-          velocityY += gravity * 0.016;
-          posX += velocityX * 0.016;
-          posY += velocityY * 0.016;
-          posZ += velocityZ * 0.016;
-
-          if (posX <= 0 || posX >= roomWidth - size) {
-            posX = Math.max(0, Math.min(posX, roomWidth - size));
-            velocityX = -velocityX * bounceFactor;
-          }
-
-          if (posZ <= 0 || posZ >= roomWidth - size) {
-            posZ = Math.max(0, Math.min(posZ, roomWidth - size));
-            velocityZ = -velocityZ * bounceFactor;
-          }
-
-          if (posY >= roomHeight - size) {
-            posY = roomHeight - size;
-            velocityY = -velocityY * bounceFactor;
-            velocityX *= frictionFactor;
-            velocityZ *= frictionFactor;
-
-            if (
-              Math.abs(velocityY) < 2 &&
-              Math.abs(velocityX) < 2 &&
-              Math.abs(velocityZ) < 2
-            ) {
-              bouncing = false;
-
-              if (
-                (typeName === 'hours' || typeName === 'minutes') &&
-                latestBalls.current[typeName] === ball
-              ) {
-                velocityX = (Math.random() - 0.5) * 10;
-                velocityZ = (Math.random() - 0.5) * 10;
-              }
-            }
-          }
-        } else if (
-          (typeName === 'hours' || typeName === 'minutes') &&
-          latestBalls.current[typeName] === ball
-        ) {
-          posX += velocityX * 0.016;
-          posZ += velocityZ * 0.016;
-
-          if (posX <= 0 || posX >= roomWidth - size) {
-            posX = Math.max(0, Math.min(posX, roomWidth - size));
-            velocityX = -velocityX;
-          }
-          if (posZ <= 0 || posZ >= roomWidth - size) {
-            posZ = Math.max(0, Math.min(posZ, roomWidth - size));
-            velocityZ = -velocityZ;
-          }
-
-          if (Math.random() < 0.01) {
-            velocityX = (Math.random() - 0.5) * 10;
-            velocityZ = (Math.random() - 0.5) * 10;
-          }
-        }
-
-        ball.style.transform = `translateX(${posX}vw) translateY(${posY}vh) translateZ(${posZ - 50}vh)`;
-        requestAnimationFrame(animate);
-      }
-
-      animate();
-    }
-
-    function resetRoom(roomId, typeName) {
-      const room = document.getElementById(roomId);
-      while (room.firstChild) {
-        room.removeChild(room.firstChild);
-      }
-      if (typeName === 'hours' || typeName === 'minutes') {
-        latestBalls.current[typeName] = null;
-      }
-    }
-
-    function syncBalls() {
-      roomTypes.forEach((type) => {
-        const current = type.countFn();
-        const prev = state.current[type.name] || 0;
-
-        if (current < prev || prev > type.max) {
-          resetRoom(`${type.name}-room`, type.name);
-          state.current[type.name] = 0;
-        }
-
-        for (let i = state.current[type.name] || 0; i < current; i++) {
-          const room = document.getElementById(`${type.name}-room`);
-          dropBall(
-            room,
-            type.colorClass,
-            type.size,
-            type.gravity,
-            type.properties.bounce,
-            type.properties.friction,
-            type.height,
-            type.width,
-            type.name,
-          );
-        }
-
-        state.current[type.name] = current;
-      });
-    }
-
-    syncBalls();
-    const intervalId = setInterval(syncBalls, 1000);
-
-    return () => clearInterval(intervalId);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const targetCounts = useMemo(() => {
+    const hours = currentTime.getHours();
+    return {
+      hours: hours % 12 === 0 ? 12 : hours % 12,
+      minutes: currentTime.getMinutes(),
+      seconds: currentTime.getSeconds(),
+    };
+  }, [currentTime]);
+
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    const originalMargin = document.body.style.margin;
+    const originalBackground = document.body.style.background;
+    
+    document.body.style.overflow = 'hidden';
+    document.body.style.margin = '0';
+    document.body.style.background = '#5B032EFF';
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      document.body.style.margin = originalMargin;
+      document.body.style.background = originalBackground;
+    };
+  }, []);
+
+  const computedOffsets = useMemo(() => {
+    let currentSum = 0;
+    return ROOM_CONFIGS.map((room) => {
+      const actualHeight = isMobile ? room.baseHeight * 0.85 : room.baseHeight;
+      const offset = currentSum;
+      currentSum += actualHeight;
+      return { name: room.name, height: actualHeight, offset };
+    });
+  }, [isMobile]);
+
+  // Physics Simulation Loop
+  useEffect(() => {
+    const animate = () => {
+      ROOM_CONFIGS.forEach((room) => {
+        const balls = ballsMapRef.current[room.name];
+        const latestBall = latestBallRef.current[room.name];
+        
+        const actualWidth = room.baseWidth; 
+        const actualSize = isMobile ? room.baseSize * 0.8 : room.baseSize;
+        const actualHeight = isMobile ? room.baseHeight * 0.85 : room.baseHeight;
+
+        balls.forEach((ball) => {
+          const isLatest = latestBall === ball;
+
+          if (ball.bouncing) {
+            ball.velocityY += room.gravity * 0.016;
+            ball.posX += ball.velocityX * 0.016;
+            ball.posY += ball.velocityY * 0.016;
+            ball.posZ += ball.velocityZ * 0.016;
+
+            // X Walls
+            if (ball.posX <= 0 || ball.posX >= actualWidth - actualSize) {
+              ball.posX = Math.max(0, Math.min(ball.posX, actualWidth - actualSize));
+              ball.velocityX = -ball.velocityX * room.properties.bounce;
+            }
+            // Z Depth
+            if (ball.posZ <= 0 || ball.posZ >= actualWidth - actualSize) {
+              ball.posZ = Math.max(0, Math.min(ball.posZ, actualWidth - actualSize));
+              ball.velocityZ = -ball.velocityZ * room.properties.bounce;
+            }
+            // Floor Collision
+            if (ball.posY >= actualHeight - actualSize) {
+              ball.posY = actualHeight - actualSize;
+              ball.velocityY = -ball.velocityY * room.properties.bounce;
+              ball.velocityX *= room.properties.friction;
+              ball.velocityZ *= room.properties.friction;
+
+              if (Math.abs(ball.velocityY) < 2 && Math.abs(ball.velocityX) < 2 && Math.abs(ball.velocityZ) < 2) {
+                ball.bouncing = false;
+                if (isLatest && (room.name === 'hours' || room.name === 'minutes')) {
+                  ball.velocityX = (Math.random() - 0.5) * 10;
+                  ball.velocityZ = (Math.random() - 0.5) * 10;
+                }
+              }
+            }
+          } else if (isLatest && (room.name === 'hours' || room.name === 'minutes')) {
+            ball.posX += ball.velocityX * 0.016;
+            ball.posZ += ball.velocityZ * 0.016;
+
+            if (ball.posX <= 0 || ball.posX >= actualWidth - actualSize) {
+              ball.posX = Math.max(0, Math.min(ball.posX, actualWidth - actualSize));
+              ball.velocityX = -ball.velocityX;
+            }
+            if (ball.posZ <= 0 || ball.posZ >= actualWidth - actualSize) {
+              ball.posZ = Math.max(0, Math.min(ball.posZ, actualWidth - actualSize));
+              ball.velocityZ = -ball.velocityZ;
+            }
+            if (Math.random() < 0.01) {
+              ball.velocityX = (Math.random() - 0.5) * 10;
+              ball.velocityZ = (Math.random() - 0.5) * 10;
+            }
+          }
+
+          if (ball.element) {
+            const displayY = isLatest && !ball.bouncing && room.name === 'minutes'
+              ? ball.posY - Math.abs(Math.sin(Date.now() / 600) * 4)
+              : ball.posY;
+            
+            const zDepthShift = isLatest ? (ball.posZ - 38) : (ball.posZ - 50);
+            ball.element.className = `${styles.ball} ${isLatest ? styles.ballCurrent : styles.ballStatic}`;
+            ball.element.style.transform = `translateX(${ball.posX}vw) translateY(${displayY}vh) translateZ(${zDepthShift}vh)`;
+          }
+        });
+      });
+
+      requestRef.current = requestAnimationFrame(animate);
+    };
+
+    requestRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+    };
+  }, [isMobile]);
+
+  // Sync state transitions 
+  useEffect(() => {
+    ROOM_CONFIGS.forEach((room) => {
+      const targetCount = targetCounts[room.name];
+      let currentBalls = [...ballsMapRef.current[room.name]];
+      
+      const actualWidth = room.baseWidth;
+      const actualSize = isMobile ? room.baseSize * 0.8 : room.baseSize;
+
+      if (targetCount < currentBalls.length || (targetCount > 0 && currentBalls.length === 0)) {
+        currentBalls.forEach(b => b.element?.remove());
+        currentBalls = [];
+        latestBallRef.current[room.name] = null;
+      }
+
+      while (currentBalls.length < targetCount) {
+        const nextNumber = currentBalls.length + 1;
+        const roomDom = document.getElementById(`${room.name}-room`);
+        if (!roomDom) break; // Ensure room exists before adding balls
+
+        const newBall: BallInstance = {
+          id: `${room.name}-ball-${Date.now()}-${nextNumber}`,
+          label: nextNumber,
+          posX: (actualWidth / 2) - (actualSize / 2) + (Math.random() - 0.5) * 10,
+          posY: -30,
+          posZ: Math.random() * (actualWidth - actualSize),
+          velocityY: 0,
+          velocityX: (Math.random() - 0.5) * 100,
+          velocityZ: (Math.random() - 0.5) * 100,
+          bouncing: true,
+        };
+
+        const ballEl = document.createElement('div');
+        ballEl.className = styles.ball;
+        ballEl.style.setProperty('--ball-size', `${actualSize}vh`);
+        ballEl.style.setProperty('--ball-gradient', room.gradient);
+        ballEl.innerText = String(nextNumber);
+
+        newBall.element = ballEl;
+        latestBallRef.current[room.name] = newBall;
+        roomDom.appendChild(ballEl);
+        currentBalls.push(newBall);
+      }
+
+      ballsMapRef.current[room.name] = currentBalls;
+    });
+  }, [targetCounts, isMobile]);
+
+  const initialTopOffset = isMobile ? 2 : 5;
+
   return (
-    <>
-      <style>{`
-        @font-face {
-          font-family: 'SphFont';
-          src: url(${permanentMarkerFont}) format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
-
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-
-        body,html {
-          width: 100%;
-          height: 100%;
-          background: #5B032EFF;
-          overflow: hidden;
-          margin: 0;
-        }
-
-        #tower {
-          position: absolute;
-          top: 20vh;
-          right: 15vw;
-          transform-origin: top right;
-          transform-style: preserve-3d;
-          transform: scale(0.8) rotateX(20deg) rotateY(20deg);
-          perspective: 1500px;
-          width: 100vw;
-          height: 100dvh;
-          overflow: visible;
-        }
-
-        .room {
-          position: absolute;
-          transform-style: preserve-3d;
-          width: 100vw;
-          overflow: visible;
-          height: auto;
-        }
-
-        .ball {
-          font-family: 'SphFont', sans-serif !important;
-          border-radius: 50%;
-          position: absolute;
-          transform-style: preserve-3d;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: rgb(7, 21, 112);
-          user-select: none;
-          box-shadow: 0 0 1vh rgba(0,0,0,0.3);
-        }
-
-        .hour-ball {
-          background: radial-gradient(circle at 30%, #0dcaec, #056d7b);
-        }
-
-        .minute-ball {
-          background: radial-gradient(circle at 30%, #dce30b, #c2b30c);
-        }
-
-        .second-ball {
-          background: radial-gradient(circle at 30%, #f80, #c50);
-        }
-      `}</style>
-
-      <div id="tower" ref={towerRef}></div>
-    </>
+    <div id="tower" className={styles.tower}>
+      {computedOffsets.map(({ name, height, offset }) => (
+        <div 
+          key={name} 
+          id={`${name}-room`} 
+          className={`${styles.room} ${name === 'minutes' ? styles.roomMinutes : ''}`}
+          style={{ height: `${height}vh`, top: `${offset + initialTopOffset}vh` }}
+        />
+      ))}
+    </div>
   );
-};
-
-export default SphereDropClock;
+}
