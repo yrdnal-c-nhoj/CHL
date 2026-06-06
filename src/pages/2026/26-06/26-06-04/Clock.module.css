@@ -1,13 +1,4 @@
-
 /* @import url('../../../clock-26-05-25.css'); */
-
-@font-face {
-  font-family: 'ClockFont_26_06_04';
-  src: url('../../../../assets/fonts/26fonts/26-06-04-north.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
 
 .container {
   width: 100vw;
@@ -55,8 +46,21 @@
   max-width: 100%;
   /* padding: 0 0.5rem; */
 }
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .digit {
-  font-size: 16vh;
+  font-size: 16vw;
   font-family: 'ClockFont_26_06_04', 'Courier New', monospace;
   background-size: 20rem 20rem;
   display: inline-flex;
@@ -72,6 +76,6 @@
 }
 
 .ampm {
-  font-size: 14vh;
-  transform: translateY(1vh);
+  font-size: 15vw;
+  transform: translateY(1vw);
 }
