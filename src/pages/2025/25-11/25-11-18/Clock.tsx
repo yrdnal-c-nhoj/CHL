@@ -101,10 +101,10 @@ export default function RotatedClockGrid() {
         className={styles.grid}
         aria-label={time.toLocaleTimeString()}
         style={{
-          transform: `rotate(-10deg) translate(-${(digitSize + gap) * extraLeft}dvh, -${(digitSize + gap) * extraTop}dvh)`,
-          gridTemplateColumns: `repeat(auto-fill, ${digitSize}dvh)`,
-          gridAutoRows: `${digitSize}dvh`,
-          gap: `${gap}dvh`,
+          '--grid-transform': `rotate(-10deg) translate(-${(digitSize + gap) * extraLeft}dvh, -${(digitSize + gap) * extraTop}dvh)`,
+          '--grid-template-columns': `repeat(auto-fill, ${digitSize}dvh)`,
+          '--grid-auto-rows': `${digitSize}dvh`,
+          '--grid-gap': `${gap}dvh`,
         }}
       >
         <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
@@ -125,9 +125,8 @@ export default function RotatedClockGrid() {
                   style={{
                     gridRow: rowIndex + 1,
                     gridColumn: columnPosition + 1,
-                    height: `${digitSize}dvh`,
-                    width: `${digitSize}dvh`,
-                    fontFamily: FONT_FAMILY + ', monospace',
+                    '--digit-size': `${digitSize}dvh`,
+                    '--digit-font-family': FONT_FAMILY + ', monospace',
                     color,
                   }}
                 >
