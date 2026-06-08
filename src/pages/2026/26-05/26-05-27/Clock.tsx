@@ -1,4 +1,4 @@
-import tireFont from '@/assets/fonts/26fonts/26-05-27-tire.otf';
+import tireFont from '@/assets/fonts/26fonts/26-05-27-tire.otf?url';
 import tire from '@/assets/images/26_images/26-05/26-05-27/tire.webp';
 import tireImage from '@/assets/images/26_images/26-05/26-05-27/tire2.webp';
 import tireFlipImage from '@/assets/images/26_images/26-05/26-05-27/tireflip.webp';
@@ -18,10 +18,10 @@ export default function TireTilingClock() {
   });
 
   const LAYER_CONFIGS = useMemo(() => [
-    { image: tireImage, size: 180, filter: 'brightness(1.2) contrast(1.7) saturation(5.0)' },
-    { image: tireFlipImage, size: 100, filter: 'brightness(1.2) contrast(1.7) saturation(5.0)' },
-    { image: tire, size: 37, filter: 'contrast(22.5)' },
-  ], []);
+    { id: 'large', image: tireImage, size: 180 },
+    { id: 'medium', image: tireFlipImage, size: 100 },
+    { id: 'small', image: tire, size: 37 },
+  ] as const, []);
 
   // Horizontal stripe configuration based on the requested layout
   const STRIPES = useMemo(() => [
@@ -72,6 +72,7 @@ export default function TireTilingClock() {
           <div
             key={idx}
             className={styles.stripe}
+            data-variant={layer.id}
             style={{
               '--stripe-top': `${idx * 20}%`,
               '--grid-cols': cols,
@@ -84,16 +85,16 @@ export default function TireTilingClock() {
               const isFlipped = (row + col) % 2 !== 0;
 
               return (
-                <div
-                  key={i}
-                  className={styles.tile}
-                  style={{
-                    '--tile-size': `${layer.size}px`,
-                    '--tile-img': `url(${layer.image})`,
-                    '--tile-filter': layer.filter,
-                    '--tile-transform': isFlipped ? 'scaleX(-1)' : 'none',
-                  } as React.CSSProperties}
-                />
+                  <div
+                    key={i}
+                    className={styles.tile}
+                    data-variant={layer.id}
+                    data-flipped={isFlipped}
+                    style={{
+                      '--tile-img': `url(${layer.image})`,
+                    } as React.CSSProperties}
+                  />
+
               );
             })}
           </div>
