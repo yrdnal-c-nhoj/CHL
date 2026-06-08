@@ -57,6 +57,36 @@
   position: relative;
 }
 
+.number {
+  position: absolute;
+  font-family: 'ClockFont_26_06_05', monospace;
+  font-size: 25vh;
+  color: #f8f7f7;
+  text-shadow: 1px 1px 10px rgb(245, 4, 4);
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.twelve {
+  top: 10%;
+  left: 50%;
+}
+
+.three {
+  top: 50%;
+  left: 90%;
+}
+
+.six {
+  top: 90%;
+  left: 50%;
+}
+
+.nine {
+  top: 50%;
+  left: 10%;
+}
+
 .hand {
   position: absolute;
   bottom: 50%;
