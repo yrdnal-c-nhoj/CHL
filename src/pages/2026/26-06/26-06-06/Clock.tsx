@@ -1,116 +1,103 @@
-import tireFont from '@/assets/fonts/26fonts/26-05-27-tire.otf';
-import tire from '@/assets/images/26_images/26-05/26-05-27/tire.webp';
-import tireImage from '@/assets/images/26_images/26-05/26-05-27/tire2.webp';
-import tireFlipImage from '@/assets/images/26_images/26-05/26-05-27/tireflip.webp';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
-import { useEffect, useMemo, useState } from 'react';
+import hangImg2 from '@/assets/images/26_images/26-06/26-06-06/hang.webp';
+import hangImg from '@/assets/images/26_images/26-06/26-06-06/hangpet.webp';
+import hangImg3 from '@/assets/images/26_images/26-06/26-06-06/pet.webp';
+import backgroundImg from '@/assets/images/26_images/26-06/26-06-06/petunia.webp';
+import React, { useEffect, useRef } from 'react';
 import styles from './Clock.module.css';
 
-// BTS: Export assets for the preloading pipeline
-export const assets = [tire, tireImage, tireFlipImage, tireFont];
+export const assets = [backgroundImg, hangImg];
 
-export default function TireTilingClock() {
-  const time = useClockTime();
-  const [windowSize, setWindowSize] = useState({
-    width: typeof window !== 'undefined' ? window.innerWidth : 0,
-    height: typeof window !== 'undefined' ? window.innerHeight : 0
-  });
-
-  const LAYER_CONFIGS = useMemo(() => [
-    { image: tireImage, size: 180, filter: 'brightness(1.2) contrast(1.7) saturation(5.0)' },
-    { image: tireFlipImage, size: 100, filter: 'brightness(1.2) contrast(1.7) saturation(5.0)' },
-    { image: tire, size: 37, filter: 'contrast(22.5)' },
-  ], []);
-
-  // Horizontal stripe configuration based on the requested layout
-  const STRIPES = useMemo(() => [
-    LAYER_CONFIGS[1], // Top 2: Small
-    LAYER_CONFIGS[0], // Top 2: Small
-    LAYER_CONFIGS[2], // Middle: Different (Medium)
-    LAYER_CONFIGS[0], // Bottom 2: One image (Large)
-    LAYER_CONFIGS[1], // Bottom 2: One image (Large)
-  ], [LAYER_CONFIGS]);
-
-  const fontConfigs = useMemo(
-    () => [
-      {
-        fontFamily: 'TireTrackFont',
-        fontUrl: tireFont
-      }
-    ],
-    []
-  );
-
-  useSuspenseFontLoader(fontConfigs);
-
-  // Memoize ISO time for the semantic <time> element as per technical standards
-  const isoTime = useMemo(() => time.toISOString(), [time]);
+const AntarcticaClock: React.FC = () => {
+  const clockRef = useRef<HTMLDivElement>(null);
+  const hourRef = useRef<HTMLDivElement>(null);
+  const minuteRef = useRef<HTMLDivElement>(null);
+  const secondRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleResize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
+    const clock = clockRef.current;
+    if (!clock) return;
+
+    // Clear any existing ticks (in case of remount)
+    while (clock.firstChild) {
+      clock.removeChild(clock.firstChild);
+    }
+
+   
+    // Append hands
+    if (hourRef.current) clock.appendChild(hourRef.current);
+    if (minuteRef.current) clock.appendChild(minuteRef.current);
+    if (secondRef.current) clock.appendChild(secondRef.current);
+
+    const updateClock = () => {
+      const now = new Date();
+      const hours = now.getHours() % 12;
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+      const ms = now.getMilliseconds();
+
+      const hourAngle = hours * 30 + minutes / 2;
+      const minuteAngle = minutes * 6 + seconds / 10;
+      const baseSecondAngle = seconds * 6;
+      const progress = ms / 1000;
+      const secondAngle = baseSecondAngle + progress * 6;
+
+      if (hourRef.current) {
+        hourRef.current.style.transform = `translateX(-50%) rotate(${hourAngle}deg)`;
+      }
+      if (minuteRef.current) {
+        minuteRef.current.style.transform = `translateX(-50%) rotate(${minuteAngle}deg)`;
+      }
+      if (secondRef.current) {
+        secondRef.current.style.transform = `translateX(-50%) rotate(${secondAngle}deg)`;
+      }
+
+      requestAnimationFrame(updateClock);
     };
 
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    updateClock();
   }, []);
 
   return (
-    <main className={styles.container}>
-      {/* Animated Background Grids */}
-      {STRIPES.map((layer, idx) => {
-        const stripeHeight = windowSize.height / 5;
-        const cols = Math.ceil(windowSize.width / layer.size) + 2;
-        const rows = Math.ceil(stripeHeight / layer.size) + 2;
-
-        return (
-          <div
-            key={idx}
-            className={styles.stripe}
-            style={{
-              '--stripe-top': `${idx * 20}%`,
-              '--grid-cols': cols,
-              '--grid-size': `${layer.size}px`,
-            } as React.CSSProperties}
-          >
-            {Array.from({ length: cols * rows }).map((_, i) => {
-              const row = Math.floor(i / cols);
-              const col = i % cols;
-              const isFlipped = (row + col) % 2 !== 0;
-
-              return (
-                <div
-                  key={i}
-                  className={styles.tile}
-                  style={{
-                    '--tile-size': `${layer.size}px`,
-                    '--tile-img': `url(${layer.image})`,
-                    '--tile-filter': layer.filter,
-                    '--tile-transform': isFlipped ? 'scaleX(-1)' : 'none',
-                  } as React.CSSProperties}
-                />
-              );
-            })}
-          </div>
-        );
-      })}
-
-      {/* Digital Readout */}
-      <time dateTime={isoTime} className={styles.timeDisplay}>
-        {time
-          .toLocaleTimeString('en-GB', { hour12: false })
-          .split('')
-          .map((char, i) => (
-            <div key={i} className={styles.digit}>
-              {char}
-            </div>
-          ))}
-      </time>
-    </main>
+    <div className={styles.container}>
+        <img
+          decoding="async"
+          loading="lazy"
+          src={backgroundImg}
+          alt="Antarctica"
+          className={styles.bgimage}
+        />
+        <img 
+          src={hangImg} 
+          alt="hang" 
+          className={styles.hangOverlay} 
+          decoding="async" 
+          loading="lazy" 
+      />
+      <img 
+          src={hangImg2} 
+          alt="hang" 
+          className={styles.hangOverlay2} 
+          decoding="async" 
+          loading="lazy" 
+      />
+       <img 
+          src={hangImg3} 
+          alt="hang" 
+          className={styles.hangOverlay3} 
+          decoding="async" 
+          loading="lazy" 
+        />
+        <div
+          ref={clockRef}
+          className={styles.clock}
+        >
+          <div className={styles.center} />
+          <div ref={hourRef} className={`${styles.hand} ${styles.hourHand}`} />
+          <div ref={minuteRef} className={`${styles.hand} ${styles.minuteHand}`} />
+          <div ref={secondRef} className={`${styles.hand} ${styles.secondHand}`} />
+        </div>
+      </div>
   );
-}
+};
+
+export default AntarcticaClock;
