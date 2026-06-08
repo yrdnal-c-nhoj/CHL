@@ -4,13 +4,13 @@ import React, { useEffect, useMemo, useRef } from 'react';
 
 import carVideo from '@/assets/images/26_images/26-06/26-06-07/spacewalk2.mp4';
 // Import the corresponding font from the assets folder
-import fontUrl from '@/assets/fonts/26fonts/26-05-02-carfall.ttf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-06-07.ttf?url';
 
 // Export assets for the preloading pipeline
-export const assets = [carVideo];
+export const assets = [carVideo, fontUrl];
 
 // Font configuration for the suspense loader
-const fontConfigs: FontConfig[] = [{ fontFamily: 'ClockFont', fontUrl }];
+const fontConfigs: FontConfig[] = [{ fontFamily: 'ClockFont_26_06_07', fontUrl }];
 
 import styles from './Clock.module.css';
 
