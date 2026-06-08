@@ -3,7 +3,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useEffect, useMemo, useRef } from 'react';
 
 // Ensure the extension matches the file on disk exactly (mp4 vs MP4)
-import carVideo from '@/assets/images/26_images/26-06/26-06-07/spacewalk.MP4';
+import carVideo from '@/assets/images/26_images/26-06/26-06-07/spacewalk2.MP4';
 // Import the corresponding font from the assets folder
 import fontUrl from '@/assets/fonts/26fonts/26-05-02-carfall.ttf?url';
 
