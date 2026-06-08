@@ -8,7 +8,7 @@ type ConsoleMethod = 'debug' | 'info' | 'warn' | 'error' | 'log';
 const shouldSuppress = (msg: string) => {
   // Firefox Glean/NewTabGleanUtils spam (from browser internals, not from this app).
   const patterns = [
-    'Reporting Header: invalid JSON value received',
+    'Reporting Header:',
     'Browser Console Mode',
     'Multiprocess(Slower)',
     'Experiment',

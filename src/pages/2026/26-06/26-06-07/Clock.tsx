@@ -2,7 +2,8 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useEffect, useMemo, useRef } from 'react';
 
-import carVideo from '@/assets/images/26_images/26-06/26-06-07/spacewalk.mp4';
+// Ensure the extension matches the file on disk exactly (mp4 vs MP4)
+import carVideo from '@/assets/images/26_images/26-06/26-06-07/spacewalk.MP4';
 // Import the corresponding font from the assets folder
 import fontUrl from '@/assets/fonts/26fonts/26-05-02-carfall.ttf?url';
 
@@ -69,6 +70,7 @@ const ClockHand: React.FC<HandProps> = ({
 
 const AnalogClock: React.FC = () => {
   const rafRef = useRef<number | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [, forceRender] = React.useReducer((x) => x + 1, 0);
 
   // Suspend rendering until the custom font is ready
@@ -86,6 +88,16 @@ const AnalogClock: React.FC = () => {
         cancelAnimationFrame(rafRef.current);
       }
     };
+  }, []);
+
+  // Explicitly trigger play to bypass potential browser autoplay blocks
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch((err) => {
+        // This catches cases where the browser blocks autoplay despite being muted
+        console.warn('Video autoplay failed:', err);
+      });
+    }
   }, []);
 
   // This ensures the milliseconds update smoothly in the digital boxes.
@@ -132,8 +144,8 @@ const AnalogClock: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.videoOverlay} />
       <video
+        ref={videoRef}
         className={styles.videoBackground}
         autoPlay
         loop
@@ -141,6 +153,44 @@ const AnalogClock: React.FC = () => {
         playsInline
         src={carVideo}
       />
+      <div className={styles.videoOverlay} />
+
+      {/* Analog Clock Face Elements */}
+      <div className={styles.clockFace}>
+        {/* Tick Marks */}
+        {tickMarks.map((tick) => (
+          <div
+            key={tick.id}
+            className={tick.isHour ? styles.hourTick : styles.minuteTick}
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: `translate(-50%, -50%) rotate(${tick.angle}deg) translateY(-140px)`,
+              width: `${tick.width}px`,
+              height: `${tick.length}px`,
+              backgroundColor: 'rgba(255,255,255,0.5)',
+            }}
+          />
+        ))}
+
+        {/* Numbers */}
+        {numbers.map(({ num, x, y }) => (
+          <div
+            key={num}
+            className={styles.clockNumber}
+            style={{ left: `${x}%`, top: `${y}%`, position: 'absolute', transform: 'translate(-50%, -50%)' }}
+          >
+            {num}
+          </div>
+        ))}
+
+        {/* Clock Hands */}
+        <ClockHand type="hour" angle={hourAngle} length={70} width={6} color="white" />
+        <ClockHand type="minute" angle={minuteAngle} length={100} width={4} color="white" />
+        <ClockHand type="second" angle={secondAngle} length={120} width={2} color="#ff3b30" />
+      </div>
+
       <time dateTime={isoTime} className={styles.timeWrapper}>
         <div className={styles.digitalTime}>
           <span className={styles.digitGroup}>
