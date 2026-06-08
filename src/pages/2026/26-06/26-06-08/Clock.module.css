@@ -29,8 +29,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'ClockFont_26_06_07', monospace;
-  font-size: 12vw;
+  font-family: 'ClockFont_26_06_08', monospace;
+  font-size: 14vh;
   font-weight: 300;
   color: #d82b08;
   text-shadow: 0 0 20px rgba(22, 21, 21, 0.3);
@@ -38,12 +38,12 @@
 
 .digitGroup {
   display: flex;
-  /* gap: 4px; */
+  flex-direction: column;
 }
 
 .digitBox {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 8vw;
+  height: 10vh;
 }
