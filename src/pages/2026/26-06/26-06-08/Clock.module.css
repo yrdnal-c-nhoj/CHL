@@ -1,49 +1,46 @@
 .container {
-  position: relative;
   width: 100vw;
   height: 100dvh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  background: #000;
   overflow: hidden;
 }
 
-.videoBackground {
+.timeDisplay {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 0.05em;
+  font-family: 'TireTrackFont', monospace;
+  color: #fff;
+  font-size: clamp(2rem, 10vw, 7rem);
+}
+
+.digit {
+  width: 0.6em;
+  text-align: center;
+}
+
+.stripe {
   position: absolute;
-  top: 0;
+  top: var(--stripe-top, 0%);
   left: 0;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1;
+  height: 20%;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols, 10), 1fr);
+  pointer-events: none;
+  z-index: 1;
 }
 
-.timeWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.digitalTime {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'ClockFont_26_06_08', monospace;
-  font-size: 14vh;
-  font-weight: 300;
-  color: #d82b08;
-  text-shadow: 0 0 20px rgba(22, 21, 21, 0.3);
-}
-
-.digitGroup {
-  display: flex;
-  flex-direction: column;
-}
-
-.digitBox {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 10vh;
+.tile {
+  width: var(--tile-size, 100px);
+  height: var(--tile-size, 100px);
+  background-image: var(--tile-img);
+  background-size: cover;
+  background-position: center;
+  filter: hue-rotate(180deg) var(--tile-filter, );
+  transform: var(--tile-transform, none);
 }

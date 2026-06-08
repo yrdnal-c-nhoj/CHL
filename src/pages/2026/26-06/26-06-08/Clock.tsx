@@ -1,178 +1,116 @@
-import type { FontConfig } from '@/types/clock';
+import tireFont from '@/assets/fonts/26fonts/26-05-27-tire.otf';
+import tire from '@/assets/images/26_images/26-05/26-05-27/tire.webp';
+import tireImage from '@/assets/images/26_images/26-05/26-05-27/tire2.webp';
+import tireFlipImage from '@/assets/images/26_images/26-05/26-05-27/tireflip.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React, { useEffect, useMemo, useRef } from 'react';
-
-import carVideo from '@/assets/images/26_images/26-06/26-06-08/spacewalk2.mp4';
-// Import the corresponding font from the assets folder
-import fontUrl from '@/assets/fonts/26fonts/26-06-08.ttf?url';
-
-// Export assets for the preloading pipeline
-export const assets = [carVideo, fontUrl];
-
-// Font configuration for the suspense loader
-const fontConfigs: FontConfig[] = [{ fontFamily: 'ClockFont_26_06_07', fontUrl }];
-
+import { useClockTime } from '@/utils/hooks';
+import { useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
-interface HandProps {
-  angle: number;
-  length: number;
-  width: number;
-  color: string;
-  type: 'hour' | 'minute' | 'second';
-}
+// BTS: Export assets for the preloading pipeline
+export const assets = [tire, tireImage, tireFlipImage, tireFont];
 
-const getHandZIndex = (type: 'hour' | 'minute' | 'second'): number => {
-  if (type === 'second') return 30;
-  if (type === 'minute') return 20;
-  return 10;
-};
+export default function TireTilingClock() {
+  const time = useClockTime();
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 0,
+    height: typeof window !== 'undefined' ? window.innerHeight : 0
+  });
 
-const getHandBorderRadius = (
-  type: 'hour' | 'minute' | 'second',
-  width: number,
-): string => {
-  if (type === 'second') return '1px';
-  return `${width / 2}px`;
-};
+  const LAYER_CONFIGS = useMemo(() => [
+    { image: tireImage, size: 180, filter: 'brightness(1.2) contrast(1.7) saturation(5.0)' },
+    { image: tireFlipImage, size: 100, filter: 'brightness(1.2) contrast(1.7) saturation(5.0)' },
+    { image: tire, size: 37, filter: 'contrast(22.5)' },
+  ], []);
 
-const getHandTransition = (type: 'hour' | 'minute' | 'second'): string => {
-  if (type === 'second') return 'none';
-  return 'transform 0.1s ease-out';
-};
+  // Horizontal stripe configuration based on the requested layout
+  const STRIPES = useMemo(() => [
+    LAYER_CONFIGS[1], // Top 2: Small
+    LAYER_CONFIGS[0], // Top 2: Small
+    LAYER_CONFIGS[2], // Middle: Different (Medium)
+    LAYER_CONFIGS[0], // Bottom 2: One image (Large)
+    LAYER_CONFIGS[1], // Bottom 2: One image (Large)
+  ], [LAYER_CONFIGS]);
 
-const ClockHand: React.FC<HandProps> = ({
-  angle,
-  length,
-  width,
-  color,
-  type,
-}) => {
-  const handStyle: React.CSSProperties = {
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    width: `${width}px`,
-    height: `${length}px`,
-    backgroundColor: color,
-    transformOrigin: 'bottom center',
-    transform: `translateX(-50%) rotate(${angle}deg)`,
-    borderRadius: getHandBorderRadius(type, width),
-    zIndex: getHandZIndex(type),
-    transition: getHandTransition(type),
-  };
-
-  return (
-    <div style={handStyle} className={styles.hand} data-hand-type={type} />
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: 'TireTrackFont',
+        fontUrl: tireFont
+      }
+    ],
+    []
   );
-};
 
-const AnalogClock: React.FC = () => {
-  const rafRef = useRef<number | null>(null);
-  const [, forceRender] = React.useReducer((x) => x + 1, 0);
-
-  // Suspend rendering until the custom font is ready
   useSuspenseFontLoader(fontConfigs);
 
+  // Memoize ISO time for the semantic <time> element as per technical standards
+  const isoTime = useMemo(() => time.toISOString(), [time]);
+
   useEffect(() => {
-    const animate = () => {
-      forceRender();
-      rafRef.current = requestAnimationFrame(animate);
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
     };
-    rafRef.current = requestAnimationFrame(animate);
 
-    return () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-    };
-  }, []);
-
-  // This ensures the milliseconds update smoothly in the digital boxes.
-  const now = new Date();
-  const hours = now.getHours();
-  const minutes = now.getMinutes();
-  const seconds = now.getSeconds();
-  const ms = now.getMilliseconds();
-  const isoTime = now.toISOString();
-
-  const hourAngle = ((hours % 12) + minutes / 60) * 30;
-  const minuteAngle = (minutes + seconds / 60) * 6;
-  const secondAngle = (seconds + ms / 1000) * 6;
-
-  const tickMarks = useMemo(() => {
-    return Array.from({ length: 60 }, (_, i) => {
-      const isHour = i % 5 === 0;
-      const angle = i * 6;
-      return {
-        id: i,
-        angle,
-        isHour,
-        length: isHour ? 16 : 8,
-        width: isHour ? 4 : 2,
-      };
-    });
-  }, []);
-
-  const numbers = useMemo(() => {
-    return Array.from({ length: 12 }, (_, i) => {
-      const num = i === 0 ? 12 : i;
-      const angle = i * 30;
-      const radian = (angle - 90) * (Math.PI / 180);
-      const radius = 35;
-      const x = 50 + radius * Math.cos(radian);
-      const y = 50 + radius * Math.sin(radian);
-      return {
-        num,
-        x,
-        y,
-      };
-    });
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.videoOverlay} />
-      <video
-        className={styles.videoBackground}
-        autoPlay
-        loop
-        muted
-        playsInline
-        src={carVideo}
-      />
-      <time dateTime={isoTime} className={styles.timeWrapper}>
-        <div className={styles.digitalTime}>
-          <span className={styles.digitGroup}>
-            <span className={styles.digitBox}>
-              {String(hours).padStart(2, '0')[0]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(hours).padStart(2, '0')[1]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(minutes).padStart(2, '0')[0]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(minutes).padStart(2, '0')[1]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(seconds).padStart(2, '0')[0]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(seconds).padStart(2, '0')[1]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(Math.floor(ms / 10)).padStart(2, '0')[0]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(Math.floor(ms / 10)).padStart(2, '0')[1]}
-            </span>
-          </span>
-        </div>
-      </time>
-    </div>
-  );
-};
+    <main className={styles.container}>
+      {/* Animated Background Grids */}
+      {STRIPES.map((layer, idx) => {
+        const stripeHeight = windowSize.height / 5;
+        const cols = Math.ceil(windowSize.width / layer.size) + 2;
+        const rows = Math.ceil(stripeHeight / layer.size) + 2;
 
-export default AnalogClock;
+        return (
+          <div
+            key={idx}
+            className={styles.stripe}
+            style={{
+              '--stripe-top': `${idx * 20}%`,
+              '--grid-cols': cols,
+              '--grid-size': `${layer.size}px`,
+            } as React.CSSProperties}
+          >
+            {Array.from({ length: cols * rows }).map((_, i) => {
+              const row = Math.floor(i / cols);
+              const col = i % cols;
+              const isFlipped = (row + col) % 2 !== 0;
+
+              return (
+                <div
+                  key={i}
+                  className={styles.tile}
+                  style={{
+                    '--tile-size': `${layer.size}px`,
+                    '--tile-img': `url(${layer.image})`,
+                    '--tile-filter': layer.filter,
+                    '--tile-transform': isFlipped ? 'scaleX(-1)' : 'none',
+                  } as React.CSSProperties}
+                />
+              );
+            })}
+          </div>
+        );
+      })}
+
+      {/* Digital Readout */}
+      <time dateTime={isoTime} className={styles.timeDisplay}>
+        {time
+          .toLocaleTimeString('en-GB', { hour12: false })
+          .split('')
+          .map((char, i) => (
+            <div key={i} className={styles.digit}>
+              {char}
+            </div>
+          ))}
+      </time>
+    </main>
+  );
+}
