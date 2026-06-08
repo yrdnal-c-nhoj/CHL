@@ -29,9 +29,8 @@
   left: 6px;
   width: clamp(120px, 48vw, 300px);
   height: auto;
-  z-index: 20;
     opacity: 0.8;
-     z-index: 5;
+  z-index: 20;
   pointer-events: none;
 }
 
@@ -43,7 +42,6 @@
   height: auto;
   opacity: 0.9;
   z-index: 20;
-   z-index: 5;
   pointer-events: none;
 }
 
@@ -55,7 +53,6 @@
   height: auto;
   opacity: 0.9;
   z-index: 20;
-   z-index: 5;
   pointer-events: none;
 }
 
