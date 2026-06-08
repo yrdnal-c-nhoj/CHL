@@ -15,7 +15,6 @@
   gap: 0.05em;
   font-family: 'TireTrackFont', monospace;
   color: #fff;
-  text-shadow: 0 0 5px #ac4704;
   font-size: clamp(2rem, 10vw, 7rem);
 }
 
@@ -42,14 +41,6 @@
   background-image: var(--tile-img);
   background-size: cover;
   background-position: center;
-
-  /* Technical standards: valid filter fallback only. */
-  filter: hue-rotate(180deg) var(--tile-filter, none);
-
-  transform: none;
+  filter: hue-rotate(180deg) var(--tile-filter, );
+  transform: var(--tile-transform, none);
 }
-
-.tile[data-flipped='true'] {
-  transform: scaleX(-1);
-}
-

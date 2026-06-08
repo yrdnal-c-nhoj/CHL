@@ -5777,9 +5777,19 @@
     "title": "0° North",
     "tags": [
       "snow",
-      "myth",
-      "cardinal-directions",
+       "myth",
+        "cardinal-directions",
       "wind"
+    ]
+  },
+  {
+    "path": "26-06-05",
+    "date": "26-06-05",
+    "title": "Slice",
+    "tags": [
+      "analog",
+      "body",
+      "face"
     ]
   }
 ]

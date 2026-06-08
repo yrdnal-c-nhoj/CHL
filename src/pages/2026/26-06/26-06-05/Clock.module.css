@@ -1,0 +1,97 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url('@/assets/images/26_images/26-06/26-06-05/brain.webp');
+  background-size: auto; /* Use the natural size of the GIF for tiling */
+  background-repeat: repeat;
+  background-position: center; /* Start tiling from the center */
+}
+
+/* Sliced webp overlay that must be above everything */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+  opacity: 1;
+  filter: brightness(1.6) contrast(1.2);
+  z-index: 5;
+  background-image: url('@/assets/images/26_images/26-06/26-06-05/slice.webp');
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+@media (min-width: 600px) {
+  .overlay {
+    background-size: 50% auto;
+  }
+}
+
+/* Ensure the clock stays on top of everything (including overlay) */
+.analogClock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60vh;
+  height: 60vh;
+  z-index: 10;
+}
+
+
+.face {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  border-radius: 4px;
+  background-color: #f8f7f757;
+  box-shadow: 1px 1px 10px rgb(245, 4, 4);
+  transform: rotate(var(--rotation));
+}
+
+.hour {
+  width: 1.5vh;
+  height: 20%;
+  margin-left: -0.75vh;
+}
+
+.minute {
+  width: 1vh;
+  height: 35%;
+  margin-left: -0.5vh;
+}
+
+.second {
+  width: 0.5vh;
+  height: 42%;
+  margin-left: -0.25vh;
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3vh;
+  height: 3vh;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
