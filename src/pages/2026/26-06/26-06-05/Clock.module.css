@@ -25,16 +25,15 @@
   pointer-events: none;
   opacity: 1;
   filter: brightness(1.6) contrast(1.2);
-  z-index: 5;
   background-image: url('@/assets/images/26_images/26-06/26-06-05/slice.webp');
   background-size: 100% auto;
   background-repeat: no-repeat;
   background-position: center;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 1024px) {
   .overlay {
-    background-size: 50% auto;
+    background-size: 70% auto;
   }
 }
 

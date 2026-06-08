@@ -5,7 +5,7 @@ import backgroundImg from '@/assets/images/26_images/26-06/26-06-06/petunia.webp
 import React, { useEffect, useRef } from 'react';
 import styles from './Clock.module.css';
 
-export const assets = [backgroundImg, hangImg];
+export const assets = [backgroundImg, hangImg, hangImg2, hangImg3];
 
 const AntarcticaClock: React.FC = () => {
   const clockRef = useRef<HTMLDivElement>(null);
