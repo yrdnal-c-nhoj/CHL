@@ -14,19 +14,7 @@ const AntarcticaClock: React.FC = () => {
   const secondRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const clock = clockRef.current;
-    if (!clock) return;
-
-    // Clear any existing ticks (in case of remount)
-    while (clock.firstChild) {
-      clock.removeChild(clock.firstChild);
-    }
-
-   
-    // Append hands
-    if (hourRef.current) clock.appendChild(hourRef.current);
-    if (minuteRef.current) clock.appendChild(minuteRef.current);
-    if (secondRef.current) clock.appendChild(secondRef.current);
+    let rafId: number;
 
     const updateClock = () => {
       const now = new Date();
@@ -51,10 +39,11 @@ const AntarcticaClock: React.FC = () => {
         secondRef.current.style.transform = `translateX(-50%) rotate(${secondAngle}deg)`;
       }
 
-      requestAnimationFrame(updateClock);
+      rafId = requestAnimationFrame(updateClock);
     };
 
     updateClock();
+    return () => cancelAnimationFrame(rafId);
   }, []);
 
   return (

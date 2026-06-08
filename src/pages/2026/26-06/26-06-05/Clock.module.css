@@ -45,7 +45,7 @@
   transform: translate(-50%, -50%);
   width: 60vh;
   height: 60vh;
-  z-index: 10;
+  z-index: 20;
 }
 
 
@@ -59,7 +59,7 @@
 .number {
   position: absolute;
   font-family: 'ClockFont_26_06_05', monospace;
-  font-size: 25vh;
+  font-size: 8vh;
   color: #f8f7f7;
   text-shadow: 1px 1px 10px rgb(245, 4, 4);
   transform: translate(-50%, -50%);
