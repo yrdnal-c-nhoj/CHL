@@ -2,9 +2,9 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useEffect, useMemo, useRef } from 'react';
 
-import carVideo from '@/assets/images/26_images/26-06/26-06-07/spacewalk2.mp4';
+import carVideo from '@/assets/images/26_images/26-06/26-06-08/spacewalk2.mp4';
 // Import the corresponding font from the assets folder
-import fontUrl from '@/assets/fonts/26fonts/26-06-07.ttf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-06-08.ttf?url';
 
 // Export assets for the preloading pipeline
 export const assets = [carVideo, fontUrl];
