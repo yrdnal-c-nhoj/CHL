@@ -5781,5 +5781,42 @@
         "cardinal-directions",
       "wind"
     ]
+  },
+  {
+    "path": "26-06-05",
+    "date": "26-06-05",
+    "title": "Slice",
+    "tags": [
+      "analog",
+      "body",
+      "face"
+    ]
+  },
+  {
+    "path": "26-06-06",
+    "date": "26-06-06",
+    "title": "Sparrow",
+    "tags": [
+      "analog",
+      "animal",
+      "bird",
+      "day",
+      "fly",
+      "nature",
+      "sky"
+    ]
+  },
+  {
+    "path": "26-06-07",
+    "date": "26-06-07",
+    "title": "Pineapple",
+    "tags": [
+      "analog",
+      "color",
+      "food",
+      "fruit",
+      "smell",
+      "tree"
+    ]
   }
 ]

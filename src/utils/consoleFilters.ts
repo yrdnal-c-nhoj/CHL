@@ -63,6 +63,15 @@ const shouldSuppress = (msg: string) => {
     'WebRequestUpload',
     'nsIHttpChannel',
     'ObliviousHTTP',
+    'FrecencyBoostProvider',
+    'HPKEConfigManager',
+    'WallpaperFeed',
+    'EssentialDomainsRemoteSettings',
+    'SimpleURIUnknownSchemesRemoteObserver',
+    'IgnoreLists',
+    'AppServicesTracing',
+    'SuggestBackendRust',
+    'ASRouter',
   ];
 
   const lowerMsg = msg.toLowerCase();
