@@ -130,13 +130,13 @@ const Clock: React.FC = () => {
     transform: 'translate(-50%, -50%)',
     zIndex: 10,
     display: 'flex',
-    gap: '0.4rem',
+    // gap: '0.4rem',
     userSelect: 'none',
     pointerEvents: 'none',
   };
 
   const digitBoxStyle = (color: string): React.CSSProperties => ({
-    width: '0.9em',
+    width: '0.6em',
     height: '1.4em',
     display: 'flex',
     alignItems: 'center',
@@ -144,7 +144,7 @@ const Clock: React.FC = () => {
     color,
     textShadow: '2px 2px 2px rgba(0, 0, 0, 0.8)',
     fontFamily: 'VegasFont, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-    fontSize: 'clamp(2rem, 29vw, 6rem)',
+    fontSize: 'clamp(2rem, 29vw, 8rem)',
   });
 
   const getTwo = (n: number) => String(n).padStart(2, '0');
