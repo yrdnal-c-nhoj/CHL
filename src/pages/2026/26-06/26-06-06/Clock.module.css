@@ -26,33 +26,33 @@
 .hangOverlay {
   position: absolute;
   top: 0px;
-  left: 6px;
-  width: clamp(120px, 48vw, 300px);
+  left: -56px;
+  width: clamp(120px, 68vw, 700px);
   height: auto;
     opacity: 0.8;
-  z-index: 20;
+  z-index: 4;
   pointer-events: none;
 }
 
 .hangOverlay2 {
   position: absolute;
-  top: -37px;
-  right: 20px;
-  width: clamp(120px, 42vw, 300px);
+  top: -57px;
+  right: 1px;
+  width: clamp(120px, 72vw, 500px);
   height: auto;
   opacity: 0.9;
-  z-index: 20;
+  z-index: 5;
   pointer-events: none;
 }
 
 .hangOverlay3 {
   position: absolute;
-  bottom: -11px;
+  bottom: -21px;
   left: 40%;
-  width: clamp(120px, 42vw, 300px);
+  width: clamp(120px, 92vw, 500px);
   height: auto;
   opacity: 0.9;
-  z-index: 20;
+  z-index: 7;
   pointer-events: none;
 }
 

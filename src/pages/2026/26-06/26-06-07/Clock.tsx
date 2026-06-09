@@ -1,4 +1,4 @@
-import fontUrl from '@/assets/fonts/26fonts/26-04-23.otf';
+import fontUrl from '@/assets/fonts/26fonts/26-06-07.ttf?url';
 import backgroundVideo from '@/assets/images/26_images/26-06/26-06-07/spacewalk.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useClockTime } from '@/utils/clockUtils';
@@ -6,31 +6,48 @@ import {
   ClockLoadingFallback,
   useSuspenseFontLoader,
 } from '@/utils/fontLoader';
-import React, { Suspense, useMemo } from 'react';
+import React, { Suspense } from 'react';
 import styles from './Clock.module.css';
+
+export const assets = [backgroundVideo, fontUrl];
+
+export const fontConfigs: FontConfig[] = [
+  { fontFamily: 'Clock26-06-07', fontUrl },
+];
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 const formatMs = (num: number): string => num.toString().padStart(3, '0');
 
 const ClockInner: React.FC = () => {
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [{ fontFamily: 'Clock26-04-23', fontUrl }],
-    [],
-  );
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useClockTime();
+  const time = useClockTime('ms');
 
   const h = formatTime(time.getHours());
   const m = formatTime(time.getMinutes());
   const s = formatTime(time.getSeconds());
-  const ms = formatMs(time.getMilliseconds());
 
-  // Join them to treat the milliseconds as part of the sequence
-  const allDigits = (h + m + s + ms).split('');
+  // Show only 2 digits for milliseconds
+  const ms = formatMs(time.getMilliseconds());
+  const ms2 = ms.slice(0, 2);
+  const allDigits = (h + m + s + ms2).split('');
 
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={{
+        position: 'relative',
+        height: '100dvh',
+        width: '100vw',
+        margin: 0,
+        padding: '2rem 0 0 0',
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        backgroundColor: '#ff0000',
+      }}
+    >
       <video
         className={styles.video}
         autoPlay
@@ -38,13 +55,39 @@ const ClockInner: React.FC = () => {
         loop
         playsInline
         preload="auto"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100vw',
+          height: '100dvh',
+          objectFit: 'cover',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
       >
         <source src={backgroundVideo} type="video/mp4" />
       </video>
 
-      <main className={styles.digitsContainer}>
+      <main
+        className={styles.digitsContainer}
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         {allDigits.map((digit, index) => (
-          <span key={index} className={styles.digitBox}>
+          <span
+            key={index}
+            className={styles.digitBox}
+            style={{
+              display: 'inline-block',
+              width: '1ch',
+              textAlign: 'center',
+              fontVariantNumeric: 'tabular-nums',
+            }}
+          >
             {digit}
           </span>
         ))}

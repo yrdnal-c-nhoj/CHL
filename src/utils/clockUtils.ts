@@ -21,12 +21,16 @@ export function useClockTime(_precision?: 'ms' | 's'): Date {
   const [time, setTime] = useState<Date>(new Date());
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
+    // If callers want milliseconds, update more frequently.
+    // Note: UI only needs ~30-60fps for smoothness; 50ms is a good balance.
+    const intervalMs = _precision === 'ms' ? 50 : 1000;
+    const timer = setInterval(() => setTime(new Date()), intervalMs);
     return () => clearInterval(timer);
-  }, []);
+  }, [_precision]);
 
   return time;
 }
+
 
 /**
  * Formats a Date object into a string based on the specified format.
