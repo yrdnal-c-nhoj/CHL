@@ -60,6 +60,8 @@ const shouldSuppress = (msg: string) => {
     'addons.update-checker',
     'browser-customtitlebar.js',
     'js.stripe.com',
+    'getRequestHeader',
+    'parseFormData',
     'WebRequestUpload',
     'nsIHttpChannel',
     'ObliviousHTTP',
