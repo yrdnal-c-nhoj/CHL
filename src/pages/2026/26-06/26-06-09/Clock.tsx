@@ -2,15 +2,7 @@ import vegasFont from '@/assets/fonts/25fonts/25-07-05-vegas.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import React, { useEffect, useMemo, useRef } from 'react';
-
-// Declare global types for YouTube API
-declare global {
-  interface Window {
-    YT: any;
-    onYouTubeIframeAPIReady: (() => void) | null;
-  }
-}
+import React, { useMemo } from 'react';
 
 const GARISH_COLORS = [
   '#FF00FF', // Neon Magenta
@@ -21,9 +13,11 @@ const GARISH_COLORS = [
   '#FF5E00', // Neon Orange
 ];
 
+const TREVI_IFRAME_URL = 'https://embed.skylinewebcams.com/en/webcam/286.html';
+// Some environments block iframe rendering; provide a direct image fallback.
+const TREVI_FALLBACK_IMG_URL = 'https://embed.skylinewebcams.com/img/286.jpg';
+
 const Clock: React.FC = () => {
-  const playerRef = useRef<any>(null);
-  const playerContainerRef = useRef<HTMLDivElement>(null);
 
   const fontConfigs = useMemo<FontConfig[]>(
     () => [
@@ -38,63 +32,6 @@ const Clock: React.FC = () => {
 
   useSuspenseFontLoader(fontConfigs);
 
-  useEffect(() => {
-    let isMounted = true;
-    const scriptId = 'youtube-iframe-api-script';
-    let scriptTag = document.getElementById(scriptId) as HTMLScriptElement | null;
-
-    const initPlayer = () => {
-      if (!isMounted) return;
-      if (playerRef.current) return;
-      if (!playerContainerRef.current) return;
-      if (!window.YT?.Player) return;
-
-      playerRef.current = new window.YT.Player(playerContainerRef.current, {
-        height: '100%',
-        width: '100%',
-        videoId: 'ZvYvZLfPatQ',
-        playerVars: {
-          autoplay: 1,
-          mute: 1,
-          controls: 0,
-          modestbranding: 1,
-          loop: 1,
-          playlist: 'ZvYvZLfPatQ',
-          playsinline: 1,
-          enablejsapi: 1,
-          origin: window.location.origin,
-        },
-        events: {
-          onReady: (event: any) => {
-            if (isMounted) event.target.playVideo();
-          },
-        },
-      });
-    };
-
-    if (window.YT?.Player) {
-      initPlayer();
-    } else {
-      if (!scriptTag) {
-        scriptTag = document.createElement('script');
-        scriptTag.id = scriptId;
-        scriptTag.src = 'https://www.youtube.com/iframe_api';
-        document.body.appendChild(scriptTag);
-      }
-
-      const previousCallback = window.onYouTubeIframeAPIReady;
-      window.onYouTubeIframeAPIReady = () => {
-        if (previousCallback) previousCallback();
-        initPlayer();
-      };
-    }
-
-    return () => {
-      isMounted = false;
-      playerRef.current = null;
-    };
-  }, []);
-
   // Full-screen, non-interactive background embed
   const iframeStyle: React.CSSProperties = {
     position: 'fixed',
@@ -106,6 +43,19 @@ const Clock: React.FC = () => {
     pointerEvents: 'none',
     background: '#000',
   };
+
+  const fallbackImgStyle: React.CSSProperties = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+    zIndex: -2,
+    objectFit: 'cover',
+    pointerEvents: 'none',
+    background: '#000',
+  };
+
 
   const clockContainerStyle: React.CSSProperties = {
     position: 'fixed',
@@ -126,7 +76,8 @@ const Clock: React.FC = () => {
     alignItems: 'center',
     justifyContent: 'center',
     color,
-    fontFamily: 'VegasFont, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+    fontFamily:
+      'VegasFont, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
     fontSize: 'clamp(2rem, 19vw, 4rem)',
   });
 
@@ -138,8 +89,22 @@ const Clock: React.FC = () => {
   return (
     <>
       <div style={iframeStyle}>
-        <div ref={playerContainerRef} />
+        <iframe
+          title="Trevi Fountain - SkylineWebcams"
+          src={TREVI_IFRAME_URL}
+          style={{ width: '100%', height: '100%', border: 0 }}
+          allow="autoplay; fullscreen; picture-in-picture"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
       </div>
+
+      <img
+        src={TREVI_FALLBACK_IMG_URL}
+        alt="Trevi Fountain webcam fallback"
+        style={fallbackImgStyle}
+        // If iframe works, this sits underneath due to z-index.
+      />
+
 
       <div style={clockContainerStyle} aria-label={timeStr}>
         {timeStr.split('').map((char, i) => (
@@ -156,3 +121,4 @@ const Clock: React.FC = () => {
 };
 
 export default Clock;
+
