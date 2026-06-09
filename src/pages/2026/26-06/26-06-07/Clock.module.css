@@ -1,93 +1,45 @@
 .container {
-  position: relative;
   width: 100vw;
   height: 100dvh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  overflow: hidden;
-  background-color: #ff0000;
-}
-
-.videoBackground {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-
-  /* Keep the background visible across browsers/staking contexts */
-  z-index: 0;
-
-  /* Avoid blend mode making the video look invisible */
-  mix-blend-mode: normal;
-}
-
-.videoOverlay {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: transparent;
-}
-
-.timeWrapper {
+  align-items: center;
   position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  pointer-events: none;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  background-color: #020202;
 }
 
-.clockFace {
+.video {
   position: absolute;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 3;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  height: 90dvh;
+  object-fit: contain;
+  z-index: 0;
 }
 
-.clockNumber {
-  font-family: 'ClockFont', sans-serif;
-  font-size: 4vh;
-  color: white;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  z-index: 10;
-}
-
-.hourTick,
-.minuteTick {
-  transform-origin: center center;
-  z-index: 5;
-}
-
-.hand {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.digitalTime {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'ClockFont_26_06_07', monospace;
-  font-size: 14vh;
-  font-weight: 300;
-  color: #d82b08;
-  text-shadow: 0 0 20px rgba(22, 21, 21, 0.3);
-}
-
-.digitGroup {
+.digitsContainer {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .digitBox {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 10vh;
+  font-size: calc(100dvh / 10);
+  font-weight: 300;
+  font-family: 'Clock26-04-23', monospace;
+  color: #faea10;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.963);
+  line-height: 0.85;
+  font-variant-numeric: tabular-nums;
 }
