@@ -5777,8 +5777,10 @@
     "title": "0° North",
     "tags": [
       "cardinal-directions",
+      "cold",
       "myth",
       "snow",
+      "wet",
       "wind"
     ]
   },
@@ -5801,7 +5803,11 @@
     "date": "26-06-06",
     "title": "Petunia",
     "tags": [
-      "analog"
+      "analog",
+      "flower",
+      "grow",
+      "plant",
+      "purple"
     ]
   },
   {
@@ -5809,7 +5815,14 @@
     "date": "26-06-07",
     "title": "Red Spacewalk",
     "tags": [
-     "digital-24h"
+      "Russia",
+      "digital-24h",
+      "horizon",
+      "milliseconds",
+      "monochrome",
+      "red",
+      "space",
+      "walk"
     ]
   },
   {
