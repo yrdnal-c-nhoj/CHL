@@ -120,20 +120,20 @@ const Clock: React.FC = () => {
   };
 
   const digitBoxStyle = (color: string): React.CSSProperties => ({
-    width: '0.5em',
+    width: '0.9em',
     height: '1.4em',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     color,
     fontFamily: 'VegasFont, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-    fontSize: 'clamp(2rem, 29vw, 6rem)',
+    fontSize: 'clamp(2rem, 19vw, 4rem)',
   });
 
   const getTwo = (n: number) => String(n).padStart(2, '0');
 
   const time = useSecondClock();
-  const timeStr = `${getTwo(time.getHours())}${getTwo(time.getMinutes())}${getTwo(time.getSeconds())}`;
+  const timeStr = `${getTwo(time.getHours())}:${getTwo(time.getMinutes())}:${getTwo(time.getSeconds())}`;
 
   return (
     <>
