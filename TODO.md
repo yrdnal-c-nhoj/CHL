@@ -1,11 +1,13 @@
 # TODO
 
-- [x] Inspect the target clock page component at `src/pages/2026/26-06/26-06-09/Clock.tsx` (currently empty)
-- [x] Create a working `Clock.tsx` implementation that embeds the requested YouTube video (id `ZvYvZLfPatQ`).
-- [x] Ensure the component matches existing clock-page patterns (fonts optional, full-screen layout, no blocking UI).
-- [x] Add the minimal CSS (inline or via existing styles) to keep the embed responsive and behind/with the clock.
-- [x] Run `npm test` / `npm run build` (or equivalent) to verify compilation.
-
+- [ ] Gather context: inspect existing clock page implementation (done)
+- [ ] Draft edit plan: replace YouTube iframe background with SkylineWebcams Trevi Fountain embed (done - draft plan below)
+- [ ] After approval, update src/pages/2026/26-06/26-06-09/Clock.tsx to:
+  - remove YouTube Iframe API loading/player init
+  - add iframe to SkylineWebcams Trevi Fountain page
+  - keep autoplay/muted-like behavior via iframe params where available
+  - keep existing overlay clock UI
+- [x] Run lint/build/tests (if available) (build: pass; tests: currently failing unrelated to this change)
 
 
 
