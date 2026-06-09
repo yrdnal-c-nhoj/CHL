@@ -14,10 +14,10 @@ declare global {
 
 const GARISH_COLORS = [
   '#FF00FF', // Neon Magenta
-  '#39FF14', // Neon Green
-  '#FFFB00', // Neon Yellow
-  '#00FFFF', // Cyan
-  '#FF3131', // Neon Red
+  '#FFFB00', // Neon Green
+  '#FF5E00', // Neon Yellow
+  '#FF00F2', // Cyan
+  '#FFFB00', // Neon Red
   '#FF5E00', // Neon Orange
 ];
 
@@ -72,6 +72,9 @@ const Clock: React.FC = () => {
       });
     };
 
+    // Save previous callback to prevent breaking other components using YT API
+    const previousCallback = window.onYouTubeIframeAPIReady;
+
     if (window.YT?.Player) {
       initPlayer();
     } else {
@@ -82,7 +85,6 @@ const Clock: React.FC = () => {
         document.body.appendChild(scriptTag);
       }
 
-      const previousCallback = window.onYouTubeIframeAPIReady;
       window.onYouTubeIframeAPIReady = () => {
         if (previousCallback) previousCallback();
         initPlayer();
@@ -91,6 +93,20 @@ const Clock: React.FC = () => {
 
     return () => {
       isMounted = false;
+      
+      // Clean up global callback if it was ours
+      if (window.onYouTubeIframeAPIReady === initPlayer || !window.YT?.Player) {
+        window.onYouTubeIframeAPIReady = previousCallback || null;
+      }
+
+      // Safely destroy the YouTube player instance to free up memory
+      if (playerRef.current && typeof playerRef.current.destroy === 'function') {
+        try {
+          playerRef.current.destroy();
+        } catch (e) {
+          console.error("Error destroying YT player:", e);
+        }
+      }
       playerRef.current = null;
     };
   }, []);
@@ -126,6 +142,7 @@ const Clock: React.FC = () => {
     alignItems: 'center',
     justifyContent: 'center',
     color,
+    // textShadow: `2px 2px 2px #333333}`,
     fontFamily: 'VegasFont, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
     fontSize: 'clamp(2rem, 29vw, 6rem)',
   });
