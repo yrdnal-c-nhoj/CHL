@@ -43,8 +43,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 60vh;
-  height: 60vh;
+  width: 35vh;
+  height: 35vh;
   z-index: 20;
 }
 
@@ -59,9 +59,9 @@
 .number {
   position: absolute;
   font-family: 'ClockFont_26_06_05', monospace;
-  font-size: 8vh;
+  font-size: 28vh;
   color: #f8f7f7;
-  text-shadow: 1px 1px 10px rgb(245, 4, 4);
+  text-shadow: 1px 1px 0px rgb(246, 219, 13);
   transform: translate(-50%, -50%);
   z-index: 2;
 }
@@ -93,18 +93,18 @@
   transform-origin: bottom center;
   border-radius: 4px;
   background-color: #f8f7f757;
-  box-shadow: 1px 1px 10px rgb(245, 4, 4);
+  box-shadow: 1px 1px 10px rgba(19, 17, 2, 0.743);
   transform: rotate(var(--rotation));
 }
 
 .hour {
-  width: 1.5vh;
+  width: 1.2vh;
   height: 20%;
   margin-left: -0.75vh;
 }
 
 .minute {
-  width: 1vh;
+  width: 0.8vh;
   height: 35%;
   margin-left: -0.5vh;
 }
