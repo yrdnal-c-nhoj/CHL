@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useMultiFontLoader } from './assetLoader';
 
 // Re-export base font loader functions
-export { ClockLoadingFallback, useFontLoader as useMultipleFontLoader, useSuspenseFontLoader } from './fontLoader';
+export { ClockLoadingFallback, useSuspenseFontLoader } from './fontLoader';
 
 /**
  * Enhanced font loader with loading state tracking (non-suspense)
@@ -93,4 +94,5 @@ export function useKeyframes(name: string, keyframes: string): string {
 /**
  * Legacy font loader alias
  */
+export const useMultipleFontLoader = useMultiFontLoader;
 export const useFontLoader = useEnhancedFontLoader;
