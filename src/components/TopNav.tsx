@@ -36,10 +36,10 @@ const TopNav: React.FC = () => {
 
           </li>
           <li className={styles.navItem}>
-            <Link to="/list" className={`${styles.navLink} ${isActive('/list') ? styles.active : ''}`} onClick={closeMenu}>List</Link>
+            <Link to="/list" className={`${styles.navLink} ${isActive('/list') ? styles.active : ''}`} onClick={closeMenu}>LIST</Link>
           </li>
           <li className={styles.navItem}>
-            <Link to="/tags" className={`${styles.navLink} ${isActive('/tags') ? styles.active : ''}`} onClick={closeMenu}>Tags</Link>
+            <Link to="/tags" className={`${styles.navLink} ${isActive('/tags') ? styles.active : ''}`} onClick={closeMenu}>TAGS</Link>
           </li>
           <li className={styles.navItem}>
             <Link to="/contact" className={`${styles.navLink} ${isActive('/contact') ? styles.active : ''}`} onClick={closeMenu}>CONTACT</Link>
