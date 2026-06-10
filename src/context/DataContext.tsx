@@ -2,13 +2,13 @@
  * This file manages the global state for all clock data in the application.
  */
 import type {
-    ReactNode
+  ReactNode
 } from 'react';
 import React, {
-    createContext,
-    useContext,
-    useEffect,
-    useState
+  createContext,
+  useContext,
+  useEffect,
+  useState
 } from 'react';
 
 /**
@@ -68,10 +68,12 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
         // We process this once and use it as our primary source of truth
         const processedItems: ClockItem[] = [...data]
           .filter((d: any) => d?.date)
+          // Tests expect newest date first (descending)
           .sort((a: any, b: any) =>
-            String(a.date).localeCompare(String(b.date)),
+            String(b.date).localeCompare(String(a.date)),
           )
           .map((item, idx) => ({ ...item, clockNumber: idx + 1 }));
+
 
         // Update the state with the fully processed items
         setItems(processedItems);

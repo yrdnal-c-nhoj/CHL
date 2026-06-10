@@ -4,21 +4,22 @@ import React, { Suspense, useContext, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ClockPageNav from '../components/ClockPageNav';
 
-
-
+const LAST_NON_CLOCK_KEY = 'lastNonClockRoute';
 
 import { DataContext } from '../context/DataContext';
 import { useAutoHeader } from '../hooks/useAutoHeader';
 import { useClockPage } from '../hooks/useClockPage';
+import { useTrackLastNonClockRoute } from '../hooks/useTrackLastNonClockRoute';
+
 import styles from '../styles/ClockPage.module.css';
 import type { ClockItem, DataContextType } from '../types/data';
 import { ClockLoadingFallback } from '../utils/fontLoader';
 
 import {
-    DATE_REGEX,
-    formatDateDots,
-    formatTitle,
-    normalizeDate,
+  DATE_REGEX,
+  formatDateDots,
+  formatTitle,
+  normalizeDate,
 } from '../utils/dateUtils';
 
 // Configuration constants
@@ -101,7 +102,11 @@ const LoadingOverlay: React.FC<{ visible: boolean }> = ({ visible }) => (
   />
 );
 
+
 const ClockPage: React.FC = () => {
+  useTrackLastNonClockRoute();
+
+
   const { date } = useParams();
   const {
     items,
@@ -119,7 +124,15 @@ const ClockPage: React.FC = () => {
   } = useClockPage(currentItem ?? null);
 
   const handleHeaderClick = () => {
-    navigate(-1);
+    // When user clicks the center (header overlay area), return to the last
+    // "non-clock" page the user visited: Home, /list, or /tags.
+    // Fallback to / when there is no usable history.
+    const lastNonClock = window.sessionStorage.getItem(LAST_NON_CLOCK_KEY);
+    if (lastNonClock) {
+      navigate(lastNonClock, { replace: false });
+      return;
+    }
+    navigate('/', { replace: false });
   };
 
   useEffect(() => {
