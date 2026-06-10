@@ -1,190 +1,153 @@
-import {
-    Suspense,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react';
-import { useNavigate } from 'react-router-dom';
-import ClockPageNav from '../components/ClockPageNav';
-import Header from '../components/Header';
-import { DataContext } from '../context/DataContext';
-import { useAutoHeader } from '../hooks/useAutoHeader';
-import { useClockPage } from '../hooks/useClockPage';
-import styles from '../styles/ClockPage.module.css';
-import type { ClockItem, DataContextType } from '../types/data';
-import {
-    formatDateSlashes,
-    formatTitle,
-    getTodayDate,
-    normalizeDate,
-    parseDateVal,
-} from '../utils/dateUtils';
-import { ClockLoadingFallback } from '../utils/fontLoader';
+import customFont from '@/assets/fonts/26fonts/26-06-08.ttf?url';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 
-const TodayClockPage = () => {
-  const { items, loading, error } = useContext(DataContext) as DataContextType;
-  const navigate = useNavigate();
-  const [currentItem, setCurrentItem] = useState<ClockItem | null>(null);
-  const headerVisible = useAutoHeader(0);
-  const OVERLAY_FADE_DURATION = 300;
+// --- Constants & Config ---
+const VIDEO_ID = 'FBYUkqutqzE';
+const YOUTUBE_URL = `https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${VIDEO_ID}&controls=0&modestbranding=1&rel=0&enablejsapi=1`;
 
-  // -------------------------------
-  // Load today's clock
-  // -------------------------------
-  useEffect(() => {
-    if (loading || !items || items.length === 0) return;
+const CENTER = 200;
+const DIGIT_RADIUS = 160;
 
-    const today = getTodayDate();
-    const todayVal = parseDateVal(today);
+export const assets: string[] = [customFont];
 
-    // Sort items descending by date (newest first)
-    const sortedItems = [...items].sort(
-      (a, b) => parseDateVal(b.date) - parseDateVal(a.date),
-    );
+const FONT_CONFIGS: FontConfig[] = [
+  { fontFamily: 'JesoloFont', fontUrl: customFont, options: { weight: 'normal', style: 'normal' } },
+];
 
-    // Find the first item that is today or past
-    let item = sortedItems.find((i) => parseDateVal(i.date) <= todayVal);
+// Structural config for the bamboo notches on the hands
+const HOUR_HAND_NOTCHES = [140, 165, 190];
+const MINUTE_HAND_NOTCHES = [105, 135, 165];
 
-    // Fallback: If no past/today clock found, find the newest available valid clock anywhere
-    if (!item) item = sortedItems[0];
+// --- Helper Functions ---
+const getDigitTransform = (hour: number) => {
+  const angle = (hour - 3) * (Math.PI / 6);
+  const x = CENTER + DIGIT_RADIUS * Math.cos(angle);
+  const y = CENTER + DIGIT_RADIUS * Math.sin(angle);
+  const rotation = (hour - 3) * 30 + 90;
+  return { x, y, rotation };
+};
 
-    setCurrentItem(item ?? null);
-  }, [items, loading]);
+// --- Sub-Components ---
+const ClockDefs: React.FC = () => (
+  <defs>
+    <linearGradient id="bambooGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stopColor="#99aa3d" />
+      <stop offset="50%" stopColor="#c5e1a5" />
+      <stop offset="100%" stopColor="#99aa3d" />
+    </linearGradient>
 
-  const handleGoHome = () => {
-    navigate('/');
-  };
+    {/* Dual 1px text shadow: white bottom-left, black top-right */}
+    <filter id="textShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="3" dy="-3" stdDeviation="0" floodColor="#F2F87A" floodOpacity="0.9" />
+      <feDropShadow dx="3" dy="3" stdDeviation="0" floodColor="#000000" floodOpacity="0.9" />
+    </filter>
 
-  // Use the hook to load the clock
-  const {
-    ClockComponent,
-    isReady,
-    error: pageError,
-    overlayVisible,
-  } = useClockPage(currentItem);
+    {/* Hand shadow */}
+    <filter id="handShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="2" floodColor="#000" floodOpacity="0.5" />
+    </filter>
+  </defs>
+);
 
-  // -------------------------------
-  // Prevent scrolling
-  // -------------------------------
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = '';
+// --- Main Component ---
+const Clock: React.FC = () => {
+  useSuspenseFontLoader(FONT_CONFIGS);
+  const time = useClockTime();
+
+  // 1. Calculate hand rotations based on local time adjustments
+  const { hourAngle, minuteAngle } = useMemo(() => {
+    if (!time) return { hourAngle: 0, minuteAngle: 0 };
+    const localMs = time.getTime() - time.getTimezoneOffset() * 60000;
+    
+    return {
+      hourAngle: (localMs / 3600000) * 30,
+      minuteAngle: (localMs / 60000) * 6,
     };
+  }, [time]);
+
+  // 2. Pre-calculate static layout elements to avoid unneeded reassessment 
+  const renderedDigits = useMemo(() => {
+    return Array.from({ length: 12 }, (_, i) => {
+      const digit = i + 1;
+      const { x, y, rotation } = getDigitTransform(digit);
+      return (
+        <text
+          key={digit}
+          x={x}
+          y={y}
+          textAnchor="middle"
+          dominantBaseline="central"
+          fill="#ABC68C"
+          fontSize="70"
+          fontFamily="JesoloFont, sans-serif"
+          transform={`rotate(${rotation} ${x} ${y})`}
+          style={{ filter: 'url(#textShadow)', letterSpacing: '-0.05em' }}
+        >
+          {digit}
+        </text>
+      );
+    });
   }, []);
 
-  // -------------------------------
-  // Navigation
-  // -------------------------------
-  const { prevItem, nextItem } = useMemo(() => {
-    const idx =
-      currentItem && items
-        ? items.findIndex(
-            (i) => normalizeDate(i.date) === normalizeDate(currentItem.date),
-          )
-        : -1;
-    return {
-      prevItem: idx > 0 ? (items[idx - 1] ?? null) : null,
-      nextItem:
-        idx !== -1 && idx < items.length - 1 ? (items[idx + 1] ?? null) : null,
-    };
-  }, [items, currentItem]);
-
-  // -------------------------------
-  // Render
-  // -------------------------------
   return (
-    <div
-      className={`${styles.container} ${styles.loaded}`}
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        backgroundColor: '#fff',
-      }}
-    >
-      {isReady && <Header visible={headerVisible} />}
-
-      <div
-        className={styles.content}
+    <main style={{ position: 'fixed', inset: 0, overflow: 'hidden', backgroundColor: '#000' }}>
+      {/* Background Stream */}
+      <iframe
+        src={YOUTUBE_URL}
+        title="Background Stream"
+        allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture"
+        referrerPolicy="no-referrer-when-downgrade"
         style={{
-          position: 'relative',
-          zIndex: 10000,
-          color: '#000',
-          textAlign: 'center',
-          paddingTop: '40dvh',
-        }}
-      >
-        {loading && <div className={styles.loading}>Loading data...</div>}
-
-        {error || pageError ? (
-          <div className={styles.sheet}>
-            <div className={styles.error}>{pageError || (error instanceof Error ? error.message : String(error))}</div>
-          </div>
-        ) : isReady && ClockComponent ? (
-          /* Reset positioning for the clock component */
-          <div
-            onClick={handleGoHome}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                handleGoHome();
-              }
-            }}
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100dvh',
-              zIndex: 1,
-              backgroundColor: '#fff',
-              cursor: 'pointer',
-            }}
-          >
-            <div
-              style={{
-                all: 'initial',
-                fontFamily: 'CustomFont, system-ui, sans-serif',
-                display: 'block',
-                width: '100%',
-                height: '100dvh',
-              }}
-            >
-              <Suspense fallback={<ClockLoadingFallback />}>
-                <ClockComponent />
-              </Suspense>
-            </div>
-          </div>
-        ) : (
-          !loading && (
-            <div className={styles.loading}>Finding today's clock...</div>
-          )
-        )}
-      </div>
-
-      {isReady && currentItem && (
-        <ClockPageNav
-          prevItem={prevItem}
-          nextItem={nextItem}
-          currentItem={currentItem}
-          formatTitle={formatTitle}
-          formatDate={formatDateSlashes}
-        />
-      )}
-
-      {/* Loading overlay */}
-      <div
-        className={styles.loadingOverlay}
-        style={{
-          opacity: overlayVisible ? 1 : 0,
-          transition: `opacity ${OVERLAY_FADE_DURATION}ms ease-out`,
+          position: 'absolute',
+          top: 0, right: 0,
+          width: '177.77777778vh', height: '100vh',
+          minWidth: '100vw', minHeight: '56.25vw',
+          border: 'none', zIndex: 0, pointerEvents: 'none',
         }}
       />
-    </div>
+
+      {/* Clock Interface */}
+      <svg
+        viewBox="0 0 400 400"
+        style={{
+          position: 'absolute', zIndex: 2,
+          width: 'min(90vmin, 400px)', height: 'min(90vmin, 400px)',
+          borderRadius: '50%',
+          top: '50%', left: '50%',
+          opacity: 0.7,
+          transform: 'translate(-50%, -50%)',
+        }}
+      >
+        <ClockDefs />
+
+        {/* Clock Face Digits */}
+        {renderedDigits}
+
+        {/* Hour Hand (Pointing up towards 12:00 at 0 deg) */}
+        <g transform={`rotate(${hourAngle} ${CENTER} ${CENTER})`} style={{ filter: 'url(#handShadow)' }}>
+          <rect x="197" y="120" width="6" height="85" rx="3" fill="url(#bambooGrad)" />
+          {HOUR_HAND_NOTCHES.map((yVal) => (
+            <line key={yVal} x1="197" y1={yVal} x2="203" y2={yVal} stroke="#5d4037" strokeWidth="1.5" />
+          ))}
+        </g>
+
+        {/* Minute Hand (Pointing up towards 12:00 at 0 deg) */}
+        <g transform={`rotate(${minuteAngle} ${CENTER} ${CENTER})`} style={{ filter: 'url(#handShadow)' }}>
+          <rect x="198" y="75" width="4" height="130" rx="2" fill="url(#bambooGrad)" />
+          {MINUTE_HAND_NOTCHES.map((yVal) => (
+            <line key={yVal} x1="198" y1={yVal} x2="202" y2={yVal} stroke="#5d4037" strokeWidth="1" />
+          ))}
+        </g>
+
+        {/* Center Pins */}
+        <circle cx={CENTER} cy={CENTER} r="2" fill="#3e2723" />
+        <circle cx={CENTER} cy={CENTER} r="1" fill="#DEB887" />
+      </svg>
+    </main>
   );
 };
 
-export default TodayClockPage;
+export default Clock;

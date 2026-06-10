@@ -86,7 +86,7 @@ const Contact: FC = () => {
 
         <section className="w-full mt-0">
           <span className={styles.hat}>Send a Message to the Lab</span>
-          <p className="mt-2 font-manrope text-[clamp(0.9rem,1.2vw,1.1rem)] text-lefy leading-relaxed">
+          <p className="mt-2 font-manrope text-[clamp(0.9rem,1.2vw,1.1rem)] text-left leading-relaxed">
             <span className="font-manrope font-bold text-[0.75rem] uppercase tracking-wider">
               Questions?
             

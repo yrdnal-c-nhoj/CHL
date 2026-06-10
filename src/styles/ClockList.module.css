@@ -40,18 +40,13 @@
   font-family: var(--font-arimo);
 }
 
-.simpleListContainer li {
-  border-bottom: 2px solid #c1bebe;
-  width: 100%;
-}
-
 .simpleListImage {
   display: grid;
-  /* Strict 3-column row: Date | Thumbnail | Content */
+  /* Default Laptop/Tablet: Date | Thumbnail | Content */
   grid-template-columns: 20px 80px 1fr;
   align-items: start;
   justify-items: start;
-  gap: 0.5rem; /* Increased gap for better visual separation */
+  gap: 0.5rem;
   width: 100%;
   padding: 0.3rem 0.3rem;
   text-decoration: none;
@@ -59,6 +54,65 @@
   cursor: pointer;
   box-sizing: border-box;
   transition: background-color 0.2s;
+}
+
+/* Mobile: 2-column Grid Layout */
+@media (max-width: 767px) {
+  .simpleListContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 1rem;
+    padding: 1rem 0;
+  }
+
+  .simpleListImage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+    padding: 0;
+  }
+
+  .simpleListContainer li {
+    border-bottom: none;
+  }
+
+  .titleNumberRow {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .simpleListImage > :nth-child(2) {
+    width: 110px;
+    height: 110px;
+    min-width: 110px;
+    max-width: 110px;
+  }
+}
+
+/* Laptop/Desktop Specifics */
+@media (min-width: 768px) {
+  .simpleListContainer li {
+    border-bottom: 2px solid #c1bebe;
+    width: 100%;
+  }
+
+  .centeredContent {
+    width: 90%;
+    max-width: 90%;
+  }
+
+  .simpleListImage {
+    grid-template-columns: 110px 70px 1fr;
+    gap: 1.5rem;
+  }
+
+  .thumbnailWrapper {
+    width: 60px;
+    height: 60px;
+  }
 }
 
 /* Prevent left column expansion caused by right content sizing */
@@ -153,29 +207,4 @@
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
-}
-
-
-
-
-
-/* DESKTOP ADJUSTMENTS */
-@media (min-width: 768px) {
-
-.centeredContent {
-  width: 90%;
-  max-width: 90%;
-}
-
-
-  .simpleListImage {
-    /* Desktop: Date | Image | Content Stack */
-    grid-template-columns: 110px 70px 1fr;
-    gap: 1.5rem;
-  }
-
-  .thumbnailWrapper {
-    width: 60px;
-    height: 60px;
-  }
 }
