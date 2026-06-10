@@ -33,16 +33,11 @@ const Clock: React.FC = () => {
 
       <time dateTime={isoTime} className={styles.analogClock}>
         <div className={styles.face}>
-          <div className={`${styles.number} ${styles.twelve}`}>12</div>
-          <div className={`${styles.number} ${styles.three}`}>3</div>
-          <div className={`${styles.number} ${styles.six}`}>6</div>
-          <div className={`${styles.number} ${styles.nine}`}>9</div>
-
+        
           <div 
             className={`${styles.hand} ${styles.hour}`} 
             style={{ '--rotation': `${hour}deg` } as React.CSSProperties} 
           />
-
           <div 
             className={`${styles.hand} ${styles.minute}`} 
             style={{ '--rotation': `${minute}deg` } as React.CSSProperties} 
