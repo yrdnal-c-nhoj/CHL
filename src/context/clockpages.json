@@ -482,6 +482,7 @@
       "digital-24h",
       "earth",
       "shrine",
+      "live-cam",
       "underworld"
     ]
   },
@@ -1300,7 +1301,8 @@
       "Las-Vegas",
       "day-and-night",
       "digital-24h",
-      "live-feed"
+      "live-cam",
+      "play"
     ]
   },
   {
@@ -5836,7 +5838,6 @@
       "day-and-night",
       "live-cam",
       "water",
-      "play",
       "waves"
     ]
   }
