@@ -64,35 +64,51 @@
   left: 50%;
   transform-origin: bottom center;
   border-radius: 4px;
-  background-color: #f8f7f757;
+  background-color: #f5f1f157;
   box-shadow: 1px 1px 10px rgba(19, 17, 2, 0.743);
   transform: rotate(var(--rotation));
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Add a red ball at the end of each hand */
+  &::after {
+    content: '';
+    position: absolute;
+    background-color: red;
+    border-radius: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1; /* Ensure the ball is above the hand */
+  }
 }
 
 .hour {
-  width: 1.2vh;
-  height: 20%;
+  width: 0.4vh;
+  height: 30%;
   margin-left: -0.75vh;
+  &::after {
+    width: 2.5vh;
+    height: 2.5vh;
+    top: -1.25vh; /* Position at the very end of the hour hand */
+  }
 }
 
 .minute {
-  width: 0.8vh;
-  height: 35%;
+  width: 0.3vh;
+  height: 60%;
   margin-left: -0.5vh;
+  &::after {
+    width: 2vh;
+    height: 2vh;
+    top: -1vh; /* Position at the very end of the minute hand */
+  }
 }
 
 .second {
-  width: 0.5vh;
-  height: 42%;
-  margin-left: -0.25vh;
-}
-
-.centerDot {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 3vh;
-  height: 3vh;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
+  width: 0.2vh;
+  height: 60%;
+  margin-left: -0.1vh;
+  &::after {
+    width: 2vh;
+    height: 2vh;
+    top: -1vh;
+  }
 }
