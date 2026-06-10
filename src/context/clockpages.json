@@ -481,8 +481,8 @@
       "bone",
       "digital-24h",
       "earth",
-      "shrine",
       "live-cam",
+      "shrine",
       "underworld"
     ]
   },
@@ -5846,7 +5846,10 @@
     "date": "26-06-09",
     "title": "Quilt",
     "tags": [
-      "analog"
+      "cloth",
+      "digital-12h",
+      "hand",
+      "thread"
     ]
   }
 ]

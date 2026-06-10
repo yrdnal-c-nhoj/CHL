@@ -32,7 +32,8 @@ const TopNav: React.FC = () => {
 
         <ul className={`${styles.navMenu} ${isOpen ? styles.active : ''}`}>
           <li className={styles.navItem}>
-            <Link to="/" className={`${styles.navLink} ${isActive('/') ? styles.active : ''}`} onClick={closeMenu}>Home</Link>
+            <Link to="/" className={`${styles.navLink} ${isActive('/') ? styles.active : ''}`} onClick={closeMenu}>HOME</Link>
+
           </li>
           <li className={styles.navItem}>
             <Link to="/list" className={`${styles.navLink} ${isActive('/list') ? styles.active : ''}`} onClick={closeMenu}>List</Link>
@@ -41,10 +42,13 @@ const TopNav: React.FC = () => {
             <Link to="/tags" className={`${styles.navLink} ${isActive('/tags') ? styles.active : ''}`} onClick={closeMenu}>Tags</Link>
           </li>
           <li className={styles.navItem}>
-            <Link to="/contact" className={`${styles.navLink} ${isActive('/contact') ? styles.active : ''}`} onClick={closeMenu}>Contact</Link>
+            <Link to="/contact" className={`${styles.navLink} ${isActive('/contact') ? styles.active : ''}`} onClick={closeMenu}>CONTACT</Link>
+
           </li>
           <li className={styles.navItem}>
-            <Link to="/today" className={`${styles.navLink} ${isActive('/today') ? styles.active : ''}`} onClick={closeMenu}>Today</Link>
+            <Link to="/today" className={`${styles.navLink} ${isActive('/today') ? styles.active : ''}`} onClick={closeMenu}>TODAY</Link>
+
+
           </li>
         </ul>
       </nav>
@@ -53,3 +57,4 @@ const TopNav: React.FC = () => {
 };
 
 export default TopNav;
+
