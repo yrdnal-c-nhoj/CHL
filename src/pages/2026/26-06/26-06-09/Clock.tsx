@@ -7,12 +7,16 @@ import { useClockTime } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
-import fontUrl from '@/assets/fonts/26fonts/26-06-09.ttf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-06-09.otf?url';
+
+// Load all images from the corresponding folder
+const imageModules = import.meta.glob('@/assets/images/26_images/26-06/26-06-09/*.{webp,png,jpg,jpeg,gif}', { eager: true });
+const imageUrls = Object.values(imageModules).map((m: any) => m.default || m);
 
 /**
  * TACTICAL STANDARD: Export assets for preloader synchronization
  */
-export const assets = [fontUrl];
+export const assets = [fontUrl, ...imageUrls];
 
 const NightSky: React.FC = () => {
   const currentTime = useClockTime();
@@ -118,8 +122,59 @@ const NightSky: React.FC = () => {
         ];
   }, [isMobile]);
 
+  /*
+   * BACKGROUND GRID IMAGE STATE
+   * Managed via state to allow for per-second individual cell updates.
+   */
+  const [gridImages, setGridImages] = useState<(string | null)[]>(() => {
+    if (imageUrls.length === 0) return Array(15).fill(null);
+    const shuffled = [...imageUrls].sort(() => Math.random() - 0.5);
+    const result = shuffled.slice(0, 15);
+    while (result.length < 15) result.push(null);
+    return result;
+  });
+
+  /*
+   * PER-SECOND INDIVIDUAL CELL REFRESH
+   * Wait 1s after load, then swap one random cell's image every second.
+   */
+  useEffect(() => {
+    const startDelay = setTimeout(() => {
+      const interval = setInterval(() => {
+        setGridImages((prev) => {
+          const next = [...prev];
+          const randomIndex = Math.floor(Math.random() * 15);
+          
+          // Identify images currently NOT in the grid to ensure "not been used yet"
+          const usedSet = new Set(prev);
+          const available = imageUrls.filter((url) => !usedSet.has(url));
+          
+          if (available.length > 0) {
+            const newImg = available[Math.floor(Math.random() * available.length)];
+            next[randomIndex] = newImg;
+          }
+          
+          return next;
+        });
+      }, 700);
+
+      return () => clearInterval(interval);
+    }, 1000);
+
+    return () => clearTimeout(startDelay);
+  }, []);
+
   return (
     <div className={styles.container}>
+      <div className={styles.backgroundGrid}>
+        {gridImages.map((src, i) => (
+          <div 
+            key={i} 
+            className={styles.gridCell} 
+            style={src ? { backgroundImage: `url(${src})` } : {}}
+          />
+        ))}
+      </div>
       <time dateTime={currentTime?.toISOString()} aria-live="polite">
         <div className={styles.timeGrid}>
           {clockCharacters.map((char, index) => (
