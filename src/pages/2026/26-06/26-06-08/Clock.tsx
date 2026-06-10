@@ -1,8 +1,8 @@
 import customFont from '@/assets/fonts/26fonts/26-06-08.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
-import React from 'react';
+import { useSmoothClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 
 const VIDEO_ID = 'FBYUkqutqzE';
 const YOUTUBE_URL = `https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${VIDEO_ID}&controls=0&modestbranding=1&rel=0&enablejsapi=1`;
@@ -21,11 +21,43 @@ const FONT_CONFIGS: FontConfig[] = [
 
 // Export assets so the global loader waits for the font to be ready
 export const assets: string[] = [customFont];
+const DIGITS = Array.from({ length: 12 }, (_, i) => i + 1);
+const CENTER = { x: 200, y: 200 };
+const DIGIT_RADIUS = 160;
+
+// Function to get position and rotation for a digit
+const getDigitPositionAndRotation = (
+  hour: number,
+  radius: number,
+  centerX: number,
+  centerY: number,
+) => {
+  // Adjust angle so 12 is at the top (0 degrees)
+  const angle = (hour - 3) * (Math.PI / 6); 
+  const x = centerX + radius * Math.cos(angle);
+  const y = centerY + radius * Math.sin(angle);
+  
+  // Perpendicular to the radius line
+  const rotation = (hour - 3) * 30 + 90; 
+  
+  return { x, y, rotation };
+};
 
 const Clock: React.FC = () => {
-  const time = useClockTime();
+  const time = useSmoothClock();
 
   useSuspenseFontLoader(FONT_CONFIGS);
+
+  // Monotonic Angle Calculation: Angles only ever increase, preventing backward spins
+  const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
+    const timestamp = time.getTime() - time.getTimezoneOffset() * 60000;
+    
+    return {
+      secondAngle: (timestamp / 1000) * 6,       // 360 / 60
+      minuteAngle: (timestamp / 60000) * 6,      // 360 / 60
+      hourAngle: (timestamp / 3600000) * 30,     // 360 / 12
+    };
+  }, [time]);
 
   const containerStyle: React.CSSProperties = {
     position: 'relative',
@@ -58,48 +90,6 @@ const Clock: React.FC = () => {
     backgroundColor: 'rgba(0, 0, 0, 0.4)', // Darker overlay for better contrast
     zIndex: 1, // Between the video and the clock
   };
-
-  // Calculate clock hand angles
-  const hours = time.getHours();
-  const minutes = time.getMinutes();
-  const seconds = time.getSeconds();
-
-  // Angles in degrees
-  const secondAngle = seconds * 6; // 360 degrees / 60 seconds = 6 deg/sec
-  // Minute hand moves continuously: 360/60 = 6 deg/min + (seconds/60)*6 deg/min
-  const minuteAngle = minutes * 6 + seconds * 0.1;
-  // Hour hand moves continuously: 360/12 = 30 deg/hr + (minutes/60)*30 deg/hr
-  const hourAngle = (hours % 12) * 30 + minutes * 0.5;
-
-  const clockRadius = 180; // Radius for the main clock face elements
-  const digitRadius = 160; // Radius for placing the digits
-  const center = { x: 200, y: 200 }; // Center of the SVG viewBox (400x400)
-
-  // Function to get position and rotation for a digit
-  const getDigitPositionAndRotation = (
-    hour: number,
-    radius: number,
-    centerX: number,
-    centerY: number,
-  ) => {
-    // Adjust angle so 12 is at the top (0 degrees), and 3 is at the right (90 degrees)
-    // SVG rotation is clockwise, so we adjust accordingly.
-    // (hour - 3) * (Math.PI / 6) makes 3 o'clock align with 0 radians (right side)
-    const angle = (hour - 3) * (Math.PI / 6); 
-    const x = centerX + radius * Math.cos(angle);
-    const y = centerY + radius * Math.sin(angle);
-    
-    // Rotate text to align with the perimeter.
-    // The text's baseline is horizontal by default.
-    // We want the text to be perpendicular to the radius line at its position.
-    // The angle of the radius line is `(hour - 3) * 30` degrees.
-    // To make the text perpendicular, we add 90 degrees.
-    const rotation = (hour - 3) * 30 + 90; 
-    
-    return { x, y, rotation };
-  };
-
-  const digits = Array.from({ length: 12 }, (_, i) => i + 1);
 
   return (
     <main style={containerStyle}>
@@ -149,12 +139,12 @@ const Clock: React.FC = () => {
 
       
         {/* Digits */}
-        {digits.map((digit) => {
+        {DIGITS.map((digit) => {
           const { x, y, rotation } = getDigitPositionAndRotation(
             digit,
-            digitRadius, // Radius for digits
-            center.x,
-            center.y,
+            DIGIT_RADIUS,
+            CENTER.x,
+            CENTER.y,
           );
           return (
             <text
@@ -195,8 +185,8 @@ const Clock: React.FC = () => {
         </g>
 
         {/* Center Dot */}
-        <circle cx={center.x} cy={center.y} r="2" fill="#3e2723" />
-        <circle cx={center.x} cy={center.y} r="1" fill="#DEB887" />
+        <circle cx={CENTER.x} cy={CENTER.y} r="2" fill="#3e2723" />
+        <circle cx={CENTER.x} cy={CENTER.y} r="1" fill="#DEB887" />
       </svg>
     </main>
   );
