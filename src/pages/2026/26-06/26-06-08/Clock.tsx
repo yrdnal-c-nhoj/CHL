@@ -1,7 +1,7 @@
 import customFont from '@/assets/fonts/26fonts/26-06-08.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSmoothClock } from '@/utils/hooks';
+import { useClockTime } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 const VIDEO_ID = 'FBYUkqutqzE';
@@ -27,13 +27,17 @@ const getDigitTransform = (hour: number) => {
 
 const Clock: React.FC = () => {
   useSuspenseFontLoader(FONT_CONFIGS);
-  const time = useSmoothClock();
+  const time = useClockTime();
 
   const { hourAngle, minuteAngle } = useMemo(() => {
-    const ms = time.getTime() - time.getTimezoneOffset() * 60000;
+    if (!time) return { hourAngle: 0, minuteAngle: 0 };
+    
+    // Get local time in milliseconds by adjusting for timezone offset
+    const localMs = time.getTime() - time.getTimezoneOffset() * 60000;
+    
     return {
-      hourAngle: (ms / 3600000) * 30,
-      minuteAngle: (ms / 60000) * 6,
+      hourAngle: (localMs / 3600000) * 30,
+      minuteAngle: (localMs / 60000) * 6,
     };
   }, [time]);
 

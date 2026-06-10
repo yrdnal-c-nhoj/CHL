@@ -13,8 +13,8 @@ import { DataContext } from '../context/DataContext';
 import { useNavigationState } from '../hooks/useNavigationState';
 import styles from '../styles/Home.module.css';
 import {
-    formatDateStandard as formatDate,
-    isValidDate,
+  formatDateStandard as formatDate,
+  isValidDate,
 } from '../utils/dateUtils';
 
 interface DataItem {
@@ -164,7 +164,13 @@ const Home: FC = () => {
     return <div className={styles.loadingContainer} />;
   }
 
-  if (error) return <div className={styles.error}>Error: {typeof error === 'string' ? error : error.message}</div>;
+  if (error) {
+    return (
+      <div className={styles.error}>
+        Error: {typeof error === 'string' ? error : (error as any).message || String(error)}
+      </div>
+    );
+  }
 
   return (
     <div

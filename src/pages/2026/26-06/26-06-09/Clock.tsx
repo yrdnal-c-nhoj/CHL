@@ -1,30 +1,31 @@
-import vegasFont from '@/assets/fonts/25fonts/25-07-05-vegas.ttf?url';
+import React, { useEffect, useMemo, useState } from 'react';
+
 import type { FontConfig } from '@/types/clock';
+
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
-import React, { useMemo } from 'react';
+import { useClockTime } from '@/utils/hooks';
 
-const GARISH_COLORS = [
-  '#FF00FF', // Neon Magenta
-  '#39FF14', // Neon Green
-  '#FFFB00', // Neon Yellow
-  '#00FFFF', // Cyan
-  '#FF3131', // Neon Red
-  '#FF5E00', // Neon Orange
-];
+import styles from './Clock.module.css';
 
-const TREVI_IFRAME_URL = 'https://embed.skylinewebcams.com/en/webcam/286.html';
-// Some environments block iframe rendering; provide a direct image fallback.
-const TREVI_FALLBACK_IMG_URL = 'https://embed.skylinewebcams.com/img/286.jpg';
+import fontUrl from '@/assets/fonts/26fonts/26-06-09.ttf?url';
 
-const Clock: React.FC = () => {
+/**
+ * TACTICAL STANDARD: Export assets for preloader synchronization
+ */
+export const assets = [fontUrl];
 
-  const fontConfigs = useMemo<FontConfig[]>(
+const NightSky: React.FC = () => {
+  const currentTime = useClockTime();
+
+  /*
+   * FONT LOADING
+   */
+
+  const fontConfigs: FontConfig[] = useMemo(
     () => [
       {
-        fontFamily: 'VegasFont',
-        fontUrl: vegasFont,
-        options: { weight: 'normal', style: 'normal' },
+        fontFamily: 'ClockFont',
+        fontUrl,
       },
     ],
     [],
@@ -32,93 +33,122 @@ const Clock: React.FC = () => {
 
   useSuspenseFontLoader(fontConfigs);
 
-  // Full-screen, non-interactive background embed
-  const iframeStyle: React.CSSProperties = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100vw',
-    height: '100vh',
-    zIndex: -1,
-    pointerEvents: 'none',
-    background: '#000',
-  };
+  /*
+   * MOBILE DETECTION
+   */
 
-  const fallbackImgStyle: React.CSSProperties = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100vw',
-    height: '100vh',
-    zIndex: -2,
-    objectFit: 'cover',
-    pointerEvents: 'none',
-    background: '#000',
-  };
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const update = () => {
+      setIsMobile(window.innerWidth <= 480);
+    };
+
+    update();
+
+    window.addEventListener('resize', update);
+
+    return () => {
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
+  /*
+   * FORMATTED TIME
+   */
+
+  const formattedTime = useMemo(() => {
+    if (!currentTime) {
+      return { hours: '00', minutes: '00', seconds: '00', meridian: 'AM' };
+    }
+
+    const hours24 = currentTime.getHours();
+    const hours12 = hours24 % 12 || 12;
+    const meridian = hours24 >= 12 ? 'PM' : 'AM';
+
+    return {
+      hours: hours12.toString().padStart(2, '0'),
+      minutes: currentTime.getMinutes().toString().padStart(2, '0'),
+      seconds: currentTime.getSeconds().toString().padStart(2, '0'),
+      meridian,
+    };
+  }, [currentTime]);
+  const clockCharacters = useMemo(() => {
+    const { hours, minutes, seconds, meridian } = formattedTime;
+
+    return [
+      hours[0],
+      hours[1],
+      minutes[0],
+      minutes[1],
+      seconds[0],
+      seconds[1],
+      meridian[0],
+      meridian[1],
+    ].map((c) => c ?? '0');
+  }, [formattedTime]);
 
 
-  const clockContainerStyle: React.CSSProperties = {
-    position: 'fixed',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    zIndex: 10,
-    display: 'flex',
-    gap: '0.4rem',
-    userSelect: 'none',
-    pointerEvents: 'none',
-  };
+  /*
+   * OPTIMIZED GRID MAP CALCULATION
+   * Memoized to prevent recalculations on every render
+   */
 
-  const digitBoxStyle = (color: string): React.CSSProperties => ({
-    width: '0.9em',
-    height: '1.4em',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color,
-    fontFamily:
-      'VegasFont, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-    fontSize: 'clamp(2rem, 19vw, 4rem)',
-  });
-
-  const getTwo = (n: number) => String(n).padStart(2, '0');
-
-  const time = useSecondClock();
-  const timeStr = `${getTwo(time.getHours())}:${getTwo(time.getMinutes())}:${getTwo(time.getSeconds())}`;
+  const gridMap = useMemo(() => {
+    return isMobile
+      ? [
+          ['1', '1'],
+          ['2', '1'],
+          ['1', '2'],
+          ['2', '2'],
+          ['1', '3'],
+          ['2', '3'],
+          ['1', '4'],
+          ['2', '4'],
+        ]
+      : [
+          ['1', '1'],
+          ['2', '1'],
+          ['3', '1'],
+          ['4', '1'],
+          ['1', '2'],
+          ['2', '2'],
+          ['3', '2'],
+          ['4', '2'],
+        ];
+  }, [isMobile]);
 
   return (
-    <>
-      <div style={iframeStyle}>
-        <iframe
-          title="Trevi Fountain - SkylineWebcams"
-          src={TREVI_IFRAME_URL}
-          style={{ width: '100%', height: '100%', border: 0 }}
-          allow="autoplay; fullscreen; picture-in-picture"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
-      </div>
-
-      <img
-        src={TREVI_FALLBACK_IMG_URL}
-        alt="Trevi Fountain webcam fallback"
-        style={fallbackImgStyle}
-        // If iframe works, this sits underneath due to z-index.
-      />
-
-
-      <div style={clockContainerStyle} aria-label={timeStr}>
-        {timeStr.split('').map((char, i) => (
-          <div
-            key={i}
-            style={digitBoxStyle(GARISH_COLORS[i % GARISH_COLORS.length])}
-          >
-            {char}
-          </div>
-        ))}
-      </div>
-    </>
+    <div className={styles.container}>
+      <time dateTime={currentTime?.toISOString()} aria-live="polite">
+        <div className={styles.timeGrid}>
+          {clockCharacters.map((char, index) => (
+            <div
+              key={index}
+              className={styles.charCell}
+              style={{
+                '--grid-col': gridMap[index]?.[0] || '1',
+                '--grid-row': gridMap[index]?.[1] || '1',
+              } as React.CSSProperties}
+            >
+              <div
+                className={
+                  `${styles.timeElement} ${
+                    isMobile ? styles.timeElementMobile : styles.timeElementDesktop
+                  }${index >= 6 ? ` ${styles.timeElementUppercase}` : ''}`
+                }
+                style={{
+                  '--index': index,
+                } as React.CSSProperties}
+              >
+                {char}
+              </div>
+            </div>
+          ))}
+        </div>
+      </time>
+    </div>
   );
 };
 
-export default Clock;
-
+export default NightSky;
