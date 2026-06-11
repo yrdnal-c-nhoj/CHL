@@ -40,65 +40,29 @@
   font-family: var(--font-arimo);
 }
 
+.simpleListContainer li {
+  width: 100%;
+  border-bottom: 1px solid #d2cece;
+}
+
 .simpleListImage {
   display: grid;
-  /* Default Laptop/Tablet: Date | Thumbnail | Content */
+  /* Default Tablet/Laptop: Date | Thumbnail | Content */
   grid-template-columns: 20px 80px 1fr;
   align-items: start;
   justify-items: start;
   gap: 0.5rem;
   width: 100%;
   padding: 0.3rem 0.3rem;
-  text-decoration: none;
   color: inherit;
   cursor: pointer;
   box-sizing: border-box;
   transition: background-color 0.2s;
 }
 
-/* Mobile: 2-column Grid Layout */
-@media (max-width: 767px) {
-  .simpleListContainer {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem 1rem;
-    padding: 1rem 0;
-  }
 
-  .simpleListImage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 0.75rem;
-    padding: 0;
-  }
-
-  .simpleListContainer li {
-    border-bottom: none;
-  }
-
-  .titleNumberRow {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-  }
-
-  .simpleListImage > :nth-child(2) {
-    width: 110px;
-    height: 110px;
-    min-width: 110px;
-    max-width: 110px;
-  }
-}
-
-/* Laptop/Desktop Specifics */
+/* Desktop Specifics */
 @media (min-width: 768px) {
-  .simpleListContainer li {
-    border-bottom: 2px solid #c1bebe;
-    width: 100%;
-  }
-
   .centeredContent {
     width: 90%;
     max-width: 90%;
@@ -110,32 +74,21 @@
   }
 
   .thumbnailWrapper {
-    width: 180px;
-    height: 180px;
+    width: 70px;
+    height: 70px;
   }
 }
 
-/* Prevent left column expansion caused by right content sizing */
-.simpleListImage > :nth-child(1) {
-  min-width: 0;
-  align-self: start;
-}
-
-/* Keep thumbnail cell perfectly constrained so it can't affect grid sizing */
-.simpleListImage > :nth-child(2) {
-  width: 80px;
-  height: 80px;
-  min-width: 80px;
-  max-width: 80px;
-  align-self: start;
-}
-
-/* Allow the right content stack to shrink instead of pushing columns */
+/* Keep columns from being affected by content sizing */
+.simpleListImage > :nth-child(1),
 .simpleListImage > :nth-child(3) {
   min-width: 0;
   align-self: start;
 }
 
+.simpleListImage > :nth-child(2) {
+  align-self: start;
+}
 
 .contentStack {
   display: flex;
@@ -154,7 +107,6 @@
 }
 
 .simpleListImage:hover {
-  /* Making the hover color more distinct and using a theme-consistent gray */
   background-color: var(--color-lab-gray-light, #929294);
 }
 
@@ -163,15 +115,15 @@
   height: 70px;
   border-radius: 1px;
   overflow: hidden;
-  box-sizing: border-box; /* include border in sizing to avoid layout shift */
-  border: 0.5px solid rgba(0, 0, 0, 0.572); 
+  box-sizing: border-box;
+  border: 0.5px solid rgba(0, 0, 0, 0.572);
 }
 
 .thumbnailWrapper > img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;  
+  object-fit: cover;
 }
 
 .simpleListDate {
@@ -181,7 +133,7 @@
   line-height: 1;
   font-size: 1rem;
   font-family: var(--font-barlow-condensed);
-  font-variant-numeric: tabular-nums; /* Ensures all digits have equal width */
+  font-variant-numeric: tabular-nums;
   font-weight: 400;
   letter-spacing: 0.09rem;
   color: #5b5b5d;
@@ -208,3 +160,4 @@
   text-overflow: ellipsis;
   text-align: center;
 }
+
