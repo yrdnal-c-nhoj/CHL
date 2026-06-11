@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="05dec69b-8859-47f9-af91-4e0627cc020d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TagList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TagList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/admin/TagManager.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/admin/TagManager.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/admin/Tagger.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/admin/Tagger.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/ClockList.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/ClockList.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/assetLoader.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/assetLoader.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/thumbnailMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/thumbnailMap.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,26 +21,85 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "yrdnal-c-nhoj"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;yrdnal-c-nhoj&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:yrdnal-c-nhoj/CHL.git",
-    "accountId": "c3b30407-ec6a-424b-a1b3-0b46d97b9abf"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:yrdnal-c-nhoj/CHL.git&quot;,
+    &quot;accountId&quot;: &quot;c3b30407-ec6a-424b-a1b3-0b46d97b9abf&quot;
   }
-}]]></component>
+}</component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 2
-}]]></component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0000000000011042" />
+      <entry key="MS500" value="1.0040608594587594" />
+      <entry key="S2" value="1.260081012751876" />
+      <entry key="S5" value="1.7971015326278317" />
+      <entry key="S10" value="2.5825163366597197" />
+      <entry key="S30" value="4.1754492966862715" />
+      <entry key="S60" value="4.944922125972922" />
+      <entry key="M2" value="5.429790587926145" />
+      <entry key="M5" value="5.76060709560797" />
+      <entry key="M10" value="5.878321040763204" />
+      <entry key="M15" value="5.918432569326046" />
+      <entry key="M30" value="5.958990297083682" />
+      <entry key="H1" value="5.979438287459486" />
+      <entry key="H2" value="5.989704882654309" />
+      <entry key="H4" value="5.994848870315005" />
+      <entry key="D1" value="5.999140981923629" />
+      <entry key="W1" value="5.999877270967316" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="0.0" />
+      <entry key="M5" value="0.0" />
+      <entry key="M10" value="0.0" />
+      <entry key="M15" value="0.0" />
+      <entry key="M30" value="0.0" />
+      <entry key="H1" value="0.0" />
+      <entry key="H2" value="0.0" />
+      <entry key="H4" value="0.0" />
+      <entry key="D1" value="0.0" />
+      <entry key="W1" value="0.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="6.085706616522521E-8" />
+      <entry key="MS500" value="0.03706587040410586" />
+      <entry key="S2" value="0.6160685475950358" />
+      <entry key="S5" value="1.3427307321221154" />
+      <entry key="S10" value="2.1818578065017693" />
+      <entry key="S30" value="3.9215125221733333" />
+      <entry key="S60" value="4.790166637436581" />
+      <entry key="M2" value="5.343898051490518" />
+      <entry key="M5" value="5.723966669325478" />
+      <entry key="M10" value="5.859598372549657" />
+      <entry key="M15" value="5.905859661817027" />
+      <entry key="M30" value="5.952657848124063" />
+      <entry key="H1" value="5.976260482698692" />
+      <entry key="H2" value="5.988113074957483" />
+      <entry key="H4" value="5.994052238852865" />
+      <entry key="D1" value="5.999008108846598" />
+      <entry key="W1" value="5.999858286620192" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="3ElwbSC9iK87I91wTt0jLEfZqZd" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -50,7 +118,9 @@
     "javascript.preferred.runtime.type.id": "node",
     "junie.onboarding.icon.badge.shown": "true",
     "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "to.speed.mode.migration.done": "true",
     "ts.external.directory.path": "/Users/john/Desktop/CHL/node_modules/typescript/lib",
@@ -62,6 +132,7 @@
       <map>
         <entry key="com.intellij.reactbuddy.reactComponents" value="false" />
         <entry key="com.intellij.reactbuddy.reactInspector" value="false" />
+        <entry key="com.intellij.reactbuddy.storybook" value="false" />
       </map>
     </option>
   </component>
@@ -80,6 +151,7 @@
       <option name="presentableId" value="Default" />
       <updated>1780766535699</updated>
       <workItem from="1780766541530" duration="264000" />
+      <workItem from="1781190401922" duration="576000" />
     </task>
     <servers />
   </component>
