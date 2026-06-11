@@ -64,8 +64,8 @@
 /* Desktop Specifics */
 @media (min-width: 768px) {
   .centeredContent {
-    width: 90%;
-    max-width: 90%;
+    width: 80%;
+    max-width: 80%;
   }
 
   .simpleListImage {
@@ -74,8 +74,8 @@
   }
 
   .thumbnailWrapper {
-    width: 70px;
-    height: 70px;
+    width: 90px;
+    height: 90px;
   }
 }
 
