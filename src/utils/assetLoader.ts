@@ -411,10 +411,13 @@ export function useFontLoader(config: FontAssetConfig): {
 
     const loadPromise = (async () => {
       const family = config.family || `font-${Math.random().toString(36).slice(2, 7)}`;
-      const font = new FontFace(family, `url(${config.src})`, {
-        weight: config.weight,
-        style: config.style,
-      });
+      const descriptors: FontFaceDescriptors = {};
+      const weight = config.weight;
+      const style = config.style;
+      if (weight) descriptors.weight = weight;
+      if (style) descriptors.style = style;
+
+      const font = new FontFace(family, `url(${config.src})`, descriptors);
 
       const loadedFont = await font.load();
       document.fonts.add(loadedFont);
@@ -540,11 +543,14 @@ export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
         } else if (config.src.match(/\.(woff|woff2|ttf|otf)$/i)) {
           // Font asset
           const family = (config as FontAssetConfig).family || `font-${key.toString()}`;
-          const font = new FontFace(family, `url(${config.src})`, {
-            weight: (config as FontAssetConfig).weight,
-            style: (config as FontAssetConfig).style,
-          });
-          
+          const descriptors: FontFaceDescriptors = {};
+          const weight = (config as FontAssetConfig).weight;
+          const style = (config as FontAssetConfig).style;
+          if (weight) descriptors.weight = weight;
+          if (style) descriptors.style = style;
+
+          const font = new FontFace(family, `url(${config.src})`, descriptors);
+
           const loadedFont = await font.load();
           document.fonts.add(loadedFont);
           newState = 'loaded';

@@ -87,7 +87,12 @@ export default function Tagger() {
       <div className={styles.container}>
         <div className={styles.card}>
           <h1 className={styles.title}>Tagger</h1>
-          <pre className={styles.preError}>{contextError instanceof Error ? contextError.message : String(contextError)}</pre>
+          <pre className={styles.preError}>
+            {contextError && typeof contextError === 'object' && 'message' in contextError
+              ? String((contextError as Error).message)
+              : String(contextError)
+            }
+          </pre>
           <button className={styles.button} onClick={() => navigate(-1)}>
             Back
           </button>

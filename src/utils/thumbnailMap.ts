@@ -29,9 +29,10 @@ for (const [filePath, mod] of Object.entries(modules)) {
   
   // Matches date pattern with optional -thumb suffix (e.g., 26-06-01.webp or 26-6-1-thumb.jpg)
   const match = filePath.match(/\/src\/assets\/thumbnails\/(\d{1,2}-\d{1,2}-\d{1,2})(?:-thumb)?\./);
-  if (!match) continue;
+  if (!match || !match[1]) continue;
 
   const date = normalizeDate(match[1]);
+
 
   // Keep first discovered asset for the date.
   if (!thumbnailMap[date]) {

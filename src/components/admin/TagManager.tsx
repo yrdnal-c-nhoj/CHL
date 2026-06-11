@@ -14,7 +14,9 @@ export default function TagManager() {
   const loading = ctx?.loading ?? true;
   const error = ctx?.error;
 
-  const errorMessage = typeof error === 'string' ? error : error?.message;
+  const errorMessage = typeof error === 'string' ? error : error instanceof Error ? error.message : undefined;
+
+
 
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -80,6 +82,8 @@ export default function TagManager() {
     }));
   };
 
+
+
   const groupedByMonth = useMemo(() => {
     const filtered = items.filter(item => 
       item.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -97,11 +101,9 @@ export default function TagManager() {
 
     const groups: Record<string, typeof sorted> = {};
     sorted.forEach(item => {
-      // Group by month for dates, or by first letter for titles
       const groupKey = sortConfig.key === 'date' 
         ? item.date.substring(0, 5) 
         : item.title.charAt(0).toUpperCase() || '#';
-        
       if (!groups[groupKey]) groups[groupKey] = [];
       groups[groupKey].push(item);
     });
@@ -118,6 +120,7 @@ export default function TagManager() {
       </div>
     );
   }
+
 
 
   // Extract all unique tags with counts for the selection elements
