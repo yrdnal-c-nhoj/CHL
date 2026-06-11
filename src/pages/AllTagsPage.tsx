@@ -5,6 +5,7 @@ import { useDataContext } from '../context/DataContext';
 import styles from '../styles/AllTagsPage.module.css';
 import sortStyles from '../styles/SortControls.module.css';
 
+
 type SortOption = 'name-asc' | 'name-desc' | 'count-desc' | 'count-asc';
 
 const AllTagsPage: React.FC = () => {

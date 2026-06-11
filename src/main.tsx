@@ -21,6 +21,8 @@ import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import './styles/globals.css';
+import './styles/tags.css';
+
 import { installConsoleFilters } from './utils/consoleFilters';
 
 // Reduce known third-party / browser-internal console noise.
