@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
 import { useClockTime } from '@/hooks/useClockTime';
+import React, { useCallback, useEffect } from 'react';
 import { BackgroundGrid } from './BackgroundGrid'; // Import the extracted component
 
-/**
- * TicTacToeClock component
- * This component displays a clock in a Tic-Tac-Toe grid style.
- */
+// TicTacToeClock component
+// This component displays a clock in a Tic-Tac-Toe grid style.
 export default function TicTacToeClock() {
   // Add viewport meta tag for mobile responsiveness
   useEffect(() => {
@@ -58,7 +56,7 @@ export default function TicTacToeClock() {
     alignItems: 'center',
     opacity: 1,
     transition: 'opacity 0.3s ease-in-out',
-    fontFamily: fontFamily,
+    fontFamily,
     position: 'relative',
     zIndex: 10,
     pointerEvents: 'none',
