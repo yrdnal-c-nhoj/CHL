@@ -86,7 +86,6 @@ const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }) => {
 const ManyHandClock: React.FC = () => {
   const now = useSmoothClock();
   const [clockSize, setClockSize] = useState<number>(90);
-  const [bgReady, setBgReady] = useState<boolean>(false);
 
   // Hand positions
   const [forgetfulPos, setForgetfulPos] = useState<number>(0);
@@ -115,26 +114,14 @@ const ManyHandClock: React.FC = () => {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
-  // Preload background to avoid flash
-  useEffect(() => {
-    const img = new Image();
-    const done = () => setBgReady(true);
-    img.onload = done;
-    img.onerror = done;
-    img.src = bgImage;
-    const timeout = setTimeout(done, 1200);
-    return () => clearTimeout(timeout);
-  }, []);
-
   // Derived time values
   const sFraction = now.getSeconds() + now.getMilliseconds() / 1000;
   const baseRotation = (sFraction / 60) * 360;
   const currentTime = now.getTime();
   const s = now.getSeconds();
 
-  // Behavior Logic triggered by time updates
+  // Behavior Logic: Using currentTime as the primary driver for physics
   useEffect(() => {
-    // 1. Forgetful Logic
     if (currentTime > nextChangeRef.current) {
       isFrozenRef.current = !isFrozenRef.current;
       if (isFrozenRef.current) frozenAtRef.current = baseRotation;
@@ -142,7 +129,6 @@ const ManyHandClock: React.FC = () => {
     }
     setForgetfulPos(isFrozenRef.current ? frozenAtRef.current : baseRotation);
 
-    // 2. Sleepy Logic
     sleepyRefs.current.forEach((ref, i) => {
       if (currentTime > ref.next) {
         if (ref.frozen) {
@@ -164,7 +150,6 @@ const ManyHandClock: React.FC = () => {
       i === 0 ? setSleepyPos1(pos) : setSleepyPos2(pos);
     });
 
-    // 3. Panicked Logic
     if (s >= 0 && s < 6) {
       if (panicStateRef.current === 'normal') {
         panicStateRef.current = 'stuck';
@@ -181,7 +166,7 @@ const ManyHandClock: React.FC = () => {
     } else {
       setPanickedPos(baseRotation);
     }
-  }, [now, baseRotation, currentTime, s]);
+  }, [currentTime, baseRotation, s]);
 
   const hourRot = (((now.getHours() % 12) + now.getMinutes() / 60) / 12) * 360;
   const minuteRot = ((now.getMinutes() + sFraction / 60) / 60) * 360;
@@ -200,8 +185,6 @@ const ManyHandClock: React.FC = () => {
       className={styles.container}
       style={{
         backgroundImage: `radial-gradient(circle at center, rgba(135, 168, 126, 0.73) 0%, rgba(123, 135, 87, 0.4) 100%), url(${bgImage})`,
-        opacity: bgReady ? 1 : 0,
-        visibility: bgReady ? 'visible' : 'hidden',
       }}
     >
       <div
