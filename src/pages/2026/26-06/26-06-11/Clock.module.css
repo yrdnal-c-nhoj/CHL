@@ -1,0 +1,80 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #f1f3e3 0%, #a2a4a8 50%, #a2b1c3 100%);
+  overflow: hidden; /* Ensure image doesn't overflow */
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+  /* filter: contrast(0.8); */
+  background-image: var(--background-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.clockFace {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.digitalGrid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(6, 1.4ch);
+  padding: 0;
+  margin: 0;
+  font-size: clamp(4rem, 20vw, 20rem);
+  letter-spacing: 0;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'ClockFont_26_05_22', serif;
+
+  /* Dazzle Camouflage Pattern (Warship style) */
+  background: repeating-linear-gradient(
+    -17deg,
+    #f449ca 0px,
+    #df31ec 20px,
+    #9805d2 20px
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1px #000;
+
+  /* Using filter instead of text-shadow to ensure visibility over clipped text */
+  /* filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.7)); */
+}
+
+/* keep 0 padding/gap even on smaller screens */
+@media (max-width: 668px) {
+  .digitalGrid {
+    /* Two columns for mobile: HH / MM / SS stacked */
+    grid-template-columns: 1.2em 1.2em;
+    font-size: clamp(6rem, 33vw, 12rem);
+    line-height: 1.1;
+  }
+}
