@@ -10,13 +10,12 @@
   transform-style: preserve-3d;
   perspective: 1400px;
   transform: scale(0.85) rotateX(20deg) rotateY(10deg);
-  overflow: hidden;
 }
 
 @media (max-width: 767px) {
   .tower {
     perspective: 1000px;
-    transform: scale(0.75) rotateX(14deg) rotateY(5deg) translateY(-2vh) translateX(-2vw);
+    transform: scale(0.75) rotateX(14deg) rotateY(5deg);
   }
 }
 
