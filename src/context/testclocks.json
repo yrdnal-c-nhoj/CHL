@@ -4,6 +4,8 @@
     "date": "26-06-11",
     "title": "Ukulele",
     "tags": [
+      "Hawaii",
+      "hand",
       "sound"
     ]
   },
@@ -13,7 +15,7 @@
     "title": "Rotary Dial",
     "tags": [
       "ampm",
-      "digital-24h",
+      "digital",
       "hand",
       "mechanical",
       "sound"
@@ -26,7 +28,7 @@
     "tags": [
       "ampm",
       "cloth",
-      "digital-12h",
+      "digital",
       "hand",
       "thread"
     ]
@@ -49,7 +51,7 @@
     "title": "Red Spacewalk",
     "tags": [
       "Russia",
-      "digital-24h",
+      "digital",
       "horizon",
       "milliseconds",
       "monochrome",
@@ -117,7 +119,7 @@
     "date": "26-06-02",
     "title": "Inclined Plane",
     "tags": [
-      "digital-24h",
+      "digital",
       "generative",
       "mechanical",
       "random",
@@ -173,7 +175,7 @@
     "tags": [
       "ampm",
       "b+w",
-      "digital-12h",
+      "digital",
       "hand",
       "stone"
     ]
@@ -197,7 +199,7 @@
     "title": "Tire Flip",
     "tags": [
       "body",
-      "digital-24h",
+      "digital",
       "mechanical",
       "round",
       "spin",
@@ -231,7 +233,7 @@
       "Georges-Méliès",
       "ampm",
       "b+w",
-      "digital-12h",
+      "digital",
       "film",
       "interior",
       "night",
@@ -263,7 +265,7 @@
       "The-Fire-Within",
       "Werner-Herzog",
       "ampm",
-      "digital-12h",
+      "digital",
       "elements",
       "film",
       "fire",
@@ -311,7 +313,7 @@
     "date": "26-05-20",
     "title": "Elevator",
     "tags": [
-      "digital-24h",
+      "digital",
       "interior",
       "mechanical",
       "metal",
@@ -324,11 +326,10 @@
     "date": "26-05-19",
     "title": "Bliss",
     "tags": [
-      "digital",
       "Clippy",
       "ampm",
       "day",
-      "digital-12h",
+      "digital",
       "landscape",
       "nature",
       "tech",
@@ -365,17 +366,13 @@
       "bone",
       "cloth",
       "desert",
-      "digital-24h",
+      "digital",
       "film",
       "light",
       "mummy",
       "myth",
-      "predator",
       "pyramid",
       "scarab",
-      "screen",
-      "slow",
-      "smell",
       "stone"
     ]
   },
@@ -404,7 +401,7 @@
       "ampm",
       "brown",
       "cells",
-      "digital-12h",
+      "digital",
       "green",
       "grow",
       "nature",
@@ -473,7 +470,7 @@
     "title": "Night Rise",
     "tags": [
       "air",
-      "digital-24h",
+      "digital",
       "night",
       "parallax",
       "sky",
@@ -488,7 +485,7 @@
       "ampm",
       "body",
       "cloth",
-      "digital-24h",
+      "digital",
       "grid",
       "hand",
       "monochrome",
@@ -518,7 +515,7 @@
     "date": "26-05-08",
     "title": "Right Ascension",
     "tags": [
-      "digital-12h",
+      "digital",
       "fast",
       "grid",
       "map",
@@ -553,7 +550,7 @@
     "date": "26-05-06",
     "title": "Droplets",
     "tags": [
-      "digital-24h",
+      "digital",
       "glass",
       "move",
       "water"
@@ -610,7 +607,6 @@
     "title": "Stuntperson",
     "tags": [
       "digital",
-      "aim",
       "day",
       "fast",
       "film",
@@ -646,7 +642,7 @@
     "tags": [
       "ampm",
       "constellations",
-      "digital-12h",
+      "digital",
       "myth",
       "night",
       "stars"
@@ -658,7 +654,7 @@
     "title": "Cavalcade",
     "tags": [
       "animal",
-      "digital-24h",
+      "digital",
       "horn",
       "mechanical",
       "run",
@@ -684,7 +680,7 @@
     "date": "26-04-27",
     "title": "Lever",
     "tags": [
-      "digital-24h",
+      "digital",
       "generative",
       "mechanical",
       "random",
@@ -700,7 +696,7 @@
       "Jetsons",
       "aerial",
       "ampm",
-      "digital-12h",
+      "digital",
       "fast",
       "film",
       "screen",
@@ -729,7 +725,7 @@
     "date": "26-04-24",
     "title": "Lissajous",
     "tags": [
-      "digital-24h",
+      "digital",
       "geometry",
       "image-free",
       "slow"
@@ -740,7 +736,7 @@
     "date": "26-04-23",
     "title": "Helianthus",
     "tags": [
-      "digital-24h",
+      "digital",
       "flower",
       "grow",
       "milliseconds",
@@ -772,7 +768,7 @@
     "tags": [
       "circle",
       "color",
-      "digital-24h",
+      "digital",
       "image-free",
       "move"
     ]
@@ -801,7 +797,7 @@
       "ampm",
       "axis",
       "day-and-night",
-      "digital-12h",
+      "digital",
       "earth",
       "fast",
       "planet",
@@ -816,7 +812,7 @@
     "date": "26-04-18",
     "title": "Frequency",
     "tags": [
-      "digital-24h",
+      "digital",
       "tech",
       "waves"
     ]
@@ -831,7 +827,7 @@
       "Playtime",
       "Tati",
       "airstairs",
-      "digital-24h",
+      "digital",
       "film",
       "glass",
       "screen"
@@ -861,7 +857,7 @@
     "tags": [
       "animal",
       "cat",
-      "digital-24h",
+      "digital",
       "predator",
       "random",
       "smell"
@@ -886,7 +882,7 @@
     "date": "26-04-13",
     "title": "Stickshift",
     "tags": [
-      "digital-24h",
+      "digital",
       "drive",
       "horn",
       "mechanical",
@@ -943,7 +939,7 @@
     "title": "Choppy",
     "tags": [
       "blue",
-      "digital-24h",
+      "digital",
       "float",
       "monochrome",
       "smell",
@@ -969,7 +965,7 @@
     "title": "Wall",
     "tags": [
       "China",
-      "digital-24h",
+      "digital",
       "horizon",
       "panorama",
       "stone",
@@ -995,7 +991,7 @@
     "title": "Bolide",
     "tags": [
       "Russia",
-      "digital-24h",
+      "digital",
       "fast",
       "gravity",
       "light",
@@ -1025,7 +1021,7 @@
     "tags": [
       "1930",
       "Cecil-B-Demille",
-      "digital-24h",
+      "digital",
       "film",
       "mechanical",
       "screen",
@@ -1038,7 +1034,7 @@
     "title": "Satellite",
     "tags": [
       "color",
-      "digital-24h",
+      "digital",
       "image-free",
       "revolve",
       "shiny",
@@ -1054,7 +1050,7 @@
       "Rococo",
       "Venus",
       "cloth",
-      "digital-12h",
+      "digital",
       "pattern",
       "shell",
       "thread"
@@ -1112,7 +1108,7 @@
       "blue",
       "bonding",
       "deepwater",
-      "digital-24h",
+      "digital",
       "elements",
       "milliseconds",
       "molecules",
@@ -1139,7 +1135,7 @@
     "title": "Overpass",
     "tags": [
       "ampm",
-      "digital-12h",
+      "digital",
       "drive",
       "landscape",
       "sky",
@@ -1174,7 +1170,7 @@
       "aim",
       "air",
       "ampm",
-      "digital-12h",
+      "digital",
       "feather",
       "hand",
       "slow"
@@ -1200,7 +1196,7 @@
       "balloon",
       "blue",
       "day",
-      "digital-24h",
+      "digital",
       "float",
       "latex",
       "parallax",
@@ -1246,7 +1242,7 @@
       "blue",
       "cloth",
       "cold",
-      "digital-12h",
+      "digital",
       "gravity",
       "monochrome",
       "night",
@@ -1306,7 +1302,7 @@
     "date": "26-03-15",
     "title": "Obliquity",
     "tags": [
-      "digital-24h",
+      "digital",
       "image-free",
       "parallel",
       "spin"
@@ -1318,7 +1314,7 @@
     "title": "Motherboard",
     "tags": [
       "ampm",
-      "digital-12h",
+      "digital",
       "electricity",
       "green",
       "tech"
@@ -1332,7 +1328,7 @@
       "LA",
       "ampm",
       "body",
-      "digital-12h",
+      "digital",
       "live-cam",
       "ocean",
       "walk"
@@ -1359,7 +1355,7 @@
     "date": "26-03-11",
     "title": "Random Image",
     "tags": [
-      "digital-24h",
+      "digital",
       "random"
     ]
   },
@@ -1382,7 +1378,7 @@
     "tags": [
       "animal",
       "cat",
-      "digital-24h",
+      "digital",
       "predator",
       "random",
       "typeface"
@@ -1412,7 +1408,7 @@
     "title": "Rectangles",
     "tags": [
       "b+w",
-      "digital-24h",
+      "digital",
       "image-free",
       "parallel"
     ]
@@ -1511,7 +1507,7 @@
     "title": "Cesium Fountain",
     "tags": [
       "atomic-clock",
-      "digital-24h",
+      "digital",
       "milliseconds",
       "purple",
       "science",
@@ -1545,7 +1541,7 @@
     "tags": [
       "ampm",
       "color",
-      "digital-12h",
+      "digital",
       "generative",
       "grow",
       "magenta",
@@ -1598,7 +1594,7 @@
     "tags": [
       "aether",
       "blue",
-      "digital-24h",
+      "digital",
       "gods",
       "myth",
       "planet",
@@ -1625,7 +1621,7 @@
     "title": "3-2-1",
     "tags": [
       "count",
-      "digital-12h",
+      "digital",
       "generative",
       "hand",
       "random"
@@ -1657,7 +1653,7 @@
       "Germany",
       "ampm",
       "design",
-      "digital-12h",
+      "digital",
       "paper",
       "typeface"
     ]
@@ -1692,7 +1688,7 @@
     "date": "26-02-16",
     "title": "Maze",
     "tags": [
-      "digital-12h",
+      "digital",
       "paper",
       "play",
       "walk"
@@ -1748,7 +1744,7 @@
     "title": "Extended Mix",
     "tags": [
       "dance",
-      "digital-24h",
+      "digital",
       "fast",
       "glass",
       "light",
@@ -1792,7 +1788,7 @@
     "title": "White Shadow",
     "tags": [
       "b+w",
-      "digital-12h",
+      "digital",
       "monochrome",
       "shadow",
       "spin"
@@ -1819,7 +1815,7 @@
     "title": "Planetary Gear",
     "tags": [
       "ampm",
-      "digital-12h",
+      "digital",
       "mechanical",
       "rotation",
       "wheel"
@@ -1845,7 +1841,7 @@
     "title": "Enigma",
     "tags": [
       "ampm",
-      "digital-12h",
+      "digital",
       "float",
       "revolve"
     ]
@@ -1856,7 +1852,7 @@
     "title": "Flux",
     "tags": [
       "copper",
-      "digital-12h",
+      "digital",
       "electricity",
       "fast",
       "landscape"
@@ -1878,7 +1874,7 @@
     "date": "26-02-02",
     "title": "Mach 1",
     "tags": [
-      "digital-24h",
+      "digital",
       "fast",
       "fly",
       "metal",
@@ -1905,7 +1901,7 @@
     "tags": [
       "analog",
       "ampm",
-      "digital-12h",
+      "digital",
       "food",
       "fruit",
       "grow",
@@ -1961,7 +1957,7 @@
     "tags": [
       "ampm",
       "day",
-      "digital-12h",
+      "digital",
       "landscape",
       "panorama",
       "spin"
@@ -1986,7 +1982,7 @@
     "date": "26-01-24",
     "title": "Emoji Digital",
     "tags": [
-      "digital-24h",
+      "digital",
       "emoji",
       "info",
       "tech"
@@ -2012,7 +2008,7 @@
       "1974",
       "brown",
       "chess",
-      "digital-24h",
+      "digital",
       "earth-tones",
       "interior",
       "neutrals",
@@ -2064,7 +2060,7 @@
     "title": "Orthogonal",
     "tags": [
       "ampm",
-      "digital-12h",
+      "digital",
       "orange",
       "purple",
       "spin"
@@ -2237,7 +2233,7 @@
     "date": "26-01-04",
     "title": "Imaged-Based",
     "tags": [
-      "digital-24h",
+      "digital",
       "generative",
       "random"
     ]
@@ -2258,7 +2254,7 @@
     "date": "26-01-02",
     "title": "Cramped",
     "tags": [
-      "digital-24h",
+      "digital",
       "gold",
       "image-free",
       "typeface"
@@ -2299,7 +2295,7 @@
     "tags": [
       "ampm",
       "day",
-      "digital-12h",
+      "digital",
       "fast",
       "geometry",
       "move",
@@ -2318,7 +2314,7 @@
       "Japan",
       "aerial",
       "ampm",
-      "digital-12h",
+      "digital",
       "gods",
       "shrine",
       "twenty",
@@ -2378,7 +2374,7 @@
       "air",
       "airstairs",
       "ampm",
-      "digital-12h",
+      "digital",
       "earth",
       "fast",
       "fly",
@@ -2632,7 +2628,7 @@
     "title": "Optotype",
     "tags": [
       "b+w",
-      "digital-12h",
+      "digital",
       "eye",
       "paper",
       "see",
@@ -2707,7 +2703,7 @@
     "title": "Timeline",
     "tags": [
       "color",
-      "digital-24h"
+      "digital"
     ]
   },
   {
@@ -2797,7 +2793,7 @@
     "date": "25-11-21",
     "title": "Liminal",
     "tags": [
-      "digital-24h",
+      "digital",
       "grid",
       "interior"
     ]
@@ -2823,7 +2819,7 @@
     "title": "Apple",
     "tags": [
       "apple",
-      "digital-24h",
+      "digital",
       "food",
       "fruit",
       "grow",
@@ -2881,7 +2877,7 @@
     "title": "Fall",
     "tags": [
       "apple",
-      "digital-12h",
+      "digital",
       "gravity",
       "grow",
       "orange",
@@ -2986,7 +2982,7 @@
     "tags": [
       "animal",
       "bird",
-      "digital-12h",
+      "digital",
       "feather",
       "fly",
       "landscape",
@@ -3015,7 +3011,7 @@
       "0123456789abcdef",
       "color",
       "design",
-      "digital-24h",
+      "digital",
       "grid",
       "image-free"
     ]
@@ -3330,7 +3326,7 @@
       "ampm",
       "b+w",
       "chess",
-      "digital-12h",
+      "digital",
       "play",
       "slow",
       "square",
@@ -3362,7 +3358,7 @@
     "date": "25-10-09",
     "title": "Spin",
     "tags": [
-      "digital-12h",
+      "digital",
       "purple",
       "round",
       "typeface"
@@ -3404,7 +3400,7 @@
     "title": "Dots",
     "tags": [
       "circle",
-      "digital-12h",
+      "digital",
       "green",
       "revolve"
     ]
@@ -3425,7 +3421,7 @@
     "title": "Waterfall",
     "tags": [
       "blue",
-      "digital-24h",
+      "digital",
       "float",
       "gravity",
       "sound",
@@ -3451,7 +3447,7 @@
     "title": "Counting Rods",
     "tags": [
       "China",
-      "digital-24h",
+      "digital",
       "float",
       "gold",
       "red"
@@ -3476,7 +3472,7 @@
     "date": "25-09-30",
     "title": "Lines",
     "tags": [
-      "digital-24h",
+      "digital",
       "green",
       "image-free",
       "parallel",
@@ -3492,7 +3488,7 @@
       "Esperanto",
       "ampm",
       "color",
-      "digital-24h",
+      "digital",
       "paper"
     ]
   },
@@ -3640,7 +3636,7 @@
     "title": "Neo",
     "tags": [
       "ampm",
-      "digital-12h",
+      "digital",
       "film",
       "gravity",
       "green",
@@ -3655,7 +3651,7 @@
       "Disney",
       "Venus",
       "ampm",
-      "digital-12h",
+      "digital",
       "hand",
       "heart",
       "paper"
@@ -3891,7 +3887,7 @@
     "date": "25-08-30",
     "title": "Afterthought",
     "tags": [
-      "digital-12h",
+      "digital",
       "fast",
       "monochrome",
       "sky",
@@ -3959,7 +3955,7 @@
     "title": "Barcode",
     "tags": [
       "UPC",
-      "digital-12h",
+      "digital",
       "interior",
       "paper",
       "parallel"
@@ -3985,7 +3981,7 @@
     "title": "Signal Pennants",
     "tags": [
       "cloth",
-      "digital-24h",
+      "digital",
       "flags",
       "pictographic",
       "triangle",
@@ -4011,7 +4007,7 @@
     "date": "25-08-21",
     "title": "Lateral",
     "tags": [
-      "digital-24h",
+      "digital",
       "monochrome",
       "parallel",
       "side-to-side"
@@ -4085,7 +4081,7 @@
     "title": "Dominoes",
     "tags": [
       "b+w",
-      "digital-24h",
+      "digital",
       "play",
       "wood"
     ]
@@ -4206,7 +4202,7 @@
     "tags": [
       "Russia",
       "animal",
-      "digital-24h",
+      "digital",
       "dog",
       "face",
       "fly",
@@ -4233,7 +4229,7 @@
     "title": "Fireflies",
     "tags": [
       "animal",
-      "digital-24h",
+      "digital",
       "exoskeletal",
       "landscape",
       "light",
@@ -4334,7 +4330,7 @@
     "date": "25-07-28",
     "title": "Water Hazard",
     "tags": [
-      "digital-12h",
+      "digital",
       "earth",
       "grow",
       "plant",
@@ -4373,7 +4369,7 @@
     "date": "25-07-25",
     "title": "Bamboo",
     "tags": [
-      "digital-24h",
+      "digital",
       "earth",
       "green",
       "grow",
@@ -4398,7 +4394,7 @@
     "title": "Baybayin",
     "tags": [
       "Tagalog",
-      "digital-24h"
+      "digital"
     ]
   },
   {
@@ -4419,7 +4415,7 @@
     "tags": [
       "animal",
       "deepwater",
-      "digital-24h",
+      "digital",
       "light",
       "nature",
       "swim"
@@ -4446,7 +4442,7 @@
     "tags": [
       "blue",
       "desert",
-      "digital-24h",
+      "digital",
       "slow",
       "stone"
     ]
@@ -4459,7 +4455,7 @@
       "b+w",
       "body",
       "bone",
-      "digital-24h",
+      "digital",
       "electricity",
       "hand",
       "milliseconds",
@@ -4488,7 +4484,7 @@
     "title": "Möbius Strip",
     "tags": [
       "Fibonacci",
-      "digital-24h",
+      "digital",
       "geometry",
       "spin"
     ]
@@ -4500,7 +4496,7 @@
     "tags": [
       "ampm",
       "black",
-      "digital-12h",
+      "digital",
       "image-free",
       "words"
     ]
@@ -4521,7 +4517,7 @@
     "title": "Rorschach",
     "tags": [
       "b+w",
-      "digital-24h",
+      "digital",
       "eye",
       "see"
     ]
@@ -4546,7 +4542,7 @@
     "title": "Penmanship",
     "tags": [
       "ampm",
-      "digital-24h",
+      "digital",
       "hand",
       "paper",
       "yellow"
@@ -4558,7 +4554,7 @@
     "title": "Sliding",
     "tags": [
       "ampm",
-      "digital-12h",
+      "digital",
       "image-free",
       "side-to-side",
       "typeface"
@@ -4569,7 +4565,7 @@
     "date": "25-07-09",
     "title": "Blob",
     "tags": [
-      "digital-24h",
+      "digital",
       "image-free"
     ]
   },
@@ -4592,7 +4588,7 @@
     "title": "SUV",
     "tags": [
       "ampm",
-      "digital-12h",
+      "digital",
       "fast",
       "mechanical",
       "metal",
@@ -4619,7 +4615,7 @@
     "tags": [
       "Las-Vegas",
       "day-and-night",
-      "digital-24h",
+      "digital",
       "live-cam",
       "play"
     ]
@@ -4631,7 +4627,7 @@
     "tags": [
       "ampm",
       "circle",
-      "digital-12h",
+      "digital",
       "image-free",
       "round",
       "spin"
@@ -4644,7 +4640,7 @@
     "tags": [
       "aim",
       "count",
-      "digital-24h",
+      "digital",
       "fast",
       "gravity",
       "sky",
@@ -4667,7 +4663,7 @@
     "date": "25-07-01",
     "title": "Cinema",
     "tags": [
-      "digital-12h",
+      "digital",
       "electricity",
       "film",
       "light",
@@ -4695,7 +4691,7 @@
     "date": "25-06-29",
     "title": "Stretch",
     "tags": [
-      "digital-12h",
+      "digital",
       "green",
       "slant",
       "typeface",
@@ -4734,7 +4730,7 @@
     "title": "Cosmic Wheels",
     "tags": [
       "b+w",
-      "digital-24h",
+      "digital",
       "revolve",
       "sky",
       "slow",
@@ -4761,7 +4757,7 @@
     "tags": [
       "air",
       "ampm",
-      "digital-24h",
+      "digital",
       "monochrome",
       "sound"
     ]
@@ -4809,7 +4805,7 @@
     "date": "25-06-20",
     "title": "Indecisive",
     "tags": [
-      "digital-24h",
+      "digital",
       "typeface"
     ]
   },
@@ -4834,7 +4830,7 @@
     "title": "Cistercian",
     "tags": [
       "cloth",
-      "digital-24h",
+      "digital",
       "gods",
       "interior",
       "slow",
@@ -4846,7 +4842,7 @@
     "date": "25-06-17",
     "title": "Backslant",
     "tags": [
-      "digital-24h",
+      "digital",
       "image-free",
       "orange",
       "parallel",
@@ -4875,7 +4871,7 @@
     "tags": [
       "body",
       "bone",
-      "digital-24h",
+      "digital",
       "pink",
       "thread"
     ]
@@ -4905,7 +4901,7 @@
     "tags": [
       "air",
       "black",
-      "digital-24h",
+      "digital",
       "fast",
       "float",
       "landscape",
@@ -4923,7 +4919,7 @@
       "camouflage",
       "cloth",
       "cow",
-      "digital-24h",
+      "digital",
       "horn",
       "hot",
       "metal",
@@ -4966,7 +4962,7 @@
     "title": "Ionosphere",
     "tags": [
       "air",
-      "digital-12h",
+      "digital",
       "fast",
       "fly",
       "mechanical",
@@ -4995,7 +4991,7 @@
     "date": "25-06-07",
     "title": "Blizzard",
     "tags": [
-      "digital-24h",
+      "digital",
       "glass",
       "interior",
       "slow",
@@ -5024,7 +5020,7 @@
     "date": "25-06-05",
     "title": "Treehouse",
     "tags": [
-      "digital-12h",
+      "digital",
       "earth",
       "green",
       "grow",
@@ -5058,7 +5054,7 @@
     "title": "Filigree",
     "tags": [
       "circle",
-      "digital-24h",
+      "digital",
       "metal",
       "purple",
       "rotation",
@@ -5088,7 +5084,7 @@
     "tags": [
       "UPC",
       "air",
-      "digital-24h",
+      "digital",
       "float",
       "fly",
       "move",
@@ -5120,7 +5116,7 @@
     "date": "25-05-30",
     "title": "ISS",
     "tags": [
-      "digital-24h",
+      "digital",
       "earth",
       "fast",
       "fly",
@@ -5160,7 +5156,7 @@
     "date": "25-05-27",
     "title": "Dots",
     "tags": [
-      "digital-12h",
+      "digital",
       "histogram",
       "image-free",
       "neutrals"
@@ -5171,7 +5167,7 @@
     "date": "25-05-26",
     "title": "Sprout",
     "tags": [
-      "digital-12h",
+      "digital",
       "earth",
       "green",
       "grow",
@@ -5202,7 +5198,7 @@
     "tags": [
       "aim",
       "air",
-      "digital-12h",
+      "digital",
       "fast",
       "spin",
       "weather",
@@ -5216,7 +5212,7 @@
     "tags": [
       "cloth",
       "color",
-      "digital-24h",
+      "digital",
       "hand",
       "slow",
       "thread"
@@ -5255,7 +5251,7 @@
     "title": "Tetrahedron",
     "tags": [
       "Platonic-Solids",
-      "digital-12h",
+      "digital",
       "fire",
       "four",
       "pyramid",
@@ -5281,7 +5277,7 @@
     "title": "Blueprint",
     "tags": [
       "blue",
-      "digital-24h",
+      "digital",
       "map",
       "monochrome",
       "paper"
@@ -5305,7 +5301,7 @@
     "date": "25-05-16",
     "title": "Braille",
     "tags": [
-      "digital-24h",
+      "digital",
       "hand",
       "monochrome",
       "paper",
@@ -5333,7 +5329,7 @@
     "tags": [
       "RGB",
       "color",
-      "digital-12h",
+      "digital",
       "generative",
       "grey"
     ]
@@ -5358,7 +5354,7 @@
       "animal",
       "camouflage",
       "cat",
-      "digital-24h",
+      "digital",
       "earth",
       "fast",
       "nature",
@@ -5372,7 +5368,7 @@
     "title": "Number Toss",
     "tags": [
       "color",
-      "digital-12h",
+      "digital",
       "gravity",
       "pink",
       "up-and-down"
@@ -5398,7 +5394,7 @@
     "tags": [
       "aerial",
       "air",
-      "digital-24h",
+      "digital",
       "float",
       "fly",
       "gold",
@@ -5428,7 +5424,7 @@
     "title": "Unruly",
     "tags": [
       "color",
-      "digital-24h",
+      "digital",
       "image-free",
       "typeface"
     ]
@@ -5441,7 +5437,7 @@
       "Warhol",
       "balloon",
       "bone",
-      "digital-24h",
+      "digital",
       "earth",
       "live-cam",
       "shrine",
@@ -5466,7 +5462,7 @@
     "date": "25-05-03",
     "title": "Petals",
     "tags": [
-      "digital-24h",
+      "digital",
       "flower",
       "gravity",
       "grow",
@@ -5496,7 +5492,7 @@
     "date": "25-05-01",
     "title": "Slow Lightning",
     "tags": [
-      "digital-24h",
+      "digital",
       "electricity",
       "elements",
       "fast",
@@ -5527,7 +5523,7 @@
     "tags": [
       "aim",
       "color",
-      "digital-24h",
+      "digital",
       "fast",
       "fire",
       "light",
@@ -5541,7 +5537,7 @@
     "title": "Jackson Pollock",
     "tags": [
       "b+w",
-      "digital-12h",
+      "digital",
       "gravity",
       "paint"
     ]
@@ -5564,7 +5560,7 @@
     "tags": [
       "black",
       "color",
-      "digital-12h"
+      "digital"
     ]
   },
   {
@@ -5587,7 +5583,7 @@
     "date": "25-04-24",
     "title": "Lava",
     "tags": [
-      "digital-24h",
+      "digital",
       "elements",
       "hot",
       "lava",
@@ -5618,7 +5614,7 @@
     "date": "25-04-22",
     "title": "Bouncing Cube",
     "tags": [
-      "digital-24h",
+      "digital",
       "fly",
       "gravity",
       "six"
@@ -5646,7 +5642,7 @@
     "tags": [
       "air",
       "blue",
-      "digital-12h",
+      "digital",
       "elements",
       "float",
       "monochrome",
@@ -5661,7 +5657,7 @@
     "title": "Sphere Drop",
     "tags": [
       "color",
-      "digital-12h",
+      "digital",
       "gravity",
       "histogram",
       "image-free",
@@ -5693,7 +5689,7 @@
     "title": "Stripe",
     "tags": [
       "color",
-      "digital-24h",
+      "digital",
       "image-free",
       "parallel"
     ]
@@ -5718,7 +5714,7 @@
     "title": "Horizon",
     "tags": [
       "day",
-      "digital-12h",
+      "digital",
       "earth",
       "horizon",
       "landscape",
@@ -5758,7 +5754,7 @@
     "title": "Magenta",
     "tags": [
       "color",
-      "digital-24h",
+      "digital",
       "magenta",
       "monochrome",
       "non-spectral",
@@ -5785,7 +5781,7 @@
     "title": "Bar Graph",
     "tags": [
       "color",
-      "digital-12h",
+      "digital",
       "histogram",
       "image-free",
       "three",
@@ -5812,7 +5808,7 @@
     "title": "Triple Cactus",
     "tags": [
       "day-and-night",
-      "digital-24h",
+      "digital",
       "dry",
       "earth",
       "horizon",
@@ -5847,7 +5843,7 @@
     "tags": [
       "cake",
       "color",
-      "digital-24h",
+      "digital",
       "gravity",
       "image-free",
       "play"
@@ -5891,7 +5887,7 @@
       "animal",
       "book",
       "deepwater",
-      "digital-24h",
+      "digital",
       "float",
       "grey",
       "mirror",
@@ -5911,7 +5907,7 @@
     "tags": [
       "black",
       "color",
-      "digital-24h",
+      "digital",
       "light",
       "night",
       "sky",
