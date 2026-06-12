@@ -1,24 +1,16 @@
 import officeImg from '@/assets/images/26_images/26-06/26-06-10/office.webp';
-import bgImg from '@/assets/images/26_images/26-06/26-06-10/phone.webp';
+import phoneImg from '@/assets/images/26_images/26-06/26-06-10/phone.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks/useSmoothClock';
-import { useEffect } from 'react';
 import styles from './Clock.module.css';
 
-export const assets = [bgImg, officeImg];
+export const assets = [phoneImg, officeImg];
 
 const fontConfigs: FontConfig[] = [];
 
 export default function DigitalClock() {
   const time = useSecondClock();
-
-  useEffect(() => {
-    const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=League+Gothic&display=swap';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-  }, []);
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -30,9 +22,9 @@ export default function DigitalClock() {
 
   return (
     <main 
-      className={styles.container} 
+      className={styles.container}
       style={{ 
-        '--phone-img': `url(${bgImg})`,
+        '--phone-img': `url(${phoneImg})`,
         '--office-img': `url(${officeImg})`
       } as React.CSSProperties}
     >

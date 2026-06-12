@@ -7,7 +7,7 @@
   align-items: center;
 
   /* Layering: Phone (Front) -> Office (Middle) -> Gradient (Back) */
-  background-image: var(--phone-img), var(--office-img), radial-gradient(circle at center, #242424 0%, #000000 100%);
+  background-image: var(--phone-img), var(--office-img), linear-gradient(to bottom, #162265 0%, #bdaaaa 100%);
   background-size: cover, cover, cover;
   background-position: center;
   font-family: 'League Gothic', sans-serif;
@@ -21,7 +21,7 @@
   display: flex;
   gap: 0.15rem;
   align-items: center;
-  transform: translate(4vw, 2vh) rotate(3deg);
+  transform: translate(4vw, 2vh) rotate(2.5deg);
   filter: blur(0.5px);
 }
 
