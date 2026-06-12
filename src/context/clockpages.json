@@ -1727,7 +1727,6 @@
       "animal",
       "film",
       "horizon",
-      "horse",
       "odd-toed-ungulate",
       "ride",
       "run",
@@ -4786,7 +4785,6 @@
       "air",
       "cardinal-directions",
       "feather",
-      "horse",
       "myth",
       "odd-toed-ungulate",
       "roman-numeral",
@@ -5850,6 +5848,15 @@
       "digital-12h",
       "hand",
       "thread"
+    ]
+  },
+  {
+    "path": "26-06-10",
+    "date": "26-06-10",
+    "title": "Rotary Dial",
+    "tags": [
+      "digital-24h",
+      "mechanical"
     ]
   }
 ]
