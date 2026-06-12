@@ -21,13 +21,7 @@ export default function DigitalClock() {
   const timeParts = [hours[0], hours[1], minutes[0], minutes[1], ampm];
 
   return (
-    <main 
-      className={styles.container}
-      style={{ 
-        '--phone-img': `url(${phoneImg})`,
-        '--office-img': `url(${officeImg})`
-      } as React.CSSProperties}
-    >
+    <main className={styles.container}>
       <time className={styles.timeRow} dateTime={time.toLocaleTimeString()}>
         {timeParts.map((part, i) => (
           <div key={i} className={styles.digit}>
