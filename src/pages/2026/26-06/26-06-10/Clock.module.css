@@ -19,17 +19,19 @@
 
 .timeRow {
   display: flex;
-  gap: 0.15rem;
+  gap: 0.5rem;
   align-items: center;
-  transform: translate(4vw, 2vh) rotate(2.5deg);
-  filter: blur(0.5px);
+  transform: translate(-6vw, 8vh) rotate(-12deg);
+  filter: blur(2px);
 }
 
 .digit {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  font-size: 3vw;
-  color: #868484;
+  font-size: 28vh;
+  color: #ffffff;
   line-height: 1;
+  text-shadow: 0 0 3vh rgba(0, 0, 0, 0.5);
+  font-variant-numeric: tabular-nums;
 }

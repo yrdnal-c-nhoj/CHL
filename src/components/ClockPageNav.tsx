@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from '../styles/ClockPageNav.module.css'; // keep using the same styles
 
@@ -128,10 +128,10 @@ const ClockPageNav = ({
       onTouchCancel={handleTouchCancel}
     >
       <Link
-        to={prevItem ? `/${prevItem.date}` : '/'}
+        to={nextItem ? `/${nextItem.date}` : '/'} // Left goes to older (previous in time)
         className={styles.navButton}
         aria-label={
-          prevItem ? `Go to previous clock: ${formatTitle(prevItem.title)}` : ''
+          nextItem ? `Previous: ${formatTitle(nextItem.title)}` : 'Home'
         }
       >
         <span aria-hidden="true">⇽</span>
@@ -169,10 +169,10 @@ const ClockPageNav = ({
       </button>
 
       <Link
-        to={nextItem ? `/${nextItem.date}` : '/'}
+        to={prevItem ? `/${prevItem.date}` : '/'} // Right goes to newer (next in list)
         className={styles.navButton}
         aria-label={
-          nextItem ? `Go to next clock: ${formatTitle(nextItem.title)}` : ''
+          prevItem ? `Next: ${formatTitle(prevItem.title)}` : 'Home'
         }
       >
         <span aria-hidden="true">⇾</span>

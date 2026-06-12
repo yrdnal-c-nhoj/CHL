@@ -16,9 +16,9 @@ export default function DigitalClock() {
 
   const hours = time.getHours().toString().padStart(2, '0');
   const minutes = time.getMinutes().toString().padStart(2, '0');
-  const ampm = time.getHours() >= 12 ? 'PM' : 'AM'; // Using 24h hours for logic, but displaying AM/PM per request
+  const ampm = time.getHours() >= 12 ? 'PM' : 'AM';
 
-  const digits = `${hours}${minutes}`;
+  const timeParts = [hours[0], hours[1], minutes[0], minutes[1], ampm];
 
   return (
     <main 
@@ -28,13 +28,12 @@ export default function DigitalClock() {
         '--office-img': `url(${officeImg})`
       } as React.CSSProperties}
     >
-      <time className={styles.timeRow} dateTime={time.toISOString()}>
-        {digits.split('').map((d, i) => (
+      <time className={styles.timeRow} dateTime={time.toLocaleTimeString()}>
+        {timeParts.map((part, i) => (
           <div key={i} className={styles.digit}>
-            {d}
+            {part}
           </div>
         ))}
-        <div className={styles.digit}>{ampm}</div>
       </time>
     </main>
   );
