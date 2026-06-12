@@ -31,7 +31,10 @@
   left: 50%;
   top: 50%;
   pointer-events: none;
+  -webkit-user-select: none;
   user-select: none;
+
+
   font-family: 'ClockFont', sans-serif;
   line-height: 0.8;
   color: #7eb4eae5;

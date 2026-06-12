@@ -10,13 +10,12 @@ import styles from './Clock.module.css';
 import fontUrl from '@/assets/fonts/26fonts/26-06-09.otf?url';
 
 // Load all images from the corresponding folder
-const imageModules = import.meta.glob('@/assets/images/26_images/26-06/26-06-09/*.{webp,png,jpg,jpeg,gif}', { eager: true });
-const imageUrls = Object.values(imageModules).map((m: any) => m.default || m);
 const imageModules = import.meta.glob(
-  '../../../../assets/images/26_images/26-06/26-06-09/*.{webp,png,jpg,jpeg,gif}', 
-  { eager: true, query: '?url', import: 'default' }
+  '@/assets/images/26_images/26-06/26-06-09/*.{webp,png,jpg,jpeg,gif}',
+  { eager: true, query: '?url', import: 'default' },
 );
 const imageUrls = Object.values(imageModules) as string[];
+
 
 /**
  * TACTICAL STANDARD: Export assets for preloader synchronization
