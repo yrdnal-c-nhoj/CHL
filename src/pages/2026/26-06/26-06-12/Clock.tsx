@@ -1,8 +1,7 @@
 import bellImage from '@/assets/images/26_images/26-06/26-06-12/orbit.webp';
 import { useClockTime } from '@/utils/clockUtils';
-import { useSuspenseFontLoader } from '@/utils/fontLoader.tsx';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
-import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 
@@ -102,7 +101,7 @@ const ClockNumerals: React.FC = () => {
 
 const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
   const { width, height, zIndex } = HAND_DIMENSIONS[type];
-  const background = CLOCK_CONFIG.COLORS[`${type}Hand`];
+  const background = CLOCK_CONFIG.COLORS[`${type}Hand` as keyof typeof CLOCK_CONFIG.COLORS];
 
   return (
     <div
@@ -121,18 +120,13 @@ const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
 const CenterDot = () => <div style={styles.centerDot} />;
 
 const AnalogClock: React.FC = () => {
-  const currentTime = useSecondClock();
   const currentTime = useClockTime('ms');
-  useSuspenseFontLoader([]);
+  useSuspenseFontLoader(['Gilda Display']);
 
   const { hr, min, sec } = calculateTimeValues(currentTime);
 
   return (
     <div style={styles.container}>
-      <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap');`}
-      </style>
-      
       <BackgroundLayers />
 
       <div style={styles.clockFace}>
@@ -175,6 +169,7 @@ const styles = {
     width: '100vmin',
     height: '100vmin',
     zIndex: 7,
+    opacity: 0.4,
     fontFamily: "'Gilda Display', serif",
   },
 
