@@ -1,166 +1,212 @@
-import { OrbitControls } from '@react-three/drei';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { useRef, useState } from 'react';
-import * as THREE from 'three';
+import bellImage from '@/assets/images/26_images/26-06/26-06-12/orbit.webp';
+import { useClockTime } from '@/utils/clockUtils';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks/useSmoothClock';
+import React, { useMemo } from 'react';
 
-// Helper function to create clock drawer for a single canvas
-const createClockDrawer = (canvas) => {
-  canvas.width = 512;
-  canvas.height = 512;
-  const ctx = canvas.getContext('2d');
+export const assets = [bellImage];
 
-  return () => {
-    const now = new Date();
-    const hrs = now.getHours();
-    const mins = now.getMinutes();
-    const secs = now.getSeconds();
-    const ms = now.getMilliseconds();
+const CLOCK_CONFIG = {
+  NUMERAL_RADIUS: 20,
+  COLORS: {
+    // background: '#BFA7A7',
+    silverText:
+      'linear-gradient(180deg, #24058B 0%, #000000 45%, #232222 50%, #062D79 100%)',
+    hourHand: 'linear-gradient(to right, #4E4D4D, #282727, #4D4949)',
+    minuteHand: 'linear-gradient(to right, #3B3939, #383636, #484444)',
+    secondHand: 'linear-gradient(to top, #4B4C4F, #4F4F52)',
+    centerDot: '#565856',
+  },
+};
 
-    // White clock background
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, 512, 512);
+// Interface for clock hand dimensions
+interface HandDimensions {
+  width: string;
+  height: string;
+  zIndex: number;
+}
 
-    // Outer Rim
-    ctx.strokeStyle = '#222222';
-    ctx.lineWidth = 14;
-    ctx.beginPath();
-    ctx.arc(256, 256, 220, 0, Math.PI * 2);
-    ctx.stroke();
+// Interface for clock hand props
+interface ClockHandProps {
+  type: 'hour' | 'minute' | 'second';
+  rotation: number;
+}
 
-    // Hour Ticks
-    ctx.lineWidth = 6;
-    ctx.strokeStyle = '#000000';
-    for (let i = 0; i < 12; i++) {
-      const angle = (i * Math.PI) / 6;
-      ctx.beginPath();
-      ctx.moveTo(256 + Math.cos(angle) * 195, 256 + Math.sin(angle) * 195);
-      ctx.lineTo(256 + Math.cos(angle) * 215, 256 + Math.sin(angle) * 215);
-      ctx.stroke();
-    }
+// Interface for time values
+interface TimeValues {
+  hr: number;
+  min: number;
+  sec: number;
+}
 
-    const drawHand = (angle, length, width, color) => {
-      ctx.strokeStyle = color;
-      ctx.lineWidth = width;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(256, 256);
-      ctx.lineTo(256 + Math.sin(angle) * length, 256 - Math.cos(angle) * length);
-      ctx.stroke();
-    };
+const HAND_DIMENSIONS: Record<string, HandDimensions> = {
+  hour: { width: '0.8vmin', height: '10vmin', zIndex: 3 },
+  minute: { width: '0.4vmin', height: '15vmin', zIndex: 4 },
+  second: { width: '0.2vmin', height: '18vmin', zIndex: 5 },
+};
 
-    // Continuous, smooth calculations
-    const secAngle = ((secs + ms / 1000) * Math.PI) / 30;
-    const minAngle = ((mins + secs / 60) * Math.PI) / 30;
-    const hrAngle = (((hrs % 12) + mins / 60) * Math.PI) / 6;
+const getHandRotation = (value: number, multiplier: number): number =>
+  value * multiplier;
 
-    drawHand(hrAngle, 110, 12, '#111111'); // Hour
-    drawHand(minAngle, 160, 8, '#444444');  // Minute
-    drawHand(secAngle, 185, 4, '#ff3333');  // Second
+const calculateNumeralPosition = (number: number) => {
+  const angleRad = (number / 12) * 2 * Math.PI;
+  const angleDeg = (number / 12) * 360;
 
-    // Center Node
-    ctx.fillStyle = '#ff3333';
-    ctx.beginPath();
-    ctx.arc(256, 256, 10, 0, Math.PI * 2);
-    ctx.fill();
+  return {
+    x: 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angleRad),
+    y: 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angleRad),
+    angle: angleDeg,
   };
 };
 
-// The Pyramid Mesh Component with 4 clocks on 4 faces
-const PyramidMesh = () => {
-  const meshRef = useRef();
-  const texturesRef = useRef([]);
+const calculateTimeValues = (date: Date): TimeValues => {
+  const msec = date.getMilliseconds();
+  const sec = date.getSeconds() + msec / 1000;
+  const min = date.getMinutes() + sec / 60;
+  const hr = (date.getHours() % 12) + min / 60;
 
-  // Initialize 4 separate canvases and textures (only for the 4 side faces)
-  const [materials] = useState(() => {
-    const mats = [];
-    texturesRef.current = [];
+  return { hr, min, sec };
+};
 
-    // Create 4 materials for the 4 side faces (indices 0, 1, 2, 3)
-    for (let i = 0; i < 4; i++) {
-      const canvas = document.createElement('canvas');
-      const drawFn = createClockDrawer(canvas);
-      
-      const texture = new THREE.CanvasTexture(canvas);
-      texture.wrapS = THREE.ClampToEdgeWrapping;
-      texture.wrapT = THREE.ClampToEdgeWrapping;
+// --- Custom Hooks ---
+const BackgroundLayers = () => (
+  <div style={{ ...styles.backgroundLayer, backgroundImage: `url(${bellImage})` }} />
+);
 
-      texturesRef.current.push({ texture, drawFn });
+const ClockNumerals: React.FC = () => {
+  const numerals = useMemo(() => {
+    return Array.from({ length: 12 }, (_, i) => {
+      const num = i + 1;
+      const { x, y, angle } = calculateNumeralPosition(num);
 
-      mats.push(
-        new THREE.MeshStandardMaterial({
-          map: texture,
-          roughness: 0.2,
-          metalness: 0.1,
-          side: THREE.DoubleSide
-        })
+      return (
+        <div
+          key={num}
+          style={{
+            ...styles.numeral,
+            left: `${x}%`,
+            top: `${y}%`,
+            transform: `translate(-50%, -50%) rotate(${angle}deg)`,
+          }}
+        >
+          {num}
+        </div>
       );
-    }
-    
-    // Create a plain material for the base (index 4) - no clock
-    const baseCanvas = document.createElement('canvas');
-    baseCanvas.width = 512;
-    baseCanvas.height = 512;
-    const baseCtx = baseCanvas.getContext('2d');
-    baseCtx.fillStyle = '#222222';
-    baseCtx.fillRect(0, 0, 512, 512);
-    
-    const baseTexture = new THREE.CanvasTexture(baseCanvas);
-    baseTexture.wrapS = THREE.ClampToEdgeWrapping;
-    baseTexture.wrapT = THREE.ClampToEdgeWrapping;
-    
-    mats.push(
-      new THREE.MeshStandardMaterial({
-        map: baseTexture,
-        roughness: 0.2,
-        metalness: 0.1,
-        side: THREE.DoubleSide
-      })
-    );
-    
-    return mats;
-  });
-
-  // Animation Loop
-  useFrame((state, delta) => {
-    // Spin the pyramid
-    if (meshRef.current) {
-      meshRef.current.rotation.y += delta * 0.4;
-      // Remove the x tilt so the pyramid stands upright - clocks won't be clipped
-      meshRef.current.rotation.x = 0;
-      meshRef.current.rotation.z = 0;
-    }
-
-    // Update all 4 clock textures (only the side faces, not the base)
-    texturesRef.current.forEach(({ texture, drawFn }) => {
-      drawFn();
-      texture.needsUpdate = true;
     });
-  });
+  }, []);
+
+  return <>{numerals}</>;
+};
+
+const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
+  const { width, height, zIndex } = HAND_DIMENSIONS[type];
+  const background = CLOCK_CONFIG.COLORS[`${type}Hand`];
 
   return (
-    <mesh 
-      ref={meshRef} 
-      material={materials}
-    >
-      {/* ConeGeometry with 4 radialSegments creates 4 triangular faces + 1 base */}
-      <coneGeometry args={[2, 3, 4]} />
-    </mesh>
+    <div
+      style={{
+        ...styles.hand,
+        width,
+        height,
+        background,
+        zIndex,
+        transform: `translate(-50%, 0) rotate(${rotation}deg)`,
+      }}
+    />
   );
 };
 
-// Main Export Scene Canvas Container
-export default function SpinningPyramid() {
+const CenterDot = () => <div style={styles.centerDot} />;
+
+const AnalogClock: React.FC = () => {
+  const currentTime = useSecondClock();
+  const currentTime = useClockTime('ms');
+  useSuspenseFontLoader([]);
+
+  const { hr, min, sec } = calculateTimeValues(currentTime);
+
   return (
-    <div style={{ width: '100vw', height: '100vh', backgroundColor: '#111111' }}>
-      <Canvas camera={{ position: [0, 2, 5.5], fov: 55 }}>
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[5, 8, 5]} intensity={1.6} />
-        <directionalLight position={[-5, -2, -5]} intensity={0.4} />
+    <div style={styles.container}>
+      <style>
+        {`@import url('https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap');`}
+      </style>
+      
+      <BackgroundLayers />
 
-        <PyramidMesh />
-
-        <OrbitControls enableZoom={true} />
-      </Canvas>
+      <div style={styles.clockFace}>
+        <ClockNumerals />
+        <ClockHand type="hour" rotation={getHandRotation(hr, 30)} />
+        <ClockHand type="minute" rotation={getHandRotation(min, 6)} />
+        <ClockHand type="second" rotation={getHandRotation(sec, 6)} />
+        <CenterDot />
+      </div>
     </div>
   );
-}
+};
+
+const styles = {
+  container: {
+    position: 'relative',
+    width: '100vw',
+    height: '100dvh',
+    overflow: 'hidden',
+    backgroundColor: CLOCK_CONFIG.COLORS.background,
+    transition: 'opacity 0.3s ease',
+  },
+
+  backgroundLayer: {
+    position: 'absolute',
+    inset: 0,
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    // filter: 'saturate(520%) hue-rotate(-120deg) contrast(0.4) brightness(1.6)',
+    zIndex: 1,
+    // opacity: 0.5,
+  },
+
+  clockFace: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '100vmin',
+    height: '100vmin',
+    zIndex: 7,
+    fontFamily: "'Gilda Display', serif",
+  },
+
+  numeral: {
+    position: 'absolute',
+    fontSize: 'clamp(1rem, 2vh, 5rem)',
+    background: CLOCK_CONFIG.COLORS.silverText,
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    filter: 'drop-shadow(2px 2px 0px white)',
+    userSelect: 'none',
+  },
+
+  hand: {
+    position: 'absolute',
+    bottom: '50%',
+    left: '50%',
+    transformOrigin: '50% 100%',
+    filter: 'drop-shadow(2px 2px 0px white)',
+    borderRadius: '10px',
+    willChange: 'transform',
+  },
+
+  centerDot: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: '2vmin',
+    height: '2vmin',
+    background: CLOCK_CONFIG.COLORS.centerDot,
+    borderRadius: '50%',
+    transform: 'translate(-50%, -50%)',
+    zIndex: 10,
+  },
+};
+
+export default AnalogClock;
