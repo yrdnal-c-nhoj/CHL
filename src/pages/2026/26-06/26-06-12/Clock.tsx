@@ -1,15 +1,17 @@
 import bellImage from '@/assets/images/26_images/26-06/26-06-12/orbit.webp';
 import { useClockTime } from '@/utils/clockUtils';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks/useSmoothClock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader.tsx';
+
+import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
+
 
 export const assets = [bellImage];
 
 const CLOCK_CONFIG = {
   NUMERAL_RADIUS: 20,
   COLORS: {
-    // background: '#BFA7A7',
+    background: '#000000',
     silverText:
       'linear-gradient(180deg, #24058B 0%, #000000 45%, #232222 50%, #062D79 100%)',
     hourHand: 'linear-gradient(to right, #4E4D4D, #282727, #4D4949)',
