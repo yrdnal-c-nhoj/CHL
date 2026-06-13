@@ -1,9 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=League+Gothic&display=swap');
-
 .container {
   width: 100vw;
   height: 100dvh;
-  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,28 +8,17 @@
 
   /* Base background: linear gradient */
   background: linear-gradient(to bottom, #a280a0 0%, #bdaaaa 100%);
-  background-position: center;
   font-family: 'League Gothic', sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  overflow: hidden;
 }
 
-/* Pseudo-elements for layered images */
-.container::before,
-.container::after {
+/* Pseudo-element for layered images */
+.container::before {
   content: '';
   position: absolute;
   inset: 0; /* Shorthand for top, right, bottom, left: 0 */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  /* opacity: 0.6; */
-}
-
-/* The mirrored copy underneath */
-.container::before {
   background-image: url('../../../../assets/images/26_images/26-06/26-06-10/phone.webp'), url('../../../../assets/images/26_images/26-06/26-06-10/office.webp');
   z-index: 10;
 }
@@ -43,8 +29,8 @@
   align-items: center;
   transform: translate(4vw, 2vh) rotate(3.3deg);
   filter: blur(0.5px);
-  position: relative; /* Ensure it's above the background layers */
-  z-index: 10;
+  position: relative;
+  z-index: 20; /* Ensure it sits above the ::before layer (z-index 10) */
 }
 
 .digit {
@@ -55,4 +41,3 @@
   color: #505263c2;
   line-height: 1;
 }
-
