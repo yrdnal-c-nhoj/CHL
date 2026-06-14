@@ -1,6 +1,8 @@
+import clockFontUrl from '@/assets/fonts/26fonts/26-06-12.otf';
 import bellImage from '@/assets/images/26_images/26-06/26-06-12/orbit.webp';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+
 
 import React, { useMemo } from 'react';
 
@@ -70,8 +72,12 @@ const calculateTimeValues = (date: Date): TimeValues => {
 };
 
 // --- Custom Hooks ---
-const BackgroundLayers = () => (
-  <div style={{ ...styles.backgroundLayer, backgroundImage: `url(${bellImage})` }} />
+const BackgroundLayers: React.FC<{ rotation: number }> = ({ rotation }) => (
+  <div style={{ 
+    ...styles.backgroundLayer, 
+    backgroundImage: `url(${bellImage})`,
+    transform: `rotate(${rotation}deg)`
+  }} />
 );
 
 const ClockNumerals: React.FC = () => {
@@ -96,8 +102,9 @@ const ClockNumerals: React.FC = () => {
     });
   }, []);
 
-  return <>{numerals}</>;
+  return numerals;
 };
+
 
 const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
   const { width, height, zIndex } = HAND_DIMENSIONS[type];
@@ -121,15 +128,23 @@ const CenterDot = () => <div style={styles.centerDot} />;
 
 const AnalogClock: React.FC = () => {
   const currentTime = useClockTime('ms');
-  useSuspenseFontLoader(['Gilda Display']);
+
+  useSuspenseFontLoader([
+    { fontFamily: 'ClockFont26_06_12', fontUrl: clockFontUrl },
+  ]);
 
   const { hr, min, sec } = calculateTimeValues(currentTime);
 
+  // Rotate entire clock face clockwise once per minute (360 degrees / 60 seconds).
+  const clockRotation = sec * 6;
+  const bgRotation = sec * -6;
+
   return (
     <div style={styles.container}>
-      <BackgroundLayers />
+      <BackgroundLayers rotation={bgRotation} />
 
-      <div style={styles.clockFace}>
+      <div style={{ ...styles.clockFace, transform: `translate(-50%, -50%) rotate(${clockRotation}deg)` }}>
+
         <ClockNumerals />
         <ClockHand type="hour" rotation={getHandRotation(hr, 30)} />
         <ClockHand type="minute" rotation={getHandRotation(min, 6)} />
@@ -152,13 +167,14 @@ const styles = {
 
   backgroundLayer: {
     position: 'absolute',
-    inset: 0,
+    inset: '-20%',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     // filter: 'saturate(520%) hue-rotate(-120deg) contrast(0.4) brightness(1.6)',
     zIndex: 1,
     // opacity: 0.5,
+    willChange: 'transform',
   },
 
   clockFace: {
@@ -170,8 +186,9 @@ const styles = {
     height: '100vmin',
     zIndex: 7,
     opacity: 0.4,
-    fontFamily: "'Gilda Display', serif",
+    fontFamily: `'ClockFont26_06_12', serif`,
   },
+
 
   numeral: {
     position: 'absolute',

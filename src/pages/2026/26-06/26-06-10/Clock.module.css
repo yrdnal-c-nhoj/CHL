@@ -16,7 +16,7 @@
   content: '';
   position: absolute;
   inset: 0; /* Shorthand for top, right, bottom, left: 0 */
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   background-image: url('../../../../assets/images/26_images/26-06/26-06-10/phone.webp'), url('../../../../assets/images/26_images/26-06/26-06-10/office.webp');

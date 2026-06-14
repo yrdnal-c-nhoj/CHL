@@ -82,6 +82,8 @@ const shouldSuppress = (msg: string) => {
     'AppServicesTracing',
     'SuggestBackendRust',
     'ASRouter',
+    'LinkPreviewChild',
+    'Empty string passed to getElementById()',
   ];
 
   const lowerMsg = msg.toLowerCase();
