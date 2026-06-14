@@ -11,13 +11,10 @@ const formatTime = (num: number): string => num.toString().padStart(2, '0');
 const Clock: React.FC = () => {
   const time = useClockTime();
 
-  const { hours, minutes, ampm } = useMemo(() => {
-    const h24 = time.getHours();
-    const h12 = h24 % 12 || 12;
-    const ampmStr = h24 >= 12 ? 'pm' : 'am';
-    const h = formatTime(h12);
+  const { hours, minutes } = useMemo(() => {
+    const h = formatTime(time.getHours());
     const m = formatTime(time.getMinutes());
-    return { hours: h, minutes: m, ampm: ampmStr };
+    return { hours: h, minutes: m };
   }, [time]);
 
   return (
@@ -43,8 +40,6 @@ const Clock: React.FC = () => {
         <span className={styles.digit}>{hours[1]}</span>
         <span className={styles.digit}>{minutes[0]}</span>
         <span className={styles.digit}>{minutes[1]}</span>
-        <span className={`${styles.digit} ${styles.ampm}`}>{ampm[0]}</span>
-        <span className={`${styles.digit} ${styles.ampm}`}>{ampm[1]}</span>
       </time>
     </div>
   );
