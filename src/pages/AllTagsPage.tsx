@@ -26,17 +26,19 @@ const AllTagsPage: React.FC = () => {
     }));
 
     return tagData.sort((a, b) => {
+      if (sortBy === 'count-desc') return b.count - a.count || a.name.localeCompare(b.name);
+      if (sortBy === 'count-asc') return a.count - b.count || a.name.localeCompare(b.name);
+
       const aIsAlpha = /^[a-zA-Z]/.test(a.name);
       const bIsAlpha = /^[a-zA-Z]/.test(b.name);
 
-      // Group tags starting with letters first, then numbers/others
+      // For name sorting, group tags starting with letters first, then numbers/others
       if (aIsAlpha && !bIsAlpha) return -1;
       if (!aIsAlpha && bIsAlpha) return 1;
 
       if (sortBy === 'name-asc') return a.name.localeCompare(b.name);
       if (sortBy === 'name-desc') return b.name.localeCompare(a.name);
-      if (sortBy === 'count-desc') return b.count - a.count;
-      if (sortBy === 'count-asc') return a.count - b.count;
+
       return 0;
     });
   }, [items, sortBy]);
@@ -66,7 +68,7 @@ const AllTagsPage: React.FC = () => {
               onClick={handleNameSort}
               className={`${sortStyles.sortButton} ${sortBy.startsWith('name') ? sortStyles.active : ''}`}
             >
-              alphabetical
+              abc
               {sortBy === 'name-asc' ? '↓' : sortBy === 'name-desc' ? '↑' : ''}
             </button>
             <button
