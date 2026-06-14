@@ -61,10 +61,10 @@
   font-family: 'ClockFont_26-05-25', 'Courier New', monospace;
   /* background-size: 20rem 20rem; */
   display: inline-flex;
-  color: #36363d;
+  color: #36363dc2;
   filter:
     drop-shadow(1px 1px 0px rgb(0 0 0))
-    drop-shadow(-1px -1px 0px rgb(206, 33, 33));
+    drop-shadow(-1px -1px 0px rgba(206, 33, 33, 0.664));
   justify-content: center;
   align-items: center;
 }

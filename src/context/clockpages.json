@@ -1,5 +1,16 @@
 [
   {
+    "path": "26-06-13",
+    "date": "26-06-13",
+    "title": "Forge",
+    "tags": [
+      "digital",
+      "fire",
+      "hot",
+      "metal"
+    ]
+  },
+  {
     "path": "26-06-12",
     "date": "26-06-12",
     "title": "Geolocate",
@@ -19,6 +30,7 @@
     "tags": [
       "Hawaii",
       "hand",
+      "pictographic",
       "sound",
       "string"
     ]
@@ -300,7 +312,7 @@
       "deepwater",
       "fast",
       "float",
-      "pictographic",     
+      "pictographic",
       "radar",
       "swim",
       "tech",
@@ -927,7 +939,7 @@
     "tags": [
       "eye",
       "face",
-      "pictographic",     
+      "pictographic",
       "see"
     ]
   },
@@ -1225,7 +1237,7 @@
     "tags": [
       "green",
       "pattern",
-      "pictographic",     
+      "pictographic",
       "typeface"
     ]
   },
