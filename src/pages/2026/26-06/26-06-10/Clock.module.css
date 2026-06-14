@@ -11,16 +11,50 @@
   font-family: 'League Gothic', sans-serif;
 }
 
-/* Pseudo-element for layered images */
-.container::before {
-  content: '';
+.backgroundGrid {
   position: absolute;
-  inset: 0; /* Shorthand for top, right, bottom, left: 0 */
-  background-size: contain, 100px;
-  background-position: center, top left;
-  background-repeat: no-repeat, repeat;
-  background-image: url('../../../../assets/images/26_images/26-06/26-06-10/phone.webp'), url('../../../../assets/images/26_images/26-06/26-06-10/office.webp');
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.stripe {
+  display: flex;
+  height: var(--tile-size);
+  animation: slideRight 20s linear infinite;
+}
+
+.stripe[data-flipped='true'] {
+  animation: slideLeft 20s linear infinite;
+}
+
+.tile {
+  width: var(--tile-size);
+  height: var(--tile-size);
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.phoneContainer {
+  position: absolute;
   z-index: 10;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  inset: 0;
+}
+
+.phoneImage {
+  height: 80vh;
+  width: auto;
 }
 
 .timeRow {

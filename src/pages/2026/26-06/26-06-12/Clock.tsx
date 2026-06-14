@@ -2,17 +2,14 @@ import clockFontUrl from '@/assets/fonts/26fonts/26-06-12.otf';
 import bellImage from '@/assets/images/26_images/26-06/26-06-12/orbit.webp';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-
-
 import React, { useMemo } from 'react';
 
-
-export const assets = [bellImage];
+export const assets = [bellImage, clockFontUrl];
 
 const CLOCK_CONFIG = {
   NUMERAL_RADIUS: 20,
   COLORS: {
-    background: '#000000',
+    background: '#121e26',
     silverText:
       'linear-gradient(180deg, #24058B 0%, #000000 45%, #232222 50%, #062D79 100%)',
     hourHand: 'linear-gradient(to right, #4E4D4D, #282727, #4D4949)',
@@ -43,9 +40,9 @@ interface TimeValues {
 }
 
 const HAND_DIMENSIONS: Record<string, HandDimensions> = {
-  hour: { width: '0.8%', height: '10%', zIndex: 3 },
-  minute: { width: '0.4%', height: '15%', zIndex: 4 },
-  second: { width: '0.4%', height: '22%', zIndex: 5 },
+  hour: { width: '0.8%', height: '12vw', zIndex: 3 },
+  minute: { width: '0.4%', height: '18vw', zIndex: 4 },
+  second: { width: '0.4%', height: '20vw', zIndex: 5 },
 };
 
 const getHandRotation = (value: number, multiplier: number): number =>
@@ -184,8 +181,8 @@ const styles = {
     transform: 'translate(-50%, -50%)',
     width: '90vw', // Scale up on wider screens
     height: '90vw', // Keep it square
-    maxWidth: '90vh', // But don't let it exceed 90% of viewport height
-    maxHeight: '90vh', // And don't let it exceed 90% of viewport height
+    // maxWidth: '90vh', // But don't let it exceed 90% of viewport height
+    // maxHeight: '90vh', // And don't let it exceed 90% of viewport height
     zIndex: 7,
     opacity: 0.7,
     fontFamily: `'ClockFont26_06_12', serif`,
@@ -194,7 +191,7 @@ const styles = {
 
   numeral: {
     position: 'absolute',
-    fontSize: 'clamp(1rem, 2vh, 5rem)',
+    fontSize: 'clamp(1rem, 2vw, 5rem)',
     background: CLOCK_CONFIG.COLORS.silverText,
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
