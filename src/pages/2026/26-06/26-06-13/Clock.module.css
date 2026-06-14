@@ -49,7 +49,7 @@
   display: flex;
   align-items: center;
   position: absolute;
-  bottom: 34%;          /* Positions the clock in the bottom third */
+  bottom: 32%;          /* Positions the clock in the bottom third */
   left: 50%;             /* Horizontal centering start */
   transform: translateX(-50%); /* Perfect horizontal center alignment */
   z-index: 10;
