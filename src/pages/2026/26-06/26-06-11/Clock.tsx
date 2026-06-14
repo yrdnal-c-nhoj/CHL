@@ -1,4 +1,4 @@
-import clockFont from '@/assets/fonts/26fonts/26-06-11.ttf?url';
+import clockFont from '@/assets/fonts/26_fonts/26-06-11.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-06/26-06-11/ukulele.webp';
 import { useClockTime } from '@/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -6,15 +6,15 @@ import React, { useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
 /**
- * Clock Component for 2026-05-22
- * Features a 6-digit grid layout over a video background.
+ * Clock Component for 2026-06-11
+ * Features a 6-digit grid layout over a tiled background.
  */
 export const assets = [backgroundImage, clockFont];
 
 const Clock: React.FC = () => {
   const time = useClockTime();
   const tileSize = 80; // Size in pixels
-  const [dimensions, setDimensions] = useState({ cols: 0, rows: 0 });
+  const [dimensions, setDimensions] = useState({ cols: 1, rows: 1 });
 
   // Handle window resizing to fill the background
   useEffect(() => {
@@ -68,9 +68,9 @@ const Clock: React.FC = () => {
           key={i}
           className={styles.tile}
           style={{
-            '--tile-img': `url(${backgroundImage})`,
-            '--sx': col % 2 === 1 ? -1 : 1,
-            '--sy': row % 2 === 1 ? -1 : 1,
+            '--tile-img': `url("${backgroundImage}")`,
+            '--sx': col % 2 === 1 ? '-1' : '1',
+            '--sy': row % 2 === 1 ? '-1' : '1',
           } as React.CSSProperties}
         />
       );
@@ -83,8 +83,8 @@ const Clock: React.FC = () => {
       className={styles.container}
       style={{ 
         '--tile-size': `${tileSize}px`,
-        '--grid-cols': dimensions.cols,
-        '--grid-rows': dimensions.rows,
+        '--grid-cols': String(dimensions.cols),
+        '--grid-rows': String(dimensions.rows),
       } as React.CSSProperties}
     >
       <div className={styles.backgroundGrid}>
