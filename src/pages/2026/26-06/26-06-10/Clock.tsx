@@ -42,7 +42,7 @@ export default function DigitalClock() {
           <div
             key={c}
             className={styles.tile}
-            style={{ '--tile-img': `url(${officeImg})` } as React.CSSProperties}
+            style={{ backgroundImage: `url(${officeImg})` }}
           />
         );
       }

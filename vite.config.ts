@@ -13,10 +13,7 @@ export default defineConfig({
   },
 
   plugins: [
-    react({
-      // Optimize JSX
-      jsxRuntime: 'automatic',
-    }),
+    react(),
     viteCompression({
       algorithm: 'brotliCompress',
       ext: '.br',
