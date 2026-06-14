@@ -1,7 +1,7 @@
-import clockFont from '@/assets/fonts/26_fonts/26-06-11.ttf?url';
+import clockFont from '@/assets/fonts/26fonts/26-06-11.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-06/26-06-11/ukulele.webp';
 import { useClockTime } from '@/hooks/useClockTime';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/enhancedFontLoader';
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -44,17 +44,20 @@ const Clock: React.FC = () => {
         fontUrl: clockFont,
       },
     ],
-    [],
+    [clockFont],
   );
   useSuspenseFontLoader(fontConfigs);
 
   // Format time into 6 individual digits (HHMMSS) to match the CSS grid
+  // We use the floor of the timestamp to ensure digits only recalculate once per second
+  const secondTimestamp = Math.floor(time.getTime() / 1000);
   const digits = useMemo(() => {
-    const hh = time.getHours().toString().padStart(2, '0');
-    const mm = time.getMinutes().toString().padStart(2, '0');
-    const ss = time.getSeconds().toString().padStart(2, '0');
+    const d = new Date(secondTimestamp * 1000);
+    const hh = d.getHours().toString().padStart(2, '0');
+    const mm = d.getMinutes().toString().padStart(2, '0');
+    const ss = d.getSeconds().toString().padStart(2, '0');
     return (hh + mm + ss).split('').map((digit) => numbers[parseInt(digit)]);
-  }, [time, numbers]);
+  }, [secondTimestamp, numbers]);
 
   // Memoize tiles to prevent re-calculating on every clock tick
   const backgroundTiles = useMemo(() => {
