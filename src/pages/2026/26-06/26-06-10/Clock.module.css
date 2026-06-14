@@ -16,9 +16,9 @@
   content: '';
   position: absolute;
   inset: 0; /* Shorthand for top, right, bottom, left: 0 */
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-size: contain, 100px;
+  background-position: center, top left;
+  background-repeat: no-repeat, repeat;
   background-image: url('../../../../assets/images/26_images/26-06/26-06-10/phone.webp'), url('../../../../assets/images/26_images/26-06/26-06-10/office.webp');
   z-index: 10;
 }
@@ -37,7 +37,21 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  font-size: 3vw;
+  font-size: 2vw;
   color: #505263c2;
   line-height: 1;
+}
+
+@keyframes slideLeft {
+  from {
+    transform: scaleX(-1) translateX(0);
+  }
+  to {
+    transform: scaleX(-1) translateX(calc(-1 * var(--tile-size)));
+  }
+}
+
+@keyframes slideRight {
+  from { transform: translateX(calc(-1 * var(--tile-size))); }
+  to { transform: translateX(0); }
 }
