@@ -9,7 +9,7 @@ export const assets = [bellImage, clockFontUrl];
 const CLOCK_CONFIG = {
   NUMERAL_RADIUS: 20,
   COLORS: {
-    background: '#121e26',
+    background: '#0a2036',
     silverText:
       'linear-gradient(180deg, #24058B 0%, #000000 45%, #232222 50%, #062D79 100%)',
     hourHand: 'linear-gradient(to right, #4E4D4D, #282727, #4D4949)',
@@ -168,7 +168,7 @@ const styles = {
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
-    // filter: 'saturate(520%) hue-rotate(-120deg) contrast(0.4) brightness(1.6)',
+    filter: 'saturate(220%) ',
     zIndex: 1,
     // opacity: 0.5,
     willChange: 'transform',
@@ -195,7 +195,7 @@ const styles = {
     background: CLOCK_CONFIG.COLORS.silverText,
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
-    filter: 'drop-shadow(2px 2px 0px #ECDF7A)',
+    filter: 'drop-shadow(2px 2px 0px #EBD84F)',
     userSelect: 'none',
   },
 
@@ -204,7 +204,7 @@ const styles = {
     bottom: '50%',
     left: '50%',
     transformOrigin: '50% 100%',
-    filter: 'drop-shadow(2px 2px 0px #D2C458)',
+    filter: 'drop-shadow(2px 2px 0px #E0CE44)',
     borderRadius: '10px',
     willChange: 'transform',
   },
