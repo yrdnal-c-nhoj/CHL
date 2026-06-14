@@ -1,0 +1,72 @@
+@font-face {
+  font-family: 'ClockFont_26-05-25';
+  src: url('../../../../assets/fonts/26fonts/26-06-13.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1c1a1a;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 80vw;
+  transform: translate(-50%, -50%);
+  object-fit: fill;
+}
+
+.fireVideo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 80vw;
+  transform: translate(-50%, -50%);
+  object-fit: fill;
+  z-index: 2;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.clock {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+  max-width: 100%;
+}
+
+.digit {
+  font-size: 16vh;
+  font-family: 'ClockFont_26-05-25', 'Courier New', monospace;
+  background-size: 20rem 20rem;
+  display: inline-flex;
+  color: #b9b7f376;
+
+  filter:
+    drop-shadow(2px 4px 1px rgb(0 0 0))
+    drop-shadow(1px 1px 1px rgb(253 253 253));
+
+  justify-content: center;
+  align-items: center;
+
+}
+
+.ampm {
+  font-size: 14vh;
+  transform: translateY(1vh);
+}
