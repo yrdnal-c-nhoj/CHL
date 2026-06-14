@@ -804,9 +804,9 @@
     "title": "Hemoglobin",
     "tags": [
       "analog",
+      "BPM",
       "animal",
       "blood",
-      "BPM",
       "cells",
       "float",
       "flow",
@@ -2850,6 +2850,7 @@
       "food",
       "fruit",
       "grow",
+      "nyc",
       "red",
       "smell",
       "tree"
@@ -3596,9 +3597,9 @@
     "title": "Cardio",
     "tags": [
       "analog",
+      "BPM",
       "blood",
       "body",
-      "BPM",
       "fast",
       "heart",
       "slow"
