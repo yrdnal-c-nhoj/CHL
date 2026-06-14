@@ -2,79 +2,68 @@
   position: relative;
   width: 100vw;
   height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(180deg, #f1f3e3 0%, #a2a4a8 50%, #a2b1c3 100%);
+  display: grid;
+  place-items: center;
   overflow: hidden; /* Ensure image doesn't overflow */
 }
 
-.container::before {
-  content: '';
+.backgroundGrid {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), var(--tile-size));
+  grid-template-rows: repeat(var(--grid-rows), var(--tile-size));
+  justify-content: center;
+  align-content: center;
   z-index: 0;
   pointer-events: none;
-  /* filter: contrast(0.8); */
-  background-image: var(--background-image);
-  background-size: cover;
-  background-position: center;
+}
+
+.tile {
+  width: var(--tile-size);
+  height: var(--tile-size);
+  background-image: var(--tile-img);
+  background-size: 100% 100%;
   background-repeat: no-repeat;
+  transform: scale(var(--sx), var(--sy));
 }
 
 .clockFace {
   position: relative;
-  width: 100vw;
-  height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  z-index: 1;
 }
 
 .digitalGrid {
-  position: relative;
-  z-index: 1;
   display: grid;
-  grid-template-columns: repeat(6, 1.4ch);
-  padding: 0;
-  margin: 0;
-  font-size: clamp(4rem, 20vw, 20rem);
-  letter-spacing: 0;
+  grid-template-columns: repeat(6, 0.8ch);
+  font-size: clamp(4rem, 30vw, 25rem);
 }
 
 .cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'ClockFont_26_05_22', serif;
+  font-family: 'ClockFont_26_06_11', serif;
 
   /* Dazzle Camouflage Pattern (Warship style) */
   background: repeating-linear-gradient(
-    -17deg,
-    #f449ca 0px,
-    #df31ec 20px,
-    #9805d2 20px
+    180deg,
+    #b86ea6 0px,
+    #df31ec 1px,
+    #8b39ab 5px
   );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  -webkit-text-stroke: 1px #000;
-
-  /* Using filter instead of text-shadow to ensure visibility over clipped text */
-  /* filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.7)); */
+  -webkit-text-stroke: 2px #2f2501;
 }
 
 /* keep 0 padding/gap even on smaller screens */
-@media (max-width: 668px) {
+@media (max-width: 550px) {
   .digitalGrid {
     /* Two columns for mobile: HH / MM / SS stacked */
-    grid-template-columns: 1.2em 1.2em;
+    grid-template-columns: 1.0em 1.0em;
     font-size: clamp(6rem, 33vw, 12rem);
-    line-height: 1.1;
+    line-height: 1.0;
   }
 }
