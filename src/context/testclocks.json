@@ -446,13 +446,11 @@
       "analog",
       "air",
       "balloon",
-      "cake",
       "color",
-      "day",
       "float",
       "latex",
       "round",
-      "smell",
+      "string",
       "up-and-down"
     ]
   },
@@ -3412,6 +3410,7 @@
     "tags": [
       "analog",
       "1964",
+      "DC",
       "Dr-Strangelove",
       "Kubrick",
       "aim",
@@ -3699,6 +3698,7 @@
       "mechanical",
       "paper",
       "slow",
+      "string",
       "tech"
     ]
   },
