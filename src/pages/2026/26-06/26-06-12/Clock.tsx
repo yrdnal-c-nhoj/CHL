@@ -43,9 +43,9 @@ interface TimeValues {
 }
 
 const HAND_DIMENSIONS: Record<string, HandDimensions> = {
-  hour: { width: '0.8vmin', height: '10vmin', zIndex: 3 },
-  minute: { width: '0.4vmin', height: '15vmin', zIndex: 4 },
-  second: { width: '0.2vmin', height: '18vmin', zIndex: 5 },
+  hour: { width: '0.8%', height: '10%', zIndex: 3 },
+  minute: { width: '0.4%', height: '15%', zIndex: 4 },
+  second: { width: '0.4%', height: '22%', zIndex: 5 },
 };
 
 const getHandRotation = (value: number, multiplier: number): number =>
@@ -168,7 +168,7 @@ const styles = {
   backgroundLayer: {
     position: 'absolute',
     inset: '-20%',
-    backgroundSize: 'cover',
+    backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     // filter: 'saturate(520%) hue-rotate(-120deg) contrast(0.4) brightness(1.6)',
@@ -182,10 +182,12 @@ const styles = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '100vmin',
-    height: '100vmin',
+    width: '90vw', // Scale up on wider screens
+    height: '90vw', // Keep it square
+    maxWidth: '90vh', // But don't let it exceed 90% of viewport height
+    maxHeight: '90vh', // And don't let it exceed 90% of viewport height
     zIndex: 7,
-    opacity: 0.4,
+    opacity: 0.7,
     fontFamily: `'ClockFont26_06_12', serif`,
   },
 
@@ -196,7 +198,7 @@ const styles = {
     background: CLOCK_CONFIG.COLORS.silverText,
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
-    filter: 'drop-shadow(2px 2px 0px white)',
+    filter: 'drop-shadow(2px 2px 0px #ECDF7A)',
     userSelect: 'none',
   },
 
@@ -205,7 +207,7 @@ const styles = {
     bottom: '50%',
     left: '50%',
     transformOrigin: '50% 100%',
-    filter: 'drop-shadow(2px 2px 0px white)',
+    filter: 'drop-shadow(2px 2px 0px #D2C458)',
     borderRadius: '10px',
     willChange: 'transform',
   },
@@ -214,8 +216,8 @@ const styles = {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    width: '2vmin',
-    height: '2vmin',
+    width: '2%', // Scale with clockFace
+    height: '2%', // Scale with clockFace
     background: CLOCK_CONFIG.COLORS.centerDot,
     borderRadius: '50%',
     transform: 'translate(-50%, -50%)',
