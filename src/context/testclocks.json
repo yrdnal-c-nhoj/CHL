@@ -807,6 +807,7 @@
       "analog",
       "animal",
       "blood",
+      "bpm",
       "cells",
       "float",
       "flow",
@@ -1770,6 +1771,7 @@
     "title": "Extended Mix",
     "tags": [
       "digital",
+      "bpm",
       "dance",
       "fast",
       "glass",
@@ -3598,6 +3600,7 @@
       "EKG",
       "blood",
       "body",
+      "bpm",
       "fast",
       "heart",
       "slow"
