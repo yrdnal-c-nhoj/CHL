@@ -13,6 +13,7 @@ interface NavItem {
   date: string;
   title: string;
   clockNumber?: number | string;
+  tags?: string[];
 }
 
 interface ClockPageNavProps {
@@ -165,6 +166,15 @@ const ClockPageNav = ({
           <span className={styles.footerTitle}>
             {formatTitle(currentItem.title)}
           </span>
+          {currentItem.tags && currentItem.tags.length > 0 && (
+            <div className={styles.footerTags}>
+              {currentItem.tags.map((tag) => (
+                <span key={tag} className={styles.tagItem}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </button>
 
