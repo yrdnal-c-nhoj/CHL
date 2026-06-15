@@ -1,4 +1,4 @@
-import clockFontUrl from '@/assets/fonts/26fonts/26-06-12.otf?url';
+import clockFontUrl from '@/assets/fonts/26fonts/26-06-12-orbit.otf?url';
 import bellImage from '@/assets/images/26_images/26-06/26-06-12/orbit.webp';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
