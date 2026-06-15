@@ -43,7 +43,7 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     sourcemap: false, // Disable sourcemaps for production
-    minify: 'terser', // Use Terser for more robust minification
+    minify: 'esbuild', // Use esbuild for significantly faster minification
     rollupOptions: {
       output: {
         // Optimize chunk splitting
