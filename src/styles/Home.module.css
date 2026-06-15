@@ -144,7 +144,7 @@
 .monthItemInfo {
   display: flex;
   justify-content: space-between;
-  font-family: var(--font-arimo);
+  font-family: var(--font-barlow-condensed);
   font-size: 0.65rem;
   color: #888;
   margin-bottom: 0;

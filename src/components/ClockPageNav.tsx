@@ -128,14 +128,13 @@ const ClockPageNav = ({
       onTouchCancel={handleTouchCancel}
     >
       <Link
-        to={prevItem ? `/${prevItem.date}` : '/'} // Left goes to older (previous in time)
+        to={prevItem ? `/${prevItem.date}` : '/'}
         className={styles.navButton}
         aria-label={
           prevItem ? `Previous: ${formatTitle(prevItem.title)}` : 'Home'
         }
       >
         <span aria-hidden="true">⇽</span>
-        <span className={styles.screenReaderText} />
       </Link>
 
       <button
@@ -150,33 +149,31 @@ const ClockPageNav = ({
         aria-label="Go back"
       >
         <div className={styles.footerCenter}>
-          <span className={styles.footerDate}>
-            {formatDate(currentItem.date)
-              .replace(/^(\w+)\s*/, '$1 ')
-              .replace(/\s*'/g, " '")}
-          </span>
-          <span className={styles.footerTitle}>
-            {formatTitle(currentItem.title)}
-          </span>
-          {currentItem.clockNumber !== undefined &&
-            currentItem.clockNumber !== null && (
+          <div className={styles.footerTopRow}>
+            <span className={styles.footerDate}>
+              {formatDate(currentItem.date)
+                .replace(/^(\w+)\s*/, '$1 ')
+                .replace(/\s*'/g, " '")}
+            </span>
+            {currentItem.clockNumber !== undefined &&
+              currentItem.clockNumber !== null && (
               <span className={styles.footerNumber}>
                 #{currentItem.clockNumber}
               </span>
             )}
+          </div>
+          <span className={styles.footerTitle}>
+            {formatTitle(currentItem.title)}
+          </span>
         </div>
-        <span className={styles.screenReaderText} />
       </button>
 
       <Link
-        to={nextItem ? `/${nextItem.date}` : '/'} // Right goes to newer (next in list)
+        to={nextItem ? `/${nextItem.date}` : '/'}
         className={styles.navButton}
-        aria-label={
-          nextItem ? `Next: ${formatTitle(nextItem.title)}` : 'Home'
-        }
+        aria-label={nextItem ? `Next: ${formatTitle(nextItem.title)}` : 'Home'}
       >
         <span aria-hidden="true">⇾</span>
-        <span className={styles.screenReaderText} />
       </Link>
     </div>
   );
