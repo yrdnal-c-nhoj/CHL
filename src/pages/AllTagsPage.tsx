@@ -5,7 +5,6 @@ import { useDataContext } from '../context/DataContext';
 import styles from '../styles/AllTagsPage.module.css';
 import sortStyles from '../styles/SortControls.module.css';
 
-
 type SortOption = 'name-asc' | 'name-desc' | 'count-desc' | 'count-asc';
 
 const AllTagsPage: React.FC = () => {
@@ -14,6 +13,7 @@ const AllTagsPage: React.FC = () => {
 
   const tagsWithCounts = useMemo(() => {
     const tagMap = new Map<string, number>();
+
     items.forEach((item) => {
       (item.tags ?? []).forEach((tag) => {
         tagMap.set(tag, (tagMap.get(tag) ?? 0) + 1);
@@ -22,12 +22,16 @@ const AllTagsPage: React.FC = () => {
 
     const tagData = Array.from(tagMap.entries()).map(([name, count]) => ({
       name,
-      count
+      count,
     }));
 
     return tagData.sort((a, b) => {
-      if (sortBy === 'count-desc') return b.count - a.count || a.name.localeCompare(b.name);
-      if (sortBy === 'count-asc') return a.count - b.count || a.name.localeCompare(b.name);
+      if (sortBy === 'count-desc') {
+        return b.count - a.count || a.name.localeCompare(b.name);
+      }
+      if (sortBy === 'count-asc') {
+        return a.count - b.count || a.name.localeCompare(b.name);
+      }
 
       const aIsAlpha = /^[a-zA-Z]/.test(a.name);
       const bIsAlpha = /^[a-zA-Z]/.test(b.name);
@@ -82,21 +86,22 @@ const AllTagsPage: React.FC = () => {
           </div>
         </header>
 
-        <div className={styles.tagContainer}>
+        <div className="tagContainer">
           {tagsWithCounts.map(({ name, count }) => (
-            <div key={name} className={styles.tagItem}>
-              <Link 
-                to={`/tag/${name}`} 
-                className={`tag-bubble ${styles.largeBubble}`}
-              >
-                {name} ({count})
-              </Link>
-            </div>
+            <Link
+              key={name}
+              to={`/tag/${name}`}
+              className="tag-bubble tag-bubble--large"
+            >
+              {name} ({count})
+            </Link>
           ))}
         </div>
 
         <footer className={styles.footer}>
-          <p>{tagsWithCounts.length} unique tags across {items.length} clocks.</p>
+          <p>
+            {tagsWithCounts.length} unique tags across {items.length} clocks.
+          </p>
         </footer>
       </main>
     </div>

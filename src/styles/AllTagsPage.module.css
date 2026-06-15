@@ -17,40 +17,6 @@
 }
 
 
-.tagContainer {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.tagItem {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  transition: transform 0.2s ease-in-out; /* Add transition for smooth hover */
-}
-
-.tagItem:hover {
-    background-color: #c2bfbf;
-  transform: translateY(-3px); /* Apply hover effect to the parent */
-}
-
-.externalCount {
-  font-size: 0.9rem;
-  color: #888;
-  font-weight: 400;
-}
-
-.largeBubble {
-  padding: 0.2rem 0.6rem !important;
-  font-size: 0.85rem !important;
-  line-height: 1 !important;
-}
-
-
 .footer {
   text-align: center;
   margin-top: 4rem;
