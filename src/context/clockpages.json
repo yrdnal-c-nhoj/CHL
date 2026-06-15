@@ -2521,7 +2521,12 @@
   {
     "path": "25-12-14",
     "date": "25-12-14",
-    "title": "Stainless"
+    "title": "Stainless",
+    "tags": [
+      "digital",
+      "metal",
+      "monochrome"
+    ]
   },
   {
     "path": "25-12-13",
@@ -4347,6 +4352,7 @@
     "date": "25-07-29",
     "title": "Slot Machine",
     "tags": [
+      "Las-Vegas",
       "gold",
       "hand",
       "mechanical",
@@ -5524,7 +5530,6 @@
       "digital",
       "electricity",
       "elements",
-      "fast",
       "light",
       "nature",
       "sky",
