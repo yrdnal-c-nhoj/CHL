@@ -121,8 +121,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.01rem;
-  margin-top: 0.01rem;
+  gap: 0.1rem;
+  margin-top: 0.05rem;
   margin-bottom: -0.41rem;
   width: 100%;
 }
