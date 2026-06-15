@@ -128,10 +128,10 @@ const ClockPageNav = ({
       onTouchCancel={handleTouchCancel}
     >
       <Link
-        to={nextItem ? `/${nextItem.date}` : '/'} // Left goes to older (previous in time)
+        to={prevItem ? `/${prevItem.date}` : '/'} // Left goes to older (previous in time)
         className={styles.navButton}
         aria-label={
-          nextItem ? `Previous: ${formatTitle(nextItem.title)}` : 'Home'
+          prevItem ? `Previous: ${formatTitle(prevItem.title)}` : 'Home'
         }
       >
         <span aria-hidden="true">⇽</span>
@@ -169,10 +169,10 @@ const ClockPageNav = ({
       </button>
 
       <Link
-        to={prevItem ? `/${prevItem.date}` : '/'} // Right goes to newer (next in list)
+        to={nextItem ? `/${nextItem.date}` : '/'} // Right goes to newer (next in list)
         className={styles.navButton}
         aria-label={
-          prevItem ? `Next: ${formatTitle(prevItem.title)}` : 'Home'
+          nextItem ? `Next: ${formatTitle(nextItem.title)}` : 'Home'
         }
       >
         <span aria-hidden="true">⇾</span>
