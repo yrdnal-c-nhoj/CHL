@@ -19,7 +19,6 @@
       "analog",
       "earth",
       "fast",
-      "orbit",
       "space",
       "spin"
     ]
@@ -782,9 +781,7 @@
     "tags": [
       "analog",
       "day",
-      "drive",
-      "exterior",
-      "mechanical",
+      "drive",      "mechanical",
       "metal",
       "roll",
       "transport"
@@ -826,7 +823,6 @@
       "digital",
       "Antarctica",
       "ampm",
-      "axis",
       "day-and-night",
       "earth",
       "fast",
@@ -1418,9 +1414,7 @@
     "tags": [
       "analog",
       "Disney",
-      "animal",
-      "exterior",
-      "fast",
+      "animal",      "fast",
       "horn",
       "light",
       "move",
@@ -2037,7 +2031,6 @@
       "1974",
       "brown",
       "chess",
-      "earth-tones",
       "interior",
       "neutrals",
       "year"
@@ -2189,7 +2182,6 @@
       "ampm",
       "b+w",
       "grid",
-      "nine",
       "play"
     ]
   },
@@ -2345,7 +2337,6 @@
       "ampm",
       "gods",
       "shrine",
-      "twenty",
       "wood"
     ]
   },
@@ -2504,7 +2495,6 @@
     "title": "Quartile",
     "tags": [
       "analog",
-      "four",
       "green",
       "image-free"
     ]
@@ -2624,7 +2614,6 @@
       "Platonic-Solids",
       "float",
       "triangle",
-      "twenty",
       "water"
     ]
   },
@@ -3020,8 +3009,7 @@
       "landscape",
       "nature",
       "one-stone",
-      "tree",
-      "two"
+      "tree"
     ]
   },
   {
@@ -3112,7 +3100,6 @@
     "tags": [
       "digital",
       "Antarctica",
-      "axis",
       "fast",
       "ice",
       "milliseconds",
@@ -3313,7 +3300,6 @@
       "Platonic-Solids",
       "aether",
       "pentagon",
-      "twelve",
       "universe"
     ]
   },
@@ -3874,7 +3860,6 @@
     "title": "Mauve",
     "tags": [
       "digital",
-      "24h",
       "ampm",
       "cloth",
       "color",
@@ -3961,8 +3946,7 @@
     "tags": [
       "analog",
       "geometry",
-      "image-free",
-      "sixteen"
+      "image-free"
     ]
   },
   {
@@ -4057,7 +4041,6 @@
       "fast",
       "grid",
       "horizon",
-      "twenty-four",
       "twilight"
     ]
   },
@@ -4152,7 +4135,6 @@
       "Platonic-Solids",
       "brown",
       "earth",
-      "six",
       "square"
     ]
   },
@@ -4740,8 +4722,7 @@
     "tags": [
       "analog",
       "b+w",
-      "image-free",
-      "twenty-four"
+      "image-free"
     ]
   },
   {
@@ -5181,7 +5162,6 @@
       "analog",
       "RYB",
       "brown",
-      "four",
       "image-free",
       "round"
     ]
@@ -5288,7 +5268,6 @@
       "digital",
       "Platonic-Solids",
       "fire",
-      "four",
       "pyramid",
       "red"
     ]
@@ -5650,8 +5629,7 @@
     "tags": [
       "digital",
       "fly",
-      "gravity",
-      "six"
+      "gravity"
     ]
   },
   {
@@ -5665,7 +5643,6 @@
       "feather",
       "fly",
       "sound",
-      "two",
       "walk"
     ]
   },
