@@ -55,6 +55,8 @@ const shouldSuppress = (msg: string) => {
     'ExtensionChild',
     '.sys.mjs',
     'email-autocomplete-relay',
+    'Sync encountered an error',
+    'policies.sys.mjs',
     'newtabRefinedCardsLayout',
     'SuggestBackendMerino',
     'DataCloneError',
