@@ -84,73 +84,86 @@
   border-color: rgba(200, 215, 242, 0.8);
 }
 
+
+
 /* --- Layouts --- */
+
 .footerCenter {
-  display: flex;
-  flex-direction: column;
-  /* align-items: center; */
-  /* gap: 0.2rem; */
+  display: grid;
+  /* Row 1 (Date/Number): 1.2rem | Row 2 (Title): 1.3rem | Row 3 (Tags Zone): 2.4rem */
+  grid-template-rows: 1.2rem 1.3rem 2.4rem; 
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* Row 1: Date & Number */
 .footerTopRow {
   display: flex;
-  align-items: top;
-  justify-content: space-between; /* date flush left, number flush right */
-  gap: 30vw;
-   margin-top: -0.8rem;
+  align-items: center;
+  justify-content: space-between; /* Pushes date hard-left, number hard-right */
+  width: 100%;
 }
 
+/* Reset all element margins to 0 to prevent text from shifting or breaking rules */
+.footerDate,
+.footerTitle,
+.footerNumber {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  white-space: nowrap; /* Prevents text wrapping from forcing row height expansions */
+}
 
 .footerDate {
   font-size: 1.1rem;
-  letter-spacing: -0.01rem;
   font-family: var(--font-barlow-condensed);
   text-align: left;
 }
 
+.footerNumber {
+  font-size: 1.1rem;
+  font-family: var(--font-barlow-condensed);
+  text-align: right;
+}
+
+/* Row 2: Title */
 .footerTitle {
   font-size: 1.2rem;
   letter-spacing: -0.02rem;
-
-  /* Move the title closer to the date/number row */
-  margin-top: -0.4rem;
-  line-height: 1;
+  text-align: center;
 }
 
+/* --- Row 3: Dedicated 2-Row Tag Zone --- */
 .footerTags {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.1rem;
-  margin-top: 0.05rem;
-  margin-bottom: -0.41rem;
+  justify-content: center;   /* Centers tags horizontally */
+  align-content: center;     /* Centers tags vertically (perfect for 1 or 2 rows) */
+  gap: 0.2rem;
   width: 100%;
+  height: 100%;              /* Completely fills the 2.4rem grid row allocation */
+  overflow: hidden;          /* Prevents a 3rd row of tags from breaking the layout */
 }
 
 .tagItem {
-  font-size: 0.7rem;
-  /* letter-spacing: 0.02rem; */
+  font-size: 0.65rem;        /* Made smaller to cleanly fit two rows */
+  line-height: 1;
   color: var(--nav-text);
   border: 0.7px solid var(--nav-text);
-  padding: 0.01rem 0.015rem;
-  border-radius: 5px;
+  padding: 0.15rem 0.3rem;
+  border-radius: 4px;
   background: rgba(255, 255, 255, 0.03);
-}
-
-.footerNumber {
-  font-size: 1.1rem;
-  letter-spacing: 0;
-  font-family: var(--font-barlow-condensed);
-  text-align: right;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
 /* --- Left/right nav buttons --- */
 .footerLeft,
 .footerRight {
   display: flex;
-  /* align-items: center; */
-  /* justify-content: center; */
 }
+
 
 /* --- Accessibility --- */
 
