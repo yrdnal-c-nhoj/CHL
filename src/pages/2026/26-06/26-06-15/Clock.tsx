@@ -1,63 +1,168 @@
-import React, { useEffect, useState } from 'react';
+import fontUrl from '@/assets/fonts/26fonts/26-06-15.otf?url';
+import { useClockTime } from '@/hooks/useClockTime';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import React, { useEffect, useMemo } from 'react';
 
-const HexadecimalClock: React.FC = () => {
-  const [currentTime, setCurrentTime] = useState(new Date());
+/**
+ * Assets to be preloaded for this clock.
+ */
+export const assets = [fontUrl];
 
+const Clock: React.FC = () => {
+  const time = useClockTime();
+
+  // Load Pliant from Google Fonts for the hexadecimal numbers
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => {
-      clearInterval(timer);
-    };
+    const linkId = 'google-font-pliant';
+    if (!document.getElementById(linkId)) {
+      const link = document.createElement('link');
+      link.id = linkId;
+      link.rel = 'stylesheet';
+      link.href = 'https://fonts.googleapis.com/css2?family=Pliant&display=swap';
+      document.head.appendChild(link);
+    }
   }, []);
 
-  const { hours, minutes, seconds } = getTimeInHexadecimal();
-
-  return (
-    <div className="container">
-      <div className="timeDisplay">
-        <span className="digit">
-          {hours[0]}
-          {hours[1]}
-        </span>
-        <span className="separator">:</span>
-        <span className="digit">
-          {minutes[0]}
-          {minutes[1]}
-        </span>
-        <span className="separator">:</span>
-        <span className="digit">
-          {seconds[0]}
-          {seconds[1]}
-        </span>
-      </div>
-    </div>
+  // Define the font configuration for the suspense-based loader
+  const fontConfigs: FontConfig[] = useMemo(
+    () => [
+      {
+        fontFamily: 'ClockFont_26_06_15',
+        fontUrl,
+      },
+    ],
+    []
   );
 
-  function getTimeInHexadecimal(): {
-    hours: [string, string];
-    minutes: [string, string];
-    seconds: [string, string];
-  } {
-    const h = padHex(currentTime.getHours());
-    const m = padHex(currentTime.getMinutes());
-    const s = padHex(currentTime.getSeconds());
+  // Load and suspend rendering until the custom font is ready
+  useSuspenseFontLoader(fontConfigs);
+
+  // Format the time components as both decimal and 2-digit hexadecimal strings
+  const timeParts = useMemo(() => {
+    const toHex2 = (num: number): string => num.toString(16).toUpperCase().padStart(2, '0');
+    const toDec2 = (num: number): string => num.toString().padStart(2, '0');
 
     return {
-      hours: [h[0] ?? '0', h[1] ?? '0'],
-      minutes: [m[0] ?? '0', m[1] ?? '0'],
-      seconds: [s[0] ?? '0', s[1] ?? '0'],
+      h: { hex: toHex2(time.getHours()), dec: toDec2(time.getHours()) },
+      m: { hex: toHex2(time.getMinutes()), dec: toDec2(time.getMinutes()) },
+      s: { hex: toHex2(time.getSeconds()), dec: toDec2(time.getSeconds()) },
     };
-  }
+  }, [time]);
 
+  const styles: Record<string, React.CSSProperties> = {
+    container: {
+      width: '100vw',
+      height: '100dvh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#444000',
+      color: '#EFB3F7',
+      margin: 0,
+      padding: 0,
+      overflow: 'hidden',
+    },
+    clockWrapper: {
+      display: 'flex',
+      alignItems: 'flex-end',
+      gap: '1.5vw',
+    },
+    unitContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+    hexRow: {
+      display: 'flex',
+      marginBottom: '0.8vh',
+    },
+    digitRow: {
+      display: 'flex',
+    },
+    digitBox: {
+      width: '6vw',
+      height: '8vw',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontFamily: 'ClockFont_26_06_15, monospace',
+      fontSize: '4vw',
+      userSelect: 'none',
+    },
+    digitBoxSmall: {
+      width: '9vw',
+      height: '11vw',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontFamily: "'Pliant', monospace",
+      fontSize: '10vw',
+      userSelect: 'none',
+    },
+    baseIndicator: {
+      fontSize: '4vw',
+      fontFamily: "'Pliant', monospace",
+      alignSelf: 'flex-end',
+      marginBottom: '-2vw',
+    },
+    unitLabel: {
+      fontSize: '1.2vw',
+      fontFamily: 'monospace',
+      textTransform: 'uppercase',
+      letterSpacing: '0.25em',
+      marginTop: '1.5vh',
+    }
+  };
 
+  const DigitBox: React.FC<{ char: string; isSmall?: boolean }> = ({ char, isSmall }) => (
+    <div style={isSmall ? styles.digitBoxSmall : styles.digitBox}>{char}</div>
+  );
 
-  function padHex(value: number): string {
-    const hexValue = value.toString(16).toUpperCase();
-    return hexValue.length === 1 ? `0${hexValue}` : hexValue;
-  }
+  return (
+    <main style={styles.container}>
+      <time dateTime={time.toISOString()} style={styles.clockWrapper}>
+        <div style={styles.unitContainer}>
+          <div style={styles.hexRow}>
+            <DigitBox char={timeParts.h.hex[0]} isSmall />
+            <DigitBox char={timeParts.h.hex[1]} isSmall />
+            <span style={styles.baseIndicator}>16</span>
+          </div>
+          <div style={styles.digitRow}>
+            <DigitBox char={timeParts.h.dec[0]} />
+            <DigitBox char={timeParts.h.dec[1]} />
+          </div>
+          <span style={styles.unitLabel}>Hours</span>
+        </div>
+
+        <div style={styles.unitContainer}>
+          <div style={styles.hexRow}>
+            <DigitBox char={timeParts.m.hex[0]} isSmall />
+            <DigitBox char={timeParts.m.hex[1]} isSmall />
+            <span style={styles.baseIndicator}>16</span>
+          </div>
+          <div style={styles.digitRow}>
+            <DigitBox char={timeParts.m.dec[0]} />
+            <DigitBox char={timeParts.m.dec[1]} />
+          </div>
+          <span style={styles.unitLabel}>Minutes</span>
+        </div>
+
+        <div style={styles.unitContainer}>
+          <div style={styles.hexRow}>
+            <DigitBox char={timeParts.s.hex[0]} isSmall />
+            <DigitBox char={timeParts.s.hex[1]} isSmall />
+            <span style={styles.baseIndicator}>16</span>
+          </div>
+          <div style={styles.digitRow}>
+            <DigitBox char={timeParts.s.dec[0]} />
+            <DigitBox char={timeParts.s.dec[1]} />
+          </div>
+          <span style={styles.unitLabel}>Seconds</span>
+        </div>
+      </time>
+    </main>
+  );
 };
 
-export default HexadecimalClock;
+export default Clock;
