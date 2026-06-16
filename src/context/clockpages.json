@@ -1,5 +1,13 @@
 [
   {
+    "path": "26-06-15",
+    "date": "26-06-15",
+    "title": "Digital Hexadecimal",
+    "tags": [
+      "digital"
+    ]
+  },
+  {
     "path": "26-06-14",
     "date": "26-06-14",
     "title": "Waterlogged",
@@ -9,16 +17,8 @@
       "water",
       "wheel",
       "mechanical"
-    ]
-  },
-  {
-    "path": "26-06-15",
-    "date": "26-06-15",
-    "title": "Jason (Digital Clock)",
-    "tags": [
-      "digital"
-    ]
-  },
+    ]}
+,
   {
     "path": "26-06-13",
     "date": "26-06-13",
