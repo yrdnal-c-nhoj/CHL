@@ -9,8 +9,16 @@
       "water",
       "wheel",
       "mechanical"
-    ]}
-,
+    ]
+  },
+  {
+    "path": "26-06-15",
+    "date": "26-06-15",
+    "title": "Jason (Digital Clock)",
+    "tags": [
+      "digital"
+    ]
+  },
   {
     "path": "26-06-13",
     "date": "26-06-13",
