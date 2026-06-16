@@ -118,6 +118,7 @@ const Clock: React.FC = () => {
       textTransform: 'uppercase',
       letterSpacing: '0.25em',
       marginTop: '1.5vh',
+      marginBottom: '4vh',
     }
   };
 
