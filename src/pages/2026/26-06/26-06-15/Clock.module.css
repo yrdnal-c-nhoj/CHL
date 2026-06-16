@@ -1,0 +1,61 @@
+/* Basic digital clock styles */
+
+.container {
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at 50% 40%, #121212 0%, #000 55%, #000 100%);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.timeDisplay {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+  color: #ffffff;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.digitGroup {
+  display: flex;
+  gap: 0;
+}
+
+.digit {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  font-size: clamp(3rem, 14vw, 11rem);
+  line-height: 1;
+  width: 0.62em;
+  text-shadow:
+    0 0 1rem rgba(0, 255, 255, 0.12),
+    0 0 2rem rgba(0, 200, 255, 0.10),
+    0 10px 40px rgba(0, 0, 0, 0.7);
+}
+
+.separator {
+  font-size: clamp(3rem, 14vw, 10rem);
+  opacity: 0.9;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
