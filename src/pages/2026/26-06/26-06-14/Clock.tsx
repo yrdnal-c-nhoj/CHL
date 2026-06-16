@@ -1,5 +1,7 @@
 import fontUrl from '@/assets/fonts/26fonts/26-06-14.ttf?url';
 import jumpVideo from '@/assets/images/26_images/26-06/26-06-14/carflood.mp4';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 import { useMemo } from 'react';
 
@@ -14,15 +16,22 @@ const CLOCK_CONFIG = {
   },
 };
 
+const FONT_CONFIGS: FontConfig[] = [
+  {
+    fontFamily: 'ClockFont_26_06_14',
+    fontUrl,
+  },
+];
+
 export const assets = [fontUrl, jumpVideo];
 
 const HAND_DIMENSIONS = {
-  hour: { width: '0.4vmin', height: '18vmin', zIndex: 3 },
-  minute: { width: '0.3vmin', height: '32vmin', zIndex: 4 },
-  second: { width: '0.2vmin', height: '38vmin', zIndex: 5 },
+  hour: { width: '0.4vmin' as const, height: '18vmin' as const, zIndex: 3 },
+  minute: { width: '0.3vmin' as const, height: '32vmin' as const, zIndex: 4 },
+  second: { width: '0.2vmin' as const, height: '38vmin' as const, zIndex: 5 },
 };
 
-const calculateNumeralPosition = (number) => {
+const calculateNumeralPosition = (number: number) => {
   const angleRad = (number / 12) * 2 * Math.PI;
 
   return {
@@ -31,7 +40,7 @@ const calculateNumeralPosition = (number) => {
   };
 };
 
-const calculateTimeValues = (date) => {
+const calculateTimeValues = (date: Date) => {
   const min = date.getMinutes();
   const hr = (date.getHours() % 12) + min / 60;
   const sec = date.getSeconds();
@@ -95,7 +104,12 @@ const ClockNumerals = () => {
   return numerals;
 };
 
-const ClockHand = ({ type, rotation }) => {
+interface ClockHandProps {
+  type: keyof typeof HAND_DIMENSIONS;
+  rotation: number;
+}
+
+const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
   const { width, height, zIndex } = HAND_DIMENSIONS[type];
 
   return (
@@ -119,20 +133,15 @@ const ClockHand = ({ type, rotation }) => {
 
 const AnalogClock = () => {
   const currentTime = useClockTime();
+  useSuspenseFontLoader(FONT_CONFIGS);
+
   const { hr, min, sec } = calculateTimeValues(currentTime);
 
   return (
     <div style={styles.container}>
-      <style>{`
-        @font-face {
-          font-family: 'ClockFont';
-          src: url(${fontUrl}) format('truetype');
-        }
-      `}</style>
-
       <BackgroundLayers />
 
-      <div style={{ ...styles.clockFace, fontFamily: "'ClockFont', serif" }}>
+      <div style={{ ...styles.clockFace, fontFamily: "'ClockFont_26_06_14', serif" }}>
         <ClockNumerals />
 
         <ClockHand type="hour" rotation={hr * 30} />
