@@ -46,7 +46,13 @@ const TagList: FC = () => {
     </div>
   );
 
-  if (error) return <div>Error: {error.message}</div>;
+  if (error)
+    return (
+      <div>
+        Error: {typeof (error as any) === 'string' ? error : (error as any)?.message}
+      </div>
+    );
+
 
   return (
     <div className={listStyles.listPageContainer}>
@@ -72,15 +78,21 @@ const TagList: FC = () => {
                 >
                   {(() => {
                     const [yy, mm, dd] = item.date.split('-');
-                    const monthName = MONTHS[parseInt(mm, 10) - 1] || '???';
+                    const monthName =
+                      mm && /^\d{2}$/.test(mm)
+                        ? MONTHS[parseInt(mm, 10) - 1] || '???'
+                        : '???';
+
+                    const day = dd ? dd.padStart(2, '0') : '--';
                     return (
                       <>
-                        <span>{dd.padStart(2, '0')}</span>
+                        <span>{day}</span>
                         <span>{monthName}</span>
                         <span>'{yy}</span>
                       </>
                     );
                   })()}
+
                 </time>
 
                 {/* Column 2: Image */}
