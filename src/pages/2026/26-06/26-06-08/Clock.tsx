@@ -1,17 +1,15 @@
 import customFont from '@/assets/fonts/26fonts/26-06-08.ttf?url';
+import tikiVideo from '@/assets/images/26_images/26-06/26-06-08/Tiki.MP4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
-const VIDEO_ID = 'FBYUkqutqzE';
-const YOUTUBE_URL = `https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${VIDEO_ID}&controls=0&modestbranding=1&rel=0&enablejsapi=1`;
-
 const FONT_CONFIGS: FontConfig[] = [
   { fontFamily: 'JesoloFont', fontUrl: customFont, options: { weight: 'normal', style: 'normal' } },
 ];
 
-export const assets: string[] = [customFont];
+export const assets: string[] = [customFont, tikiVideo];
 
 const CENTER = 200;
 const DIGIT_RADIUS = 160;
@@ -43,19 +41,23 @@ const Clock: React.FC = () => {
 
   return (
     <main style={{ position: 'fixed', inset: 0, overflow: 'hidden', backgroundColor: '#000' }}>
-      <iframe
-        src={YOUTUBE_URL}
-        title="Background Stream"
-        allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture"
-        referrerPolicy="no-referrer-when-downgrade"
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
         style={{
           position: 'absolute',
-          top: 0, right: 0,
-          width: '177.77777778vh', height: '100vh',
-          minWidth: '100vw', minHeight: '56.25vw',
-          border: 'none', zIndex: 0, pointerEvents: 'none',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          zIndex: 0,
+          pointerEvents: 'none',
         }}
-      />
+      >
+        <source src={tikiVideo} type="video/mp4" />
+      </video>
 
       <svg
         viewBox="0 0 400 400"
