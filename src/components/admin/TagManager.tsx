@@ -14,7 +14,14 @@ export default function TagManager() {
   const loading = ctx?.loading ?? true;
   const error = ctx?.error;
 
-  const errorMessage = typeof error === 'string' ? error : error instanceof Error ? error.message : undefined;
+  const errorMessage =
+    typeof error === 'string'
+      ? error
+      : error && typeof error === 'object' && 'message' in error
+        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          String((error as any).message)
+        : undefined;
+
 
 
 

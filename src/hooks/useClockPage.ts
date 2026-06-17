@@ -16,7 +16,8 @@ const CLOCK_MODULES = import.meta.glob('../pages/**/Clock.tsx') as Record<string
 // Build a static lookup map once for O(1) access
 const CLOCK_LOOKUP = Object.entries(CLOCK_MODULES).reduce((acc, [path, importFn]) => {
   const dateMatch = path.match(/\/(\d{2}-\d{2}-\d{2})\//i);
-  if (dateMatch) acc[dateMatch[1]] = importFn;
+  if (dateMatch?.[1]) acc[dateMatch[1]] = importFn;
+
   return acc;
 }, {} as Record<string, () => Promise<ClockModule>>);
 
