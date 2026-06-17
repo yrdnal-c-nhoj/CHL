@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
+
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.backgroundImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Image-specific styling moved from TSX */
+.backgroundImage:nth-of-type(1) {
+  z-index: 0;
+  opacity: 1.0;
+  filter: hue-rotate(0deg) saturate(1.4);
+}
+
+.backgroundImage:nth-of-type(2) {
+  z-index: 12;
+  opacity: 0.6;
+  filter: hue-rotate(0deg) saturate(1.4);
+}
+
+.backgroundImage:nth-of-type(3) {
+  z-index: 9;
+  opacity: 0.6;
+  filter: hue-rotate(0deg) saturate(1.0);
+}
+
+.analogClock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(80vmin, 720px);
+  height: min(80vmin, 720px);
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  opacity: 0.6;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+
+.hourHand,
+.minuteHand,
+.secondHand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center bottom;
+  box-shadow: 3px 3px 0px rgba(223, 13, 13, 0.333);
+}
+
+.hourHand {
+  width: 10px;
+  height: 25%;
+  background: #FFD700;
+  margin-left: -1.5px;
+  margin-top: -25%;
+  z-index: 2;
+  transform: rotate(calc(var(--h-angle) * 1deg));
+}
+
+.minuteHand {
+  width: 5px;
+  height: 50%;
+  background: #FFD700;
+  margin-left: -1px;
+  margin-top: -50%;
+  z-index: 3;
+  transform: rotate(calc(var(--m-angle) * 1deg));
+}
+
+.secondHand {
+  width: 1px;
+  height: 50%;
+  background: #FFD700;
+  margin-left: -0.5px;
+  margin-top: -50%;
+  z-index: 4;
+  transform: rotate(calc(var(--s-angle) * 1deg));
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: #b3b2a7;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
