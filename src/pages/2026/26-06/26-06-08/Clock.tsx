@@ -1,5 +1,5 @@
 import customFont from '@/assets/fonts/26fonts/26-06-08.ttf?url';
-import tikiVideo from '@/assets/images/26_images/26-06/26-06-08/Tiki.MP4';
+import tikiVideo from '@/assets/images/26_images/26-06/26-06-08/Tiki.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
