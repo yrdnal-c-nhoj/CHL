@@ -5958,5 +5958,32 @@
       "fire",
       "zodiac"
     ]
+  },
+  {
+    "path": "26-06-17",
+    "date": "26-06-17",
+    "title": "Avalanche",
+    "tags": [
+      "digital",
+      "ampm"
+    ]
+  },
+  {
+    "path": "26-06-18",
+    "date": "26-06-18",
+    "title": "Digital Clock",
+    "tags": [
+      "digital",
+      "ampm"
+    ]
+  },
+  {
+    "path": "26-06-19",
+    "date": "26-06-19",
+    "title": "Digital Clock",
+    "tags": [
+      "digital",
+      "ampm"
+    ]
   }
 ]
