@@ -1,5 +1,8 @@
+import chandelierBg from '@/assets/images/26_images/26-06/26-06-19/chandelier.webp';
 import { useClockTime } from '@/utils/hooks';
 import React, { useMemo } from 'react';
+
+export const assets = [chandelierBg];
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
@@ -24,6 +27,10 @@ const DigitalClock: React.FC = () => {
         width: '100vw',
         height: '100dvh',
         backgroundColor: '#000',
+        backgroundImage: `url(${chandelierBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         margin: 0,
         padding: 0,
       }}
