@@ -5932,6 +5932,7 @@
     "title": "Waterlogged",
     "tags": [
       "analog",
+      "drive",
       "mechanical",
       "transport",
       "water",
@@ -5944,7 +5945,8 @@
     "title": "Digital Hexadecimal",
     "tags": [
       "digital",
-      "0123456789abcdef"
+      "0123456789abcdef",
+      "image-free"
     ]
   },
   {
@@ -5965,7 +5967,11 @@
     "title": "Avalanche",
     "tags": [
       "digital",
-      "ampm"
+      "cold",
+      "fast",
+      "gravity",
+      "snow",
+      "up-and-down"
     ]
   },
   {
