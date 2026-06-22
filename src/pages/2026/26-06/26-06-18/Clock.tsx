@@ -67,8 +67,6 @@ const PyramidMesh = () => {
   const meshRef = useRef<THREE.Mesh | null>(null);
 
   const { pyramidGeometry, materials, clockTexture, drawFn } = useMemo(() => {
-    // 1) Explicit Geometry Setup using ConeGeometry(radius, height, radialSegments, heightSegments, openEnded)
-    // 4 radial segments means 4 triangles for the sides and 4 triangles for the bottom cap.
     const geo = new THREE.ConeGeometry(2, 3, 4, 1, false).toNonIndexed();
     geo.clearGroups();
 
@@ -76,34 +74,29 @@ const PyramidMesh = () => {
     const uvAttr = geo.attributes.uv;
 
     if (pos && uvAttr) {
-      // In ConeGeometry, the side faces are built first. 
-      // 4 radial segments = 4 side triangles = 12 vertices.
-      // We assign Group 0 (Clock) to the sides, Group 1 (Plain) to the bottom base.
-      geo.addGroup(0, 12, 0);       // Side faces get the clock
-      geo.addGroup(12, 12, 1);      // Bottom base faces get plain dark color
+      geo.addGroup(0, 12, 0);       // Side faces (Clock)
+      geo.addGroup(12, 12, 1);      // Bottom base (Plain)
 
-      // Adjust UV mapping for the side triangles so the clock scales cleanly up to the apex point
       for (let i = 0; i < 12; i += 3) {
         for (let v = 0; v < 3; v++) {
           const idx = i + v;
           const y = pos.getY(idx);
           
           if (y > 0) {
-            // This is the top tip of the pyramid (Apex)
-            uvAttr.setXY(idx, 0.5, 1);
+            // FIXED: Changed Y from 1 to 1.3 to push the texture mapping downward 
+            // toward the wider section of the pyramid.
+            uvAttr.setXY(idx, 0.5, 1.3);
           } else {
-            // Left or right base vertices of the side triangle face
-            // Distribute them cleanly based on their sequence in the face
-            if (v === 0) uvAttr.setXY(idx, 0, 0);
-            if (v === 1) uvAttr.setXY(idx, 1, 0);
-            if (v === 2) uvAttr.setXY(idx, 0.5, 0); 
+            // Shifted base anchors down slightly to cleanly compress the dial format
+            if (v === 0) uvAttr.setXY(idx, 0, -0.1);
+            if (v === 1) uvAttr.setXY(idx, 1, -0.1);
+            if (v === 2) uvAttr.setXY(idx, 0.5, -0.1); 
           }
         }
       }
       uvAttr.needsUpdate = true;
     }
 
-    // 2) Materials Setup
     const canvas = document.createElement('canvas');
     const createdDrawFn = createClockDrawer(canvas);
     const createdClockTexture = new THREE.CanvasTexture(canvas);
@@ -135,14 +128,14 @@ const PyramidMesh = () => {
       meshRef.current.rotation.y += delta * 0.4;
     }
 
-    // FIXED: Access stable values directly from useMemo closure instead of missing Refs
     if (drawFn && clockTexture) {
       drawFn();
       clockTexture.needsUpdate = true;
     }
   });
 
-  return <mesh ref={meshRef} geometry={pyramidGeometry} material={materials} />;
+  // FIXED: Added position={[0, 0.5, 0]} to lift the entire mesh higher up in 3D space
+  return <mesh ref={meshRef} geometry={pyramidGeometry} material={materials} position={[0, 0.5, 0]} />;
 };
 
 export default function SpinningPyramid() {
