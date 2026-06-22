@@ -60,36 +60,18 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       try {
         // Conditionally import the data based on the environment.
         // This prevents test data from being loaded or bundled in production.
-        // Under Vitest, prefer mocked fixture JSON.
-        // Vitest runs in NODE_ENV=test (reliable for this repo); if not, fall back.
-        // Only use test data when explicitly enabled.
-        // NOTE: import.meta.env.MODE can be unreliable in some dev/test setups; GitHub/Vercel should always use production data.
-        const useTestDataExplicit = import.meta.env.VITE_USE_TEST_DATA === 'true';
-
-        const useTestData = useTestDataExplicit;
-
-
-
-        const data = useTestData
+        const data = import.meta.env.DEV
           ? (await import('./testclocks.json')).default
           : (await import('./clockpages.json')).default;
-
-
-
-
 
         // Sort the data by date string (ascending) to determine the chronological order
         // We process this once and use it as our primary source of truth
         const processedItems: ClockItem[] = [...data]
           .filter((d: any) => d?.date)
-          // Sort chronologically: newest on top, oldest at bottom (descending)
           .sort((a: any, b: any) =>
-            String(b.date).localeCompare(String(a.date)),
+            String(a.date).localeCompare(String(b.date)),
           )
           .map((item, idx) => ({ ...item, clockNumber: idx + 1 }));
-
-
-
 
         // Update the state with the fully processed items
         setItems(processedItems);
