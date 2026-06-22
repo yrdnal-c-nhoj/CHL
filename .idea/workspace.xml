@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05dec69b-8859-47f9-af91-4e0627cc020d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="05dec69b-8859-47f9-af91-4e0627cc020d" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -27,6 +25,10 @@
     &quot;accountId&quot;: &quot;c3b30407-ec6a-424b-a1b3-0b46d97b9abf&quot;
   }
 }</component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -147,6 +149,7 @@
       <workItem from="1780766541530" duration="264000" />
       <workItem from="1781190401922" duration="576000" />
       <workItem from="1781704287396" duration="986000" />
+      <workItem from="1782136481502" duration="685000" />
     </task>
     <servers />
   </component>

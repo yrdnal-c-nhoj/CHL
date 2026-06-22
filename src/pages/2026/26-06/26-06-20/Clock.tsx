@@ -1,4 +1,4 @@
-import chandelierBg from '@/assets/images/26_images/26-06/26-06-19/chandelier.webp';
+import chandelierBg from '@/assets/images/26_images/26-06/26-06-20/chandelier.webp';
 import { useClockTime } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
@@ -150,8 +150,7 @@ const AnalogClock: React.FC = () => {
           <circle cx="100" cy="25" r="4" fill="#fff" filter="url(#glow-light)" />
         </g>
 
-        {/* Center Pin */}
-        <circle cx="100" cy="100" r="5" fill="#fff" />
+      
       </svg>
     </main>
   );
