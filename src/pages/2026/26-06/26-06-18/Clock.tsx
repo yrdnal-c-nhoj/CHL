@@ -54,7 +54,7 @@ const createClockDrawer = (canvas: HTMLCanvasElement) => {
 
     drawHand(hrAngle, 110, 12, '#111111');
     drawHand(minAngle, 160, 8, '#1D1B1B');
-    drawHand(secAngle, 185, 4, '#ff3333');
+    drawHand(secAngle, 185, 4, '#012C10');
 
     ctx.fillStyle = '#ff3333';
     ctx.beginPath();
