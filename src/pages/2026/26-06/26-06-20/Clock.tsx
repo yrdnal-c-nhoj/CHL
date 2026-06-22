@@ -1,46 +1,141 @@
+import chandelierBg from '@/assets/images/26_images/26-06/26-06-19/chandelier.webp';
 import { useClockTime } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
-const formatTime = (num: number): string => num.toString().padStart(2, '0');
+export const assets = [chandelierBg];
 
-const DigitalClock: React.FC = () => {
+const AnalogClock: React.FC = () => {
   const time = useClockTime();
 
-  const { hours, minutes, seconds } = useMemo(
-    () => ({
-      hours: formatTime(time.getHours()),
-      minutes: formatTime(time.getMinutes()),
-      seconds: formatTime(time.getSeconds()),
-    }),
-    [time],
-  );
+  // Calculate rotation angles for the clock hands
+  const { hourDegrees, minuteDegrees, secondDegrees } = useMemo(() => {
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const seconds = time.getSeconds();
+
+    const hr = (hours % 12) * 30 + minutes * 0.5;
+    const min = minutes * 6;
+    const sec = seconds * 6;
+
+    return { hourDegrees: hr, minuteDegrees: min, secondDegrees: sec };
+  }, [time]);
 
   return (
-    <main
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100vw',
-        height: '100dvh',
-        backgroundColor: '#000',
-        margin: 0,
-        padding: 0,
-      }}
-    >
-      <time
-        dateTime={time.toISOString()}
+    <main className="clock-container">
+      <style>
+        {`
+          .clock-container {
+            position: relative; /* Establish positioning context for pseudo-element */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100dvh;
+            background-color: #000;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevents edge spilling when background is rotated */
+          }
+
+          /* --- ONE CUTOFF PLACE: 768px --- */
+
+          /* Phone / Portrait Mode (Below 768px) */
+          @media (max-width: 768px) {
+            .clock-container::before {
+              content: '';
+              position: absolute;
+              /* Over-size the canvas to account for 90-degree corner clip gap */
+              width: 100dvh; 
+              height: 100vw;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%) rotate(90deg);
+              background-image: url(${chandelierBg});
+              background-repeat: no-repeat;
+              background-position: center center;
+              background-size: cover;
+              z-index: 1;
+            }
+          }
+
+          /* Laptop / Landscape Mode (769px and above) */
+          @media (min-width: 769px) {
+            .clock-container {
+              background-image: url(${chandelierBg});
+              background-repeat: no-repeat;
+              background-position: center center;
+              background-size: 100% 100%;
+            }
+          }
+          
+          /* Ensure the clock stays floating over the pseudo-element background on mobile */
+          .clock-svg {
+            position: relative;
+            z-index: 2;
+          }
+        `}
+      </style>
+
+     {/* Analog Clock SVG */}
+      <svg
+        className="clock-svg"
+        viewBox="0 0 200 200"
         style={{
-          fontFamily: 'monospace',
-          fontSize: 'clamp(2rem, 10vw, 6rem)',
-          color: '#fff',
-          fontVariantNumeric: 'tabular-nums',
+          width: 'min(60vw, 60vh, 400px)',
+          height: 'min(60vw, 60vh, 400px)',
+          borderRadius: '50%',
+          // Nudge the clock left and up
+          // marginLeft: '-2vw',
+          marginTop: '-1vh',
         }}
       >
-        {hours}:{minutes}:{seconds}
-      </time>
+        {/* Clock Face Markings */}
+        <line x1="100" y1="10" x2="100" y2="20" stroke="#fff" strokeWidth="4" />
+        <line x1="190" y1="100" x2="180" y2="100" stroke="#fff" strokeWidth="4" />
+        <line x1="100" y1="190" x2="100" y2="180" stroke="#fff" strokeWidth="4" />
+        <line x1="10" y1="100" x2="20" y2="100" stroke="#fff" strokeWidth="4" />
+
+        {/* Hour Hand */}
+        <line
+          x1="100"
+          y1="100"
+          x2="100"
+          y2="55"
+          stroke="#fff"
+          strokeWidth="6"
+          strokeLinecap="round"
+          transform={`rotate(${hourDegrees} 100 100)`}
+        />
+
+        {/* Minute Hand */}
+        <line
+          x1="100"
+          y1="100"
+          x2="100"
+          y2="35"
+          stroke="#fff"
+          strokeWidth="4"
+          strokeLinecap="round"
+          transform={`rotate(${minuteDegrees} 100 100)`}
+        />
+
+        {/* Second Hand */}
+        <line
+          x1="100"
+          y1="100"
+          x2="100"
+          y2="25"
+          stroke="#ff4d4d"
+          strokeWidth="2"
+          strokeLinecap="round"
+          transform={`rotate(${secondDegrees} 100 100)`}
+        />
+
+        {/* Center Pin */}
+        <circle cx="100" cy="100" r="5" fill="#fff" />
+      </svg>
     </main>
   );
 };
 
-export default DigitalClock;
+export default AnalogClock;
