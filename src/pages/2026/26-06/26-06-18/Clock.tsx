@@ -1,4 +1,4 @@
-import { OrbitControls } from '@react-three/drei';
+// import { OrbitControls } from '@react-three/drei';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
@@ -17,16 +17,10 @@ const createClockDrawer = (canvas) => {
     const ms = now.getMilliseconds();
 
     // White clock background
-    ctx.fillStyle = '#AB9F9F';
+    ctx.fillStyle = '#BB744E';
     ctx.fillRect(0, 0, 512, 512);
 
-    // Outer Rim
-    ctx.strokeStyle = '#22222200';
-    ctx.lineWidth = 0;
-    ctx.beginPath();
-    ctx.arc(256, 256, 220, 0, Math.PI * 2);
-    ctx.stroke();
-
+   
     // Hour Ticks
     ctx.lineWidth = 6;
     ctx.strokeStyle = '#000000';
@@ -54,7 +48,7 @@ const createClockDrawer = (canvas) => {
     const hrAngle = (((hrs % 12) + mins / 60) * Math.PI) / 6;
 
     drawHand(hrAngle, 110, 12, '#111111'); // Hour
-    drawHand(minAngle, 160, 8, '#444444');  // Minute
+    drawHand(minAngle, 160, 8, '#1D1B1B');  // Minute
     drawHand(secAngle, 185, 4, '#ff3333');  // Second
 
     // Center Node
@@ -166,19 +160,40 @@ export default function SpinningPyramid() {
       style={{
         width: '100vw',
         height: '100vh',
-        backgroundImage: 'linear-gradient(135deg, #F3F363 0%, #DD9174 50%, #D2AB11 100%)',
-        backgroundColor: '#7D7781',
+        position: 'relative',
+        backgroundImage: "url('src/assets/images/26_images/26-06/26-06-18/pyramid.webp')",
+        // Smaller repeated tiles
+        backgroundSize: '140px 100px',
+        backgroundRepeat: 'repeat',
+        backgroundPosition: 'top left',
+        backgroundColor: '#111111',
+        filter: 'invert(1)',
       }}
     >
-      <Canvas camera={{ position: [0, 0, 5.5], fov: 55 }}>
-        <ambientLight intensity={0.9} />
-        <directionalLight position={[5, 8, 5]} intensity={2.6} />
-        <directionalLight position={[-5, -2, -5]} intensity={2.4} />
+      {/* Yellow overlay across the tiling background only */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'rgba(4, 181, 246, 0.58)',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      />
 
-        <PyramidMesh />
+      <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%' }}>
+        <Canvas camera={{ position: [0, 0, 5.5], fov: 55 }}>
+          <group position={[0, 0.1, 0]}>
+            <ambientLight intensity={0.9} />
+            <directionalLight position={[5, 8, 5]} intensity={2.6} />
+            <directionalLight position={[-5, -2, -5]} intensity={2.4} />
 
-        <OrbitControls enableZoom={true} />
-      </Canvas>
+            <PyramidMesh />
+          </group>
+
+          <OrbitControls enableZoom={true} />
+      </div>
     </div>
   );
 }
