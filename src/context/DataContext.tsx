@@ -62,12 +62,11 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
         // This prevents test data from being loaded or bundled in production.
         // Under Vitest, prefer mocked fixture JSON.
         // Vitest runs in NODE_ENV=test (reliable for this repo); if not, fall back.
-        const isTestEnv = import.meta.env.MODE === 'test';
+        // Only use test data when explicitly enabled.
+        // NOTE: import.meta.env.MODE can be unreliable in some dev/test setups; GitHub/Vercel should always use production data.
         const useTestDataExplicit = import.meta.env.VITE_USE_TEST_DATA === 'true';
 
-        // Production should ALWAYS use clockpages.json.
-        // Use testclocks.json only when explicitly enabled for local testing or when running Vitest.
-        const useTestData = isTestEnv || useTestDataExplicit;
+        const useTestData = useTestDataExplicit;
 
 
 
@@ -88,6 +87,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
             String(b.date).localeCompare(String(a.date)),
           )
           .map((item, idx) => ({ ...item, clockNumber: idx + 1 }));
+
 
 
 
