@@ -1,13 +1,15 @@
-// import { OrbitControls } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
 // Helper function to create clock drawer for a single canvas
-const createClockDrawer = (canvas) => {
+const createClockDrawer = (canvas: HTMLCanvasElement) => {
   canvas.width = 512;
   canvas.height = 512;
   const ctx = canvas.getContext('2d');
+
+  if (!ctx) return () => {};
 
   return () => {
     const now = new Date();
@@ -16,12 +18,11 @@ const createClockDrawer = (canvas) => {
     const secs = now.getSeconds();
     const ms = now.getMilliseconds();
 
-    // White clock background
+    // Clock background
     ctx.fillStyle = '#BB744E';
     ctx.fillRect(0, 0, 512, 512);
 
-   
-    // Hour Ticks
+    // Hour ticks
     ctx.lineWidth = 6;
     ctx.strokeStyle = '#000000';
     for (let i = 0; i < 12; i++) {
@@ -32,7 +33,7 @@ const createClockDrawer = (canvas) => {
       ctx.stroke();
     }
 
-    const drawHand = (angle, length, width, color) => {
+    const drawHand = (angle: number, length: number, width: number, color: string) => {
       ctx.strokeStyle = color;
       ctx.lineWidth = width;
       ctx.lineCap = 'round';
@@ -42,16 +43,16 @@ const createClockDrawer = (canvas) => {
       ctx.stroke();
     };
 
-    // Continuous, smooth calculations
+    // Smooth angles
     const secAngle = ((secs + ms / 1000) * Math.PI) / 30;
     const minAngle = ((mins + secs / 60) * Math.PI) / 30;
     const hrAngle = (((hrs % 12) + mins / 60) * Math.PI) / 6;
 
     drawHand(hrAngle, 110, 12, '#111111'); // Hour
-    drawHand(minAngle, 160, 8, '#1D1B1B');  // Minute
-    drawHand(secAngle, 185, 4, '#ff3333');  // Second
+    drawHand(minAngle, 160, 8, '#1D1B1B'); // Minute
+    drawHand(secAngle, 185, 4, '#ff3333'); // Second
 
-    // Center Node
+    // Center node
     ctx.fillStyle = '#ff3333';
     ctx.beginPath();
     ctx.arc(256, 256, 10, 0, Math.PI * 2);
@@ -60,98 +61,86 @@ const createClockDrawer = (canvas) => {
 };
 
 const PyramidMesh = () => {
-  const meshRef = useRef();
-  const textureRef = useRef(null);
+  const meshRef = useRef<THREE.Mesh | null>(null);
+  const textureRef = useRef<{
+    drawFn: () => void;
+    texture: THREE.CanvasTexture;
+  } | null>(null);
 
-  // 1. Isolate the geometry faces and correct UV mapping for the clock face
-  const pyramidGeometry = useMemo(() => {
-    // Create a 4-segmented cone and convert to separate independent triangles
-    const geo = new THREE.ConeGeometry(2, 3, 4).toNonIndexed();
-    geo.clearGroups();
+  const { pyramidGeometry, materials } = useMemo(() => {
+    // 1) Geometry
+    const pyramidGeometry = (() => {
+      const geo = new THREE.ConeGeometry(2, 3, 4).toNonIndexed();
+      geo.clearGroups();
 
-    // Group 0: First triangle face (vertices 0-2) -> gets the Clock Material
-    geo.addGroup(0, 3, 0);
-    // Group 1: The remaining faces and base -> gets the Plain Material
-    geo.addGroup(3, geo.attributes.position.count - 3, 1);
+      // Group 0: first triangle face (vertices 0-2) -> clock
+      geo.addGroup(0, 3, 0);
+      // Group 1: rest -> plain
+      geo.addGroup(3, geo.attributes.position.count - 3, 1);
 
-    // Remap UVs for the first face so the clock texture fits beautifully inside the triangle
-    const pos = geo.attributes.position;
-    const uv = geo.attributes.uv;
-    const bottomVerts = [];
+      const pos = geo.attributes.position;
+      const uv = geo.attributes.uv;
+      const bottomVerts: number[] = [];
 
-    for (let i = 0; i < 3; i++) {
-      if (pos.getY(i) > 0) {
-        // Apex/Top vertex maps to top-middle of texture
-        uv.setXY(i, 0.5, 1);
-      } else {
-        bottomVerts.push(i);
+      if (!pos || !uv) return geo;
+
+      for (let i = 0; i < 3; i++) {
+        if (pos.getY(i) > 0) {
+          uv.setXY(i, 0.5, 1);
+        } else {
+          bottomVerts.push(i);
+        }
       }
-    }
-    // Sort bottom vertices to assign bottom-left (0,0) and bottom-right (1,0) textures properly
-    if (uv.getX(bottomVerts[0]) < uv.getX(bottomVerts[1])) {
-      uv.setXY(bottomVerts[0], 0, 0);
-      uv.setXY(bottomVerts[1], 1, 0);
-    } else {
-      uv.setXY(bottomVerts[0], 1, 0);
-      uv.setXY(bottomVerts[1], 0, 0);
-    }
 
-    uv.needsUpdate = true;
-    return geo;
-  }, []);
+      if (bottomVerts.length === 2) {
+        if (uv.getX(bottomVerts[0]) < uv.getX(bottomVerts[1])) {
+          uv.setXY(bottomVerts[0], 0, 0);
+          uv.setXY(bottomVerts[1], 1, 0);
+        } else {
+          uv.setXY(bottomVerts[0], 1, 0);
+          uv.setXY(bottomVerts[1], 0, 0);
+        }
+      }
 
-  // 2. Generate exactly two materials (Clock vs Plain)
-  const [materials] = useState(() => {
-    // Material 0: Clock Face
+      uv.needsUpdate = true;
+      return geo;
+    })();
+
+    // 2) Materials
     const canvas = document.createElement('canvas');
     const drawFn = createClockDrawer(canvas);
     const clockTexture = new THREE.CanvasTexture(canvas);
-    
-    textureRef.current = { texture: clockTexture, drawFn };
+
+    textureRef.current = { drawFn, texture: clockTexture };
 
     const clockMat = new THREE.MeshStandardMaterial({
       map: clockTexture,
       roughness: 0.2,
       metalness: 0.1,
-      side: THREE.DoubleSide
+      side: THREE.DoubleSide,
     });
 
-    // Material 1: Plain Background for the rest of the pyramid
     const plainMat = new THREE.MeshStandardMaterial({
       color: '#222222',
       roughness: 0.5,
       metalness: 0.1,
-      side: THREE.DoubleSide
+      side: THREE.DoubleSide,
     });
 
-    return [clockMat, plainMat];
-  });
+    return { pyramidGeometry, materials: [clockMat, plainMat] as THREE.Material[] };
+  }, []);
 
-  // Animation Loop
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (meshRef.current) {
       meshRef.current.rotation.y += delta * 0.4;
     }
 
-    // Update the single clock texture smoothly
-    if (textureRef.current) {
-      textureRef.current.drawFn();
-      textureRef.current.texture.needsUpdate = true;
-    }
+    if (!textureRef.current) return;
+    textureRef.current.drawFn();
+    textureRef.current.texture.needsUpdate = true;
   });
 
-  return (
-    <mesh
-      ref={meshRef}
-      geometry={pyramidGeometry}
-      material={materials}
-    >
-      {/*
-        The clock is applied only to Material index 0 (first triangle face group).
-        The other faces use Material index 1 (plain), but remain visible while the pyramid rotates.
-      */}
-    </mesh>
-  );
+  return <mesh ref={meshRef} geometry={pyramidGeometry} material={materials} />;
 };
 
 export default function SpinningPyramid() {
@@ -162,7 +151,6 @@ export default function SpinningPyramid() {
         height: '100vh',
         position: 'relative',
         backgroundImage: "url('src/assets/images/26_images/26-06/26-06-18/pyramid.webp')",
-        // Smaller repeated tiles
         backgroundSize: '140px 100px',
         backgroundRepeat: 'repeat',
         backgroundPosition: 'top left',
@@ -170,7 +158,6 @@ export default function SpinningPyramid() {
         filter: 'invert(1)',
       }}
     >
-      {/* Yellow overlay across the tiling background only */}
       <div
         aria-hidden="true"
         style={{
@@ -193,7 +180,9 @@ export default function SpinningPyramid() {
           </group>
 
           <OrbitControls enableZoom={true} />
+        </Canvas>
       </div>
     </div>
   );
 }
+
