@@ -62,9 +62,9 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
         // This prevents test data from being loaded or bundled in production.
         // Under Vitest, prefer mocked fixture JSON.
         // Vitest runs in NODE_ENV=test (reliable for this repo); if not, fall back.
-        const useTestDataForDev =
-          import.meta.env.DEV && import.meta.env.VITE_USE_TEST_DATA === 'true'; // For dev server
-        const isTestEnv = import.meta.env.PROD === false && import.meta.env.DEV === false; // True in Vitest
+        const useTestDataForDev = 
+          import.meta.env.DEV && import.meta.env.VITE_USE_TEST_DATA === 'true';
+        const isTestEnv = import.meta.env.MODE === 'test'; // Correctly detect Vitest
         // Static imports under test avoid any dynamic-import/mocking inconsistencies.
         const data = isTestEnv || useTestDataForDev
           ? (await import('./testclocks.json')).default
