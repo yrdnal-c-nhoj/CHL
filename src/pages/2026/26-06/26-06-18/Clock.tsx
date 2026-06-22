@@ -154,7 +154,7 @@ export default function SpinningPyramid() {
         backgroundSize: '140px 100px',
         backgroundRepeat: 'repeat',
         backgroundPosition: 'top left',
-        backgroundColor: '#111111',
+        backgroundColor: '#151313',
         filter: 'invert(1)',
       }}
     >
