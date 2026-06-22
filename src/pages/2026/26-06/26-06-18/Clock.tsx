@@ -3,14 +3,8 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
-// Dynamic background asset fallback
-let pyramidBgUrl = '';
-try {
-  // @ts-ignore
-  import('@/assets/images/26_images/26-06/26-06-18/pyramid.webp?url').then((m) => (pyramidBgUrl = m.default));
-} catch (e) {
-  /* Fallback handled gracefully */
-}
+// Statically imported at build-time to prevent production race conditions
+import pyramidBgUrl from '@/assets/images/26_images/26-06/26-06-18/pyramid.webp?url';
 
 /**
  * Hook to manage the 2D clock texture generation and real-time updates
@@ -65,15 +59,12 @@ const useClockTexture = () => {
       const minAngle = ((mins + secs / 60) * Math.PI) / 30;
       const hrAngle = (((hrs % 12) + mins / 60) * Math.PI) / 6;
 
-   
       // Draw Minute Hand (Elegant, extended mid-thickness)
       drawHand(ctx, minAngle, 100, 16, '#1D1B1B');
       
-
-   // Draw Hour Hand (Shorter, robust tapered base)
+      // Draw Hour Hand (Shorter, robust tapered base)
       drawHand(ctx, hrAngle, 60, 23, '#1B375B');
       
-
       // Draw Second Hand (Longest, sleek needle profile)
       drawHand(ctx, secAngle, 520, 6, '#EB11BF');
 
@@ -159,7 +150,7 @@ export default function SpinningPyramid() {
         height: '100vh',
         position: 'relative',
         backgroundColor: '#151313',
-        backgroundImage: pyramidBgUrl ? `url(${pyramidBgUrl})` : 'none',
+        backgroundImage: `url(${pyramidBgUrl})`,
         backgroundSize: '100px 70px',
         backgroundRepeat: 'repeat',
         backgroundPosition: 'center',
