@@ -1,17 +1,7 @@
-# TODO
+- [ ] Review current environment-based JSON selection logic in src/context/DataContext.tsx
+- [x] Change DataContext to always default to clockpages.json in non-test builds
+- [x] Only load testclocks.json when explicitly enabled (VITE_USE_TEST_DATA === 'true') or (MODE === 'test')
+- [x] Add lightweight runtime logging in dev/test to confirm which JSON is loaded
 
-## Step 1: Gather context
-- [x] Read `src/pages/2026/26-06/26-06-16/Clock.tsx`
-- [x] Read `src/pages/2026/26-06/26-06-16/Clock.module.css`
-
-## Step 2: Confirm requirements
-- [ ] Receive the exact user task (what needs to be changed beyond centering)
-
-## Step 3: Implement change (once task is confirmed)
-- [ ] Use search/read to locate all related selectors/components
-- [ ] Edit affected files
-- [ ] Re-run `npm run build` and/or `npm test`
-
-## Step 4: Verify
-- [ ] Confirm UI alignment visually / via screenshot if needed
+- [ ] Run unit tests / build (npm run test, npm run build) to ensure nothing breaks
 
