@@ -52,6 +52,7 @@ const AnalogClock: React.FC = () => {
               transform: translate(-50%, -50%) rotate(90deg);
               background-image: url(${chandelierBg});
               background-repeat: no-repeat;
+              filter: saturate(200%) contrast(0.1.3) brightness(1.1);
               background-position: center center;
               background-size: cover;
               z-index: 1;
@@ -63,6 +64,7 @@ const AnalogClock: React.FC = () => {
             .clock-container {
               background-image: url(${chandelierBg});
               background-repeat: no-repeat;
+                        filter: saturate(200%) contrast(0.1.3) brightness(1.1);
               background-position: center center;
               background-size: 100% 100%;
             }
@@ -81,17 +83,17 @@ const AnalogClock: React.FC = () => {
         className="clock-svg"
         viewBox="0 0 200 200"
         style={{
-          width: 'min(60vw, 60vh, 400px)',
-          height: 'min(60vw, 60vh, 400px)',
+          width: 'min(88vw, 88vh, 600px)',
+          height: 'min(88vw, 88vh, 600px)',
           borderRadius: '50%',
           marginTop: '-1vh',
         }}
       >
         {/* Glow Filter Definition */}
         <defs>
-          <filter id="glow-light" x="-50%" y="-50%" width="200%" height="200%">
+          <filter id="glow-light" x="-90%" y="-90%" width="200%" height="200%">
             {/* Blurs the input to create the glow "blob" effect */}
-            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feGaussianBlur stdDeviation="6" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
@@ -99,55 +101,20 @@ const AnalogClock: React.FC = () => {
           </filter>
         </defs>
 
-        {/* Clock Face Markings */}
-        <line x1="100" y1="10" x2="100" y2="20" stroke="#fff" strokeWidth="4" />
-        <line x1="190" y1="100" x2="180" y2="100" stroke="#fff" strokeWidth="4" />
-        <line x1="100" y1="190" x2="100" y2="180" stroke="#fff" strokeWidth="4" />
-        <line x1="10" y1="100" x2="20" y2="100" stroke="#fff" strokeWidth="4" />
-
         {/* Hour Hand Group */}
         <g transform={`rotate(${hourDegrees} 100 100)`}>
-          <line
-            x1="100"
-            y1="100"
-            x2="100"
-            y2="55"
-            stroke="#fff"
-            strokeWidth="6"
-            strokeLinecap="round"
-          />
-          {/* Light blob at coordinate (100, 55) */}
-          <circle cx="100" cy="55" r="7" fill="#fff" filter="url(#glow-light)" />
+          <circle cx="100" cy="55" r="12" fill="#F3E8DA" filter="url(#glow-light)" />
         </g>
-
         {/* Minute Hand Group */}
         <g transform={`rotate(${minuteDegrees} 100 100)`}>
-          <line
-            x1="100"
-            y1="100"
-            x2="100"
-            y2="35"
-            stroke="#fff"
-            strokeWidth="4"
-            strokeLinecap="round"
-          />
-          {/* Light blob at coordinate (100, 35) */}
-          <circle cx="100" cy="35" r="5" fill="#fff" filter="url(#glow-light)" />
+       <circle cx="100" cy="35" r="8" fill="#F3E8DA" filter="url(#glow-light)" />
         </g>
 
         {/* Second Hand Group */}
         <g transform={`rotate(${secondDegrees} 100 100)`}>
-          <line
-            x1="100"
-            y1="100"
-            x2="100"
-            y2="25"
-            stroke="#ff4d4d"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
+      
           {/* Light blob at coordinate (100, 25) */}
-          <circle cx="100" cy="25" r="4" fill="#fff" filter="url(#glow-light)" />
+          <circle cx="100" cy="25" r="6" fill="#F3E8DA" filter="url(#glow-light)" />
         </g>
 
       
