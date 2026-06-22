@@ -64,7 +64,7 @@ const AnalogClock: React.FC = () => {
             .clock-container {
               background-image: url(${chandelierBg});
               background-repeat: no-repeat;
-                        filter: saturate(200%) contrast(0.1.3) brightness(1.1);
+              filter: saturate(400%) contrast(0.1.3) brightness(1.1);
               background-position: center center;
               background-size: 100% 100%;
             }
