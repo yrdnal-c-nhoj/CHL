@@ -3,6 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
+
 // Helper function to create clock drawer for a single canvas
 const createClockDrawer = (canvas: HTMLCanvasElement) => {
   canvas.width = 512;
@@ -68,6 +69,7 @@ const PyramidMesh = () => {
   } | null>(null);
 
   const { pyramidGeometry, materials } = useMemo(() => {
+
     // 1) Geometry
     const pyramidGeometry = (() => {
       const geo = new THREE.ConeGeometry(2, 3, 4).toNonIndexed();
@@ -150,9 +152,10 @@ export default function SpinningPyramid() {
         width: '100vw',
         height: '100vh',
         position: 'relative',
-        backgroundImage: "url('src/assets/images/26_images/26-06/26-06-18/pyramid.webp')",
+        backgroundImage: `url(${pyramidBgUrl})`,
         backgroundSize: '140px 100px',
         backgroundRepeat: 'repeat',
+
         backgroundPosition: 'top left',
         backgroundColor: '#151313',
         filter: 'invert(1)',

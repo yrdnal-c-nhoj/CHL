@@ -5932,6 +5932,7 @@
     "title": "Waterlogged",
     "tags": [
       "analog",
+      "drive",
       "mechanical",
       "transport",
       "water",
@@ -5944,7 +5945,8 @@
     "title": "Digital Hexadecimal",
     "tags": [
       "digital",
-      "0123456789abcdef"
+      "0123456789abcdef",
+      "image-free"
     ]
   },
   {
@@ -5959,19 +5961,32 @@
       "zodiac"
     ]
   },
-    {
+  {
     "path": "26-06-17",
     "date": "26-06-17",
     "title": "Avalanche",
     "tags": [
       "digital",
-      "ampm"
+      "cold",
+      "fast",
+      "gravity",
+      "snow",
+      "up-and-down"
     ]
-  }
-  ,  {
+  },
+  {
     "path": "26-06-18",
     "date": "26-06-18",
     "title": "Pyramid",
+    "tags": [
+      "digital",
+      "ampm"
+    ]
+  },
+  {
+    "path": "26-06-19",
+    "date": "26-06-19",
+    "title": "Digital Clock",
     "tags": [
       "digital",
       "ampm"
