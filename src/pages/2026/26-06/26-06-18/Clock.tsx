@@ -1,10 +1,11 @@
+import pyramidBgUrl from '@/assets/images/26_images/26-06/26-06-18/pyramid.webp?url';
 import { OrbitControls } from '@react-three/drei';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
-
 // Helper function to create clock drawer for a single canvas
+
 const createClockDrawer = (canvas: HTMLCanvasElement) => {
   canvas.width = 512;
   canvas.height = 512;
@@ -63,17 +64,17 @@ const createClockDrawer = (canvas: HTMLCanvasElement) => {
 
 const PyramidMesh = () => {
   const meshRef = useRef<THREE.Mesh | null>(null);
-  const textureRef = useRef<{
-    drawFn: () => void;
-    texture: THREE.CanvasTexture;
-  } | null>(null);
+  const clockTextureRef = useRef<THREE.CanvasTexture | null>(null);
+  const drawFnRef = useRef<(() => void) | null>(null);
 
   const { pyramidGeometry, materials } = useMemo(() => {
 
     // 1) Geometry
+
     const pyramidGeometry = (() => {
       const geo = new THREE.ConeGeometry(2, 3, 4).toNonIndexed();
       geo.clearGroups();
+
 
       // Group 0: first triangle face (vertices 0-2) -> clock
       geo.addGroup(0, 3, 0);
@@ -87,7 +88,9 @@ const PyramidMesh = () => {
       if (!pos || !uv) return geo;
 
       for (let i = 0; i < 3; i++) {
-        if (pos.getY(i) > 0) {
+        const y = pos.getY(i) ?? 0;
+        if (y > 0) {
+
           uv.setXY(i, 0.5, 1);
         } else {
           bottomVerts.push(i);
@@ -113,9 +116,9 @@ const PyramidMesh = () => {
     const drawFn = createClockDrawer(canvas);
     const clockTexture = new THREE.CanvasTexture(canvas);
 
-    textureRef.current = { drawFn, texture: clockTexture };
-
     const clockMat = new THREE.MeshStandardMaterial({
+
+
       map: clockTexture,
       roughness: 0.2,
       metalness: 0.1,
@@ -137,9 +140,10 @@ const PyramidMesh = () => {
       meshRef.current.rotation.y += delta * 0.4;
     }
 
-    if (!textureRef.current) return;
-    textureRef.current.drawFn();
-    textureRef.current.texture.needsUpdate = true;
+    if (!clockTextureRef.current || !drawFnRef.current) return;
+    drawFnRef.current();
+    clockTextureRef.current.needsUpdate = true;
+
   });
 
   return <mesh ref={meshRef} geometry={pyramidGeometry} material={materials} />;

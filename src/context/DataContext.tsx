@@ -2,13 +2,13 @@
  * This file manages the global state for all clock data in the application.
  */
 import type {
-    ReactNode
+  ReactNode
 } from 'react';
 import React, {
-    createContext,
-    useContext,
-    useEffect,
-    useState
+  createContext,
+  useContext,
+  useEffect,
+  useState
 } from 'react';
 
 /**
@@ -60,19 +60,27 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       try {
         // Conditionally import the data based on the environment.
         // This prevents test data from being loaded or bundled in production.
-        const data = import.meta.env.DEV
+        // Under Vitest, prefer mocked fixture JSON.
+        // Vitest runs in NODE_ENV=test (reliable for this repo); if not, fall back.
+        const isTestEnv = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
+        // Static imports under test avoid any dynamic-import/mocking inconsistencies.
+        const data = isTestEnv
           ? (await import('./testclocks.json')).default
           : (await import('./clockpages.json')).default;
+
+
+
 
         // Sort the data by date string (ascending) to determine the chronological order
         // We process this once and use it as our primary source of truth
         const processedItems: ClockItem[] = [...data]
           .filter((d: any) => d?.date)
-          // Sort chronologically: oldest on top, newest at bottom (ascending)
+          // Sort chronologically: newest on top, oldest at bottom (descending)
           .sort((a: any, b: any) =>
-            String(a.date).localeCompare(String(b.date)),
+            String(b.date).localeCompare(String(a.date)),
           )
           .map((item, idx) => ({ ...item, clockNumber: idx + 1 }));
+
 
 
         // Update the state with the fully processed items
