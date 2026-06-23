@@ -58,7 +58,7 @@ const cellStyle: CSSProperties = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  fontSize: 'clamp(10vw, 15vh, 150px)',
+  fontSize: 'clamp(10vw, 12vh, 150px)',
   lineHeight: 1,
   userSelect: 'none',
 };
