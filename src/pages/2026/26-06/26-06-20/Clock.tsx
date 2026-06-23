@@ -66,7 +66,7 @@ const AnalogClock: React.FC = () => {
               background-repeat: no-repeat;
               filter: saturate(400%) contrast(0.1.3) brightness(1.1);
               background-position: center center;
-              background-size: 100% 100%;
+              background-size: cover
             }
           }
           
