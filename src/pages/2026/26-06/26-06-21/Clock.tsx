@@ -1,5 +1,5 @@
 import clockFont from '@/assets/fonts/26fonts/26-06-21.ttf?url';
-import backgroundImage from '@/assets/images/26_images/26-06/26-06-11/ukulele.webp';
+import backgroundImage from '@/assets/images/26_images/26-06/26-06-21/ukulele.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
@@ -90,7 +90,7 @@ const Clock: React.FC = () => {
   const fontConfigs = useMemo(
     () => [
       {
-        fontFamily: 'ClockFont_26_06_11',
+        fontFamily: 'ClockFont_26_06_21',
         fontUrl: clockFont,
       },
     ],
@@ -147,7 +147,7 @@ const Clock: React.FC = () => {
           dateTime={time.toISOString()}
           style={{
             ...digitalGridStyle,
-            fontFamily: 'ClockFont_26_06_11',
+            fontFamily: 'ClockFont_26_06_21',
           }}
         >
           {digits.map((digit, index) => (
