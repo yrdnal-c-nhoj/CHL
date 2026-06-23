@@ -36,7 +36,7 @@
 .digitalGrid {
   display: grid;
   grid-template-columns: repeat(6, 0.8ch);
-  font-size: clamp(4rem, 30vw, 25rem);
+  font-size: 10vh;
 }
 
 .cell {
@@ -46,11 +46,11 @@
   font-family: 'ClockFont_26_06_11', serif;
 
 /* keep 0 padding/gap even on smaller screens */
-@media (max-width: 550px) {
-  .digitalGrid {
+/* @media (max-width: 550px) { */
+  /* .digitalGrid { */
     /* Two columns for mobile: HH / MM / SS stacked */
-    grid-template-columns: 1.0em 1.0em;
-    font-size: clamp(6rem, 33vw, 12rem);
-    line-height: 1.0;
-  }
+    /* grid-template-columns: 1.0em 1.0em; */
+    /* font-size: clamp(6rem, 33vw, 12rem); */
+    /* line-height: 1.0; */
+  /* } */
 }
