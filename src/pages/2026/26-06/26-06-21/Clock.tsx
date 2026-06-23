@@ -5,11 +5,16 @@ import { useClockTime } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 
-/**
- * Clock Component for 2026-06-21
- * Features a 6-digit grid layout over a tiled, mirrored background.
- */
 export const assets = [backgroundImage, clockFont];
+
+// Constant — no reason to live inside the component
+const TILE_SIZE = 80;
+
+const NUMBERS = ['N', 'm', '1', 'R', 't', 'F', '8', 'Q', 'E', 'v'] as const;
+
+const FONT_CONFIGS = [{ fontFamily: 'ClockFont_26_06_21', fontUrl: clockFont }];
+
+// --- Static styles ---
 
 const containerStyle: CSSProperties = {
   position: 'relative',
@@ -39,20 +44,14 @@ const tileStyle: CSSProperties = {
   transform: 'scale(var(--sx), var(--sy))',
 };
 
-const clockFaceStyle: CSSProperties = {
+const digitalGridStyle: CSSProperties = {
   position: 'relative',
   zIndex: 1,
   display: 'grid',
-  placeItems: 'center',
-};
-
-const digitalGridStyle: CSSProperties = {
-  display: 'grid',
-  gridTemplateColumns: '1fr',
   gridTemplateRows: 'repeat(6, 1fr)',
-  gap: '1vh',
-  color: 'white',
-  textShadow: '0 0 10px rgba(255, 255, 255, 0.7)',
+  gap: '2vh',
+  color: '#111111',
+  textShadow: '0 0 20px rgba(205, 245, 135, 0.99)',
 };
 
 const cellStyle: CSSProperties = {
@@ -64,62 +63,39 @@ const cellStyle: CSSProperties = {
   userSelect: 'none',
 };
 
+// --- Component ---
+
 const Clock: React.FC = () => {
   const time = useClockTime();
-  const tileSize = 80; // Size in pixels
   const [dimensions, setDimensions] = useState({ cols: 1, rows: 1 });
 
-  // Handle window resizing to fill the background
   useEffect(() => {
-    const updateGrid = () => {
+    const update = () =>
       setDimensions({
-        cols: Math.ceil(window.innerWidth / tileSize) + 1,
-        rows: Math.ceil(window.innerHeight / tileSize) + 1,
+        cols: Math.ceil(window.innerWidth / TILE_SIZE) + 1,
+        rows: Math.ceil(window.innerHeight / TILE_SIZE) + 1,
       });
-    };
-    updateGrid();
-    window.addEventListener('resize', updateGrid);
-    return () => window.removeEventListener('resize', updateGrid);
-  }, [tileSize]);
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
 
+  useSuspenseFontLoader(FONT_CONFIGS);
 
-  // Replace these with the specific characters you picked out for your font mapping
-  const numbers = useMemo(
-    () => ['N', 'm', '1', 'R', 't', 'F', '8', 'Q', 'E', 'v'],
-    []
-  );
-
-  // Standardized font loading to ensure 'ClockFont_26_06_11' is available
-  const fontConfigs = useMemo(
-    () => [
-      {
-        fontFamily: 'ClockFont_26_06_21',
-        fontUrl: clockFont,
-      },
-    ],
-    [],
-  );
-  useSuspenseFontLoader(fontConfigs);
-
-  // Format time into 6 individual digits (HHMMSS) to match the CSS grid
-  // We use the floor of the timestamp to ensure digits only recalculate once per second
-  const secondTimestamp = Math.floor(time.getTime() / 1000);
   const digits = useMemo(() => {
-    const d = new Date(secondTimestamp * 1000);
+    const d = new Date(Math.floor(time.getTime() / 1000) * 1000);
     const hh = d.getHours().toString().padStart(2, '0');
     const mm = d.getMinutes().toString().padStart(2, '0');
     const ss = d.getSeconds().toString().padStart(2, '0');
-    return (hh + mm + ss).split('').map((digit) => numbers[parseInt(digit)]);
-  }, [secondTimestamp, numbers]); // Correctly depends on `numbers`
+    return (hh + mm + ss).split('').map((ch) => NUMBERS[parseInt(ch)]);
+  }, [time]);
 
-  // Memoize tiles to prevent re-calculating on every clock tick
   const backgroundTiles = useMemo(() => {
-    const tiles = [];
     const total = dimensions.cols * dimensions.rows;
-    for (let i = 0; i < total; i++) {
+    return Array.from({ length: total }, (_, i) => {
       const row = Math.floor(i / dimensions.cols);
       const col = i % dimensions.cols;
-      tiles.push(
+      return (
         <div
           key={i}
           style={{
@@ -130,36 +106,30 @@ const Clock: React.FC = () => {
           } as CSSProperties}
         />
       );
-    }
-    return tiles;
+    });
   }, [dimensions]);
 
   return (
-    <main style={{
+    <main
+      style={{
         ...containerStyle,
-        '--tile-size': `${tileSize}px`,
+        '--tile-size': `${TILE_SIZE}px`,
         '--grid-cols': String(dimensions.cols),
         '--grid-rows': String(dimensions.rows),
-      } as CSSProperties}>
-      <div style={backgroundGridStyle}>
-        {backgroundTiles}
-      </div>
+      } as CSSProperties}
+    >
+      <div style={backgroundGridStyle}>{backgroundTiles}</div>
 
-      <div style={clockFaceStyle}>
-        <time
-          dateTime={time.toISOString()}
-          style={{
-            ...digitalGridStyle,
-            fontFamily: 'ClockFont_26_06_21',
-          }}
-        >
-          {digits.map((digit, index) => (
-            <div key={index} style={cellStyle} aria-hidden="true">
-              {digit}
-            </div>
-          ))}
-        </time>
-      </div>
+      <time
+        dateTime={time.toISOString()}
+        style={{ ...digitalGridStyle, fontFamily: 'ClockFont_26_06_21' }}
+      >
+        {digits.map((digit, i) => (
+          <div key={i} style={cellStyle} aria-hidden="true">
+            {digit}
+          </div>
+        ))}
+      </time>
     </main>
   );
 };
