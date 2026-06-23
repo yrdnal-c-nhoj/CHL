@@ -1,0 +1,69 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  display: grid;
+  place-items: center;
+  overflow: hidden; /* Ensure image doesn't overflow */
+}
+
+.backgroundGrid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), var(--tile-size));
+  grid-template-rows: repeat(var(--grid-rows), var(--tile-size));
+  justify-content: center;
+  align-content: center;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.tile {
+  width: var(--tile-size);
+  height: var(--tile-size);
+  background-image: var(--tile-img);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: scale(var(--sx), var(--sy));
+}
+
+.clockFace {
+  position: relative;
+  z-index: 1;
+}
+
+.digitalGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 0.8ch);
+  font-size: clamp(4rem, 30vw, 25rem);
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'ClockFont_26_06_11', serif;
+
+  /* Dazzle Camouflage Pattern (Warship style) */
+  background: repeating-linear-gradient(
+    180deg,
+    #b86ea6 0px,
+    #df31ec 1px,
+    #8b39ab 5px
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 2px #2f2501;
+}
+
+/* keep 0 padding/gap even on smaller screens */
+@media (max-width: 550px) {
+  .digitalGrid {
+    /* Two columns for mobile: HH / MM / SS stacked */
+    grid-template-columns: 1.0em 1.0em;
+    font-size: clamp(6rem, 33vw, 12rem);
+    line-height: 1.0;
+  }
+}
