@@ -45,19 +45,6 @@
   justify-content: center;
   font-family: 'ClockFont_26_06_11', serif;
 
-  /* Dazzle Camouflage Pattern (Warship style) */
-  background: repeating-linear-gradient(
-    180deg,
-    #b86ea6 0px,
-    #df31ec 1px,
-    #8b39ab 5px
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-stroke: 2px #2f2501;
-}
-
 /* keep 0 padding/gap even on smaller screens */
 @media (max-width: 550px) {
   .digitalGrid {

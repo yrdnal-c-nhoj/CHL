@@ -6002,17 +6002,18 @@
     "title": "Chandelier",
     "tags": [
       "analog",
-      "interior"
+      "interior",
+      "round"
     ]
-  }
-  ,
+  },
   {
     "path": "26-06-21",
     "date": "26-06-21",
     "title": "Nestbox",
     "tags": [
-      "digital",
-      "ampm"
+      "animal",
+      "bird",
+      "pictographic"
     ]
   }
 ]
