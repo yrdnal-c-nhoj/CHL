@@ -6004,5 +6004,15 @@
       "analog",
       "interior"
     ]
+  ,
+
+  {
+    "path": "26-06-21",
+    "date": "26-06-21",
+    "title": "Nestbox",
+    "tags": [
+      "digital",
+      "ampm"
+    ]
   }
 ]
