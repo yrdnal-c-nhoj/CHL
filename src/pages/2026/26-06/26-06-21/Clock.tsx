@@ -1,5 +1,5 @@
 import clockFont from '@/assets/fonts/26fonts/26-06-21.ttf?url';
-import backgroundImage from '@/assets/images/26_images/26-06/26-06-21/row.webp';
+import backgroundImage from '@/assets/images/26_images/26-06/26-06-21/birdhaus.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
@@ -27,6 +27,8 @@ const backgroundGridStyle: CSSProperties = {
   display: 'grid',
   gridTemplateColumns: 'repeat(var(--grid-cols), var(--tile-size))',
   gridTemplateRows: 'repeat(var(--grid-rows), var(--tile-size))',
+  justifyContent: 'center',
+  alignContent: 'center',
   zIndex: 0,
 };
 
@@ -46,8 +48,9 @@ const clockFaceStyle: CSSProperties = {
 
 const digitalGridStyle: CSSProperties = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(6, 1fr)',
-  gap: '1vw',
+  gridTemplateColumns: '1fr',
+  gridTemplateRows: 'repeat(6, 1fr)',
+  gap: '1vh',
   color: 'white',
   textShadow: '0 0 10px rgba(255, 255, 255, 0.7)',
 };
@@ -82,7 +85,7 @@ const Clock: React.FC = () => {
 
   // Replace these with the specific characters you picked out for your font mapping
   const numbers = useMemo(
-    () => ['c', 'X', 'L', 'Y', 'F', 'H', 'U', 'M', 'W', 'T'],
+    () => ['N', 'm', '1', 'R', 't', 'F', '8', 'Q', 'E', 'v'],
     []
   );
 
