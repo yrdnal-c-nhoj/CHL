@@ -234,7 +234,7 @@ const styles: Record<string, React.CSSProperties> = {
     pointerEvents:'none',
     willChange:   'transform, opacity',
     zIndex:       4,
-    boxShadow:    '0 0 3vmin #fff, inset 0 0 2vmin #fff, 0 0 4vmin rgba(255,255,255,.3)',
+    boxShadow:    '0 0 3vmin #fff, inset 0 0 2vmin #fff, 0 0 4vmin rgba(255, 255, 255, 0.98)',
     opacity:      0,
     transform:    'scale(1.6)',
   },
