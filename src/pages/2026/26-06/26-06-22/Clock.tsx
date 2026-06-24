@@ -2,14 +2,14 @@ import React, { useEffect, useRef } from 'react';
 
 // ── constants ────────────────────────────────────────────────────────────────
 
-const COLORS: Record<string, string> = {
+const COLORS: Record<ElementType, string> = {
   hour:   '#ff1493',
   minute: '#00bfff',
   second: '#00ff7f',
   period: '#ffaa00',
 };
 
-const THRESH = 0.002; // skip DOM write if weight delta is below this
+const THRESH = 0.002;
 
 type ElementType = 'hour' | 'minute' | 'second' | 'period';
 
@@ -19,44 +19,57 @@ interface ClockElement {
   idx:  number;
 }
 
+// Pre-build array out of the loop with precise typing
 const ELEMENTS: ClockElement[] = [
-  ...Array.from({ length: 12 }, (_, i) => ({ val: i + 1, type: 'hour'   as const, idx: i + 1 })),
-  ...Array.from({ length: 60 }, (_, i) => ({ val: i,     type: 'minute' as const, idx: i     })),
-  ...Array.from({ length: 60 }, (_, i) => ({ val: i,     type: 'second' as const, idx: i     })),
+  ...Array.from({ length: 12 }, (_, i) => ({ val: i + 1, type: 'hour' as const, idx: i + 1 })),
+  ...Array.from({ length: 60 }, (_, i) => ({ val: i,     type: 'minute' as const, idx: i })),
+  ...Array.from({ length: 60 }, (_, i) => ({ val: i,     type: 'second' as const, idx: i })),
   { val: 'am', type: 'period' as const, idx: 0 },
   { val: 'pm', type: 'period' as const, idx: 1 },
 ];
 
+const TOTAL_ELEMENTS = ELEMENTS.length;
+
 // ── helpers ──────────────────────────────────────────────────────────────────
 
-/** Smooth circular proximity weight in [0, 1]. */
+/** Smooth circular proximity weight in [0, 1]. Optimized math. */
 function prox(idx: number, cur: number, range: number): number {
-  let d = Math.abs(idx - cur);
+  let d = idx - cur;
+  if (d < 0) d = -d; // Faster than Math.abs
   if (d > range * 0.5) d = range - d;
-  return d < 1.5 ? Math.max(0, 1 - d / 1.5) : 0;
+  return d < 1.5 ? 1 - d * 0.6666666666666666 : 0; // Pre-calculated 1 / 1.5
 }
 
-/** Compute per-element weights for the current timestamp. */
-function getWeights(now: Date): number[] {
+/** Pre-allocated array to avoid GC sweeps inside rAF */
+const WEIGHTS_ARRAY = new Float32Array(TOTAL_ELEMENTS);
+
+/** Compute per-element weights directly into an existing array buffer. */
+function updateWeights(now: Date): void {
   const ms    = now.getMilliseconds();
   const sec   = now.getSeconds();
   const min   = now.getMinutes();
   const rawH  = now.getHours();
   const dH    = rawH % 12 || 12;
   const pIdx  = rawH >= 12 ? 1 : 0;
-  const cSec  = sec  + ms   / 1000;
-  const cMin  = min  + cSec / 60;
-  const cHour = (rawH % 12 === 0 ? 0 : dH) + cMin / 60;
+  const cSec  = sec  + ms   * 0.001; // Multiplication is faster than division
+  const cMin  = min  + cSec * 0.016666666666666666;
+  const cHour = (rawH % 12 === 0 ? 0 : dH) + cMin * 0.016666666666666666;
 
-  return ELEMENTS.map(({ type, idx }) => {
-    if (type === 'hour')   return prox(idx === 12 ? 0 : idx, cHour, 12);
-    if (type === 'minute') return prox(idx, cMin, 60);
-    if (type === 'second') return prox(idx, cSec, 60);
-    return idx === pIdx ? 1 : 0;
-  });
+  for (let i = 0; i < TOTAL_ELEMENTS; i++) {
+    const el = ELEMENTS[i];
+    if (el.type === 'hour') {
+      WEIGHTS_ARRAY[i] = prox(el.idx === 12 ? 0 : el.idx, cHour, 12);
+    } else if (el.type === 'minute') {
+      WEIGHTS_ARRAY[i] = prox(el.idx, cMin, 60);
+    } else if (el.type === 'second') {
+      WEIGHTS_ARRAY[i] = prox(el.idx, cSec, 60);
+    } else {
+      WEIGHTS_ARRAY[i] = el.idx === pIdx ? 1 : 0;
+    }
+  }
 }
 
-/** Write visual state directly to DOM refs — keeps React out of the hot path. */
+/** Write visual state directly to DOM refs. Strings are strictly cached/built cleanly. */
 function applyWeight(
   span: HTMLSpanElement,
   lens: HTMLDivElement,
@@ -78,14 +91,16 @@ function applyWeight(
   span.style.transform  = `scale(${zoom.toFixed(3)})`;
   span.style.color      = w > 0.3 ? '#fff' : base;
   span.style.fontWeight = isMain ? '900' : '700';
-  span.style.textShadow = blur > 0.01
-    ? [
-        `0 0 ${blur.toFixed(2)}vmin #fff`,
-        `0 0 ${(blur * 1.5).toFixed(2)}vmin ${base}`,
-        `0 0 ${(blur * 3.0).toFixed(2)}vmin ${base}`,
-        `0 0 ${(blur * 4.5).toFixed(2)}vmin ${base}`,
-      ].join(',')
-    : 'none';
+  
+  if (blur > 0.01) {
+    const b1 = blur.toFixed(2);
+    const b2 = (blur * 1.5).toFixed(2);
+    const b3 = (blur * 3.0).toFixed(2);
+    const b4 = (blur * 4.5).toFixed(2);
+    span.style.textShadow = `0 0 ${b1}vmin #fff, 0 0 ${b2}vmin ${base}, 0 0 ${b3}vmin ${base}, 0 0 ${b4}vmin ${base}`;
+  } else {
+    span.style.textShadow = 'none';
+  }
 
   lens.style.opacity   = fp.toFixed(3);
   lens.style.transform = `scale(${(1 + (1 - fp) * 0.6).toFixed(3)})`;
@@ -104,7 +119,6 @@ interface ClockCellProps {
   elRef:  NodeRefs;
 }
 
-/** Stateless cell — React only renders it once; animation is handled imperatively. */
 const ClockCell = React.memo(({ val, elRef }: ClockCellProps) => {
   return (
     <div style={styles.cell}>
@@ -122,16 +136,20 @@ const ClockCell = React.memo(({ val, elRef }: ClockCellProps) => {
   );
 });
 
+ClockCell.displayName = 'ClockCell';
+
 // ── main component ───────────────────────────────────────────────────────────
 
 export default function DigitalClock() {
-  const refsArr = useRef<NodeRefs[]>(
-    ELEMENTS.map(() => ({ span: null, lens: null, prevW: -1 }))
-  );
+  const refsArr = useRef<NodeRefs[]>([]);
+  
+  if (refsArr.current.length === 0) {
+    refsArr.current = Array.from({ length: TOTAL_ELEMENTS }, () => ({ span: null, lens: null, prevW: -1 }));
+  }
+
   const bucketRef = useRef(-1);
   const rafRef    = useRef<number>(0);
 
-  // Dynamically load Google Font "Bitcount Grid Double" when component mounts
   useEffect(() => {
     const linkId = 'google-font-bitcount';
     if (!document.getElementById(linkId)) {
@@ -150,18 +168,25 @@ export default function DigitalClock() {
       rafRef.current = requestAnimationFrame(frame);
 
       const now = new Date();
-      const mb = now.getMilliseconds() >> 1;
+      // 0.5ms bucket check -> roughly twice every millisecond.
+      const mb = now.getMilliseconds() >> 1; 
       if (mb === bucketRef.current) return;
       bucketRef.current = mb;
 
-      const weights = getWeights(now);
+      updateWeights(now);
 
-      for (let i = 0; i < refs.length; i++) {
+      for (let i = 0; i < TOTAL_ELEMENTS; i++) {
         const r = refs[i];
-        const w = weights[i];
-        if (Math.abs(w - r.prevW) < THRESH) continue;
+        const w = WEIGHTS_ARRAY[i];
+        
+        let diff = w - r.prevW;
+        if (diff < 0) diff = -diff; // Manual Math.abs optimization
+        if (diff < THRESH) continue;
+
         r.prevW = w;
-        if (r.span && r.lens) applyWeight(r.span, r.lens, w, ELEMENTS[i]);
+        if (r.span && r.lens) {
+          applyWeight(r.span, r.lens, w, ELEMENTS[i]);
+        }
       }
     }
 
@@ -194,7 +219,7 @@ const styles: Record<string, React.CSSProperties> = {
     height:          '100vh',
     width:           '100vw',
     backgroundColor: '#787B80',
-    fontFamily:      '"Bitcount Grid Double", monospace', // ◄ Updated font stack
+    fontFamily:      '"Bitcount Grid Double", monospace',
     boxSizing:       'border-box',
     overflow:        'hidden',
   },
