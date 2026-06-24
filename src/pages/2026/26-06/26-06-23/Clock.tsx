@@ -1,46 +1,205 @@
+import fontUrl from '@/assets/fonts/26fonts/26-06-22.ttf?url';
+
+// Ensure the browser can load and use the font from Vite's bundled URL
+// Some font files might not be discoverable by CSS font loading unless we
+// explicitly set the family name here.
+const FONT_FAMILY = 'ClockFont_26_06_14';
+
+import jumpVideo from '@/assets/images/26_images/26-06/26-06-22/row.mp4';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
-import React, { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 
-const formatTime = (num: number): string => num.toString().padStart(2, '0');
+// --- CONFIG & CONSTANTS ---
+const CLOCK_CONFIG = {
+  NUMERAL_RADIUS: 40,
+  COLORS: {
+    background: '#000000A7',
+    primary: '#0D1B40D8',
+    shadow: 'drop-shadow(2px 2px 0px rgba(242, 209, 188, 0.96))',
+    // decayHighlight: 'rgba(255, 149, 0, 0.77)',
+    // decayShadow: 'rgb(0, 0, 0)',
+  },
+};
 
-const DigitalClock: React.FC = () => {
-  const time = useClockTime();
 
-  const { hours, minutes, seconds } = useMemo(
-    () => ({
-      hours: formatTime(time.getHours()),
-      minutes: formatTime(time.getMinutes()),
-      seconds: formatTime(time.getSeconds()),
-    }),
-    [time],
-  );
+const FONT_CONFIGS: FontConfig[] = [
+  {
+    fontFamily: FONT_FAMILY,
+    fontUrl,
+  },
+];
+
+export const assets = [fontUrl, jumpVideo];
+
+
+const HAND_DIMENSIONS = {
+  hour: { width: '0.4vmin', height: '18vmin', zIndex: 3 },
+  minute: { width: '0.3vmin', height: '32vmin', zIndex: 4 },
+  second: { width: '0.2vmin', height: '38vmin', zIndex: 5 },
+} as const;
+
+// --- UTILITIES ---
+const calculateNumeralPosition = (number: number) => {
+  const angleRad = (number / 12) * 2 * Math.PI;
+  return {
+    x: 50 + CLOCK_CONFIG.NUMERAL_RADIUS * Math.sin(angleRad),
+    y: 50 - CLOCK_CONFIG.NUMERAL_RADIUS * Math.cos(angleRad),
+  };
+};
+
+const calculateTimeValues = (date: Date) => {
+  const min = date.getMinutes();
+  return {
+    hr: (date.getHours() % 12) + min / 60,
+    min,
+    sec: date.getSeconds(),
+  };
+};
+
+// --- SUB-COMPONENTS ---
+
+// Memoized to prevent video element re-creation/flicker on time updates
+const BackgroundLayers = memo(() => (
+  <video
+    style={styles.backgroundVideo}
+    autoPlay
+    loop
+    muted
+    playsInline
+  >
+    <source src={jumpVideo} type="video/mp4" />
+  </video>
+));
+BackgroundLayers.displayName = 'BackgroundLayers';
+
+// 1..12 mapped to letters (I=9, V=5 style or any custom mapping)
+const numeralToLetter = (n: number) => {
+  const map = ['w', 'T', 'h', 'c', 's', 'y', 'q', 'f', 'e', 'n', 'g', 'L'] as const;
+  return map[n - 1] ?? String(n);
+};
+
+const ClockNumerals = memo(() => {
+  return useMemo(() => {
+    return Array.from({ length: 12 }, (_, i) => {
+      const num = i + 1;
+      const label = numeralToLetter(num);
+      const { x, y } = calculateNumeralPosition(num);
+
+      return (
+        <div
+          key={num}
+          style={{
+            ...styles.numeralBase,
+            left: `${x}%`,
+            top: `${y}%`,
+            transform: `translate(-50%, -50%) rotate(${(num / 12) * 360}deg)`,
+          }}
+        >
+          {label}
+        </div>
+      );
+    });
+  }, []);
+});
+ClockNumerals.displayName = 'ClockNumerals';
+
+interface ClockHandProps {
+  type: keyof typeof HAND_DIMENSIONS;
+  rotation: number;
+}
+
+const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
+  const { width, height, zIndex } = HAND_DIMENSIONS[type];
 
   return (
-    <main
+    <div
       style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100vw',
-        height: '100dvh',
-        backgroundColor: '#000',
-        margin: 0,
-        padding: 0,
+        ...styles.handBase,
+        width,
+        height,
+        zIndex,
+        transform: `translateX(-50%) rotate(${rotation}deg)`,
       }}
-    >
-      <time
-        dateTime={time.toISOString()}
-        style={{
-          fontFamily: 'monospace',
-          fontSize: 'clamp(2rem, 10vw, 6rem)',
-          color: '#fff',
-          fontVariantNumeric: 'tabular-nums',
-        }}
-      >
-        {hours}:{minutes}:{seconds}
-      </time>
-    </main>
+    />
   );
 };
 
-export default DigitalClock;
+// --- MAIN COMPONENT ---
+const AnalogClock = () => {
+  const currentTime = useClockTime();
+  useSuspenseFontLoader(FONT_CONFIGS);
+
+  const { hr, min, sec } = calculateTimeValues(currentTime);
+
+  return (
+    <div style={styles.container}>
+      <BackgroundLayers />
+
+      <div style={styles.clockFace}>
+        <ClockNumerals />
+        <ClockHand type="hour" rotation={hr * 30} />
+        <ClockHand type="minute" rotation={min * 6} />
+        <ClockHand type="second" rotation={sec * 6} />
+      </div>
+    </div>
+  );
+};
+
+// --- STATIC STYLES ---
+const styles = {
+  container: {
+    position: 'relative' as const,
+    width: '100vw',
+    height: '100dvh',
+    overflow: 'hidden',
+    backgroundColor: CLOCK_CONFIG.COLORS.background,
+  },
+  backgroundVideo: {
+    position: 'absolute' as const,
+    inset: 0,
+    filter: 'saturate(250%) contrast(1.1) brightness(1.2)',
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover' as const,
+    zIndex: 1,
+  },
+  clockFace: {
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    // opacity: 0.5,
+    width: '100vmin',
+    height: '100vmin',
+    zIndex: 7,
+    fontFamily: FONT_CONFIGS[0]!.fontFamily, // Aligned with config
+
+  },
+  numeralBase: {
+    position: 'absolute' as const,
+    fontSize: '22vh',
+    color: CLOCK_CONFIG.COLORS.primary,
+    filter: CLOCK_CONFIG.COLORS.shadow,
+    userSelect: 'none' as const,
+    // textShadow: `
+    //   -1px -1px 0px ${CLOCK_CONFIG.COLORS.decayShadow},
+    //   1px 1px 0px ${CLOCK_CONFIG.COLORS.decayHighlight},
+    //   -2px -2px 2px ${CLOCK_CONFIG.COLORS.decayShadow},
+    //   2px 2px 2px ${CLOCK_CONFIG.COLORS.decayHighlight}
+    // `,
+  },
+  handBase: {
+    position: 'absolute' as const,
+    bottom: '50%',
+    left: '50%',
+    background: CLOCK_CONFIG.COLORS.primary,
+    transformOrigin: '50% 100%',
+    filter: `${CLOCK_CONFIG.COLORS.shadow} sepia(0.4) saturate(1.8) contrast(1.2)`,
+    borderRadius: '0px',
+  },
+};
+
+export default AnalogClock;
+

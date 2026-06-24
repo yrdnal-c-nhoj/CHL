@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-export const DigitalClock: React.FC = () => {
+export default function DigitalClock() {
   const [time, setTime] = useState(new Date());
   const [isColonVisible, setIsColonVisible] = useState(true);
 
   useEffect(() => {
-    // Keeps the time accurate every second
     const timer = setInterval(() => setTime(new Date()), 1000);
-    
-    // Handles the blinking effect at a 1-second interval (500ms on, 500ms off)
     const blinker = setInterval(() => setIsColonVisible((prev) => !prev), 500);
 
     return () => {
@@ -17,7 +14,6 @@ export const DigitalClock: React.FC = () => {
     };
   }, []);
 
-  // Time calculations
   let hours = time.getHours();
   const ampm = hours >= 12 ? 'PM' : 'AM';
   hours = hours % 12;
@@ -50,7 +46,7 @@ export const DigitalClock: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 const styles: { [key: string]: React.CSSProperties } = {
   wrapper: {
@@ -95,11 +91,11 @@ const styles: { [key: string]: React.CSSProperties } = {
     textShadow: '0 0 2vmin rgba(248, 250, 252, 0.4)',
   },
   colon: {
-    fontSize: '7vmin',
+    fontSize: '70vmin',
     fontWeight: 'bold',
     color: '#38bdf8',
     paddingBottom: '6vmin', 
-    transition: 'opacity 0.2s ease-in-out', // Keeps the blink smooth
+    transition: 'opacity 0.2s ease-in-out',
   },
   label: {
     fontSize: '1.8vmin',

@@ -6022,6 +6022,16 @@
   {
     "path": "26-06-22",
     "date": "26-06-22",
+    "title": "Bitcount Grid",
+    "tags": [
+      "digital",
+      "grid",
+      "image-free"
+    ]
+  },
+  {
+    "path": "26-06-23",
+    "date": "26-06-23",
     "title": "Rowboat",
     "tags": [
       "analog",
@@ -6033,17 +6043,18 @@
     ]
   },
   {
-    "path": "26-06-23",
-    "date": "26-06-23",
+    "path": "26-06-24",
+    "date": "26-06-24",
     "title": "Digital Clock",
     "tags": [
       "digital",
       "ampm"
     ]
-  },
+  }
+  ,
   {
-    "path": "26-06-24",
-    "date": "26-06-24",
+    "path": "26-06-25",
+    "date": "26-06-25",
     "title": "Digital Clock",
     "tags": [
       "digital",
