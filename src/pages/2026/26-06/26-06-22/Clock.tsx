@@ -16,8 +16,8 @@ const CLOCK_CONFIG = {
   NUMERAL_RADIUS: 40,
   COLORS: {
     // background: '#000000A7', 
-    primary: '#CDCAC9D8', 
-    shadow: 'drop-shadow(2px 2px 0px rgba(50, 20, 0, 0.96))', 
+    primary: '#0D1B40D8', 
+    shadow: 'drop-shadow(2px 2px 0px rgba(242, 209, 188, 0.96))', 
     // decayHighlight: 'rgba(255, 149, 0, 0.77)', 
     // decayShadow: 'rgb(0, 0, 0)', 
   },
@@ -75,7 +75,7 @@ BackgroundLayers.displayName = 'BackgroundLayers';
 
 // 1..12 mapped to letters (I=9, V=5 style or any custom mapping)
 const numeralToLetter = (n: number) => {
-  const map = ['a', 'b', 'd', 'c', 'z', 'y', 'g', 'h', 't', 'm', 'g', 'h'] as const;
+  const map = ['w', 'T', 'h', 'c', 's', 'y', 'q', 'f', 'e', 'n', 'g', 'L'] as const;
   return map[n - 1] ?? String(n);
 };
 
