@@ -176,16 +176,10 @@ const styles = {
   },
   numeralBase: {
     position: 'absolute' as const,
-    fontSize: '22vh',
+    fontSize: '28vmin',
     color: CLOCK_CONFIG.COLORS.primary,
     filter: CLOCK_CONFIG.COLORS.shadow,
     userSelect: 'none' as const,
-    // textShadow: `
-    //   -1px -1px 0px ${CLOCK_CONFIG.COLORS.decayShadow},
-    //   1px 1px 0px ${CLOCK_CONFIG.COLORS.decayHighlight},
-    //   -2px -2px 2px ${CLOCK_CONFIG.COLORS.decayShadow},
-    //   2px 2px 2px ${CLOCK_CONFIG.COLORS.decayHighlight}
-    // `,
   },
   handBase: {
     position: 'absolute' as const,
