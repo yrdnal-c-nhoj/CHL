@@ -213,7 +213,7 @@ const styles: Record<string, React.CSSProperties> = {
     display:         'flex',
     justifyContent:  'center',
     alignItems:      'center',
-    backgroundColor: '#1A2208',
+    backgroundColor: '#2D2003',
     position:        'relative',
     overflow:        'visible',
   },
