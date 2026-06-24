@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import type { FontConfig } from '../types/clock';
 
 // --- Global Cache & State ---
@@ -43,9 +43,12 @@ function getFontResource(
 
     const promise = fontFace.load().then(
       (loaded) => {
+        // Register immediately so CSS font-family application works deterministically
+        document.fonts.add(loaded);
         status = 'success';
         result = loaded;
       },
+
       (err) => {
         status = 'error';
         error = err;
