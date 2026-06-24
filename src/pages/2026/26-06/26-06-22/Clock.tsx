@@ -75,7 +75,7 @@ BackgroundLayers.displayName = 'BackgroundLayers';
 
 // 1..12 mapped to letters (I=9, V=5 style or any custom mapping)
 const numeralToLetter = (n: number) => {
-  const map = ['a', 'b', 'd', 'c', 'z', 'y', 'G', 'H', 't', 'm', 'g', 'n'] as const;
+  const map = ['a', 'b', 'd', 'c', 'z', 'y', 'g', 'h', 't', 'm', 'g', 'h'] as const;
   return map[n - 1] ?? String(n);
 };
 
