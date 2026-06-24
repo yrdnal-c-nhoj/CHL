@@ -5993,7 +5993,8 @@
       "digital",
       "ampm",
       "b+w",
-      "glass"
+      "glass",
+      "gravity"
     ]
   },
   {
@@ -6003,6 +6004,7 @@
     "tags": [
       "analog",
       "interior",
+      "light",
       "round"
     ]
   },
@@ -6013,6 +6015,7 @@
     "tags": [
       "animal",
       "bird",
+      "fly",
       "pictographic"
     ]
   },
@@ -6021,8 +6024,12 @@
     "date": "26-06-22",
     "title": "Rowboat",
     "tags": [
-      "digital",
-      "ampm"
+      "analog",
+      "animal",
+      "float",
+      "swim",
+      "transport",
+      "water"
     ]
   },
   {
