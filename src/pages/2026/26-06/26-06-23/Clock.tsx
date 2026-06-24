@@ -191,6 +191,7 @@ const styles = {
     position: 'absolute' as const,
     bottom: '50%',
     left: '50%',
+      opacity: 0.6,
     background: CLOCK_CONFIG.COLORS.primary,
     transformOrigin: '50% 100%',
     filter: `${CLOCK_CONFIG.COLORS.shadow} sepia(0.4) saturate(1.8) contrast(1.2)`,
