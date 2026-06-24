@@ -178,7 +178,7 @@ const styles = {
     position: 'absolute' as const,
     fontSize: '28vmin',
     color: CLOCK_CONFIG.COLORS.primary,
-    filter: CLOCK_CONFIG.COLORS.shadow,
+    // filter: CLOCK_CONFIG.COLORS.shadow,
     userSelect: 'none' as const,
   },
   handBase: {
