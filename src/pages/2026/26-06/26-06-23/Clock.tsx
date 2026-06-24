@@ -15,11 +15,8 @@ import { memo, useMemo } from 'react';
 const CLOCK_CONFIG = {
   NUMERAL_RADIUS: 40,
   COLORS: {
-    background: '#000000A7',
     primary: '#0D1B40D8',
-    shadow: 'drop-shadow(2px 2px 0px rgba(242, 209, 188, 0.96))',
-    // decayHighlight: 'rgba(255, 149, 0, 0.77)',
-    // decayShadow: 'rgb(0, 0, 0)',
+    shadow: 'drop-shadow(1px 1px 0px rgba(242, 209, 188, 0.96))',
   },
 };
 
@@ -35,8 +32,8 @@ export const assets = [fontUrl, jumpVideo];
 
 
 const HAND_DIMENSIONS = {
-  hour: { width: '0.4vmin', height: '18vmin', zIndex: 3 },
-  minute: { width: '0.3vmin', height: '32vmin', zIndex: 4 },
+  hour: { width: '0.5vmin', height: '18vmin', zIndex: 3 },
+  minute: { width: '0.4vmin', height: '32vmin', zIndex: 4 },
   second: { width: '0.2vmin', height: '38vmin', zIndex: 5 },
 } as const;
 
@@ -170,10 +167,10 @@ const styles = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    // opacity: 0.5,
     width: '100vmin',
     height: '100vmin',
     zIndex: 7,
+    opacity: 0.6,
     fontFamily: FONT_CONFIGS[0]!.fontFamily, // Aligned with config
 
   },
