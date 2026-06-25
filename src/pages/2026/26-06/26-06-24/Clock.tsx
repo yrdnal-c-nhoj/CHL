@@ -4,6 +4,8 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useEffect, useMemo, useState } from 'react';
 
+export const assets = [backgroundImage, customFont];
+
 export default function DigitalClock() {
   const [time, setTime] = useState(new Date());
 
