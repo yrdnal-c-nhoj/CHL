@@ -39,6 +39,10 @@ export default function DigitalClock() {
   const minutes = time.getMinutes().toString().padStart(2, '0');
   const formattedHours = hours.toString().padStart(2, '0');
 
+  // Replace '0' with 'O' for a stylized look
+  const displayHours = formattedHours.replaceAll('0', 'O');
+  const displayMinutes = minutes.replaceAll('0', 'O');
+
   return (
     <div style={styles.container}>
       <div
@@ -56,9 +60,9 @@ export default function DigitalClock() {
       />
       <div style={styles.timeContainer}>
         <div style={styles.time}>
-          <span>{formattedHours}</span>
+          <span>{displayHours}</span>
           <span style={styles.colon}>:</span>
-          <span>{minutes}</span>
+          <span>{displayMinutes}</span>
         </div>
         <span style={styles.ampm}>{ampm}</span>
       </div>
