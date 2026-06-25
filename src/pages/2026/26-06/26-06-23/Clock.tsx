@@ -155,11 +155,15 @@ const styles = {
   },
   backgroundVideo: {
     position: 'absolute' as const,
-    inset: 0,
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 'auto',
     filter: 'saturate(250%) contrast(1.1) brightness(1.2)',
     width: '100%',
     height: '100%',
     objectFit: 'cover' as const,
+    objectPosition: '100% 50%' as const,
     zIndex: 1,
   },
   clockFace: {
