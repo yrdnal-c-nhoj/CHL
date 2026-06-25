@@ -8,7 +8,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 export const assets = [backgroundImage, clockFont];
 
 // Constant — no reason to live inside the component
-const TILE_SIZE = 80;
+const TILE_SIZE = 50;
 
 const NUMBERS = ['N', 'm', '1', 'R', 't', 'F', '8', 'Q', 'E', 'v'] as const;
 
@@ -58,7 +58,7 @@ const cellStyle: CSSProperties = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  fontSize: 'clamp(10vw, 12vh, 150px)',
+  fontSize: '14vh',
   lineHeight: 1,
   userSelect: 'none',
 };
