@@ -1,11 +1,11 @@
-import fontUrl from '@/assets/fonts/26fonts/26-06-22.ttf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-06-23.ttf?url';
 
 // Ensure the browser can load and use the font from Vite's bundled URL
 // Some font files might not be discoverable by CSS font loading unless we
 // explicitly set the family name here.
 const FONT_FAMILY = 'ClockFont_26_06_14';
 
-import jumpVideo from '@/assets/images/26_images/26-06/26-06-22/row.mp4';
+import jumpVideo from '@/assets/images/26_images/26-06/26-06-23/row.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
