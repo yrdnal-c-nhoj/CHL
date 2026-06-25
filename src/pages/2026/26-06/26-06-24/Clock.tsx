@@ -94,7 +94,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   time: {
     display: 'flex',
     alignItems: 'center',
-    fontSize: '18vh',
+    fontSize: '15vh',
     fontFamily: 'CustomFont260624, monospace',
     color: '#D92828',
     lineHeight: 0.8,             // Tightened to pull everything closer vertically
