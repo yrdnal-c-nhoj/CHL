@@ -88,7 +88,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
     position: 'relative',
     bottom: '18vh',              // Adjust this value to move it higher or lower from the bottom edge
-    left: '90px',                // Adjust this value to move it closer or further from the left edge
+    left: '90px',
+    opacity: 0.7,// Adjust this value to move it closer or further from the left edge
   },
   time: {
     display: 'flex',
