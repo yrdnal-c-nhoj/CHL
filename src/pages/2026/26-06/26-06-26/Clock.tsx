@@ -1,16 +1,28 @@
 import backgroundImage from '@/assets/images/26_images/26-06/26-06-26/sword.webp';
 import urnImage from '@/assets/images/26_images/26-06/26-06-26/urn.webp';
+import windflowerVideo from '@/assets/images/26_images/26-06/26-06-26/windflower.mp4?url';
 import { useClockTime } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 
-export const assets = [backgroundImage, urnImage];
+export const assets = [backgroundImage, urnImage, windflowerVideo];
 
 // Constant — no reason to live inside the component
 const TILE_WIDTH = 150;
 const TILE_HEIGHT = 220;
 
 // --- Static styles ---
+
+const videoStyle: CSSProperties = {
+  position: 'absolute',
+  inset: 0,
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  zIndex: 1,
+  filter: 'brightness(0.7)',
+  opacity: 0.4,
+};
 
 const containerStyle: CSSProperties = {
   position: 'relative',
@@ -47,12 +59,12 @@ const middleLayerStyle: CSSProperties = {
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
-  zIndex: 1,
+  zIndex: 2,
 };
 
 const timeStyle: CSSProperties = {
   position: 'relative',
-  zIndex: 1,
+  zIndex: 3,
   color: '#CFDFF07D',
   textShadow: '0 0 20px rgba(15, 4, 73, 0.99)',
   fontSize: '14vh',
@@ -135,6 +147,15 @@ const Clock: React.FC = () => {
       <style>
         {`@import url('https://fonts.googleapis.com/css2?family=Cardo:wght@700&display=swap');`}
       </style>
+
+      <video
+        src={windflowerVideo}
+        style={videoStyle}
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
 
       <div style={backgroundGridStyle}>{backgroundTiles}</div>
 
