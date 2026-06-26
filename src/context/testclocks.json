@@ -6058,11 +6058,22 @@
   {
     "path": "26-06-25",
     "date": "26-06-25",
-    "title": "Slurping",
+    "title": "Slurp",
     "tags": [
       "analog",
       "animal",
+      "predator",
       "water"
+    ]
+  },
+  {
+    "path": "26-06-26",
+    "date": "26-06-26",
+    "title": "Gyro",
+    "tags": [
+      "analog",
+      "fast",
+      "spin"
     ]
   }
 ]
