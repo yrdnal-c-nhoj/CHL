@@ -106,7 +106,6 @@
       "landscape",
       "nature",
       "sky",
-      "three",
       "tree",
       "up-and-down",
       "vertical"
@@ -135,7 +134,6 @@
       "color",
       "histogram",
       "image-free",
-      "three",
       "up-and-down"
     ]
   },
@@ -188,8 +186,7 @@
       "blue",
       "histogram",
       "monochrome",
-      "parallel",
-      "three"
+      "parallel"
     ]
   },
   {
@@ -259,8 +256,7 @@
       "gravity",
       "histogram",
       "image-free",
-      "sphere",
-      "three"
+      "sphere"
     ]
   },
   {
@@ -3958,8 +3954,7 @@
     "title": "Trifurcate",
     "tags": [
       "analog",
-      "RYB",
-      "three"
+      "RYB"
     ]
   },
   {
@@ -4780,7 +4775,6 @@
       "analog",
       "face",
       "image-free",
-      "three",
       "triangle"
     ]
   },
@@ -4797,7 +4791,6 @@
       "milliseconds",
       "molecules",
       "ocean",
-      "three",
       "water"
     ]
   },
@@ -6074,6 +6067,15 @@
       "analog",
       "fast",
       "spin"
+    ]
+  },
+  {
+    "path": "26-06-27",
+    "date": "26-06-27",
+    "title": "315° Northwest",
+    "tags": [
+      "digital",
+      "cardinal-directions"
     ]
   }
 ]
