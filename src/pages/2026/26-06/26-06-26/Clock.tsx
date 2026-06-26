@@ -66,8 +66,9 @@ const timeStyle: CSSProperties = {
 // --- Component ---
 
 const Clock: React.FC = () => {
-  const time = useClockTime('ms');
+  const time = useClockTime(); // Use standard second-based time for the digital display
   const [dimensions, setDimensions] = useState({ cols: 1, rows: 1 });
+  const [rotationAngle, setRotationAngle] = useState(0);
 
   useEffect(() => {
     const update = () =>
@@ -80,18 +81,26 @@ const Clock: React.FC = () => {
     return () => window.removeEventListener('resize', update);
   }, []);
 
-  const timeString = useMemo(() => {
-    const d = new Date(Math.floor(time.getTime() / 1000) * 1000);
-    const hh = d.getHours().toString().padStart(2, '0');
-    const mm = d.getMinutes().toString().padStart(2, '0');
-    const ss = d.getSeconds().toString().padStart(2, '0');
-    return `${hh}:${mm}:${ss}`;
-  }, [time]);
+  // Animation loop for smooth rotation
+  useEffect(() => {
+    let frameId: number;
+    const animate = () => {
+      const now = new Date();
+      const secondsWithMs = now.getSeconds() + now.getMilliseconds() / 1000;
+      const angle = -(secondsWithMs * 6); // -360 degrees over 60 seconds
+      setRotationAngle(angle);
+      frameId = requestAnimationFrame(animate);
+    };
 
-  const rotationAngle = useMemo(() => {
-    const secondsWithMs =
-      time.getSeconds() + time.getMilliseconds() / 1000;
-    return -(secondsWithMs * 6); // -360 degrees over 60 seconds
+    frameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+
+  const timeString = useMemo(() => {
+    const hh = time.getHours().toString().padStart(2, '0');
+    const mm = time.getMinutes().toString().padStart(2, '0');
+    const ss = time.getSeconds().toString().padStart(2, '0');
+    return `${hh}:${mm}:${ss}`;
   }, [time]);
 
   const backgroundTiles = useMemo(() => {
