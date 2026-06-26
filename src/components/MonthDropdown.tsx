@@ -146,7 +146,7 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
                       date={item.date}
                       title={item.title || ''}
                       style={{
-                        opacity: 0.8,
+                        opacity: 1,
                       }}
                     />
                   </div>
