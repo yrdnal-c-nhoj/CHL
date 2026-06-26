@@ -6062,17 +6062,7 @@
   {
     "path": "26-06-26",
     "date": "26-06-26",
-    "title": "Gyro",
-    "tags": [
-      "analog",
-      "fast",
-      "spin"
-    ]
-  },
-  {
-    "path": "26-06-27",
-    "date": "26-06-27",
-    "title": "315° Northwest",
+   "title": "315° Northwest",
     "tags": [
       "digital",
       "cardinal-directions"
