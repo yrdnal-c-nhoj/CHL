@@ -1,5 +1,5 @@
 import customFont from '@/assets/fonts/26fonts/26-06-24.ttf?url';
-import backgroundImage from '@/assets/images/26_images/26-06/26-06-22/golf.webp';
+import backgroundImage from '@/assets/images/26_images/26-06/26-06-22/golf.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -47,19 +47,23 @@ export default function DigitalClock() {
 
   return (
     <div style={styles.container}>
-      <div
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
           width: '100%',
           height: '100%',
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'right bottom',
+          objectFit: 'cover',
+          objectPosition: 'right bottom',
           transform: 'scaleX(-1)',
         }}
-      />
+        src={backgroundImage}
+       />
       <div style={styles.timeContainer}>
         <div style={styles.time}>
           <span>{displayHours}</span>
