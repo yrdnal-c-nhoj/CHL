@@ -1,13 +1,24 @@
+import fontUrl from '@/assets/fonts/26fonts/26-06-26.otf?url';
 import backgroundImage from '@/assets/images/26_images/26-06/26-06-26/sword.webp';
 import urnImage from '@/assets/images/26_images/26-06/26-06-26/urn.webp';
 import windflowerVideo from '@/assets/images/26_images/26-06/26-06-26/windflower.mp4?url';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 
-export const assets = [backgroundImage, urnImage, windflowerVideo];
+export const assets = [backgroundImage, urnImage, windflowerVideo, fontUrl];
 
 // Constant — no reason to live inside the component
+const FONT_FAMILY = 'ClockFont_26_06_26';
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: FONT_FAMILY,
+    fontUrl,
+  },
+];
+
 const TILE_WIDTH = 150;
 const TILE_HEIGHT = 220;
 
@@ -21,7 +32,7 @@ const videoStyle: CSSProperties = {
   objectFit: 'cover',
   zIndex: 1,
   filter: 'brightness(0.7)',
-  opacity: 0.4,
+  opacity: 0.5,
 };
 
 const containerStyle: CSSProperties = {
@@ -63,24 +74,41 @@ const middleLayerStyle: CSSProperties = {
 };
 
 const timeStyle: CSSProperties = {
-  position: 'relative',
+  position: 'absolute', // Absolute positioning matches the true bounding space of the container
+  inset: 0,             // Spans full container width/height
   zIndex: 3,
-  color: '#CFDFF07D',
-  textShadow: '0 0 20px rgba(15, 4, 73, 0.99)',
-  fontSize: '14vh',
+  color: '#BCDBFBB7',
+  textShadow: '0 1px 2px rgba(5, 2, 20, 0.99)',
+  fontSize: '10vh',
   lineHeight: 1,
   userSelect: 'none',
-  fontFamily: "'Cardo', serif",
-  letterSpacing: '0.05em',
+  fontFamily: `'${FONT_FAMILY}', serif`,
   mixBlendMode: 'overlay',
+  display: 'flex',       // Centers child elements flawlessly
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
+const digitBoxStyle: CSSProperties = {
+  width: '5vh',          // Sized appropriately for numbers
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
+const colonBoxStyle: CSSProperties = {
+  width: '2vh',          // Thinner bounding box ensures colons don't cause visual shift
+  textAlign: 'center',
+  display: 'inline-block',
 };
 
 // --- Component ---
 
 const Clock: React.FC = () => {
-  const time = useClockTime(); // Use standard second-based time for the digital display
+  const time = useClockTime(); 
   const [dimensions, setDimensions] = useState({ cols: 1, rows: 1 });
   const [rotationAngle, setRotationAngle] = useState(0);
+
+  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const update = () =>
@@ -144,10 +172,6 @@ const Clock: React.FC = () => {
         '--grid-rows': String(dimensions.rows),
       } as CSSProperties}
     >
-      <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Cardo:wght@700&display=swap');`}
-      </style>
-
       <video
         src={windflowerVideo}
         style={videoStyle}
@@ -164,7 +188,14 @@ const Clock: React.FC = () => {
       />
 
       <time dateTime={time.toISOString()} style={timeStyle}>
-        {timeString}
+        {timeString.split('').map((char, index) => (
+          <span 
+            key={index} 
+            style={char === ':' ? colonBoxStyle : digitBoxStyle}
+          >
+            {char}
+          </span>
+        ))}
       </time>
     </main>
   );
