@@ -35,7 +35,7 @@ const HAND_DIMENSIONS = {
   hour: { width: '0.5vmin', height: '18vmin', zIndex: 3 },
   minute: { width: '0.4vmin', height: '32vmin', zIndex: 4 },
   second: { width: '0.2vmin', height: '38vmin', zIndex: 5 },
-} as const;
+};
 
 // --- UTILITIES ---
 const calculateNumeralPosition = (number: number) => {
@@ -73,7 +73,7 @@ BackgroundLayers.displayName = 'BackgroundLayers';
 
 // 1..12 mapped to letters (I=9, V=5 style or any custom mapping)
 const numeralToLetter = (n: number) => {
-  const map = ['w', 'T', 'h', 'c', 's', 'y', 'q', 'f', 'e', 'n', 'g', 'L'] as const;
+  const map = ['w', 'T', 'h', 'c', 's', 'y', 'q', 'f', 'e', 'n', 'g', 'L'];
   return map[n - 1] ?? String(n);
 };
 
@@ -147,14 +147,14 @@ const AnalogClock = () => {
 // --- STATIC STYLES ---
 const styles = {
   container: {
-    position: 'relative' as const,
+    position: 'relative',
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
-    backgroundColor: CLOCK_CONFIG.COLORS.background,
+    backgroundColor: CLOCK_CONFIG.COLORS.primary,
   },
   backgroundVideo: {
-    position: 'absolute' as const,
+    position: 'absolute',
     top: 0,
     bottom: 0,
     right: 0,
@@ -162,12 +162,12 @@ const styles = {
     filter: 'saturate(250%) contrast(1.1) brightness(1.2)',
     width: '100%',
     height: '100%',
-    objectFit: 'cover' as const,
-    objectPosition: '100% 50%' as const,
+    objectFit: 'cover',
+    objectPosition: '100% 50%',
     zIndex: 1,
   },
   clockFace: {
-    position: 'absolute' as const,
+    position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -179,14 +179,14 @@ const styles = {
 
   },
   numeralBase: {
-    position: 'absolute' as const,
+    position: 'absolute',
     fontSize: '22vmin',
     color: CLOCK_CONFIG.COLORS.primary,
     filter: CLOCK_CONFIG.COLORS.shadow,
-    userSelect: 'none' as const,
+    userSelect: 'none',
   },
   handBase: {
-    position: 'absolute' as const,
+    position: 'absolute',
     bottom: '50%',
     left: '50%',
       opacity: 0.6,
@@ -198,4 +198,3 @@ const styles = {
 };
 
 export default AnalogClock;
-
