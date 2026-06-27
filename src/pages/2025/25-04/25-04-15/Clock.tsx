@@ -1,17 +1,17 @@
-import React, {
-  useEffect,
-  useState,
-  useMemo,
-  useCallback,
-  useRef,
-} from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import horizonFontUrl from '@/assets/fonts/25fonts/25-04-15-hori.otf?url';
 import layer2 from '@/assets/images/25_images/25-04/25-04-15/4c558c5dbff1828f2b87582dc49526e8.gif';
-import sdfwef from '@/assets/images/25_images/25-04/25-04-15/sdfwef.webp';
 import layer1 from '@/assets/images/25_images/25-04/25-04-15/ewfsdfsd.webp';
+import sdfwef from '@/assets/images/25_images/25-04/25-04-15/sdfwef.webp';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 // Component Props interface
 interface HorizonClockProps {
@@ -63,7 +63,7 @@ const HorizonClock = () => {
     <div
       style={{
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         position: 'fixed',
         top: 0,
         left: 0,
