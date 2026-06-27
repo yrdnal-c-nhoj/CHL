@@ -174,8 +174,7 @@ const ClockPage: React.FC = () => {
           }}
           aria-label="Go back"
           style={{
-            cursor: 'pointer',
-            minHeight: '100dvh',
+            height: '100dvh',
             display: 'flex',
             flexDirection: 'column',
           }}
