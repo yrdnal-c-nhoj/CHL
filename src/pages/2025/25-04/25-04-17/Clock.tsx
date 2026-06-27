@@ -1,7 +1,7 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 // Digit style interface
 interface DigitStyle {
@@ -36,6 +36,22 @@ const loadFont = () => {
   document.head.appendChild(link);
 };
 
+// Custom hook to get the actual inner height, avoiding mobile browser issues
+const useViewportHeight = () => {
+  const [height, setHeight] = useState(window.innerHeight);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setHeight(window.innerHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return height;
+};
+
 export default function StripeClock() {
   // Font loading configuration (memoized) - no custom fonts needed
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
@@ -43,6 +59,7 @@ export default function StripeClock() {
 
   const time = useSecondClock();
 
+  const viewportHeight = useViewportHeight();
   useEffect(() => {
     loadFont();
   }, []);
@@ -56,7 +73,7 @@ export default function StripeClock() {
     display: 'flex',
     flexDirection: 'column', // stack stripes vertically
     width: '100vw',
-    height: '100dvh',
+    height: `${viewportHeight}px`,
     position: 'fixed',
     top: 0,
     left: 0,
