@@ -1,14 +1,9 @@
 import fontUrl from '@/assets/fonts/26fonts/26-06-23.ttf?url';
-
-// Ensure the browser can load and use the font from Vite's bundled URL
-// Some font files might not be discoverable by CSS font loading unless we
-// explicitly set the family name here.
-const FONT_FAMILY = 'ClockFont_26_06_14';
-
 import jumpVideo from '@/assets/images/26_images/26-06/26-06-23/row.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
+import type { CSSProperties } from 'react';
 import { memo, useMemo } from 'react';
 
 // --- CONFIG & CONSTANTS ---
@@ -20,6 +15,7 @@ const CLOCK_CONFIG = {
   },
 };
 
+const FONT_FAMILY = 'ClockFont_26_06_14';
 
 const FONT_CONFIGS: FontConfig[] = [
   {
@@ -30,8 +26,8 @@ const FONT_CONFIGS: FontConfig[] = [
 
 export const assets = [fontUrl, jumpVideo];
 
-
-const HAND_DIMENSIONS = {
+// Strongly typed hand dimensions to prevent TS errors
+const HAND_DIMENSIONS: Record<string, CSSProperties> = {
   hour: { width: '0.5vmin', height: '18vmin', zIndex: 3 },
   minute: { width: '0.4vmin', height: '32vmin', zIndex: 4 },
   second: { width: '0.2vmin', height: '38vmin', zIndex: 5 },
@@ -55,12 +51,17 @@ const calculateTimeValues = (date: Date) => {
   };
 };
 
+const numeralToLetter = (n: number) => {
+  const map = ['w', 'T', 'h', 'c', 's', 'y', 'q', 'f', 'e', 'n', 'g', 'L'];
+  return map[n - 1] ?? String(n);
+};
+
 // --- SUB-COMPONENTS ---
 
-// Memoized to prevent video element re-creation/flicker on time updates
 const BackgroundLayers = memo(() => (
   <video
     style={styles.backgroundVideo}
+    className="background-video" // FIX: Added missing class for media query
     autoPlay
     loop
     muted
@@ -70,12 +71,6 @@ const BackgroundLayers = memo(() => (
   </video>
 ));
 BackgroundLayers.displayName = 'BackgroundLayers';
-
-// 1..12 mapped to letters (I=9, V=5 style or any custom mapping)
-const numeralToLetter = (n: number) => {
-  const map = ['w', 'T', 'h', 'c', 's', 'y', 'q', 'f', 'e', 'n', 'g', 'L'];
-  return map[n - 1] ?? String(n);
-};
 
 const ClockNumerals = memo(() => {
   return useMemo(() => {
@@ -103,26 +98,34 @@ const ClockNumerals = memo(() => {
 ClockNumerals.displayName = 'ClockNumerals';
 
 interface ClockHandProps {
-  type: keyof typeof HAND_DIMENSIONS;
+  type: 'hour' | 'minute' | 'second'; // FIX: Explicitly typed for better IDE auto-complete
   rotation: number;
 }
 
 const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
-  const { width, height, zIndex } = HAND_DIMENSIONS[type];
+  const handStyle = HAND_DIMENSIONS[type];
 
   return (
     <div
       style={{
         ...styles.handBase,
-        width,
-        height,
-        zIndex,
+        ...handStyle, // FIX: Safe spread with standard CSSProperties
         transform: `translateX(-50%) rotate(${rotation}deg)`,
       }}
     />
   );
 };
-
+const StyleOverrides = () => (
+  <style>{`
+    @media (max-width: 768px) {
+      .background-video {
+        object-fit: contain !important;
+        transform: scale(1.3); /* Adjust this number (e.g., 1.2 to 1.5) to zoom in or out */
+        transform-origin: center center;
+      }
+    }
+  `}</style>
+);
 // --- MAIN COMPONENT ---
 const AnalogClock = () => {
   const currentTime = useClockTime();
@@ -132,6 +135,7 @@ const AnalogClock = () => {
 
   return (
     <div style={styles.container}>
+      <StyleOverrides />
       <BackgroundLayers />
 
       <div style={styles.clockFace}>
@@ -145,7 +149,7 @@ const AnalogClock = () => {
 };
 
 // --- STATIC STYLES ---
-const styles = {
+const styles: Record<string, CSSProperties> = {
   container: {
     position: 'relative',
     width: '100vw',
@@ -158,12 +162,12 @@ const styles = {
     top: 0,
     bottom: 0,
     left: 0,
-    right: 0, // Ensure it spans full width
+    right: 0,
     filter: 'saturate(250%) contrast(1.1) brightness(1.2)',
     width: '100%',
     height: '100%',
     objectFit: 'cover',
-    objectPosition: 'center', // Center the video content
+    objectPosition: 'center',
     zIndex: 1,
   },
   clockFace: {
@@ -175,8 +179,7 @@ const styles = {
     height: '100vmin',
     zIndex: 7,
     opacity: 0.6,
-    fontFamily: FONT_CONFIGS[0]!.fontFamily, // Aligned with config
-
+    fontFamily: FONT_CONFIGS[0]!.fontFamily,
   },
   numeralBase: {
     position: 'absolute',
@@ -187,6 +190,7 @@ const styles = {
   },
   handBase: {
     position: 'absolute',
+    display: 'block', // FIX: Ensures div reliably block-renders dimensions
     bottom: '50%',
     left: '50%',
     opacity: 0.6,
