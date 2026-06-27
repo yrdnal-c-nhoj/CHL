@@ -157,12 +157,13 @@ const styles = {
     position: 'absolute',
     top: 0,
     bottom: 0,
-    right: 0,
+    left: 0,
+    right: 0, // Ensure it spans full width
     filter: 'saturate(250%) contrast(1.1) brightness(1.2)',
     width: '100%',
     height: '100%',
     objectFit: 'cover',
-    objectPosition: '100% 50%',
+    objectPosition: 'center', // Center the video content
     zIndex: 1,
   },
   clockFace: {
