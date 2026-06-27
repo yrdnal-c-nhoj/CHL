@@ -1,24 +1,10 @@
 import { useClockTime } from '@/hooks/useClockTime';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { BackgroundGrid } from './BackgroundGrid'; // Import the extracted component
 
 // TicTacToeClock component
 // This component displays a clock in a Tic-Tac-Toe grid style.
 export default function TicTacToeClock() {
-  // Add viewport meta tag for mobile responsiveness
-  useEffect(() => {
-    if (typeof document !== 'undefined') {
-      const viewportMeta = document.querySelector('meta[name="viewport"]');
-      if (!viewportMeta) {
-        const meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content =
-          'width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no';
-        document.head.appendChild(meta);
-      }
-    }
-  }, []);
-
   const time = useClockTime();
 
   // Font is loaded by useSuspenseFontLoader in BackgroundGrid component
