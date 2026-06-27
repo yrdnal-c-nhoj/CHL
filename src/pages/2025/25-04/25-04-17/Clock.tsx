@@ -74,7 +74,7 @@ export default function StripeClock() {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: '12vh',
+    fontSize: '10vh',
     fontWeight: 'bold',
     backgroundColor: digitStyles[char].bg,
     color: digitStyles[char].color,
