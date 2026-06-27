@@ -19,8 +19,8 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
-const TILE_WIDTH = 150;
-const TILE_HEIGHT = 220;
+const TILE_WIDTH = 70;
+const TILE_HEIGHT = 120;
 
 // --- Static styles ---
 
