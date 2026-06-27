@@ -64,7 +64,6 @@ export default function StripeClock() {
     margin: 0,
     padding: 0,
     fontFamily: "'Asset', monospace",
-    fontWeight: 'bold',
   };
 
   // Stripe style function
@@ -74,8 +73,7 @@ export default function StripeClock() {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: '10vh',
-    fontWeight: 'bold',
+    fontSize: '8vh',
     backgroundColor: digitStyles[char].bg,
     color: digitStyles[char].color,
     transition: 'all 0.5s ease',
