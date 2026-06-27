@@ -81,7 +81,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     justifyContent: 'flex-start', // Aligns items to the left horizontally
     alignItems: 'flex-end',      // Aligns items to the bottom vertically
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     position: 'relative',
     overflow: 'hidden',
