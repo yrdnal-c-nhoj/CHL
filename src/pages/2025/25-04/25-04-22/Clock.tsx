@@ -156,7 +156,7 @@ const styles: Record<string, CSSProperties> = {
   },
   scene: {
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     perspective: '1000px',
     position: 'absolute',
     top: 0,
