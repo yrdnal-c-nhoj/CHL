@@ -1,10 +1,9 @@
-import { useEffect, useState, useMemo } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import sproutFontTtf from '@/assets/fonts/25fonts/25-05-26-sprout.ttf?url';
 import spr from '@/assets/images/25_images/25-05/25-05-26/spr.gif';
 import sprou from '@/assets/images/25_images/25-05/25-05-26/sprou.gif';
 import sprout from '@/assets/images/25_images/25-05/25-05-26/sprout.gif';
-import sproutFontTtf from '@/assets/fonts/25fonts/25-05-26-sprout.ttf?url';
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useEffect, useMemo, useState } from 'react';
 
 const baseStyles = {
   container: {
@@ -58,7 +57,6 @@ const baseStyles = {
   clock: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '0.1vh',
     zIndex: 12,
     alignItems: 'center',
     justifyContent: 'center',
@@ -71,9 +69,9 @@ const baseStyles = {
     color: 'rgb(184, 244, 172)',
     textShadow: 'rgb(55, 4, 10) 2px 2px',
     fontFamily: "'sprout', monospace",
-    padding: '0.1vh 0.1vw',
+    // padding: '0.1vh 0.1vw',
     fontSize: '16vh',
-    minWidth: '14vh',
+    minWidth: '12vh',
     textAlign: 'center',
   },
   imageBase: {
@@ -159,8 +157,8 @@ export default function SproutClock() {
         transition: 'opacity 0.3s ease',
       }}
     >
-      <div style={styles.bgTiled}></div>
-      <div style={styles.bgCover}></div>
+      <div style={styles.bgTiled} />
+      <div style={styles.bgCover} />
 
       <div style={styles.content}>
         {imagePositions.map((pos, i) => (
