@@ -1,12 +1,11 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import type { CSSProperties } from 'react';
-import lava1 from '@/assets/images/25_images/25-04/25-04-24/lava.webp';
-import lava2 from '@/assets/images/25_images/25-04/25-04-24/vp2OVr.gif';
-import lava3 from '@/assets/images/25_images/25-04/25-04-24/lava.webp';
 import lavaFont from '@/assets/fonts/25fonts/25-04-24-lava.ttf?url';
+import { default as lava1, default as lava3 } from '@/assets/images/25_images/25-04/25-04-24/lava.webp';
+import lava2 from '@/assets/images/25_images/25-04/25-04-24/vp2OVr.gif';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+import type { CSSProperties } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // Time state interface
 interface TimeState {
@@ -88,8 +87,8 @@ const LavaClock: React.FC<LavaClockProps> = () => {
     position: 'absolute',
     top: 0,
     left: 0,
-    width: '170vw',
-    height: '100vh',
+    width: '170vw', // Keep width as vw for horizontal overscan
+    height: '100dvh', // Use dvh to respect mobile viewport
     objectFit: 'cover',
     opacity: '90%',
     zIndex: 4,
@@ -101,7 +100,7 @@ const LavaClock: React.FC<LavaClockProps> = () => {
     top: 0,
     left: 0,
     width: '100vw',
-    height: '160vh',
+    height: '160dvh', // Use dvh to respect mobile viewport
     objectFit: 'cover',
     opacity: '60%',
     transform: 'scaleX(-1)',
@@ -113,7 +112,7 @@ const LavaClock: React.FC<LavaClockProps> = () => {
     top: 0,
     left: 0,
     width: '100vw',
-    height: '100vh',
+    height: '100dvh', // Use dvh to respect mobile viewport
     objectFit: 'cover',
     filter: 'saturate(150%)',
     opacity: '50%',
@@ -124,7 +123,7 @@ const LavaClock: React.FC<LavaClockProps> = () => {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    height: '100vh',
+    height: '100dvh', // Use dvh to respect mobile viewport
     justifyContent: 'center',
     position: 'relative',
     zIndex: 10,
@@ -146,12 +145,12 @@ const LavaClock: React.FC<LavaClockProps> = () => {
       style={{
         backgroundColor: '#f70f07',
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         overflow: 'hidden',
         position: 'relative',
       }}
     >
-      <div style={screenStyle}></div>
+      <div style={screenStyle} />
 
       <img
         decoding="async"
