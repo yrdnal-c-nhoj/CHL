@@ -1,4 +1,4 @@
-import chandelierBg from '@/assets/images/26_images/26-06/26-06-27/clover.webp';
+import chandelierBg from '@/assets/images/26_images/26-06/26-06-27/clover.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -40,7 +40,8 @@ const AnalogClock: React.FC = () => {
   const clockNumbers = useMemo(() => generateNumbers(), []);
 
   useEffect(() => {
-    const timerId = setInterval(() => setNow(new Date()), 1000);
+    // Sync with requestAnimationFrame or high frequency to capture milliseconds smoothly
+    const timerId = setInterval(() => setNow(new Date()), 16); 
     return () => clearInterval(timerId);
   }, []);
 
@@ -59,7 +60,7 @@ const AnalogClock: React.FC = () => {
         width="300"
         height="300"
         viewBox="0 0 200 200"
-        preserveAspectRatio="xMidYMid meet"
+        preserveAspectRatio="xMidYMid slice" // Changed to 'slice' to cover the clock background area properly
         style={styles.analogClock}
       >
         <defs>
@@ -72,8 +73,17 @@ const AnalogClock: React.FC = () => {
           </filter>
         </defs>
 
-        {/* Background Image */}
-        <image href={chandelierBg} height="100%" width="100%" />
+        {/* Background Video Embedded via foreignObject */}
+        <foreignObject x="0" y="0" width="200" height="200">
+          <video
+            src={chandelierBg}
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        </foreignObject>
 
         {/* Clock Face */}
         <g>
@@ -123,14 +133,10 @@ const styles: { [key: string]: React.CSSProperties } = {
   analogClock: {
     width: '100vmin',
     height: '100vmin',
-    // maxWidth: '600px',
-    // maxHeight: '600px',
-
-    // filter: 'saturate(1.2) contrast(1.1) drop-shadow(0 0 10px rgba(0,0,0,0.5))',
   },
   numberText: {
     fontFamily: "'ClockFont_26_06_27', monospace",
-    fontSize: '8vh',
+    fontSize: '24px', // Fixed from 8vh to static px/em relative to the viewBox coordinate system
     fill: '#F3E8DA',
     textAnchor: 'middle',
     dominantBaseline: 'central',
@@ -139,15 +145,14 @@ const styles: { [key: string]: React.CSSProperties } = {
     filter: 'drop-shadow(0 1px 0px rgba(233, 220, 220, 0.7))',
   },
   centerPin: {
-    // fill: '#D99946',
     stroke: '#F3E8DA',
     strokeWidth: '1.0',
-      opacity: 0.6,
+    opacity: 0.6,
   },
   hand: {
     strokeLinecap: 'round',
     stroke: '#F3E8DA',
-      opacity: 0.6,
+    opacity: 0.6,
     filter: 'drop-shadow(0 0 2px rgba(0,0,0,0.8))',
   },
   hourHand: {
