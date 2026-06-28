@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
 // Component Props interface
 interface CubeClockProps {
@@ -77,15 +77,11 @@ const CubeClock: React.FC<CubeClockProps> = () => {
     if (position.current.y <= 0) {
       position.current.y = 0;
       velocity.current.y = Math.abs(velocity.current.y);
-    } else if (
-      position.current.y +
-        cubeSizeVw * (window.innerWidth / window.innerHeight) >=
-      100
-    ) {
-      // Corrected for aspect ratio since cube height is 15vw
-      const cubeHeightVh =
-        (cubeSizeVw * window.innerWidth) / window.innerHeight;
-      position.current.y = 100 - cubeHeightVh;
+    } else if (cube.getBoundingClientRect().bottom >= window.innerHeight) {
+      // Use getBoundingClientRect for precise collision detection against the viewport edge.
+      // This is more reliable than calculating vh from vw.
+      const cubeHeightInVh = (cube.offsetHeight / window.innerHeight) * 100;
+      position.current.y = 100 - cubeHeightInVh;
       velocity.current.y = -Math.abs(velocity.current.y);
     }
 
@@ -133,12 +129,12 @@ const CubeClock: React.FC<CubeClockProps> = () => {
     <div style={styles.body}>
       <div style={styles.scene}>
         <div ref={cubeRef} style={styles.cube}>
-          <div style={{ ...styles.face, ...styles.front }}></div>
-          <div style={{ ...styles.face, ...styles.back }}></div>
-          <div style={{ ...styles.face, ...styles.left }}></div>
-          <div style={{ ...styles.face, ...styles.right }}></div>
-          <div style={{ ...styles.face, ...styles.top }}></div>
-          <div style={{ ...styles.face, ...styles.bottom }}></div>
+          <div style={{ ...styles.face, ...styles.front }} />
+          <div style={{ ...styles.face, ...styles.back }} />
+          <div style={{ ...styles.face, ...styles.left }} />
+          <div style={{ ...styles.face, ...styles.right }} />
+          <div style={{ ...styles.face, ...styles.top }} />
+          <div style={{ ...styles.face, ...styles.bottom }} />
         </div>
       </div>
     </div>
