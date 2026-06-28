@@ -29,7 +29,7 @@ const baseStyles = {
     opacity: 0.7,
     backgroundImage: `url(${spr})`,
     backgroundRepeat: 'repeat',
-    backgroundSize: '23px 23px',
+    backgroundSize: '33px 33px',
     pointerEvents: 'none',
   },
   bgCover: {
