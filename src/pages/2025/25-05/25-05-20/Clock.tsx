@@ -1,25 +1,19 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import flaFont from '../../../../assets/fonts/25fonts/25-10-05-do.ttf'; // Fallback to an existing font file
-import { useMultipleFontLoader } from '../../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 
 const Clock: React.FC = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+  // Use the suspense-based font loader for consistency and reliability.
+  useSuspenseFontLoader([
     {
       fontFamily: 'fla',
       fontUrl: flaFont,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
-    }
-  ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+      options: { weight: 'normal', style: 'normal' },
+    },
+  ]);
 
   const mountRef = useRef(null);
-
-  // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -76,7 +70,7 @@ const Clock: React.FC = () => {
         }),
     );
 
-    let geometry = new THREE.TetrahedronGeometry(1).toNonIndexed();
+    const geometry = new THREE.TetrahedronGeometry(1).toNonIndexed();
     const uvAttribute = new Float32Array(
       geometry.attributes.position.count * 2,
     );
@@ -155,27 +149,15 @@ const Clock: React.FC = () => {
 
   return (
     <>
+      {/* The font is loaded via useSuspenseFontLoader, so the inline @font-face is not needed. */}
       <style>{`
-        @font-face {
-          font-family: 'fla';
-          src: url(${flaFont}) format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
-
         body {
           margin: 0;
           overflow: hidden;
           background: linear-gradient(135deg, #b20832, #541c08);
         }
-
-        .fire-gradient {
-          height: 100vh;
-          width: 100vw;
-          overflow: hidden;
-        }
       `}</style>
-      <div ref={mountRef} className="fire-gradient" />
+      <div ref={mountRef} style={{ width: '100vw', height: '100dvh', overflow: 'hidden' }} />
     </>
   );
 };
