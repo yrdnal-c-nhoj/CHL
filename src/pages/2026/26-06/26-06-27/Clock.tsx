@@ -17,16 +17,20 @@ const fontConfigs: FontConfig[] = [
 // --- Helper for generating clock numerals ---
 const generateNumbers = () => {
   return Array.from({ length: 12 }, (_, i) => {
-    const angle = (i + 1) * 30; // 30 degrees per hour
-    const x = 100 + 80 * Math.sin((angle * Math.PI) / 180);
-    const y = 100 - 80 * Math.cos((angle * Math.PI) / 180);
-    return {
-      key: i,
-      x,
-      y,
-      number: i + 1,
-    };
-  });
+    const number = i + 1;
+    if (number % 3 === 0) {
+      const angle = number * 30; // 30 degrees per hour
+      const x = 100 + 80 * Math.sin((angle * Math.PI) / 180);
+      const y = 100 - 80 * Math.cos((angle * Math.PI) / 180);
+      return {
+        key: i,
+        x,
+        y,
+        number,
+      };
+    }
+    return null;
+  }).filter(Boolean) as { key: number; x: number; y: number; number: number }[];
 };
 
 const AnalogClock: React.FC = () => {
@@ -55,20 +59,13 @@ const AnalogClock: React.FC = () => {
         width="300"
         height="300"
         viewBox="0 0 200 200"
+        preserveAspectRatio="xMidYMid meet"
         style={styles.analogClock}
       >
-        <defs>
-          <filter id="glow-light">
-            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
-            <feMerge>
-              <feMergeNode in="coloredBlur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
+      
 
         {/* Background Image */}
-        <image href={chandelierBg} height="200" width="200" />
+        <image href={chandelierBg} height="100%" width="100%" />
 
         {/* Clock Face */}
         <g>
@@ -112,33 +109,37 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
     width: '100vw',
     height: '100dvh',
-    backgroundColor: '#000',
+    backgroundColor: '#AFC076',
     overflow: 'hidden',
   },
   analogClock: {
-    width: '70vmin',
-    height: '70vmin',
-    maxWidth: '600px',
-    maxHeight: '600px',
-    filter: 'saturate(1.2) contrast(1.1) drop-shadow(0 0 10px rgba(0,0,0,0.5))',
+    width: '100vmin',
+    height: '100vmin',
+    // maxWidth: '600px',
+    // maxHeight: '600px',
+
+    // filter: 'saturate(1.2) contrast(1.1) drop-shadow(0 0 10px rgba(0,0,0,0.5))',
   },
   numberText: {
     fontFamily: "'ClockFont_26_06_27', monospace",
-    fontSize: '20px',
+    fontSize: '8vh',
     fill: '#F3E8DA',
     textAnchor: 'middle',
     dominantBaseline: 'central',
     userSelect: 'none',
-    filter: 'drop-shadow(0 0 3px rgba(0,0,0,0.7))',
+    opacity: 0.6,
+    filter: 'drop-shadow(0 1px 0px rgba(233, 220, 220, 0.7))',
   },
   centerPin: {
-    fill: '#D99946',
+    // fill: '#D99946',
     stroke: '#F3E8DA',
-    strokeWidth: '1.5',
+    strokeWidth: '1.0',
+      opacity: 0.6,
   },
   hand: {
     strokeLinecap: 'round',
     stroke: '#F3E8DA',
+      opacity: 0.6,
     filter: 'drop-shadow(0 0 2px rgba(0,0,0,0.8))',
   },
   hourHand: {
