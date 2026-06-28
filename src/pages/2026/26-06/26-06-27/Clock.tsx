@@ -62,7 +62,15 @@ const AnalogClock: React.FC = () => {
         preserveAspectRatio="xMidYMid meet"
         style={styles.analogClock}
       >
-      
+        <defs>
+          <filter id="glow-light">
+            <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
+            <feMerge>
+              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
 
         {/* Background Image */}
         <image href={chandelierBg} height="100%" width="100%" />
