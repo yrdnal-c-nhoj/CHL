@@ -67,7 +67,7 @@ const middleLayerStyle: CSSProperties = {
   position: 'absolute',
   inset: 0,
   backgroundImage: `url("${urnImage}")`,
-  backgroundSize: 'cover',
+  backgroundSize: 'contain',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
   zIndex: 2,
