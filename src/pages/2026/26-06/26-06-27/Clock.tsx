@@ -55,36 +55,21 @@ const AnalogClock: React.FC = () => {
   const hourDegrees = (h / 12) * 360;
 
   return (
-    <main style={styles.container}>
+    <div style={styles.container}>
+      <video
+        src={chandelierBg}
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={styles.backgroundVideo}
+      />
       <svg
         width="300"
         height="300"
         viewBox="0 0 200 200"
-        preserveAspectRatio="xMidYMid slice" // Changed to 'slice' to cover the clock background area properly
         style={styles.analogClock}
       >
-        <defs>
-          <filter id="glow-light">
-            <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
-            <feMerge>
-              <feMergeNode in="coloredBlur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-
-        {/* Background Video Embedded via foreignObject */}
-        <foreignObject x="0" y="0" width="200" height="200">
-          <video
-            src={chandelierBg}
-            autoPlay
-            loop
-            muted
-            playsInline
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
-        </foreignObject>
-
         {/* Clock Face */}
         <g>
           {clockNumbers.map(({ key, x, y, number }) => (
@@ -116,7 +101,7 @@ const AnalogClock: React.FC = () => {
           />
         </g>
       </svg>
-    </main>
+    </div>
   );
 };
 
@@ -127,16 +112,31 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
     width: '100vw',
     height: '100dvh',
-    backgroundColor: '#AFC076',
+    backgroundColor: '#000', // Fallback color if video fails
     overflow: 'hidden',
+    position: 'relative',
+  },
+  backgroundVideo: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '100vw',
+    height: '100dvh',
+    objectFit: 'cover',
+    zIndex: 1,
   },
   analogClock: {
-    width: '100vmin',
-    height: '100vmin',
+    width: '90vmin',
+    height: '90vmin',
+    maxWidth: '800px',
+    maxHeight: '800px',
+    zIndex: 2,
+    position: 'relative',
   },
   numberText: {
     fontFamily: "'ClockFont_26_06_27', monospace",
-    fontSize: '24px', // Fixed from 8vh to static px/em relative to the viewBox coordinate system
+    fontSize: '12px', // Scaled for viewBox units, will resize with SVG
     fill: '#F3E8DA',
     textAnchor: 'middle',
     dominantBaseline: 'central',
@@ -164,7 +164,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   secondHand: {
     strokeWidth: 1.5,
-    filter: 'url(#glow-light) drop-shadow(0 0 2px rgba(0,0,0,0.8))',
+    stroke: '#F3E8DA', // A lighter color for visibility
   },
 };
 
