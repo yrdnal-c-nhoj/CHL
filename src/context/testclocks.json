@@ -6077,5 +6077,55 @@
       "plant",
       "paper"
     ]
-  }
+  },
+  {
+    "path": "26-06-28",
+    "date": "26-06-28",
+    "title": "Spiral",
+    "tags": [
+      "digital",
+      "0123456789abcdef",
+      "image-free"
+    ]
+  },
+  {
+    "path": "26-06- 29",
+    "date": "26-06-29",
+    "title": "Manufacturing",
+    "tags": [
+      "digital",
+      "0123456789abcdef",
+      "image-free"
+    ]
+  },
+  {
+    "path": "26-06-30",
+    "date": "26-06-30",
+    "title": "Digital Hexadecimal",
+    "tags": [
+      "digital",
+      "0123456789abcdef",
+      "image-free"
+    ]
+  }   ,
+  {
+    "path": "26-07-01",
+    "date": "26-07-01",
+    "title": "Digital Hexadecimal",
+     "tags": [
+      "digital",
+      "0123456789abcdef",
+      "image-free"
+    ]
+  } ,
+  {
+    "path": "26-07-02",
+    "date": "26-07-02",
+    "title": "Digital Hexadecimal",
+    "tags": [
+      "digital",
+      "0123456789abcdef",
+      "image-free"
+    ]
+  }     
 ]
