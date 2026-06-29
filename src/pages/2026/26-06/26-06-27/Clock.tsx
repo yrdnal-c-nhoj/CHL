@@ -1,7 +1,7 @@
 import chandelierBg from '@/assets/images/26_images/26-06/26-06-27/clover.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import fontUrl from '@/assets/fonts/26fonts/26-06-27.otf?url';
 
@@ -36,13 +36,26 @@ const generateNumbers = () => {
 const AnalogClock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [now, setNow] = useState(new Date());
   const clockNumbers = useMemo(() => generateNumbers(), []);
 
   useEffect(() => {
     // Sync with requestAnimationFrame or high frequency to capture milliseconds smoothly
-    const timerId = setInterval(() => setNow(new Date()), 16); 
+    const timerId = setInterval(() => setNow(new Date()), 16);
     return () => clearInterval(timerId);
+  }, []);
+
+  // Attempt to play the video programmatically on mount
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      // We want to ensure it plays, so we call play()
+      const playPromise = videoElement.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => console.error("Video play failed:", error));
+      }
+    }
   }, []);
 
   // Smooth hand movements
@@ -57,11 +70,13 @@ const AnalogClock: React.FC = () => {
   return (
     <div style={styles.container}>
       <video
+        ref={videoRef}
         src={chandelierBg}
         autoPlay
         loop
         muted
         playsInline
+        preload="auto"
         style={styles.backgroundVideo}
       />
       <svg
