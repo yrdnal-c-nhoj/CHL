@@ -48,15 +48,6 @@ export default defineConfig({
       output: {
         // Optimize chunk splitting
         manualChunks: (id) => {
-          if (!id.includes('node_modules')) {
-            // Use physical path segments instead of aliases which aren't expanded here
-            if (id.includes('/src/utils/')) return 'utils';
-            // DO NOT group all clocks into one 'clocks' chunk. 
-            // Removing this allows Vite to create individual chunks per clock,
-            // isolating errors and improving load times.
-            if (id.includes('/src/components/')) return 'ui';
-            return;
-          }
 
           if (id.includes('three')) return 'three';
 
