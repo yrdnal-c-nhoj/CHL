@@ -108,8 +108,8 @@ const RotatingAnalemmaClock: React.FC = () => {
       writingMode: 'vertical-rl',
       color: '#666666',
       letterSpacing: '0.2dvh', // Already correct
-      fontFamily: `'AnalemmaText', sans-serif`, // No change needed
-      fontSize: '3.3vh',
+      fontFamily: `'AnalemmaText', sans-serif`,
+      fontSize: '3.3dvh',
       // letterSpacing: '0.2em',
       zIndex: 10,
     },
@@ -119,8 +119,8 @@ const RotatingAnalemmaClock: React.FC = () => {
       top: '50%',
       transform: 'translateY(-50%)',
       writingMode: 'vertical-lr',
-      fontFamily: `'AnalemmaText', sans-serif`, // No change needed
-      fontSize: '3.3vh',
+      fontFamily: `'AnalemmaText', sans-serif`,
+      fontSize: '3.3dvh',
       color: '#666666',
       letterSpacing: '0.2dvh', // Already correct
       zIndex: 10,
