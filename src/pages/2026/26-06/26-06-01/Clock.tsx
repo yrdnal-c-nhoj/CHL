@@ -3,8 +3,8 @@ import needleImage from '@/assets/images/26_images/26-06/26-06-01/needle.webp';
 import jumpVideo from '@/assets/images/26_images/26-06/26-06-01/sew.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
-import { memo, useMemo } from 'react';
+import { useSecondClock } from '@/utils/hooks';
+import React, { memo, useMemo } from 'react';
 import styles from './Clock.module.css'; // Import CSS module
 
 const FONT_FAMILY = 'ClockFont_26_05_26';
@@ -51,7 +51,7 @@ const ClockHand = ({ type, rotation }) => {
 };
 
 const AnalogClock = () => {
-  const currentTime = useClockTime();
+  const currentTime = useSecondClock();
 
   const fontConfigs = useMemo<FontConfig[]>(
     () => [{ fontFamily: FONT_FAMILY, fontUrl }],

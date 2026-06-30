@@ -2,7 +2,7 @@ import customFont from '@/assets/fonts/26fonts/26-06-08.ttf?url';
 import tikiVideo from '@/assets/images/26_images/26-06/26-06-08/tiki.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 const FONT_CONFIGS: FontConfig[] = [
@@ -25,7 +25,7 @@ const getDigitTransform = (hour: number) => {
 
 const Clock: React.FC = () => {
   useSuspenseFontLoader(FONT_CONFIGS);
-  const time = useClockTime();
+  const time = useSecondClock();
 
   const { hourAngle, minuteAngle } = useMemo(() => {
     if (!time) return { hourAngle: 0, minuteAngle: 0 };

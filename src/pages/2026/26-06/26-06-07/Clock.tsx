@@ -1,11 +1,11 @@
 import fontUrl from '@/assets/fonts/26fonts/26-06-07.ttf?url';
 import backgroundVideo from '@/assets/images/26_images/26-06/26-06-07/spacewalk.mp4';
 import type { FontConfig } from '@/types/clock';
-import { useClockTime } from '@/utils/clockUtils';
 import {
   ClockLoadingFallback,
   useSuspenseFontLoader,
 } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
 import React, { Suspense } from 'react';
 import styles from './Clock.module.css';
 
@@ -21,7 +21,7 @@ const formatMs = (num: number): string => num.toString().padStart(3, '0');
 const ClockInner: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useClockTime('ms');
+  const time = useMillisecondClock();
 
   const h = formatTime(time.getHours());
   const m = formatTime(time.getMinutes());

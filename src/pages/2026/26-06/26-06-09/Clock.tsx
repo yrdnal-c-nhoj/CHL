@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import type { FontConfig } from '@/types/clock';
 
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useSecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
@@ -23,7 +23,7 @@ const imageUrls = Object.values(imageModules) as string[];
 export const assets = [fontUrl, ...imageUrls];
 
 const NightSky: React.FC = () => {
-  const currentTime = useClockTime();
+  const currentTime = useSecondClock();
 
   /*
    * FONT LOADING
