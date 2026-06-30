@@ -139,7 +139,7 @@ interface ClockItemProps {
   currentTime: Date; // Pass currentTime as a prop
 }
 
-const ClockItem: React.FC<ClockItemProps> = ({ clock, currentTime }) => {
+const ClockItem: React.FC<ClockItemProps> = React.memo(({ clock, currentTime }) => {
   const h = (currentTime.getHours() % 12) * 30 + currentTime.getMinutes() * 0.5;
   const m = currentTime.getMinutes() * 6;
 
@@ -177,6 +177,6 @@ const ClockItem: React.FC<ClockItemProps> = ({ clock, currentTime }) => {
       </div>
     </div>
   );
-};
+});
 
 export default GravityClock;

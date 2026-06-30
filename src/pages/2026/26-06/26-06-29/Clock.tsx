@@ -17,6 +17,64 @@ const STEEL_TEXTURES = [
   'linear-gradient(210deg, #111111 0%, #444444 25%, #222222 50%, #555555 75%, #111111 100%)', // Dark Damascus
 ];
 
+interface DigitProps {
+  char: string;
+  texture: string;
+  gridRow: string;
+  gridColumn: string;
+  isMobile: boolean;
+  index: number;
+}
+
+const Digit: React.FC<DigitProps> = React.memo(
+  ({ char, texture, gridRow, gridColumn, isMobile, index }) => {
+    return (
+      <div
+        style={{
+          gridColumn,
+          gridRow,
+          position: 'relative',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'visible',
+        }}
+      >
+        <div
+          style={{
+            position: 'relative',
+            zIndex: index + 1,
+            pointerEvents: 'none',
+            userSelect: 'none',
+            background: texture,
+            WebkitBackgroundClip: 'text',
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            color: 'transparent',
+            filter: `
+              drop-shadow(-1px -1px 0px rgba(255,255,255,0.45))
+              drop-shadow(2px 2px 2px rgba(0,0,0,0.85))
+              drop-shadow(4px 4px 8px rgba(0,0,0,0.7))
+            `,
+            fontFamily: 'ClockFont',
+            fontSize: isMobile ? '22dvh' : '28vw',
+            lineHeight: 0.85,
+            fontWeight: 'bold',
+            textAlign: 'center',
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {char}
+        </div>
+      </div>
+    );
+  },
+);
+
 const Manufactured: React.FC = () => {
   const currentTime = useMillisecondClock();
 
@@ -144,57 +202,18 @@ const Manufactured: React.FC = () => {
             const currentTexture = STEEL_TEXTURES[textureIndex];
 
             // Force re-creation of the element every second to help with background-clip stability
-            const elementKey = `${index}-${currentSecondInt}-${char}`;
+            const elementKey = `${index}-${currentSecondInt}`;
 
             return (
-              <div
+              <Digit
                 key={elementKey}
-                style={{
-                  gridColumn: gridMap[index]?.[0] || '1',
-                  gridRow: gridMap[index]?.[1] || '1',
-                  position: 'relative',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  overflow: 'visible',
-                }}
-              >
-                <div
-                  style={{
-                    position: 'relative',
-                    zIndex: index + 1,
-                    pointerEvents: 'none',
-                    userSelect: 'none',
-
-                    // Metallic Material Properties
-                    background: currentTexture,
-                    WebkitBackgroundClip: 'text',
-                    backgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    color: 'transparent',
-
-                    // Sharp bevel shadow mapping (Light source from top-left)
-                    filter: `
-                      drop-shadow(-1px -1px 0px rgba(255,255,255,0.45))
-                      drop-shadow(2px 2px 2px rgba(0,0,0,0.85))
-                      drop-shadow(4px 4px 8px rgba(0,0,0,0.7))
-                    `,
-
-                    fontFamily: 'ClockFont',
-                    fontSize: isMobile ? '22dvh' : '28vw',
-                    lineHeight: 0.85,
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {char}
-                </div>
-              </div>
+                char={char}
+                texture={currentTexture}
+                gridColumn={gridMap[index]?.[0] || '1'}
+                gridRow={gridMap[index]?.[1] || '1'}
+                isMobile={isMobile}
+                index={index}
+              />
             );
           })}
         </div>
