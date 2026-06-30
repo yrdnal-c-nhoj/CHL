@@ -5,9 +5,8 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import carVideo from '@/assets/images/26_images/26-06/26-06-29/manufacture.mp4';
 // Import the corresponding font from the assets folder
 import fontUrl from '@/assets/fonts/26fonts/26-06-29.ttf?url';
-
 // Export assets for the preloading pipeline
-export const assets = [carVideo];
+export const assets = [carVideo, fontUrl];
 
 // Font configuration for the suspense loader
 const fontConfigs: FontConfig[] = [{ fontFamily: 'ClockFont', fontUrl }];
@@ -32,14 +31,14 @@ const styles: { [key: string]: React.CSSProperties } = {
     objectFit: 'cover',
     zIndex: 1,
   },
-  videoOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 2,
+  digitalTime: {
+    fontFamily: 'ClockFont, monospace',
+    fontSize: '18vh',
+    color: 'rgba(255, 255, 255, 0.85)',
+    textShadow: '0 0 15px rgba(255, 255, 255, 0.3)',
+    letterSpacing: '0.05em',
+    display: 'flex',
+    gap: '0.5ch',
   },
   timeWrapper: {
     zIndex: 3,
@@ -164,7 +163,7 @@ const AnalogClock: React.FC = () => {
 
   return (
     <div style={styles.container}>
-      <div style={styles.videoOverlay} />
+      {/* <div style={styles.videoOverlay} /> */}
       <video
         style={styles.videoBackground}
         autoPlay
@@ -173,36 +172,18 @@ const AnalogClock: React.FC = () => {
         playsInline
         src={carVideo}
       />
-      <time dateTime={isoTime} style={styles.timeWrapper}>
-        <div>
-          <span>
-            <span>
-              {String(hours).padStart(2, '0')[0]}
-            </span>
-            <span>
-              {String(hours).padStart(2, '0')[1]}
-            </span>
-            <span>
-              {String(minutes).padStart(2, '0')[0]}
-            </span>
-            <span>
-              {String(minutes).padStart(2, '0')[1]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(seconds).padStart(2, '0')[0]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(seconds).padStart(2, '0')[1]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(Math.floor(ms / 10)).padStart(2, '0')[0]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(Math.floor(ms / 10)).padStart(2, '0')[1]}
-            </span>
-          </span>
-        </div>
-      </time>
+      <div style={styles.timeWrapper}>
+        <time dateTime={isoTime} style={styles.digitalTime}>
+          <span>{String(hours).padStart(2, '0')[0]}</span>
+          <span>{String(hours).padStart(2, '0')[1]}</span>
+          <span style={{ opacity: 0.5 }}>:</span>
+          <span>{String(minutes).padStart(2, '0')[0]}</span>
+          <span>{String(minutes).padStart(2, '0')[1]}</span>
+          <span style={{ opacity: 0.5 }}>:</span>
+          <span>{String(seconds).padStart(2, '0')[0]}</span>
+          <span>{String(seconds).padStart(2, '0')[1]}</span>
+        </time>
+      </div>
     </div>
   );
 };
