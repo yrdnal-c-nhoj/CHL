@@ -16,13 +16,10 @@ export default defineConfig({
     react({
       tsDecorators: true,
     }),
+    // Consolidate compression plugins into a single instance
     viteCompression({
       algorithm: 'brotliCompress',
       ext: '.br',
-    }),
-    viteCompression({
-      algorithm: 'gzip',
-      ext: '.gz',
     }),
   ],
 
@@ -63,7 +60,9 @@ export default defineConfig({
 
           if (id.includes('gsap')) return 'animation';
           if (id.includes('framer-motion')) return 'animation';
-          return 'vendor';
+          // Let Vite handle chunking for other node_modules to avoid a monolithic vendor chunk.
+          // This is more efficient for dynamic imports.
+          if (id.includes('node_modules')) return 'vendor';
         },
       },
       onwarn: (warning, warn) => {
