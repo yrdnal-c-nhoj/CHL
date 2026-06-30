@@ -1,14 +1,12 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  useCallback,
-} from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
-import type { CSSProperties } from 'react';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+import React, {
+    useEffect,
+    useMemo,
+    useRef,
+    useState
+} from 'react';
 import styles from './Clock.module.css';
 
 interface ClockData {
@@ -35,7 +33,7 @@ const GravityClock: React.FC<GravityClockProps> = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useClockTime();
+  const currentTime = useSecondClock();
   const [clocks, setClocks] = useState<ClockData[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>();

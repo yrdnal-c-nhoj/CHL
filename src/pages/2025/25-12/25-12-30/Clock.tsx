@@ -2,7 +2,8 @@ import fontAnaUrl from '@/assets/fonts/25fonts/25-12-30-ana.ttf?url';
 import fontLemUrl from '@/assets/fonts/25fonts/25-12-30-lem.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useSecondClock } from '@/utils/hooks';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 // 1. Define font configurations for the Suspense-based loader
 export const fontConfigs: FontConfig[] = [
@@ -11,7 +12,7 @@ export const fontConfigs: FontConfig[] = [
 ];
 
 const RotatingAnalemmaClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  const time = useSecondClock();
   const rotationRef = useRef(0);
   const rotatingGroupRef = useRef<SVGGElement | null>(null);
 
@@ -24,11 +25,6 @@ const RotatingAnalemmaClock: React.FC = () => {
     document.body.style.boxSizing = 'border-box';
     document.body.style.margin = '0';
     document.body.style.padding = '0';
-
-    // 3. Clock Interval: keep `time` updated once per second (used for labels)
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
 
     // 4. Smooth RAF-based rotation
     let rafId: number | null = null;
@@ -51,7 +47,6 @@ const RotatingAnalemmaClock: React.FC = () => {
 
     // 5. Cleanup on Unmount
     return () => {
-      clearInterval(timer);
       if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
