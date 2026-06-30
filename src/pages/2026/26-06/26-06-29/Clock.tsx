@@ -1,191 +1,208 @@
+import React, { useEffect, useMemo, useState } from 'react';
+
 import type { FontConfig } from '@/types/clock';
+import { formatTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React, { useEffect, useMemo, useRef } from 'react';
+import { useClockTime } from '@/utils/hooks';
 
-import carVideo from '@/assets/images/26_images/26-06/26-06-29/manufacture.mp4';
-// Import the corresponding font from the assets folder
 import fontUrl from '@/assets/fonts/26fonts/26-06-29.ttf?url';
-// Export assets for the preloading pipeline
-export const assets = [carVideo, fontUrl];
+import carVideo from '@/assets/images/26_images/26-06/26-06-29/manufacture.mp4';
 
-// Font configuration for the suspense loader
-const fontConfigs: FontConfig[] = [{ fontFamily: 'ClockFont', fontUrl }];
+const NightSky: React.FC = () => {
+  const currentTime = useClockTime();
 
-const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-    position: 'relative',
-    backgroundColor: '#000',
-  },
-  videoBackground: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    zIndex: 1,
-  },
-  digitalTime: {
-    fontFamily: 'ClockFont, monospace',
-    fontSize: '18vh',
-    color: 'rgba(255, 255, 255, 0.85)',
-    textShadow: '0 0 15px rgba(255, 255, 255, 0.3)',
-    letterSpacing: '0.05em',
-    display: 'flex',
-    gap: '0.5ch',
-  },
-  timeWrapper: {
-    zIndex: 3,
-  },
-};
+  /*
+   * FONT LOADING
+   */
 
-interface HandProps {
-  angle: number;
-  length: number;
-  width: number;
-  color: string;
-  type: 'hour' | 'minute' | 'second';
-}
-
-const getHandZIndex = (type: 'hour' | 'minute' | 'second'): number => {
-  if (type === 'second') return 30;
-  if (type === 'minute') return 20;
-  return 10;
-};
-
-const getHandBorderRadius = (
-  type: 'hour' | 'minute' | 'second',
-  width: number,
-): string => {
-  if (type === 'second') return '1px';
-  return `${width / 2}px`;
-};
-
-const getHandTransition = (type: 'hour' | 'minute' | 'second'): string => {
-  if (type === 'second') return 'none';
-  return 'transform 0.1s ease-out';
-};
-
-const ClockHand: React.FC<HandProps> = ({
-  angle,
-  length,
-  width,
-  color,
-  type,
-}) => {
-  const handStyle: React.CSSProperties = {
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    width: `${width}px`,
-    height: `${length}px`,
-    backgroundColor: color,
-    transformOrigin: 'bottom center',
-    transform: `translateX(-50%) rotate(${angle}deg)`,
-    borderRadius: getHandBorderRadius(type, width),
-    zIndex: getHandZIndex(type),
-    transition: getHandTransition(type),
-  };
-
-  return (
-    <div style={handStyle} data-hand-type={type} />
+  const fontConfigs: FontConfig[] = useMemo(
+    () => [
+      {
+        fontFamily: 'ClockFont',
+        fontUrl,
+      },
+    ],
+    [],
   );
-};
 
-const AnalogClock: React.FC = () => {
-  const rafRef = useRef<number | null>(null);
-  const [, forceRender] = React.useReducer((x) => x + 1, 0);
-
-  // Suspend rendering until the custom font is ready
   useSuspenseFontLoader(fontConfigs);
 
+  /*
+   * MOBILE DETECTION
+   */
+
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
-    const animate = () => {
-      forceRender();
-      rafRef.current = requestAnimationFrame(animate);
+    const update = () => {
+      setIsMobile(window.innerWidth <= 480);
     };
-    rafRef.current = requestAnimationFrame(animate);
+
+    update();
+
+    window.addEventListener('resize', update);
 
     return () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
+      window.removeEventListener('resize', update);
     };
   }, []);
 
-  // This ensures the milliseconds update smoothly in the digital boxes.
-  const now = new Date();
-  const hours = now.getHours();
-  const minutes = now.getMinutes();
-  const seconds = now.getSeconds();
-  const ms = now.getMilliseconds();
-  const isoTime = now.toISOString();
+  /*
+   * FORMATTED TIME
+   */
 
-  const hourAngle = ((hours % 12) + minutes / 60) * 30;
-  const minuteAngle = (minutes + seconds / 60) * 6;
-  const secondAngle = (seconds + ms / 1000) * 6;
+  const formattedTime = useMemo(() => {
+    if (!currentTime) {
+      return { hours: '00', minutes: '00', seconds: '00', meridian: 'AM' };
+    }
 
-  const tickMarks = useMemo(() => {
-    return Array.from({ length: 60 }, (_, i) => {
-      const isHour = i % 5 === 0;
-      const angle = i * 6;
+    // utils/clockUtils.formatTime('12h') returns: "HH:MM:SS AM|PM"
+    const formatted = formatTime(currentTime, '12h');
+
+    const match = formatted.match(/^(\d{2}):(\d{2}):(\d{2})\s+(AM|PM)$/);
+    if (!match) {
+      const meridian = currentTime.getHours() >= 12 ? 'PM' : 'AM';
+      const hours12 = currentTime.getHours() % 12 || 12;
+      const hours = hours12.toString().padStart(2, '0');
       return {
-        id: i,
-        angle,
-        isHour,
-        length: isHour ? 16 : 8,
-        width: isHour ? 4 : 2,
+        hours,
+        minutes: currentTime.getMinutes().toString().padStart(2, '0'),
+        seconds: currentTime.getSeconds().toString().padStart(2, '0'),
+        meridian,
       };
-    });
-  }, []);
+    }
 
-  const numbers = useMemo(() => {
-    return Array.from({ length: 12 }, (_, i) => {
-      const num = i === 0 ? 12 : i;
-      const angle = i * 30;
-      const radian = (angle - 90) * (Math.PI / 180);
-      const radius = 35;
-      const x = 50 + radius * Math.cos(radian);
-      const y = 50 + radius * Math.sin(radian);
-      return {
-        num,
-        x,
-        y,
-      };
-    });
-  }, []);
+    const [, hours, minutes, seconds, meridian] = match;
+    return { hours, minutes, seconds, meridian };
+  }, [currentTime]);
+
+  const clockCharacters = useMemo(() => {
+    const { hours, minutes, seconds, meridian } = formattedTime;
+
+    return [
+      hours[0] || '0',
+      hours[1] || '0',
+      minutes[0] || '0',
+      minutes[1] || '0',
+      seconds[0] || '0',
+      seconds[1] || '0',
+      meridian[0] || 'A',
+      meridian[1] || 'M',
+    ];
+  }, [formattedTime]);
+
+  /*
+   * OPTIMIZED GRID MAP CALCULATION
+   * Memoized to prevent recalculations on every render
+   */
+
+  const gridMap = useMemo(() => {
+    return isMobile
+      ? [
+          ['1', '1'],
+          ['2', '1'],
+          ['1', '2'],
+          ['2', '2'],
+          ['1', '3'],
+          ['2', '3'],
+          ['1', '4'],
+          ['2', '4'],
+        ]
+      : [
+          ['1', '1'],
+          ['2', '1'],
+          ['3', '1'],
+          ['4', '1'],
+          ['1', '2'],
+          ['2', '2'],
+          ['3', '2'],
+          ['4', '2'],
+        ];
+  }, [isMobile]);
 
   return (
-    <div style={styles.container}>
-      {/* <div style={styles.videoOverlay} /> */}
+    <div
+      style={{
+        position: 'relative',
+        overflow: 'hidden',
+        width: '100%',
+        height: '100vh',
+        background: '#000428',
+      }}
+    >
       <video
-        style={styles.videoBackground}
         autoPlay
         loop
         muted
         playsInline
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          objectFit: 'fill',
+          zIndex: 1,
+        }}
         src={carVideo}
+                  pointerEvents: 'none',
+                  userSelect: 'none',
+                  mixBlendMode: 'screen',
+                  fontFamily: 'ClockFont',
+                  fontSize: isMobile ? '58vh' : '58vw',
+                  lineHeight: 0.8,
+                  color: '#333333',
       />
-      <div style={styles.timeWrapper}>
-        <time dateTime={isoTime} style={styles.digitalTime}>
-          <span>{String(hours).padStart(2, '0')[0]}</span>
-          <span>{String(hours).padStart(2, '0')[1]}</span>
-          <span style={{ opacity: 0.5 }}>:</span>
-          <span>{String(minutes).padStart(2, '0')[0]}</span>
-          <span>{String(minutes).padStart(2, '0')[1]}</span>
-          <span style={{ opacity: 0.5 }}>:</span>
-          <span>{String(seconds).padStart(2, '0')[0]}</span>
-          <span>{String(seconds).padStart(2, '0')[1]}</span>
-        </time>
-      </div>
+      <time dateTime={currentTime?.toISOString()} aria-live="polite">
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+
+            width: '100%',
+            height: '100%',
+
+            display: 'grid',
+
+            gridTemplateColumns: isMobile ? '1fr 1fr' : '1fr 1fr 1fr 1fr',
+
+            gridTemplateRows: isMobile ? '1fr 1fr 1fr 1fr' : '1fr 1fr',
+
+            zIndex: 20,
+          }}
+        >
+          {clockCharacters.map((char, index) => (
+            <div
+              key={index}
+              style={{
+                gridColumn: gridMap[index]?.[0] || '1',
+                gridRow: gridMap[index]?.[1] || '1',
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'visible',
+              }}
+            >
+              <div
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  transform: `
+                  translate(-50%, -50%)
+                  translate(${index * -2}px, ${index * 1.5}px)
+                `,
+                  zIndex: index + 1,
+                  // opacity: 0.6,
+                }}
+              >
+                {char}
+              </div>
+            </div>
+          ))}
+        </div>
+      </time>
     </div>
   );
 };
 
-export default AnalogClock;
+export default NightSky;
