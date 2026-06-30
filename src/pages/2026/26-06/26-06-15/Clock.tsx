@@ -1,8 +1,8 @@
 import fontUrl from '@/assets/fonts/26fonts/26-06-15.otf?url';
-import { useClockTime } from '@/hooks/useClockTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React, { useEffect, useMemo } from 'react';
+import { useSecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 
 /**
  * Assets to be preloaded for this clock.
@@ -10,19 +10,7 @@ import React, { useEffect, useMemo } from 'react';
 export const assets = [fontUrl];
 
 const Clock: React.FC = () => {
-  const time = useClockTime();
-
-  // Load Pliant from Google Fonts for the hexadecimal numbers
-  useEffect(() => {
-    const linkId = 'google-font-pliant';
-    if (!document.getElementById(linkId)) {
-      const link = document.createElement('link');
-      link.id = linkId;
-      link.rel = 'stylesheet';
-      link.href = 'https://fonts.googleapis.com/css2?family=Pliant&display=swap';
-      document.head.appendChild(link);
-    }
-  }, []);
+  const time = useSecondClock();
 
   // Define the font configuration for the suspense-based loader
   const fontConfigs: FontConfig[] = useMemo(

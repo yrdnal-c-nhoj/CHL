@@ -3,7 +3,7 @@ import glassVideo2 from '@/assets/images/26_images/26-06/26-06-19/glass3.mp4';
 import glassbreak from '@/assets/images/26_images/26-06/26-06-19/glassbreak.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 // Import the font with the corresponding date from the assets folder
@@ -24,7 +24,7 @@ const fontConfigs: FontConfig[] = [
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
 const DigitalClock: React.FC = () => {
-  const time = useClockTime();
+  const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
 
   const { hours, minutes, ampm } = useMemo(() => {

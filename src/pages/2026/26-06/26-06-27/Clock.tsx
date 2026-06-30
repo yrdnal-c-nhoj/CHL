@@ -1,7 +1,8 @@
 import chandelierBg from '@/assets/images/26_images/26-06/26-06-27/clover.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useMillisecondClock } from '@/utils/hooks';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 import fontUrl from '@/assets/fonts/26fonts/26-06-27.otf?url';
 
@@ -38,14 +39,9 @@ const generateNumbers = () => {
 const AnalogClock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
+  const now = useMillisecondClock();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [now, setNow] = useState(new Date());
   const clockNumbers = useMemo(() => generateNumbers(), []);
-
-  useEffect(() => {
-    const timerId = setInterval(() => setNow(new Date()), 16);
-    return () => clearInterval(timerId);
-  }, []);
 
   useEffect(() => {
     const videoElement = videoRef.current;
