@@ -141,7 +141,7 @@ const styles: Record<string, CSSProperties> = {
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
-    backgroundColor: '#90B08F',
+    backgroundColor: '#E209A5',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -164,11 +164,11 @@ const styles: Record<string, CSSProperties> = {
     overflow: 'visible',
   },
   textTrack: {
-    fontSize: '18vh',
+    fontSize: '28vh',
     fill: CONFIG.COLOR,
     fontWeight: 400,
     // Note: Heavy text-shadows on large SVG text tracks can impact rendering performance.
-    textShadow: '0 0 10px #060455, 0 0 20px rgb(199, 18, 231)',
+    textShadow: '0 0 10px #908C0C, 0 0 20px rgb(231, 227, 18)',
     textRendering: 'geometricPrecision', // Swapped for smoother vector calculation during rotation
     fontVariantNumeric: 'tabular-nums', 
   }
