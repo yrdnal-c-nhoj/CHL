@@ -15,13 +15,15 @@ const fontConfigs: FontConfig[] = [
 ];
 
 // --- Helper for generating clock numerals ---
+// Scaled coordinates up to an 800x800 internal grid system
 const generateNumbers = () => {
   return Array.from({ length: 12 }, (_, i) => {
     const number = i + 1;
     if (number % 3 === 0) {
       const angle = number * 30; // 30 degrees per hour
-      const x = 100 + 80 * Math.sin((angle * Math.PI) / 180);
-      const y = 100 - 80 * Math.cos((angle * Math.PI) / 180);
+      // Center is now 400, 400. Radius is expanded to 280 to accommodate large font padding
+      const x = 400 + 280 * Math.sin((angle * Math.PI) / 180);
+      const y = 400 - 280 * Math.cos((angle * Math.PI) / 180);
       return {
         key: i,
         x,
@@ -79,7 +81,7 @@ const AnalogClock: React.FC = () => {
       <svg
         width="400"
         height="400"
-        viewBox="0 0 200 200"
+        viewBox="0 0 800 800"
         style={styles.analogClock}
       >
         {/* Clock Face */}
@@ -91,22 +93,22 @@ const AnalogClock: React.FC = () => {
           ))}
         </g>
 
-        {/* Hands */}
+        {/* Hands — Center point shifted to 400 400 */}
         <g>
           <line
-            x1="100" y1="100" x2="100" y2="65"
+            x1="400" y1="400" x2="400" y2="260"
             style={{ ...styles.hand, ...styles.hourHand }}
-            transform={`rotate(${hourDegrees} 100 100)`}
+            transform={`rotate(${hourDegrees} 400 400)`}
           />
           <line
-            x1="100" y1="100" x2="100" y2="45"
+            x1="400" y1="400" x2="400" y2="180"
             style={{ ...styles.hand, ...styles.minuteHand }}
-            transform={`rotate(${minuteDegrees} 100 100)`}
+            transform={`rotate(${minuteDegrees} 400 400)`}
           />
           <line
-            x1="100" y1="100" x2="100" y2="35"
+            x1="400" y1="400" x2="400" y2="140"
             style={{ ...styles.hand, ...styles.secondHand }}
-            transform={`rotate(${secondDegrees} 100 100)`}
+            transform={`rotate(${secondDegrees} 400 400)`}
           />
         </g>
       </svg>
@@ -145,29 +147,29 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   numberText: {
     fontFamily: "'ClockFont_26_06_27', monospace",
-    fontSize: '7vh',
+    fontSize: '43vh',
     fill: '#359C45',
     textAnchor: 'middle',
     dominantBaseline: 'central',
     userSelect: 'none',
     opacity: 0.6,
-    filter: 'drop-shadow(0 1px 0px rgba(233, 220, 220, 0.7))',
+    filter: 'drop-shadow(0 4px 0px rgba(233, 220, 220, 0.7))',
   },
   hand: {
     strokeLinecap: 'round',
     opacity: 0.6,
-    filter: 'drop-shadow(0 2px 0px rgba(233, 220, 220, 0.88))',
+    filter: 'drop-shadow(-3px 4px 0px rgba(233, 220, 220, 0.88))',
   },
   hourHand: {
-    strokeWidth: 4,
+    strokeWidth: 66,
     stroke: '#359C45',
   },
   minuteHand: {
-    strokeWidth: 3,
+    strokeWidth: 42,
     stroke: '#359C45',
   },
   secondHand: {
-    strokeWidth: 1.5,
+    strokeWidth: 16,
     stroke: '#359C45',
   },
 };
