@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import myFontUrl from '@/assets/fonts/25fonts/25-08-20-go.otf?url';
 import bgImage from '@/assets/images/25_images/25-08/25-08-20/24.webp'; // background image
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+import React, { useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
 const TIMEZONES = [
@@ -38,7 +38,7 @@ const AnalogClock: React.FC<{ zone: string; clockSize: number }> = ({
   zone,
   clockSize,
 }) => {
-  const time = useSmoothClock();
+  const time = useMillisecondClock();
 
   const local = new Date(time.toLocaleString('en-US', { timeZone: zone }));
   const seconds = local.getSeconds();

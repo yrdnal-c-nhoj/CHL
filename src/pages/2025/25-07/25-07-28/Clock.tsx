@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
-import type { FontConfig } from '@/types/clock';
 import customFont from '@/assets/fonts/25fonts/25-07-28-gol.ttf?url';
 import backgroundImage from '@/assets/images/25_images/25-07/25-07-28/go.gif';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
 const Clock: React.FC = () => {
@@ -23,7 +23,7 @@ const Clock: React.FC = () => {
 
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useClockTime();
+  const time = useSecondClock();
 
   const getFormattedTime = () => {
     let h = time.getHours() % 12;
