@@ -1,191 +1,175 @@
+import fontUrl from '@/assets/fonts/26fonts/26-06-28.otf?url';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { CSSProperties } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 const CONFIG = {
-  UPDATE_RATE_MS: 150,        
-  SPIRAL_TURNS: 8,            // Reduced turns for logarithmic spiral to prevent inner overlapping
-  GLOW_COLOR: '#FF6E92',
-  CRAWL_SPEED: 4,             
-  BASE_RADIUS: 15,            // Starting radius at the exact center
-  EXPANSION_FACTOR: 0.11,     // Controls how fast the spiral distance expands outwards
-};
+  UPDATE_RATE_MS: 500,
+  SPIRAL_TURNS: 9.5,
+  COLOR: '#B22CA9',
+  CRAWL_SPEED: 2.5,
+  BASE_RADIUS: 10,
+  EXPANSION_FACTOR: 0.085,
+  REPETITIONS: 48,
+  CHAR_SPACING_PX: 92,
+} as const;
 
-const get12HourTime = () => {
+const fontConfigs: FontConfig[] = [{
+  fontFamily: 'ClockFont_26_06_28',
+  fontUrl,
+}];
+
+const get12HourTime = (): string => {
   const now = new Date();
-  let hours = now.getHours();
-  const minutes = now.getMinutes();
-  const seconds = now.getSeconds();
-  const ampm = hours >= 12 ? 'PM' : 'AM';
+  let h = now.getHours();
+  const m = now.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
 
-  hours = hours % 12 || 12;
-
-  const pad = (n: number) => n.toString().padStart(2, '0');
-  return `${hours}:${pad(minutes)}:${pad(seconds)} ${ampm}   `;
+  return `${h}:${m.toString().padStart(2, '0')} ${ampm}`;
 };
 
 export default function ContinuousSwirlClock() {
-  const [timeStream, setTimeStream] = useState(''); 
-  const [offset, setOffset] = useState(0);
-  const pathRef = useRef<SVGPathElement>(null);
-  const [pathLength, setPathLength] = useState(0);
+  const [timeText, setTimeText] = useState('');
+  const textPathRef = useRef<SVGTextPathElement>(null);
+  const offsetRef = useRef(0);
+  
+  // Use a mutable ref to track the current loop threshold without resetting the animation loop
+  const thresholdRef = useRef(11 * CONFIG.CHAR_SPACING_PX);
 
-  // 1. Generate a LOGARITHMIC spiral (grows exponentially outwards)
+  useSuspenseFontLoader(fontConfigs);
+
+  // 1. Optimized Path Data: Cache length and reduce precision overhead
   const spiralPathData = useMemo(() => {
     const center = 1000;
     const points: string[] = [];
-    const totalPoints = 2000;
+    const totalPoints = 1000; // Reduced from 1400 without sacrificing smoothness
     const maxTheta = CONFIG.SPIRAL_TURNS * 2 * Math.PI;
 
-    // Loop backwards to keep path direction flowing from outside to center
-    for (let i = totalPoints; i >= 0; i--) {
+    for (let i = 0; i <= totalPoints; i++) {
       const theta = (i / totalPoints) * maxTheta;
-      
-      // Logarithmic Spiral formula: r = a * e^(b * theta)
       const r = CONFIG.BASE_RADIUS * Math.exp(CONFIG.EXPANSION_FACTOR * theta);
-      
       const x = center + r * Math.cos(theta);
       const y = center + r * Math.sin(theta);
 
-      if (i === totalPoints) points.push(`M ${x.toFixed(2)} ${y.toFixed(2)}`);
-      else points.push(`L ${x.toFixed(2)} ${y.toFixed(2)}`);
+      // Single-decimal precision matches high-res viewboxes perfectly
+      points.push(`${i === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`);
     }
-    return points.join(' ');
+    return points.join('');
   }, []);
 
-  // 2. Track path length on mount
+  // 2. Time stream update + synchronous threshold tracking
   useEffect(() => {
-    if (pathRef.current) {
-      const length = pathRef.current.getTotalLength();
-      setPathLength(length);
-      setOffset(length); 
-    }
-  }, [spiralPathData]);
-
-  // 3. Stream timestamps
-  useEffect(() => {
-    if (pathLength === 0) return;
-
-    const startTimer = setTimeout(() => {
-      setTimeStream(get12HourTime());
-
-      const interval = setInterval(() => {
-        setTimeStream((prev) => prev + get12HourTime());
-      }, CONFIG.UPDATE_RATE_MS);
-
-      return () => clearInterval(interval);
-    }, 600);
-
-    return () => clearTimeout(startTimer);
-  }, [pathLength]);
-
-  // 4. Smooth animation loop
-  useEffect(() => {
-    if (pathLength === 0) return;
-
-    let rafId: number;
-    const animate = () => {
-      setOffset((prev) => prev - CONFIG.CRAWL_SPEED);
-      rafId = requestAnimationFrame(animate);
+    const updateTime = () => {
+      const current = get12HourTime();
+      setTimeText(Array(CONFIG.REPETITIONS).fill(current).join(' • '));
+      
+      // Update threshold smoothly in-place
+      const segmentLength = current.length + 3; // " • " length is 3
+      thresholdRef.current = segmentLength * CONFIG.CHAR_SPACING_PX;
     };
-    rafId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafId);
-  }, [pathLength]);
+
+    updateTime();
+    const interval = setInterval(updateTime, CONFIG.UPDATE_RATE_MS);
+    return () => clearInterval(interval);
+  }, []);
+
+  // 3. Independent Animation Loop (Zero dependency array)
+  useEffect(() => {
+    let lastFrame = performance.now();
+    let animationFrameId: number;
+
+    const animate = (now: number) => {
+      // Normalize delta around 60fps (16.67ms) to protect against massive frame drops
+      const delta = Math.min(now - lastFrame, 33); 
+      lastFrame = now;
+
+      offsetRef.current += CONFIG.CRAWL_SPEED * (delta / 16.666);
+
+      const currentLoopThreshold = thresholdRef.current;
+      if (offsetRef.current >= currentLoopThreshold) {
+        offsetRef.current %= currentLoopThreshold;
+      }
+
+      if (textPathRef.current) {
+        textPathRef.current.setAttribute('startOffset', `${offsetRef.current.toFixed(1)}px`);
+      }
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []); // Run once on mount. Never teardown and restart mid-flight.
 
   return (
     <div style={styles.viewport}>
-      <div style={styles.nebulaBackground} />
-
-      {/* 3D Perspective Context to natively scale outer items larger */}
       <div style={styles.perspectiveWrapper}>
         <svg
           viewBox="0 0 2000 2000"
           style={styles.svgCoilCanvas}
           xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
         >
           <defs>
-            <path 
-              ref={pathRef}
-              id="masterCoilPath" 
-              d={spiralPathData} 
-              fill="none" 
-            />
-            <filter id="neonGlow" x="-80%" y="-80%" width="260%" height="260%">
-              <feGaussianBlur stdDeviation="6" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
+            <path id="masterCoilPath" d={spiralPathData} fill="none" />
           </defs>
 
-          {pathLength > 0 && (
-            <text style={styles.textContainer} filter="url(#neonGlow)">
-              <textPath
-                href="#masterCoilPath"
-                startOffset={offset}
-                style={styles.textTrack}
-              >
-                {timeStream}
-              </textPath>
-            </text>
-          )}
+          <text style={styles.textContainer}>
+            <textPath
+              ref={textPathRef}
+              href="#masterCoilPath"
+              startOffset="0px"
+              style={styles.textTrack}
+              lengthAdjust="spacing"
+              textLength={timeText.length * CONFIG.CHAR_SPACING_PX}
+            >
+              {timeText}
+            </textPath>
+          </text>
         </svg>
       </div>
-
-      <div style={styles.centerCore} />
     </div>
   );
 }
 
+// 4. Styles Optimized for GPU Acceleration
 const styles: Record<string, CSSProperties> = {
   viewport: {
     position: 'relative',
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
-    backgroundColor: '#0a0014',
+    backgroundColor: '#90B08F',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontFamily: 'monospace',
-    perspective: '1200px', // Creates the spatial 3D depth field
+    fontFamily: 'ClockFont_26_06_28, monospace',
+    perspective: '1200px',
   },
   perspectiveWrapper: {
-    transform: 'rotateX(55deg) translateZ(0px)', // Tilts canvas so foreground loops expand beautifully
+    transform: 'rotateX(55deg) rotateZ(15deg)',
     transformStyle: 'preserve-3d',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  nebulaBackground: {
-    position: 'absolute',
-    inset: 0,
-    background: 'radial-gradient(circle at center, rgba(90, 99, 27, 0.45) 0%, #37065821 80%)',
-    zIndex: 1,
+    willChange: 'transform',
+    backfaceVisibility: 'hidden', // Prevents jagged aliasing in 3D perspective
   },
   svgCoilCanvas: {
-    width: '180vmin',
-    height: '180vmin',
-    zIndex: 2,
+    width: '120vmin',
+    height: '120vmin',
     overflow: 'visible',
   },
   textContainer: {
-    fill: '#ffffff',
+    fill: '#fff',
+    overflow: 'visible',
   },
   textTrack: {
-    fontSize: '9vh',
-    letterSpacing: '8vh',
-    fill: CONFIG.GLOW_COLOR,
-  },
-  centerCore: {
-    position: 'absolute',
-    width: '16px',
-    height: '16px',
-    borderRadius: '50%',
-    background: '#ffffff',
-    boxShadow: `0 0 30px 15px #ffffff, 0 0 70px 30px ${CONFIG.GLOW_COLOR}`,
-    zIndex: 3,
-    pointerEvents: 'none',
-  },
+    fontSize: '18vh',
+    fill: CONFIG.COLOR,
+    fontWeight: 400,
+    // Note: Heavy text-shadows on large SVG text tracks can impact rendering performance.
+    textShadow: '0 0 10px #060455, 0 0 20px rgb(199, 18, 231)',
+    textRendering: 'geometricPrecision', // Swapped for smoother vector calculation during rotation
+    fontVariantNumeric: 'tabular-nums', 
+  }
 };
