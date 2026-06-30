@@ -1,3 +1,4 @@
+import { useMillisecondClock } from '@/utils/hooks';
 import React, { useEffect, useRef } from 'react';
 import styles from './Clock.module.css';
 
@@ -19,6 +20,8 @@ const CmykClock: React.FC = () => {
     return () => window.removeEventListener('resize', resizeCanvas);
   }, []);
 
+  const time = useMillisecondClock();
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const clockEl = clockRef.current;
@@ -27,14 +30,13 @@ const CmykClock: React.FC = () => {
     if (!ctx) return;
     const sectors = ['cyan', 'magenta', 'yellow'];
 
-    const updateClock = () => {
-      const now = new Date();
-      const ms = now.getMilliseconds();
-      const sec = now.getSeconds() + ms / 1000;
-      const min = now.getMinutes() + sec / 60;
-      const hr = (now.getHours() % 12) + min / 60;
+    const draw = () => {
+      const ms = time.getMilliseconds();
+      const sec = time.getSeconds() + ms / 1000;
+      const min = time.getMinutes() + sec / 60;
+      const hr = (time.getHours() % 12) + min / 60;
 
-      const secondDeg = (sec / 60) * 360;
+      const secondDeg = sec * 6;
       const minuteDeg = (min / 60) * 360;
       const hourDeg = (hr / 12) * 360;
 
@@ -73,16 +75,13 @@ const CmykClock: React.FC = () => {
       if (sh) sh.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
       if (mh) mh.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
       if (hh) hh.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
-
-      requestAnimationFrame(updateClock);
     };
 
-    requestAnimationFrame(updateClock);
-  }, []);
+    draw();
+  }, [time]);
 
   return (
-    <>
-      <div className={styles.clock} ref={clockRef}>
+    <div className={styles.clock} ref={clockRef}>
         <canvas ref={canvasRef} className={styles.canvas} />
         <div className={`${styles.hand} ${styles.hourHand}`} />
         <div className={`${styles.hand} ${styles.minuteHand}`} />
@@ -92,7 +91,6 @@ const CmykClock: React.FC = () => {
           {/* Optional date text can go here */}
         </div>
       </div>
-    </>
   );
 };
 

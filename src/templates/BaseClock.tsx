@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
 import type { FontConfig } from '@/types/clock';
-import { useClockTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 import styles from './BaseClock.module.css';
 
 /**
@@ -44,7 +44,7 @@ const formatDigits = (num: number): string => num.toString().padStart(2, '0');
 // =========================
 const BaseClock: React.FC = () => {
   // Use standardized hook (1-second updates by default)
-  const time = useClockTime();
+  const time = useSecondClock();
 
   // Load fonts via Suspense (component must be wrapped in <Suspense>)
   useSuspenseFontLoader(fontConfigs);

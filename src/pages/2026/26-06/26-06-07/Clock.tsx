@@ -18,6 +18,42 @@ export const fontConfigs: FontConfig[] = [
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 const formatMs = (num: number): string => num.toString().padStart(3, '0');
 
+const stylesObj: Record<string, React.CSSProperties> = {
+  container: {
+    position: 'relative',
+    height: '100dvh',
+    width: '100vw',
+    margin: 0,
+    padding: '2rem 0 0 0',
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    backgroundColor: '#ff0000',
+  },
+  video: {
+    position: 'absolute',
+    inset: 0,
+    width: '100vw',
+    height: '100dvh',
+    objectFit: 'cover',
+    zIndex: 0,
+    pointerEvents: 'none',
+  },
+  digitsContainer: {
+    position: 'relative',
+    zIndex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  digitBox: {
+    display: 'inline-block',
+    width: '1ch',
+    textAlign: 'center',
+    fontVariantNumeric: 'tabular-nums',
+  },
+};
+
 const ClockInner: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
@@ -33,21 +69,7 @@ const ClockInner: React.FC = () => {
   const allDigits = (h + m + s + ms2).split('');
 
   return (
-    <div
-      className={styles.container}
-      style={{
-        position: 'relative',
-        height: '100dvh',
-        width: '100vw',
-        margin: 0,
-        padding: '2rem 0 0 0',
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        backgroundColor: '#ff0000',
-      }}
-    >
+    <div className={styles.container} style={stylesObj.container}>
       <video
         className={styles.video}
         autoPlay
@@ -55,39 +77,14 @@ const ClockInner: React.FC = () => {
         loop
         playsInline
         preload="auto"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100vw',
-          height: '100dvh',
-          objectFit: 'cover',
-          zIndex: 0,
-          pointerEvents: 'none',
-        }}
+        style={stylesObj.video}
       >
         <source src={backgroundVideo} type="video/mp4" />
       </video>
 
-      <main
-        className={styles.digitsContainer}
-        style={{
-          position: 'relative',
-          zIndex: 1,
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
+      <main className={styles.digitsContainer} style={stylesObj.digitsContainer}>
         {allDigits.map((digit, index) => (
-          <span
-            key={index}
-            className={styles.digitBox}
-            style={{
-              display: 'inline-block',
-              width: '1ch',
-              textAlign: 'center',
-              fontVariantNumeric: 'tabular-nums',
-            }}
-          >
+          <span key={index} className={styles.digitBox} style={stylesObj.digitBox}>
             {digit}
           </span>
         ))}
