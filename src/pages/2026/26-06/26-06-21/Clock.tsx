@@ -49,7 +49,7 @@ const digitalGridStyle: CSSProperties = {
   zIndex: 1,
   display: 'grid',
   gridTemplateRows: 'repeat(6, 1fr)',
-  gap: '2vh',
+  gap: '2dvh',
   color: '#111111',
   textShadow: '0 0 20px rgba(205, 245, 135, 0.99)',
 };
@@ -58,7 +58,7 @@ const cellStyle: CSSProperties = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  fontSize: '14vh',
+  fontSize: '14dvh',
   lineHeight: 1,
   userSelect: 'none',
 };

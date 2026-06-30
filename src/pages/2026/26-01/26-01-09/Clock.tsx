@@ -1,18 +1,18 @@
-import { useClockTime } from '@/hooks/useClockTime';
-import React, { useCallback } from 'react';
+import { useSecondClock } from '@/utils/hooks';
+import React from 'react';
 import { BackgroundGrid } from './BackgroundGrid'; // Import the extracted component
 
 // TicTacToeClock component
 // This component displays a clock in a Tic-Tac-Toe grid style.
 export default function TicTacToeClock() {
-  const time = useClockTime();
+  const time = useSecondClock();
 
   // Font is loaded by useSuspenseFontLoader in BackgroundGrid component
 
   const fontFamily = 'CustomClockFont, monospace';
   // This formatTime is specific to this clock and differs from the one in clockUtils.ts.
   // It's fine to keep it local if it's not reusable elsewhere, or move to a specific utility.
-  const formatTime = useCallback((date: Date) => {
+  const formatTime = (date: Date) => {
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
@@ -29,7 +29,7 @@ export default function TicTacToeClock() {
       ms1: 0, // Milliseconds not available with useClockTime
       ampm,
     };
-  }, []);
+  };
 
   // Update display time when time changes
   const displayTime = formatTime(time);
