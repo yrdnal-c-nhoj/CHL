@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import type { CSSProperties } from 'react';
 import mapFont from '@/assets/fonts/25fonts/25-05-05-Map.ttf?url';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 
 // Component Props interface
 interface WarholGraveCamClockProps {
@@ -30,58 +29,14 @@ const WarholGraveCamClock: React.FC<WarholGraveCamClockProps> = () => {
   // Use the standardized hook for smooth clock updates
   const currentTime = useSecondClock();
 
-  const [time, setTime] = useState<any>({
-    hours: '00',
-    minutes: '00',
-    seconds: '00',
-  });
-
-  // Font loading handled by useSuspenseFontLoader
-
-  useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      setTime({
-        hours: String(now.getHours()).padStart(2, '0'),
-        minutes: String(now.getMinutes()).padStart(2, '0'),
-        seconds: String(now.getSeconds()).padStart(2, '0'),
-      });
+  const time = useMemo(() => {
+    const now = currentTime;
+    return {
+      hours: String(now.getHours()).padStart(2, '0'),
+      minutes: String(now.getMinutes()).padStart(2, '0'),
+      seconds: String(now.getSeconds()).padStart(2, '0'),
     };
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Inject font-face once
-  useEffect(() => {
-    // Check if font is already loaded
-    if (document.fonts.check('12px "Map"')) {
-      return;
-    }
-
-    // Method 1: FontFace API
-    const font = new FontFace('Map', `url(${mapFont})`);
-    font
-      .load()
-      .then((loadedFont) => {
-        document.fonts.add(loadedFont);
-      })
-      .catch((error) => {
-        console.error('Font loading failed:', error);
-        // Method 2: CSS injection as fallback
-        if (!document.getElementById('map-font-style')) {
-          const style = document.createElement('style');
-          style.id = 'map-font-style';
-          style.innerHTML = `
-          @font-face {
-            font-family: 'Map';
-            src: url(${mapFont}) format('truetype');
-          }
-        `;
-          document.head.appendChild(style);
-        }
-      });
-  }, []);
+  }, [currentTime]);
 
   const digitStyle = {
     color: '#ef1337',
@@ -100,16 +55,6 @@ const WarholGraveCamClock: React.FC<WarholGraveCamClockProps> = () => {
 
   return (
     <>
-      {/* Ensure CSS @font-face + class that can use !important */}
-      <style>{`
-        @font-face {
-          font-family: 'Map';
-          src: url(${mapFont}) format('truetype');
-          font-display: swap;
-        }
-        .digit { font-family: 'Map', sans-serif !important; }
-      `}</style>
-
       <iframe
         src="https://www.youtube.com/embed/JHpJvvn9hvk?autoplay=1&mute=1"
         title="Live YouTube Stream"

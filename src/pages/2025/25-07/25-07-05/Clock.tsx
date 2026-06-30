@@ -117,7 +117,7 @@ const Clock: React.FC = () => {
     top: 0,
     left: 0,
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     zIndex: -1,
     pointerEvents: 'none',
     background: '#000',

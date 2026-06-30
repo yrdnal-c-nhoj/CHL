@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import fontLemUrl from '@/assets/fonts/25fonts/25-12-30-lem.ttf?url';
 import fontAnaUrl from '@/assets/fonts/25fonts/25-12-30-ana.ttf?url';
+import fontLemUrl from '@/assets/fonts/25fonts/25-12-30-lem.ttf?url';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 // 1. Define font configurations for the Suspense-based loader
 export const fontConfigs: FontConfig[] = [
@@ -74,7 +74,7 @@ const RotatingAnalemmaClock: React.FC = () => {
   };
 
   const { pathData, currentPos } = useMemo(() => {
-    let points = [];
+    const points = [];
     for (let i = 0; i <= 365; i++) {
       const pos = calculateAnalemma(i);
       points.push(`${pos.x},${pos.y}`);
@@ -98,7 +98,7 @@ const RotatingAnalemmaClock: React.FC = () => {
       justifyContent: 'space-between',
       backgroundColor: '#ffffff',
       color: '#000000',
-      fontFamily: 'monospace',
+      fontFamily: `'Lem', monospace`, // No change needed here, but keeping for context
       margin: 0,
       padding: '2dvh 0',
       overflow: 'hidden',
@@ -112,8 +112,8 @@ const RotatingAnalemmaClock: React.FC = () => {
       transform: 'translateY(-50%) rotate(180deg)',
       writingMode: 'vertical-rl',
       color: '#666666',
-      letterSpacing: '0.2vh',
-      fontFamily: `AnalemmaText, sans-serif`,
+      letterSpacing: '0.2dvh', // Already correct
+      fontFamily: `'AnalemmaText', sans-serif`, // No change needed
       fontSize: '3.3vh',
       // letterSpacing: '0.2em',
       zIndex: 10,
@@ -124,10 +124,10 @@ const RotatingAnalemmaClock: React.FC = () => {
       top: '50%',
       transform: 'translateY(-50%)',
       writingMode: 'vertical-lr',
-      fontFamily: `AnalemmaText, sans-serif`,
+      fontFamily: `'AnalemmaText', sans-serif`, // No change needed
       fontSize: '3.3vh',
       color: '#666666',
-      letterSpacing: '0.2vh',
+      letterSpacing: '0.2dvh', // Already correct
       zIndex: 10,
     },
     clockContainer: {
@@ -260,7 +260,7 @@ const RotatingAnalemmaClock: React.FC = () => {
         </svg>
       </div>
 
-      <div style={{ height: '5vh' }} />
+      <div style={{ height: '5dvh' }} />
     </div>
   );
 };

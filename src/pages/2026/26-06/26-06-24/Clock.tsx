@@ -2,12 +2,13 @@ import customFont from '@/assets/fonts/26fonts/26-06-24.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-06/26-06-22/golf.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useSecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 
 export const assets = [backgroundImage, customFont];
 
 export default function DigitalClock() {
-  const [time, setTime] = useState(new Date());
+  const time = useSecondClock();
 
   const fontConfigs = useMemo<FontConfig[]>(
     () => [
@@ -24,14 +25,6 @@ export default function DigitalClock() {
   );
 
   useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
 
   let hours = time.getHours();
   const ampm = hours >= 12 ? 'pm' : 'am';
@@ -91,28 +84,28 @@ const styles: { [key: string]: React.CSSProperties } = {
     flexDirection: 'column',
     alignItems: 'center',
     position: 'relative',
-    bottom: '18vh',              // Adjust this value to move it higher or lower from the bottom edge
+    bottom: '18dvh',             // Adjust this value to move it higher or lower from the bottom edge
     left: '90px',
     opacity: 0.7,// Adjust this value to move it closer or further from the left edge
   },
   time: {
     display: 'flex',
     alignItems: 'center',
-    fontSize: '15vh',
+    fontSize: '15dvh',
     fontFamily: 'CustomFont260624, monospace',
     color: '#D92828',
     lineHeight: 0.8,             // Tightened to pull everything closer vertically
   },
   colon: {
-    fontSize: '12vh',
+    fontSize: '12dvh',
     margin: '0 0rem',         // Cleaned up margin properties
     transform: 'translateY(-0.1em)',
   },
   ampm: {
-    fontSize: '8vh',             // Slightly smaller for hierarchy, adjust as you see fit
+    fontSize: '8dvh',            // Slightly smaller for hierarchy, adjust as you see fit
     fontFamily: 'CustomFont260624, monospace',
     color: '#D92828',
     lineHeight: 0.1,             // Pulls the text up closely under the time numbers
-    marginTop: '0.5vh',          // A tiny micro-adjustment nudge to fine-tune spacing
+    marginTop: '0.5dvh',         // A tiny micro-adjustment nudge to fine-tune spacing
   },
 };

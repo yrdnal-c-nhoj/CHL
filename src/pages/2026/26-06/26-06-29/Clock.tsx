@@ -104,7 +104,7 @@ const Manufactured: React.FC = () => {
         position: 'relative',
         overflow: 'hidden',
         width: '100%',
-        height: '100vh',
+        height: '100dvh',
         background: '#07090e',
       }}
     >
@@ -181,7 +181,7 @@ const Manufactured: React.FC = () => {
                     `,
 
                     fontFamily: 'ClockFont',
-                    fontSize: isMobile ? '22vh' : '28vw',
+                    fontSize: isMobile ? '22dvh' : '28vw',
                     lineHeight: 0.85,
                     fontWeight: 'bold',
                     textAlign: 'center',
