@@ -4,7 +4,7 @@ import sliceImg from '@/assets/images/26_images/26-06/26-06-05/slice.webp';
 import type { FontConfig } from '@/types/clock';
 import { calculateAngles } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useSecondClock } from '@/utils/hooks';
 import { useMemo } from 'react';
 
 import styles from './Clock.module.css';
@@ -12,7 +12,7 @@ import styles from './Clock.module.css';
 export const assets = [brainGif, sliceImg, clockFont];
 
 const Clock: React.FC = () => {
-  const time = useClockTime();
+  const time = useSecondClock();
   
   const fontConfigs: FontConfig[] = useMemo(() => [
     {

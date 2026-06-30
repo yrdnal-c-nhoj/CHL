@@ -2,7 +2,7 @@ import fontUrl from '@/assets/fonts/26fonts/26-06-23.ttf?url';
 import jumpVideo from '@/assets/images/26_images/26-06/26-06-23/row.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useSecondClock } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
 import { memo, useMemo } from 'react';
 
@@ -128,7 +128,7 @@ const StyleOverrides = () => (
 );
 // --- MAIN COMPONENT ---
 const AnalogClock = () => {
-  const currentTime = useClockTime();
+  const currentTime = useSecondClock();
   useSuspenseFontLoader(FONT_CONFIGS);
 
   const { hr, min, sec } = calculateTimeValues(currentTime);

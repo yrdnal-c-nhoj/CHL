@@ -4,7 +4,7 @@ import urnImage from '@/assets/images/26_images/26-06/26-06-26/urn.webp';
 import windflowerVideo from '@/assets/images/26_images/26-06/26-06-26/windflower.mp4?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useSecondClock } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -104,7 +104,7 @@ const colonBoxStyle: CSSProperties = {
 // --- Component ---
 
 const Clock: React.FC = () => {
-  const time = useClockTime(); 
+  const time = useSecondClock(); 
   const [dimensions, setDimensions] = useState({ cols: 1, rows: 1 });
   const [rotationAngle, setRotationAngle] = useState(0);
 
