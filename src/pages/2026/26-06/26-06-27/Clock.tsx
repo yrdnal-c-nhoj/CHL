@@ -41,16 +41,13 @@ const AnalogClock: React.FC = () => {
   const clockNumbers = useMemo(() => generateNumbers(), []);
 
   useEffect(() => {
-    // Sync with requestAnimationFrame or high frequency to capture milliseconds smoothly
     const timerId = setInterval(() => setNow(new Date()), 16);
     return () => clearInterval(timerId);
   }, []);
 
-  // Attempt to play the video programmatically on mount
   useEffect(() => {
     const videoElement = videoRef.current;
     if (videoElement) {
-      // We want to ensure it plays, so we call play()
       const playPromise = videoElement.play();
       if (playPromise !== undefined) {
         playPromise.catch(error => console.error("Video play failed:", error));
@@ -80,8 +77,8 @@ const AnalogClock: React.FC = () => {
         style={styles.backgroundVideo}
       />
       <svg
-        width="300"
-        height="300"
+        width="400"
+        height="400"
         viewBox="0 0 200 200"
         style={styles.analogClock}
       >
@@ -93,9 +90,6 @@ const AnalogClock: React.FC = () => {
             </text>
           ))}
         </g>
-
-        {/* Center Pin */}
-        <circle cx="100" cy="100" r="4" style={styles.centerPin} />
 
         {/* Hands */}
         <g>
@@ -127,7 +121,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
     width: '100vw',
     height: '100dvh',
-    backgroundColor: '#000', // Fallback color if video fails
+    backgroundColor: '#000',
     overflow: 'hidden',
     position: 'relative',
   },
@@ -151,35 +145,30 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   numberText: {
     fontFamily: "'ClockFont_26_06_27', monospace",
-    fontSize: '12px', // Scaled for viewBox units, will resize with SVG
-    fill: '#F3E8DA',
+    fontSize: '7vh',
+    fill: '#359C45',
     textAnchor: 'middle',
     dominantBaseline: 'central',
     userSelect: 'none',
     opacity: 0.6,
     filter: 'drop-shadow(0 1px 0px rgba(233, 220, 220, 0.7))',
   },
-  centerPin: {
-    stroke: '#F3E8DA',
-    strokeWidth: '1.0',
-    opacity: 0.6,
-  },
   hand: {
     strokeLinecap: 'round',
-    stroke: '#F3E8DA',
     opacity: 0.6,
-    filter: 'drop-shadow(0 0 2px rgba(0,0,0,0.8))',
+    filter: 'drop-shadow(0 2px 0px rgba(233, 220, 220, 0.88))',
   },
   hourHand: {
     strokeWidth: 4,
-    stroke: '#EDE1D2',
+    stroke: '#359C45',
   },
   minuteHand: {
     strokeWidth: 3,
+    stroke: '#359C45',
   },
   secondHand: {
     strokeWidth: 1.5,
-    stroke: '#F3E8DA', // A lighter color for visibility
+    stroke: '#359C45',
   },
 };
 
