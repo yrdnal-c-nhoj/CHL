@@ -96,7 +96,7 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.57.1",
     "vite": "^7.3.2",
-    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-compression": "0.5.1",
     "vite-plugin-dts": "^4.5.4",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-pages": "^0.33.1",
