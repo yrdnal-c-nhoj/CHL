@@ -32,7 +32,7 @@ export default function TicTacToeClock() {
   };
 
   // Update display time when time changes
-  const displayTime = formatTime(time);
+  const displayTime = React.useMemo(() => formatTime(time), [time]);
 
   const clockContainerStyle = {
     width: '100%',
