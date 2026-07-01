@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import paperFont from '@/assets/fonts/26fonts/26-03-03-paper.ttf';
+import paperflowerVideo from '@/assets/images/26_images/26-03/26-03-02/paperflower.mp4';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import paperflowerVideo from '@/assets/images/26_images/26-03/26-03-02/paperflower.mp4';
-import paperFont from '@/assets/fonts/26fonts/26-03-03-paper.ttf';
+import React, { useEffect, useMemo, useState } from 'react';
 
 const AnalogClock: React.FC = () => {
   const fontConfigs = [
@@ -104,7 +104,7 @@ const AnalogClock: React.FC = () => {
         style={{
           width: 14,
           height: height * 0.25,
-          background: 'linear-gradient(to top, #ff69b4, #ffb6c1)',
+          background: 'linear-gradient(to top, #FB68B2, #ffb6c1)',
           clipPath: 'path("M7 0 C 15 10, 15 25, 7 45 C -1 25, -1 10, 7 0")', // Organic leaf shape
           transform: `translateX(-50%) rotate(${timeData.hr}deg)`,
           zindex: 3,
