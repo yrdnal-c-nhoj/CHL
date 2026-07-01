@@ -3,7 +3,7 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
-import React, { memo, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 /**
  * July 1, 2026 - Alpha Centauri Cosmic Clock System
@@ -16,7 +16,7 @@ const fontConfigs: FontConfig[] = [
   {
     fontFamily: 'Share Tech Mono',
     fontUrl: 'https://fonts.gstatic.com/s/sharetechmono/v15/J7aHnp1uDWRBEqV98dVQztYldFcLowEF.woff2',
-    options: { weight: 400, style: 'normal' },
+    options: { weight: '400', style: 'normal' },
   },
   {
     fontFamily: 'LabelFont',
@@ -26,46 +26,6 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const formatDigits = (num: number): string => num.toString().padStart(2, '0');
-
-const Starfield: React.FC<{ count: number; speed: number; size: string }> = memo(({ count, speed, size }) => {
-  const stars = useMemo(() => {
-    return Array.from({ length: count }, (_, i) => ({
-      id: i,
-      style: {
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        width: size,
-        height: size,
-        backgroundColor: '#fff',
-        borderRadius: '50%',
-        position: 'absolute',
-        animationDuration: `${20 + Math.random() * 30}s`,
-        animationDelay: `-${Math.random() * 50}s`,
-        opacity: Math.random() * 0.5 + 0.3,
-        animationName: 'twinkle',
-      } as CSSProperties,
-    }));
-  }, [count, size]);
-
-  const containerStyle: CSSProperties = {
-    position: 'absolute',
-    inset: 0,
-    width: '100%',
-    height: '100%',
-    // This pattern creates a fine, repeating dust of stars
-    backgroundImage: `radial-gradient(1px 1px at ${Math.random() * speed}px ${Math.random() * speed}px, white, transparent)`,
-    zIndex: 1,
-  };
-
-  return (
-    <div style={containerStyle}>
-      {stars.map(star => (
-        <div key={star.id} style={star.style} />
-      ))}
-    </div>
-  );
-});
-Starfield.displayName = 'Starfield';
 
 const AlphaCentauriClock: React.FC = () => {
   const time = useSecondClock();
@@ -122,17 +82,17 @@ const AlphaCentauriClock: React.FC = () => {
     label: {
       fontFamily: "'LabelFont', serif",
       fontStyle: 'italic',
-      letterSpacing: '0.06em',
-      color: '#eaf2ff',
+      letterSpacing: '0.02em',
+      color: '#C9D8EF',
       textShadow: '0 2px 8px rgba(0, 0, 0, 0.95), 0 0 4px rgba(0, 0, 0, 0.8)',
       whiteSpace: 'nowrap',
-      fontSize: 'clamp(1rem, 2.2vw, 1.35rem)',
-      fontWeight: 500,
+      fontSize: '6vh',
+      fontWeight: 300,
       textAlign: 'center',
     },
     starA: {
-      width: 'clamp(65px, 11vw, 100px)',
-      height: 'clamp(65px, 11vw, 100px)',
+      width: ' 20vh',
+      height: ' 20vh',
       borderRadius: '50%',
       background: 'radial-gradient(circle, #fff9ea 0%, #ffdf9e 60%, rgba(255,223,158,0) 75%)',
       boxShadow: '0 0 35px 12px rgba(255, 223, 158, 0.6)',
@@ -142,8 +102,8 @@ const AlphaCentauriClock: React.FC = () => {
       animation: 'orbit-a 12s linear infinite',
     },
     starB: {
-      width: 'clamp(50px, 8.5vw, 78px)',
-      height: 'clamp(50px, 8.5vw, 78px)',
+      width: ' 16vh',
+      height:  ' 16vh',
       borderRadius: '50%',
       background: 'radial-gradient(circle, #fff1d9 0%, #ffb066 60%, rgba(255,176,102,0) 75%)',
       boxShadow: '0 0 30px 10px rgba(255, 176, 102, 0.55)',
@@ -153,9 +113,9 @@ const AlphaCentauriClock: React.FC = () => {
       animation: 'orbit-b 12s linear infinite',
     },
     starDigits: {
-      fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)',
-      fontWeight: 700,
-      color: '#120b00',
+      fontSize: '9vh',
+      fontWeight: 300,
+      color: '#2E245B',
       lineHeight: 1,
     },
     proximaOrbitTrack: {
@@ -179,8 +139,8 @@ const AlphaCentauriClock: React.FC = () => {
       transform: 'translateX(-50%)',
     },
     proxima: {
-      width: 'clamp(42px, 6.5vw, 55px)',
-      height: 'clamp(42px, 6.5vw, 55px)',
+      width: '10vh',
+      height:  '10vh',
       borderRadius: '50%',
       background: 'radial-gradient(circle, #ff8c72 0%, #c1440e 65%, rgba(193,68,14,0) 80%)',
       boxShadow: '0 0 20px 6px rgba(193, 68, 14, 0.7)',
@@ -189,7 +149,7 @@ const AlphaCentauriClock: React.FC = () => {
       justifyContent: 'center',
     },
     proximaDigits: {
-      fontSize: 'clamp(0.85rem, 1.5vw, 1.05rem)',
+      fontSize: '6vh',
       color: '#ffffff',
       fontWeight: 700,
       lineHeight: 1,
@@ -198,11 +158,6 @@ const AlphaCentauriClock: React.FC = () => {
 
   return (
     <main style={styles.container}>
-      {/* Animated Starfield Layers */}
-      <Starfield count={150} speed={500} size="1px" />
-      <Starfield count={100} speed={800} size="2px" />
-      <Starfield count={50} speed={1200} size="3px" />
-
       <style>{`
         @keyframes orbit-a {
           0% { transform: translate(0px, 0px); }
@@ -221,12 +176,6 @@ const AlphaCentauriClock: React.FC = () => {
         @keyframes counter-rotate {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
-        }
-        @keyframes twinkle {
-          0%, 100% { opacity: 0.3; }
-          25% { opacity: 0.8; }
-          50% { opacity: 0.2; }
-          75% { opacity: 0.9; }
         }
       `}</style>
 
