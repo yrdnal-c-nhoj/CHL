@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import cyanVideo from '@/assets/images/26_images/26-06/26-06-30/cyan.MP4';
+import cyanImage from '@/assets/images/26_images/26-06/26-06-30/cyan.WEBP';
+import { useSecondClock } from '@/utils/hooks';
+import React from 'react';
+
+export const assets = [cyanImage, cyanVideo];
 
 const CyanClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const time = useSecondClock();
 
   const seconds = time.getSeconds();
   const minutes = time.getMinutes();
@@ -23,15 +20,43 @@ const CyanClock: React.FC = () => {
   return (
     <div
       style={{
+        position: 'relative',
         width: '100%',
         height: '100dvh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#000',
         overflow: 'hidden',
       }}
     >
+      <video
+        src={cyanVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url(${cyanImage})`,
+          backgroundPosition: 'center',
+          backgroundSize: '150px', // You can adjust the tile size here
+          backgroundRepeat: 'repeat',
+        }}
+      />
       <div style={{ position: 'relative', width: 'min(90vmin, 620px)', height: 'min(90vmin, 620px)' }}>
         <svg
           width="100%"
@@ -46,7 +71,7 @@ const CyanClock: React.FC = () => {
             cx="100"
             cy="100"
             r="92"
-            fill="#0A1F1F"
+            fill="none"
             stroke="#00FFFF"
             strokeWidth="9"
           />
@@ -56,7 +81,7 @@ const CyanClock: React.FC = () => {
             cx="100"
             cy="100"
             r="81"
-            fill="none"
+            // fill="none"
             stroke="#00FFFF"
             strokeWidth="3"
             opacity="0.25"
@@ -156,7 +181,7 @@ const CyanClock: React.FC = () => {
             cx="100"
             cy="100"
             r="10"
-            fill="#001414"
+            fill="none"
             stroke="#00FFFF"
             strokeWidth="4"
           />
