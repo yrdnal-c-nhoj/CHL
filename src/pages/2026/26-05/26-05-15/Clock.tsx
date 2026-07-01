@@ -1,6 +1,6 @@
-import React from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+import React from 'react';
 import styles from './Clock.module.css';
 
 import font from '@/assets/fonts/26fonts/26-05-15.ttf?url';
@@ -63,7 +63,7 @@ const getOffsetClassName = (offset: number): string => {
 };
 
 const DigitalClock: React.FC = () => {
-  const currentTime = useClockTime();
+  const currentTime = useSecondClock();
 
   useSuspenseFontLoader([fontConfig]);
 

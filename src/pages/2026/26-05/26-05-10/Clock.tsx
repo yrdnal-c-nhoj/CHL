@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { useClockTime } from '@/utils/hooks';
+import type { FontConfig } from '@/types/clock';
 import { formatTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
+import { useSecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
@@ -11,7 +11,7 @@ import fontUrl from '@/assets/fonts/26fonts/26-05-10.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-05/26-05-10/23.gif';
 
 const NightSky: React.FC = () => {
-  const currentTime = useClockTime();
+  const currentTime = useSecondClock();
 
   /*
    * FONT LOADING
