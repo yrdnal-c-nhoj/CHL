@@ -157,6 +157,7 @@
     "title": "Magenta",
     "tags": [
       "digital",
+      "#FF00FF",
       "color",
       "magenta",
       "monochrome",
@@ -6105,11 +6106,14 @@
   {
     "path": "26-06-30",
     "date": "26-06-30",
-    "title": "Digital Hexadecimal",
+    "title": "Cyan",
     "tags": [
-      "digital",
-      "0123456789abcdef",
-      "image-free"
+      "analog",
+      "#00FFFF",
+      "CMYK",
+      "color",
+      "image-free",
+      "cyan"
     ]
   },
   {
