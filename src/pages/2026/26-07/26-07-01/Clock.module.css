@@ -1,0 +1,51 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0d0d0d;
+  color: #f0f0f0;
+  font-family: 'Share Tech Mono', monospace, system-ui;
+  overflow: hidden;
+}
+
+.timeDisplay {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  font-size: clamp(2rem, 20vw, 15rem);
+  line-height: 1;
+  user-select: none;
+  text-shadow:
+    0 0 5px #c8c8c8,
+    0 0 10px #c8c8c8,
+    0 0 20px #00aaff,
+    0 0 30px #00aaff;
+}
+
+.digitGroup {
+  display: inline-block;
+  min-width: 1.8em; /* Ensure consistent width for HH, MM, SS */
+  text-align: center;
+}
+
+.digit {
+  letter-spacing: 0.05em;
+}
+
+.separator {
+  font-size: 0.8em;
+  margin: 0 0.1em;
+  transform: translateY(-0.05em);
+}
+
+.blinking {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
