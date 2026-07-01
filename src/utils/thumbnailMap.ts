@@ -1,7 +1,7 @@
 // Thumbnail mapping for clock pages
 //
 // For each clock date (format: YY-MM-DD), CHL shows a thumbnail image.
-// Historically the app looked in `/src/assets/thumbnails/[date]-*.webp`.
+// Historically the app looked in `/src/assets/thumbnails/`.
 //
 // Your 2026/26-06 artwork lives in `/src/assets/images/26_images/26-06/[date]/*.webp|*.gif|*.jpg|*.png`.
 // This loader maps date -> first matching file inside that folder.
@@ -10,39 +10,44 @@
 
 import { normalizeDate } from './dateUtils';
 
-// Build thumbnail mapping from the pre-generated thumbnails folder:
-//   /src/assets/thumbnails/YY-MM-DD-thumb.webp
-// (and possibly other extensions for the same naming convention)
-type AnyModule = { default?: string };
+type ImageModule = { default: string };
 
-const modules = import.meta.glob(
+const legacyModules = import.meta.glob(
   '/src/assets/thumbnails/*.{webp,gif,jpg,jpeg,png}',
-  { eager: false }, // Change to lazy loading
-) as Record<string, () => Promise<AnyModule>>;
+  { eager: true },
+) as Record<string, ImageModule>;
 
+const newModules = import.meta.glob(
+  '/src/assets/images/26_images/26-06/**/*.{webp,gif,jpg,jpeg,png}',
+  { eager: true },
+) as Record<string, ImageModule>;
 
 const thumbnailMap: Record<string, string> = {};
 
-for (const [filePath, mod] of Object.entries(modules)) {
-  const imageUrl = (mod as AnyModule).default;
-  if (!imageUrl) continue;
-  
-  // Matches date pattern with optional -thumb suffix (e.g., 26-06-01.webp or 26-6-1-thumb.jpg)
-  const match = filePath.match(/\/src\/assets\/thumbnails\/(\d{1,2}-\d{1,2}-\d{1,2})(?:-thumb)?\./);
-  if (!match || !match[1]) continue;
+const buildMap = (modules: Record<string, ImageModule>) => {
+  for (const [filePath, mod] of Object.entries(modules)) {
+    const imageUrl = mod.default;
+    if (!imageUrl) continue;
 
-  const date = normalizeDate(match[1]);
+    // Matches YY-MM-DD in the path.
+    const match = filePath.match(/(\d{2}-\d{2}-\d{2})/);
+    if (!match || !match[1]) continue;
 
+    const date = normalizeDate(match[1]);
 
-  // Keep first discovered asset for the date.
-  if (!thumbnailMap[date]) {
-    thumbnailMap[date] = imageUrl;
+    // Keep first discovered asset for the date.
+    if (!thumbnailMap[date]) {
+      thumbnailMap[date] = imageUrl;
+    }
   }
-}
+};
+
+buildMap(legacyModules);
+buildMap(newModules);
 
 /**
  * Returns the thumbnail URL for a given date (YY-MM-DD).
  */
 export const getThumbnailByDate = (date: string): string | undefined => thumbnailMap[date];
 
-export { thumbnailMap, modules as thumbnailModules };
+export { thumbnailMap };

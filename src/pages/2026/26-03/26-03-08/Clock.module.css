@@ -34,7 +34,9 @@
   font-family: 'Dragon', serif;
   font-size: 5rem;
   color: #83ef907f;
+  -webkit-user-select: none;
   user-select: none;
+
 }
 
 .hand {
@@ -55,3 +57,4 @@
   white-space: nowrap;
   border: 0;
 }
+
