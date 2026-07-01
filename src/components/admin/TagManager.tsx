@@ -303,15 +303,23 @@ export default function TagManager() {
                             
                             <select
                               className={styles.select}
-                              value=""
+                              multiple
+                              value={[]}
+                              aria-label={`Add tags for ${item.date}`}
                               onChange={(e) => {
-                                const tag = e.target.value;
-                                if (tag) toggleTag(item.date, tag);
-                                e.target.value = '';
+                                const selected = Array.from(e.target.selectedOptions).map(o => o.value);
+                                if (selected.length) {
+                                  // Apply all selections as toggles.
+                                  selected.forEach(tag => toggleTag(item.date, tag));
+                                }
+
+                                // Clear selection so the next interaction can re-select the same tags.
+                                Array.from(e.target.options).forEach(opt => {
+                                  opt.selected = false;
+                                });
                               }}
-                              style={{ width: 'auto', minWidth: '140px' }}
+                              style={{ width: 'auto', minWidth: '140px', height: '10rem' }}
                             >
-                              <option value="" disabled>Add existing...</option>
                               {allExistingTags.map(({ name, count }) => (
                                 <option key={name} value={name}>{name} ({count})</option>
                               ))}
