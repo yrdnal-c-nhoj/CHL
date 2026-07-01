@@ -1,185 +1,201 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import cyanVideo from '@/assets/images/26_images/26-06/26-06-30/cyan.MP4';
+import cyanImage from '@/assets/images/26_images/26-06/26-06-30/cyan.WEBP';
+import { useSecondClock } from '@/utils/hooks';
+import React from 'react';
 
-import type { FontConfig } from '@/types/clock';
-import { formatTime } from '@/utils/clockUtils';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+export const assets = [cyanImage, cyanVideo];
 
-import fontUrl from '@/assets/fonts/26fonts/26-06-29.ttf?url';
-import carVideo from '@/assets/images/26_images/26-06/26-06-29/manufacture.mp4';
+const CyanClock: React.FC = () => {
+  const time = useSecondClock();
 
-const NightSky: React.FC = () => {
-  const currentTime = useClockTime();
+  const seconds = time.getSeconds();
+  const minutes = time.getMinutes();
+  const hours = time.getHours();
 
-  /*
-   * FONT LOADING
-   */
-  const fontConfigs: FontConfig[] = useMemo(
-    () => [
-      {
-        fontFamily: 'ClockFont',
-        fontUrl,
-      },
-    ],
-    [],
-  );
-
-  useSuspenseFontLoader(fontConfigs);
-
-  /*
-   * MOBILE DETECTION
-   */
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const update = () => {
-      setIsMobile(window.innerWidth <= 480);
-    };
-
-    update();
-    window.addEventListener('resize', update);
-
-    return () => {
-      window.removeEventListener('resize', update);
-    };
-  }, []);
-
-  /*
-   * FORMATTED TIME
-   */
-  const formattedTime = useMemo(() => {
-    if (!currentTime) {
-      return { hours: '00', minutes: '00', seconds: '00', meridian: 'AM' };
-    }
-
-    const formatted = formatTime(currentTime, '12h');
-    const match = formatted.match(/^(\d{2}):(\d{2}):(\d{2})\s+(AM|PM)$/);
-    
-    if (!match) {
-      const meridian = currentTime.getHours() >= 12 ? 'PM' : 'AM';
-      const hours12 = currentTime.getHours() % 12 || 12;
-      const hours = hours12.toString().padStart(2, '0');
-      return {
-        hours,
-        minutes: currentTime.getMinutes().toString().padStart(2, '0'),
-        seconds: currentTime.getSeconds().toString().padStart(2, '0'),
-        meridian,
-      };
-    }
-
-    const [, hours, minutes, seconds, meridian] = match;
-    return { hours, minutes, seconds, meridian };
-  }, [currentTime]);
-
-  const clockCharacters = useMemo(() => {
-    const { hours, minutes, seconds, meridian } = formattedTime;
-
-    return [
-      hours[0] || '0',
-      hours[1] || '0',
-      minutes[0] || '0',
-      minutes[1] || '0',
-      seconds[0] || '0',
-      seconds[1] || '0',
-      meridian[0] || 'A',
-      meridian[1] || 'M',
-    ];
-  }, [formattedTime]);
-
-  /*
-   * OPTIMIZED GRID MAP CALCULATION
-   */
-  const gridMap = useMemo(() => {
-    return isMobile
-      ? [
-          ['1', '1'], ['2', '1'],
-          ['1', '2'], ['2', '2'],
-          ['1', '3'], ['2', '3'],
-          ['1', '4'], ['2', '4'],
-        ]
-      : [
-          ['1', '1'], ['2', '1'], ['3', '1'], ['4', '1'],
-          ['1', '2'], ['2', '2'], ['3', '2'], ['4', '2'],
-        ];
-  }, [isMobile]);
+  // Calculate angles (degrees)
+  const secondAngle = seconds * 6;
+  const minuteAngle = minutes * 6 + seconds * 0.1;
+  const hourAngle = (hours % 12) * 30 + minutes * 0.5;
 
   return (
     <div
       style={{
         position: 'relative',
-        overflow: 'hidden',
         width: '100%',
-        height: '100vh',
-        background: '#000428',
+        height: '100dvh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
       }}
     >
       <video
+        src={cyanVideo}
         autoPlay
         loop
         muted
         playsInline
         style={{
           position: 'absolute',
+          top: 0,
+          left: 0,
           width: '100%',
           height: '100%',
-          objectFit: 'fill',
-          zIndex: 1,
+          objectFit: 'cover',
         }}
-        src={carVideo}
       />
-      <time dateTime={currentTime?.toISOString()} aria-live="polite">
-        <div
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url(${cyanImage})`,
+          backgroundPosition: 'center',
+          backgroundSize: '17vh', // You can adjust the tile size here
+          backgroundRepeat: 'repeat',
+          zIndex: 9,
+        }}
+      />
+      <div style={{ position: 'relative', width: 'min(90vmin, 620px)', height: 'min(90vmin, 620px)' }}>
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 200 200"
           style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            display: 'grid',
-            gridTemplateColumns: isMobile ? '1fr 1fr' : '1fr 1fr 1fr 1fr',
-            gridTemplateRows: isMobile ? '1fr 1fr 1fr 1fr' : '1fr 1fr',
-            zIndex: 20,
+            filter: 'drop-shadow(0 0 25px #00FFFF)',
           }}
         >
-          {clockCharacters.map((char, index) => (
-            <div
-              key={index}
-              style={{
-                gridColumn: gridMap[index]?.[0] || '1',
-                gridRow: gridMap[index]?.[1] || '1',
-                position: 'relative',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                overflow: 'visible',
-              }}
-            >
-              <div
-                style={{
-                  position: 'absolute',
-                  left: '50%',
-                  top: '50%',
-                  transform: `
-                    translate(-50%, -50%)
-                    translate(${index * -2}px, ${index * 1.5}px)
-                  `,
-                  zIndex: index + 1,
-                  pointerEvents: 'none',
-                  userSelect: 'none',
-                  mixBlendMode: 'screen',
-                  fontFamily: 'ClockFont',
-                  fontSize: isMobile ? '58vh' : '58vw',
-                  lineHeight: 0.8,
-                  color: '#333333',
-                }}
-              >
-                {char}
-              </div>
-            </div>
-          ))}
-        </div>
-      </time>
+          {/* Clock face */}
+          <circle
+            cx="100"
+            cy="100"
+            r="92"
+            fill="none"
+            stroke="#00FFFF"
+            strokeWidth="9"
+          />
+
+          {/* Inner ring */}
+          <circle
+            cx="100"
+            cy="100"
+            r="81"
+            fill="none"
+            stroke="#00FFFF"
+            strokeWidth="3"
+            // opacity="0"
+          />
+
+          {/* Hour ticks */}
+          {Array.from({ length: 12 }).map((_, i) => {
+            const angle = i * 30;
+            const x1 = 100 + 69 * Math.cos((angle - 90) * (Math.PI / 180));
+            const y1 = 100 + 69 * Math.sin((angle - 90) * (Math.PI / 180));
+            const x2 = 100 + 83 * Math.cos((angle - 90) * (Math.PI / 180));
+            const y2 = 100 + 83 * Math.sin((angle - 90) * (Math.PI / 180));
+            return (
+              <line
+                key={i}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke="#00FFFF"
+                strokeWidth="7"
+                strokeLinecap="round"
+              />
+            );
+          })}
+
+          {/* Minute ticks */}
+          {Array.from({ length: 60 }).map((_, i) => {
+            if (i % 5 === 0) return null;
+            const angle = i * 6;
+            const x1 = 100 + 75 * Math.cos((angle - 90) * (Math.PI / 180));
+            const y1 = 100 + 75 * Math.sin((angle - 90) * (Math.PI / 180));
+            const x2 = 100 + 83 * Math.cos((angle - 90) * (Math.PI / 180));
+            const y2 = 100 + 83 * Math.sin((angle - 90) * (Math.PI / 180));
+            return (
+              <line
+                key={i}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke="#00FFFF"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                // opacity="0.55"
+              />
+            );
+          })}
+
+          {/* Hour hand */}
+          <g transform={`rotate(${hourAngle} 100 100)`}>
+            <line
+              x1="100"
+              y1="100"
+              x2="100"
+              y2="46"
+              stroke="#00FFFF"
+              strokeWidth="8.5"
+              strokeLinecap="round"
+            />
+          </g>
+
+          {/* Minute hand */}
+          <g transform={`rotate(${minuteAngle} 100 100)`}>
+            <line
+              x1="100"
+              y1="100"
+              x2="100"
+              y2="36"
+              stroke="#00FFFF"
+              strokeWidth="5"
+              strokeLinecap="round"
+            />
+          </g>
+
+          {/* Second hand */}
+          <g transform={`rotate(${secondAngle} 100 100)`}>
+            <line
+              x1="100"
+              y1="100"
+              x2="100"
+              y2="30"
+              stroke="#00FFFF"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            />
+            <circle
+              cx="100"
+              cy="30"
+              r="3.5"
+              fill="#00FFFF"
+            />
+          </g>
+
+          {/* Center hub */}
+          <circle
+            cx="100"
+            cy="100"
+            r="10"
+            fill="none"
+            stroke="#00FFFF"
+            strokeWidth="4"
+          />
+          <circle
+            cx="100"
+            cy="100"
+            r="4"
+            fill="#00FFFF"
+          />
+        </svg>
+      </div>
     </div>
   );
 };
 
-export default NightSky;
+export default CyanClock;
