@@ -1,8 +1,7 @@
-import React, { useMemo, Suspense } from 'react';
-import { useClockTime } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { formatTime } from '@/utils/clockUtils';
 import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime, useSecondClock } from '@/utils/hooks';
+import React, { Suspense, useMemo } from 'react';
 import styles from './Clock.module.css';
 
 // Asset Imports
@@ -40,6 +39,7 @@ const BackgroundLayers: React.FC = () => (
 // ---------------- MAIN CLOCK COMPONENT ----------------
 const ClockContent: React.FC = () => {
   const currentTime = useClockTime();
+  const currentTime = useSecondClock();
 
   // Use direct date methods to ensure "undefined" never appears
   const timeString = useMemo(() => {
