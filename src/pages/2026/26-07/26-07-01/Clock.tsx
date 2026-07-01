@@ -1,4 +1,5 @@
 import labelFont from '@/assets/fonts/26fonts/26-07-01.ttf?url';
+import digitFont from '@/assets/fonts/26fonts/26-07-01digit.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
@@ -10,13 +11,13 @@ import React, { useMemo } from 'react';
  * Features a tight central binary core with an un-clippable outer orbit for Proxima Centauri.
  */
 
-export const assets: string[] = [labelFont];
+export const assets: string[] = [labelFont, digitFont];
 
 const fontConfigs: FontConfig[] = [
   {
-    fontFamily: 'Share Tech Mono',
-    fontUrl: 'https://fonts.gstatic.com/s/sharetechmono/v15/J7aHnp1uDWRBEqV98dVQztYldFcLowEF.woff2',
-    options: { weight: '400', style: 'normal' },
+    fontFamily: 'DigitFont',
+    fontUrl: digitFont,
+    options: { weight: 400, style: 'normal' },
   },
   {
     fontFamily: 'LabelFont',
@@ -51,7 +52,7 @@ const AlphaCentauriClock: React.FC = () => {
       justifyContent: 'center',
       background: 'radial-gradient(ellipse at 50% 40%, #0b0f1a 0%, #05060b 55%, #000000 100%)',
       color: '#eaf2ff',
-      fontFamily: "'Share Tech Mono', monospace, system-ui",
+      fontFamily: "'DigitFont', 'Share Tech Mono', monospace, system-ui",
       overflow: 'hidden',
       boxSizing: 'border-box',
     },
@@ -91,8 +92,8 @@ const AlphaCentauriClock: React.FC = () => {
       textAlign: 'center',
     },
     starA: {
-      width: ' 20vh',
-      height: ' 20vh',
+      width: ' 30vh',
+      height: ' 30vh',
       borderRadius: '50%',
       background: 'radial-gradient(circle, #fff9ea 0%, #ffdf9e 60%, rgba(255,223,158,0) 75%)',
       boxShadow: '0 0 35px 12px rgba(255, 223, 158, 0.6)',
@@ -102,8 +103,8 @@ const AlphaCentauriClock: React.FC = () => {
       animation: 'orbit-a 12s linear infinite',
     },
     starB: {
-      width: ' 16vh',
-      height:  ' 16vh',
+      width: ' 26vh',
+      height:  ' 26vh',
       borderRadius: '50%',
       background: 'radial-gradient(circle, #fff1d9 0%, #ffb066 60%, rgba(255,176,102,0) 75%)',
       boxShadow: '0 0 30px 10px rgba(255, 176, 102, 0.55)',
@@ -117,6 +118,7 @@ const AlphaCentauriClock: React.FC = () => {
       fontWeight: 300,
       color: '#2E245B',
       lineHeight: 1,
+      textShadow: '1px 1px 0px rgba(252, 248, 248, 1)',
     },
     proximaOrbitTrack: {
       position: 'absolute',
@@ -139,8 +141,8 @@ const AlphaCentauriClock: React.FC = () => {
       transform: 'translateX(-50%)',
     },
     proxima: {
-      width: '10vh',
-      height:  '10vh',
+      width: '20vh',
+      height:  '20vh',
       borderRadius: '50%',
       background: 'radial-gradient(circle, #ff8c72 0%, #c1440e 65%, rgba(193,68,14,0) 80%)',
       boxShadow: '0 0 20px 6px rgba(193, 68, 14, 0.7)',
@@ -150,9 +152,10 @@ const AlphaCentauriClock: React.FC = () => {
     },
     proximaDigits: {
       fontSize: '6vh',
-      color: '#ffffff',
+      color: '#0C0202',
       fontWeight: 700,
       lineHeight: 1,
+      textShadow: '1px 1px 0px rgb(242, 235, 235)',
     },
   };
 
