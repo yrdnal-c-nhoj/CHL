@@ -1,13 +1,12 @@
-import React, { memo, useEffect, useRef } from 'react';
-import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+import React, { memo, useMemo } from 'react';
 import styles from './Clock.module.css';
 
+import customFont from '@/assets/fonts/26fonts/26-05-18.ttf?url';
 import bellImage2 from '@/assets/images/26_images/26-05/26-05-18/accordion.webp';
 import accordionBg from '@/assets/images/26_images/26-05/26-05-18/accordion2.webp';
-import customFont from '@/assets/fonts/26fonts/26-05-18.ttf?url';
 
 // ======================================================
 // Config & Constants
@@ -125,24 +124,14 @@ const FONT_CONFIGS: FontConfig[] = [
 
 const AnalogClock: React.FC = () => {
   const currentTime = useSecondClock();
-  const clockFaceRef = useRef<HTMLDivElement>(null);
 
   useSuspenseFontLoader(FONT_CONFIGS);
-
-  // Directly update CSS properties on tick without re-rendering React sub-trees
-  useEffect(() => {
-    if (!clockFaceRef.current) return;
 
   const { hourRotation, minuteRotation, secondRotation } = useMemo(() => {
     const ms = currentTime.getMilliseconds();
     const seconds = currentTime.getSeconds() + ms / 1000;
     const minutes = currentTime.getMinutes() + seconds / 60;
     const hours = (currentTime.getHours() % 12) + minutes / 60;
-
-    const face = clockFaceRef.current;
-    face.style.setProperty('--hour-rotation', `${hours * 30}deg`);
-    face.style.setProperty('--minute-rotation', `${minutes * 6}deg`);
-    face.style.setProperty('--second-rotation', `${seconds * 6}deg`);
     return {
       hourRotation: `${hours * 30}deg`,
       minuteRotation: `${minutes * 6}deg`,
@@ -154,7 +143,6 @@ const AnalogClock: React.FC = () => {
     <div className={styles.container}>
       <BackgroundLayers />
 
-      <div ref={clockFaceRef} className={styles.clockFace}>
       <div
         className={styles.clockFace}
         style={
