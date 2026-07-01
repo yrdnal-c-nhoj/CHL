@@ -53,8 +53,9 @@ const CyanClock: React.FC = () => {
           height: '100%',
           backgroundImage: `url(${cyanImage})`,
           backgroundPosition: 'center',
-          backgroundSize: '150px', // You can adjust the tile size here
+          backgroundSize: '17vh', // You can adjust the tile size here
           backgroundRepeat: 'repeat',
+          zIndex: 9,
         }}
       />
       <div style={{ position: 'relative', width: 'min(90vmin, 620px)', height: 'min(90vmin, 620px)' }}>
@@ -81,10 +82,10 @@ const CyanClock: React.FC = () => {
             cx="100"
             cy="100"
             r="81"
-            // fill="none"
+            fill="none"
             stroke="#00FFFF"
             strokeWidth="3"
-            opacity="0.25"
+            // opacity="0"
           />
 
           {/* Hour ticks */}
@@ -126,7 +127,7 @@ const CyanClock: React.FC = () => {
                 stroke="#00FFFF"
                 strokeWidth="2.5"
                 strokeLinecap="round"
-                opacity="0.55"
+                // opacity="0.55"
               />
             );
           })}

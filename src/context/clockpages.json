@@ -157,6 +157,7 @@
     "title": "Magenta",
     "tags": [
       "digital",
+      "#FF00FF",
       "color",
       "magenta",
       "monochrome",
@@ -6100,6 +6101,19 @@
       "digital",
       "mechanical",
       "milliseconds"
+    ]
+  },
+  {
+    "path": "26-06-30",
+    "date": "26-06-30",
+    "title": "Cyan",
+    "tags": [
+      "analog",
+      "#00FFFF",
+      "CMYK",
+      "color",
+      "image-free",
+      "cyan"
     ]
   }
 ]
