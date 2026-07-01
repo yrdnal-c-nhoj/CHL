@@ -1,7 +1,7 @@
-import React, { useMemo, useRef, useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
-import { useClockTime } from '@/utils/clockUtils';
 import backgroundImage from '@/assets/images/26_images/26-05/26-05-01/sampson-radar-spinning-loop-1yfouy6i3iowbryl-ezgif.com-speed.webp';
+import { useMillisecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
@@ -26,13 +26,13 @@ const ClockHand: React.FC<HandProps> = ({
     position: 'absolute',
     bottom: '50%',
     left: '50%',
-    width: width,
+    width,
     height: length,
     backgroundColor: color,
     transformOrigin: 'bottom center',
     transform: `translateX(-50%) rotate(${angle}deg)`,
     borderRadius: '50%',
-    zIndex: zIndex,
+    zIndex,
     transition: 'none',
   };
 
@@ -42,9 +42,7 @@ const ClockHand: React.FC<HandProps> = ({
 };
 
 const AnalogClock: React.FC = () => {
-  const time = useClockTime('ms');
-  const rafRef = useRef<number | null>(null);
-  const [, forceRender] = React.useReducer((x) => x + 1, 0);
+  const time = useMillisecondClock();
 
   // Get current dimensions for oval calculations
   const [dims, setDims] = React.useState({

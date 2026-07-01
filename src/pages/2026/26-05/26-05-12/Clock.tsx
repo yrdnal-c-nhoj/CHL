@@ -1,12 +1,12 @@
-import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import styles from './Clock.module.css';
 import customFont from '@/assets/fonts/26fonts/26-05-12.ttf?url';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
+import styles from './Clock.module.css';
 
 // Properly import assets so Vite can resolve and hash them
-import lionVideo from '@/assets/images/26_images/26-05/26-05-12/lionwalk.mp4';
 import fireImage from '@/assets/images/26_images/26-05/26-05-12/fire.webp';
+import lionVideo from '@/assets/images/26_images/26-05/26-05-12/lionwalk.mp4';
 
 const ROMAN_NUMERALS = [
   'XII',
@@ -69,7 +69,7 @@ const BackgroundLayers: React.FC = () => (
 );
 
 const AnalogClock: React.FC = () => {
-  const currentTime = useClockTime();
+  const currentTime = useMillisecondClock();
 
   const rotations = useMemo(() => {
     const seconds =

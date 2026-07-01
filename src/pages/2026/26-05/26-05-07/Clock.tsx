@@ -1,9 +1,9 @@
-import React, { useMemo, useEffect, useState, memo } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import backgroundImage from '@/assets/images/26_images/26-05/26-05-07/1gallop.webp';
 import gallopFont from '@/assets/fonts/26fonts/26-05-07-gallop.ttf?url';
+import backgroundImage from '@/assets/images/26_images/26-05/26-05-07/1gallop.webp';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
 export const assets = [backgroundImage, gallopFont];
@@ -45,7 +45,7 @@ const ClockHand: React.FC<HandProps> = ({
         backgroundColor: color,
         transform: `rotate(${angle}deg)`,
         borderRadius: type === 'second' ? '50% 50% 0 0' : '2px 2px 0 0',
-        zIndex: zIndex,
+        zIndex,
       }}
       data-hand-type={type}
     />
@@ -53,7 +53,7 @@ const ClockHand: React.FC<HandProps> = ({
 };
 
 const AnalogClock: React.FC = () => {
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   const [dims, setDims] = useState({ w: 0, h: 0 });
   useEffect(() => {

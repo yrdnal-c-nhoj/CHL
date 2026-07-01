@@ -1,25 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useSecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
-const GOOGLE_FONTS_URL =
-  'https://fonts.googleapis.com/css2?family=VT323&display=swap';
-
 const Clock: React.FC = () => {
-  const time = useClockTime();
-
-  useEffect(() => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = GOOGLE_FONTS_URL;
-    document.head.appendChild(link);
-
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
+  const time = useSecondClock();
 
   // Calculate grid dimensions based on viewport and tile size
   const tileWidth = 26; // 26vh (260px / 10)
