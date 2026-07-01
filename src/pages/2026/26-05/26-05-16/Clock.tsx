@@ -1,13 +1,11 @@
 import backgroundImage from '@/assets/images/26_images/26-05/26-05-16/depart.gif';
-import { useMillisecondClock, useSmoothClock } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
 export const assets = [backgroundImage];
 
 const AnalogClock: React.FC = () => {
-  const smoothTime = useSmoothClock(16);
-  const time = smoothTime || new Date();
   const time = useMillisecondClock();
 
   const { hourDeg, minuteDeg, secondDeg, isoTime } = useMemo(() => {

@@ -1,6 +1,7 @@
-import React, { useMemo, useRef, useEffect } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 
 import carVideo from '@/assets/images/26_images/26-05/26-05-02/car.mp4';
 // Import the corresponding font from the assets folder
@@ -68,28 +69,11 @@ const ClockHand: React.FC<HandProps> = ({
 };
 
 const AnalogClock: React.FC = () => {
-  const rafRef = useRef<number | null>(null);
-  const [, forceRender] = React.useReducer((x) => x + 1, 0);
-
   // Suspend rendering until the custom font is ready
   useSuspenseFontLoader(fontConfigs);
 
-  useEffect(() => {
-    const animate = () => {
-      forceRender();
-      rafRef.current = requestAnimationFrame(animate);
-    };
-    rafRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-    };
-  }, []);
-
   // This ensures the milliseconds update smoothly in the digital boxes.
-  const now = new Date();
+  const now = useMillisecondClock();
   const hours = now.getHours();
   const minutes = now.getMinutes();
   const seconds = now.getSeconds();

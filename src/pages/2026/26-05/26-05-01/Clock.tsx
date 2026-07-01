@@ -53,18 +53,11 @@ const AnalogClock: React.FC = () => {
   const ry = (dims.h * 0.95) / 2;
 
   useEffect(() => {
-    const animate = () => {
-      forceRender();
-      rafRef.current = requestAnimationFrame(animate);
-    };
-    rafRef.current = requestAnimationFrame(animate);
-
     const handleResize = () =>
       setDims({ w: window.innerWidth, h: window.innerHeight });
     window.addEventListener('resize', handleResize);
 
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
       window.removeEventListener('resize', handleResize);
     };
   }, []);

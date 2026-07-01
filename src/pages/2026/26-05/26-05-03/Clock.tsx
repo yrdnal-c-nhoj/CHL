@@ -1,5 +1,5 @@
 import boxImage from '@/assets/images/26_images/26-05/26-05-03/box.webp';
-import { useClockTime } from '@/utils/hooks';
+import { useSecondClock } from '@/utils/hooks';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
@@ -308,7 +308,7 @@ const Glyph: React.FC<GlyphProps> = ({ char }) => {
 /* ---------------- CLOCK ---------------- */
 
 const Clock3D: React.FC = () => {
-  const time = useClockTime();
+  const time = useSecondClock();
 
   const chars = useMemo(() => {
     const h = String(time.getHours()).padStart(2, '0');
