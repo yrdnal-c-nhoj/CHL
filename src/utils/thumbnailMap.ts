@@ -15,10 +15,10 @@ import { normalizeDate } from './dateUtils';
 // (and possibly other extensions for the same naming convention)
 type AnyModule = { default?: string };
 
-const modules = import.meta.glob( // This function dynamically imports modules matching a pattern.
+const modules = import.meta.glob(
   '/src/assets/thumbnails/*.{webp,gif,jpg,jpeg,png}',
-  { eager: true },
-) as Record<string, AnyModule>;
+  { eager: false }, // Change to lazy loading
+) as Record<string, () => Promise<AnyModule>>;
 
 
 const thumbnailMap: Record<string, string> = {};
@@ -43,8 +43,6 @@ for (const [filePath, mod] of Object.entries(modules)) {
 /**
  * Returns the thumbnail URL for a given date (YY-MM-DD).
  */
-export const getThumbnailByDate = (date: string): string | undefined => {
-  return thumbnailMap[date];
-};
+export const getThumbnailByDate = (date: string): string | undefined => thumbnailMap[date];
 
-export { thumbnailMap };
+export { thumbnailMap, modules as thumbnailModules };
