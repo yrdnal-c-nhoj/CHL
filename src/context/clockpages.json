@@ -6106,30 +6106,10 @@
   {
     "path": "26-06-30",
     "date": "26-06-30",
-    "title": "Cyan",
+    "title": "Cyanotype",
     "tags": [
       "analog",
       "color"
-    ]
-  },
-  {
-    "path": "26-07-01",
-    "date": "26-07-01",
-    "title": "Digital Hexadecimal",
-    "tags": [
-      "digital",
-      "0123456789abcdef",
-      "image-free"
-    ]
-  },
-  {
-    "path": "26-07-02",
-    "date": "26-07-02",
-    "title": "Digital Hexadecimal",
-    "tags": [
-      "digital",
-      "0123456789abcdef",
-      "image-free"
     ]
   }
 ]
