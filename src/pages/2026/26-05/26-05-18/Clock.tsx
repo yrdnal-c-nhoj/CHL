@@ -1,4 +1,5 @@
 import React, { memo, useEffect, useRef } from 'react';
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -132,6 +133,7 @@ const AnalogClock: React.FC = () => {
   useEffect(() => {
     if (!clockFaceRef.current) return;
 
+  const { hourRotation, minuteRotation, secondRotation } = useMemo(() => {
     const ms = currentTime.getMilliseconds();
     const seconds = currentTime.getSeconds() + ms / 1000;
     const minutes = currentTime.getMinutes() + seconds / 60;
@@ -141,6 +143,11 @@ const AnalogClock: React.FC = () => {
     face.style.setProperty('--hour-rotation', `${hours * 30}deg`);
     face.style.setProperty('--minute-rotation', `${minutes * 6}deg`);
     face.style.setProperty('--second-rotation', `${seconds * 6}deg`);
+    return {
+      hourRotation: `${hours * 30}deg`,
+      minuteRotation: `${minutes * 6}deg`,
+      secondRotation: `${seconds * 6}deg`,
+    };
   }, [currentTime]);
 
   return (
@@ -148,6 +155,16 @@ const AnalogClock: React.FC = () => {
       <BackgroundLayers />
 
       <div ref={clockFaceRef} className={styles.clockFace}>
+      <div
+        className={styles.clockFace}
+        style={
+          {
+            '--hour-rotation': hourRotation,
+            '--minute-rotation': minuteRotation,
+            '--second-rotation': secondRotation,
+          } as React.CSSProperties
+        }
+      >
         <time dateTime={currentTime.toISOString()} className={styles.timeA11y}>
           {currentTime.toTimeString()}
         </time>

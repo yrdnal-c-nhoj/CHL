@@ -1,16 +1,16 @@
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock, useSmoothClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
-import { useSmoothClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 
 // Hardcode the 3 images in this folder so we don't scan the folder at runtime.
 // These are the only assets in `src/assets/images/26_images/26-05/26-05-14/`.
+import fontUrl from '@/assets/fonts/26fonts/26-05-14.ttf?url';
 import balloon from '@/assets/images/26_images/26-05/26-05-14/balloon.webp';
 import balloon2 from '@/assets/images/26_images/26-05/26-05-14/balloon2.webp';
 import balloon3 from '@/assets/images/26_images/26-05/26-05-14/balloon3.webp';
 import balloon4 from '@/assets/images/26_images/26-05/26-05-14/balloons4.webp';
-import fontUrl from '@/assets/fonts/26fonts/26-05-14.ttf?url';
 
 const background1 = balloon;
 const background2 = balloon2;
@@ -35,6 +35,7 @@ const fontConfigs: FontConfig[] = [
 
 const AnalogClock: React.FC = () => {
   const time = useSmoothClock();
+  const time = useMillisecondClock();
   useSuspenseFontLoader(fontConfigs);
 
   const { hourDeg, minuteDeg, secondDeg, isoTime } = useMemo(() => {
