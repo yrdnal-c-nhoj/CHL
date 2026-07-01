@@ -177,7 +177,7 @@ const Manufactured: React.FC = () => {
           height: '100%',
           objectFit: 'fill',
           zIndex: 1,
-          filter: 'saturate(350%) contrast(1.4) brightness(1.2)',
+          filter: 'saturate(130%) contrast(1.4) brightness(1.2)',
           // opacity: 0.35,
         }}
         src={carVideo}
