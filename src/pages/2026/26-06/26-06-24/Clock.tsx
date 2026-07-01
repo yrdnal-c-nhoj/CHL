@@ -43,20 +43,10 @@ export default function DigitalClock() {
       <video
         autoPlay
         loop
-        muted
-        playsInline
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          objectPosition: 'right bottom',
-          transform: 'scaleX(-1)',
-        }}
-        src={backgroundImage}
-       />
+        muted        playsInline
+        preload="auto"
+        style={styles.backgroundVideo}
+        src={backgroundImage} />
       <div style={styles.timeContainer}>
         <div style={styles.time}>
           <span>{displayHours}</span>
@@ -78,6 +68,18 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: '100vw',
     position: 'relative',
     overflow: 'hidden',
+  },
+  backgroundVideo: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    objectPosition: 'right bottom',
+    transform: 'scaleX(-1)',
+    zIndex: -1,
+    pointerEvents: 'none',
   },
   timeContainer: {
     display: 'flex',

@@ -4,13 +4,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
-// Component Props interface
-interface WarholGraveCamClockProps {
-  // No props required for this component
-}
-
-const WarholGraveCamClock: React.FC<WarholGraveCamClockProps> = () => {
-  // Font loading configuration (memoized)
+const WarholGraveCamClock: React.FC = () => {
   const fontConfigs = useMemo<FontConfig[]>(
     () => [
       {
@@ -25,9 +19,7 @@ const WarholGraveCamClock: React.FC<WarholGraveCamClockProps> = () => {
     [],
   );
   useSuspenseFontLoader(fontConfigs);
-
-  // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const currentTime = useSecondClock(); // Standardized hook for smooth updates
 
   const time = useMemo(() => {
     const now = currentTime;
@@ -38,9 +30,58 @@ const WarholGraveCamClock: React.FC<WarholGraveCamClockProps> = () => {
     };
   }, [currentTime]);
 
-  const digitStyle = {
+  return (
+    <>
+      <iframe
+        src="https://www.youtube.com/embed/JHpJvvn9hvk?autoplay=1&mute=1"
+        title="Live YouTube Stream"
+        allow="autoplay; encrypted-media"
+        allowFullScreen
+        style={styles.iframe}
+      />
+
+      <div style={styles.clockContainer}>
+        {Object.values(time).map((unit, i) => (
+          <div key={i} style={{ display: 'flex', gap: '0.5vmin' }}>
+            {unit.split('').map((digit, j) => (
+              <div key={j} className="digit" style={styles.digit}>
+                {digit}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </>
+  );
+};
+
+const styles: { [key: string]: React.CSSProperties } = {
+  iframe: {
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '100vw',
+    height: '100dvh',
+    border: 'none',
+    zIndex: 1,
+  },
+  clockContainer: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    zIndex: 2,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '2vmin',
+    pointerEvents: 'none',
+    userSelect: 'none',
+  },
+  digit: {
     color: '#ef1337',
-    fontFamily: "'Map', sans-serif", // removed !important from inline style
+    fontFamily: "'Map', sans-serif",
     fontSize: '6rem',
     width: '3rem',
     height: '6rem',
@@ -50,53 +91,7 @@ const WarholGraveCamClock: React.FC<WarholGraveCamClockProps> = () => {
     minWidth: '2rem',
     textAlign: 'center',
     boxSizing: 'border-box',
-    userSelect: 'none',
-  };
-
-  return (
-    <>
-      <iframe
-        src="https://www.youtube.com/embed/JHpJvvn9hvk?autoplay=1&mute=1"
-        title="Live YouTube Stream"
-        allow="autoplay; encrypted-media"
-        allowFullScreen
-        style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '100vw',
-          height: '100dvh',
-          border: 'none',
-          zIndex: 1,
-        }}
-      />
-
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 2,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: '2vmin',
-        }}
-      >
-        {Object.values(time).map((unit, i) => (
-          <div key={i} style={{ display: 'flex', gap: '0.5vmin' }}>
-            {unit.split('').map((digit, j) => (
-              <div key={j} className="digit" style={digitStyle}>
-                {digit}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </>
-  );
+  },
 };
 
 export default WarholGraveCamClock;

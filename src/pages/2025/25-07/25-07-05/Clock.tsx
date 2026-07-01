@@ -95,7 +95,7 @@ const Clock: React.FC = () => {
       isMounted = false;
       
       // Clean up global callback if it was ours
-      if (window.onYouTubeIframeAPIReady === initPlayer || !window.YT?.Player) {
+      if (window.onYouTubeIframeAPIReady === initPlayer) {
         window.onYouTubeIframeAPIReady = previousCallback || null;
       }
 
