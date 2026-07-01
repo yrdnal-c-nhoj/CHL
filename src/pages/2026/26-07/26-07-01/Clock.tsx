@@ -1,5 +1,5 @@
-import cyanVideo from '@/assets/images/26_images/26-06/26-06-30/cyan.MP4';
-import cyanImage from '@/assets/images/26_images/26-06/26-06-30/cyan.WEBP';
+import cyanVideo from '@/assets/images/26_images/26-06/26-06-30/cyan.mp4';
+import cyanImage from '@/assets/images/26_images/26-06/26-06-30/cyan.webp';
 import { useSecondClock } from '@/utils/hooks';
 import React from 'react';
 
