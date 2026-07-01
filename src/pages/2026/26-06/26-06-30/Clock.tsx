@@ -241,37 +241,9 @@ const CyanotypeClock: React.FC = () => {
           })}
 
           {/* handwritten caption, in the naturalist's own hand */}
-          <text
-            x={44}
-            y={540}
-            fill={INK}
-            fontSize={30}
-            fontFamily={fontReady ? 'Caveat, cursive' : 'Georgia, serif'}
-            opacity={0.92}
-          >
-            Sun-print no. {dayOfYear}
-          </text>
-          <text
-            x={44}
-            y={572}
-            fill={INK_SOFT}
-            fontSize={22}
-            fontFamily={fontReady ? 'Caveat, cursive' : 'Georgia, serif'}
-          >
-            recorded {timeStr} — {dateStr}
-          </text>
-          <text
-            x={456}
-            y={596}
-            fill={INK_SOFT}
-            fontSize={13}
-            fontFamily='"EB Garamond", Georgia, serif'
-            fontStyle="italic"
-            textAnchor="end"
-            opacity={0.55}
-          >
-            est. 1842
-          </text>
+         
+      
+        
         </g>
       </svg>
     </div>

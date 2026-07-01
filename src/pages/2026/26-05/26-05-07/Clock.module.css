@@ -70,8 +70,8 @@
   font-family: 'Gallop', 'Courier New', monospace;
   color: #8f5020f6;
   text-shadow: -1px -1px 0px rgba(245, 222, 179, 0.347);
-  webkituserselect: none;
-  userselect: none;
+  -webkit-user-select: none;
+  user-select: none;
   z-index: 5;
   letter-spacing: 0.05em;
 }
