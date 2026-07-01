@@ -1,34 +1,27 @@
 import React, { useEffect, useState } from 'react';
 
-// Cyanotype: the 1842 sun-printing process that gave "cyan" its name.
-// Objects laid on chemically treated paper block the sun, leaving a pale
-// ghost silhouette on a field of Prussian blue once the paper is washed.
-// Anna Atkins used it to print the first photographically illustrated
-// book — algae and ferns, pressed flat, exposed, and rinsed. This clock
-// borrows that vocabulary: hands drawn as pressed botanical specimens,
-// numerals inked in a naturalist's hand, the paper itself uneven and
-// sun-worn at the edges.
 
-const INK = '#EAF6F5';
-const INK_SOFT = 'rgba(234, 246, 245, 0.55)';
-const VEIN = 'rgba(12, 42, 74, 0.45)';
-const PAPER_MID = '#1E5187';
-const PAPER_LIGHT = '#3574AC';
-const PAPER_DEEP = '#0C2C4C';
-const WALL = '#0A0A0A';
+// Authentic Prussian Blue & Sun-Exposed Paper Palette
+const INK = '#F5F9F8';                 // Creamy, unexposed paper silhouette
+const INK_SOFT = 'rgba(245, 249, 252, 0.4)'; // Faint ghosting/shadows
+const VEIN = 'rgba(14, 34, 61, 0.35)';       // Darker, unexposed leaf skeleton lines
+const PAPER_LIGHT = '#22446C';         // Sun-washed center
+const PAPER_MID = '#163256';           // Classic Prussian blue
+const PAPER_DEEP = '#0A1C33';          // Rich, dense chemical borders
+const WALL = '#322914';                // Studio darkroom wall backdrop
 
 const DECKLE =
   'M 24,6 L 96,2 168,8 240,1 312,7 384,2 452,8 470,18 476,64 470,128 476,196 468,264 476,332 469,400 476,470 470,538 458,586 392,596 320,590 248,597 176,591 104,596 40,590 8,560 2,492 8,424 1,356 7,288 0,220 6,152 1,88 6,32 Z';
 
 const CyanotypeClock: React.FC = () => {
   const [now, setNow] = useState(new Date());
-  const [fontReady, setFontReady] = useState(false);
+  const [, setFontReady] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=EB+Garamond:ital@1&display=swap';
+    link.href = 'https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&family=EB+Garamond:ital,wght@1,400;1,500&display=swap';
     link.onload = () => setFontReady(true);
     document.head.appendChild(link);
     return () => {
@@ -52,6 +45,7 @@ const CyanotypeClock: React.FC = () => {
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const dateStr = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
   const timeStr = `${pad(now.getHours())}:${pad(minutes)}:${pad(seconds)}`;
+  
   const dayOfYear = Math.floor(
     (Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) -
       Date.UTC(now.getFullYear(), 0, 0)) /
@@ -77,37 +71,35 @@ const CyanotypeClock: React.FC = () => {
           x2={x2}
           y2={y2}
           stroke={isHour ? INK : INK_SOFT}
-          strokeWidth={isHour ? 2 : 0.75}
+          strokeWidth={isHour ? 1.8 : 0.6}
           strokeLinecap="round"
         />
-        {isHour && <circle cx={x1} cy={y1} r={2.4} fill={INK} opacity={0.9} />}
+        {isHour && <circle cx={x1} cy={y1} r={2.2} fill={INK} opacity={0.85} />}
       </g>
     );
   });
 
   // Fern frond built from paired leaflets that taper toward the tip
-  const fernLeaflets = Array.from({ length: 6 }, (_, i) => {
-    const d = 26 + i * 16;
-    const size = 13 - i * 1.6;
-    const tilt = 32 - i * 2;
+  const fernLeaflets = Array.from({ length: 7 }, (_, i) => {
+    const d = 22 + i * 15;
+    const size = 12 - i * 1.4;
+    const tilt = 34 - i * 2;
     return (
       <g key={i}>
         <ellipse
           cx={cx - 3}
           cy={cy - d}
           rx={size}
-          ry={size * 0.42}
+          ry={size * 0.4}
           fill={INK}
-          opacity={0.88}
           transform={`rotate(${-tilt} ${cx - 3} ${cy - d})`}
         />
         <ellipse
           cx={cx + 3}
           cy={cy - d}
           rx={size}
-          ry={size * 0.42}
+          ry={size * 0.4}
           fill={INK}
-          opacity={0.88}
           transform={`rotate(${tilt} ${cx + 3} ${cy - d})`}
         />
       </g>
@@ -131,39 +123,48 @@ const CyanotypeClock: React.FC = () => {
           <clipPath id="deckleClip">
             <path d={DECKLE} />
           </clipPath>
+          
+          {/* Paper texture grain */}
           <filter id="grain">
-            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves={2} seed={7} result="noise" />
+            <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves={3} seed={12} result="noise" />
             <feColorMatrix
               in="noise"
               type="matrix"
-              values="0 0 0 0 0.04
-                      0 0 0 0 0.13
-                      0 0 0 0 0.24
-                      0 0 0 0.5 0"
+              values="0 0 0 0 0.05
+                      0 0 0 0 0.15
+                      0 0 0 0 0.28
+                      0 0 0 0.4 0"
             />
           </filter>
-          <radialGradient id="wash" cx="42%" cy="38%" r="75%">
+
+          {/* Soft drop shadow for the heavy photo paper */}
+          <filter id="dropshadow" x="-10%" y="-10%" width={130} height={130}>
+            <feDropShadow dx="4" dy="8" stdDeviation="6" floodColor="#0d0e10" floodOpacity="0.6" />
+          </filter>
+
+          {/* Sun exposure wash gradient */}
+          <radialGradient id="wash" cx="48%" cy="45%" r="70%">
             <stop offset="0%" stopColor={PAPER_LIGHT} />
-            <stop offset="60%" stopColor={PAPER_MID} />
+            <stop offset="65%" stopColor={PAPER_MID} />
             <stop offset="100%" stopColor={PAPER_DEEP} />
           </radialGradient>
         </defs>
 
-        {/* the sheet, cast in shadow against the wall */}
-        <g filter="url(#dropshadow)">
-          <path d={DECKLE} fill={PAPER_DEEP} opacity={0.35} transform="translate(6,10)" />
-        </g>
+        {/* The paper sheet shadow */}
+        <path d={DECKLE} fill="none" filter="url(#dropshadow)" />
 
+        {/* The actual chemical sheet */}
         <g clipPath="url(#deckleClip)">
           <rect x={0} y={0} width={500} height={620} fill="url(#wash)" />
-          <rect x={0} y={0} width={500} height={620} filter="url(#grain)" opacity={0.5} />
-          {/* uneven brush-coated edges, a hallmark of hand-sensitized paper */}
-          <ellipse cx={40} cy={40} rx={140} ry={110} fill={PAPER_DEEP} opacity={0.28} />
-          <ellipse cx={470} cy={590} rx={160} ry={120} fill={PAPER_DEEP} opacity={0.3} />
-          <ellipse cx={460} cy={60} rx={90} ry={70} fill={PAPER_LIGHT} opacity={0.18} />
+          <rect x={0} y={0} width={500} height={620} filter="url(#grain)" opacity={0.4} />
+          
+          {/* Uneven hand-brushed chemistry streaks */}
+          <ellipse cx={50} cy={50} rx={160} ry={130} fill={PAPER_DEEP} opacity={0.35} />
+          <ellipse cx={450} cy={570} rx={180} ry={140} fill={PAPER_DEEP} opacity={0.4} />
+          <ellipse cx={440} cy={70} rx={110} ry={90} fill={PAPER_LIGHT} opacity={0.15} />
 
-          {/* clock face */}
-          <circle cx={cx} cy={cy} r={182} fill="none" stroke={INK} strokeWidth={1} opacity={0.5} />
+          {/* Clock face ring */}
+          <circle cx={cx} cy={cy} r={182} fill="none" stroke={INK} strokeWidth={1} opacity={0.4} />
           {ticks}
 
           {['XII', 'III', 'VI', 'IX'].map((label, i) => {
@@ -178,61 +179,60 @@ const CyanotypeClock: React.FC = () => {
                 x={x}
                 y={y}
                 fill={INK}
-                fontSize={17}
-                fontStyle="italic"
+                fontSize={19}
                 fontFamily='"EB Garamond", Georgia, serif'
                 textAnchor="middle"
                 dominantBaseline="middle"
-                opacity={0.85}
+                opacity={0.8}
               >
                 {label}
               </text>
             );
           })}
 
-          {/* hour hand: a single pressed leaf */}
+          {/* Hour hand: A pressed botanical leaf */}
           <g transform={`rotate(${hourDeg} ${cx} ${cy})`}>
             <path
-              d={`M ${cx} ${cy} Q ${cx - 10} ${cy - 45} ${cx} ${cy - 92} Q ${cx + 10} ${cy - 45} ${cx} ${cy} Z`}
+              d={`M ${cx} ${cy} Q ${cx - 11} ${cy - 45} ${cx} ${cy - 88} Q ${cx + 11} ${cy - 45} ${cx} ${cy} Z`}
               fill={INK}
               opacity={0.9}
             />
-            <line x1={cx} y1={cy - 4} x2={cx} y2={cy - 90} stroke={VEIN} strokeWidth={1} />
+            <line x1={cx} y1={cy - 2} x2={cx} y2={cy - 86} stroke={VEIN} strokeWidth={1.2} />
           </g>
 
-          {/* minute hand: fern frond */}
+          {/* Minute hand: Fern frond */}
           <g transform={`rotate(${minuteDeg} ${cx} ${cy})`}>
-            <line x1={cx} y1={cy} x2={cx} y2={cy - 128} stroke={INK} strokeWidth={1.4} opacity={0.9} />
+            <line x1={cx} y1={cy} x2={cx} y2={cy - 124} stroke={INK} strokeWidth={1.5} opacity={0.9} />
             {fernLeaflets}
           </g>
 
-          {/* second hand: a strand of algae, Atkins' first specimens */}
-          <g transform={`rotate(${secondDeg} ${cx} ${cy})`} style={{ transition: 'transform 0.25s cubic-bezier(0.4,2,0.4,1)' }}>
+          {/* Second hand: A strand of marine algae */}
+          <g transform={`rotate(${secondDeg} ${cx} ${cy})`} style={{ transition: 'transform 0.2s cubic-bezier(0.4, 2, 0.4, 1)' }}>
             <path
-              d={`M ${cx} ${cy + 22} Q ${cx + 6} ${cy - 40} ${cx - 4} ${cy - 100} Q ${cx - 9} ${cy - 130} ${cx} ${cy - 152}`}
+              d={`M ${cx} ${cy + 20} Q ${cx + 5} ${cy - 40} ${cx - 4} ${cy - 100} Q ${cx - 8} ${cy - 130} ${cx} ${cy - 150}`}
               fill="none"
               stroke={INK}
-              strokeWidth={1.3}
-              opacity={0.85}
+              strokeWidth={1.2}
+              opacity={0.8}
             />
-            {[0.15, 0.32, 0.48, 0.64, 0.78, 0.9].map((f, i) => {
-              const yy = cy + 22 - f * 174;
-              const xx = cx - f * 6;
-              return <circle key={i} cx={xx} cy={yy} r={3.4 - f * 2} fill={INK} opacity={0.75} />;
+            {[0.15, 0.35, 0.55, 0.72, 0.88].map((f, i) => {
+              const yy = cy + 20 - f * 170;
+              const xx = cx - f * 5;
+              return <circle key={i} cx={xx} cy={yy} r={3 - f * 1.5} fill={INK} opacity={0.7} />;
             })}
           </g>
 
-          {/* a small pressed seed-pod at the pivot */}
-          <circle cx={cx} cy={cy} r={9} fill={PAPER_DEEP} stroke={INK} strokeWidth={1.4} />
+          {/* Seed-pod center pivot */}
+          <circle cx={cx} cy={cy} r={8} fill={PAPER_MID} stroke={INK} strokeWidth={1.5} />
           {Array.from({ length: 8 }, (_, i) => {
             const a = (i * 45 * Math.PI) / 180;
             return (
               <line
                 key={i}
-                x1={cx + 3 * Math.sin(a)}
-                y1={cy - 3 * Math.cos(a)}
-                x2={cx + 8 * Math.sin(a)}
-                y2={cy - 8 * Math.cos(a)}
+                x1={cx + 2.5 * Math.sin(a)}
+                y1={cy - 2.5 * Math.cos(a)}
+                x2={cx + 7 * Math.sin(a)}
+                y2={cy - 7 * Math.cos(a)}
                 stroke={INK}
                 strokeWidth={0.8}
                 opacity={0.8}
@@ -240,10 +240,6 @@ const CyanotypeClock: React.FC = () => {
             );
           })}
 
-          {/* handwritten caption, in the naturalist's own hand */}
-         
-      
-        
         </g>
       </svg>
     </div>
