@@ -6062,7 +6062,7 @@
   {
     "path": "26-06-26",
     "date": "26-06-26",
-   "title": "315° Northwest",
+    "title": "315° Northwest",
     "tags": [
       "digital",
       "cardinal-directions"
@@ -6074,8 +6074,8 @@
     "title": "Four-Leaf Clover",
     "tags": [
       "analog",
-      "plant",
-      "paper"
+      "paper",
+      "plant"
     ]
   },
   {
@@ -6093,9 +6093,7 @@
     "date": "26-06-29",
     "title": "Manufacturing",
     "tags": [
-      "digital",
-      "0123456789abcdef",
-      "image-free"
+      "digital"
     ]
   },
   {
@@ -6107,17 +6105,17 @@
       "0123456789abcdef",
       "image-free"
     ]
-  }   ,
+  },
   {
     "path": "26-07-01",
     "date": "26-07-01",
     "title": "Digital Hexadecimal",
-     "tags": [
+    "tags": [
       "digital",
       "0123456789abcdef",
       "image-free"
     ]
-  } ,
+  },
   {
     "path": "26-07-02",
     "date": "26-07-02",
@@ -6127,5 +6125,5 @@
       "0123456789abcdef",
       "image-free"
     ]
-  }     
+  }
 ]

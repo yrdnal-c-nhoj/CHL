@@ -197,19 +197,25 @@ export default function Tagger() {
           />
           <select
             className={styles.select}
-            value=""
+            multiple
+            value={[]}
+            aria-label="Add tags"
             onChange={(e) => {
-              const selectedTag = e.target.value;
-              if (selectedTag) {
+              const selected = Array.from(e.target.selectedOptions).map(o => o.value);
+              if (selected.length) {
                 const currentTags = tagInput.trim();
-                const newTags = currentTags ? `${currentTags}, ${selectedTag}` : selectedTag;
+                const tagsToAppend = selected.join(', ');
+                const newTags = currentTags ? `${currentTags}, ${tagsToAppend}` : tagsToAppend;
                 setTagInput(newTags);
               }
-              e.target.value = '';
+
+              // Clear selection so the next interaction can re-select the same tags.
+              Array.from(e.target.options).forEach(opt => {
+                opt.selected = false;
+              });
             }}
-            style={{ width: 'auto', minWidth: '150px' }} // Unified with TagManager
+            style={{ width: 'auto', minWidth: '150px', height: '10rem' }} // Unified with TagManager
           >
-            <option value="" disabled>Add existing...</option>
             {allExistingTags.map(({ name, count }) => (
               <option key={name} value={name}>{name} ({count})</option>
             ))}
