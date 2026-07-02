@@ -22,11 +22,12 @@ interface DigitProps {
   texture: string;
   gridRow: string;
   gridColumn: string;
+  isMobile: boolean;
   index: number;
 }
 
 const Digit: React.FC<DigitProps> = React.memo(
-  ({ char, texture, gridRow, gridColumn, index }) => {
+  ({ char, texture, gridRow, gridColumn, isMobile, index }) => {
     return (
       <div
         style={{
@@ -211,6 +212,7 @@ const Manufactured: React.FC = () => {
                 gridColumn={gridMap[index]?.[0] || '1'}
                 gridRow={gridMap[index]?.[1] || '1'}
                 index={index}
+                isMobile={isMobile}
               />
             );
           })}
