@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
+import backgroundImage from '@/assets/images/26_images/26-04/26-04-17/tati.webp';
+import type { FontConfig } from '@/types/clock';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import backgroundImage from '@/assets/images/26_images/26-04/26-04-17/tati.webp';
+import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
@@ -27,7 +27,8 @@ const Clock: React.FC = () => {
     const m = formatTime(time.getMinutes());
     const s = formatTime(time.getSeconds());
     return { hours: h, minutes: m, seconds: s };
-  }, [time]);
+    // The 'time' object is used above, so it must be a dependency.
+  }, [time]); 
 
   return (
     <div
