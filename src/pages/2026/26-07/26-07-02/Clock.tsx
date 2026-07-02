@@ -60,7 +60,7 @@ const FloatingDigitalClocks: React.FC = () => {
   }, []);
 
   // Helper to generate a slow random velocity between -0.3 and +0.3 degrees per frame
-  const getRandomVelocity = () => (Math.random() * 0.6 - 0.3);
+  const getRandomVelocity = () => (Math.random() * 0.001 - 0.05);
 
   // 2. Initialize floating clocks with random positions, initial rotations, and spin rates
   useEffect(() => {
