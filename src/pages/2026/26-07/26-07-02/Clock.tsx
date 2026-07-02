@@ -1,9 +1,9 @@
-import chandelierBg from '@/assets/images/26_images/26-06/26-06-27/clover.mp4';
+import chandelierBg from '@/assets/images/26_images/26-07/26-07-02/dive1.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import fontUrl from '@/assets/fonts/26fonts/26-06-27.otf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-07-02.ttf?url';
 
 export const assets = [chandelierBg, fontUrl];
 
@@ -14,58 +14,136 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
-// --- Helper for generating clock numerals ---
-const generateNumbers = () => {
-  return Array.from({ length: 12 }, (_, i) => {
-    const number = i + 1;
-    if (number % 3 === 0) {
-      const angle = number * 30; // 30 degrees per hour
-      const x = 100 + 80 * Math.sin((angle * Math.PI) / 180);
-      const y = 100 - 80 * Math.cos((angle * Math.PI) / 180);
-      return {
-        key: i,
-        x,
-        y,
-        number,
-      };
-    }
-    return null;
-  }).filter(Boolean) as { key: number; x: number; y: number; number: number }[];
+interface FloatingClock {
+  id: number;
+  x: number; 
+  y: number; 
+  speed: number;
+  scale: number;
+  opacity: number;
+  // Current angles for each axis
+  rotX: number;
+  rotY: number;
+  rotZ: number;
+  // Unique slow rotation velocities per frame
+  velX: number;
+  velY: number;
+  velZ: number;
+}
+
+const formatTime = (date: Date) => {
+  let hours = date.getHours();
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  
+  hours = hours % 12;
+  hours = hours ? hours : 12; 
+  const hoursStr = String(hours).padStart(2, '0');
+
+  return `${hoursStr}:${minutes}:${seconds} ${ampm}`;
 };
 
-const AnalogClock: React.FC = () => {
+const FloatingDigitalClocks: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [now, setNow] = useState(new Date());
-  const clockNumbers = useMemo(() => generateNumbers(), []);
+  const [timeString, setTimeString] = useState(formatTime(new Date()));
+  const [clocks, setClocks] = useState<FloatingClock[]>([]);
 
+  // 1. Maintain the master clock time string
   useEffect(() => {
-    // Sync with requestAnimationFrame or high frequency to capture milliseconds smoothly
-    const timerId = setInterval(() => setNow(new Date()), 16);
+    const timerId = setInterval(() => {
+      setTimeString(formatTime(new Date()));
+    }, 1000);
     return () => clearInterval(timerId);
   }, []);
 
-  // Attempt to play the video programmatically on mount
+  // Helper to generate a slow random velocity between -0.3 and +0.3 degrees per frame
+  const getRandomVelocity = () => (Math.random() * 0.6 - 0.3);
+
+  // 2. Initialize floating clocks with random positions, initial rotations, and spin rates
+  useEffect(() => {
+    const initialClocks: FloatingClock[] = Array.from({ length: 10 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 80 + 10,         
+      y: Math.random() * 120,             
+      speed: Math.random() * 0.05 + 0.03, 
+      scale: Math.random() * 0.5 + 0.6,   
+      opacity: Math.random() * 0.4 + 0.3, 
+      // Initialize random start angles spanning a full 3D space
+      rotX: Math.random() * 360,
+      rotY: Math.random() * 360,
+      rotZ: Math.random() * 180 - 90,
+      // Slow structural velocities
+      velX: getRandomVelocity(),
+      velY: getRandomVelocity(),
+      velZ: getRandomVelocity(),
+    }));
+    setClocks(initialClocks);
+  }, []);
+
+  // 3. High-performance Animation Loop handling positional float and 3D rotations
+  useEffect(() => {
+    let animationFrameId: number;
+
+    const updatePosition = () => {
+      setClocks((prevClocks) =>
+        prevClocks.map((clock) => {
+          let nextY = clock.y - clock.speed;
+          let nextX = clock.x;
+          
+          // Increment rotations steadily
+          let nextRotX = (clock.rotX + clock.velX) % 360;
+          let nextRotY = (clock.rotY + clock.velY) % 360;
+          let nextRotZ = (clock.rotZ + clock.velZ) % 360;
+
+          let nextVelX = clock.velX;
+          let nextVelY = clock.velY;
+          let nextVelZ = clock.velZ;
+
+          // Recycle when leaving top boundary
+          if (nextY < -10) {
+            nextY = 110;
+            nextX = Math.random() * 80 + 10;
+            // Mix up the rotation values and dynamics on respawn
+            nextRotX = Math.random() * 360;
+            nextRotY = Math.random() * 360;
+            nextRotZ = Math.random() * 180 - 90;
+            nextVelX = getRandomVelocity();
+            nextVelY = getRandomVelocity();
+            nextVelZ = getRandomVelocity();
+          }
+
+          return { 
+            ...clock, 
+            y: nextY, 
+            x: nextX, 
+            rotX: nextRotX, 
+            rotY: nextRotY, 
+            rotZ: nextRotZ,
+            velX: nextVelX,
+            velY: nextVelY,
+            velZ: nextVelZ
+          };
+        })
+      );
+      animationFrameId = requestAnimationFrame(updatePosition);
+    };
+
+    animationFrameId = requestAnimationFrame(updatePosition);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
+
+  // 4. Handle video playback safely
   useEffect(() => {
     const videoElement = videoRef.current;
     if (videoElement) {
-      // We want to ensure it plays, so we call play()
-      const playPromise = videoElement.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(error => console.error("Video play failed:", error));
-      }
+      videoElement.play().catch((error) =>
+        console.error('Video play failed:', error)
+      );
     }
   }, []);
-
-  // Smooth hand movements
-  const s = now.getSeconds() + now.getMilliseconds() / 1000;
-  const m = now.getMinutes() + s / 60;
-  const h = now.getHours() + m / 60;
-
-  const secondDegrees = (s / 60) * 360;
-  const minuteDegrees = (m / 60) * 360;
-  const hourDegrees = (h / 12) * 360;
 
   return (
     <div style={styles.container}>
@@ -79,40 +157,29 @@ const AnalogClock: React.FC = () => {
         preload="auto"
         style={styles.backgroundVideo}
       />
-      <svg
-        width="400"
-        height="400"
-        viewBox="0 0 200 200"
-        style={styles.analogClock}
-      >
-        {/* Clock Face */}
-        <g>
-          {clockNumbers.map(({ key, x, y, number }) => (
-            <text key={key} x={x} y={y} style={styles.numberText}>
-              {number}
-            </text>
-          ))}
-        </g>
 
-        {/* Hands */}
-        <g>
-          <line
-            x1="100" y1="100" x2="100" y2="65"
-            style={{ ...styles.hand, ...styles.hourHand }}
-            transform={`rotate(${hourDegrees} 100 100)`}
-          />
-          <line
-            x1="100" y1="100" x2="100" y2="45"
-            style={{ ...styles.hand, ...styles.minuteHand }}
-            transform={`rotate(${minuteDegrees} 100 100)`}
-          />
-          <line
-            x1="100" y1="100" x2="100" y2="35"
-            style={{ ...styles.hand, ...styles.secondHand }}
-            transform={`rotate(${secondDegrees} 100 100)`}
-          />
-        </g>
-      </svg>
+      {/* Floating Clocks Layer */}
+      <div style={styles.clocksLayer}>
+        {clocks.map((clock) => (
+          <div
+            key={clock.id}
+            style={{
+              ...styles.digitalClock,
+              left: `${clock.x}%`,
+              top: `${clock.y}%`,
+              // Chains 3D translates and custom rotation properties sequentially
+              transform: `translate(-50%, -50%) scale(${clock.scale}) rotateX(${clock.rotX}deg) rotateY(${clock.rotY}deg) rotateZ(${clock.rotZ}deg)`,
+              opacity: clock.opacity,
+            }}
+          >
+            {timeString.split('').map((char, index) => (
+              <span key={index} style={styles.digitBox}>
+                {char}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -124,9 +191,11 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
     width: '100vw',
     height: '100dvh',
-    backgroundColor: '#000', // Fallback color if video fails
+    backgroundColor: '#000',
     overflow: 'hidden',
     position: 'relative',
+    // Adds depth perception so the X and Y rotations look accurately three-dimensional
+    perspective: '1000px', 
   },
   backgroundVideo: {
     position: 'absolute',
@@ -138,42 +207,38 @@ const styles: { [key: string]: React.CSSProperties } = {
     objectFit: 'cover',
     zIndex: 1,
   },
-  analogClock: {
-    width: '90vmin',
-    height: '90vmin',
-    maxWidth: '800px',
-    maxHeight: '800px',
+  clocksLayer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
     zIndex: 2,
-    position: 'relative',
+    pointerEvents: 'none',
+    // Ensures nested 3D spaces are preserved
+    transformStyle: 'preserve-3d', 
   },
-  numberText: {
+  digitalClock: {
+    position: 'absolute',
     fontFamily: "'ClockFont_26_06_27', monospace",
-    fontSize: '7vh', // Scaled for viewBox units, will resize with SVG
-    fill: '#359C45',
-    textAnchor: 'middle',
-    dominantBaseline: 'central',
+    fontSize: '19vh',
+    color: '#35359C',
+    whiteSpace: 'nowrap',
     userSelect: 'none',
-    opacity: 0.6,
-    filter: 'drop-shadow(0 1px 0px rgba(233, 220, 220, 0.7))',
+    display: 'flex',
+    fontWeight: 'bold',
+    flexDirection: 'row',
+    alignItems: 'center',
+    textShadow: '0 1px 0px rgba(215, 228, 217, 0.6), 0 1px 0px rgba(233, 220, 220, 0.5)',
+    // Removed the linear CSS transition to prevent conflicts with the continuous requestAnimationFrame loop updates
+    transformStyle: 'preserve-3d',
   },
-
-  hand: {
-    strokeLinecap: 'round',
-    stroke: '#359C45',
-    opacity: 0.6,
-    filter: 'drop-shadow(0 13px 0 rgba(241, 237, 237, 0.8))',
-  },
-  hourHand: {
-    strokeWidth: 4,
-    stroke: '#359C45',
-  },
-  minuteHand: {
-    strokeWidth: 3,
-  },
-  secondHand: {
-    strokeWidth: 1.5,
-    stroke: '#359C45',// A lighter color for visibility
+  digitBox: {
+    display: 'inline-block',
+    // Proportional width adjustments matching your larger 19vh font-size structure
+    width: '11vh', 
+    textAlign: 'center',
   },
 };
 
-export default AnalogClock;
+export default FloatingDigitalClocks;
