@@ -168,7 +168,7 @@ const styles: Record<string, CSSProperties> = {
     fill: CONFIG.COLOR,
     fontWeight: 400,
     // Note: Heavy text-shadows on large SVG text tracks can impact rendering performance.
-    textShadow: '0 0 10px #908C0C, 0 0 20px rgb(231, 227, 18)',
+    textShadow: '0 1px 10px #908C0C, 0 0 20px rgb(231, 227, 18)',
     textRendering: 'geometricPrecision', // Swapped for smoother vector calculation during rotation
     fontVariantNumeric: 'tabular-nums', 
   }
