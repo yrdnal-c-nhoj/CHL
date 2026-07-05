@@ -7,11 +7,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 const CONFIG = {
   UPDATE_RATE_MS: 500,
   SPIRAL_TURNS: 9.5,
-  COLOR: '#B22CA9',
+  COLOR: '#45B3E6',
   CRAWL_SPEED: 2.5,
   BASE_RADIUS: 10,
   EXPANSION_FACTOR: 0.085,
-  REPETITIONS: 48,
+  REPETITIONS: 48,28
   CHAR_SPACING_PX: 92,
 } as const;
 
@@ -141,7 +141,7 @@ const styles: Record<string, CSSProperties> = {
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
-    backgroundColor: '#E209A5',
+    backgroundColor: '#66054A',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
