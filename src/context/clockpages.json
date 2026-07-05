@@ -5457,7 +5457,6 @@
       "France",
       "International-Klein-Blue-(IKB)",
       "Paris",
-      "air",
       "blue",
       "color",
       "day",
@@ -6132,6 +6131,17 @@
       "body",
       "gravity",
       "up-and-down"
+    ]
+  },
+  {
+    "path": "26-07-03",
+    "date": "26-07-03",
+    "title": "Caterwaul",
+    "tags": [
+      "digital",
+      "cat",
+      "Footlight Parade",
+      "1933"
     ]
   }
 ]
