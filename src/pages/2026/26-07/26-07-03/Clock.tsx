@@ -1,5 +1,3 @@
-// import glassVideo from '@/assets/images/26_images/26-06/26-06-19/glass.mp4';
-// import glassVideo2 from '@/assets/images/26_images/26-06/26-06-19/glass3.mp4';
 import glassbreak from '@/assets/images/26_images/26-07/26-07-03/kitty.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
