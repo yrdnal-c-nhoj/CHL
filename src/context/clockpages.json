@@ -6140,8 +6140,31 @@
     "tags": [
       "digital",
       "cat",
+      "b+w",
       "Footlight Parade",
-      "1933"
+      "1933",
+      "screen"
+    ]
+  },
+  {
+    "path": "26-07-04",
+    "date": "26-07-04",
+    "title": "Orange",
+    "tags": [ "analog",
+      "analog",
+      "color",
+      "orange",
+      "food"
+    ]
+  },
+  {
+    "path": "26-07-05",
+    "date": "26-07-05",
+    "title": "Penguins",
+    "tags": [
+      "digital",
+      "cold",
+      "animal"
     ]
   }
 ]
