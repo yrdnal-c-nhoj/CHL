@@ -63,7 +63,7 @@ export default function ContinuousSwirlClock() {
   useEffect(() => {
     const updateTime = () => {
       const current = get12HourTime();
-      setTimeText(Array(CONFIG.REPETITIONS).fill(current).join(' • '));
+      setTimeText(Array(Math.round(CONFIG.REPETITIONS)).fill(current).join(' • '));
       
       // Update threshold smoothly in-place
       const segmentLength = current.length + 3; // " • " length is 3
