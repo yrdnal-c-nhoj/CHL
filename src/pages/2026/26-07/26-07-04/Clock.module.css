@@ -1,0 +1,117 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fafafb;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.clockFace {
+  position: relative;
+  width: 90vmin;
+  height: 90vmin;
+  border-radius: 50%;
+  z-index: 5;
+}
+
+.centerPin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background:#f48106;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  border: 2px solid #f48106;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  box-shadow: 0.5px 0.5px 0 #000, -0.5px -0.5px 0 #fff;
+  border-radius: 4px;
+}
+
+.hourHand {
+  width: 6px;
+  height: 25%;
+  background: #f48106;
+  margin-left: -3px;
+}
+
+.minuteHand {
+  width: 4px;
+  height: 35%;
+  background: #f48106;
+  margin-left: -2px;
+}
+
+.secondHand {
+  width: 2px;
+  height: 40%;
+  background: #f48106;
+  margin-left: -1px;
+}
+
+.videoBackground {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  filter: brightness(1.0) saturate(2) contrast(1.8);
+    /* opacity: 0.5; */
+}
+
+.videoLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 2;
+  filter: brightness(0.7) saturate(1) contrast(0.9);
+
+}
+
+.videoLayerTop {
+  mix-blend-mode: screen;
+}
+
+.tick {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  transform-origin: center;
+}
+
+.tick::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f48106;
+  box-shadow: 0.5px 0.5px 0 #000, -0.5px -0.5px 0 #fff;
+}
+
+.hourTick::before {
+  top: 4px;
+  width: 1px;
+  height: 215px;
+}
+
+.minuteTick::before {
+  top: 4px;
+  width: 2px;
+  height: 15px;
+}
