@@ -1,82 +1,108 @@
-import styles from '@/templates/BaseClock.module.css';
+import glassbreak from '@/assets/images/26_images/26-07/26-07-03/kitty.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
-/**
- * BaseClock - Standardized Clock Component Architecture
- *
- * This component demonstrates the canonical structure for all BorrowedTime clocks:
- *
- * 1. Asset exports for preloading pipeline
- * 2. Font loading with Suspense
- * 3. CSS Module for scoped styles
- * 4. Standard hook for time management
- * 5. Semantic HTML with <time> element
- */
+// Import the font with the corresponding date from the assets folder
+import fontUrl from '@/assets/fonts/26fonts/26-07-03.ttf?url';
 
 // =========================
 // ASSET EXPORTS (Required)
 // =========================
-// Export any images/fonts for the preloading pipeline in useClockPage.ts
-export const assets: string[] = [];
+export const assets = [glassbreak];
 
-// =========================
-// FONT CONFIGURATION
-// =========================
 const fontConfigs: FontConfig[] = [
-  // { fontFamily: 'MyClockFont', fontUrl: new URL('@/assets/fonts/YYYY/YY-MM-DD-name.woff2', import.meta.url).href }
+  {
+    fontFamily: 'ClockFont_26_06_19',
+    fontUrl,
+  },
 ];
 
-// =========================
-// UTILITY FUNCTIONS
-// =========================
-const formatDigits = (num: number): string => num.toString().padStart(2, '0');
+const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
-// =========================
-// MAIN COMPONENT
-// =========================
-const BaseClock: React.FC = () => {
-  // Use standardized hook (1-second updates by default)
+const useIsMobile = (breakpoint = 768) => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < breakpoint);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < breakpoint);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [breakpoint]);
+
+  return isMobile;
+};
+
+const DigitalClock: React.FC = () => {
   const time = useSecondClock();
-
-  // Load fonts via Suspense (component must be wrapped in <Suspense>)
   useSuspenseFontLoader(fontConfigs);
+  const isMobile = useIsMobile();
 
-  // Memoize formatted time to prevent unnecessary recalculations
-  const { hours, minutes, seconds, isoTime } = useMemo(() => {
-    const h = formatDigits(time.getHours());
-    const m = formatDigits(time.getMinutes());
-    const s = formatDigits(time.getSeconds());
+  const { hours, minutes, ampm } = useMemo(() => {
+    const h = time.getHours();
+    const m = time.getMinutes();
+
+    const ampm = h >= 12 ? 'pm' : 'am';
+    let hours12 = h % 12;
+    if (hours12 === 0) hours12 = 12; // Handle midnight (0) and noon (12)
+
     return {
-      hours: h,
-      minutes: m,
-      seconds: s,
-      isoTime: time.toISOString(),
+      hours: hours12.toString(),
+      minutes: formatTime(m),
+      ampm,
     };
   }, [time]);
 
   return (
-    <main className={styles.container}>
-      <time className={styles.timeDisplay} dateTime={isoTime}>
-        <span className={styles.digitGroup}>
-          <span className={styles.digit}>{hours[0]}</span>
-          <span className={styles.digit}>{hours[1]}</span>
-        </span>
-        <span className={styles.separator}>:</span>
-        <span className={styles.digitGroup}>
-          <span className={styles.digit}>{minutes[0]}</span>
-          <span className={styles.digit}>{minutes[1]}</span>
-        </span>
-        <span className={styles.separator}>:</span>
-        <span className={styles.digitGroup}>
-          <span className={styles.digit}>{seconds[0]}</span>
-          <span className={styles.digit}>{seconds[1]}</span>
+    <main
+      style={{
+        position: 'relative',
+        width: '100vw',
+        height: '100dvh',
+        backgroundColor: '#000',
+        overflow: 'hidden', // Hide video overflow
+        margin: 0,
+        padding: 0,
+        backgroundImage: `url(${glassbreak})`,
+        backgroundSize: 'cover',
+        filter: 'contrast(0.9) brightness(1.1)',
+        backgroundPosition: 'center',
+      }}
+    >
+    
+      {/* The time element's style is dynamically adjusted based on screen size */}
+      <time
+        dateTime={time.toISOString()}
+        style={{
+          fontFamily: 'ClockFont_26_06_19, monospace',
+          fontSize: '8vh',
+          color: '#B4D0F1BF',
+          fontVariantNumeric: 'tabular-nums',
+          position: 'absolute',
+          zIndex: 2,
+          // Centered on mobile
+          ...(isMobile && {
+            bottom: '2vh',
+            left: '50%',
+            transform: 'translateX(-50%)',
+          }),
+          // Flushed right on desktop
+          ...(!isMobile && {
+            bottom: '2vh',
+            right: '2vw',
+          }),
+        }}
+      >
+        {hours}:{minutes}
+        <span style={{ fontSize: '9vh', marginLeft: '0.1em' }}>
+          {ampm}
         </span>
       </time>
     </main>
   );
 };
 
-export default BaseClock;
+export default DigitalClock;
