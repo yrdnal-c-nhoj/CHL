@@ -6149,23 +6149,22 @@
   {
     "path": "26-07-04",
     "date": "26-07-04",
-    "title": "Fireworks",
+    "title": "Orange",
     "tags": [ "analog",
-      "aim",
+      "analog",
       "color",
-      "fire",
-      "gravity"
+      "orange",
+      "food",
     ]
   },
   {
     "path": "26-07-05",
     "date": "26-07-05",
-    "title": "Crescent Moon",
+    "title": "Penguins",
     "tags": [
-      "analog",
-      "moon",
-      "night",
-      "space"
+      "digital",
+      "cold",
+      "animal"
     ]
   }
 ]
