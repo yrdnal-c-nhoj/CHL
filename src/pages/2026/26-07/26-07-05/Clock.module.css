@@ -80,7 +80,7 @@
   align-items: center;
   justify-content: center;
   font-family: 'ClockFont', 'Courier New', Courier, monospace;
-  font-size: 18vw;
+  font-size: 12vw;
   color: #fbf7e6;
   text-shadow:
     1px -2px 0px rgb(37, 3, 3);
@@ -98,9 +98,9 @@
   justify-content: center;
   width: 0.7em; /* Use em to scale with font-size */
   text-align: center;
-  margin: 0 -0.02em;
+  /* margin: 0 -0.01em; */
 }
 
 .separator {
-  /* margin: 0 -0.2em; */
+  margin: 0 0.2em;
 }
