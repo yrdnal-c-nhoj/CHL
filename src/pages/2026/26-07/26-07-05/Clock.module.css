@@ -80,13 +80,15 @@
   align-items: center;
   justify-content: center;
   font-family: 'ClockFont', 'Courier New', Courier, monospace;
-  font-size: 12vw;
+  font-size: 26vw;
   color: #fbf7e6;
-  text-shadow:
-    1px -2px 0px rgb(37, 3, 3);
-    /* 0 0 15px rgba(105, 87, 12, 0.864),
-    0 0 30px rgba(125, 22, 22, 0.806); */
+text-shadow:
+    -1px -1px 0 rgb(4, 113, 168),  /* Top-Left */
+     1px -1px 0 rgb(4, 113, 168),   /* Top-Right */
+    -1px  1px 0 rgb(4, 113, 168),  /* Bottom-Left */
+     1px  1px 0 rgb(4, 113, 168);  /* Bottom-Right */
 }
+                                                            
 
 .digitGroup {
   display: flex;
@@ -96,11 +98,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 0.7em; /* Use em to scale with font-size */
+  width: 22vw; /* Use em to scale with font-size */
   text-align: center;
-  /* margin: 0 -0.01em; */
+  /* margin: 0 -2vw; */
+
 }
 
 .separator {
-  margin: 0 0.2em;
+  margin: 0 0.9vw;
 }
