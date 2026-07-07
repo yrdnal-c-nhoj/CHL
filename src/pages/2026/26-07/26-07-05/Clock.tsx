@@ -87,6 +87,10 @@ const BackgroundLayers: FC = () => (
   </div>
 );
 
+const ThailandPatternOverlay: FC = () => (
+  <div className={styles.thailandPatternOverlay} />
+);
+
 const formatDigits = (num: number): string => num.toString().padStart(2, '0');
 
 const DigitalClock: FC = () => {
@@ -123,6 +127,7 @@ const AmbientDisplayClock: FC = () => {
   return (
     <div className={styles.container}>
       <BackgroundLayers />
+      <ThailandPatternOverlay />
       <DigitalClock />
     </div>
   );
