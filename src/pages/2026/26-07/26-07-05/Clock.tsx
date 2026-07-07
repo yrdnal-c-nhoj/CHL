@@ -92,14 +92,12 @@ const formatDigits = (num: number): string => num.toString().padStart(2, '0');
 const DigitalClock: FC = () => {
   const time = useSecondClock();
 
-  const { hours, minutes, seconds, isoTime } = useMemo(() => {
+  const { hours, minutes, isoTime } = useMemo(() => {
     const h = formatDigits(time.getHours());
     const m = formatDigits(time.getMinutes());
-    const s = formatDigits(time.getSeconds());
     return {
       hours: h,
       minutes: m,
-      seconds: s,
       isoTime: time.toISOString(),
     };
   }, [time]);
@@ -114,11 +112,6 @@ const DigitalClock: FC = () => {
       <div className={styles.digitGroup}>
         <div className={styles.digitBox}>{minutes[0]}</div>
         <div className={styles.digitBox}>{minutes[1]}</div>
-      </div>
-      <div className={styles.separator}>:</div>
-      <div className={styles.digitGroup}>
-        <div className={styles.digitBox}>{seconds[0]}</div>
-        <div className={styles.digitBox}>{seconds[1]}</div>
       </div>
     </time>
   );
