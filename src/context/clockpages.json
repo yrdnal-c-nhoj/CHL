@@ -6117,8 +6117,11 @@
     "title": "Alpha Centauri",
     "tags": [
       "digital",
+      "constellations",
+      "orbit",
+      "space",
       "stars",
-      "constellations"
+      "universe"
     ]
   },
   {
@@ -6139,10 +6142,10 @@
     "title": "Caterwaul",
     "tags": [
       "digital",
-      "cat",
-      "b+w",
-      "Footlight Parade",
       "1933",
+      "Footlight Parade",
+      "b+w",
+      "cat",
       "screen"
     ]
   },
@@ -6150,11 +6153,12 @@
     "path": "26-07-04",
     "date": "26-07-04",
     "title": "Orange",
-    "tags": [ "analog",
+    "tags": [
       "analog",
       "color",
+      "food",
       "orange",
-      "food"
+      "spin"
     ]
   },
   {
@@ -6162,9 +6166,14 @@
     "date": "26-07-05",
     "title": "Penguins",
     "tags": [
+      "analog",
       "digital",
+      "Antarctica",
+      "animal",
       "cold",
-      "animal"
+      "ice",
+      "snow",
+      "walk"
     ]
   }
 ]
