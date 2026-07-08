@@ -1,108 +1,78 @@
-import glassbreak from '@/assets/images/26_images/26-07/26-07-03/kitty.webp';
-import type { FontConfig } from '@/types/clock';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useMillisecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
+import styles from './Clock.module.css';
 
-// Import the font with the corresponding date from the assets folder
-import fontUrl from '@/assets/fonts/26fonts/26-07-03.ttf?url';
+// Import the background image for the firework display
+import fireworksVideo1 from '@/assets/images/26_images/26-07/26-07-04/orange.mp4';
+import fireworksVideo2 from '@/assets/images/26_images/26-07/26-07-04/orange2.mp4';
 
-// =========================
-// ASSET EXPORTS (Required)
-// =========================
-export const assets = [glassbreak];
+// Export assets for the preloading pipeline
+export const assets = [fireworksVideo1, fireworksVideo2];
 
-const fontConfigs: FontConfig[] = [
-  {
-    fontFamily: 'ClockFont_26_06_19',
-    fontUrl,
-  },
-];
+const TickMarks: React.FC = () => (
+  <>
+    {Array.from({ length: 60 }).map((_, i) => {
+      const isHourMark = i % 5 === 0;
+      return (
+        <div
+          key={`tick-${i}`}
+          className={`${styles.tick} ${isHourMark ? styles.hourTick : styles.minuteTick}`}
+          style={{
+            transform: `rotate(${i * 6}deg)`,
+          }}
+        />
+      );
+    })}
+  </>
+);
 
-const formatTime = (num: number): string => num.toString().padStart(2, '0');
+const AnalogClock: React.FC = () => {
+  const currentTime = useMillisecondClock();
 
-const useIsMobile = (breakpoint = 768) => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < breakpoint);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < breakpoint);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [breakpoint]);
-
-  return isMobile;
-};
-
-const DigitalClock: React.FC = () => {
-  const time = useSecondClock();
-  useSuspenseFontLoader(fontConfigs);
-  const isMobile = useIsMobile();
-
-  const { hours, minutes, ampm } = useMemo(() => {
-    const h = time.getHours();
-    const m = time.getMinutes();
-
-    const ampm = h >= 12 ? 'pm' : 'am';
-    let hours12 = h % 12;
-    if (hours12 === 0) hours12 = 12; // Handle midnight (0) and noon (12)
-
+  // Memoize angle calculations for performance
+  const rotations = useMemo(() => {
+    const seconds = currentTime.getSeconds() + currentTime.getMilliseconds() / 1000;
+    const minutes = currentTime.getMinutes() + seconds / 60;
+    const hours = (currentTime.getHours() % 12) + minutes / 60;
     return {
-      hours: hours12.toString(),
-      minutes: formatTime(m),
-      ampm,
+      hour: hours * 30,
+      minute: minutes * 6,
+      second: seconds * 6,
     };
-  }, [time]);
+  }, [currentTime]);
 
   return (
-    <main
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        backgroundColor: '#000',
-        overflow: 'hidden', // Hide video overflow
-        margin: 0,
-        padding: 0,
-        backgroundImage: `url(${glassbreak})`,
-        backgroundSize: 'cover',
-        filter: 'contrast(0.9) brightness(1.1)',
-        backgroundPosition: 'center',
-      }}
-    >
-    
-      {/* The time element's style is dynamically adjusted based on screen size */}
-      <time
-        dateTime={time.toISOString()}
-        style={{
-          fontFamily: 'ClockFont_26_06_19, monospace',
-          fontSize: '8vh',
-          color: '#B4D0F1BF',
-          fontVariantNumeric: 'tabular-nums',
-          position: 'absolute',
-          zIndex: 2,
-          // Centered on mobile
-          ...(isMobile && {
-            bottom: '2vh',
-            left: '50%',
-            transform: 'translateX(-50%)',
-          }),
-          // Flushed right on desktop
-          ...(!isMobile && {
-            bottom: '2vh',
-            right: '2vw',
-          }),
-        }}
-      >
-        {hours}:{minutes}
-        <span style={{ fontSize: '9vh', marginLeft: '0.1em' }}>
-          {ampm}
-        </span>
-      </time>
+    <main className={styles.container}>
+      <div className={styles.videoBackground}>
+        <video autoPlay loop muted playsInline className={styles.videoLayer}>
+          <source src={fireworksVideo1} type="video/mp4" />
+        </video>
+        <video autoPlay loop muted playsInline className={`${styles.videoLayer} ${styles.videoLayerTop}`}>
+          <source src={fireworksVideo2} type="video/mp4" />
+        </video>
+      </div>
+
+      <div className={styles.clockFace}>
+        <TickMarks />
+
+        {/* Clock Hands */}
+        <div
+          className={`${styles.hand} ${styles.hourHand}`}
+          style={{ transform: `rotate(${rotations.hour}deg)` }}
+        />
+        <div
+          className={`${styles.hand} ${styles.minuteHand}`}
+          style={{ transform: `rotate(${rotations.minute}deg)` }}
+        />
+        <div
+          className={`${styles.hand} ${styles.secondHand}`}
+          style={{ transform: `rotate(${rotations.second}deg)` }}
+        />
+
+        <div className={styles.centerPin} />
+      </div>
     </main>
   );
 };
 
-export default DigitalClock;
+export default AnalogClock;
