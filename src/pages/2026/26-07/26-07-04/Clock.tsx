@@ -56,6 +56,16 @@ const DigitalClock: React.FC = () => {
     };
   }, [time]);
 
+  // Shared styles for the clock face background numbers
+  const markerStyle: React.CSSProperties = {
+    position: 'absolute',
+    fontFamily: 'ClockFont_26_06_19, monospace',
+    fontSize: isMobile ? '6vh' : '10vh',
+    color: 'rgba(180, 208, 241, 0.3)', // Semi-transparent so it acts as a background
+    zIndex: 1,
+    userSelect: 'none',
+  };
+
   return (
     <main
       style={{
@@ -63,7 +73,7 @@ const DigitalClock: React.FC = () => {
         width: '100vw',
         height: '100dvh',
         backgroundColor: '#000',
-        overflow: 'hidden', // Hide video overflow
+        overflow: 'hidden',
         margin: 0,
         padding: 0,
         backgroundImage: `url(${glassbreak})`,
@@ -72,8 +82,13 @@ const DigitalClock: React.FC = () => {
         backgroundPosition: 'center',
       }}
     >
+      {/* Clock Face Numbers */}
+      <div style={{ ...markerStyle, top: '4vh', left: '50%', transform: 'translateX(-50%)' }}>12</div>
+      <div style={{ ...markerStyle, top: '50%', right: '6vw', transform: 'translateY(-50%)' }}>3</div>
+      <div style={{ ...markerStyle, bottom: '12vh', left: '50%', transform: 'translateX(-50%)' }}>6</div>
+      <div style={{ ...markerStyle, top: '50%', left: '6vw', transform: 'translateY(-50%)' }}>9</div>
     
-      {/* The time element's style is dynamically adjusted based on screen size */}
+      {/* Current Time Display */}
       <time
         dateTime={time.toISOString()}
         style={{
@@ -97,7 +112,7 @@ const DigitalClock: React.FC = () => {
         }}
       >
         {hours}:{minutes}
-        <span style={{ fontSize: '9vh', marginLeft: '0.1em' }}>
+        <span style={{ fontSize: '6vh', marginLeft: '0.1em' }}>
           {ampm}
         </span>
       </time>

@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
 import { useClockTime } from '@/hooks/useClockTime';
+import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
-import { GRID, MAPPING, HOUR_WORDS } from './clockConstants'; // Import constants
+import { GRID, HOUR_WORDS, MAPPING } from './clockConstants'; // Import constants
 
 const WordClock: React.FC = () => {
   const now = useClockTime();
