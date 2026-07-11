@@ -6136,7 +6136,7 @@
       "up-and-down"
     ]
   },
-   {
+  {
     "path": "26-07-03",
     "date": "26-07-03",
     "title": "Orange",
@@ -6179,20 +6179,21 @@
     "path": "26-07-06",
     "date": "26-07-06",
     "title": "Wedge",
-     "tags": [
-      "digital",
-      "Antarctica",
-      "animal",
-      "cold",
-      "ice",
-      "snow",
-      "walk"
+    "tags": [
+      "analog",
+      "six-simple-machines"
     ]
   },
   {
     "path": "26-07-07",
     "date": "26-07-07",
-    "title": "Taurus"
+    "title": "Taurus",
+    "tags": [
+      "animal",
+      "constellations",
+      "earth",
+      "zodiac"
+    ]
   },
   {
     "path": "26-07-08",
@@ -6208,8 +6209,7 @@
     "path": "26-07-10",
     "date": "26-07-10",
     "title": "Placeholder"
-  }
-  ,
+  },
   {
     "path": "26-07-11",
     "date": "26-07-11",
