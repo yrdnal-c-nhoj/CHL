@@ -6136,7 +6136,7 @@
       "up-and-down"
     ]
   },
-   {
+  {
     "path": "26-07-03",
     "date": "26-07-03",
     "title": "Orange",
@@ -6147,7 +6147,7 @@
       "orange",
       "spin"
     ]
-  }
+  },
   {
     "path": "26-07-04",
     "date": "26-07-04",
@@ -6173,6 +6173,26 @@
       "ice",
       "snow",
       "walk"
+    ]
+  },
+  {
+    "path": "26-07-06",
+    "date": "26-07-06",
+    "title": "Wedge",
+    "tags": [
+      "analog",
+      "six-simple-machines"
+    ]
+  },
+  {
+    "path": "26-07-07",
+    "date": "26-07-07",
+    "title": "Taurus",
+    "tags": [
+      "animal",
+      "constellations",
+      "earth",
+      "zodiac"
     ]
   }
 ]
