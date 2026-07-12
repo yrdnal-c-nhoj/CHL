@@ -82,12 +82,6 @@ const DigitalClock: React.FC = () => {
         backgroundPosition: 'center',
       }}
     >
-      {/* Clock Face Numbers */}
-      <div style={{ ...markerStyle, top: '4vh', left: '50%', transform: 'translateX(-50%)' }}>12</div>
-      <div style={{ ...markerStyle, top: '50%', right: '6vw', transform: 'translateY(-50%)' }}>3</div>
-      <div style={{ ...markerStyle, bottom: '12vh', left: '50%', transform: 'translateX(-50%)' }}>6</div>
-      <div style={{ ...markerStyle, top: '50%', left: '6vw', transform: 'translateY(-50%)' }}>9</div>
-    
       {/* Current Time Display */}
       <time
         dateTime={time.toISOString()}
