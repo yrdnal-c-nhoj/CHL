@@ -1,25 +1,20 @@
 /** @jsxImportSource react */
-import React, { useEffect, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import cus251101font from '@/assets/fonts/25fonts/25-11-01-edgecase.ttf?url';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import React, { useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
 export default function EdgeClockWithHands() {
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [
-      {
-        fontFamily: 'CustomClockFont',
-        fontUrl: cus251101font,
-        options: { weight: 'normal', style: 'normal' },
-      },
-    ],
+  const fontConfigs: FontConfig[] = useMemo(
+    () => [{ fontFamily: 'CustomClockFont', fontUrl: cus251101font }],
     [],
   );
 
   useSuspenseFontLoader(fontConfigs);
 
   const [time, setTime] = useState(new Date());
+  const viewport = useWindowSize();
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 50);
