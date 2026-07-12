@@ -176,7 +176,7 @@ const AnalogClock: React.FC = () => {
 
   return (
     <main style={styles.stage} data-device={device}>
-      {/* Full-res backgrounds as <img> sharper than CSS background + filter stack */}
+      {/* Full-res backgrounds as <img> sharper tha CSS background + filter stack */}
       {sunrise && (
         <img
           src={sunrise}
