@@ -9,28 +9,88 @@ import React, { useEffect, useState } from 'react';
 // =========================
 export const assets = [glassbreak, cloud];
 
-const useIsMobile = (breakpoint = 768) => {
-  const [isMobile, setIsMobile] = useState(() => {
+type Device = 'phone' | 'tablet' | 'desktop' | 'tv';
+
+const getDevice = (width: number): Device => {
+  if (width < 768) return 'phone';
+  if (width < 1024) return 'tablet';
+  if (width < 1920) return 'desktop';
+  return 'tv';
+};
+
+const useDevice = () => {
+  const [device, setDevice] = useState<Device>(() => {
     if (typeof window !== 'undefined') {
-      return window.innerWidth < breakpoint;
+      return getDevice(window.innerWidth);
     }
-    return false;
+    return 'desktop';
   });
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < breakpoint);
-    };
-
+    const handleResize = () => setDevice(getDevice(window.innerWidth));
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [breakpoint]);
+  }, []);
 
-  return isMobile;
+  return device;
 };
+
+const DEVICE_LAYOUT: Record<
+  Device,
+  {
+    clockSize: string;
+    fontSize: string;
+    hourWidth: number;
+    minuteWidth: number;
+    secondWidth: number;
+    centerSize: number;
+    numeralRadius: number;
+  }
+> = {
+  phone: {
+    clockSize: 'min(78vw, 72vh)',
+    fontSize: 'clamp(0.95rem, 4.2vw, 1.35rem)',
+    hourWidth: 5,
+    minuteWidth: 3,
+    secondWidth: 2,
+    centerSize: 10,
+    numeralRadius: 37,
+  },
+  tablet: {
+    clockSize: 'min(58vw, 62vh)',
+    fontSize: 'clamp(1.1rem, 2.8vw, 1.55rem)',
+    hourWidth: 6,
+    minuteWidth: 4,
+    secondWidth: 2,
+    centerSize: 12,
+    numeralRadius: 38,
+  },
+  desktop: {
+    clockSize: 'min(42vw, 58vh, 440px)',
+    fontSize: 'clamp(1.15rem, 1.8vw, 1.65rem)',
+    hourWidth: 6,
+    minuteWidth: 4,
+    secondWidth: 2,
+    centerSize: 12,
+    numeralRadius: 38,
+  },
+  tv: {
+    clockSize: 'min(36vw, 55vh, 640px)',
+    fontSize: 'clamp(1.5rem, 1.4vw, 2.25rem)',
+    hourWidth: 8,
+    minuteWidth: 5,
+    secondWidth: 3,
+    centerSize: 16,
+    numeralRadius: 39,
+  },
+};
+
+const ROMAN_NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 
 const AnalogClock: React.FC = () => {
   const time = useSecondClock();
+  const device = useDevice();
+  const layout = DEVICE_LAYOUT[device];
 
   // Load the 'Shrikhand' Google Font
   useEffect(() => {
@@ -49,12 +109,10 @@ const AnalogClock: React.FC = () => {
     };
   }, []);
 
-  // Calculate clock hand rotations
   const seconds = time.getSeconds();
   const minutes = time.getMinutes();
   const hours = time.getHours();
 
-  // Add fractional parts for smoother hand movement
   const secondDegrees = (seconds / 60) * 360;
   const minuteDegrees = (minutes / 60) * 360 + (seconds / 60) * 6;
   const hourDegrees = (hours / 12) * 360 + (minutes / 60) * 30;
@@ -69,16 +127,23 @@ const AnalogClock: React.FC = () => {
         overflow: 'hidden',
         margin: 0,
         padding: 0,
-        backgroundImage: `url(${glassbreak})`,
-        backgroundSize: 'cover',
-        filter: 'contrast(0.9) brightness(1.1)',
-        backgroundPosition: 'center',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
       }}
     >
-      {/* Cloud Overlay */}
+      {/* Background layers keep filters so the clock stays crisp */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `url(${glassbreak})`,
+          backgroundSize: 'cover',
+          backgroundPosition: device === 'phone' ? '60% center' : 'center',
+          filter: 'contrast(0.9) brightness(1.1)',
+          zIndex: 0,
+        }}
+      />
       <div
         style={{
           position: 'absolute',
@@ -94,50 +159,72 @@ const AnalogClock: React.FC = () => {
       />
 
       {/* Analog Clock */}
-      <div style={styles.clock}>
+      <div
+        style={{
+          ...styles.clock,
+          width: layout.clockSize,
+          height: layout.clockSize,
+        }}
+      >
         <div style={styles.face}>
-          {/* Roman Numerals */}
-          {Array.from({ length: 12 }, (_, i) => {
-            const numeral = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'][i];
+          {ROMAN_NUMERALS.map((numeral, i) => {
             const angle = (i + 1) * 30;
+            const rad = ((angle - 90) * Math.PI) / 180;
+            const left = 50 + layout.numeralRadius * Math.cos(rad);
+            const top = 50 + layout.numeralRadius * Math.sin(rad);
             return (
               <div
-                key={i}
+                key={numeral}
                 style={{
                   ...styles.numeral,
-                  // Centers the element first, rotates towards the target layout path, 
-                  // and moves it outwards. The numeral remains aligned with the radius.
-                  transform: `translate(-50%, -50%) rotate(${angle}deg) translate(0, -11.5vmin)`,
+                  left: `${left}%`,
+                  top: `${top}%`,
+                  fontSize: layout.fontSize,
+                  transform: 'translate(-50%, -50%)',
                 }}
               >
                 {numeral}
               </div>
             );
           })}
-          
-          {/* Hands */}
+
           <div
             style={{
               ...styles.hand,
-              ...styles.hourHand,
+              width: layout.hourWidth,
+              height: '28%',
+              marginLeft: -layout.hourWidth / 2,
+              backgroundColor: '#fff',
               transform: `rotate(${hourDegrees}deg)`,
             }}
           />
           <div
             style={{
               ...styles.hand,
-              ...styles.minuteHand,
+              width: layout.minuteWidth,
+              height: '38%',
+              marginLeft: -layout.minuteWidth / 2,
+              backgroundColor: '#fff',
               transform: `rotate(${minuteDegrees}deg)`,
             }}
           />
           <div
             style={{
               ...styles.hand,
-              ...styles.secondHand,
+              width: layout.secondWidth,
+              height: '42%',
+              marginLeft: -layout.secondWidth / 2,
+              backgroundColor: '#B4D0F1',
               transform: `rotate(${secondDegrees}deg)`,
             }}
           />
-          <div style={styles.centerDot} />
+          <div
+            style={{
+              ...styles.centerDot,
+              width: layout.centerSize,
+              height: layout.centerSize,
+            }}
+          />
         </div>
       </div>
     </main>
@@ -147,17 +234,15 @@ const AnalogClock: React.FC = () => {
 const styles: { [key: string]: CSSProperties } = {
   clock: {
     position: 'relative',
-    width: 'clamp(300px, 50vmin, 450px)',
-    height: 'clamp(300px, 50vmin, 450px)',
     borderRadius: '50%',
-    border: '3px solid rgba(255, 255, 255, 0.4)',
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    backdropFilter: 'blur(8px)',
+    border: 'none',
+    backgroundColor: 'rgba(0, 0, 0, 0.15)',
     zIndex: 2,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    boxShadow: '0 0 30px rgba(0,0,0,0.3)',
+    WebkitFontSmoothing: 'antialiased',
+    MozOsxFontSmoothing: 'grayscale',
   },
   face: {
     width: '100%',
@@ -169,49 +254,29 @@ const styles: { [key: string]: CSSProperties } = {
     bottom: '50%',
     left: '50%',
     transformOrigin: 'bottom center',
-    borderRadius: '2px',
-  },
-  hourHand: {
-    width: '6px',
-    height: '25%',
-    marginLeft: '-3px',
-    backgroundColor: '#fff',
-  },
-  minuteHand: {
-    width: '4px',
-    height: '35%',
-    marginLeft: '-2px',
-    backgroundColor: '#fff',
-  },
-  secondHand: {
-    width: '2px',
-    height: '40%',
-    marginLeft: '-1px',
-    backgroundColor: '#B4D0F1',
+    borderRadius: 2,
+    willChange: 'transform',
   },
   centerDot: {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    width: '12px',
-    height: '12px',
     borderRadius: '50%',
     backgroundColor: '#B4D0F1',
     transform: 'translate(-50%, -50%)',
     border: '2px solid #fff',
+    zIndex: 1,
   },
   numeral: {
     position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '40px',
-    height: '30px',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 'clamp(0.9rem, 3vmin, 1.5rem)',
-    color: 'rgba(255, 255, 255, 0.8)',
+    lineHeight: 1,
+    color: 'rgba(255, 255, 255, 0.95)',
     fontFamily: "'Shrikhand', cursive",
+    whiteSpace: 'nowrap',
+    textRendering: 'geometricPrecision',
   },
 };
 
