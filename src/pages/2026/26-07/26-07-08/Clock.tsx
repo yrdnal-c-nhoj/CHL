@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
+=======
+>>>>>>> 1c42735dca7f49e2a971f8a3b88241755ec4ac01
 import num1 from '@/assets/images/26_images/26-07/26-07-08/1.webp';
 import num10 from '@/assets/images/26_images/26-07/26-07-08/10.webp';
 import num11 from '@/assets/images/26_images/26-07/26-07-08/11.webp';
@@ -14,13 +17,27 @@ import num7 from '@/assets/images/26_images/26-07/26-07-08/7.webp';
 import num8 from '@/assets/images/26_images/26-07/26-07-08/8.webp';
 import num9 from '@/assets/images/26_images/26-07/26-07-08/9.webp';
 import peachImg from '@/assets/images/26_images/26-07/26-07-08/ocean.webp';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 const CLOCK_LABELS = [num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, num12];
 export const assets = [...CLOCK_LABELS, peachImg];
 
 const PEACH_COLOR = '#FFDAB9';
+<<<<<<< HEAD
 const LABEL_SHADOW =
   'drop-shadow(0 -1px 3px rgba(45, 18, 3, 0.9)) drop-shadow(0 1px 1px rgba(40, 236, 10, 0.7))';
+=======
+const SHADOW_FILTER = 'drop-shadow(0 -1px 3px rgba(45, 18, 3, 0.9)) drop-shadow(0 1px 1px rgba(40, 236, 10, 0.7))';
+
+const HAND_CONFIG = {
+  hour:   { width: 0.03, height: 0.25, z: 10 },
+  minute: { width: 0.02, height: 0.35, z: 11 },
+  second: { width: 0.01, height: 0.4, z: 12 },
+};
+
+// ─── Component: ClockFace ────────────────────────────────────────────────────
+>>>>>>> 1c42735dca7f49e2a971f8a3b88241755ec4ac01
 
 interface ClockFaceProps {
   clockSize: number;
@@ -101,17 +118,24 @@ const RegularHands: React.FC<{ clockSize: number }> = React.memo(({ clockSize })
   const handBase = (width: number, height: number, z: number, color: string): React.CSSProperties => ({
     position: 'absolute',
     bottom: '50%',
+<<<<<<< HEAD
     left: '50%',
     width,
     height: clockSize * height,
     marginLeft: -width / 2,
     backgroundColor: color,
     borderRadius: width,
+=======
+    left: `calc(50% - ${(clockSize * config.width) / 2}px)`,
+    width: clockSize * config.width,
+    height: clockSize * config.height,
+>>>>>>> 1c42735dca7f49e2a971f8a3b88241755ec4ac01
     transformOrigin: 'bottom center',
     transform: 'rotate(var(--deg, 0deg))',
     zIndex: z,
     pointerEvents: 'none',
     willChange: 'transform',
+<<<<<<< HEAD
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.35)',
   });
 
@@ -138,6 +162,19 @@ const RegularHands: React.FC<{ clockSize: number }> = React.memo(({ clockSize })
           boxShadow: '0 2px 10px rgba(0, 0, 0, 0.4)',
         }}
       />
+=======
+    background: 'linear-gradient(180deg, #f0f0f0 0%, #c0c0c0 50%, #808080 100%)',
+    borderRadius: '2px',
+    boxShadow: 'inset 0 0 0.5px #555, 0 0 1px rgba(200, 200, 200, 0.5)',
+  });
+
+
+  return (
+    <>
+      <div ref={hourRef} style={getHandStyle(HAND_CONFIG.hour)} />
+      <div ref={minRef} style={getHandStyle(HAND_CONFIG.minute)} />
+      <div ref={secRef} style={getHandStyle(HAND_CONFIG.second)} />
+>>>>>>> 1c42735dca7f49e2a971f8a3b88241755ec4ac01
     </>
   );
 });
