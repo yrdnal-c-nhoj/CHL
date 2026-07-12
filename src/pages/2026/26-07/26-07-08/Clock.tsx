@@ -11,8 +11,7 @@ import num7 from '@/assets/images/26_images/26-07/26-07-08/7.webp';
 import num8 from '@/assets/images/26_images/26-07/26-07-08/8.webp';
 import num9 from '@/assets/images/26_images/26-07/26-07-08/9.webp';
 import peachImg from '@/assets/images/26_images/26-07/26-07-08/ocean.webp';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // ─── Constants & Configuration ───────────────────────────────────────────────
 
@@ -32,11 +31,10 @@ const HAND_CONFIG = {
 
 interface ClockFaceProps {
   clockSize: number;
-  radius: number;
-  ready: boolean;
+  radius: number; 
 }
 
-const ClockFace = React.memo(({ clockSize, radius, ready }: ClockFaceProps) => (
+const ClockFace = React.memo(({ clockSize, radius }: ClockFaceProps) => (
   <div
     style={{
       position: 'relative',
@@ -46,8 +44,8 @@ const ClockFace = React.memo(({ clockSize, radius, ready }: ClockFaceProps) => (
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      transform: ready ? 'scale(1)' : 'scale(0.95)',
-      transition: 'transform 0.5s ease-out',
+      transform: 'scale(1)',
+      transition: 'transform 0.5s ease-out', 
     }}
   >
     {CLOCK_LABELS.map((label, i) => {
@@ -141,16 +139,6 @@ const TangerineClock: React.FC = () => {
   const [clockSize, setClockSize] = useState<number>(300);
   const [isClient, setIsClient] = useState<boolean>(false);
 
-  const assetConfig = useMemo(() => {
-    const base = CLOCK_LABELS.reduce<Record<string, { src: string }>>((acc, label, idx) => {
-      acc[`num${idx + 1}`] = { src: label };
-      return acc;
-    }, {});
-    return { ...base, peach: { src: peachImg } };
-  }, []);
-
-  const loaderState = useMultiAssetLoader(assetConfig);
-
   useEffect(() => {
     setIsClient(true);
     
@@ -200,7 +188,7 @@ const TangerineClock: React.FC = () => {
       }}
     >
       <div style={{ position: 'relative', width: clockSize, height: clockSize }}>
-        <ClockFace clockSize={clockSize} radius={radius} ready={loaderState.isAllLoaded} />
+        <ClockFace clockSize={clockSize} radius={radius} />
         <AnimatedHands clockSize={clockSize} />
       </div>
     </main>
