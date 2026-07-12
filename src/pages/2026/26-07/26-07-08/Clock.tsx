@@ -1,10 +1,3 @@
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-
-// Background & Assets
-import hourHandImg from '@/assets/images/26_images/26-05/26-05-30/hour.webp';
-import minuteHandImg from '@/assets/images/26_images/26-05/26-05-30/minute.webp';
-import secondHandImg from '@/assets/images/26_images/26-05/26-05-30/second.webp';
 import num1 from '@/assets/images/26_images/26-07/26-07-08/1.webp';
 import num10 from '@/assets/images/26_images/26-07/26-07-08/10.webp';
 import num11 from '@/assets/images/26_images/26-07/26-07-08/11.webp';
@@ -18,20 +11,21 @@ import num7 from '@/assets/images/26_images/26-07/26-07-08/7.webp';
 import num8 from '@/assets/images/26_images/26-07/26-07-08/8.webp';
 import num9 from '@/assets/images/26_images/26-07/26-07-08/9.webp';
 import peachImg from '@/assets/images/26_images/26-07/26-07-08/ocean.webp';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 // ─── Constants & Configuration ───────────────────────────────────────────────
 
 const CLOCK_LABELS = [num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, num12];
-export const assets = [...CLOCK_LABELS, hourHandImg, minuteHandImg, secondHandImg, peachImg];
+export const assets = [...CLOCK_LABELS, peachImg];
 
 const PEACH_COLOR = '#FFDAB9';
 const SHADOW_FILTER = 'drop-shadow(0 -1px 3px rgba(45, 18, 3, 0.9)) drop-shadow(0 1px 1px rgba(40, 236, 10, 0.7))';
-const HOUR_HAND_FILTER = `brightness(1.1) contrast(1.0) hue-rotate(-20deg) saturate(1.4) ${SHADOW_FILTER}`;
 
 const HAND_CONFIG = {
-  hour:   { width: 0.42, height: 0.8, z: 20, filter: HOUR_HAND_FILTER, img: hourHandImg },
-  minute: { width: 0.40, height: 0.8, z: 10, filter: SHADOW_FILTER,    img: minuteHandImg },
-  second: { width: 0.68, height: 0.6, z: 30, filter: SHADOW_FILTER,    img: secondHandImg },
+  hour:   { width: 0.03, height: 0.25, z: 10 },
+  minute: { width: 0.02, height: 0.35, z: 11 },
+  second: { width: 0.01, height: 0.4, z: 12 },
 };
 
 // ─── Component: ClockFace ────────────────────────────────────────────────────
@@ -117,7 +111,7 @@ const AnimatedHands: React.FC<{ clockSize: number }> = React.memo(({ clockSize }
   const getHandStyle = (config: typeof HAND_CONFIG.hour): React.CSSProperties => ({
     position: 'absolute',
     bottom: '50%',
-    left: '50%',
+    left: `calc(50% - ${(clockSize * config.width) / 2}px)`,
     width: clockSize * config.width,
     height: clockSize * config.height,
     transformOrigin: 'bottom center',
@@ -125,19 +119,17 @@ const AnimatedHands: React.FC<{ clockSize: number }> = React.memo(({ clockSize }
     zIndex: config.z,
     pointerEvents: 'none',
     willChange: 'transform',
+    background: 'linear-gradient(180deg, #f0f0f0 0%, #c0c0c0 50%, #808080 100%)',
+    borderRadius: '2px',
+    boxShadow: 'inset 0 0 0.5px #555, 0 0 1px rgba(200, 200, 200, 0.5)',
   });
+
 
   return (
     <>
-      <div ref={hourRef} style={getHandStyle(HAND_CONFIG.hour)}>
-        <img src={HAND_CONFIG.hour.img} alt="Hour" style={{ width: '100%', height: '100%', objectFit: 'contain', filter: HAND_CONFIG.hour.filter }} />
-      </div>
-      <div ref={minRef} style={getHandStyle(HAND_CONFIG.minute)}>
-        <img src={HAND_CONFIG.minute.img} alt="Minute" style={{ width: '100%', height: '100%', objectFit: 'contain', filter: HAND_CONFIG.minute.filter }} />
-      </div>
-      <div ref={secRef} style={getHandStyle(HAND_CONFIG.second)}>
-        <img src={HAND_CONFIG.second.img} alt="Second" style={{ width: '100%', height: '100%', objectFit: 'contain', filter: HAND_CONFIG.second.filter }} />
-      </div>
+      <div ref={hourRef} style={getHandStyle(HAND_CONFIG.hour)} />
+      <div ref={minRef} style={getHandStyle(HAND_CONFIG.minute)} />
+      <div ref={secRef} style={getHandStyle(HAND_CONFIG.second)} />
     </>
   );
 });
@@ -154,7 +146,7 @@ const TangerineClock: React.FC = () => {
       acc[`num${idx + 1}`] = { src: label };
       return acc;
     }, {});
-    return { ...base, hourHand: { src: hourHandImg }, minuteHand: { src: minuteHandImg }, secondHand: { src: secondHandImg }, peach: { src: peachImg } };
+    return { ...base, peach: { src: peachImg } };
   }, []);
 
   const loaderState = useMultiAssetLoader(assetConfig);
