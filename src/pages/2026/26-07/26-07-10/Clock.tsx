@@ -85,7 +85,7 @@ function detectDevice(): DeviceKind {
   const h = window.innerHeight;
   const minSide = Math.min(w, h);
   const maxSide = Math.max(w, h);
-  const ua = navigator.userAgent || '';
+  const ua = navigator.userAgent || ''; // User Agent
   const coarse = window.matchMedia('(pointer: coarse)').matches;
   const fine = window.matchMedia('(pointer: fine)').matches;
   const tvUa = /TV|SmartTV|AppleTV|GoogleTV|BRAVIA|WebOS|Tizen|CrKey|AFT|Roku/i.test(ua);
