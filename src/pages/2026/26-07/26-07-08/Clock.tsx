@@ -1,5 +1,5 @@
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 // Background & Assets
 import hourHandImg from '@/assets/images/26_images/26-05/26-05-30/hour.webp';
@@ -19,41 +19,22 @@ import num8 from '@/assets/images/26_images/26-07/26-07-08/8.webp';
 import num9 from '@/assets/images/26_images/26-07/26-07-08/9.webp';
 import peachImg from '@/assets/images/26_images/26-07/26-07-08/ocean.webp';
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+// ─── Constants & Configuration ───────────────────────────────────────────────
 
-const CLOCK_LABELS = [
-  num1, num2, num3, num4, num5, num6,
-  num7, num8, num9, num10, num11, num12,
-];
-
-/** Export assets for the upstream preloading pipeline */
+const CLOCK_LABELS = [num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, num12];
 export const assets = [...CLOCK_LABELS, hourHandImg, minuteHandImg, secondHandImg, peachImg];
 
 const PEACH_COLOR = '#FFDAB9';
+const SHADOW_FILTER = 'drop-shadow(0 -1px 3px rgba(45, 18, 3, 0.9)) drop-shadow(0 1px 1px rgba(40, 236, 10, 0.7))';
+const HOUR_HAND_FILTER = `brightness(1.1) contrast(1.0) hue-rotate(-20deg) saturate(1.4) ${SHADOW_FILTER}`;
 
-const SHADOW_FILTER =
-  'drop-shadow(0 -1px 3px rgba(45, 18, 3, 0.9)) drop-shadow(0 1px 1px rgba(40, 236, 10, 0.7))';
-
-const HOUR_HAND_FILTER =
-  `brightness(1.1) contrast(1.0) hue-rotate(-20deg) saturate(1.4) ${SHADOW_FILTER}`;
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-interface HandSize {
-  width: number;   // fraction of clockSize
-  height: number;  // fraction of clockSize
-  z: number;       // z-index
-}
-
-// ─── Hand config ──────────────────────────────────────────────────────────────
-
-const HAND_CONFIG: Record<'hourHand' | 'minuteHand' | 'secondHand', HandSize> = {
-  hourHand:   { width: 0.42, height: 0.8, z: 20 },
-  minuteHand: { width: 0.40, height: 0.8, z: 10 },
-  secondHand: { width: 0.68, height: 0.6, z: 30 },
+const HAND_CONFIG = {
+  hour:   { width: 0.42, height: 0.8, z: 20, filter: HOUR_HAND_FILTER, img: hourHandImg },
+  minute: { width: 0.40, height: 0.8, z: 10, filter: SHADOW_FILTER,    img: minuteHandImg },
+  second: { width: 0.68, height: 0.6, z: 30, filter: SHADOW_FILTER,    img: secondHandImg },
 };
 
-// ─── ClockFace ────────────────────────────────────────────────────────────────
+// ─── Component: ClockFace ────────────────────────────────────────────────────
 
 interface ClockFaceProps {
   clockSize: number;
@@ -61,9 +42,6 @@ interface ClockFaceProps {
   ready: boolean;
 }
 
-/**
- * Memoised so the twelve number images don't re-render on every millisecond tick.
- */
 const ClockFace = React.memo(({ clockSize, radius, ready }: ClockFaceProps) => (
   <div
     style={{
@@ -102,125 +80,112 @@ const ClockFace = React.memo(({ clockSize, radius, ready }: ClockFaceProps) => (
     })}
   </div>
 ));
-
 ClockFace.displayName = 'ClockFace';
+
+// ─── Component: AnimatedHands ────────────────────────────────────────────────
+
+const AnimatedHands: React.FC<{ clockSize: number }> = React.memo(({ clockSize }) => {
+  const hourRef = useRef<HTMLDivElement>(null);
+  const minRef = useRef<HTMLDivElement>(null);
+  const secRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let rafId: number;
+    
+    const updateAngles = () => {
+      const time = new Date();
+      const ms = time.getMilliseconds();
+      const s  = time.getSeconds();
+      const m  = time.getMinutes();
+      const h  = time.getHours();
+
+      const totalSeconds = s + ms / 1000;
+      const totalMinutes = m + totalSeconds / 60;
+      const totalHours   = (h % 12) + totalMinutes / 60;
+
+      if (secRef.current) secRef.current.style.setProperty('--deg', `${(totalSeconds / 60) * 360}deg`);
+      if (minRef.current) minRef.current.style.setProperty('--deg', `${(totalMinutes / 60) * 360}deg`);
+      if (hourRef.current) hourRef.current.style.setProperty('--deg', `${(totalHours / 12) * 360}deg`);
+
+      rafId = requestAnimationFrame(updateAngles);
+    };
+
+    rafId = requestAnimationFrame(updateAngles);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
+
+  const getHandStyle = (config: typeof HAND_CONFIG.hour): React.CSSProperties => ({
+    position: 'absolute',
+    bottom: '50%',
+    left: '50%',
+    width: clockSize * config.width,
+    height: clockSize * config.height,
+    transformOrigin: 'bottom center',
+    transform: 'translateX(-50%) rotate(var(--deg, 0deg))',
+    zIndex: config.z,
+    pointerEvents: 'none',
+    willChange: 'transform',
+  });
+
+  return (
+    <>
+      <div ref={hourRef} style={getHandStyle(HAND_CONFIG.hour)}>
+        <img src={HAND_CONFIG.hour.img} alt="Hour" style={{ width: '100%', height: '100%', objectFit: 'contain', filter: HAND_CONFIG.hour.filter }} />
+      </div>
+      <div ref={minRef} style={getHandStyle(HAND_CONFIG.minute)}>
+        <img src={HAND_CONFIG.minute.img} alt="Minute" style={{ width: '100%', height: '100%', objectFit: 'contain', filter: HAND_CONFIG.minute.filter }} />
+      </div>
+      <div ref={secRef} style={getHandStyle(HAND_CONFIG.second)}>
+        <img src={HAND_CONFIG.second.img} alt="Second" style={{ width: '100%', height: '100%', objectFit: 'contain', filter: HAND_CONFIG.second.filter }} />
+      </div>
+    </>
+  );
+});
+AnimatedHands.displayName = 'AnimatedHands';
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 const TangerineClock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
   const [clockSize, setClockSize] = useState<number>(300);
   const [isClient, setIsClient] = useState<boolean>(false);
 
-  // Implement a high-frequency update loop using requestAnimationFrame.
-  // This ensures the second hand moves in a continuous "sweep" motion at the
-  // display's refresh rate (typically 60fps) rather than ticking every second.
-  useEffect(() => {
-    let rafId: number;
-    const updateClock = () => {
-      setTime(new Date());
-      rafId = requestAnimationFrame(updateClock);
-    };
-    rafId = requestAnimationFrame(updateClock);
-    return () => cancelAnimationFrame(rafId);
+  const assetConfig = useMemo(() => {
+    const base = CLOCK_LABELS.reduce<Record<string, { src: string }>>((acc, label, idx) => {
+      acc[`num${idx + 1}`] = { src: label };
+      return acc;
+    }, {});
+    return { ...base, hourHand: { src: hourHandImg }, minuteHand: { src: minuteHandImg }, secondHand: { src: secondHandImg }, peach: { src: peachImg } };
   }, []);
-
-  // ── Asset loading ──────────────────────────────────────────────────────────
-
-  const assetConfig = useMemo(
-    () => ({
-      ...CLOCK_LABELS.reduce<Record<string, { src: string }>>((acc, label, index) => {
-        acc[`num${index + 1}`] = { src: label };
-        return acc;
-      }, {}),
-      hourHand:   { src: hourHandImg },
-      minuteHand: { src: minuteHandImg },
-      secondHand: { src: secondHandImg },
-      peach:      { src: peachImg },
-    }),
-    [],
-  );
 
   const loaderState = useMultiAssetLoader(assetConfig);
 
-  // ── Responsive sizing ──────────────────────────────────────────────────────
-
-  const updateClockSize = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      const size = Math.min(
-        window.innerWidth  * 0.9,
-        window.innerHeight * 0.7,
-        500,
-      );
-      setClockSize(size);
-    }
-  }, []);
-
   useEffect(() => {
     setIsClient(true);
-    updateClockSize();
+    
+    const handleResize = () => {
+      setClockSize(Math.min(window.innerWidth * 0.9, window.innerHeight * 0.7, 500));
+    };
+
+    handleResize();
 
     let resizeTimer: ReturnType<typeof setTimeout>;
-    const handleResize = () => {
+    const debouncedResize = () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(updateClockSize, 100);
+      resizeTimer = setTimeout(handleResize, 100);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', debouncedResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', debouncedResize);
       clearTimeout(resizeTimer);
     };
-  }, [updateClockSize]);
+  }, []);
 
-  // ── Angle calculations ─────────────────────────────────────────────────────
-
-  const radius = useMemo(() => clockSize * 0.42, [clockSize]);
-
-  const { secDeg, minDeg, hourDeg } = useMemo(() => {
-    const ms = time.getMilliseconds();
-    const s  = time.getSeconds();
-    const m  = time.getMinutes();
-    const h  = time.getHours();
-
-    const totalSeconds = s + ms / 1000;
-    const totalMinutes = m + totalSeconds / 60;
-    const totalHours   = (h % 12) + totalMinutes / 60;
-
-    return {
-      secDeg:  (totalSeconds / 60) * 360,
-      minDeg:  (totalMinutes / 60) * 360,
-      hourDeg: (totalHours / 12) * 360,
-    };
-  }, [time]);
-
-  // ── Hand style factory ─────────────────────────────────────────────────────
-
-  const getHandStyle = (deg: number, size: HandSize): React.CSSProperties => ({
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    width: clockSize * size.width,
-    height: clockSize * size.height,
-    transformOrigin: 'bottom center',
-    transform: `translateX(-50%) rotate(${deg}deg)`,
-    zIndex: size.z,
-    pointerEvents: 'none',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    willChange: 'transform',
-  });
-
-  // ── SSR guard ──────────────────────────────────────────────────────────────
+  const radius = clockSize * 0.42;
 
   if (!isClient) {
     return <div style={{ position: 'fixed', inset: 0, backgroundColor: PEACH_COLOR }} />;
   }
-
-  const ready = loaderState.isAllLoaded;
-
-  // ── Render ─────────────────────────────────────────────────────────────────
 
   return (
     <main
@@ -228,7 +193,7 @@ const TangerineClock: React.FC = () => {
         position: 'fixed',
         inset: 0,
         overflow: 'hidden',
-       backgroundColor: PEACH_COLOR,
+        backgroundColor: PEACH_COLOR,
         backgroundImage: `url(${peachImg})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
@@ -243,50 +208,8 @@ const TangerineClock: React.FC = () => {
       }}
     >
       <div style={{ position: 'relative', width: clockSize, height: clockSize }}>
-
-        {/* Static face — memoised, only re-renders when size/ready changes */}
-        <ClockFace clockSize={clockSize} radius={radius} ready={ready} />
-
-        {/* Hour Hand */}
-        <div style={getHandStyle(hourDeg, HAND_CONFIG.hourHand)}>
-          <div
-            style={{
-              width: '10%',
-              height: '40%',
-              borderRadius: '99px',
-              background: 'rgba(132, 129, 127, 0.75)',
-              filter: HOUR_HAND_FILTER,
-            }}
-          />
-        </div>
-
-        {/* Minute Hand */}
-        <div style={getHandStyle(minDeg, HAND_CONFIG.minuteHand)}>
-          <div
-            style={{
-              width: '4%',
-              height: '70%',
-              borderRadius: '99px',
-              background: 'rgba(206, 197, 192, 0.75)',
-              filter: SHADOW_FILTER,
-            }}
-          />
-        </div>
-
-        {/* Second Hand */}
-        <div style={getHandStyle(secDeg, HAND_CONFIG.secondHand)}>
-          <div
-            style={{
-              width: '1%',
-              height: '80%',
-              borderRadius: '9px',
-              background: 'rgba(222, 207, 199, 0.75)',
-              filter: SHADOW_FILTER,
-            }}
-          />
-        </div>
-
-
+        <ClockFace clockSize={clockSize} radius={radius} ready={loaderState.isAllLoaded} />
+        <AnimatedHands clockSize={clockSize} />
       </div>
     </main>
   );
