@@ -83,7 +83,7 @@ const VTEC: React.FC = () => {
           fontFamily: "'Rubik Dirt', monospace",
           zIndex: 10,
           // textShadow: '0 0 20px rgba(0,0,0,0.5)',
-          color: '#eee',
+          color: '#E0C989',
           gap: '0.1vmin', // Even spacing between all elements
         }}
       >
