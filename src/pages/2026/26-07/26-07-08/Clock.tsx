@@ -22,9 +22,9 @@ const PEACH_COLOR = '#FFDAB9';
 const SHADOW_FILTER = 'drop-shadow(0 -1px 3px rgba(45, 18, 3, 0.9)) drop-shadow(0 1px 1px rgba(40, 236, 10, 0.7))';
 
 const HAND_CONFIG = {
-  hour:   { width: 0.03, height: 0.25, z: 10 },
-  minute: { width: 0.02, height: 0.35, z: 11 },
-  second: { width: 0.01, height: 0.4, z: 12 },
+  hour:   { width: 0.04, height: 0.25, z: 10 }, 
+  minute: { width: 0.03, height: 0.35, z: 11 }, 
+  second: { width: 0.015, height: 0.4, z: 12 }, 
 };
 
 // ─── Component: ClockFace ────────────────────────────────────────────────────
@@ -66,6 +66,11 @@ const ClockFace = React.memo(({ clockSize, radius }: ClockFaceProps) => (
             height: clockSize * 0.22,
             objectFit: 'contain',
             filter: SHADOW_FILTER,
+            
+            /* ─── Ultra-Soft Vignette Mask ─── */
+            // Gradually fades out to transparent starting from the center (20%) to the outer edge (75%)
+            WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 75%)',
+            maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 75%)',
           }}
         />
       );
@@ -106,28 +111,60 @@ const AnimatedHands: React.FC<{ clockSize: number }> = React.memo(({ clockSize }
     return () => cancelAnimationFrame(rafId);
   }, []);
 
-  const getHandStyle = (config: typeof HAND_CONFIG.hour): React.CSSProperties => ({
-    position: 'absolute',
-    bottom: '50%',
-    left: `calc(50% - ${(clockSize * config.width) / 2}px)`,
-    width: clockSize * config.width,
-    height: clockSize * config.height,
-    transformOrigin: 'bottom center',
-    transform: 'translateX(-50%) rotate(var(--deg, 0deg))',
-    zIndex: config.z,
-    pointerEvents: 'none',
-    willChange: 'transform',
-    background: 'linear-gradient(180deg, #f0f0f0 0%, #c0c0c0 50%, #808080 100%)',
-    borderRadius: '2px',
-    boxShadow: 'inset 0 0 0.5px #555, 0 0 1px rgba(200, 200, 200, 0.5)',
-  });
+  const getHandStyle = (config: typeof HAND_CONFIG.hour, type: 'hour' | 'minute' | 'second'): React.CSSProperties => {
+    // Custom clip-paths simulating antique brass navigational equipment and chronometers
+    let clipPath = 'none';
+    if (type === 'hour') {
+      clipPath = 'polygon(50% 0%, 100% 35%, 70% 45%, 65% 100%, 35% 100%, 30% 45%, 0% 35%)';
+    } else if (type === 'minute') {
+      clipPath = 'polygon(50% 0%, 90% 25%, 60% 35%, 60% 100%, 40% 100%, 40% 35%, 10% 25%)';
+    } else if (type === 'second') {
+      clipPath = 'polygon(50% 0%, 100% 20%, 55% 80%, 80% 85%, 50% 100%, 20% 85%, 45% 80%, 0% 20%)';
+    }
 
+    // Aged marine metals
+    const antiqueBrass = 'linear-gradient(90deg, #4a3319 0%, #a37c3f 40%, #d1b46a 55%, #8c662d 75%, #36220f 100%)';
+    const antiqueCopper = 'linear-gradient(90deg, #2b1105 0%, #8f4423 50%, #52220b 100%)';
+
+    return {
+      position: 'absolute',
+      bottom: '50%',
+      left: `calc(50% - ${(clockSize * config.width) / 2}px)`,
+      width: clockSize * config.width,
+      height: clockSize * config.height,
+      transformOrigin: 'bottom center',
+      transform: 'translateX(-50%) rotate(var(--deg, 0deg))',
+      zIndex: config.z,
+      pointerEvents: 'none',
+      willChange: 'transform',
+      background: type === 'second' ? antiqueCopper : antiqueBrass,
+      clipPath,
+      WebkitClipPath: clipPath,
+      filter: 'drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.65))',
+    };
+  };
 
   return (
     <>
-      <div ref={hourRef} style={getHandStyle(HAND_CONFIG.hour)} />
-      <div ref={minRef} style={getHandStyle(HAND_CONFIG.minute)} />
-      <div ref={secRef} style={getHandStyle(HAND_CONFIG.second)} />
+      <div ref={hourRef} style={getHandStyle(HAND_CONFIG.hour, 'hour')} />
+      <div ref={minRef} style={getHandStyle(HAND_CONFIG.minute, 'minute')} />
+      <div ref={secRef} style={getHandStyle(HAND_CONFIG.second, 'second')} />
+      
+      {/* 3D Polished Brass Pin Cap */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: clockSize * 0.045,
+          height: clockSize * 0.045,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle at 35% 35%, #f7e7ad 0%, #a37c3f 60%, #36220f 100%)',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.4)',
+          zIndex: 20,
+        }}
+      />
     </>
   );
 });
