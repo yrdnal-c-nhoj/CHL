@@ -6,13 +6,12 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
-// Import the font with the corresponding date from the assets folder
 import fontUrl from '@/assets/fonts/26fonts/26-06-19.otf?url';
 
 // =========================
 // ASSET EXPORTS (Required)
 // =========================
-export const assets = [glassVideo, glassVideo2,glassbreak];
+export const assets = [glassVideo, glassbreak, glassVideo2];
 
 const fontConfigs: FontConfig[] = [
   {
@@ -33,7 +32,7 @@ const DigitalClock: React.FC = () => {
 
     const ampm = h >= 12 ? 'PM' : 'AM';
     let hours12 = h % 12;
-    if (hours12 === 0) hours12 = 12; // Handle midnight (0) and noon (12)
+    if (hours12 === 0) hours12 = 12;
 
     return {
       hours: hours12.toString(),
@@ -45,22 +44,60 @@ const DigitalClock: React.FC = () => {
   return (
     <main
       style={{
-        position: 'relative', // Needed for positioning the video overlay
+        position: 'relative',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         width: '100vw',
         height: '100dvh',
         backgroundColor: '#000',
-        overflow: 'hidden', // Hide video overflow
+        overflow: 'hidden',
         margin: 0,
         padding: 0,
+        // Base background layer (Original)
         backgroundImage: `url(${glassbreak})`,
         backgroundSize: 'cover',
-        filter: 'contrast(1.2) brightness(1.7)',
         backgroundPosition: 'center',
+        filter: 'contrast(1.2) brightness(1.7)',
       }}
     >
+      {/* Flipped background layer sitting directly on top of the original */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url(${glassbreak})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          transform: 'scaleX(-1) scaleY(-1)', // Flips it horizontally and vertically
+          mixBlendMode: 'screen', // Blends the breaks together cleanly over each other
+          filter: 'contrast(1.2) brightness(1.7)', // Match the filter of the base layer
+          opacity: 0.8,            // Adjust opacity if you want the original layer to show through more/less
+          zIndex: 0,
+        }}
+      />
+
+      <video
+        src={glassVideo2}
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          opacity: 0.2,
+          filter: 'contrast(1.2) brightness(1.7)', // Match the filter of the base layer
+          zIndex: 0,
+        }}
+      />
       <video
         src={glassVideo}
         autoPlay
@@ -75,28 +112,11 @@ const DigitalClock: React.FC = () => {
           height: '100%',
           objectFit: 'cover',
           opacity: 0.4,
-          filter: 'contrast(1.9) brightness(0.7)',
-          zIndex: 1, // Sit above the background but below the time
+          filter: 'contrast(1.2) brightness(1.7)', // Match the filter of the base layer
+          zIndex: 1, // Sits above both background layers
         }}
       />
-       <video
-        src={glassVideo2}
-        autoPlay
-        loop
-        muted
-        playsInline
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          opacity: 0.3,
-          filter: 'contrast(1.9) brightness(0.7)',
-          zIndex: 2, // Sit above the background but below the time
-        }}
-      />
+
       <time
         dateTime={time.toISOString()}
         style={{
@@ -104,8 +124,8 @@ const DigitalClock: React.FC = () => {
           fontSize: '30vw',
           color: '#B4D0F139',
           fontVariantNumeric: 'tabular-nums',
-          position: 'relative', // Ensure time is on top of the video
-          zIndex: 2,
+          position: 'relative',
+          zIndex: 2, // Sits above everything
         }}
       >
         {hours}:{minutes}
