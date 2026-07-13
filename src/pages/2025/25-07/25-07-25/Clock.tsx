@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import background2 from '@/assets/images/25_images/25-07/25-07-25/bb.webp'; // front
+import { useClockTime, useMultipleFontLoader } from '@/utils/hooks';
+import React, { useEffect } from 'react';
+// Fixed: Imported the correct hook used in the component body
+import customFont from '@/assets/fonts/25fonts/25-07-25-bamboo.ttf';
 import background1 from '@/assets/images/25_images/25-07/25-07-25/bam.webp'; // back
 import background3 from '@/assets/images/25_images/25-07/25-07-25/bambu.gif'; // static background
-import customFont from '@/assets/fonts/25fonts/25-07-25-bamboo.ttf';
+import background2 from '@/assets/images/25_images/25-07/25-07-25/bb.webp'; // front
+
+// Asset exports for preloading
+export const assets = [background1, background2, background3, customFont];
 
 const Clock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -18,14 +21,14 @@ const Clock: React.FC = () => {
       },
     },
   ];
+  
+  // This now references the correctly imported hook
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   const time = useClockTime();
 
   useEffect(() => {
     const style = document.createElement('style');
     style.innerHTML = `
-      /* Font loading handled by useMultipleFontLoader */
-
       @keyframes parallaxBack {
         0% { background-position: 0 0; }
         100% { background-position: -100vw 0; }
@@ -40,7 +43,8 @@ const Clock: React.FC = () => {
     return () => document.head.removeChild(style);
   }, []);
 
-  const formatTime = (date) => {
+  const formatTime = (date: Date) => {
+    if (!date) return { hours: '00', minutes: '00' };
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
     return { hours, minutes };
@@ -48,7 +52,12 @@ const Clock: React.FC = () => {
 
   const { hours, minutes } = formatTime(time);
 
-  const wrapperStyle = {
+  // Optional optimization: Return a loader state if fonts are required before rendering
+  if (!fontsLoaded) {
+    return null; // Or a subtle loading spinner/placeholder
+  }
+
+  const wrapperStyle: React.CSSProperties = {
     position: 'relative',
     width: '100vw',
     height: '100dvh',
@@ -58,7 +67,7 @@ const Clock: React.FC = () => {
     justifyContent: 'center',
   };
 
-  const backgroundLayer1Style = {
+  const backgroundLayer1Style: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -73,7 +82,7 @@ const Clock: React.FC = () => {
     zIndex: 0,
   };
 
-  const backgroundLayer2Style = {
+  const backgroundLayer2Style: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -88,7 +97,7 @@ const Clock: React.FC = () => {
     zIndex: 1,
   };
 
-  const backgroundLayer3Style = {
+  const backgroundLayer3Style: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -102,7 +111,7 @@ const Clock: React.FC = () => {
     zIndex: 2,
   };
 
-  const overlayStyle = {
+  const overlayStyle: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -112,20 +121,20 @@ const Clock: React.FC = () => {
     zIndex: 3,
   };
 
-  const clockStackStyle = {
-    position: 'relative', // <-- Added this so it layers above backgrounds
+  const clockStackStyle: React.CSSProperties = {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     zIndex: 4,
   };
 
-  const digitRowStyle = {
+  const digitRowStyle: React.CSSProperties = {
     display: 'flex',
     margin: '0.5rem 0',
   };
 
-  const digitBoxStyle = {
+  const digitBoxStyle: React.CSSProperties = {
     width: '4.5rem',
     height: '5rem',
     fontSize: '6rem',
@@ -138,10 +147,10 @@ const Clock: React.FC = () => {
 
   return (
     <div style={wrapperStyle}>
-      <div style={backgroundLayer1Style}></div>
-      <div style={backgroundLayer2Style}></div>
-      <div style={backgroundLayer3Style}></div>
-      <div style={overlayStyle}></div>
+      <div style={backgroundLayer1Style} />
+      <div style={backgroundLayer2Style} />
+      <div style={backgroundLayer3Style} />
+      <div style={overlayStyle} />
       <div style={clockStackStyle}>
         <div style={digitRowStyle}>
           {hours.split('').map((char, index) => (
