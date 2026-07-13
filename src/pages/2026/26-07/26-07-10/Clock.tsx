@@ -1,6 +1,7 @@
 import fontUrl from '@/assets/fonts/26fonts/26-07-10.ttf?url';
 import glassbreak from '@/assets/images/26_images/26-07/26-07-10/clouds.webp';
 import cloud from '@/assets/images/26_images/26-07/26-07-10/sunrise.webp';
+import taurus from '@/assets/images/26_images/26-07/26-07-10/taurus.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
@@ -10,7 +11,7 @@ import React, { useEffect, useRef } from 'react';
 // =========================
 // ASSET EXPORTS (Required)
 // =========================
-export const assets = [glassbreak, cloud];
+export const assets = [glassbreak, cloud, taurus];
 
 const fontConfigs: FontConfig[] = [
   {
@@ -190,6 +191,7 @@ const AnalogClock: React.FC = () => {
     <main style={styles.mainContainer}>
       <div style={styles.bgGlass} />
       <div style={styles.bgClouds} />
+      <div style={styles.taurusOverlay} />
 
       <canvas ref={canvasRef} style={styles.rainCanvas} />
 
@@ -267,7 +269,7 @@ const styles: { [key: string]: CSSProperties } = {
     backgroundImage: `url(${glassbreak})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    filter: 'contrast(0.9) brightness(0.2) saturate(5) hue-rotate(-10deg)',
+    filter: 'contrast(0.9) brightness(0.2) saturate(2) hue-rotate(-10deg)',
     zIndex: 0,
   },
   bgClouds: {
@@ -277,8 +279,19 @@ const styles: { [key: string]: CSSProperties } = {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     mixBlendMode: 'screen',
-    filter: 'contrast(1.2) brightness(0.9) saturate(7) hue-rotate(20deg)',
+    filter: 'contrast(1.2) brightness(0.9) saturate(2) hue-rotate(20deg)',
     zIndex: 3,
+    pointerEvents: 'none',
+  },
+  taurusOverlay: {
+    position: 'absolute',
+    inset: 0,
+    backgroundImage: `url(${taurus})`,
+    backgroundSize: 'fill',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    mixBlendMode: 'screen',
+    zIndex: 5,
     pointerEvents: 'none',
   },
   rainCanvas: {
