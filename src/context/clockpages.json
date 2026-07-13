@@ -6147,8 +6147,6 @@
       "orange",
       "spin"
     ]
-
-
   },
   {
     "path": "26-07-04",
@@ -6191,6 +6189,7 @@
     "date": "26-07-07",
     "title": "Taurus",
     "tags": [
+      "digital",
       "animal",
       "constellations",
       "earth",
@@ -6201,7 +6200,7 @@
     "path": "26-07-08",
     "date": "26-07-08",
     "title": "Red Right",
-     "tags": [
+    "tags": [
       "analog",
       "color",
       "ocean"
@@ -6211,20 +6210,22 @@
     "path": "26-07-09",
     "date": "26-07-09",
     "title": "Intersections",
-      "tags": [
+    "tags": [
       "digital",
-      "color",
-      "ocean"
+      "grid",
+      "milliseconds",
+      "night"
     ]
   },
   {
     "path": "26-07-10",
     "date": "26-07-10",
     "title": "112.5° East-Southeast",
-      "tags": [
+    "tags": [
+      "analog",
       "cardinal-directions",
-      "digital",
-      "roman-numeral"
+      "roman-numeral",
+      "wind"
     ]
   }
 ]
