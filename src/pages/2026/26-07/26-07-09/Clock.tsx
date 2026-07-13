@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useRef } from 'react';
 
 import carVideo from '@/assets/images/26_images/26-07/26-07-09/city.mp4';
 // Import the corresponding font from the assets folder
-import fontUrl from '@/assets/fonts/26fonts/26-07-10.ttf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-07-09.ttf?url';
 
 // Export assets for the preloading pipeline
 export const assets = [carVideo];
