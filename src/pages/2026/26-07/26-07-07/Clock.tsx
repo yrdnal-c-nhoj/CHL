@@ -2,10 +2,11 @@ import type { FontConfig } from '@/types/clock';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React from 'react';
+import taurus from '../../../../assets/images/26_images/26-07/26-07-06/taurus.webp';
 
 const tile = new URL('../../../../assets/images/26_images/26-07/26-07-06/rodeo-bull.webp', import.meta.url).href;
 const fontUrl = 'https://fonts.googleapis.com/css2?family=Rubik+Dirt&display=swap';
-export const assets = [tile]; 
+export const assets = [tile, taurus];
 const fontConfigs: FontConfig[] = [{ fontFamily: 'Rubik Dirt', fontUrl }];
 
 const VTEC: React.FC = () => {
@@ -55,6 +56,7 @@ const VTEC: React.FC = () => {
         gridTemplateColumns: `repeat(${columns}, 1fr)`,
         gridTemplateRows: `repeat(${rows}, 1fr)`,
         filter: 'saturate(1) contrast(2.2) brightness(0.8)',
+        zIndex: 0,
       }}>
         {Array.from({ length: rows }).map((_, rowIndex) =>
           Array.from({ length: columns }).map((_, colIndex) => {
@@ -74,6 +76,20 @@ const VTEC: React.FC = () => {
         )}
       </div>
 
+      {/* Taurus Overlay */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `url(${taurus})`,
+          backgroundSize: 'contain',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          mixBlendMode: 'screen',
+          opacity: 0.7,
+          zIndex: 1,
+        }}
+      />
       <time
         dateTime={time.toISOString()}
         style={{
@@ -81,7 +97,7 @@ const VTEC: React.FC = () => {
           alignItems: 'center',
           justifyContent: 'center',
           fontFamily: "'Rubik Dirt', monospace",
-          zIndex: 10,
+          zIndex: 2,
           // textShadow: '0 0 20px rgba(0,0,0,0.5)',
           color: '#E0C989',
           gap: '0.1vmin', // Even spacing between all elements
@@ -128,7 +144,6 @@ const vtecStyles: { [key: string]: React.CSSProperties } = {
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
-    zIndex: 5,
     backgroundColor: '#000',
   },
 };
