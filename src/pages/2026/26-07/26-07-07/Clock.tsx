@@ -82,7 +82,7 @@ const VTEC: React.FC = () => {
           position: 'absolute',
           inset: 0,
           backgroundImage: `url(${taurus})`,
-          backgroundSize: 'contain',
+          backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           mixBlendMode: 'screen',
