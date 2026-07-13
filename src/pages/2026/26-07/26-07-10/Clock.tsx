@@ -25,10 +25,10 @@ const CLOCK_VARIABLES = {
   '--clock-size': 'min(78vw, 72vh)',
   '--font-size': 'clamp(0.95rem, 8vw, 2.35rem)',
   '--radius': '45',
-  '--h-width': '5px',
-  '--m-width': '3px',
+  '--h-width': '6px', 
+  '--m-width': '4px',
   '--s-width': '2px',
-  '--dot-size': '10px',
+  '--dot-size': '12px', 
 } as CSSProperties;
 
 interface RainDrop {
@@ -38,6 +38,8 @@ interface RainDrop {
   length: number;
   opacity: number;
 }
+
+type StormState = 'calm' | 'rampUp' | 'downpour' | 'fade';
 
 const AnalogClock: React.FC = () => {
   const time = useSecondClock();
@@ -52,10 +54,7 @@ const AnalogClock: React.FC = () => {
   const minuteDegrees = (minutes / 60) * 360 + (seconds / 60) * 6;
   const hourDegrees = (hours / 12) * 360 + (minutes / 60) * 30;
 
-
-
-
-// Rain Simulation Engine
+  // Rain Simulation Engine with Regulated Constraints
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -73,49 +72,62 @@ const AnalogClock: React.FC = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    const startTime = performance.now();
-    let currentStormCycleStart = startTime;
-    let randomDelay = Math.floor(Math.random() * 2000) + 2000; 
-
-    // Increased max density for a much more prominent storm presence
+    // Initial state: starts calm on page load
+    let currentState: StormState = 'calm';
+    let stateStartTime = performance.now();
+    
+    // Exact 3/8 of a second delay for the very first interval
+    let targetDuration = 375; 
     const MAX_RAIN_DENSITY = 350; 
 
-    const tick = (now: number) => {
-      const elapsed = now - currentStormCycleStart;
-      let targetDropsCount = 0;
+    // Function to generate tightly governed randomized phase windows
+    const getRandomDuration = (state: StormState): number => {
+      switch (state) {
+        case 'calm':      
+          // Dry intervals between rain: never more than 2 seconds (500ms to 2000ms)
+          return Math.floor(Math.random() * 1500) + 500;  
+        case 'rampUp':    
+          // Short buildup (500ms to 1000ms)
+          return Math.floor(Math.random() * 500) + 500;  
+        case 'downpour':  
+          // Heavy state window (1000ms to 2000ms)
+          return Math.floor(Math.random() * 1000) + 1000;  
+        case 'fade':      
+          // Falloff cleanup window (500ms to 1000ms)
+          // Total combined rain cycle (ramp + downpour + fade) stays well under 4 seconds max limit
+          return Math.floor(Math.random() * 500) + 500;  
+        default:          
+          return 1000;
+      }
+    };
 
-      // Phase 1: Initial Calm (0ms to 750ms)
-      if (elapsed < 750) {
+    const tick = (now: number) => {
+      let elapsed = now - stateStartTime;
+
+      // Evaluate Phase Transits
+      if (elapsed >= targetDuration) {
+        stateStartTime = now;
+        elapsed = 0;
+        
+        if (currentState === 'calm') currentState = 'rampUp';
+        else if (currentState === 'rampUp') currentState = 'downpour';
+        else if (currentState === 'downpour') currentState = 'fade';
+        else if (currentState === 'fade') currentState = 'calm';
+
+        targetDuration = getRandomDuration(currentState);
+      }
+
+      let targetDropsCount = 0;
+      const progress = Math.min(elapsed / targetDuration, 1);
+
+      if (currentState === 'calm') {
         targetDropsCount = 0;
-      } 
-      // Phase 2: Quickly ramps up (750ms to 2750ms)
-      else if (elapsed >= 750 && elapsed < 2750) {
-        const progress = (elapsed - 750) / 2000;
+      } else if (currentState === 'rampUp') {
         targetDropsCount = progress * MAX_RAIN_DENSITY;
-      } 
-      // Phase 3: Heavy downpour sustained (2750ms to 3250ms)
-      else if (elapsed >= 2750 && elapsed < 3250) {
+      } else if (currentState === 'downpour') {
         targetDropsCount = MAX_RAIN_DENSITY;
-      } 
-      // Phase 4: Lightens up quickly (3250ms to 3500ms)
-      else if (elapsed >= 3250 && elapsed < 3500) {
-        const progress = (elapsed - 3250) / 250;
-        targetDropsCount = MAX_RAIN_DENSITY - (progress * (MAX_RAIN_DENSITY * 0.8));
-      } 
-      // Phase 5: Gradual fade out (3500ms to 4500ms)
-      else if (elapsed >= 3500 && elapsed < 4500) {
-        const progress = (elapsed - 3500) / 1000;
-        const startingDensity = MAX_RAIN_DENSITY * 0.2;
-        targetDropsCount = startingDensity - (progress * startingDensity);
-      } 
-      // Phase 6: Reset loop
-      else {
-        targetDropsCount = 0;
-        const cycleTotalDuration = 4500 + randomDelay;
-        if (elapsed >= cycleTotalDuration) {
-          currentStormCycleStart = now;
-          randomDelay = Math.floor(Math.random() * 2000) + 2000;
-        }
+      } else if (currentState === 'fade') {
+        targetDropsCount = MAX_RAIN_DENSITY * (1 - progress);
       }
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -128,9 +140,9 @@ const AnalogClock: React.FC = () => {
         drops.push({
           x: Math.random() * canvas.width,
           y: Math.random() * -canvas.height,
-          speed: Math.random() * 18 + 22,     // Faster fall speed for higher velocity impact
-          length: Math.random() * 25 + 15,    // Longer drops
-          opacity: Math.random() * 0.4 + 0.6, // Higher overall visibility opacity
+          speed: Math.random() * 18 + 22,
+          length: Math.random() * 25 + 15,
+          opacity: Math.random() * 0.4 + 0.6,
         });
       }
 
@@ -138,11 +150,8 @@ const AnalogClock: React.FC = () => {
 
       for (let i = 0; i < drops.length; i++) {
         const d = drops[i];
-        
         ctx.globalAlpha = d.opacity;
 
-        // --- LAYER 1: The Dark Shadow Outline ---
-        // Thick dark stroke cuts through the background contrast
         ctx.strokeStyle = 'rgba(0, 0, 0, 0.75)';
         ctx.lineWidth = 3.5; 
         ctx.beginPath();
@@ -150,8 +159,6 @@ const AnalogClock: React.FC = () => {
         ctx.lineTo(d.x - 2, d.y + d.length);
         ctx.stroke();
 
-        // --- LAYER 2: The Bright Core Highlight ---
-        // Thinner bright stroke nested directly inside the dark outline
         ctx.strokeStyle = 'rgba(225, 245, 255, 0.95)';
         ctx.lineWidth = 1.2;
         ctx.beginPath();
@@ -159,7 +166,6 @@ const AnalogClock: React.FC = () => {
         ctx.lineTo(d.x - 2, d.y + d.length);
         ctx.stroke();
 
-        // Update Position
         d.y += d.speed;
         d.x -= 2;
 
@@ -180,17 +186,13 @@ const AnalogClock: React.FC = () => {
     };
   }, []);
 
-
   return (
     <main style={styles.mainContainer}>
-      {/* Background layers */}
       <div style={styles.bgGlass} />
       <div style={styles.bgClouds} />
 
-      {/* Atmospheric Rain Canvas Layer */}
       <canvas ref={canvasRef} style={styles.rainCanvas} />
 
-      {/* Analog Clock Wrapper injecting layout variables dynamically */}
       <div style={{ ...styles.clock, ...CLOCK_VARIABLES }}>
         <div style={styles.face}>
           {ROMAN_NUMERALS.map((numeral, i) => {
@@ -212,36 +214,33 @@ const AnalogClock: React.FC = () => {
             );
           })}
 
-          {/* Hands */}
           <div
             style={{
               ...styles.hand,
               width: 'var(--h-width)',
               height: '28%',
               transform: `translate(-50%) rotate(${hourDegrees}deg)`,
-              backgroundColor: '#fff',
             }}
           />
+          
           <div
             style={{
               ...styles.hand,
               width: 'var(--m-width)',
               height: '38%',
               transform: `translate(-50%) rotate(${minuteDegrees}deg)`,
-              backgroundColor: '#fff',
             }}
           />
+          
           <div
             style={{
               ...styles.hand,
               width: 'var(--s-width)',
               height: '42%',
               transform: `translate(-50%) rotate(${secondDegrees}deg)`,
-              backgroundColor: '#B4D0F1',
             }}
           />
           
-          {/* Center Pin */}
           <div style={styles.centerDot} />
         </div>
       </div>
@@ -278,8 +277,8 @@ const styles: { [key: string]: CSSProperties } = {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     mixBlendMode: 'screen',
-    filter: 'contrast(1.2) brightness(0.9)',
-    zIndex: 1,
+    filter: 'contrast(1.2) brightness(0.9) saturate(7) hue-rotate(20deg)',
+    zIndex: 3,
     pointerEvents: 'none',
   },
   rainCanvas: {
@@ -287,14 +286,14 @@ const styles: { [key: string]: CSSProperties } = {
     inset: 0,
     width: '100%',
     height: '100%',
-    zIndex: 2, // Layered cleanly on top of backgrounds, behind the clock numerals/hands
+    zIndex: 2,
     pointerEvents: 'none',
   },
   clock: {
     position: 'relative',
     width: 'var(--clock-size)',
     height: 'var(--clock-size)',
-    zIndex: 3, // Raised clock depth slightly above rain canvas
+    zIndex: 2,
   },
   face: {
     width: '100%',
@@ -306,9 +305,19 @@ const styles: { [key: string]: CSSProperties } = {
     bottom: '50%',
     left: '50%',
     transformOrigin: 'bottom center',
-    borderRadius: 2,
+    borderRadius: '4px 4px 1px 1px',
     willChange: 'transform',
-    boxShadow: '1px 1px 1px #000',
+    backgroundColor: '#B59263',
+    border: '1px solid #1A0F05',
+    boxShadow: `
+      0.5px 0.5px 0px rgba(255, 255, 255, 0.9),
+      -1px -1px 0px #000,
+      1px -1px 0px #000,
+      -1px 1px 0px #000,
+      1px 1px 0px #000,
+      2px 4px 5px rgba(0, 0, 0, 0.95),
+      0px 0px 15px rgba(0, 0, 0, 0.6)
+    `,
   },
   centerDot: {
     position: 'absolute',
@@ -317,20 +326,31 @@ const styles: { [key: string]: CSSProperties } = {
     width: 'var(--dot-size)',
     height: 'var(--dot-size)',
     borderRadius: '50%',
-    backgroundColor: '#B4D0F1',
+    backgroundColor: '#5C401B',
+    backgroundImage: 'radial-gradient(circle at 35% 35%, #FFF 0%, #A38051 25%, #5C401B 75%, #000 100%)',
     transform: 'translate(-50%, -50%)',
-    border: '2px solid #fff',
-    zIndex: 1,
+    border: '2px solid #000',
+    boxShadow: '2px 3px 6px rgba(0,0,0,0.95), inset 1px 1px 1px rgba(255,255,255,0.8)',
+    zIndex: 4,
   },
   numeral: {
     position: 'absolute',
     fontSize: 'var(--font-size)',
-    color: 'rgb(255, 255, 255)',
     fontFamily: "'Shrikhand', cursive",
     whiteSpace: 'nowrap',
     textRendering: 'geometricPrecision',
     lineHeight: 1,
-    textShadow: '1px 1px 1px #000',
+    color: '#B59263',
+    WebkitTextStroke: '1px #1A0F05',
+    textShadow: `
+      0.5px 0.5px 0px rgba(255, 255, 255, 0.9),
+      -1px -1px 0px #000,
+      1px -1px 0px #000,
+      -1px 1px 0px #000,
+      1px 1px 0px #000,
+      2px 4px 5px rgba(0, 0, 0, 0.95),
+      0px 0px 15px rgba(0, 0, 0, 0.6)
+    `,
   },
 };
 
