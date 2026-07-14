@@ -13,9 +13,9 @@ export const assets = [jumpVideo];
 
 
 const HAND_DIMENSIONS = {
-  hour: { width: '1.9vmin', height: '9vmin', zIndex: 3 },
-  minute: { width: '1.2vmin', height: '18vmin', zIndex: 4 },
-  second: { width: '0.9vmin', height: '18vmin', zIndex: 5 },
+  hour: { width: '1.9vmin', height: '12vmin', zIndex: 3 },
+  minute: { width: '1.2vmin', height: '26vmin', zIndex: 4 },
+  second: { width: '0.3vmin', height: '28vmin', zIndex: 5 },
 } as const;
 
 const calculateTimeValues = (date: Date) => {
@@ -121,7 +121,7 @@ const styles = {
     bottom: 0,
     right: 0,
     left: 'auto',
-    // filter: 'saturate(250%) contrast(1.1) brightness(1.2)',
+    filter: 'saturate(150%) contrast(1.3) brightness(1.2)',
     width: '100%',
     height: '100%',
     objectFit: 'cover' as const,
@@ -142,10 +142,10 @@ const styles = {
     position: 'absolute' as const,
     bottom: '50%',
     left: '50%',
-      opacity: 0.6,
+      // opacity: 0.6,
     background: CLOCK_CONFIG.COLORS.primary,
     transformOrigin: '50% 100%',
-    filter: `${CLOCK_CONFIG.COLORS.shadow} sepia(0.4) saturate(1.8) contrast(1.2)`,
+    // filter: `${CLOCK_CONFIG.COLORS.shadow} sepia(0.4) saturate(1.8) contrast(1.2)`,
     borderRadius: '0px',
   },
 };
