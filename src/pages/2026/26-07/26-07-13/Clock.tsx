@@ -1,122 +1,153 @@
-import { useClockTime } from '@/utils/clockUtils';
-import React from 'react';
+import React, { useMemo } from 'react';
 
-const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#222',
-    fontFamily: '"Share Tech Mono", monospace',
-    padding: '2vmin',
-    boxSizing: 'border-box',
-  },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(11, 1fr)',
-    gap: '0.5vmin',
-    width: '95vmin',
-    maxWidth: '800px',
-  },
-  letter: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: '5.5vmin',
-    color: '#444',
-    transition: 'color 0.5s ease, text-shadow 0.5s ease',
-    textTransform: 'uppercase',
-  },
-};
+import shapesFont from '@/assets/fonts/26fonts/26-07-13.ttf?url';
+import clockVideo from '@/assets/images/26_images/26-07/26-07-13/click.mp4';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
-const WORD_GRID = [
-  'ITLISASTIME',
-  'ACQUARTERDC',
-  'TWENTYFIVEX',
-  'HALFBTENSTO',
-  'PASTERUNINE',
-  'ONESIXTHREE',
-  'FOURFIVETWO',
-  'EIGHTELEVEN',
-  'SEVENTWELVE',
-  'TENSEOCLOCK',
+export const assets = [clockVideo, shapesFont];
+
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'ShapesFont',
+    fontUrl: shapesFont,
+    options: {
+      weight: 'normal',
+      style: 'normal',
+    },
+  },
 ];
 
-const getActiveIndices = (date: Date) => {
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const active = new Set<string>();
-
-  // "IT IS"
-  [0, 1, 3, 4].forEach((i) => active.add(`0-${i}`));
-
-  const displayHour = hours % 12;
-  let hourWord = displayHour;
-  if (minutes > 34) {
-    hourWord = (displayHour + 1) % 12;
-  }
-  hourWord = hourWord === 0 ? 12 : hourWord;
-
-  const ranges: { [key: string]: [number, number, number] } = {
-    1: [5, 0, 2], 2: [6, 8, 10], 3: [5, 7, 11], 4: [6, 0, 3],
-    5: [6, 4, 7], 6: [5, 3, 5], 7: [8, 0, 4], 8: [7, 0, 4],
-    9: [4, 7, 10], 10: [9, 0, 2], 11: [7, 5, 10], 12: [8, 5, 10],
-  };
-
-  const range = ranges[hourWord];
-  if (!range) return active;
-  const [row, start, end] = range;
-
-  for (let i = start; i <= end; i++) active.add(`${row}-${i}`);
-
-  if (minutes >= 5 && minutes <= 9) [3, 7, 10].forEach(i => active.add(`2-${i}`)); // FIVE
-  if (minutes >= 10 && minutes <= 14) [3, 5, 7].forEach(i => active.add(`3-${i}`)); // TEN
-  if (minutes >= 15 && minutes <= 19) [1, 2, 8].forEach(i => active.add(`1-${i}`)); // A QUARTER
-  if (minutes >= 20 && minutes <= 24) [2, 0, 5].forEach(i => active.add(`2-${i}`)); // TWENTY
-  if (minutes >= 25 && minutes <= 29) { [2, 0, 5].forEach(i => active.add(`2-${i}`)); [2, 7, 10].forEach(i => active.add(`2-${i}`)); } // TWENTY FIVE
-  if (minutes >= 30 && minutes <= 34) [3, 0, 3].forEach(i => active.add(`3-${i}`)); // HALF
-
-  if (minutes >= 5 && minutes <= 34) [4, 0, 3].forEach(i => active.add(`4-${i}`)); // PAST
-  if (minutes >= 35 && minutes <= 59) [3, 8, 9].forEach(i => active.add(`3-${i}`)); // TO
-
-  if (minutes < 5 || minutes > 59) {
-    [9, 5, 10].forEach((i) => active.add(`9-${i}`)); // O'CLOCK
-  }
-
-  return active;
+const styles: Record<string, React.CSSProperties> = {
+  clockWrapper: {
+    position: 'relative',
+    width: '100vw',
+    height: '100dvh',
+    overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: '#191B1B',
+  },
+  background: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: 1,
+  },
+  backgroundVideo: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    filter: 'brightness(1) contrast(1.2) saturate(6)',
+  },
+clockContainer: {
+  fontFamily: 'ShapesFont, monospace',
+  position: 'relative',
+  zIndex: 2,
+  display: 'grid',
+  gap: '4vw',
+  color: '#FBA433',
+  justifyItems: 'center',
+  alignItems: 'center',
+  // Standard Web CSS Text Shadow syntax: "h-offset v-offset blur-radius color"
+  textShadow: '2px 2px 0px #C5B0F0 , -2px 2px 0px #22045F', 
+},
+  digit: {
+    lineHeight: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '1ch',
+    fontVariantNumeric: 'tabular-nums',
+  },
 };
 
-const Letter: React.FC<{ char: string; active: boolean }> = React.memo(
-  ({ char, active }) => {
-    const letterStyle: React.CSSProperties = {
-      ...styles.letter,
-      color: active ? '#fff' : '#444',
-      textShadow: active ? '0 0 10px #fff, 0 0 20px #2d7dd2' : 'none',
-    };
-    return <div style={letterStyle}>{char}</div>;
-  }
-);
+const Clock: React.FC = () => {
+  useSuspenseFontLoader(fontConfigs);
 
-export default function WordClock() {
-  const time = useClockTime();
-  const activeIndices = getActiveIndices(time);
+  const time = useSecondClock();
+
+  const timeString = useMemo(() => {
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return pad(time.getHours()) + pad(time.getMinutes()) + pad(time.getSeconds());
+  }, [time]);
+
+  const digits = timeString.split('');
+
+  // 0-9 => A-J
+  const digitToLetter: Record<string, string> = {
+    '0': 'A',
+    '1': 'R',
+    '2': 'j',
+    '3': '8',
+    '4': 'm',
+    '5': 'l',
+    '6': '6',
+    '7': 'o',
+    '8': 'K',
+    '9': '3',
+  };
+
+  const displayed = digits.map((d) => digitToLetter[d] ?? d);
 
   return (
-    <div style={styles.container}>
-      <div style={styles.grid}>
-        {WORD_GRID.flatMap((row, rIndex) =>
-          row.split('').map((char, cIndex) => (
-            <Letter
-              key={`${rIndex}-${cIndex}`}
-              char={char}
-              active={activeIndices.has(`${rIndex}-${cIndex}`)}
-            />
-          ))
-        )}
+    <div style={styles.clockWrapper}>
+      {/* Injected responsive layout styles */}
+      <style>{`
+        /* Laptop / Desktop (Default): All 6 digits in 1 row */
+        .responsive-clock-grid {
+          grid-template-columns: repeat(6, 1fr);
+        }
+        .responsive-digit {
+          font-size: clamp(3rem, 18vw, 15rem);
+        }
+
+        /* Phone: 2 columns, 3 rows */
+        @media (max-width: 768px) {
+          .responsive-clock-grid {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 3vh 15vw !important;
+          }
+          .responsive-digit {
+            font-size: clamp(4rem, 44vw, 10rem);
+          }
+        }
+      `}</style>
+
+      <div style={styles.background}>
+        <video
+          style={styles.backgroundVideo}
+          src={clockVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
       </div>
+
+      <time
+        dateTime={time.toISOString()}
+        aria-label={`Current time is ${time.toLocaleTimeString()}`}
+        style={styles.clockContainer}
+        className="responsive-clock-grid"
+      >
+        {displayed.map((letter, index) => (
+          <div 
+            key={index} 
+            style={styles.digit} 
+            className="responsive-digit"
+          >
+            {letter}
+          </div>
+        ))}
+      </time>
     </div>
   );
-}
+};
 
+export default Clock;
