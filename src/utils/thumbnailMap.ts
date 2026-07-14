@@ -12,38 +12,31 @@ import { normalizeDate } from './dateUtils';
 
 type ImageModule = { default: string };
 
-const legacyModules = import.meta.glob(
-  '/src/assets/thumbnails/*.{webp,gif,jpg,jpeg,png}',
-  { eager: true },
-) as Record<string, ImageModule>;
-
-const newModules = import.meta.glob(
-  '/src/assets/images/26_images/26-06/**/*.{webp,gif,jpg,jpeg,png}',
+const allModules = import.meta.glob(
+  [
+    '/src/assets/thumbnails/*.{webp,gif,jpg,jpeg,png}',
+    '/src/assets/images/26_images/26-06/**/*.{webp,gif,jpg,jpeg,png}',
+  ],
   { eager: true },
 ) as Record<string, ImageModule>;
 
 const thumbnailMap: Record<string, string> = {};
 
-const buildMap = (modules: Record<string, ImageModule>) => {
-  for (const [filePath, mod] of Object.entries(modules)) {
-    const imageUrl = mod.default;
-    if (!imageUrl) continue;
+for (const [filePath, mod] of Object.entries(allModules)) {
+  const imageUrl = mod.default;
+  if (!imageUrl) continue;
 
-    // Matches YY-MM-DD in the path.
-    const match = filePath.match(/(\d{2}-\d{2}-\d{2})/);
-    if (!match || !match[1]) continue;
+  // Matches YY-MM-DD in the path.
+  const match = filePath.match(/(\d{2}-\d{2}-\d{2})/);
+  if (!match || !match[1]) continue;
 
-    const date = normalizeDate(match[1]);
+  const date = normalizeDate(match[1]);
 
-    // Keep first discovered asset for the date.
-    if (!thumbnailMap[date]) {
-      thumbnailMap[date] = imageUrl;
-    }
+  // Keep first discovered asset for the date.
+  if (!thumbnailMap[date]) {
+    thumbnailMap[date] = imageUrl;
   }
-};
-
-buildMap(legacyModules);
-buildMap(newModules);
+}
 
 /**
  * Returns the thumbnail URL for a given date (YY-MM-DD).
