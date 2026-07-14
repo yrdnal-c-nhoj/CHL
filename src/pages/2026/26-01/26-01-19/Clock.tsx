@@ -1,5 +1,5 @@
 import bgImage from '@/assets/images/26_images/26-01/26-01-19/hands.webp';
-import { useSmoothClock } from '@/utils/hooks';
+import { useClockTime as useSmoothClock } from '@/utils/clockUtils';
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
