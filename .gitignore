@@ -1,46 +1,28 @@
 # OS
 .DS_Store
 
-# dependencies
-node_modules/
-
-# builds / generated output
-dist/
-
 # logs
 *.log
 
-# env files (keep example)
-.env
-.env.*
-!.env.example
-!.env.test
-
-# vercel/netlify caches (optional but common)
-.vercel/
-out/
-
-
 # OS / build output
-.DS_Store
 node_modules/
 dist/
 coverage/
 .vercel/
+out/
 
 # local env
 .env
 .env.*
 !.env.example
-
+!.env.test
 
 # misc
-coverage/
 AGENTS.md
 DEVELOPMENT.md/
 scripts/
 docs/
 TODO.md
+
+# Social media assets
 src/assets/social_media/
-
-
