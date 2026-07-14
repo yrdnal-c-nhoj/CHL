@@ -14,8 +14,8 @@ type ImageModule = { default: string };
 
 const allModules = import.meta.glob(
   [
+    // IMPORTANT: thumbnails MUST come from /src/assets/thumbnails only
     '/src/assets/thumbnails/*.{webp,gif,jpg,jpeg,png}',
-    '/src/assets/images/26_images/26-06/**/*.{webp,gif,jpg,jpeg,png}',
   ],
   { eager: true },
 ) as Record<string, ImageModule>;
