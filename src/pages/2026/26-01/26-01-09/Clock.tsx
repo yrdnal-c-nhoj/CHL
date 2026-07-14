@@ -1,11 +1,11 @@
-import { useSecondClock } from '@/utils/hooks';
+import { useClockTime as useSecondClock } from '@/utils/clockUtils';
 import React from 'react';
 import { BackgroundGrid } from './BackgroundGrid'; // Import the extracted component
 
 // TicTacToeClock component
 // This component displays a clock in a Tic-Tac-Toe grid style.
 export default function TicTacToeClock() {
-  const time = useSecondClock();
+  const time = useSecondClock('ms');
 
   // Font is loaded by useSuspenseFontLoader in BackgroundGrid component
 
