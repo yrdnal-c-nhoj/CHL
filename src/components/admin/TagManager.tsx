@@ -32,10 +32,8 @@ export default function TagManager() {
     direction: 'asc' | 'desc';
   }>({ key: 'date', direction: 'desc' });
 
-  // State to track which months are expanded/open
-  const [expandedMonths, setExpandedMonths] = useState<Record<string, boolean>>({
-    // Default the first month to open if it exists
-  });
+  // State to track which months are expanded/open. Initialized later via useEffect.
+  const [expandedMonths, setExpandedMonths] = useState<Record<string, boolean>>({});
 
   const toggleMonth = (monthKey: string) => {
     setExpandedMonths(prev => ({ ...prev, [monthKey]: !prev[monthKey] }));
@@ -119,6 +117,14 @@ export default function TagManager() {
       return sortConfig.direction === 'asc' ? a.localeCompare(b) : b.localeCompare(a);
     });
   }, [items, sortConfig, searchTerm]);
+
+  // Effect to open the first month by default once data is ready.
+  useEffect(() => {
+    if (groupedByMonth.length > 0 && Object.keys(expandedMonths).length === 0) {
+      const firstMonthKey = groupedByMonth[0][0];
+      setExpandedMonths({ [firstMonthKey]: true });
+    }
+  }, [groupedByMonth, expandedMonths]);
 
   if (errorMessage) {
     return (
