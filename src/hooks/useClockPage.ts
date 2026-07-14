@@ -75,7 +75,7 @@ export function useClockPage(currentItem: { date: string } | null) {
         // preloadAssets is already Promise-based; this catch is defensive.
       }
     },
-    [],
+    [currentItem?.date],
   );
 
   useEffect(() => {
