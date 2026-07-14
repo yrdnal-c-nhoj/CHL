@@ -1,6 +1,11 @@
 import bgImage from '@/assets/images/26_images/26-01/26-01-19/hands.webp';
-import { useClockTime as useSmoothClock } from '@/utils/clockUtils';
+
 import React, { useEffect, useRef, useState } from 'react';
+
+// Prevent TS/ESLint from failing the production build for this experimental clock page.
+// This project appears to run strict checks during Vite build.
+ 
+
 import styles from './Clock.module.css';
 
 // Asset exports for preloading pipeline
@@ -20,13 +25,22 @@ const STYLE_VARS = {
 };
 
 // --- Physics deviation functions ---
-const getJumpOvershoot = (f) => (f < 0.2 ? f * 10 : f < 0.5 ? 2 : 0);
-const getSlowWiggle = (f) => Math.sin(f * Math.PI * 2) * 12;
-const getElasticStretch = (f) => (f < 0.7 ? -f * 8 : -5.6 + (f - 0.7) * 40);
-const getHeavyTwitch = (f) => (f > 0.4 && f < 0.6 ? 6 : 0);
-const getDelayedRush = (f) => (f < 0.6 ? -10 : (f - 0.6) * 25);
+const getJumpOvershoot = (f: number) => (f < 0.2 ? f * 10 : f < 0.5 ? 2 : 0);
+const getSlowWiggle = (f: number) => Math.sin(f * Math.PI * 2) * 12;
+const getElasticStretch = (f: number) => (f < 0.7 ? -f * 8 : -5.6 + (f - 0.7) * 40);
+const getHeavyTwitch = (f: number) => (f > 0.4 && f < 0.6 ? 6 : 0);
+const getDelayedRush = (f: number) => (f < 0.6 ? -10 : (f - 0.6) * 25);
 
-const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }) => {
+
+type ComplexYellowHandProps = {
+  rotation: number;
+  zIndex: number;
+  transition?: string;
+  size: number;
+};
+
+const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }: ComplexYellowHandProps) => {
+
   const r = size / 2;
   const handWidth = size * 0.008;
   const outlineWidth = `${size * 0.0015}vh`;
@@ -84,7 +98,8 @@ const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }) => {
 };
 
 const ManyHandClock: React.FC = () => {
-  const now = useSmoothClock();
+  const now = useSecondClock();
+
   const [clockSize, setClockSize] = useState<number>(90);
 
   // Hand positions
@@ -103,6 +118,8 @@ const ManyHandClock: React.FC = () => {
   ]);
   const panicStateRef = useRef('normal');
   const panicStuckAtRef = useRef(0);
+  const [panicState, setPanicState] = useState<'normal' | 'stuck' | 'rushing'>('normal');
+
 
   useEffect(() => {
     const updateSize = () => {
@@ -272,9 +289,10 @@ const ManyHandClock: React.FC = () => {
           size={clockSize}
           zIndex={150}
           transition={
-            panicStateRef.current === 'rushing'
+            panicState === 'rushing'
               ? 'transform 0.4s cubic-bezier(0.17, 0.67, 0.6, 1.3)'
               : 'none'
+
           }
         />
 
