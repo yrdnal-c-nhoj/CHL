@@ -103,7 +103,7 @@ const Clock: React.FC = () => {
           grid-template-columns: repeat(6, 1fr);
         }
         .responsive-digit {
-          font-size: clamp(3rem, 18vw, 15rem);
+          font-size: clamp(3rem, 15vw, 12rem);
         }
 
         /* Phone: 2 columns, 3 rows */
@@ -114,7 +114,7 @@ const Clock: React.FC = () => {
             gap: 3vh 15vw !important;
           }
           .responsive-digit {
-            font-size: clamp(4rem, 44vw, 10rem);
+            font-size: clamp(4rem, 33vh, 8rem);
           }
         }
       `}</style>
