@@ -4,119 +4,97 @@ import React from 'react';
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#222',
-    fontFamily: '"Share Tech Mono", monospace',
-    padding: '2vmin',
+    width: '100vw',
+    height: '100dvh',
+    // Rich, twilight gradient of the Argentine Pampas meeting a dusty library
+    background: 'radial-gradient(circle at center, #2d1a18 0%, #110912 100%)',
+    color: '#f4ede2', // Aged parchment white
+    fontFamily: '"Cinzel", "Playfair Display", "Georgia", serif',
+    padding: '8vmin',
     boxSizing: 'border-box',
+    textAlign: 'center',
+    overflow: 'hidden',
+    position: 'relative',
   },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(11, 1fr)',
-    gap: '0.5vmin',
-    width: '95vmin',
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: 'radial-gradient(circle, transparent 40%, rgba(0, 0, 0, 0.7) 100%)',
+    pointerEvents: 'none',
+    zIndex: 1,
+  },
+  quoteContainer: {
     maxWidth: '800px',
+    zIndex: 2,
+    transform: 'translateY(-5vh)', // Centers the quote beautifully as the dreamlike focal point
   },
-  letter: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: '5.5vmin',
-    color: '#444',
-    transition: 'color 0.5s ease, text-shadow 0.5s ease',
-    textTransform: 'uppercase',
+  title: {
+    fontSize: 'clamp(1.1rem, 2.5vmin, 2.2rem)',
+    fontWeight: '300',
+    fontStyle: 'italic',
+    lineHeight: '1.6',
+    color: '#e2b36e', // Dusty gold leaf
+    textShadow: '0 2px 10px rgba(226, 179, 110, 0.15)',
+    maxWidth: '90%',
+    margin: '0 auto',
+    letterSpacing: '0.05em',
   },
+  // Positioned strictly in the lower-right corner
+  clockPositioner: {
+    position: 'absolute',
+    bottom: '5vmin',
+    right: '5vmin',
+    zIndex: 2,
+    transform: 'rotate(-1.5deg)', // Subtle surreal tilt
+  },
+  digitalClock: {
+    fontSize: 'clamp(2.5rem, 8vmin, 5rem)',
+    letterSpacing: '0.05em',
+    color: '#e86a43', // Terracotta fire
+    textShadow: `
+      0 0 8px rgba(232, 106, 67, 0.4), 
+      0 0 20px rgba(226, 179, 110, 0.3),
+      -4px 4px 0px rgba(17, 9, 18, 0.8)
+    `,
+    whiteSpace: 'nowrap',
+  }
 };
 
-const WORD_GRID = [
-  'ITLISASTIME',
-  'ACQUARTERDC',
-  'TWENTYFIVEX',
-  'HALFBTENSTO',
-  'PASTERUNINE',
-  'ONESIXTHREE',
-  'FOURFIVETWO',
-  'EIGHTELEVEN',
-  'SEVENTWELVE',
-  'TENSEOCLOCK',
-];
-
-const getActiveIndices = (date: Date) => {
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const active = new Set<string>();
-
-  // "IT IS"
-  [0, 1, 3, 4].forEach((i) => active.add(`0-${i}`));
-
-  const displayHour = hours % 12;
-  let hourWord = displayHour;
-  if (minutes > 34) {
-    hourWord = (displayHour + 1) % 12;
-  }
-  hourWord = hourWord === 0 ? 12 : hourWord;
-
-  const ranges: { [key: string]: [number, number, number] } = {
-    1: [5, 0, 2], 2: [6, 8, 10], 3: [5, 7, 11], 4: [6, 0, 3],
-    5: [6, 4, 7], 6: [5, 3, 5], 7: [8, 0, 4], 8: [7, 0, 4],
-    9: [4, 7, 10], 10: [9, 0, 2], 11: [7, 5, 10], 12: [8, 5, 10],
-  };
-
-  const range = ranges[hourWord];
-  if (!range) return active;
-  const [row, start, end] = range;
-
-  for (let i = start; i <= end; i++) active.add(`${row}-${i}`);
-
-  if (minutes >= 5 && minutes <= 9) [3, 7, 10].forEach(i => active.add(`2-${i}`)); // FIVE
-  if (minutes >= 10 && minutes <= 14) [3, 5, 7].forEach(i => active.add(`3-${i}`)); // TEN
-  if (minutes >= 15 && minutes <= 19) [1, 2, 8].forEach(i => active.add(`1-${i}`)); // A QUARTER
-  if (minutes >= 20 && minutes <= 24) [2, 0, 5].forEach(i => active.add(`2-${i}`)); // TWENTY
-  if (minutes >= 25 && minutes <= 29) { [2, 0, 5].forEach(i => active.add(`2-${i}`)); [2, 7, 10].forEach(i => active.add(`2-${i}`)); } // TWENTY FIVE
-  if (minutes >= 30 && minutes <= 34) [3, 0, 3].forEach(i => active.add(`3-${i}`)); // HALF
-
-  if (minutes >= 5 && minutes <= 34) [4, 0, 3].forEach(i => active.add(`4-${i}`)); // PAST
-  if (minutes >= 35 && minutes <= 59) [3, 8, 9].forEach(i => active.add(`3-${i}`)); // TO
-
-  if (minutes < 5 || minutes > 59) {
-    [9, 5, 10].forEach((i) => active.add(`9-${i}`)); // O'CLOCK
-  }
-
-  return active;
-};
-
-const Letter: React.FC<{ char: string; active: boolean }> = React.memo(
-  ({ char, active }) => {
-    const letterStyle: React.CSSProperties = {
-      ...styles.letter,
-      color: active ? '#fff' : '#444',
-      textShadow: active ? '0 0 10px #fff, 0 0 20px #2d7dd2' : 'none',
-    };
-    return <div style={letterStyle}>{char}</div>;
-  }
-);
-
-export default function WordClock() {
+export default function CurrentTimeClock() {
   const time = useClockTime();
-  const activeIndices = getActiveIndices(time);
+  
+  // 24-hour format with hours and minutes stripped of leading zeros
+  const hours = time.getHours().toString();
+  const minutes = time.getMinutes().toString();
+  const timeString = `*${hours}:${minutes}`;
 
   return (
     <div style={styles.container}>
-      <div style={styles.grid}>
-        {WORD_GRID.flatMap((row, rIndex) =>
-          row.split('').map((char, cIndex) => (
-            <Letter
-              key={`${rIndex}-${cIndex}`}
-              char={char}
-              active={activeIndices.has(`${rIndex}-${cIndex}`)}
-            />
-          ))
-        )}
+      <div style={styles.overlay} />
+      
+      {/* Centered quote */}
+      <div style={styles.quoteContainer}>
+        <h6 style={styles.title}>
+          "Time is the substance I am made of. Time is a river which sweeps me along, but I am the river; 
+          it is a tiger which destroys me, but I am the tiger; it is a fire which consumes me, but I am the fire."
+          <span style={{ display: 'block', marginTop: '1.5rem', fontSize: '0.8em', fontStyle: 'normal', opacity: 0.8 }}>
+            — Jorge Luis Borges, <i>A New Refutation of Time</i>
+          </span>
+        </h6>
+      </div>
+      
+      {/* Single clock anchored to the bottom-right corner */}
+      <div style={styles.clockPositioner}>
+        <time dateTime={time.toISOString()} style={styles.digitalClock}>
+          {timeString}
+        </time>
       </div>
     </div>
   );
 }
-
