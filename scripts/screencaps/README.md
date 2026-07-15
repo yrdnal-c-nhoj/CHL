@@ -16,8 +16,8 @@ npm run dev
 
 This repo’s capture script in this folder targets **host/port 5173** by default and saves thumbnails to `src/assets/thumbnails/`.
 
-```bash
-node scripts/screencaps/capture today
+
+node scripts/screencaps/capture today```bash
 ```
 
 Replace `today` with:
