@@ -54,7 +54,6 @@ const AnalogClock: React.FC = () => {
     gridTemplateRows: isMobile ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)',
     gap: '-0.5vh',
     padding: '0rem',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
     borderRadius: '10px',
     opacity: 0.7,
   }), [isMobile]);
@@ -127,7 +126,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: '100%',
     height: '100%',
     objectFit: 'cover',
-    filter: 'brightness(1.3) hue-rotate(20deg) saturate(1.8)',
+    filter: 'brightness(1.3) hue-rotate(20deg) saturate(1.)',
     zIndex: 1,
   },
   timeWrapper: {
