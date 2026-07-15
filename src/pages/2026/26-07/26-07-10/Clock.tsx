@@ -1,4 +1,4 @@
-import fontUrl from '@/assets/fonts/26fonts/26-07-10.ttf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-07-11.ttf?url';
 import cloud from '@/assets/images/26_images/26-07/26-07-10/clouds.webp';
 import glassbreak from '@/assets/images/26_images/26-07/26-07-10/sunrise.webp';
 import type { FontConfig } from '@/types/clock';
