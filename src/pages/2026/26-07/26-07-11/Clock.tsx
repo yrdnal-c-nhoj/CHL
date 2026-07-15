@@ -41,7 +41,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     position: 'absolute',
     inset: 0,
     backgroundImage: `url(${tileImage})`,
-    backgroundSize: '150px', // Small tile size
+    backgroundSize: '50px', // Small tile size
     backgroundRepeat: 'repeat',
     opacity: 0.8,
     backgroundPosition: 'center', // Start tiling from the center
@@ -49,8 +49,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   digitalClock: {
     display: 'flex',
     color: 'white',
-    fontSize: 'clamp(2rem, 18vmin, 12rem)',
-    textShadow: '0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgba(0, 128, 255, 0.4)',
+    fontSize: 'clamp(2rem, 22vmin, 12rem)',
+    textShadow: '0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgb(0, 128, 255)',
     fontFamily: 'ClockFont_26_07_11, "Share Tech Mono", monospace',
     position: 'relative', // Ensure clock is on top of the background layers
     zIndex: 1,
@@ -64,7 +64,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   colon: {
     position: 'relative',
-    top: '-0.08em', // Raise the colon slightly
+    top: '-0.15em', // Raise the colon slightly more
     width: '0.3em', // Narrower width for the colon
     justifyContent: 'center',
   },
