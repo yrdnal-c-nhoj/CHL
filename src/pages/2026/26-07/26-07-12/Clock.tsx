@@ -13,7 +13,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     background: 'radial-gradient(circle at center, #2d1a18 0%, #110912 100%)',
     color: '#f4ede2', // Aged parchment white
     fontFamily: '"Cinzel", "Playfair Display", "Georgia", serif',
-    padding: '8vmin',
+    padding: '2vmin',
     boxSizing: 'border-box',
     textAlign: 'center',
     overflow: 'hidden',
@@ -38,7 +38,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: 'clamp(1.1rem, 2.5vmin, 2.2rem)',
     fontWeight: '300',
     fontStyle: 'italic',
-    lineHeight: '1.6',
+    lineHeight: '1.0',
     color: '#e2b36e', // Dusty gold leaf
     textShadow: '0 2px 10px rgba(226, 179, 110, 0.15)',
     maxWidth: '90%',
