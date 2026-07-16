@@ -1,0 +1,44 @@
+.clockWrapper {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  filter: brightness(1.2) contrast(0.8) saturate(1.1) hue-rotate(40deg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -2;
+}
+
+.clockContainer {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: 1fr;
+}
+
+.digit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'ShapesFont', monospace;
+  font-size: 12vw;
+  user-select: none;
+  overflow: hidden;
+  color: #b4b2b1;
+  text-shadow:
+    1px 1px 0px #eb7f7f;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  height: 100dvh;
+  width: 16.66vw;
+  box-sizing: border-box;
+  position: relative;
+}
