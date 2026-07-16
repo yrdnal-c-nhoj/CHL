@@ -1,11 +1,29 @@
+import fontUrl from '@/assets/fonts/26fonts/26-07-14.ttf?url';
 import chandelierBg from '@/assets/images/26_images/26-07/26-07-14/root.webp';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
-export const assets = [chandelierBg];
+export const assets = [chandelierBg, fontUrl];
+
+const FONT_FAMILY = 'CustomFont260714';
 
 const AnalogClock: React.FC = () => {
   const time = useClockTime();
+
+  // Load the custom font using the suspense-based loader
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: FONT_FAMILY,
+        fontUrl,
+        options: { weight: 'normal', style: 'normal' },
+      },
+    ],
+    [],
+  );
+  useSuspenseFontLoader(fontConfigs);
+
   // Calculate rotation angles for the clock hands
   const { hourDegrees, minuteDegrees, secondDegrees } = useMemo(() => {
     const hours = time.getHours();
@@ -28,62 +46,100 @@ const AnalogClock: React.FC = () => {
     alignItems: 'center',
     width: '100vw',
     height: '100dvh',
-    backgroundColor: '#000',
     margin: 0,
     padding: 0,
     overflow: 'hidden',
-    backgroundImage: `url(${chandelierBg})`,
-    backgroundRepeat: 'no-repeat',
-    filter: 'saturate(400%) contrast(1.3) brightness(1.1)',
-    backgroundPosition: 'center center',
-    backgroundSize: 'cover',
+    backgroundColor: '#000', // Fallback color
   };
 
-  const svgStyle: React.CSSProperties = {
-    position: 'relative',
-    zIndex: 2,
-    width: 'min(88vw, 88vh, 600px)',
-    height: 'min(88vw, 88vh, 600px)',
-    borderRadius: '50%',
-    marginTop: '-1vh',
+  const backgroundStyle: React.CSSProperties = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundImage: `url(${chandelierBg})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    backgroundSize: '100% 100%',
+    filter: 'contrast(0.9) brightness(1.5)',
+    zIndex: 0,
   };
 
   return (
     <main style={containerStyle}>
-     {/* Analog Clock SVG */}
+      <div style={backgroundStyle} />
       <svg
         viewBox="0 0 200 200"
-        style={svgStyle}
+        style={{
+          width: 'min(80vw, 80vh)',
+          height: 'min(80vw, 80vh)',
+          position: 'relative', // Ensure SVG is in the same stacking context
+          zIndex: 1,
+       }}
       >
-        {/* Glow Filter Definition */}
+        {/* Filter for text shadow */}
         <defs>
-          <filter id="glow-light" x="-90%" y="-90%" width="200%" height="200%">
-            {/* Blurs the input to create the glow "blob" effect */}
-            <feGaussianBlur stdDeviation="6" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
+          <filter id="text-shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="1" dy="1" stdDeviation="0" floodColor="#000" floodOpacity="0.8" />
           </filter>
         </defs>
 
-        {/* Hour Hand Group */}
+        {/* Clock Face */}
+        <circle cx="100" cy="100" r="98" fill="rgba(0, 0, 0, 0)" />
+
+        {/* Hour Markers and Numbers */}
+        {Array.from({ length: 12 }).map((_, i) => {
+          const hour = i + 1;
+          const angle = (hour * 30 - 90) * (Math.PI / 180);
+          const radius = 84;
+          const x = 100 + radius * Math.cos(angle);
+          const y = 100 + radius * Math.sin(angle);
+          return (
+            <g key={hour}>
+              <line
+                x1="100"
+                y1="8"
+                x2="100"
+                y2="15"
+                transform={`rotate(${i * 30} 100 100)`}
+              />
+              <text
+                x={x}
+                y={y}
+                dy="0.35em"
+                textAnchor="middle"
+                style={{
+                  fill: '#D7CCBF',
+                  fontSize: '2vh',
+                  fontWeight: 'normal',
+                  fontFamily: FONT_FAMILY,
+                  filter: 'url(#text-shadow)',
+                }}
+              >
+                {hour}
+              </text>
+            </g>
+          );
+        })}
+
+        {/* Hour Hand */}
         <g transform={`rotate(${hourDegrees} 100 100)`}>
-          <circle cx="100" cy="55" r="12" fill="#F3E8DA" filter="url(#glow-light)" />
+          <line x1="100" y1="100" x2="100" y2="60" stroke="#F3E8DA" strokeWidth="1" strokeLinecap="round" />
         </g>
-        {/* Minute Hand Group */}
+
+        {/* Minute Hand */}
         <g transform={`rotate(${minuteDegrees} 100 100)`}>
-       <circle cx="100" cy="35" r="8" fill="#F3E8DA" filter="url(#glow-light)" />
+          <line x1="100" y1="100" x2="100" y2="40" stroke="#F3E8DA" strokeWidth="1" strokeLinecap="round" />
         </g>
 
-        {/* Second Hand Group */}
+        {/* Second Hand */}
         <g transform={`rotate(${secondDegrees} 100 100)`}>
-      
-          {/* Light blob at coordinate (100, 25) */}
-          <circle cx="100" cy="25" r="6" fill="#F3E8DA" filter="url(#glow-light)" />
+          <line x1="100" y1="110" x2="100" y2="30" stroke="#BBC17E" strokeWidth="1" strokeLinecap="round" />
         </g>
 
-      
+        {/* Center Pin */}
+        <circle cx="100" cy="100" r="4" fill="#ABC17E"stroke="#F3E8DA" strokeWidth="1" />
       </svg>
     </main>
   );
