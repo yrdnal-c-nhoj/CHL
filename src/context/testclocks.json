@@ -6231,16 +6231,50 @@
   {
     "path": "26-07-11",
     "date": "26-07-11",
-    "title": "Wittgetstein"
+    "title": "Wittgetstein",
+    "tags": [
+      "digital",
+      "Germany",
+      "bauhaus",
+      "shrine"
+    ]
   },
   {
     "path": "26-07-12",
     "date": "26-07-12",
-    "title": "Footnote"
+    "title": "Footnote",
+    "tags": [
+      "digital",
+      "image-free"
+    ]
   },
   {
     "path": "26-07-13",
     "date": "26-07-13",
-    "title": "Shutter"
+    "title": "Shutter",
+    "tags": [
+      "mechanical",
+      "pictographic"
+    ]
+  },
+  {
+    "path": "26-07-14",
+    "date": "26-07-14",
+    "title": "Crescent Moon"
+  },
+  {
+    "path": "26-07-15",
+    "date": "26-07-15",
+    "title": "Lunar Eclipse"
+  },
+  {
+    "path": "26-07-16",
+    "date": "26-07-16",
+    "title": "Solar Eclipse"
+  },
+  {
+    "path": "26-07-17",
+    "date": "26-07-17",
+    "title": "Lunar Phase"
   }
 ]
