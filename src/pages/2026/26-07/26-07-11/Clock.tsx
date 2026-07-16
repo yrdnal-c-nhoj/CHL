@@ -43,7 +43,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     backgroundImage: `url(${tileImage})`,
     backgroundSize: '50px', // Small tile size
     backgroundRepeat: 'repeat',
-    opacity: 0.8,
+    opacity: 0.5,
     backgroundPosition: 'center', // Start tiling from the center
   },
   digitalClock: {
