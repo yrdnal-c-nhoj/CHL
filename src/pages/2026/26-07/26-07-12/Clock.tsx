@@ -38,7 +38,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: 'clamp(1.1rem, 2.5vmin, 2.2rem)',
     fontWeight: '300',
     fontStyle: 'italic',
-    lineHeight: '1.0',
+    lineHeight: '1.3',
     color: '#e2b36e', // Dusty gold leaf
     textShadow: '0 2px 10px rgba(226, 179, 110, 0.15)',
     maxWidth: '90%',
@@ -58,7 +58,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     letterSpacing: '0.05em',
     color: '#e86a43', // Terracotta fire
     textShadow: `
-      0 0 8px rgba(232, 106, 67, 0.4), 
+      0 0 8px rgba(232, 106, 67, 0.4),
       0 0 20px rgba(226, 179, 110, 0.3),
       -4px 4px 0px rgba(17, 9, 18, 0.8)
     `,
@@ -68,7 +68,6 @@ const styles: { [key: string]: React.CSSProperties } = {
 
 export default function CurrentTimeClock() {
   const time = useClockTime();
-  
   // 24-hour format with hours and minutes stripped of leading zeros
   const hours = time.getHours().toString();
   const minutes = time.getMinutes().toString();
@@ -78,17 +77,30 @@ export default function CurrentTimeClock() {
     <div style={styles.container}>
       <div style={styles.overlay} />
       
-      {/* Centered quote */}
+      {/* Centered quote - Spanish on top, English below */}
       <div style={styles.quoteContainer}>
         <h6 style={styles.title}>
-          "Time is the substance I am made of. Time is a river which sweeps me along, but I am the river; 
-          it is a tiger which destroys me, but I am the tiger; it is a fire which consumes me, but I am the fire."
-          <span style={{ display: 'block', marginTop: '1.5rem', fontSize: '0.8em', fontStyle: 'normal', opacity: 0.8 }}>
+          "El tiempo es la sustancia de que estoy hecho. El tiempo es un río que me arrebata, pero yo soy el río; es un tigre que me destroza, pero yo soy el tigre; es un fuego que me consume, pero yo soy el fuego."
+          <br />
+          <span style={{ display: 'block', marginTop: '1.5rem', fontSize: '0.8em', fontStyle: 'normal', opacity: 0.85 }}>
+            — Jorge Luis Borges, <i>Nueva refutación del tiempo</i>
+          </span>
+
+          <span style={{ 
+            display: 'block', 
+            marginTop: '2.5rem', 
+            fontSize: '0.75em', 
+            opacity: 0.9,
+            lineHeight: '1.4'
+          }}>
+            "Time is the substance I am made of. Time is a river which sweeps me along, but I am the river; 
+            it is a tiger which destroys me, but I am the tiger; it is a fire which consumes me, but I am the fire."
+            <br />
             — Jorge Luis Borges, <i>A New Refutation of Time</i>
           </span>
         </h6>
       </div>
-      
+
       {/* Single clock anchored to the bottom-right corner */}
       <div style={styles.clockPositioner}>
         <time dateTime={time.toISOString()} style={styles.digitalClock}>
