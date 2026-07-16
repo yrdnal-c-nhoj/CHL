@@ -1,7 +1,7 @@
 import { useClockTime } from '@/utils/clockUtils';
 import React, { useEffect, useRef } from 'react';
 
-const styles: { [key: string]: React.CSSProperties } = {
+const styles: Record<string, React.CSSProperties> = {
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -9,10 +9,10 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
     width: '100vw',
     height: '100dvh',
-    background: 'radial-gradient(circle at center, #2d1a18 0%, #110912 100%)',
-    color: '#f4ede2', 
+    background: 'radial-gradient(circle at center, #2B2D18 0%, #594E07 100%)',
+    color: '#B3B3B9',
     fontFamily: '"Playfair Display", "Georgia", serif',
-    padding: '2vmin',
+    padding: '1vmin',
     boxSizing: 'border-box',
     textAlign: 'center',
     overflow: 'hidden',
@@ -31,43 +31,42 @@ const styles: { [key: string]: React.CSSProperties } = {
   quoteContainer: {
     maxWidth: '800px',
     zIndex: 2,
-    transform: 'translateY(-5vh)', 
+    transform: 'translateY(-5vh)',
   },
   title: {
-    fontSize: 'clamp(1.1rem, 2.5vmin, 2.2rem)',
+    fontSize: 'clamp(1.1rem, 3vmin, 3rem)',
     fontWeight: '300',
-    fontStyle: 'italic',
+    // fontStyle: 'italic',
     lineHeight: '1.3',
-    color: '#e2b36e', 
+    color: '#E1F9E3',
     textShadow: '0 2px 10px rgba(226, 179, 110, 0.15)',
     maxWidth: '90%',
     margin: '0 auto',
     letterSpacing: '0.05em',
   },
-  // Added Inter font family style for modern sans-serif accents
   sansAccents: {
     fontFamily: '"Inter", "Helvetica Neue", sans-serif',
     letterSpacing: '0.08em',
-    textTransform: 'uppercase', // Often looks great for metadata like author/source
+    textTransform: 'uppercase',
   },
   clockPositioner: {
     position: 'absolute',
     bottom: '5vmin',
     right: '5vmin',
     zIndex: 2,
-    transform: 'rotate(-1.5deg)', 
+    transform: 'rotate(-1.5deg)',
   },
   digitalClock: {
-    fontSize: 'clamp(2.5rem, 8vmin, 5rem)',
+    fontSize: 'clamp(1em, 4vmin, 2rem)',
     letterSpacing: '0.05em',
-    color: '#e86a43', 
+    color: '#e86a43',
     textShadow: `
       0 0 8px rgba(232, 106, 67, 0.4),
       0 0 20px rgba(226, 179, 110, 0.3),
       -4px 4px 0px rgba(17, 9, 18, 0.8)
     `,
     whiteSpace: 'nowrap',
-  }
+  },
 };
 
 function DustMotes() {
@@ -79,28 +78,26 @@ function DustMotes() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let animationFrameId: number;
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
     const handleResize = () => {
-      if (!canvas) return;
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     };
     window.addEventListener('resize', handleResize);
 
     class Mote {
-      x!: number;
-      y!: number;
-      size!: number;
-      speedX!: number;
-      speedY!: number;
-      alpha!: number;
-      maxAlpha!: number;
-      fadeSpeed!: number;
-      phase!: number;
-      swaySpeed!: number;
+      x = 0;
+      y = 0;
+      size = 0;
+      speedX = 0;
+      speedY = 0;
+      alpha = 0;
+      maxAlpha = 0;
+      fadeSpeed = 0;
+      phase = 0;
+      swaySpeed = 0;
 
       constructor() {
         this.reset(true);
@@ -141,22 +138,23 @@ function DustMotes() {
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(226, 179, 110, ${Math.max(0, this.alpha)})`;
         ctx.shadowBlur = 4;
-        ctx.shadowColor = 'rgba(226, 179, 110, 0.3)';
+        ctx.shadowColor = 'rgba(241, 219, 186, 0.3)';
         ctx.fill();
       }
     }
 
     const motes = Array.from({ length: 45 }, () => new Mote());
+    let animationFrameId: number;
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
-      ctx.shadowBlur = 0; 
-
+      
+      // Keep shadows limited only to when drawing the active particles
       for (let i = 0; i < motes.length; i++) {
-        const mote = motes[i];
-        mote.update();
-        mote.draw();
+        motes[i].update();
+        motes[i].draw();
       }
+      ctx.shadowBlur = 0; 
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -196,22 +194,21 @@ export default function CurrentTimeClock() {
   return (
     <div style={styles.container}>
       <div style={styles.overlay} />
-      
       <DustMotes />
       
       <div style={styles.quoteContainer}>
         {/* Spanish Original */}
         <p style={styles.title}>
-          "El tiempo es la sustancia de que estoy hecho. El tiempo es un río que me arrebata, pero yo soy el río; es un tigre que me destroza, pero yo soy el tigre; es un fuego que me consume, pero yo soy el fuego."
+          "El tiempo es la sustancia de que estoy hecho. El tiempo es un río que me arrebata, pero yo soy el río; es un tigre que me destroza, pero yo soy el tigre; es un fuego que me consume, pero yo soy el fuego."*
         </p>
         <span style={{ 
           ...styles.sansAccents,
           display: 'block', 
           marginTop: '1.25rem', 
           fontSize: '0.75em', 
-          fontWeight: '500',
+          fontWeight: 500,
           opacity: 0.85,
-          color: '#e2b36e'
+          color: '#B3B2AF'
         }}>
           — Jorge Luis Borges, <span style={{ fontStyle: 'italic', textTransform: 'none' }}>Nueva refutación del tiempo</span>
         </span>
@@ -224,14 +221,14 @@ export default function CurrentTimeClock() {
           opacity: 0.75 
         }}>
           "Time is the substance I am made of. Time is a river which sweeps me along, but I am the river; 
-          it is a tiger which destroys me, but I am the tiger; it is a fire which consumes me, but I am the fire."
+          it is a tiger which destroys me, but I am the tiger; it is a fire which consumes me, but I am the fire."*
         </p>
         <span style={{ 
           ...styles.sansAccents,
           display: 'block', 
           marginTop: '0.85rem', 
           fontSize: '0.65em', 
-          fontWeight: '500',
+          fontWeight: 500,
           opacity: 0.7 
         }}>
           — Jorge Luis Borges, <span style={{ fontStyle: 'italic', textTransform: 'none' }}>A New Refutation of Time</span>
