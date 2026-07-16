@@ -6231,19 +6231,17 @@
   {
     "path": "26-07-11",
     "date": "26-07-11",
-    "title": "1517",
+    "title": "Lavender",
     "tags": [
-      "digital",
-      "Germany",
-      "bauhaus",
-      "shrine",
-      "1517"
+      "analog",
+      "grow",
+      "smell"
     ]
   },
   {
     "path": "26-07-12",
     "date": "26-07-12",
-    "title": "Footnote",
+    "title": "Footnote #1",
     "tags": [
       "digital",
       "image-free"
@@ -6257,6 +6255,28 @@
       "camera",
       "mechanical",
       "pictographic"
+    ]
+  },
+  {
+    "path": "26-07-14",
+    "date": "26-07-14",
+    "title": "1517",
+    "tags": [
+      "digital",
+      "1517",
+      "Germany",
+      "bauhaus",
+      "shrine"
+    ]
+  },
+  {
+    "path": "26-07-15",
+    "date": "26-07-15",
+    "title": "Emergence",
+    "tags": [
+      "analog",
+      "earth",
+      "grow"
     ]
   }
 ]
