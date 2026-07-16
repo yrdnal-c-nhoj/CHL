@@ -1,107 +1,87 @@
+import fontUrl from '@/assets/fonts/26fonts/26-05-03-dolphin.ttf?url';
+import jumpVideo from '@/assets/images/26_images/26-07/26-07-15/lav.mp4';
 import type { FontConfig } from '@/types/clock';
-import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React from 'react';
+import { useClockTime } from '@/utils/hooks';
+import { memo, useMemo } from 'react';
+import styles from './Clock.module.css'; // Import CSS module
 
-// Assuming an image exists in the corresponding folder for the date
-import tileImage from '@/assets/images/26_images/26-07/26-07-11/b.webp'; // The tiled overlay image
-import backgroundImage from '@/assets/images/26_images/26-07/26-07-11/door.webp'; // The main background
-// Import the font with the corresponding date from the assets folder
-import fontUrl from '@/assets/fonts/26fonts/26-07-11.otf?url';
+const FONT_FAMILY = 'ClockFont_26_05_26';
 
-// Consolidate into a single assets export
-export const assets = [backgroundImage, tileImage, fontUrl];
-
-const fontConfigs: FontConfig[] = [
-  {
-    fontFamily: 'ClockFont_26_07_11',
-    fontUrl,
-  },
-];
-
-const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100vw',
-    height: '100dvh',
-    fontFamily: '"Share Tech Mono", monospace',
-    position: 'relative', // Needed for stacking layers
-    overflow: 'hidden',
-  },
-  backgroundLayer: {
-    position: 'absolute',
-    inset: 0,
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
-  tileOverlay: {
-    position: 'absolute',
-    inset: 0,
-    backgroundImage: `url(${tileImage})`,
-    backgroundSize: '50px', // Small tile size
-    backgroundRepeat: 'repeat',
-    opacity: 0.5,
-    backgroundPosition: 'center', // Start tiling from the center
-  },
-  digitalClock: {
-    display: 'flex',
-    color: 'white',
-    fontSize: 'clamp(2rem, 22vmin, 12rem)',
-    textShadow: '0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgb(0, 128, 255)',
-    fontFamily: 'ClockFont_26_07_11, "Share Tech Mono", monospace',
-    position: 'relative', // Ensure clock is on top of the background layers
-    zIndex: 1,
-  },
-  digitBox: {
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '0.6em', // Fixed width to prevent jumping
-    fontVariantNumeric: 'tabular-nums',
-  },
-  colon: {
-    position: 'relative',
-    top: '-0.15em', // Raise the colon slightly more
-    width: '0.3em', // Narrower width for the colon
-    justifyContent: 'center',
+const CLOCK_CONFIG = {
+  COLORS: {
+    background: '#000000',
+    primary: '#0D3E9F56',
+    shadow: 'drop-shadow(2px 2px 0px rgba(250, 249, 249, 0.8))',
   },
 };
 
-/**
- * Formats a number to be two digits, zero-padded.
- * @param num The number to format.
- * @returns A zero-padded string.
- */
-const formatTime = (num: number): string => num.toString().padStart(2, '0');
+const HAND_DIMENSIONS = {
+  hour: { width: '1.2vmin', height: '20vmin', zIndex: 3 },
+  minute: { width: '0.8vmin', height: '32vmin', zIndex: 4 },
+};
 
-export default function DigitalClock() {
-  const time = useClockTime();
-  useSuspenseFontLoader(fontConfigs);
+const BackgroundLayers = memo(() => (
+  <video
+    className={styles.backgroundVideo} // Use CSS module class
+    autoPlay
+    loop
+    muted
+    playsInline
+  >
+    <source src={jumpVideo} type="video/mp4" />
+  </video>
+));
 
-  const timeString = [
-    formatTime(time.getHours()),
-    formatTime(time.getMinutes()),
-    formatTime(time.getSeconds()),
-  ].join(':');
+const ClockHand = ({ type, rotation }) => {
+  const { width, height, zIndex } = HAND_DIMENSIONS[type];
 
   return (
-    <div style={styles.container}>
-      <div style={styles.backgroundLayer} />
-      <div style={styles.tileOverlay} />
-      <time dateTime={time.toISOString()} style={styles.digitalClock}>
-        {timeString.split('').map((char, index) => {
-          const isColon = char === ':';
-          return (
-            <span
-              key={index}
-              style={{ ...styles.digitBox, ...(isColon && styles.colon) }}
-            >{char}</span>
-          );
-        })}
-      </time>
+    <div
+      className={styles.clockHand} // Use CSS module class
+      style={{ // Keep dynamic styles and hand-specific dimensions inline
+        width,
+        height,
+        zIndex,
+        transform: `translate(-50%, 0) rotate(${rotation}deg)`,
+      }}
+    />
+  );
+};
+
+const AnalogClock = () => {
+  const currentTime = useClockTime();
+
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [{ fontFamily: FONT_FAMILY, fontUrl }],
+    []
+  );
+  useSuspenseFontLoader(fontConfigs);
+
+  const { hr, min } = useMemo(() => {
+    const m = currentTime.getMinutes();
+    const h = (currentTime.getHours() % 12) + m / 60;
+    return { hr: h, min: m };
+  }, [currentTime]);
+
+  return (
+    <div
+      className={styles.container} // Use CSS module class
+      style={{
+        // Define CSS variables for colors here, to be used by the CSS module
+        '--clock-background-color': CLOCK_CONFIG.COLORS.background,
+        '--clock-primary-color': CLOCK_CONFIG.COLORS.primary,
+        '--clock-shadow-filter': CLOCK_CONFIG.COLORS.shadow,
+      } as React.CSSProperties} // Type assertion for CSS variables
+    >
+      <BackgroundLayers />
+
+      <div className={styles.clockFace} style={{ fontFamily: `${FONT_FAMILY}, serif` }}>
+        <ClockHand type="hour" rotation={hr * 30} />
+        <ClockHand type="minute" rotation={min * 6} />
+      </div>
     </div>
   );
-}
+};
+
+export default AnalogClock;

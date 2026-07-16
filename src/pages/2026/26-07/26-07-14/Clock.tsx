@@ -1,148 +1,107 @@
-import fontUrl from '@/assets/fonts/26fonts/26-07-14.ttf?url';
-import chandelierBg from '@/assets/images/26_images/26-07/26-07-14/root.webp';
+import type { FontConfig } from '@/types/clock';
+import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
-import React, { useMemo } from 'react';
+import React from 'react';
 
-export const assets = [chandelierBg, fontUrl];
+// Assuming an image exists in the corresponding folder for the date
+import tileImage from '@/assets/images/26_images/26-07/26-07-11/b.webp'; // The tiled overlay image
+import backgroundImage from '@/assets/images/26_images/26-07/26-07-11/door.webp'; // The main background
+// Import the font with the corresponding date from the assets folder
+import fontUrl from '@/assets/fonts/26fonts/26-07-11.otf?url';
 
-const FONT_FAMILY = 'CustomFont260714';
+// Consolidate into a single assets export
+export const assets = [backgroundImage, tileImage, fontUrl];
 
-const AnalogClock: React.FC = () => {
-  const time = useClockTime();
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'ClockFont_26_07_11',
+    fontUrl,
+  },
+];
 
-  // Load the custom font using the suspense-based loader
-  const fontConfigs = useMemo(
-    () => [
-      {
-        fontFamily: FONT_FAMILY,
-        fontUrl,
-        options: { weight: 'normal', style: 'normal' },
-      },
-    ],
-    [],
-  );
-  useSuspenseFontLoader(fontConfigs);
-
-  // Calculate rotation angles for the clock hands
-  const { hourDegrees, minuteDegrees, secondDegrees } = useMemo(() => {
-    const hours = time.getHours();
-    const minutes = time.getMinutes();
-    const seconds = time.getSeconds();
-    const milliseconds = time.getMilliseconds();
-
-    // Calculate smooth rotations for each hand
-    const sec = (seconds + milliseconds / 1000) * 6;
-    const min = (minutes + seconds / 60) * 6;
-    const hr = (hours % 12) * 30 + minutes * 0.5;
-
-    return { hourDegrees: hr, minuteDegrees: min, secondDegrees: sec };
-  }, [time]);
-
-  const containerStyle: React.CSSProperties = {
-    position: 'relative',
+const styles: { [key: string]: React.CSSProperties } = {
+  container: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100vw',
     height: '100dvh',
-    margin: 0,
-    padding: 0,
+    fontFamily: '"Share Tech Mono", monospace',
+    position: 'relative', // Needed for stacking layers
     overflow: 'hidden',
-    backgroundColor: '#000', // Fallback color
-  };
-
-  const backgroundStyle: React.CSSProperties = {
+  },
+  backgroundLayer: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundImage: `url(${chandelierBg})`,
-    backgroundRepeat: 'no-repeat',
+    inset: 0,
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundSize: '100% 100%',
-    filter: 'contrast(0.9) brightness(1.5)',
-    zIndex: 0,
-  };
-
-  return (
-    <main style={containerStyle}>
-      <div style={backgroundStyle} />
-      <svg
-        viewBox="0 0 200 200"
-        style={{
-          width: 'min(80vw, 80vh)',
-          height: 'min(80vw, 80vh)',
-          position: 'relative', // Ensure SVG is in the same stacking context
-          zIndex: 1,
-       }}
-      >
-        {/* Filter for text shadow */}
-        <defs>
-          <filter id="text-shadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="1" dy="1" stdDeviation="0" floodColor="#000" floodOpacity="0.8" />
-          </filter>
-        </defs>
-
-        {/* Clock Face */}
-        <circle cx="100" cy="100" r="98" fill="rgba(0, 0, 0, 0)" />
-
-        {/* Hour Markers and Numbers */}
-        {Array.from({ length: 12 }).map((_, i) => {
-          const hour = i + 1;
-          const angle = (hour * 30 - 90) * (Math.PI / 180);
-          const radius = 84;
-          const x = 100 + radius * Math.cos(angle);
-          const y = 100 + radius * Math.sin(angle);
-          return (
-            <g key={hour}>
-              <line
-                x1="100"
-                y1="8"
-                x2="100"
-                y2="15"
-                transform={`rotate(${i * 30} 100 100)`}
-              />
-              <text
-                x={x}
-                y={y}
-                dy="0.35em"
-                textAnchor="middle"
-                style={{
-                  fill: '#D7CCBF',
-                  fontSize: '2vh',
-                  fontWeight: 'normal',
-                  fontFamily: FONT_FAMILY,
-                  filter: 'url(#text-shadow)',
-                }}
-              >
-                {hour}
-              </text>
-            </g>
-          );
-        })}
-
-        {/* Hour Hand */}
-        <g transform={`rotate(${hourDegrees} 100 100)`}>
-          <line x1="100" y1="100" x2="100" y2="60" stroke="#F3E8DA" strokeWidth="1" strokeLinecap="round" />
-        </g>
-
-        {/* Minute Hand */}
-        <g transform={`rotate(${minuteDegrees} 100 100)`}>
-          <line x1="100" y1="100" x2="100" y2="40" stroke="#F3E8DA" strokeWidth="1" strokeLinecap="round" />
-        </g>
-
-        {/* Second Hand */}
-        <g transform={`rotate(${secondDegrees} 100 100)`}>
-          <line x1="100" y1="110" x2="100" y2="30" stroke="#BBC17E" strokeWidth="1" strokeLinecap="round" />
-        </g>
-
-        {/* Center Pin */}
-        <circle cx="100" cy="100" r="4" fill="#ABC17E"stroke="#F3E8DA" strokeWidth="1" />
-      </svg>
-    </main>
-  );
+  },
+  tileOverlay: {
+    position: 'absolute',
+    inset: 0,
+    backgroundImage: `url(${tileImage})`,
+    backgroundSize: '50px', // Small tile size
+    backgroundRepeat: 'repeat',
+    opacity: 0.5,
+    backgroundPosition: 'center', // Start tiling from the center
+  },
+  digitalClock: {
+    display: 'flex',
+    color: 'white',
+    fontSize: 'clamp(2rem, 22vmin, 12rem)',
+    textShadow: '0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgb(0, 128, 255)',
+    fontFamily: 'ClockFont_26_07_11, "Share Tech Mono", monospace',
+    position: 'relative', // Ensure clock is on top of the background layers
+    zIndex: 1,
+  },
+  digitBox: {
+    display: 'inline-flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '0.6em', // Fixed width to prevent jumping
+    fontVariantNumeric: 'tabular-nums',
+  },
+  colon: {
+    position: 'relative',
+    top: '-0.15em', // Raise the colon slightly more
+    width: '0.3em', // Narrower width for the colon
+    justifyContent: 'center',
+  },
 };
 
-export default AnalogClock;
+/**
+ * Formats a number to be two digits, zero-padded.
+ * @param num The number to format.
+ * @returns A zero-padded string.
+ */
+const formatTime = (num: number): string => num.toString().padStart(2, '0');
+
+export default function DigitalClock() {
+  const time = useClockTime();
+  useSuspenseFontLoader(fontConfigs);
+
+  const timeString = [
+    formatTime(time.getHours()),
+    formatTime(time.getMinutes()),
+    formatTime(time.getSeconds()),
+  ].join(':');
+
+  return (
+    <div style={styles.container}>
+      <div style={styles.backgroundLayer} />
+      <div style={styles.tileOverlay} />
+      <time dateTime={time.toISOString()} style={styles.digitalClock}>
+        {timeString.split('').map((char, index) => {
+          const isColon = char === ':';
+          return (
+            <span
+              key={index}
+              style={{ ...styles.digitBox, ...(isColon && styles.colon) }}
+            >{char}</span>
+          );
+        })}
+      </time>
+    </div>
+  );
+}
