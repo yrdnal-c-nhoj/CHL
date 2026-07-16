@@ -6233,11 +6233,9 @@
     "date": "26-07-11",
     "title": "Lavender",
     "tags": [
-      "digital",
-      "Germany",
-      "bauhaus",
-      "shrine",
-      "1517"
+      "analog",
+      "grow",
+      "smell"
     ]
   },
   {
@@ -6262,12 +6260,24 @@
   {
     "path": "26-07-14",
     "date": "26-07-14",
-    "title": "1517"
+    "title": "1517",
+    "tags": [
+      "digital",
+      "1517",
+      "Germany",
+      "bauhaus",
+      "shrine"
+    ]
   },
   {
     "path": "26-07-15",
     "date": "26-07-15",
-    "title": "Emergence"
+    "title": "Emergence",
+    "tags": [
+      "analog",
+      "earth",
+      "grow"
+    ]
   },
   {
     "path": "26-07-16",
