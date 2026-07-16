@@ -6233,19 +6233,19 @@
     "date": "26-07-11",
      "title": "Footnote #1", 
     "tags": [
-      "analog",
-      "grow",
-      "smell"
+      "digital",
+      "image-free"
     ]
   },
   {
     "path": "26-07-12",
     "date": "26-07-12",
    "title": "Lavender",
-    "tags": [
-      "digital",
-      "image-free"
-    ]
+     "tags": [
+      "analog",
+      "grow",
+      "smell"
+     ]
   },
   {
     "path": "26-07-13",
@@ -6282,11 +6282,21 @@
   {
     "path": "26-07-16",
     "date": "26-07-16",
-    "title": "Solar Eclipse"
-  },
+    "title": "Footnote #2",
+    "tags": [
+      "digital",
+      "image-free"
+    ]
+  }
+,
   {
     "path": "26-07-17",
     "date": "26-07-17",
-    "title": "Lunar Phase"
-  }
+      "title": "Footnote #2",
+    "tags": [
+      "digital",
+      "image-free"
+    ]
+
+  } 
 ]
