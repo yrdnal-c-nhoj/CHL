@@ -6231,16 +6231,30 @@
   {
     "path": "26-07-11",
     "date": "26-07-11",
-    "title": "Wittgetstein"
+    "title": "Wittgetstein",
+    "tags": [
+      "digital",
+      "Germany",
+      "bauhaus",
+      "shrine"
+    ]
   },
   {
     "path": "26-07-12",
     "date": "26-07-12",
-    "title": "Footnote"
+    "title": "Footnote",
+    "tags": [
+      "digital",
+      "image-free"
+    ]
   },
   {
     "path": "26-07-13",
     "date": "26-07-13",
-    "title": "Shutter"
+    "title": "Shutter",
+    "tags": [
+      "mechanical",
+      "pictographic"
+    ]
   }
 ]
