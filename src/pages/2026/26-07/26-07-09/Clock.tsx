@@ -108,6 +108,10 @@ const AnalogClock: React.FC = () => {
   );
 };
 
+
+
+
+
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
     width: '100vw',
@@ -140,10 +144,11 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '11.6vw',
-    height: '13.7vw',
-    fontSize: '14vw',
-    color: '#F1F1B9',
+    width: '20vmin',
+    height: '23.5vmin',
+    fontSize: '24vmin',
+    color: '#C5A56C',
+    textShadow: '-2px -2px 0 #000, 2px 2px 0 #fff',
   },
 };
 
