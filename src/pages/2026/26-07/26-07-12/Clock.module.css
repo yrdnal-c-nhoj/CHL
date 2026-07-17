@@ -17,8 +17,9 @@
   width: 100vw;
   height: 100%;
   object-fit: fill;
-  z-index: 1;
+  z-index: 0;
   transform-origin: 50% 50%;
+  pointer-events: none;
   /* transform: rotate(180deg); */
 
 
@@ -27,23 +28,26 @@
 
 .clockFace {
   position: absolute;
-  top: 40%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100vmin;
   height: 100vmin;
-  z-index: 7;
+  z-index: 2;
 }
+
 
 .clockHand {
   position: absolute;
   bottom: 50%;
   left: 50%;
-  background: var(--clock-primary-color);
+  background: transparent;
   transform-origin: 50% 100%;
   filter: var(--clock-shadow-filter);
   border-radius: 40px;
+  display: block;
 }
+
 
 /* (Unused) Animation kept for future use */
 @keyframes clockBgRotateCW {

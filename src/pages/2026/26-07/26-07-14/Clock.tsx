@@ -92,7 +92,10 @@ export default function DigitalClock() {
   ].join(':');
 
   return (
-    <div style={styles.container}>
+    <div style={{
+      ...styles.container,
+    }}>
+      {/* Inline keyframes + inline style (no separate CSS file) */}
       <style>{`
         @keyframes tilingRise {
           from { background-position: center 0px; }
