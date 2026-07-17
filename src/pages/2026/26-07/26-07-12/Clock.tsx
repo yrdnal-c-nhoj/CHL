@@ -1,87 +1,33 @@
-import fontUrl from '@/assets/fonts/26fonts/26-05-03-dolphin.ttf?url';
 import jumpVideo from '@/assets/images/26_images/26-07/26-07-15/lav.mp4';
-import type { FontConfig } from '@/types/clock';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
-import { memo, useMemo } from 'react';
-import styles from './Clock.module.css'; // Import CSS module
+import React from 'react';
 
-const FONT_FAMILY = 'ClockFont_26_05_26';
+/**
+ * Export the video asset for the application's preloading pipeline.
+ * This is required by the `useClockPage` hook to ensure the video is
+ * available before the component is rendered.
+ */
+export const assets = [
+  jumpVideo
+];
 
-const CLOCK_CONFIG = {
-  COLORS: {
-    background: '#000000',
-    primary: '#0D3E9F56',
-    shadow: 'drop-shadow(2px 2px 0px rgba(250, 249, 249, 0.8))',
-  },
-};
-
-const HAND_DIMENSIONS = {
-  hour: { width: '1.2vmin', height: '20vmin', zIndex: 3 },
-  minute: { width: '0.8vmin', height: '32vmin', zIndex: 4 },
-};
-
-const BackgroundLayers = memo(() => (
-  <video
-    className={styles.backgroundVideo} // Use CSS module class
-    autoPlay
-    loop
-    muted
-    playsInline
-  >
-    <source src={jumpVideo} type="video/mp4" />
-  </video>
-));
-
-const ClockHand = ({ type, rotation }) => {
-  const { width, height, zIndex } = HAND_DIMENSIONS[type];
+const VideoPlayer: React.FC = () => {
+  const videoStyle: React.CSSProperties = {
+    position: 'fixed', // Use fixed to cover the entire viewport
+    top: '50%',
+    left: '50%',
+    minWidth: '100%',
+    minHeight: '100%',
+    width: 'auto',
+    height: 'auto',
+    transform: 'translate(-50%, -50%)', // Center the video
+    zIndex: -1, // Place it behind any other content
+  };
 
   return (
-    <div
-      className={styles.clockHand} // Use CSS module class
-      style={{ // Keep dynamic styles and hand-specific dimensions inline
-        width,
-        height,
-        zIndex,
-        transform: `translate(-50%, 0) rotate(${rotation}deg)`,
-      }}
-    />
+    <video autoPlay loop muted playsInline style={videoStyle}>
+      <source src={jumpVideo} type="video/mp4" />
+    </video>
   );
 };
 
-const AnalogClock = () => {
-  const currentTime = useClockTime();
-
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [{ fontFamily: FONT_FAMILY, fontUrl }],
-    []
-  );
-  useSuspenseFontLoader(fontConfigs);
-
-  const { hr, min } = useMemo(() => {
-    const m = currentTime.getMinutes();
-    const h = (currentTime.getHours() % 12) + m / 60;
-    return { hr: h, min: m };
-  }, [currentTime]);
-
-  return (
-    <div
-      className={styles.container} // Use CSS module class
-      style={{
-        // Define CSS variables for colors here, to be used by the CSS module
-        '--clock-background-color': CLOCK_CONFIG.COLORS.background,
-        '--clock-primary-color': CLOCK_CONFIG.COLORS.primary,
-        '--clock-shadow-filter': CLOCK_CONFIG.COLORS.shadow,
-      } as React.CSSProperties} // Type assertion for CSS variables
-    >
-      <BackgroundLayers />
-
-      <div className={styles.clockFace} style={{ fontFamily: `${FONT_FAMILY}, serif` }}>
-        <ClockHand type="hour" rotation={hr * 30} />
-        <ClockHand type="minute" rotation={min * 6} />
-      </div>
-    </div>
-  );
-};
-
-export default AnalogClock;
+export default VideoPlayer;

@@ -146,10 +146,15 @@ export function useClockPage(currentItem: { date: string } | null) {
         try {
           if (Array.isArray(module.assets) && module.assets.length > 0) {
             // Keep only string URLs; ignore any other shapes.
-            // Filter out videos (.mp4, .webm) from preloading, as they cause networkidle hangs.
-            const assetUrls = module.assets.filter((v) => 
-              typeof v === 'string' && !/\.(mp4|webm|ogg)$/i.test(v)
-            );
+            let assetUrls = module.assets.filter((v): v is string => typeof v === 'string');
+
+            // If there are multiple assets, filter out videos to prevent network-idle hangs.
+            // If a video is the *only* asset, keep it to ensure it preloads.
+            if (assetUrls.length > 1) {
+              assetUrls = assetUrls.filter(
+                (v) => !/\.(mp4|webm|ogg)$/i.test(v)
+              );
+            }
 
             if (assetUrls.length > 0) {
               await preloadClockAssets(assetUrls as string[]);
