@@ -36,23 +36,38 @@ const VideoBackground: React.FC = () => {
   );
 };
 
+
+
+
+
+
+
 const AnalogClock: React.FC = () => {
   const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
-    const id = window.setInterval(() => setNow(new Date()), 1000);
-    return () => window.clearInterval(id);
+    let animationFrameId: number;
+
+    const updateClock = () => {
+      setNow(new Date());
+      animationFrameId = window.requestAnimationFrame(updateClock);
+    };
+
+    // Start the smooth animation loop
+    animationFrameId = window.requestAnimationFrame(updateClock);
+    
+    return () => window.cancelAnimationFrame(animationFrameId);
   }, []);
 
   const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
-    const seconds = now.getSeconds();
+    const ms = now.getMilliseconds();
+    const seconds = now.getSeconds() + ms / 1000; // Includes fractional seconds for a smooth sweep
     const minutes = now.getMinutes();
     const hours = now.getHours();
 
     return {
       secondAngle: seconds * 6, // 360deg / 60s
       minuteAngle: (minutes + seconds / 60) * 6, // 360deg / 60m
-      // 360deg / 12h = 30deg per hour
       hourAngle: ((hours % 12) + minutes / 60 + seconds / 3600) * 30,
     };
   }, [now]);
@@ -69,7 +84,6 @@ const AnalogClock: React.FC = () => {
           style={{
             ...clockStyles.handImgBase,
             ...clockStyles.hourHand,
-            // brightness(0.9), contrast(1.1), and lavender drop-shadow
             transform: `rotate(${hourAngle}deg)`,
             filter: `brightness(1.3) saturate(2.5) contrast(0.7) ${dropShadow}`,
           }}
@@ -81,7 +95,6 @@ const AnalogClock: React.FC = () => {
           style={{
             ...clockStyles.handImgBase,
             ...clockStyles.minuteHand,
-            // brightness(1.1), contrast(0.9), and lavender drop-shadow
             transform: `rotate(${minuteAngle}deg)`,
             filter: `brightness(1.1) saturate(2.5) contrast(0.9) ${dropShadow}`,
           }}
@@ -93,7 +106,6 @@ const AnalogClock: React.FC = () => {
           style={{
             ...clockStyles.handImgBase,
             ...clockStyles.secondHand,
-            // brightness(1.2), contrast(1.3), and lavender drop-shadow
             transform: `rotate(${secondAngle}deg)`,
             filter: `brightness(1.2) contrast(1.3) ${dropShadow}`,
           }}
