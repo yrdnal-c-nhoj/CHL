@@ -1,132 +1,117 @@
-import type { FontConfig } from '@/types/clock';
-import { useClockTime } from '@/utils/clockUtils';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
-import fontUrl from '@/assets/fonts/26fonts/26-07-11.otf?url';
-import tileImage from '@/assets/images/26_images/26-07/26-07-11/b.webp';
-import backgroundImage from '@/assets/images/26_images/26-07/26-07-11/door.webp';
+import ClockPageNav from '@/components/ClockPageNav';
+import { useDataContext } from '@/context/DataContext';
+import { useClockPage } from '@/hooks/useClockPage';
 
-export const assets = [backgroundImage, tileImage, fontUrl];
+/**
+ * Dynamic clock route page.
 
-const fontConfigs: FontConfig[] = [
-  {
-    fontFamily: 'ClockFont_26_07_11',
-    fontUrl,
-  },
-];
+ *
+ * Expects the route param:
+ *   /:date  where date is typically YY-MM-DD
+ *
+ * Finds the matching ClockItem from DataContext and uses useClockPage
+ * to dynamically import the corresponding clock module from:
+ *   src/pages/<date>/Clock.tsx
+ */
+export default function ClockPage() {
+  const { date } = useParams<{ date: string }>();
 
-const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100vw',
-    height: '100dvh',
-    fontFamily: '"Share Tech Mono", monospace',
-    position: 'relative',
-    overflow: 'hidden',
-    backgroundColor: '#000', // fallback
-  },
+  const { items = [] } = useDataContext();
 
-  backgroundLayer: {
-    position: 'absolute',
-    inset: 0,
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
 
-  tileOverlay: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    width: '100%',
-    height: 'calc(100% + 600px)',
-    backgroundImage: `url(${tileImage})`,
-    backgroundSize: '50px',
-    backgroundRepeat: 'repeat',
-    opacity: 0.4,
-    animation: 'tilingRise 60s linear infinite',
-    willChange: 'transform',
-    imageRendering: 'pixelated',
-    backfaceVisibility: 'hidden',
-  },
 
-  digitalClock: {
-    display: 'flex',
-    color: 'white',
-    fontSize: 'clamp(2rem, 22vmin, 12rem)',
-    textShadow: '0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgb(0, 128, 255)',
-    fontFamily: 'ClockFont_26_07_11, "Share Tech Mono", monospace',
-    position: 'relative',
-    zIndex: 1,
-  },
 
-  digitBox: {
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '0.6em',
-    fontVariantNumeric: 'tabular-nums',
-  },
 
-  colon: {
-    position: 'relative',
-    top: '-0.15em',
-    width: '0.3em',
-    justifyContent: 'center',
-  },
-};
 
-const formatTime = (num: number): string => num.toString().padStart(2, '0');
+  const currentItem = React.useMemo(() => {
+    if (!date) return null;
+    return items.find((it) => it.date === date) ?? null;
+  }, [date, items]);
 
-export default function DigitalClock() {
-  const time = useClockTime();
-  useSuspenseFontLoader(fontConfigs);
+  const { ClockComponent, isReady, error, overlayVisible } = useClockPage(
+    currentItem,
+  );
 
-  const timeString = [
-    formatTime(time.getHours()),
-    formatTime(time.getMinutes()),
-    formatTime(time.getSeconds()),
-  ].join(':');
+  const prevItem = React.useMemo(() => {
+    if (!currentItem) return null;
+    const idx = items.findIndex((it) => it.date === currentItem.date);
+    if (idx <= 0) return null;
+    return items[idx - 1] ?? null;
+  }, [currentItem, items]);
+
+  const nextItem = React.useMemo(() => {
+    if (!currentItem) return null;
+    const idx = items.findIndex((it) => it.date === currentItem.date);
+    if (idx < 0) return null;
+    return items[idx + 1] ?? null;
+  }, [currentItem, items]);
+
+  const formatTitle = React.useCallback((title?: string | null) => {
+    return (title ?? '').toString();
+  }, []);
+
+  const formatDate = React.useCallback((d?: string | null) => {
+    return (d ?? '').toString();
+  }, []);
+
 
   return (
-    <div style={styles.container}>
-      <style>{`
-        @keyframes tilingRise {
-          from {
-            transform: translate3d(0, 0, 0);
-          }
-          to {
-            transform: translate3d(0, -600px, 0);
-          }
-        }
-      `}</style>
+    <div
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        minHeight: '100dvh',
+      }}
+    >
+      {/* Loading overlay */}
+      {overlayVisible && !isReady && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: '#000',
+            color: '#fff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            fontFamily: 'monospace',
+          }}
+        >
+          Loading...
+        </div>
+      )}
 
-      {/* Background Image */}
-      <div style={styles.backgroundLayer} />
+      {error ? (
+        <div
+          style={{
+            padding: '2rem',
+            fontFamily: 'monospace',
+            color: '#fff',
+            background: '#000',
+          }}
+        >
+          Error: {error}
+        </div>
+      ) : ClockComponent ? (
+        <ClockComponent />
+      ) : null}
 
-      {/* Tiling Overlay */}
-      <div style={styles.tileOverlay} />
+      {currentItem ? (
+        <ClockPageNav
+          prevItem={prevItem}
+          nextItem={nextItem}
+          currentItem={currentItem}
+          formatTitle={formatTitle}
+          formatDate={formatDate}
+        />
+      ) : null}
 
-      {/* Digital Clock */}
-      <time dateTime={time.toISOString()} style={styles.digitalClock}>
-        {timeString.split('').map((char, index) => {
-          const isColon = char === ':';
-          return (
-            <span
-              key={index}
-              style={{
-                ...styles.digitBox,
-                ...(isColon && styles.colon),
-              }}
-            >
-              {char}
-            </span>
-          );
-        })}
-      </time>
     </div>
   );
 }
+
