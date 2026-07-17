@@ -152,18 +152,6 @@ const clockStyles: {
     height: 300,
     marginLeft: -106, // Half of 212px width
   },
-  centerDot: {
-    // Basic styling for the center dot (optional)
-    width: 12,
-    height: 12,
-    backgroundColor: '#333',
-    borderRadius: '50%',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    zIndex: 2,
-  },
 };
 
 const styles: { [key: string]: React.CSSProperties } = {
