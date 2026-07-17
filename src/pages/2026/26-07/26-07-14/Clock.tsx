@@ -20,6 +20,8 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const styles: { [key: string]: React.CSSProperties } = {
+  // Note: keyframes are injected via a <style> tag below (inline stylesheets).
+
   container: {
     display: 'flex',
     justifyContent: 'center',
@@ -43,8 +45,10 @@ const styles: { [key: string]: React.CSSProperties } = {
     backgroundImage: `url(${tileImage})`,
     backgroundSize: '50px', // Small tile size
     backgroundRepeat: 'repeat',
-    opacity: 0.5,
-    backgroundPosition: 'center', // Start tiling from the center
+    opacity: 0.4,
+    backgroundPosition: 'center 0px', // Start tiling from the bottom edge (will animate up)
+    animation: 'tilingRise 6s linear infinite',
+    willChange: 'background-position',
   },
   digitalClock: {
     display: 'flex',
@@ -89,6 +93,12 @@ export default function DigitalClock() {
 
   return (
     <div style={styles.container}>
+      <style>{`
+        @keyframes tilingRise {
+          from { background-position: center 0px; }
+          to { background-position: center -50px; }
+        }
+      `}</style>
       <div style={styles.backgroundLayer} />
       <div style={styles.tileOverlay} />
       <time dateTime={time.toISOString()} style={styles.digitalClock}>
