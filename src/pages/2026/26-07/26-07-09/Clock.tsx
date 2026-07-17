@@ -138,7 +138,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     textAlign: 'center',
   },
   digitalTime: {
-    marginBottom: '2rem',
+    // marginBottom: '2rem', // Removed to achieve perfect vertical centering
   },
   digitBox: {
     display: 'flex',
