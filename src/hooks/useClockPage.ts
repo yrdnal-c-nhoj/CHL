@@ -118,11 +118,18 @@ export function useClockPage(currentItem: { date: string } | null) {
         }
 
         // 2. Dynamically import the module
-        const module = await importFn().catch(
-          (err) => {
+        const module = await importFn().catch((err) => {
+          // In production, a failed import is a critical, unrecoverable error.
+          // In development, this might be a transient issue during HMR.
+          if (import.meta.env.PROD) {
+            // If the error is about a missing asset *within* the module (like Tom.webp),
+            // it will manifest as a build failure before this point. This runtime catch
+            // is for module resolution issues.
+            console.error(`[useClockPage] Production build failed to load module for ${targetDate}. This is a critical error.`, err);
+            throw new Error(`The clock for ${targetDate} could not be loaded. The file may be missing or contain errors.`);
+          } else {
             const msg = err instanceof Error ? err.message : String(err);
             console.error(`[useClockPage] Critical: Failed to load module for ${targetDate}. Ensure the file exists in src/pages/ and has no syntax/import errors. Original error:`, err);
-            
             if (msg.includes('Failed to fetch') || msg.includes('error loading dynamically imported module')) {
               throw new Error(
                 `Clock file for ${targetDate} could not be fetched. This usually indicates a syntax error in the clock file, a broken import, a network failure, or an outdated browser cache. ` +
@@ -130,8 +137,8 @@ export function useClockPage(currentItem: { date: string } | null) {
               );
             }
             throw new Error(`Clock execution failed (${targetDate}): ${msg}`);
-          },
-        );
+          }
+        });
 
         if (!module || !module.default) {
           throw new Error(`Clock module for ${targetDate} is missing a default export.`);
