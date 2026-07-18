@@ -2,8 +2,8 @@ import TomWebp from '@/assets/images/26_images/26-07-16/Tom.webp';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
-const WORK_EMOJIS = ['🎯', '🛠️', '🔨', '📌', '📎', '💼', '🖥️', '📱', '📊', '📈', '🏗️', '🧱', '🔧', '⚙️', '📋', '💻'];
-const PLAY_EMOJIS = ['🎲', '🃏', '🎮', '🕹️', '⚽', '🏀', '🎨', '🖌️', '🎸', '🎤', '🏖️', '🌊', '🎟️', '🎡', '🎭', '🎸'];
+const WORK_EMOJIS = ['🎯', '🛠️', '📊', '🔨', '📌', '📎', '💼',  '📱', '📈', '🏗️','🖥️', '🧱', '🔧', '📋', '⚙️', '💻'];
+const PLAY_EMOJIS = ['🎲', '🃏', '🎮',  '⚽',  '🎨', '🖌️', '🎸', '🎤', '🏖️', '🌊', '🎟️', '🎡', '🎭','🏀','🕹️', '🎸'];
 
 const GRID_COLS = 10;
 const GRID_ROWS = 14;
