@@ -222,18 +222,18 @@ const styles: { [key: string]: React.CSSProperties } = {
   hourHand: {
     width: 8,
     height: '26%',
-    backgroundColor: '#000000',
+    backgroundColor: '#2F2E2E',
     marginLeft: -4,
   },
   minuteHand: {
     width: 6,
     height: '37%',
-    backgroundColor: '#111111',
+    backgroundColor: '#2D2C2C',
     marginLeft: -3,
   },
   secondHand: {
     width: 2,
-    height: '42%',
+    height: '342%',
     marginLeft: -1,
     transition: 'background-color 0.2s linear', // Added a smooth transition for the color flip
   },
