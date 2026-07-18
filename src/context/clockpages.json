@@ -6231,7 +6231,7 @@
   {
     "path": "26-07-11",
     "date": "26-07-11",
-     "title": "Footnote #1", 
+    "title": "Footnote #1",
     "tags": [
       "digital",
       "image-free"
@@ -6240,12 +6240,12 @@
   {
     "path": "26-07-12",
     "date": "26-07-12",
-   "title": "Lavender",
-     "tags": [
+    "title": "Lavender",
+    "tags": [
       "analog",
       "grow",
       "smell"
-     ]
+    ]
   },
   {
     "path": "26-07-13",
@@ -6256,7 +6256,8 @@
       "mechanical",
       "pictographic"
     ]
-  }, {
+  },
+  {
     "path": "26-07-14",
     "date": "26-07-14",
     "title": "Wittenberg",
@@ -6283,7 +6284,10 @@
     "date": "26-07-16",
     "title": "Pomodoro",
     "tags": [
-      "analog"
+      "analog",
+      "Esperanto",
+      "emoji",
+      "tomato"
     ]
   }
 ]
