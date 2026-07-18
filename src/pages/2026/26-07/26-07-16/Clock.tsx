@@ -1,4 +1,4 @@
-// import TomWebp from '@/assets/images/26_images/26-07/26-07-16/Tom.webp';
+import TomWebp from '@/assets/images/26_images/26-07/26-07-16/Tom.webp';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
@@ -66,13 +66,13 @@ const AnalogClock: React.FC = () => {
       }}
     >
       {/* Background Image Layer */}
-      {/* <div
+      <div
         style={{
           ...styles.backgroundImage,
           backgroundImage: `url(${TomWebp})`,
           filter: `hue-rotate(${isWorkPhase ? '0deg' : '120deg'})`,
         }}
-      /> */}
+      />
 
       {/* Background Emoji Grid Layer */}
       <div style={styles.emojiGridWrapper}>
@@ -222,18 +222,18 @@ const styles: { [key: string]: React.CSSProperties } = {
   hourHand: {
     width: 8,
     height: '26%',
-    backgroundColor: '#2F2E2E',
+    backgroundColor: '#000000',
     marginLeft: -4,
   },
   minuteHand: {
     width: 6,
     height: '37%',
-    backgroundColor: '#2D2C2C',
+    backgroundColor: '#111111',
     marginLeft: -3,
   },
   secondHand: {
     width: 2,
-    height: '342%',
+    height: '42%',
     marginLeft: -1,
     transition: 'background-color 0.2s linear', // Added a smooth transition for the color flip
   },
