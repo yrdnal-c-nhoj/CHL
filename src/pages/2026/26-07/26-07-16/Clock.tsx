@@ -1,10 +1,10 @@
+import TomWebp from '@/assets/images/26_images/26-07/26-07-16/Tom.webp';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 const WORK_EMOJIS = ['🎯', '🛠️', '🔨', '📌', '📎', '💼', '🖥️', '📱', '📊', '📈', '🏗️', '🧱', '🔧', '⚙️', '📋', '💻'];
 const PLAY_EMOJIS = ['🎲', '🃏', '🎮', '🕹️', '⚽', '🏀', '🎨', '🖌️', '🎸', '🎤', '🏖️', '🌊', '🎟️', '🎡', '🎭', '🎸'];
 
-// Reduced counts because the emojis are now much larger
 const GRID_COLS = 10;
 const GRID_ROWS = 14;
 
@@ -30,9 +30,7 @@ const AnalogClock: React.FC = () => {
   const totalSecondsElapsed = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
   const fifteenSecondStep = Math.floor(totalSecondsElapsed / 15);
 
-  // Checkerboard-style grid generation: two alternating emoji "tracks"
-  // so the background reads as a clear repeating pattern rather than
-  // a uniform scan of the emoji list.
+  // Checkerboard-style grid generation
   const gridCells = useMemo(() => {
     const cells = [];
     const midCol = (GRID_COLS - 1) / 2;
@@ -44,7 +42,6 @@ const AnalogClock: React.FC = () => {
         const left = (c / (GRID_COLS - 1)) * 100;
         const top = (r / (GRID_ROWS - 1)) * 100;
         const index = r * GRID_COLS + c;
-        // Checkerboard parity: 0 or 1 depending on tile position
         const parity = (r + c) % 2;
 
         cells.push({
@@ -68,17 +65,22 @@ const AnalogClock: React.FC = () => {
         backgroundColor: isWorkPhase ? '#EB1212' : '#1BC41B',
       }}
     >
+      {/* Background Image Layer */}
+      <div
+        style={{
+          ...styles.backgroundImage,
+          backgroundImage: `url(${TomWebp})`,
+          filter: `hue-rotate(${isWorkPhase ? '0deg' : '120deg'})`,
+        }}
+      />
+
       {/* Background Emoji Grid Layer */}
       <div style={styles.emojiGridWrapper}>
         {gridCells.map((cell) => {
-          // Checkerboard pattern: alternating tiles pull from two different
-          // offsets into the emoji list, so the grid alternates in a
-          // clear repeating diagonal pattern instead of a flat scan.
           const baseOffset = cell.parity === 0 ? fifteenSecondStep : fifteenSecondStep + 3;
           const emojiIndex = (Math.floor(cell.index / 2) + baseOffset) % activeEmojis.length;
           const emoji = activeEmojis[emojiIndex];
 
-          // Wave calculation
           const wavePulse = Math.sin((currentSecond + cell.distance) * 0.5);
           const scaleFactor = (isWorkPhase ? 1.0 : 0.85) + (cell.parity === 0 ? 0.1 : -0.05);
           const dynamicScale = scaleFactor + wavePulse * 0.05;
@@ -121,7 +123,14 @@ const AnalogClock: React.FC = () => {
         {/* Hand Indicators */}
         <div style={{ ...styles.hand, ...styles.hourHand, transform: `rotate(${hourAngle}deg)` }} />
         <div style={{ ...styles.hand, ...styles.minuteHand, transform: `rotate(${minuteAngle}deg)` }} />
-        <div style={{ ...styles.hand, ...styles.secondHand, transform: `rotate(${secondAngle}deg)` }} />
+        <div
+          style={{
+            ...styles.hand,
+            ...styles.secondHand,
+            transform: `rotate(${secondAngle}deg)`,
+            backgroundColor: isWorkPhase ? '#00ff00' : '#ff0000', // Dynamic coloring applied here
+          }}
+        />
 
         <div style={styles.centerDot} />
       </div>
@@ -140,6 +149,18 @@ const styles: { [key: string]: React.CSSProperties } = {
     position: 'relative',
     transition: 'background-color 0.2s linear',
   },
+  backgroundImage: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    zIndex: 0,
+    transition: 'filter 0.4s ease-in-out',
+    willChange: 'filter',
+  },
   emojiGridWrapper: {
     position: 'absolute',
     top: '-2%',
@@ -151,7 +172,6 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   emojiCell: {
     position: 'absolute',
-    // Larger sizing range for stronger visual presence
     fontSize: 'clamp(48px, 8vw, 110px)',
     willChange: 'transform, opacity',
   },
@@ -159,6 +179,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     position: 'relative',
     width: 340,
     height: 340,
+    opacity: 0.9,
     border: '12px solid #f0f0f0',
     borderRadius: '50%',
     backgroundColor: '#ffffff',
@@ -176,7 +197,6 @@ const styles: { [key: string]: React.CSSProperties } = {
       #ff0000 180deg 330deg,
       #00ff00 330deg 360deg
     )`,
-    opacity: 0.25,
   },
   statusBadge: {
     position: 'absolute',
@@ -214,8 +234,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   secondHand: {
     width: 2,
     height: '42%',
-    backgroundColor: '#ff0000',
     marginLeft: -1,
+    transition: 'background-color 0.2s linear', // Added a smooth transition for the color flip
   },
   centerDot: {
     position: 'absolute',
@@ -223,8 +243,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     left: '50%',
     width: 18,
     height: 18,
-    backgroundColor: '#ff0000',
-    border: '4px solid #ffffff',
+    backgroundColor: '#CAC4C4',
+    border: '4px solid #141313',
     borderRadius: '50%',
     transform: 'translate(-50%, -50%)',
     zIndex: 10,
