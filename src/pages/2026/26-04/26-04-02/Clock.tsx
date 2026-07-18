@@ -1,6 +1,6 @@
+import { useClockTime } from '@/utils/clockUtils';
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { useClockTime } from '@/utils/clockUtils';
 import styles from './Clock.module.css';
 
 // --- Utilities ---
@@ -146,7 +146,7 @@ const Clock: React.FC = () => {
       updateSphereCanvas(
         moonCanvas,
         formatMinute(now),
-        '#FF4500',
+        '#FE4907',
         'bold 120px "Space Mono", monospace',
       );
       planetTex.needsUpdate = true;
