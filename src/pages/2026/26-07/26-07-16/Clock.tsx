@@ -1,4 +1,4 @@
-import TomWebp from '@/assets/images/26_images/26-07/26-07-16/Tom.webp';
+import TomWebp from '@/assets/images/26_images/26-07-16/Tom.webp';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
