@@ -1,4 +1,4 @@
-import TomWebp from '@/assets/images/26_images/26-07/26-07-16/Tom.webp';
+// import TomWebp from '@/assets/images/26_images/26-07/26-07-16/Tom.webp';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
@@ -66,13 +66,13 @@ const AnalogClock: React.FC = () => {
       }}
     >
       {/* Background Image Layer */}
-      <div
+      {/* <div
         style={{
           ...styles.backgroundImage,
           backgroundImage: `url(${TomWebp})`,
           filter: `hue-rotate(${isWorkPhase ? '0deg' : '120deg'})`,
         }}
-      />
+      /> */}
 
       {/* Background Emoji Grid Layer */}
       <div style={styles.emojiGridWrapper}>
