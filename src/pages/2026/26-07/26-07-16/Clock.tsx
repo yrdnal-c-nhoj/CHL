@@ -65,7 +65,7 @@ const AnalogClock: React.FC = () => {
     <div
       style={{
         ...styles.container,
-        backgroundColor: isWorkPhase ? '#ff0000' : '#00ff00',
+        backgroundColor: isWorkPhase ? '#EB1212' : '#1BC41B',
       }}
     >
       {/* Background Emoji Grid Layer */}
@@ -109,6 +109,8 @@ const AnalogClock: React.FC = () => {
         <div
           style={{
             ...styles.statusBadge,
+            top: isWorkPhase ? '18%' : 'auto',
+            bottom: isWorkPhase ? 'auto' : '18%',
             backgroundColor: isWorkPhase ? '#ff0000' : '#00ff00',
             color: isWorkPhase ? '#ffffff' : '#000000',
           }}
@@ -178,7 +180,6 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   statusBadge: {
     position: 'absolute',
-    top: '18%',
     left: '50%',
     transform: 'translateX(-50%)',
     padding: '6px 16px',
@@ -189,7 +190,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     letterSpacing: '1px',
     zIndex: 5,
     boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-    transition: 'background-color 0.2s, color 0.2s',
+    transition: 'background-color 0.2s, color 0.2s, top 0.2s, bottom 0.2s',
   },
   hand: {
     position: 'absolute',
