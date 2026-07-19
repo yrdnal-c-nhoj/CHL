@@ -66,7 +66,8 @@ const Clock: React.FC = () => {
     return progress ** 3 * (10 - 15 * progress + 6 * progress * progress);
   };
 
-  const animate = useCallback(
+
+const animate = useCallback(
     (timestamp: number) => {
       if (!startRef.current) startRef.current = timestamp;
       const elapsed = timestamp - startRef.current;
@@ -75,14 +76,14 @@ const Clock: React.FC = () => {
       if (!container) return;
 
       if (elapsed < 250) {
-        // Initial static frame
+        // Initial static frame (0ms to 250ms)
         container.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
         container.style.filter = 'drop-shadow(0 0 12px rgba(0,0,0,0.6))';
-      } else if (elapsed < 6250) {
+      } else if (elapsed < 7250) { // Changed from 6250 to 7250 (+1 second)
         const spinElapsed = elapsed - 250;
-        const progress = Math.min(spinElapsed / 6000, 1);
+        const progress = Math.min(spinElapsed / 7000, 1); // Changed from 6000 to 7000
         const eased = getEasedProgress(progress);
-        const totalRotation = eased * 5400;
+        const totalRotation = eased * 5400; // Keeps the exact same number of total rotations, just slower over 7s
 
         // Apply phase-specific rotation direction
         container.style.transform =
@@ -92,7 +93,7 @@ const Clock: React.FC = () => {
                         `perspective(1000px) rotateX(${-totalRotation}deg)`;
 
         container.style.filter = 'drop-shadow(0 0 8px rgba(0,0,0,0.5))';
-      } else if (elapsed < 6500) {
+      } else if (elapsed < 7500) { // Changed from 6500 to 7500 to maintain the 250ms settlement window
         // Settlement frame
         container.style.filter = 'drop-shadow(0 0 12px rgba(0,0,0,0.6))';
       } else {

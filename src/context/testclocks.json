@@ -4943,7 +4943,8 @@
       "image-free",
       "physics",
       "purple",
-      "rotation"
+      "rotation",
+       "spin"
     ]
   },
   {
@@ -6299,10 +6300,13 @@
   {
     "path": "26-07-17",
     "date": "26-07-17",
-    "title": "Footnote #2",
+    "title": "Digital Spinning",
     "tags": [
-      "digital",
-      "image-free"
+      "digital",  
+     "image-free",
+      "physics",
+      "rotation",
+      "spin"
     ]
   }
 ]
