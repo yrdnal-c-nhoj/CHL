@@ -4937,13 +4937,14 @@
   {
     "path": "26-04-08",
     "date": "26-04-08",
-    "title": "Spinning",
+    "title": "Analog Spinning",
     "tags": [
       "analog",
       "image-free",
       "physics",
       "purple",
-      "rotation"
+      "rotation",
+       "spin"
     ]
   },
   {
@@ -6294,6 +6295,18 @@
       "Esperanto",
       "emoji",
       "tomato"
+    ]
+  },
+  {
+    "path": "26-07-17",
+    "date": "26-07-17",
+    "title": "Digital Spinning",
+    "tags": [
+      "digital",  
+     "image-free",
+      "physics",
+      "rotation",
+      "spin"
     ]
   }
 ]
