@@ -23,7 +23,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    background: 'linear-gradient(180deg, #655A19 0%, #4A2D02 50%, #141205 100%)',
+    background: 'linear-gradient(180deg, #9A45E6 0%, #B5D2FD 50%, #EBEBFA 100%)',
     overflow: 'hidden',
   },
   clockWrapper: {
@@ -34,14 +34,22 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   timeDisplay: {
     fontFamily: 'ClockFont_26_07_16, monospace',
-    fontSize: '20vmin',
-    color: '#B6F3C4',
-    textShadow: '0 0 10px #547EC7, 0 0 20px #6354C7',
+    fontSize: '26vmin',
+    color: '#490C3B',
+    textShadow: '0 0 10px #AB8138, 0 0 20px #9CA938',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
     height: '100%',
+    letterSpacing: '-0.5vmin', // Reduced general letter-spacing since colons are handled manually now
+  },
+  // NEW: Custom styling specifically for the colons
+  colon: {
+    fontSize: '15vmin',          // Shrinks the colons (numbers are 20vmin)
+    transform: 'translateY(-1.2vmin)', // Shifts them upward slightly
+    margin: '0 -1.5vmin',        // Pulls the adjacent digits tightly inward to reduce room
+    display: 'inline-block',     // Required for the transform positioning to apply correctly
   }
 };
 
@@ -54,20 +62,19 @@ const Clock: React.FC = () => {
   const animRef = useRef<number | null>(null);
   const startRef = useRef<number | null>(null);
 
-  const timeLabel = useMemo(() => {
+  // Separated time units to target them individually in the DOM
+  const timeUnits = useMemo(() => {
     const hours = time.getHours().toString().padStart(2, '0');
     const minutes = time.getMinutes().toString().padStart(2, '0');
     const seconds = time.getSeconds().toString().padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
+    return { hours, minutes, seconds, fullString: `${hours}:${minutes}:${seconds}` };
   }, [time]);
 
   const getEasedProgress = (progress: number): number => {
-    // Quintic smoothstep: zero velocity and acceleration at t=0 and t=1
     return progress ** 3 * (10 - 15 * progress + 6 * progress * progress);
   };
 
-
-const animate = useCallback(
+  const animate = useCallback(
     (timestamp: number) => {
       if (!startRef.current) startRef.current = timestamp;
       const elapsed = timestamp - startRef.current;
@@ -76,28 +83,24 @@ const animate = useCallback(
       if (!container) return;
 
       if (elapsed < 250) {
-        // Initial static frame (0ms to 250ms)
         container.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
-        container.style.filter = 'drop-shadow(0 0 12px rgba(0,0,0,0.6))';
-      } else if (elapsed < 7250) { // Changed from 6250 to 7250 (+1 second)
+        container.style.filter = 'drop-shadow(0 0 12px rgba(255,255,255,0.6))';
+      } else if (elapsed < 7250) {
         const spinElapsed = elapsed - 250;
-        const progress = Math.min(spinElapsed / 7000, 1); // Changed from 6000 to 7000
+        const progress = Math.min(spinElapsed / 7000, 1);
         const eased = getEasedProgress(progress);
-        const totalRotation = eased * 5400; // Keeps the exact same number of total rotations, just slower over 7s
+        const totalRotation = eased * 5400;
 
-        // Apply phase-specific rotation direction
         container.style.transform =
           phase === 0 ? `perspective(1000px) rotateY(${totalRotation}deg)` :
           phase === 1 ? `perspective(1000px) rotateX(${totalRotation}deg)` :
           phase === 2 ? `perspective(1000px) rotateY(${-totalRotation}deg)` :
                         `perspective(1000px) rotateX(${-totalRotation}deg)`;
 
-        container.style.filter = 'drop-shadow(0 0 8px rgba(0,0,0,0.5))';
-      } else if (elapsed < 7500) { // Changed from 6500 to 7500 to maintain the 250ms settlement window
-        // Settlement frame
-        container.style.filter = 'drop-shadow(0 0 12px rgba(0,0,0,0.6))';
+        container.style.filter = 'drop-shadow(0 0 8px rgba(255,255,255,0.5))';
+      } else if (elapsed < 7500) {
+        container.style.filter = 'drop-shadow(0 0 12px rgba(255,255,255,0.6))';
       } else {
-        // Cycle complete → trigger next phase
         setPhase((prev) => ((prev + 1) % 4) as SpinPhase);
         return;
       }
@@ -121,11 +124,16 @@ const animate = useCallback(
     <div
       style={styles.container}
       role="img"
-      aria-label={`Digital clock showing ${timeLabel}`}
+      aria-label={`Digital clock showing ${timeUnits.fullString}`}
     >
       <div ref={containerRef} style={styles.clockWrapper}>
         <time dateTime={time.toISOString()} style={styles.timeDisplay}>
-          {timeLabel}
+          {/* Rendered elements individually to control localized spacing and alignment */}
+          <span>{timeUnits.hours}</span>
+          <span style={styles.colon}>:</span>
+          <span>{timeUnits.minutes}</span>
+          <span style={styles.colon}>:</span>
+          <span>{timeUnits.seconds}</span>
         </time>
       </div>
     </div>
