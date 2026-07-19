@@ -1,257 +1,134 @@
-import TomWebp from '@/assets/images/26_images/26-07/26-07-16/tom.webp';
-import { useSecondClock } from '@/utils/hooks';
-import React, { useMemo } from 'react';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-export const assets = [TomWebp];
+import fontUrl from '@/assets/fonts/26fonts/26-07-16.otf?url';
 
-const WORK_EMOJIS = ['🎯', '🛠️', '📊', '🔨', '📌', '📎', '💼',  '📱', '📈', '🏗️','🖥️', '🧱', '🔧', '📋', '⚙️', '💻'];
-const PLAY_EMOJIS = ['🎲', '🃏', '🎮',  '⚽',  '🎨', '🖌️', '🎸', '🎤', '🏖️', '🌊', '🎟️', '🎡', '🎭','🏀','🕹️', '🎸'];
+export const assets = [fontUrl];
 
-const GRID_COLS = 10;
-const GRID_ROWS = 14;
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'ClockFont_26_07_16',
+    fontUrl,
+  },
+];
 
-const AnalogClock: React.FC = () => {
-  const now = useSecondClock();
+type SpinPhase = 0 | 1 | 2 | 3;
 
-  const { hourAngle, minuteAngle, secondAngle, currentSecond } = useMemo(() => {
-    const seconds = now.getSeconds();
-    const minutes = now.getMinutes();
-    const hours = now.getHours();
-    return {
-      secondAngle: seconds * 6,
-      minuteAngle: (minutes + seconds / 60) * 6,
-      hourAngle: ((hours % 12) + minutes / 60) * 30,
-      currentSecond: seconds,
-    };
-  }, [now]);
+const styles: { [key: string]: React.CSSProperties } = {
+  container: {
+    width: '100vw',
+    height: '100dvh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: 'linear-gradient(180deg, #655A19 0%, #4A2D02 50%, #141205 100%)',
+    overflow: 'hidden',
+  },
+  clockWrapper: {
+    width: '95vmin',
+    height: '95vmin',
+    transformStyle: 'preserve-3d',
+    willChange: 'transform',
+  },
+  timeDisplay: {
+    fontFamily: 'ClockFont_26_07_16, monospace',
+    fontSize: '20vmin',
+    color: '#B6F3C4',
+    textShadow: '0 0 10px #547EC7, 0 0 20px #6354C7',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+  }
+};
 
-  // Phase matching logic
-  const isWorkPhase = currentSecond < 25 || (currentSecond >= 30 && currentSecond < 55);
-  const activeEmojis = isWorkPhase ? WORK_EMOJIS : PLAY_EMOJIS;
+const Clock: React.FC = () => {
+  const time = useMillisecondClock();
+  useSuspenseFontLoader(fontConfigs);
+  const [phase, setPhase] = useState<SpinPhase>(0);
+  
+  const containerRef = useRef<HTMLDivElement>(null);
+  const animRef = useRef<number | null>(null);
+  const startRef = useRef<number | null>(null);
 
-  const totalSecondsElapsed = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-  const fifteenSecondStep = Math.floor(totalSecondsElapsed / 15);
+  const timeLabel = useMemo(() => {
+    const hours = time.getHours().toString().padStart(2, '0');
+    const minutes = time.getMinutes().toString().padStart(2, '0');
+    const seconds = time.getSeconds().toString().padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+  }, [time]);
 
-  // Checkerboard-style grid generation
-  const gridCells = useMemo(() => {
-    const cells = [];
-    const midCol = (GRID_COLS - 1) / 2;
-    const midRow = (GRID_ROWS - 1) / 2;
+  const getEasedProgress = (progress: number): number => {
+    // Quintic smoothstep: zero velocity and acceleration at t=0 and t=1
+    return progress ** 3 * (10 - 15 * progress + 6 * progress * progress);
+  };
 
-    for (let r = 0; r < GRID_ROWS; r++) {
-      for (let c = 0; c < GRID_COLS; c++) {
-        const distance = Math.sqrt(Math.pow(c - midCol, 2) + Math.pow(r - midRow, 2));
-        const left = (c / (GRID_COLS - 1)) * 100;
-        const top = (r / (GRID_ROWS - 1)) * 100;
-        const index = r * GRID_COLS + c;
-        const parity = (r + c) % 2;
+  const animate = useCallback(
+    (timestamp: number) => {
+      if (!startRef.current) startRef.current = timestamp;
+      const elapsed = timestamp - startRef.current;
+      const container = containerRef.current;
+      
+      if (!container) return;
 
-        cells.push({
-          left: `${left}%`,
-          top: `${top}%`,
-          distance,
-          index,
-          row: r,
-          col: c,
-          parity,
-        });
+      if (elapsed < 250) {
+        // Initial static frame
+        container.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+        container.style.filter = 'drop-shadow(0 0 12px rgba(0,0,0,0.6))';
+      } else if (elapsed < 6250) {
+        const spinElapsed = elapsed - 250;
+        const progress = Math.min(spinElapsed / 6000, 1);
+        const eased = getEasedProgress(progress);
+        const totalRotation = eased * 5400;
+
+        // Apply phase-specific rotation direction
+        container.style.transform =
+          phase === 0 ? `perspective(1000px) rotateY(${totalRotation}deg)` :
+          phase === 1 ? `perspective(1000px) rotateX(${totalRotation}deg)` :
+          phase === 2 ? `perspective(1000px) rotateY(${-totalRotation}deg)` :
+                        `perspective(1000px) rotateX(${-totalRotation}deg)`;
+
+        container.style.filter = 'drop-shadow(0 0 8px rgba(0,0,0,0.5))';
+      } else if (elapsed < 6500) {
+        // Settlement frame
+        container.style.filter = 'drop-shadow(0 0 12px rgba(0,0,0,0.6))';
+      } else {
+        // Cycle complete → trigger next phase
+        setPhase((prev) => ((prev + 1) % 4) as SpinPhase);
+        return;
       }
-    }
-    return cells;
-  }, []);
+
+      animRef.current = requestAnimationFrame(animate);
+    },
+    [phase],
+  );
+
+  useEffect(() => {
+    startRef.current = null;
+    if (animRef.current) cancelAnimationFrame(animRef.current);
+    animRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animRef.current) cancelAnimationFrame(animRef.current);
+    };
+  }, [phase, animate]);
 
   return (
     <div
-      style={{
-        ...styles.container,
-        backgroundColor: isWorkPhase ? '#EB1212' : '#1BC41B',
-      }}
+      style={styles.container}
+      role="img"
+      aria-label={`Digital clock showing ${timeLabel}`}
     >
-      {/* Background Image Layer */}
-      <div
-        style={{
-          ...styles.backgroundImage,
-          backgroundImage: `url(${TomWebp})`,
-          filter: `hue-rotate(${isWorkPhase ? '0deg' : '120deg'})`,
-        }}
-      />
-
-      {/* Background Emoji Grid Layer */}
-      <div style={styles.emojiGridWrapper}>
-        {gridCells.map((cell) => {
-          const baseOffset = cell.parity === 0 ? fifteenSecondStep : fifteenSecondStep + 3;
-          const emojiIndex = (Math.floor(cell.index / 2) + baseOffset) % activeEmojis.length;
-          const emoji = activeEmojis[emojiIndex];
-
-          const wavePulse = Math.sin((currentSecond + cell.distance) * 0.5);
-          const scaleFactor = (isWorkPhase ? 1.0 : 0.85) + (cell.parity === 0 ? 0.1 : -0.05);
-          const dynamicScale = scaleFactor + wavePulse * 0.05;
-
-          return (
-            <span
-              key={cell.index}
-              style={{
-                ...styles.emojiCell,
-                left: cell.left,
-                top: cell.top,
-                opacity: isWorkPhase ? 0.95 : 0.85,
-                transform: `translate(-50%, -50%) scale(${dynamicScale}) translate3d(0, ${wavePulse * 4}px, 0)`,
-                transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease',
-              }}
-              aria-hidden="true"
-            >
-              {emoji}
-            </span>
-          );
-        })}
-      </div>
-
-      {/* Main Clock Dial */}
-      <div style={styles.clockFace}>
-        <div style={styles.pomodoroSectors} />
-
-        <div
-          style={{
-            ...styles.statusBadge,
-            top: isWorkPhase ? '18%' : 'auto',
-            bottom: isWorkPhase ? 'auto' : '18%',
-            backgroundColor: isWorkPhase ? '#ff0000' : '#00ff00',
-            color: isWorkPhase ? '#ffffff' : '#000000',
-          }}
-        >
-          {isWorkPhase ? 'LABORTEMPO' : 'LUDTEMPO'}
-        </div>
-
-        {/* Hand Indicators */}
-        <div style={{ ...styles.hand, ...styles.hourHand, transform: `rotate(${hourAngle}deg)` }} />
-        <div style={{ ...styles.hand, ...styles.minuteHand, transform: `rotate(${minuteAngle}deg)` }} />
-        <div
-          style={{
-            ...styles.hand,
-            ...styles.secondHand,
-            transform: `rotate(${secondAngle}deg)`,
-            backgroundColor: isWorkPhase ? '#00ff00' : '#ff0000', // Dynamic coloring applied here
-          }}
-        />
-
-        <div style={styles.centerDot} />
+      <div ref={containerRef} style={styles.clockWrapper}>
+        <time dateTime={time.toISOString()} style={styles.timeDisplay}>
+          {timeLabel}
+        </time>
       </div>
     </div>
   );
 };
 
-const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: '100dvh',
-    overflow: 'hidden',
-    position: 'relative',
-    transition: 'background-color 0.2s linear',
-  },
-  backgroundImage: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    zIndex: 0,
-    transition: 'filter 0.4s ease-in-out',
-    willChange: 'filter',
-  },
-  emojiGridWrapper: {
-    position: 'absolute',
-    top: '-2%',
-    left: '-2%',
-    width: '104%',
-    height: '104%',
-    zIndex: 1,
-    pointerEvents: 'none',
-  },
-  emojiCell: {
-    position: 'absolute',
-    fontSize: 'clamp(48px, 8vw, 110px)',
-    willChange: 'transform, opacity',
-  },
-  clockFace: {
-    position: 'relative',
-    width: 340,
-    height: 340,
-    opacity: 0.9,
-    border: '6px solid #111010',
-    borderRadius: '50%',
-    backgroundColor: '#ffffff',
-    boxShadow: '0 0 30px rgba(0,0,0,0.4), inset 0 0 25px rgba(0,0,0,0.2)',
-    zIndex: 2,
-  },
-  pomodoroSectors: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    borderRadius: '50%',
-    background: `conic-gradient(
-      #ff0000 0deg 150deg,
-      #00ff00 150deg 180deg,
-      #ff0000 180deg 330deg,
-      #00ff00 330deg 360deg
-    )`,
-  },
-  statusBadge: {
-    position: 'absolute',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    padding: '6px 16px',
-    borderRadius: '20px',
-    fontFamily: 'system-ui, sans-serif',
-    fontWeight: '900',
-    fontSize: '13px',
-    letterSpacing: '1.5px',
-    zIndex: 5,
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.69)',
-    transition: 'background-color 0.2s, color 0.2s, top 0.2s, bottom 0.2s',
-  },
-  hand: {
-    position: 'absolute',
-    left: '50%',
-    bottom: '50%',
-    transformOrigin: 'bottom center',
-    borderRadius: '4px',
-  },
-  hourHand: {
-    width: 12,
-    height: '29%',
-    backgroundColor: '#000000',
-    marginLeft: -4,
-  },
-  minuteHand: {
-    width: 12,
-    height: '48%',
-    backgroundColor: '#111111',
-    marginLeft: -3,
-  },
-  secondHand: {
-    width: 3,
-    height: '342%',
-    marginLeft: -1,
-    transition: 'background-color 0.2s linear', // Added a smooth transition for the color flip
-  },
-  centerDot: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: 18,
-    height: 18,
-    backgroundColor: '#CAC4C4',
-    border: '4px solid #141313',
-    borderRadius: '50%',
-    transform: 'translate(-50%, -50%)',
-    zIndex: 10,
-    boxShadow: '0 0 8px rgba(255, 0, 0, 0.6)',
-  },
-};
-
-export default AnalogClock;
+export default Clock;
