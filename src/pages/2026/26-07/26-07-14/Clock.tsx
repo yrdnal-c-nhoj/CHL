@@ -85,10 +85,10 @@ export default function DigitalClock() {
   const time = useClockTime();
   useSuspenseFontLoader(fontConfigs);
 
+  // Removed formatTime(time.getSeconds()) from the array
   const timeString = [
     formatTime(time.getHours()),
     formatTime(time.getMinutes()),
-    formatTime(time.getSeconds()),
   ].join(':');
 
   return (
