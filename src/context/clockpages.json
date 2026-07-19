@@ -6100,6 +6100,7 @@
     "tags": [
       "digital",
       "mechanical",
+      "metal",
       "milliseconds"
     ]
   },
@@ -6204,7 +6205,8 @@
     "tags": [
       "analog",
       "color",
-      "ocean"
+      "ocean",
+      "transport"
     ]
   },
   {
@@ -6235,7 +6237,8 @@
     "title": "Footnote #1",
     "tags": [
       "digital",
-      "image-free"
+      "image-free",
+      "words"
     ]
   },
   {
@@ -6267,6 +6270,7 @@
       "1517",
       "Germany",
       "bauhaus",
+      "metal",
       "shrine"
     ]
   },
