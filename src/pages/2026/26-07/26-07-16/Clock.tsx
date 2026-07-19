@@ -48,7 +48,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   colon: {
     fontSize: '15vmin',          // Shrinks the colons (numbers are 20vmin)
     transform: 'translateY(-1.2vmin)', // Shifts them upward slightly
-    margin: '0 -1.5vmin',        // Pulls the adjacent digits tightly inward to reduce room
+    margin: '0 -1.0vmin',        // Pulls the adjacent digits tightly inward to reduce room
     display: 'inline-block',     // Required for the transform positioning to apply correctly
   }
 };
