@@ -1,49 +1,45 @@
-import React, { useMemo } from 'react';
-
 import fontUrl from '@/assets/fonts/26fonts/26-07-18.ttf?url';
 import akiraVideo from '@/assets/images/26_images/26-07/26-07-18/ak2.mp4';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 
-// --- COLOR CONFIGURATION ---
+// --- CONFIGURATION ---
 const CONFIG = {
-  themeColor: 'rgba(255, 255, 255, 0.65)',      // Main color for text, clock hands, and outline boundary
-  glowColor: 'rgba(255, 165, 0, 0.7)',         // Color for text shadows and analog clock glow
+  themeColor: 'rgba(255, 255, 255, 0.65)',
+  glowColor: 'rgba(255, 165, 0, 0.7)',
+  bgColor: '#484F48', // Unified background control
+  fontFamily: 'ClockFont_26-07-18',
 };
 
-const FONT_FAMILY = 'ClockFont_26-07-18';
-
-const styles: { [key: string]: React.CSSProperties } = {
+const styles: Record<string, React.CSSProperties> = {
   container: {
     position: 'relative',
     width: '100vw',
     height: '100dvh',
-    display: 'flex', 
-    flexDirection: 'column', 
-    backgroundColor: '#484F48',
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: CONFIG.bgColor,
     overflow: 'hidden',
   },
   clockStrip: {
     display: 'flex',
-    justifyContent: 'left',
-    alignItems: 'left',
     width: '100%',
-    backgroundColor: '#484F48', 
-    padding: '0rem 0',
+    backgroundColor: CONFIG.bgColor,
     zIndex: 2,
   },
   imageContainer: {
-    flex: 1, 
+    flex: 1,
     width: '100%',
-    position: 'relative', 
+    position: 'relative',
   },
   bottomStrip: {
     display: 'flex',
-    justifyContent: 'flex-end', 
+    justifyContent: 'flex-end',
     alignItems: 'center',
     width: '100%',
-    backgroundColor: '#484F48', 
-    padding: '1vh', 
+    backgroundColor: CONFIG.bgColor,
+    padding: '1vh',
     boxSizing: 'border-box',
     zIndex: 2,
   },
@@ -57,28 +53,27 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   clock: {
     display: 'flex',
-    fontFamily: `"${FONT_FAMILY}", "Courier New", Courier, monospace`,
-    fontSize: 'clamp(1rem, 2vw, 2rem)', 
-    color: CONFIG.themeColor, // <-- Uses config color
+    fontFamily: `"${CONFIG.fontFamily}", "Courier New", Courier, monospace`,
+    fontSize: 'clamp(1rem, 2vw, 2rem)',
+    color: CONFIG.themeColor,
     letterSpacing: '10vw',
-    textShadow: `0 0 20px ${CONFIG.glowColor}`, // <-- Uses config color (Uncommented and tied to theme)
+    textShadow: `0 0 20px ${CONFIG.glowColor}`,
   },
   analogClockContainer: {
-    position: 'relative', 
+    position: 'relative',
     width: '10vh',
     height: '10vh',
-    borderRadius: '50%', 
-    // border: `1px solid ${CONFIG.themeColor}`, // <-- Uses config color for the outline boundary
-    // boxShadow: `0 0 70px ${CONFIG.glowColor}`, // <-- Uses config color
+    borderRadius: '50%',
   },
   hand: {
     position: 'absolute',
     bottom: '50%',
     left: '50%',
     transformOrigin: 'bottom center',
-    backgroundColor: CONFIG.themeColor, // <-- Uses config color
-    boxShadow: `0 0 20px ${CONFIG.glowColor}`, // <-- Uses config color
+    backgroundColor: CONFIG.themeColor,
+    boxShadow: `0 0 20px ${CONFIG.glowColor}`,
     borderRadius: '1px',
+    transform: 'translateX(-50%)',
   },
 };
 
@@ -101,52 +96,34 @@ const AnalogClock: React.FC<{ time: Date }> = ({ time }) => {
   }, [time]);
 
   return (
-    <div style={styles.analogClockContainer}>
-      <div
-        style={{ ...styles.hand, width: '0px', height: '25%', transform: `translateX(-50%) rotate(${hourDegrees}deg)` }}
-      />
-      <div
-        style={{ ...styles.hand, width: '0px', height: '55%', transform: `translateX(-50%) rotate(${minuteDegrees}deg)` }}
-      />
-      <div
-        style={{ ...styles.hand, width: '2px', height: '55%', transform: `translateX(-50%) rotate(${secondDegrees}deg)` }}
-      />
+    <div style={styles.analogClockContainer} aria-label="Analog representation of current time">
+      <div style={{ ...styles.hand, width: '0px', height: '25%', transform: `${styles.hand.transform} rotate(${hourDegrees}deg)` }} />
+      <div style={{ ...styles.hand, width: '0px', height: '55%', transform: `${styles.hand.transform} rotate(${minuteDegrees}deg)` }} />
+      <div style={{ ...styles.hand, width: '2px', height: '55%', transform: `${styles.hand.transform} rotate(${secondDegrees}deg)` }} />
     </div>
   );
 };
 
+const FONT_CONFIGS = [{ fontFamily: CONFIG.fontFamily, fontUrl }];
+
 const Clock: React.FC = () => {
   const time = useMillisecondClock();
+  
+  // Load custom font asset via suspense hook
+  useSuspenseFontLoader(FONT_CONFIGS);
 
-  const fontConfigs = useMemo(
-    () => [
-      {
-        fontFamily: FONT_FAMILY,
-        fontUrl,
-      },
-    ],
-    [],
-  );
-
-  useSuspenseFontLoader(fontConfigs);
-
-  const { hours, minutes } = useMemo(() => {
-    const h = formatTime(time.getHours());
-    const m = formatTime(time.getMinutes());
-    return { hours: h, minutes: m };
-  }, [time]);
+  const timeString = `${formatTime(time.getHours())}${formatTime(time.getMinutes())}`;
 
   return (
     <div style={styles.container}>
       <div style={styles.clockStrip}>
         <time dateTime={time.toISOString()} style={styles.clock}>
-          <span>{hours[0]}</span>
-          <span>{hours[1]}</span>
-          <span>{minutes[0]}</span>
-          <span>{minutes[1]}</span>
+          {timeString.split('').map((char, index) => (
+            <span key={index}>{char}</span>
+          ))}
         </time>
       </div>
-      
+
       <div style={styles.imageContainer}>
         <video
           style={styles.video}
@@ -157,7 +134,7 @@ const Clock: React.FC = () => {
           playsInline
         />
       </div>
-      
+
       <div style={styles.bottomStrip}>
         <AnalogClock time={time} />
       </div>
