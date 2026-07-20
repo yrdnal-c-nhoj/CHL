@@ -1,0 +1,144 @@
+.main {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background-color: #ffdabe; /* PEACH_COLOR */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  touch-action: none;
+  user-select: none;
+  transition: opacity 0.3s ease-in;
+}
+
+.clockContainer {
+  position: relative;
+}
+
+.clockFace {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: scale(1);
+  transition: transform 0.5s ease-out;
+}
+
+.numberLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  object-fit: contain;
+  filter: drop-shadow(0 -1px 3px rgba(45, 18, 3, 0.9))
+    drop-shadow(0 1px 1px rgba(40, 236, 10, 0.7));
+  -webkit-mask-image: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 1) 20%,
+    rgba(0, 0, 0, 0) 75%
+  );
+  mask-image: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 1) 20%,
+    rgba(0, 0, 0, 0) 75%
+  );
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  pointer-events: none;
+  will-change: transform;
+  filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.65));
+}
+
+.hourHand {
+  clip-path: polygon(
+    50% 0%,
+    100% 35%,
+    70% 45%,
+    65% 100%,
+    35% 100%,
+    30% 45%,
+    0% 35%
+  );
+  background: linear-gradient(
+    90deg,
+    #4a3319 0%,
+    #a37c3f 40%,
+    #d1b46a 55%,
+    #8c662d 75%,
+    #36220f 100%
+  ); /* antiqueBrass */
+  z-index: 10;
+}
+
+.minuteHand {
+  clip-path: polygon(
+    50% 0%,
+    90% 25%,
+    60% 35%,
+    60% 100%,
+    40% 100%,
+    40% 35%,
+    10% 25%
+  );
+  background: linear-gradient(
+    90deg,
+    #4a3319 0%,
+    #a37c3f 40%,
+    #d1b46a 55%,
+    #8c662d 75%,
+    #36220f 100%
+  ); /* antiqueBrass */
+  z-index: 11;
+}
+
+.secondHand {
+  clip-path: polygon(
+    50% 0%,
+    100% 20%,
+    55% 80%,
+    80% 85%,
+    50% 100%,
+    20% 85%,
+    45% 80%,
+    0% 20%
+  );
+  background: linear-gradient(90deg, #2b1105 0%, #8f4423 50%, #52220b 100%); /* antiqueCopper */
+  z-index: 12;
+}
+
+.centerPin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 35%,
+    #f7e7ad 0%,
+    #a37c3f 60%,
+    #36220f 100%
+  );
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  z-index: 20;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
