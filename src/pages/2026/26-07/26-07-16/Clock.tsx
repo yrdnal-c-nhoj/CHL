@@ -47,11 +47,11 @@ const Clock: React.FC = () => {
       if (elapsed < 250) {
         container.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
         container.style.filter = 'drop-shadow(0 0 12px rgba(255,255,255,0.6))';
-      } else if (elapsed < 8250) {
+      } else if (elapsed < 10250) {
         const spinElapsed = elapsed - 250;
-        const progress = Math.min(spinElapsed / 8000, 1);
+        const progress = Math.min(spinElapsed / 10000, 1);
         const eased = getEasedProgress(progress);
-        const totalRotation = eased * 5400;
+        const totalRotation = eased * 7200;
 
         container.style.transform =
           phase === 0 ? `perspective(1000px) rotateY(${totalRotation}deg)` :
@@ -60,7 +60,7 @@ const Clock: React.FC = () => {
                         `perspective(1000px) rotateX(${-totalRotation}deg)`;
 
         container.style.filter = 'drop-shadow(0 0 8px rgba(255,255,255,0.5))';
-      } else if (elapsed < 8500) {
+      } else if (elapsed < 10500) {
         container.style.filter = 'drop-shadow(0 0 12px rgba(255,255,255,0.6))';
       } else {
         setPhase((prev) => ((prev + 1) % 4) as SpinPhase);
