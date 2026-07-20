@@ -17,7 +17,7 @@
 
 .timeDisplay {
   font-family: 'ClockFont_26_07_16', monospace;
-  font-size: 26vmin;
+  font-size: 46vmin;
   color: #490c3b;
   text-shadow: 0 0 10px #ab8138, 0 0 20px #9ca938;
   display: flex;
@@ -29,9 +29,9 @@
 }
 
 .colon {
-  font-size: 15vmin;
+  font-size: 38vmin;
   transform: translateY(-1.2vmin);
-  margin: 0 -1vmin;
+  margin: 0 -2.5vmin;
   display: inline-block;
 }
 
