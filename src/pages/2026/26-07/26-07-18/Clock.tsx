@@ -39,7 +39,7 @@ const SweepClock = () => {
         <div
           className="absolute inset-0 transition-transform duration-75 rounded-full shadow-2xl"
           style={{
-            background: `conic-gradient(from ${secondDegrees}deg, #22c55e 0deg, #15803d 2deg, transparent 3deg)`,
+            background: `conic-gradient(from ${secondDegrees}deg, #A91E06 0deg, #ECE6E4 360deg, transparent 33deg)`,
           }}
         />
 
@@ -47,7 +47,7 @@ const SweepClock = () => {
         <div
           className="absolute inset-0 rounded-full scale-[0.80] shadow-inner"
           style={{
-            background: `conic-gradient(from ${minuteDegrees}deg, #3b82f6 0deg, #1d4ed8 3deg, transparent 4deg)`,
+            background: `conic-gradient(from ${minuteDegrees}deg, #08409A 0deg, #E2E4E9 360deg, transparent 4deg)`,
           }}
         />
 
@@ -55,17 +55,12 @@ const SweepClock = () => {
         <div
           className="absolute inset-0 rounded-full scale-[0.60]"
           style={{
-            background: `conic-gradient(from ${hourDegrees}deg, #a855f7 0deg, #7e22ce 4deg, transparent 6deg)`,
+            background: `conic-gradient(from ${hourDegrees}deg, #5604A2 0deg, #DDD8E2 360deg, transparent 6deg)`,
           }}
         />
 
         {/* CENTER MATTE (Optional: Cleans up the center core so it looks like rings) */}
-        <div className="absolute inset-0 rounded-full scale-[0.45] bg-slate-950 shadow-2xl flex flex-col items-center justify-center text-slate-400 font-mono text-sm sm:text-lg">
-          <div>
-            {time.getHours().toString().padStart(2, '0')}:
-            {time.getMinutes().toString().padStart(2, '0')}
-          </div>
-        </div>
+        <div className="absolute inset-0 rounded-full scale-[0.45] bg-slate-950 shadow-2xl flex flex-col items-center justify-center text-slate-400 font-mono text-sm sm:text-lg" />
 
       </div>
     </div>
