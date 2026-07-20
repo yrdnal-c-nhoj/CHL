@@ -1,0 +1,63 @@
+@keyframes tilingRise {
+  from {
+    background-position: center 0px;
+  }
+  to {
+    background-position: center -50px;
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100dvh;
+  font-family: 'Share Tech Mono', monospace;
+  position: relative;
+  overflow: hidden;
+}
+
+.backgroundLayer {
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+}
+
+.tileOverlay {
+  position: absolute;
+  inset: 0;
+  background-image: var(--tile-image);
+  background-size: 50px;
+  background-repeat: repeat;
+  opacity: 0.4;
+  animation: tilingRise 6s linear infinite;
+  will-change: background-position;
+}
+
+.digitalClock {
+  display: flex;
+  color: white;
+  font-size: clamp(2rem, 22vmin, 12rem);
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgb(0, 128, 255);
+  font-family: 'ClockFont_26_07_14', 'Share Tech Mono', monospace;
+  position: relative;
+  z-index: 1;
+}
+
+.digitBox {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 0.6em;
+  font-variant-numeric: tabular-nums;
+}
+
+.colon {
+  position: relative;
+  top: -0.15em;
+  width: 0.3em;
+  justify-content: center;
+}
