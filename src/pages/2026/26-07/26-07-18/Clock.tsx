@@ -1,70 +1,166 @@
-import { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 
-const SweepClock = () => {
-  const [time, setTime] = useState(new Date());
+import fontUrl from '@/assets/fonts/26fonts/26-07-18.ttf?url';
+import akiraImage from '@/assets/images/26_images/26-07/26-07-18/akira.webp';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
 
-  useEffect(() => {
-    let animationFrameId;
+// --- COLOR CONFIGURATION ---
+const CONFIG = {
+  themeColor: 'rgba(255, 255, 255, 0.65)',      // Main color for text, clock hands, and outline boundary
+  glowColor: 'rgba(255, 165, 0, 0.7)',         // Color for text shadows and analog clock glow
+};
 
-    const update = () => {
-      setTime(new Date());
-      animationFrameId = requestAnimationFrame(update);
+const FONT_FAMILY = 'ClockFont_26-07-18';
+
+const styles: { [key: string]: React.CSSProperties } = {
+  container: {
+    position: 'relative',
+    width: '100vw',
+    height: '100dvh',
+    display: 'flex', 
+    flexDirection: 'column', 
+    backgroundColor: '#484F48',
+    overflow: 'hidden',
+  },
+  clockStrip: {
+    display: 'flex',
+    justifyContent: 'left',
+    alignItems: 'left',
+    width: '100%',
+    backgroundColor: '#484F48', 
+    padding: '0rem 0',
+    zIndex: 2,
+  },
+  imageContainer: {
+    flex: 1, 
+    width: '100%',
+    position: 'relative', 
+  },
+  bottomStrip: {
+    display: 'flex',
+    justifyContent: 'flex-end', 
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: '#484F48', 
+    padding: '1vh', 
+    boxSizing: 'border-box',
+    zIndex: 2,
+  },
+  backgroundImage: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundSize: 'contain', 
+    backgroundRepeat: 'no-repeat', 
+    backgroundPosition: 'center', 
+  },
+  clock: {
+    display: 'flex',
+    fontFamily: `"${FONT_FAMILY}", "Courier New", Courier, monospace`,
+    fontSize: 'clamp(1rem, 2vw, 2rem)', 
+    color: CONFIG.themeColor, // <-- Uses config color
+    letterSpacing: '10vw',
+
+    textShadow: `0 0 20px ${CONFIG.glowColor}`, // <-- Uses config color (Uncommented and tied to theme)
+  },
+  analogClockContainer: {
+    position: 'relative', 
+    width: '9vh',
+    height: '9vh',
+    borderRadius: '50%', 
+    // border: `1px solid ${CONFIG.themeColor}`, // <-- Uses config color for the outline boundary
+    // boxShadow: `0 0 70px ${CONFIG.glowColor}`, // <-- Uses config color
+  },
+  hand: {
+    position: 'absolute',
+    bottom: '50%',
+    left: '50%',
+    transformOrigin: 'bottom center',
+    backgroundColor: CONFIG.themeColor, // <-- Uses config color
+    boxShadow: `0 0 20px ${CONFIG.glowColor}`, // <-- Uses config color
+    borderRadius: '1px',
+  },
+};
+
+const formatTime = (num: number): string => num.toString().padStart(2, '0');
+
+const AnalogClock: React.FC<{ time: Date }> = ({ time }) => {
+  const { hourDegrees, minuteDegrees, secondDegrees } = useMemo(() => {
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+
+    const minuteValue = minutes + seconds / 60;
+    const hourValue = (hours % 12) + minuteValue / 60;
+
+    return {
+      hourDegrees: hourValue * 30,
+      minuteDegrees: minuteValue * 6,
+      secondDegrees: seconds * 6,
     };
-
-    animationFrameId = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, []);
-
-  const ms = time.getMilliseconds();
-  
-  // 1. Seconds calculations (Continuous sweep)
-  const seconds = time.getSeconds() + ms / 1000;
-  const secondDegrees = (seconds / 60) * 360;
-
-  // 2. Minutes calculations (Continuous sweep based on minutes + seconds elapsed)
-  const minutes = time.getMinutes() + seconds / 60;
-  const minuteDegrees = (minutes / 60) * 360;
-
-  // 3. Hours calculations (Continuous sweep based on 12-hour cycle + minutes elapsed)
-  const hours = (time.getHours() % 12) + minutes / 60;
-  const hourDegrees = (hours / 12) * 360;
+  }, [time]);
 
   return (
-    // Outer responsive centering container
-    <div className="box-border flex items-center justify-center w-full h-screen p-8 bg-white">
-      {/* Aspect-locked relative container for layout layering */}
-      <div className="relative flex items-center justify-center w-full h-full max-w-full max-h-full aspect-square">
-        
-        {/* LAYER 1: OUTER RING - SECONDS (Full Size) */}
+    <div style={styles.analogClockContainer}>
+      <div
+        style={{ ...styles.hand, width: '3px', height: '25%', transform: `translateX(-50%) rotate(${hourDegrees}deg)` }}
+      />
+      <div
+        style={{ ...styles.hand, width: '2px', height: '55%', transform: `translateX(-50%) rotate(${minuteDegrees}deg)` }}
+      />
+      <div
+        style={{ ...styles.hand, width: '1px', height: '60%', transform: `translateX(-50%) rotate(${secondDegrees}deg)` }}
+      />
+    </div>
+  );
+};
+
+const Clock: React.FC = () => {
+  const time = useMillisecondClock();
+
+  const fontConfigs = useMemo(
+    () => [
+      {
+        fontFamily: FONT_FAMILY,
+        fontUrl,
+      },
+    ],
+    [],
+  );
+
+  useSuspenseFontLoader(fontConfigs);
+
+  const { hours, minutes } = useMemo(() => {
+    const h = formatTime(time.getHours());
+    const m = formatTime(time.getMinutes());
+    return { hours: h, minutes: m };
+  }, [time]);
+
+  return (
+    <div style={styles.container}>
+      <div style={styles.clockStrip}>
+        <time dateTime={time.toISOString()} style={styles.clock}>
+          <span>{hours[0]}</span>
+          <span>{hours[1]}</span>
+          <span>{minutes[0]}</span>
+          <span>{minutes[1]}</span>
+        </time>
+      </div>
+      
+      <div style={styles.imageContainer}>
         <div
-          className="absolute inset-0 transition-transform duration-75 rounded-full shadow-2xl"
-          style={{
-            background: `conic-gradient(from ${secondDegrees}deg, #CC081C 0deg, #f0f0f0 360deg, transparent 33deg)`,
-          }}
+          style={{ ...styles.backgroundImage, backgroundImage: `url(${akiraImage})` }}
         />
-
-        {/* LAYER 2: MIDDLE RING - MINUTES (Scaled down slightly) */}
-        <div
-          className="absolute inset-0 rounded-full scale-[0.90] shadow-inner"
-          style={{
-            background: `conic-gradient(from ${minuteDegrees}deg, #071BD0 0deg, #f3f3f3 360deg, transparent 4deg)`,
-          }}
-        />
-
-        {/* LAYER 3: INNER RING - HOURS (Smallest inner layer) */}
-        <div
-          className="absolute inset-0 rounded-full scale-[0.70]"
-          style={{
-            background: `conic-gradient(from ${hourDegrees}deg, #5604A2 0deg, #f6f6f6 360deg, transparent 6deg)`,
-          }}
-        />
-
-        {/* CENTER MATTE (Optional: Cleans up the center core so it looks like rings) */}
-        <div className="absolute inset-0 rounded-full scale-[0.45] bg-white shadow-2xl flex flex-col items-center justify-center text-slate-900 font-mono text-sm sm:text-lg" />
-
+      </div>
+      
+      <div style={styles.bottomStrip}>
+        <AnalogClock time={time} />
       </div>
     </div>
   );
 };
 
-export default SweepClock;
+export default Clock;
