@@ -4,8 +4,9 @@ import glassbreak from '@/assets/images/26_images/26-07/26-07-10/sunrise.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import type { CSSProperties } from 'react';
-import React, { useEffect, useRef } from 'react';
+import type { CSSProperties, FC } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import styles from './Clock.module.css';
 
 // =========================
 // ASSET EXPORTS (Required)
@@ -41,7 +42,7 @@ interface RainDrop {
 
 type StormState = 'calm' | 'rampUp' | 'downpour' | 'fade';
 
-const AnalogClock: React.FC = () => {
+const AnalogClock: FC = () => {
   const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -50,9 +51,11 @@ const AnalogClock: React.FC = () => {
   const minutes = time.getMinutes();
   const hours = time.getHours();
 
-  const secondDegrees = (seconds / 60) * 360;
-  const minuteDegrees = (minutes / 60) * 360 + (seconds / 60) * 6;
-  const hourDegrees = (hours / 12) * 360 + (minutes / 60) * 30;
+  const { hourDegrees, minuteDegrees, secondDegrees } = useMemo(() => ({
+    secondDegrees: (seconds / 60) * 360,
+    minuteDegrees: (minutes / 60) * 360 + (seconds / 60) * 6,
+    hourDegrees: (hours / 12) * 360 + (minutes / 60) * 30,
+  }), [seconds, minutes, hours]);
 
   // Rain Simulation Engine with Regulated Constraints
   useEffect(() => {
@@ -187,14 +190,22 @@ const AnalogClock: React.FC = () => {
   }, []);
 
   return (
-    <main style={styles.mainContainer}>
-      <div style={styles.bgGlass} />
-      <div style={styles.bgClouds} />
+    <main
+      className={styles.mainContainer}
+      role="img"
+      aria-label={`An analog clock showing the time is ${time.toLocaleTimeString()}`}
+    >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
 
-      <canvas ref={canvasRef} style={styles.rainCanvas} />
+      <div className={styles.bgGlass} style={{ '--bg-glass-image': `url(${glassbreak})` } as CSSProperties} />
+      <div className={styles.bgClouds} style={{ '--bg-cloud-image': `url(${cloud})` } as CSSProperties} />
 
-      <div style={{ ...styles.clock, ...CLOCK_VARIABLES }}>
-        <div style={styles.face}>
+      <canvas ref={canvasRef} className={styles.rainCanvas} />
+
+      <div className={styles.clock} style={CLOCK_VARIABLES}>
+        <div className={styles.face}>
           {ROMAN_NUMERALS.map((numeral, i) => {
             const angle = (i + 1) * 30;
             const rad = ((angle - 90) * Math.PI) / 180;
@@ -202,8 +213,8 @@ const AnalogClock: React.FC = () => {
             return (
               <div
                 key={numeral}
+                className={styles.numeral}
                 style={{
-                  ...styles.numeral,
                   left: `calc(50% + var(--radius) * ${Math.cos(rad)}%)`,
                   top: `calc(50% + var(--radius) * ${Math.sin(rad)}%)`,
                   transform: `translate(-50%, -50%) rotate(${angle}deg)`,
@@ -215,8 +226,8 @@ const AnalogClock: React.FC = () => {
           })}
 
           <div
+            className={styles.hand}
             style={{
-              ...styles.hand,
               width: 'var(--h-width)',
               height: '28%',
               transform: `translate(-50%) rotate(${hourDegrees}deg)`,
@@ -224,8 +235,8 @@ const AnalogClock: React.FC = () => {
           />
           
           <div
+            className={styles.hand}
             style={{
-              ...styles.hand,
               width: 'var(--m-width)',
               height: '38%',
               transform: `translate(-50%) rotate(${minuteDegrees}deg)`,
@@ -233,125 +244,19 @@ const AnalogClock: React.FC = () => {
           />
           
           <div
+            className={styles.hand}
             style={{
-              ...styles.hand,
               width: 'var(--s-width)',
               height: '42%',
               transform: `translate(-50%) rotate(${secondDegrees}deg)`,
             }}
           />
           
-          <div style={styles.centerDot} />
+          <div className={styles.centerDot} />
         </div>
       </div>
     </main>
   );
-};
-
-const styles: { [key: string]: CSSProperties } = {
-  mainContainer: {
-    position: 'relative',
-    width: '100vw',
-    height: '100dvh',
-    backgroundColor: '#000',
-    overflow: 'hidden',
-    margin: 0,
-    padding: 0,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  bgGlass: {
-    position: 'absolute',
-    inset: 0,
-    backgroundImage: `url(${glassbreak})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    filter: 'contrast(0.9) brightness(0.2) saturate(5) hue-rotate(-10deg)',
-    zIndex: 0,
-  },
-  bgClouds: {
-    position: 'absolute',
-    inset: 0,
-    backgroundImage: `url(${cloud})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    mixBlendMode: 'screen',
-    filter: 'contrast(1.2) brightness(0.9) saturate(7) hue-rotate(20deg)',
-    zIndex: 3,
-    pointerEvents: 'none',
-  },
-  rainCanvas: {
-    position: 'absolute',
-    inset: 0,
-    width: '100%',
-    height: '100%',
-    zIndex: 2,
-    pointerEvents: 'none',
-  },
-  clock: {
-    position: 'relative',
-    width: 'var(--clock-size)',
-    height: 'var(--clock-size)',
-    zIndex: 2,
-  },
-  face: {
-    width: '100%',
-    height: '100%',
-    position: 'relative',
-  },
-  hand: {
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    transformOrigin: 'bottom center',
-    borderRadius: '4px 4px 1px 1px',
-    willChange: 'transform',
-    backgroundColor: '#B59263',
-    border: '1px solid #1A0F05',
-    boxShadow: `
-      0.5px 0.5px 0px rgba(255, 255, 255, 0.9),
-      -1px -1px 0px #000,
-      1px -1px 0px #000,
-      -1px 1px 0px #000,
-      1px 1px 0px #000,
-      2px 4px 5px rgba(0, 0, 0, 0.95),
-      0px 0px 15px rgba(0, 0, 0, 0.6)
-    `,
-  },
-  centerDot: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: 'var(--dot-size)',
-    height: 'var(--dot-size)',
-    borderRadius: '50%',
-    backgroundColor: '#5C401B',
-    backgroundImage: 'radial-gradient(circle at 35% 35%, #FFF 0%, #A38051 25%, #5C401B 75%, #000 100%)',
-    transform: 'translate(-50%, -50%)',
-    border: '2px solid #000',
-    boxShadow: '2px 3px 6px rgba(0,0,0,0.95), inset 1px 1px 1px rgba(255,255,255,0.8)',
-    zIndex: 4,
-  },
-  numeral: {
-    position: 'absolute',
-    fontSize: 'var(--font-size)',
-    fontFamily: "'Shrikhand', cursive",
-    whiteSpace: 'nowrap',
-    textRendering: 'geometricPrecision',
-    lineHeight: 1,
-    color: '#B59263',
-    WebkitTextStroke: '1px #1A0F05',
-    textShadow: `
-      0.5px 0.5px 0px rgba(255, 255, 255, 0.9),
-      -1px -1px 0px #000,
-      1px -1px 0px #000,
-      -1px 1px 0px #000,
-      1px 1px 0px #000,
-      2px 4px 5px rgba(0, 0, 0, 0.95),
-      0px 0px 15px rgba(0, 0, 0, 0.6)
-    `,
-  },
 };
 
 export default AnalogClock;

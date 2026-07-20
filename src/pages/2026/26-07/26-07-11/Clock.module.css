@@ -1,0 +1,104 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100dvh;
+  background: radial-gradient(circle at center, #2b2d18 0%, #594e07 100%);
+  color: #b3b3b9;
+  font-family: 'Playfair Display', 'Georgia', serif;
+  padding: 1vmin;
+  box-sizing: border-box;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle,
+    transparent 40%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.quoteContainer {
+  max-width: 800px;
+  z-index: 2;
+  transform: translateY(-5vh);
+}
+
+.title {
+  font-size: clamp(1.1rem, 3vmin, 3rem);
+  font-weight: 300;
+  line-height: 1.3;
+  color: #e1f9e3;
+  text-shadow: 0 2px 10px rgba(226, 179, 110, 0.15);
+  max-width: 90%;
+  margin: 0 auto;
+  letter-spacing: 0.05em;
+}
+
+.englishQuote {
+  margin-top: 2.5rem;
+  font-size: clamp(0.9rem, 2vmin, 1.8rem);
+  opacity: 0.75;
+}
+
+.sansAccents {
+  font-family: 'Inter', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: block;
+  font-weight: 500;
+}
+
+.spanishAuthor {
+  margin-top: 1.25rem;
+  font-size: 0.75em;
+  opacity: 0.85;
+  color: #b3b2af;
+}
+
+.englishAuthor {
+  margin-top: 0.85rem;
+  font-size: 0.65em;
+  opacity: 0.7;
+}
+
+.italic {
+  font-style: italic;
+  text-transform: none;
+}
+
+.clockPositioner {
+  position: absolute;
+  bottom: 5vmin;
+  right: 5vmin;
+  z-index: 2;
+  transform: rotate(-1.5deg);
+}
+
+.digitalClock {
+  font-size: clamp(1em, 4vmin, 2rem);
+  letter-spacing: 0.05em;
+  color: #e86a43;
+  text-shadow: 0 0 8px rgba(232, 106, 67, 0.4),
+    0 0 20px rgba(226, 179, 110, 0.3), -4px 4px 0px rgba(17, 9, 18, 0.8);
+  white-space: nowrap;
+}
+
+.dustCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: screen;
+}

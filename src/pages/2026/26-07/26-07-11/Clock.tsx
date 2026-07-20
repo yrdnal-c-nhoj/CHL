@@ -1,73 +1,6 @@
-import { useClockTime } from '@/utils/clockUtils';
-import React, { useEffect, useRef } from 'react';
-
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100vw',
-    height: '100dvh',
-    background: 'radial-gradient(circle at center, #2B2D18 0%, #594E07 100%)',
-    color: '#B3B3B9',
-    fontFamily: '"Playfair Display", "Georgia", serif',
-    padding: '1vmin',
-    boxSizing: 'border-box',
-    textAlign: 'center',
-    overflow: 'hidden',
-    position: 'relative',
-  },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'radial-gradient(circle, transparent 40%, rgba(0, 0, 0, 0.7) 100%)',
-    pointerEvents: 'none',
-    zIndex: 1,
-  },
-  quoteContainer: {
-    maxWidth: '800px',
-    zIndex: 2,
-    transform: 'translateY(-5vh)',
-  },
-  title: {
-    fontSize: 'clamp(1.1rem, 3vmin, 3rem)',
-    fontWeight: '300',
-    // fontStyle: 'italic',
-    lineHeight: '1.3',
-    color: '#E1F9E3',
-    textShadow: '0 2px 10px rgba(226, 179, 110, 0.15)',
-    maxWidth: '90%',
-    margin: '0 auto',
-    letterSpacing: '0.05em',
-  },
-  sansAccents: {
-    fontFamily: '"Inter", "Helvetica Neue", sans-serif',
-    letterSpacing: '0.08em',
-    textTransform: 'uppercase',
-  },
-  clockPositioner: {
-    position: 'absolute',
-    bottom: '5vmin',
-    right: '5vmin',
-    zIndex: 2,
-    transform: 'rotate(-1.5deg)',
-  },
-  digitalClock: {
-    fontSize: 'clamp(1em, 4vmin, 2rem)',
-    letterSpacing: '0.05em',
-    color: '#e86a43',
-    textShadow: `
-      0 0 8px rgba(232, 106, 67, 0.4),
-      0 0 20px rgba(226, 179, 110, 0.3),
-      -4px 4px 0px rgba(17, 9, 18, 0.8)
-    `,
-    whiteSpace: 'nowrap',
-  },
-};
+import { useSecondClock } from '@/utils/hooks';
+import { useEffect, useRef } from 'react';
+import styles from './Clock.module.css';
 
 function DustMotes() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -168,75 +101,43 @@ function DustMotes() {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        pointerEvents: 'none',
-        zIndex: 1,
-        mixBlendMode: 'screen',
-      }}
-    />
+    <canvas ref={canvasRef} className={styles.dustCanvas} />
   );
 }
 
 export default function CurrentTimeClock() {
-  const time = useClockTime();
+  const time = useSecondClock();
   
   const hours = time.getHours().toString();
   const minutes = time.getMinutes().toString().padStart(2, '0');
   const timeString = `*${hours}:${minutes}`;
 
   return (
-    <div style={styles.container}>
-      <div style={styles.overlay} />
+    <div className={styles.container}>
+      <div className={styles.overlay} />
       <DustMotes />
       
-      <div style={styles.quoteContainer}>
+      <div className={styles.quoteContainer}>
         {/* Spanish Original */}
-        <p style={styles.title}>
+        <p className={styles.title}>
           "El tiempo es la sustancia de que estoy hecho. El tiempo es un río que me arrebata, pero yo soy el río; es un tigre que me destroza, pero yo soy el tigre; es un fuego que me consume, pero yo soy el fuego."*
         </p>
-        <span style={{ 
-          ...styles.sansAccents,
-          display: 'block', 
-          marginTop: '1.25rem', 
-          fontSize: '0.75em', 
-          fontWeight: 500,
-          opacity: 0.85,
-          color: '#B3B2AF'
-        }}>
-          — Jorge Luis Borges, <span style={{ fontStyle: 'italic', textTransform: 'none' }}>Nueva refutación del tiempo</span>
+        <span className={`${styles.sansAccents} ${styles.spanishAuthor}`}>
+          — Jorge Luis Borges, <span className={styles.italic}>Nueva refutación del tiempo</span>
         </span>
 
         {/* English Translation */}
-        <p style={{ 
-          ...styles.title, 
-          marginTop: '2.5rem', 
-          fontSize: 'clamp(0.9rem, 2vmin, 1.8rem)', 
-          opacity: 0.75 
-        }}>
+        <p className={`${styles.title} ${styles.englishQuote}`}>
           "Time is the substance I am made of. Time is a river which sweeps me along, but I am the river; 
           it is a tiger which destroys me, but I am the tiger; it is a fire which consumes me, but I am the fire."*
         </p>
-        <span style={{ 
-          ...styles.sansAccents,
-          display: 'block', 
-          marginTop: '0.85rem', 
-          fontSize: '0.65em', 
-          fontWeight: 500,
-          opacity: 0.7 
-        }}>
-          — Jorge Luis Borges, <span style={{ fontStyle: 'italic', textTransform: 'none' }}>A New Refutation of Time</span>
+        <span className={`${styles.sansAccents} ${styles.englishAuthor}`}>
+          — Jorge Luis Borges, <span className={styles.italic}>A New Refutation of Time</span>
         </span>
       </div>
 
-      <div style={styles.clockPositioner}>
-        <time dateTime={time.toISOString()} style={styles.digitalClock}>
+      <div className={styles.clockPositioner}>
+        <time dateTime={time.toISOString()} className={styles.digitalClock}>
           {timeString}
         </time>
       </div>
