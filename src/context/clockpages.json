@@ -4679,7 +4679,8 @@
       "light",
       "metal",
       "screen",
-      "stone"
+      "stone", 
+      "NYC"
     ]
   },
   {
@@ -6340,7 +6341,9 @@
       "digital",
       "metal",
       "up-and-down",
-      "vertical"
+      "vertical",
+      "NYC",
+      "milliseconds"
     ]
   }
 ]
