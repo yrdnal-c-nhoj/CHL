@@ -1,0 +1,77 @@
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: var(--bg-image);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  filter: contrast(0.9) brightness(1.5);
+  z-index: 0;
+}
+
+.clockSvg {
+  width: min(80vw, 80vh);
+  height: min(80vw, 80vh);
+  position: relative;
+  z-index: 1;
+}
+
+.hourMarkerText {
+  fill: #d7ccbf;
+  font-size: 2vh;
+  font-weight: normal;
+  font-family: var(--font-family);
+  filter: url(#text-shadow);
+}
+
+.hourHand {
+  stroke: #f3e8da;
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.minuteHand {
+  stroke: #f3e8da;
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.secondHand {
+  stroke: #bbc17e;
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.centerPin {
+  fill: #abc17e;
+  stroke: #f3e8da;
+  stroke-width: 1;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
