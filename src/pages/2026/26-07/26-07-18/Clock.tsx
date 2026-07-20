@@ -61,13 +61,12 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: 'clamp(1rem, 2vw, 2rem)', 
     color: CONFIG.themeColor, // <-- Uses config color
     letterSpacing: '10vw',
-
     textShadow: `0 0 20px ${CONFIG.glowColor}`, // <-- Uses config color (Uncommented and tied to theme)
   },
   analogClockContainer: {
     position: 'relative', 
-    width: '9vh',
-    height: '9vh',
+    width: '10vh',
+    height: '10vh',
     borderRadius: '50%', 
     // border: `1px solid ${CONFIG.themeColor}`, // <-- Uses config color for the outline boundary
     // boxShadow: `0 0 70px ${CONFIG.glowColor}`, // <-- Uses config color
@@ -104,13 +103,13 @@ const AnalogClock: React.FC<{ time: Date }> = ({ time }) => {
   return (
     <div style={styles.analogClockContainer}>
       <div
-        style={{ ...styles.hand, width: '3px', height: '25%', transform: `translateX(-50%) rotate(${hourDegrees}deg)` }}
+        style={{ ...styles.hand, width: '0px', height: '25%', transform: `translateX(-50%) rotate(${hourDegrees}deg)` }}
       />
       <div
-        style={{ ...styles.hand, width: '2px', height: '55%', transform: `translateX(-50%) rotate(${minuteDegrees}deg)` }}
+        style={{ ...styles.hand, width: '0px', height: '55%', transform: `translateX(-50%) rotate(${minuteDegrees}deg)` }}
       />
       <div
-        style={{ ...styles.hand, width: '1px', height: '60%', transform: `translateX(-50%) rotate(${secondDegrees}deg)` }}
+        style={{ ...styles.hand, width: '2px', height: '55%', transform: `translateX(-50%) rotate(${secondDegrees}deg)` }}
       />
     </div>
   );
