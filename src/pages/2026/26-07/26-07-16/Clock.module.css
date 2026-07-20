@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(180deg, #65195e 0%, #4a0216 50%, #140507 100%);
+  background: linear-gradient(180deg, #9a45e6 0%, #b5d2fd 50%, #ebebfa 100%);
   overflow: hidden;
 }
 
@@ -13,4 +13,36 @@
   height: 95vmin;
   transform-style: preserve-3d;
   will-change: transform;
+}
+
+.timeDisplay {
+  font-family: 'ClockFont_26_07_16', monospace;
+  font-size: 26vmin;
+  color: #490c3b;
+  text-shadow: 0 0 10px #ab8138, 0 0 20px #9ca938;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  letter-spacing: -0.5vmin;
+}
+
+.colon {
+  font-size: 15vmin;
+  transform: translateY(-1.2vmin);
+  margin: 0 -1vmin;
+  display: inline-block;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
