@@ -1,0 +1,120 @@
+.mainContainer {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  background-color: #000;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bgGlass {
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg-glass-image);
+  background-size: cover;
+  background-position: center;
+  filter: contrast(0.9) brightness(0.2) saturate(5) hue-rotate(-10deg);
+  z-index: 0;
+}
+
+.bgClouds {
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg-cloud-image);
+  background-size: cover;
+  background-position: center;
+  mix-blend-mode: screen;
+  filter: contrast(1.2) brightness(0.9) saturate(7) hue-rotate(20deg);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.rainCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.clock {
+  position: relative;
+  width: var(--clock-size);
+  height: var(--clock-size);
+  z-index: 2;
+}
+
+.face {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  border-radius: 4px 4px 1px 1px;
+  will-change: transform;
+  background-color: #b59263;
+  border: 1px solid #1a0f05;
+  box-shadow: 0.5px 0.5px 0px rgba(255, 255, 255, 0.9),
+    -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000,
+    1px 1px 0px #000, 2px 4px 5px rgba(0, 0, 0, 0.95),
+    0px 0px 15px rgba(0, 0, 0, 0.6);
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  border-radius: 50%;
+  background-color: #5c401b;
+  background-image: radial-gradient(
+    circle at 35% 35%,
+    #fff 0%,
+    #a38051 25%,
+    #5c401b 75%,
+    #000 100%
+  );
+  transform: translate(-50%, -50%);
+  border: 2px solid #000;
+  box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.95),
+    inset 1px 1px 1px rgba(255, 255, 255, 0.8);
+  z-index: 4;
+}
+
+.numeral {
+  position: absolute;
+  font-size: var(--font-size);
+  font-family: 'Shrikhand', cursive;
+  white-space: nowrap;
+  text-rendering: geometricprecision;
+  line-height: 1;
+  color: #b59263;
+  -webkit-text-stroke: 1px #1a0f05;
+  text-shadow: 0.5px 0.5px 0px rgba(255, 255, 255, 0.9),
+    -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000,
+    1px 1px 0px #000, 2px 4px 5px rgba(0, 0, 0, 0.95),
+    0px 0px 15px rgba(0, 0, 0, 0.6);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
