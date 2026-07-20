@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import fontUrl from '@/assets/fonts/26fonts/26-07-18.ttf?url';
-import akiraImage from '@/assets/images/26_images/26-07/26-07-18/akira.webp';
+import akiraVideo from '@/assets/images/26_images/26-07/26-07-18/ak2.mp4';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 
@@ -47,15 +47,13 @@ const styles: { [key: string]: React.CSSProperties } = {
     boxSizing: 'border-box',
     zIndex: 2,
   },
-  backgroundImage: {
+  video: {
     position: 'absolute',
     top: 0,
     left: 0,
     width: '100%',
     height: '100%',
-    backgroundSize: 'contain', 
-    backgroundRepeat: 'no-repeat', 
-    backgroundPosition: 'center', 
+    objectFit: 'contain',
   },
   clock: {
     display: 'flex',
@@ -151,8 +149,13 @@ const Clock: React.FC = () => {
       </div>
       
       <div style={styles.imageContainer}>
-        <div
-          style={{ ...styles.backgroundImage, backgroundImage: `url(${akiraImage})` }}
+        <video
+          style={styles.video}
+          src={akiraVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
         />
       </div>
       
