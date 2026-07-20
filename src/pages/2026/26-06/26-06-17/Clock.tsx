@@ -141,36 +141,7 @@ const AnalogClock: React.FC = () => {
         playsInline
         src={carVideo}
       />
-      <time dateTime={isoTime} className={styles.timeWrapper}>
-        <div className={styles.digitalTime}>
-          <span className={styles.digitGroup}>
-            <span className={styles.digitBox}>
-              {String(hours).padStart(2, '0')[0]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(hours).padStart(2, '0')[1]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(minutes).padStart(2, '0')[0]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(minutes).padStart(2, '0')[1]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(seconds).padStart(2, '0')[0]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(seconds).padStart(2, '0')[1]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(Math.floor(ms / 10)).padStart(2, '0')[0]}
-            </span>
-            <span className={styles.digitBox}>
-              {String(Math.floor(ms / 10)).padStart(2, '0')[1]}
-            </span>
-          </span>
-        </div>
-      </time>
+      <time dateTime={isoTime} className={styles.timeWrapper} />
     </div>
   );
 };
