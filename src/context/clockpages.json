@@ -4944,7 +4944,7 @@
       "physics",
       "purple",
       "rotation",
-       "spin"
+      "spin"
     ]
   },
   {
@@ -6029,9 +6029,8 @@
     "title": "Rowboat",
     "tags": [
       "analog",
-      "animal",
       "float",
-      "swim",
+      "predator",
       "transport",
       "water"
     ]
@@ -6291,14 +6290,12 @@
     "date": "26-07-16",
     "title": "Digital Spinning",
     "tags": [
-      "digital",  
-     "image-free",
+      "digital",
+      "image-free",
       "physics",
       "rotation",
       "spin"
     ]
-
-
   },
   {
     "path": "26-07-17",
