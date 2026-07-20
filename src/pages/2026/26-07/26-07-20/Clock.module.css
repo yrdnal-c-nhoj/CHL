@@ -1,0 +1,66 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  overflow: hidden;
+  font-family: 'ClockFont_26_07_20', sans-serif;
+}
+
+.backgroundImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  z-index: 1;
+}
+
+.videoOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.timeWrapper {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.digitalTime {
+  color: white;
+  font-size: 15vh;
+}
+
+.digitGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1vh;
+}
+
+.digitBox {
+  padding: 0.05vh 1vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 0.8;
+  font-variant-numeric: tabular-nums;
+
+  /* Metal/Chrome Effect */
+  background: linear-gradient(180deg, #e90c0c 0%, #160b0b 40%, #cdf007 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 1px 1px 1px #cecdf5;
+}
