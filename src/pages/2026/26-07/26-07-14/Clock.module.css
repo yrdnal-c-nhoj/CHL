@@ -45,12 +45,5 @@
   font-family: 'ClockFont_26_07_14', 'Share Tech Mono', monospace;
   position: relative;
   z-index: 1;
-}
-
-.digitBox {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 0.6em;
-  font-variant-numeric: tabular-nums;
+  letter-spacing: 3vmin;
 }
