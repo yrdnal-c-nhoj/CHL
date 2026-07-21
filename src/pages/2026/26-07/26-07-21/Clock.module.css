@@ -36,9 +36,9 @@
 .clockFace {
   position: relative;
   z-index: 3;
-  width: 40vmin;
-  height: 40vmin;
-  border: 4px solid rgba(255, 255, 255, 0.7);
+  width: 99vmin;
+  height: 99vmin;
+  border: 1px solid rgba(228, 196, 119, 0.812);
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.2);
   /* backdrop-filter: blur(5px); */
@@ -53,35 +53,35 @@
   bottom: 50%;
   left: 50%;
   transform-origin: bottom center;
-  background-color: #fff;
+  background-color:  rgba(228, 196, 119, 0.812);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 .hourHand {
-  width: 6px;
+  width: 1px;
   height: 25%;
   margin-left: -3px;
   border-radius: 3px;
 }
 
 .minuteHand {
-  width: 4px;
-  height: 35%;
+  width: 1px;
+  height: 45%;url(https://www.instagram.com/p/DU8SM_NmgFO/)
   margin-left: -2px;
   border-radius: 2px;
 }
 
 .secondHand {
-  width: 2px;
-  height: 40%;
+  width: 1px;
+  height: 50%;
   margin-left: -1px;
-  background-color: #0fa; /* Match the old glow color */
+  background-color:  rgba(228, 196, 119, 0.812);/* Match the old glow color */
 }
 
 .centerDot {
-  width: 12px;
-  height: 12px;
-  background-color: #fff;
+  width: 8px;
+  height: 8px;
+  background-color:  rgba(228, 196, 119, 0.812);
   border-radius: 50%;
   z-index: 10;
 }
