@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import ClockPageNav from '@/components/ClockPageNav';
 import { useDataContext } from '@/context/DataContext';
@@ -18,13 +18,9 @@ import { useClockPage } from '@/hooks/useClockPage';
  */
 export default function ClockPage() {
   const { date } = useParams<{ date: string }>();
+  const navigate = useNavigate();
 
   const { items = [] } = useDataContext();
-
-
-
-
-
 
   const currentItem = React.useMemo(() => {
     if (!date) return null;
@@ -57,12 +53,18 @@ export default function ClockPage() {
     return (d ?? '').toString();
   }, []);
 
+  const handleContainerClick = React.useCallback(() => {
+    navigate('/');
+  }, [navigate]);
 
   return (
     <div
+      onClick={handleContainerClick}
+      role="button"
+      tabIndex={0}
       style={{
         position: 'relative',
-        width: '100%',
+        width: '100vw',
         height: '100%',
         minHeight: '100dvh',
       }}
@@ -114,4 +116,3 @@ export default function ClockPage() {
     </div>
   );
 }
-
