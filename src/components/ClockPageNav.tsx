@@ -127,6 +127,7 @@ const ClockPageNav = ({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchCancel}
+      onClick={(e) => e.stopPropagation()}
     >
       <Link
         to={prevItem ? `/${prevItem.date}` : '/'}
