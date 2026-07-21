@@ -1,56 +1,65 @@
 .clockWrapper {
+  position: relative;
   width: 100vw;
   height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #191b1b;
 }
 
 .background {
   position: absolute;
-  inset: 0;
-  filter: brightness(1.2) contrast(0.8) saturate(1.1) hue-rotate(40deg);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: -2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.backgroundVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(1) contrast(1.2) saturate(6);
 }
 
 .clockContainer {
+  font-family: 'ShapesFont', monospace;
+  position: relative;
+  z-index: 2;
   display: grid;
+  color: #fba433;
+  justify-items: center;
+  align-items: center;
+  /* Standard Web CSS Text Shadow syntax: "h-offset v-offset blur-radius color" */
+  text-shadow: 2px 2px 0px #c5b0f0, -2px 2px 0px #22045f;
+
+  /* Laptop / Desktop (Default): All 6 digits in 1 row */
   grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: 1fr;
+  gap: 4vw;
 }
 
 .digit {
+  line-height: 1;
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-family: 'ShapesFont', monospace;
-  font-size: 12vw;
-  user-select: none;
-  overflow: hidden;
-  color: #b4b2b1;
-  text-shadow:
-    1px 1px 0px #eb7f7f;
-  font-weight: 300;
-  letter-spacing: 0.05em;
-  height: 100dvh;
-  width: 16.66vw;
-  box-sizing: border-box;
-  position: relative;
+  align-items: center;
+  width: 1ch;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(3rem, 15vw, 12rem);
 }
 
-@media (max-width: 600px) {
+/* Phone: 2 columns, 3 rows */
+@media (max-width: 768px) {
   .clockContainer {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
+    gap: 3vh 15vw;
   }
+
   .digit {
-    font-size: 14vh;
-    height: 33.33vh;
-    width: 50vw;
+    font-size: clamp(4rem, 33vh, 8rem);
   }
 }
