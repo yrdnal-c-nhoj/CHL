@@ -1,0 +1,87 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  overflow: hidden;
+  filter: brightness(1.3) contrast(0.8) saturate(1.3) hue-rotate(-10deg);
+}
+
+.videoBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* This keeps the main video centered and visible */
+  transform: scale(1.4); /* Zoom in on the main video */
+  z-index: 2;
+}
+
+.repeatingBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* This scales the video to fill the empty space */
+  /* filter: blur(10px) brightness(0.7); Blur and darken the background layer */
+  z-index: 1; /* Place it behind the main video */
+}
+
+
+.clockFace {
+  position: relative;
+  z-index: 3;
+  width: 40vmin;
+  height: 40vmin;
+  border: 4px solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  /* backdrop-filter: blur(5px); */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.hourHand {
+  width: 6px;
+  height: 25%;
+  margin-left: -3px;
+  border-radius: 3px;
+}
+
+.minuteHand {
+  width: 4px;
+  height: 35%;
+  margin-left: -2px;
+  border-radius: 2px;
+}
+
+.secondHand {
+  width: 2px;
+  height: 40%;
+  margin-left: -1px;
+  background-color: #0fa; /* Match the old glow color */
+}
+
+.centerDot {
+  width: 12px;
+  height: 12px;
+  background-color: #fff;
+  border-radius: 50%;
+  z-index: 10;
+}
