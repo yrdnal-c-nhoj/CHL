@@ -40,9 +40,6 @@
   height: 99vmin;
   border: 1px solid rgba(228, 196, 119, 0.812);
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.2);
-  /* backdrop-filter: blur(5px); */
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -54,7 +51,6 @@
   left: 50%;
   transform-origin: bottom center;
   background-color:  rgba(228, 196, 119, 0.812);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 .hourHand {
@@ -66,7 +62,7 @@
 
 .minuteHand {
   width: 1px;
-  height: 45%;url(https://www.instagram.com/p/DU8SM_NmgFO/)
+  height: 45%;
   margin-left: -2px;
   border-radius: 2px;
 }
@@ -79,9 +75,9 @@
 }
 
 .centerDot {
-  width: 8px;
-  height: 8px;
-  background-color:  rgba(228, 196, 119, 0.812);
+  width: 5px;
+  height: 5px;
+  background-color:  rgba(228, 195, 119, 0.642);
   border-radius: 50%;
   z-index: 10;
 }
