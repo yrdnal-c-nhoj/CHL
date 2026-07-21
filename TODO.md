@@ -1,9 +1,7 @@
-# TODO
-
-## Clock page bottom nav missing
-- [ ] Inspect `ClockPage.tsx` to find why nav isn’t rendering
-- [ ] Update `src/pages/ClockPage.tsx` to render `ClockPageNav` (restore prior behavior)
-- [ ] Wire `prevItem` / `nextItem` / `currentItem` using `items` from `DataContext`
-- [ ] Ensure `overlayVisible` behavior doesn’t hide the nav (keep original working behavior)
-- [ ] Run `npm run build` and `npm test` (if available) to confirm no regressions
+## Tile MP4 Video Background (26-07-22)
+- [x] Analyze current code and gather information
+- [x] Create plan and get approval
+- [ ] Update `Clock.module.css` — refactor `.background` for canvas tiling
+- [ ] Rewrite `Clock.tsx` — implement canvas-based video tiling with CSS modules
+- [ ] Verify build succeeds (`npm run build`)
 
