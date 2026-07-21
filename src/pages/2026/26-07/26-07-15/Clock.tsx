@@ -1,7 +1,7 @@
 import fontUrl from '@/assets/fonts/26fonts/26-07-14.ttf?url';
 import chandelierBg from '@/assets/images/26_images/26-07/26-07-14/root.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 export const assets = [chandelierBg, fontUrl];
@@ -9,7 +9,7 @@ export const assets = [chandelierBg, fontUrl];
 const FONT_FAMILY = 'CustomFont260714';
 
 const AnalogClock: React.FC = () => {
-  const time = useClockTime();
+  const time = useSecondClock();
 
   // Load the custom font using the suspense-based loader
   const fontConfigs = useMemo(
@@ -39,50 +39,19 @@ const AnalogClock: React.FC = () => {
     return { hourDegrees: hr, minuteDegrees: min, secondDegrees: sec };
   }, [time]);
 
-  const containerStyle: React.CSSProperties = {
-    position: 'relative',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100vw',
-    height: '100dvh',
-    margin: 0,
-    padding: 0,
-    overflow: 'hidden',
-    backgroundColor: '#000', // Fallback color
-  };
-
-  const backgroundStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundImage: `url(${chandelierBg})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    backgroundSize: '100% 100%',
-    filter: 'contrast(0.9) brightness(1.5)',
-    zIndex: 0,
-  };
-
   return (
-    <main style={containerStyle}>
-      <div style={backgroundStyle} />
+    <main className={styles.container}>
+      <div
+        className={styles.background}
+        style={{ '--bg-image': `url(${chandelierBg})` } as React.CSSProperties}
+      />
       <svg
         viewBox="0 0 200 200"
-        style={{
-          width: 'min(80vw, 80vh)',
-          height: 'min(80vw, 80vh)',
-          position: 'relative', // Ensure SVG is in the same stacking context
-          zIndex: 1,
-       }}
+        className={styles.clockSvg}
       >
         {/* Filter for text shadow */}
         <defs>
-          <filter id="text-shadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="1" dy="1" stdDeviation="0" floodColor="#000" floodOpacity="0.8" />
-          </filter>
+          <filter id="text-shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="1" dy="1" stdDeviation="0" floodColor="#000" floodOpacity="0.8" /></filter>
         </defs>
 
         {/* Clock Face */}
@@ -108,14 +77,7 @@ const AnalogClock: React.FC = () => {
                 x={x}
                 y={y}
                 dy="0.35em"
-                textAnchor="middle"
-                style={{
-                  fill: '#D7CCBF',
-                  fontSize: '2vh',
-                  fontWeight: 'normal',
-                  fontFamily: FONT_FAMILY,
-                  filter: 'url(#text-shadow)',
-                }}
+                className={styles.hourMarkerText}
               >
                 {hour}
               </text>
@@ -125,22 +87,25 @@ const AnalogClock: React.FC = () => {
 
         {/* Hour Hand */}
         <g transform={`rotate(${hourDegrees} 100 100)`}>
-          <line x1="100" y1="100" x2="100" y2="60" stroke="#F3E8DA" strokeWidth="1" strokeLinecap="round" />
+          <line x1="100" y1="100" x2="100" y2="60" className={styles.hourHand} />
         </g>
 
         {/* Minute Hand */}
         <g transform={`rotate(${minuteDegrees} 100 100)`}>
-          <line x1="100" y1="100" x2="100" y2="40" stroke="#F3E8DA" strokeWidth="1" strokeLinecap="round" />
+          <line x1="100" y1="100" x2="100" y2="40" className={styles.minuteHand} />
         </g>
 
         {/* Second Hand */}
         <g transform={`rotate(${secondDegrees} 100 100)`}>
-          <line x1="100" y1="110" x2="100" y2="30" stroke="#BBC17E" strokeWidth="1" strokeLinecap="round" />
+          <line x1="100" y1="110" x2="100" y2="30" className={styles.secondHand} />
         </g>
 
         {/* Center Pin */}
-        <circle cx="100" cy="100" r="4" fill="#ABC17E"stroke="#F3E8DA" strokeWidth="1" />
+        <circle cx="100" cy="100" r="4" className={styles.centerPin} />
       </svg>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
     </main>
   );
 };

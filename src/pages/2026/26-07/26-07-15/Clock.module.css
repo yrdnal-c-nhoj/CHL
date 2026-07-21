@@ -36,6 +36,7 @@
   fill: #d7ccbf;
   font-size: 2vh;
   font-weight: normal;
+  text-anchor: middle;
   font-family: var(--font-family);
   filter: url(#text-shadow);
 }
