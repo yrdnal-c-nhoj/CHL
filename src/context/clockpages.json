@@ -4679,7 +4679,7 @@
       "light",
       "metal",
       "screen",
-      "stone", 
+      "stone",
       "NYC"
     ]
   },
@@ -6354,6 +6354,20 @@
       "analog",
       "mechanical",
       "spin"
+    ]
+  },
+  {
+    "path": "26-07-22",
+    "date": "26-07-22",
+    "title": "Zoom",
+    "tags": [
+      "digital",
+      "video",
+      "mp4",
+      "zoom",
+      "background",
+      "typeface",
+      "monochrome"
     ]
   }
 ]
