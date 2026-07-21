@@ -4671,6 +4671,7 @@
     "title": "Empire",
     "tags": [
       "analog",
+      "NYC",
       "Warhol",
       "apple",
       "b+w",
@@ -4679,8 +4680,7 @@
       "light",
       "metal",
       "screen",
-      "stone",
-      "NYC"
+      "stone"
     ]
   },
   {
@@ -6339,11 +6339,11 @@
     "title": "Machine Age",
     "tags": [
       "digital",
-      "metal",
-      "up-and-down",
-      "vertical",
       "NYC",
-      "milliseconds"
+      "metal",
+      "milliseconds",
+      "up-and-down",
+      "vertical"
     ]
   },
   {
@@ -6352,6 +6352,8 @@
     "title": "Multi-Axis Trainer",
     "tags": [
       "analog",
+      "body",
+      "gravity",
       "mechanical",
       "spin"
     ]
