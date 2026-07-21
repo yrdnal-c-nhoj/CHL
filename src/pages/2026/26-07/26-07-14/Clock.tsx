@@ -85,11 +85,10 @@ export default function DigitalClock() {
   const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
 
-  // Memoize the formatted time string to avoid re-computation on every render.
   const timeString = useMemo(() => {
     const hours = formatTime(time.getHours());
     const minutes = formatTime(time.getMinutes());
-    return `${hours}:${minutes}`;
+    return `${hours} ${minutes}`;
   }, [time]);
 
   return (
