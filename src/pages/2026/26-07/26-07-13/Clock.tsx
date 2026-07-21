@@ -1,10 +1,9 @@
-import React, { useMemo } from 'react';
-
 import shapesFont from '@/assets/fonts/26fonts/26-07-13.ttf?url';
 import clockVideo from '@/assets/images/26_images/26-07/26-07-13/click.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 
 export const assets = [clockVideo, shapesFont];
 
@@ -135,16 +134,12 @@ const Clock: React.FC = () => {
 
       <time
         dateTime={time.toISOString()}
-        aria-label={`Current time is ${time.toLocaleTimeString()}`}
+        aria-label="A digital clock displaying the time using abstract shapes."
         style={styles.clockContainer}
         className="responsive-clock-grid"
       >
         {displayed.map((letter, index) => (
-          <div 
-            key={index} 
-            style={styles.digit} 
-            className="responsive-digit"
-          >
+          <div key={index} style={styles.digit} className="responsive-digit">
             {letter}
           </div>
         ))}
