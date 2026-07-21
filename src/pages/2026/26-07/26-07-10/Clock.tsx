@@ -1,4 +1,4 @@
-import fontUrl from '@/assets/fonts/26fonts/26-07-11.ttf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-07-10.ttf?url';
 import cloud from '@/assets/images/26_images/26-07/26-07-10/clouds.webp';
 import glassbreak from '@/assets/images/26_images/26-07/26-07-10/sunrise.webp';
 import type { FontConfig } from '@/types/clock';
@@ -11,7 +11,7 @@ import styles from './Clock.module.css';
 // =========================
 // ASSET EXPORTS (Required)
 // =========================
-export const assets = [glassbreak, cloud];
+export const assets = [glassbreak, cloud, fontUrl];
 
 const fontConfigs: FontConfig[] = [
   {
@@ -19,6 +19,20 @@ const fontConfigs: FontConfig[] = [
     fontUrl,
   },
 ];
+
+// Constants for the rain simulation for better readability and maintainability
+const RAIN_CONSTANTS = {
+  INITIAL_DELAY: 375, // ms before the first storm cycle begins
+  MAX_DENSITY: 350, // Max number of raindrops on screen
+  MIN_SPEED: 22,
+  SPEED_VARIANCE: 18,
+  MIN_LENGTH: 15,
+  LENGTH_VARIANCE: 25,
+  MIN_OPACITY: 0.6,
+  OPACITY_VARIANCE: 0.4,
+  STROKE_WIDTH: 1.2,
+  SHADOW_WIDTH: 3.5,
+};
 
 const ROMAN_NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 
@@ -79,9 +93,8 @@ const AnalogClock: FC = () => {
     let currentState: StormState = 'calm';
     let stateStartTime = performance.now();
     
-    // Exact 3/8 of a second delay for the very first interval
-    let targetDuration = 375; 
-    const MAX_RAIN_DENSITY = 350; 
+    // Initial delay before the first storm cycle
+    let targetDuration = RAIN_CONSTANTS.INITIAL_DELAY;
 
     // Function to generate tightly governed randomized phase windows
     const getRandomDuration = (state: StormState): number => {
@@ -126,11 +139,11 @@ const AnalogClock: FC = () => {
       if (currentState === 'calm') {
         targetDropsCount = 0;
       } else if (currentState === 'rampUp') {
-        targetDropsCount = progress * MAX_RAIN_DENSITY;
+        targetDropsCount = progress * RAIN_CONSTANTS.MAX_DENSITY;
       } else if (currentState === 'downpour') {
-        targetDropsCount = MAX_RAIN_DENSITY;
+        targetDropsCount = RAIN_CONSTANTS.MAX_DENSITY;
       } else if (currentState === 'fade') {
-        targetDropsCount = MAX_RAIN_DENSITY * (1 - progress);
+        targetDropsCount = RAIN_CONSTANTS.MAX_DENSITY * (1 - progress);
       }
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -143,9 +156,9 @@ const AnalogClock: FC = () => {
         drops.push({
           x: Math.random() * canvas.width,
           y: Math.random() * -canvas.height,
-          speed: Math.random() * 18 + 22,
-          length: Math.random() * 25 + 15,
-          opacity: Math.random() * 0.4 + 0.6,
+          speed: Math.random() * RAIN_CONSTANTS.SPEED_VARIANCE + RAIN_CONSTANTS.MIN_SPEED,
+          length: Math.random() * RAIN_CONSTANTS.LENGTH_VARIANCE + RAIN_CONSTANTS.MIN_LENGTH,
+          opacity: Math.random() * RAIN_CONSTANTS.OPACITY_VARIANCE + RAIN_CONSTANTS.MIN_OPACITY,
         });
       }
 
@@ -156,14 +169,14 @@ const AnalogClock: FC = () => {
         ctx.globalAlpha = d.opacity;
 
         ctx.strokeStyle = 'rgba(0, 0, 0, 0.75)';
-        ctx.lineWidth = 3.5; 
+        ctx.lineWidth = RAIN_CONSTANTS.SHADOW_WIDTH;
         ctx.beginPath();
         ctx.moveTo(d.x, d.y);
         ctx.lineTo(d.x - 2, d.y + d.length);
         ctx.stroke();
 
         ctx.strokeStyle = 'rgba(225, 245, 255, 0.95)';
-        ctx.lineWidth = 1.2;
+        ctx.lineWidth = RAIN_CONSTANTS.STROKE_WIDTH;
         ctx.beginPath();
         ctx.moveTo(d.x, d.y);
         ctx.lineTo(d.x - 2, d.y + d.length);
@@ -193,7 +206,7 @@ const AnalogClock: FC = () => {
     <main
       className={styles.mainContainer}
       role="img"
-      aria-label={`An analog clock showing the time is ${time.toLocaleTimeString()}`}
+      aria-label="An analog clock with a stormy, rainy background."
     >
       <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
