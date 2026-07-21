@@ -2,6 +2,76 @@ import { useSecondClock } from '@/utils/hooks';
 import { useEffect, useRef } from 'react';
 import styles from './Clock.module.css';
 
+// --- Constants for DustMotes Animation ---
+const MOTE_CONFIG = {
+  COUNT: 45,
+  MIN_SIZE: 0.5,
+  SIZE_VARIANCE: 1.5,
+  MIN_VERTICAL_SPEED: 0.05,
+  VERTICAL_SPEED_VARIANCE: 0.2,
+  HORIZONTAL_SPEED_VARIANCE: 0.15,
+  MIN_ALPHA: 0.1,
+  ALPHA_VARIANCE: 0.4,
+  MIN_FADE_SPEED: 0.002,
+  FADE_SPEED_VARIANCE: 0.005,
+  MIN_SWAY_SPEED: 0.005,
+  SWAY_SPEED_VARIANCE: 0.01,
+  SWAY_MAGNITUDE: 0.1,
+  FADE_OUT_Y_THRESHOLD: 100, // Y-coordinate to start fading out at the top
+  FADE_OUT_SPEED: 0.005,
+  SHADOW_BLUR: 4,
+  SHADOW_COLOR: 'rgba(241, 219, 186, 0.3)',
+  FILL_STYLE: 'rgba(226, 179, 110, %ALPHA%)',
+};
+
+// --- Mote Class Definition ---
+// Moved outside the component for better code organization and to prevent re-declaration.
+class Mote {
+  x = 0; y = 0; size = 0; speedX = 0; speedY = 0;
+  alpha = 0; maxAlpha = 0; fadeSpeed = 0; phase = 0; swaySpeed = 0;
+
+  constructor(private canvasWidth: number, private canvasHeight: number) {
+    this.reset(true);
+  }
+
+  reset(init = false) {
+    this.x = Math.random() * this.canvasWidth;
+    this.y = init ? Math.random() * this.canvasHeight : this.canvasHeight + 10;
+    this.size = Math.random() * MOTE_CONFIG.SIZE_VARIANCE + MOTE_CONFIG.MIN_SIZE;
+    this.speedX = (Math.random() - 0.5) * MOTE_CONFIG.HORIZONTAL_SPEED_VARIANCE;
+    this.speedY = -(Math.random() * MOTE_CONFIG.VERTICAL_SPEED_VARIANCE + MOTE_CONFIG.MIN_VERTICAL_SPEED);
+    this.alpha = 0;
+    this.maxAlpha = Math.random() * MOTE_CONFIG.ALPHA_VARIANCE + MOTE_CONFIG.MIN_ALPHA;
+    this.fadeSpeed = Math.random() * MOTE_CONFIG.FADE_SPEED_VARIANCE + MOTE_CONFIG.MIN_FADE_SPEED;
+    this.phase = Math.random() * Math.PI * 2;
+    this.swaySpeed = Math.random() * MOTE_CONFIG.SWAY_SPEED_VARIANCE + MOTE_CONFIG.MIN_SWAY_SPEED;
+  }
+
+  update() {
+    this.y += this.speedY;
+    this.phase += this.swaySpeed;
+    this.x += this.speedX + Math.sin(this.phase) * MOTE_CONFIG.SWAY_MAGNITUDE;
+
+    if (this.y < MOTE_CONFIG.FADE_OUT_Y_THRESHOLD) {
+      this.alpha -= MOTE_CONFIG.FADE_OUT_SPEED;
+    } else if (this.alpha < this.maxAlpha) {
+      this.alpha += this.fadeSpeed;
+    }
+
+    if (this.y < 0 || this.x < -10 || this.x > this.canvasWidth + 10 || this.alpha <= 0) {
+      this.reset(false);
+    }
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    const fillStyle = MOTE_CONFIG.FILL_STYLE.replace('%ALPHA%', String(Math.max(0, this.alpha)));
+    ctx.fillStyle = fillStyle;
+    ctx.fill();
+  }
+}
+
 function DustMotes() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -20,74 +90,23 @@ function DustMotes() {
     };
     window.addEventListener('resize', handleResize);
 
-    class Mote {
-      x = 0;
-      y = 0;
-      size = 0;
-      speedX = 0;
-      speedY = 0;
-      alpha = 0;
-      maxAlpha = 0;
-      fadeSpeed = 0;
-      phase = 0;
-      swaySpeed = 0;
-
-      constructor() {
-        this.reset(true);
-      }
-
-      reset(init = false) {
-        this.x = Math.random() * width;
-        this.y = init ? Math.random() * height : height + 10;
-        this.size = Math.random() * 1.5 + 0.5;
-        this.speedX = (Math.random() - 0.5) * 0.15;
-        this.speedY = -(Math.random() * 0.2 + 0.05);
-        this.alpha = 0;
-        this.maxAlpha = Math.random() * 0.4 + 0.1;
-        this.fadeSpeed = Math.random() * 0.005 + 0.002;
-        this.phase = Math.random() * Math.PI * 2;
-        this.swaySpeed = Math.random() * 0.01 + 0.005;
-      }
-
-      update() {
-        this.y += this.speedY;
-        this.phase += this.swaySpeed;
-        this.x += this.speedX + Math.sin(this.phase) * 0.1;
-
-        if (this.y < 100) {
-          this.alpha -= 0.005;
-        } else if (this.alpha < this.maxAlpha) {
-          this.alpha += this.fadeSpeed;
-        }
-
-        if (this.y < 0 || this.x < -10 || this.x > width + 10 || this.alpha <= 0) {
-          this.reset(false);
-        }
-      }
-
-      draw() {
-        if (!ctx) return;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(226, 179, 110, ${Math.max(0, this.alpha)})`;
-        ctx.shadowBlur = 4;
-        ctx.shadowColor = 'rgba(241, 219, 186, 0.3)';
-        ctx.fill();
-      }
-    }
-
-    const motes = Array.from({ length: 45 }, () => new Mote());
+    const motes = Array.from({ length: MOTE_CONFIG.COUNT }, () => new Mote(width, height));
     let animationFrameId: number;
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
       
-      // Keep shadows limited only to when drawing the active particles
+      // Set shadow properties once before the loop for better performance.
+      ctx.shadowBlur = MOTE_CONFIG.SHADOW_BLUR;
+      ctx.shadowColor = MOTE_CONFIG.SHADOW_COLOR;
+
       for (let i = 0; i < motes.length; i++) {
         motes[i].update();
-        motes[i].draw();
+        motes[i].draw(ctx);
       }
-      ctx.shadowBlur = 0; 
+
+      // Reset shadow blur after drawing all motes.
+      ctx.shadowBlur = 0;
 
       animationFrameId = requestAnimationFrame(render);
     };
