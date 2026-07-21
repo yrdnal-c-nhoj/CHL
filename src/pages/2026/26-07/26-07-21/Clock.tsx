@@ -1,10 +1,10 @@
 import type { FontConfig } from '@/types/clock';
 import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React, from 'react';
+import React from 'react';
 
-import gyroVideo from '@/assets/images/26_images/26-07/26-07-21/200.mp4';
 import fontUrl from '@/assets/fonts/26fonts/26-07-20.ttf?url';
+import gyroVideo from '@/assets/images/26_images/26-07/26-07-21/200.mp4';
 
 import styles from './Clock.module.css';
 
@@ -15,7 +15,7 @@ const fontConfigs: FontConfig[] = [
   { fontFamily: 'ClockFont_26_07_21', fontUrl },
 ];
 
-const DigitalClock: React.FC = () => {
+const AnalogClock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
   const now = useClockTime('ms');
@@ -48,7 +48,7 @@ const DigitalClock: React.FC = () => {
         muted
         playsInline
       />
-    
+      <div className={styles.overlay} />
       <div className={styles.clockFace}>
         <div
           className={`${styles.hand} ${styles.hourHand}`}
@@ -70,4 +70,4 @@ const DigitalClock: React.FC = () => {
   );
 };
 
-export default DigitalClock;
+export default AnalogClock;
