@@ -19,6 +19,21 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
+// This mapping converts numeric digits to the corresponding characters in the "ShapesFont".
+// Defined outside the component to prevent re-declaration on every render.
+const DIGIT_TO_SHAPE_MAP: Record<string, string> = {
+  '0': 'A',
+  '1': 'R',
+  '2': 'j',
+  '3': '8',
+  '4': 'm',
+  '5': 'l',
+  '6': '6',
+  '7': 'o',
+  '8': 'K',
+  '9': '3',
+};
+
 const styles: Record<string, React.CSSProperties> = {
   clockWrapper: {
     position: 'relative',
@@ -49,12 +64,11 @@ clockContainer: {
   position: 'relative',
   zIndex: 2,
   display: 'grid',
-  gap: '4vw',
   color: '#FBA433',
   justifyItems: 'center',
   alignItems: 'center',
   // Standard Web CSS Text Shadow syntax: "h-offset v-offset blur-radius color"
-  textShadow: '2px 2px 0px #C5B0F0 , -2px 2px 0px #22045F', 
+  textShadow: '2px 2px 0px #C5B0F0, -2px 2px 0px #22045F',
 },
   digit: {
     lineHeight: 1,
@@ -78,21 +92,9 @@ const Clock: React.FC = () => {
 
   const digits = timeString.split('');
 
-  // 0-9 => A-J
-  const digitToLetter: Record<string, string> = {
-    '0': 'A',
-    '1': 'R',
-    '2': 'j',
-    '3': '8',
-    '4': 'm',
-    '5': 'l',
-    '6': '6',
-    '7': 'o',
-    '8': 'K',
-    '9': '3',
-  };
-
-  const displayed = digits.map((d) => digitToLetter[d] ?? d);
+  const displayed = useMemo(() =>
+    digits.map((d) => DIGIT_TO_SHAPE_MAP[d] ?? d),
+    [digits]);
 
   return (
     <div style={styles.clockWrapper}>
@@ -101,6 +103,7 @@ const Clock: React.FC = () => {
         /* Laptop / Desktop (Default): All 6 digits in 1 row */
         .responsive-clock-grid {
           grid-template-columns: repeat(6, 1fr);
+          gap: 4vw;
         }
         .responsive-digit {
           font-size: clamp(3rem, 15vw, 12rem);
@@ -111,7 +114,7 @@ const Clock: React.FC = () => {
           .responsive-clock-grid {
             grid-template-columns: repeat(2, 1fr);
             grid-template-rows: repeat(3, 1fr);
-            gap: 3vh 15vw !important;
+            gap: 3vh 15vw;
           }
           .responsive-digit {
             font-size: clamp(4rem, 33vh, 8rem);
