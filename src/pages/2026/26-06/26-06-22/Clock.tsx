@@ -196,14 +196,16 @@ export default function DigitalClock() {
 
   return (
     <div style={styles.wrapper}>
-      <div style={styles.grid}>
-        {ELEMENTS.map((el, i) => (
-          <ClockCell
-            key={`${el.type}-${el.idx}`}
-            val={el.val}
-            elRef={refsArr.current[i]}
-          />
-        ))}
+      <div style={styles.gridContainer}>
+        <div style={styles.grid}>
+          {ELEMENTS.map((el, i) => (
+            <ClockCell
+              key={`${el.type}-${el.idx}`}
+              val={el.val}
+              elRef={refsArr.current[i]}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -223,13 +225,20 @@ const styles: Record<string, React.CSSProperties> = {
     boxSizing:       'border-box',
     overflow:        'hidden',
   },
+  gridContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    padding: '4vmin',
+    boxSizing: 'border-box',
+  },
   grid: {
     display:               'grid',
     gridTemplateColumns:   'repeat(14, 1fr)',
     gridTemplateRows:      'repeat(10, 1fr)',
-    width:                 '96vmin',
-    height:                'calc(96vmin / 1.4)',
-    padding:               '4vmin',
+    aspectRatio:           '1.4 / 1',
     gap:                   '0.5px',
     userSelect:            'none',
     boxSizing:             'border-box',
