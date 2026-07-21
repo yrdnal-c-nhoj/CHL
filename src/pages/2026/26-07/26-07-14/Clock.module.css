@@ -54,10 +54,3 @@
   width: 0.6em;
   font-variant-numeric: tabular-nums;
 }
-
-.colon {
-  position: relative;
-  top: -0.15em;
-  width: 0.3em;
-  justify-content: center;
-}
