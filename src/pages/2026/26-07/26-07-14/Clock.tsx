@@ -1,20 +1,20 @@
 import type { FontConfig } from '@/types/clock';
-import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React from 'react';
+import { useSecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 
 // Assuming an image exists in the corresponding folder for the date
-import tileImage from '@/assets/images/26_images/26-07/26-07-11/b.webp'; // The tiled overlay image
-import backgroundImage from '@/assets/images/26_images/26-07/26-07-11/door.webp'; // The main background
+import tileImage from '@/assets/images/26_images/26-07/26-07-14/b.webp'; // The tiled overlay image
+import backgroundImage from '@/assets/images/26_images/26-07/26-07-14/door.webp'; // The main background
 // Import the font with the corresponding date from the assets folder
-import fontUrl from '@/assets/fonts/26fonts/26-07-11.otf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-07-14.otf?url';
 
 // Consolidate into a single assets export
 export const assets = [backgroundImage, tileImage, fontUrl];
 
 const fontConfigs: FontConfig[] = [
   {
-    fontFamily: 'ClockFont_26_07_11',
+    fontFamily: 'ClockFont_26_07_14',
     fontUrl,
   },
 ];
@@ -55,7 +55,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     color: 'white',
     fontSize: 'clamp(2rem, 22vmin, 12rem)',
     textShadow: '0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgb(0, 128, 255)',
-    fontFamily: 'ClockFont_26_07_11, "Share Tech Mono", monospace',
+    fontFamily: 'ClockFont_26_07_14, "Share Tech Mono", monospace',
     position: 'relative', // Ensure clock is on top of the background layers
     zIndex: 1,
   },
@@ -82,14 +82,15 @@ const styles: { [key: string]: React.CSSProperties } = {
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
 export default function DigitalClock() {
-  const time = useClockTime();
+  const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
 
-  // Removed formatTime(time.getSeconds()) from the array
-  const timeString = [
-    formatTime(time.getHours()),
-    formatTime(time.getMinutes()),
-  ].join(':');
+  // Memoize the formatted time string to avoid re-computation on every render.
+  const timeString = useMemo(() => {
+    const hours = formatTime(time.getHours());
+    const minutes = formatTime(time.getMinutes());
+    return `${hours}:${minutes}`;
+  }, [time]);
 
   return (
     <div style={{
