@@ -47,7 +47,7 @@ const SweepClock = () => {
         <div
           className="absolute inset-0 rounded-full scale-[0.90] shadow-inner"
           style={{
-            background: `conic-gradient(from ${minuteDegrees}deg, #5151EE 0deg, #571204 360deg, transparent 4deg)`,
+            background: `conic-gradient(from ${minuteDegrees}deg, #0B0B84 0deg, #E3ADA3 360deg, transparent 4deg)`,
           }}
         />
 
@@ -55,7 +55,7 @@ const SweepClock = () => {
         <div
           className="absolute inset-0 rounded-full scale-[0.70]"
           style={{
-            background: `conic-gradient(from ${hourDegrees}deg, #D3A2F6 0deg,  #535E01  360deg, transparent 6deg)`,
+            background: `conic-gradient(from ${hourDegrees}deg, #D3A2F6 0deg,  #5E5001  360deg, transparent 6deg)`,
           }}
         />
 
