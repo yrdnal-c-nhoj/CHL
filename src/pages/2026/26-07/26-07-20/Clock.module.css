@@ -15,12 +15,19 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 5vmin;
+  width: 10vmin; /* Default width for mobile */
   height: 100%; /* Inherits 100dvh from container */
   /* Apply blur to the background */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px); /* For Safari support */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* For Safari support */
   z-index: 2;
+}
+
+/* On larger screens (laptops/desktops), make the strip narrower */
+@media (min-width: 768px) {
+  .blurStrip {
+    width: 5vmin;
+  }
 }
 
 
