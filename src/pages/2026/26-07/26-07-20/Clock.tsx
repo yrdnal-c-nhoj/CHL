@@ -31,7 +31,7 @@ const DigitalClock: React.FC = () => {
   }, [now]);
 
   return (
-    <main className={styles.container}>
+    <main className={styles.container}>x
       <div className={styles.blurStrip} />
       <img src={decoImage} alt="" className={styles.backgroundImage} />
       <time dateTime={isoTime} className={styles.timeWrapper}>
