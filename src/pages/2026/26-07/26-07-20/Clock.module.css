@@ -51,13 +51,9 @@
 
 .digitalTime {
   color: white;
-  font-size: 13vh;
-}
-
-.digitGroup {
+  font-size: 12vh;
   display: flex;
   flex-direction: column;
-  /* gap: -10.01vh; */
 }
 
 .digitBox {

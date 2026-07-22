@@ -31,18 +31,16 @@ const DigitalClock: React.FC = () => {
   }, [now]);
 
   return (
-    <main className={styles.container}>x
+    <main className={styles.container}>
       <div className={styles.blurStrip} />
       <img src={decoImage} alt="" className={styles.backgroundImage} />
       <time dateTime={isoTime} className={styles.timeWrapper}>
         <div className={styles.digitalTime}>
-          <div className={styles.digitGroup}>
-            {digits.map((digit, index) => (
-              <span key={index} className={styles.digitBox}>
-                {digit}
-              </span>
-            ))}
-          </div>
+          {digits.map((digit, index) => (
+            <span key={index} className={styles.digitBox}>
+              {digit}
+            </span>
+          ))}
         </div>
       </time>
     </main>
