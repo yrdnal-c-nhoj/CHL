@@ -1,0 +1,145 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--bg-color);
+  transition: background-color 0.2s linear;
+}
+
+.semanticTime {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.backgroundImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  filter: contrast(1.1) brightness(0.9) hue-rotate(var(--hue-filter));
+  transition: filter 0.4s ease-in-out;
+  will-change: filter;
+}
+
+.emojiGridWrapper {
+  position: absolute;
+  top: -2%;
+  left: -2%;
+  width: 104%;
+  height: 104%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.emojiCell {
+  position: absolute;
+  font-size: clamp(28px, 6vw, 50px);
+  will-change: transform, opacity;
+  opacity: var(--opacity);
+  transform: var(--transform);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+}
+
+.clockFace {
+  position: relative;
+  width: 340px;
+  height: 340px;
+  opacity: 0.9;
+  border: 6px solid #111010;
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: 0 0 30px rgba(0,0,0,0.4), inset 0 0 25px rgba(0,0,0,0.2);
+  z-index: 2;
+}
+
+.pomodoroSectors {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(
+    #ff0000 0deg 150deg,
+    #00ff00 150deg 180deg,
+    #ff0000 180deg 330deg,
+    #00ff00 330deg 360deg
+  );
+}
+
+.statusBadge {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-family: system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  z-index: 5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.69);
+  transition: background-color 0.2s, color 0.2s, top 0.2s, bottom 0.2s;
+}
+
+.statusBadge[data-work-phase='true'] {
+  top: 18%;
+  background-color: #ff0000;
+  color: #ffffff;
+}
+
+.statusBadge[data-work-phase='false'] {
+  bottom: 18%;
+  background-color: #00ff00;
+  color: #000000;
+}
+
+.hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: bottom center;
+  border-radius: 4px;
+}
+
+.hourHand {
+  width: 6px;
+  height: 29%;
+  background-color: #000000;
+  margin-left: -4px;
+}
+
+.minuteHand {
+  width: 6px;
+  height: 48%;
+  background-color: #111111;
+  margin-left: -3px;
+}
+
+.secondHand {
+  width: 2px;
+  height: 42%; /* Corrected from 342% which was likely a typo and would be huge */
+  margin-left: -1px;
+  transition: background-color 0.2s linear;
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  background-color: #656262;
+  border: 4px solid #141313;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+}
