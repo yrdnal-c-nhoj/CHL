@@ -1,24 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useClockTime } from '@/utils/clockUtils';
+import styles from './Clock.module.css';
+
+// Conforms to the project standard of exporting assets, even if empty.
+export const assets: string[] = [];
 
 const SweepClock = () => {
-  const [time, setTime] = useState(new Date());
+  // Use the project's standardized hook for timekeeping.
+  const time = useClockTime('ms');
 
-  useEffect(() => {
-    let animationFrameId;
-
-    const update = () => {
-      setTime(new Date());
-      animationFrameId = requestAnimationFrame(update);
-    };
-
-    animationFrameId = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, []);
-
-  const ms = time.getMilliseconds();
-  
   // 1. Seconds calculations (Continuous sweep)
-  const seconds = time.getSeconds() + ms / 1000;
+  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
   const secondDegrees = (seconds / 60) * 360;
 
   // 2. Minutes calculations (Continuous sweep based on minutes + seconds elapsed)
@@ -29,15 +20,14 @@ const SweepClock = () => {
   const hours = (time.getHours() % 12) + minutes / 60;
   const hourDegrees = (hours / 12) * 360;
 
+  const isoTime = time.toISOString();
+
   return (
-    // Outer responsive centering container
-    <div className="box-border flex items-center justify-center w-full h-screen p-8" style={{ backgroundColor: ' #E0E0D1'  }}>
-      {/* Aspect-locked relative container for layout layering */}
-      <div className="relative flex items-center justify-center w-full h-full max-w-full max-h-full aspect-square">
-        
+    <main className={styles.container}>
+      <time dateTime={isoTime} className={styles.aspectWrapper}>
         {/* LAYER 1: OUTER RING - SECONDS (Full Size) */}
         <div
-          className="absolute inset-0 transition-transform duration-75 rounded-full shadow-2xl"
+          className={`${styles.ring} ${styles.secondsRing}`}
           style={{
             background: `conic-gradient(from ${secondDegrees}deg, #FA5D28 0deg, #2C4402 360deg, transparent 33deg)`,
           }}
@@ -45,7 +35,7 @@ const SweepClock = () => {
 
         {/* LAYER 2: MIDDLE RING - MINUTES (Scaled down slightly) */}
         <div
-          className="absolute inset-0 rounded-full scale-[0.90] shadow-inner"
+          className={`${styles.ring} ${styles.minutesRing}`}
           style={{
             background: `conic-gradient(from ${minuteDegrees}deg, #0B0B84 0deg, #E3ADA3 360deg, transparent 4deg)`,
           }}
@@ -53,17 +43,16 @@ const SweepClock = () => {
 
         {/* LAYER 3: INNER RING - HOURS (Smallest inner layer) */}
         <div
-          className="absolute inset-0 rounded-full scale-[0.70]"
+          className={`${styles.ring} ${styles.hoursRing}`}
           style={{
             background: `conic-gradient(from ${hourDegrees}deg, #D3A2F6 0deg,  #5E5001  360deg, transparent 6deg)`,
           }}
         />
 
         {/* CENTER MATTE (Optional: Cleans up the center core so it looks like rings) */}
-        <div className="absolute inset-0 rounded-full scale-[0.45] shadow-2xl flex flex-col items-center justify-center text-slate-900 font-mono text-sm sm:text-lg" style={{ backgroundColor: '#D8D8C0' }} />
-
-      </div>
-    </div>
+        <div className={`${styles.ring} ${styles.centerMatte}`} />
+      </time>
+    </main>
   );
 };
 
