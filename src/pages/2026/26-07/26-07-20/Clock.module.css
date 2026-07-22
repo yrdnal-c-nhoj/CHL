@@ -1,7 +1,7 @@
 .container {
   position: relative;
   width: 100vw;
-  height: 100dvh;
+  height: 100dvh; /* Use dynamic viewport height to avoid clipping on mobile */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,6 +9,20 @@
   overflow: hidden;
   font-family: 'ClockFont_26_07_20', sans-serif;
 }
+
+.blurStrip {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5vmin;
+  height: 100%; /* Inherits 100dvh from container */
+  /* Apply blur to the background */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); /* For Safari support */
+  z-index: 2;
+}
+
 
 .backgroundImage {
   position: absolute;

@@ -31,21 +31,9 @@ const DigitalClock: React.FC = () => {
   }, [now]);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <div className={styles.videoOverlay} />
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '5vw',
-          height: '100dvh',
-          backdropFilter: 'blur(8px)',
-          WebkitBackdropFilter: 'blur(8px)', // For Safari support
-          zIndex: 2,
-        }}
-      />
+      <div className={styles.blurStrip} />
       <img src={decoImage} alt="" className={styles.backgroundImage} />
       <time dateTime={isoTime} className={styles.timeWrapper}>
         <div className={styles.digitalTime}>
@@ -58,7 +46,7 @@ const DigitalClock: React.FC = () => {
           </div>
         </div>
       </time>
-    </div>
+    </main>
   );
 };
 
