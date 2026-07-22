@@ -18,7 +18,7 @@
   width: 10vmin; /* Default width for mobile */
   height: 100%; /* Inherits 100dvh from container */
   /* Apply blur to the background */
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(10px); /* For Safari support */
   z-index: 2;
 }
@@ -65,9 +65,10 @@
   font-variant-numeric: tabular-nums;
 
   /* Metal/Chrome Effect */
-  background: linear-gradient(180deg, #ec6969 0%, #160b0b 40%, #11e9c8 100%);
+  background: linear-gradient(180deg, #dacf09 0%, #160b0b 40%, #47a093 100%);
   -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* For Safari */
   background-clip: text;
-  color: transparent;
-  text-shadow: 1px 1px 1px #cecdf5;
+  color: #11e9c8; /* Fallback color */
+  text-shadow: 1px 1px 1px #dcdbf3;
 }
