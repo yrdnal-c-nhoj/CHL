@@ -32,7 +32,6 @@ const DigitalClock: React.FC = () => {
 
   return (
     <main className={styles.container}>
-      <div className={styles.videoOverlay} />
       <div className={styles.blurStrip} />
       <img src={decoImage} alt="" className={styles.backgroundImage} />
       <time dateTime={isoTime} className={styles.timeWrapper}>
