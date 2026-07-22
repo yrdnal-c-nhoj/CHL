@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useRef } from 'react';
 
 export const assets = [zoomVideo];
 
-const TILE_WIDTH = 180;
+const TILE_WIDTH = 380;
 
 const STYLES: Record<string, React.CSSProperties> = {
   container: {
