@@ -4,8 +4,8 @@ import React, { useMemo } from 'react';
 
 export const assets: string[] = [TomWebp];
 
-const WORK_EMOJIS = ['🎯', '🛠️', '📊', '🔨', '📌', '📎', '💼',  '📱', '📈', '🏗️','🖥️', '🧱', '🔧', '📋', '⚙️', '💻'];
-const PLAY_EMOJIS = ['🎲', '🃏', '🎮',  '⚽',  '🎨', '🖌️', '🎸', '🎤', '🏖️', '🌊', '🎟️', '🎡', '🎭','🏀','🕹️', '🎸'];
+const WORK_EMOJIS = ['🎯', '🛠️', '📊', '🔨', '📌', '📎', '💼', '📱', '📈', '🏗️', '🖥️', '🧱', '🔧', '📋', '⚙️', '💻'];
+const PLAY_EMOJIS = ['🎲', '🃏', '🎮', '⚽', '🎨', '🖌️', '🎸', '🎤', '🏖️', '🌊', '🎟️', '🎡', '🎭', '🏀', '🕹️', '🎸'];
 
 const GRID_COLS = 10;
 const GRID_ROWS = 14;
@@ -104,7 +104,7 @@ const STYLES: Record<string, React.CSSProperties> = {
     width: 6,
     height: '29%',
     backgroundColor: '#000000',
-    marginLeft: -4,
+    marginLeft: -3,
   },
   minuteHand: {
     width: 6,
@@ -114,7 +114,7 @@ const STYLES: Record<string, React.CSSProperties> = {
   },
   secondHand: {
     width: 2,
-    height: '242%',
+    height: '348%',
     marginLeft: -1,
     transition: 'background-color 0.2s linear',
   },
@@ -213,6 +213,7 @@ const AnalogClock: React.FC = () => {
       <time dateTime={isoTime} style={STYLES.semanticTime}>
         {now.toLocaleTimeString()}
       </time>
+      
       {/* Background Image Layer */}
       <div
         style={{
@@ -225,7 +226,7 @@ const AnalogClock: React.FC = () => {
       />
 
       {/* Background Emoji Grid Layer */}
-      <div className={styles.emojiGridWrapper}>
+      <div style={STYLES.emojiGridWrapper}>
         {gridCells.map((cell) => {
           const baseOffset = cell.parity === 0 ? fifteenSecondStep : fifteenSecondStep + 3;
           const emojiIndex = (Math.floor(cell.index / 2) + baseOffset) % activeEmojis.length;
@@ -254,25 +255,26 @@ const AnalogClock: React.FC = () => {
       </div>
 
       {/* Main Clock Dial */}
-      <div className={styles.clockFace}>
-        <div className={styles.pomodoroSectors} />
+      <div style={STYLES.clockFace}>
+        <div style={STYLES.pomodoroSectors} />
 
-        <div
-          className={styles.statusBadge}
-          data-work-phase={isWorkPhase}
-        >
+        <div style={statusBadgeStyle} data-work-phase={isWorkPhase}>
           {isWorkPhase ? 'LABORTEMPO' : 'LUDTEMPO'}
         </div>
 
         {/* Hand Indicators */}
-        <div className={`${styles.hand} ${styles.hourHand}`} style={{ transform: `rotate(${hourAngle}deg)` }} />
-        <div className={`${styles.hand} ${styles.minuteHand}`} style={{ transform: `rotate(${minuteAngle}deg)` }} />
+        <div style={{ ...STYLES.hand, ...STYLES.hourHand, transform: `rotate(${hourAngle}deg)` }} />
+        <div style={{ ...STYLES.hand, ...STYLES.minuteHand, transform: `rotate(${minuteAngle}deg)` }} />
         <div
-          className={`${styles.hand} ${styles.secondHand}`}
-          style={{ transform: `rotate(${secondAngle}deg)`, backgroundColor: isWorkPhase ? '#00ff00' : '#ff0000' }}
+          style={{
+            ...STYLES.hand,
+            ...STYLES.secondHand,
+            transform: `rotate(${secondAngle}deg)`,
+            backgroundColor: isWorkPhase ? '#00ff00' : '#ff0000',
+          }}
         />
 
-        <div className={styles.centerDot} />
+        <div style={STYLES.centerDot} />
       </div>
     </main>
   );
