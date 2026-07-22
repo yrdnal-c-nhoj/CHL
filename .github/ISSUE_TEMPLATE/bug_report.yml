@@ -32,8 +32,10 @@ body:
       label: Expected behavior
     validations:
       required: true
-  - type: input
-    id: environment
+  - type: textarea
+    id: device
     attributes:
-      label: Environment
-      description: OS, browser, Node version, and any relevant context.
+      label: Device/Browser
+      description: |
+        What device and browser did you see the issue on? (e.g., iPhone 14 Pro, Chrome on Windows 11, etc.)
+        All clocks are expected to be responsive and functional on modern desktop and mobile browsers.
