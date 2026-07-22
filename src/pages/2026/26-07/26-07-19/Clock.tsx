@@ -31,7 +31,7 @@ const SweepClock = () => {
 
   return (
     // Outer responsive centering container
-    <div className="box-border flex items-center justify-center w-full h-screen p-8" style={{ backgroundColor: '#D8D8C0' }}>
+    <div className="box-border flex items-center justify-center w-full h-screen p-8" style={{ backgroundColor: ' #E0E0D1'  }}>
       {/* Aspect-locked relative container for layout layering */}
       <div className="relative flex items-center justify-center w-full h-full max-w-full max-h-full aspect-square">
         
@@ -39,7 +39,7 @@ const SweepClock = () => {
         <div
           className="absolute inset-0 transition-transform duration-75 rounded-full shadow-2xl"
           style={{
-            background: `conic-gradient(from ${secondDegrees}deg, #A52A2A 0deg, #E0E0D1 360deg, transparent 33deg)`,
+            background: `conic-gradient(from ${secondDegrees}deg, #FA5D28 0deg, #2C4402 360deg, transparent 33deg)`,
           }}
         />
 
@@ -47,7 +47,7 @@ const SweepClock = () => {
         <div
           className="absolute inset-0 rounded-full scale-[0.90] shadow-inner"
           style={{
-            background: `conic-gradient(from ${minuteDegrees}deg, #00008B 0deg, #E3E3D4 360deg, transparent 4deg)`,
+            background: `conic-gradient(from ${minuteDegrees}deg, #5151EE 0deg, #571204 360deg, transparent 4deg)`,
           }}
         />
 
@@ -55,7 +55,7 @@ const SweepClock = () => {
         <div
           className="absolute inset-0 rounded-full scale-[0.70]"
           style={{
-            background: `conic-gradient(from ${hourDegrees}deg, #4B0082 0deg, #E6E6D7 360deg, transparent 6deg)`,
+            background: `conic-gradient(from ${hourDegrees}deg, #D3A2F6 0deg,  #535E01  360deg, transparent 6deg)`,
           }}
         />
 
