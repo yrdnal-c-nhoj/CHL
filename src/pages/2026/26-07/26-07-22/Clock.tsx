@@ -1,84 +1,11 @@
 import zoomVideo from '@/assets/images/26_images/26-07/26-07-22/zoom.mp4';
-import { useSecondClock } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useRef } from 'react';
+import styles from './Clock.module.css';
 
 export const assets = [zoomVideo];
 
 const TILE_WIDTH = 380;
-
-const STYLES: Record<string, React.CSSProperties> = {
-  container: {
-    position: 'relative',
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#000',
-    overflow: 'hidden',
-  },
-  background: {
-    position: 'absolute',
-    inset: 0,
-    zIndex: 1,
-    width: '100%',
-    height: '100%',
-  },
-  timeDisplay: {
-    position: 'relative',
-    zIndex: 3,
-    display: 'flex',
-    alignItems: 'center',
-    fontFamily: "'Press Start 2P', 'Courier New', Courier, monospace",
-    color: '#CEEDF8',
-    userSelect: 'none',
-    WebkitUserSelect: 'none',
-    textShadow: '3px 3px rgb(0, 0, 0), -3px -3px rgba(0, 0, 0)',
-    // Apply the 14-second continuous zoom cycle
-    animation: 'zoomCycle 14s ease-in-out infinite',
-    transformOrigin: 'center center',
-  },
-  digitGroup: {
-    display: 'flex',
-  },
-  digit: {
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: 'clamp(3rem, 10vw, 8rem)',
-    lineHeight: 1,
-  },
-  separator: {
-    fontSize: 'clamp(2rem, 10vw, 8rem)',
-    opacity: 0.8,
-    animation: 'pulse 1s ease-in-out infinite',
-    margin: '0 -0.15em',
-  },
-};
-
-const KEYFRAMES = `
-  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-  
-  @keyframes pulse {
-    0%, 100% { opacity: 0.8; }
-    50% { opacity: 0.3; }
-  }
-
-  @keyframes zoomCycle {
-    0% {
-      transform: scale(1);
-      opacity: 1;
-    }
-    50% {
-      transform: scale(0);
-      opacity: 0;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-`;
 
 function useVideoTiling(
   videoSrc: string,
@@ -87,27 +14,13 @@ function useVideoTiling(
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
-    const video = document.createElement('video');
-    video.src = videoSrc;
-    video.autoplay = true;
-    video.loop = true;
-    video.muted = true;
-    video.playsInline = true;
-    video.style.display = 'none';
-
-    document.body.appendChild(video);
-    videoRef.current = video;
-
-    video.play().catch(() => {});
-
-    return () => {
-      video.pause();
-      video.removeAttribute('src');
-      video.load();
-      video.remove();
-      videoRef.current = null;
-    };
-  }, [videoSrc]);
+    const video = videoRef.current;
+    if (video) {
+      video.play().catch((e) => {
+        console.error("Video play failed:", e);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     let animationFrameId: number;
@@ -182,22 +95,23 @@ function useVideoTiling(
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [canvasRef]);
+  }, [canvasRef, videoRef]);
+
+  return videoRef;
 }
 
 const DigitGroup: React.FC<{ value: string }> = React.memo(({ value }) => (
-  <span style={STYLES.digitGroup}>
-    <span style={STYLES.digit}>{value[0]}</span>
-    <span style={STYLES.digit}>{value[1]}</span>
+  <span className={styles.digitGroup}>
+    <span className={styles.digit}>{value[0]}</span>
+    <span className={styles.digit}>{value[1]}</span>
   </span>
 ));
 DigitGroup.displayName = 'DigitGroup';
 
 const ZoomClock: React.FC = () => {
-  const time = useSecondClock();
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  useVideoTiling(zoomVideo, canvasRef);
+  const time = useMillisecondClock();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const videoRef = useVideoTiling(zoomVideo, canvasRef);
 
   useEffect(() => {
     const handleResize = () => {
@@ -227,16 +141,25 @@ const ZoomClock: React.FC = () => {
   }, [time]);
 
   return (
-    <div style={STYLES.container}>
-      <style>{KEYFRAMES}</style>
-      <canvas ref={canvasRef} style={STYLES.background} />
+    <div className={styles.container}>
+      <video
+        ref={videoRef}
+        src={zoomVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className={styles.videoSource}
+      />
+      <canvas ref={canvasRef} className={styles.background} />
 
-      <time style={STYLES.timeDisplay} dateTime={isoTime}>
+      <time className={styles.timeDisplay} dateTime={isoTime} aria-label={time.toLocaleTimeString()}>
         <DigitGroup value={hours} />
-        <span style={STYLES.separator}>:</span>
+        <span className={styles.separator}>:</span>
         <DigitGroup value={minutes} />
-        <span style={STYLES.separator}>:</span>
+        <span className={styles.separator}>:</span>
         <DigitGroup value={seconds} />
+        <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
       </time>
     </div>
   );
