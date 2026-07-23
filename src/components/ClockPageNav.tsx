@@ -177,9 +177,14 @@ const ClockPageNav = ({
           {currentItem.tags && currentItem.tags.length > 0 && (
             <div className={styles.footerTags}>
               {currentItem.tags.map((tag) => (
-                <span key={tag} className={styles.tagItem}>
+                <Link
+                  key={tag}
+                  to={`/tag/${tag}`}
+                  className={styles.tagItem}
+                  onClick={(e) => e.stopPropagation()}
+                >
                   {tag}
-                </span>
+                </Link>
               ))}
             </div>
           )}
