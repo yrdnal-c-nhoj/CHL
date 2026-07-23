@@ -1622,9 +1622,7 @@
       "cloth",
       "eye",
       "meteor",
-      "slow",
       "thread",
-      "underworld",
       "year"
     ]
   },
@@ -6380,8 +6378,7 @@
       "Egypt",
       "mummy",
       "pyramid",
-      "scarab",
-      "underworld"
+      "scarab"
     ]
   }
 ]

@@ -1,0 +1,78 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: #000000;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.clockFace {
+  position: relative;
+  width: 55vh;
+  height: 46vh;
+  border: 0px solid rgba(228, 196, 119, 0.7);
+  border-radius: 50%;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.8));
+}
+
+.hourHand {
+  width: 9px;
+  height: 12vh;
+  background-color: rgba(228, 196, 119, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 4px 4px 0 0;
+  transform: translateX(-50%);
+}
+
+.minuteHand {
+  width: 7px;
+  height: 22vh;
+  background-color: rgba(228, 196, 119, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 3px 3px 0 0;
+  transform: translateX(-50%);
+}
+
+.secondHand {
+  width: 2px;
+  height: 22vh;
+  background-color: #10f6d7;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transform: translateX(-50%);
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  background-color: #10f6d7;
+  border: 1px solid #32260ba6;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
