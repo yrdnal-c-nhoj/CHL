@@ -149,15 +149,22 @@
 }
 
 .tagItem {
-  font-size: 0.65rem;        /* Made smaller to cleanly fit two rows */
+  font-size: 0.75rem;
   line-height: 1;
-  color: var(--nav-text);
-  border: 0.7px solid var(--nav-text);
-  padding: 0.15rem 0.3rem;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.03);
+  color: var(--nav-text-bright) !important;
+  border: 1px solid rgba(180, 180, 180, 0.4);
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
   white-space: nowrap;
   box-sizing: border-box;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.tagItem:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(180, 180, 180, 0.7);
 }
 
 /* --- Left/right nav buttons --- */
