@@ -5,7 +5,7 @@ import styles from './Clock.module.css';
 
 export const assets = [zoomVideo];
 
-const TILE_WIDTH = 380;
+const TILE_WIDTH = 200;
 
 function useVideoTiling(
   videoSrc: string,
