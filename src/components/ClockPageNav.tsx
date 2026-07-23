@@ -153,9 +153,16 @@ const ClockPageNav = ({
         <div className={styles.footerCenter}>
           <div className={styles.footerTopRow}>
             <span className={styles.footerDate}>
-              {formatDate(currentItem.date)
-                .replace(/^(\w+)\s*/, '$1 ')
-                .replace(/\s*'/g, " '")}
+              {(() => {
+                if (!currentItem.date) return null;
+                const [yy, mm, dd] = currentItem.date.split('-');
+                const months = [
+                  'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
+                  'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
+                ];
+                const monthName = months[parseInt(mm, 10) - 1] || '???';
+                return `${dd} ${monthName} '${yy}`;
+              })()}
             </span>
             {currentItem.clockNumber !== undefined &&
               currentItem.clockNumber !== null && (
