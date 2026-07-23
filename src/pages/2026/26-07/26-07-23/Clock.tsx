@@ -11,7 +11,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    backgroundColor: '#1A1A1A',
+    backgroundColor: '#000000',
     backgroundSize: 'contain',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
@@ -32,24 +32,25 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   hourHand: {
     width: '9px',
-    height: '80px',
+    height: '12vh',
     backgroundColor: 'rgba(228, 196, 119, 0.9)',
-    border: '1px solid rgba(0,0,0,0.2)',
+    border: '1px solid rgba(0,0,0,0.5)',
     borderRadius: '4px 4px 0 0',
     transform: 'translateX(-50%)',
   },
   minuteHand: {
     width: '7px',
-    height: '130px',
+    height: '22vh',
     backgroundColor: 'rgba(228, 196, 119, 0.9)',
-    border: '1px solid rgba(0,0,0,0.2)',
+    border: '1px solid rgba(0,0,0,0.5)',
     borderRadius: '3px 3px 0 0',
     transform: 'translateX(-50%)',
   },
   secondHand: {
     width: '2px',
-    height: '130px',
+    height: '22vh',
     backgroundColor: '#10F6D7',
+    border: '1px solid rgba(0,0,0,0.1)',
     transform: 'translateX(-50%)',
   },
   centerDot: {
@@ -59,7 +60,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: '14px',
     height: '14px',
     backgroundColor: '#10F6D7',
-    border: '2px solid rgba(228, 196, 119, 1)',
+    border: '1px solid #32260BA6',
     borderRadius: '50%',
     transform: 'translate(-50%, -50%)',
     zIndex: 10,
@@ -96,7 +97,7 @@ const AnalogClock: React.FC = () => {
   const responsiveContainerStyle: React.CSSProperties = {
     ...styles.container,
     backgroundImage: `url(${nefertitiImage})`,
-    paddingTop: isMobile ? '10vh' : '2vh',
+    paddingTop: isMobile ? '1vh' : '2vh',
   };
 
   return (
