@@ -165,7 +165,7 @@ const analogStyles: { [key: string]: React.CSSProperties } = {
   number: {
     position: 'absolute',
     fontFamily: 'ClockFont_26_07_07, sans-serif',
-    fontSize: '30vh',
+    fontSize: '10vh',
     color: '#3B053F',
     transform: 'translate(-50%, -50%)',
     userSelect: 'none',
