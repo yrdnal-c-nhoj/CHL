@@ -97,7 +97,7 @@ const AnalogClock: React.FC = () => {
   const responsiveContainerStyle: React.CSSProperties = {
     ...styles.container,
     backgroundImage: `url(${nefertitiImage})`,
-    paddingTop: isMobile ? '1vh' : '2vh',
+    paddingTop: isMobile ? '1vh' : '1vh',
   };
 
   return (
