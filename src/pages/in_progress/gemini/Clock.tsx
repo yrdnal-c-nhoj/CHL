@@ -1,12 +1,12 @@
 import { useMillisecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
-import gemImage from '@/assets/images/26_images/26-07/26-07-23/gem.webp';
+import nefertitiImage from '@/assets/images/26_images/26-07/26-07-23/Nefertiti.webp';
 import videoBackground from '@/assets/images/26_images/26-07/26-07-23/gemini.mp4';
 
 import styles from './Clock.module.css';
 
-export const assets = [videoBackground, gemImage];
+export const assets = [videoBackground, nefertitiImage];
 
 const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 
@@ -41,7 +41,7 @@ const AnalogClock: React.FC = () => {
         playsInline
         src={videoBackground}
       />
-      <div className={styles.gemOverlay} style={{ '--gem-image': `url(${gemImage})` } as React.CSSProperties} />
+      <div className={styles.gemOverlay} style={{ '--gem-image': `url(${nefertitiImage})` } as React.CSSProperties} />
       <div className={styles.yellowOverlay} />
       {/* Visually hidden time for accessibility, matching your standard */}
       <time dateTime={isoTime} className={styles.semanticTime}>
