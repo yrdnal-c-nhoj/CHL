@@ -38,14 +38,18 @@ const AnalogClock: React.FC = () => {
       className={styles.container}
       style={{
         backgroundImage: `url(${nefertitiImage})`,
-        paddingTop: isMobile ? '1vh' : '1vh',
-      }}
-    >
-      <div className={styles.clockFace}>
+      >
+        <div
+          className={styles.clockFace}
+          style={{
+            transform: isMobile ? 'translateY(5vh)' : 'translateY(1vh)',
+          }}
+        >
         <div className={`${styles.hand} ${styles.hourHand}`} style={{ transform: `translateX(-50%) rotate(${hourAngle}deg)` }} />
         <div className={`${styles.hand} ${styles.minuteHand}`} style={{ transform: `translateX(-50%) rotate(${minuteAngle}deg)` }} />
         <div className={`${styles.hand} ${styles.secondHand}`} style={{ transform: `translateX(-50%) rotate(${secondAngle}deg)` }} />
         <div className={styles.centerDot} />
+      </div>
       </div>
       <time dateTime={time.toISOString()} aria-label={time.toLocaleTimeString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
