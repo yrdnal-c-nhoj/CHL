@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import cyanImage from '@/assets/images/26_images/26-07/26-07-27/cyan.webp';
 
 // Authentic Prussian Blue & Sun-Exposed Paper Palette
-const INK = '#F5F9F8';                 // Creamy, unexposed paper silhouette
+const INK = '#F5F9F8A9';                 // Creamy, unexposed paper silhouette
 const VEIN = 'rgba(14, 34, 61, 0.45)';       // Darker, unexposed leaf skeleton lines
-const PAPER_LIGHT = '#254E7D';         // Sun-washed hot center
-const PAPER_MID = '#16365C';           // Classic Prussian blue
-const PAPER_DEEP = '#081629';          // Rich, dense chemical borders (thick hand-brushed look)
+const PAPER_LIGHT = '#254E7D91';         // Sun-washed hot center
+const PAPER_MID = '#16365C61';           // Classic Prussian blue
+const PAPER_DEEP = '#08162910';          // Rich, dense chemical borders (thick hand-brushed look)
 
 // A highly irregular, organic hand-torn paper shape (500x620)
 const DECKLE =
@@ -167,23 +167,7 @@ const CyanotypeClock: React.FC = () => {
             })}
           </g>
 
-          {/* Seed-pod center pivot */}
-          <circle cx={cx} cy={cy} r={11} fill={PAPER_MID} stroke={INK} strokeWidth={2} />
-          {Array.from({ length: 10 }, (_, i) => {
-            const a = (i * 36 * Math.PI) / 180;
-            return (
-              <line
-                key={i}
-                x1={cx + 3 * Math.sin(a)}
-                y1={cy - 3 * Math.cos(a)}
-                x2={cx + 9 * Math.sin(a)}
-                y2={cy - 9 * Math.cos(a)}
-                stroke={INK}
-                strokeWidth={1}
-                opacity={0.9}
-              />
-            );
-          })}
+      
         </g>
       </svg>
     </div>
