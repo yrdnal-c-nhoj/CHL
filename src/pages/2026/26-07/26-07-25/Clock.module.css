@@ -1,0 +1,99 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #dbd8d8;
+}
+
+.backgroundVideo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translateX(-50%) translateY(-50%);
+  z-index: 1;
+}
+
+/* Analog Clock Styles */
+.analogClock {
+  position: relative;
+  z-index: 3;
+  width: 70vmin; /* Adjust size as needed */
+  height: 70vmin;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.twelveMarker {
+  position: absolute;
+  top: 5%; /* Position near the top edge */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 15px;
+  height: 15px;
+  background-color: #d4d4d1; /* Match minute hand color */
+  border-radius: 50%;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.4); /* Consistent shadow */
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%; /* Position the bottom of the hand at the center of the clock */
+  left: 50%; /* Position the center of the hand horizontally at the center of the clock */
+  transform-origin: center bottom; /* Set the pivot point to the bottom center of the hand */
+  background-color: white;
+  border-radius: 2px; /* Slightly rounded edges */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+}
+
+.hourHand {
+  width: 8px;
+  height: 25%; /* Relative to clock size */
+  background-color: #c5c3be; /* Brassy gold color */
+  z-index: 4;
+  transition: transform 0.1s cubic-bezier(0.4, 2.3, 0.6, 1); /* Smooth transition */
+}
+
+.minuteHand {
+  width: 6px;
+  height: 35%; /* Relative to clock size */
+  background-color: #d4d4d1; /* Brassy gold color */
+  z-index: 5;
+  transition: transform 0.1s cubic-bezier(0.4, 2.3, 0.6, 1); /* Smooth transition */
+}
+
+.secondHand {
+  width: 3px;
+  height: 40%; /* Relative to clock size */
+  background-color: #929090; /* Deeper red for second hand */
+  z-index: 6;
+  transition: transform 0.1s linear; /* Linear transition for second hand */
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.4); /* Slightly less pronounced shadow */
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px; /* Slightly larger center */
+  height: 14px;
+  background-color: #babab8; /* Darker brass for the center */
+  border-radius: 50%;
+  z-index: 7;
+}
