@@ -41,6 +41,14 @@ const AnalogClock: React.FC = () => {
         playsInline
         src={videoBackground}
       />
+      <video
+        className={styles.flippedVideoBackground}
+        autoPlay
+        loop
+        muted
+        playsInline
+        src={videoBackground}
+      />
       <div className={styles.gemOverlay} style={{ '--gem-image': `url(${nefertitiImage})` } as React.CSSProperties} />
       <div className={styles.yellowOverlay} />
       {/* Visually hidden time for accessibility, matching your standard */}
