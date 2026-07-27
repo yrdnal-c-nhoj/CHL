@@ -21,6 +21,14 @@
   z-index: 1;
 }
 
+/* On smaller screens (phones), make the video larger to create a zoomed-in effect. */
+@media (max-width: 767px) {
+  .backgroundVideo {
+    /* This will zoom the video to 1.5x its container width on mobile */
+    min-width: 150%;
+  }
+}
+
 /* Analog Clock Styles */
 .analogClock {
   position: relative;
