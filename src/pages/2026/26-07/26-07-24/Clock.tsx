@@ -31,18 +31,18 @@ const Clock: React.FC = () => {
       // and amplitudes to create a more complex and less predictable motion.
 
       // Horizontal sway (x-axis)
-      const x1 = Math.sin(elapsed * 1.1) * 6;   // Slower, larger sway
-      const x2 = Math.sin(elapsed * 2.7) * 2.5; // Faster, smaller jiggle
+      const x1 = Math.sin(elapsed * 1.1) * 9;   // Slower, larger sway
+      const x2 = Math.sin(elapsed * 2.7) * 4; // Faster, smaller jiggle
       const x = x1 + x2;
 
       // Vertical bounce (y-axis)
-      const y1 = Math.cos(elapsed * 1.3) * 4;   // Slower, larger bounce
-      const y2 = Math.cos(elapsed * 3.1) * 2;   // Faster, smaller jiggle
+      const y1 = Math.cos(elapsed * 1.3) * 7;   // Slower, larger bounce
+      const y2 = Math.cos(elapsed * 3.1) * 3.5;   // Faster, smaller jiggle
       const y = y1 + y2;
 
       // Rotation (rot)
-      const rot1 = Math.sin(elapsed * 0.8) * 8;  // Slow, wide tilt
-      const rot2 = Math.sin(elapsed * 2.2) * 3;  // Faster, sharper tilt
+      const rot1 = Math.sin(elapsed * 0.8) * 12;  // Slow, wide tilt
+      const rot2 = Math.sin(elapsed * 2.2) * 5;  // Faster, sharper tilt
       const rot = rot1 + rot2;
 
       setOffsets({ x, y, rot });
