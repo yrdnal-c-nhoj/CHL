@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import portholeVideo from '@/assets/images/26_images/26-07/26-07-25/porthole.mp4';
-import { calculateAngles } from '@/utils/clockUtils';
-import { useSecondClock } from '@/utils/hooks';
+import { calculateAngles, useMillisecondClock } from '@/utils/clockUtils';
 import styles from './Clock.module.css';
 
 export const assets = [portholeVideo];
@@ -15,13 +14,13 @@ const Clock: React.FC = () => {
   // Ref to store the start time of the animation for consistent motion
   const startTime = useRef(Date.now());
 
-  const time = useSecondClock();
+  const time = useMillisecondClock();
 
   const {
     hour: hourAngle,
     minute: minuteAngle,
     second: secondAngle,
-  } = calculateAngles(time);
+  } = calculateAngles(time, true); // Pass true for millisecond precision
 
   useEffect(() => {
     const animate = () => {
@@ -91,8 +90,9 @@ const Clock: React.FC = () => {
           <div className={styles.center} />
         </div>
       </div>
-      <time dateTime={time.toISOString()} className="sr-only">
-        {time.toLocaleTimeString()}
+      {/* Accessible time element, hidden from view but available to screen readers */}
+      <time dateTime={time.toISOString()} aria-label={time.toLocaleTimeString()}>
+        <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
       </time>
     </main>
   );
