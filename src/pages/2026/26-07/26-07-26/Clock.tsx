@@ -1,8 +1,8 @@
 import { useMillisecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
-import nefertitiImage from '@/assets/images/26_images/26-07/26-07-23/nefertiti.webp';
-import videoBackground from './gemini.mp4';
+import nefertitiImage from '@/assets/images/26_images/26-07/26-07-26/gem.webp';
+import videoBackground from '@/assets/images/26_images/26-07/26-07-26/gemini.mp4';
 
 import styles from './Clock.module.css';
 

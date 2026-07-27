@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 
+import cyanImage from '@/assets/images/26_images/26-07/26-07-27/cyan.webp';
+
 // Authentic Prussian Blue & Sun-Exposed Paper Palette
 const INK = '#F5F9F8';                 // Creamy, unexposed paper silhouette
 const VEIN = 'rgba(14, 34, 61, 0.45)';       // Darker, unexposed leaf skeleton lines
 const PAPER_LIGHT = '#254E7D';         // Sun-washed hot center
 const PAPER_MID = '#16365C';           // Classic Prussian blue
 const PAPER_DEEP = '#081629';          // Rich, dense chemical borders (thick hand-brushed look)
-const WALL = '#1E1A12';                // Moody darkroom table backdrop
 
 // A highly irregular, organic hand-torn paper shape (500x620)
 const DECKLE =
   'M 35,22 C 110,12 210,28 310,15 C 390,5 440,18 465,35 C 490,65 475,150 482,240 C 490,340 472,420 478,510 C 482,565 455,595 390,602 C 310,610 205,592 115,605 C 55,612 22,585 15,530 C 5,450 18,350 10,250 C 4,160 12,85 35,22 Z';
+
+export const assets = [cyanImage];
 
 const CyanotypeClock: React.FC = () => {
   const [now, setNow] = useState(new Date());
@@ -67,7 +70,9 @@ const CyanotypeClock: React.FC = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: WALL,
+        backgroundImage: `url(${cyanImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         overflow: 'hidden',
       }}
     >
