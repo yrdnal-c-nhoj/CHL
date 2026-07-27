@@ -1,108 +1,101 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-export default function HexClock() {
-  const [time, setTime] = useState(new Date());
-  const [isScaledMode, setIsScaledMode] = useState(false);
+import portholeVideo from '@/assets/images/26_images/26-07/26-07-25/porthole.mp4';
+import { calculateAngles } from '@/utils/clockUtils';
+import { useSecondClock } from '@/utils/hooks';
+import styles from './Clock.module.css';
+
+export const assets = [portholeVideo];
+
+const Clock: React.FC = () => {
+  // State to manage the dynamic offsets and rotation for the josseling effect
+  const [offsets, setOffsets] = useState({ x: 0, y: 0, rot: 0 });
+  // Ref to store the requestAnimationFrame ID for cleanup
+  const animationFrameId = useRef<number | null>(null);
+  // Ref to store the start time of the animation for consistent motion
+  const startTime = useRef(Date.now());
+
+  const time = useSecondClock();
+
+  const {
+    hour: hourAngle,
+    minute: minuteAngle,
+    second: secondAngle,
+  } = calculateAngles(time);
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+    const animate = () => {
+      const elapsed = (Date.now() - startTime.current) / 1000; // Time in seconds since animation started
+      
+      // Layer multiple sine/cosine waves with different, non-integer frequencies
+      // and amplitudes to create a more complex and less predictable motion.
 
-  const hours = time.getHours();
-  const minutes = time.getMinutes();
-  const seconds = time.getSeconds();
+      // Horizontal sway (x-axis)
+      const x1 = Math.sin(elapsed * 1.1) * 6;   // Slower, larger sway
+      const x2 = Math.sin(elapsed * 2.7) * 2.5; // Faster, smaller jiggle
+      const x = x1 + x2;
 
-  // Helper to pad single digits with a leading zero
-  const pad = (num: number): string => num.toString().padStart(2, '0');
+      // Vertical bounce (y-axis)
+      const y1 = Math.cos(elapsed * 1.3) * 4;   // Slower, larger bounce
+      const y2 = Math.cos(elapsed * 3.1) * 2;   // Faster, smaller jiggle
+      const y = y1 + y2;
 
-  // Formatted strings for the standard time display
-  const displayHours = pad(hours);
-  const displayMinutes = pad(minutes);
-  const displaySeconds = pad(seconds);
+      // Rotation (rot)
+      const rot1 = Math.sin(elapsed * 0.8) * 8;  // Slow, wide tilt
+      const rot2 = Math.sin(elapsed * 2.2) * 3;  // Faster, sharper tilt
+      const rot = rot1 + rot2;
 
-  let hexCode = '';
+      setOffsets({ x, y, rot });
+      animationFrameId.current = requestAnimationFrame(animate);
+    };
 
-  if (isScaledMode) {
-    // Scale hours (0-23) and mins/secs (0-59) to a full 0-255 (00-FF) hex range
-    const r = Math.round((hours / 23) * 255).toString(16).padStart(2, '0');
-    const g = Math.round((minutes / 59) * 255).toString(16).padStart(2, '0');
-    const b = Math.round((seconds / 59) * 255).toString(16).padStart(2, '0');
-    hexCode = `#${r}${g}${b}`.toUpperCase();
-  } else {
-    // True Time-to-Hex Mode: Literal mapping
-    hexCode = `#${displayHours}${displayMinutes}${displaySeconds}`;
-  }
+    animationFrameId.current = requestAnimationFrame(animate);
 
-  // Determine text color (white or black) based on background luminance for readability
-  const getContrastColor = (hex: string) => {
-    // Default to white text for the dark "True Mode"
-    if (!isScaledMode) return '#ffffff';
-    
-    // Simple luminance calculation for Scaled Mode
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    const yiq = (r * 299 + g * 587 + b * 114) / 1000;
-    return yiq >= 128 ? '#111111' : '#ffffff';
-  };
-
-  const textColor = getContrastColor(hexCode);
+    return () => {
+      if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
+    };
+  }, []); // Empty dependency array ensures this effect runs once on mount and cleans up on unmount
 
   return (
-    <div
-      style={{
-        backgroundColor: hexCode,
-        color: textColor,
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontFamily: 'monospace',
-        transition: 'background-color 1s ease, color 0.5s ease',
-      }}
-    >
-      <div style={{ fontSize: '4rem', fontWeight: 'bold', letterSpacing: '2px' }}>
-        {displayHours}:{displayMinutes}:{displaySeconds}
+    <main className={styles.container}>
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className={styles.backgroundVideo}
+        src={portholeVideo}
+      />
+    
+      <div
+        className={styles.analogClock}
+        style={{
+          // Apply the calculated offsets and rotation to the entire clock
+          transform: `translate(${offsets.x}vmin, ${offsets.y}vmin) rotate(${offsets.rot}deg)`,
+        }}
+      >
+        <div className={styles.face}>
+          <div className={styles.twelveMarker} />
+          <div
+            className={`${styles.hand} ${styles.hourHand}`}
+            style={{ transform: `translateX(-50%) rotate(${hourAngle}deg)` }}
+          />
+          <div
+            className={`${styles.hand} ${styles.minuteHand}`}
+            style={{ transform: `translateX(-50%) rotate(${minuteAngle}deg)` }}
+          />
+          <div
+            className={`${styles.hand} ${styles.secondHand}`}
+            style={{ transform: `translateX(-50%) rotate(${secondAngle}deg)` }}
+          />
+          <div className={styles.center} />
+        </div>
       </div>
-      
-      <div style={{ fontSize: '2rem', marginTop: '10px', opacity: 0.8 }}>
-        {hexCode}
-      </div>
-
-      <div style={{ marginTop: '30px', display: 'flex', gap: '15px' }}>
-        <button
-          onClick={() => setIsScaledMode(false)}
-          style={{
-            padding: '8px 16px',
-            cursor: 'pointer',
-            backgroundColor: !isScaledMode ? textColor : 'transparent',
-            color: !isScaledMode ? hexCode : textColor,
-            border: `2px solid ${textColor}`,
-            borderRadius: '4px',
-            fontWeight: 'bold',
-            transition: 'all 0.3s ease',
-          }}
-        >
-          True Hex Mode
-        </button>
-        <button
-          onClick={() => setIsScaledMode(true)}
-          style={{
-            padding: '8px 16px',
-            cursor: 'pointer',
-            backgroundColor: isScaledMode ? textColor : 'transparent',
-            color: isScaledMode ? hexCode : textColor,
-            border: `2px solid ${textColor}`,
-            borderRadius: '4px',
-            fontWeight: 'bold',
-            transition: 'all 0.3s ease',
-          }}
-        >
-          Full Spectrum Mode
-        </button>
-      </div>
-    </div>
+      <time dateTime={time.toISOString()} className="sr-only">
+        {time.toLocaleTimeString()}
+      </time>
+    </main>
   );
-}
+};
+
+export default Clock;
