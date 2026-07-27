@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import portholeVideo from '@/assets/images/26_images/26-07/26-07-25/porthole.mp4';
-import { calculateAngles, useMillisecondClock } from '@/utils/clockUtils';
+import { calculateAngles, useClockTime } from '@/utils/clockUtils';
 import styles from './Clock.module.css';
 
 export const assets = [portholeVideo];
@@ -14,7 +14,7 @@ const Clock: React.FC = () => {
   // Ref to store the start time of the animation for consistent motion
   const startTime = useRef(Date.now());
 
-  const time = useMillisecondClock();
+  const time = useClockTime('ms');
 
   const {
     hour: hourAngle,
