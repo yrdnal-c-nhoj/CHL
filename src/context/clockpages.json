@@ -6111,7 +6111,8 @@
     "title": "Cyan",
     "tags": [
       "analog",
-      "color"
+      "color",
+      "cyan"
     ]
   },
   {
@@ -6381,7 +6382,8 @@
       "scarab",
       "underworld"
     ]
-  }, {
+  },
+  {
     "path": "26-07-24",
     "date": "26-07-24",
     "title": "Porthole",
@@ -6390,15 +6392,16 @@
       "ocean",
       "transport"
     ]
-  }, {
+  },
+  {
     "path": "26-07-25",
     "date": "26-07-25",
     "title": "Hexadecimal Color",
     "tags": [
       "digital",
+      "0123456789abcdef",
       "color",
-      "hex",
-      "0123456789abcdef"
+      "hex"
     ]
   },
   {
@@ -6407,11 +6410,12 @@
     "title": "Gemini",
     "tags": [
       "analog",
+      "constellations",
       "twins",
-      "zodiac",
-      "constellations"
+      "zodiac"
     ]
-  }, {
+  },
+  {
     "path": "26-07-27",
     "date": "26-07-27",
     "title": "Photogram",
@@ -6421,5 +6425,4 @@
       "shadow"
     ]
   }
-
 ]
