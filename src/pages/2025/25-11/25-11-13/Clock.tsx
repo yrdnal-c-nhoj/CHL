@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
-import styles from './Clock.module.css';
-import { useClockTime } from '@/utils/clockUtils';
 import bgImage from '@/assets/images/25_images/25-11/25-11-13/bg.webp';
+import { useMillisecondClock } from '@/utils/hooks';
+import React, { useEffect, useRef, useState } from 'react';
+import styles from './Clock.module.css';
 
 export const assets = [bgImage];
 
@@ -15,7 +15,7 @@ interface ClockInstance {
   direction: 'right-to-left' | 'left-to-right';
 }
 
-export default function RollingAnalogClock() {
+const RollingAnalogClock: React.FC = () => {
   const [clocks, setClocks] = useState<ClockInstance[]>([]);
 
   /* ------------------------------------------------------------------
@@ -24,7 +24,7 @@ export default function RollingAnalogClock() {
   useEffect(() => {
     let isMounted = true;
 
-    const spawnClock: React.FC = () => {
+    const spawnClock = () => {
       if (!isMounted) return;
 
       // Random animation duration (3–15 seconds)
@@ -66,7 +66,12 @@ export default function RollingAnalogClock() {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{ backgroundImage: `url(${bgImage})` }}>
+      {/* Accessible time element (Required) */}
+      <time dateTime={new Date().toISOString()} className={styles.semanticTime}>
+        {new Date().toLocaleTimeString()}
+      </time>
+
       {clocks.map((clock) => (
         <SingleSlowRollingClock
           key={clock.id}
@@ -76,7 +81,12 @@ export default function RollingAnalogClock() {
       ))}
     </div>
   );
-}
+};
+
+const MemoizedClock = React.memo(RollingAnalogClock);
+MemoizedClock.displayName = 'Clock_25_11_13';
+
+export default MemoizedClock;
 
 // --------------------------------------------------------------------
 
@@ -95,8 +105,7 @@ function SingleSlowRollingClock({ duration, direction }: SingleClockProps) {
     minute: HTMLDivElement | null;
     second: HTMLDivElement | null;
   }>({ hour: null, minute: null, second: null });
-
-  const now = useClockTime(); // Standardized animation loop
+  const now = useMillisecondClock(); // Standardized animation loop
 
   // Set a large distance to ensure the clock travels completely off-screen
   const travelDistance = 150; // 150vw

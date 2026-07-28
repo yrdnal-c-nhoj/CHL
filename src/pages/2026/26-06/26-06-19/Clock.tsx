@@ -5,6 +5,7 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
+import styles from './Clock.module.css';
 
 import fontUrl from '@/assets/fonts/26fonts/26-06-19.otf?url';
 
@@ -42,99 +43,46 @@ const DigitalClock: React.FC = () => {
   }, [time]);
 
   return (
-    <main
-      style={{
-        position: 'relative',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100vw',
-        height: '100dvh',
-        backgroundColor: '#000',
-        overflow: 'hidden',
-        margin: 0,
-        padding: 0,
-        // Base background layer (Original)
-        backgroundImage: `url(${glassbreak})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        filter: 'contrast(1.2) brightness(1.7)',
-      }}
-    >
+    <main className={styles.container} style={{ backgroundImage: `url(${glassbreak})` }}>
+      {/* Accessible time element (Required) */}
+      <time dateTime={time.toISOString()} className={styles.semanticTime}>
+        {time.toLocaleTimeString()}
+      </time>
+
       {/* Flipped background layer sitting directly on top of the original */}
       <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          backgroundImage: `url(${glassbreak})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          transform: 'scaleX(-1) scaleY(-1)', // Flips it horizontally and vertically
-          mixBlendMode: 'screen', // Blends the breaks together cleanly over each other
-          filter: 'contrast(1.2) brightness(1.7)', // Match the filter of the base layer
-          opacity: 0.8,            // Adjust opacity if you want the original layer to show through more/less
-          zIndex: 0,
-        }}
+        className={styles.flippedBackground}
+        style={{ backgroundImage: `url(${glassbreak})` }}
       />
 
       <video
         src={glassVideo2}
+        className={styles.videoLayer}
+        style={{ opacity: 0.2, zIndex: 0 }}
         autoPlay
         loop
         muted
         playsInline
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          opacity: 0.2,
-          filter: 'contrast(1.2) brightness(1.7)', // Match the filter of the base layer
-          zIndex: 0,
-        }}
       />
       <video
         src={glassVideo}
+        className={styles.videoLayer}
+        style={{ opacity: 0.4, zIndex: 1 }}
         autoPlay
         loop
         muted
         playsInline
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          opacity: 0.4,
-          filter: 'contrast(1.2) brightness(1.7)', // Match the filter of the base layer
-          zIndex: 1, // Sits above both background layers
-        }}
       />
 
-      <time
-        dateTime={time.toISOString()}
-        style={{
-          fontFamily: 'ClockFont_26_06_19, monospace',
-          fontSize: '30vw',
-          color: '#B4D0F139',
-          fontVariantNumeric: 'tabular-nums',
-          position: 'relative',
-          zIndex: 2, // Sits above everything
-        }}
-      >
+      <div className={styles.timeDisplay}>
         {hours}:{minutes}
-        <span style={{ fontSize: '28vw', marginLeft: '0.25em' }}>
-          {ampm}
-        </span>
-      </time>
+        <span className={styles.ampm}>{ampm}</span>
+      </div>
     </main>
   );
 };
 
-export default DigitalClock;
+const MemoizedClock = React.memo(DigitalClock);
+MemoizedClock.displayName = 'Clock_26_06_19';
+
+export default MemoizedClock;
