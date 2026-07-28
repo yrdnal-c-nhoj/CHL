@@ -1,51 +1,161 @@
 .container {
   width: 100vw;
   height: 100dvh;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #0d0d0d;
-  color: #f0f0f0;
-  font-family: 'Share Tech Mono', monospace, system-ui;
+  background: radial-gradient(ellipse at 50% 40%, #0b0f1a 0%, #05060b 55%, #000000 100%);
+  color: #eaf2ff;
+  font-family: 'DigitFont', 'Share Tech Mono', monospace, system-ui;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
-.timeDisplay {
+/* Accessible time element (Required) */
+.semanticTime {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.stage {
+  position: relative;
+  /* Using vmin bounds ensures the entire clock canvas scales gracefully to avoid edge clipping */
+  width: min(76vw, 76vh, 600px);
+  height: min(76vw, 76vh, 600px);
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: center;
-  font-size: clamp(2rem, 20vw, 15rem);
-  line-height: 1;
-  user-select: none;
-  text-shadow:
-    0 0 5px #c8c8c8,
-    0 0 10px #c8c8c8,
-    0 0 20px #00aaff,
-    0 0 30px #00aaff;
+  z-index: 2;
 }
 
-.digitGroup {
-  display: inline-block;
-  min-width: 1.8em; /* Ensure consistent width for HH, MM, SS */
+.systemLayout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 5;
+}
+
+.binarySystem {
+  display: flex;
+  gap: 24px; /* Tightened gap between A and B */
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  font-family: 'LabelFont', serif;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  color: #c9d8ef;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95), 0 0 4px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  font-size: 6vh;
+  font-weight: 300;
   text-align: center;
 }
 
-.digit {
-  letter-spacing: 0.05em;
+.starA {
+  width: 30vh;
+  height: 30vh;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff9ea 0%, #ffdf9e 60%, rgba(255, 223, 158, 0) 75%);
+  box-shadow: 0 0 35px 12px rgba(255, 223, 158, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: orbit-a 12s linear infinite;
 }
 
-.separator {
-  font-size: 0.8em;
-  margin: 0 0.1em;
-  transform: translateY(-0.05em);
+.starB {
+  width: 26vh;
+  height: 26vh;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff1d9 0%, #ffb066 60%, rgba(255, 176, 102, 0) 75%);
+  box-shadow: 0 0 30px 10px rgba(255, 176, 102, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: orbit-b 12s linear infinite;
 }
 
-.blinking {
-  animation: blink 1s step-end infinite;
+.starDigits {
+  font-size: 9vh;
+  font-weight: 300;
+  color: #2e245b;
+  line-height: 1;
+  text-shadow: 1px 1px 0px rgba(252, 248, 248, 1);
 }
 
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
+.proximaOrbitTrack {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: proxima-orbit 60s linear infinite;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.proximaNode {
+  position: absolute;
+  left: 0px; /* Stays bound seamlessly along the left boundary edge of the safe stage */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transform: translateX(-50%);
+}
+
+.proxima {
+  width: 20vh;
+  height: 20vh;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ff8c72 0%, #c1440e 65%, rgba(193, 68, 14, 0) 80%);
+  box-shadow: 0 0 20px 6px rgba(193, 68, 14, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.proximaDigits {
+  font-size: 6vh;
+  color: #0c0202;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 1px 1px 0px rgb(242, 235, 235);
+}
+
+.counterRotate {
+  animation: counter-rotate 60s linear infinite;
+}
+
+@keyframes orbit-a {
+  0% { transform: translate(0px, 0px); }
+  50% { transform: translate(12px, 4px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes orbit-b {
+  0% { transform: translate(0px, 0px); }
+  50% { transform: translate(-12px, -4px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes proxima-orbit {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+@keyframes counter-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
