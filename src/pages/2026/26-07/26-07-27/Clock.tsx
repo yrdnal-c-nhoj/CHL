@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import cyanImage from '@/assets/images/26_images/26-07/26-07-27/cyan.webp';
 import { useSecondClock } from '@/utils/hooks';
+import styles from './Clock.module.css';
 
 // Authentic Prussian Blue & Sun-Exposed Paper Palette
 const INK = '#F5F9F8A9';                 // Creamy, unexposed paper silhouette
@@ -16,87 +17,77 @@ const DECKLE =
 
 export const assets = [cyanImage];
 
-const CyanotypeClock: React.FC = () => {
+const CyanotypeClock: React.FC = React.memo(() => {
   const now = useSecondClock();
 
-  // Centered inside the 500x620 canvas
+  const { hourDeg, minuteDeg, secondDeg, isoTime } = useMemo(() => {
+    const hours = now.getHours() % 12;
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+
+    return {
+      secondDeg: seconds * 6,
+      minuteDeg: minutes * 6 + seconds * 0.1,
+      hourDeg: hours * 30 + minutes * 0.5,
+      isoTime: now.toISOString(),
+    };
+  }, [now]);
+
+  // Memoize the fern leaflets as they don't change
+  const fernLeaflets = useMemo(() => {
+    // Centered inside the 500x620 canvas
+    const cx = 250;
+    const cy = 310;
+
+    // Fern frond built from paired leaflets that taper toward the tip (Scaled up by ~1.4x)
+    return Array.from({ length: 8 }, (_, i) => {
+      const d = 30 + i * 20;
+      const size = 18 - i * 1.8;
+      const tilt = 36 - i * 2;
+      return (
+        <g key={i}>
+          <ellipse
+            cx={cx - 4}
+            cy={cy - d}
+            rx={size}
+            ry={size * 0.4}
+            fill={INK}
+            transform={`rotate(${-tilt} ${cx - 4} ${cy - d})`}
+          />
+          <ellipse
+            cx={cx + 4}
+            cy={cy - d}
+            rx={size}
+            ry={size * 0.4}
+            fill={INK}
+            transform={`rotate(${tilt} ${cx + 4} ${cy - d})`}
+          />
+        </g>
+      );
+    });
+  }, []);
+
+  // Center points for SVG transforms
   const cx = 250;
   const cy = 310;
 
-  const hours = now.getHours() % 12;
-  const minutes = now.getMinutes();
-  const seconds = now.getSeconds();
-
-  const secondDeg = seconds * 6;
-  const minuteDeg = minutes * 6 + seconds * 0.1;
-  const hourDeg = hours * 30 + minutes * 0.5;
-
-  // Fern frond built from paired leaflets that taper toward the tip (Scaled up by ~1.4x)
-  const fernLeaflets = Array.from({ length: 8 }, (_, i) => {
-    const d = 30 + i * 20;
-    const size = 18 - i * 1.8;
-    const tilt = 36 - i * 2;
-    return (
-      <g key={i}>
-        <ellipse
-          cx={cx - 4}
-          cy={cy - d}
-          rx={size}
-          ry={size * 0.4}
-          fill={INK}
-          transform={`rotate(${-tilt} ${cx - 4} ${cy - d})`}
-        />
-        <ellipse
-          cx={cx + 4}
-          cy={cy - d}
-          rx={size}
-          ry={size * 0.4}
-          fill={INK}
-          transform={`rotate(${tilt} ${cx + 4} ${cy - d})`}
-        />
-      </g>
-    );
-  });
-
   return (
-    <div
-      style={{
-        width: '100%',
-        height: '100dvh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundImage: `url(${cyanImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        overflow: 'hidden',
-      }}
-    >
-      <svg viewBox="0 0 500 620" style={{ maxHeight: '95dvh', maxWidth: '95vw', width: 'auto', height: 'auto' }}>
+    <main className={styles.container} style={{ backgroundImage: `url(${cyanImage})` }}>
+      <time dateTime={isoTime} className={styles.semanticTime}>
+        {now.toLocaleTimeString()}
+      </time>
+      <svg viewBox="0 0 500 620" className={styles.clockSvg}>
         <defs>
           <clipPath id="deckleClip">
             <path d={DECKLE} />
           </clipPath>
-          
-          {/* High-frequency analog paper grain texture */}
           <filter id="grain">
             <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves={4} seed={42} result="noise" />
-            <feColorMatrix
-              in="noise"
-              type="matrix"
-              values="0 0 0 0 0.04
-                      0 0 0 0 0.12
-                      0 0 0 0 0.24
-                      0 0 0 0.45 0"
-            />
+            <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.04 0 0 0 0 0.12 0 0 0 0 0.24 0 0 0 0.45 0" />
           </filter>
-
-          {/* Heavy photo-paper fiber shadow */}
           <filter id="dropshadow" x="-20%" y="-20%" width="140%" height="140%">
             <feDropShadow dx="5" dy="12" stdDeviation="10" floodColor="#060503" floodOpacity="0.75" />
           </filter>
-
-          {/* Sun exposure gradient - rich dark borders bleeding into an overexposed center */}
           <radialGradient id="wash" cx="50%" cy="50%" r="65%">
             <stop offset="0%" stopColor={PAPER_LIGHT} />
             <stop offset="55%" stopColor={PAPER_MID} />
@@ -104,25 +95,12 @@ const CyanotypeClock: React.FC = () => {
             <stop offset="100%" stopColor="#040b14" />
           </radialGradient>
         </defs>
-
-        {/* Heavy drop shadow beneath the deckle sheet */}
         <path d={DECKLE} fill="none" filter="url(#dropshadow)" />
-
-        {/* The Cyanotype print area */}
         <g clipPath="url(#deckleClip)">
-          {/* Base paper chemical tone */}
           <rect x={0} y={0} width={500} height={620} fill="url(#wash)" />
-          
-          {/* Watercolor paper fiber overlay */}
           <rect x={0} y={0} width={500} height={620} filter="url(#grain)" opacity={0.6} />
-          
-          {/* Heavy hand-brushed border emulation */}
           <path d={DECKLE} fill="none" stroke={PAPER_DEEP} strokeWidth={40} opacity={0.85} filter="blur(6px)" />
           <path d={DECKLE} fill="none" stroke="#03080f" strokeWidth={15} opacity={0.5} filter="blur(2px)" />
-
-          {/* ================= CLOCK WORK (CENTERED & SCALED UP) ================= */}
-
-          {/* Hour hand: A large, elegant pressed botanical leaf */}
           <g transform={`rotate(${hourDeg} ${cx} ${cy})`}>
             <path
               d={`M ${cx} ${cy} Q ${cx - 16} ${cy - 60} ${cx} ${cy - 125} Q ${cx + 16} ${cy - 60} ${cx} ${cy} Z`}
@@ -132,8 +110,6 @@ const CyanotypeClock: React.FC = () => {
             />
             <line x1={cx} y1={cy} x2={cx} y2={cy - 122} stroke={VEIN} strokeWidth={1.5} strokeLinecap="round" />
           </g>
-
-          {/* Minute hand: Large Fern frond */}
           <g transform={`rotate(${minuteDeg} ${cx} ${cy})`}>
             <path
               d={`M ${cx} ${cy} Q ${cx - 1} ${cy - 90} ${cx} ${cy - 185}`}
@@ -145,8 +121,6 @@ const CyanotypeClock: React.FC = () => {
             />
             {fernLeaflets}
           </g>
-
-          {/* Second hand: Fine strand of marine algae */}
           <g transform={`rotate(${secondDeg} ${cx} ${cy})`}>
             <path
               d={`M ${cx} ${cy + 30} Q ${cx + 8} ${cy - 60} ${cx - 6} ${cy - 160} Q ${cx - 12} ${cy - 200} ${cx} ${cy - 230}`}
@@ -162,12 +136,12 @@ const CyanotypeClock: React.FC = () => {
               return <circle key={i} cx={xx} cy={yy} r={4.5 - f * 2} fill={INK} opacity={0.75} />;
             })}
           </g>
-
-      
         </g>
       </svg>
-    </div>
+    </main>
   );
-};
+});
+
+CyanotypeClock.displayName = 'CyanotypeClock_26_07_27';
 
 export default CyanotypeClock;

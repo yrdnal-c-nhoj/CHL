@@ -1,0 +1,30 @@
+.container {
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.clockSvg {
+  max-height: 95dvh;
+  max-width: 95vw;
+  width: auto;
+  height: auto;
+}
+
+/* Visually hidden, but accessible to screen readers, per ARCHITECTURE.md */
+.semanticTime {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
