@@ -134,18 +134,29 @@ export default function HexClock() {
       }}
     >
       <style>{`
-        .top-explanation-bar {
-          width: 100%;
-          background-color: #565656;
-          color: #A2A0A0;
-          font-size: 0.75rem;
-          line-height: 1.3;
-          padding: 6px 12px;
-          box-sizing: border-box;
-          border-bottom: 1px solid #343232;
-          text-align: center;
-          letter-spacing: 0.2px;
-        }
+
+
+.top-explanation-bar {
+  width: 100vw;
+  max-width: 650px; /* Constrains line length so it's not full-bleed */
+  margin: 0 auto;    /* Centers the bar */
+  background-color: #565656;
+  color: #A2A0A0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  padding: 8px 16px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #343232;
+  text-align: center;
+  letter-spacing: 0.2px;
+  
+  /* Prevents single-word overflow lines */
+  text-wrap: balance; 
+}
+
+
+
+
 
         .tech-shadow {
           text-shadow: 
