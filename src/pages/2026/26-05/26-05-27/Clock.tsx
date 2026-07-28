@@ -2,16 +2,17 @@ import tireFont from '@/assets/fonts/26fonts/26-05-27-tire.otf?url';
 import tire from '@/assets/images/26_images/26-05/26-05-27/tire.webp';
 import tireImage from '@/assets/images/26_images/26-05/26-05-27/tire2.webp';
 import tireFlipImage from '@/assets/images/26_images/26-05/26-05-27/tireflip.webp';
+import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
-import { useEffect, useMemo, useState } from 'react';
+import { useSecondClock } from '@/utils/hooks';
+import React, { useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
 // BTS: Export assets for the preloading pipeline
 export const assets = [tire, tireImage, tireFlipImage, tireFont];
 
-export default function TireTilingClock() {
-  const time = useClockTime();
+const TireTilingClock: React.FC = () => {
+  const time = useSecondClock();
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 0,
     height: typeof window !== 'undefined' ? window.innerHeight : 0
@@ -32,15 +33,12 @@ export default function TireTilingClock() {
     LAYER_CONFIGS[1], // Bottom 2: One image (Large)
   ], [LAYER_CONFIGS]);
 
-  const fontConfigs = useMemo(
-    () => [
-      {
-        fontFamily: 'TireTrackFont',
-        fontUrl: tireFont
-      }
-    ],
-    []
-  );
+  const fontConfigs: FontConfig[] = [
+    {
+      fontFamily: 'TireTrackFont',
+      fontUrl: tireFont,
+    },
+  ];
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -114,4 +112,9 @@ export default function TireTilingClock() {
       </time>
     </main>
   );
-}
+};
+
+const MemoizedClock = React.memo(TireTilingClock);
+MemoizedClock.displayName = 'Clock_26_05_27';
+
+export default MemoizedClock;
