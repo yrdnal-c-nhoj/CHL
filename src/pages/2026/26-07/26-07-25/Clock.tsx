@@ -138,7 +138,6 @@ export default function HexClock() {
 
 .top-explanation-bar {
   width: 100vw;
-  max-width: 650px; /* Constrains line length so it's not full-bleed */
   margin: 0 auto;    /* Centers the bar */
   background-color: #565656;
   color: #A2A0A0;
