@@ -267,8 +267,8 @@ export default function HexClock() {
 
       {/* Top Banner */}
       <div className="top-explanation-bar">
-        Background color is time values (Hours/23, Mins/59, Secs/59) mapped onto the 0–255 RGB spectrum (16.7M colors).
-        &nbsp;Text color is the mathematical opposite.
+        The background color is time values (Hours/23, Mins/59, Secs/59) mapped onto the 0–255 RGB spectrum (16.7M colors).
+        &nbsp;The text color is the mathematical opposite.
       </div>
 
       {/* Main Clock Readouts */}
