@@ -10,7 +10,7 @@ export const assets = [videoBackground, nefertitiImage];
 
 const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 
-const AnalogClock: React.FC = () => {
+const AnalogClock: React.FC = React.memo(() => {
   const time = useMillisecondClock();
 
   const { hourDeg, minuteDeg, secondDeg, isoTime } = useMemo(() => {
@@ -58,15 +58,20 @@ const AnalogClock: React.FC = () => {
       <div className={styles.clock}>
         <div className={styles.face}>
           {romanNumerals.map((numeral, i) => (
-            <div
+            <span
               key={numeral}
               className={styles.numeralContainer}
               style={{ transform: `rotate(${(i + 1) * 30}deg)` }}
+              // Add aria-label for accessibility
+              aria-label={`${i + 1} o'clock`}
             >
-              <div className={styles.numeral} style={{ transform: `rotate(-${(i + 1) * 30}deg)` }}>
+              <span
+                className={styles.numeral}
+                style={{ transform: `rotate(-${(i + 1) * 30}deg)` }}
+              >
                 {numeral}
-              </div>
-            </div>
+              </span>
+            </span>
           ))}
           <div
             className={styles.hand + ' ' + styles.hourHand}
@@ -85,8 +90,8 @@ const AnalogClock: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
-AnalogClock.displayName = 'AnalogClock_26_07_23';
+AnalogClock.displayName = 'AnalogClock_26_07_26';
 
 export default AnalogClock;
