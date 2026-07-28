@@ -1,0 +1,120 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.semanticTime {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.colorOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Sit above the background but below the clock face */
+  opacity: 0.5; /* Increased for better visibility */
+  mix-blend-mode: overlay; /* Changed to overlay for more noticeable color blending */
+  animation: cycleHue 60s linear infinite;
+}
+
+@keyframes cycleHue {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+.clockFace {
+  position: relative;
+  /* Define layout variables for easy maintenance */
+  --clock-size: 85vmin;
+  --digit-size: 14vmin;
+  --radius: calc(var(--clock-size) / 2);
+
+  width: var(--clock-size);
+  height: var(--clock-size);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2; /* Ensure clock face is above the overlay */
+}
+
+.digit {
+  position: absolute;
+  width: var(--digit-size);
+  height: var(--digit-size);
+  background-image: var(--bg-image);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  /* Refactored Transform Logic:
+     1. Rotate the element to its position on the clock.
+     2. Translate it outward along its new Y-axis to the edge.
+     3. Counter-rotate it so the image content is upright. */
+  transform: rotate(var(--rotation)) translateY(calc(var(--radius) * -1))
+    rotate(calc(var(--rotation) * -1));
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.hourHand {
+  composes: hand;
+  width: 8px;
+  height: 25%;
+  margin-left: -4px;
+  background-color: #333;
+  z-index: 4;
+}
+
+.minuteHand {
+  composes: hand;
+  width: 6px;
+  height: 35%;
+  margin-left: -3px;
+  background-color: #555;
+  z-index: 5;
+}
+
+.secondHand {
+  composes: hand;
+  width: 3px;
+  height: 40%;
+  margin-left: -1.5px;
+  background-color: #d94848;
+  z-index: 6;
+}
+
+.centerPin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 15px;
+  height: 15px;
+  background-color: #222;
+  border-radius: 50%;
+  z-index: 7;
+  border: 2px solid #fff;
+}
