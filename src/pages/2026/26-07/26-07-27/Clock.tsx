@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import cyanImage from '@/assets/images/26_images/26-07/26-07-27/cyan.webp';
+import { useSecondClock } from '@/utils/hooks';
 
 // Authentic Prussian Blue & Sun-Exposed Paper Palette
 const INK = '#F5F9F8A9';                 // Creamy, unexposed paper silhouette
@@ -16,12 +17,7 @@ const DECKLE =
 export const assets = [cyanImage];
 
 const CyanotypeClock: React.FC = () => {
-  const [now, setNow] = useState(new Date());
-
-  useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(id);
-  }, []);
+  const now = useSecondClock();
 
   // Centered inside the 500x620 canvas
   const cx = 250;

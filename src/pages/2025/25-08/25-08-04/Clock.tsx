@@ -1,8 +1,8 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import myFont from '@/assets/fonts/25fonts/25-08-04-Tr.ttf'; // Your custom font file
+import bgImage from '@/assets/images/25_images/25-08/25-08-04/shrub.jpeg'; // Your background image file
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useClockTime } from '@/utils/hooks';
-import bgImage from '@/assets/images/25_images/25-08/25-08-04/shrub.jpeg'; // Your background image file
-import myFont from '@/assets/fonts/25fonts/25-08-04-Tr.ttf'; // Your custom font file
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 const getRandomPosition = () => ({
   top: `${Math.random() * 80 + 10}%`,
@@ -59,13 +59,16 @@ const DigitalClock: React.FC = () => {
     let diff = i - fadeIndex;
     if (diff < 0) diff += totalClocks;
 
-    if (diff <= 5) {
-      return diff / 5;
-    } else {
-      return 1 - (diff - 5) / 4;
-    }
-  };
+    const FADE_IN_DURATION = 5; // Number of clocks for fade-in
+    const FADE_OUT_DURATION = 4; // Number of clocks for fade-out after peak
 
+    if (diff <= FADE_IN_DURATION) {
+      return diff / FADE_IN_DURATION;
+    } 
+      return 1 - (diff - FADE_IN_DURATION) / FADE_OUT_DURATION;
+    
+  };
+  
   const hours = time.getHours() % 12 || 12;
   const minutes = time.getMinutes().toString().padStart(2, '0');
 

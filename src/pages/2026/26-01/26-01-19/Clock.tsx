@@ -1,5 +1,6 @@
 import bgImage from '@/assets/images/26_images/26-01/26-01-19/hands.webp';
 
+import { useSecondClock } from '@/utils/hooks';
 import React, { useEffect, useRef, useState } from 'react';
 
 // Prevent TS/ESLint from failing the production build for this experimental clock page.
