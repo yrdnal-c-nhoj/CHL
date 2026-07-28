@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
-import { useClockTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 import fontUrl from '@/assets/fonts/26fonts/26-07-20.ttf?url';
@@ -18,7 +18,7 @@ const fontConfigs: FontConfig[] = [
 const DigitalClock: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
-  const now = useClockTime('ms');
+  const now = useMillisecondClock();
   const isoTime = now.toISOString();
 
   // Memoize the digit array to prevent recalculation on every render
@@ -47,4 +47,7 @@ const DigitalClock: React.FC = () => {
   );
 };
 
-export default DigitalClock;
+const MemoizedDigitalClock = React.memo(DigitalClock);
+MemoizedDigitalClock.displayName = 'DigitalClock_26_07_20';
+
+export default MemoizedDigitalClock;

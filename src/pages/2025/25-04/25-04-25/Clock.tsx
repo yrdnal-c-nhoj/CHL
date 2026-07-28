@@ -1,176 +1,78 @@
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
+
 import minuteHandImage from '@/assets/images/25_images/25-04/25-04-25/ba.gif';
 import backgroundImage from '@/assets/images/25_images/25-04/25-04-25/bad.webp';
 import hourHandImage from '@/assets/images/25_images/25-04/25-04-25/ban.webp';
 import secondHandImage from '@/assets/images/25_images/25-04/25-04-25/band.gif';
-import type { FontConfig } from '@/types/clock'; // Import FontConfig type
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSmoothClock } from '@/utils/hooks';
-import React, { useEffect, useRef } from 'react';
+
 import styles from './Clock.module.css';
 
-// To use Google Fonts Oswald, you need the direct URL to the font file (e.g., .woff2).
-// You can find this by going to Google Fonts, selecting Oswald 700, and inspecting the CSS provided in the @import or <link> tag.
-// Look for the `src: url(...) format('woff2')` part.
-// The URL below is an example for Oswald 700 Latin and might change over time.
-const oswaldFontUrl = 'https://fonts.gstatic.com/s/oswald/v49/TK3_WkUHHAIjg75cFRf3bXL8LICs1_FvsUtiZTaR.woff2'; 
+export const assets = [backgroundImage, hourHandImage, minuteHandImage, secondHandImage];
+
+const oswaldFontUrl = 'https://fonts.gstatic.com/s/oswald/v49/TK3_WkUHHAIjg75cFRf3bXL8LICs1_FvsUtiZTaR.woff2';
 const fontConfigs: FontConfig[] = [
   { fontFamily: 'Oswald', fontUrl: oswaldFontUrl, options: { weight: '700' } },
 ];
 
-interface ClockImages {
-  hourImg: HTMLImageElement;
-  minuteImg: HTMLImageElement;
-  secondImg: HTMLImageElement;
-}
+const numerals = Array.from({ length: 12 }, (_, i) => i + 1);
 
-// Component Props interface
-interface MyClockProps {
-  // No props required for this component
-}
+const MyClock: React.FC = () => {
+  useSuspenseFontLoader(fontConfigs);
+  const time = useSecondClock();
 
-const MyClock: React.FC<MyClockProps> = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const imagesRef = useRef<ClockImages | null>(null);
+  const { hourDeg, minuteDeg, secondDeg, isoTime } = useMemo(() => {
+    const s = time.getSeconds();
+    const m = time.getMinutes();
+    const h = time.getHours();
 
-  const currentTime = useSmoothClock(); // Provides a Date object updated at 60fps
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
-
-  // This effect sets up the RAF loop and should only run once,
-  // but also re-run if images or fonts finish loading to ensure proper drawing.
-  // The actual drawing logic should check if fonts are loaded.
-  useEffect(() => {
-    if (!imagesRef.current) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d', { willReadFrequently: true });
-    if (!ctx) return;
-
-    // Only proceed if fonts are loaded
-    if (!fontsLoaded) {
-      return; // Or draw a fallback while loading
-    }
-
-    const update = (): void => {
-      const w = (canvas.width = window.innerWidth);
-      const h = (canvas.height = window.innerHeight);
-      const r = Math.min(w, h) / 3;
-
-      ctx.clearRect(0, 0, w, h);
-      ctx.save();
-      ctx.translate(w / 2, h / 2);
-
-      // Draw clock numbers
-      ctx.fillStyle = '#FA0820FF';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.font = `700 ${r * 0.5}px Oswald, sans-serif`;
-
-      for (let i = 1; i <= 12; i++) {
-        const angle = (i * Math.PI) / 6;
-        ctx.save();
-        ctx.rotate(angle);
-        ctx.translate(0, -r * 0.85);
-        ctx.fillText(i.toString(), 0, 0);
-        ctx.restore();
-      }
-
-      const hour = currentTime.getHours() % 12;
-      const minute = currentTime.getMinutes();
-      const second = currentTime.getSeconds();
-
-      // Updated drawImageHand function
-      const drawImageHand = (
-        img: HTMLImageElement,
-        angle: number,
-        widthScale = 1,
-        heightScale = 1,
-      ): void => {
-        const imgW = r * 0.1 * widthScale;
-        const imgH = r * heightScale;
-
-        ctx.save();
-        ctx.rotate(angle);
-
-        // Add a shadow to make the hand "pop"
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
-        ctx.shadowBlur = 15;
-        ctx.shadowOffsetX = 5;
-        ctx.shadowOffsetY = 5;
-
-        ctx.drawImage(img, -imgW / 2, -imgH * 0.9, imgW, imgH); // base of hand at center
-        ctx.restore();
-      };
-
-      // Use preloaded images
-      const images = imagesRef.current;
-      if (!images) return;
-      const { hourImg, minuteImg, secondImg } = images;
-
-      // Customize image hand sizes here:
-      drawImageHand(
-        hourImg,
-        (Math.PI / 6) * hour + (Math.PI / 360) * minute,
-        1.9,
-        0.5,
-      );
-      drawImageHand(
-        minuteImg,
-        (Math.PI / 30) * minute + (Math.PI / 1800) * second,
-        1.6,
-        0.8,
-      );
-      drawImageHand(secondImg, (Math.PI / 30) * second, 1.2, 1.0);
-
-      ctx.restore();
-      requestAnimationFrame(update);
+    return {
+      secondDeg: s * 6,
+      minuteDeg: m * 6 + s * 0.1,
+      hourDeg: (h % 12) * 30 + m * 0.5,
+      isoTime: time.toISOString(),
     };
-
-    update();
-  }, [imagesRef.current, fontsLoaded]); // Re-run when images or fonts are loaded
-
-  // Load images once (this effect runs only once on mount)
-  useEffect(() => {
-    const loadImages = async (): Promise<void> => {
-      const hourImg = new Image();
-      const minuteImg = new Image();
-      const secondImg = new Image();
-
-      const loadPromises = [
-        new Promise<void>((resolve) => {
-          hourImg.onload = () => resolve();
-          hourImg.src = hourHandImage;
-        }),
-        new Promise<void>((resolve) => {
-          minuteImg.onload = () => resolve();
-          minuteImg.src = minuteHandImage;
-        }),
-        new Promise<void>((resolve) => {
-          secondImg.onload = () => resolve();
-          secondImg.src = secondHandImage;
-        }),
-      ];
-
-      await Promise.all(loadPromises);
-      imagesRef.current = { hourImg, minuteImg, secondImg };
-    };
-
-    loadImages();
-  }, [hourHandImage, minuteHandImage, secondHandImage]);
-
-  const isoTime = currentTime.toISOString();
+  }, [time]);
 
   return (
-    <main
-      className={styles.container}
-      style={{ '--bg-image': `url(${backgroundImage})` } as React.CSSProperties}
-    >
-      {/* Visually hidden time for accessibility and SEO */}
-      <time dateTime={isoTime} className={styles.semanticTime}>
-        {currentTime.toLocaleTimeString()}
+    <main className={styles.container} style={{ backgroundImage: `url(${backgroundImage})` }}>
+      <time dateTime={isoTime} className={styles.semanticTime} aria-hidden="true">
+        {time.toLocaleTimeString()}
       </time>
-      <canvas ref={canvasRef} className={styles.clockCanvas} />
+      <div className={styles.clockFace}>
+        {numerals.map((num) => (
+          <div key={num} className={styles.numeralContainer} style={{ transform: `rotate(${num * 30}deg)` }}>
+            <span className={styles.numeral} style={{ transform: `rotate(-${num * 30}deg)` }}>
+              {num}
+            </span>
+          </div>
+        ))}
+        <img
+          src={hourHandImage}
+          className={`${styles.hand} ${styles.hourHand}`}
+          alt="Hour hand"
+          style={{ transform: `rotate(${hourDeg}deg)` }}
+        />
+        <img
+          src={minuteHandImage}
+          className={`${styles.hand} ${styles.minuteHand}`}
+          alt="Minute hand"
+          style={{ transform: `rotate(${minuteDeg}deg)` }}
+        />
+        <img
+          src={secondHandImage}
+          className={`${styles.hand} ${styles.secondHand}`}
+          alt="Second hand"
+          style={{ transform: `rotate(${secondDeg}deg)` }}
+        />
+      </div>
     </main>
   );
 };
 
-export default MyClock;
+const MemoizedClock = React.memo(MyClock);
+MemoizedClock.displayName = 'MyClock_25_04_25';
+
+export default MemoizedClock;

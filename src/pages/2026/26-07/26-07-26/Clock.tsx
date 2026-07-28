@@ -66,41 +66,24 @@ const AnalogClock: React.FC = React.memo(() => {
               aria-label={`${i + 1} o'clock`}
             >
               <span
-                className={styles.numeral}
-                style={{
-                  transform: `rotate(-${(i + 1) * 30}deg)`,
-                  color: '#FFD700',
-                  fontWeight: 'bold',
-                  textShadow: '0 0 8px #FFD700, 0 0 12px #000',
-                }}
+                className={`${styles.numeral} ${styles.yellowText}`}
+                style={{ transform: `rotate(-${(i + 1) * 30}deg)` }}
               >
                 {numeral}
               </span>
             </span>
           ))}
           <div
-            className={styles.hand + ' ' + styles.hourHand}
-            style={{
-              transform: `rotate(${hourDeg}deg)`,
-              backgroundColor: '#FFD700',
-              boxShadow: '0 0 8px #FFD700, 0 0 12px #000',
-            }}
+            className={`${styles.hand} ${styles.hourHand} ${styles.yellowHand}`}
+            style={{ transform: `rotate(${hourDeg}deg)` }}
           />
           <div
-            className={styles.hand + ' ' + styles.minuteHand}
-            style={{
-              transform: `rotate(${minuteDeg}deg)`,
-              backgroundColor: '#FFD700',
-              boxShadow: '0 0 8px #FFD700, 0 0 12px #000',
-            }}
+            className={`${styles.hand} ${styles.minuteHand} ${styles.yellowHand}`}
+            style={{ transform: `rotate(${minuteDeg}deg)` }}
           />
           <div
-            className={styles.hand + ' ' + styles.secondHand}
-            style={{
-              transform: `rotate(${secondDeg}deg)`,
-              backgroundColor: '#FFD700',
-              boxShadow: '0 0 8px #FFD700, 0 0 12px #000',
-            }}
+            className={`${styles.hand} ${styles.secondHand} ${styles.yellowHand}`}
+            style={{ transform: `rotate(${secondDeg}deg)` }}
           />
           <div className={styles.centerDot} />
         </div>
