@@ -1,10 +1,9 @@
-import React, { useMemo } from 'react';
-
 import { useMillisecondClock } from '@/utils/hooks';
-
+import type { CSSProperties } from 'react';
+import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
-// 1. Asset Exports (Required)
+// 1. Asset Exports
 import digit1 from '@/assets/images/26_images/26-07/26-07-28/1.webp';
 import digit10 from '@/assets/images/26_images/26-07/26-07-28/10.webp';
 import digit11 from '@/assets/images/26_images/26-07/26-07-28/11.webp';
@@ -18,8 +17,11 @@ import digit7 from '@/assets/images/26_images/26-07/26-07-28/7.webp';
 import digit8 from '@/assets/images/26_images/26-07/26-07-28/8.webp';
 import digit9 from '@/assets/images/26_images/26-07/26-07-28/9.webp';
 import backgroundImage from '@/assets/images/26_images/26-07/26-07-28/background.webp';
+import hourHandImage from '@/assets/images/26_images/26-07/26-07-28/hour.webp';
+import minuteHandImage from '@/assets/images/26_images/26-07/26-07-28/minute.webp';
+import secondHandImage from '@/assets/images/26_images/26-07/26-07-28/second.webp';
 
-const digitImages = [
+const DIGIT_IMAGES = [
   digit1,
   digit2,
   digit3,
@@ -34,16 +36,51 @@ const digitImages = [
   digit12,
 ];
 
-export const assets = [backgroundImage, ...digitImages];
+export const assets = [
+  backgroundImage,
+  ...DIGIT_IMAGES,
+  hourHandImage,
+  minuteHandImage,
+  secondHandImage,
+];
+
+// --- Configuration Constants ---
+
+// Background Image Filter Settings (Adjust values as needed)
+const BACKGROUND_SETTINGS = {
+  contrast: '110%',
+  brightness: '90%',
+};
+
+// Base Digit Size (in vmin)
+const BASE_DIGIT_SIZE_VMIN = 14;
+
+interface DigitCustomization {
+  imgSrc: string;
+  rotationDeg: number;
+  sizeVmin?: number;     // Override base size individually
+  brightness?: string;  // e.g., '120%'
+  contrast?: string;    // e.g., '150%'
+}
+
+// Per-digit customization array
+// Tweak individual brightness & contrast values per index as needed
+const DIGIT_CONFIGS: DigitCustomization[] = DIGIT_IMAGES.map((imgSrc, index) => ({
+  imgSrc,
+  rotationDeg: (index + 1) * 30,
+  sizeVmin: BASE_DIGIT_SIZE_VMIN,
+  brightness: '100%', // Adjust per digit, e.g. index === 11 ? '120%' : '100%'
+  contrast: '100%',   // Adjust per digit, e.g. index === 0 ? '130%' : '100%'
+}));
 
 // 2. Main Component
 const ClockComponent: React.FC = () => {
-  // 2a. Use standard hooks for time.
-  const time = useMillisecondClock(); // Smooth second hand
+  const time = useMillisecondClock();
 
-  // 2b. Memoize expensive calculations for clock hand rotation.
+  // Calculate clock hand degrees efficiently
   const { hourDeg, minuteDeg, secondDeg } = useMemo(() => {
-    const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+    const ms = time.getMilliseconds();
+    const seconds = time.getSeconds() + ms / 1000;
     const minutes = time.getMinutes() + seconds / 60;
     const hours = (time.getHours() % 12) + minutes / 60;
 
@@ -54,60 +91,102 @@ const ClockComponent: React.FC = () => {
     };
   }, [time]);
 
-  // Generate a random starting hue for the color overlay animation, memoized to run only once.
+  // Initial random hue tint
   const randomStartHue = useMemo(() => Math.floor(Math.random() * 360), []);
 
   return (
-    <main
-      className={styles.container}
-      style={{ backgroundImage: `url(${backgroundImage})` }}
-    >
-      {/* Accessible time element (Required) */}
-      <time dateTime={time.toISOString()} className={styles.semanticTime}>
-        {time.toLocaleTimeString()}
-      </time>
-
-      {/* Color shifting overlay */}
+    <main className={styles.container} aria-label="Analog Clock">
+      {/* Background Layer with custom contrast and brightness filters */}
       <div
-        className={styles.colorOverlay}
+        className={styles.backgroundLayer}
         style={
           {
-            // Set the starting color directly. The animation will handle the rotation from here.
-            backgroundColor: `hsl(${randomStartHue}, 70%, 50%)`,
-          } as React.CSSProperties
+            '--bg-image': `url(${backgroundImage})`,
+            '--bg-brightness': BACKGROUND_SETTINGS.brightness,
+            '--bg-contrast': BACKGROUND_SETTINGS.contrast,
+          } as CSSProperties
         }
+        aria-hidden="true"
       />
 
-      {/* Clock UI */}
-      <div className={styles.clockFace}>
-        {/* Digits with Image Backgrounds */}
-        {digitImages.map((imgSrc, i) => {
-          const rotationDeg = (i + 1) * 30;
-          return (
-            <div
-              key={i}
-              className={styles.digit}
-              style={
-                {
-                  '--bg-image': `url(${imgSrc})`,
-                  '--rotation': `${rotationDeg}deg`,
-                } as React.CSSProperties
-              }
-            />
-          );
-        })}
+      {/* Accessible time representation */}
+      <time dateTime={time.toISOString()} aria-label={time.toLocaleTimeString()}>
+        <span className={styles.semanticTime}>{time.toLocaleTimeString()}</span>
+      </time>
 
-        {/* Hands */}
-        <div className={styles.hourHand} style={{ transform: `rotate(${hourDeg}deg)` }} />
-        <div className={styles.minuteHand} style={{ transform: `rotate(${minuteDeg}deg)` }} />
-        <div className={styles.secondHand} style={{ transform: `rotate(${secondDeg}deg)` }} />
+      {/* Color overlay */}
+      <div
+        aria-hidden="true"
+        className={styles.colorOverlay}
+        style={{ backgroundColor: `hsl(${randomStartHue}, 70%, 50%)` }}
+      />
+
+      {/* Clock Face */}
+      <div className={styles.clockFace} aria-hidden="true">
+        {/* Digits with individual filter and size controls */}
+        {DIGIT_CONFIGS.map(
+          (
+            {
+              imgSrc,
+              rotationDeg,
+              sizeVmin = BASE_DIGIT_SIZE_VMIN,
+              brightness = '100%',
+              contrast = '100%',
+            },
+            i
+          ) => {
+            const halfDigitVmin = sizeVmin / 2;
+
+            return (
+              <div
+                key={i}
+                className={styles.digit}
+                style={
+                  {
+                    '--bg-image': `url(${imgSrc})`,
+                    '--size': `${sizeVmin}vmin`,
+                    '--rotation': `${rotationDeg}deg`,
+                    '--brightness': brightness,
+                    '--contrast': contrast,
+                    '--translate-y': `calc(-42.5vmin + ${halfDigitVmin}vmin)`,
+                  } as CSSProperties
+                }
+              />
+            );
+          }
+        )}
+
+        {/* Clock Hands */}
+        <div
+          className={styles.hourHand}
+          style={{
+            '--bg-image': `url(${hourHandImage})`,
+            transform: `translateX(-50%) rotate(${hourDeg}deg)`,
+          } as CSSProperties}
+        />
+        <div
+          className={styles.minuteHand}
+          style={{
+            '--bg-image': `url(${minuteHandImage})`,
+            transform: `translateX(-50%) rotate(${minuteDeg}deg)`,
+          } as CSSProperties}
+        />
+        <div
+          className={styles.secondHand}
+          style={{
+            '--bg-image': `url(${secondHandImage})`,
+            transform: `translateX(-50%) rotate(${secondDeg}deg)`,
+          } as CSSProperties}
+        />
+
+        {/* Center Pin */}
         <div className={styles.centerPin} />
       </div>
     </main>
   );
 };
 
-// 3. Performance and Debugging (Required)
+// 3. Memoized Component Export
 const MemoizedClock = React.memo(ClockComponent);
 MemoizedClock.displayName = 'Clock_26_07_28';
 
