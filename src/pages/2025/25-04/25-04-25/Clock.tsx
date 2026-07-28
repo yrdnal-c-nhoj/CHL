@@ -1,10 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useClockTime } from '@/utils/hooks';
+import minuteHandImage from '@/assets/images/25_images/25-04/25-04-25/ba.gif';
 import backgroundImage from '@/assets/images/25_images/25-04/25-04-25/bad.webp';
 import hourHandImage from '@/assets/images/25_images/25-04/25-04-25/ban.webp';
-import minuteHandImage from '@/assets/images/25_images/25-04/25-04-25/ba.gif';
 import secondHandImage from '@/assets/images/25_images/25-04/25-04-25/band.gif';
+import type { FontConfig } from '@/types/clock'; // Import FontConfig type
+import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSmoothClock } from '@/utils/hooks';
+import React, { useEffect, useRef } from 'react';
 import styles from './Clock.module.css';
+
+// To use Google Fonts Oswald, you need the direct URL to the font file (e.g., .woff2).
+// You can find this by going to Google Fonts, selecting Oswald 700, and inspecting the CSS provided in the @import or <link> tag.
+// Look for the `src: url(...) format('woff2')` part.
+// The URL below is an example for Oswald 700 Latin and might change over time.
+const oswaldFontUrl = 'https://fonts.gstatic.com/s/oswald/v49/TK3_WkUHHAIjg75cFRf3bXL8LICs1_FvsUtiZTaR.woff2'; 
+const fontConfigs: FontConfig[] = [
+  { fontFamily: 'Oswald', fontUrl: oswaldFontUrl, options: { weight: '700' } },
+];
+
 interface ClockImages {
   hourImg: HTMLImageElement;
   minuteImg: HTMLImageElement;
@@ -20,23 +32,23 @@ const MyClock: React.FC<MyClockProps> = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<ClockImages | null>(null);
 
-  const currentTime = useClockTime();
+  const currentTime = useSmoothClock(); // Provides a Date object updated at 60fps
+  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  // Load Google Font for canvas
-  useEffect(() => {
-    const link = document.createElement('link');
-    link.href =
-      'https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-  }, []);
-
+  // This effect sets up the RAF loop and should only run once,
+  // but also re-run if images or fonts finish loading to ensure proper drawing.
+  // The actual drawing logic should check if fonts are loaded.
   useEffect(() => {
     if (!imagesRef.current) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
+
+    // Only proceed if fonts are loaded
+    if (!fontsLoaded) {
+      return; // Or draw a fallback while loading
+    }
 
     const update = (): void => {
       const w = (canvas.width = window.innerWidth);
@@ -78,6 +90,13 @@ const MyClock: React.FC<MyClockProps> = () => {
 
         ctx.save();
         ctx.rotate(angle);
+
+        // Add a shadow to make the hand "pop"
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+        ctx.shadowBlur = 15;
+        ctx.shadowOffsetX = 5;
+        ctx.shadowOffsetY = 5;
+
         ctx.drawImage(img, -imgW / 2, -imgH * 0.9, imgW, imgH); // base of hand at center
         ctx.restore();
       };
@@ -107,7 +126,7 @@ const MyClock: React.FC<MyClockProps> = () => {
     };
 
     update();
-  }, [currentTime, imagesRef.current]);
+  }, [imagesRef.current, fontsLoaded]); // Re-run when images or fonts are loaded
 
   // Load images once (this effect runs only once on mount)
   useEffect(() => {
