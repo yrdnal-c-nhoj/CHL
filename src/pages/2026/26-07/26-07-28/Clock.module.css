@@ -40,7 +40,7 @@
   z-index: 1; /* Sit above the background but below the clock face */
   opacity: 0.5; /* Increased for better visibility */
   mix-blend-mode: overlay; /* Changed to overlay for more noticeable color blending */
-  /* The animation is now handled by inline style + filter */
+  animation: cycleHue 60s linear infinite;
 }
 
 @keyframes cycleHue {
@@ -104,7 +104,7 @@
 
 .secondHand {
   composes: hand;
-  width: 125px;
+  width: 200px;
   height: 98vh;
   z-index: 6;
 }
