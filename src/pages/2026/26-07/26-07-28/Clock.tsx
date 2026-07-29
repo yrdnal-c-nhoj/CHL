@@ -61,6 +61,7 @@ interface DigitCustomization {
   sizeVmin?: number;     // Override base size individually
   brightness?: string;  // e.g., '120%'
   contrast?: string;    // e.g., '150%'
+  dropShadow?: string;  // e.g., '0px 5px 15px rgba(0, 0, 0, 0.6)'
 }
 
 // Per-digit customization array
@@ -68,18 +69,18 @@ interface DigitCustomization {
 const DIGIT_CONFIGS: DigitCustomization[] = [
   // You can manually set the brightness and contrast for each digit here.
   // The index corresponds to the digit (0 = 1, 1 = 2, etc.)
-  { imgSrc: DIGIT_IMAGES[0], rotationDeg: 30, brightness: '90%', contrast: '120%' }, // 1
-  { imgSrc: DIGIT_IMAGES[1], rotationDeg: 60, brightness: '90%', contrast: '130%' }, // 2
-  { imgSrc: DIGIT_IMAGES[2], rotationDeg: 90, brightness: '90%', contrast: '170%' }, // 3
-  { imgSrc: DIGIT_IMAGES[3], rotationDeg: 120, brightness: '90%', contrast: '130%' }, // 4
-  { imgSrc: DIGIT_IMAGES[4], rotationDeg: 150, brightness: '100%', contrast: '120%' }, // 5
-  { imgSrc: DIGIT_IMAGES[5], rotationDeg: 180, brightness: '100%', contrast: '100%' }, // 6
-  { imgSrc: DIGIT_IMAGES[6], rotationDeg: 210, brightness: '110%', contrast: '120%' }, // 7
-  { imgSrc: DIGIT_IMAGES[7], rotationDeg: 240, brightness: '90%', contrast: '120%' }, // 8
-  { imgSrc: DIGIT_IMAGES[8], rotationDeg: 270, brightness: '110%', contrast: '100%' }, // 9
-  { imgSrc: DIGIT_IMAGES[9], rotationDeg: 300, brightness: '80%', contrast: '140%' }, // 10
-  { imgSrc: DIGIT_IMAGES[10], rotationDeg: 330, brightness: '80%', contrast: '120%' }, // 11
-  { imgSrc: DIGIT_IMAGES[11], rotationDeg: 360, brightness: '110%', contrast: '100%' }, // 12
+  { imgSrc: DIGIT_IMAGES[0], rotationDeg: 30, brightness: '90%', contrast: '120%', dropShadow: '0px 5px 15px rgba(0, 0, 0, 0.6)' }, // 1
+  { imgSrc: DIGIT_IMAGES[1], rotationDeg: 60, brightness: '90%', contrast: '130%', dropShadow: '0px 5px 15px rgba(0, 0, 0, 0.6)' }, // 2
+  { imgSrc: DIGIT_IMAGES[2], rotationDeg: 90, brightness: '90%', contrast: '170%', dropShadow: '0px 8px 25px rgba(0, 0, 0, 0.75)' }, // 3
+  { imgSrc: DIGIT_IMAGES[3], rotationDeg: 120, brightness: '90%', contrast: '130%', dropShadow: '0px 5px 15px rgba(0, 0, 0, 0.6)' }, // 4
+  { imgSrc: DIGIT_IMAGES[4], rotationDeg: 150, brightness: '100%', contrast: '120%', dropShadow: '0px 5px 15px rgba(0, 0, 0, 0.6)' }, // 5
+  { imgSrc: DIGIT_IMAGES[5], rotationDeg: 180, brightness: '100%', contrast: '100%', dropShadow: '0px 8px 25px rgba(0, 0, 0, 0.75)' }, // 6
+  { imgSrc: DIGIT_IMAGES[6], rotationDeg: 210, brightness: '110%', contrast: '120%', dropShadow: '0px 5px 15px rgba(0, 0, 0, 0.6)' }, // 7
+  { imgSrc: DIGIT_IMAGES[7], rotationDeg: 240, brightness: '90%', contrast: '120%', dropShadow: '0px 5px 15px rgba(0, 0, 0, 0.6)' }, // 8
+  { imgSrc: DIGIT_IMAGES[8], rotationDeg: 270, brightness: '110%', contrast: '100%', dropShadow: '0px 8px 25px rgba(0, 0, 0, 0.75)' }, // 9
+  { imgSrc: DIGIT_IMAGES[9], rotationDeg: 300, brightness: '80%', contrast: '140%', dropShadow: '0px 5px 15px rgba(0, 0, 0, 0.6)' }, // 10
+  { imgSrc: DIGIT_IMAGES[10], rotationDeg: 330, brightness: '80%', contrast: '120%', dropShadow: '0px 5px 15px rgba(0, 0, 0, 0.6)' }, // 11
+  { imgSrc: DIGIT_IMAGES[11], rotationDeg: 360, brightness: '110%', contrast: '100%', dropShadow: '0px 8px 25px rgba(0, 0, 0, 0.75)' }, // 12
 ].map((config) => ({
   ...config,
   sizeVmin: BASE_DIGIT_SIZE_VMIN, // Ensure base size is applied to all
@@ -144,6 +145,7 @@ const ClockComponent: React.FC = () => {
               sizeVmin = BASE_DIGIT_SIZE_VMIN,
               brightness = '100%',
               contrast = '100%',
+              dropShadow = 'none',
             },
             i
           ) => {
@@ -158,8 +160,7 @@ const ClockComponent: React.FC = () => {
                     '--bg-image': `url(${imgSrc})`,
                     '--size': `${sizeVmin}vmin`,
                     '--rotation': `${rotationDeg}deg`,
-                    '--brightness': brightness,
-                    '--contrast': contrast,
+                    '--digit-filter': `brightness(${brightness}) contrast(${contrast}) drop-shadow(${dropShadow})`,
                     '--translate-y': `calc(-42.5vmin + ${halfDigitVmin}vmin)`,
                   } as CSSProperties
                 }

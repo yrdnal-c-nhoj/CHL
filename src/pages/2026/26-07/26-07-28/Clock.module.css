@@ -71,7 +71,7 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  filter: brightness(var(--brightness, 100%)) contrast(var(--contrast, 100%));
+  filter: var(--digit-filter);
   transform: rotate(var(--rotation)) translateY(var(--translate-y))
     rotate(calc(var(--rotation) * -1));
 }
