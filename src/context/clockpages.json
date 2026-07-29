@@ -6389,8 +6389,10 @@
     "title": "Porthole",
     "tags": [
       "analog",
+      "float",
       "ocean",
-      "transport"
+      "transport",
+      "waves"
     ]
   },
   {
@@ -6400,8 +6402,7 @@
     "tags": [
       "digital",
       "0123456789abcdef",
-      "color",
-      "hex"
+      "color"
     ]
   },
   {
@@ -6411,6 +6412,7 @@
     "tags": [
       "analog",
       "constellations",
+      "myth",
       "twins",
       "zodiac"
     ]
@@ -6421,18 +6423,22 @@
     "title": "Photogram",
     "tags": [
       "analog",
+      "Anna Atkins",
       "cyan",
+      "light",
       "shadow"
     ]
   },
- {
+  {
     "path": "26-07-28",
     "date": "26-07-28",
     "title": "Fenestration",
     "tags": [
       "analog",
-      "cyan",
-      "shadow"
+      "glass",
+      "paint",
+      "windows",
+      "wood"
     ]
   }
 ]

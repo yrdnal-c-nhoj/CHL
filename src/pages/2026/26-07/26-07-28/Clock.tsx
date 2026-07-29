@@ -48,12 +48,12 @@ export const assets = [
 
 // Background Image Filter Settings (Adjust values as needed)
 const BACKGROUND_SETTINGS = {
-  contrast: '110%',
-  brightness: '90%',
+  contrast: '120%', // Example: Slightly higher contrast for the background
+  brightness: '80%', // Example: Slightly darker background
 };
 
 // Base Digit Size (in vmin)
-const BASE_DIGIT_SIZE_VMIN = 14;
+const BASE_DIGIT_SIZE_VMIN = 16;
 
 interface DigitCustomization {
   imgSrc: string;
@@ -65,12 +65,24 @@ interface DigitCustomization {
 
 // Per-digit customization array
 // Tweak individual brightness & contrast values per index as needed
-const DIGIT_CONFIGS: DigitCustomization[] = DIGIT_IMAGES.map((imgSrc, index) => ({
-  imgSrc,
-  rotationDeg: (index + 1) * 30,
-  sizeVmin: BASE_DIGIT_SIZE_VMIN,
-  brightness: '100%', // Adjust per digit, e.g. index === 11 ? '120%' : '100%'
-  contrast: '100%',   // Adjust per digit, e.g. index === 0 ? '130%' : '100%'
+const DIGIT_CONFIGS: DigitCustomization[] = [
+  // You can manually set the brightness and contrast for each digit here.
+  // The index corresponds to the digit (0 = 1, 1 = 2, etc.)
+  { imgSrc: DIGIT_IMAGES[0], rotationDeg: 30, brightness: '90%', contrast: '120%' }, // 1
+  { imgSrc: DIGIT_IMAGES[1], rotationDeg: 60, brightness: '90%', contrast: '130%' }, // 2
+  { imgSrc: DIGIT_IMAGES[2], rotationDeg: 90, brightness: '90%', contrast: '170%' }, // 3
+  { imgSrc: DIGIT_IMAGES[3], rotationDeg: 120, brightness: '90%', contrast: '130%' }, // 4
+  { imgSrc: DIGIT_IMAGES[4], rotationDeg: 150, brightness: '100%', contrast: '120%' }, // 5
+  { imgSrc: DIGIT_IMAGES[5], rotationDeg: 180, brightness: '100%', contrast: '100%' }, // 6
+  { imgSrc: DIGIT_IMAGES[6], rotationDeg: 210, brightness: '110%', contrast: '120%' }, // 7
+  { imgSrc: DIGIT_IMAGES[7], rotationDeg: 240, brightness: '90%', contrast: '120%' }, // 8
+  { imgSrc: DIGIT_IMAGES[8], rotationDeg: 270, brightness: '110%', contrast: '100%' }, // 9
+  { imgSrc: DIGIT_IMAGES[9], rotationDeg: 300, brightness: '80%', contrast: '140%' }, // 10
+  { imgSrc: DIGIT_IMAGES[10], rotationDeg: 330, brightness: '80%', contrast: '120%' }, // 11
+  { imgSrc: DIGIT_IMAGES[11], rotationDeg: 360, brightness: '110%', contrast: '100%' }, // 12
+].map((config) => ({
+  ...config,
+  sizeVmin: BASE_DIGIT_SIZE_VMIN, // Ensure base size is applied to all
 }));
 
 // 2. Main Component
@@ -179,8 +191,7 @@ const ClockComponent: React.FC = () => {
           } as CSSProperties}
         />
 
-        {/* Center Pin */}
-        <div className={styles.centerPin} />
+  
       </div>
     </main>
   );

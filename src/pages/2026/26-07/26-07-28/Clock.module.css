@@ -38,7 +38,7 @@
   position: absolute;
   inset: 0;
   z-index: 1; /* Sit above the background but below the clock face */
-  opacity: 0.5; /* Increased for better visibility */
+  opacity: 0.9; /* Increased for better visibility */
   mix-blend-mode: overlay; /* Changed to overlay for more noticeable color blending */
   animation: cycleHue 60s linear infinite;
 }
@@ -86,19 +86,20 @@
   background-position: bottom center;
   background-repeat: no-repeat;
   background-image: var(--bg-image);
+  filter: drop-shadow(2px 3px 4px rgba(0, 0, 0, 0.5));
 }
 
 .hourHand {
   composes: hand;
   width: 50px;
-  height: 25%;
-  z-index: 4;
+  height: 30%;
+  z-index: 7;
 }
 
 .minuteHand {
   composes: hand;
-  width: 90px;
-  height: 88vh;
+  width: 130px;
+  height: 100vh;
   z-index: 5;
 }
 
@@ -107,17 +108,4 @@
   width: 200px;
   height: 98vh;
   z-index: 6;
-}
-
-.centerPin {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 15px;
-  height: 15px;
-  background-color: #222;
-  border-radius: 50%;
-  z-index: 7;
-  border: 2px solid #fff;
 }
