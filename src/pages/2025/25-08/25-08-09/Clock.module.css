@@ -1,0 +1,27 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #540579;
+}
+
+.clockSvg {
+  width: 90vmin;
+  height: 90vmin;
+}
+
+/* Standard from ARCHITECTURE.md for accessible, visually-hidden elements */
+.semanticTime {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
