@@ -1,0 +1,55 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+}
+
+.clockFace {
+  width: 60vmin;
+  height: 60vmin;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hand {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: var(--bg-image);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transform-origin: center;
+}
+
+.hourHand {
+  /* Sizing can be adjusted if needed */
+}
+
+.minuteHand {
+  /* Sizing can be adjusted if needed */
+}
+
+.secondHand {
+  /* Sizing can be adjusted if needed */
+}
+
+.semanticTime {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
