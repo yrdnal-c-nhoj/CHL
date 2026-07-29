@@ -1,10 +1,14 @@
-import React, { useMemo } from 'react';
+import customFont from '@/assets/fonts/25fonts/25-08-09-box.ttf?url'; // Custom font file
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
-import customFont from '@/assets/fonts/25fonts/25-08-09-box.ttf'; // Custom font file
+import { useMillisecondClock } from '@/utils/hooks';
+import React from 'react';
+import styles from './Clock.module.css';
+
+// 1. Asset Exports
+export const assets = [customFont];
 
 // Standardized font loading with font-display: swap to avoid FOUC
-export const fontConfigs = [
+const fontConfigs = [
   {
     fontFamily: 'MyCustomFont',
     fontUrl: customFont,
@@ -15,9 +19,9 @@ export const fontConfigs = [
   },
 ];
 
-const RectangularAnalogClock: React.FC = () => {
+const ClockComponent: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   // Calculate hand angles
   const calculateHandAngles = () => {
@@ -170,25 +174,14 @@ const RectangularAnalogClock: React.FC = () => {
   const handStroke = 0.4;
 
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100vh',
-        overflow: 'hidden',
-        userSelect: 'none',
-      }}
-    >
+    <main className={styles.container}>
+      {/* Accessible time element */}
+      <time dateTime={time.toISOString()} className={styles.semanticTime}>
+        {time.toLocaleTimeString()}
+      </time>
       <svg
-        width="100vw"
-        height="100dvh"
+        className={styles.clockSvg}
         viewBox="0 0 100 100"
-        preserveAspectRatio="xMidYMid meet"
-        style={{
-          backgroundColor: '#460260FF',
-          backgroundImage:
-            'linear-gradient(#592dc1 1px, transparent 1px), linear-gradient(to right, #592dc1 1px, transparent 1px)',
-          backgroundSize: '10px 10px',
-        }}
       >
         <defs>
           <filter id="multiShadow">
@@ -242,8 +235,11 @@ const RectangularAnalogClock: React.FC = () => {
         )}
         <circle cx="50" cy="50" r="0.4" fill={handColor} />
       </svg>
-    </div>
+    </main>
   );
 };
 
-export default RectangularAnalogClock;
+const MemoizedClock = React.memo(ClockComponent);
+MemoizedClock.displayName = 'Clock_25_08_09';
+
+export default MemoizedClock;
