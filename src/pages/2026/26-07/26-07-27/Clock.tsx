@@ -1,188 +1,188 @@
-import cyanImage from '@/assets/images/26_images/26-07/26-07-27/cyan.webp';
-import hourHandImage from '@/assets/images/26_images/26-07/26-07-27/hour.webp';
-import minuteHandImage from '@/assets/images/26_images/26-07/26-07-27/minute.webp';
-import secondHandImage from '@/assets/images/26_images/26-07/26-07-27/second.webp';
-import { useSecondClock } from '@/utils/hooks';
-import type { CSSProperties } from 'react';
-import React, { useMemo } from 'react';
+import bgImage from '@/assets/images/26_images/26-07/26-07-27/bg.webp';
+import cyanBg from '@/assets/images/26_images/26-07/26-07-27/cyan.webp';
+import hourImg from '@/assets/images/26_images/26-07/26-07-27/hour.webp';
+import minImg from '@/assets/images/26_images/26-07/26-07-27/minute.webp';
+import secImg from '@/assets/images/26_images/26-07/26-07-27/second.webp';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
+import React, { useEffect, useMemo, useRef, type CSSProperties } from 'react';
 
-export const assets = [cyanImage, hourHandImage, minuteHandImage, secondHandImage];
+export const assets = [bgImage, cyanBg, hourImg, minImg, secImg];
 
-// --- Constants ---
-const CANVAS = { width: 500, height: 620, cx: 250, cy: 310 } as const;
-
-const PALETTE = {
-  paperLight: '#254E7D91',
-  paperMid: '#16365CB5',
-  paperDeep: '#08162910',
-  dropShadow: '#060503',
-  washEnd: '#040b14',
-  outerBorder: '#03080FA0',
-} as const;
-
-const DECKLE_PATH =
-  'M 35,22 C 110,12 210,28 310,15 C 390,5 440,18 465,35 C 490,65 475,150 482,240 C 490,340 472,420 478,510 C 482,565 455,595 390,602 C 310,610 205,592 115,605 C 55,612 22,585 15,530 C 5,450 18,350 10,250 C 4,160 12,85 35,22 Z';
-
-const HANDS = [
-  {
-    key: 'hour',
-    image: hourHandImage,
-    width: 60,
-    height: 140,
-    degrees: (h: number, m: number) => (h % 12) * 30 + m * 0.5,
-  },
-  {
-    key: 'minute',
-    image: minuteHandImage,
-    width: 60,
-    height: 200,
-    degrees: (_: number, m: number, s: number) => m * 6 + s * 0.1,
-  },
-  {
-    key: 'second',
-    image: secondHandImage,
-    width: 80,
-    height: 280,
-    degrees: (_: number, __: number, s: number) => s * 6,
-  },
-] as const;
-
-// --- Static styles ---
-const containerStyle: CSSProperties = {
-  width: '100%',
-  height: '100dvh',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  backgroundImage: `url(${cyanImage})`,
-  backgroundPosition: 'center',
-  overflow: 'hidden',
-};
-
-const svgStyle: CSSProperties = {
-  maxHeight: '95dvh',
-  maxWidth: '95vw',
-  width: 'auto',
-  height: 'auto',
-};
-
-// --- Component ---
-const CyanotypeClock: React.FC = React.memo(() => {
-  const now = useSecondClock();
-
-  const { angles, formattedTime, isoTime } = useMemo(() => {
-    const h = now.getHours();
-    const m = now.getMinutes();
-    const s = now.getSeconds();
+const AnalogClock: React.FC<{ now: Date }> = ({ now }) => {
+  const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
+    const ms = now.getMilliseconds();
+    const seconds = now.getSeconds() + ms / 1000; // Includes fractional seconds for a smooth sweep
+    const minutes = now.getMinutes() + seconds / 60; // Include fractional minutes
+    const hours = now.getHours();
 
     return {
-      angles: HANDS.map((hand) => hand.degrees(h, m, s)),
-      formattedTime: now.toLocaleTimeString(),
-      isoTime: now.toISOString(),
+      secondAngle: seconds * 6, // 360deg / 60s
+      minuteAngle: minutes * 6, // 360deg / 60m
+      hourAngle: ((hours % 12) + minutes / 60) * 30, // 360deg / 12h
     };
   }, [now]);
 
+  // Common drop-shadow for all hands
+  const dropShadow = 'drop-shadow(0px 0px 8px lavender)';
+  const handFilter = `brightness(1.2) contrast(1.3) ${dropShadow}`;
+
   return (
-    <main style={containerStyle}>
-      <svg
-        viewBox={`0 0 ${CANVAS.width} ${CANVAS.height}`}
-        style={svgStyle}
-        role="img"
-        aria-label="Cyanotype Clock"
-      >
-        <title>Cyanotype Clock - {formattedTime}</title>
+    <div style={clockStyles.wrapper} aria-label="Analog clock">
+      <div style={clockStyles.face}>
+        <img
+          alt="Hour hand"
+          src={hourImg}
+          style={{
+            ...clockStyles.handImgBase,
+            ...clockStyles.hourHand,
+            transform: `translate(-50%, -100%) rotate(${hourAngle}deg)`,
+            filter: handFilter,
+          }}
+        />
 
-        <defs>
-          <clipPath id="deckleClip">
-            <path d={DECKLE_PATH} />
-          </clipPath>
+        <img
+          alt="Minute hand"
+          src={minImg}
+          style={{
+            ...clockStyles.handImgBase,
+            ...clockStyles.minuteHand,
+            transform: `translate(-50%, -100%) rotate(${minuteAngle}deg)`,
+            filter: handFilter,
+          }}
+        />
 
-          <filter id="grain">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.85"
-              numOctaves={4}
-              seed={42}
-              result="noise"
-            />
-            <feColorMatrix
-              in="noise"
-              type="matrix"
-              values="0 0 0 0 0.04 0 0 0 0 0.12 0 0 0 0 0.24 0 0 0 0.45 0"
-            />
-          </filter>
+        <img
+          alt="Second hand"
+          src={secImg}
+          style={{
+            ...clockStyles.handImgBase,
+            ...clockStyles.secondHand,
+            transform: `translate(-50%, -100%) rotate(${secondAngle}deg)`,
+            filter: handFilter,
+          }}
+        />
 
-          <filter id="dropshadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow
-              dx="5"
-              dy="12"
-              stdDeviation="10"
-              floodColor={PALETTE.dropShadow}
-              floodOpacity="0.75"
-            />
-          </filter>
+        <div style={clockStyles.centerDot} />
+      </div>
+    </div>
+  );
+};
 
-          <radialGradient id="wash" cx="50%" cy="50%" r="65%">
-            <stop offset="0%" stopColor={PALETTE.paperLight} />
-            <stop offset="55%" stopColor={PALETTE.paperMid} />
-            <stop offset="88%" stopColor={PALETTE.paperDeep} />
-            <stop offset="100%" stopColor={PALETTE.washEnd} />
-          </radialGradient>
-        </defs>
+const clockStyles: {
+  [key: string]: CSSProperties;
+}  = {
+  wrapper: {
+    position: 'fixed',
+    inset: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1,
+    pointerEvents: 'none',
+    // Use a variable for the clock size to make it responsive
+    '--clock-size': 'clamp(200px, 30vmin, 400px)',
+  },
+  face: {
+    width: 'var(--clock-size)',
+    height: 'var(--clock-size)',
+    borderRadius: '50%',
+    position: 'relative',
+  },
+  handImgBase: {
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    transformOrigin: '50% 100%',
+    borderRadius: 999,
+    // Add a subtle transition for ultra-smooth rendering
+    transition: 'transform 50ms linear',
+    userSelect: 'none',
+  },
+ hourHand: {
+    width: 'calc(var(--clock-size) * 0.45)', // Responsive sizing
+    height: 'calc(var(--clock-size) * 0.65)',
+  },
+  minuteHand: {
+    width: 'calc(var(--clock-size) * 0.83)', // Responsive sizing
+    height: 'calc(var(--clock-size) * 1.12)',
+  },
+  secondHand: {
+    width: 'calc(var(--clock-size) * 0.81)', // Responsive sizing
+    height: 'calc(var(--clock-size) * 1.15)',
+  },
+};
 
-        {/* Shadow backing */}
-        <path d={DECKLE_PATH} fill="none" filter="url(#dropshadow)" />
+const styles: { [key: string]: CSSProperties } = {
+  container: {
+    position: 'relative',
+    width: '100%',
+    height: '100dvh',
+    overflow: 'hidden',
+    backgroundColor: '#000',
+  },
+  bgLayer: {
+    position: 'absolute',
+    inset: 0,
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    zIndex: 0,
+    filter: 'brightness(0.7) saturate(2.2) contrast(0.7)',
+  },
+  cyanLayer: {
+    position: 'absolute',
+    // Make the layer larger than the viewport to prevent clipping on rotation.
+    // 142vmax is roughly sqrt(2) * 100, the diagonal of the screen.
+    width: '90vmin',
+    height: '90vmin',
+    left: '50%',
+    top: '50%',
+    backgroundImage: `url(${cyanBg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    // filter: 'brightness(0.8) saturate(1.2) contrast(1.2)',
+    mixBlendMode: 'screen',
+    // opacity: 0.7,
+  },
+};
 
-        {/* Paper + hands */}
-        <g clipPath="url(#deckleClip)">
-          <rect width={CANVAS.width} height={CANVAS.height} fill="url(#wash)" />
-          <rect
-            width={CANVAS.width}
-            height={CANVAS.height}
-            filter="url(#grain)"
-            opacity={0.6}
-          />
+const ClockPage: React.FC = () => {
+  const now = useSmoothClock();
+  const cyanLayerRef = useRef<HTMLDivElement>(null);
+  const animationFrameId = useRef<number>();
 
-          {/* Soft deckle edge */}
-          <path
-            d={DECKLE_PATH}
-            fill="none"
-            stroke={PALETTE.paperDeep}
-            strokeWidth={40}
-            opacity={0.85}
-            filter="blur(6px)"
-          />
-          <path
-            d={DECKLE_PATH}
-            fill="none"
-            stroke={PALETTE.outerBorder}
-            strokeWidth={15}
-            opacity={0.5}
-            filter="blur(2px)"
-          />
+  useEffect(() => {
+    const animate = () => {
+      if (cyanLayerRef.current) {
+        const currentTime = new Date();
+        const ms = currentTime.getMilliseconds();
+        const seconds = currentTime.getSeconds() + ms / 1000;
+        // -6 degrees per second for a 60-second counter-clockwise rotation
+        const rotationAngle = -seconds * 6;
+        cyanLayerRef.current.style.transform = `translate(-50%, -50%) rotate(${rotationAngle}deg)`;
+      }
+      animationFrameId.current = requestAnimationFrame(animate);
+    };
 
-          {HANDS.map((hand, i) => (
-            <image
-              key={hand.key}
-              href={hand.image}
-              x={CANVAS.cx - hand.width / 2}
-              y={CANVAS.cy - hand.height}
-              width={hand.width}
-              height={hand.height}
-              style={{
-                transform: `rotate(${angles[i]}deg)`,
-                transformOrigin: `${CANVAS.cx}px ${CANVAS.cy}px`,
-                transition: hand.key === 'second' ? 'none' : 'transform 0.2s ease-out',
-              }}
-            />
-          ))}
-        </g>
-      </svg>
+    animationFrameId.current = requestAnimationFrame(animate);
 
-      <time dateTime={isoTime} className="sr-only" aria-hidden="true" />
+    return () => {
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+    };
+  }, []);
+
+  return (
+    <main style={styles.container}>
+      <div style={styles.bgLayer} />
+      <div
+        ref={cyanLayerRef}
+        style={styles.cyanLayer}
+      />
+      <AnalogClock now={now} />
     </main>
   );
-});
+};
 
-CyanotypeClock.displayName = 'CyanotypeClock_26_07_27';
-export default CyanotypeClock;
+export default ClockPage;
