@@ -6420,6 +6420,18 @@
   {
     "path": "26-07-27",
     "date": "26-07-27",
+    "title": "Fenestration",
+    "tags": [
+      "analog",
+      "glass",
+      "paint",
+      "windows",
+      "wood"
+      
+  },
+  {
+    "path": "26-07-28",
+    "date": "26-07-28",
     "title": "Charge",
     "tags": [
       "digital",
@@ -6429,18 +6441,6 @@
       "electricity",
       "light",
       "metal"
-    ]
-  },
-  {
-    "path": "26-07-28",
-    "date": "26-07-28",
-    "title": "Fenestration",
-    "tags": [
-      "analog",
-      "glass",
-      "paint",
-      "windows",
-      "wood"
     ]
   },
   {

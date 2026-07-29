@@ -3,109 +3,53 @@
   width: 100vw;
   height: 100dvh;
   overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #000;
+  background-color: #2a293c;
+  contain: layout style paint;
+  isolation: isolate;
 }
 
 .backgroundLayer {
   position: absolute;
-  inset: 0;
-  background-image: var(--bg-image);
-  background-size: cover;
-  background-position: center;
-  filter: brightness(var(--bg-brightness, 100%))
-    contrast(var(--bg-contrast, 100%));
-  z-index: 0;
-}
-
-.semanticTime {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-  /* Per verify-clock.js, this is the standard for sr-only text */
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-}
-
-.colorOverlay {
-  position: absolute;
-  inset: 0;
-  z-index: 1; /* Sit above the background but below the clock face */
-  opacity: 0.9; /* Increased for better visibility */
-  mix-blend-mode: overlay; /* Changed to overlay for more noticeable color blending */
-  animation: cycleHue 60s linear infinite;
-}
-
-@keyframes cycleHue {
-  0% {
-    filter: hue-rotate(0deg);
-  }
-  100% {
-    filter: hue-rotate(360deg);
-  }
-}
-
-.clockFace {
-  position: relative;
-  width: 85vmin;
-  height: 85vmin;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2; /* Ensure clock face is above the overlay */
-}
-
-.digit {
-  position: absolute;
-  width: var(--size);
-  height: var(--size);
-  background-image: var(--bg-image);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  filter: var(--digit-filter);
-  transform: rotate(var(--rotation)) translateY(var(--translate-y))
-    rotate(calc(var(--rotation) * -1));
-}
-
-.hand {
-  position: absolute;
-  bottom: 50%;
+  top: 50%;
   left: 50%;
-  transform-origin: bottom center;
+  transform: translate(-50%, -50%);
+  width: 50vmin;
+  height: 50vmin;
+  object-fit: contain;
+  pointer-events: none;
   will-change: transform;
-  background-size: contain;
-  background-position: bottom center;
-  background-repeat: no-repeat;
-  background-image: var(--bg-image);
-  filter: drop-shadow(2px 3px 4px rgba(0, 0, 0, 0.5));
-}
-
-.hourHand {
-  composes: hand;
-  width: 50px;
-  height: 30%;
-  z-index: 7;
-}
-
-.minuteHand {
-  composes: hand;
-  width: 130px;
-  height: 100vh;
   z-index: 5;
 }
 
-.secondHand {
-  composes: hand;
-  width: 200px;
-  height: 98vh;
-  z-index: 6;
+.face {
+  position: absolute;
+  inset: 0;
+  color: #ececef;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  font-family: 'ClockFont_26_07_29', sans-serif;
+}
+
+.digitGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.05vmin;
+  justify-content: center;
+}
+
+.digitBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 2rem;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.separator {
+  font-size: 1.8rem;
+  padding-bottom: 0.2rem;
 }
