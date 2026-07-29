@@ -1,0 +1,51 @@
+/* Clock.module.css */
+
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: var(--clock-background-color);
+}
+
+.backgroundVideo {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100%;
+  object-fit: fill;
+  z-index: 0;
+  transform-origin: 50% 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.clockFace {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vmin;
+  height: 100vmin;
+  z-index: 2;
+}
+
+
+.clockHand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  background: transparent;
+  transform-origin: 50% 100%;
+  filter: var(--clock-shadow-filter);
+  border-radius: 40px;
+  display: block;
+}
+
+
+/* (Unused) Animation kept for future use */
+@keyframes clockBgRotateCW {
+  from { transform: translateX(5vw) rotate(0deg); }
+  to { transform: translateX(5vw) rotate(360deg); }
+}

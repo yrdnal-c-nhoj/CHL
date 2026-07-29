@@ -1,188 +1,133 @@
-import bgImage from '@/assets/images/26_images/26-07/26-07-27/bg.webp';
-import cyanBg from '@/assets/images/26_images/26-07/26-07-27/cyan.webp';
-import hourImg from '@/assets/images/26_images/26-07/26-07-27/hour.webp';
-import minImg from '@/assets/images/26_images/26-07/26-07-27/minute.webp';
-import secImg from '@/assets/images/26_images/26-07/26-07-27/second.webp';
-import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
-import React, { useEffect, useMemo, useRef, type CSSProperties } from 'react';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+import React, { memo } from 'react';
 
-export const assets = [bgImage, cyanBg, hourImg, minImg, secImg];
+import fontUrl from '@/assets/fonts/26fonts/26-07-29.otf?url';
+import backgroundVideo from '@/assets/images/26_images/26-07/26-07-29/eiffel.mp4';
 
-const AnalogClock: React.FC<{ now: Date }> = ({ now }) => {
-  const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
-    const ms = now.getMilliseconds();
-    const seconds = now.getSeconds() + ms / 1000; // Includes fractional seconds for a smooth sweep
-    const minutes = now.getMinutes() + seconds / 60; // Include fractional minutes
-    const hours = now.getHours();
+// ======================================================
+// Config & Constants
+// ======================================================
 
-    return {
-      secondAngle: seconds * 6, // 360deg / 60s
-      minuteAngle: minutes * 6, // 360deg / 60m
-      hourAngle: ((hours % 12) + minutes / 60) * 30, // 360deg / 12h
-    };
-  }, [now]);
+export const assets = [backgroundVideo, fontUrl];
 
-  // Common drop-shadow for all hands
-  const dropShadow = 'drop-shadow(0px 0px 8px lavender)';
-  const handFilter = `brightness(1.2) contrast(1.3) ${dropShadow}`;
+// ======================================================
+// Main Component
+// ======================================================
+
+const FONT_CONFIGS: FontConfig[] = [
+  {
+    fontFamily: 'ClockFont_26_07_29',
+    fontUrl,
+  },
+];
+
+const styles: Record<string, React.CSSProperties> = {
+  container: {
+    position: 'relative',
+    width: '100vw',
+    height: '100dvh',
+    overflow: 'hidden',
+    backgroundColor: '#2A2765',
+    contain: 'layout style paint',
+    isolation: 'isolate',
+  },
+  backgroundLayer: {
+    position: 'absolute',
+    inset: 0,
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    pointerEvents: 'none',
+    willChange: 'transform',
+    zIndex: 5,
+  },
+  face: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '25vh',
+    color: '#ececef',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontFamily: "'ClockFont_26_07_29', sans-serif",
+    zIndex: 10,
+  },
+  digitGroup: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.05vmin',
+    justifyContent: 'center',
+  },
+  digitBox: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '1.5rem',
+    height: '2rem',
+    fontSize: '1.8rem',
+    flexShrink: 0,
+    textAlign: 'center',
+  },
+  separator: {
+    fontSize: '1.8rem',
+    paddingBottom: '0.2rem',
+  },
+};
+
+const ClockComponent: React.FC = () => {
+  const currentTime = useMillisecondClock();
+
+  useSuspenseFontLoader(FONT_CONFIGS);
+
+  const hours = currentTime.getHours().toString().padStart(2, '0');
+  const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+  const seconds = currentTime.getSeconds().toString().padStart(2, '0');
+  const milliseconds = Math.floor(currentTime.getMilliseconds() / 10)
+    .toString()
+    .padStart(2, '0');
 
   return (
-    <div style={clockStyles.wrapper} aria-label="Analog clock">
-      <div style={clockStyles.face}>
-        <img
-          alt="Hour hand"
-          src={hourImg}
-          style={{
-            ...clockStyles.handImgBase,
-            ...clockStyles.hourHand,
-            transform: `translate(-50%, -100%) rotate(${hourAngle}deg)`,
-            filter: handFilter,
-          }}
-        />
+    <div style={styles.container}>
+      <video
+        src={backgroundVideo}
+        autoPlay
+        muted
+        loop
+        playsInline
+        style={styles.backgroundLayer}
+      />
 
-        <img
-          alt="Minute hand"
-          src={minImg}
-          style={{
-            ...clockStyles.handImgBase,
-            ...clockStyles.minuteHand,
-            transform: `translate(-50%, -100%) rotate(${minuteAngle}deg)`,
-            filter: handFilter,
-          }}
-        />
-
-        <img
-          alt="Second hand"
-          src={secImg}
-          style={{
-            ...clockStyles.handImgBase,
-            ...clockStyles.secondHand,
-            transform: `translate(-50%, -100%) rotate(${secondAngle}deg)`,
-            filter: handFilter,
-          }}
-        />
-
-        <div style={clockStyles.centerDot} />
+      <div style={styles.face}>
+        <div style={styles.digitGroup}>
+          <span style={styles.digitGroup}>
+            <span style={styles.digitBox}>{hours[0]}</span>
+            <span style={styles.digitBox}>{hours[1]}</span>
+            <span style={styles.separator}>:</span>
+            <span style={styles.digitBox}>{minutes[0]}</span>
+            <span style={styles.digitBox}>{minutes[1]}</span>
+            <span style={styles.separator}>:</span>
+            <span style={styles.digitBox}>{seconds[0]}</span>
+            <span style={styles.digitBox}>{seconds[1]}</span>
+            <span style={styles.separator}>:</span>
+            <span style={styles.digitBox}>{milliseconds[0]}</span>
+            <span style={styles.digitBox}>{milliseconds[1]}</span>
+          </span>
+        </div>
       </div>
+
+      {/* Accessible time element as per ARCHITECTURE.md */}
+      <time dateTime={currentTime.toISOString()} className="sr-only">
+        {currentTime.toLocaleTimeString()}
+      </time>
     </div>
   );
 };
 
-const clockStyles: {
-  [key: string]: CSSProperties;
-}  = {
-  wrapper: {
-    position: 'fixed',
-    inset: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1,
-    pointerEvents: 'none',
-    // Use a variable for the clock size to make it responsive
-    '--clock-size': 'clamp(200px, 30vmin, 400px)',
-  },
-  face: {
-    width: 'var(--clock-size)',
-    height: 'var(--clock-size)',
-    borderRadius: '50%',
-    position: 'relative',
-  },
-  handImgBase: {
-    position: 'absolute',
-    left: '50%',
-    top: '50%',
-    transformOrigin: '50% 100%',
-    borderRadius: 999,
-    // Add a subtle transition for ultra-smooth rendering
-    transition: 'transform 50ms linear',
-    userSelect: 'none',
-  },
- hourHand: {
-    width: 'calc(var(--clock-size) * 0.45)', // Responsive sizing
-    height: 'calc(var(--clock-size) * 0.65)',
-  },
-  minuteHand: {
-    width: 'calc(var(--clock-size) * 0.83)', // Responsive sizing
-    height: 'calc(var(--clock-size) * 1.12)',
-  },
-  secondHand: {
-    width: 'calc(var(--clock-size) * 0.81)', // Responsive sizing
-    height: 'calc(var(--clock-size) * 1.15)',
-  },
-};
+const MemoizedClock = memo(ClockComponent);
+MemoizedClock.displayName = 'Clock_26_07_29';
 
-const styles: { [key: string]: CSSProperties } = {
-  container: {
-    position: 'relative',
-    width: '100%',
-    height: '100dvh',
-    overflow: 'hidden',
-    backgroundColor: '#000',
-  },
-  bgLayer: {
-    position: 'absolute',
-    inset: 0,
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    zIndex: 0,
-    filter: 'brightness(0.7) saturate(2.2) contrast(0.7)',
-  },
-  cyanLayer: {
-    position: 'absolute',
-    // Make the layer larger than the viewport to prevent clipping on rotation.
-    // 142vmax is roughly sqrt(2) * 100, the diagonal of the screen.
-    width: '90vmin',
-    height: '90vmin',
-    left: '50%',
-    top: '50%',
-    backgroundImage: `url(${cyanBg})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    // filter: 'brightness(0.8) saturate(1.2) contrast(1.2)',
-    mixBlendMode: 'screen',
-    // opacity: 0.7,
-  },
-};
-
-const ClockPage: React.FC = () => {
-  const now = useSmoothClock();
-  const cyanLayerRef = useRef<HTMLDivElement>(null);
-  const animationFrameId = useRef<number>();
-
-  useEffect(() => {
-    const animate = () => {
-      if (cyanLayerRef.current) {
-        const currentTime = new Date();
-        const ms = currentTime.getMilliseconds();
-        const seconds = currentTime.getSeconds() + ms / 1000;
-        // -6 degrees per second for a 60-second counter-clockwise rotation
-        const rotationAngle = -seconds * 6;
-        cyanLayerRef.current.style.transform = `translate(-50%, -50%) rotate(${rotationAngle}deg)`;
-      }
-      animationFrameId.current = requestAnimationFrame(animate);
-    };
-
-    animationFrameId.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
-    };
-  }, []);
-
-  return (
-    <main style={styles.container}>
-      <div style={styles.bgLayer} />
-      <div
-        ref={cyanLayerRef}
-        style={styles.cyanLayer}
-      />
-      <AnalogClock now={now} />
-    </main>
-  );
-};
-
-export default ClockPage;
+export default MemoizedClock;

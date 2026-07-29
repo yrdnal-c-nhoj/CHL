@@ -6,7 +6,7 @@ import React, { useMemo } from 'react';
 import nefertitiImage from '@/assets/images/26_images/26-07/26-07-26/gem.webp';
 import videoBackground from '@/assets/images/26_images/26-07/26-07-26/gemini.mp4';
 // 1. Import the custom font with the `?url` suffix
-import customFont from '@/assets/fonts/your-custom-font.otf?url';
+import customFont from '@/assets/fonts/26fonts/26-07-26.otf?url';
 
 import styles from './Clock.module.css';
 
