@@ -44,6 +44,11 @@ export const assets = [
   secondHandImage,
 ];
 
+// 2. Font Configuration (No custom fonts used in this component)
+// Adhering to the architecture, this section is intentionally left.
+// If fonts were used, they would be configured here with useSuspenseFontLoader.
+// const fontConfigs: FontConfig[] = [];
+
 // --- Configuration Constants ---
 
 // Background Image Filter Settings (Adjust values as needed)
@@ -86,7 +91,7 @@ const DIGIT_CONFIGS: DigitCustomization[] = [
   sizeVmin: BASE_DIGIT_SIZE_VMIN, // Ensure base size is applied to all
 }));
 
-// 2. Main Component
+// 3. Main Component
 const ClockComponent: React.FC = () => {
   const time = useMillisecondClock();
 
@@ -123,8 +128,8 @@ const ClockComponent: React.FC = () => {
       />
 
       {/* Accessible time representation */}
-      <time dateTime={time.toISOString()} aria-label={time.toLocaleTimeString()}>
-        <span className={styles.semanticTime}>{time.toLocaleTimeString()}</span>
+      <time dateTime={time.toISOString()} className={styles.semanticTime}>
+        {time.toLocaleTimeString()}
       </time>
 
       {/* Color overlay */}
@@ -198,7 +203,7 @@ const ClockComponent: React.FC = () => {
   );
 };
 
-// 3. Memoized Component Export
+// 4. Performance and Debugging
 const MemoizedClock = React.memo(ClockComponent);
 MemoizedClock.displayName = 'Clock_26_07_28';
 
