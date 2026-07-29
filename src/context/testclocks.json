@@ -6420,13 +6420,15 @@
   {
     "path": "26-07-27",
     "date": "26-07-27",
-    "title": "Photogram",
+    "title": "Charge",
     "tags": [
-      "analog",
-      "Anna Atkins",
-      "cyan",
+      "digital",
+      "France",
+      "Paris",
+      "Sylvain-Leser",
+      "electricity",
       "light",
-      "shadow"
+      "metal"
     ]
   },
   {
@@ -6439,6 +6441,18 @@
       "paint",
       "windows",
       "wood"
+    ]
+  },
+  {
+    "path": "26-07-29",
+    "date": "26-07-29",
+    "title": "Photogram",
+    "tags": [
+      "analog",
+      "Anna Atkins",
+      "cyan",
+      "light",
+      "shadow"
     ]
   }
 ]

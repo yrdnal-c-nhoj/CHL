@@ -1,0 +1,57 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding-top: 2rem;
+  background-color: #070707;
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  filter:  contrast(1.2);
+  mix-blend-mode: screen;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.digitsContainer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.digitBox {
+  font-size: calc(100dvw / 10);
+  font-weight: 300;
+  font-family: 'ClockFont_26_07_29', monospace;
+  color: #ece8e8ab;
+  text-shadow: 1px 1px 0 rgb(244 240 240 / 59%), -1px -1px 0 rgb(20 1 1 / 90%);
+  line-height: 0.8;
+  font-variant-numeric: tabular-nums;
+  width: 1ch;
+  text-align: center;
+}
+
+/* Standard from ARCHITECTURE.md for accessible, visually-hidden elements */
+.semanticTime {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
