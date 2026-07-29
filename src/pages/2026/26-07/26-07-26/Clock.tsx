@@ -1,14 +1,23 @@
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 import nefertitiImage from '@/assets/images/26_images/26-07/26-07-26/gem.webp';
 import videoBackground from '@/assets/images/26_images/26-07/26-07-26/gemini.mp4';
+// 1. Import the custom font with the `?url` suffix
+import customFont from '@/assets/fonts/your-custom-font.otf?url';
 
 import styles from './Clock.module.css';
 
-export const assets = [videoBackground, nefertitiImage];
+export const assets = [videoBackground, nefertitiImage, customFont];
 
 const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+
+// 2. Define the font configuration
+const fontConfigs: FontConfig[] = [
+  { fontFamily: 'GeminiClockFont', fontUrl: customFont },
+];
 
 const AnalogClock: React.FC = React.memo(() => {
   const time = useMillisecondClock();
@@ -30,6 +39,9 @@ const AnalogClock: React.FC = React.memo(() => {
       isoTime: time.toISOString(),
     };
   }, [time]);
+
+  // 3. Use the hook to suspend rendering until the font is ready
+  useSuspenseFontLoader(fontConfigs);
 
   return (
     <div className={styles.container}>
