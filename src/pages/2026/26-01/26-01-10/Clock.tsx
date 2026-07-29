@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import d25090116font from '@/assets/fonts/26fonts/26-01-10-bit.ttf?url';
 import bgImage from '@/assets/images/26_images/26-01/26-01-10/moo.gif';
-import d25090116font from '@/assets/fonts/26fonts/26-01-10-bit.ttf';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
-const Clock: React.FC = () => {
-  const [time, setTime] = useState(new Date());
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [isLargeScreen, setIsLargeScreen] = useState<any>(
-    window.innerWidth > 700,
-  );
-  const [bgReady, setBgReady] = useState<boolean>(false);
+// 1. Asset Exports
+export const assets = [bgImage, d25090116font];
 
-  // 1. LETTER MAPPING: Change these letters to your preference
+// 2. Font Configuration
+const fontConfigs: FontConfig[] = [
+  { fontFamily: 'MyD25090116font', fontUrl: d25090116font },
+];
+
+const ClockComponent: React.FC = () => {
+  const time = useSecondClock();
+  useSuspenseFontLoader(fontConfigs);
+
+  // LETTER MAPPING
   const digitToLetter = {
     0: ' ',
     1: 'd',
@@ -27,61 +32,15 @@ const Clock: React.FC = () => {
     9: 't',
   };
 
-  useEffect(() => {
-    setTime(new Date());
-    const timer = setInterval(() => setTime(new Date()), 100);
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'MyD25090116font';
-        src: url(${d25090116font}) format('truetype');
-        font-display: block;
-      }
-    `;
-    document.head.appendChild(style);
-    const fontPromise = document.fonts.load('22vh MyD25090116font');
-    const imagePromise = new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = bgImage;
-      img.onload = resolve;
-      img.onerror = reject;
-    });
-
-    Promise.all([fontPromise, imagePromise])
-      .then(() => setIsLoaded(true))
-      .catch(() => setIsLoaded(true));
-
-    return () => {
-      document.head.removeChild(style);
+  const { hours, minutes, seconds } = useMemo(() => {
+    return {
+      hours: String(time.getHours()).padStart(2, '0'),
+      minutes: String(time.getMinutes()).padStart(2, '0'),
+      seconds: String(time.getSeconds()).padStart(2, '0'),
     };
-  }, []);
+  }, [time]);
 
-  // Separate background readiness
-  useEffect(() => {
-    const img = new Image();
-    const done = () => setBgReady(true);
-    img.onload = done;
-    img.onerror = done;
-    img.src = bgImage;
-    const timeout = setTimeout(done, 1200);
-    return () => clearTimeout(timeout);
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => setIsLargeScreen(window.innerWidth > 600);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const hours = String(((time.getHours() + 11) % 12) + 1).padStart(2, '0');
-  const minutes = String(time.getMinutes()).padStart(2, '0');
-  const seconds = String(time.getSeconds()).padStart(2, '0');
-
-  // 3. RENDER HELPERS
+  // RENDER HELPERS
   const renderUnit = (value) => (
     <div className={styles.unitGroup}>
       {value.split('').map((digit, i) => (
@@ -92,12 +51,14 @@ const Clock: React.FC = () => {
     </div>
   );
 
-  const ready = isLoaded && bgReady;
-
   return (
-    <>
+    <main className={styles.container}>
+      {/* Accessible time element */}
+      <time dateTime={time.toISOString()} className={styles.semanticTime}>
+        {time.toLocaleTimeString()}
+      </time>
       {/* Mirror background effect */}
-      <div className={styles.background} style={{ opacity: ready ? 1 : 0 }}>
+      <div className={styles.background}>
         <div
           className={styles.leftBackground}
           style={{ backgroundImage: `url(${bgImage})` }}
@@ -107,19 +68,17 @@ const Clock: React.FC = () => {
           style={{ backgroundImage: `url(${bgImage})` }}
         />
       </div>
-
       {/* Clock content layer */}
-      <div className={styles.container} style={{ opacity: ready ? 1 : 0 }}>
-        <div
-          className={`${styles.layout} ${isLargeScreen ? styles.row : styles.column}`}
-        >
-          {renderUnit(hours)}
-          {renderUnit(minutes)}
-          {renderUnit(seconds)}
-        </div>
+      <div className={styles.layout}>
+        {renderUnit(hours)}
+        {renderUnit(minutes)}
+        {renderUnit(seconds)}
       </div>
-    </>
+    </main>
   );
 };
 
-export default Clock;
+const MemoizedClock = React.memo(ClockComponent);
+MemoizedClock.displayName = 'Clock_26_01_10';
+
+export default MemoizedClock;

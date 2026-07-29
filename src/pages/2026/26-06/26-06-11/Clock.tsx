@@ -11,7 +11,7 @@ import styles from './Clock.module.css';
  */
 export const assets = [backgroundImage, clockFont];
 
-const Clock: React.FC = () => {
+const ClockComponent: React.FC = () => {
   const time = useSecondClock();
   const tileSize = 80; // Size in pixels
   const [dimensions, setDimensions] = useState({ cols: 1, rows: 1 });
@@ -90,6 +90,11 @@ const Clock: React.FC = () => {
         '--grid-rows': String(dimensions.rows),
       } as React.CSSProperties}
     >
+      {/* Accessible time element (Required) */}
+      <time dateTime={time.toISOString()} className={styles.semanticTime}>
+        {time.toLocaleTimeString()}
+      </time>
+
       <div className={styles.backgroundGrid}>
         {backgroundTiles}
       </div>
@@ -114,4 +119,8 @@ const Clock: React.FC = () => {
   );
 };
 
-export default Clock;
+// Performance and Debugging
+const MemoizedClock = React.memo(ClockComponent);
+MemoizedClock.displayName = 'Clock_26_06_11';
+
+export default MemoizedClock;
