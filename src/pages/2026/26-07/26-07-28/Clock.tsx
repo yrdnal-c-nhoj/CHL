@@ -4,7 +4,7 @@ import { useMillisecondClock } from '@/utils/hooks';
 import React, { memo, useMemo } from 'react';
 
 import fontUrl from '@/assets/fonts/26fonts/26-07-28.ttf?url';
-import backgroundVideo from '@/assets/images/26_images/26-07/26-07-28/eiffel.mp4';
+import backgroundVideo from '@/assets/images/26_images/26-07/26-07-29/eiffel.mp4';
 
 import styles from './Clock.module.css';
 // ======================================================
