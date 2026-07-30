@@ -52,8 +52,6 @@ const STYLES: Record<string, React.CSSProperties> = {
   emojiCell: {
     position: 'absolute',
     fontSize: 'clamp(32px, 7vw, 60px)',
-    willChange: 'transform, opacity',
-    transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease',
     filter: 'drop-shadow(4px 4px 5px rgba(0, 0, 0, 0.6))',
   },
   clockFace: {
@@ -114,7 +112,7 @@ const STYLES: Record<string, React.CSSProperties> = {
   },
   secondHand: {
     width: 2,
-    height: '348%',
+    height: '48%',
     marginLeft: -1,
     transition: 'background-color 0.2s linear',
   },
@@ -172,7 +170,6 @@ const AnalogClock: React.FC = () => {
     const cells = [];
     const midCol = (GRID_COLS - 1) / 2;
     const midRow = (GRID_ROWS - 1) / 2;
-
     for (let r = 0; r < GRID_ROWS; r++) {
       for (let c = 0; c < GRID_COLS; c++) {
         const distance = Math.sqrt(Math.pow(c - midCol, 2) + Math.pow(r - midRow, 2));
@@ -180,7 +177,6 @@ const AnalogClock: React.FC = () => {
         const top = (r / (GRID_ROWS - 1)) * 100;
         const index = r * GRID_COLS + c;
         const parity = (r + c) % 2;
-
         cells.push({
           left: `${left}%`,
           top: `${top}%`,
@@ -213,7 +209,7 @@ const AnalogClock: React.FC = () => {
       <time dateTime={isoTime} style={STYLES.semanticTime}>
         {now.toLocaleTimeString()}
       </time>
-      
+
       {/* Background Image Layer */}
       <div
         style={{
@@ -232,10 +228,6 @@ const AnalogClock: React.FC = () => {
           const emojiIndex = (Math.floor(cell.index / 2) + baseOffset) % activeEmojis.length;
           const emoji = activeEmojis[emojiIndex];
 
-          const wavePulse = Math.sin((currentSecond + cell.distance) * 0.5);
-          const scaleFactor = (isWorkPhase ? 1.0 : 0.85) + (cell.parity === 0 ? 0.1 : -0.05);
-          const dynamicScale = scaleFactor + wavePulse * 0.05;
-
           return (
             <span
               key={cell.index}
@@ -244,7 +236,7 @@ const AnalogClock: React.FC = () => {
                 left: cell.left,
                 top: cell.top,
                 opacity: isWorkPhase ? 0.95 : 0.85,
-                transform: `translate(-50%, -50%) scale(${dynamicScale}) translate3d(0, ${wavePulse * 4}px, 0)`,
+                transform: 'translate(-50%, -50%) scale(1)',
               }}
               aria-hidden="true"
             >
@@ -257,7 +249,6 @@ const AnalogClock: React.FC = () => {
       {/* Main Clock Dial */}
       <div style={STYLES.clockFace}>
         <div style={STYLES.pomodoroSectors} />
-
         <div style={statusBadgeStyle} data-work-phase={isWorkPhase}>
           {isWorkPhase ? 'LABORTEMPO' : 'LUDTEMPO'}
         </div>
@@ -273,7 +264,6 @@ const AnalogClock: React.FC = () => {
             backgroundColor: isWorkPhase ? '#00ff00' : '#ff0000',
           }}
         />
-
         <div style={STYLES.centerDot} />
       </div>
     </main>
