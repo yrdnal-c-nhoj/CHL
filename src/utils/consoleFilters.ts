@@ -101,7 +101,9 @@ export function installConsoleFilters() {
   if (installed) return;
   installed = true;
 
-  (['debug', 'info', 'warn', 'error', 'log'] as ConsoleMethod[]).forEach(
+// Only filter known browser-internal noise on 'debug' and 'info' channels.
+  // Never suppress 'warn' or 'error' — those may contain actionable app issues.
+  (['debug', 'info'] as ConsoleMethod[]).forEach(
     (method) => {
       const original = console[method];
       console[method] = (...args: unknown[]) => {

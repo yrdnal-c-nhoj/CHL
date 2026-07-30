@@ -1,11 +1,12 @@
 /**
  * clockUtils.ts
  *
- * Provides utility functions and standardized clock hooks/formatters
- * to support all clock pages.
+ * Provides utility functions for clock pages.
+ *
+ * ⚠️ NOTE: For time hooks (useClockTime, useSecondClock, etc.),
+ * import from '@/utils/hooks' instead.
+ * The useClockTime export here is maintained only for backward compatibility.
  */
-
-import { useEffect, useState } from 'react';
 
 /**
  * Pads a number with a leading zero if it's a single digit.
@@ -13,23 +14,12 @@ import { useEffect, useState } from 'react';
 const pad = (num: number): string => num.toString().padStart(2, '0');
 
 /**
- * useClockTime
- * Canonical hook expected by some clock pages.
- * Provides the current time and updates every second.
+ * Re-export of the canonical useClockTime hook from @/utils/hooks.
+ *
+ * ⚠️ DEPRECATED: Import from '@/utils/hooks' instead.
+ * This export is maintained only for backward compatibility with existing clock pages.
  */
-export function useClockTime(_precision?: 'ms' | 's'): Date {
-  const [time, setTime] = useState<Date>(new Date());
-
-  useEffect(() => {
-    // If callers want milliseconds, update more frequently.
-    // Note: UI only needs ~30-60fps for smoothness; 50ms is a good balance.
-    const intervalMs = _precision === 'ms' ? 50 : 1000;
-    const timer = setInterval(() => setTime(new Date()), intervalMs);
-    return () => clearInterval(timer);
-  }, [_precision]);
-
-  return time;
-}
+export { useClockTime } from '@/utils/hooks/useClockTime';
 
 
 /**

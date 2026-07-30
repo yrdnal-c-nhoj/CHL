@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
-import gemImage from '@/assets/images/26_images/26-07/26-07-26/gem.png';
-import backgroundVideo from '@/assets/images/26_images/26-07/26-07-26/ink.mp4';
+import gemImage from '@/assets/images/26_images/26-07/26-07-26/gem.webp';
+import backgroundVideo from '@/assets/images/26_images/26-07/26-07-26/gemini.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';

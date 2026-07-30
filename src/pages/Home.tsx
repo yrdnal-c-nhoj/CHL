@@ -40,7 +40,6 @@ const Home: FC = () => {
     saveNavigationState,
     restoreNavigationState,
     restoreScrollPosition,
-    restoreCursorPosition,
     clearNavigationState,
   } = useNavigationState();
   const [expandedMonth, setExpandedMonth] = useState<string | null>(() => {
@@ -78,20 +77,15 @@ const Home: FC = () => {
     if (fontsReady && !loading) {
       const savedState = restoreNavigationState();
       if (savedState) {
-        // Restore scroll position after a short delay to ensure DOM is ready
-        setTimeout(() => {
+        // Restore scroll position after DOM is ready
+        requestAnimationFrame(() => {
           restoreScrollPosition(savedState);
-        }, 300);
-
-        // Restore cursor position after scroll is restored
-        setTimeout(() => {
-          restoreCursorPosition(savedState);
-        }, 600);
+        });
 
         // Clear the navigation state after restoring
         setTimeout(() => {
           clearNavigationState();
-        }, 800);
+        }, 400);
       }
     }
   }, [
@@ -99,7 +93,6 @@ const Home: FC = () => {
     loading,
     restoreNavigationState,
     restoreScrollPosition,
-    restoreCursorPosition,
     clearNavigationState,
   ]);
 
