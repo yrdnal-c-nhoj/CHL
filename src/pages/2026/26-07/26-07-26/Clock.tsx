@@ -1,109 +1,117 @@
+import React, { useMemo } from 'react';
+
+import gemImage from '@/assets/images/26_images/26-07/26-07-26/gem.png';
+import backgroundVideo from '@/assets/images/26_images/26-07/26-07-26/ink.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import React, { useMemo } from 'react';
-
-import nefertitiImage from '@/assets/images/26_images/26-07/26-07-26/gem.webp';
-import videoBackground from '@/assets/images/26_images/26-07/26-07-26/gemini.mp4';
-// 1. Import the custom font with the `?url` suffix
-import customFont from '@/assets/fonts/26fonts/26-07-26.otf?url';
 
 import styles from './Clock.module.css';
 
-export const assets = [videoBackground, nefertitiImage, customFont];
+// 1. Asset Exports (Required)
+export const assets = [backgroundVideo, gemImage];
 
-const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
-
-// 2. Define the font configuration
+// 2. Font Configuration
+// The font is loaded via @import in the CSS, so no JS loader config is needed.
 const fontConfigs: FontConfig[] = [
-  { fontFamily: 'GeminiClockFont', fontUrl: customFont },
+  { fontFamily: 'Almendra Display', fontUrl: 'https://fonts.googleapis.com/css2?family=Almendra+Display&display=swap' },
 ];
 
-const AnalogClock: React.FC = React.memo(() => {
+// 3. Main Component
+const ClockComponent: React.FC = () => {
+  // 3a. Use standard hooks for time and font loading.
   const time = useMillisecondClock();
-
-  const { hourDeg, minuteDeg, secondDeg, isoTime } = useMemo(() => {
-    const ms = time.getMilliseconds();
-    const s = time.getSeconds();
-    const m = time.getMinutes();
-    const h = time.getHours();
-
-    const totalSeconds = s + ms / 1000;
-    const totalMinutes = m + totalSeconds / 60;
-    const totalHours = (h % 12) + totalMinutes / 60;
-
-    return {
-      secondDeg: totalSeconds * 6,
-      minuteDeg: totalMinutes * 6,
-      hourDeg: totalHours * 30,
-      isoTime: time.toISOString(),
-    };
-  }, [time]);
-
-  // 3. Use the hook to suspend rendering until the font is ready
   useSuspenseFontLoader(fontConfigs);
 
+  // 3b. Memoize expensive calculations.
+  const { hourAngle, minuteAngle, secondAngle, currentHourForNumeral } =
+    useMemo(() => {
+      const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+      const minutes = time.getMinutes() + seconds / 60;
+      const hours = time.getHours() + minutes / 60;
+
+      return {
+        hourAngle: (hours % 12) * 30,
+        minuteAngle: minutes * 6,
+        secondAngle: seconds * 6,
+        currentHourForNumeral: Math.ceil(hours % 12) || 12,
+      };
+    }, [time]);
+
+  // Memoize the numerals array
+  const numerals = useMemo(() => {
+    const roman = [
+      'XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI',
+    ];
+    return roman.map((numeral, index) => ({
+      numeral,
+      // Rotate each numeral to its correct position on the clock face
+      rotation: index * 30,
+    }));
+  }, []);
+
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
+      {/* Background Layers */}
       <video
+        autoPlay
+        loop
+        muted
+        playsInline
         className={styles.videoBackground}
-        autoPlay
-        loop
-        muted
-        playsInline
-        src={videoBackground}
+        src={backgroundVideo}
       />
       <video
-        className={styles.flippedVideoBackground}
         autoPlay
         loop
         muted
         playsInline
-        src={videoBackground}
+        className={styles.flippedVideoBackground}
+        src={backgroundVideo}
       />
-      <div className={styles.gemOverlay} style={{ '--gem-image': `url(${nefertitiImage})` } as React.CSSProperties} />
       <div className={styles.yellowOverlay} />
-      {/* Visually hidden time for accessibility, matching your standard */}
-      <time dateTime={isoTime} className={styles.semanticTime}>
+      <div
+        className={styles.gemOverlay}
+        style={{ '--gem-image': `url(${gemImage})` } as React.CSSProperties}
+      />
+
+      {/* Accessible time element (Required) */}
+      <time dateTime={time.toISOString()} className={styles.semanticTime}>
         {time.toLocaleTimeString()}
       </time>
+
+      {/* Clock UI */}
       <div className={styles.clock}>
         <div className={styles.face}>
-          {romanNumerals.map((numeral, i) => (
-            <span
-              key={numeral}
-              className={styles.numeralContainer}
-              style={{ transform: `rotate(${(i + 1) * 30}deg)` }}
-              // Add aria-label for accessibility
-              aria-label={`${i + 1} o'clock`}
-            >
-              <span
-                className={`${styles.numeral} ${styles.yellowText}`}
-                style={{ transform: `rotate(-${(i + 1) * 30}deg)` }}
+          {/* Numerals */}
+          <div className={styles.numeralContainer}>
+            {numerals.map(({ numeral, rotation }) => (
+              <div
+                key={numeral}
+                className={styles.numeral}
+                style={{ transform: `rotate(${rotation}deg)` }}
               >
-                {numeral}
-              </span>
-            </span>
-          ))}
-          <div
-            className={`${styles.hand} ${styles.hourHand} ${styles.yellowHand}`}
-            style={{ transform: `rotate(${hourDeg}deg)` }}
-          />
-          <div
-            className={`${styles.hand} ${styles.minuteHand} ${styles.yellowHand}`}
-            style={{ transform: `rotate(${minuteDeg}deg)` }}
-          />
-          <div
-            className={`${styles.hand} ${styles.secondHand} ${styles.yellowHand}`}
-            style={{ transform: `rotate(${secondDeg}deg)` }}
-          />
+                <span style={{ transform: `rotate(${-rotation}deg)` }}>
+                  {numeral}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Hands */}
+          <div className={`${styles.hand} ${styles.hourHand}`} style={{ transform: `translateX(-50%) rotate(${hourAngle}deg)` }} />
+          <div className={`${styles.hand} ${styles.minuteHand}`} style={{ transform: `translateX(-50%) rotate(${minuteAngle}deg)` }} />
+          <div className={`${styles.hand} ${styles.secondHand}`} style={{ transform: `translateX(-50%) rotate(${secondAngle}deg)` }} />
+
           <div className={styles.centerDot} />
         </div>
       </div>
-    </div>
+    </main>
   );
-});
+};
 
-AnalogClock.displayName = 'AnalogClock_26_07_26';
+// 4. Performance and Debugging (Required)
+const MemoizedClock = React.memo(ClockComponent);
+MemoizedClock.displayName = 'Clock_2026_07_26';
 
-export default AnalogClock;
+export default MemoizedClock;
