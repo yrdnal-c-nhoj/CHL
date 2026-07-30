@@ -49,7 +49,7 @@ const styles: Record<string, React.CSSProperties> = {
     left: 0,
     right: 0,
     height: '25vh',
-    color: '#F6A5189A',
+    color: '#F6A51864',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
