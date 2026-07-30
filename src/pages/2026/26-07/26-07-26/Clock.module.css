@@ -116,10 +116,12 @@
   font-family: 'Almendra Display', serif;
   font-size: clamp(1rem, 10vmin, 9rem);
   color:  rgb(251, 248, 51);
-   user-select: none;
-  /* Position the numeral at the top edge of the clock face */
+  user-select: none;
   position: absolute;
-  top: 5%;
+  /* Position the numeral's spoke at the center of the clock */
+  bottom: 50%;
+  height: 50%;
+  transform-origin: bottom center;
   z-index: 30;
 }
 

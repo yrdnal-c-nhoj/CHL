@@ -1,19 +1,7 @@
-import { useState, useEffect } from 'react';
-
 /**
- * Custom hook that provides the current time, updating every second.
- * @returns The current Date object.
+ * Re-export of the canonical useClockTime hook.
+ *
+ * ⚠️ DEPRECATED: Import from '@/utils/hooks' instead.
+ * This file exists only for backward compatibility and will be removed in a future release.
  */
-export const useClockTime = () => {
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  return time;
-};
+export { useClockTime } from '@/utils/hooks/useClockTime';

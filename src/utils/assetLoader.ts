@@ -385,7 +385,9 @@ export function useAudioLoader(config: AudioAssetConfig): {
 }
 
 /**
- * Standardized font loading hook
+ * ⚠️ DEPRECATED — Use useSuspenseFontLoader from '@/utils/fontLoader' instead.
+ *
+ * Standardized font loading hook (non-suspense, kept for backward compatibility).
  */
 export function useFontLoader(config: FontAssetConfig): {
   state: AssetLoadState;
@@ -445,6 +447,8 @@ export function useFontLoader(config: FontAssetConfig): {
 }
 
 /**
+ * ⚠️ DEPRECATED — Use useSuspenseFontLoader from '@/utils/fontLoader' instead.
+ *
  * Hook for loading multiple fonts, often used by clocks.
  * Provides both names to satisfy different implementation styles.
  */
@@ -463,6 +467,7 @@ export function useMultiFontLoader<T extends Record<string, FontAssetConfig>>(
 }
 
 /**
+ * ⚠️ DEPRECATED — Use useSuspenseFontLoader from '@/utils/fontLoader' instead.
  * Alias to fix "useMultipleFontLoader is not defined" errors in existing clocks.
  */
 export const useMultipleFontLoader = useMultiFontLoader;
@@ -630,6 +635,7 @@ export function preloadAssets(assets: AssetConfig[]): Promise<void[]> {
         audio.load();
       });
     } else if (asset.src.match(/\.(woff|woff2|ttf|otf)$/i)) {
+      // ⚠️ Font preloading should use useSuspenseFontLoader instead.
       return new Promise<void>((resolve, reject) => {
         const font = new FontFace('temp-preload', `url(${asset.src})`);
         font.load()

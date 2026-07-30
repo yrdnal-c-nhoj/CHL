@@ -29,29 +29,40 @@
 
     <!-- Google Analytics is injected at runtime (see src/analytics.ts) when env + DNT guards pass -->
     <script>
-      // Avoid FOUC: hide content while fonts are loading
+      // FOUC Prevention Strategy
+      // ========================
+      // 1. Immediately hide content
+      // 2. Wait for fonts to load (with 3s hard timeout)
+      // 3. Show content with fade-in transition
+      //
+      // This prevents the Flash of Unstyled Content (FOUC) that occurs
+      // when web fonts load asynchronously after the initial render.
+
       document.documentElement.classList.add('fonts-loading');
 
-      const removeFontsLoading = () => {
+      const showContent = () => {
         document.documentElement.classList.remove('fonts-loading');
+        document.documentElement.classList.add('fonts-ready');
       };
 
-      // Hard timeout to ensure we never stay hidden indefinitely
-      const fontsLoadingTimeout = setTimeout(removeFontsLoading, 3000);
+      // Hard timeout: never stay hidden longer than 3s
+      const MAX_FONT_WAIT = 3000;
+      const fontTimeout = setTimeout(showContent, MAX_FONT_WAIT);
 
       if ('fonts' in document) {
-        document.fonts.ready.finally(() => {
-          clearTimeout(fontsLoadingTimeout);
-          removeFontsLoading();
-        });
+        document.fonts.ready
+          .then(showContent)
+          .catch(() => showContent())
+          .finally(() => clearTimeout(fontTimeout));
       } else {
+        // Fallback for older browsers: show content once the page loads
         window.addEventListener('load', () => {
-          clearTimeout(fontsLoadingTimeout);
-          removeFontsLoading();
+          clearTimeout(fontTimeout);
+          showContent();
         });
       }
 
-      // Prevent flash before React hydrates
+      // Mark DOM as loaded for smooth transition
       document.addEventListener('DOMContentLoaded', () => {
         document.documentElement.classList.add('dom-loaded');
       });
@@ -71,14 +82,25 @@
       rel="stylesheet"
     />
 
-    <style>
+<style>
       /* Critical CSS: Prevent FOUC */
       .fonts-loading body {
         opacity: 0;
+        visibility: hidden;
       }
+      .fonts-ready body {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.3s ease-in;
+      }
+      /* Fallback: if DOM loaded but fonts aren't ready yet, still show content */
       .fonts-loading.dom-loaded body {
         opacity: 1;
-        transition: opacity 0.3s ease-in;
+        visibility: visible;
+      }
+      /* Ensure the root container is always visible */
+      #root {
+        min-height: 100dvh;
       }
     </style>
   </head>
