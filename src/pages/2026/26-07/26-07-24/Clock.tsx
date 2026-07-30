@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useMemo } from 'react';
 
 import portholeVideo from '@/assets/images/26_images/26-07/26-07-25/porthole.mp4';
 import { calculateAngles } from '@/utils/clockUtils';
@@ -8,13 +8,6 @@ import styles from './Clock.module.css';
 export const assets = [portholeVideo];
 
 const Clock: React.FC = () => {
-  // State to manage the dynamic offsets and rotation for the josseling effect
-  const [offsets, setOffsets] = useState({ x: 0, y: 0, rot: 0 });
-  // Ref to store the requestAnimationFrame ID for cleanup
-  const animationFrameId = useRef<number | null>(null);
-  // Ref to store the start time of the animation for consistent motion
-  const startTime = useRef(Date.now());
-
   const time = useMillisecondClock();
 
   const {
@@ -23,38 +16,20 @@ const Clock: React.FC = () => {
     second: secondAngle,
   } = calculateAngles(time, true); // Pass true for millisecond precision
 
-  useEffect(() => {
-    const animate = () => {
-      const elapsed = (Date.now() - startTime.current) / 1000; // Time in seconds since animation started
-      
-      // Layer multiple sine/cosine waves with different, non-integer frequencies
-      // and amplitudes to create a more complex and less predictable motion.
+  const offsets = useMemo(() => {
+    const elapsed = time.getTime() / 1000; // Time in seconds
 
-      // Horizontal sway (x-axis)
-      const x1 = Math.sin(elapsed * 1.1) * 25;   // Slower, larger sway
-      const x2 = Math.sin(elapsed * 2.7) * 10; // Faster, smaller jiggle
-      const x = x1 + x2;
+    // Horizontal sway (x-axis)
+    const x = Math.sin(elapsed * 1.1) * 25 + Math.sin(elapsed * 2.7) * 10;
 
-      // Vertical bounce (y-axis)
-      const y1 = Math.cos(elapsed * 1.3) * 15;   // Slower, larger bounce
-      const y2 = Math.cos(elapsed * 3.1) * 7;   // Faster, smaller jiggle
-      const y = y1 + y2;
+    // Vertical bounce (y-axis)
+    const y = Math.cos(elapsed * 1.3) * 15 + Math.cos(elapsed * 3.1) * 7;
 
-      // Rotation (rot)
-      const rot1 = Math.sin(elapsed * 0.8) * 12;  // Slow, wide tilt
-      const rot2 = Math.sin(elapsed * 2.2) * 5;  // Faster, sharper tilt
-      const rot = rot1 + rot2;
+    // Rotation (rot)
+    const rot = Math.sin(elapsed * 0.8) * 12 + Math.sin(elapsed * 2.2) * 5;
 
-      setOffsets({ x, y, rot });
-      animationFrameId.current = requestAnimationFrame(animate);
-    };
-
-    animationFrameId.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
-    };
-  }, []); // Empty dependency array ensures this effect runs once on mount and cleans up on unmount
+    return { x, y, rot };
+  }, [time]);
 
   return (
     <main className={styles.container}>

@@ -24,7 +24,7 @@ const ClockComponent: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // 3b. Memoize expensive calculations.
-  const { hourAngle, minuteAngle, secondAngle, currentHourForNumeral } =
+  const { hourAngle, minuteAngle, secondAngle } =
     useMemo(() => {
       const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
       const minutes = time.getMinutes() + seconds / 60;
@@ -34,7 +34,6 @@ const ClockComponent: React.FC = () => {
         hourAngle: (hours % 12) * 30,
         minuteAngle: minutes * 6,
         secondAngle: seconds * 6,
-        currentHourForNumeral: Math.ceil(hours % 12) || 12,
       };
     }, [time]);
 
