@@ -24,7 +24,7 @@
 .face {
   position: absolute;
   inset: 0;
-  color: #ececef;
+  color: #a3781b;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 1rem;
@@ -47,9 +47,4 @@
   font-size: 1.8rem;
   flex-shrink: 0;
   text-align: center;
-}
-
-.separator {
-  font-size: 1.8rem;
-  padding-bottom: 0.2rem;
 }
