@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import portholeVideo from '@/assets/images/26_images/26-07/26-07-25/porthole.mp4';
-import { calculateAngles, useClockTime } from '@/utils/clockUtils';
+import { calculateAngles } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [portholeVideo];
@@ -14,7 +15,7 @@ const Clock: React.FC = () => {
   // Ref to store the start time of the animation for consistent motion
   const startTime = useRef(Date.now());
 
-  const time = useClockTime('ms');
+  const time = useMillisecondClock();
 
   const {
     hour: hourAngle,
@@ -30,13 +31,13 @@ const Clock: React.FC = () => {
       // and amplitudes to create a more complex and less predictable motion.
 
       // Horizontal sway (x-axis)
-      const x1 = Math.sin(elapsed * 1.1) * 9;   // Slower, larger sway
-      const x2 = Math.sin(elapsed * 2.7) * 4; // Faster, smaller jiggle
+      const x1 = Math.sin(elapsed * 1.1) * 25;   // Slower, larger sway
+      const x2 = Math.sin(elapsed * 2.7) * 10; // Faster, smaller jiggle
       const x = x1 + x2;
 
       // Vertical bounce (y-axis)
-      const y1 = Math.cos(elapsed * 1.3) * 7;   // Slower, larger bounce
-      const y2 = Math.cos(elapsed * 3.1) * 3.5;   // Faster, smaller jiggle
+      const y1 = Math.cos(elapsed * 1.3) * 15;   // Slower, larger bounce
+      const y2 = Math.cos(elapsed * 3.1) * 7;   // Faster, smaller jiggle
       const y = y1 + y2;
 
       // Rotation (rot)
@@ -91,11 +92,14 @@ const Clock: React.FC = () => {
         </div>
       </div>
       {/* Accessible time element, hidden from view but available to screen readers */}
-      <time dateTime={time.toISOString()} aria-label={time.toLocaleTimeString()}>
-        <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
+      <time dateTime={time.toISOString()} className={styles.semanticTime}>
+        {time.toLocaleTimeString()}
       </time>
     </main>
   );
 };
 
-export default Clock;
+const MemoizedClock = React.memo(Clock);
+MemoizedClock.displayName = 'Clock_2026_07_24';
+
+export default MemoizedClock;
