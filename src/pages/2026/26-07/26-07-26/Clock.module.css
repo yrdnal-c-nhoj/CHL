@@ -83,7 +83,7 @@
   bottom: 50%;
   left: 50%;
   opacity: 0.6;
-  transform-origin: bottom center;
+  transform: translateX(-50%) rotate(var(--hand-angle, 0deg));
   background-color: rgb(251, 248, 51);
   border-radius: 2px;
 }
@@ -133,15 +133,4 @@
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
-}
-
-.yellowText {
-  color: #ffd700;
-  font-weight: bold;
-  text-shadow: 0 0 8px #ffd700, 0 0 12px #000;
-}
-
-.yellowHand {
-  background-color: #ffd700;
-  box-shadow: 0 0 8px #ffd700, 0 0 12px #000;
 }

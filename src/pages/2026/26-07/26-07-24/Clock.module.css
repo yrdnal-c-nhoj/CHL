@@ -37,6 +37,8 @@
   height: 70vmin;
   border-radius: 50%;
   display: flex;
+  transform: translate(var(--offset-x, 0), var(--offset-y, 0))
+    rotate(var(--offset-rot, 0deg));
   justify-content: center;
   align-items: center;
 }
@@ -63,6 +65,7 @@
   position: absolute;
   bottom: 50%; /* Position the bottom of the hand at the center of the clock */
   left: 50%; /* Position the center of the hand horizontally at the center of the clock */
+  transform: translateX(-50%) rotate(var(--hand-angle, 0deg));
   transform-origin: center bottom; /* Set the pivot point to the bottom center of the hand */
   background-color: white;
   border-radius: 2px; /* Slightly rounded edges */
