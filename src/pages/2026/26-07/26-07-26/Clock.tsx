@@ -98,9 +98,22 @@ const ClockComponent: React.FC = () => {
           </div>
 
           {/* Hands */}
-          <div className={`${styles.hand} ${styles.hourHand}`} style={{ transform: `translateX(-50%) rotate(${hourAngle}deg)` }} />
-          <div className={`${styles.hand} ${styles.minuteHand}`} style={{ transform: `translateX(-50%) rotate(${minuteAngle}deg)` }} />
-          <div className={`${styles.hand} ${styles.secondHand}`} style={{ transform: `translateX(-50%) rotate(${secondAngle}deg)` }} />
+          <div
+            className={`${styles.hand} ${styles.hourHand}`}
+            style={{ '--hand-angle': `${hourAngle}deg` } as React.CSSProperties}
+          />
+          <div
+            className={`${styles.hand} ${styles.minuteHand}`}
+            style={
+              { '--hand-angle': `${minuteAngle}deg` } as React.CSSProperties
+            }
+          />
+          <div
+            className={`${styles.hand} ${styles.secondHand}`}
+            style={
+              { '--hand-angle': `${secondAngle}deg` } as React.CSSProperties
+            }
+          />
 
           <div className={styles.centerDot} />
         </div>

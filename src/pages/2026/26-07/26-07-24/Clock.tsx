@@ -45,23 +45,28 @@ const Clock: React.FC = () => {
       <div
         className={styles.analogClock}
         style={{
-          // Apply the calculated offsets and rotation to the entire clock
-          transform: `translate(${offsets.x}vmin, ${offsets.y}vmin) rotate(${offsets.rot}deg)`,
-        }}
+          '--offset-x': `${offsets.x}vmin`,
+          '--offset-y': `${offsets.y}vmin`,
+          '--offset-rot': `${offsets.rot}deg`,
+        } as React.CSSProperties}
       >
         <div className={styles.face}>
           <div className={styles.twelveMarker} />
           <div
             className={`${styles.hand} ${styles.hourHand}`}
-            style={{ transform: `translateX(-50%) rotate(${hourAngle}deg)` }}
+            style={{ '--hand-angle': `${hourAngle}deg` } as React.CSSProperties}
           />
           <div
             className={`${styles.hand} ${styles.minuteHand}`}
-            style={{ transform: `translateX(-50%) rotate(${minuteAngle}deg)` }}
+            style={
+              { '--hand-angle': `${minuteAngle}deg` } as React.CSSProperties
+            }
           />
           <div
             className={`${styles.hand} ${styles.secondHand}`}
-            style={{ transform: `translateX(-50%) rotate(${secondAngle}deg)` }}
+            style={
+              { '--hand-angle': `${secondAngle}deg` } as React.CSSProperties
+            }
           />
           <div className={styles.center} />
         </div>
