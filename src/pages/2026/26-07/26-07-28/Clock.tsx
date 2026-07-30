@@ -3,7 +3,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import React, { memo } from 'react';
 
-import fontUrl from '@/assets/fonts/26fonts/26-07-29.otf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-07-28.ttf?url';
 import backgroundVideo from '@/assets/images/26_images/26-07/26-07-29/eiffel.mp4';
 
 // ======================================================
@@ -45,11 +45,11 @@ const styles: Record<string, React.CSSProperties> = {
   },
   face: {
     position: 'absolute',
-    top: 0,
+    top: 15,
     left: 0,
     right: 0,
     height: '25vh',
-    color: '#ececef',
+    color: '#F6A5189A',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -59,22 +59,18 @@ const styles: Record<string, React.CSSProperties> = {
   digitGroup: {
     display: 'flex',
     alignItems: 'center',
-    gap: '0.05vmin',
+    // gap: '0.05vmin',
     justifyContent: 'center',
   },
   digitBox: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '1.5rem',
-    height: '2rem',
-    fontSize: '1.8rem',
+    width: '12vw',
+    height: '2vw',
+    fontSize: '18vw',
     flexShrink: 0,
     textAlign: 'center',
-  },
-  separator: {
-    fontSize: '1.8rem',
-    paddingBottom: '0.2rem',
   },
 };
 
@@ -106,13 +102,10 @@ const ClockComponent: React.FC = () => {
           <span style={styles.digitGroup}>
             <span style={styles.digitBox}>{hours[0]}</span>
             <span style={styles.digitBox}>{hours[1]}</span>
-            <span style={styles.separator}>:</span>
             <span style={styles.digitBox}>{minutes[0]}</span>
             <span style={styles.digitBox}>{minutes[1]}</span>
-            <span style={styles.separator}>:</span>
             <span style={styles.digitBox}>{seconds[0]}</span>
             <span style={styles.digitBox}>{seconds[1]}</span>
-            <span style={styles.separator}>:</span>
             <span style={styles.digitBox}>{milliseconds[0]}</span>
             <span style={styles.digitBox}>{milliseconds[1]}</span>
           </span>
