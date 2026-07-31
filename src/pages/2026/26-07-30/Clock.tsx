@@ -54,18 +54,18 @@ const DIGIT_TO_SHAPE_MAP: Record<string, string> = {
 };
 
 /**
- * Individual positioning configuration for each digit index (0 to 5):
- * - x: Horizontal offset from center (-50vw to +50vw)
- * - y: Vertical offset from center (-50vh to +50vh)
- * - rotation: (Optional) Rotation in degrees
+ * Position of each digit (0 to 5) as absolute percentages from top-left (0 to 100vw/vh):
+ * - x: Horizontal position from left edge (0vw to 100vw)
+ * - y: Vertical position from top edge (0vh to 100vh)
+ * - rotation: Optional rotation in degrees
  */
 const DIGIT_POSITIONS: { x: number; y: number; rotation?: number }[] = [
-  { x: 22, y: 25, rotation: 0 },  // Hour 1
-  { x: 37, y: 34, rotation: 0 },  // Hour 2
-  { x: 66,  y:40, rotation: 0 },  // Minute 1
-  { x: 87,   y:38, rotation: 0 },  // Minute 2
-  { x: 42,  y: 67, rotation: 0 },  // Second 1
-  { x: 61,  y: 78, rotation: 0 },  // Second 2
+  { x: 12, y: 15, rotation: 0 },  // Hour 1
+  { x: 25, y: 24, rotation: 0 },  // Hour 2
+  { x: 45, y: 35, rotation: 0 },  // Minute 1
+  { x: 60, y: 42, rotation: 0 },  // Minute 2
+  { x: 32, y: 65, rotation: 0 },  // Second 1
+  { x: 50, y: 72, rotation: 0 },  // Second 2
 ] as const;
 
 const PAD2 = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'));
@@ -101,9 +101,9 @@ const ClockComponent: React.FC = () => {
         char: DIGIT_TO_SHAPE_MAP[digitChar] ?? digitChar,
         style: {
           position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: `translate(calc(-50% + ${pos.x}vw), calc(-50% + ${pos.y}vh))${rotTransform}`,
+          top: 0,
+          left: 0,
+          transform: `translate(${pos.x}vw, ${pos.y}vh)${rotTransform}`,
           willChange: 'transform',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -135,7 +135,7 @@ const ClockComponent: React.FC = () => {
           style={{
             width: '100%',
             height: '100%',
-            objectFit: 'fill',
+            objectFit: 'cover',
             filter: 'brightness(0.7) contrast(1.1)',
           }}
           autoPlay
@@ -154,7 +154,7 @@ const ClockComponent: React.FC = () => {
           height: '100%',
           zIndex: 2,
           fontFamily: 'ShapesFont, sans-serif',
-          fontSize: '24vmin',
+          fontSize: '20vmin',
           lineHeight: 1,
         }}
       >
