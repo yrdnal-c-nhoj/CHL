@@ -1,4 +1,4 @@
-[
+src/context/clockpages.json src/context/DataContext.tsx src/context/testclocks.json[
   {
     "path": "25-04-02",
     "date": "25-04-02",
@@ -6453,6 +6453,17 @@
       "cyan",
       "light",
       "shadow"
+    ]
+  },
+  {
+    "path": "26-07-30",
+    "date": "26-07-30",
+    "title": "Concealment",
+    "tags": [
+    "pictographic",
+    "bird",
+    "tree",
+    "camouflage"
     ]
   }
 ]
