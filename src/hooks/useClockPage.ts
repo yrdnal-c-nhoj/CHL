@@ -9,15 +9,11 @@ interface ClockModule {
   assets?: unknown;
 }
 
-// Register all clock components via Vite glob outside the hook.
-// This ensures the registry is static and correctly mapped by the build tool.
 const CLOCK_MODULES = import.meta.glob('../pages/**/Clock.tsx') as Record<string, () => Promise<ClockModule>>;
 
-// Build a static lookup map once for O(1) access
 const CLOCK_LOOKUP = Object.entries(CLOCK_MODULES).reduce((acc, [path, importFn]) => {
   const dateMatch = path.match(/\/(\d{2}-\d{2}-\d{2})\//i);
   if (dateMatch?.[1]) acc[dateMatch[1]] = importFn;
-
   return acc;
 }, {} as Record<string, () => Promise<ClockModule>>);
 
@@ -25,19 +21,8 @@ const CLOCK_LOOKUP = Object.entries(CLOCK_MODULES).reduce((acc, [path, importFn]
 const LOADING_TIMEOUT = 10000; // 10 seconds
 
 /**
- * State-of-the-art dynamic clock loader.
- * Handles dynamic imports, asset preloading, and overlay synchronization.
- * 
- * Tactical Standards:
- * 1. Fail-Open Preloading: Asset failures or timeouts must never block the clock mount.
- * 2. Video Filtering: Large media (.mp4, .webm) are excluded from the preload queue to prevent network-idle hangs.
- * 3. HMR Safety: Component mapping is static to support Vite's hot module replacement.
- * 4. Resource Safety: Enforces a 10s hard timeout to prevent permanent white/black screens.
+ * Dynamically loads clock components and their assets based on the date.
  */
-
-// NOTE: Some clocks export `assets` as `string[]`, others may export as `AssetConfig[]`.
-// Production crashes like "Clock execution failed (...): assetPathString is not defined" usually happen
-// when the preload layer expects `{ src: string }` but receives a plain string.
 export function useClockPage(currentItem: { date: string } | null) {
 
   const [ClockComponent, setClockComponent] =
@@ -54,12 +39,8 @@ export function useClockPage(currentItem: { date: string } | null) {
   const preloadClockAssets = useCallback(
     async (assetUrls: string[]): Promise<void> => {
       if (!assetUrls?.length) return;
-
-      // Use a completely unique name for the mapping function parameter
-      // to avoid any potential minifier collision with global 'src' identifiers
       const configurations: AssetConfig[] = assetUrls.map((src) => ({ src }));
       
-      // Create a timeout for asset preloading to prevent infinite hangs on broken resources
       const assetTimeout = new Promise((_, reject) => 
         setTimeout(() => reject(new Error('Asset preloading timed out')), 5000)
       );
@@ -72,7 +53,6 @@ export function useClockPage(currentItem: { date: string } | null) {
         ]);
       } catch (e) {
         console.warn(`[useClockPage] Preload interrupted for ${currentItem?.date}:`, e);
-        // preloadAssets is already Promise-based; this catch is defensive.
       }
     },
     [currentItem?.date],
@@ -80,7 +60,6 @@ export function useClockPage(currentItem: { date: string } | null) {
 
   useEffect(() => {
     if (!currentItem) {
-      // Reset state when no item is selected
       setIsReady(false);
       setOverlayVisible(false);
       return;
@@ -117,27 +96,15 @@ export function useClockPage(currentItem: { date: string } | null) {
           );
         }
 
-        // 2. Dynamically import the module
         const module = await importFn().catch((err) => {
-          // In production, a failed import is a critical, unrecoverable error.
-          // In development, this might be a transient issue during HMR.
-          if (import.meta.env.PROD) {
-            // If the error is about a missing asset *within* the module (like Tom.webp),
-            // it will manifest as a build failure before this point. This runtime catch
-            // is for module resolution issues.
-            console.error(`[useClockPage] Production build failed to load module for ${targetDate}. This is a critical error.`, err);
-            throw new Error(`The clock for ${targetDate} could not be loaded. The file may be missing or contain errors.`);
-          } else {
-            const msg = err instanceof Error ? err.message : String(err);
-            console.error(`[useClockPage] Critical: Failed to load module for ${targetDate}. Ensure the file exists in src/pages/ and has no syntax/import errors. Original error:`, err);
-            if (msg.includes('Failed to fetch') || msg.includes('error loading dynamically imported module')) {
-              throw new Error(
-                `Clock file for ${targetDate} could not be fetched. This usually indicates a syntax error in the clock file, a broken import, a network failure, or an outdated browser cache. ` +
-                `Please check the "Network" tab for 404s, the "Console" for script errors, and try a hard refresh (Cmd+Shift+R).`
-              );
-            }
-            throw new Error(`Clock execution failed (${targetDate}): ${msg}`);
+          const msg = err instanceof Error ? err.message : String(err);
+          console.error(`[useClockPage] Critical: Failed to load module for ${targetDate}.`, err);
+          if (msg.includes('Failed to fetch') || msg.includes('error loading dynamically imported module')) {
+            throw new Error(
+              `Clock file for ${targetDate} could not be fetched. This often indicates a syntax error in the clock file or a broken import. Check the browser console for details.`
+            );
           }
+          throw new Error(`Clock execution failed for ${targetDate}: ${msg}`);
         });
 
         if (!module || !module.default) {
@@ -145,19 +112,12 @@ export function useClockPage(currentItem: { date: string } | null) {
         }
 
         // 3. Preload defined assets (images + video + audio)
-        // Contract: most clock modules export `assets` as `string[]`.
-        // Production breakage (black screen) can happen if a particular clock
-        // exports a malformed `assets` value or if preloading hard-fails.
-        //
-        // Fail-open: asset preload must never prevent the clock from mounting.
         try {
           if (Array.isArray(module.assets) && module.assets.length > 0) {
-            // Keep only string URLs; ignore any other shapes.
             let assetUrls = module.assets.filter((v): v is string => typeof v === 'string');
 
-            // If there are multiple assets, filter out videos to prevent network-idle hangs.
-            // If a video is the *only* asset, keep it to ensure it preloads.
             if (assetUrls.length > 1) {
+              // Filter out large video files to prevent network-idle hangs during preloading.
               assetUrls = assetUrls.filter(
                 (v) => !/\.(mp4|webm|ogg)$/i.test(v)
               );
@@ -167,14 +127,10 @@ export function useClockPage(currentItem: { date: string } | null) {
               await preloadClockAssets(assetUrls as string[]);
             }
           } else if (module.assets !== undefined) {
-            // If assets exists but isn't a string[], log for diagnosis.
-            // Don't throw.
-            if (import.meta.env.PROD) {
-              console.warn(
-                `[useClockPage] Ignoring malformed assets for ${targetDate}. Type=${typeof module.assets}`,
-                module.assets,
-              );
-            }
+            console.warn(
+              `[useClockPage] Ignoring malformed assets for ${targetDate}. Type=${typeof module.assets}`,
+              module.assets,
+            );
           }
         } catch (assetErr) {
           // Fail open: still mount the clock.
