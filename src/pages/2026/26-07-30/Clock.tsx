@@ -48,18 +48,7 @@ const CAMO_TEXTURES = [
   camo7, camo8, camo9, camo10, camo11, camo12,
 ] as const;
 
-const DIGIT_TO_SHAPE_MAP: Record<string, string> = {
-  '0': '0', '1': '1', '2': '2', '3': '3', '4': '4',
-  '5': '5', '6': '6', '7': '7', '8': '8', '9': '9',
-};
-
-/**
- * Position of each digit (0 to 5) as absolute percentages from top-left (0 to 100vw/vh):
- * - x: Horizontal position from left edge (0vw to 100vw)
- * - y: Vertical position from top edge (0vh to 100vh)
- * - rotation: Optional rotation in degrees
- */
-const DIGIT_POSITIONS: { x: number; y: number; rotation?: number }[] = [
+const DIGIT_POSITIONS = [
   { x: 12, y: 15, rotation: 0 },  // Hour 1
   { x: 25, y: 24, rotation: 0 },  // Hour 2
   { x: 45, y: 35, rotation: 0 },  // Minute 1
@@ -75,9 +64,40 @@ function getDeterministicTextureIndex(digitChar: string, positionIndex: number):
   return (charCode * 7 + positionIndex * 13) % CAMO_TEXTURES.length;
 }
 
-const ClockComponent: React.FC = () => {
-  useSuspenseFontLoader(FONT_CONFIGS);
+// Sub-component: Memoized so individual digits ONLY re-render when their specific character updates
+const DigitItem = memo(({ char, index }: { char: string; index: number }) => {
+  const pos = DIGIT_POSITIONS[index] ?? { x: 0, y: 0 };
+  const textureIdx = getDeterministicTextureIndex(char, index);
+  const camoTex = CAMO_TEXTURES[textureIdx] ?? CAMO_TEXTURES[0];
+  const rotTransform = pos.rotation ? ` rotate(${pos.rotation}deg)` : '';
 
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        transform: `translate3d(${pos.x}vw, ${pos.y}vh, 0)${rotTransform}`,
+        willChange: 'transform',
+        backfaceVisibility: 'hidden',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundClip: 'text',
+        WebkitBackgroundClip: 'text',
+        color: 'transparent',
+        WebkitTextFillColor: 'transparent',
+        backgroundImage: `url(${camoTex})`,
+      }}
+    >
+      {char}
+    </div>
+  );
+});
+
+DigitItem.displayName = 'DigitItem';
+
+// Sub-component: Isolate clock state ticks from background video DOM
+const ClockDisplay: React.FC = () => {
   const time = useSecondClock();
 
   const timeString = useMemo(() => {
@@ -87,49 +107,52 @@ const ClockComponent: React.FC = () => {
     return `${h}${m}${s}`;
   }, [time]);
 
-  const positionedDigits = useMemo(() => {
-    return Array.from({ length: 6 }, (_, index) => {
-      const digitChar = timeString[index] ?? '0';
-      const pos = DIGIT_POSITIONS[index] ?? { x: 0, y: 0 };
-      const textureIdx = getDeterministicTextureIndex(digitChar, index);
-      const camoTex = CAMO_TEXTURES[textureIdx] ?? CAMO_TEXTURES[0];
+  return (
+    <time
+      dateTime={time.toISOString()}
+      aria-label="A digital clock displaying individually positioned digits."
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        zIndex: 2,
+        fontFamily: 'ShapesFont, sans-serif',
+        fontSize: '20vmin',
+        lineHeight: 1,
+      }}
+    >
+      {Array.from({ length: 6 }, (_, index) => (
+        <DigitItem 
+          key={index} 
+          index={index} 
+          char={timeString[index] ?? '0'} 
+        />
+      ))}
+    </time>
+  );
+};
 
-      const rotTransform = pos.rotation ? ` rotate(${pos.rotation}deg)` : '';
-
-      return {
-        key: index,
-        char: DIGIT_TO_SHAPE_MAP[digitChar] ?? digitChar,
-        style: {
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          transform: `translate(${pos.x}vw, ${pos.y}vh)${rotTransform}`,
-          willChange: 'transform',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundClip: 'text',
-          WebkitBackgroundClip: 'text',
-          color: 'transparent',
-          WebkitTextFillColor: 'transparent',
-          backgroundImage: `url(${camoTex})`,
-        } as React.CSSProperties,
-      };
-    });
-  }, [timeString]);
+const ClockComponent: React.FC = () => {
+  useSuspenseFontLoader(FONT_CONFIGS);
 
   return (
-    <div style={{
-      position: 'relative',
-      width: '100vw',
-      height: '100dvh',
-      overflow: 'hidden',
-      backgroundColor: '#000',
-    }}>
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        zIndex: 1,
-      }}>
+    <div
+      style={{
+        position: 'relative',
+        width: '100vw',
+        height: '100dvh',
+        overflow: 'hidden',
+        backgroundColor: '#000',
+      }}
+    >
+      {/* Background Video Layer - Rendered once, un-touched by clock ticks */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 1,
+        }}
+      >
         <video
           src={clockVideo}
           style={{
@@ -145,25 +168,7 @@ const ClockComponent: React.FC = () => {
         />
       </div>
 
-      <time
-        dateTime={time.toISOString()}
-        aria-label="A digital clock displaying individually positioned digits."
-        style={{
-          position: 'relative',
-          width: '100%',
-          height: '100%',
-          zIndex: 2,
-          fontFamily: 'ShapesFont, sans-serif',
-          fontSize: '20vmin',
-          lineHeight: 1,
-        }}
-      >
-        {positionedDigits.map(({ key, char, style }) => (
-          <div key={key} style={style}>
-            {char}
-          </div>
-        ))}
-      </time>
+      <ClockDisplay />
     </div>
   );
 };
