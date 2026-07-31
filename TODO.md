@@ -1,20 +1,12 @@
-# Technical Standards Cleanup & Update
+# TODO - Fix production build failure (invalid JSON in clockpages.json)
 
-## Phase 1: Consolidate Duplicate Code ✅
-- [x] Remove duplicate `useClockTime` from `src/hooks/useClockTime.ts`
-- [x] Remove duplicate `useClockTime` from `src/utils/clockUtils.ts` (keep formatters/angle utils)
-- [x] Remove empty files `src/utils/useClock.ts` and `src/utils/useSmoothClock.ts`
-- [x] Mark `src/utils/enhancedFontLoader.ts` with deprecation notices
-- [x] Mark font loaders in `assetLoader.ts` as deprecated
+## Steps
 
-## Phase 2: Fix FOUC Protection ✅
-- [x] Update/strengthen `index.html` FOUC prevention with inline critical CSS
-- [x] Ensure FOUC strategy is documented in standards
+- [x] Analyze the task and identify the root cause
+  - `src/context/clockpages.json` contains a stray text prefix before the opening `[`, making it invalid JSON
+- [x] Read relevant files (`clockpages.json`, `DataContext.tsx`, `testclocks.json`)
+- [x] Confirm the plan with the user
+- [x] Edit `src/context/clockpages.json` to remove the stray prefix
+- [x] Validate the repaired JSON parses correctly
+- [x] Run the production build (`npm run build`) to confirm it succeeds
 
-## Phase 3: Remove Dead Code ✅
-- [x] Simplify `useNavigationState.ts` - remove cursor tracking DOM manipulation
-- [x] Add deprecation notices to unused utilities
-- [x] Clean up console filter to not swallow app errors (warn/error pass through)
-
-## Phase 4: Rewrite Technical Standards ✅
-- [x] Rewrite `src/templates/ARCHITECTURE.md` with current best practices
