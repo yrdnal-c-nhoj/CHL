@@ -47,6 +47,9 @@ const DIGIT_POSITIONS = [
   { x: 50, y: 72, rotation: 0 },  // Second 2
 ] as const;
 
+// Digit to letter mapping array: 0 -> A, 1 -> B, ..., 9 -> J
+const DIGIT_TO_LETTER = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'] as const;
+
 const PAD2 = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'));
 
 function getDeterministicTextureIndex(digitChar: string, positionIndex: number): number {
@@ -54,6 +57,7 @@ function getDeterministicTextureIndex(digitChar: string, positionIndex: number):
   return (charCode * 7 + positionIndex * 13) % CAMO_TEXTURES.length;
 }
 
+// Sub-component: Memoized so individual letters ONLY re-render when their character updates
 const DigitItem = memo(({ char, index }: { char: string; index: number }) => {
   const pos = DIGIT_POSITIONS[index] ?? { x: 0, y: 0 };
   const textureIdx = getDeterministicTextureIndex(char, index);
@@ -88,6 +92,7 @@ const DigitItem = memo(({ char, index }: { char: string; index: number }) => {
 
 DigitItem.displayName = 'DigitItem';
 
+// Sub-component: Isolate clock state ticks from background video DOM
 const ClockDisplay: React.FC = () => {
   const time = useSecondClock();
 
@@ -101,9 +106,9 @@ const ClockDisplay: React.FC = () => {
   return (
     <time
       dateTime={time.toISOString()}
-      aria-label="A digital clock displaying individually positioned digits."
+      aria-label="A digital clock displaying individually positioned letter glyphs."
       style={{
-        display: 'block', // Ensures positioning context works properly for child divs
+        display: 'block',
         position: 'relative',
         width: '100%',
         height: '100%',
@@ -113,13 +118,19 @@ const ClockDisplay: React.FC = () => {
         lineHeight: 1,
       }}
     >
-      {Array.from({ length: 6 }, (_, index) => (
-        <DigitItem 
-          key={index} 
-          index={index} 
-          char={timeString[index] ?? '0'} 
-        />
-      ))}
+      {Array.from({ length: 6 }, (_, index) => {
+        const digitChar = timeString[index] ?? '0';
+        const digitNum = parseInt(digitChar, 10);
+        const letterChar = DIGIT_TO_LETTER[digitNum] ?? 'A';
+
+        return (
+          <DigitItem 
+            key={index} 
+            index={index} 
+            char={letterChar} 
+          />
+        );
+      })}
     </time>
   );
 };
@@ -137,6 +148,7 @@ const ClockComponent: React.FC = () => {
         backgroundColor: '#000',
       }}
     >
+      {/* Background Video Layer */}
       <div
         style={{
           position: 'absolute',
