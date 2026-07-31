@@ -21,18 +21,8 @@ import { useSecondClock } from '@/utils/hooks';
 export const assets = [
   clockVideo,
   shapesFont,
-  camo1,
-  camo2,
-  camo3,
-  camo4,
-  camo5,
-  camo6,
-  camo7,
-  camo8,
-  camo9,
-  camo10,
-  camo11,
-  camo12,
+  camo1, camo2, camo3, camo4, camo5, camo6,
+  camo7, camo8, camo9, camo10, camo11, camo12,
 ];
 
 const FONT_CONFIGS: FontConfig[] = [
@@ -64,7 +54,6 @@ function getDeterministicTextureIndex(digitChar: string, positionIndex: number):
   return (charCode * 7 + positionIndex * 13) % CAMO_TEXTURES.length;
 }
 
-// Sub-component: Memoized so individual digits ONLY re-render when their specific character updates
 const DigitItem = memo(({ char, index }: { char: string; index: number }) => {
   const pos = DIGIT_POSITIONS[index] ?? { x: 0, y: 0 };
   const textureIdx = getDeterministicTextureIndex(char, index);
@@ -77,6 +66,9 @@ const DigitItem = memo(({ char, index }: { char: string; index: number }) => {
         position: 'absolute',
         top: 0,
         left: 0,
+        display: 'inline-block',
+        width: '1em',
+        textAlign: 'center',
         transform: `translate3d(${pos.x}vw, ${pos.y}vh, 0)${rotTransform}`,
         willChange: 'transform',
         backfaceVisibility: 'hidden',
@@ -96,7 +88,6 @@ const DigitItem = memo(({ char, index }: { char: string; index: number }) => {
 
 DigitItem.displayName = 'DigitItem';
 
-// Sub-component: Isolate clock state ticks from background video DOM
 const ClockDisplay: React.FC = () => {
   const time = useSecondClock();
 
@@ -112,6 +103,7 @@ const ClockDisplay: React.FC = () => {
       dateTime={time.toISOString()}
       aria-label="A digital clock displaying individually positioned digits."
       style={{
+        display: 'block', // Ensures positioning context works properly for child divs
         position: 'relative',
         width: '100%',
         height: '100%',
@@ -145,7 +137,6 @@ const ClockComponent: React.FC = () => {
         backgroundColor: '#000',
       }}
     >
-      {/* Background Video Layer - Rendered once, un-touched by clock ticks */}
       <div
         style={{
           position: 'absolute',
