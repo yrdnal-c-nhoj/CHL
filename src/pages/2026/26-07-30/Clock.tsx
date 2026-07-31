@@ -21,8 +21,18 @@ import { useSecondClock } from '@/utils/hooks';
 export const assets = [
   clockVideo,
   shapesFont,
-  camo1, camo2, camo3, camo4, camo5, camo6,
-  camo7, camo8, camo9, camo10, camo11, camo12,
+  camo1,
+  camo2,
+  camo3,
+  camo4,
+  camo5,
+  camo6,
+  camo7,
+  camo8,
+  camo9,
+  camo10,
+  camo11,
+  camo12,
 ];
 
 const FONT_CONFIGS: FontConfig[] = [
@@ -38,62 +48,50 @@ const CAMO_TEXTURES = [
   camo7, camo8, camo9, camo10, camo11, camo12,
 ] as const;
 
-const DIGIT_POSITIONS = [
-  { x: 12, y: 15, rotation: 0 },  // Hour 1
-  { x: 25, y: 24, rotation: 0 },  // Hour 2
-  { x: 45, y: 35, rotation: 0 },  // Minute 1
-  { x: 60, y: 42, rotation: 0 },  // Minute 2
-  { x: 32, y: 65, rotation: 0 },  // Second 1
-  { x: 50, y: 72, rotation: 0 },  // Second 2
-] as const;
+const DIGIT_TO_SHAPE_MAP: Record<string, string> = {
+  '0': 'A', '1': 'j', '2': 'v', '3': 'm', '4': '1',
+  '5': 'p', '6': '8', '7': 't', '8': 'O', '9': 'k',
+};
 
-// Digit to letter mapping array: 0 -> A, 1 -> B, ..., 9 -> J
-const DIGIT_TO_LETTER = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'] as const;
+const DIGIT_POSITIONS: { x: number; y: number; rotation?: number }[] = [
+  { x: 22, y: 25, rotation: 0 },  // Hour 1
+  { x: 37, y: 34, rotation: 0 },  // Hour 2
+  { x: 62, y: 40, rotation: 0 },  // Minute 1
+  { x: 86, y: 32, rotation: 0 },  // Minute 2
+  { x: 42, y: 67, rotation: 0 },  // Second 1
+  { x: 66, y: 82, rotation: 0 },  // Second 2
+] as const;
 
 const PAD2 = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'));
 
-function getDeterministicTextureIndex(digitChar: string, positionIndex: number): number {
-  const charCode = digitChar.charCodeAt(0) || 0;
-  return (charCode * 7 + positionIndex * 13) % CAMO_TEXTURES.length;
+/**
+ * Generates an array of unique texture indices (0 to CAMO_TEXTURES.length - 1)
+ * shuffled deterministically based on the current timestamp in seconds.
+ */
+function getUniqueTextureIndicesForSecond(timestampMs: number): number[] {
+  // Use Unix timestamp divided by 1000 to seed per-second state
+  let seed = Math.floor(timestampMs / 1000);
+  
+  // Simple Pseudo-Random Number Generator (PRNG) to shuffle deterministically
+  const pseudoRandom = () => {
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / 233280;
+  };
+
+  const indices = Array.from({ length: CAMO_TEXTURES.length }, (_, i) => i);
+  
+  // Fisher-Yates Shuffle
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(pseudoRandom() * (i + 1));
+    [indices[i], indices[j]] = [indices[j]!, indices[i]!];
+  }
+
+  return indices;
 }
 
-// Sub-component: Memoized so individual letters ONLY re-render when their character updates
-const DigitItem = memo(({ char, index }: { char: string; index: number }) => {
-  const pos = DIGIT_POSITIONS[index] ?? { x: 0, y: 0 };
-  const textureIdx = getDeterministicTextureIndex(char, index);
-  const camoTex = CAMO_TEXTURES[textureIdx] ?? CAMO_TEXTURES[0];
-  const rotTransform = pos.rotation ? ` rotate(${pos.rotation}deg)` : '';
+const ClockComponent: React.FC = () => {
+  useSuspenseFontLoader(FONT_CONFIGS);
 
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        display: 'inline-block',
-        width: '1em',
-        textAlign: 'center',
-        transform: `translate3d(${pos.x}vw, ${pos.y}vh, 0)${rotTransform}`,
-        willChange: 'transform',
-        backfaceVisibility: 'hidden',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundClip: 'text',
-        WebkitBackgroundClip: 'text',
-        color: 'transparent',
-        WebkitTextFillColor: 'transparent',
-        backgroundImage: `url(${camoTex})`,
-      }}
-    >
-      {char}
-    </div>
-  );
-});
-
-DigitItem.displayName = 'DigitItem';
-
-// Sub-component: Isolate clock state ticks from background video DOM
-const ClockDisplay: React.FC = () => {
   const time = useSecondClock();
 
   const timeString = useMemo(() => {
@@ -103,65 +101,61 @@ const ClockDisplay: React.FC = () => {
     return `${h}${m}${s}`;
   }, [time]);
 
-  return (
-    <time
-      dateTime={time.toISOString()}
-      aria-label="A digital clock displaying individually positioned letter glyphs."
-      style={{
-        display: 'block',
-        position: 'relative',
-        width: '100%',
-        height: '100%',
-        zIndex: 2,
-        fontFamily: 'ShapesFont, sans-serif',
-        fontSize: '20vmin',
-        lineHeight: 1,
-      }}
-    >
-      {Array.from({ length: 6 }, (_, index) => {
-        const digitChar = timeString[index] ?? '0';
-        const digitNum = parseInt(digitChar, 10);
-        const letterChar = DIGIT_TO_LETTER[digitNum] ?? 'A';
+  // Compute 6 unique, randomly assigned camo textures every second
+  const positionedDigits = useMemo(() => {
+    const shuffledIndices = getUniqueTextureIndicesForSecond(time.getTime());
 
-        return (
-          <DigitItem 
-            key={index} 
-            index={index} 
-            char={letterChar} 
-          />
-        );
-      })}
-    </time>
-  );
-};
+    return Array.from({ length: 6 }, (_, index) => {
+      const digitChar = timeString[index] ?? '0';
+      const pos = DIGIT_POSITIONS[index] ?? { x: 0, y: 0 };
 
-const ClockComponent: React.FC = () => {
-  useSuspenseFontLoader(FONT_CONFIGS);
+      // Guaranteed unique texture selection for position 'index'
+      const textureIdx = shuffledIndices[index] ?? 0;
+      const camoTex = CAMO_TEXTURES[textureIdx] ?? CAMO_TEXTURES[0];
 
-  return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        backgroundColor: '#000',
-      }}
-    >
-      {/* Background Video Layer */}
-      <div
-        style={{
+      const rotTransform = pos.rotation ? ` rotate(${pos.rotation}deg)` : '';
+
+      return {
+        key: index,
+        char: DIGIT_TO_SHAPE_MAP[digitChar] ?? digitChar,
+        style: {
           position: 'absolute',
-          inset: 0,
-          zIndex: 1,
-        }}
-      >
+          top: '50%',
+          left: '50%',
+          transform: `translate(calc(-50% + ${pos.x}vw), calc(-50% + ${pos.y}vh))${rotTransform}`,
+          willChange: 'transform',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundClip: 'text',
+          WebkitBackgroundClip: 'text',
+          color: 'transparent',
+          WebkitTextFillColor: 'transparent',
+          backgroundImage: `url(${camoTex})`,
+          filter: 'drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.8))',
+        } as React.CSSProperties,
+      };
+    });
+  }, [time, timeString]);
+
+  return (
+    <div style={{
+      position: 'relative',
+      width: '100vw',
+      height: '100dvh',
+      overflow: 'hidden',
+      backgroundColor: '#000',
+    }}>
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        zIndex: 1,
+      }}>
         <video
           src={clockVideo}
           style={{
             width: '100%',
             height: '100%',
-            objectFit: 'cover',
+            objectFit: 'fill',
             filter: 'brightness(0.7) contrast(1.1)',
           }}
           autoPlay
@@ -171,7 +165,25 @@ const ClockComponent: React.FC = () => {
         />
       </div>
 
-      <ClockDisplay />
+      <time
+        dateTime={time.toISOString()}
+        aria-label="A digital clock displaying individually positioned digits."
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '100%',
+          zIndex: 2,
+          fontFamily: 'ShapesFont, sans-serif',
+          fontSize: '24vmin',
+          lineHeight: 1,
+        }}
+      >
+        {positionedDigits.map(({ key, char, style }) => (
+          <div key={key} style={style}>
+            {char}
+          </div>
+        ))}
+      </time>
     </div>
   );
 };
