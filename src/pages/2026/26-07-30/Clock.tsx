@@ -45,6 +45,20 @@ const TEXTURE_MAP: readonly string[] = [
   camo9, // Digit 9
 ] as const;
 
+// Map each digit (0-9) to a letter of the alphabet.
+const DIGIT_TO_LETTER_MAP: readonly string[] = [
+  '1', // 0
+  'J', // 1
+  'v', // 2
+  'M', // 3
+  '3', // 4
+  'T', // 5
+  'k', // 6
+  'P', // 7
+  '7', // 8
+  'J', // 9
+] as const;
+
 // Structural viewport container styles
 const FULL_SCREEN_STYLE: React.CSSProperties = {
   position: 'relative',
@@ -144,7 +158,9 @@ const ClockComponent: React.FC = () => {
       {/* Positioned Digits Layer */}
       <time aria-label="Digital clock" style={CLOCK_TIME_STYLE}>
         {digits.map((digit, index) => (
-          <div key={index} style={getDigitStyle(index)}>{digit}</div>
+          <div key={index} style={getDigitStyle(index)}>
+            {DIGIT_TO_LETTER_MAP[digit] ?? 'A'}
+          </div>
         ))}
       </time>
     </div>
