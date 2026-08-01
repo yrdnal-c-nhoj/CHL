@@ -56,7 +56,7 @@ const DIGIT_TO_LETTER_MAP: readonly string[] = [
   'k', // 6
   'P', // 7
   '7', // 8
-  'J', // 9
+  'L', // 9
 ] as const;
 
 // Structural viewport container styles
