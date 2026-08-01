@@ -91,13 +91,16 @@ const BASE_DIGIT_STYLES: React.CSSProperties[] = [
   { transform: 'translate(-5vw, 18vh) rotate(-5deg)' },
   { transform: 'translate(20vw, 25vh) rotate(-15deg)' },
 ].map((base) => ({
-  ...base,
   gridArea: '1 / 1',
   willChange: 'transform, background-image',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
+  // The base transform is applied here, and we add translate(0,0) to fix a Firefox rendering bug.
+  transform: `${base.transform} translate(0, 0)`,
   backgroundClip: 'text',
   WebkitBackgroundClip: 'text',
+  MozBackgroundClip: 'text', // Added for Firefox compatibility
+  WebkitTextFillColor: 'transparent', // Added for better cross-browser support
   color: 'transparent',
   filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))',
 }));
