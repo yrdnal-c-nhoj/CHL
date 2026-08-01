@@ -1,62 +1,56 @@
-.clockWrapper {
+.container {
   position: relative;
   width: 100vw;
   height: 100dvh;
   overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #191b1b;
+  background-color: #000;
 }
 
-.background {
+.videoWrapper {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   z-index: 1;
 }
 
 .backgroundVideo {
   width: 100%;
   height: 100%;
-  object-fit: fill;
-  filter: brightness(1.2) contrast(0.9) saturate(4);
+  object-fit: cover; /* Changed from fill to cover for better aspect ratio handling */
+  filter: brightness(0.7) contrast(1.1);
 }
 
-.clockContainer {
-  font-family: 'ShapesFont', monospace;
-  position: relative;
+.timeContainer {
+  display: grid;
+  place-items: center;
   width: 100%;
   height: 100%;
   z-index: 2;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
+  font-family: 'ShapesFont', sans-serif;
+  font-size: 24vmin;
+  line-height: 1;
+  font-weight: bold; /* Added for better visibility */
 }
 
 .digit {
+  grid-area: 1 / 1; /* Stack all digits in the center grid cell */
+  will-change: transform;
+  color: #fff;
+  filter: drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.8));
+}
+
+/* 
+  Accessible, visually-hidden text for screen readers.
+  Standard from ARCHITECTURE.md.
+*/
+.srOnly {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  line-height: 1;
-  width: 25vmon;
-  font-variant-numeric: tabular-nums;
-  font-size: clamp(3rem, 25vmin, 12rem);
-  /*
-    Fill the glyphs with the CAMO texture assigned via inline style.
-    The background image is set from React (`--digit-camo`), while the
-    clipping behaviour lives here so the glyph shapes reveal the texture.
-  */
-  -webkit-background-clip: text;
-  background-clip: text;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  /*
-    These margins offset the digit by half its own width and height,
-    ensuring it's perfectly centered on its calculated (x, y) coordinate.
-  */
-  margin-left: -0.5ch;
-  margin-top: -0.5em;
+  width: 1px;
+  white-space: nowrap;
+  word-wrap: normal;
 }
