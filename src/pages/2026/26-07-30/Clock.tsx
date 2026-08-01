@@ -1,12 +1,27 @@
 import React, { memo } from 'react';
 
 import shapesFont from '@/assets/fonts/26fonts/26-07-30.ttf?url';
+import camo0 from '@/assets/images/26_images/26-07/26-07-30/camo1.webp';
+import camo9 from '@/assets/images/26_images/26-07/26-07-30/camo10.webp';
+import camo1 from '@/assets/images/26_images/26-07/26-07-30/camo2.webp';
+import camo2 from '@/assets/images/26_images/26-07/26-07-30/camo3.webp';
+import camo3 from '@/assets/images/26_images/26-07/26-07-30/camo4.webp';
+import camo4 from '@/assets/images/26_images/26-07/26-07-30/camo5.webp';
+import camo5 from '@/assets/images/26_images/26-07/26-07-30/camo6.webp';
+import camo6 from '@/assets/images/26_images/26-07/26-07-30/camo7.webp';
+import camo7 from '@/assets/images/26_images/26-07/26-07-30/camo8.webp';
+import camo8 from '@/assets/images/26_images/26-07/26-07-30/camo9.webp';
 import clockVideo from '@/assets/images/26_images/26-07/26-07-30/tree.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
-export const assets = [clockVideo, shapesFont];
+export const assets = [
+  clockVideo,
+  shapesFont,
+  camo0, camo1, camo2, camo3, camo4,
+  camo5, camo6, camo7, camo8, camo9,
+];
 
 const FONT_CONFIGS: FontConfig[] = [
   {
@@ -15,6 +30,20 @@ const FONT_CONFIGS: FontConfig[] = [
     options: { weight: 'normal', style: 'normal' },
   },
 ];
+
+// Map each digit (0-9) to a specific camo texture.
+const TEXTURE_MAP: readonly string[] = [
+  camo0, // Digit 0
+  camo1, // Digit 1
+  camo2, // Digit 2
+  camo3, // Digit 3
+  camo4, // Digit 4
+  camo5, // Digit 5
+  camo6, // Digit 6
+  camo7, // Digit 7
+  camo8, // Digit 8
+  camo9, // Digit 9
+] as const;
 
 // Structural viewport container styles
 const FULL_SCREEN_STYLE: React.CSSProperties = {
@@ -62,8 +91,13 @@ const DIGIT_STYLES: React.CSSProperties[] = [
 ].map((base) => ({
   ...base,
   gridArea: '1 / 1',
-  willChange: 'transform',
-  color: '#ffffff',
+  willChange: 'transform, background-image',
+  // Clip the background to the text shape
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundClip: 'text',
+  WebkitBackgroundClip: 'text',
+  color: 'transparent', // Make text color transparent to show background
   filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))',
 }));
 
@@ -83,6 +117,16 @@ const ClockComponent: React.FC = () => {
   const d4 = Math.floor(s / 10);
   const d5 = s % 10;
 
+  // Create an array of digits for easier mapping in the JSX
+  const digits = [d0, d1, d2, d3, d4, d5];
+
+  // Create a style object for each digit with its unique texture
+  const getDigitStyle = (digitIndex: number): React.CSSProperties => {
+    const digitValue = digits[digitIndex] ?? 0;
+    const textureUrl = TEXTURE_MAP[digitValue] ?? TEXTURE_MAP[0];
+    return { ...DIGIT_STYLES[digitIndex], backgroundImage: `url(${textureUrl})` };
+  };
+
   return (
     <div style={FULL_SCREEN_STYLE}>
       {/* Background Video Layer */}
@@ -99,12 +143,9 @@ const ClockComponent: React.FC = () => {
 
       {/* Positioned Digits Layer */}
       <time aria-label="Digital clock" style={CLOCK_TIME_STYLE}>
-        <div style={DIGIT_STYLES[0]}>{d0}</div>
-        <div style={DIGIT_STYLES[1]}>{d1}</div>
-        <div style={DIGIT_STYLES[2]}>{d2}</div>
-        <div style={DIGIT_STYLES[3]}>{d3}</div>
-        <div style={DIGIT_STYLES[4]}>{d4}</div>
-        <div style={DIGIT_STYLES[5]}>{d5}</div>
+        {digits.map((digit, index) => (
+          <div key={index} style={getDigitStyle(index)}>{digit}</div>
+        ))}
       </time>
     </div>
   );
