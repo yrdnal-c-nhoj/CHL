@@ -48,17 +48,17 @@ const CLOCK_TIME_STYLE: React.CSSProperties = {
   height: '100%',
   fontFamily: 'ShapesFont, sans-serif',
   // Scales fluidly with 24% of smaller viewport dimension, capped between 3rem (48px) and 14rem (224px)
-  fontSize: 'clamp(3rem, 24vmin, 14rem)',
+  fontSize: 'clamp(3rem, 18vmin, 13rem)',
 };
 
 // Frozen individual digit layout positions using viewport units (vw/vh)
 const DIGIT_STYLES: React.CSSProperties[] = [
-  { transform: 'translate(-15vw, -15vh) rotate(-10deg)' }, // Hour 1
-  { transform: 'translate(0vw, -18vh) rotate(5deg)' },     // Hour 2
-  { transform: 'translate(15vw, -15vh) rotate(10deg)' },    // Minute 1
-  { transform: 'translate(-10vw, 15vh) rotate(15deg)' },    // Minute 2
-  { transform: 'translate(5vw, 18vh) rotate(-5deg)' },     // Second 1
-  { transform: 'translate(20vw, 15vh) rotate(-15deg)' },    // Second 2
+  { transform: 'translate(-28vw, -36vh) rotate(-10deg)' }, // Hour 1
+  { transform: 'translate(-13vw, -18vh) rotate(5deg)' },     // Hour 2
+  { transform: 'translate(11vw, -15vh) rotate(10deg)' },    // Minute 1
+  { transform: 'translate(29vw, -25vh) rotate(15deg)' },    // Minute 2
+  { transform: 'translate(-5vw, 18vh) rotate(-5deg)' },     // Second 1
+  { transform: 'translate(20vw, 25vh) rotate(-15deg)' },    // Second 2
 ].map((base) => ({
   ...base,
   gridArea: '1 / 1',
