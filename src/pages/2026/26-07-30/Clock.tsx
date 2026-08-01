@@ -29,7 +29,7 @@ const DIGIT_STYLES = [
   return {
     gridArea: '1 / 1',
     willChange: 'transform',
-    color: '#fff',
+    color: '#648355',
     filter: 'drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.8))',
     transform: `translate(${pos.x}vw, ${pos.y}vh)${rotTransform}`,
   } as React.CSSProperties;
