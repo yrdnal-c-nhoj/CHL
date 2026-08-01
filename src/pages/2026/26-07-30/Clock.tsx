@@ -31,35 +31,26 @@ const FONT_CONFIGS: FontConfig[] = [
   },
 ];
 
-// Map each digit (0-9) to a specific camo texture.
-const TEXTURE_MAP: readonly string[] = [
-  camo0, // Digit 0
-  camo1, // Digit 1
-  camo2, // Digit 2
-  camo3, // Digit 3
-  camo4, // Digit 4
-  camo5, // Digit 5
-  camo6, // Digit 6
-  camo7, // Digit 7
-  camo8, // Digit 8
-  camo9, // Digit 9
+// Pre-formatted texture URLs array to prevent string concatenation during render
+const TEXTURE_URLS: readonly string[] = [
+  `url(${camo0})`,
+  `url(${camo1})`,
+  `url(${camo2})`,
+  `url(${camo3})`,
+  `url(${camo4})`,
+  `url(${camo5})`,
+  `url(${camo6})`,
+  `url(${camo7})`,
+  `url(${camo8})`,
+  `url(${camo9})`,
 ] as const;
 
-// Map each digit (0-9) to a letter of the alphabet.
+// Mapping digit (0-9) to font glyph character
 const DIGIT_TO_LETTER_MAP: readonly string[] = [
-  '1', // 0
-  'J', // 1
-  'v', // 2
-  'M', // 3
-  '3', // 4
-  'T', // 5
-  'k', // 6
-  'P', // 7
-  '7', // 8
-  'L', // 9
+  '1', 'J', 'v', 'M', '3', 'T', 'k', 'P', '7', 'L',
 ] as const;
 
-// Structural viewport container styles
+// Static Styles
 const FULL_SCREEN_STYLE: React.CSSProperties = {
   position: 'relative',
   width: '100vw',
@@ -81,7 +72,6 @@ const VIDEO_ELEMENT_STYLE: React.CSSProperties = {
   filter: 'brightness(0.7) contrast(1.1)',
 };
 
-// Clock display container with clamp-bounded typography
 const CLOCK_TIME_STYLE: React.CSSProperties = {
   position: 'relative',
   zIndex: 2,
@@ -90,30 +80,29 @@ const CLOCK_TIME_STYLE: React.CSSProperties = {
   width: '100%',
   height: '100%',
   fontFamily: 'ShapesFont, sans-serif',
-  // Scales fluidly with 24% of smaller viewport dimension, capped between 3rem (48px) and 14rem (224px)
   fontSize: 'clamp(3rem, 18vmin, 13rem)',
 };
 
-// Frozen individual digit layout positions using viewport units (vw/vh)
-const DIGIT_STYLES: React.CSSProperties[] = [
-  { transform: 'translate(-28vw, -36vh) rotate(-10deg)' }, // Hour 1
-  { transform: 'translate(-13vw, -18vh) rotate(5deg)' },     // Hour 2
-  { transform: 'translate(11vw, -15vh) rotate(10deg)' },    // Minute 1
-  { transform: 'translate(29vw, -25vh) rotate(15deg)' },    // Minute 2
-  { transform: 'translate(-5vw, 18vh) rotate(-5deg)' },     // Second 1
-  { transform: 'translate(20vw, 25vh) rotate(-15deg)' },    // Second 2
+const BASE_DIGIT_STYLES: React.CSSProperties[] = [
+  { transform: 'translate(-28vw, -36vh) rotate(-10deg)' },
+  { transform: 'translate(-13vw, -18vh) rotate(5deg)' },
+  { transform: 'translate(11vw, -15vh) rotate(10deg)' },
+  { transform: 'translate(29vw, -25vh) rotate(15deg)' },
+  { transform: 'translate(-5vw, 18vh) rotate(-5deg)' },
+  { transform: 'translate(20vw, 25vh) rotate(-15deg)' },
 ].map((base) => ({
   ...base,
   gridArea: '1 / 1',
   willChange: 'transform, background-image',
-  // Clip the background to the text shape
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundClip: 'text',
   WebkitBackgroundClip: 'text',
-  color: 'transparent', // Make text color transparent to show background
+  color: 'transparent',
   filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))',
 }));
+
+const SLOT_KEYS = ['h1', 'h2', 'm1', 'm2', 's1', 's2'] as const;
 
 const ClockComponent: React.FC = () => {
   useSuspenseFontLoader(FONT_CONFIGS);
@@ -123,27 +112,20 @@ const ClockComponent: React.FC = () => {
   const m = time.getMinutes();
   const s = time.getSeconds();
 
-  // Extract digits zero-allocation via floor division and modulo
-  const d0 = Math.floor(h / 10);
-  const d1 = h % 10;
-  const d2 = Math.floor(m / 10);
-  const d3 = m % 10;
-  const d4 = Math.floor(s / 10);
-  const d5 = s % 10;
+  const digits = [
+    Math.floor(h / 10),
+    h % 10,
+    Math.floor(m / 10),
+    m % 10,
+    Math.floor(s / 10),
+    s % 10,
+  ];
 
-  // Create an array of digits for easier mapping in the JSX
-  const digits = [d0, d1, d2, d3, d4, d5];
-
-  // Create a style object for each digit with its unique texture
-  const getDigitStyle = (digitIndex: number): React.CSSProperties => {
-    const digitValue = digits[digitIndex] ?? 0;
-    const textureUrl = TEXTURE_MAP[digitValue] ?? TEXTURE_MAP[0];
-    return { ...DIGIT_STYLES[digitIndex], backgroundImage: `url(${textureUrl})` };
-  };
+  // Accessible standard ISO/time display for assistive tech
+  const timeString = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 
   return (
     <div style={FULL_SCREEN_STYLE}>
-      {/* Background Video Layer */}
       <div style={VIDEO_CONTAINER_STYLE}>
         <video
           src={clockVideo}
@@ -155,13 +137,24 @@ const ClockComponent: React.FC = () => {
         />
       </div>
 
-      {/* Positioned Digits Layer */}
-      <time aria-label="Digital clock" style={CLOCK_TIME_STYLE}>
-        {digits.map((digit, index) => (
-          <div key={index} style={getDigitStyle(index)}>
-            {DIGIT_TO_LETTER_MAP[digit] ?? 'A'}
-          </div>
-        ))}
+      <time dateTime={timeString} aria-label={`Current time ${timeString}`} style={CLOCK_TIME_STYLE}>
+        {digits.map((digit, index) => {
+          const bgUrl = TEXTURE_URLS[digit] ?? TEXTURE_URLS[0];
+          const glyph = DIGIT_TO_LETTER_MAP[digit] ?? 'A';
+
+          return (
+            <div
+              key={SLOT_KEYS[index]}
+              style={{
+                ...BASE_DIGIT_STYLES[index],
+                backgroundImage: bgUrl,
+              }}
+              aria-hidden="true"
+            >
+              {glyph}
+            </div>
+          );
+        })}
       </time>
     </div>
   );
