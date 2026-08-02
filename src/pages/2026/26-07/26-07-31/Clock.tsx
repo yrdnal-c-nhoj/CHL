@@ -1,6 +1,7 @@
 import React, { memo, useMemo } from 'react';
 
 import fontUrl from '@/assets/fonts/26fonts/26-07-30.ttf?url';
+import borderImage from '@/assets/images/26_images/26-07/26-07-31/border.webp';
 import phobosVideo from '@/assets/images/26_images/26-07/26-07-31/phobos.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -9,7 +10,7 @@ import { useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 // 1. Asset Exports (Required for preloading pipeline)
-export const assets = [phobosVideo, fontUrl];
+export const assets = [phobosVideo, fontUrl, borderImage];
 
 // 2. Font Configuration
 const fontConfigs: FontConfig[] = [
@@ -51,6 +52,10 @@ const PhobosClockComponent: React.FC = () => {
         muted
         playsInline
       />
+      {/* Borders */}
+      <div className={styles.border} />
+      <div className={styles.border} />
+
       {/* Accessible time for screen readers */}
       <time dateTime={isoTime} className="sr-only">
         {time.toLocaleTimeString()}
