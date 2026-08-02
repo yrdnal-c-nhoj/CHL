@@ -58,6 +58,7 @@
     height: 48vh;
     max-width: 48vw; /* Ensure it doesn't exceed screen width */
     max-height: 48vw;
+    z-index: 11; /* Ensure clocks are above the video but below borders */
   }
 }
 
@@ -99,7 +100,7 @@
   pointer-events: none;
   z-index: 10;
   mix-blend-mode: overlay;
-  opacity: 0.3;
+  opacity: 0.4;
 }
 
 /* --- Borders --- */
