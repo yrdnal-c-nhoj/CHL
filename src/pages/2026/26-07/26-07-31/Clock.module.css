@@ -35,6 +35,9 @@
   align-items: center;
   width: 100%;
   height: 100%;
+  /* Inset the wrapper to respect the borders */
+  padding: 10vh 0;
+  box-sizing: border-box;
 }
 
 .clockFace {
@@ -51,6 +54,8 @@
 @media (min-width: 768px) and (orientation: landscape) {
   .clocksWrapper {
     flex-direction: row;
+    /* On desktop, padding is horizontal */
+    padding: 0 10vw;
   }
   .clockFace {
     /* Each clock takes up just under half the viewport height */
