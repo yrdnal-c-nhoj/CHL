@@ -52,7 +52,7 @@
   height: 100vw;
   /* max-width: 50vh; Prevent clocks from being too large on tall, narrow screens */
   /* max-height: 50vh; */
-  border: 2px dashed rgba(255, 0, 0, 0.4);
+  /* border: 2px dashed rgba(255, 0, 0, 0.4); */
   border-radius: 50%;
   animation: pulse-red 2s infinite ease-in-out;
 }
@@ -66,8 +66,8 @@
     /* Each clock takes up just under half the viewport height */
     width: 50vh;
     height: 50vh;
-    max-width: 50vw; /* Ensure it doesn't exceed screen width */
-    max-height: 50vw;
+    /* max-width: 50vw; /* Ensure it doesn't exceed screen width */
+    /* max-height: 50vw; */ */
   }
 }
 
