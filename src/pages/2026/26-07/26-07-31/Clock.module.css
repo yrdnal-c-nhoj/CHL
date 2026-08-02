@@ -92,3 +92,68 @@
   background-color: #ff1100;
   box-shadow: 0 0 10px #ff1100, 0 0 20px #ff1100;
 }
+
+.border {
+  position: absolute;
+  background-image: url('@/assets/images/26_images/26-07/26-07-31/border.webp');
+  pointer-events: none;
+  z-index: 10;
+  mix-blend-mode: overlay;
+  opacity: 0.3;
+}
+
+/* --- Borders --- */
+
+/* Mobile: Top and bottom borders (default) */
+.border {
+  left: 0;
+  right: 0;
+  height: 10vh;
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+}
+
+.border:first-of-type {
+  top: 0;
+  transform: rotate(180deg); /* Flip the top border */
+}
+
+.border:nth-of-type(2) {
+  bottom: 0;
+}
+
+/* Desktop: Switch to left and right borders */
+@media (min-width: 768px) {
+  .border {
+    top: 0;
+    bottom: 0;
+    width: 10vw;
+    height: auto; /* Reset height */
+    background-image: none; /* Move image to pseudo-element */
+    transform: rotate(0deg); /* Reset rotation */
+    overflow: hidden; /* Contain the rotated pseudo-element */
+  }
+
+  .border::before {
+    content: '';
+    position: absolute;
+    /* Size the pseudo-element to be wide enough to cover when rotated */
+    width: 100vh;
+    height: 10vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(270deg);
+    background-image: url('@/assets/images/26_images/26-07/26-07-31/border.webp');
+    background-size: auto 100%;
+    background-repeat: repeat-x;
+  }
+
+  .border:first-of-type {
+    left: 0;
+    right: auto; /* Reset right */
+  }
+  .border:nth-of-type(2) {
+    right: 0;
+    left: auto; /* Reset left */
+  }
+}
