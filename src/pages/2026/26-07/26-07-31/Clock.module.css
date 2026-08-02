@@ -1,11 +1,4 @@
-@keyframes pulse-red {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3), 0 0 25px rgba(0, 0, 0, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 30px rgba(255, 0, 0, 0.6), 0 0 35px rgba(0, 0, 0, 0.6);
-  }
-}
+
 
 .container {
   position: relative;
@@ -32,14 +25,6 @@
   z-index: 1;
 }
 
-.overlay {
-  position: absolute;
-  inset: 0;
-  /* A harsher vignette to create a sense of tunnel vision */
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.9));
-  z-index: 2;
-}
-
 .clocksWrapper {
   position: relative;
   z-index: 3;
@@ -59,10 +44,7 @@
   height: 80vw;
   max-width: 50vh; /* Prevent clocks from being too large on tall, narrow screens */
   max-height: 50vh;
-  /* Style as a target reticle with a pulsing red glow */
-  border: 2px dashed rgba(255, 0, 0, 0.4);
   border-radius: 50%;
-  animation: pulse-red 2s infinite ease-in-out;
 }
 
 /* On larger screens (laptops/desktops), switch to side-by-side layout */
@@ -84,8 +66,6 @@
   bottom: 50%;
   left: 50%;
   transform-origin: bottom center;
-  /* Sharper hands, no border-radius */
-  /* box-shadow: 0 0 8px rgba(0, 0, 0, 0.7); */
 }
 
 .hourHand {
@@ -106,23 +86,9 @@
 
 .secondHand {
   width: 1px;
-  height: 40%;
+  height: 240%;
   margin-left: -0.5px;
   /* A stark, alarming red for the second hand */
   background-color: #ff1100;
   box-shadow: 0 0 10px #ff1100, 0 0 20px #ff1100;
-}
-
-.centerDot {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  transform: translate(-50%, -50%);
- 
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  z-index: 10;
-  box-shadow: 0 0 12px rgba(255, 17, 0, 0.8);
 }
