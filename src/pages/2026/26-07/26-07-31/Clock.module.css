@@ -1,9 +1,9 @@
 @keyframes pulse-red {
   0%, 100% {
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3), 0 0 25px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0), 0 0 25px rgba(0, 0, 0, 0.4);
   }
   50% {
-    box-shadow: 0 0 30px rgba(255, 0, 0, 0.6), 0 0 35px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.926), 0 0 35px rgba(0, 0, 0, 0.6);
   }
 }
 
@@ -32,13 +32,6 @@
   z-index: 1;
 }
 
-.overlay {
-  position: absolute;
-  inset: 0;
-  /* A harsher vignette to create a sense of tunnel vision */
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.9));
-  z-index: 2;
-}
 
 .clocksWrapper {
   position: relative;
@@ -46,9 +39,8 @@
   display: flex;
   /* Stack clocks vertically by default (for mobile) */
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
-  gap: 4vmin;
   width: 100%;
   height: 100%;
 }
@@ -69,14 +61,13 @@
 @media (min-width: 768px) and (orientation: landscape) {
   .clocksWrapper {
     flex-direction: row;
-    gap: 2vw;
   }
   .clockFace {
     /* Each clock takes up just under half the viewport height */
     width: 50vh;
     height: 50vh;
     max-width: 50vw; /* Ensure it doesn't exceed screen width */
-    max-height:508vw;
+    max-height: 50vw;
   }
 }
 
@@ -85,8 +76,7 @@
   bottom: 50%;
   left: 50%;
   transform-origin: bottom center;
-  /* Sharper hands, no border-radius */
-  /* box-shadow: 0 0 8px rgba(0, 0, 0, 0.7); */
+  opacity: 0.6;
 }
 
 .hourHand {
@@ -107,23 +97,9 @@
 
 .secondHand {
   width: 1px;
-  height: 40%;
+  height: 740%;
   margin-left: -0.5px;
   /* A stark, alarming red for the second hand */
   background-color: #ff1100;
   box-shadow: 0 0 10px #ff1100, 0 0 20px #ff1100;
-}
-
-.centerDot {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  transform: translate(-50%, -50%);
- 
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  z-index: 10;
-  box-shadow: 0 0 12px rgba(255, 17, 0, 0.8);
 }
