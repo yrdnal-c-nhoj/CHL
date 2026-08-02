@@ -56,20 +56,23 @@ const PhobosClockComponent: React.FC = () => {
         {time.toLocaleTimeString()}
       </time>
 
-      <div className={styles.clockFace}>
-        <div
-          className={`${styles.hand} ${styles.hourHand}`}
-          style={{ transform: `rotate(${hourAngle}deg)` }}
-        />
-        <div
-          className={`${styles.hand} ${styles.minuteHand}`}
-          style={{ transform: `rotate(${minuteAngle}deg)` }}
-        />
-        <div
-          className={`${styles.hand} ${styles.secondHand}`}
-          style={{ transform: `rotate(${secondAngle}deg)` }}
-        />
-      
+      <div className={styles.clocksWrapper}>
+        {[...Array(2)].map((_, i) => (
+          <div key={i} className={styles.clockFace}>
+            <div
+              className={`${styles.hand} ${styles.hourHand}`}
+              style={{ transform: `rotate(${hourAngle}deg)` }}
+            />
+            <div
+              className={`${styles.hand} ${styles.minuteHand}`}
+              style={{ transform: `rotate(${minuteAngle}deg)` }}
+            />
+            <div
+              className={`${styles.hand} ${styles.secondHand}`}
+              style={{ transform: `rotate(${secondAngle}deg)` }}
+            />
+          </div>
+        ))}
       </div>
     </main>
   );
