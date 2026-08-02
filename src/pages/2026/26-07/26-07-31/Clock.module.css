@@ -1,0 +1,79 @@
+@keyframes pulse-red {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3), 0 0 25px rgba(0, 0, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.6), 0 0 35px rgba(0, 0, 0, 0.6);
+  }
+}
+
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+}
+
+.backgroundVideo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translateX(-50%) translateY(-50%);
+  object-fit: cover;
+  z-index: 1;
+  /* Add a filter to desaturate and add contrast, like old surveillance footage */
+  filter:  contrast(1.5) brightness(1.5);
+}
+
+.clockFace {
+  position: relative;
+  z-index: 3;
+  width:  99vmin;
+  height: 99vmin;
+    border: 2px dashed rgba(255, 0, 0, 0.4);
+  border-radius: 50%;
+  animation: pulse-red 2s infinite ease-in-out;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  opacity: 0.3;
+  transform-origin: bottom center;
+  /* Sharper hands, no border-radius */
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+}
+
+.hourHand {
+  width: 5px;
+  height: 25%;
+  margin-left: -2.5px;
+   background-color: #ff1100;
+  box-shadow: 0 0 10px #ff1100, 0 0 20px #ff1100;
+}
+
+.minuteHand {
+  width: 3px;
+  height: 35%;
+  margin-left: -1.5px;
+   background-color: #ff1100;
+  box-shadow: 0 0 10px #ff1100, 0 0 20px #ff1100;
+}
+
+.secondHand {
+  width: 1px;
+  height: 40%;
+  margin-left: -0.5px;
+  /* A stark, alarming red for the second hand */
+  background-color: #ff1100;
+  box-shadow: 0 0 10px #ff1100, 0 0 20px #ff1100;
+}
