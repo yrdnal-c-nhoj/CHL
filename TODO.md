@@ -1,12 +1,15 @@
-# TODO - Fix production build failure (invalid JSON in clockpages.json)
+# TODO - Align project with state-of-the-art technical standards
 
 ## Steps
 
-- [x] Analyze the task and identify the root cause
-  - `src/context/clockpages.json` contains a stray text prefix before the opening `[`, making it invalid JSON
-- [x] Read relevant files (`clockpages.json`, `DataContext.tsx`, `testclocks.json`)
-- [x] Confirm the plan with the user
-- [x] Edit `src/context/clockpages.json` to remove the stray prefix
-- [x] Validate the repaired JSON parses correctly
-- [x] Run the production build (`npm run build`) to confirm it succeeds
-
+- [x] Review `src/pages/2026/26-07/26-07-30/Clock.tsx` against `ARCHITECTURE.md`
+- [x] Clean up `Clock.tsx`: remove dead constants, move static inline styles to CSS Module, use `<main>` root
+- [x] Fix `tsconfig.json`: remove deprecated `baseUrl`, make `paths` relative (`./src/*`)
+- [x] Fix `vite.config.ts` `manualChunks`: add explicit `return undefined` for non-matching path
+- [x] Fix `src/utils/isoEngine.ts`: type `points` as tuples + add `noUncheckedIndexedAccess` guards
+- [x] Fix `src/components/admin/TagManager.tsx`: guard `groupedByMonth[0]?.[0]`
+- [x] Fix `src/components/ClockPageNav.tsx`: guard `mm`/`yy`/`dd`; remove unused `formatDate` from destructuring
+- [x] Confirm clean type-check (`npx tsc --noEmit -p tsconfig.ci.json`, EXIT_CODE=0)
+- [x] Align `scripts/verify-clock.js` with `ARCHITECTURE.md` §4 (canonical hook, semantic `<time>`, srOnly, memo+displayName, font loader)
+- [x] Confirm verifier passes all standards on the cleaned `Clock.tsx`
+- [x] Confirm production build succeeds (`npm run build`, BUILD_EXIT=0)

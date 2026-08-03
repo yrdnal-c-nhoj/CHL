@@ -63,6 +63,7 @@ export default defineConfig({
           // Let Vite handle chunking for other node_modules to avoid a monolithic vendor chunk.
           // This is more efficient for dynamic imports.
           if (id.includes('node_modules')) return 'vendor';
+          return undefined;
         },
       },
       onwarn: (warning, warn) => {

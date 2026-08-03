@@ -121,8 +121,11 @@ export default function TagManager() {
   // Effect to open the first month by default once data is ready.
   useEffect(() => {
     if (groupedByMonth.length > 0 && Object.keys(expandedMonths).length === 0) {
-      const firstMonthKey = groupedByMonth[0][0];
-      setExpandedMonths({ [firstMonthKey]: true });
+      const firstMonth = groupedByMonth[0];
+      const firstMonthKey = firstMonth?.[0];
+      if (firstMonthKey) {
+        setExpandedMonths({ [firstMonthKey]: true });
+      }
     }
   }, [groupedByMonth, expandedMonths]);
 

@@ -36,7 +36,7 @@ export class IsoEngine {
   }
 
   drawPrism(x: number, y: number, z: number, w: number, l: number, h: number, color: Color) {
-    const points = [
+    const points: [number, number, number][] = [
       [x, y, z], [x + w, y, z], [x + w, y + l, z], [x, y + l, z],
       [x, y, z + h], [x + w, y, z + h], [x + w, y + l, z + h], [x, y + l, z + h],
     ];
@@ -46,15 +46,21 @@ export class IsoEngine {
     const shades = [0.8, 0.6, 1.0];
 
     faces.forEach((indices, i) => {
+      const shade = shades[i] ?? 1;
       this.ctx.beginPath();
-      const p0 = this.project(...points[indices[0]] as [number, number, number]);
+      const firstIdx = indices[0];
+      const firstPoint = firstIdx !== undefined ? points[firstIdx] : undefined;
+      if (!firstPoint) return;
+      const p0 = this.project(...firstPoint);
       this.ctx.moveTo(p0.x, p0.y);
       indices.slice(1).forEach((idx) => {
-        const p = this.project(...points[idx] as [number, number, number]);
+        const pt = points[idx];
+        if (!pt) return;
+        const p = this.project(...pt);
         this.ctx.lineTo(p.x, p.y);
       });
       this.ctx.closePath();
-      this.ctx.fillStyle = `rgb(${color.r * shades[i]}, ${color.g * shades[i]}, ${color.b * shades[i]})`;
+      this.ctx.fillStyle = `rgb(${color.r * shade}, ${color.g * shade}, ${color.b * shade})`;
       this.ctx.fill();
     });
   }
@@ -63,3 +69,4 @@ export class IsoEngine {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 }
+
