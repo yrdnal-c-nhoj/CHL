@@ -146,7 +146,7 @@ const ClockComponent: React.FC = () => {
       </div>
 
       <div className={styles.timeContainer}>
-        {/* Accessible time for screen readers, per ARCHITECTURE.md */}
+        {/* Accessible time for screen readers, using srOnly class */}
         <time dateTime={time.toISOString()} className={styles.srOnly}>
           {timeString}
         </time>
