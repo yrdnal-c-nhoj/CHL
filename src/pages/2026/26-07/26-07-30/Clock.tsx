@@ -51,65 +51,6 @@ const DIGIT_TO_LETTER_MAP: readonly string[] = [
   '1', 'J', 'v', 'M', '3', 'T', 'k', 'P', '7', 'L',
 ] as const;
 
-// Static Styles
-const FULL_SCREEN_STYLE: React.CSSProperties = {
-  position: 'relative',
-  width: '100vw',
-  height: '100dvh',
-  overflow: 'hidden',
-  backgroundColor: '#000',
-};
-
-const VIDEO_CONTAINER_STYLE: React.CSSProperties = {
-  position: 'absolute',
-  inset: 0,
-  zIndex: 1,
-};
-
-const VIDEO_ELEMENT_STYLE: React.CSSProperties = {
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  filter: 'brightness(0.7) contrast(1.1)',
-};
-
-const CLOCK_TIME_STYLE: React.CSSProperties = {
-  position: 'relative',
-  zIndex: 2,
-  display: 'grid',
-  placeItems: 'center',
-  width: '100%',
-  height: '100%',
-  fontFamily: 'ShapesFont, sans-serif',
-  fontSize: 'clamp(3rem, 18vmin, 13rem)',
-};
-
-// Positioning transforms live on a wrapper so the text element
-// itself has no transform (avoids Firefox background-clip:text bug)
-const BASE_DIGIT_WRAPPER_STYLES: React.CSSProperties[] = [
-  { transform: 'translate(-28vw, -36vh) rotate(-10deg)' },
-  { transform: 'translate(-13vw, -18vh) rotate(5deg)' },
-  { transform: 'translate(11vw, -15vh) rotate(10deg)' },
-  { transform: 'translate(29vw, -25vh) rotate(15deg)' },
-  { transform: 'translate(-5vw, 18vh) rotate(-5deg)' },
-  { transform: 'translate(20vw, 25vh) rotate(-15deg)' },
-].map((base) => ({
-  gridArea: '1 / 1',
-  willChange: 'transform',
-  ...base,
-}));
-
-// Styles that belong only on the text node (clip + texture)
-const DIGIT_TEXT_STYLES: React.CSSProperties = {
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundClip: 'text',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  color: 'transparent',
-  filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))',
-};
-
 const SLOT_KEYS = ['h1', 'h2', 'm1', 'm2', 's1', 's2'] as const;
 
 const ClockComponent: React.FC = () => {
@@ -133,11 +74,11 @@ const ClockComponent: React.FC = () => {
   const timeString = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 
   return (
-    <div style={FULL_SCREEN_STYLE}>
-      <div style={VIDEO_CONTAINER_STYLE}>
+    <main className={styles.container}>
+      <div className={styles.videoWrapper}>
         <video
           src={clockVideo}
-          style={VIDEO_ELEMENT_STYLE}
+          className={styles.backgroundVideo}
           autoPlay
           loop
           muted
@@ -170,7 +111,7 @@ const ClockComponent: React.FC = () => {
           );
         })}
       </div>
-    </div>
+    </main>
   );
 };
 
