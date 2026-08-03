@@ -1,0 +1,177 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0d1b2a;
+  color: #e0e1dd;
+  font-family: monospace;
+}
+
+.cubesWrapper {
+  display: flex;
+  gap: 15vw;
+}
+
+.scene {
+  width: 20vmin;
+  height: 20vmin;
+  perspective: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: spin 12s linear infinite;
+}
+
+.face {
+  position: absolute;
+  width: 20vmin;
+  height: 20vmin;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8vmin;
+  font-weight: bold;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backface-visibility: hidden;
+}
+
+/* Positioning the faces of the cube */
+.front {
+  transform: translateZ(10vmin);
+  background-color: rgba(231, 76, 60, 0.7);
+}
+.back {
+  transform: rotateY(180deg) translateZ(10vmin);
+  background-color: rgba(52, 152, 219, 0.7);
+}
+.left {
+  transform: rotateY(-90deg) translateZ(10vmin);
+  background-color: rgba(46, 204, 113, 0.7);
+}
+.right {
+  transform: rotateY(90deg) translateZ(10vmin);
+  background-color: rgba(241, 196, 15, 0.7);
+}
+.top {
+  transform: rotateX(90deg) translateZ(10vmin);
+  background-color: rgba(155, 89, 182, 0.7);
+}
+.bottom {
+  transform: rotateX(-90deg) translateZ(10vmin);
+  background-color: rgba(26, 188, 156, 0.7);
+}
+
+.label {
+  margin-top: 2vmin;
+  font-size: 2.5vmin;
+  color: #778da9;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* --- Sphere --- */
+.sphere {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    circle at 65% 35%,
+    #a9def9,
+    #3d5a80 80%
+  );
+  animation: spin 18s linear infinite;
+}
+
+.sphereFace {
+  font-size: 8vmin;
+  font-weight: bold;
+  color: #e0e1dd;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Pyramid --- */
+.pyramid {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: spin 8s linear infinite;
+}
+
+.pyramidFace {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align text to the top */
+  padding-top: 4vmin;
+  box-sizing: border-box;
+  font-size: 6vmin;
+  font-weight: bold;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  transform-origin: bottom center;
+  backface-visibility: hidden;
+}
+
+.pyramidFront {
+  transform: rotateY(0deg) translateZ(7vmin);
+  background-color: rgba(255, 107, 107, 0.8);
+}
+
+.pyramidRight {
+  transform: rotateY(90deg) translateZ(7vmin);
+  background-color: rgba(255, 236, 139, 0.8);
+}
+
+.pyramidBack {
+  transform: rotateY(180deg) translateZ(7vmin);
+  background-color: rgba(167, 255, 188, 0.8);
+}
+
+.pyramidLeft {
+  transform: rotateY(-90deg) translateZ(7vmin);
+  background-color: rgba(137, 207, 240, 0.8);
+}
+
+/* Override for pyramid label position */
+.pyramid + .label {
+  margin-top: 4vmin;
+}
+
+@keyframes spin {
+  from {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  to {
+    transform: rotateX(360deg) rotateY(360deg);
+  }
+}
+
+/* Standard from ARCHITECTURE.md for accessible, visually-hidden elements */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
