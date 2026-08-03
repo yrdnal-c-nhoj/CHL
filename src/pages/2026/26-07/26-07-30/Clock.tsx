@@ -83,7 +83,9 @@ const CLOCK_TIME_STYLE: React.CSSProperties = {
   fontSize: 'clamp(3rem, 18vmin, 13rem)',
 };
 
-const BASE_DIGIT_STYLES: React.CSSProperties[] = [
+// Positioning transforms live on a wrapper so the text element
+// itself has no transform (avoids Firefox background-clip:text bug)
+const BASE_DIGIT_WRAPPER_STYLES: React.CSSProperties[] = [
   { transform: 'translate(-28vw, -36vh) rotate(-10deg)' },
   { transform: 'translate(-13vw, -18vh) rotate(5deg)' },
   { transform: 'translate(11vw, -15vh) rotate(10deg)' },
@@ -92,18 +94,20 @@ const BASE_DIGIT_STYLES: React.CSSProperties[] = [
   { transform: 'translate(20vw, 25vh) rotate(-15deg)' },
 ].map((base) => ({
   gridArea: '1 / 1',
-  willChange: 'transform, background-image',
+  willChange: 'transform',
+  ...base,
+}));
+
+// Styles that belong only on the text node (clip + texture)
+const DIGIT_TEXT_STYLES: React.CSSProperties = {
   backgroundSize: 'cover',
   backgroundPosition: 'center',
-  // The base transform is applied here, and we add translate(0,0) to fix a Firefox rendering bug.
-  transform: `${base.transform} translate(0, 0)`,
   backgroundClip: 'text',
   WebkitBackgroundClip: 'text',
-  MozBackgroundClip: 'text', // Added for Firefox compatibility
-  WebkitTextFillColor: 'transparent', // Added for better cross-browser support
+  WebkitTextFillColor: 'transparent',
   color: 'transparent',
   filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))',
-}));
+};
 
 const SLOT_KEYS = ['h1', 'h2', 'm1', 'm2', 's1', 's2'] as const;
 
@@ -140,21 +144,26 @@ const ClockComponent: React.FC = () => {
         />
       </div>
 
-      <time dateTime={timeString} aria-label={`Current time ${timeString}`} style={CLOCK_TIME_STYLE}>
+      <time
+        dateTime={timeString}
+        aria-label={`Current time ${timeString}`}
+        style={CLOCK_TIME_STYLE}
+      >
         {digits.map((digit, index) => {
           const bgUrl = TEXTURE_URLS[digit] ?? TEXTURE_URLS[0];
           const glyph = DIGIT_TO_LETTER_MAP[digit] ?? 'A';
 
           return (
-            <div
-              key={SLOT_KEYS[index]}
-              style={{
-                ...BASE_DIGIT_STYLES[index],
-                backgroundImage: bgUrl,
-              }}
-              aria-hidden="true"
-            >
-              {glyph}
+            <div key={SLOT_KEYS[index]} style={BASE_DIGIT_WRAPPER_STYLES[index]}>
+              <div
+                style={{
+                  ...DIGIT_TEXT_STYLES,
+                  backgroundImage: bgUrl,
+                }}
+                aria-hidden="true"
+              >
+                {glyph}
+              </div>
             </div>
           );
         })}
