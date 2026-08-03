@@ -2,22 +2,20 @@
  * Application Entry Point
  *
  * This file initializes the React application and sets up:
- * - React 18's concurrent rendering with StrictMode
- * - Helmet provider for SEO meta tag management
+ * - React 19's concurrent rendering with StrictMode
  * - Error handling for the root element
  * - Performance optimizations
  *
  * Features:
- * - Modern React 18 createRoot API
+ * - Modern React 19 createRoot API
  * - Concurrent rendering capabilities
- * - SEO support with react-helmet-async
+ * - SEO support with native React metadata elements
  * - Development and production optimizations
  * - Error boundary integration
  */
 
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import './styles/globals.css';
@@ -58,16 +56,14 @@ const initializeApp = () => {
 
     root.render(
       <StrictMode>
-        <HelmetProvider>
-          <BrowserRouter
-            future={{
-              v7_startTransition: true,
-              v7_relativeSplatPath: true,
-            }}
-          >
-            <App />
-          </BrowserRouter>
-        </HelmetProvider>
+        <BrowserRouter
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}
+        >
+          <App />
+        </BrowserRouter>
       </StrictMode>,
     );
   } catch (error) {
