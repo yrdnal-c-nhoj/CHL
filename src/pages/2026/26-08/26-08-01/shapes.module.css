@@ -1,0 +1,127 @@
+/* Base styles for 3D scenes */
+.scene {
+  width: 150px;
+  height: 150px;
+  perspective: 600px;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #eee;
+}
+
+/* Cube styles */
+.cube {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(-30deg) rotateY(30deg); /* Example rotation */
+  animation: rotateCube 10s infinite linear;
+}
+
+.face {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 1px solid #555;
+  background: rgba(0, 123, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.front  { transform: rotateY(0deg) translateZ(50px); }
+.back   { transform: rotateX(180deg) translateZ(50px); }
+.right  { transform: rotateY(90deg) translateZ(50px); }
+.left   { transform: rotateY(-90deg) translateZ(50px); }
+.top    { transform: rotateX(90deg) translateZ(50px); }
+.bottom { transform: rotateX(-90deg) translateZ(50px); }
+
+@keyframes rotateCube {
+  from { transform: rotateX(-30deg) rotateY(0deg); }
+  to { transform: rotateX(-30deg) rotateY(360deg); }
+}
+
+/* Sphere styles (simplified for demonstration) */
+.sphere {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #6dd5ed, #2193b0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  animation: pulseSphere 2s infinite alternate;
+}
+
+.sphereFace {
+  font-size: 2rem;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+@keyframes pulseSphere {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+/* Pyramid styles */
+.pyramid {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(-30deg) rotateY(30deg); /* Example rotation */
+  animation: rotatePyramid 12s infinite linear;
+}
+
+.pyramidFace {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 100px solid rgba(255, 165, 0, 0.7); /* Orange */
+  transform-origin: bottom;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem; /* Smaller font for pyramid faces */
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.pyramidFront {
+  transform: rotateY(0deg) translateZ(25px) rotateX(60deg); /* Adjust for pyramid shape */
+  border-bottom-color: rgba(255, 165, 0, 0.7);
+}
+.pyramidRight {
+  transform: rotateY(90deg) translateZ(25px) rotateX(60deg);
+  border-bottom-color: rgba(255, 140, 0, 0.7);
+}
+.pyramidBack {
+  transform: rotateY(180deg) translateZ(25px) rotateX(60deg);
+  border-bottom-color: rgba(255, 120, 0, 0.7);
+}
+.pyramidLeft {
+  transform: rotateY(-90deg) translateZ(25px) rotateX(60deg);
+  border-bottom-color: rgba(255, 100, 0, 0.7);
+}
+
+@keyframes rotatePyramid {
+  from { transform: rotateX(-30deg) rotateY(0deg); }
+  to { transform: rotateX(-30deg) rotateY(360deg); }
+}
