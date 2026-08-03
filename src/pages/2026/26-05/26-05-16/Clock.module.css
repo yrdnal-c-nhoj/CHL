@@ -73,6 +73,7 @@
   width: 1px;
   height: 45%;
   margin-left: -0.5px;
+  background: #ff0000; /* Added a red background to make the second hand visible */
   z-index: 4;
 }
 
