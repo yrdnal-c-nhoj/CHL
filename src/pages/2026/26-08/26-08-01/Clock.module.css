@@ -10,156 +10,78 @@
   font-family: monospace;
 }
 
-.cubesWrapper {
+.timeDisplay {
   display: flex;
-  gap: 15vw;
-}
-
-.scene {
-  width: 20vmin;
-  height: 20vmin;
-  perspective: 600px;
-  display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Stack vertically on phones by default */
   align-items: center;
-  justify-content: center;
+  gap: 2vh;
 }
 
-.cube {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  animation: spin 12s linear infinite;
-}
-
-.face {
-  position: absolute;
-  width: 20vmin;
-  height: 20vmin;
+.hours,
+.minutes,
+.seconds {
+  width: 32vh;
+  height: 32vh;
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 8vmin;
+  align-items: center;
+  font-size: 16vh;
   font-weight: bold;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backface-visibility: hidden;
-}
-
-/* Positioning the faces of the cube */
-.front {
-  transform: translateZ(10vmin);
-  background-color: rgba(231, 76, 60, 0.7);
-}
-.back {
-  transform: rotateY(180deg) translateZ(10vmin);
-  background-color: rgba(52, 152, 219, 0.7);
-}
-.left {
-  transform: rotateY(-90deg) translateZ(10vmin);
-  background-color: rgba(46, 204, 113, 0.7);
-}
-.right {
-  transform: rotateY(90deg) translateZ(10vmin);
-  background-color: rgba(241, 196, 15, 0.7);
-}
-.top {
-  transform: rotateX(90deg) translateZ(10vmin);
-  background-color: rgba(155, 89, 182, 0.7);
-}
-.bottom {
-  transform: rotateX(-90deg) translateZ(10vmin);
-  background-color: rgba(26, 188, 156, 0.7);
-}
-
-.label {
-  margin-top: 2vmin;
-  font-size: 2.5vmin;
-  color: #778da9;
-  text-transform: uppercase;
   letter-spacing: 0.1em;
+  text-shadow:
+    0 0 5px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-/* --- Sphere --- */
-.sphere {
-  width: 100%;
-  height: 100%;
+.hours {
+  background-color: #c0392b; /* Red */
+}
+
+.minutes {
+  background-color: #2980b9; /* Blue */
   border-radius: 50%;
+}
+
+.seconds {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(
-    circle at 65% 35%,
-    #a9def9,
-    #3d5a80 80%
-  );
-  animation: spin 18s linear infinite;
+  background-color: transparent;
+  width: 0;
+  height: 0;
+  border-left: 16vh solid transparent;
+  border-right: 16vh solid transparent;
+  border-bottom: 32vh solid #f1c40f; /* Yellow */
 }
 
-.sphereFace {
-  font-size: 8vmin;
-  font-weight: bold;
-  color: #e0e1dd;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-/* --- Pyramid --- */
-.pyramid {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  animation: spin 8s linear infinite;
-}
-
-.pyramidFace {
+.seconds span {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start; /* Align text to the top */
-  padding-top: 4vmin;
-  box-sizing: border-box;
-  font-size: 6vmin;
-  font-weight: bold;
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  transform-origin: bottom center;
-  backface-visibility: hidden;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 8vh; /* Position number correctly inside the triangle */
 }
 
-.pyramidFront {
-  transform: rotateY(0deg) translateZ(7vmin);
-  background-color: rgba(255, 107, 107, 0.8);
-}
-
-.pyramidRight {
-  transform: rotateY(90deg) translateZ(7vmin);
-  background-color: rgba(255, 236, 139, 0.8);
-}
-
-.pyramidBack {
-  transform: rotateY(180deg) translateZ(7vmin);
-  background-color: rgba(167, 255, 188, 0.8);
-}
-
-.pyramidLeft {
-  transform: rotateY(-90deg) translateZ(7vmin);
-  background-color: rgba(137, 207, 240, 0.8);
-}
-
-/* Override for pyramid label position */
-.pyramid + .label {
-  margin-top: 4vmin;
-}
-
-@keyframes spin {
-  from {
-    transform: rotateX(0deg) rotateY(0deg);
+/* For laptops and larger screens, display in a row */
+@media (min-width: 768px) {
+  .timeDisplay {
+    flex-direction: row; /* Display in a row */
+    gap: 4vw;
   }
-  to {
-    transform: rotateX(360deg) rotateY(360deg);
+
+  .hours,
+  .minutes,
+  .seconds {
+    width: 30vw;
+    height: 30vw;
+    font-size: 15vw;
+  }
+
+  .seconds {
+    border-left-width: 15vw;
+    border-right-width: 15vw;
+    border-bottom-width: 30vw;
+  }
+
+  .seconds span {
+    bottom: 7.5vw; /* Adjust position for desktop view */
   }
 }
 
