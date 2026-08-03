@@ -16,7 +16,6 @@
  */
 
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import {
   Navigate,
   Route,
@@ -88,8 +87,9 @@ const AnalyticsAndSEO = React.memo(() => {
     trackPageView();
   }, [trackPageView]);
 
+// React 19 natively hoists <title>, <meta>, and <link> to <head>.
   return (
-    <Helmet>
+    <>
       <title>{metaData.title}</title>
       <meta name="description" content={metaData.description} />
       <meta property="og:title" content={metaData.title} />
@@ -97,7 +97,7 @@ const AnalyticsAndSEO = React.memo(() => {
       <meta property="og:url" content={`${BASE_URL}${processedPath.path}`} />
       <meta property="og:type" content="website" />
       <link rel="canonical" href={`${BASE_URL}${processedPath.path}`} />
-    </Helmet>
+    </>
   );
 });
 

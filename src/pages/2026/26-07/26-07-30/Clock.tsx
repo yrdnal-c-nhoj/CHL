@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo, type FC } from 'react';
 
 import shapesFont from '@/assets/fonts/26fonts/26-07-30.ttf?url';
 import camo0 from '@/assets/images/26_images/26-07/26-07-30/camo1.webp';
@@ -53,7 +53,7 @@ const DIGIT_TO_LETTER_MAP: readonly string[] = [
 
 const SLOT_KEYS = ['h1', 'h2', 'm1', 'm2', 's1', 's2'] as const;
 
-const ClockComponent: React.FC = () => {
+const ClockComponent: FC = () => {
   useSuspenseFontLoader(FONT_CONFIGS);
   const time = useSecondClock();
 

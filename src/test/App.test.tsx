@@ -1,7 +1,7 @@
+import { render } from '@testing-library/react';
 import React from 'react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import App from '../App';
 
 // Mock all lazy-loaded components
@@ -37,12 +37,6 @@ vi.mock('../context/DataContext', () => ({
 // Mock analytics
 vi.mock('../analytics', () => ({
   pageview: vi.fn(),
-}));
-
-// Mock Helmet
-vi.mock('react-helmet-async', () => ({
-  Helmet: ({ children }: { children: React.ReactNode }) => children,
-  HelmetProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 describe('App Routing', () => {
