@@ -15,6 +15,7 @@ import clockVideo from '@/assets/images/26_images/26-07/26-07-30/tree.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
+import styles from './Clock.module.css';
 
 export const assets = [
   clockVideo,
@@ -144,20 +145,21 @@ const ClockComponent: React.FC = () => {
         />
       </div>
 
-      <time
-        dateTime={timeString}
-        aria-label={`Current time ${timeString}`}
-        style={CLOCK_TIME_STYLE}
-      >
+      <div className={styles.timeContainer}>
+        {/* Accessible time for screen readers, per ARCHITECTURE.md */}
+        <time dateTime={time.toISOString()} className={styles.srOnly}>
+          {timeString}
+        </time>
+
         {digits.map((digit, index) => {
           const bgUrl = TEXTURE_URLS[digit] ?? TEXTURE_URLS[0];
           const glyph = DIGIT_TO_LETTER_MAP[digit] ?? 'A';
 
           return (
-            <div key={SLOT_KEYS[index]} style={BASE_DIGIT_WRAPPER_STYLES[index]}>
+            <div key={SLOT_KEYS[index]} className={`${styles.digitWrapper} ${styles[`pos${index}`]}`}>
               <div
+                className={styles.digit}
                 style={{
-                  ...DIGIT_TEXT_STYLES,
                   backgroundImage: bgUrl,
                 }}
                 aria-hidden="true"
@@ -167,7 +169,7 @@ const ClockComponent: React.FC = () => {
             </div>
           );
         })}
-      </time>
+      </div>
     </div>
   );
 };

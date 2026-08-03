@@ -15,33 +15,45 @@
 .backgroundVideo {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Changed from fill to cover for better aspect ratio handling */
+  object-fit: cover;
   filter: brightness(0.7) contrast(1.1);
 }
 
 .timeContainer {
+  position: relative;
+  z-index: 2;
   display: grid;
   place-items: center;
   width: 100%;
   height: 100%;
-  z-index: 2;
   font-family: 'ShapesFont', sans-serif;
-  font-size: 24vmin;
-  line-height: 1;
-  font-weight: bold; /* Added for better visibility */
+  font-size: clamp(3rem, 18vmin, 13rem);
 }
+
+.digitWrapper {
+  grid-area: 1 / 1;
+  will-change: transform;
+}
+
+/* Positioning classes for each digit */
+.pos0 { transform: translate(-28vw, -36vh) rotate(-10deg); }
+.pos1 { transform: translate(-13vw, -18vh) rotate(5deg); }
+.pos2 { transform: translate(11vw, -15vh) rotate(10deg); }
+.pos3 { transform: translate(29vw, -25vh) rotate(15deg); }
+.pos4 { transform: translate(-5vw, 18vh) rotate(-5deg); }
+.pos5 { transform: translate(20vw, 25vh) rotate(-15deg); }
 
 .digit {
-  grid-area: 1 / 1; /* Stack all digits in the center grid cell */
-  will-change: transform;
-  color: #fff;
-  filter: drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.8));
+  background-size: cover;
+  background-position: center;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
 }
 
-/* 
-  Accessible, visually-hidden text for screen readers.
-  Standard from ARCHITECTURE.md.
-*/
+/* Standard from ARCHITECTURE.md for accessible, visually-hidden elements */
 .srOnly {
   border: 0;
   clip: rect(0 0 0 0);
