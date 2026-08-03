@@ -1,0 +1,27 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #111;
+  color: #eee;
+}
+
+.clockFace {
+  font-family: monospace;
+  font-size: 10vw;
+}
+
+/* Standard from ARCHITECTURE.md for accessible, visually-hidden elements */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
