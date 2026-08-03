@@ -4,13 +4,17 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 /**
- * BorrowedTime Tactical Standards Verifier & Auto-Fixer
- * 
- * Tactical Standards:
+ * BorrowedTime Standards Verifier
+ *
+ * Aligned with ARCHITECTURE.md §4 (Clock Component Standards).
+ *
+ * Standards:
  * 1. Asset Export: export const assets = [...]
- * 2. Precision Hook: useMillisecondClock()
+ * 2. Canonical Time Hook: useSecondClock() or useMillisecondClock() from '@/utils/hooks'
  * 3. CSS Modules: Import styles from './Clock.module.css'
- * 4. Accessibility: <time> with aria-label and srOnly span
+ * 4. Accessibility: <time> element with dateTime + visually hidden (srOnly) time text
+ * 5. Performance: React.memo + displayName
+ * 6. Font Loading: useSuspenseFontLoader() from '@/utils/fontLoader' (if custom fonts used)
  */
 
 const args = process.argv.slice(2);
@@ -35,7 +39,7 @@ try {
   let content = originalContent;
 
   // Detect the variable name used for the clock (standardizing on 'time')
-  const hookVarMatch = content.match(/const\s+(\w+)\s*=\s*useMillisecondClock\(\)/);
+  const hookVarMatch = content.match(/const\s+(\w+)\s*=\s*use(?:Second|Millisecond)Clock\(/);
   const tVar = hookVarMatch ? hookVarMatch[1] : 'time';
 
   const rules = [
@@ -46,10 +50,10 @@ try {
       hint: 'Expected "export const assets = [...];" for preloading.'
     },
     {
-      id: 'precision-hook',
-      label: 'Precision Clock Hook',
-      check: (code) => /useMillisecondClock\(\)/.test(code),
-      hint: 'Use useMillisecondClock() for millisecond-level precision.'
+      id: 'canonical-hook',
+      label: 'Canonical Time Hook',
+      check: (code) => /use(?:Second|Millisecond)Clock\(\)/.test(code),
+      hint: 'Use useSecondClock() (default) or useMillisecondClock() (smooth/millisecond precision) from @/utils/hooks.'
     },
     {
       id: 'css-module',
@@ -58,18 +62,28 @@ try {
       hint: 'Relocate inline styles to Clock.module.css.'
     },
     {
-      id: 'aria-label',
-      label: 'Accessible Time Element',
-      check: (code) => new RegExp(`<time[^>]+aria-label=\\{${tVar}\\.toLocaleTimeString\\(`).test(code),
-      fix: (code) => code.replace(/<time([^>]*?)>/s, `<time$1 aria-label={${tVar}.toLocaleTimeString()}>`),
-      hint: `The <time> tag needs an aria-label.`
+      id: 'semantic-time',
+      label: 'Semantic <time> Element',
+      check: (code) => /<time[^>]+dateTime=/.test(code),
+      hint: 'Include a semantic <time> element with a valid dateTime attribute.'
     },
     {
       id: 'sr-only',
-      label: 'SR-Only Timestamp',
-      check: (code) => new RegExp(`className=\\{styles\\.srOnly\\}.*\\{${tVar}\\.toLocaleTimeString\\(`).test(code),
-      fix: (code) => code.replace(/(<time[^>]*?>)/s, `$1\n      <span className={styles.srOnly}>{${tVar}.toLocaleTimeString()}</span>`),
-      hint: `Include a visually hidden span for screen readers.`
+      label: 'Screen-Reader Accessible Time',
+      check: (code) => new RegExp(`className=\\{\\s*styles\\.srOnly\\s*\\}`).test(code),
+      hint: 'Wrap the time text in a visually-hidden (srOnly) container so screen readers can announce it.'
+    },
+    {
+      id: 'memo-displayname',
+      label: 'React.memo + displayName',
+      check: (code) => /memo\(/.test(code) && /displayName\s*=/.test(code),
+      hint: 'Wrap the component in React.memo and set displayName (e.g., Clock_YY_MM_DD).'
+    },
+    {
+      id: 'font-loader',
+      label: 'Canonical Font Loader',
+      check: (code) => /useSuspenseFontLoader/.test(code) || !/@\/assets\/fonts/.test(code),
+      hint: 'Load custom fonts with useSuspenseFontLoader from @/utils/fontLoader.'
     }
   ];
 
@@ -101,7 +115,7 @@ try {
   } else {
     console.log(`\n${colors.yellow}⚠️  ${failures} violation(s) found.${colors.reset}`);
     if (!isFixMode) {
-      console.log(`   Run with ${colors.cyan}--fix${colors.reset} to resolve automatically.\n`);
+      console.log(`   Run with ${colors.cyan}--fix${colors.reset} to resolve automatically.`);
     }
     process.exit(1);
   }
@@ -109,3 +123,4 @@ try {
   console.error(`${colors.red}Error: ${error.message}${colors.reset}`);
   process.exit(1);
 }
+

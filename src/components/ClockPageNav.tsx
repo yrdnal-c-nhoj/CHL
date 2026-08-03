@@ -29,7 +29,6 @@ const ClockPageNav = ({
   nextItem,
   currentItem,
   formatTitle,
-  formatDate,
 }: ClockPageNavProps) => {
   const [visible, setVisible] = useState(true);
   const [isInHotZone, setIsInHotZone] = useState(false);
@@ -156,6 +155,7 @@ const ClockPageNav = ({
               {(() => {
                 if (!currentItem.date) return null;
                 const [yy, mm, dd] = currentItem.date.split('-');
+                if (!yy || !mm || !dd) return null;
                 const months = [
                   'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
                   'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
