@@ -17,6 +17,8 @@ const shouldSuppress = (msg: string) => {
     'nsIScriptSecurityManager',
     'createContentPrincipalFromOrigin',
     'SearchSuggestionController',
+    'MerinoClient',
+    'NetworkGeolocationProvider',
     'NewTabGleanUtils',
     'RemoteSettingsExperimentLoader',
     'nsIFaviconService',
@@ -30,6 +32,7 @@ const shouldSuppress = (msg: string) => {
     'Cookie “FPID” has been rejected',
     'Cookie “FPLC” has been rejected',
     'ownerGlobal',
+    'PictureInPicture.sys.mjs',
     'Window.fullScreen',
     'PushDB',
     'PushService',
@@ -49,6 +52,7 @@ const shouldSuppress = (msg: string) => {
     '0x80070057',
     'LinkHandlerParent',
     '0x80040111',
+    'Cannot attach ID to a tab in a closed window',
     '[Exception...',
     'FormAutofillParent',
     'createFromField',
@@ -87,6 +91,11 @@ const shouldSuppress = (msg: string) => {
     'LinkPreviewChild',
     'Empty string passed to getElementById()',
   ];
+  patterns.push('unwatchFronts');
+  patterns.push('windowGlobalTarget');
+  patterns.push('innerWindowId');
+  patterns.push('watcher.js');
+  patterns.push('JSProcessActor');
 
   const lowerMsg = msg.toLowerCase();
   if (patterns.some((p) => lowerMsg.includes(p.toLowerCase()))) {
