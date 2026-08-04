@@ -62,7 +62,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
         // This prevents test data from being loaded or bundled in production.
         const data = import.meta.env.DEV
           ? (await import('./testclocks.json')).default
-          : (await import('./clockpages.json')).default;
+          : (await import('./clockpages.json?url', { assert: { type: 'json' } })).default;
 
         // Sort the data by date string (ascending) to determine the chronological order
         // We process this once and use it as our primary source of truth
