@@ -1,15 +1,8 @@
-# TODO
+# TODO — Avoid FOUC (26-08-02 clock)
 
-## Task: Load 26-08-02.ttf font in 26-08-02 clock page
-
-- [x] Import the font: `import fontUrl from '@/assets/fonts/26fonts/26-08-02.ttf?url';`
-- [x] Add `fontUrl` to the `assets` array
-- [x] Populate `fontConfigs` with `{ fontFamily: 'ClockFont_26_08_02', fontUrl }`
-- [x] Verify the changes compile and the font loads correctly
-
-## Task: Rotate clock digits to align with the perimeter
-
-- [x] Add per-digit `--num-rotation` CSS variable (`num * 30` degrees)
-- [x] Apply rotation in the `number` style base transform
-- [x] Preserve rotation in the `auroraPulseNumber` keyframes
-- [x] Verify no TypeScript errors in the 26-08-02 file
+## Steps
+- [x] Explore repo & understand FOUC strategy (ARCHITECTURE.md §6, fontLoader, index.html)
+- [x] Confirm scope with user (Option B: CSS cleanup only, leave ClockPage.tsx untouched)
+- [x] Clean up duplicate/conflicting definitions in `src/pages/2026/26-08/26-08-02/Clock.module.css`
+- [x] Verify with lint + type-check (pre-existing errors only, unrelated to CSS change)
+- [x] Ensure digits start blurred: base `.number` `filter` set to `blur(7px)` matching animation start, `animation-fill-mode: both`, and `auroraPulseNumber` minimum blur raised from `1px` → `6px` so digits are never sharp
