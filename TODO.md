@@ -1,8 +1,15 @@
-# TODO: Refactor 26-08-01 Clock to use shared shape components
+# TODO
 
-## Steps
-- [x] Analyze task and read relevant files (Clock.tsx, Cube/Sphere/Pyramid, shapes.module.css, verify scripts)
-- [ ] Refactor `26-08-01/Clock.tsx` to import Cube, Sphere, Pyramid from shared files
-- [ ] Fix `asset-export` verification failure (remove type annotation from `export const assets`)
-- [ ] Fix `font-loader` verification failure (remove commented `@/assets/fonts` import line)
-- [ ] Verify with `node scripts/verify-clock.js src/pages/2026/26-08/26-08-01/Clock.tsx`
+## Task: Load 26-08-02.ttf font in 26-08-02 clock page
+
+- [x] Import the font: `import fontUrl from '@/assets/fonts/26fonts/26-08-02.ttf?url';`
+- [x] Add `fontUrl` to the `assets` array
+- [x] Populate `fontConfigs` with `{ fontFamily: 'ClockFont_26_08_02', fontUrl }`
+- [x] Verify the changes compile and the font loads correctly
+
+## Task: Rotate clock digits to align with the perimeter
+
+- [x] Add per-digit `--num-rotation` CSS variable (`num * 30` degrees)
+- [x] Apply rotation in the `number` style base transform
+- [x] Preserve rotation in the `auroraPulseNumber` keyframes
+- [x] Verify no TypeScript errors in the 26-08-02 file
