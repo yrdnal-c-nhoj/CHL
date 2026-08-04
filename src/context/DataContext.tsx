@@ -60,14 +60,22 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       try {
         // Conditionally import the data based on the environment.
         // This prevents test data from being loaded or bundled in production.
-        const data = import.meta.env.DEV
-          ? (await import('./testclocks.json')).default
-          : (await import('./clockpages.json?url', { assert: { type: 'json' } })).default;
+        let data;
+        if (import.meta.env.DEV) {
+          // In development, import the test data directly.
+          data = (await import('./testclocks.json')).default;
+        } else {
+          // In production, get the URL of the JSON file and fetch it.
+          const clockPagesUrl = (await import('./clockpages.json?url')).default;
+          const response = await fetch(clockPagesUrl);
+          data = await response.json();
+        }
 
         // Sort the data by date string (ascending) to determine the chronological order
         // We process this once and use it as our primary source of truth
         const processedItems: ClockItem[] = [...data]
           .filter((d: any) => d?.date)
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           .sort((a: any, b: any) =>
             String(a.date).localeCompare(String(b.date)),
           )
