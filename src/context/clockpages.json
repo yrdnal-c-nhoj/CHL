@@ -6452,6 +6452,7 @@
       "Anna-Atkins",
       "cyan",
       "light",
+      "paper",
       "shadow"
     ]
   },
@@ -6460,23 +6461,27 @@
     "date": "26-07-30",
     "title": "Concealment",
     "tags": [
-    "pictographic",
-    "bird",
-    "tree",
-    "camouflage"
+      "bird",
+      "camouflage",
+      "fly",
+      "pictographic",
+      "sound",
+      "tree"
     ]
   },
   {
     "path": "26-07-31",
     "date": "26-07-31",
     "title": "Phobos and Deimos",
-    "tags": [ 
+    "tags": [
       "analog",
+      "Mars",
+      "myth",
       "planet",
       "satellite",
-      "twins",  
-      "space"
-  ]
+      "space",
+      "twins"
+    ]
   },
   {
     "path": "26-08-01",
@@ -6484,9 +6489,22 @@
     "title": "Formfunktion",
     "tags": [
       "digital",
-      "Germany",
       "Bauhaus",
-      "color"
+      "Germany",
+      "color",
+      "glass",
+      "sky"
+    ]
+  },
+  {
+    "path": "26-08-02",
+    "date": "26-08-02",
+    "title": "Aurora",
+    "tags": [
+      "analog",
+      "night",
+      "space", 
+      "light"
     ]
   }
 ]
