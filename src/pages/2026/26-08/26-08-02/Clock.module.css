@@ -70,8 +70,8 @@
   transform-origin: center bottom;
   background: linear-gradient(
     to top,
-    rgba(0, 255, 170, 0.9),
-    rgba(0, 230, 255, 0.6),
+    rgba(0, 255, 170, 0.637),
+    rgba(104, 243, 54, 0.525),
     transparent
   );
   border-radius: 50% 50% 0 0;
@@ -88,8 +88,8 @@
   transform-origin: center bottom;
   background: linear-gradient(
     to top,
-    rgba(0, 230, 255, 0.9),
-    rgba(186, 85, 211, 0.7),
+    rgba(83, 233, 133, 0.651),
+    rgba(6, 190, 40, 0.523),
     transparent
   );
   border-radius: 50% 50% 0 0;
@@ -102,12 +102,12 @@
   bottom: 50%;
   left: 50%;
   width: 3px;
-  height: 45%;
+  height: 66%;
   transform-origin: center bottom;
   background: linear-gradient(
     to top,
-    rgba(244, 63, 94, 1),
-    rgba(236, 72, 153, 0.8),
+    rgba(8, 149, 24, 0.521),
+    rgba(38, 240, 82, 0.409),
     transparent
   );
   animation: auroraSecondRibbon 3s ease-in-out infinite alternate;
@@ -123,13 +123,13 @@
   height: 20px;
   background: radial-gradient(
     circle,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(0, 255, 200, 0.8) 50%,
+    rgba(255, 255, 255, 0.441) 0%,
+    rgba(0, 255, 200, 0.425) 50%,
     transparent 100%
   );
   box-shadow:
-    0 0 20px rgba(0, 255, 200, 0.9),
-    0 0 40px rgba(186, 85, 211, 0.7);
+    0 0 20px rgba(0, 255, 200, 0.581),
+    0 0 40px rgba(186, 85, 211, 0.41);
   border-radius: 50%;
   filter: blur(1px);
   z-index: 7;

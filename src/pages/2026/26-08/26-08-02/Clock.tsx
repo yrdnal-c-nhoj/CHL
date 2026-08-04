@@ -1,5 +1,4 @@
 import type { FontConfig } from '@/types/clock';
-import { calculateAngles } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
@@ -28,7 +27,16 @@ const ClockComponent: React.FC = () => {
     hour: hourAngle,
     minute: minuteAngle,
     second: secondAngle,
-  } = useMemo(() => calculateAngles(time), [time]);
+  } = useMemo(() => {
+    const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+    const minutes = time.getMinutes() + seconds / 60;
+    const hours = time.getHours() + minutes / 60;
+    return {
+      second: seconds * 6,
+      minute: minutes * 6,
+      hour: hours * 30,
+    };
+  }, [time]);
 
   return (
     <main className={styles.container}>
