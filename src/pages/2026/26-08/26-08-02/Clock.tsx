@@ -1,3 +1,4 @@
+import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
@@ -51,9 +52,7 @@ const ClockComponent: React.FC = () => {
         src={backgroundVideo}
       />
 
-      <time dateTime={time.toISOString()} className={styles.srOnly}>
-        {time.toLocaleTimeString()}
-      </time>
+      <SRTime time={time} />
 
       <div className={styles.analogClock}>
         <div className={styles.face}>

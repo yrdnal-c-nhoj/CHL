@@ -1,5 +1,6 @@
 import myFontUrl from '@/assets/fonts/25fonts/25-08-20-go.otf?url';
 import bgImage from '@/assets/images/25_images/25-08/25-08-20/24.webp'; // background image
+import SRTime from '@/components/SRTime';
 import { useClockAngles } from '@/hooks/useClockAngles';
 import type { FontConfig } from '@/types/clock';
 import { useDebounce } from '@/utils/debounce';
@@ -157,9 +158,7 @@ const WorldClockGrid: React.FC = () => {
         backgroundImage: `url(${bgImage})`,
       }}
     >
-      <time dateTime={time.toISOString()} className={styles.srOnly}>
-        {time.toLocaleTimeString()}
-      </time>
+      <SRTime time={time} />
       {TIMEZONES.map((zone) => (
         <AnalogClock key={zone} time={time} zone={zone} clockSize={clockSize} />
       ))}
