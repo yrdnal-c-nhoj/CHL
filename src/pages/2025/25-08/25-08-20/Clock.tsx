@@ -1,5 +1,6 @@
 import myFontUrl from '@/assets/fonts/25fonts/25-08-20-go.otf?url';
 import bgImage from '@/assets/images/25_images/25-08/25-08-20/24.webp'; // background image
+import { useClockAngles } from '@/hooks/useClockAngles';
 import type { FontConfig } from '@/types/clock';
 import { useDebounce } from '@/utils/debounce';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -36,20 +37,13 @@ const TIMEZONES = [
 ];
 
 // Analog clock component
-const AnalogClock: React.FC<{ zone: string; clockSize: number }> = ({
+const AnalogClock: React.FC<{ time: Date; zone: string; clockSize: number }> = ({
+  time,
   zone,
   clockSize,
 }) => {
-  const time = useMillisecondClock();
-
-  const local = new Date(time.toLocaleString('en-US', { timeZone: zone }));
-  const seconds = local.getSeconds();
-  const minutes = local.getMinutes();
-  const hours = local.getHours();
-
-  const secAngle = seconds * 6;
-  const minAngle = minutes * 6 + seconds * 0.1;
-  const hourAngle = (hours % 12) * 30 + minutes * 0.5;
+  const zonedTime = useMemo(() => new Date(time.toLocaleString('en-US', { timeZone: zone })), [time, zone]);
+  const { hourAngle, minAngle, secAngle } = useClockAngles(zonedTime);
 
   const hourHandHeight = clockSize * 0.4;
   const minuteHandHeight = clockSize * 0.55;

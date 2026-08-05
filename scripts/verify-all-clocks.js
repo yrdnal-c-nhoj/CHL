@@ -98,6 +98,18 @@ const RULES = [
     check: (code) => /<main[^>]*className=\{?styles\.container\}?/.test(code),
     hint: 'Use semantic <main> as the root landmark element.',
   },
+  {
+    id: 'deprecated-clock-utils',
+    label: 'Deprecated: useClockTime from clockUtils',
+    check: (code) => !/from ('|")@\/utils\/clockUtils('|")/.test(code),
+    hint: 'Replace imports from @/utils/clockUtils with @/utils/hooks.',
+  },
+  {
+    id: 'deprecated-font-loaders',
+    label: 'Deprecated: useFontLoader/useMultiFontLoader',
+    check: (code) => !/useFontLoader|useMultiFontLoader/.test(code),
+    hint: 'Replace useFontLoader/useMultiFontLoader with useSuspenseFontLoader from @/utils/fontLoader.',
+  },
 ];
 
 // Additional "legacy / prohibited pattern" detectors grouped by severity.
@@ -122,16 +134,6 @@ const PROHIBITED = [
     severity: 'major',
     check: (code) => /enhancedFontLoader/.test(code),
     hint: 'Replace enhancedFontLoader with useSuspenseFontLoader from @/utils/fontLoader.',
-  },
-  {
-    id: 'deprecated-clock-utils',
-    label: 'Deprecated useClockTime/assetLoader fonts',
-    severity: 'major',
-    check: (code) =>
-      /useClockTime/.test(code) ||
-      /useFontLoader/.test(code) ||
-      /useMultiFontLoader/.test(code),
-    hint: 'Import time hooks from @/utils/hooks and fonts from @/utils/fontLoader.',
   },
   {
     id: 'no-assets',
