@@ -65,6 +65,7 @@
   font-size: 3dvh;
   background-color: #ffff00;
   color: #8b00ff;
+  letter-spacing: 0.2em;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   font-family: 'ClockFont_26_08_01_Seconds', sans-serif;
   padding-top: 7dvh; /* Nudge down */
