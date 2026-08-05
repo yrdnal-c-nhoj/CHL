@@ -12,8 +12,9 @@
  */
 
 export { useClockTime } from './useClockTime';
+export { useIsDesktop } from './useIsDesktop';
 export {
-  useSmoothClock,
   useMillisecondClock,
-  useSecondClock,
+  useSecondClock, useSmoothClock
 } from './useSmoothClock';
+

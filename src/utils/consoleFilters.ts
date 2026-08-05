@@ -30,6 +30,9 @@ const shouldSuppress = (msg: string) => {
     'OpaqueResponseBlocking',
     'Referrer Policy:',
     'Cookie “FPID” has been rejected',
+    'nimbusStore', // New pattern identified
+    'feltPrivacy', // New pattern identified
+    'SessionStore', // New pattern identified
     'Cookie “FPLC” has been rejected',
     'ownerGlobal',
     'PictureInPicture.sys.mjs',
@@ -91,6 +94,7 @@ const shouldSuppress = (msg: string) => {
     'LinkPreviewChild',
     'Empty string passed to getElementById()',
   ];
+patterns.push('ext-browser.js');
   patterns.push('unwatchFronts');
   patterns.push('windowGlobalTarget');
   patterns.push('innerWindowId');
