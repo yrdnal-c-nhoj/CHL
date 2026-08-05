@@ -6,18 +6,15 @@
   align-items: center;
   justify-content: center;
   color: #e0e1dd;
-  font-family: monospace;
   position: relative;
 }
 
 .background {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
+  background-image: var(--bg-image);
   background-position: center;
-  background-size: 100% 100%; /* Stretches the image */
+  background-size: 100% 100%; /* Stretch to fill viewport: full image visible, no white space, allows skewing */
   z-index: -1;
 }
 
@@ -42,6 +39,7 @@
   line-height: 1;
   letter-spacing: -0.03em;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 0, 0, 0.5);
+  -webkit-user-select: none;
   user-select: none;
   width: 30dvh;
   height: 30dvh;
@@ -51,7 +49,7 @@
   font-size: 28dvh;
   background-color: #ff0000;
   color: #00ff00;
-  font-family: 'Pirata One', cursive;
+  font-family: 'ClockFont_26_08_01_Hours', sans-serif;
   padding-bottom: 2dvh; /* Nudge up */
 }
 
@@ -60,7 +58,7 @@
   background-color: #0000ff;
   border-radius: 50%;
   color: #ff7700;
-  font-family: 'Teko', sans-serif;
+  font-family: 'ClockFont_26_08_01_Minutes_Local', sans-serif;
 }
 
 .seconds {
@@ -68,7 +66,7 @@
   background-color: #ffff00;
   color: #8b00ff;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'ClockFont_26_08_01_Seconds', sans-serif;
   padding-top: 7dvh; /* Nudge down */
 }
 
