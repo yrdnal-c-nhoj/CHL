@@ -100,6 +100,7 @@ export default tseslint.config(
 
       // React Hooks
       ...pluginReactHooks.configs.recommended.rules,
+      'react-hooks/exhaustive-deps': 'error', // Enforce exhaustive-deps for correctness and performance
 
       // Import/Export rules
       'import/order': [
