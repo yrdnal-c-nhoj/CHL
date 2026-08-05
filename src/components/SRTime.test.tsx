@@ -7,7 +7,8 @@ describe('<SRTime />', () => {
     const testDate = new Date('2024-08-10T14:30:00.000Z');
     render(<SRTime time={testDate} />);
 
-    const timeElement = screen.getByRole('time');
+    // Using querySelector for robustness as <time> has no default role.
+    const timeElement = document.querySelector('time');
     expect(timeElement).toBeInTheDocument();
     expect(timeElement).toHaveAttribute('dateTime', testDate.toISOString());
   });

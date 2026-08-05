@@ -26,12 +26,12 @@ describe('useClockAngles', () => {
     const time = new Date('2024-01-01T06:30:15.000Z');
     const { result } = renderHook(() => useClockAngles(time));
 
-    // 6 hours * 30 deg/hr + 30.25 mins * 0.5 deg/min
-    const expectedHourAngle = 6 * 30 + (30 + 15 / 60) / 60 * 30;
-    // 30 mins * 6 deg/min + 15 secs * 0.1 deg/sec
-    const expectedMinuteAngle = 30 * 6 + (15 / 60) * 6;
-
-    expect(result.current.hourAngle).toBeCloseTo(195.75);
+    // Note: The original test had slightly incorrect expected values.
+    // Corrected calculations:
+    // hour: (6 + 30/60 + 15/3600) * 30 = 195.125
+    // minute: (30 + 15/60) * 6 = 181.5
+    // second: 15 * 6 = 90
+    expect(result.current.hourAngle).toBeCloseTo(195.125);
     expect(result.current.minAngle).toBeCloseTo(181.5);
     expect(result.current.secAngle).toBe(90);
   });
