@@ -164,6 +164,12 @@ try {
       check: (code) => !/<style[\s>]/.test(code),
       hint: 'Critical: Replace inline <style> blocks with CSS Modules.'
     },
+    {
+      id: 'no-to-locale-string-parse',
+      label: 'Prohibited: No toLocaleString parsing',
+      check: (code) => !/new Date\([^)]*toLocaleString\s*\([^)]*\)[^)]*\)/.test(code),
+      hint: 'Major: Replace new Date(time.toLocaleString(...)) with Intl.DateTimeFormat for robust timezone handling.',
+    },
     // --- Deprecated API Fixers ---
     {
       id: 'deprecated-clock-utils',

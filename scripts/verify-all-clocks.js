@@ -142,6 +142,13 @@ const PROHIBITED = [
     check: (code) => !/export const assets\s*=\s*\[/.test(code),
     hint: 'Export an assets array for the preloading pipeline.',
   },
+  {
+    id: 'to-locale-string-parse',
+    label: 'Prohibited toLocaleString parsing',
+    severity: 'major',
+    check: (code) => /new Date\([^)]*toLocaleString\s*\([^)]*\)[^)]*\)/.test(code),
+    hint: 'Replace new Date(time.toLocaleString(...)) with Intl.DateTimeFormat for robust timezone handling.',
+  },
 ];
 
 // ---------------------------------------------------------------------------
