@@ -150,6 +150,42 @@ try {
         // This is a targeted replacement for the most common non-compliant pattern.
         return code.replace(/<div(\s+className=\{?styles\.container\}?)/, '<main$1');
       }
+    },
+    // --- Prohibited Pattern Detectors (no --fix) ---
+    {
+      id: 'no-set-interval',
+      label: 'Prohibited: No setInterval',
+      check: (code) => !/setInterval\(/.test(code),
+      hint: 'Critical: Replace setInterval with useSecondClock() or useMillisecondClock() from @/utils/hooks.'
+    },
+    {
+      id: 'no-inline-style-tag',
+      label: 'Prohibited: No inline <style> tag',
+      check: (code) => !/<style[\s>]/.test(code),
+      hint: 'Critical: Replace inline <style> blocks with CSS Modules.'
+    },
+    // --- Deprecated API Fixers ---
+    {
+      id: 'deprecated-clock-utils',
+      label: 'Deprecated: useClockTime from clockUtils',
+      check: (code) => !/from ('|")@\/utils\/clockUtils('|")/.test(code),
+      hint: 'Replace imports from @/utils/clockUtils with @/utils/hooks.',
+      fix: (code) => {
+        return code.replace(/from ('|")@\/utils\/clockUtils('|")/g, "from '@/utils/hooks'");
+      }
+    },
+    {
+      id: 'deprecated-font-loaders',
+      label: 'Deprecated: useFontLoader/useMultiFontLoader',
+      check: (code) => !/useFontLoader|useMultiFontLoader/.test(code),
+      hint: 'Replace useFontLoader/useMultiFontLoader with useSuspenseFontLoader from @/utils/fontLoader.',
+      fix: (code) => {
+        let modified = code.replace(/\buseFontLoader\b/g, 'useSuspenseFontLoader');
+        modified = modified.replace(/\buseMultiFontLoader\b/g, 'useSuspenseFontLoader');
+        // Also fix the import path if it's from the old assetLoader
+        modified = modified.replace(/from ('|")@\/utils\/assetLoader('|")/g, "from '@/utils/fontLoader'");
+        return modified;
+      }
     }
   ];
 
