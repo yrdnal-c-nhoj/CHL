@@ -1,7 +1,7 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import secondsFont from '@/assets/fonts/26fonts/26--08-01-seconds.ttf?url';
 import hoursFont from '@/assets/fonts/26fonts/26-08-01-hours.ttf?url';
@@ -21,6 +21,17 @@ const fontConfigs: FontConfig[] = [
 const ClockComponent: React.FC = () => {
   const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
+
+  // This effect removes the default browser margin from the body, ensuring the component fills the viewport.
+  // It also provides a cleanup function to restore the original margin when the component unmounts.
+  useEffect(() => {
+    const originalMargin = document.body.style.margin;
+    document.body.style.margin = '0';
+
+    return () => {
+      document.body.style.margin = originalMargin;
+    };
+  }, []);
 
   const hours = String(time.getHours()).padStart(2, '0');
   const minutes = String(time.getMinutes()).padStart(2, '0');
