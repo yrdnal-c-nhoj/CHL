@@ -5,95 +5,111 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #0d1b2a;
   color: #e0e1dd;
   font-family: monospace;
+  position: relative;
 }
 
-.timeDisplay {
-  display: flex;
-  flex-direction: column; /* Stack vertically on phones by default */
-  align-items: center;
-  gap: 2vh;
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: 100% 100%; /* Stretches the image */
+  z-index: -1;
 }
 
-.hours,
-.minutes,
-.seconds {
-  width: 32vh;
-  height: 32vh;
+.contentWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 16vh;
-  font-weight: bold;
-  letter-spacing: 0.1em;
-  text-shadow:
-    0 0 5px rgba(0, 0, 0, 0.5),
-    0 0 10px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  padding: 1dvh;
+  box-sizing: border-box;
+  flex-direction: column;
+  gap: 1dvh;
+}
+
+.shapeBase {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 0, 0, 0.5);
+  user-select: none;
+  width: 30dvh;
+  height: 30dvh;
 }
 
 .hours {
-  background-color: #c0392b; /* Red */
+  font-size: 28dvh;
+  background-color: #ff0000;
+  color: #00ff00;
+  font-family: 'Pirata One', cursive;
+  padding-bottom: 2dvh; /* Nudge up */
 }
 
 .minutes {
-  background-color: #2980b9; /* Blue */
+  font-size: 13dvh;
+  background-color: #0000ff;
   border-radius: 50%;
+  color: #ff7700;
+  font-family: 'Teko', sans-serif;
 }
 
 .seconds {
-  position: relative;
-  background-color: transparent;
-  width: 0;
-  height: 0;
-  border-left: 16vh solid transparent;
-  border-right: 16vh solid transparent;
-  border-bottom: 32vh solid #f1c40f; /* Yellow */
+  font-size: 3dvh;
+  background-color: #ffff00;
+  color: #8b00ff;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  font-family: 'Space Grotesk', sans-serif;
+  padding-top: 7dvh; /* Nudge down */
 }
 
-.seconds span {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 8vh; /* Position number correctly inside the triangle */
-}
-
-/* For laptops and larger screens, display in a row */
+/* Desktop layout overrides */
 @media (min-width: 768px) {
-  .timeDisplay {
-    flex-direction: row; /* Display in a row */
-    gap: 4vw;
+  .contentWrapper {
+    flex-direction: row;
+    gap: 1vw;
+    padding: 1vw;
   }
 
-  .hours,
-  .minutes,
-  .seconds {
+  .shapeBase {
     width: 30vw;
     height: 30vw;
-    font-size: 15vw;
+  }
+
+  .hours {
+    font-size: 28vw;
+    padding-bottom: 2vw;
+  }
+
+  .minutes {
+    font-size: 13vw;
   }
 
   .seconds {
-    border-left-width: 15vw;
-    border-right-width: 15vw;
-    border-bottom-width: 30vw;
-  }
-
-  .seconds span {
-    bottom: 7.5vw; /* Adjust position for desktop view */
+    font-size: 3vw;
+    padding-top: 7vw;
   }
 }
 
 /* Standard from ARCHITECTURE.md for accessible, visually-hidden elements */
 .srOnly {
-  position: absolute;
-  width: 1px;
+  border: 0;
+  clip: rect(0 0 0 0);
   height: 1px;
-  padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  padding: 0;
+  position: absolute;
+  width: 1px;
   white-space: nowrap;
-  border-width: 0;
+  word-wrap: normal;
 }
