@@ -91,6 +91,13 @@ const RULES = [
       /useSuspenseFontLoader/.test(code) || !/@\/assets\/fonts/.test(code),
     hint: 'Load custom fonts with useSuspenseFontLoader from @/utils/fontLoader.',
   },
+  {
+    id: 'root-main',
+    label: 'Root element is <main>',
+    // This check looks for a <main> element that also has a className matching styles.container
+    check: (code) => /<main[^>]*className=\{?styles\.container\}?/.test(code),
+    hint: 'Use semantic <main> as the root landmark element.',
+  },
 ];
 
 // Additional "legacy / prohibited pattern" detectors grouped by severity.
@@ -125,13 +132,6 @@ const PROHIBITED = [
       /useFontLoader/.test(code) ||
       /useMultiFontLoader/.test(code),
     hint: 'Import time hooks from @/utils/hooks and fonts from @/utils/fontLoader.',
-  },
-  {
-    id: 'root-not-main',
-    label: 'Root element is <div> not <main>',
-    severity: 'minor',
-    check: (code) => /\s*<div\s+className=\{?styles\.container/.test(code),
-    hint: 'Use semantic <main> as the root landmark element.',
   },
   {
     id: 'no-assets',
@@ -396,4 +396,3 @@ function main() {
 }
 
 main();
-

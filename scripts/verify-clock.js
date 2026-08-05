@@ -47,7 +47,20 @@ try {
       id: 'asset-export',
       label: 'Standard Asset Export',
       check: (code) => /export const assets\s*=\s*\[/.test(code),
-      hint: 'Expected "export const assets = [...];" for preloading.'
+      hint: 'Expected "export const assets = [...];" for preloading.',
+      fix: (code) => {
+        if (!/export const assets\s*=\s*\[/.test(code)) {
+          // Find the last import statement and insert after it, or at the top if no imports.
+          const lastImportMatch = [...code.matchAll(/import .* from .*;?\n/g)].pop();
+          if (lastImportMatch) {
+            const insertIndex = lastImportMatch.index + lastImportMatch[0].length;
+            return code.slice(0, insertIndex) + '\nexport const assets = [];\n' + code.slice(insertIndex);
+          } else {
+            return 'export const assets = [];\n\n' + code;
+          }
+        }
+        return code;
+      }
     },
     {
       id: 'canonical-hook',
@@ -65,25 +78,78 @@ try {
       id: 'semantic-time',
       label: 'Semantic <time> Element',
       check: (code) => /<time[^>]+dateTime=/.test(code),
-      hint: 'Include a semantic <time> element with a valid dateTime attribute.'
+      hint: 'Include a semantic <time> element with a valid dateTime attribute.',
+      fix: (code) => {
+        if (!/<time[^>]+dateTime=/.test(code)) {
+          // Find the main return statement of the functional component
+          const rootElementMatch = code.match(/(<main[^>]*>|<div[^>]*>)([\s\S]*?)(<\/(main|div)>)/);
+          if (rootElementMatch) {
+            const rootStartTag = rootElementMatch[1];
+            const content = rootElementMatch[2];
+            const rootEndTag = rootElementMatch[3];
+
+            const srOnlyMissing = !new RegExp(`className=\\{\\s*styles\\.srOnly\\s*\\}`).test(code);
+            const srOnlyClass = srOnlyMissing ? ` className={styles.srOnly}` : '';
+
+            const timeElement = `<time dateTime={${tVar}.toISOString()}${srOnlyClass}>{${tVar}.toLocaleTimeString()}</time>`;
+
+            return code.replace(rootElementMatch[0], `${rootStartTag}\n      ${timeElement}\n${content}${rootEndTag}`);
+          }
+        }
+        return code;
+      }
     },
     {
       id: 'sr-only',
       label: 'Screen-Reader Accessible Time',
       check: (code) => new RegExp(`className=\\{\\s*styles\\.srOnly\\s*\\}`).test(code),
-      hint: 'Wrap the time text in a visually-hidden (srOnly) container so screen readers can announce it.'
+      hint: 'Wrap the time text in a visually-hidden (srOnly) container so screen readers can announce it.',
+      fix: (code) => {
+        // If a <time> element with dateTime exists but doesn't have className={styles.srOnly}, add it.
+        if (/<time[^>]+dateTime=/.test(code) && !new RegExp(`className=\\{\\s*styles\\.srOnly\\s*\\}`).test(code)) {
+          // This regex is a bit fragile, assuming className is not already present in a complex way.
+          // It tries to insert className={styles.srOnly} before the closing > of the time tag.
+          return code.replace(/(<time[^>]+dateTime=[^>]*?)(\s*\/?>)/, '$1 className={styles.srOnly}$2');
+        }
+        return code;
+      }
     },
     {
       id: 'memo-displayname',
       label: 'React.memo + displayName',
       check: (code) => /memo\(/.test(code) && /displayName\s*=/.test(code),
-      hint: 'Wrap the component in React.memo and set displayName (e.g., Clock_YY_MM_DD).'
+      hint: 'Wrap the component in React.memo and set displayName (e.g., Clock_YY_MM_DD).',
+      fix: (code) => {
+        if (!(/memo\(/.test(code) && /displayName\s*=/.test(code))) {
+          const exportDefaultMatch = code.match(/export default\s+(\w+);/);
+          if (exportDefaultMatch) {
+            const componentName = exportDefaultMatch[1];
+            const dateMatch = targetPath.match(/\b(\d{2}-\d{2}-\d{2})\b/);
+            const displayName = dateMatch ? `Clock_${dateMatch[1].replace(/-/g, '_')}` : componentName;
+
+            const replacement = `const Memoized${componentName} = React.memo(${componentName});\nMemoized${componentName}.displayName = '${displayName}';\nexport default Memoized${componentName};`;
+            return code.replace(exportDefaultMatch[0], replacement);
+          }
+        }
+        return code;
+      }
     },
     {
       id: 'font-loader',
       label: 'Canonical Font Loader',
       check: (code) => /useSuspenseFontLoader/.test(code) || !/@\/assets\/fonts/.test(code),
       hint: 'Load custom fonts with useSuspenseFontLoader from @/utils/fontLoader.'
+    },
+    {
+      id: 'root-main',
+      label: 'Root element is <main>',
+      check: (code) => /<main[^>]*className=\{?styles\.container\}?/.test(code),
+      hint: 'Use semantic <main> as the root landmark element.',
+      fix: (code) => {
+        // Replace <div className={styles.container}> with <main className={styles.container}>
+        // This is a targeted replacement for the most common non-compliant pattern.
+        return code.replace(/<div(\s+className=\{?styles\.container\}?)/, '<main$1');
+      }
     }
   ];
 
@@ -123,4 +189,3 @@ try {
   console.error(`${colors.red}Error: ${error.message}${colors.reset}`);
   process.exit(1);
 }
-
