@@ -7,7 +7,7 @@ import styles from './Clock.module.css';
 import fontUrl from '@/assets/fonts/26fonts/26-08-02.ttf?url';
 import backgroundVideo from '@/assets/images/26_images/26-08/26-08-02/aurora.mp4';
 
-export const assets: string[] = [backgroundVideo, fontUrl];
+export const assets: string[] = [fontUrl];
 
 const fontConfigs: FontConfig[] = [
   {

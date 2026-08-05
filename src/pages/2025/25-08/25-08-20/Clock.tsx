@@ -1,11 +1,13 @@
 import myFontUrl from '@/assets/fonts/25fonts/25-08-20-go.otf?url';
 import bgImage from '@/assets/images/25_images/25-08/25-08-20/24.webp'; // background image
 import type { FontConfig } from '@/types/clock';
+import { useDebounce } from '@/utils/debounce';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
+export const assets = [bgImage, myFontUrl];
 const TIMEZONES = [
   'UTC',
   'America/New_York',
@@ -116,7 +118,7 @@ const AnalogClock: React.FC<{ zone: string; clockSize: number }> = ({
   );
 };
 
-export default function WorldClockGrid() {
+const WorldClockGrid: React.FC = () => {
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -128,16 +130,21 @@ export default function WorldClockGrid() {
   );
 
   useSuspenseFontLoader(fontConfigs);
+  const time = useMillisecondClock();
+
+  const handleResize = useCallback(() => {
+    setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  }, []);
+
+  const debouncedResize = useDebounce(handleResize, 250);
 
   useEffect(() => {
-    const handleResize = () =>
-      setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    window.addEventListener('resize', debouncedResize);
+    return () => window.removeEventListener('resize', debouncedResize);
+  }, [debouncedResize]);
 
   const isMobile = dimensions.width < 768;
   const cols = isMobile ? 6 : 12;
@@ -148,7 +155,7 @@ export default function WorldClockGrid() {
     10;
 
   return (
-    <div
+    <main
       className={styles.container}
       style={{
         gridTemplateColumns: `repeat(${cols}, 1fr)`,
@@ -156,9 +163,16 @@ export default function WorldClockGrid() {
         backgroundImage: `url(${bgImage})`,
       }}
     >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
       {TIMEZONES.map((zone) => (
-        <AnalogClock key={zone} zone={zone} clockSize={clockSize} />
+        <AnalogClock key={zone} time={time} zone={zone} clockSize={clockSize} />
       ))}
-    </div>
+    </main>
   );
-}
+};
+
+const MemoizedClock = React.memo(WorldClockGrid);
+MemoizedClock.displayName = 'Clock_25_08_20';
+export default MemoizedClock;
