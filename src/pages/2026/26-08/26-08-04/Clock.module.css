@@ -1,18 +1,94 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background-color: #282c34; /* Example background */
-  color: white;
-  font-family: sans-serif;
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #000; /* Fallback background */
 }
 
-.cubesWrapper {
+.videoWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0; /* Place video behind everything else */
+}
+
+.backgroundVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure video covers the entire container */
+  filter: brightness(0.8) contrast(1.2) saturate(1.5); /* Adjust video appearance */
+}
+
+.analogClock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1; /* Place clock above the video */
+  width: 60vmin; /* Adjust size as needed */
+  height: 60vmin;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent clock face */
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   display: flex;
-  gap: 20px;
-  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%; /* Pivot from the bottom center */
+  left: 50%;
+  transform-origin: center bottom;
+  background-color: white;
+  border-radius: 2px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.hourHand {
+  width: 6px;
+  height: 25%; /* Relative to clock size */
+  background-color: #fff;
+  z-index: 3;
+  /* Transition for smooth movement, but only for the angle */
+  transition: transform 0.2s ease-in-out;
+}
+
+.minuteHand {
+  width: 4px;
+  height: 35%; /* Relative to clock size */
+  background-color: #eee;
+  z-index: 4;
+  transition: transform 0.2s ease-in-out;
+}
+
+.secondHand {
+  width: 2px;
+  height: 40%; /* Relative to clock size */
+  background-color: #f00; /* Red for the second hand */
+  z-index: 5;
+  transition: transform 0.1s linear; /* Linear transition for second hand */
+  box-shadow: 0 0 3px rgba(255, 0, 0, 0.7);
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background-color: #333;
+  border-radius: 50%;
+  z-index: 6;
+  border: 2px solid #fff;
 }
 
 .srOnly {
