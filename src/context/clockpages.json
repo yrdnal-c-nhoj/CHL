@@ -6521,12 +6521,22 @@
   {
     "path": "26-08-04",
     "date": "26-08-04",
-    "title": "Lunar Eclipse",
+    "title": "Mishap",
     "tags": [
       "analog",
       "Buster-Keaton",
       "film",
       "transport"
+    ]
+  },
+  {
+    "path": "26-08-05",
+    "date": "26-08-05",
+    "title": "Levitation",
+    "tags": [
+      "analog",
+     "earth",
+     "day-and-night"
     ]
   }
 ]
