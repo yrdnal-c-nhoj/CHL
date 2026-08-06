@@ -28,8 +28,7 @@
 .backgroundVideo {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Ensure the entire video is visible, may add black bars */
-  filter: brightness(0.8) contrast(1.2) saturate(1.5); /* Adjust video appearance */
+  object-fit: contain;
 }
 
 .analogClock {
