@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import ClockPageNav from '@/components/ClockPageNav';
@@ -21,6 +21,17 @@ export default function ClockPage() {
   const navigate = useNavigate();
 
   const { items = [] } = useDataContext();
+
+  // Remove default body margin to prevent whitespace around the component
+  useEffect(() => {
+    const originalMargin = document.body.style.margin;
+    document.body.style.margin = '0';
+
+    // Restore original margin on cleanup
+    return () => {
+      document.body.style.margin = originalMargin;
+    };
+  }, []);
 
   const currentItem = React.useMemo(() => {
     if (!date) return null;
