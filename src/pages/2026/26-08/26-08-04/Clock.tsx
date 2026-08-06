@@ -11,8 +11,7 @@ import fontUrl from '@/assets/fonts/26fonts/26-08-04.ttf?url';
 // 1. Asset Exports (Required for preloading pipeline)
 
 export const assets: string[] = [
-  clockVideo,
-  fontUrl, // Add font to assets for preloading
+  clockVideo, // The preloader only handles single-video assets correctly. The font is handled by useSuspenseFontLoader.
 ];
 
 // 2. Font Configuration (if custom fonts are used)
