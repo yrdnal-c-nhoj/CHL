@@ -22,15 +22,19 @@ export default function ClockPage() {
 
   const { items = [] } = useDataContext();
 
-  // Remove default body margin to prevent whitespace around the component
+  // Inject a global style to remove the default body margin, fixing whitespace issues.
   useEffect(() => {
-    const originalMargin = document.body.style.margin;
-    document.body.style.margin = '0';
+    const styleId = 'global-body-margin-reset';
+    if (document.getElementById(styleId)) return; // Avoid adding duplicate styles
 
-    // Restore original margin on cleanup
-    return () => {
-      document.body.style.margin = originalMargin;
-    };
+    const style = document.createElement('style');
+    style.id = styleId;
+    style.innerHTML = `
+      body {
+        margin: 0;
+      }
+    `;
+    document.head.appendChild(style);
   }, []);
 
   const currentItem = React.useMemo(() => {
