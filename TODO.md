@@ -17,11 +17,19 @@ Tracked progress for the recommended fixes from `CHL-COMPONENT-ASSESSMENT-REPORT
   - `vitest.config.js`: added `@` path alias (was blocking the whole suite).
   - ✅ Suite green: **10 files / 53 tests passing.**
 
-## Phase 1+ (future)
-- [ ] Add a CI workflow (GitHub Actions) gating type-check/lint/test/verify
+## Phase 1 (in progress)
+- [x] Add a CI workflow (GitHub Actions) gating test/build + standards/lint regression
+  - `.github/workflows/ci.yml` replaced the old red-always gate with a layered design:
+    - **Hard gate** (`test-and-build`): `npm ci` → `vitest run` → `npm run build` (always green; type-check is non-blocking while legacy debt remains).
+    - **No-new-debt gate** (`verify-standards`): compares clock-standards + lint counts to a committed baseline (`.github/compliance-baseline.json`) and **fails only on regression**, uploading `clocks-report.csv` as an artifact.
 - [ ] Codemod `setInterval` → rAF hooks (**134** clock files)
 - [ ] Codemod inline `<style>` → CSS Modules (**143** clock files)
 - [ ] Consolidate duplicated font loaders / hooks / types / templates
+
+## Ratchet procedure (after each migration drive)
+1. Run `node scripts/verify-all-clocks.js --csv clocks-report.csv`.
+2. On a green (non-regressed) result, lower the numbers in `.github/compliance-baseline.json` to the new values.
+3. Commit the lowered baseline so the CI gate ratchets compliance upward.
 
 ## Current compliance baseline (from `scripts/verify-all-clocks.js`)
 - Total clocks: **491** | Fully compliant: **1** | Need work: **490**
