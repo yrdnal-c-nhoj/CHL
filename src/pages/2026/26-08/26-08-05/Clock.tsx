@@ -57,7 +57,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   clockContainer: {
     position: 'absolute',
-    top: '100vh',
+    top: 0, // Changed from '100vh' to 0 so clocks pre-fill the viewport immediately
     left: '50%',
     width: '100%',
     zIndex: 2,
@@ -73,17 +73,11 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     justifyContent: 'center',
     fontFamily: "'ClockFont_26_08_05', sans-serif",
-    
-    /* 
-      1. min(14vw, 13vh) caps font size so it never exceeds 13vh vertically 
-         (leaving ~7vh gap between 20vh slots) and never clips horizontally.
-      2. line-height: 1 ensures no extra vertical padding is added by fonts.
-    */
     fontSize: 'min(20vw, 13vh)',
     lineHeight: 1,
     whiteSpace: 'nowrap',
     textShadow: '18px 0px 0px #f97316, -18px 0px 0px #7799E1',
-    height: `${SPACING_VH}vh`, // Fixes bounding box to slot height
+    height: `${SPACING_VH}vh`,
   },
   digitBox: {
     display: 'inline-block',
