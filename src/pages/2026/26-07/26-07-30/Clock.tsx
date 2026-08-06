@@ -84,6 +84,7 @@ const ClockComponent: FC = () => {
           muted
           playsInline
         />
+        <div className={styles.blueSkyOverlay} aria-hidden="true" />
       </div>
 
       <div className={styles.timeContainer}>
