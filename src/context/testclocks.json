@@ -6499,24 +6499,23 @@
   {
     "path": "26-08-02",
     "date": "26-08-02",
+    "title": "Aurora",
+    "tags": [
+      "analog",
+      "night",
+      "space", 
+      "light"
+    ]
+  },
+  {
+    "path": "26-08-03",
+    "date": "26-08-03",
     "title": "Baker-Miller Pink",
     "tags": [
       "digital",
       "color",
       "pink",
       "interior"
-    ]
-  },
-  {
-    "path": "26-08-03",
-    "date": "26-08-03",
-    "title": "Lunar Eclipse",
-    "tags": [
-      "analog",
-      "moon",
-      "night",
-      "space",
-      "star"
     ]
   },
   {
