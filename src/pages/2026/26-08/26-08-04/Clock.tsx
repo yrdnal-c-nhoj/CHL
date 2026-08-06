@@ -1,50 +1,52 @@
 import clockVideo from '@/assets/images/26_images/26-08/26-08-04/buster.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import React, { memo, useMemo } from 'react';
 import styles from './Clock.module.css';
 
+// Import the font with the corresponding date from the assets folder
+import fontUrl from '@/assets/fonts/26fonts/26-08-04.ttf?url';
+
 // 1. Asset Exports (Required for preloading pipeline)
-// import backgroundImage from '@/assets/images/your-image.webp';
-// import fontUrl from '@/assets/fonts/your-font.otf?url';
 
 export const assets: string[] = [
   clockVideo,
-  // If you had a custom font for this clock, you'd add fontUrl here too.
+  fontUrl, // Add font to assets for preloading
 ];
 
 // 2. Font Configuration (if custom fonts are used)
 const fontConfigs: FontConfig[] = [
-  // Example:
-  // { fontFamily: 'ClockFont_26_08_04', fontUrl: 'path/to/your/font.ttf?url' }
-  // For this analog clock, we might not need a custom font for digits,
-  // but if you had any text elements, you could define it here.
+  {
+    fontFamily: 'ClockFont_26_08_04',
+    fontUrl,
+  },
 ];
 
 // 3. Main Component
 const ClockComponent: React.FC = () => {
   // Use the standardized time hook
-  const time = useSecondClock(); // or useMillisecondClock() for smooth
+  const time = useMillisecondClock(); // Switched to useMillisecondClock for smooth movement
 
   // Load fonts via Suspense (component must be in <Suspense> boundary)
   useSuspenseFontLoader(fontConfigs);
 
   // Calculate angles for analog clock hands
   const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
-    const hours = time.getHours();
+    const hours = time.getHours() % 12; // Use 12-hour format
     const minutes = time.getMinutes();
     const seconds = time.getSeconds();
+    const milliseconds = time.getMilliseconds();
 
     // Calculate degrees for each hand
     // Second hand: 360 degrees / 60 seconds = 6 degrees per second
-    const secondAngle = seconds * 6;
+    const secondAngle = (seconds + milliseconds / 1000) * 6;
     // Minute hand: 360 degrees / 60 minutes = 6 degrees per minute
     // Add seconds contribution: (seconds / 60) * 6 degrees
-    const minuteAngle = minutes * 6 + (seconds / 60) * 6;
+    const minuteAngle = (minutes + seconds / 60) * 6;
     // Hour hand: 360 degrees / 12 hours = 30 degrees per hour
     // Add minutes contribution: (minutes / 60) * 30 degrees
-    const hourAngle = (hours % 12) * 30 + (minutes / 60) * 30;
+    const hourAngle = (hours + minutes / 60) * 30;
 
     return { hourAngle, minuteAngle, secondAngle };
   }, [time]);
@@ -85,6 +87,21 @@ const ClockComponent: React.FC = () => {
             className={`${styles.hand} ${styles.secondHand}`}
             style={{ transform: `translateX(-50%) rotate(${secondAngle}deg)` }}
           />
+          {/* Render numbers 1-12 on the clock face */}
+          {Array.from({ length: 12 }, (_, i) => {
+            const hour = i + 1;
+            // Each hour is 30 degrees (360 / 12)
+            const angle = hour * 30;
+            return (
+              <div
+                key={`num-${hour}`}
+                className={styles.number}
+                style={{ '--angle': `${angle}deg` } as React.CSSProperties}
+              >
+                {hour}
+              </div>
+            );
+          })}
           <div className={styles.centerDot} />
         </div>
       </div>

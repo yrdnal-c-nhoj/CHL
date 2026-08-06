@@ -25,12 +25,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1; /* Place clock above the video */
-  width: 60vmin; /* Adjust size as needed */
-  height: 60vmin;
+  width: 90vmin; /* Adjust size as needed */
+  height: 90vmin;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent clock face */
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,7 +43,7 @@
   position: absolute;
   bottom: 50%; /* Pivot from the bottom center */
   left: 50%;
-  transform-origin: center bottom;
+  transform-origin: bottom center;
   background-color: white;
   border-radius: 2px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
@@ -55,7 +52,9 @@
 .hourHand {
   width: 6px;
   height: 25%; /* Relative to clock size */
-  background-color: #fff;
+  /* Exaggerated chrome gradient */
+  background: linear-gradient(to right, #666 0%, #eee 45%, #fff 50%, #eee 55%, #666 100%);
+  border: 1px solid #333;
   z-index: 3;
   /* Transition for smooth movement, but only for the angle */
   transition: transform 0.2s ease-in-out;
@@ -64,7 +63,9 @@
 .minuteHand {
   width: 4px;
   height: 35%; /* Relative to clock size */
-  background-color: #eee;
+  /* Exaggerated chrome gradient */
+  background: linear-gradient(to right, #555 0%, #ddd 45%, #fff 50%, #ddd 55%, #555 100%);
+  border: 1px solid #333;
   z-index: 4;
   transition: transform 0.2s ease-in-out;
 }
@@ -72,10 +73,11 @@
 .secondHand {
   width: 2px;
   height: 40%; /* Relative to clock size */
-  background-color: #f00; /* Red for the second hand */
+  /* Polished steel look for the second hand */
+  background: linear-gradient(to right, #888, #fff, #888);
   z-index: 5;
   transition: transform 0.1s linear; /* Linear transition for second hand */
-  box-shadow: 0 0 3px rgba(255, 0, 0, 0.7);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Changed from red to a neutral shadow */
 }
 
 .centerDot {
@@ -85,10 +87,28 @@
   transform: translate(-50%, -50%);
   width: 12px;
   height: 12px;
-  background-color: #333;
+  background: radial-gradient(circle, #fff 10%, #eee 50%, #777 100%);
   border-radius: 50%;
   z-index: 6;
-  border: 2px solid #fff;
+  border: 1px solid #222;
+}
+
+.number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Use CSS variable for dynamic rotation, keeping other transforms in CSS */
+  transform: translate(-50%, -50%) rotate(var(--angle)) translate(0, -40vmin);
+  /* Sharper, more defined metallic bevel effect */
+  background: linear-gradient(180deg, #fff 0%, #e0e0e0 30%, #666 48%, #333 52%, #888 65%, #fff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-family: 'ClockFont_26_08_04', sans-serif;
+  font-size: 8vmin;
+  /* 1920s style embossed shadow */
+  text-shadow: -1px -1px 1px rgba(255, 255, 255, 0.6), 1px 1px 2px rgba(0, 0, 0, 0.8);
+  z-index: 2;
 }
 
 .srOnly {
