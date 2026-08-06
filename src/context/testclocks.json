@@ -6502,9 +6502,9 @@
     "title": "Aurora",
     "tags": [
       "analog",
+      "light",
       "night",
-      "space", 
-      "light"
+      "space"
     ]
   },
   {
@@ -6514,8 +6514,8 @@
     "tags": [
       "digital",
       "color",
-      "pink",
-      "interior"
+      "interior",
+      "pink"
     ]
   },
   {
@@ -6535,8 +6535,9 @@
     "title": "Levitation",
     "tags": [
       "analog",
-     "earth",
-     "day-and-night"
+      "day-and-night",
+      "earth",
+      "gravity"
     ]
   },
   {
