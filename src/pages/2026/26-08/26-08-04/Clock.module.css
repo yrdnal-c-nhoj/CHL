@@ -29,6 +29,7 @@
   height: 90vmin;
   border-radius: 50%;
   display: flex;
+  opacity: 0.6;
   justify-content: center;
   align-items: center;
 }
@@ -56,8 +57,7 @@
   background: linear-gradient(to right, #666 0%, #eee 45%, #fff 50%, #eee 55%, #666 100%);
   border: 1px solid #333;
   z-index: 3;
-  /* Transition for smooth movement, but only for the angle */
-  transition: transform 0.2s ease-in-out;
+  /* No transition: hands are driven by ~60 FPS JS updates for smooth forward movement */
 }
 
 .minuteHand {
@@ -67,7 +67,6 @@
   background: linear-gradient(to right, #555 0%, #ddd 45%, #fff 50%, #ddd 55%, #555 100%);
   border: 1px solid #333;
   z-index: 4;
-  transition: transform 0.2s ease-in-out;
 }
 
 .secondHand {
@@ -76,7 +75,6 @@
   /* Polished steel look for the second hand */
   background: linear-gradient(to right, #888, #fff, #888);
   z-index: 5;
-  transition: transform 0.1s linear; /* Linear transition for second hand */
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Changed from red to a neutral shadow */
 }
 
@@ -85,8 +83,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 12px;
-  height: 12px;
+  width: 6px;
+  height: 6px;
   background: radial-gradient(circle, #fff 10%, #eee 50%, #777 100%);
   border-radius: 50%;
   z-index: 6;
