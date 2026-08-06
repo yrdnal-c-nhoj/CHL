@@ -1,18 +1,18 @@
 .container {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  background-color: #282c34; /* Example background */
-  color: white;
-  font-family: sans-serif;
+  width: 100vw;
+  height: 100dvh;
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  color: #FF91AF;
 }
 
-.cubesWrapper {
-  display: flex;
-  gap: 20px;
-  margin-top: 20px;
+.clockFace {
+  font-family: 'ClockFont_26_08_03', sans-serif;
+  font-size: 30vw;
 }
 
 .srOnly {

@@ -4,18 +4,15 @@ import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
-// 1. Asset Exports (Required for preloading pipeline)
-// import backgroundImage from '@/assets/images/your-image.webp';
-// import fontUrl from '@/assets/fonts/your-font.otf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-08-03.ttf?url';
+import backgroundImage from '@/assets/images/26_images/26-08/26-08-03/bakermiller.webp';
 
-export const assets: string[] = [
-  // backgroundImage,
-  // fontUrl
-];
+// 1. Asset Exports (Required for preloading pipeline)
+export const assets: string[] = [backgroundImage, fontUrl];
 
 // 2. Font Configuration (if custom fonts are used)
 const fontConfigs: FontConfig[] = [
-  // { fontFamily: 'ClockFont_26_08_03', fontUrl }
+  { fontFamily: 'ClockFont_26_08_03', fontUrl },
 ];
 
 // 3. Main Component
@@ -34,7 +31,10 @@ const ClockComponent: React.FC = () => {
   }, [time]);
 
   return (
-    <main className={styles.container}>
+    <main
+      className={styles.container}
+      style={{ '--bg-image': `url(${backgroundImage})` } as React.CSSProperties}
+    >
       {/* Semantic <time> element for accessibility (Required) */}
       <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
