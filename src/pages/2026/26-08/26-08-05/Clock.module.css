@@ -1,0 +1,83 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100dvh;
+  background-color: #fff; /* White background for letterboxing */
+  color: #000; /* Black text for visibility on white background */
+  overflow: hidden;
+  position: relative;
+}
+
+.videoWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.backgroundVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensures no part of the video is clipped */
+}
+
+.clockContainer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+@keyframes scrollUp {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100vh);
+  }
+}
+
+.scrollingColumn {
+  animation: scrollUp 15s linear infinite;
+}
+
+.clockFace {
+  position: absolute;
+  top: 0; /* Position relative to the scrolling container */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'ClockFont_26_08_05', sans-serif;
+  font-size: 7.5vw;
+}
+
+.digitBox {
+  display: inline-block;
+  width: 0.6em; /* Provides a fixed width container for each digit */
+  text-align: center;
+}
+
+.separator {
+  display: inline-block;
+  width: 0.2em; /* Reduce width to bring digits closer */
+  text-align: center;
+  transform: scale(1.5); /* Make the colon character larger */
+  margin: 0 -0.05em; /* Add negative margin to tuck digits in */
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
