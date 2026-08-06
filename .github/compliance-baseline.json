@@ -1,0 +1,12 @@
+{
+  "description": "Clock standards & lint compliance baseline for the 'no new debt' CI gate.",
+  "updated": "2025-08-assessment",
+  "baselines": {
+    "totalClocks": 491,
+    "fullyCompliant": 1,
+    "criticalViolations": 222,
+    "totalViolations": 3672,
+    "lintVulnerabilities": 579
+  },
+  "note": "This baseline is used by .github/workflows/ci.yml. The CI fails ONLY if a PR regresses these numbers (i.e. makes compliance worse). Reducing them is the goal. Update this file to a LOWER value after each successful migration drive to ratchet compliance upward."
+}
