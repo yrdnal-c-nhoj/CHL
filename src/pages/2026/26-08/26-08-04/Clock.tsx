@@ -26,7 +26,8 @@ const fontConfigs: FontConfig[] = [
 // 3. Main Component
 const ClockComponent: React.FC = () => {
   // Use the standardized time hook
-  const time = useMillisecondClock(); // Switched to useMillisecondClock for smooth movement
+  // 16ms = ~60 FPS updates for perfectly smooth, continuous forward movement
+  const time = useMillisecondClock(16);
 
   // Load fonts via Suspense (component must be in <Suspense> boundary)
   useSuspenseFontLoader(fontConfigs);
