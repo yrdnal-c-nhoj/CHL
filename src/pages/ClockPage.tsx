@@ -42,9 +42,8 @@ export default function ClockPage() {
     return items.find((it) => it.date === date) ?? null;
   }, [date, items]);
 
-  const { ClockComponent, isReady, error, overlayVisible } = useClockPage(
-    currentItem,
-  );
+  const { ClockComponent, isReady, error, overlayVisible } =
+    useClockPage(currentItem);
 
   const prevItem = React.useMemo(() => {
     if (!currentItem) return null;
@@ -72,11 +71,26 @@ export default function ClockPage() {
     navigate('/');
   }, [navigate]);
 
+  // Keyboard accessibility: allow Enter/Space to trigger the same
+  // navigation as a click (WCAG 2.1 — clickable elements must be
+  // operable by keyboard). See ARCHITECTURE.md §11.
+  const handleContainerKeyDown = React.useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        navigate('/');
+      }
+    },
+    [navigate],
+  );
+
   return (
     <div
       onClick={handleContainerClick}
+      onKeyDown={handleContainerKeyDown}
       role="button"
       tabIndex={0}
+      aria-label="Return to home"
       style={{
         position: 'relative',
         width: '100vw',
@@ -127,7 +141,6 @@ export default function ClockPage() {
           formatDate={formatDate}
         />
       ) : null}
-
     </div>
   );
 }

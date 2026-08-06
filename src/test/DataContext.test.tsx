@@ -1,12 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
-import {
-  DataProvider,
-  useDataContext,
-  DataContext,
-} from '../context/DataContext';
-import { render, screen } from '@testing-library/react';
-import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { DataProvider, useDataContext } from '../context/DataContext';
 
 vi.mock('../context/clockpages.json', () => ({
   default: [
@@ -101,12 +95,12 @@ describe('DataContext', () => {
       </DataProvider>,
     );
 
+    // DataProvider sorts items ascending by date, so the earliest date
+    // (26-03-03) is first.
     await waitFor(() => {
-      expect(screen.getByTestId('first-path')).toHaveTextContent('26-03-05');
-      expect(screen.getByTestId('first-date')).toHaveTextContent('26-03-05');
-      expect(screen.getByTestId('first-title')).toHaveTextContent(
-        'Retro Terminal',
-      );
+      expect(screen.getByTestId('first-path')).toHaveTextContent('26-03-03');
+      expect(screen.getByTestId('first-date')).toHaveTextContent('26-03-03');
+      expect(screen.getByTestId('first-title')).toHaveTextContent('Moon Clock');
     });
   });
 
@@ -121,7 +115,7 @@ describe('DataContext', () => {
     );
   });
 
-  it('should have items in correct order', async () => {
+  it('should have items sorted ascending by date', async () => {
     const TestComponent = () => {
       const { items } = useDataContext();
       return (
@@ -135,9 +129,11 @@ describe('DataContext', () => {
       </DataProvider>,
     );
 
+    // DataContext sorts ascending via localeCompare on the date string,
+    // so the earliest date comes first.
     await waitFor(() => {
       expect(screen.getByTestId('paths')).toHaveTextContent(
-        '26-03-05,26-03-04,26-03-03',
+        '26-03-03,26-03-04,26-03-05',
       );
     });
   });

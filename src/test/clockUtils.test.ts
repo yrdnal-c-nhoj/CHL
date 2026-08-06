@@ -1,15 +1,51 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useClockTime } from '../hooks/useClockTime';
-import { formatTime, calculateAngles } from '../utils/clockUtils';
-// The import for useClockTime was already correct in the test file,
-// but the actual hook definition was still in clockUtils.ts.
+import { calculateAngles, formatTime } from '../utils/clockUtils';
+// useClockTime is now an alias of the canonical rAF-based useSecondClock
+// (no setInterval), so these tests exercise the rAF-driven 1-second updates.
+
+/**
+ * jsdom does not queue requestAnimationFrame callbacks through fake timers,
+ * so we shim it to run synchronously. This makes the rAF-based hooks
+ * deterministic under vi.useFakeTimers().
+ */
+function installSyncRafShim() {
+  let rafId = 0;
+  const rafCallbacks = new Map<number, FrameRequestCallback>();
+
+  vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => {
+    const id = ++rafId;
+    rafCallbacks.set(id, cb);
+    return id;
+  });
+
+  vi.stubGlobal('cancelAnimationFrame', (id: number) => {
+    rafCallbacks.delete(id);
+  });
+
+  // Expose a helper to flush pending rAF callbacks during a test.
+  return {
+    flush() {
+      const entries = Array.from(rafCallbacks.entries());
+      rafCallbacks.clear();
+      for (const [, cb] of entries) {
+        cb(performance.now());
+      }
+    },
+  };
+}
+
 describe('useClockTime', () => {
+  let raf: ReturnType<typeof installSyncRafShim>;
+
   beforeEach(() => {
     vi.useFakeTimers();
+    raf = installSyncRafShim();
   });
 
   afterEach(() => {
+    vi.unstubAllGlobals();
     vi.useRealTimers();
   });
 
@@ -22,7 +58,7 @@ describe('useClockTime', () => {
     expect(result.current.getTime()).toBe(testTime.getTime());
   });
 
-  it('should update time every second', () => {
+  it('should update time when the second changes', () => {
     const initialTime = new Date('2024-01-15T10:30:00');
     vi.setSystemTime(initialTime);
 
@@ -30,22 +66,26 @@ describe('useClockTime', () => {
 
     expect(result.current.getTime()).toBe(initialTime.getTime());
 
+    // Advance system time past the second boundary, then run a rAF tick.
     act(() => {
-      vi.advanceTimersByTime(1000);
+      vi.setSystemTime(new Date('2024-01-15T10:30:02'));
+      raf.flush();
     });
 
-    expect(result.current.getTime()).toBe(initialTime.getTime() + 1000);
+    expect(result.current.getTime()).toBe(
+      new Date('2024-01-15T10:30:02').getTime(),
+    );
   });
 
-  it('should clear interval on unmount', () => {
-    const clearIntervalSpy = vi.spyOn(window, 'clearInterval');
+  it('should cancel the rAF loop on unmount', () => {
+    const cancelSpy = vi.spyOn(window, 'cancelAnimationFrame');
 
     const { unmount } = renderHook(() => useClockTime());
 
     unmount();
 
-    expect(clearIntervalSpy).toHaveBeenCalled();
-    clearIntervalSpy.mockRestore();
+    expect(cancelSpy).toHaveBeenCalled();
+    cancelSpy.mockRestore();
   });
 });
 

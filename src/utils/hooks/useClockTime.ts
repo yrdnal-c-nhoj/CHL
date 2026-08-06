@@ -1,19 +1,18 @@
-import { useState, useEffect } from 'react';
 import type { ClockTime, TimeFormat } from '@/types/clock';
+import { useSecondClock } from './useSmoothClock';
 
 /**
- * Hook that provides current time with automatic updates
+ * Hook that provides current time with automatic 1-second updates.
+ *
+ * Backed by the canonical rAF-based `useSecondClock` (no `setInterval`),
+ * which only re-renders when the second actually changes. This keeps the
+ * "basic 1-second clock" API while conforming to the project's
+ * "no setInterval" standard (see ARCHITECTURE.md §4.3).
+ *
  * @returns {Date} Current time
  */
 export function useClockTime(): Date {
-  const [time, setTime] = useState<Date>(new Date());
-
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  return time;
+  return useSecondClock();
 }
 
 /**
