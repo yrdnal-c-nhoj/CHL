@@ -1,0 +1,43 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow: hidden;
+  position: relative;
+}
+
+.backgroundVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+    /* opacity: 0.1; */
+  pointer-events: none;
+}
+
+.lionOverlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.windOverlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* opacity: 0.8; */
+  z-index: 2;
+  pointer-events: none;
+}
