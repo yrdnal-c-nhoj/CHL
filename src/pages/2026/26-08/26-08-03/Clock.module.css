@@ -6,9 +6,17 @@
   height: 100dvh;
   overflow: hidden;
   position: relative;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background-image: var(--bg-image);
   background-size: cover;
   background-position: center;
+  filter: saturate(1.5);
+  z-index: 0;
 }
 
 .tiledLayer {
@@ -26,9 +34,6 @@
 .clockFace {
   position: relative;
   z-index: 2;
-  font-family: 'ClockFont_26_08_03', sans-serif;
-  font-size: min(35vw, 35vh);
-  color: #FF91AF;
 }
 
 /*

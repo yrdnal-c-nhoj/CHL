@@ -3,7 +3,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
-
+ 
 import fontUrl from '@/assets/fonts/26fonts/26-08-03.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-08/26-08-03/bakermiller.webp';
 import happyImage from '@/assets/images/26_images/26-08/26-08-03/happy.webp';
@@ -47,7 +47,10 @@ const ClockComponent: React.FC = () => {
         style={{ '--tile-image': `url(${happyImage})` } as React.CSSProperties}
       />
       {/* Clock UI */}
-      <div className={styles.clockFace}>
+      <div
+        className={styles.clockFace}
+        style={{ fontFamily: 'ClockFont_26_08_03', fontSize: 'min(30vw, 25vh)', color: '#FF91AF' }}
+      >
         <span>{hours}:{minutes}</span>
       </div>
     </main>
