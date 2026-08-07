@@ -48,6 +48,7 @@ const styles: Record<string, React.CSSProperties> = {
     left: 0,
     width: '100%',
     height: '100%',
+    filter: 'brightness(1.1) saturate(1.3) contrast(1.4)', // Adjusted for better visibility of the clocks
     zIndex: 1,
   },
   backgroundVideo: {
