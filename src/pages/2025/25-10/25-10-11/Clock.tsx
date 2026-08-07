@@ -5,6 +5,7 @@ import bottomBackgroundImg from '@/assets/images/25_images/25-10/25-10-11/ch.jpg
 import backgroundImg from '@/assets/images/25_images/25-10/25-10-11/ches.jpg'; // Original background image
 import customFont20251011 from '@/assets/fonts/25fonts/25-10-11-ch.ttf';
 import alphabetFont20251011 from '@/assets/fonts/25fonts/25-10-11-chess.ttf';
+import { useSecondClock } from '@/utils/hooks';
 
 export default function FancyClock() {
   const [time, setTime] = useState(new Date());
@@ -33,10 +34,11 @@ export default function FancyClock() {
   }, []);
 
   // Update time every second
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+  // (was a pure 1000ms state ticker; state now derived from the hook time)
+  const clockTime = useSecondClock();
+  useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
+
 
   // Handle window resize
   useEffect(() => {

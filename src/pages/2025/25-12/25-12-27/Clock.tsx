@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useSecondClock } from '@/utils/hooks';
 
 const ConcentricClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
 
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+  // (was a pure 1000ms state ticker; state now derived from the hook time)
+  const clockTime = useSecondClock();
+  useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
+
 
   const seconds = time.getSeconds();
   const minutes = time.getMinutes();

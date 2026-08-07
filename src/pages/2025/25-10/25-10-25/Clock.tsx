@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import font20251027 from '@/assets/fonts/25fonts/25-10-25-fall.ttf?url'; // Local font file
+import { useSecondClock } from '@/utils/hooks';
 
 const EntropyClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
@@ -29,10 +30,11 @@ const EntropyClock: React.FC = () => {
   const styleElementRef = useRef(null);
 
   // --- Update time every second ---
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+  // (was a pure 1000ms state ticker; state now derived from the hook time)
+  const clockTime = useSecondClock();
+  useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
+
 
   // --- Trigger fade-in for each animation cycle ---
   useEffect(() => {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/25_images/25-12/25-12-29/shrine.webp';
 import shrineFont from '@/assets/fonts/25fonts/25-12-29-shrine.ttf?url';
+import { useSecondClock } from '@/utils/hooks';
 
 const DynamicClockComponent: React.FC = () => {
   const FONT_FAMILY = 'ShrineFont_20251229';
@@ -27,10 +28,11 @@ const DynamicClockComponent: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+  // (was a pure 1000ms state ticker; state now derived from the hook time)
+  const clockTime = useSecondClock();
+  useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
+
 
   const formattedTime = time
     .toLocaleTimeString('en-US', {

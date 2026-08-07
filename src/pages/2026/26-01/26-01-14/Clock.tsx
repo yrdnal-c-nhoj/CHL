@@ -4,6 +4,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgVideo from '@/assets/images/26_images/26-01/26-01-14/kuro.mp4';
 import fallbackImg from '@/assets/images/26_images/26-01/26-01-14/kuro.webp';
 import romanFont from '@/assets/fonts/26fonts/26-01-14-kuro.otf';
+import { useSecondClock } from '@/utils/hooks';
 
 const FONT_NAME = 'RomanClockFont';
 const CLOCK_GRADIENT = 'linear-gradient(180deg, #DCCFE1, #AFB1B3)';
@@ -14,10 +15,11 @@ export default function KurosawaClock() {
   const [videoError, setVideoError] = useState<boolean>(false);
   const [mediaReady, setMediaReady] = useState<boolean>(false);
 
-  useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+  // (was a pure 1000ms state ticker; state now derived from the hook time)
+  const clockTime = useSecondClock();
+  useEffect(() => { setNow(clockTime); }, [clockTime, setNow]);
+
 
   useEffect(() => {
     const font = new FontFace(FONT_NAME, `url(${romanFont})`);

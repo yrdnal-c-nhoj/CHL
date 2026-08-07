@@ -3,6 +3,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import background from '@/assets/images/25_images/25-12/25-12-17/swagr.webp';
 import FONT_PATH from '@/assets/fonts/25fonts/25-12-17-facexxxx.ttf?url';
 import type { FontConfig } from '@/types/clock';
+import { useSecondClock } from '@/utils/hooks';
 
 const fontFamilyName = 'ClockComponentFont';
 
@@ -21,10 +22,11 @@ export default function App() {
 
   useSuspenseFontLoader(fontConfigs);
 
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+  // (was a pure 1000ms state ticker; state now derived from the hook time)
+  const clockTime = useSecondClock();
+  useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
+
 
   useEffect(() => {
     const handleResize: React.FC = () => {

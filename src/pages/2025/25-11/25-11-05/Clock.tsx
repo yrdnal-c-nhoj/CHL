@@ -3,6 +3,7 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import WebFonnov25ufuf from '@/assets/fonts/25fonts/25-11-05-webs1.ttf';
 import Webfont2511055 from '@/assets/fonts/25fonts/25-11-05-webs2.ttf';
 import w251105font from '@/assets/fonts/25fonts/25-11-05-webs3.ttf';
+import { useMillisecondClock } from '@/utils/hooks';
 
 // Helper function remains the same
 function makeColumnsBackground(columns, gutterVw, marginVw) {
@@ -170,10 +171,11 @@ function ModernDigitalClock() {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 100);
-    return () => clearInterval(id);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useMillisecondClock).
+  // (was a pure 100ms state ticker; state now derived from the hook time)
+  const clockTime = useMillisecondClock(100);
+  useEffect(() => { setNow(clockTime); }, [clockTime, setNow]);
+
 
   // Avoid FOUT: wait for fonts then reveal component
   useEffect(() => {

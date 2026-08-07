@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
+import { useSecondClock } from '@/utils/hooks';
 
 // Asset imports
 import bgImage from '@/assets/images/25_images/25-12/25-12-26/sat.webp';
@@ -13,10 +14,11 @@ const FONT_FAMILY = 'SaturnFont';
 function useClock() {
   const [time, setTime] = useState(new Date());
 
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+  // (was a pure 1000ms state ticker; state now derived from the hook time)
+  const clockTime = useSecondClock();
+  useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
+
 
   return time;
 }

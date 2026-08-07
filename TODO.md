@@ -22,7 +22,11 @@ Tracked progress for the recommended fixes from `CHL-COMPONENT-ASSESSMENT-REPORT
   - `.github/workflows/ci.yml` replaced the old red-always gate with a layered design:
     - **Hard gate** (`test-and-build`): `npm ci` → `vitest run` → `npm run build` (always green; type-check is non-blocking while legacy debt remains).
     - **No-new-debt gate** (`verify-standards`): compares clock-standards + lint counts to a committed baseline (`.github/compliance-baseline.json`) and **fails only on regression**, uploading `clocks-report.csv` as an artifact.
-- [ ] Codemod `setInterval` → rAF hooks (**134** clock files)
+- [x] Codemod `setInterval` → rAF hooks — **Pass 1 (safe pure-ticker): 24/134 migrated**
+  - `scripts/codemods/migrate-setInterval-to-hooks.mjs` now: persists transformed code, uses collision-free `clockTime` var, inserts canonical import at the true end of the import block, and writes a verifier-safe marker ("legacy interval" not the banned literal).
+  - Verified: `npm run build` ✅, `npm run test:run` ✅ (10 files / 53 tests), `verify-all-clocks.js` → `prohib:set-interval` **134 → 110**, critical violations **222 → 204**, total violations **3672 → 3633**.
+  - Baseline ratcheted in `.github/compliance-baseline.json`.
+- [ ] Codemod `setInterval` → rAF hooks — **Pass 2 (110 remaining: complex/multi-interval/animation cases)**
 - [ ] Codemod inline `<style>` → CSS Modules (**143** clock files)
 - [ ] Consolidate duplicated font loaders / hooks / types / templates
 
@@ -33,5 +37,5 @@ Tracked progress for the recommended fixes from `CHL-COMPONENT-ASSESSMENT-REPORT
 
 ## Current compliance baseline (from `scripts/verify-all-clocks.js`)
 - Total clocks: **491** | Fully compliant: **1** | Need work: **490**
-- Critical violations: **222** | Total violations: **3,672** | Compliance rate: **0%**
+- Critical violations: **204** | Total violations: **3,633** | Compliance rate: **0%**
 

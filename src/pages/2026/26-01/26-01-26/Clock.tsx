@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
 // Explicit Asset Imports
 import top260126Font from '@/assets/fonts/26fonts/26-01-26-halfb.ttf?url';
@@ -26,10 +27,11 @@ const DynamicComponent: React.FC = () => {
     ),
   );
 
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+  // (was a pure 1000ms state ticker; state now derived from the hook time)
+  const clockTime = useSecondClock();
+  useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
+
 
   const timeString = time
     .toLocaleTimeString('en-US', {

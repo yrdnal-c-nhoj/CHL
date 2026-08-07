@@ -4,16 +4,18 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 import bgImage from '@/assets/images/25_images/25-10/25-10-30/turq.webp';
 import clockFaceImage from '@/assets/images/25_images/25-10/25-10-30/tur.jpg';
 import customFont2025_10_31 from '@/assets/fonts/25fonts/25-10-30-turqs.ttf?url';
+import { useMillisecondClock } from '@/utils/hooks';
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
   const [ready, setReady] = useState<boolean>(false);
 
   // Update clock smoothly
-  useEffect(() => {
-    const id = setInterval(() => setTime(new Date()), 50);
-    return () => clearInterval(id);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useMillisecondClock).
+  // (was a pure 50ms state ticker; state now derived from the hook time)
+  const clockTime = useMillisecondClock(50);
+  useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
+
 
   // Preload images and font
   useEffect(() => {

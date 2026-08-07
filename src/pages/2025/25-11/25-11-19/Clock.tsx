@@ -3,6 +3,7 @@ import bgImg from '@/assets/images/25_images/25-11/25-11-19/apple.webp';
 import tileImg from '@/assets/images/25_images/25-11/25-11-19/ap.webp';
 import overlayImg from '@/assets/images/25_images/25-11/25-11-19/app.webp';
 import customFontUrl from '@/assets/fonts/25fonts/25-11-19-apple.ttf?url';
+import { useSecondClock } from '@/utils/hooks';
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
@@ -24,10 +25,11 @@ export default function AnalogClock() {
   }, []);
 
   // 2. Manage Clock Timer
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+  // (was a pure 1000ms state ticker; state now derived from the hook time)
+  const clockTime = useSecondClock();
+  useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
+
 
   // 3. Format Time
   const displayTime = useMemo(() => {
