@@ -1,4 +1,5 @@
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
 // Use the original fonts - they're not corrupted
 import AsteriskFont1 from '@/assets/fonts/26fonts/26-02-17-ast.otf?url';
@@ -144,7 +145,8 @@ const BackgroundGrid: React.FC<BackgroundGridProps> = ({
  * Main Asterisk Clock Component
  */
 const AsteriskClock: React.FC = () => {
-  const [time, setTime] = useState<Date>(new Date());
+  // Migrated from legacy interval ticker to canonical rAF hook (useSecondClock).
+  const time = useSecondClock();
   const [clockChars, setClockChars] = useState<string[]>(generateChars());
   const [visible, setVisible] = useState<boolean>(true);
   const [windowSize, setWindowSize] = useState<WindowSize>({
@@ -182,11 +184,9 @@ const AsteriskClock: React.FC = () => {
     };
 
     window.addEventListener('resize', handleResize);
-    const clockTimer = setInterval(() => setTime(new Date()), 1000);
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      clearInterval(clockTimer);
     };
   }, []);
 

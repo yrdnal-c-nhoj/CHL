@@ -1,0 +1,661 @@
+{
+  "generated": "2026-08-07T17:49:53.982Z",
+  "buckets": {
+    "A": [
+      {
+        "file": "src/pages/2025/25-06/25-06-02/Clock.tsx",
+        "bucket": "A",
+        "label": "deprecated-import-only"
+      },
+      {
+        "file": "src/pages/2025/25-09/25-09-15/Clock.tsx",
+        "bucket": "A",
+        "label": "deprecated-import-only"
+      },
+      {
+        "file": "src/pages/2025/25-09/25-09-17/Clock.tsx",
+        "bucket": "A",
+        "label": "deprecated-import-only"
+      },
+      {
+        "file": "src/pages/2025/25-10/25-10-01/Clock.tsx",
+        "bucket": "A",
+        "label": "deprecated-import-only"
+      },
+      {
+        "file": "src/pages/2025/25-11/25-11-29/Clock.tsx",
+        "bucket": "A",
+        "label": "deprecated-import-only"
+      },
+      {
+        "file": "src/pages/2025/25-12/25-12-03/Clock.tsx",
+        "bucket": "A",
+        "label": "deprecated-import-only"
+      },
+      {
+        "file": "src/pages/2026/26-06/26-06-02/Clock.tsx",
+        "bucket": "A",
+        "label": "deprecated-import-only"
+      }
+    ],
+    "B": [
+      {
+        "file": "src/pages/2025/25-04/25-04-06/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-04/25-04-27/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-04/25-04-28/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-04/25-04-30/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-05/25-05-04/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-05/25-05-06/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-05/25-05-08/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-05/25-05-10/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-05/25-05-12/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-05/25-05-15/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-05/25-05-17/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-05/25-05-22/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-05/25-05-25/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-05/25-05-26/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-05/25-05-29/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-06/25-06-04/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-06/25-06-10/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-06/25-06-11/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-06/25-06-12/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-06/25-06-13/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-06/25-06-14/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-06/25-06-15/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-06/25-06-20/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-06/25-06-25/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-06/25-06-26/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-06/25-06-29/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-06/25-06-30/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-01/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-02/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-07/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-08/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-10/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-11/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-12/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-13/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-14/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-15/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-16/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-18/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-19/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-20/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-21/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-22/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-23/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-26/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-07/25-07-27/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-08/25-08-03/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-08/25-08-07/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-08/25-08-10/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-08/25-08-13/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-08/25-08-19/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-08/25-08-22/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-08/25-08-24/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-08/25-08-26/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-09/25-09-30/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-10/25-10-13/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-10/25-10-14/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-10/25-10-16/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-10/25-10-17/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-10/25-10-18/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-10/25-10-19/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-10/25-10-23/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-10/25-10-26/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-10/25-10-27/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-11/25-11-01/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-11/25-11-03/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-11/25-11-04/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-11/25-11-10/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-11/25-11-12/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-11/25-11-13/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-11/25-11-15/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-11/25-11-22/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-11/25-11-25/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-11/25-11-26/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-12/25-12-16/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-12/25-12-19/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-12/25-12-23/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2025/25-12/25-12-28/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-01/26-01-02/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-01/26-01-03/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-01/26-01-04/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-01/26-01-05/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-01/26-01-06/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-01/26-01-07/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-01/26-01-11/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-01/26-01-12/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-01/26-01-17/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-01/26-01-27/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-01/26-01-30/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-02/26-02-09/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-03/26-03-05/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-03/26-03-24/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-05/26-05-11/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-05/26-05-20/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-06/26-06-09/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-06/26-06-28/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-07/26-07-02/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      },
+      {
+        "file": "src/pages/2026/26-07/26-07-06/Clock.tsx",
+        "bucket": "B",
+        "label": "single-behavioral",
+        "reason": "no single pure ticker effect"
+      }
+    ],
+    "C": [
+      {
+        "file": "src/pages/2026/26-01/26-01-15/Clock.tsx",
+        "bucket": "C",
+        "label": "multi-interval"
+      },
+      {
+        "file": "src/pages/2026/26-02/26-02-17/Clock.tsx",
+        "bucket": "C",
+        "label": "multi-interval"
+      }
+    ],
+    "D": [
+      {
+        "file": "src/pages/2025/25-06/25-06-06/Clock.tsx",
+        "bucket": "D",
+        "label": "deprecated-import+interval"
+      },
+      {
+        "file": "src/pages/2025/25-09/25-09-28/Clock.tsx",
+        "bucket": "D",
+        "label": "deprecated-import+interval"
+      },
+      {
+        "file": "src/pages/2025/25-11/25-11-28/Clock.tsx",
+        "bucket": "D",
+        "label": "deprecated-import+interval"
+      }
+    ]
+  }
+}

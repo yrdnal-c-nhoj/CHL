@@ -26,7 +26,15 @@ Tracked progress for the recommended fixes from `CHL-COMPONENT-ASSESSMENT-REPORT
   - `scripts/codemods/migrate-setInterval-to-hooks.mjs` now: persists transformed code, uses collision-free `clockTime` var, inserts canonical import at the true end of the import block, and writes a verifier-safe marker ("legacy interval" not the banned literal).
   - Verified: `npm run build` ✅, `npm run test:run` ✅ (10 files / 53 tests), `verify-all-clocks.js` → `prohib:set-interval` **134 → 110**, critical violations **222 → 204**, total violations **3672 → 3633**.
   - Baseline ratcheted in `.github/compliance-baseline.json`.
-- [ ] Codemod `setInterval` → rAF hooks — **Pass 2 (110 remaining: complex/multi-interval/animation cases)**
+- [x] Codemod `setInterval` → rAF hooks — **Pass 2 triage (110 remaining: complex/multi-interval/animation cases)**
+  - Added `--triage` mode to `scripts/codemods/migrate-setInterval-to-hooks.mjs` (read-only classifier).
+  - **Finding:** all 110 remaining are *behavioral* intervals, not provably-safe pure tickers. No further auto-migration is safe.
+  - Triage buckets (`scripts/codemods/pass2-triage.json`):
+    - `A: deprecated-import-only` — **7 files** already use the canonical rAF-backed `useClockTime` (compliant for the time-hook rule; `PLAN-PASS2.md`).
+    - `B: single-behavioral` — **98 files** (DOM/animation/ref intervals; manual review).
+    - `C: multi-interval` — **2 files** (`26-01-15`, `26-02-17`; manual review).
+    - `D: deprecated-import + own interval` — **3 files** (`25-06-06`, `25-09-28`, `25-11-28`; manual review).
+  - See `PLAN-PASS2.md` for the manual-backlog disposition. This task does NOT ratchet the baseline (no safe reductions).
 - [ ] Codemod inline `<style>` → CSS Modules (**143** clock files)
 - [ ] Consolidate duplicated font loaders / hooks / types / templates
 

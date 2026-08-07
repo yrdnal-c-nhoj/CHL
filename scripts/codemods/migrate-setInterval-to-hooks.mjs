@@ -25,9 +25,10 @@
  *   - MS >= 1000  -> useSecondClock()            (1s rAF, updates when second changes)
  *   - MS <  1000  -> useMillisecondClock(MS)     (smooth sub-second; preserves animation)
  *
- * Usage:
+* Usage:
  *   node scripts/codemods/migrate-setInterval-to-hooks.mjs           # dry-run (writes catalog)
  *   node scripts/codemods/migrate-setInterval-to-hooks.mjs --apply   # apply safe transforms
+ *   node scripts/codemods/migrate-setInterval-to-hooks.mjs --triage  # classify the review backlog
  */
 
 import fs from 'node:fs';
@@ -37,9 +38,11 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const PAGES = path.join(ROOT, 'src', 'pages');
 const CATALOG = path.join(ROOT, 'scripts', 'codemods', 'setinterval-catalog.json');
+const TRIAGE = path.join(ROOT, 'scripts', 'codemods', 'pass2-triage.json');
 
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
+const TRIAGE_MODE = args.includes('--triage');
 
 function walkClockFiles(dir, acc = []) {
   let entries;
@@ -135,6 +138,75 @@ function processFile(code) {
   }
 
   return { changed: true, info: res, code };
+}
+
+/**
+ * Classify a "needs review" file into an actionable sub-bucket so the manual
+ * Pass 2 backlog is tractable. This is a TRIAGE ONLY — it never mutates code.
+ *
+ * Buckets:
+ *   A: deprecated-import-only   - uses canonical useClockTime/useSecondClock
+ *                                 (already safe for the time-hook rule); remaining
+ *                                 violations are inline <style>/a11y/boilerplate.
+ *                                 No action needed here.
+ *   B: single-behavioral        - exactly one setInterval, but not a pure ticker
+ *                                 (DOM/ref/animation). Needs manual judgment.
+ *   C: multi-interval           - intervalCount >= 2. Needs manual judgment.
+ *   D: deprecated-import+interval - imports useClockTime AND has its own
+ *                                 setInterval for a subordinate behavior.
+ */
+function triageFile(code, reason) {
+  const deprecatedImport =
+    /useClockTime/.test(code) &&
+    /@\/utils\/hooks/.test(code);
+  const intervalCount = (code.match(/setInterval\(/g) || []).length;
+
+  if (deprecatedImport && intervalCount === 1) {
+    return { bucket: 'A', label: 'deprecated-import-only' };
+  }
+  if (deprecatedImport && intervalCount >= 2) {
+    return { bucket: 'D', label: 'deprecated-import+interval' };
+  }
+  if (intervalCount >= 2) {
+    return { bucket: 'C', label: 'multi-interval' };
+  }
+  return { bucket: 'B', label: 'single-behavioral', reason };
+}
+
+// ---- TRIAGE MODE ----
+if (TRIAGE_MODE) {
+  const files = walkClockFiles(PAGES);
+  const triage = {
+    generated: new Date().toISOString(),
+    buckets: { A: [], B: [], C: [], D: [] },
+  };
+  for (const f of files) {
+    const code = fs.readFileSync(f, 'utf8');
+    if (!/setInterval\(/.test(code)) continue;
+    // Skip files that are provably-safe (Pass 1 would transform them).
+    const res = processFile(code);
+    if (res.changed) continue;
+    const rel = path.relative(ROOT, f);
+    const t = triageFile(code, res.info.reason);
+    triage.buckets[t.bucket].push({ file: rel, ...t });
+  }
+  fs.writeFileSync(TRIAGE, JSON.stringify(triage, null, 2));
+  const total = Object.values(triage.buckets).reduce((n, arr) => n + arr.length, 0);
+  console.log(`Triage report (total review files): ${total}`);
+  for (const b of ['A', 'B', 'C', 'D']) {
+    console.log(`  ${b}: ${triage.buckets[b].length} file(s)`);
+  }
+  console.log(`\nReport: ${TRIAGE}`);
+  console.log('\nBucket A files (canonical time hook already used):');
+  triage.buckets.A.forEach((f) => console.log(`  ${f.file}`));
+  console.log(`\nBucket B files (single behavioral interval, needs manual review) — sample 10:`);
+  triage.buckets.B.slice(0, 10).forEach((f) => console.log(`  ${f.file}  - ${f.reason}`));
+  console.log(`\nBucket C files (multi-interval, needs manual review):`);
+  triage.buckets.C.forEach((f) => console.log(`  ${f.file}`));
+  console.log(`\nBucket D files (deprecated import + own interval):`);
+  triage.buckets.D.forEach((f) => console.log(`  ${f.file}`));
+  console.log('\nTriage is read-only. It does not modify any clock file.');
+  process.exit(0);
 }
 
 const files = walkClockFiles(PAGES);
