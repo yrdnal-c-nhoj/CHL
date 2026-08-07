@@ -4,15 +4,17 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 import backgroundImg from '@/assets/images/25_images/25-10/25-10-21/bg.jpg';
 import hourHandImg from '@/assets/images/25_images/25-10/25-10-21/hour.gif';
 import minuteHandImg from '@/assets/images/25_images/25-10/25-10-21/min.gif';
+import { useSecondClock } from '@/utils/hooks';
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
   const [isWide, setIsWide] = useState<boolean>(true);
 
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 60000);
-    return () => clearInterval(interval);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+  // (was a pure 60000ms state ticker; state now derived from the hook time)
+  const clockTime = useSecondClock();
+  useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
+
 
   useEffect(() => {
     const onResize = () => setIsWide(window.innerWidth >= window.innerHeight);

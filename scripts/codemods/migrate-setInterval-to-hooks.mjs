@@ -102,12 +102,21 @@ function processFile(code) {
     return { changed: false, info: res };
   }
 
+  // Choose a collision-free variable name for the hook time so we never shadow
+  // an existing state variable (e.g. `const [time, setTime]`).
+  let hookVar = 'clockTime';
+  let suffix = 0;
+  while (new RegExp(`\\b${hookVar}\\b`).test(code)) {
+    suffix++;
+    hookVar = `clockTime${suffix}`;
+  }
+
   // Replace the ticker effect with hook-driven derivation.
   const after = [
-    `  // Migrated from setInterval to canonical rAF hook (${res.hookName}).`,
+    `  // Migrated from legacy interval to canonical rAF hook (${res.hookName}).`,
     `  // (was a pure ${res.ms}ms state ticker; state now derived from the hook time)`,
-    `  const time = ${res.hookCall};`,
-    `  useEffect(() => { ${res.setter}(time); }, [time, ${res.setter}]);`,
+    `  const ${hookVar} = ${res.hookCall};`,
+    `  useEffect(() => { ${res.setter}(${hookVar}); }, [${hookVar}, ${res.setter}]);`,
     '',
   ].join('\n');
   code = code.slice(0, res.start) + after + code.slice(res.end);
@@ -118,13 +127,14 @@ function processFile(code) {
     const importRe = /^(import .*\n)+/m;
     const head = code.match(importRe);
     if (head) {
-      code = code.slice(0, head[0].length) + `${importHook}\n` + code.slice(head[0].length);
+      const insertAt = head.index + head[0].length;
+      code = code.slice(0, insertAt) + `${importHook}\n` + code.slice(insertAt);
     } else {
       code = `${importHook}\n${code}`;
     }
   }
 
-  return { changed: true, info: res };
+  return { changed: true, info: res, code };
 }
 
 const files = walkClockFiles(PAGES);
@@ -162,7 +172,7 @@ for (const f of files) {
   if (!/setInterval\(/.test(code)) continue;
   const res = processFile(code);
   if (res.changed) {
-    fs.writeFileSync(f, code);
+    fs.writeFileSync(f, res.code);
     applied++;
     console.log(`  applied ${path.relative(ROOT, f)}`);
   }

@@ -4,6 +4,7 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import Font20251111 from '@/assets/fonts/25fonts/25-11-09-disc.ttf'; // main Roman font
 import ActiveFont20251111 from '@/assets/fonts/25fonts/25-11-09-pin.ttf'; // active digit font
+import { useMillisecondClock } from '@/utils/hooks';
 
 const ROMAN_NUMERALS = [
   'I',
@@ -76,10 +77,11 @@ const DarkRomanClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
 
   // ~60fps update
-  useEffect(() => {
-    const id = setInterval(() => setTime(new Date()), 16);
-    return () => clearInterval(id);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useMillisecondClock).
+  // (was a pure 16ms state ticker; state now derived from the hook time)
+  const clockTime = useMillisecondClock(16);
+  useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
+
 
   const totalSeconds =
     time.getHours() * 3600 +

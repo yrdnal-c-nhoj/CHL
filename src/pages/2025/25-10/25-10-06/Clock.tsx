@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSecondClock } from '@/utils/hooks';
 
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import font20251006 from '@/assets/fonts/25fonts/25-10-06-shado.ttf';
@@ -32,10 +33,11 @@ export default function DigitalClock() {
   }, []);
 
   // Update time every second
-  useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+  // (was a pure 1000ms state ticker; state now derived from the hook time)
+  const clockTime = useSecondClock();
+  useEffect(() => { setCurrentTime(clockTime); }, [clockTime, setCurrentTime]);
+
 
   // Animate shadow rotation
   useEffect(() => {

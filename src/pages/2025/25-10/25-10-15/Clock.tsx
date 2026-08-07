@@ -4,6 +4,7 @@ import type { FontConfig } from '@/types/clock';
 import font20251016 from '@/assets/fonts/25fonts/25-10-15-brahmi.ttf?url';
 import image1 from '@/assets/images/25_images/25-10/25-10-15/palm.webp';
 import image2 from '@/assets/images/25_images/25-10/25-10-15/brahmi.webp';
+import { useSecondClock } from '@/utils/hooks';
 
 const brahmiDigits = ['𑁦', '𑁧', '𑁨', '𑁩', '𑁪', '𑁫', '𑁬', '𑁭', '𑁮', '𑁯'];
 
@@ -25,10 +26,11 @@ export default function BrahmiClock() {
   useSuspenseFontLoader(fontConfigs);
 
   // Update time every second
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+  // (was a pure 1000ms state ticker; state now derived from the hook time)
+  const clockTime = useSecondClock();
+  useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
+
 
   const hours = toBrahmi(time.getHours().toString().padStart(2, '0'));
   const minutes = toBrahmi(time.getMinutes().toString().padStart(2, '0'));

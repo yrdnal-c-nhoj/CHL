@@ -8,6 +8,7 @@ import minuteHandImg from '@/assets/images/25_images/25-11/25-11-27/fren.webp';
 import secondHandImg from '@/assets/images/25_images/25-11/25-11-27/french.webp';
 import backgroundImg from '@/assets/images/25_images/25-11/25-11-27/fr.jpg';
 import styles from './Clock.module.css';
+import { useMillisecondClock } from '@/utils/hooks';
 
 const fontConfigs: FontConfig[] = [
   { fontFamily: 'RevolutionaryClock251127font', fontUrl: revolution251127font },
@@ -18,10 +19,11 @@ export default function Clock() {
   const [time, setTime] = useState(new Date());
   useSuspenseFontLoader(fontConfigs);
 
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 50);
-    return () => clearInterval(interval);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useMillisecondClock).
+  // (was a pure 50ms state ticker; state now derived from the hook time)
+  const clockTime = useMillisecondClock(50);
+  useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
+
 
   const decimalTime = useMemo(() => {
     const totalSeconds =

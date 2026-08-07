@@ -3,14 +3,16 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/25_images/25-12/25-12-18/ci.webp';
 import FONT_PATH from '@/assets/fonts/25fonts/25-12-18-cine.ttf?url';
+import { useSecondClock } from '@/utils/hooks';
 
 const TiltedReverseClock: React.FC = () => {
   const [time, setTime] = useState(new Date());
 
-  useEffect(() => {
-    const id = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(id);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+  // (was a pure 1000ms state ticker; state now derived from the hook time)
+  const clockTime = useSecondClock();
+  useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
+
 
   // Load font
   useEffect(() => {

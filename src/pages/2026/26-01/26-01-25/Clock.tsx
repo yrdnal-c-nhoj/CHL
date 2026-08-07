@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import analogBgImage from '@/assets/images/26_images/26-01/26-01-25/mirage.webp';
+import { useSecondClock } from '@/utils/hooks';
 
 const AnalogClockTemplate: React.FC = () => {
   const [time, setTime] = useState(new Date());
@@ -10,10 +11,11 @@ const AnalogClockTemplate: React.FC = () => {
   const noiseSeedRef = useRef(Math.random() * 10000);
 
   // Clock update every second
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+  // (was a pure 1000ms state ticker; state now derived from the hook time)
+  const clockTime = useSecondClock();
+  useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
+
 
   // Organic, random-like opacity animation
   useEffect(() => {

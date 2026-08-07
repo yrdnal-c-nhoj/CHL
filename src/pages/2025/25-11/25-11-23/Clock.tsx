@@ -3,15 +3,17 @@ import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImg from '@/assets/images/25_images/25-11/25-11-23/gs.webp'; // your background
 import font2025_11_24 from '@/assets/fonts/25fonts/25-11-23-gal.ttf?url'; // your custom font
+import { useMillisecondClock } from '@/utils/hooks';
 
 export default function DigitalStackClock() {
   const [now, setNow] = useState(new Date());
 
   // Update time every 250 ms
-  useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 250);
-    return () => clearInterval(id);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useMillisecondClock).
+  // (was a pure 250ms state ticker; state now derived from the hook time)
+  const clockTime = useMillisecondClock(250);
+  useEffect(() => { setNow(clockTime); }, [clockTime, setNow]);
+
 
   // Format time
   const hh = String(now.getHours()).padStart(2, '0');

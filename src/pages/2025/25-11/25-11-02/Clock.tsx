@@ -4,6 +4,7 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import bgVideo from '@/assets/images/25_images/25-11/25-11-02/swim.mp4';
 import fallbackImg from '@/assets/images/25_images/25-11/25-11-02/swim.webp';
 import fontFile2025_11_04 from '@/assets/fonts/25fonts/25-11-02-sperm.ttf'; // Custom scientific font
+import { useMillisecondClock } from '@/utils/hooks';
 
 export default function MonarchScene() {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -64,10 +65,11 @@ export default function MonarchScene() {
   }, []);
 
   // Update time every 25ms
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 25);
-    return () => clearInterval(interval);
-  }, []);
+    // Migrated from legacy interval to canonical rAF hook (useMillisecondClock).
+  // (was a pure 25ms state ticker; state now derived from the hook time)
+  const clockTime = useMillisecondClock(25);
+  useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
+
 
   const h = String(time.getHours()).padStart(2, '0');
   const m = String(time.getMinutes()).padStart(2, '0');
