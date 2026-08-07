@@ -37,7 +37,7 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     width: '100vw',
     height: '100dvh',
-    backgroundColor: '#fff',
+    backgroundColor: '#000',
     color: '#000',
     overflow: 'hidden',
     position: 'relative',
