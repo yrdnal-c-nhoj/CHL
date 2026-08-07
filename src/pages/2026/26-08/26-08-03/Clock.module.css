@@ -27,15 +27,8 @@
   position: relative;
   z-index: 2;
   font-family: 'ClockFont_26_08_03', sans-serif;
-  font-size: min(30vw, 25vh);
-  color: white;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 2rem 4rem;
-  border-radius: 1rem;
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: min(35vw, 35vh);
+  color: #FF91AF;
 }
 
 /*
