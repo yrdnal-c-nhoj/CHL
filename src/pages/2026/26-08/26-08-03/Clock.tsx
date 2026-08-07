@@ -6,9 +6,10 @@ import styles from './Clock.module.css';
 
 import fontUrl from '@/assets/fonts/26fonts/26-08-03.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-08/26-08-03/bakermiller.webp';
+import happyImage from '@/assets/images/26_images/26-08/26-08-03/happy.webp';
 
 // 1. Asset Exports (Required for preloading pipeline)
-export const assets: string[] = [backgroundImage, fontUrl];
+export const assets: string[] = [backgroundImage, fontUrl, happyImage];
 
 // 2. Font Configuration (if custom fonts are used)
 const fontConfigs: FontConfig[] = [
@@ -40,6 +41,11 @@ const ClockComponent: React.FC = () => {
         {time.toLocaleTimeString()}
       </time>
 
+      {/* Tiled happy image layer */}
+      <div
+        className={styles.tiledLayer}
+        style={{ '--tile-image': `url(${happyImage})` } as React.CSSProperties}
+      />
       {/* Clock UI */}
       <div className={styles.clockFace}>
         <span>{hours}:{minutes}</span>

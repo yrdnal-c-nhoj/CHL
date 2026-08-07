@@ -4,17 +4,44 @@
   justify-content: center;
   width: 100vw;
   height: 100dvh;
+  overflow: hidden;
+  position: relative;
   background-image: var(--bg-image);
   background-size: cover;
   background-position: center;
-  color: #FF91AF;
+}
+
+.tiledLayer {
+  position: absolute;
+  inset: 0;
+  background-image: var(--tile-image);
+  background-size: 30px;
+  background-repeat: repeat;
+  background-position: center;
+  z-index: 1;
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 .clockFace {
+  position: relative;
+  z-index: 2;
   font-family: 'ClockFont_26_08_03', sans-serif;
-  font-size: 30vw;
+  font-size: min(30vw, 25vh);
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 2rem 4rem;
+  border-radius: 1rem;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+/*
+  Required for accessibility.
+  Hides an element visually but keeps it available for screen readers.
+*/
 .srOnly {
   position: absolute;
   width: 1px;
