@@ -1,6 +1,7 @@
 /**
  * This file manages the global state for all clock data in the application.
  */
+import type { ClockItem, DataContextType } from '@/types/data';
 import type {
   ReactNode
 } from 'react';
@@ -10,26 +11,6 @@ import React, {
   useEffect,
   useState
 } from 'react';
-
-/**
- * Defines the structure of a single Clock object
- */
-export interface ClockItem {
-  path: string;      // The URL path/slug for the clock
-  date: string;      // The date string (usually YY-MM-DD)
-  title: string;     // The display name of the clock
-  tags?: string[];   // Optional array of tags
-  clockNumber?: number; // Injected during initialization
-}
-
-/**
- * Defines the shape of the data shared via React Context
- */
-export interface DataContextType {
-  items: ClockItem[];   // Array of processed clock data
-  loading: boolean;     // Whether the data is currently being fetched
-  error: Error | null;  // Holds any errors encountered during load
-}
 
 // Create the context with an initial value of undefined
 export const DataContext = createContext<DataContextType | undefined>(

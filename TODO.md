@@ -36,7 +36,13 @@ Tracked progress for the recommended fixes from `CHL-COMPONENT-ASSESSMENT-REPORT
     - `D: deprecated-import + own interval` — **3 files** (`25-06-06`, `25-09-28`, `25-11-28`; manual review).
   - See `PLAN-PASS2.md` for the manual-backlog disposition. This task does NOT ratchet the baseline (no safe reductions).
 - [ ] Codemod inline `<style>` → CSS Modules (**143** clock files)
+  - ✅ **Triage complete** — `scripts/codemods/migrate-inline-style-to-css-modules.mjs --triage` classified all 143 files into `scripts/codemods/inline-style-triage.json`.
+  - **Finding:** no provably-safe auto-migration exists. Buckets: A(static @font-face)=0, B(static keyframes)=21, C(class selectors)=12, D(templated)=65, E(mixed)=41. All inline `<style>` blocks either define `@keyframes` referenced by inline `animation:` props, `.class{}` selectors used via `className`, or JS-templated `@font-face { url(${var}) }` — all break under naive CSS-Module scoping. **Manual per-clock backlog** (see `TODO-INLINE-STYLE.md`).
 - [ ] Consolidate duplicated font loaders / hooks / types / templates
+  - ✅ **Templates consolidated** — removed byte-identical duplicates `src/templates/ClockTemplate.tsx` and `src/templates/MasterTemplate.tsx` (identical SHA `7fa1640…`, unreferenced). `BaseClock.tsx` preserved as the single canonical template (exported via `index.ts`).
+  - Remaining: font loaders (`enhancedFontLoader`/`assetLoader` deprecated hooks), time-hook re-export shims, duplicate types (`ClockItem`/`DataContextType`).
+- [ ] Consolidate duplicated `ClockItem`/`DataContextType` types
+  - ✅ **Types consolidated** — `src/types/data.ts` is now the single source of truth. `src/context/DataContext.tsx` imports `ClockItem`/`DataContextType` from `@/types/data` (removed its local duplicates). `src/types/utils.ts` dead duplicate `ClockItem`/`DataContextType` + unused `ClockMetadata`/`ClockType`/`AnimationType`/`FontLoadingResult` removed (deprecated-stub retained). **Fixed type drift:** `DataContextType.error` aligned from `string | null` → `Error | null` (matches actual runtime value). Verified: build ✅, 53 tests ✅, CI type-check ✅ (0 errors in edited files).
 
 ## Ratchet procedure (after each migration drive)
 1. Run `node scripts/verify-all-clocks.js --csv clocks-report.csv`.

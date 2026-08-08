@@ -9,5 +9,5 @@ export interface ClockItem {
 export interface DataContextType {
   items: ClockItem[];
   loading: boolean;
-  error: string | null;
+  error: Error | null;
 }
