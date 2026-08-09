@@ -6559,5 +6559,27 @@
       "image-free",
       "words"
     ]
+  },
+  {
+    "path": "26-08-08",
+    "date": "26-08-08",
+    "title": "Crescent",
+    "tags": [
+      "analog",
+      "moon",
+      "night"
+    ]
+  },
+  {
+    "path": "26-08-09",
+    "date": "26-08-09",
+    "title": "Sundial",
+    "tags": [
+      "digital",
+      "ampm",
+      "day-and-night",
+      "earth",
+      "sun"
+    ]
   }
 ]

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import lionOverlay from '@/assets/images/26_images/26-08/26-08-07/lion.webp';
-import backgroundVideo from '@/assets/images/26_images/26-08/26-08-07/mount.mp4?url';
-import windOverlay from '@/assets/images/26_images/26-08/26-08-07/wind.webp';
+import lionOverlay from '@/assets/images/26_images/26-08/26-08-08/lion.webp?url';
+import backgroundVideo from '@/assets/images/26_images/26-08/26-08-08/mount.mp4?url';
+import windOverlay from '@/assets/images/26_images/26-08/26-08-08/wind.webp?url';
 
 import styles from './Clock.module.css';
 
