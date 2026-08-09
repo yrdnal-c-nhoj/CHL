@@ -19,14 +19,29 @@
   position: absolute;
   top: 2rem;
   left: 2rem;
+  /* Add animation for side-to-side movement */
+  animation: moveClock 14.32s steps(1, end) infinite, fadeIn 1s ease-out forwards;
   display: flex;
   flex-direction: column;
   font-family: 'ClockFont_26_08_04', sans-serif;
-  font-size: 6vmin;
-  color: rgba(191, 191, 91, 0.799);
+  font-size: 11vh;
+  color: rgba(251, 222, 2, 0.928);
   text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
   z-index: 1;
-  opacity: 0.6;
+  /* Start with opacity 0 to prevent FOUC, will be faded in by animation */
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 0.6;
+  }
+}
+
+@keyframes moveClock {
+  50% {
+    transform: translateX(calc(100vw - 100% - 4rem));
+  }
 }
 
 .digitalClock span {
