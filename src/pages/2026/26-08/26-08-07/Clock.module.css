@@ -1,0 +1,55 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  background-color: #222; /* Dark gray to make shadow visible */
+  overflow: hidden;
+  position: relative;
+}
+
+.digitalClock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Apply perspective and rotation for a 3D "hanging" effect */
+  transform: perspective(600px) translate(-50%, -50%) rotateX(10deg);
+  z-index: 10;
+  color: #f0f0f0;
+  font-family: 'Courier New', Courier, monospace;
+  display: flex;
+  align-items: baseline;
+  /* Create a long-cast shadow to make letters appear to float off the wall */
+  text-shadow:
+    1px -1px 1px #777,
+    /* Long shadow effect */
+    0px 4px 1px rgba(0, 0, 0, 0.5),
+    0px 8px 2px rgba(0, 0, 0, 0.4),
+    0px 12px 4px rgba(0, 0, 0, 0.3),
+    0px 16px 8px rgba(0, 0, 0, 0.2),
+    0px 20px 16px rgba(0, 0, 0, 0.2);
+}
+
+.time {
+  font-size: 15vmin;
+  font-weight: bold;
+}
+
+.ampm {
+  font-size: 15vmin;
+  margin-left: 1.5vmin;
+  font-weight: bold;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
