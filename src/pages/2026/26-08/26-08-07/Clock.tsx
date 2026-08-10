@@ -1,186 +1,110 @@
+import fontUrl from '@/assets/fonts/26fonts/26-08-07.ttf?url';
+import floorImage from '@/assets/images/26_images/26-08/26-08-07/floor.webp';
+import wallImage from '@/assets/images/26_images/26-08/26-08-07/wall.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import React, { memo, useMemo } from 'react';
-
-// 1. Asset Exports
-export const assets: string[] = [];
-
-// 2. Font Configuration
-const fontConfigs: FontConfig[] = [];
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 // -----------------------------------------------------------------------------
-// WALL
+// ASSETS
 // -----------------------------------------------------------------------------
+export const assets: string[] = [floorImage, wallImage, fontUrl];
+const fontConfigs: FontConfig[] = [
+  { fontFamily: 'ClockFont_26_08_07', fontUrl },
+];
 
+// -----------------------------------------------------------------------------
+// STYLES
+// -----------------------------------------------------------------------------
 const containerStyle: React.CSSProperties = {
   width: '100vw',
   height: '100dvh',
-  minHeight: '100dvh',
   margin: 0,
   padding: 0,
   overflow: 'hidden',
   display: 'flex',
-  alignItems: 'center',
+  alignItems: 'flex-start',
+  paddingTop: '22dvh',
   justifyContent: 'center',
   userSelect: 'none',
-  perspective: '1000px', // Add perspective to the room
-
-  // Concrete / plaster wall
+  perspective: '1000px',
+  perspectiveOrigin: '50% 30%',
   backgroundColor: '#9b9992',
-
-  backgroundImage: `
-    radial-gradient(
-      ellipse at 35% 30%,
-      rgba(255,255,255,0.08) 0%,
-      rgba(255,255,255,0) 45%
-    ),
-    radial-gradient(
-      ellipse at 70% 75%,
-      rgba(0,0,0,0.10) 0%,
-      rgba(0,0,0,0) 55%
-    ),
-    repeating-linear-gradient(
-      97deg,
-      rgba(255,255,255,0.018) 0,
-      rgba(255,255,255,0.018) 0.08rem,
-      rgba(0,0,0,0.018) 0.08rem,
-      rgba(0,0,0,0.018) 0.16rem
-    ),
-    repeating-linear-gradient(
-      13deg,
-      rgba(255,255,255,0.012) 0,
-      rgba(255,255,255,0.012) 0.12rem,
-      rgba(0,0,0,0.012) 0.12rem,
-      rgba(0,0,0,0.012) 0.24rem
-    )
-  `,
+  backgroundImage: `url(${wallImage})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
 };
-
-// -----------------------------------------------------------------------------
-// FLOOR
-// -----------------------------------------------------------------------------
 
 const floorStyle: React.CSSProperties = {
   position: 'absolute',
   bottom: 0,
   left: 0,
   width: '100%',
-  height: '25%', // Take up the bottom quarter
-  transformOrigin: 'bottom center',
-  transform: 'rotateX(60deg)', // Apply perspective to the floor
+  height: '40%',
   zIndex: 0,
-
-  // Wood floor texture
-  backgroundColor: '#5C3D2E',
-  backgroundImage: `
-    repeating-linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.07) 0,
-      rgba(255, 255, 255, 0.07) 1px,
-      transparent 1px,
-      transparent 20%
-    ),
-    repeating-linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.1) 0,
-      rgba(0, 0, 0, 0.1) 1px,
-      transparent 1px,
-      transparent 2px
-    ),
-    linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 20%)
-  `,
+  backgroundImage: `url(${floorImage})`,
+  backgroundSize: '100% 100%',
+  backgroundPosition: 'center bottom',
 };
-
-// -----------------------------------------------------------------------------
-// CLOCK
-// -----------------------------------------------------------------------------
 
 const digitalClockStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'baseline',
   justifyContent: 'center',
-
-  color: '#8b8982',
-
-  fontFamily: "'Courier New', Courier, monospace",
+  fontFamily: "'ClockFont_26_08_07', 'Courier New', Courier, monospace",
   fontVariantNumeric: 'tabular-nums',
-
-  /*
-   * The entire clock sits against the wall.
-   * The shadows belong to the lettering itself, creating the illusion
-   * that the wall has been physically cut away.
-   */
-  filter: 'contrast(1.05)',
+  filter: 'contrast(1.08)',
+  transformStyle: 'preserve-3d',
+  transform: 'rotateX(2deg) translateZ(10px)',
 };
 
-// -----------------------------------------------------------------------------
-// MAIN TIME
-// -----------------------------------------------------------------------------
+/* 
+ * Deep 3D Carved & Extruded Bevel Effect:
+ * 1. Top light highlights (-0.02em -0.02em) for sharp chiseled edges.
+ * 2. Multi-layered offset extrusion steps extending back toward the wall.
+ * 3. Wall ambient occlusion (dark shadow right behind the block).
+ * 4. Deep directional drop shadow projecting onto the wall surface.
+ */
+const textShadow = `
+  /* Top-down lighting with a sharp bottom shadow */
+  -0.01em -0.01em 0px rgba(255, 255, 255, 0.5), /* Subtle top highlight */
+  
+  /* Bottom Bevel/Edge */
+  0em 0.02em 0px #C86060,
+  0em 0.04em 0px #AD4646,
+  0em 0.06em 0px #903131,
+  
+  /* Sharp, defined drop shadow directly underneath */
+  0em 0.12em 4px rgba(0, 0, 0, 0.5)
+`;
 
-const timeStyle: React.CSSProperties = {
+const textBaseStyle: React.CSSProperties = {
   position: 'relative',
-
   fontSize: '15vmin',
   fontWeight: 900,
-  letterSpacing: '0.02em',
   lineHeight: 0.9,
-
-  color: '#85837d',
-
-  /*
-   * Recessed / carved effect.
-   *
-   * Upper-left:
-   *   light catches the inside edge of the cut.
-   *
-   * Lower-right:
-   *   deep occlusion makes the cavity look deeper.
-   *
-   * The very subtle dark outer shadow makes the wall around the
-   * cut-out feel physically displaced.
-   */
-  textShadow: `
-    -0.10rem -0.10rem 0.08rem rgba(255,255,255,0.34),
-     0.10rem  0.10rem 0.12rem rgba(0,0,0,0.42),
-     0.18rem  0.22rem 0.35rem rgba(0,0,0,0.28),
-    -0.18rem -0.18rem 0.28rem rgba(255,255,255,0.10),
-     0 0.35rem 0.65rem rgba(0,0,0,0.18)
-  `,
+  color: '#E57373', // Main front face color
+  textShadow,
+  transformStyle: 'preserve-3d',
 };
 
-// -----------------------------------------------------------------------------
-// AM / PM
-// -----------------------------------------------------------------------------
+const timeStyle: React.CSSProperties = {
+  ...textBaseStyle,
+  letterSpacing: '0.04em',
+};
 
 const ampmStyle: React.CSSProperties = {
-  position: 'relative',
-
-  fontSize: '8vmin',
-  marginLeft: '2vmin',
-  fontWeight: 900,
-  lineHeight: 0.9,
-
-  color: '#85837d',
-
-  textShadow: `
-    -0.08rem -0.08rem 0.06rem rgba(255,255,255,0.32),
-     0.08rem  0.08rem 0.10rem rgba(0,0,0,0.42),
-     0.14rem  0.18rem 0.28rem rgba(0,0,0,0.25),
-    -0.12rem -0.12rem 0.20rem rgba(255,255,255,0.08)
-  `,
+  ...textBaseStyle,
+  marginLeft: '2.5vmin',
 };
-
-// -----------------------------------------------------------------------------
-// ACCESSIBILITY
-// -----------------------------------------------------------------------------
 
 const srOnlyStyle: React.CSSProperties = {
   position: 'absolute',
-  width: '1px',
-  height: '1px',
+  width: 1,
+  height: 1,
   padding: 0,
-  margin: '-1px',
+  margin: -1,
   overflow: 'hidden',
   clip: 'rect(0, 0, 0, 0)',
   whiteSpace: 'nowrap',
@@ -188,61 +112,299 @@ const srOnlyStyle: React.CSSProperties = {
 };
 
 // -----------------------------------------------------------------------------
-// MAIN COMPONENT
+// KEYFRAMES
 // -----------------------------------------------------------------------------
+const keyframes = `
+  @keyframes shake {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    15%      { transform: translate(-3px, 2px) rotate(-4deg); }
+    30%      { transform: translate(3px, -2px) rotate(4deg); }
+    45%      { transform: translate(-4px, -1px) rotate(-6deg); }
+    60%      { transform: translate(4px, 2px) rotate(5deg); }
+    75%      { transform: translate(-2px, 3px) rotate(-3deg); }
+    90%      { transform: translate(2px, -3px) rotate(3deg); }
+  }
 
-const ClockComponent: React.FC = () => {
+  @keyframes realisticBounce {
+    0% {
+      transform: translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1, 1);
+      animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    }
+    35% {
+      transform: translateY(49vh) translateZ(15px) rotateX(86deg) rotateY(-18deg) rotateZ(-12deg) scale(1.1, 0.75);
+      text-shadow: -8px 6px 4px rgba(0,0,0,0.6);
+      animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    52% {
+      transform: translateY(38vh) translateZ(35px) rotateX(78deg) rotateY(12deg) rotateZ(-4deg) scale(0.95, 1.05);
+      text-shadow: -15px 22px 18px rgba(0,0,0,0.2);
+      animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    }
+    68% {
+      transform: translateY(49vh) translateZ(12px) rotateX(88deg) rotateY(-10deg) rotateZ(3deg) scale(1.04, 0.92);
+      text-shadow: -6px 8px 5px rgba(0,0,0,0.5);
+      animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    80% {
+      transform: translateY(44vh) translateZ(20px) rotateX(84deg) rotateY(2deg) rotateZ(8deg) scale(1, 1);
+      text-shadow: -9px 13px 10px rgba(0,0,0,0.3);
+      animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    }
+    90% {
+      transform: translateY(49vh) translateZ(10px) rotateX(89deg) rotateY(-4deg) rotateZ(9deg) scale(1, 1);
+      text-shadow: -4px 8px 6px rgba(0,0,0,0.48);
+      animation-timing-function: ease-out;
+    }
+    100% {
+      transform: translateY(48vh) translateZ(15px) rotateX(88deg) rotateY(15deg) rotateZ(-20deg) scale(1, 1);
+      text-shadow: 10px 10px 8px rgba(0,0,0,0.5), 0 0 1px rgba(0,0,0,0.3);
+    }
+  }
+`;
+
+const AnimationStyles = memo(() => <style>{keyframes}</style>);
+AnimationStyles.displayName = 'AnimationStyles';
+
+// -----------------------------------------------------------------------------
+// TYPES
+// -----------------------------------------------------------------------------
+type FallState = 'idle' | 'shaking' | 'falling' | 'fading';
+type CharacterStates = FallState[];
+
+// -----------------------------------------------------------------------------
+// COMPONENT
+// -----------------------------------------------------------------------------
+const Clock_26_08_07: React.FC = () => {
   const time = useSecondClock();
-
   useSuspenseFontLoader(fontConfigs);
 
-  const { timeString, ampm, minutesPadded } = useMemo(() => {
+  const [charStates, setCharStates] = useState<CharacterStates>([]);
+
+  // Ref to hold timers to ensure they are cleared on unmount/re-run
+  const animationTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  // Current time string (always up-to-date)
+  const { timeString, ampm, accessibleTime, fullString } = useMemo(() => {
     const hours = time.getHours();
     const minutes = String(time.getMinutes()).padStart(2, '0');
-
     const ampm = hours >= 12 ? 'PM' : 'AM';
-
     const hours12 = String(hours % 12 || 12).padStart(2, '0');
+    const timeString = `${hours12}:${minutes}`;
 
     return {
-      timeString: `${hours12}:${minutes}`,
+      timeString,
       ampm,
-      minutesPadded: minutes,
+      accessibleTime: `${hours % 12 || 12}:${minutes} ${ampm}`,
+      fullString: timeString + ampm,
     };
   }, [time]);
 
-  const accessibleTimeString = `${time.getHours()}:${minutesPadded}`;
+  // Initialize or update character states when the string length changes
+  useEffect(() => {
+    setCharStates(Array(fullString.length).fill('idle'));
+  }, [fullString.length]);
+
+  // Animation cycle: trigger a full cascade of falling characters
+  useEffect(() => {
+    // Function to clear all scheduled animation timers
+    const clearTimers = () => {
+      animationTimers.current.forEach(clearTimeout);
+      animationTimers.current = [];
+    };
+
+    // Main animation sequence orchestrator
+    const startCascade = () => {
+      clearTimers(); // Ensure no old timers are running
+
+      const eligibleIndices = fullString
+      .split('')
+      .map((char, i) => (char === ':' ? -1 : i))
+      .filter((i) => i !== -1);
+
+      if (eligibleIndices.length === 0) return;
+
+      const colonIndex = fullString.indexOf(':');
+
+      // --- New Randomized Timing Logic ---
+
+      // 1. The first digit always falls first, alone.
+      const firstToFallIndex = eligibleIndices.shift()!; // Remove the first digit from the list
+
+      // 2. The rest of the characters are shuffled for a random fall order.
+      const remainingIndices = eligibleIndices;
+      for (let i = remainingIndices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [remainingIndices[i], remainingIndices[j]] = [remainingIndices[j], remainingIndices[i]];
+      }
+
+      // Function to trigger a character's fall sequence
+      const triggerFall = (charIndex: number) => {
+        // Start shaking
+        setCharStates((prev) => {
+          const next = [...prev];
+          if (next[charIndex] === 'idle') next[charIndex] = 'shaking';
+          return next;
+        });
+        // After shaking, start falling
+        const fallAnimTimer = setTimeout(() => {
+          setCharStates((prev) => {
+            const next = [...prev];
+            if (next[charIndex] === 'shaking') next[charIndex] = 'falling';
+            return next;
+          });
+        }, 1800); // SHAKE_DURATION
+        animationTimers.current.push(fallAnimTimer);
+      };
+
+      // 3. Trigger the first digit immediately.
+      triggerFall(firstToFallIndex);
+
+      // 4. Trigger the rest of the characters at random intervals.
+      let maxFallDelay = 0;
+      remainingIndices.forEach((charIndex) => {
+        // Stagger the rest of the falls over a random window starting after the first one.
+        const fallDelay = 1000 + Math.random() * 4000;
+        if (fallDelay > maxFallDelay) maxFallDelay = fallDelay;
+
+        const fallTimer = setTimeout(() => {
+          triggerFall(charIndex);
+        }, fallDelay);
+        animationTimers.current.push(fallTimer);
+      });
+
+      // --- Sequence Finale: Colon Fall, Fade Out, and Reset ---
+
+      const FALL_ANIMATION_DURATION = 1500; // ms
+      const SHAKE_DURATION = 1800; // ms
+
+      // Time when the last digit has finished its fall animation
+      const lastDigitLandedTime = maxFallDelay + SHAKE_DURATION + FALL_ANIMATION_DURATION;
+
+      // 5. Schedule the colon to fall 2 seconds after the last digit lands.
+      const colonFallTimer = setTimeout(() => {
+        if (colonIndex === -1) return;
+        // Start shaking colon
+        setCharStates((prev) => {
+          const next = [...prev];
+          next[colonIndex] = 'shaking';
+          return next;
+        });
+        // After shaking, start falling
+        const colonAnimTimer = setTimeout(() => {
+          setCharStates((prev) => {
+            const next = [...prev];
+            next[colonIndex] = 'falling';
+            return next;
+          });
+        }, SHAKE_DURATION);
+        animationTimers.current.push(colonAnimTimer);
+      }, lastDigitLandedTime + 2000);
+      animationTimers.current.push(colonFallTimer);
+
+      // 6. Schedule the fade-out 1 second after the colon lands.
+      const colonLandedTime = lastDigitLandedTime + 2000 + SHAKE_DURATION + FALL_ANIMATION_DURATION;
+      const fadeOutTimer = setTimeout(() => {
+        setCharStates((prev) => prev.map(state => (state === 'falling' ? 'fading' : state)));
+      }, colonLandedTime + 1000);
+      animationTimers.current.push(fadeOutTimer);
+
+      // 7. Schedule the final reset 2 seconds after the fade-out begins.
+      const resetTimer = setTimeout(() => {
+        setCharStates(Array(fullString.length).fill('idle')); // Reset all to idle
+      }, colonLandedTime + 1000 + 2000);
+      animationTimers.current.push(resetTimer);
+    };
+
+    // Start the first cascade after a delay, then repeat on a long interval
+    const initial = setTimeout(startCascade, 2500);
+    const interval = setInterval(startCascade, 25000);
+    animationTimers.current.push(initial);
+
+    return () => {
+      clearTimers();
+      clearInterval(interval);
+    };
+  }, [fullString]); // Rerun if the time string format changes (e.g. 9:59 -> 10:00)
+
+  // Style for each character
+  const getCharStyle = useCallback(
+    (charIndex: number): React.CSSProperties => {
+      const state = charStates[charIndex] ?? 'idle';
+
+      if (state === 'idle') {
+        return { display: 'inline-block' };
+      }
+
+      const base: React.CSSProperties = {
+        display: 'inline-block',
+        transformStyle: 'preserve-3d',
+        transformOrigin: '50% 100%',
+        position: 'relative',
+      };
+
+      switch (state) {
+        case 'shaking':
+          return {
+            ...base,
+            animation: 'shake 0.15s ease-in-out infinite',
+          };
+        case 'falling':
+          return {
+            ...base,
+            zIndex: 10,
+            animation: 'realisticBounce 1.5s linear forwards',
+            // When the animation ends, it will hold the 100% frame style
+          };
+        case 'fading':
+          return {
+            ...base,
+            zIndex: 10,
+            transform: 'translateY(48vh) translateZ(15px) rotateX(88deg) rotateY(15deg) rotateZ(-20deg)',
+            textShadow: '10px 10px 8px rgba(0,0,0,0.5), 0 0 1px rgba(0,0,0,0.3)',
+            opacity: 0,
+            transition: 'opacity 1s ease-out',
+          };
+        default:
+          return base;
+      }
+    },
+    [charStates]
+  );
 
   return (
     <main style={containerStyle}>
-      {/* Floor element */}
+      <AnimationStyles />
       <div style={floorStyle} />
 
-      {/* Semantic element for accessibility */}
       <time dateTime={time.toISOString()} style={srOnlyStyle}>
-        {accessibleTimeString}
+        {accessibleTime}
       </time>
 
-      {/* Recessed wall clock */}
       <div style={digitalClockStyle}>
-        <span style={timeStyle}>
-          {timeString}
-        </span>
+        <div style={timeStyle}>
+          {timeString.split('').map((char, i) => (
+            <span key={`t-${i}`} style={getCharStyle(i)}>
+              {char}
+            </span>
+          ))}
+        </div>
 
-        <span style={ampmStyle}>
-          {ampm}
-        </span>
+        <div style={ampmStyle}>
+          {ampm.split('').map((char, i) => (
+            <span
+              key={`a-${i}`}
+              style={getCharStyle(i + timeString.length)}
+            >
+              {char}
+            </span>
+          ))}
+        </div>
       </div>
     </main>
   );
 };
 
-// -----------------------------------------------------------------------------
-// PERFORMANCE
-// -----------------------------------------------------------------------------
+const MemoizedClock_26_08_07 = memo(Clock_26_08_07);
+MemoizedClock_26_08_07.displayName = 'Clock_26_08_07';
 
-const MemoizedClock = memo(ClockComponent);
-
-MemoizedClock.displayName = 'Clock_26_08_07';
-
-export default MemoizedClock;
+export default MemoizedClock_26_08_07;
