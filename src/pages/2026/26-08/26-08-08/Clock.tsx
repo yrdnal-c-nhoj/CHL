@@ -28,18 +28,6 @@ const fontConfigs: FontConfig[] = [
 
 // Roman numerals for the clock face
 const ROMAN_NUMERALS = [
-  'I',
-  'II',
-  'III',
-  'IV',
-  'V',
-  'VI',
-  'VII',
-  'VIII',
-  'IX',
-  'X',
-  'XI',
-  'XII',
   'i',
   'ii',
   'iii',
@@ -65,7 +53,7 @@ const ClockComponent: React.FC = () => {
 
   // Calculate angles for analog clock hands
   // Use the shared hook for angle calculations for consistency and maintainability.
-  const { hourAngle, minAngle: minuteAngle, secAngle: secondAngle } = useClockAngles(time);
+  const { hourAngle, minAngle: minuteAngle } = useClockAngles(time);
 
   // Accessible standard ISO/time display for assistive tech
   const timeString = `${String(time.getHours()).padStart(2, '0')}:${String(time.getMinutes()).padStart(2, '0')}:${String(time.getSeconds()).padStart(2, '0')}`;
@@ -103,10 +91,6 @@ const ClockComponent: React.FC = () => {
           <div
             className={`${styles.hand} ${styles.minuteHand}`}
             style={{ transform: `translateX(-50%) rotate(${minuteAngle}deg)` }}
-          />
-          <div
-            className={`${styles.hand} ${styles.secondHand}`}
-            style={{ transform: `translateX(-50%) rotate(${secondAngle}deg)` }}
           />
           {/* Render numbers 1-12 on the clock face */}
           {Array.from({ length: 12 }, (_, i) => {
