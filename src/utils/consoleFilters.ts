@@ -18,6 +18,7 @@ const shouldSuppress = (msg: string) => {
     'createContentPrincipalFromOrigin',
     'SearchSuggestionController',
     'MerinoClient',
+    'SuggestBackendMerino',
     'NetworkGeolocationProvider',
     'NewTabGleanUtils',
     'RemoteSettingsExperimentLoader',
@@ -28,6 +29,8 @@ const shouldSuppress = (msg: string) => {
     'PurgeTrackerService',
     'URLBar - MerinoClient',
     'OpaqueResponseBlocking',
+    'email-autocomplete-relay',
+    'newtabRefinedCardsLayout',
     'Referrer Policy:',
     'Cookie “FPID” has been rejected',
     'nimbusStore', // New pattern identified
@@ -60,13 +63,10 @@ const shouldSuppress = (msg: string) => {
     'FormAutofillParent',
     'createFromField',
     'ExtensionChild',
+    'DataCloneError: Function object could not be cloned',
     '.sys.mjs',
-    'email-autocomplete-relay',
     'Sync encountered an error',
     'policies.sys.mjs',
-    'newtabRefinedCardsLayout',
-    'SuggestBackendMerino',
-    'DataCloneError',
     'Cross-Origin Request Blocked',
     'Same Origin Policy',
     'keywee.co',
@@ -93,6 +93,7 @@ const shouldSuppress = (msg: string) => {
     'ASRouter',
     'LinkPreviewChild',
     'Empty string passed to getElementById()',
+    'WindowGlobalParent',
   ];
 patterns.push('ext-browser.js');
   patterns.push('unwatchFronts');

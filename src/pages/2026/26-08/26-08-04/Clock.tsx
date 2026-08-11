@@ -1,8 +1,9 @@
 import clockVideo from '@/assets/images/26_images/26-08/26-08-04/buster.mp4';
+import { useClockAngles } from '@/hooks/useClockAngles';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
-import React, { memo, useMemo } from 'react';
+import { useMillisecondClock } from '@/utils/hooks/useSmoothClock';
+import React, { memo } from 'react';
 import styles from './Clock.module.css';
 
 // Import the font with the corresponding date from the assets folder
@@ -32,24 +33,8 @@ const ClockComponent: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Calculate angles for analog clock hands
-  const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
-    const hours = time.getHours() % 12; // Use 12-hour format
-    const minutes = time.getMinutes();
-    const seconds = time.getSeconds();
-    const milliseconds = time.getMilliseconds();
-
-    // Calculate degrees for each hand
-    // Second hand: 360 degrees / 60 seconds = 6 degrees per second
-    const secondAngle = (seconds + milliseconds / 1000) * 6;
-    // Minute hand: 360 degrees / 60 minutes = 6 degrees per minute
-    // Add seconds contribution: (seconds / 60) * 6 degrees
-    const minuteAngle = (minutes + seconds / 60) * 6;
-    // Hour hand: 360 degrees / 12 hours = 30 degrees per hour
-    // Add minutes contribution: (minutes / 60) * 30 degrees
-    const hourAngle = (hours + minutes / 60) * 30;
-
-    return { hourAngle, minuteAngle, secondAngle };
-  }, [time]);
+  // Use the shared hook for angle calculations for consistency and maintainability.
+  const { hourAngle, minAngle: minuteAngle, secAngle: secondAngle } = useClockAngles(time);
 
   // Accessible standard ISO/time display for assistive tech
   const timeString = `${String(time.getHours()).padStart(2, '0')}:${String(time.getMinutes()).padStart(2, '0')}:${String(time.getSeconds()).padStart(2, '0')}`;
