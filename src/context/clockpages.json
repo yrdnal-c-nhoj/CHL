@@ -2758,7 +2758,7 @@
   {
     "path": "25-10-25",
     "date": "25-10-25",
-    "title": "Entropy",
+    "title": "Entropy Ananlog",
     "tags": [
       "analog",
       "gravity"
@@ -6548,6 +6548,28 @@
       "digital",
       "animal",
       "fly"
+    ]
+  },
+  {
+    "path": "26-08-07",
+    "date": "26-08-07",
+    "title": "Entropy Digital",
+    "tags": [
+      "digital",
+      "image-free",
+      "words"
+    ]
+  },
+  {
+    "path": "26-08-08",
+    "date": "26-08-08",
+    "title": "337.5° North-Northwest",
+    "tags": [
+      "analog",
+      "wind",
+      "cardinal-directions",
+      "roman-numeral",
+      "lion"
     ]
   }
 ]
