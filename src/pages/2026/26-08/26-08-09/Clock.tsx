@@ -1,86 +1,89 @@
-import customFont from '@/assets/fonts/26fonts/26-08-09.ttf?url';
-import rubikVideo from '@/assets/images/26_images/26-08/26-08-12/rubik.mp4?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
-import React, { memo, useMemo } from 'react';
+import { useSecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
+
+import hoursVideo from '@/assets/images/26_images/26-08/26-08-09/hours.webm?url';
+import minutesVideo from '@/assets/images/26_images/26-08/26-08-09/minutes.webm?url';
+import secondsVideo from '@/assets/images/26_images/26-08/26-08-09/seconds.webm?url';
 import styles from './Clock.module.css';
 
-export const assets: string[] = [rubikVideo, customFont];
+// 1. Asset Exports (Required for preloading pipeline)
+export const assets: string[] = [hoursVideo, minutesVideo, secondsVideo];
 
-const FONT_FAMILY = 'ClockFont_26_08_09';
-interface ClockProps {
-  /** Size of each video tile in CSS units (e.g. '200px', '20vw', '15rem') */
-  tileSize?: string;
-  /** Number of tile copies to render to cover large or high-resolution screens */
-  tileCount?: number;
-}
+const FONT_FAMILY = 'IBM Plex Mono';
 
-const Clock_26_08_12: React.FC<ClockProps> = ({
-  tileSize = '300px',
-  tileCount = 64,
-}) => {
-  const fontConfigs = useMemo<FontConfig[]>(() => [{ fontFamily: FONT_FAMILY, fontUrl: customFont }], []);
+// 3. Main Component
+const ClockComponent: React.FC = () => {
+  // Use the standardized time hook
+  const time = useSecondClock();
+
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: FONT_FAMILY,
+        // For Google Fonts, the fontUrl is the CSS API endpoint
+        fontUrl:
+          'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&display=swap',
+      },
+    ],
+    [],
+  );
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useMillisecondClock();
-
-  const { hours, minutes, seconds, milliseconds, accessibleTime } = useMemo(() => {
-    const hours = String(time.getHours()).padStart(2, '0');
-    const minutes = String(time.getMinutes()).padStart(2, '0');
-    const seconds = String(time.getSeconds()).padStart(2, '0');
-    const milliseconds = String(Math.floor(time.getMilliseconds() / 10)).padStart(2, '0');
-    const ampm = time.getHours() >= 12 ? 'PM' : 'AM';
-    const hours12 = String(time.getHours() % 12 || 12);
-
-    return {
-      hours,
-      minutes,
-      seconds,
-      milliseconds,
-      accessibleTime: `${hours12}:${minutes}:${seconds}.${milliseconds} ${ampm}`,
-    };
-  }, [time]);
-
-  // Dynamically compute the grid style based on the configurable tile size
-  const gridStyle = useMemo(
-    () => ({ gridTemplateColumns: `repeat(auto-fit, minmax(${tileSize}, 1fr))`, gridAutoRows: tileSize }),
-    [tileSize],
-  );
+  const hours = String(time.getHours()).padStart(2, '0');
+  const minutes = String(time.getMinutes()).padStart(2, '0');
+  const seconds = String(time.getSeconds()).padStart(2, '0');
 
   return (
     <main className={styles.container}>
-      <div className={styles.videoGridWrapper}>
-        <div className={styles.videoGrid} style={gridStyle}>
-          {Array.from({ length: tileCount }).map((_, i) => (
-            <video
-              key={i}
-              src={rubikVideo}
-              autoPlay
-              muted
-              loop
-              playsInline
-              style={tileVideoStyle}
-            />
-          ))}
-        </div>
-      </div>
-
-      <time dateTime={time.toISOString()} className={`${styles.digitalClock} ${styles.fontLoaded}`}>
-        <span className={styles.timePart}>{hours}</span>
-        <span className={styles.timePart}>{minutes}</span>
-        <span className={styles.timePart}>{seconds}</span>
-        <span className={styles.timePart}>{milliseconds}</span>
+      {/* Semantic <time> element for accessibility (Required) */}
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
       </time>
 
-      <span aria-live="polite" className={styles.srOnly}>
-        {accessibleTime}
-      </span>
+      {/* Clock UI */}
+      <div className={styles.videoWrapper}>
+        <div className={styles.videoContainer}>
+          <video
+            src={hoursVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className={styles.video}
+          />
+          <span className={styles.timeOverlay}>{hours}</span>
+        </div>
+        <div className={styles.videoContainer}>
+          <video
+            src={minutesVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className={styles.video}
+          />
+          <span className={styles.timeOverlay}>{minutes}</span>
+        </div>
+        <div className={styles.videoContainer}>
+          <video
+            src={secondsVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className={styles.video}
+          />
+          <span className={styles.timeOverlay}>{seconds}</span>
+        </div>
+      </div>
     </main>
   );
 };
 
-const MemoizedClock = memo(Clock_26_08_12);
+// 4. Performance: Wrap in React.memo + set displayName (Required)
+const MemoizedClock = React.memo(ClockComponent);
 MemoizedClock.displayName = 'Clock_26_08_09';
 
 export default MemoizedClock;
