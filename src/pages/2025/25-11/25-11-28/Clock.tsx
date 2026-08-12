@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useClockTime } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import li251128font from '@/assets/fonts/25fonts/25-11-28-line.otf?url';
 import patternImg from '@/assets/images/25_images/25-11/25-11-28/line.webp';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockTime } from '@/utils/hooks';
+import React, { useEffect, useState } from 'react';
 import styles from './Clock.module.css';
 
 // Export assets for preloading
@@ -67,6 +67,7 @@ export default function TimelineClock() {
       left: isVertical ? 0 : `${percent}%`,
       width: isVertical ? '100%' : '2.4px',
       height: isVertical ? '2.4px' : '100%',
+      backgroundColor: '#007bff', // A vibrant blue
     },
     comet: {
       top: isVertical ? `${comet}%` : '50%',
@@ -84,11 +85,8 @@ export default function TimelineClock() {
     <main className={styles.container}>
       <div className={styles.timeline}>
         <div 
-          className={styles.bar} 
-          style={{ 
-            backgroundImage: `url(${patternImg})`,
-            ...dynamicStyles.bar 
-          }} 
+          className={styles.bar}
+          style={{ backgroundColor: '#007bff' }} 
         />
         {/* Hour ticks (now diagonal) */}
         {ticks.map((t) => (

@@ -22,16 +22,19 @@
 
 .overlayImage {
   position: absolute;
-  inset: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: 100%; /* Give the element a height */
+  background-image: url('@/assets/images/26_images/26-08/26-08-08/lion.webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #007bff; /* A vibrant blue */
   z-index: 0;
-  opacity: 0.3; /* Increased opacity to make the blend effect more prominent */
-  /* Apply a filter to re-color the brown lion image to blue. */
-  filter: sepia(100%) hue-rotate(180deg) saturate(900%);
-  /* This blend mode will cause the lion to change color where it overlaps with other elements. */
-  mix-blend-mode: difference;
+  animation: pulseOpacity 7s ease-in-out infinite;
+  mix-blend-mode: screen; /* This makes highlights transparent and shadows blue */
 }
 
 .analogClock {
@@ -69,7 +72,7 @@
   width: 1px;
   height: 25%; /* Relative to clock size */
   /* Match the visual style of the numbers */
-  background-color: #c0c0c0; /* A neutral silver/grey base */
+  background-color: #c0c0c047; /* A neutral silver/grey base */
   box-shadow: -1px -1px 1px rgba(255, 255, 255, 0.8), 1px 1px 3px rgba(0, 0, 0, 1);
   z-index: 3;
   /* No transition: hands are driven by ~60 FPS JS updates for smooth forward movement */
@@ -79,7 +82,7 @@
   width: 1px;
   height: 35%; /* Relative to clock size */
   /* Match the visual style of the numbers */
-  background-color: #c0c0c0; /* A neutral silver/grey base */
+  background-color: #c0c0c058; /* A neutral silver/grey base */
   box-shadow: -1px -1px 1px rgba(255, 255, 255, 0.8), 1px 1px 3px rgba(0, 0, 0, 1);
   z-index: 4;
 }
@@ -109,4 +112,14 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+@keyframes pulseOpacity {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.4;
+  }
 }
