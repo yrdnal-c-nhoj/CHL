@@ -1,5 +1,5 @@
 import fontUrl from '@/assets/fonts/26fonts/26-08-10.otf?url';
-import fairVideo from '@/assets/images/26_images/26-08/26-08-10/fair.mp4';
+import fairVideo from '@/assets/images/26_images/26-08/26-08-11/fair.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
