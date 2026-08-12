@@ -1,10 +1,13 @@
+import customFont from '@/assets/fonts/26fonts/26-08-09.ttf?url';
 import rubikVideo from '@/assets/images/26_images/26-08/26-08-12/rubik.mp4?url';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import type { CSSProperties } from 'react';
-import React, { memo, useMemo } from 'react';
+import React, { memo, useMemo, type CSSProperties } from 'react';
 
-export const assets: string[] = [rubikVideo];
+export const assets: string[] = [rubikVideo, customFont];
 
+const FONT_FAMILY = 'ClockFont_26_08_09';
 interface ClockProps {
   /** Size of each video tile in CSS units (e.g. '200px', '20vw', '15rem') */
   tileSize?: string;
@@ -41,20 +44,21 @@ const tileVideoStyle: CSSProperties = {
   objectFit: 'cover',
 };
 
-const digitalClockStyle: CSSProperties = {
-  position: 'relative',
-  zIndex: 2,
-  fontSize: '18vmin',
-  fontWeight: 'bold',
-  letterSpacing: '0.05em',
-  textShadow: '0 0 5px #00bfff, 0 0 10px #00bfff, 0 0 20px #00bfff',
-  pointerEvents: 'none',
-};
-
 const Clock_26_08_12: React.FC<ClockProps> = ({
   tileSize = '300px',
   tileCount = 64,
 }) => {
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: FONT_FAMILY,
+        fontUrl: customFont,
+      },
+    ],
+    [],
+  );
+  useSuspenseFontLoader(fontConfigs);
+
   const time = useSecondClock();
 
   const { timeString, accessibleTime } = useMemo(() => {
@@ -85,6 +89,19 @@ const Clock_26_08_12: React.FC<ClockProps> = ({
     [tileSize]
   );
 
+  const digitalClockStyle: CSSProperties = useMemo(
+    () => ({
+      position: 'relative',
+      zIndex: 2,
+      fontSize: '18vmin',
+      fontWeight: 'bold',
+      letterSpacing: '0.05em',
+      textShadow: '0 0 5px #00bfff, 0 0 10px #00bfff, 0 0 20px #00bfff',
+      pointerEvents: 'none',
+      fontFamily: `${FONT_FAMILY}, 'Courier New', Courier, monospace`,
+    }),
+    [],
+  );
   return (
     <main style={containerStyle}>
       <div style={videoGridWrapperStyle}>
