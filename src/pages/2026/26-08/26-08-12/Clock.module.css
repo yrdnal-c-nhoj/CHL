@@ -1,24 +1,69 @@
 .container {
   width: 100vw;
   height: 100dvh;
+  background-color: #111;
+  color: #eee;
+  overflow: hidden;
+}
+
+/* Wrapper for all video containers */
+.videoWrapper {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #1a1a1a;
-  color: #e0e0e0;
-  font-family: 'Courier New', Courier, monospace;
+  width: 100%;
+  height: 100%;
+  /* Vertical layout for mobile by default */
+  flex-direction: column;
 }
 
-.digitalClock {
-  font-size: 18vmin;
+/* Container for each individual video */
+.videoContainer {
+  flex: 1; /* Each container takes equal space */
+  position: relative;
+  overflow: hidden;
+}
+
+.timeOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  color: rgb(209, 41, 41);
+  font-family: 'IBM Plex Mono', monospace;
   font-weight: bold;
-  letter-spacing: 0.05em;
-  text-shadow:
-    0 0 5px #00bfff,
-    0 0 10px #00bfff,
-    0 0 20px #00bfff;
+  font-size: 15vmin;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  line-height: 1;
 }
 
+.video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: fill;
+}
+
+/* Desktop/Laptop layout overrides */
+@media (min-width: 768px) {
+  .videoWrapper {
+    /* Horizontal layout for larger screens */
+    flex-direction: row;
+  }
+
+  .timeOverlay {
+    font-size: 15vw;
+  }
+}
+
+/* Standard from ARCHITECTURE.md for accessible, visually-hidden elements */
 .srOnly {
   position: absolute;
   width: 1px;

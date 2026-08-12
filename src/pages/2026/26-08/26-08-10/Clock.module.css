@@ -1,69 +1,24 @@
 .container {
-  position: relative;
   width: 100vw;
   height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #000;
+  background-image: url('@/assets/images/26_images/26-08/26-08-09/straw.webp');
+  background-size: cover;
+  background-position: center;
   color: #e0e0e0;
-  overflow: hidden;
-}
-
-.videoWrapper {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.backgroundVideo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top; /* Align video to the top to prevent top clipping */
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .digitalClock {
-  position: relative;
-  z-index: 1;
-  font-size: 12vmin;
-  font-family: 'Courier New', Courier, monospace;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.fontLoaded {
-  font-family: 'ClockFont_26_08_10', 'Courier New', Courier, monospace;
-}
-
-/*
- * Kinescope glow effect:
- * A soft, slightly blurred white glow to mimic old CRT screens.
- */
-.digit,
-.separator {
+  font-size: 18vmin;
+  font-weight: bold;
+  letter-spacing: 0.05em;
   text-shadow:
-    0 0 2px #ffffff,
-    0 0 6px #ffffff,
-    0 0 12px #ffffff;
-  filter: blur(0.5px);
-}
-
-/*
- * Each digit is in an invisible, fixed-width box to prevent jumping.
- * The 'em' unit scales the box relative to the font size.
- */
-.digit {
-  display: inline-block;
-  width: 0.8em;
-  text-align: center;
-}
-
-.separator {
-  display: inline-block;
-  width: 0.3em;
-  text-align: center;
+    0 0 5px #00bfff,
+    0 0 10px #00bfff,
+    0 0 20px #00bfff;
 }
 
 .srOnly {
@@ -76,24 +31,4 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
-}
-
-/*
- * On smaller screens (phones), stack the video on top of the clock.
- */
-@media (max-width: 767px) and (orientation: portrait) {
-  .container {
-    /* Stack video and clock vertically */
-    flex-direction: column-reverse;
-    /* Justify content from the end (bottom) to keep video at the bottom */
-    justify-content: flex-end;
-  }
-
-  .videoWrapper {
-    /* Make video a block element at the top, taking 50% of screen height */
-    position: relative;
-    width: 100%;
-    height: 50vh;
-  }
-
 }
