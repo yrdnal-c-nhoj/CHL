@@ -1,10 +1,9 @@
-import lionImage from '@/assets/images/26_images/26-08/26-08-08/lion.webp';
 import clockVideo from '@/assets/images/26_images/26-08/26-08-08/mount.mp4';
 import { useClockAngles } from '@/hooks/useClockAngles';
 import type { FontConfig } from '@/types/clock';
-import { ROMAN_NUMERALS } from '@/utils/dateUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks/useSmoothClock';
+import { ROMAN_NUMERALS } from '@/utils/romanNumerals';
 import React, { memo } from 'react';
 import styles from './Clock.module.css';
 
@@ -13,11 +12,6 @@ import fontUrl from '@/assets/fonts/26fonts/26-08-08.ttf?url';
 
 // 1. Asset Exports (Required for preloading pipeline)
 
-export const assets: string[] = [
-  clockVideo, // The preloader only handles single-video assets correctly. The font is handled by useSuspenseFontLoader.
-  lionImage,
-  fontUrl, // Explicitly export the font for preloading.
-];
 export const assets: string[] = [clockVideo]; // The preloader only handles single-video assets correctly. The font is handled by useSuspenseFontLoader.
 
 // 2. Font Configuration: Use the canonical Suspense loader with the local font file.
@@ -85,7 +79,7 @@ const ClockComponent: React.FC = () => {
                 className={styles.number}
                 style={{ '--angle': `${angle}deg` } as React.CSSProperties}
               >
-                {ROMAN_NUMERALS[i]}
+                {ROMAN_NUMERALS[i].toLowerCase()}
               </div>
             );
           })}
