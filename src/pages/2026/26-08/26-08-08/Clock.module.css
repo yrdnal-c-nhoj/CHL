@@ -26,7 +26,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.2; /* Increased opacity to make the blend effect more prominent */
+  z-index: 0;
+  opacity: 0.3; /* Increased opacity to make the blend effect more prominent */
   /* Apply a filter to re-color the brown lion image to blue. */
   filter: sepia(100%) hue-rotate(180deg) saturate(900%);
   /* This blend mode will cause the lion to change color where it overlaps with other elements. */
