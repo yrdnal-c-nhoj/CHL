@@ -1,5 +1,7 @@
 .container {
   width: 100vw;
+  opacity: 0; /* Initially hide the component */
+  transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
   height: 100dvh;
   background-color: #1a1a1a;
   color: #eee;
@@ -7,6 +9,14 @@
   justify-content: center;
   align-items: center;
   position: relative;
+}
+
+/*
+ * When the fonts and assets are ready, the parent page adds a 'fonts-ready' class.
+ * We use this to fade in the component, preventing a flash of unstyled content.
+ */
+:global(.fonts-ready) .container {
+  opacity: 1;
 }
 
 .videoGrid {
@@ -34,8 +44,7 @@
   position: relative;
   z-index: 1;
   font-family: 'ClockFont_26_08_12', monospace;
-  font-weight: 700;
-  font-size: 15vmin;
+  font-size: 18vmin;
   color: #fff;
   /* text-shadow:
     0 0 5px #fff,
@@ -50,10 +59,8 @@
 
 .digit {
   display: inline-block;
-  width: 0.6em;
+  width: 1em;
   text-align: center;
-  border: 2px solid #ff4136; /* A nice, bright red */
-  border-radius: 8px;
   padding: 0.1em 0;
   margin: 0 0.05em;
 }
@@ -68,4 +75,14 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* On smaller screens (phones), switch to a 2-column, 3-row grid */
+@media (max-width: 767px) {
+  .digitalClock {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1vmin; /* Add some space between the boxes */
+  }
 }
