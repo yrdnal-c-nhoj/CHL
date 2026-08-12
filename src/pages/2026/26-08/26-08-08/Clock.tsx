@@ -2,6 +2,7 @@ import lionImage from '@/assets/images/26_images/26-08/26-08-08/lion.webp';
 import clockVideo from '@/assets/images/26_images/26-08/26-08-08/mount.mp4';
 import { useClockAngles } from '@/hooks/useClockAngles';
 import type { FontConfig } from '@/types/clock';
+import { ROMAN_NUMERALS } from '@/utils/dateUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks/useSmoothClock';
 import React, { memo } from 'react';
@@ -24,22 +25,6 @@ const fontConfigs: FontConfig[] = [
     fontFamily: 'ClockFont_26_08_08',
     fontUrl,
   },
-];
-
-// Roman numerals for the clock face
-const ROMAN_NUMERALS = [
-  'i',
-  'ii',
-  'iii',
-  'iv',
-  'v',
-  'vi',
-  'vii',
-  'viii',
-  'ix',
-  'x',
-  'xi',
-  'xii',
 ];
 
 // 3. Main Component
