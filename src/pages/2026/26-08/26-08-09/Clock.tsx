@@ -2,8 +2,9 @@ import customFont from '@/assets/fonts/26fonts/26-08-09.ttf?url';
 import rubikVideo from '@/assets/images/26_images/26-08/26-08-12/rubik.mp4?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
-import React, { memo, useMemo, type CSSProperties } from 'react';
+import { useMillisecondClock } from '@/utils/hooks';
+import React, { memo, useMemo } from 'react';
+import styles from './Clock.module.css';
 
 export const assets: string[] = [rubikVideo, customFont];
 
@@ -15,97 +16,42 @@ interface ClockProps {
   tileCount?: number;
 }
 
-const containerStyle: CSSProperties = {
-  position: 'relative',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '100vw',
-  height: '100dvh',
-  backgroundColor: '#000',
-  color: '#e0e0e0',
-  fontFamily: "'Courier New', Courier, monospace",
-  overflow: 'hidden',
-};
-
-const videoGridWrapperStyle: CSSProperties = {
-  position: 'absolute',
-  inset: 0,
-  zIndex: 1,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  overflow: 'hidden',
-};
-
-const tileVideoStyle: CSSProperties = {
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-};
-
 const Clock_26_08_12: React.FC<ClockProps> = ({
   tileSize = '300px',
   tileCount = 64,
 }) => {
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [
-      {
-        fontFamily: FONT_FAMILY,
-        fontUrl: customFont,
-      },
-    ],
-    [],
-  );
+  const fontConfigs = useMemo<FontConfig[]>(() => [{ fontFamily: FONT_FAMILY, fontUrl: customFont }], []);
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useSecondClock();
+  const time = useMillisecondClock();
 
-  const { timeString, accessibleTime } = useMemo(() => {
+  const { hours, minutes, seconds, milliseconds, accessibleTime } = useMemo(() => {
     const hours = String(time.getHours()).padStart(2, '0');
     const minutes = String(time.getMinutes()).padStart(2, '0');
     const seconds = String(time.getSeconds()).padStart(2, '0');
+    const milliseconds = String(Math.floor(time.getMilliseconds() / 10)).padStart(2, '0');
     const ampm = time.getHours() >= 12 ? 'PM' : 'AM';
     const hours12 = String(time.getHours() % 12 || 12);
 
     return {
-      timeString: `${hours}:${minutes}:${seconds}`,
-      accessibleTime: `${hours12}:${minutes}:${seconds} ${ampm}`,
+      hours,
+      minutes,
+      seconds,
+      milliseconds,
+      accessibleTime: `${hours12}:${minutes}:${seconds}.${milliseconds} ${ampm}`,
     };
   }, [time]);
 
   // Dynamically compute the grid style based on the configurable tile size
-  const videoGridStyle: CSSProperties = useMemo(
-    () => ({
-      display: 'grid',
-      gridTemplateColumns: `repeat(auto-fit, minmax(${tileSize}, 1fr))`,
-      gridAutoRows: tileSize,
-      width: 'max(200vw, 2000px)',
-      height: 'max(200vh, 2000px)',
-      justifyContent: 'center',
-      alignContent: 'center',
-      flexShrink: 0,
-    }),
-    [tileSize]
+  const gridStyle = useMemo(
+    () => ({ gridTemplateColumns: `repeat(auto-fit, minmax(${tileSize}, 1fr))`, gridAutoRows: tileSize }),
+    [tileSize],
   );
 
-  const digitalClockStyle: CSSProperties = useMemo(
-    () => ({
-      position: 'relative',
-      zIndex: 2,
-      fontSize: '18vmin',
-      fontWeight: 'bold',
-      letterSpacing: '0.05em',
-      textShadow: '0 0 5px #00bfff, 0 0 10px #00bfff, 0 0 20px #00bfff',
-      pointerEvents: 'none',
-      fontFamily: `${FONT_FAMILY}, 'Courier New', Courier, monospace`,
-    }),
-    [],
-  );
   return (
-    <main style={containerStyle}>
-      <div style={videoGridWrapperStyle}>
-        <div style={videoGridStyle}>
+    <main className={styles.container}>
+      <div className={styles.videoGridWrapper}>
+        <div className={styles.videoGrid} style={gridStyle}>
           {Array.from({ length: tileCount }).map((_, i) => (
             <video
               key={i}
@@ -120,11 +66,14 @@ const Clock_26_08_12: React.FC<ClockProps> = ({
         </div>
       </div>
 
-      <time dateTime={time.toISOString()} style={digitalClockStyle}>
-        {timeString}
+      <time dateTime={time.toISOString()} className={`${styles.digitalClock} ${styles.fontLoaded}`}>
+        <span className={styles.timePart}>{hours}</span>
+        <span className={styles.timePart}>{minutes}</span>
+        <span className={styles.timePart}>{seconds}</span>
+        <span className={styles.timePart}>{milliseconds}</span>
       </time>
 
-      <span aria-live="polite" style={{ display: 'none' }}>
+      <span aria-live="polite" className={styles.srOnly}>
         {accessibleTime}
       </span>
     </main>
@@ -132,6 +81,6 @@ const Clock_26_08_12: React.FC<ClockProps> = ({
 };
 
 const MemoizedClock = memo(Clock_26_08_12);
-MemoizedClock.displayName = 'Clock_26_08_12';
+MemoizedClock.displayName = 'Clock_26_08_09';
 
 export default MemoizedClock;

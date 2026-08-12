@@ -1,22 +1,58 @@
 .container {
-  width: 100vw;
-  height: 100dvh;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #1a1a1a;
+  width: 100vw;
+  height: 100dvh;
+  background-color: #000;
   color: #e0e0e0;
   font-family: 'Courier New', Courier, monospace;
+  overflow: hidden;
+}
+
+.videoGridWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.videoGrid {
+  display: grid;
+  width: max(200vw, 2000px);
+  height: max(200vh, 2000px);
+  justify-content: center;
+  align-content: center;
+  flex-shrink: 0;
+}
+
+.tileVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .digitalClock {
-  font-size: 18vmin;
+  position: relative;
+  z-index: 2;
+  display: flex;
   font-weight: bold;
-  letter-spacing: 0.05em;
-  text-shadow:
-    0 0 5px #00bfff,
-    0 0 10px #00bfff,
-    0 0 20px #00bfff;
+  pointer-events: none;
+  text-shadow: 0 0 5px #00bfff, 0 0 10px #00bfff, 0 0 20px #00bfff;
+}
+
+.fontLoaded {
+  font-family: 'ClockFont_26_08_09', 'Courier New', Courier, monospace;
+}
+
+.timePart {
+  /* Default horizontal layout for desktop */
+  font-size: 18vmin;
+  letter-spacing: 0.1em;
 }
 
 .srOnly {
@@ -29,4 +65,20 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/*
+ * On smaller screens (phones), stack the time parts vertically.
+ */
+@media (max-width: 767px) and (orientation: portrait) {
+  .digitalClock {
+    flex-direction: column;
+    align-items: center;
+    gap: 2vh;
+  }
+
+  .timePart {
+    font-size: 15vmin;
+    letter-spacing: 0.1em;
+  }
 }
