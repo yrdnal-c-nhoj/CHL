@@ -1,33 +1,35 @@
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import React, { useEffect } from 'react';
+import React, { useMemo } from 'react';
 
-import hoursVideo from '@/assets/images/26_images/26-08/26-08-11/hours.mp4?url';
-import minutesVideo from '@/assets/images/26_images/26-08/26-08-11/minutes.mp4?url';
-import secondsVideo from '@/assets/images/26_images/26-08/26-08-11/seconds.mp4?url';
+import hoursVideo from '@/assets/images/26_images/26-08/26-08-11/hours.webm?url';
+import minutesVideo from '@/assets/images/26_images/26-08/26-08-11/minutes.webm?url';
+import secondsVideo from '@/assets/images/26_images/26-08/26-08-11/seconds.webm?url';
 import styles from './Clock.module.css';
 
 // 1. Asset Exports (Required for preloading pipeline)
 export const assets: string[] = [hoursVideo, minutesVideo, secondsVideo];
+
+const FONT_FAMILY = 'IBM Plex Mono';
 
 // 3. Main Component
 const ClockComponent: React.FC = () => {
   // Use the standardized time hook
   const time = useSecondClock();
 
-  // Load the Google Font
-  useEffect(() => {
-    const fontId = 'google-font-ibm-plex-mono';
-    if (document.getElementById(fontId)) return; // Already loaded
-
-    const link = document.createElement('link');
-    link.id = fontId;
-    link.rel = 'stylesheet';
-    link.href =
-      'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&display=swap';
-    document.head.appendChild(link);
-
-    return () => document.head.removeChild(link);
-  }, []);
+  const fontConfigs = useMemo<FontConfig[]>(
+    () => [
+      {
+        fontFamily: FONT_FAMILY,
+        // For Google Fonts, the fontUrl is the CSS API endpoint
+        fontUrl:
+          'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&display=swap',
+      },
+    ],
+    [],
+  );
+  useSuspenseFontLoader(fontConfigs);
 
   const hours = String(time.getHours()).padStart(2, '0');
   const minutes = String(time.getMinutes()).padStart(2, '0');
