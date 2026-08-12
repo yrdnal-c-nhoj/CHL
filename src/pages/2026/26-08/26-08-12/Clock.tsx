@@ -2,88 +2,69 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
-
-import hoursVideo from '@/assets/images/26_images/26-08/26-08-11/hours.webm?url';
-import minutesVideo from '@/assets/images/26_images/26-08/26-08-11/minutes.webm?url';
-import secondsVideo from '@/assets/images/26_images/26-08/26-08-11/seconds.webm?url';
 import styles from './Clock.module.css';
 
-// 1. Asset Exports (Required for preloading pipeline)
-export const assets: string[] = [hoursVideo, minutesVideo, secondsVideo];
+// 1. Asset Exports
+import tileVideo from '@/assets/images/26_images/26-08/26-08-12/tile.mp4';
 
-const FONT_FAMILY = 'IBM Plex Mono';
+export const assets: string[] = [tileVideo];
+
+// 2. Font Configuration
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'IBM Plex Mono',
+    fontUrl:
+      'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&display=swap',
+  },
+];
 
 // 3. Main Component
 const ClockComponent: React.FC = () => {
-  // Use the standardized time hook
   const time = useSecondClock();
-
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [
-      {
-        fontFamily: FONT_FAMILY,
-        // For Google Fonts, the fontUrl is the CSS API endpoint
-        fontUrl:
-          'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&display=swap',
-      },
-    ],
-    [],
-  );
   useSuspenseFontLoader(fontConfigs);
 
-  const hours = String(time.getHours()).padStart(2, '0');
-  const minutes = String(time.getMinutes()).padStart(2, '0');
-  const seconds = String(time.getSeconds()).padStart(2, '0');
+  const timeString = useMemo(() => {
+    const hours = String(time.getHours()).padStart(2, '0');
+    const minutes = String(time.getMinutes()).padStart(2, '0');
+    const seconds = String(time.getSeconds()).padStart(2, '0');
+    return `${hours}${minutes}${seconds}`;
+  }, [time]);
 
   return (
     <main className={styles.container}>
-      {/* Semantic <time> element for accessibility (Required) */}
+      <div className={styles.videoGrid}>
+        {Array.from({ length: 36 }).map((_, i) => (
+          <div key={i} className={styles.videoTile}>
+            <video
+              src={tileVideo}
+              className={styles.tileVideo}
+              autoPlay
+              loop
+              muted
+            />
+          </div>
+        ))}
+      </div>
+
       <time dateTime={time.toISOString()} className={styles.srOnly}>
-        {time.toTimeString()}
+        {time.toLocaleTimeString()}
       </time>
 
-      {/* Clock UI */}
-      <div className={styles.videoWrapper}>
-        <div className={styles.videoContainer}>
-          <video
-            src={hoursVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className={styles.video}
-          />
-          <span className={styles.timeOverlay}>{hours}</span>
-        </div>
-        <div className={styles.videoContainer}>
-          <video
-            src={minutesVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className={styles.video}
-          />
-          <span className={styles.timeOverlay}>{minutes}</span>
-        </div>
-        <div className={styles.videoContainer}>
-          <video
-            src={secondsVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className={styles.video}
-          />
-          <span className={styles.timeOverlay}>{seconds}</span>
-        </div>
+      <div className={styles.digitalClock}>
+        <span className={styles.digit}>{timeString[0]}</span>
+        <span className={styles.digit}>{timeString[1]}</span>
+        <span className={styles.separator}>:</span>
+        <span className={styles.digit}>{timeString[2]}</span>
+        <span className={styles.digit}>{timeString[3]}</span>
+        <span className={styles.separator}>:</span>
+        <span className={styles.digit}>{timeString[4]}</span>
+        <span className={styles.digit}>{timeString[5]}</span>
       </div>
     </main>
   );
 };
 
-// 4. Performance: Wrap in React.memo + set displayName (Required)
 const MemoizedClock = React.memo(ClockComponent);
-MemoizedClock.displayName = 'Clock_26_08_03';
+MemoizedClock.displayName = 'Clock_26_08_12';
 
 export default MemoizedClock;
