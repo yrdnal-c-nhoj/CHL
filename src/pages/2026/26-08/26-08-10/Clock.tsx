@@ -1,11 +1,12 @@
+import fairVideo from '@/assets/images/26_images/26-08/26-08-10/fair.mp4';
 import { useSecondClock } from '@/utils/hooks';
 import React, { memo, useMemo } from 'react';
 import styles from './Clock.module.css';
 
-// No external assets are needed for this simple clock.
-export const assets: string[] = [];
+// Export the video asset for preloading.
+export const assets: string[] = [fairVideo];
 
-const Clock_26_08_12: React.FC = () => {
+const Clock_26_08_10: React.FC = () => {
   const time = useSecondClock();
 
   const { timeString, accessibleTime } = useMemo(() => {
@@ -23,6 +24,16 @@ const Clock_26_08_12: React.FC = () => {
 
   return (
     <main className={styles.container}>
+      <div className={styles.videoWrapper}>
+        <video
+          className={styles.backgroundVideo}
+          src={fairVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+      </div>
       <time dateTime={time.toISOString()} className={styles.digitalClock}>
         {timeString}
       </time>
@@ -35,7 +46,7 @@ const Clock_26_08_12: React.FC = () => {
   );
 };
 
-const MemoizedClock = memo(Clock_26_08_12);
-MemoizedClock.displayName = 'Clock_26_08_12';
+const MemoizedClock = memo(Clock_26_08_10);
+MemoizedClock.displayName = 'Clock_26_08_10';
 
 export default MemoizedClock;
