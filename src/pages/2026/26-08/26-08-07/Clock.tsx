@@ -67,16 +67,21 @@ const digitalClockStyle: React.CSSProperties = {
  * 4. Deep directional drop shadow projecting onto the wall surface.
  */
 const textShadow = `
-  /* Top-down lighting with a sharp bottom shadow */
-  -0.01em -0.01em 0px rgba(255, 255, 255, 0.5), /* Subtle top highlight */
+  /* 1. Ultra-sharp top-left glint for a crisp, wet highlight */
+  -0.01em -0.01em 0.01em rgba(255, 255, 255, 0.8),
   
-  /* Bottom Bevel/Edge */
-  0em 0.02em 0px #C86060,
-  0em 0.04em 0px #AD4646,
-  0em 0.06em 0px #903131,
+  /* 2. Softer, warmer bloom highlight to give a golden sheen */
+  0.02em -0.01em 0.03em rgba(255, 215, 100, 0.5),
   
-  /* Sharp, defined drop shadow directly underneath */
-  0em 0.12em 4px rgba(0, 0, 0, 0.5)
+  /* 3. Deeper, more pronounced gold beveling for a bigger 3D effect */
+  0.01em 0.02em 0px #CD950C,  /* Richer Gold */
+  0.02em 0.04em 0px #A9710A,
+  0.03em 0.06em 0px #865008,
+  0.04em 0.08em 0px #633C06,
+  0.05em 0.10em 0px #402804,  /* Deepest brown for max extrusion */
+  
+  /* 4. A stronger, deeper, and slightly softer drop shadow for more depth */
+  0.08em 0.15em 15px rgba(0, 0, 0, 0.6)
 `;
 
 const textBaseStyle: React.CSSProperties = {
@@ -84,7 +89,7 @@ const textBaseStyle: React.CSSProperties = {
   fontSize: '15vmin',
   fontWeight: 900,
   lineHeight: 0.9,
-  color: '#E57373', // Main front face color
+  color: '#FFC700', // Main front face color: A richer, less yellow gold
   textShadow,
   transformStyle: 'preserve-3d',
 };
@@ -188,7 +193,7 @@ const Clock_26_08_07: React.FC = () => {
     const hours = time.getHours();
     const minutes = String(time.getMinutes()).padStart(2, '0');
     const ampm = hours >= 12 ? 'PM' : 'AM';
-    const hours12 = String(hours % 12 || 12).padStart(2, '0');
+    const hours12 = String(hours % 12 || 12);
     const timeString = `${hours12}:${minutes}`;
 
     return {
@@ -216,29 +221,30 @@ const Clock_26_08_07: React.FC = () => {
     const startCascade = () => {
       clearTimers(); // Ensure no old timers are running
 
-      const eligibleIndices = fullString
-      .split('')
-      .map((char, i) => (char === ':' ? -1 : i))
-      .filter((i) => i !== -1);
-
-      if (eligibleIndices.length === 0) return;
-
-      const colonIndex = fullString.indexOf(':');
-
       // --- New Randomized Timing Logic ---
+      // 1. All characters are now eligible to be part of the main animation group.
+      const allIndices = fullString.split('').map((_, i) => i);
 
-      // 1. The first digit always falls first, alone.
-      const firstToFallIndex = eligibleIndices.shift()!; // Remove the first digit from the list
-
-      // 2. The rest of the characters are shuffled for a random fall order.
-      const remainingIndices = eligibleIndices;
-      for (let i = remainingIndices.length - 1; i > 0; i--) {
+      // 2. Shuffle all indices to randomize their roles.
+      for (let i = allIndices.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [remainingIndices[i], remainingIndices[j]] = [remainingIndices[j], remainingIndices[i]];
+        [allIndices[i], allIndices[j]] = [allIndices[j], allIndices[i]];
       }
+
+      // 3. Decide if there will be a delayed final character.
+      const hasDelayedFinale = Math.random() > 0.25; // 75% chance of a finale
+      let lastToFallIndex: number | null = null;
+      const mainGroupIndices = allIndices;
+
+      if (hasDelayedFinale && allIndices.length > 1) {
+        lastToFallIndex = allIndices.pop()!;
+      }
+
+      if (mainGroupIndices.length === 0) return;
 
       // Function to trigger a character's fall sequence
       const triggerFall = (charIndex: number) => {
+        const SHAKE_DURATION = 1800; // ms
         // Start shaking
         setCharStates((prev) => {
           const next = [...prev];
@@ -261,16 +267,17 @@ const Clock_26_08_07: React.FC = () => {
             });
           }, FALL_ANIMATION_DURATION);
           animationTimers.current.push(fadeTimer);
-        }, 1800); // SHAKE_DURATION
+        }, SHAKE_DURATION);
         animationTimers.current.push(fallAnimTimer);
       };
 
-      // 3. Trigger the first digit immediately.
+      // 4. The first character from the shuffled main group falls immediately.
+      const firstToFallIndex = mainGroupIndices.shift()!;
       triggerFall(firstToFallIndex);
 
-      // 4. Trigger the rest of the characters at random intervals.
+      // 5. Trigger the rest of the main group at random intervals.
       let maxFallDelay = 0;
-      remainingIndices.forEach((charIndex) => {
+      mainGroupIndices.forEach((charIndex) => {
         // Stagger the rest of the falls over a random window starting after the first one.
         const fallDelay = 1000 + Math.random() * 2000; // Random delay between 1 and 3 seconds
         if (fallDelay > maxFallDelay) maxFallDelay = fallDelay;
@@ -281,60 +288,40 @@ const Clock_26_08_07: React.FC = () => {
         animationTimers.current.push(fallTimer);
       });
 
-      // --- Sequence Finale: Colon Fall, Fade Out, and Reset ---
+      // --- Sequence Finale: Last Character Fall, Fade Out, and Reset ---
 
-      const FALL_ANIMATION_DURATION = 1500; // ms
-      const SHAKE_DURATION = 1800; // ms
-      const FADE_DURATION = 200; // ms (from CSS transition)
+      const FALL_ANIMATION_DURATION = 1500;
+      const SHAKE_DURATION = 1800;
+      const FADE_DURATION = 200;
 
-      // Time when the last digit has finished its fall animation
+      // Time when the last character of the main group has finished its fall animation
       const lastDigitLandedTime = maxFallDelay + SHAKE_DURATION + FALL_ANIMATION_DURATION;
 
-      // 5. Schedule the colon to fall 2 seconds after the last digit lands.
-      const colonFallTimer = setTimeout(() => {
-        if (colonIndex === -1) return;
-        // Start shaking colon
-        setCharStates((prev) => {
-          const next = [...prev];
-          next[colonIndex] = 'shaking';
-          return next;
-        });
-        // After shaking, start falling
-        const colonAnimTimer = setTimeout(() => {
-          setCharStates((prev) => {
-            const next = [...prev];
-            next[colonIndex] = 'falling';
-            return next;
-          });
-          // After falling, start fading immediately
-          const fadeTimer = setTimeout(() => {
-            setCharStates((prev) => {
-              const next = [...prev];
-              if (next[colonIndex] === 'falling') next[colonIndex] = 'fading';
-              return next;
-            });
-          }, FALL_ANIMATION_DURATION);
-          animationTimers.current.push(fadeTimer);
-        }, SHAKE_DURATION);
-        animationTimers.current.push(colonAnimTimer);
-      }, lastDigitLandedTime + 2000);
-      animationTimers.current.push(colonFallTimer);
+      // 6. Schedule the final, randomly chosen character to fall after the main group lands.
+      if (lastToFallIndex !== null) {
+        const lastFallTimer = setTimeout(() => {
+          triggerFall(lastToFallIndex!);
+        }, lastDigitLandedTime + 2000);
+        animationTimers.current.push(lastFallTimer);
+      }
 
       // Schedule the final reset after all animations (including fade) are complete for the colon.
       const resetTimer = setTimeout(() => {
-        setCharStates(Array(fullString.length).fill('idle')); // Reset all to idle
+        setCharStates(Array(fullString.length).fill('idle'));
+
+        // Schedule the next cascade to start 1 second after this reset.
+        const nextCascadeTimer = setTimeout(startCascade, 1000);
+        animationTimers.current.push(nextCascadeTimer);
       }, lastDigitLandedTime + 2000 + SHAKE_DURATION + FALL_ANIMATION_DURATION + FADE_DURATION);
       animationTimers.current.push(resetTimer);
     };
 
-    // Start the first cascade after a delay, then repeat on a long interval
+    // Start the first cascade after an initial delay. Subsequent cascades are chained.
     const initial = setTimeout(startCascade, 2500);
-    const interval = setInterval(startCascade, 25000);
     animationTimers.current.push(initial);
 
     return () => {
       clearTimers();
-      clearInterval(interval);
     };
   }, [fullString]); // Rerun if the time string format changes (e.g. 9:59 -> 10:00)
 
