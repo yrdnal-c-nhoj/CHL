@@ -27,8 +27,7 @@
   position: relative;
   z-index: 1; /* Ensure clock is on top of the video */
   font-size: 18vmin;
-  font-weight: bold;
-  letter-spacing: 0.05em;
+  font-family: 'ClockFont_26_08_10', 'Courier New', Courier, monospace; /* Apply the custom font */
   text-shadow:
     0 0 5px #00bfff,
     0 0 10px #00bfff,
