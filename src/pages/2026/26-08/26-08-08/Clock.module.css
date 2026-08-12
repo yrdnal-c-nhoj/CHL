@@ -15,6 +15,7 @@
 .backgroundVideo {
   width: 100%;
   height: 100%;
+  z-index: 0  ;
   /* Cover ensures the video fills the entire container, cropping if necessary. */
   object-fit: cover;
 }
@@ -25,10 +26,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.2;
+  opacity: 0.2; /* Increased opacity to make the blend effect more prominent */
   /* Apply a filter to re-color the brown lion image to blue. */
-  filter: sepia(100%) hue-rotate(180deg) saturate(200%);
-  z-index: 0;
+  filter: sepia(100%) hue-rotate(180deg) saturate(900%);
+  /* This blend mode will cause the lion to change color where it overlaps with other elements. */
+  mix-blend-mode: difference;
 }
 
 .analogClock {
@@ -63,7 +65,7 @@
 }
 
 .hourHand {
-  width: 6px;
+  width: 1px;
   height: 25%; /* Relative to clock size */
   /* Match the visual style of the numbers */
   background-color: #c0c0c0; /* A neutral silver/grey base */
@@ -73,7 +75,7 @@
 }
 
 .minuteHand {
-  width: 4px;
+  width: 1px;
   height: 35%; /* Relative to clock size */
   /* Match the visual style of the numbers */
   background-color: #c0c0c0; /* A neutral silver/grey base */
@@ -81,12 +83,6 @@
   z-index: 4;
 }
 
-.centerDot {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  display: none; /* Hide the center dot */
-}
 
 .number {
   position: absolute;
