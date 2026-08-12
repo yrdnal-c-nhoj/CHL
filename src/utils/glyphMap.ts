@@ -76,3 +76,18 @@ export const GLYPH_MAP = {
     [3, 0, 3, 1, 1, 1],
   ],
 };
+
+/**
+ * Character set for Go pieces.
+ * These can be used to represent numbers or states in a clock face.
+ */
+export const GO_PIECES = {
+  BLACK: '●',
+  WHITE: '○',
+  EMPTY: '·',
+  // Corner and side markers for a Go board representation
+  TOP_LEFT: '┏',
+  TOP_RIGHT: '┓',
+  BOTTOM_LEFT: '┗',
+  BOTTOM_RIGHT: '┛',
+};
