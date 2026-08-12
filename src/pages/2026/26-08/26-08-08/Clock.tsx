@@ -18,6 +18,7 @@ export const assets: string[] = [
   lionImage,
   fontUrl, // Explicitly export the font for preloading.
 ];
+export const assets: string[] = [clockVideo]; // The preloader only handles single-video assets correctly. The font is handled by useSuspenseFontLoader.
 
 // 2. Font Configuration: Use the canonical Suspense loader with the local font file.
 const fontConfigs: FontConfig[] = [
