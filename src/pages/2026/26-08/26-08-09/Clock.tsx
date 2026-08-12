@@ -1,11 +1,12 @@
+import strawImage from '@/assets/images/26_images/26-08/26-08-09/straw.webp';
 import { useSecondClock } from '@/utils/hooks';
 import React, { memo, useMemo } from 'react';
 import styles from './Clock.module.css';
 
-// No external assets are needed for this simple clock.
-export const assets: string[] = [];
 
-const Clock_26_08_12: React.FC = () => {
+export const assets: string[] = [strawImage];
+
+const Clock_26_08_09: React.FC = () => {
   const time = useSecondClock();
 
   const { timeString, accessibleTime } = useMemo(() => {
@@ -35,7 +36,7 @@ const Clock_26_08_12: React.FC = () => {
   );
 };
 
-const MemoizedClock = memo(Clock_26_08_12);
-MemoizedClock.displayName = 'Clock_26_08_12';
+const MemoizedClock = memo(Clock_26_08_09);
+MemoizedClock.displayName = 'Clock_26_08_09';
 
 export default MemoizedClock;
