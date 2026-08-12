@@ -252,6 +252,15 @@ const Clock_26_08_07: React.FC = () => {
             if (next[charIndex] === 'shaking') next[charIndex] = 'falling';
             return next;
           });
+          // After falling, start fading immediately
+          const fadeTimer = setTimeout(() => {
+            setCharStates((prev) => {
+              const next = [...prev];
+              if (next[charIndex] === 'falling') next[charIndex] = 'fading';
+              return next;
+            });
+          }, FALL_ANIMATION_DURATION);
+          animationTimers.current.push(fadeTimer);
         }, 1800); // SHAKE_DURATION
         animationTimers.current.push(fallAnimTimer);
       };
@@ -263,7 +272,7 @@ const Clock_26_08_07: React.FC = () => {
       let maxFallDelay = 0;
       remainingIndices.forEach((charIndex) => {
         // Stagger the rest of the falls over a random window starting after the first one.
-        const fallDelay = 1000 + Math.random() * 4000;
+        const fallDelay = 1000 + Math.random() * 2000; // Random delay between 1 and 3 seconds
         if (fallDelay > maxFallDelay) maxFallDelay = fallDelay;
 
         const fallTimer = setTimeout(() => {
@@ -276,6 +285,7 @@ const Clock_26_08_07: React.FC = () => {
 
       const FALL_ANIMATION_DURATION = 1500; // ms
       const SHAKE_DURATION = 1800; // ms
+      const FADE_DURATION = 200; // ms (from CSS transition)
 
       // Time when the last digit has finished its fall animation
       const lastDigitLandedTime = maxFallDelay + SHAKE_DURATION + FALL_ANIMATION_DURATION;
@@ -296,22 +306,24 @@ const Clock_26_08_07: React.FC = () => {
             next[colonIndex] = 'falling';
             return next;
           });
+          // After falling, start fading immediately
+          const fadeTimer = setTimeout(() => {
+            setCharStates((prev) => {
+              const next = [...prev];
+              if (next[colonIndex] === 'falling') next[colonIndex] = 'fading';
+              return next;
+            });
+          }, FALL_ANIMATION_DURATION);
+          animationTimers.current.push(fadeTimer);
         }, SHAKE_DURATION);
         animationTimers.current.push(colonAnimTimer);
       }, lastDigitLandedTime + 2000);
       animationTimers.current.push(colonFallTimer);
 
-      // 6. Schedule the fade-out 1 second after the colon lands.
-      const colonLandedTime = lastDigitLandedTime + 2000 + SHAKE_DURATION + FALL_ANIMATION_DURATION;
-      const fadeOutTimer = setTimeout(() => {
-        setCharStates((prev) => prev.map(state => (state === 'falling' ? 'fading' : state)));
-      }, colonLandedTime + 1000);
-      animationTimers.current.push(fadeOutTimer);
-
-      // 7. Schedule the final reset 2 seconds after the fade-out begins.
+      // Schedule the final reset after all animations (including fade) are complete for the colon.
       const resetTimer = setTimeout(() => {
         setCharStates(Array(fullString.length).fill('idle')); // Reset all to idle
-      }, colonLandedTime + 1000 + 2000);
+      }, lastDigitLandedTime + 2000 + SHAKE_DURATION + FALL_ANIMATION_DURATION + FADE_DURATION);
       animationTimers.current.push(resetTimer);
     };
 
@@ -362,7 +374,7 @@ const Clock_26_08_07: React.FC = () => {
             transform: 'translateY(48vh) translateZ(15px) rotateX(88deg) rotateY(15deg) rotateZ(-20deg)',
             textShadow: '10px 10px 8px rgba(0,0,0,0.5), 0 0 1px rgba(0,0,0,0.3)',
             opacity: 0,
-            transition: 'opacity 1s ease-out',
+            transition: 'opacity 0.2s ease-out',
           };
         default:
           return base;
