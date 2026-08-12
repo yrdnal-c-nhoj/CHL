@@ -69,11 +69,7 @@ const ClockComponent: React.FC = () => {
           muted
           playsInline
         />
-        <img
-          src={lionImage}
-          className={styles.overlayImage}
-          alt="" // Decorative image, alt text is not needed
-        />
+        <div className={styles.overlayImage} />
       </div>
 
       {/* Semantic <time> element for accessibility (Required) */}
