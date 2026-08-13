@@ -53,7 +53,6 @@ const TagList: FC = () => {
       </div>
     );
 
-
   return (
     <div className={listStyles.listPageContainer}>
       <TopNav />

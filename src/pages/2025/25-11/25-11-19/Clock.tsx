@@ -30,7 +30,6 @@ export default function AnalogClock() {
   const clockTime = useSecondClock();
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
-
   // 3. Format Time
   const displayTime = useMemo(() => {
     const h = String(time.getHours()).padStart(2, '0');

@@ -34,7 +34,6 @@ const ErasingClock =  () => {
   const clockTime = useMillisecondClock(16);
   useEffect(() => { setNow(clockTime); }, [clockTime, setNow]);
 
-
   /* ---------- Cycle Calculation ---------- */
   const perfNow = performance.now() - epochRef.current;
   const cycleIndex = Math.floor(perfNow / CYCLE);

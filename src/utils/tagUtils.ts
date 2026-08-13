@@ -12,7 +12,6 @@ export function normalizeTags(input: string): string[] {
   ).sort();
 }
 
-
 /**
  * Sorts tags alphabetically but keeps priority tags at the beginning.
  */

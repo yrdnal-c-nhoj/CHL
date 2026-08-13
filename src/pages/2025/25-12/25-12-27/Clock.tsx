@@ -9,7 +9,6 @@ const ConcentricClock =  () => {
   const clockTime = useSecondClock();
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
-
   const seconds = time.getSeconds();
   const minutes = time.getMinutes();
   const hours = time.getHours() % 12;

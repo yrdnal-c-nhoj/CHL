@@ -1,6 +1,6 @@
 import clockFont from '@/assets/fonts/26fonts/26-06-11.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-06/26-06-11/ukulele.webp';
-import { useSuspenseFontLoader } from '@/utils/enhancedFontLoader';
+import { useSuspenseFontLoader, ClockLoadingFallback } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
@@ -28,7 +28,6 @@ const ClockComponent =  () => {
     window.addEventListener('resize', updateGrid);
     return () => window.removeEventListener('resize', updateGrid);
   }, [tileSize]);
-
 
   // Replace these with the specific characters you picked out for your font mapping
   const numbers = useMemo(

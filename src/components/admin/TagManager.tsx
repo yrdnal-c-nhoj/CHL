@@ -22,10 +22,6 @@ export default function TagManager() {
           String((error as any).message)
         : undefined;
 
-
-
-
-
   const [searchTerm, setSearchTerm] = useState('');
   const [sortConfig, setSortConfig] = useState<{
     key: 'date' | 'title';
@@ -47,7 +43,6 @@ export default function TagManager() {
   const collapseAll = () => {
     setExpandedMonths({});
   };
-
 
   // Local state to store edited tags, keyed by the clock's date
   const [localTags, setLocalTags] = useState<Record<string, string>>({});
@@ -86,8 +81,6 @@ export default function TagManager() {
       direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc',
     }));
   };
-
-
 
   const groupedByMonth = useMemo(() => {
     const filtered = items.filter(item => 
@@ -137,8 +130,6 @@ export default function TagManager() {
     );
   }
 
-
-
   // Extract all unique tags with counts for the selection elements
   const { allExistingTags, tagCounts } = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -153,7 +144,6 @@ export default function TagManager() {
       tagCounts: counts
     };
   }, [items]);
-
 
   const editedClockPagesJson = useMemo(() => {
     const updated = items.map((it) => {

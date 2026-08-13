@@ -21,7 +21,6 @@ export default function MonarchClock() {
   const clockTime = useMillisecondClock(25);
   useEffect(() => { setNow(clockTime); }, [clockTime, setNow]);
 
-
   /* ------------------------------------------------------------------
      2. Preload and load font with scoping
   ------------------------------------------------------------------ */

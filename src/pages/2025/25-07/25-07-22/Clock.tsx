@@ -187,8 +187,6 @@ const BarrelrollClock =  () => {
           transform: translate(-50%, -50%) rotate(calc(30deg * var(--i))) translateY(-42vmin) rotate(calc(-30deg * var(--i)));
         }
 
-
-
      
       `}</style>
 

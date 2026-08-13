@@ -127,11 +127,6 @@ const Pendulum =  () => {
           height: 18vw;
         }
 
-
-
-
-
-
   .piece::after {
     content: attr(data-digit);
     border-radius: 50%;

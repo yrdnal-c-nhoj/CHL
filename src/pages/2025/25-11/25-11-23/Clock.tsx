@@ -14,7 +14,6 @@ export default function DigitalStackClock() {
   const clockTime = useMillisecondClock(250);
   useEffect(() => { setNow(clockTime); }, [clockTime, setNow]);
 
-
   // Format time
   const hh = String(now.getHours()).padStart(2, '0');
   const mm = String(now.getMinutes()).padStart(2, '0');

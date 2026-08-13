@@ -21,7 +21,6 @@ const pad = (num: number): string => num.toString().padStart(2, '0');
  */
 export { useClockTime } from '@/utils/hooks/useClockTime';
 
-
 /**
  * Formats a Date object into a string based on the specified format.
  */

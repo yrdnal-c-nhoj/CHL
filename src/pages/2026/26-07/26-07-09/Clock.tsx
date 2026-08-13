@@ -108,10 +108,6 @@ const AnalogClock =  () => {
   );
 };
 
-
-
-
-
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
     width: '100vw',

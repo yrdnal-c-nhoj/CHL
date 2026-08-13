@@ -48,7 +48,6 @@ const TopNav =  () => {
           <li className={styles.navItem}>
             <Link to="/today" className={`${styles.navLink} ${isActive('/today') ? styles.active : ''}`} onClick={closeMenu}>TODAY</Link>
 
-
           </li>
         </ul>
       </nav>

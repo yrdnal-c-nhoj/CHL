@@ -3,7 +3,7 @@ import frameImg from '@/assets/images/25_images/25-06/25-06-01/frame.jpg';
 import stampImg from '@/assets/images/25_images/25-06/25-06-01/stamp.png';
 import stamp2Img from '@/assets/images/25_images/25-06/25-06-01/stamp2.png';
 import stamp3Img from '@/assets/images/25_images/25-06/25-06-01/stamp3.png';
-import { useMultipleFontLoader } from '@/utils/assetLoader';
+
 import { useMillisecondClock } from '@/utils/hooks';
 
 // Font loading handled by useMultipleFontLoader

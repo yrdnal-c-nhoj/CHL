@@ -34,7 +34,6 @@ export default function ProcessingCounterClock() {
   const clockTime = useMillisecondClock(100);
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
-
   // === Mobile resize watcher ===
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);

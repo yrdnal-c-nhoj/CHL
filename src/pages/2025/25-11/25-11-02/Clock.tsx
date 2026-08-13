@@ -70,7 +70,6 @@ export default function MonarchScene() {
   const clockTime = useMillisecondClock(25);
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
-
   const h = String(time.getHours()).padStart(2, '0');
   const m = String(time.getMinutes()).padStart(2, '0');
   const s = String(time.getSeconds()).padStart(2, '0');

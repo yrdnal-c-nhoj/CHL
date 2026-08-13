@@ -12,7 +12,6 @@ const TiltedReverseClock =  () => {
   const clockTime = useSecondClock();
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
-
   // Load font
   useEffect(() => {
     const style = document.createElement('style');

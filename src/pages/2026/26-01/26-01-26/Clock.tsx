@@ -32,7 +32,6 @@ const DynamicComponent =  () => {
   const clockTime = useSecondClock();
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
-
   const timeString = time
     .toLocaleTimeString('en-US', {
       hour12: true,

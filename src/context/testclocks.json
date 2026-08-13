@@ -6566,10 +6566,10 @@
     "title": "337.5° North-Northwest",
     "tags": [
       "analog",
-      "wind",
       "cardinal-directions",
+      "lion",
       "roman-numeral",
-      "lion"
+      "wind"
     ]
   },
   {
@@ -6580,7 +6580,7 @@
       "digital",
       "ampm",
       "day-and-night",
-      "earth",  
+      "earth",
       "landscape",
       "tree"
     ]
@@ -6594,19 +6594,18 @@
       "color",
       "fruit",
       "red",
-      "smell",
-      "fruit"
+      "smell"
     ]
   },
   {
     "path": "26-08-11",
     "date": "26-08-11",
     "title": "Electric Tower",
-    "tags": [     
+    "tags": [
       "digital",
-      "electricity",
-      "1901", 
-      "Buffalo"
+      "1901",
+      "Buffalo",
+      "electricity"
     ]
   },
   {
@@ -6616,8 +6615,7 @@
     "tags": [
       "digital",
       "color",
-       "hand"
+      "hand"
     ]
-    
   }
 ]

@@ -19,7 +19,6 @@ function useClock() {
   const clockTime = useSecondClock();
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
-
   return time;
 }
 

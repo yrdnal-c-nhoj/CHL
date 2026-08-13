@@ -40,7 +40,6 @@ const VTEC =  () => {
   const idCounter = useRef(0);
   const [hasMounted, setHasMounted] = useState(false);
 
-
   // Load and suspend rendering until the custom font is ready
   useSuspenseFontLoader(fontConfigs);
 

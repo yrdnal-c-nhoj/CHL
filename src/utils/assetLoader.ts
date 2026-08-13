@@ -385,94 +385,6 @@ export function useAudioLoader(config: AudioAssetConfig): {
 }
 
 /**
- * ⚠️ DEPRECATED — Use useSuspenseFontLoader from '@/utils/fontLoader' instead.
- *
- * Standardized font loading hook (non-suspense, kept for backward compatibility).
- */
-export function useFontLoader(config: FontAssetConfig): {
-  state: AssetLoadState;
-  error: Error | null;
-} {
-  const [state, setState] = useState<AssetLoadState>('loading');
-  const [error, setError] = useState<Error | null>(null);
-
-  const loadFont = useCallback(async () => {
-    const fontKey = `${config.family || 'font'}-${config.src}`;
-    
-    if (fontRegistry.has(fontKey)) {
-      try {
-        await fontRegistry.get(fontKey);
-        setState('loaded');
-        return;
-      } catch (err) {
-        setError(err as Error);
-        setState('error');
-        return;
-      }
-    }
-
-    const loadPromise = (async () => {
-      const family = config.family || `font-${Math.random().toString(36).slice(2, 7)}`;
-      const descriptors: FontFaceDescriptors = {};
-      const weight = config.weight;
-      const style = config.style;
-      if (weight) descriptors.weight = weight;
-      if (style) descriptors.style = style;
-
-      const font = new FontFace(family, `url(${config.src})`, descriptors);
-
-      const loadedFont = await font.load();
-      document.fonts.add(loadedFont);
-      return loadedFont;
-    })();
-
-    fontRegistry.set(fontKey, loadPromise);
-
-    try {
-      await loadPromise;
-      setState('loaded');
-    } catch (err) {
-      setError(err as Error);
-      setState('error');
-    }
-  }, [config]);
-
-  useEffect(() => {
-    if (config.preload !== false) {
-      loadFont();
-    }
-  }, [loadFont, config.preload]);
-
-  return { state, error };
-}
-
-/**
- * ⚠️ DEPRECATED — Use useSuspenseFontLoader from '@/utils/fontLoader' instead.
- *
- * Hook for loading multiple fonts, often used by clocks.
- * Provides both names to satisfy different implementation styles.
- */
-export function useMultiFontLoader<T extends Record<string, FontAssetConfig>>(
-  configs: T,
-): {
-  states: Record<keyof T, AssetLoadState>;
-  errors: Record<keyof T, Error | null>;
-  isAllLoaded: boolean;
-  hasErrors: boolean;
-  loadedCount: number;
-  totalCount: number;
-} {
-  // Re-use the logic from MultiAssetLoader which is now enhanced for fonts
-  return useMultiAssetLoader(configs);
-}
-
-/**
- * ⚠️ DEPRECATED — Use useSuspenseFontLoader from '@/utils/fontLoader' instead.
- * Alias to fix "useMultipleFontLoader is not defined" errors in existing clocks.
- */
-export const useMultipleFontLoader = useMultiFontLoader;
-
-/**
  * Multi-asset loading hook for clocks with multiple assets
  */
 export function useMultiAssetLoader<T extends Record<string, AssetConfig>>(
@@ -708,9 +620,6 @@ export default {
   useVideoLoader,
   useAudioLoader,
   useMultiAssetLoader,
-  useFontLoader,
-  useMultiFontLoader,
-  useMultipleFontLoader,
   preloadAssets,
   AssetUtils,
 };

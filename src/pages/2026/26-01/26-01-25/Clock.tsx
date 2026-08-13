@@ -16,7 +16,6 @@ const AnalogClockTemplate =  () => {
   const clockTime = useSecondClock();
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
-
   // Organic, random-like opacity animation
   useEffect(() => {
     let mounted = true;

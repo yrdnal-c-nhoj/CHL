@@ -33,7 +33,6 @@ const DynamicClockComponent =  () => {
   const clockTime = useSecondClock();
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
-
   const formattedTime = time
     .toLocaleTimeString('en-US', {
       hour: '2-digit',
