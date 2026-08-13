@@ -1,0 +1,86 @@
+.container {
+  height: 100dvh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: #000;
+  font-family: 'Dir', serif;
+  overflow: hidden;
+}
+
+.sun {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 600px;
+  max-height: 600px;
+  z-index: 0;
+  filter: hue-rotate(322deg) contrast(180%) saturate(160%);
+  pointer-events: none;
+}
+
+.clockFace {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clock {
+  width: 90vmin;
+  height: 90vmin;
+  border-radius: 50%;
+  position: relative;
+  color: #abe5f3;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.numeral {
+  position: absolute;
+  font-size: 7vh;
+}
+
+.hourHand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom;
+  background: #abe5f3;
+  width: 2%;
+  height: 25%;
+}
+
+.minuteHand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom;
+  background: #abe5f3;
+  width: 1%;
+  height: 35%;
+}
+
+.secondHand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom;
+  background: #abe5f3;
+  width: 0.4%;
+  height: 45%;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
