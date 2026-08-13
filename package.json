@@ -15,9 +15,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "type-check": "tsc --noEmit -p tsconfig.ci.json",
-    "clean": "rm -rf dist",
-    "perf:analyze": "vite build --mode production && npx source-map-explorer 'dist/assets/*.js'",
-    "optimize:images": "npx sharp-cli -i ./src/assets/images -o ./src/assets/images --webp",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
