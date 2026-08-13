@@ -1,10 +1,30 @@
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import styles from './Clock.module.css';
 
+// --- Project Standards ---
+
+// 1. Asset Exports (for preloading)
+// These fonts are from Google Fonts and will be loaded via the font loader.
+export const assets: string[] = [];
+
+// 2. Font Configuration
+const fontConfigs = [
+  { fontFamily: 'Abril Fatface', options: { weight: '400', style: 'normal' } },
+  { fontFamily: 'Space Mono', options: { weight: '700', style: 'normal' } },
+];
+
 // --- Utilities ---
 
+// Memoize formatters to avoid re-creating functions on each render
+const useTimeFormatters = () => {
+  return useMemo(() => ({
+    formatHour: (date: Date): string => date.getHours().toString().padStart(2, '0'),
+    formatMinute: (date: Date): string => date.getMinutes().toString().padStart(2, '0'),
+  }), []);
+};
 const formatHour = (date: Date): string =>
   date.getHours().toString().padStart(2, '0');
 const formatMinute = (date: Date): string =>
@@ -47,10 +67,14 @@ const updateSphereCanvas = (
 
 // --- Component ---
 
-const Clock =  () => {
+const ClockComponent: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const time = useMillisecondClock();
+  const { formatHour, formatMinute } = useTimeFormatters();
 
+  // Use the standard font loader
+  useSuspenseFontLoader(fontConfigs);
+  
   // Refs to Three.js objects for direct updates without re-renders
   const planetMaterialRef = useRef<THREE.MeshStandardMaterial | null>(null);
   const moonMaterialRef = useRef<THREE.MeshStandardMaterial | null>(null);
@@ -208,47 +232,42 @@ const Clock =  () => {
     const hourStr = formatHour(time);
     const minuteStr = formatMinute(time);
 
-    if (planetMaterialRef.current?.map) {
-      const tex = planetMaterialRef.current.map as THREE.CanvasTexture;
+    const planetMap = planetMaterialRef.current?.map as THREE.CanvasTexture | undefined;
+    if (planetMap?.image) {
       updateSphereCanvas(
-        tex.image,
+        planetMap.image,
         hourStr,
         '#1034A6',
         '900 300px "Abril Fatface", serif',
       );
-      // Apply silver color
-      const canvas = tex.image as HTMLCanvasElement;
-      const ctx = canvas.getContext('2d')!;
-      ctx.fillStyle = '#E8E8E8';
-      ctx.fillText(hourStr, canvas.width * 0.25, canvas.height / 2);
-      ctx.fillText(hourStr, canvas.width * 0.75, canvas.height / 2);
-      tex.needsUpdate = true;
+      planetMap.needsUpdate = true;
     }
 
-    if (moonMaterialRef.current?.map) {
-      const tex = moonMaterialRef.current.map as THREE.CanvasTexture;
+    const moonMap = moonMaterialRef.current?.map as THREE.CanvasTexture | undefined;
+    if (moonMap?.image) {
       updateSphereCanvas(
-        tex.image,
+        moonMap.image,
         minuteStr,
         '#FF4500',
         'bold 120px "Space Mono", monospace',
       );
-      // Apply silver color
-      const canvas = tex.image as HTMLCanvasElement;
-      const ctx = canvas.getContext('2d')!;
-      ctx.fillStyle = '#E8E8E8';
-      ctx.fillText(minuteStr, canvas.width * 0.25, canvas.height / 2);
-      ctx.fillText(minuteStr, canvas.width * 0.75, canvas.height / 2);
-      tex.needsUpdate = true;
+      moonMap.needsUpdate = true;
     }
-  }, [time]);
+  }, [time, formatHour, formatMinute]);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
       <div className={styles.gradientOverlay} />
       <div ref={containerRef} className={styles.canvasContainer} />
-    </div>
+    </main>
   );
 };
 
-export default Clock;
+// 4. Performance: Wrap in React.memo + set displayName (Required)
+const MemoizedClock = React.memo(ClockComponent);
+MemoizedClock.displayName = 'Clock_26_04_02';
+
+export default MemoizedClock;
