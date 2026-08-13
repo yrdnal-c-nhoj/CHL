@@ -31,7 +31,6 @@
   width: 100%;
   max-width: 100%;
   font-family: var(--font-arimo);
-  text-transform: lowercase;
   font-weight: normal;
 }
 
@@ -50,8 +49,9 @@
 
 .simpleListImage {
   display: grid;
-  /* Default Tablet/Laptop: Date | Thumbnail | Content */
-  grid-template-columns: 2em 110px 1fr;
+  /* Date | Content | Thumbnail */
+  /* Date | Image | Title/Tags | Number */
+  grid-template-columns: 2em 110px 1fr auto;
   align-items: start;
   justify-items: start;
   gap: 0.5rem;
@@ -64,13 +64,16 @@
 }
 /* Keep columns from being affected by content sizing */
 .simpleListImage > :nth-child(1),
-.simpleListImage > :nth-child(3) {
+.simpleListImage > :nth-child(2) {
   min-width: 0;
   align-self: start;
 }
-
-.simpleListImage > :nth-child(2) {
+.simpleListImage > :nth-child(3) {
   align-self: start;
+}
+
+.titleNumberRow {
+  display: contents; /* Allow children to participate in the parent grid */
 }
 
 .contentStack {
@@ -78,15 +81,14 @@
   flex-direction: column;
   width: 100%;
   min-width: 0; /* Important for ellipsis on Title */
-  gap: 0.1rem;
 }
 
 .titleNumberRow {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: baseline;
   width: 97%;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .simpleListImage:hover {
@@ -112,14 +114,14 @@
 .simpleListDate {
   display: flex;
   flex-direction: column;
-  align-items: right;
+  align-items: left;
   line-height: 1.3;
   font-size: 1.1rem;
   font-family: var(--font-barlow-condensed);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.09rem;
   color: #5b5b5d;
-  text-align: right;
+  text-align: left;
 }
 
 .simpleListNumber {
@@ -129,17 +131,18 @@
   font-family: var(--font-barlow-condensed);
   letter-spacing: 0.1rem;
   color: #5b5b5d;
+  grid-column: 4; /* Place in the fourth column */
 }
 
 .simpleListTitle {
-  flex: 1;
   font-size: 1.2rem;
   letter-spacing: 0.05rem;
   font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-align: center;
+  text-align: left;
+  grid-column: 3; /* Place in the third column */
 }
 
 @media (min-width: 768px) {
@@ -149,8 +152,8 @@
   }
 
   .simpleListImage {
-    grid-template-columns: 1em 100px 1fr;
-    gap: 1.5rem;
+    grid-template-columns: 1em 100px 1fr auto;
+    gap: 1rem;
   }
 
   .thumbnailWrapper {
