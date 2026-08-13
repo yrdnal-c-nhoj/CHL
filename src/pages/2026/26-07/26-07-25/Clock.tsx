@@ -135,7 +135,6 @@ export default function HexClock() {
     >
       <style>{`
 
-
 .top-explanation-bar {
   width: 100vw;
   margin: 0 auto;    /* Centers the bar */
@@ -152,10 +151,6 @@ export default function HexClock() {
   /* Prevents single-word overflow lines */
   text-wrap: balance; 
 }
-
-
-
-
 
         .tech-shadow {
           text-shadow: 

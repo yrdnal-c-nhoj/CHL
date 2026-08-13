@@ -20,5 +20,4 @@ const Header: React.FC<HeaderProps> = ({ visible }) => {
   );
 };
 
-
 export default Header;

@@ -1,6 +1,6 @@
 import dodecahedronFontFile from '@/assets/fonts/25fonts/25-08-27-root.ttf'; // fixed path for existing asset
 import backgroundImage from '@/assets/images/25_images/25-08/25-08-27/rootsu.gif';
-import { useSuspenseFontLoader } from '@/utils/enhancedFontLoader';
+import { useSuspenseFontLoader, ClockLoadingFallback } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useEffect, useMemo, useRef } from 'react';
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useGlobalStyles, useKeyframes } from '@/utils/enhancedFontLoader';
 
 const DigitalClock =  () => {
   const time = useMillisecondClock();

@@ -160,7 +160,6 @@ const AnalogClock =  () => {
     0 0 4px #D4AF37;
 }
 
-
     `;
     document.head.appendChild(styleSheet);
 

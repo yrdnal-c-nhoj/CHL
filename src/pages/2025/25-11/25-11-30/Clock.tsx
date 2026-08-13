@@ -32,7 +32,6 @@ export default function DigitalClock() {
   const clockTime = useSecondClock();
   useEffect(() => { setNow(clockTime); }, [clockTime, setNow]);
 
-
   // --- 3. Time Calculations and Leetspeak (Unchanged) ---
   const digitMap = {
     0: '1',

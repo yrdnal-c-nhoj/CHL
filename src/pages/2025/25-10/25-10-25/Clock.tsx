@@ -35,7 +35,6 @@ const EntropyClock =  () => {
   const clockTime = useSecondClock();
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
-
   // --- Trigger fade-in for each animation cycle ---
   useEffect(() => {
     // Hide clock first

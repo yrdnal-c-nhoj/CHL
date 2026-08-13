@@ -16,7 +16,6 @@ export default function AnalogClock() {
   const clockTime = useMillisecondClock(50);
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
-
   // Preload images and font
   useEffect(() => {
     const loadFont = async () => {

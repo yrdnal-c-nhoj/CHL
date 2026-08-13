@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useEnhancedFontLoader } from '@/utils/enhancedFontLoader';
+
 import { useMillisecondClock } from '@/utils/hooks';
 
 // === Local assets ===

@@ -1,4 +1,4 @@
-import { useGlobalStyles } from '@/utils/enhancedFontLoader';
+
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, {
   useEffect,

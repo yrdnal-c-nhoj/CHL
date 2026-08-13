@@ -38,7 +38,6 @@ const TagByImage = React.lazy(() => import('./components/admin/TagByImage'));
 const AllTagsPage = React.lazy(() => import('./pages/AllTagsPage'));
 const AdminDashboard = React.lazy(() => import('./components/admin/AdminDashboard'));
 
-
 // Configuration constants
 const BASE_URL = 'https://www.cubistheart.com';
 const DYNAMIC_CLOCK_REGEX = /^\/\d{2}-\d{2}-\d{2}$/;

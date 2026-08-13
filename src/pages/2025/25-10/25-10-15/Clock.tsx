@@ -31,7 +31,6 @@ export default function BrahmiClock() {
   const clockTime = useSecondClock();
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
-
   const hours = toBrahmi(time.getHours().toString().padStart(2, '0'));
   const minutes = toBrahmi(time.getMinutes().toString().padStart(2, '0'));
   const seconds = toBrahmi(time.getSeconds().toString().padStart(2, '0'));

@@ -38,7 +38,6 @@ export default function DigitalClock() {
   const clockTime = useSecondClock();
   useEffect(() => { setCurrentTime(clockTime); }, [clockTime, setCurrentTime]);
 
-
   // Animate shadow rotation
   useEffect(() => {
     let animationFrameId;

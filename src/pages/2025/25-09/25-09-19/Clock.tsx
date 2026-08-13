@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
-import { useKeyframes , useGlobalStyles , useEnhancedFontLoader } from '@/utils/enhancedFontLoader';
+
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-09/25-09-19/oort.jpg';
 

@@ -27,7 +27,6 @@ export default function App() {
   const clockTime = useSecondClock();
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
-
   useEffect(() => {
     const handleResize =  () => {
       setTime(new Date()); // Trigger re-render to recalculate layout

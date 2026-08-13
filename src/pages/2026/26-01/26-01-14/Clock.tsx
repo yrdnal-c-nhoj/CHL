@@ -20,7 +20,6 @@ export default function KurosawaClock() {
   const clockTime = useSecondClock();
   useEffect(() => { setNow(clockTime); }, [clockTime, setNow]);
 
-
   useEffect(() => {
     const font = new FontFace(FONT_NAME, `url(${romanFont})`);
     font

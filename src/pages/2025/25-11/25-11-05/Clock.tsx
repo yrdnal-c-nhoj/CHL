@@ -176,7 +176,6 @@ function ModernDigitalClock() {
   const clockTime = useMillisecondClock(100);
   useEffect(() => { setNow(clockTime); }, [clockTime, setNow]);
 
-
   // Avoid FOUT: wait for fonts then reveal component
   useEffect(() => {
     const raf = requestAnimationFrame(() => {

@@ -1,7 +1,6 @@
 import jumpVideo from '@/assets/images/26_images/26-06/26-06-25/tiger.mp4';
 import { memo, useEffect, useRef, useState } from 'react';
 
-
 // --- CONFIG & CONSTANTS ---
 const CLOCK_CONFIG = {
   COLORS: {
@@ -10,7 +9,6 @@ const CLOCK_CONFIG = {
   },
 };
 export const assets = [jumpVideo];
-
 
 const HAND_DIMENSIONS = {
   hour: { width: '1.9vmin', height: '12vmin', zIndex: 3 },

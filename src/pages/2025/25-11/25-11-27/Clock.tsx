@@ -24,7 +24,6 @@ export default function Clock() {
   const clockTime = useMillisecondClock(50);
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
-
   const decimalTime = useMemo(() => {
     const totalSeconds =
       time.getHours() * 3600 +

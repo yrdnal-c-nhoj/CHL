@@ -32,7 +32,6 @@ const getElasticStretch = (f: number) => (f < 0.7 ? -f * 8 : -5.6 + (f - 0.7) * 
 const getHeavyTwitch = (f: number) => (f > 0.4 && f < 0.6 ? 6 : 0);
 const getDelayedRush = (f: number) => (f < 0.6 ? -10 : (f - 0.6) * 25);
 
-
 type ComplexYellowHandProps = {
   rotation: number;
   zIndex: number;
@@ -120,7 +119,6 @@ const ManyHandClock =  () => {
   const panicStateRef = useRef('normal');
   const panicStuckAtRef = useRef(0);
   const [panicState, setPanicState] = useState<'normal' | 'stuck' | 'rushing'>('normal');
-
 
   useEffect(() => {
     const updateSize = () => {

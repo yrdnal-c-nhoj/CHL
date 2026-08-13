@@ -15,7 +15,6 @@ export default function AnalogClock() {
   const clockTime = useSecondClock();
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
-
   useEffect(() => {
     const onResize = () => setIsWide(window.innerWidth >= window.innerHeight);
     onResize();

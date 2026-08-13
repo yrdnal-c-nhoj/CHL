@@ -81,7 +81,6 @@ const DarkRomanClock =  () => {
   const clockTime = useMillisecondClock(16);
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
-
   const totalSeconds =
     time.getHours() * 3600 +
     time.getMinutes() * 60 +

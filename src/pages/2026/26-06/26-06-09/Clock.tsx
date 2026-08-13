@@ -16,7 +16,6 @@ const imageModules = import.meta.glob(
 );
 const imageUrls = Object.values(imageModules) as string[];
 
-
 /**
  * TACTICAL STANDARD: Export assets for preloader synchronization
  */
@@ -95,7 +94,6 @@ const NightSky =  () => {
       meridian[1],
     ].map((c) => c ?? '0');
   }, [formattedTime]);
-
 
   /*
    * OPTIMIZED GRID MAP CALCULATION

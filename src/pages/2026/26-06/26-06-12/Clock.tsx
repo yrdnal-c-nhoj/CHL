@@ -102,7 +102,6 @@ const ClockNumerals =  () => {
   return numerals;
 };
 
-
 const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
   const { width, height, zIndex } = HAND_DIMENSIONS[type];
   const background = CLOCK_CONFIG.COLORS[`${type}Hand` as keyof typeof CLOCK_CONFIG.COLORS];
@@ -187,7 +186,6 @@ const styles = {
     opacity: 0.7,
     fontFamily: `'ClockFont26_06_12', serif`,
   },
-
 
   numeral: {
     position: 'absolute',

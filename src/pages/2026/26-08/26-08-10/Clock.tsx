@@ -4,7 +4,6 @@ import { useSecondClock } from '@/utils/hooks';
 import React, { memo, useMemo } from 'react';
 import styles from './Clock.module.css';
 
-
 export const assets: string[] = [strawImage];
 
 const ClockComponent =  () => {
