@@ -1,6 +1,7 @@
 // LIST
 
 import { useContext, useMemo, useState, type FC, type MouseEvent } from 'react';
+import React, { useContext, useMemo, useState, type FC, type MouseEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Thumbnail from '../components/Thumbnail';
@@ -19,11 +20,31 @@ type SortOption =
 
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
+const FormattedDate: FC<{ date: string }> = React.memo(({ date }) => {
+  const [yy, mm, dd] = date.split('-');
+  const monthName =
+    mm && /^\d{2}$/.test(mm)
+      ? MONTHS[parseInt(mm, 10) - 1] || '???'
+      : '???';
+  const day = dd ? dd.padStart(2, '0') : '--';
+
+  return (
+    <time className={listStyles.simpleListDate} dateTime={`20${date}`}>
+      <span>{day}</span>
+      <span>{monthName}</span>
+      <span>'{yy}</span>
+    </time>
+  );
+});
+
 const ClockList: FC = () => {
   const context = useContext(DataContext) as DataContextType;
   const { items = [], loading = false, error = null } = context || {};
+  const context = useContext(DataContext);
   const navigate = useNavigate();
   const [sortBy, setSortBy] = useState<SortOption>('date-desc');
+
+  const { items = [], loading = false, error = null } = context || {};
 
   // Calculate global frequency counts for all tags to display counts in bubbles
   const tagCounts = useMemo(() => {
@@ -65,6 +86,7 @@ const ClockList: FC = () => {
 
   if (loading) return (
     <div className={listStyles.listPageContainer}>
+    <div className={listStyles.listPageContainer} aria-live="polite" aria-busy="true">
       <TopNav />
       <div className={listStyles.loadingContainer}>Loading...</div>
       <Footer />
@@ -73,6 +95,11 @@ const ClockList: FC = () => {
 
   if (error) {
     return <div>Error: {error instanceof Error ? error.message : String(error)}</div>;
+    return (
+      <div className={listStyles.listPageContainer}>
+        <div className={listStyles.errorContainer}>Error: {error instanceof Error ? error.message : String(error)}</div>
+      </div>
+    );
   }
 
   return (
@@ -85,12 +112,14 @@ const ClockList: FC = () => {
             type="button"
             onClick={handleDateSort}
             className={`${sortStyles.sortButton} ${sortBy.startsWith('date') ? sortStyles.active : ''}`}
+            style={{ textTransform: 'uppercase' }}
           >
             date
             {sortBy === 'date-asc' ? '↓' : sortBy === 'date-desc' ? '↑' : ''}
           </button>
           <button
             type="button"
+            style={{ textTransform: 'uppercase' }}
             onClick={handleTitleSort}
             className={`${sortStyles.sortButton} ${sortBy.startsWith('title') ? sortStyles.active : ''}`}
           >
@@ -106,6 +135,8 @@ const ClockList: FC = () => {
                 className={listStyles.simpleListImage}
                 onClick={() => handleRowClick(item.date)}
               >
+            <li key={item.date} className={listStyles.simpleListItem} onClick={() => handleRowClick(item.date)}>
+              <div className={listStyles.simpleListRow}>
                 {/* Column 1: Date */}
                 <time
                   className={listStyles.simpleListDate}
@@ -127,6 +158,7 @@ const ClockList: FC = () => {
                       </>
                     );
                   })()}
+                <FormattedDate date={item.date} />
 
                 </time>
 
