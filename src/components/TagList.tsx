@@ -19,7 +19,9 @@ const TagList: FC = () => {
   const title = useMemo(() => {
     if (loading) return `Loading tag: ${tag}...`;
     if (error) return 'Error loading clocks';
-    return `${filteredItems.length} clocks matching "${tag}"`;
+    const count = filteredItems.length;
+    const clockWord = count === 1 ? 'clock' : 'clocks';
+    return `${count} ${clockWord} matching "${tag}"`;
   }, [tag, loading, error, filteredItems.length]);
 
   return (
