@@ -1,8 +1,0 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "build": {
-    "env": {
-      "NODE_VERSION": "22.x"
-    }
-  }
-}
