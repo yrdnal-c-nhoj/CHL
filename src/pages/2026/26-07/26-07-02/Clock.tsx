@@ -1,9 +1,10 @@
 import chandelierBg from '@/assets/images/26_images/26-07/26-07-02/dive1.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import fontUrl from '@/assets/fonts/26fonts/26-07-02.ttf?url';
+import styles from './Clock.module.css';
 
 export const assets = [chandelierBg, fontUrl];
 
@@ -146,7 +147,7 @@ const FloatingDigitalClocks =  () => {
   }, []);
 
   return (
-    <div style={styles.container}>
+    <div className={styles.container}>
       <video
         ref={videoRef}
         src={chandelierBg}
@@ -155,16 +156,16 @@ const FloatingDigitalClocks =  () => {
         muted
         playsInline
         preload="auto"
-        style={styles.backgroundVideo}
+        className={styles.backgroundVideo}
       />
 
       {/* Floating Clocks Layer */}
-      <div style={styles.clocksLayer}>
+      <div className={styles.clocksLayer}>
         {clocks.map((clock) => (
           <div
             key={clock.id}
+            className={styles.digitalClock}
             style={{
-              ...styles.digitalClock,
               left: `${clock.x}%`,
               top: `${clock.y}%`,
               // Chains 3D translates and custom rotation properties sequentially
@@ -173,7 +174,7 @@ const FloatingDigitalClocks =  () => {
             }}
           >
             {timeString.split('').map((char, index) => (
-              <span key={index} style={styles.digitBox}>
+              <span key={index} className={styles.digitBox}>
                 {char}
               </span>
             ))}
@@ -182,63 +183,6 @@ const FloatingDigitalClocks =  () => {
       </div>
     </div>
   );
-};
-
-const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100vw',
-    height: '100dvh',
-    backgroundColor: '#000',
-    overflow: 'hidden',
-    position: 'relative',
-    // Adds depth perception so the X and Y rotations look accurately three-dimensional
-    perspective: '1000px', 
-  },
-  backgroundVideo: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '100vw',
-    height: '100dvh',
-    objectFit: 'cover',
-    zIndex: 1,
-  },
-  clocksLayer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    zIndex: 2,
-    pointerEvents: 'none',
-    // Ensures nested 3D spaces are preserved
-    transformStyle: 'preserve-3d', 
-  },
-  digitalClock: {
-    position: 'absolute',
-    fontFamily: "'ClockFont_26_06_27', monospace",
-    fontSize: '19vh',
-    color: '#35359C',
-    whiteSpace: 'nowrap',
-    userSelect: 'none',
-    display: 'flex',
-    fontWeight: 'bold',
-    flexDirection: 'row',
-    alignItems: 'center',
-    textShadow: '0 1px 0px rgba(215, 228, 217, 0.6), 0 1px 0px rgba(233, 220, 220, 0.5)',
-    // Removed the linear CSS transition to prevent conflicts with the continuous requestAnimationFrame loop updates
-    transformStyle: 'preserve-3d',
-  },
-  digitBox: {
-    display: 'inline-block',
-    // Proportional width adjustments matching your larger 19vh font-size structure
-    width: '11vh', 
-    textAlign: 'center',
-  },
 };
 
 export default FloatingDigitalClocks;
