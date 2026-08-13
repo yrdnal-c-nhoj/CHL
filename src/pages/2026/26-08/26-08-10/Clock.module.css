@@ -33,31 +33,29 @@
   bottom: 50%;
   left: 50%;
   transform-origin: bottom center;
-  background-color: #D81B60;
-  border-radius: 2px;
+  display: block; /* Ensure image behaves as a block element */
+  width: auto; /* Allow image to determine its width */
+  height: auto; /* Allow image to determine its height */
+  max-width: 100%; /* Ensure image doesn't overflow its parent */
+  max-height: 100%; /* Ensure image doesn't overflow its parent */
+  object-fit: contain; /* Scale the image nicely within its bounds */
 }
 
 .hourHand {
-  width: 6px;
-  height: 25%;
   transform: translateX(-50%);
 }
 
 .minuteHand {
-  width: 4px;
-  height: 35%;
   transform: translateX(-50%);
 }
 
 .secondHand {
-  width: 2px;
-  height: 40%;
-  background-color: #FF6F91; /* Lighter strawberry for contrast */
   transform: translateX(-50%);
 }
 
 .srOnly {
   position: absolute;
+  /* Visually hide content but keep it accessible to screen readers */
   width: 1px;
   height: 1px;
   padding: 0;
