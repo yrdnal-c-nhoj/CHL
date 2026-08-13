@@ -1,6 +1,8 @@
 import chandelierBg from '@/assets/images/26_images/26-07/26-07-02/dive1.mp4';
 import type { FontConfig } from '@/types/clock';
+import { installConsoleFilters } from '@/utils/consoleFilters';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 import { useEffect, useRef, useState } from 'react';
 
 import fontUrl from '@/assets/fonts/26fonts/26-07-02.ttf?url';
@@ -46,19 +48,17 @@ const formatTime = (date: Date) => {
 };
 
 const FloatingDigitalClocks =  () => {
+  // Install console filters to reduce browser noise during development
+  installConsoleFilters();
+
   useSuspenseFontLoader(fontConfigs);
+  const time = useSecondClock();
 
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [timeString, setTimeString] = useState(formatTime(new Date()));
   const [clocks, setClocks] = useState<FloatingClock[]>([]);
 
-  // 1. Maintain the master clock time string
-  useEffect(() => {
-    const timerId = setInterval(() => {
-      setTimeString(formatTime(new Date()));
-    }, 1000);
-    return () => clearInterval(timerId);
-  }, []);
+  // 1. Derive the time string from the canonical hook
+  const timeString = formatTime(time);
 
   // Helper to generate a slow random velocity between -0.3 and +0.3 degrees per frame
   const getRandomVelocity = () => (Math.random() * 0.001 - 0.05);
