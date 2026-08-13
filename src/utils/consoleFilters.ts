@@ -86,6 +86,8 @@ const shouldSuppress = (msg: string) => {
     'Empty string passed to getElementById()',
     'MerinoClient',
     'WindowGlobalParent',
+    'AbortError', // For PushService AbortError
+    'NS_ERROR_ILLEGAL_VALUE', // For favicon service errors
   ];
 patterns.push('ext-browser.js');
   patterns.push('unwatchFronts');
