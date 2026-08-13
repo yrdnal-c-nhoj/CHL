@@ -21,7 +21,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 // 3. Main Component
-const PhobosClockComponent: React.FC = () => {
+const PhobosClockComponent =  () => {
   // Use the standardized time hook
   const time = useMillisecondClock();
 

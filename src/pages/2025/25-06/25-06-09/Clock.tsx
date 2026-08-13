@@ -32,11 +32,11 @@ function getRandomGrayOrSilver() {
   if (Math.random() < 0.5) {
     const g = Math.floor(100 + Math.random() * 130);
     return `rgb(${g}, ${g}, ${g})`;
-  } else {
+  } 
     return namedSilverShades[
       Math.floor(Math.random() * namedSilverShades.length)
     ];
-  }
+  
 }
 
 function getCharColor(index) {

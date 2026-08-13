@@ -1,5 +1,5 @@
 import React from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 
 // Image imports with Vite ?url suffix
 import pageBgImgBase from '@/assets/images/25_images/25-11/25-11-24/skin.jpg?url';
@@ -12,7 +12,7 @@ import clockCenterImg from '@/assets/images/25_images/25-11/25-11-24/center.webp
 import fon251124 from '@/assets/fonts/25fonts/25-11-24-snake.ttf?url';
 
 export default function AnalogClock() {
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
@@ -136,12 +136,12 @@ export default function AnalogClock() {
 
   return (
     <div style={pageWrapperStyle}>
-      <div style={pageBackgroundBase}></div>
-      <div style={pageBackgroundLayer1}></div>
+      <div style={pageBackgroundBase} />
+      <div style={pageBackgroundLayer1} />
 
       <div style={containerStyle}>
         <style>{fontBlob}</style>
-        <div style={backgroundStyle}></div>
+        <div style={backgroundStyle} />
 
         {digits.map((d) => (
           <div key={d} style={digitStyle(d)}>

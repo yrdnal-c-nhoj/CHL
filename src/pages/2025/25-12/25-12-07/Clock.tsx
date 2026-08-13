@@ -1,5 +1,5 @@
 import React, { useRef, useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Html } from '@react-three/drei';
@@ -90,7 +90,7 @@ export default function IcosahedronScene() {
 
 function FloatingIcosahedron() {
   const groupRef = useRef<THREE.Group | null>(null);
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   const { geometry, edges } = useMemo(() => {
     const geo = new THREE.IcosahedronGeometry(1.2, 0).index

@@ -17,7 +17,7 @@ interface TimeFormat {
   mm: string;
 }
 
-const DigitalClockTemplate: React.FC = () => {
+const DigitalClockTemplate =  () => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   const fontConfigs = useMemo<FontConfig[]>(

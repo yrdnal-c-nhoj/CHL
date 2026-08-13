@@ -7,14 +7,14 @@ import bone1 from '@/assets/images/25_images/25-06/25-06-25/bone1.png';
 import bone2 from '@/assets/images/25_images/25-06/25-06-25/bone2.png';
 import bgImage from '@/assets/images/25_images/25-06/25-06-25/bon.png';
 
-const BoneClock: React.FC = () => {
+const BoneClock =  () => {
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
   const numberContainerRef = useRef(null);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const seconds = now.getSeconds();
       const minutes = now.getMinutes();
@@ -32,7 +32,7 @@ const BoneClock: React.FC = () => {
         hourRef.current.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
     };
 
-    const placeClockNumbers: React.FC = () => {
+    const placeClockNumbers =  () => {
       const container = numberContainerRef.current;
       if (!container) return;
 

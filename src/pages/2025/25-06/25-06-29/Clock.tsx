@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import stretchFont from '@/assets/fonts/25fonts/25-06-29-stretch.ttf';
 
-const StretchClock: React.FC = () => {
+const StretchClock =  () => {
   const [time, setTime] = useState<any>({
     hours: '',
     minutes: '',
@@ -25,9 +25,9 @@ const StretchClock: React.FC = () => {
   // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
-      let hours = now.getHours() % 12 || 12;
+      const hours = now.getHours() % 12 || 12;
       const minutes = now.getMinutes().toString().padStart(2, '0');
       const seconds = now.getSeconds();
 

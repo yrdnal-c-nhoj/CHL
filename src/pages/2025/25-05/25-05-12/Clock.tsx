@@ -39,7 +39,7 @@ const CheetahClock: React.FC<CheetahClockProps> = () => {
 
     const updateClock = () => {
       const now = new Date();
-      let hours = now.getHours() % 12 || 12;
+      const hours = now.getHours() % 12 || 12;
       const minutes = now.getMinutes();
       const seconds = now.getSeconds();
       const milliseconds = Math.floor(now.getMilliseconds() / 10);
@@ -154,7 +154,7 @@ const CheetahClock: React.FC<CheetahClockProps> = () => {
               ...sharedDigitStyle,
               ...(isMobile ? { gridArea: id } : {}),
             }}
-          ></div>
+           />
         ))}
       </div>
     </div>

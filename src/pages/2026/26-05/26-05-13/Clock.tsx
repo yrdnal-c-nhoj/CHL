@@ -9,7 +9,7 @@ import styles from './Clock.module.css';
 
 export const assets = [dripFont, analogBgImage, bgVideo];
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const now = useMillisecondClock();
 
   if (!now) return null;

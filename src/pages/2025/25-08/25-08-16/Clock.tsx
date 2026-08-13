@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import imageLeft from '@/assets/images/25_images/25-08/25-08-16/pal.webp';
@@ -11,7 +11,7 @@ import secondHandImage from '@/assets/images/25_images/25-08/25-08-16/p3.gif';
 
 const CLOCK_FONT_FAMILY = 'ClockFont__Scoped_9k2';
 
-const MirroredBackground: React.FC = () => {
+const MirroredBackground =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -25,7 +25,7 @@ const MirroredBackground: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const now = useClockTime();
+  const now = useMillisecondClock();
 
   // Font loading handled by useMultipleFontLoader
   const fontFaceTag = useMemo(() => {

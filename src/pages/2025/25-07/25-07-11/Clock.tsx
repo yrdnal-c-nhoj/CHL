@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import penFontUrl from '@/assets/fonts/25fonts/25-07-11-Pen.ttf';
 
-const PenmanshipClock: React.FC = () => {
+const PenmanshipClock =  () => {
   const [timeString, setTimeString] = useState<any>('--:--');
   const [ampm, setAmpm] = useState<any>('--');
   const [gridSize, setGridSize] = useState<any>({ columns: 1, rows: 1 });
@@ -22,7 +22,7 @@ const PenmanshipClock: React.FC = () => {
 
   // Update time every second
   useEffect(() => {
-    const updateTime: React.FC = () => {
+    const updateTime =  () => {
       const now = new Date();
       let hours = now.getHours();
       const minutes = now.getMinutes();
@@ -40,7 +40,7 @@ const PenmanshipClock: React.FC = () => {
 
   // Calculate grid size
   useEffect(() => {
-    const resize: React.FC = () => {
+    const resize =  () => {
       const clockWidthVW = 18;
       const clockHeightVH = 8.2;
       const columns = Math.ceil(100 / clockWidthVW);

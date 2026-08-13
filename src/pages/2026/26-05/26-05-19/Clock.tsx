@@ -4,7 +4,7 @@ import bloowinImage from '@/assets/images/26_images/26-05/26-05-19/bloowin.webp'
 import windowsImage from '@/assets/images/26_images/26-05/26-05-19/windows5.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import React from 'react';
 import styles from './Clock.module.css';
 
@@ -17,8 +17,8 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
-const DigitalClock: React.FC = () => {
-  const currentTime = useClockTime();
+const DigitalClock =  () => {
+  const currentTime = useMillisecondClock();
 
   useSuspenseFontLoader(fontConfigs);
 

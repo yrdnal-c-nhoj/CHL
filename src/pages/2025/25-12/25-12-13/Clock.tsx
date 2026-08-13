@@ -2,20 +2,20 @@ import fontFile from '@/assets/fonts/25fonts/25-12-13-cherub.ttf?url';
 import bgImage from '@/assets/images/25_images/25-12/25-12-13/roc.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMemo } from 'react';
 
 const fontFamily = 'RococoFont';
 
 const fontConfigs: FontConfig[] = [
   {
-    fontFamily: fontFamily,
+    fontFamily,
     fontUrl: fontFile,
   },
 ];
 
 export default function RococoClock() {
-  const now = useClockTime();
+  const now = useMillisecondClock();
 
   useSuspenseFontLoader(fontConfigs);
 

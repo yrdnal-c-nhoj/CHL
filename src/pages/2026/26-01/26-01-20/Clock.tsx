@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime, formatTime } from '@/utils/clockUtils';
+import { formatTime, useMillisecondClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import d25090120font from '@/assets/fonts/26fonts/26-01-20-hairdo.ttf';
 import styles from './Clock.module.css';
@@ -27,8 +27,8 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
-const Clock: React.FC = () => {
-  const time = useClockTime();
+const Clock =  () => {
+  const time = useMillisecondClock();
   useSuspenseFontLoader(fontConfigs);
 
   const [hours, minutes, seconds] = useMemo(

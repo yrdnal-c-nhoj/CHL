@@ -14,7 +14,7 @@ const fontConfigs: FontConfig[] = [
   { fontFamily: 'MyD25090116font', fontUrl: d25090116font },
 ];
 
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
 

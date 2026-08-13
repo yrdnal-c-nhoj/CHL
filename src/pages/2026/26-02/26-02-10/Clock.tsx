@@ -13,7 +13,7 @@ const CLOCK_CONFIG = {
   },
 };
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   const now = useSecondClock();
 
   const fontConfigs = useMemo(

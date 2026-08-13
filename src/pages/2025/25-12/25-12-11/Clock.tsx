@@ -1,6 +1,6 @@
 // GeologicTimeClock.jsx
 import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 
 // Static configuration moves outside the component lifecycle
 const GEOLOGIC_EVENTS = [
@@ -13,7 +13,7 @@ const GEOLOGIC_EVENTS = [
 ];
 
 export default function GeologicTimeClock() {
-  const now = useClockTime();
+  const now = useMillisecondClock();
 
   // Memoize the time formatting to separate data prep from rendering
   const timeData = useMemo(() => {

@@ -24,7 +24,7 @@ export default function Clock() {
 
   useEffect(() => {
     // --- Clock update loop ---
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const seconds = now.getSeconds();
       const minutes = now.getMinutes();
@@ -143,7 +143,7 @@ export default function Clock() {
             height: '6rem',
             background: '#634a05',
           }}
-        ></div>
+         />
         <div
           ref={minuteRef}
           className="hand minute-hand"
@@ -153,7 +153,7 @@ export default function Clock() {
             height: '8rem',
             background: '#b97c03',
           }}
-        ></div>
+         />
         <div
           ref={secondRef}
           className="hand second-hand"
@@ -163,7 +163,7 @@ export default function Clock() {
             height: '9rem',
             background: 'rgb(148, 3, 3)',
           }}
-        ></div>
+         />
 
         {/* Center dot */}
         <div
@@ -178,7 +178,7 @@ export default function Clock() {
             transform: 'translate(-50%, -50%) scaleX(-1)',
             zIndex: 3,
           }}
-        ></div>
+         />
 
         {/* Numbers */}
         {numbers.map(({ top, left, angle, label }, i) => (

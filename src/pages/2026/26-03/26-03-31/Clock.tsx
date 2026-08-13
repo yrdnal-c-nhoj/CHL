@@ -41,7 +41,7 @@ const NUMERAL_DRIFT = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((_, i) => ({
   scaleHi: (3 + ((i * 0.009 + 0.005) % 0.1)).toFixed(3),
 }));
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useMillisecondClock();
 
   // Load custom font via Suspense

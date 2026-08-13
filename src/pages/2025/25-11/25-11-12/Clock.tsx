@@ -49,10 +49,10 @@ export default function TwoBackgroundOctahedron() {
 
     const fontName = 'OctahedronFont'; // Use the same name as the loaded font
 
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
-      let h = now.getHours() % 12 || 12;
-      let m = now.getMinutes();
+      const h = now.getHours() % 12 || 12;
+      const m = now.getMinutes();
       const txt = `${h}:${m < 10 ? '0' + m : m}`;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -110,7 +110,7 @@ export default function TwoBackgroundOctahedron() {
     scene.add(new THREE.AmbientLight(0xffffff, 0.4));
 
     const clock = new THREE.Clock();
-    const animate: React.FC = () => {
+    const animate =  () => {
       requestAnimationFrame(animate);
 
       oct.rotation.x += 0.003;
@@ -131,7 +131,7 @@ export default function TwoBackgroundOctahedron() {
     };
     animate();
 
-    const handleResize: React.FC = () => {
+    const handleResize =  () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);

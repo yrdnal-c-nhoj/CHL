@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useGlobalStyles, useKeyframes } from '@/utils/enhancedFontLoader';
 
-const DigitalClock: React.FC = () => {
-  const time = useClockTime();
+const DigitalClock =  () => {
+  const time = useMillisecondClock();
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   // Generate unique keyframe names
@@ -106,7 +106,7 @@ const DigitalClock: React.FC = () => {
   const fontsReady = true; // System fonts are always available
 
   useEffect(() => {
-    const checkMobile: React.FC = () => {
+    const checkMobile =  () => {
       setIsMobile(window.innerWidth <= 768);
     };
 

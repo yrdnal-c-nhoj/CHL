@@ -1,13 +1,13 @@
 import React from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import treeFont from '@/assets/fonts/25fonts/25-06-05-tree.ttf';
 import tree1Img from '@/assets/images/25_images/25-06/25-06-05/tree1.webp';
 import tree2Img from '@/assets/images/25_images/25-06/25-06-05/tree2.webp';
 
-const TreehouseClock: React.FC = () => {
-  const time = useClockTime();
+const TreehouseClock =  () => {
+  const time = useMillisecondClock();
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -22,9 +22,9 @@ const TreehouseClock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  let hours = time.getHours() % 12 || 12;
-  let minutes = time.getMinutes().toString().padStart(2, '0');
-  let hourStr = hours.toString();
+  const hours = time.getHours() % 12 || 12;
+  const minutes = time.getMinutes().toString().padStart(2, '0');
+  const hourStr = hours.toString();
 
   const digitStyle = {
     color: 'rgb(224, 200, 127)',

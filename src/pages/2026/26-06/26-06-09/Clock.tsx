@@ -22,7 +22,7 @@ const imageUrls = Object.values(imageModules) as string[];
  */
 export const assets = [fontUrl, ...imageUrls];
 
-const NightSky: React.FC = () => {
+const NightSky =  () => {
   const currentTime = useSecondClock();
 
   /*

@@ -1,6 +1,6 @@
 import clockFontUrl from '@/assets/fonts/26fonts/26-06-12.otf?url';
 import bellImage from '@/assets/images/26_images/26-06/26-06-12/orbit.webp';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useMemo } from 'react';
 
@@ -77,7 +77,7 @@ const BackgroundLayers: React.FC<{ rotation: number }> = ({ rotation }) => (
   }} />
 );
 
-const ClockNumerals: React.FC = () => {
+const ClockNumerals =  () => {
   const numerals = useMemo(() => {
     return Array.from({ length: 12 }, (_, i) => {
       const num = i + 1;
@@ -123,8 +123,8 @@ const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
 
 const CenterDot = () => <div style={styles.centerDot} />;
 
-const AnalogClock: React.FC = () => {
-  const currentTime = useClockTime('ms');
+const AnalogClock =  () => {
+  const currentTime = useMillisecondClock();
 
   useSuspenseFontLoader([
     { fontFamily: 'ClockFont26_06_12', fontUrl: clockFontUrl },

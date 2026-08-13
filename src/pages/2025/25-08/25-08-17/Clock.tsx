@@ -1,12 +1,12 @@
 import React from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import customFontUrl from '@/assets/fonts/25fonts/25-08-17-scr.otf';
 import pageBg from '@/assets/images/25_images/25-08/25-08-17/bg.webp'; // full-screen background image
 
 const CLOCK_FONT_FAMILY = 'DigitalClockFont__Scoped';
 
-const StickyNoteClock: React.FC = () => {
+const StickyNoteClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -20,7 +20,7 @@ const StickyNoteClock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   let hours = time.getHours();
   const ampm = hours >= 12 ? 'PM' : 'AM';

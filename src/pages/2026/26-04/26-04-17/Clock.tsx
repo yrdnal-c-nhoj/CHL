@@ -1,13 +1,13 @@
 import backgroundImage from '@/assets/images/26_images/26-04/26-04-17/tati.webp';
 import type { FontConfig } from '@/types/clock';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const fontConfigs = useMemo<FontConfig[]>(
     () => [
       {
@@ -20,7 +20,7 @@ const Clock: React.FC = () => {
   );
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   const { hours, minutes, seconds } = useMemo(() => {
     const h = formatTime(time.getHours());

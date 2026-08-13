@@ -6,7 +6,7 @@ import hourHandImg from '@/assets/images/26_images/26-03/26-03-06/hand2.webp';
 import minuteHandImg from '@/assets/images/26_images/26-03/26-03-06/hand1.webp';
 import secondHandImg from '@/assets/images/26_images/26-03/26-03-06/hand3.webp';
 
-const RocketGrid: React.FC = () => {
+const RocketGrid =  () => {
   const time = useMillisecondClock();
 
   const ms = time.getMilliseconds();

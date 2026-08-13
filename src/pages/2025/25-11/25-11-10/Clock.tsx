@@ -72,7 +72,7 @@ const extraBg = new URL(
   import.meta.url,
 ).href;
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const [time, setTime] = useState(new Date());
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [loadingProgress, setLoadingProgress] = useState<number>(0);

@@ -2005,7 +2005,7 @@ const TOP_AIRPORTS = [
   },
 ];
 
-const FlightDuration: React.FC = () => {
+const FlightDuration =  () => {
   // Component implementation would go here
   return <div>Flight Duration Component</div>;
 };

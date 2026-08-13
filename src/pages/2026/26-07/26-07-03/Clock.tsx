@@ -9,7 +9,7 @@ import fireworksVideo2 from '@/assets/images/26_images/26-07/26-07-04/orange2.mp
 // Export assets for the preloading pipeline
 export const assets = [fireworksVideo1, fireworksVideo2];
 
-const TickMarks: React.FC = () => (
+const TickMarks =  () => (
   <>
     {Array.from({ length: 60 }).map((_, i) => {
       const isHourMark = i % 5 === 0;
@@ -26,7 +26,7 @@ const TickMarks: React.FC = () => (
   </>
 );
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const currentTime = useMillisecondClock();
 
   // Memoize angle calculations for performance

@@ -30,7 +30,7 @@ const DIGITS = [
   digit10,
 ];
 
-const SimpleClock: React.FC = () => {
+const SimpleClock =  () => {
   const time = useSecondClock();
   const [hueRotation, setHueRotation] = useState(
     Math.floor(Math.random() * 360),

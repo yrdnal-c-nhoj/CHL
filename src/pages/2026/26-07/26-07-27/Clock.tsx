@@ -92,7 +92,7 @@ const DIGIT_CONFIGS: DigitCustomization[] = [
 }));
 
 // 3. Main Component
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   const time = useMillisecondClock();
 
   // Calculate clock hand degrees efficiently

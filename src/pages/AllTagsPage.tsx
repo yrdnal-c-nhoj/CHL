@@ -7,7 +7,7 @@ import sortStyles from '../styles/SortControls.module.css';
 
 type SortOption = 'name-asc' | 'name-desc' | 'count-desc' | 'count-asc';
 
-const AllTagsPage: React.FC = () => {
+const AllTagsPage =  () => {
   const { items, loading, error } = useDataContext();
   const [sortBy, setSortBy] = useState<SortOption>('name-asc');
 

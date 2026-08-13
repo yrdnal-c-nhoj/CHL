@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 
 import animalsVideo from '@/assets/images/26_images/26-05/26-05-25/time.mp4';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
-const Clock: React.FC = () => {
-  const time = useClockTime();
+const Clock =  () => {
+  const time = useMillisecondClock();
 
   const { hours, minutes, ampm } = useMemo(() => {
     const h24 = time.getHours();

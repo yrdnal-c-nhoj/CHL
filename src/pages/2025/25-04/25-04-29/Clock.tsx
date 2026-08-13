@@ -22,7 +22,7 @@ const FireworksClock: React.FC<FireworksClockProps> = () => {
     () => [
       {
         fontFamily: 'bang',
-        fontUrl: fontUrl,
+        fontUrl,
         options: {
           weight: 'normal',
           style: 'normal',

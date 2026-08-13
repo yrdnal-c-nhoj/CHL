@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundVideo from '@/assets/images/26_images/26-04/26-04-03/clox.mp4';
@@ -12,12 +12,12 @@ const formatTimeParts = (date: Date): string[] => {
   return [...hours, ':', ...minutes, ':', ...seconds];
 };
 
-const Clock: React.FC = () => {
-  const time = useClockTime();
+const Clock =  () => {
+  const time = useMillisecondClock();
   const timeParts = formatTimeParts(time);
 
   const fontConfigs = useMemo<FontConfig[]>(
-    () => [{ fontFamily: 'Clox', fontUrl: fontUrl }],
+    () => [{ fontFamily: 'Clox', fontUrl }],
     [],
   );
 

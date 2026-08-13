@@ -1,4 +1,4 @@
-import { useClockTime as useSecondClock } from '@/utils/clockUtils';
+import { useSecondClock, useMillisecondClock } from '@/utils/hooks';
 import React from 'react';
 import { BackgroundGrid } from './BackgroundGrid'; // Import the extracted component
 

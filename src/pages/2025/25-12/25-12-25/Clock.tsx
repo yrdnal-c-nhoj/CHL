@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import topoImage from '@/assets/images/25_images/25-12/25-12-25/topo.jpg';
 
 // Constants
@@ -313,7 +313,7 @@ const getRandomAirports = () => {
   };
 };
 
-const BoardingPass: React.FC = () => {
+const BoardingPass =  () => {
   const [flightData, setFlightData] = useState(() => {
     const randomAirports = getRandomAirports();
     return {
@@ -348,7 +348,7 @@ const BoardingPass: React.FC = () => {
   ]);
 
   // BTS Standard: RAF-based time hook
-  const currentDate = useClockTime('seconds');
+  const currentDate = useMillisecondClock();
 
   useEffect(() => {
     const randomAirports = getRandomAirports();
@@ -392,8 +392,8 @@ const BoardingPass: React.FC = () => {
         </div>
 
         <div style={styles.body}>
-          <div style={styles.notch('left')}></div>
-          <div style={styles.notch('right')}></div>
+          <div style={styles.notch('left')} />
+          <div style={styles.notch('right')} />
 
           <div style={styles.locations}>
             <LocationDisplay
@@ -449,7 +449,7 @@ const BoardingPass: React.FC = () => {
               />
             </div>
 
-            <div style={styles.barcode}></div>
+            <div style={styles.barcode} />
           </div>
         </div>
       </div>
@@ -470,7 +470,7 @@ const addMinutes = (date, minutes) =>
   new Date(date.getTime() + minutes * 60000);
 
 // Generate topographic SVG background with random wavy curves
-const generateTopographicSVG: React.FC = () => {
+const generateTopographicSVG =  () => {
   const lines = 12; // number of contour lines
   const width = 600;
   const height = 600;
@@ -690,8 +690,8 @@ const LocationDisplay = ({ city, code, time }) => (
 const Arrow = () => (
   <div style={styles.location}>
     <div style={styles.arrow.container}>
-      <div style={styles.arrow.part(45, '0.75rem -0.3125rem')}></div>
-      <div style={styles.arrow.part(-45, '0.75rem 0.4375rem')}></div>
+      <div style={styles.arrow.part(45, '0.75rem -0.3125rem')} />
+      <div style={styles.arrow.part(-45, '0.75rem 0.4375rem')} />
     </div>
   </div>
 );

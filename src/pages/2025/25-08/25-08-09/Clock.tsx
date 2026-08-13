@@ -19,7 +19,7 @@ const fontConfigs = [
   },
 ];
 
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useMillisecondClock();
 

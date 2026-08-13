@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import OrbitronFont20251012 from '@/assets/fonts/25fonts/25-10-14-air.ttf';
 import bgImage from '@/assets/images/25_images/25-10/25-10-14/air.webp';
 
-const SpinningDodecahedronClock: React.FC = () => {
+const SpinningDodecahedronClock =  () => {
   const containerRef = useRef(null);
   const bgRef = useRef(null);
   const animationIdRef = useRef(null);
@@ -94,13 +94,13 @@ const SpinningDodecahedronClock: React.FC = () => {
     scene.add(dodecahedronGroup);
 
     // --- Clock Texture ---
-    const createClockTexture: React.FC = () => {
+    const createClockTexture =  () => {
       const canvas = document.createElement('canvas');
       canvas.width = 512;
       canvas.height = 512;
       const ctx = canvas.getContext('2d');
 
-      const drawTime: React.FC = () => {
+      const drawTime =  () => {
         ctx.clearRect(0, 0, 512, 512);
         const now = new Date();
         const hours = now.getHours();
@@ -188,7 +188,7 @@ const SpinningDodecahedronClock: React.FC = () => {
 
     // --- Animate ---
     const clockObj = new THREE.Clock();
-    const animate: React.FC = () => {
+    const animate =  () => {
       animationIdRef.current = requestAnimationFrame(animate);
       const t = clockObj.getElapsedTime();
 
@@ -207,7 +207,7 @@ const SpinningDodecahedronClock: React.FC = () => {
     animate();
 
     // --- Handle Resize ---
-    const handleResize: React.FC = () => {
+    const handleResize =  () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -259,7 +259,7 @@ const SpinningDodecahedronClock: React.FC = () => {
             fontSize: '1.2rem',
             zIndex: 5,
           }}
-        ></div>
+         />
       )}
 
       <div

@@ -11,7 +11,7 @@ import styles from './Clock.module.css';
 // BTS: Export assets for the preloading pipeline
 export const assets = [tire, tireImage, tireFlipImage, tireFont];
 
-const TireTilingClock: React.FC = () => {
+const TireTilingClock =  () => {
   const time = useSecondClock();
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 0,

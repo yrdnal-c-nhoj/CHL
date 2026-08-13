@@ -7,7 +7,7 @@ import minuteImg from '@/assets/images/25_images/25-07/25-07-08/minty.webp';
 import secondImg from '@/assets/images/25_images/25-07/25-07-08/min.png';
 import bgImage from '@/assets/images/25_images/25-07/25-07-08/candy.jpg';
 
-const MintClock: React.FC = () => {
+const MintClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -36,7 +36,7 @@ const MintClock: React.FC = () => {
     const minuteHand = document.querySelector('.hand.minute');
     const secondHand = document.querySelector('.hand.second');
 
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const seconds = now.getSeconds();
       const minutes = now.getMinutes();
@@ -169,7 +169,7 @@ const MintClock: React.FC = () => {
           }
         `}
       </style>
-      <div className="bgimage"></div>
+      <div className="bgimage" />
       <div className="clock" id="clock">
         <img
           decoding="async"
@@ -192,7 +192,7 @@ const MintClock: React.FC = () => {
           src={secondImg}
           alt="Second Hand"
         />
-        <div className="center-dot"></div>
+        <div className="center-dot" />
       </div>
     </div>
   );

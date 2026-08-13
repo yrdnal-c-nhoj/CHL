@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 
-const ClockGrid: React.FC = () => {
+const ClockGrid =  () => {
   const faceCanvasRef = useRef(null);
   const handsCanvasRef = useRef(null);
   const numRows = 10;
   const numCols = 10;
 
-  const getClockSize: React.FC = () => {
+  const getClockSize =  () => {
     const maxWidthSize = window.innerWidth / numCols;
     const maxHeightSize = window.innerHeight / numRows;
     return Math.floor(Math.min(maxWidthSize, maxHeightSize)); // fits both directions
@@ -64,7 +64,7 @@ const ClockGrid: React.FC = () => {
     let radius = clockSize / 2;
     let clocks = [];
 
-    const drawFaces: React.FC = () => {
+    const drawFaces =  () => {
       faceCtx.clearRect(0, 0, faceCanvas.width, faceCanvas.height);
 
       const totalGridWidth = numCols * clockSize;
@@ -83,7 +83,7 @@ const ClockGrid: React.FC = () => {
       }
     };
 
-    const draw: React.FC = () => {
+    const draw =  () => {
       handsCtx.clearRect(0, 0, handsCanvas.width, handsCanvas.height);
 
       const currentTime = new Date();
@@ -124,7 +124,7 @@ const ClockGrid: React.FC = () => {
       animationFrameId = requestAnimationFrame(draw);
     };
 
-    const resizeCanvases: React.FC = () => {
+    const resizeCanvases =  () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
       faceCanvas.width = width;

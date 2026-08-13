@@ -26,7 +26,7 @@ const useMsClockTime = () => {
 
 const fontConfigs: FontConfig[] = [{ fontFamily: 'Car', fontUrl: carFont }];
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useMsClockTime();
 

@@ -16,7 +16,7 @@ const fontConfigs: FontConfig[] = [
 
 type SpinPhase = 0 | 1 | 2 | 3;
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useMillisecondClock();
   useSuspenseFontLoader(fontConfigs);
   const [phase, setPhase] = useState<SpinPhase>(0);

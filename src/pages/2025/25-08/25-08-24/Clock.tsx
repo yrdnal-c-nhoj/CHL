@@ -45,7 +45,7 @@ const RomanClock = () => {
 
   const [time, setTime] = useState('');
   const [fade, setFade] = useState(false);
-  const timeoutRef = useRef<any>();
+  const timeoutRef = useRef<any | null>(null);
 
   useEffect(() => {
     const updateClock = () => {

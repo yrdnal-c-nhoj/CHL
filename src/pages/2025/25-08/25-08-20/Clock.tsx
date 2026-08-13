@@ -113,7 +113,7 @@ const AnalogClock: React.FC<{ time: Date; zone: string; clockSize: number }> = (
   );
 };
 
-const WorldClockGrid: React.FC = () => {
+const WorldClockGrid =  () => {
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,

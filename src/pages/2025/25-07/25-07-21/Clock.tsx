@@ -5,11 +5,11 @@ import anglerfishFuse from '@/assets/images/25_images/25-07/25-07-21/Deep-Sea-An
 import patternOverlay from '@/assets/images/25_images/25-07/25-07-21/qsxwwd.webp';
 import spinGif from '@/assets/images/25_images/25-07/25-07-21/spin.gif';
 
-const AnglerfishClock: React.FC = () => {
+const AnglerfishClock =  () => {
   const [time, setTime] = useState<any>('');
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       let hours = now.getHours();
       let minutes = now.getMinutes();

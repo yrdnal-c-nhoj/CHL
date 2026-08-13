@@ -4,7 +4,7 @@ import type { FontConfig } from '@/types/clock';
 import font20251027 from '@/assets/fonts/25fonts/25-10-25-fall.ttf?url'; // Local font file
 import { useSecondClock } from '@/utils/hooks';
 
-const EntropyClock: React.FC = () => {
+const EntropyClock =  () => {
   const [time, setTime] = useState(new Date());
   const [animationKey, setAnimationKey] = useState<number>(0); // triggers animation restart
   const [showClock, setShowClock] = useState<boolean>(false); // controls fade-in

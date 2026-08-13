@@ -1,5 +1,5 @@
 import React from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import sloanFont_2025_1204 from '@/assets/fonts/25fonts/25-12-04-ichart.otf?url';
 import type { FontConfig } from '@/types/clock';
@@ -17,7 +17,7 @@ export default function EyeChart() {
   // Use standardized font loader
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   const hours = ('0' + (time.getHours() % 12 || 12)).slice(-2);
   const minutes = ('0' + time.getMinutes()).slice(-2);

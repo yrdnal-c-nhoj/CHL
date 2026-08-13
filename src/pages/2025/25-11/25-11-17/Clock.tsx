@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useClockTime } from '@/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import bg1 from '@/assets/images/25_images/25-11/25-11-17/mars2.webp';
 import bg2 from '@/assets/images/25_images/25-11/25-11-17/mars1.gif';
 import bg3 from '@/assets/images/25_images/25-11/25-11-17/mars1.gif';
@@ -27,7 +27,7 @@ const DigitBox = ({ children }) => (
 );
 
 export default function MarsDigitalClock() {
-  const time = useClockTime();
+  const time = useMillisecondClock();
   useSuspenseFontLoader(fontConfigs);
 
   // Assume font is loaded by useSuspenseFontLoader for rendering purposes
@@ -54,11 +54,11 @@ export default function MarsDigitalClock() {
       `}</style>
 
       <div style={styles.root}>
-        <div style={localStyles.background4} aria-hidden="true"></div>
-        <div style={localStyles.gradientBackground}></div>
-        <div style={localStyles.background1}></div>
-        <div style={localStyles.background2}></div>
-        <div style={localStyles.background3}></div>
+        <div style={localStyles.background4} aria-hidden="true" />
+        <div style={localStyles.gradientBackground} />
+        <div style={localStyles.background1} />
+        <div style={localStyles.background2} />
+        <div style={localStyles.background3} />
 
         <div className="content" style={localStyles.content}>
           <div className="group" style={localStyles.group}>

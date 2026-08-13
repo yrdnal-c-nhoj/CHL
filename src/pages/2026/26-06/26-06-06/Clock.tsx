@@ -7,7 +7,7 @@ import styles from './Clock.module.css';
 
 export const assets = [backgroundImg, hangImg, hangImg2, hangImg3];
 
-const AntarcticaClock: React.FC = () => {
+const AntarcticaClock =  () => {
   const clockRef = useRef<HTMLDivElement>(null);
   const hourRef = useRef<HTMLDivElement>(null);
   const minuteRef = useRef<HTMLDivElement>(null);

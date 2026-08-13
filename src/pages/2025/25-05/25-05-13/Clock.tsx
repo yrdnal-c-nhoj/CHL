@@ -54,7 +54,7 @@ const FlatClock: React.FC<FlatClockProps> = () => {
         `Current time: ${now.toLocaleTimeString()}`;
     };
 
-    const tick: React.FC = () => {
+    const tick =  () => {
       updateClock();
       requestAnimationFrame(tick);
     };
@@ -193,15 +193,15 @@ const FlatClock: React.FC<FlatClockProps> = () => {
       </style>
 
       <div className="scene">
-        <div className="grid-plane"></div>
+        <div className="grid-plane" />
         <div className="clock">
-          <div className="numbers" id="clock-numbers"></div>
-          <div className="hand hour" id="hour-hand"></div>
-          <div className="hand minute" id="minute-hand"></div>
-          <div className="hand second" id="second-hand"></div>
+          <div className="numbers" id="clock-numbers" />
+          <div className="hand hour" id="hour-hand" />
+          <div className="hand minute" id="minute-hand" />
+          <div className="hand second" id="second-hand" />
         </div>
       </div>
-      <div className="sr-only" id="clock-time" aria-live="polite"></div>
+      <div className="sr-only" id="clock-time" aria-live="polite" />
     </>
   );
 };

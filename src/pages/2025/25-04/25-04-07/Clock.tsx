@@ -140,17 +140,17 @@ const SolarSystemClock = ({
             className="ball hour unique-solar-clock"
             style={{ ...styles.ball, ...styles.hour }}
             ref={clockRefs.hour}
-          ></div>
+           />
           <div
             className="ball minute unique-solar-clock"
             style={{ ...styles.ball, ...styles.minute }}
             ref={clockRefs.minute}
-          ></div>
+           />
           <div
             className="ball second unique-solar-clock"
             style={{ ...styles.ball, ...styles.second }}
             ref={clockRefs.second}
-          ></div>
+           />
         </div>
       </div>
     </div>

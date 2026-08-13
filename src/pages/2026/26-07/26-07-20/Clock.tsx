@@ -15,7 +15,7 @@ const fontConfigs: FontConfig[] = [
   { fontFamily: 'ClockFont_26_07_20', fontUrl },
 ];
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   useSuspenseFontLoader(fontConfigs);
 
   const now = useMillisecondClock();

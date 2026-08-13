@@ -7,7 +7,7 @@ import eastFont from '@/assets/fonts/26fonts/26-03-29-east.ttf';
 import styles from './Clock.module.css';
 
 // --- Optimized Rain Overlay ---
-const RainOverlay: React.FC = () => {
+const RainOverlay =  () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -94,7 +94,7 @@ const RainOverlay: React.FC = () => {
 };
 
 // --- Main Clock Component ---
-const Clock: React.FC = () => {
+const Clock =  () => {
   const hourRef = useRef<HTMLDivElement>(null);
   const minRef = useRef<HTMLDivElement>(null);
   const secRef = useRef<HTMLDivElement>(null);

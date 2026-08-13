@@ -4,7 +4,7 @@ import { useSecondClock } from '@/utils/hooks';
 import customFontUrl from '@/assets/fonts/26fonts/26-02-07-gear.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-02/26-02-07/gear.gif';
 
-const FullscreenClock: React.FC = () => {
+const FullscreenClock =  () => {
   const [showContent, setShowContent] = useState(false);
 
   const fontConfigs = useMemo(

@@ -5,7 +5,7 @@ import type { FontConfig } from '@/types/clock';
 
 export const fontConfigs: FontConfig[] = [];
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useMillisecondClock();
 
   useSuspenseFontLoader(fontConfigs);

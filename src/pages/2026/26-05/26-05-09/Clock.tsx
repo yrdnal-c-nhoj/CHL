@@ -12,7 +12,7 @@ export const assets = [bgImage];
  * May 9, 2026 - "Capture"
  * An analog clock with lotus background.
  */
-const CaptureClock: React.FC = () => {
+const CaptureClock =  () => {
   const time = useSecondClock();
 
   const {

@@ -4,7 +4,7 @@ import tileBgGif from '@/assets/images/26_images/26-03/26-03-17/tile_bg.gif';
 import topImageWebp from '@/assets/images/26_images/26-03/26-03-17/0001-0160-ezgif.com-optiwebp-1.webp';
 import { useMillisecondClock } from '@/utils/hooks';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useMillisecondClock();
   const digitColor = '#5D0DA8';
 
@@ -42,7 +42,7 @@ const Clock: React.FC = () => {
     </div>
   );
 
-  const Separator: React.FC = () => (
+  const Separator =  () => (
     <div
       style={{
         color: digitColor,

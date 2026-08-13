@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const RandomColorClock: React.FC = () => {
-  const hourRef = useRef();
-  const minuteRef = useRef();
-  const secondRef = useRef();
-  const dotContainerRef = useRef();
+const RandomColorClock =  () => {
+  const hourRef = useRef(null);
+  const minuteRef = useRef(null);
+  const secondRef = useRef(null);
+  const dotContainerRef = useRef(null);
   const squareRefs = useRef([]);
-  const clockRef = useRef();
+  const clockRef = useRef(null);
 
   const [background, setBackground] = useState<any>('#f7050d');
 
@@ -15,7 +15,7 @@ const RandomColorClock: React.FC = () => {
       .toString(16)
       .padStart(6, '0')}`;
 
-  const updateClock: React.FC = () => {
+  const updateClock =  () => {
     const now = new Date();
     const hours = now.getHours() % 12;
     const minutes = now.getMinutes();
@@ -51,7 +51,7 @@ const RandomColorClock: React.FC = () => {
     setBackground(getRandomColor());
   };
 
-  const createDots: React.FC = () => {
+  const createDots =  () => {
     const container = dotContainerRef.current;
     if (!container || !clockRef.current) return;
 
@@ -77,7 +77,7 @@ const RandomColorClock: React.FC = () => {
     }
   };
 
-  const positionSquares: React.FC = () => {
+  const positionSquares =  () => {
     if (!clockRef.current) return;
     const size = clockRef.current.offsetWidth;
     const radius = size * 0.6;

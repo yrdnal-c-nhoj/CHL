@@ -11,7 +11,7 @@ const HOLD = 1000;
 const FADE = 3000;
 const CYCLE = ERASE + HOLD + FADE;
 
-const ErasingClock: React.FC = () => {
+const ErasingClock =  () => {
   const [now, setNow] = useState(new Date());
 
   /* Fixed epoch */

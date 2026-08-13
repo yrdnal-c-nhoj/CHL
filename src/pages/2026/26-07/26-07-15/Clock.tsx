@@ -9,7 +9,7 @@ export const assets = [chandelierBg, fontUrl];
 
 const FONT_FAMILY = 'CustomFont260715';
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const time = useSecondClock();
 
   // Load the custom font using the suspense-based loader

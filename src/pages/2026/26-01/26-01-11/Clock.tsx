@@ -40,7 +40,7 @@ function useTime() {
   const [time, setTime] = useState(() => new Date());
   useEffect(() => {
     let intervalId;
-    const updateTime: React.FC = () => {
+    const updateTime =  () => {
       setTime(new Date());
     };
     intervalId = setInterval(updateTime, 50);
@@ -142,9 +142,9 @@ const ClockHand = memo(({ img, height, rotation, flip, reverse, zIndex }) => (
       position: 'absolute',
       top: '50%',
       left: '50%',
-      height: height,
+      height,
       width: 'auto',
-      zIndex: zIndex,
+      zIndex,
       transformOrigin: 'bottom center',
       transform: `translate(-50%, -100%) ${flip ? 'scaleX(-1)' : ''} rotate(${reverse ? -rotation : rotation}deg)`,
       pointerEvents: 'none',

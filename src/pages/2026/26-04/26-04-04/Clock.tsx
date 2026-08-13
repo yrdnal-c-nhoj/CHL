@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import img12 from '@/assets/images/26_images/26-04/26-04-04/12.jpg';
 import img3 from '@/assets/images/26_images/26-04/26-04-04/3.png';
 import img6 from '@/assets/images/26_images/26-04/26-04-04/6.jpg';
 import img9 from '@/assets/images/26_images/26-04/26-04-04/9.png';
 import styles from './Clock.module.css';
 
-const Clock: React.FC = () => {
-  const time = useClockTime();
+const Clock =  () => {
+  const time = useMillisecondClock();
 
   // Calculate total elapsed values to prevent the 360 -> 0 reset glitch
   const seconds = time.getSeconds();

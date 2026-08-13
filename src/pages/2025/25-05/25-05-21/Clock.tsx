@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import background from '@/assets/images/25_images/25-05/25-05-21/signals.jpg';
 import semFont from '@/assets/fonts/25fonts/25-05-21-sem.ttf';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -17,7 +17,7 @@ const Clock: React.FC = () => {
     },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-  const time = useClockTime();
+  const time = useMillisecondClock();
   const isMobile = window.innerWidth < 768;
 
   // Font loading handled by useMultipleFontLoader
@@ -94,7 +94,7 @@ const Clock: React.FC = () => {
 
   return (
     <div style={bodyStyle}>
-      <div style={bgStyle}></div>
+      <div style={bgStyle} />
       <div style={containerStyle}>
         <div style={timeGroupStyle}>
           <div style={digitStyle}>{hourTens}</div>

@@ -23,7 +23,7 @@ const getDigitTransform = (hour: number) => {
   return { x, y, rotation };
 };
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   useSuspenseFontLoader(FONT_CONFIGS);
   const time = useSecondClock();
 

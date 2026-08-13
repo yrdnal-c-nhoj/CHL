@@ -93,7 +93,7 @@ export default function AnalogClock() {
   useEffect(() => {
     if (!ready) return;
 
-    const update: React.FC = () => {
+    const update =  () => {
       const now = new Date();
       const ms = now.getMilliseconds() / 1000;
       const seconds = now.getSeconds() + ms;

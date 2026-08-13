@@ -1,7 +1,7 @@
 import dodecahedronFontFile from '@/assets/fonts/25fonts/25-08-27-root.ttf'; // fixed path for existing asset
 import backgroundImage from '@/assets/images/25_images/25-08/25-08-27/rootsu.gif';
 import { useSuspenseFontLoader } from '@/utils/enhancedFontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useEffect, useMemo, useRef } from 'react';
 
 // Asset exports for preloading pipeline
@@ -11,7 +11,7 @@ export default function TwelfthRootsOfUnityWithClock() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const clockRef = useRef<HTMLCanvasElement>(null);
   const fontRef = useRef<string>('sans-serif'); // fallback
-  const time = useClockTime();
+  const time = useMillisecondClock();
   const timeRef = useRef(time);
 
   // Keep time ref updated for the animation loop

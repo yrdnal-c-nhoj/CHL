@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import bgImage from '@/assets/images/25_images/25-11/25-11-07/birds.webp';
 import clockFontUrl from '@/assets/fonts/25fonts/25-11-07-twobirds.ttf?url';
 import { formatTime as utilFormatTime } from '@/utils/clockUtils'; // Import the utility formatTime
@@ -26,7 +26,7 @@ export default function PanicAnalogClock() {
   );
   useSuspenseFontLoader(fontConfigs);
 
-  const now = useClockTime();
+  const now = useMillisecondClock();
 
   const rightImageDelay = 500; // 0.5s delay for right image
   const bottomImageOpacity = 1.0;

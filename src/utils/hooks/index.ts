@@ -16,7 +16,7 @@
  *   const time = useSecondClock(); // Returns Date object, updates every second
  */
 
-export { useClockTime } from './useClockTime';
+export { useClockTime, formatTime, calculateAngles, generateTickMarks, isValidTime, timeStringToDate } from './useClockTime';
 export { useIsDesktop } from './useIsDesktop';
 export {
   useMillisecondClock,

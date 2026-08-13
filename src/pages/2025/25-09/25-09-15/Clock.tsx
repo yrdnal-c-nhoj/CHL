@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImageUrl from '@/assets/images/25_images/25-09/25-09-15/plaid.jpg';
 import m250915font from '@/assets/fonts/25fonts/25-09-15-plaid.ttf?url';
@@ -10,7 +10,7 @@ const SkewFlatClock = ({
   verticalRepeats = 40,
   horizontalRepeats = 30,
 }) => {
-  const time = useClockTime();
+  const time = useMillisecondClock();
   const [hue, setHue] = useState<number>(0);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 

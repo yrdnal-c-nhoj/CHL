@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMultipleFontLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // Image paths in public folder
 import bgImage from '@/assets/images/25_images/25-12/25-12-06/giraffe.webp';
@@ -14,7 +13,7 @@ import centerImg from '@/assets/images/25_images/25-12/25-12-06/walk.webp';
 import customFont_2025_1206 from '@/assets/fonts/25fonts/25-12-06-gir.otf?url';
 
 export default function AnalogClock() {
-  const time = useClockTime();
+  const time = useMillisecondClock();
   const [viewport, setViewport] = useState<any>({
     width: typeof window !== 'undefined' ? window.innerWidth : 1200,
     height: typeof window !== 'undefined' ? window.innerHeight : 800,
@@ -22,7 +21,7 @@ export default function AnalogClock() {
 
   // useLayoutEffect prevents the "flash" of incorrect positions on first mount
   useLayoutEffect(() => {
-    const handleResize: React.FC = () => {
+    const handleResize =  () => {
       setViewport({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -149,7 +148,7 @@ export default function AnalogClock() {
     // translate(-50%, -90%) ensures the pivot point of the image sits exactly in the center
     transform: `translate(-50%, -90%) rotate(${deg}deg)`,
     transformOrigin: '50% 90%',
-    zIndex: zIndex,
+    zIndex,
     filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.5))',
     maskImage: 'linear-gradient(to top, transparent 10%, rgba(0,0,0,1) 30%)',
     WebkitMaskImage:

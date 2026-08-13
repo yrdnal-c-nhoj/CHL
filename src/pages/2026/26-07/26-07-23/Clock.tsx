@@ -21,7 +21,7 @@ const useIsMobile = (breakpoint = 768) => {
   return isMobile;
 };
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const time = useMillisecondClock();
   const isMobile = useIsMobile();
 

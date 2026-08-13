@@ -4,7 +4,7 @@ import { useSecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useSecondClock();
 
   // Calculate grid dimensions based on viewport and tile size

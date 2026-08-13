@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 
 import pleiadesFont from '@/assets/fonts/26fonts/26-04-30-pleides.otf';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 
@@ -116,9 +116,9 @@ const fontConfigs: FontConfig[] = [
 
 // --- Component ---
 
-const PleiadesClock: React.FC = () => {
+const PleiadesClock =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useClockTime();
+  const time = useMillisecondClock();
   const [starPairs, setStarPairs] = useState<StarPair[]>(() =>
     Array.from({ length: 24 }, (_, i) => generateRandomPair(i, 0)),
   );

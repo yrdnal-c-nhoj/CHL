@@ -22,7 +22,7 @@ const Clock: React.FC<ClockProps> = () => {
   const currentTime = useSecondClock();
   const clockRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const sec = now.getSeconds();
       const min = now.getMinutes();
@@ -127,15 +127,15 @@ const Clock: React.FC<ClockProps> = () => {
             height: '6px',
             background: 'rgb(113, 107, 113)',
           }}
-        ></div>
+         />
         <div
           id="minute"
           style={{ ...handStyle, background: 'rgb(65, 69, 69)' }}
-        ></div>
+         />
         <div
           id="second"
           style={{ ...handStyle, height: '1px', background: 'rgb(65, 69, 69)' }}
-        ></div>
+         />
       </div>
 
       <img

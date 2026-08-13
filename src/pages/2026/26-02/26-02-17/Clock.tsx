@@ -144,7 +144,7 @@ const BackgroundGrid: React.FC<BackgroundGridProps> = ({
 /**
  * Main Asterisk Clock Component
  */
-const AsteriskClock: React.FC = () => {
+const AsteriskClock =  () => {
   // Migrated from legacy interval ticker to canonical rAF hook (useSecondClock).
   const time = useSecondClock();
   const [clockChars, setClockChars] = useState<string[]>(generateChars());

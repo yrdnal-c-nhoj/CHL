@@ -14,19 +14,19 @@ export const assets = [canisBg, canisComponent];
 export const fontConfigs: FontConfig[] = [
   {
     fontFamily: '26-05-21',
-    fontUrl: fontUrl,
+    fontUrl,
   },
 ];
 
 // ---------------- COMPONENTS ----------------
-const BackgroundLayers: React.FC = () => (
+const BackgroundLayers =  () => (
   <div
     className={styles.backgroundImage}
     style={{ backgroundImage: `url(${canisBg})` }}
   />
 );
 
-const ComponentLayers: React.FC = () => (
+const ComponentLayers =  () => (
   <>
     <div
       className={styles.componentImage1}
@@ -91,7 +91,7 @@ const ClockFace: React.FC<{ fontFamily: string }> = ({ fontFamily }) => {
   );
 };
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   // Load the date-specific font
   useSuspenseFontLoader(fontConfigs);
 

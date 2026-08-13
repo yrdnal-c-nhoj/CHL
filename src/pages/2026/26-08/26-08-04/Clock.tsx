@@ -24,7 +24,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 // 3. Main Component
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   // Use the standardized time hook
   // 16ms = ~60 FPS updates for perfectly smooth, continuous forward movement
   const time = useMillisecondClock(16);

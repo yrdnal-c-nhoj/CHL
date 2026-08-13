@@ -4,7 +4,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
-const WarholGraveCamClock: React.FC = () => {
+const WarholGraveCamClock =  () => {
   const fontConfigs = useMemo<FontConfig[]>(
     () => [
       {

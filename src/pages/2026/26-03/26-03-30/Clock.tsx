@@ -14,7 +14,7 @@ const Digit = React.memo(({ char }: { char: string }) => (
   </div>
 ));
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useSecondClock();
 
   const fontConfigs = useMemo(

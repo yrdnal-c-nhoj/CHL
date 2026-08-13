@@ -62,7 +62,7 @@ const getOffsetClassName = (offset: number): string => {
   }
 };
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   const currentTime = useSecondClock();
 
   useSuspenseFontLoader([fontConfig]);

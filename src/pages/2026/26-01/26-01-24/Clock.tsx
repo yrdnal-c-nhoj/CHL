@@ -11,7 +11,7 @@ import styles from './Clock.module.css';
 
 export const assets = [];
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // --- STATE MANAGEMENT ---
   const time = useMillisecondClock(); // Centralized time source
   const [isLargeScreen, setIsLargeScreen] = useState(true);

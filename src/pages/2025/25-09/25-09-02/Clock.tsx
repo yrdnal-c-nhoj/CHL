@@ -9,7 +9,7 @@ import styles from './Clock.module.css';
 // 1. Asset Exports
 export const assets = [bgImage, hourHandImage, minuteHandImage, secondHandImage];
 
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   const time = useMillisecondClock();
 
   const { hourAngle, minAngle, secAngle } = useMemo(() => {

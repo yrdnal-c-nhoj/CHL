@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import squFontUrl from '@/assets/fonts/25fonts/25-06-23-squ.ttf';
 
-const SquigglingClock: React.FC = () => {
+const SquigglingClock =  () => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -13,7 +13,7 @@ const SquigglingClock: React.FC = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
-    const resizeCanvas: React.FC = () => {
+    const resizeCanvas =  () => {
       const size = Math.min(window.innerWidth, window.innerHeight) * 0.8;
       canvas.width = size;
       canvas.height = size;
@@ -25,7 +25,7 @@ const SquigglingClock: React.FC = () => {
     let distortionPhase = 0;
     const distortionSpeed = 0.03;
 
-    const drawClock: React.FC = () => {
+    const drawClock =  () => {
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
       const radius = canvas.width * 0.46;
@@ -127,7 +127,7 @@ const SquigglingClock: React.FC = () => {
       distortionPhase += distortionSpeed;
     };
 
-    const animate: React.FC = () => {
+    const animate =  () => {
       drawClock();
       requestAnimationFrame(animate);
     };

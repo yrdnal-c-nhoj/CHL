@@ -22,7 +22,7 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const time = useMillisecondClock();
   useSuspenseFontLoader(fontConfigs);
 
@@ -87,7 +87,7 @@ const AnalogClock: React.FC = () => {
   );
 };
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   return (
     <main className={styles.container}>
       <video autoPlay loop muted playsInline className={styles.video}>

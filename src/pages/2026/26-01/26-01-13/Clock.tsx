@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const DiscClock: React.FC = () => {
+const DiscClock =  () => {
   const [rotation, setRotation] = useState<any>({ h: 0, m: 0, s: 0 });
-  const requestRef = useRef();
+  const requestRef = useRef(null);
   const [ready, setReady] = useState<boolean>(false);
 
   // Use requestAnimationFrame for buttery smooth movement
-  const animate: React.FC = () => {
+  const animate =  () => {
     const now = new Date();
     const ms = now.getMilliseconds();
     const s = now.getSeconds();

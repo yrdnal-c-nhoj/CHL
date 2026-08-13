@@ -3,7 +3,7 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import slotFont from '@/assets/fonts/25fonts/25-07-29-slot.otf';
 import bgImage from '@/assets/images/25_images/25-07/25-07-29/IMAGE_1688551792.webp';
 
-const SlotMachineClock: React.FC = () => {
+const SlotMachineClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -70,7 +70,7 @@ const SlotMachineClock: React.FC = () => {
   const getRandomEmoji = () =>
     slotEmojis[Math.floor(Math.random() * slotEmojis.length)];
 
-  const getCurrentTime: React.FC = () => {
+  const getCurrentTime =  () => {
     const now = new Date();
     let hours = now.getHours();
     const minutes = now.getMinutes();
@@ -113,7 +113,7 @@ const SlotMachineClock: React.FC = () => {
     });
   };
 
-  const updateTimeDisplay: React.FC = () => {
+  const updateTimeDisplay =  () => {
     setTime(getCurrentTime());
   };
 
@@ -153,7 +153,7 @@ const SlotMachineClock: React.FC = () => {
     }
   };
 
-  const spinReels: React.FC = () => {
+  const spinReels =  () => {
     if (isSpinning) return;
     setIsSpinning(true);
     const currentTime = getCurrentTime();
@@ -175,7 +175,7 @@ const SlotMachineClock: React.FC = () => {
   };
 
   useEffect(() => {
-    const initialize: React.FC = () => {
+    const initialize =  () => {
       const currentTime = getCurrentTime();
       setTime(currentTime);
       const targets = [

@@ -27,7 +27,7 @@ const digitImages = {
   9: digit9,
 };
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   const [time, setTime] = useState(getTimeParts());
 
   useEffect(() => {

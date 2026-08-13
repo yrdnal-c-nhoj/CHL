@@ -4,7 +4,7 @@ import { useSecondClock } from '@/utils/hooks';
 const fontVersion = '2026-03-11';
 const FONT_NAME = `XanhMono_${fontVersion}`;
 
-const BorrowedTimeClock: React.FC = () => {
+const BorrowedTimeClock =  () => {
   const time = useSecondClock();
   const [imageUrl, setImageUrl] = useState(
     `https://picsum.photos/800/600?sig=${Date.now()}`,

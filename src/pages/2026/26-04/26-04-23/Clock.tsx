@@ -1,7 +1,7 @@
 import React, { Suspense, useMemo } from 'react';
 import backgroundVideo from '@/assets/images/26_images/26-04/26-04-23/sunflower.mp4';
 import fontUrl from '@/assets/fonts/26fonts/26-04-23.otf';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import {
   useSuspenseFontLoader,
   ClockLoadingFallback,
@@ -12,14 +12,14 @@ import styles from './Clock.module.css';
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 const formatMs = (num: number): string => num.toString().padStart(3, '0');
 
-const ClockInner: React.FC = () => {
+const ClockInner =  () => {
   const fontConfigs = useMemo<FontConfig[]>(
-    () => [{ fontFamily: 'Clock26-04-23', fontUrl: fontUrl }],
+    () => [{ fontFamily: 'Clock26-04-23', fontUrl }],
     [],
   );
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   const h = formatTime(time.getHours());
   const m = formatTime(time.getMinutes());
@@ -53,7 +53,7 @@ const ClockInner: React.FC = () => {
   );
 };
 
-const Clock: React.FC = () => (
+const Clock =  () => (
   <Suspense fallback={<ClockLoadingFallback />}>
     <ClockInner />
   </Suspense>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundVideo from '@/assets/images/26_images/26-04/26-04-09/water.mp4';
@@ -8,7 +8,7 @@ export { backgroundVideo }; // Export for preloading pipeline
 import waterFontUrl from '@/assets/fonts/26fonts/26-04-09-water.ttf?url';
 import styles from './Clock.module.css';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const [digitTransforms, setDigitTransforms] = useState([
     { y: 0, rotate: 0, scale: 1 },
     { y: 0, rotate: 0, scale: 1 },
@@ -17,7 +17,7 @@ const Clock: React.FC = () => {
   ]);
   const timeRef = useRef(0);
   const animationRef = useRef<number | undefined>(undefined);
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   const fontConfigs = useMemo<FontConfig[]>(
     () => [{ fontFamily: 'Water', fontUrl: waterFontUrl }],
@@ -122,7 +122,7 @@ const Clock: React.FC = () => {
           <span className={styles.digitBox} style={getDigitStyle(1)}>
             {digits[1]}
           </span>
-          <span className={styles.space}></span>
+          <span className={styles.space} />
           <span className={styles.digitBox} style={getDigitStyle(2)}>
             {digits[2]}
           </span>

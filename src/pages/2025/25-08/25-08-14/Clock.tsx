@@ -47,7 +47,7 @@ const words = [
   'MAR',
 ];
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const fontConfigs = [
     {
       fontFamily: 'CustomClockFont',
@@ -144,7 +144,7 @@ const AnalogClock: React.FC = () => {
 
   return (
     <div style={pageStyle}>
-      <div style={backgroundStyle}></div>
+      <div style={backgroundStyle} />
 
       <div style={clockContainerStyle}>
         <div style={clockStyle}>

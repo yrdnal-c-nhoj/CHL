@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import backgroundImg from '@/assets/images/25_images/25-04/25-04-18/Antarctica.jpg';
 
-const AntarcticaClock: React.FC = () => {
+const AntarcticaClock =  () => {
   const clockRef = useRef(null);
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
@@ -29,7 +29,7 @@ const AntarcticaClock: React.FC = () => {
     clock.appendChild(minuteRef.current);
     clock.appendChild(secondRef.current);
 
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const hours = now.getHours() % 12;
       const minutes = now.getMinutes();

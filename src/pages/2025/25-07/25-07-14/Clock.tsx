@@ -36,13 +36,13 @@ const digitImages = [
 ];
 const sizes = [6.5, 7.1, 7.2, 7.7, 6.3, 10.5, 7.3, 7.5, 7.4, 6.7, 7.3, 7.3]; // rem units
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const hourRef = useRef(null);
   const minRef = useRef(null);
   const secRef = useRef(null);
 
   useEffect(() => {
-    const update: React.FC = () => {
+    const update =  () => {
       const now = new Date();
       const seconds = now.getSeconds();
       const minutes = now.getMinutes();

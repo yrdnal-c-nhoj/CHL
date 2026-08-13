@@ -9,7 +9,7 @@ export const assets = [catFont];
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useSecondClock();
   // Use a timestamp rounded to 3 seconds to prevent excessive network requests
   const catInterval = Math.floor(time.getTime() / 3000);

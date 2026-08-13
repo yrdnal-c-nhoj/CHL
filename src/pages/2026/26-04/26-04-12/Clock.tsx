@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 // Asset Imports
@@ -138,8 +138,8 @@ const imageSettings = [
   },
 ];
 
-const Clock: React.FC = () => {
-  const time = useClockTime();
+const Clock =  () => {
+  const time = useMillisecondClock();
 
   // Initialize state for face indices and spare index
   const [faceIndices, setFaceIndices] = useState<number[]>([]);

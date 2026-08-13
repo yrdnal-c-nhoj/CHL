@@ -68,7 +68,7 @@ const ClockHand: React.FC<HandProps> = ({
   );
 };
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   // Suspend rendering until the custom font is ready
   useSuspenseFontLoader(fontConfigs);
 

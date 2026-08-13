@@ -8,7 +8,7 @@ import minuteHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
 import secondHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
 import banFont from '@/assets/fonts/25fonts/25-06-11-Ban.ttf';
 
-const BananaClock: React.FC = () => {
+const BananaClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -22,7 +22,7 @@ const BananaClock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const seconds = now.getSeconds();
       const minutes = now.getMinutes();

@@ -24,7 +24,7 @@ const FONT_CONFIGS: FontConfig[] = [
   },
 ];
 
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   const currentTime = useMillisecondClock();
 
   useSuspenseFontLoader(FONT_CONFIGS);

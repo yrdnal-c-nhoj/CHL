@@ -3,7 +3,7 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import fibFont from '@/assets/fonts/25fonts/25-07-12-fib.otf';
 import fibImage from '@/assets/images/25_images/25-07/25-07-12/fib.gif';
 
-const FibonacciClock: React.FC = () => {
+const FibonacciClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -18,7 +18,7 @@ const FibonacciClock: React.FC = () => {
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const seconds = now.getSeconds();
       const minutes = now.getMinutes();
@@ -184,7 +184,7 @@ const FibonacciClock: React.FC = () => {
             opacity: 0.1,
             backgroundColor: '#000',
           }}
-        ></div>
+         />
       </div>
       <style>{`
         @keyframes slow-rotate {

@@ -5,7 +5,7 @@ import suvFont from '@/assets/fonts/25fonts/25-07-07-suv.ttf';
 import suvImage from '@/assets/images/25_images/25-07/25-07-07/suv.gif';
 import suvBackground from '@/assets/images/25_images/25-07/25-07-07/suvx.jpg';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const [time, setTime] = useState<any>({
     h: '00',
     m: '00',
@@ -26,7 +26,7 @@ const Clock: React.FC = () => {
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       let hours = now.getHours();
       const minutes = now.getMinutes();

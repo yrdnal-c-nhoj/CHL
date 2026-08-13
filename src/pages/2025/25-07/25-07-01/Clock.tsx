@@ -3,14 +3,14 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-07/25-07-01/mu.jpg';
 import fontUrl from '@/assets/fonts/25fonts/25-07-01-mult.ttf';
 
-const CinemaClock: React.FC = () => {
+const CinemaClock =  () => {
   const [time, setTime] = useState<any>({ hours: '', minutes: '' });
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
       fontFamily: 'mult',
-      fontUrl: fontUrl,
+      fontUrl,
       options: {
         weight: 'normal',
         style: 'normal',
@@ -20,7 +20,7 @@ const CinemaClock: React.FC = () => {
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       let hours = now.getHours();
       const minutes = now.getMinutes();
@@ -85,7 +85,7 @@ const CinemaClock: React.FC = () => {
   return (
     <div style={styles.htmlBody}>
       <style>{fontFace}</style>
-      <div style={styles.bgImage}></div>
+      <div style={styles.bgImage} />
       <div style={styles.clock}>
         {time.hours}
         {time.minutes}

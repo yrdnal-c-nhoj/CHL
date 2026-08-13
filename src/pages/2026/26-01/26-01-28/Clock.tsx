@@ -45,7 +45,7 @@ function CheckerboardBackground() {
               height: tileSize,
               backgroundImage: `url(${backgroundImage})`,
               backgroundSize: 'cover',
-              transform: transform,
+              transform,
               opacity: 0.2,
             }}
           />,

@@ -13,7 +13,7 @@ interface HandStyleParams {
   overlap?: number;
 }
 
-const Analog260205Clock: React.FC = () => {
+const Analog260205Clock =  () => {
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {

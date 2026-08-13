@@ -34,7 +34,7 @@ export default function PixelInverseClock() {
     const video = videoRef.current;
 
     // Resize canvas ONLY on resize, never per-frame
-    const resizeCanvas: React.FC = () => {
+    const resizeCanvas =  () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
@@ -50,7 +50,7 @@ export default function PixelInverseClock() {
       return { r: data[i], g: data[i + 1], b: data[i + 2] };
     };
 
-    const draw: React.FC = () => {
+    const draw =  () => {
       const w = canvas.width;
       const h = canvas.height;
       const cx = w / 2;

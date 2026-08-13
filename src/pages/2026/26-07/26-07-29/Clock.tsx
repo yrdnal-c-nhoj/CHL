@@ -146,10 +146,10 @@ const styles: { [key: string]: CSSProperties } = {
   },
 };
 
-const ClockPage: React.FC = () => {
+const ClockPage =  () => {
   const now = useSmoothClock();
   const cyanLayerRef = useRef<HTMLDivElement>(null);
-  const animationFrameId = useRef<number>();
+  const animationFrameId = useRef<number | null>(null);
 
   useEffect(() => {
     const animate = () => {

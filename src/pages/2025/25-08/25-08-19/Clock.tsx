@@ -3,12 +3,12 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import fontUrl from '@/assets/fonts/25fonts/25-08-19-cas.ttf';
 import bgUrl from '@/assets/images/25_images/25-08/25-08-19/ap.jpeg';
 
-const Pendulum: React.FC = () => {
+const Pendulum =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
       fontFamily: 'CustomFont',
-      fontUrl: fontUrl,
+      fontUrl,
       options: {
         weight: 'normal',
         style: 'normal',
@@ -23,7 +23,7 @@ const Pendulum: React.FC = () => {
     style.textContent = ``;
     document.head.appendChild(style);
 
-    const updateTimeOnBalls: React.FC = () => {
+    const updateTimeOnBalls =  () => {
       const now = new Date();
       let hours = now.getHours();
       hours = hours % 12 || 12;
@@ -107,7 +107,7 @@ const Pendulum: React.FC = () => {
 
   return (
     <div style={styles.pendulumApp}>
-      <div style={styles.bgLayer}></div>
+      <div style={styles.bgLayer} />
 
       <style>{`
         @keyframes left {
@@ -160,15 +160,15 @@ const Pendulum: React.FC = () => {
         <div
           style={{ ...styles.piece, ...styles.pieceFirstChild }}
           className="piece"
-        ></div>
-        <div style={styles.piece} className="piece"></div>
-        <div style={styles.piece} className="piece"></div>
-        <div style={styles.piece} className="piece"></div>
-        <div style={styles.piece} className="piece"></div>
+         />
+        <div style={styles.piece} className="piece" />
+        <div style={styles.piece} className="piece" />
+        <div style={styles.piece} className="piece" />
+        <div style={styles.piece} className="piece" />
         <div
           style={{ ...styles.piece, ...styles.pieceLastChild }}
           className="piece"
-        ></div>
+         />
       </div>
     </div>
   );

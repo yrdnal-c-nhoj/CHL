@@ -5,7 +5,7 @@ import React, {
   useState,
   useMemo,
 } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
@@ -25,13 +25,13 @@ interface Circle {
 
 const COLORS = ['#F60C52', '#F1E211', '#C608EC', '#37A9CC', '#0DEC41'];
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const circlesRef = useRef<Circle[]>([]);
   const timeRef = useRef<string>('');
   const animationRef = useRef<number>(0);
   const textPixelsRef = useRef<{ x: number; y: number }[]>([]);
-  const time = useClockTime();
+  const time = useMillisecondClock();
   const [slowdownActive, setSlowdownActive] = useState(false);
   const [resetKey, setResetKey] = useState(0);
 

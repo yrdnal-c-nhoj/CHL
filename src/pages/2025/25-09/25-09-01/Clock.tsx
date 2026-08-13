@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import * as DigitalClock from './ChinaClock.module.css';
 import bgImage from '@/assets/images/25_images/25-09/25-09-01/clo.webp';
@@ -18,8 +18,8 @@ const chineseDigits = {
   9: '九',
 };
 
-const ChinaClock: React.FC = () => {
-  const time = useClockTime();
+const ChinaClock =  () => {
+  const time = useMillisecondClock();
   const [isMobile, setIsMobile] = useState<any>(window.innerWidth < 768);
 
   // Handle resize

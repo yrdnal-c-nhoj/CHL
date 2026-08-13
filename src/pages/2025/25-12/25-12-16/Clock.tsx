@@ -10,7 +10,7 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
-const QuadClock: React.FC = () => {
+const QuadClock =  () => {
   const [time, setTime] = useState(Date.now());
 
   // Use standardized font loader
@@ -19,7 +19,7 @@ const QuadClock: React.FC = () => {
   // === Effect 2: Animation loop for smooth clock ===
   useEffect(() => {
     let animationId;
-    const updateTime: React.FC = () => {
+    const updateTime =  () => {
       setTime(Date.now());
       animationId = setInterval(() => setTime(new Date()), 100);
     };

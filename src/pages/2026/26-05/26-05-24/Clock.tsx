@@ -1,5 +1,5 @@
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import React, { useLayoutEffect, useMemo, useState } from 'react';
 
 // Image paths in public folder
@@ -97,7 +97,7 @@ const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
   );
 };
 
-const ClockNumerals: React.FC = () => {
+const ClockNumerals =  () => {
   return (
     <>
       {[...Array(12)].map((_, i) => {
@@ -128,7 +128,7 @@ const ClockNumerals: React.FC = () => {
 // ---------------- MAIN COMPONENT ----------------
 
 export default function AnalogClock() {
-  const time = useClockTime();
+  const time = useMillisecondClock();
   
   // Load custom font using the project's suspense loader
   useSuspenseFontLoader(fontConfigs);

@@ -179,7 +179,7 @@ function ModernDigitalClock() {
 
   // Avoid FOUT: wait for fonts then reveal component
   useEffect(() => {
-    let raf = requestAnimationFrame(() => {
+    const raf = requestAnimationFrame(() => {
       if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(() => setFontsReady(true));
       } else {
@@ -684,11 +684,9 @@ function ModernDigitalClock() {
             borderRadius: '0.8vh',
           }}
         >
-          <>
-            <span>{pad(now.getHours())}</span>
+          <span>{pad(now.getHours())}</span>
             <span>{pad(now.getMinutes())}</span>
             <span>{pad(now.getSeconds())}</span>
-          </>
         </div>
       </div>
 

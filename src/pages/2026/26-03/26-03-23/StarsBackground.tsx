@@ -14,7 +14,7 @@ interface Star {
   alpha: number;
 }
 
-const StarsBackground: React.FC = () => {
+const StarsBackground =  () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>(0);
   const starsRef = useRef<Star[]>([]);

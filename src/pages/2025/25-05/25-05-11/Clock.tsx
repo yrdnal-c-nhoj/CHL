@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import clockTax from './tax';
 import styles from './Clock.module.css';
@@ -12,9 +12,9 @@ import styles from './Clock.module.css';
  * - Utilizes project-standard hooks for time synchronization.
  * - Follows BTS standards with CSS Modules and semantic HTML.
  */
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Synchronize time using the standard hook
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   // Setup font loading configuration (memoized)
   const fontConfigs = useMemo<any[]>(() => [], []);

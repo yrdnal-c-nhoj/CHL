@@ -109,7 +109,7 @@ const CharBox = React.memo(
 );
 CharBox.displayName = 'CharBox';
 
-const ExplodingClock: React.FC = () => {
+const ExplodingClock =  () => {
   const fontConfigs = useMemo(() => [{ fontFamily: FONT_FAMILY, fontUrl }], []);
   useSuspenseFontLoader(fontConfigs);
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import analogBgImage from '@/assets/images/26_images/26-01/26-01-25/mirage.webp';
 import { useSecondClock } from '@/utils/hooks';
 
-const AnalogClockTemplate: React.FC = () => {
+const AnalogClockTemplate =  () => {
   const [time, setTime] = useState(new Date());
   const [opacity, setOpacity] = useState<number>(0.06);
 
@@ -84,7 +84,7 @@ const AnalogClockTemplate: React.FC = () => {
     width: '110vmin',
     height: '110vmin',
     borderRadius: '50%',
-    opacity: opacity,
+    opacity,
     willChange: 'opacity',
   };
 

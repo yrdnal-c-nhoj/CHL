@@ -60,7 +60,7 @@ export default function AnalogClock() {
           fontFamily: 'sans-serif',
           letterSpacing: '0.2em',
         }}
-      ></div>
+       />
     );
 
   // Time math
@@ -249,8 +249,7 @@ export default function AnalogClock() {
   );
 
   return (
-    <>
-      <div style={pageStyle}>
+    <div style={pageStyle}>
         <div style={bgStyle} />
         <div style={wrapperStyle}>
           <div style={overlayStyle} />
@@ -258,9 +257,8 @@ export default function AnalogClock() {
           <div style={hourHand} />
           <div style={minuteHand} />
           <div style={secondHand} />
-          <div style={centerCap}></div>
+          <div style={centerCap} />
         </div>
       </div>
-    </>
   );
 }

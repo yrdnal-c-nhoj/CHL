@@ -3,10 +3,10 @@ import image1 from '@/assets/images/25_images/25-05/25-05-18/13966281486_Volanti
 import image2 from '@/assets/images/25_images/25-05/25-05-18/8mMt.gif'; // middle layer
 import image3 from '@/assets/images/25_images/25-05/25-05-18/bloo.gif'; // top layer
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import React, { useEffect } from 'react';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -19,7 +19,7 @@ const Clock: React.FC = () => {
     },
   ];
   useMultipleFontLoader(fontConfigs);
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   // Format time with leading zeros
   const formatTime = (unit) => String(unit).padStart(2, '0');

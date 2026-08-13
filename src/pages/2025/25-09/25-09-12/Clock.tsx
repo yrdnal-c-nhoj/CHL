@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 
-const App: React.FC = () => {
+const App =  () => {
   const time = useSmoothClock();
   const starCanvasRef = useRef(null);
   const faceRef = useRef(null);
@@ -180,7 +180,7 @@ const App: React.FC = () => {
       ctx.restore();
     };
 
-    const resize: React.FC = () => {
+    const resize =  () => {
       starCanvas.width = window.innerWidth;
       starCanvas.height = window.innerHeight;
 
@@ -207,7 +207,7 @@ const App: React.FC = () => {
       drawClockFace(contexts.face, radius, fontSize);
     };
 
-    const animate: React.FC = () => {
+    const animate =  () => {
       // ---- Stars ----
       starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
 

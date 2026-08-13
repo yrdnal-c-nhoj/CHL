@@ -61,7 +61,7 @@ export function useImageLoader(config: ImageAssetConfig): {
   state: AssetLoadState;
   element: HTMLImageElement | null;
   error: Error | null;
-  ref: React.RefObject<HTMLImageElement>;
+  ref: React.RefObject<HTMLImageElement | null>;
 } {
   const [state, setState] = useState<AssetLoadState>('loading');
   const [error, setError] = useState<Error | null>(null);
@@ -149,7 +149,7 @@ export function useVideoLoader(config: VideoAssetConfig): {
   state: AssetLoadState;
   element: HTMLVideoElement | null;
   error: Error | null;
-  ref: React.RefObject<HTMLVideoElement>;
+  ref: React.RefObject<HTMLVideoElement | null>;
   play: () => Promise<void>;
   pause: () => void;
   isPlaying: boolean;
@@ -268,7 +268,7 @@ export function useAudioLoader(config: AudioAssetConfig): {
   state: AssetLoadState;
   element: HTMLAudioElement | null;
   error: Error | null;
-  ref: React.RefObject<HTMLAudioElement>;
+  ref: React.RefObject<HTMLAudioElement | null>;
   play: () => Promise<void>;
   pause: () => void;
   isPlaying: boolean;

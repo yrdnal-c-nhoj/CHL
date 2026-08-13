@@ -36,7 +36,7 @@ const generateNumbers = () => {
   }).filter(Boolean) as { key: number; x: number; y: number; number: number }[];
 };
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   useSuspenseFontLoader(fontConfigs);
 
   const now = useMillisecondClock();

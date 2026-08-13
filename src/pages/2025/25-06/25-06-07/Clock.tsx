@@ -31,7 +31,7 @@ export default function BlizzardClock() {
 
   // ✅ Correct viewport height for mobile Chrome
   useEffect(() => {
-    const setVh: React.FC = () => {
+    const setVh =  () => {
       document.documentElement.style.setProperty(
         '--vh',
         `${window.innerHeight * 0.01}px`,
@@ -44,7 +44,7 @@ export default function BlizzardClock() {
 
   // ✅ Live time updater
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const hours = now.getHours().toString().padStart(2, '0');
       const minutes = now.getMinutes().toString().padStart(2, '0');

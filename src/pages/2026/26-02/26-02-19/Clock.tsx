@@ -3,7 +3,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import platFont from '@/assets/fonts/26fonts/26-02-19-plat.ttf';
 
-const ImageDisplay: React.FC = () => {
+const ImageDisplay =  () => {
   const time = useSecondClock();
   const [showContent, setShowContent] = useState(false);
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import customFontUrl from '@/assets/fonts/25fonts/25-08-15-dom.ttf';
 import backgroundImg from '@/assets/images/25_images/25-08/25-08-15/tabl.webp';
@@ -45,7 +45,7 @@ const styles = {
   },
 };
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   const fontConfigs = [
     {
       fontFamily: 'dom',
@@ -58,7 +58,7 @@ const DigitalClock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   const digitToLetter = (str) => {
     const map = {

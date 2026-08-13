@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import customFontpawww from '@/assets/fonts/25fonts/25-09-13-anim.ttf?url';
 import bgImage from '@/assets/images/25_images/25-09/25-09-13/anim.jpg';
 
-const DigitalClock: React.FC = () => {
-  const time = useClockTime();
+const DigitalClock =  () => {
+  const time = useMillisecondClock();
   const [prevTime, setPrevTime] = useState(new Date());
   const [isHorizontal, setIsHorizontal] = useState<any>(
     window.innerWidth >= 768,

@@ -11,7 +11,7 @@ interface Digit {
   color: string;
 }
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -62,7 +62,7 @@ const Clock: React.FC = () => {
       }, 6000);
     };
 
-    const showTimeDigits: React.FC = () => {
+    const showTimeDigits =  () => {
       const now = new Date();
       const timeStr = formatTime(now);
       const hourLength = timeStr.length - 2;

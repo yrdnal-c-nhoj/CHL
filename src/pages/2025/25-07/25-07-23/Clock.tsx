@@ -3,7 +3,7 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import backgroundImg from '@/assets/images/25_images/25-07/25-07-23/bay01s52djxo1_400.webp';
 import bayFont from '@/assets/fonts/25fonts/25-07-23-bay.ttf';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const [timeStr, setTimeStr] = useState<any>('');
 
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -20,7 +20,7 @@ const Clock: React.FC = () => {
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const time = now
         .toLocaleTimeString('en-GB', { hour12: false })

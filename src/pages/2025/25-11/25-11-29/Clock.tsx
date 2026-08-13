@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundImg from '@/assets/images/25_images/25-11/25-11-29/squ.webp';
 import fontUrl_20251128 from '@/assets/fonts/25fonts/25-11-29-roc.ttf?url';
 
 export default function RococoDigitalClock() {
-  const now = useClockTime();
+  const now = useMillisecondClock();
   const [morph, setMorph] = useState<number>(0);
   const [isVertical, setIsVertical] = useState<boolean>(false);
 
@@ -51,7 +51,7 @@ export default function RococoDigitalClock() {
   const timeStr = `${hours}:${minutes}:${seconds}`;
 
   const rand = (seed) => {
-    let x = Math.sin(seed) * 12345;
+    const x = Math.sin(seed) * 12345;
     return x - Math.floor(x);
   };
 

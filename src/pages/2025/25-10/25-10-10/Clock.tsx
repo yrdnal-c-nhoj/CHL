@@ -58,7 +58,7 @@ export default function ProcessingCounterClock() {
   useEffect(() => {
     let fadeTimeout;
 
-    const loopFadeIn: React.FC = () => {
+    const loopFadeIn =  () => {
       fadeTimeout = setTimeout(() => {
         setVisible(false); // briefly hide to trigger fade-in
         setTimeout(() => {

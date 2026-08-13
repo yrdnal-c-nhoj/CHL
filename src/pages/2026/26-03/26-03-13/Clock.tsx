@@ -3,7 +3,7 @@ import veniceFont from '@/assets/fonts/26fonts/26-03-13-venice.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useSecondClock();
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 

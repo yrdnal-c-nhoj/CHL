@@ -9,11 +9,11 @@ import hourImg from '@/assets/images/25_images/25-06/25-06-21/mercc.gif';
 import minuteImg from '@/assets/images/25_images/25-06/25-06-21/memm.gif';
 import secondImg from '@/assets/images/25_images/25-06/25-06-21/mmmm.png';
 
-const MercuryClock: React.FC = () => {
-  const hourRef = useRef();
-  const minuteRef = useRef();
-  const secondRef = useRef();
-  const clockRef = useRef();
+const MercuryClock =  () => {
+  const hourRef = useRef(null);
+  const minuteRef = useRef(null);
+  const secondRef = useRef(null);
+  const clockRef = useRef(null);
 
   useEffect(() => {
     const font = new FontFace('merc', `url(${fontUrl})`);
@@ -59,7 +59,7 @@ const MercuryClock: React.FC = () => {
       clock.appendChild(el);
     });
 
-    const updateClockSmooth: React.FC = () => {
+    const updateClockSmooth =  () => {
       const now = new Date();
       const ms = now.getMilliseconds();
       const sec = now.getSeconds() + ms / 1000;

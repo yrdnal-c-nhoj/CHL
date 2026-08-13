@@ -142,7 +142,7 @@ const KEYFRAMES = `
   }
 `;
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const now = useSecondClock();
 
   const { hourAngle, minuteAngle, secondAngle, currentSecond, isoTime } = useMemo(() => {

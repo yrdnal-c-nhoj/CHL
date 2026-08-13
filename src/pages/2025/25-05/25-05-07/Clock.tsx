@@ -17,9 +17,9 @@ const Clock: React.FC<ClockProps> = () => {
 
   // Use the standardized hook for smooth millisecond clock updates
   const currentTime = useMillisecondClock();
-  const requestRef = useRef<number>();
+  const requestRef = useRef<number | null>(null);
 
-  const updateClock: React.FC = () => {
+  const updateClock =  () => {
     const now = new Date();
     const ms = now.getMilliseconds();
     const seconds = now.getSeconds();
@@ -69,11 +69,11 @@ const Clock: React.FC<ClockProps> = () => {
       <div className="clock">
         <div id="radar">
           {/* The trailing glow effect */}
-          <div className="radar-sweep"></div>
+          <div className="radar-sweep" />
 
           <div className="clock-face">
-            <div className="hand hour-hand"></div>
-            <div className="hand minute-hand"></div>
+            <div className="hand hour-hand" />
+            <div className="hand minute-hand" />
             {/* <div className="hand second-hand"></div> */}
             {/* <div className="center"></div> */}
           </div>

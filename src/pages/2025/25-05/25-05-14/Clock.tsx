@@ -48,7 +48,7 @@ const Clock: React.FC<ClockProps> = () => {
       return [...(String(hours) + minutes)];
     };
 
-    const randomColor: React.FC = () => {
+    const randomColor =  () => {
       const hues = [0, 120, 240, 300];
       return `hsl(${hues[Math.floor(Math.random() * hues.length)]}, 70%, 50%)`;
     };
@@ -131,7 +131,7 @@ const Clock: React.FC<ClockProps> = () => {
     };
 
     // ------------------- Clock logic -------------------
-    const startClockLogic: React.FC = () => {
+    const startClockLogic =  () => {
       const root = document.getElementById(SCOPE_ID);
       const srTime = document.getElementById('screen-reader-time');
       if (!root || !srTime) return;

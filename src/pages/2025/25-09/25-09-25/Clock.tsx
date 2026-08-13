@@ -22,7 +22,7 @@ export const fontConfigs = [
   { fontFamily: fontFourName, fontUrl: FontFour_2025_09_25 },
 ];
 
-const UnixEpochClock: React.FC = () => {
+const UnixEpochClock =  () => {
   const [timestamp, setTimestamp] = useState<string>('');
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);

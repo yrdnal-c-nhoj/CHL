@@ -104,7 +104,7 @@ export default function ClockWall() {
 
   // Calculate grid
   useEffect(() => {
-    const calcGrid: React.FC = () => {
+    const calcGrid =  () => {
       const clockCharCount = '00:00:00.00'.length;
       const clockWidth =
         parseFloat(CONFIG.digitWidth) * clockCharCount +
@@ -185,8 +185,8 @@ export default function ClockWall() {
 
   return (
     <div style={containerStyle}>
-      <div style={overlayStyle}></div>
-      <div style={bottomImageStyle}></div>
+      <div style={overlayStyle} />
+      <div style={bottomImageStyle} />
       <div style={gridStyle}>{clocks}</div>
     </div>
   );

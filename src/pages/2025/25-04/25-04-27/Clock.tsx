@@ -156,7 +156,7 @@ const SpinningCoinClock: React.FC<SpinningCoinClockProps> = () => {
             transform: 'translate(-50%, -50%)',
             zIndex: 10,
           }}
-        ></div>
+         />
       </div>
       <style>{`
         @keyframes spin {

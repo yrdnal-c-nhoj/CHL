@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultipleFontLoader } from '../../../utils/fontLoader';
 import airFontUrl from './air.ttf';
 import stampImg from './stamp.png';
@@ -130,7 +130,7 @@ const styles = {
   },
 };
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -143,7 +143,7 @@ const Clock: React.FC = () => {
     },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   const timeStr = time
     .toLocaleTimeString('en-US', {

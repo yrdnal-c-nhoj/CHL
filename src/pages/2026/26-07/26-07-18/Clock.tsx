@@ -106,7 +106,7 @@ const AnalogClock: React.FC<{ time: Date }> = ({ time }) => {
 
 const FONT_CONFIGS = [{ fontFamily: CONFIG.fontFamily, fontUrl }];
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useMillisecondClock();
   
   // Load custom font asset via suspense hook

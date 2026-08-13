@@ -21,7 +21,7 @@ const GARISH_COLORS = [
   '#FF5E00', // Neon Orange
 ];
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const playerRef = useRef<any>(null);
   const playerContainerRef = useRef<HTMLDivElement>(null);
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import symJpg from '@/assets/images/25_images/25-12/25-12-23/sym.jpg';
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -68,8 +68,8 @@ const DigitalClock: React.FC = () => {
           justifyContent: 'center',
           alignItems: 'center',
           fontSize: size,
-          zIndex: zIndex,
-          opacity: opacity,
+          zIndex,
+          opacity,
           color: '#F5D9D9',
           pointerEvents: 'none',
           lineHeight: 1,

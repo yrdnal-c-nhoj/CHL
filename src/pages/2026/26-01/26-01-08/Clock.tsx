@@ -52,7 +52,7 @@ const CONFIG = {
   },
 };
 
-const TangerineClock: React.FC = () => {
+const TangerineClock =  () => {
   const [time, setTime] = useState(() => new Date());
   const [clockSize, setClockSize] = useState<number>(300);
   const [isClient, setIsClient] = useState<boolean>(false);

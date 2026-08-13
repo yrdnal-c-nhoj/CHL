@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from '../styles/TopNav.module.css';
 
-const TopNav: React.FC = () => {
+const TopNav =  () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 

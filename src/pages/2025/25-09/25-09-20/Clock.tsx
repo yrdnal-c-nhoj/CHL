@@ -27,7 +27,7 @@ const SIZES = {
   number: { width: '2rem', height: '2rem', fontSize: '1.9rem' },
 };
 
-const NeonClock: React.FC = () => {
+const NeonClock =  () => {
   const time = useSmoothClock();
   const clockRef = useRef(null);
   const ticksRef = useRef([]);
@@ -37,7 +37,7 @@ const NeonClock: React.FC = () => {
   useEffect(() => {
     let animationFrameId;
 
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const ms = time.getMilliseconds();
       const second = time.getSeconds() + ms / 1000;
       const minute = time.getMinutes() + second / 60;

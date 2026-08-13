@@ -1,4 +1,4 @@
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import styles from './Clock.module.css';
@@ -47,9 +47,9 @@ const updateSphereCanvas = (
 
 // --- Component ---
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   // Refs to Three.js objects for direct updates without re-renders
   const planetMaterialRef = useRef<THREE.MeshStandardMaterial | null>(null);

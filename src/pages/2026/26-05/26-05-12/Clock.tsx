@@ -37,7 +37,7 @@ const fontConfigs = [
   },
 ];
 
-const BackgroundLayers: React.FC = () => (
+const BackgroundLayers =  () => (
   <div className={styles.backgroundLayersContainer}>
     <div className={styles.twoUp}>
       <div className={styles.half}>
@@ -68,7 +68,7 @@ const BackgroundLayers: React.FC = () => (
   </div>
 );
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const currentTime = useMillisecondClock();
 
   const rotations = useMemo(() => {

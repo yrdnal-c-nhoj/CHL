@@ -38,7 +38,7 @@ export default function HexClock() {
   const [subSecondProgress, setSubSecondProgress] = useState(0);
 
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | null>(null);
 
   useSuspenseFontLoader(fontConfigs);
 

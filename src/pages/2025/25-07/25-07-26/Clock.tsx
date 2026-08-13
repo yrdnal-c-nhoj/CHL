@@ -12,7 +12,7 @@ const getRandomDifferentColor = (currentColor, palette) => {
   return newPalette[Math.floor(Math.random() * newPalette.length)];
 };
 
-const PrimaryColorClock: React.FC = () => {
+const PrimaryColorClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -45,7 +45,7 @@ const PrimaryColorClock: React.FC = () => {
 
   // Clock hand movement - smooth seconds
   useEffect(() => {
-    const update: React.FC = () => {
+    const update =  () => {
       const now = new Date();
 
       const ms = now.getMilliseconds();
@@ -202,8 +202,8 @@ const PrimaryColorClock: React.FC = () => {
     <>
       {styleTag}
       <div style={containerStyle}>
-        <div style={bgStyle1}></div>
-        <div style={bgStyle2}></div>
+        <div style={bgStyle1} />
+        <div style={bgStyle2} />
 
         <div style={centerContainerStyle}>
           <div style={clockStyle}>

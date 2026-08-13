@@ -5,7 +5,7 @@ import React from 'react';
 
 export const assets = [cyanImage, cyanVideo];
 
-const CyanClock: React.FC = () => {
+const CyanClock =  () => {
   const time = useSecondClock();
 
   const seconds = time.getSeconds();

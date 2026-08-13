@@ -15,7 +15,7 @@ export const fontConfigs: FontConfig[] = [
   { fontFamily: 'ClockFont', fontUrl: clockFont }
 ];
 
-const ClockInner: React.FC = () => {
+const ClockInner =  () => {
   const [isOpen, setIsOpen] = useState(false);
   const timeoutRef = useRef<number | null>(null);
   
@@ -94,7 +94,7 @@ const ClockInner: React.FC = () => {
   );
 };
 
-const Clock: React.FC = () => (
+const Clock =  () => (
   <Suspense fallback={<ClockLoadingFallback />}>
     <ClockInner />
   </Suspense>

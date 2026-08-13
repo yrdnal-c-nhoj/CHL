@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import backgroundImage from '@/assets/images/25_images/25-12/25-12-02/bg.webp';
 
 const ROTATION_DURATION = 240; // seconds for a full rotation (quarter speed)
 const ZOOM_MULTIPLIER = 1.5;
 
-const RotatingBackground: React.FC = () => {
+const RotatingBackground =  () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [rotationAngle, setRotationAngle] = useState<number>(0);
   const [sideLength, setSideLength] = useState<number>(0);
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   // Preload the background image and compute sizes
   useEffect(() => {
     let isMounted = true;
 
-    const loadImage: React.FC = () => {
+    const loadImage =  () => {
       const img = new Image();
       img.src = backgroundImage;
 
       img.onload = () => {
         if (isMounted) {
-          const computeSize: React.FC = () => {
+          const computeSize =  () => {
             const w = window.innerWidth;
             const h = window.innerHeight;
             const diagonal = Math.sqrt(w * w + h * h) * ZOOM_MULTIPLIER;

@@ -3,14 +3,14 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-06/25-06-12/auth.jpg';
 import cattleFont from '@/assets/fonts/25fonts/25-06-12-cattle.ttf';
 
-const CattleBrandClock: React.FC = () => {
+const CattleBrandClock =  () => {
   const [time, setTime] = useState<any>({ hours: 12, minutes: '00' });
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       let hours = now.getHours();
-      let minutes = now.getMinutes();
+      const minutes = now.getMinutes();
 
       hours = hours % 12 || 12;
       const minStr = minutes.toString().padStart(2, '0');

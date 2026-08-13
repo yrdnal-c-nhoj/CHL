@@ -42,7 +42,7 @@ const formatDigits = (num: number): string => num.toString().padStart(2, '0');
 // =========================
 // MAIN COMPONENT
 // =========================
-const BaseClock: React.FC = () => {
+const BaseClock =  () => {
   // Use standardized hook (1-second updates by default)
   const time = useSecondClock();
 

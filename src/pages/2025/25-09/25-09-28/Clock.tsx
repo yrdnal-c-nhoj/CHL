@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import ufoImg from '@/assets/images/25_images/25-09/25-09-28/ufo.webp';
@@ -51,7 +51,7 @@ export default function DesertUFOSequence() {
   const [beam, setBeam] = useState<boolean>(false);
   const [clockVisible, setClockVisible] = useState<boolean>(true);
   const [clockOpacity, setClockOpacity] = useState<number>(1);
-  const time = useClockTime();
+  const time = useMillisecondClock();
   const [clockText, setClockText] = useState(getClockTime());
   const [chaos, setChaos] = useState<number>(0);
   const [sparks, setSparks] = useState<any>([]);
@@ -176,7 +176,7 @@ export default function DesertUFOSequence() {
           setFlashOpacity(0.7);
           setTimeout(() => setFlashOpacity(0), FLASH_DURATION);
 
-          let blobStart = performance.now();
+          const blobStart = performance.now();
           const moveBlob = (now) => {
             const blobProgress = Math.min(
               (now - blobStart) / UFO_LEAVE_DURATION,

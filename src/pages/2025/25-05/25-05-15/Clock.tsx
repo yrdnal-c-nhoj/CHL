@@ -136,7 +136,7 @@ const RouletteClock: React.FC<RouletteClockProps> = () => {
     clock.appendChild(center);
   };
 
-  const updateClock: React.FC = () => {
+  const updateClock =  () => {
     const now = new Date();
     const hours = now.getHours() % 12;
     const minutes = now.getMinutes();
@@ -224,7 +224,7 @@ const RouletteClock: React.FC<RouletteClockProps> = () => {
           boxSizing: 'border-box',
           zIndex: 6,
         }}
-      ></div>
+       />
 
       <img
         decoding="async"

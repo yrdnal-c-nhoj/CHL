@@ -176,7 +176,7 @@ class ErrorBoundary extends React.Component<Props, State> {
  * The root component that sets up routing, error boundaries,
  * and global providers for the entire application
  */
-const App: React.FC = () => {
+const App =  () => {
   return (
     <ErrorBoundary>
       <DataProvider>
