@@ -66,10 +66,9 @@
 
 .simpleListRow {
   display: grid;
-  /* Date | Content | Thumbnail */
-  /* Date | Image | Title/Tags | Number */
-  grid-template-columns: auto 110px 1fr auto;
-  align-items: start;
+  /* Defines the four columns: Date | Image | Title/Tags | Number */
+  grid-template-columns: min-content 110px 1fr min-content;
+  align-items: center;
   justify-items: stretch;
   gap: 1rem;
   width: 100%;
@@ -78,11 +77,6 @@
   cursor: pointer;
   box-sizing: border-box;
   transition: background-color 0.2s;
-}
-/* Keep columns from being affected by content sizing */
-.simpleListRow > * {
-  min-width: 0;
-  align-self: start;
 }
 
 .simpleListDate {
@@ -97,6 +91,7 @@
   flex-direction: column;
   grid-column: 3;
   width: 100%;
+  align-self: start; /* Align this stack to the top */
   min-width: 0; /* Important for ellipsis on Title */
 }
 
