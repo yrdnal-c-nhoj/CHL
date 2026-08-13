@@ -2,10 +2,10 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, {
-    useEffect,
-    useMemo,
-    useRef,
-    useState
+  useEffect,
+  useMemo,
+  useRef,
+  useState
 } from 'react';
 import styles from './Clock.module.css';
 
@@ -37,6 +37,7 @@ const GravityClock: React.FC<GravityClockProps> = () => {
   const [clocks, setClocks] = useState<ClockData[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number | null>(null);
+  const lastSpawnTimeRef = useRef<number>(0);
 
   // Spawning logic
   useEffect(() => {
@@ -46,7 +47,7 @@ const GravityClock: React.FC<GravityClockProps> = () => {
       const size = sizes[Math.floor(Math.random() * sizes.length)];
 
       // Inverse Gravity: Large is slow, Small is fast
-      const gravity = 2.2 / size + 0.005;
+      const gravity = (2.2 / size + 0.005) * 10;
 
       // Higher bounce for larger "lighter" clocks
       const bounce = Math.min(0.92, 0.2 + size / 320);
@@ -57,7 +58,7 @@ const GravityClock: React.FC<GravityClockProps> = () => {
         gravity,
         bounce,
         x: Math.random() * 90,
-        y: -20,
+        y: -size, // Start off-screen in pixels
         vy: 0,
         squash: 1, // 1 = normal, < 1 = squashed
         color: `hsl(${Math.floor(Math.random() * 360)}, 30%, 50%)`,
@@ -66,9 +67,17 @@ const GravityClock: React.FC<GravityClockProps> = () => {
       setClocks((prev) => [...prev, newClock]);
     };
 
-    const interval = setInterval(spawnClock, 1800);
-    return () => clearInterval(interval);
-  }, []);
+    const now = currentTime.getTime();
+
+    // Initialize with a spawn
+    if (lastSpawnTimeRef.current === 0) {
+      spawnClock();
+      lastSpawnTimeRef.current = now;
+    } else if (now - lastSpawnTimeRef.current > 1800) {
+      spawnClock();
+      lastSpawnTimeRef.current = now;
+    }
+  }, [currentTime]);
 
   // Animation loop
   const animate = () => {
@@ -77,32 +86,30 @@ const GravityClock: React.FC<GravityClockProps> = () => {
       const containerHeight =
         containerRef.current?.getBoundingClientRect().height ||
         window.innerHeight;
-      // Convert to rem for the physics simulation since we use rem for drawing
-      const floor = containerHeight / 16;
+      const floor = containerHeight; // Floor is the container height in pixels
 
       return prevClocks
         .filter((c) => Date.now() - c.born < 45000)
         .map((c) => {
           let nextVy = c.vy + c.gravity;
           let nextY = c.y + nextVy;
-          let nextSquash = 1;
-          const sizeRem = c.size / 16;
+          let nextSquash;
 
           // 1. Calculate Stretch based on velocity (velocity-based elongation)
           // As it falls faster, it stretches slightly: scaleY > 1
-          nextSquash = 1 + Math.abs(nextVy) * 0.15;
+          nextSquash = 1 + Math.abs(nextVy) * 0.05;
 
           // 2. Floor Collision & Squash
-          if (nextY > floor - sizeRem) {
-            nextY = floor - sizeRem;
+          if (nextY > floor - c.size) {
+            nextY = floor - c.size;
 
             // If impact velocity is significant, trigger squash
-            if (Math.abs(nextVy) > 0.1) {
+            if (Math.abs(nextVy) > 1) {
               nextSquash = 0.6; // Flatten to 60% height
             }
 
             nextVy *= -c.bounce;
-            if (Math.abs(nextVy) < 0.01) nextVy = 0;
+            if (Math.abs(nextVy) < 0.1) nextVy = 0;
           }
 
           // Smoothly return squash back to 1 if it was squashed
@@ -152,11 +159,11 @@ const ClockItem: React.FC<ClockItemProps> = React.memo(({ clock, currentTime }) 
     <div
       className={styles.clockItem}
       style={{
-        width: `${clock.size / 16}rem`,
-        height: `${clock.size / 16}rem`,
+        width: `${clock.size}px`,
+        height: `${clock.size}px`,
         left: `${clock.x}vw`,
         backgroundColor: clock.color,
-        transform: `translateY(${clock.y}rem) scale(${scaleX}, ${scaleY})`,
+        transform: `translateY(${clock.y}px) scale(${scaleX}, ${scaleY})`,
       }}
     >
       <div className={styles.clockFace}>
