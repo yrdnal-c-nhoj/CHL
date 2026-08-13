@@ -1,13 +1,13 @@
-import React, {
-  useEffect,
-  useRef,
-  useCallback,
-  useState,
-  useMemo,
-} from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+import {
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import styles from './Clock.module.css';
 
 interface Circle {
@@ -50,8 +50,8 @@ const Clock =  () => {
 
   // Trigger a "reload" of the particle system every 5 seconds
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
-    let slowdownTimeoutId: NodeJS.Timeout;
+    let intervalId: number;
+    let slowdownTimeoutId: number;
 
     const scheduleCycle = () => {
       // Start slowdown 2 seconds before the reset
