@@ -25,10 +25,6 @@ const useTimeFormatters = () => {
     formatMinute: (date: Date): string => date.getMinutes().toString().padStart(2, '0'),
   }), []);
 };
-const formatHour = (date: Date): string =>
-  date.getHours().toString().padStart(2, '0');
-const formatMinute = (date: Date): string =>
-  date.getMinutes().toString().padStart(2, '0');
 
 /**
  * Updates a canvas with text for sphere mapping.
@@ -225,7 +221,7 @@ const ClockComponent: React.FC = () => {
         container.removeChild(renderer.domElement);
       }
     };
-  }, []);
+  }, [formatHour, formatMinute]);
 
   // Update textures whenever the 'time' prop/hook changes
   useEffect(() => {
