@@ -1,11 +1,7 @@
 import bgImage from '@/assets/images/26_images/26-01/26-01-19/hands.webp';
 
-import { useSecondClock } from '@/utils/hooks';
-import React, { useEffect, useRef, useState } from 'react';
-
-// Prevent TS/ESLint from failing the production build for this experimental clock page.
-// This project appears to run strict checks during Vite build.
- 
+import { useSecondClock } from '@/utils/hooks/useSmoothClock';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import styles from './Clock.module.css';
 
@@ -17,12 +13,6 @@ const COLORS = {
   secondHand: '#F1E206', // Bright Yellow
   mainHands: '#1E293B',
   border: '#330202', // Darker border for contrast
-};
-
-const STYLE_VARS = {
-  handTransition: 'transform 0.1s ease-out',
-  sleepyTransition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
-  panicTransition: 'transform 0.4s cubic-bezier(0.17, 0.67, 0.6, 1.3)',
 };
 
 // --- Physics deviation functions ---
@@ -43,7 +33,7 @@ const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }: Comp
 
   const r = size / 2;
   const handWidth = size * 0.008;
-  const outlineWidth = `${size * 0.0015}vh`;
+  const outlineWidth = useMemo(() => `${size * 0.0015}vh` as const, [size]);
   const arrowBase = {
     width: 0, height: 0, position: 'absolute', left: '50%', transform: 'translateX(-50%)', bottom: `${r * 0.9}vh`
   };
@@ -51,7 +41,7 @@ const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }: Comp
   return (
     <div style={{
       position: 'absolute', bottom: '50%', left: '50%', width: handWidth, height: 0,
-      transformOrigin: 'bottom center', transform: `translateX(-50%) rotate(${rotation}deg)`,
+      transformOrigin: 'bottom center', transform: `translateX(-50%) rotate(${rotation}deg)` as const,
       zIndex, transition
     }}>
       {/* Arrow Heads */}
@@ -80,7 +70,7 @@ const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }: Comp
       {/* Tail */}
       <div style={{
         position: 'absolute', top: 0, left: 0, width: '100%', height: `${r * 0.3}vh`,
-        background: COLORS.secondHand, boxSizing: 'border-box',
+        background: COLORS.secondHand, boxSizing: 'border-box' as const,
         borderBottom: `${outlineWidth} solid ${COLORS.border}`,
         borderLeft: `${outlineWidth} solid ${COLORS.border}`,
         borderRight: `${outlineWidth} solid ${COLORS.border}`,
@@ -90,7 +80,7 @@ const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }: Comp
       <div style={{
         position: 'absolute', top: `${r * 0.4}vh`, left: '50%', transform: 'translateX(-50%)',
         width: `${size * 0.08}vh`, height: `${size * 0.08}vh`,
-        borderRadius: '50%', background: COLORS.secondHand, boxSizing: 'border-box',
+        borderRadius: '50%', background: COLORS.secondHand, boxSizing: 'border-box' as const,
         border: `${outlineWidth} solid ${COLORS.border}`,
       }} />
     </div>
@@ -108,18 +98,18 @@ const ManyHandClock =  () => {
   const [sleepyPos2, setSleepyPos2] = useState<number>(0);
   const [panickedPos, setPanickedPos] = useState<number>(0);
 
-  // Behavior Refs
+  // --- Behavior Refs & State ---
   const nextChangeRef = useRef(0);
   const isFrozenRef = useRef(false);
-  const frozenAtRef = useRef(0);
+  const frozenAtRef = useRef(0); // For 'forgetful' hand
   const sleepyRefs = useRef([
     { frozen: false, at: 0, next: 0, shaking: false, start: 0 },
     { frozen: false, at: 0, next: 0, shaking: false, start: 0 },
   ]);
   const panicStateRef = useRef('normal');
   const panicStuckAtRef = useRef(0);
-  const [panicState, setPanicState] = useState<'normal' | 'stuck' | 'rushing'>('normal');
-
+  const panicState = panicStateRef.current;
+  
   useEffect(() => {
     const updateSize = () => {
       const vmin = Math.min(window.innerWidth, window.innerHeight);
@@ -130,13 +120,13 @@ const ManyHandClock =  () => {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
-  // Derived time values
+  // --- Derived time values ---
   const sFraction = now.getSeconds() + now.getMilliseconds() / 1000;
   const baseRotation = (sFraction / 60) * 360;
   const currentTime = now.getTime();
   const s = now.getSeconds();
 
-  // Behavior Logic: Using currentTime as the primary driver for physics
+  // --- Behavior Logic: Using currentTime as the primary driver for physics ---
   useEffect(() => {
     if (currentTime > nextChangeRef.current) {
       isFrozenRef.current = !isFrozenRef.current;
@@ -182,7 +172,7 @@ const ManyHandClock =  () => {
     } else {
       setPanickedPos(baseRotation);
     }
-  }, [currentTime, baseRotation, s]);
+  }, [currentTime, baseRotation, s, panicState]);
 
   const hourRot = (((now.getHours() % 12) + now.getMinutes() / 60) / 12) * 360;
   const minuteRot = ((now.getMinutes() + sFraction / 60) / 60) * 360;
@@ -287,12 +277,11 @@ const ManyHandClock =  () => {
           rotation={panickedPos}
           size={clockSize}
           zIndex={150}
-          transition={
+          transition={(
             panicState === 'rushing'
               ? 'transform 0.4s cubic-bezier(0.17, 0.67, 0.6, 1.3)'
               : 'none'
-
-          }
+          ) as React.CSSProperties['transition']}
         />
 
         {/* Center Dot */}
