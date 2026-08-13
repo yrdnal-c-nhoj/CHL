@@ -40,8 +40,7 @@
   font-family: 'IBM Plex Mono', monospace;
   font-size: 25vmin;
   font-weight: bold;
-  color: white;
-  mix-blend-mode: difference;
+  color: #7f5f35; /* A plain brown color */
 }
 
 .srOnly {

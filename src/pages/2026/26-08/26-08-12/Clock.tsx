@@ -33,20 +33,14 @@ const ClockComponent: React.FC = () => {
 
   return (
     <main className={styles.container}>
-      <div className={styles.videoGrid}>
-        {Array.from({ length: 36 }).map((_, i) => (
-          <div key={i} className={styles.videoTile}>
-            <video
-              src={tileVideo}
-              className={styles.tileVideo}
-              autoPlay
-              loop
-              muted
-            />
-          </div>
-        ))}
-      </div>
-
+      <video
+        src={tileVideo}
+        className={styles.backgroundVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
       <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
