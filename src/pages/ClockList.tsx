@@ -72,7 +72,7 @@ const ClockList: FC = () => {
   );
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>Error: {error instanceof Error ? error.message : String(error)}</div>;
   }
 
   return (

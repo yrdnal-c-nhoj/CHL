@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 // Export empty font configs to disable font loader
 export const fontConfigs = [];
 
-const IndecisiveClock: React.FC = () => {
+const IndecisiveClock =  () => {
   const [time, setTime] = useState({ h: '', m: '', s: '' });
   const [showFirst, setShowFirst] = useState<boolean>(true);
 

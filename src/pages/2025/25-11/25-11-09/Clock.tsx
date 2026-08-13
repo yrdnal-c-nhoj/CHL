@@ -1,7 +1,6 @@
 // src/components/DarkRomanClock.jsx
 import React, { useState, useEffect, useMemo } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMultipleFontLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
 import Font20251111 from '@/assets/fonts/25fonts/25-11-09-disc.ttf'; // main Roman font
 import ActiveFont20251111 from '@/assets/fonts/25fonts/25-11-09-pin.ttf'; // active digit font
 import { useMillisecondClock } from '@/utils/hooks';
@@ -73,7 +72,7 @@ const ROMAN_NUMERALS = [
 const romanByIndex = (i) => ROMAN_NUMERALS[i];
 const timeValueToIndex = (value, max) => (value + max - 1) % max;
 
-const DarkRomanClock: React.FC = () => {
+const DarkRomanClock =  () => {
   const [time, setTime] = useState(new Date());
 
   // ~60fps update

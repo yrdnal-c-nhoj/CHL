@@ -5,7 +5,7 @@ import bardImg from '@/assets/images/25_images/25-07/25-07-22/bard.webp';
 import barrsImg from '@/assets/images/25_images/25-07/25-07-22/barrs.webp';
 import berFont from '@/assets/fonts/25fonts/25-07-22-ber.otf';
 
-const BarrelrollClock: React.FC = () => {
+const BarrelrollClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -19,7 +19,7 @@ const BarrelrollClock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const second = now.getSeconds();
       const minute = now.getMinutes();
@@ -210,7 +210,7 @@ const BarrelrollClock: React.FC = () => {
               alt="Right Image"
             />
           </div>
-          <div className="center-line"></div>
+          <div className="center-line" />
         </div>
 
         <div className="clock" id="clock">
@@ -220,9 +220,9 @@ const BarrelrollClock: React.FC = () => {
             </div>
           ))}
 
-          <div className="hand hour" id="hour"></div>
-          <div className="hand minute" id="minute"></div>
-          <div className="hand second" id="second"></div>
+          <div className="hand hour" id="hour" />
+          <div className="hand minute" id="minute" />
+          <div className="hand second" id="second" />
         </div>
       </div>
     </div>

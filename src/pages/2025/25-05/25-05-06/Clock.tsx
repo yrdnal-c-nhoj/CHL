@@ -23,7 +23,7 @@ const googleFonts = [
   'Danfo',
 ];
 
-const UnrulyClock: React.FC = () => {
+const UnrulyClock =  () => {
   const digitRefs = useRef([]);
   // Added 'shake' to the behavior list
   const animations = [
@@ -46,7 +46,7 @@ const UnrulyClock: React.FC = () => {
     link.rel = 'stylesheet';
     document.head.appendChild(link);
 
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const timeStr = [now.getHours(), now.getMinutes(), now.getSeconds()]
         .map((n) => String(n).padStart(2, '0'))

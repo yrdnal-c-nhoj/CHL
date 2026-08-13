@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import polFont from '@/assets/fonts/25fonts/25-07-06-pol.otf';
 import polarisGif from '@/assets/images/25_images/25-07/25-07-06/polaris.gif';
@@ -19,8 +19,8 @@ const CLOCK_NUMBERS = [
   { num: '11', top: '16%', left: '22%' },
 ];
 
-const Clock: React.FC = () => {
-  const time = useClockTime();
+const Clock =  () => {
+  const time = useMillisecondClock();
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [

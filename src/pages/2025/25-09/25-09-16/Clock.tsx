@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/25_images/25-09/25-09-16/bg.jpg';
 import d250916font from '@/assets/fonts/25fonts/25-09-16-baud.ttf?url';
 
-const Clock: React.FC = () => {
-  const time = useClockTime();
+const Clock =  () => {
+  const time = useMillisecondClock();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   const fontConfigs = useMemo<FontConfig[]>(

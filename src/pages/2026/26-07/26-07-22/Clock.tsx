@@ -108,7 +108,7 @@ const DigitGroup: React.FC<{ value: string }> = React.memo(({ value }) => (
 ));
 DigitGroup.displayName = 'DigitGroup';
 
-const ZoomClock: React.FC = () => {
+const ZoomClock =  () => {
   const time = useMillisecondClock();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useVideoTiling(zoomVideo, canvasRef);

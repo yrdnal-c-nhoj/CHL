@@ -59,7 +59,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
 };
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const clockRef = useRef<HTMLDivElement>(null);
 
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);

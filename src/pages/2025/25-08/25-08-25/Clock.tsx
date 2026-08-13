@@ -1,5 +1,5 @@
 import React from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import font1 from '@/assets/fonts/25fonts/25-08-25-code.ttf';
 import font2 from '@/assets/fonts/25fonts/25-08-25-bar.ttf';
@@ -19,7 +19,7 @@ export default function DigitalClock() {
     },
   ]);
 
-  const time = useClockTime('ms');
+  const time = useMillisecondClock();
   const dateTime = time.toISOString();
 
   const formatTimeDigits = (date) => {

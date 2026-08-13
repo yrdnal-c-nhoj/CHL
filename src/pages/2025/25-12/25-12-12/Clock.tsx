@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import bgImage from './wheel.svg';
 
 export default function AnalogBackgroundClock() {
-  const now = useClockTime();
+  const now = useMillisecondClock();
 
   const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
   const minutes = now.getMinutes() + seconds / 60;

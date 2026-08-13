@@ -16,7 +16,7 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   const time = useSecondClock();
 
   // Load fonts via Suspense, this will pause rendering until the font is ready

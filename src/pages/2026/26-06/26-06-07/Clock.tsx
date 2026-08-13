@@ -54,7 +54,7 @@ const stylesObj: Record<string, React.CSSProperties> = {
   },
 };
 
-const ClockInner: React.FC = () => {
+const ClockInner =  () => {
   useSuspenseFontLoader(fontConfigs);
 
   const time = useMillisecondClock();
@@ -93,7 +93,7 @@ const ClockInner: React.FC = () => {
   );
 };
 
-const Clock: React.FC = () => (
+const Clock =  () => (
   <Suspense fallback={<ClockLoadingFallback />}>
     <ClockInner />
   </Suspense>

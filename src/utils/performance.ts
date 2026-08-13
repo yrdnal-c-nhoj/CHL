@@ -83,8 +83,8 @@ export function useMemoWithCleanup<T>(
   cleanup: (value: T) => void,
   deps: React.DependencyList,
 ): T {
-  const valueRef = useRef<T>();
-  const depsRef = useRef<React.DependencyList>();
+  const valueRef = useRef<T | undefined>(undefined);
+  const depsRef = useRef<React.DependencyList | undefined>(undefined);
 
   // Check if dependencies changed
   const depsChanged =

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import cinzel20251010 from '@/assets/fonts/25fonts/25-10-09-d1.ttf';
 import roboto20251010 from '@/assets/fonts/25fonts/25-10-09-d2.ttf';
 import orbitron20251010 from '@/assets/fonts/25fonts/25-10-09-d3.otf';
@@ -12,7 +12,7 @@ interface TimeState {
 }
 
 export default function ConcentricClock() {
-  const time = useClockTime();
+  const time = useMillisecondClock();
   const [gateReady, setGateReady] = useState(false);
 
   useEffect(() => {

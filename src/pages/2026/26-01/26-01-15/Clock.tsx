@@ -12,7 +12,7 @@ const handColors = {
   centerBorder: '#F39191B3',
 };
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Migrated from legacy interval ticker to canonical rAF hook (useMillisecondClock).
   const time = useMillisecondClock(100);
   const [bgReady, setBgReady] = useState<boolean>(false);
@@ -21,7 +21,7 @@ const Clock: React.FC = () => {
   useEffect(() => {
     const imgs = [overlayBg, baseBg];
     let loaded = 0;
-    const done: React.FC = () => {
+    const done =  () => {
       loaded += 1;
       if (loaded >= imgs.length) setBgReady(true);
     };

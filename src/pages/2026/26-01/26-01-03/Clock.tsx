@@ -54,7 +54,7 @@ const pageBackground = new URL(
   import.meta.url,
 ).href;
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const [time, setTime] = useState(new Date());
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [lightsOff, setLightsOff] = useState<boolean>(false);
@@ -74,7 +74,7 @@ const Clock: React.FC = () => {
     if (!isLoaded) return;
 
     let timeout;
-    const toggleLights: React.FC = () => {
+    const toggleLights =  () => {
       setLightsOff((prev) => !prev);
       setIsShaking(true);
 

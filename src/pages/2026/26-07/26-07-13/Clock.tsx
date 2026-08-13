@@ -79,7 +79,7 @@ clockContainer: {
   },
 };
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   useSuspenseFontLoader(fontConfigs);
 
   const time = useSecondClock();

@@ -29,7 +29,7 @@ export default function App() {
 
 
   useEffect(() => {
-    const handleResize: React.FC = () => {
+    const handleResize =  () => {
       setTime(new Date()); // Trigger re-render to recalculate layout
       setIsLargeScreen(window.innerWidth > 768);
     };

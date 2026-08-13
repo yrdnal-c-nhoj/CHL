@@ -27,7 +27,7 @@ const FONT_DATA = [
   { name: 'Purrfect', url: PurrfectFont, maxSize: 1.5 },
 ];
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const fontConfigs = FONT_DATA.map((f) => ({
     fontFamily: f.name,
     fontUrl: f.url,

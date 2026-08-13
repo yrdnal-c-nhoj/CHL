@@ -177,10 +177,10 @@ export default function QuadrantClock() {
       const maxHeightPerPair = (windowSize.height - totalGap) / pairCount;
       const maxWidthPerDigit = (windowSize.width - DIGIT_GAP) / 2;
       return Math.floor(Math.min(maxHeightPerPair, maxWidthPerDigit));
-    } else {
+    } 
       const totalGap = DIGIT_GAP * (digits.length - 1);
       return Math.floor((windowSize.width - totalGap) / digits.length);
-    }
+    
   })();
 
   const renderDigit = (digit) => {

@@ -3,7 +3,7 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import cunFont from '@/assets/fonts/25fonts/25-07-19-cun.ttf';
 import bgOverlay from '@/assets/images/25_images/25-07/25-07-19/cun1.webp';
 
-const CuneiformClock: React.FC = () => {
+const CuneiformClock =  () => {
   const [time, setTime] = useState<any>('');
 
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -20,9 +20,9 @@ const CuneiformClock: React.FC = () => {
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
-      let hours = now.getHours() % 12 || 12;
+      const hours = now.getHours() % 12 || 12;
       const minutes = String(now.getMinutes()).padStart(2, '0');
       setTime(`${hours}:${minutes}`);
     };

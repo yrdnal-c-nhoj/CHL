@@ -1,5 +1,5 @@
 import type { FontConfig } from '@/types/clock';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -43,8 +43,8 @@ const useIsMobile = (breakpoint = 768) => {
   return isMobile;
 };
 
-const VTEC: React.FC = () => {
-  const time = useClockTime('ms');
+const VTEC =  () => {
+  const time = useMillisecondClock();
   const [visibleImages, setVisibleImages] = useState<ImageData[]>([]);
   const idCounter = useRef(0);
   const isMobile = useIsMobile();

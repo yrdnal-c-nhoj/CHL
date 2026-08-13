@@ -36,7 +36,7 @@ const GravityClock: React.FC<GravityClockProps> = () => {
   const currentTime = useSecondClock();
   const [clocks, setClocks] = useState<ClockData[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
-  const requestRef = useRef<number>();
+  const requestRef = useRef<number | null>(null);
 
   // Spawning logic
   useEffect(() => {

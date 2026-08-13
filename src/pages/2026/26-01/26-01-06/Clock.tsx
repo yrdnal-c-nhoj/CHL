@@ -80,7 +80,7 @@ export default function PyramidzBackground() {
 
   // 3. Clock update
   useEffect(() => {
-    const updateTime: React.FC = () => {
+    const updateTime =  () => {
       const now = new Date();
       const time = now.toLocaleTimeString('en-US', {
         hour12: true,
@@ -133,7 +133,7 @@ export default function PyramidzBackground() {
       <div
         className="pz-background"
         style={{ position: 'absolute', inset: 0 }}
-      ></div>
+       />
 
       <div
         style={{

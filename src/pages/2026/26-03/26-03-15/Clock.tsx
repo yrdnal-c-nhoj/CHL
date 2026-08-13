@@ -6,7 +6,7 @@ import styles from './Clock.module.css';
 
 const MS_PER_ROTATION = 30000;
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useMillisecondClock();
   const [rotation, setRotation] = useState(0);
 

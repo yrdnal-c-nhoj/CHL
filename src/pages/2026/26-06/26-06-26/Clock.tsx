@@ -103,7 +103,7 @@ const colonBoxStyle: CSSProperties = {
 
 // --- Component ---
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useSecondClock(); 
   const [dimensions, setDimensions] = useState({ cols: 1, rows: 1 });
   const [rotationAngle, setRotationAngle] = useState(0);

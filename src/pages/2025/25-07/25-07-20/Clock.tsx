@@ -7,7 +7,7 @@ import bg2 from '@/assets/images/25_images/25-07/25-07-20/cam.webp';
 import bg3 from '@/assets/images/25_images/25-07/25-07-20/camer.webp';
 import bg4 from '@/assets/images/25_images/25-07/25-07-20/camr.webp';
 
-const FStopClock: React.FC = () => {
+const FStopClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -25,7 +25,7 @@ const FStopClock: React.FC = () => {
     const minuteHand = document.getElementById('fstop-minuteHand');
     const secondHand = document.getElementById('fstop-secondHand');
 
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const sec = now.getSeconds();
       const min = now.getMinutes();
@@ -273,9 +273,9 @@ const FStopClock: React.FC = () => {
       />
 
       <div className="fstop-clock">
-        <div className="fstop-hand fstop-hour" id="fstop-hourHand"></div>
-        <div className="fstop-hand fstop-minute" id="fstop-minuteHand"></div>
-        <div className="fstop-hand fstop-second" id="fstop-secondHand"></div>
+        <div className="fstop-hand fstop-hour" id="fstop-hourHand" />
+        <div className="fstop-hand fstop-minute" id="fstop-minuteHand" />
+        <div className="fstop-hand fstop-second" id="fstop-secondHand" />
       </div>
     </div>
   );

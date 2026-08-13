@@ -84,7 +84,7 @@ const numberSizes = {
 
 const textRotationDegrees = Array.from({ length: 12 }, (_, i) => i * 30);
 
-const AnimatedClock: React.FC = () => {
+const AnimatedClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {

@@ -1,7 +1,7 @@
 import myFont from '@/assets/fonts/25fonts/25-08-04-Tr.ttf'; // Your custom font file
 import bgImage from '@/assets/images/25_images/25-08/25-08-04/shrub.jpeg'; // Your background image file
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 const getRandomPosition = () => ({
@@ -13,8 +13,8 @@ const getRandomTilt = () => ({
   transform: `rotate(${Math.random() * 20 - 10}deg)`,
 });
 
-const DigitalClock: React.FC = () => {
-  const time = useClockTime();
+const DigitalClock =  () => {
+  const time = useMillisecondClock();
   const [fadeIndex, setFadeIndex] = useState<number>(0);
   const [fontLoaded, setFontLoaded] = useState(false);
   const componentId = useRef(`multi-clock-${Date.now()}`);

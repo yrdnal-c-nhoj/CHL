@@ -9,7 +9,7 @@ import clockFont from '@/assets/fonts/25fonts/25-08-03-st.ttf';
 const goldGradient =
   'linear-gradient(135deg, #ffd700, #ffec85, #b8860b, #f5d742)';
 
-const OrnateClock: React.FC = () => {
+const OrnateClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -28,7 +28,7 @@ const OrnateClock: React.FC = () => {
   const secondRef = useRef(null);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const sec = now.getSeconds();
       const min = now.getMinutes();
@@ -202,7 +202,7 @@ const OrnateClock: React.FC = () => {
     [],
   );
 
-  const renderClockNumbers: React.FC = () => {
+  const renderClockNumbers =  () => {
     const positions = {
       XII: -90,
       III: 0,
@@ -214,7 +214,7 @@ const OrnateClock: React.FC = () => {
 
     return Object.entries(positions).map(([num, deg]) => {
       const angle = (deg * Math.PI) / 180;
-      let x = 50 + radius * Math.cos(angle);
+      const x = 50 + radius * Math.cos(angle);
       let y = 50 + radius * Math.sin(angle);
 
       y -= 3; // move numbers slightly upward

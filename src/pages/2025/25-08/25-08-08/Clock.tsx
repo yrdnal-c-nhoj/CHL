@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-08/25-08-08/q.webp';
 import fontFile_2025_11_01 from '@/assets/fonts/25fonts/25-08-08-q.otf';
@@ -18,7 +18,7 @@ export default function DigitalClock() {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const time = useClockTime();
+  const time = useMillisecondClock();
   const [offsetX, setOffsetX] = useState<number>(0);
 
   const hours = time.getHours().toString().padStart(2, '0');

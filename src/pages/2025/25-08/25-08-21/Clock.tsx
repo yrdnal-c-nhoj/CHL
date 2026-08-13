@@ -8,7 +8,7 @@ export const fontConfigs: FontConfig[] = [
   { fontFamily: 'CustomFont', fontUrl: customFont821 },
 ];
 
-const NumberLineClock: React.FC = () => {
+const NumberLineClock =  () => {
   useSuspenseFontLoader(fontConfigs);
 
   const hoursRef = useRef<HTMLDivElement>(null);
@@ -74,7 +74,7 @@ const NumberLineClock: React.FC = () => {
       const now = new Date();
 
       // Get 24-hour format and convert to 12-hour
-      let hours24 = now.getHours();
+      const hours24 = now.getHours();
       let hours12 = hours24 % 12;
       if (hours12 === 0) hours12 = 12; // Convert 0 to 12 for 12 AM/PM
 

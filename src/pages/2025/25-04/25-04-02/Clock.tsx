@@ -131,7 +131,7 @@ interface DigitStyle extends React.CSSProperties {
   height: string;
 }
 
-const DeepSpaceClock: React.FC = () => {
+const DeepSpaceClock =  () => {
   const digitRefs: DigitRefs = {
     hour1: useRef<HTMLDivElement>(null),
     hour2: useRef<HTMLDivElement>(null),
@@ -277,12 +277,12 @@ const DeepSpaceClock: React.FC = () => {
             }
           `}
         </style>
-        <div className="digit" ref={digitRefs.hour1} style={digitStyle}></div>
-        <div className="digit" ref={digitRefs.hour2} style={digitStyle}></div>
-        <div className="digit" ref={digitRefs.minute1} style={digitStyle}></div>
-        <div className="digit" ref={digitRefs.minute2} style={digitStyle}></div>
-        <div className="digit" ref={digitRefs.second1} style={digitStyle}></div>
-        <div className="digit" ref={digitRefs.second2} style={digitStyle}></div>
+        <div className="digit" ref={digitRefs.hour1} style={digitStyle} />
+        <div className="digit" ref={digitRefs.hour2} style={digitStyle} />
+        <div className="digit" ref={digitRefs.minute1} style={digitStyle} />
+        <div className="digit" ref={digitRefs.minute2} style={digitStyle} />
+        <div className="digit" ref={digitRefs.second1} style={digitStyle} />
+        <div className="digit" ref={digitRefs.second2} style={digitStyle} />
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const fontConfigs = [
     {
       fontFamily: 'PaperFont',
@@ -153,7 +153,7 @@ const AnalogClock: React.FC = () => {
   );
 };
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   return (
     <main
       style={{

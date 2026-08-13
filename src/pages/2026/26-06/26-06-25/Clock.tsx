@@ -34,7 +34,7 @@ const calculateTimeValues = (date: Date) => {
  */
 const useSmoothClock = () => {
   const [time, setTime] = useState(new Date());
-  const rafId = useRef<number>();
+  const rafId = useRef<number | null>(null);
 
   useEffect(() => {
     const animate = () => {

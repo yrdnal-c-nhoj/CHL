@@ -91,7 +91,7 @@ const ClockFace = memo(() => {
   );
 });
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useSecondClock();
   const { hour, minute, second } = calculateAngles(time);
 

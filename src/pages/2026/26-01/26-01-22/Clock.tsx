@@ -1,5 +1,5 @@
 import React from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // Asset imports
@@ -9,12 +9,12 @@ import fontUrl from '@/assets/fonts/26fonts/26-01-22-1974.ttf';
 
 const FONT_FAMILY = '1974';
 
-const DynamicClock: React.FC = () => {
+const DynamicClock =  () => {
   // BTS Standard: FOUC Prevention via Suspense
   useSuspenseFontLoader([{ fontFamily: FONT_FAMILY, fontUrl }]);
 
   // BTS Standard: Frame-perfect time synchronization
-  const time = useClockTime('seconds');
+  const time = useMillisecondClock();
   const dateTime = time.toISOString();
 
   const timeString = [time.getHours(), time.getMinutes(), time.getSeconds()]

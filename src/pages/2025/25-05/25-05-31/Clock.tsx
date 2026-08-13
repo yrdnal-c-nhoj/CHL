@@ -8,7 +8,7 @@ import el3 from '@/assets/images/25_images/25-05/25-05-31/el3.png';
 import eleGif from '@/assets/images/25_images/25-05/25-05-31/ele.gif';
 import fatFont from '@/assets/fonts/25fonts/25-05-31-fat.otf';
 
-const ElephantClock: React.FC = () => {
+const ElephantClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -22,10 +22,10 @@ const ElephantClock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const hourRef = useRef();
-  const minuteRef = useRef();
-  const secondRef = useRef();
-  const orbitRef = useRef();
+  const hourRef = useRef(null);
+  const minuteRef = useRef(null);
+  const secondRef = useRef(null);
+  const orbitRef = useRef(null);
 
   // Font loading handled by useMultipleFontLoader
 
@@ -35,8 +35,8 @@ const ElephantClock: React.FC = () => {
     const secondHand = secondRef.current;
     const orbitingImage = orbitRef.current;
 
-    let hourSway = { amplitude: 0, frequency: 0, nextUpdate: 0 };
-    let minuteSway = { amplitude: 0, frequency: 0, nextUpdate: 0 };
+    const hourSway = { amplitude: 0, frequency: 0, nextUpdate: 0 };
+    const minuteSway = { amplitude: 0, frequency: 0, nextUpdate: 0 };
 
     const randomizeSway = (sway) => {
       sway.amplitude = Math.random() * 5;
@@ -51,7 +51,7 @@ const ElephantClock: React.FC = () => {
     const orbitRadius = 40;
     let frameId;
 
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const seconds = now.getSeconds();
       const milliseconds = now.getMilliseconds();

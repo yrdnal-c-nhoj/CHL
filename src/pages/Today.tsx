@@ -6,7 +6,7 @@ import React, { useMemo } from 'react';
  * A page that displays either the clock for the current date or,
  * if one for today doesn't exist, the most recently available clock.
  */
-const TodayPage: React.FC = () => {
+const TodayPage =  () => {
   const { items, loading: dataLoading, error: dataError } = useDataContext();
 
   const targetItem = useMemo(() => {

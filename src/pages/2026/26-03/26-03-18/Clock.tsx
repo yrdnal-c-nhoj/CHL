@@ -4,7 +4,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import walkFont from '@/assets/fonts/26fonts/26-03-18-walk.ttf?url';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const time = useMillisecondClock();
 

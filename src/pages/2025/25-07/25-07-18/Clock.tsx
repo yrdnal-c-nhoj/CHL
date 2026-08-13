@@ -3,7 +3,7 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-07/25-07-18/558074085193-ezgif.com-optiwebp-1.webp';
 import xrayFontUrl from '@/assets/fonts/25fonts/25-07-18-xray.ttf';
 
-const HospitalClock: React.FC = () => {
+const HospitalClock =  () => {
   const [time, setTime] = useState<any>('');
 
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -20,7 +20,7 @@ const HospitalClock: React.FC = () => {
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const h = String(now.getHours()).padStart(2, '0');
       const m = String(now.getMinutes()).padStart(2, '0');

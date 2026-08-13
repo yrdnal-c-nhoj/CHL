@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useClockTime } from '@/utils/hooks'; // Import the standardized clock hook
+import { useMillisecondClock } from '@/utils/hooks'; // Import the standardized clock hook
 
 import bgImage from '@/assets/images/25_images/25-12/25-12-14/steel.webp';
 import digitTexture from '@/assets/images/25_images/25-12/25-12-14/steel2.webp';
@@ -8,7 +8,7 @@ import digitTexture from '@/assets/images/25_images/25-12/25-12-14/steel2.webp';
 // Font imported with today's date (DEC 16, 2025)
 import screw251214 from '@/assets/fonts/25fonts/25-12-14-steel.ttf?url';
 export default function DigitalClock() {
-  const time = useClockTime(); // Use the standardized clock hook
+  const time = useMillisecondClock(); // Use the standardized clock hook
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
   // Load and detect the custom font as early as possible
   useEffect(() => {

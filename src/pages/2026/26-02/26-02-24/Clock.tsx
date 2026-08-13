@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks'; // Corrected import path
+import { useMillisecondClock } from '@/utils/hooks'; // Corrected import path
 // import { useSuspenseFontLoader } from '@/utils/fontLoader'; // Not suitable for external Google Fonts
 import futurBg from '@/assets/images/26_images/26-02/26-02-24/futur.jpg';
 
@@ -60,7 +60,7 @@ const POSITIONS: Position[] = [
 ];
 
 const ImageDisplay = () => {
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   // Professional Practice: Use standardized project loader for external fonts
   // For Google Fonts, it's best to link them in index.html or import via CSS.

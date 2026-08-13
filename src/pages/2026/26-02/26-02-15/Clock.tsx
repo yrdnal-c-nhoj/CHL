@@ -8,7 +8,7 @@ const FONT_FAMILY = 'FireFont';
 
 export default function PixelInverseClock() {
   const canvasRef = useRef(null);
-  const requestRef = useRef();
+  const requestRef = useRef(null);
   const [assetsLoaded, setAssetsLoaded] = useState<boolean>(false);
   const imageRef = useRef(new Image());
 

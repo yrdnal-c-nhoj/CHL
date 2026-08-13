@@ -19,7 +19,7 @@ const CLOCK_CONFIG = {
   },
 };
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const now = useMillisecondClock();
 
   const fontConfigs = useMemo(

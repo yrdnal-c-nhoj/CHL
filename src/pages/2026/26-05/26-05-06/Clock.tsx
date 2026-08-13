@@ -133,7 +133,7 @@ void main(){
 }
 `;
 
-const WaterDropletsClock: React.FC = () => {
+const WaterDropletsClock =  () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<{
     renderer: THREE.WebGLRenderer | null;
@@ -339,7 +339,7 @@ const WaterDropletsClock: React.FC = () => {
     const droplets = dropletsRef.current;
 
     for (const d of droplets) {
-      let speed = Math.hypot(d.vx, d.vy);
+      const speed = Math.hypot(d.vx, d.vy);
       if (speed > MAX_SPEED) {
         const s = MAX_SPEED / speed;
         d.vx *= s;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 
-const ConcentricClock: React.FC = () => {
+const ConcentricClock =  () => {
   const [time, setTime] = useState(new Date());
 
     // Migrated from legacy interval to canonical rAF hook (useSecondClock).

@@ -27,7 +27,7 @@ const CONFIG = {
   showSeconds: true,
 };
 
-const DigitalClockTemplate: React.FC = () => {
+const DigitalClockTemplate =  () => {
   const time = useSecondClock();
 
   const fontConfigs = useMemo(

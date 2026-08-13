@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMultipleFontLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage926 from '@/assets/images/25_images/25-09/25-09-26/wall.webp';
 import font20250926A from '@/assets/fonts/25fonts/25-09-26-not.otf?url'; // give date-specific names
 import font20250926B from '@/assets/fonts/25fonts/25-09-26-not2.otf?url';
 
 export default function DualFontClock() {
   const [ready, setReady] = useState<boolean>(false);
-  const time = useClockTime();
+  const time = useMillisecondClock();
   const [isPhone, setIsPhone] = useState<any>(window.innerWidth < 768);
   const [fadeStarted, setFadeStarted] = useState<boolean>(false);
 
@@ -141,7 +140,7 @@ export default function DualFontClock() {
     </div>
   );
 
-  const renderTime: React.FC = () => {
+  const renderTime =  () => {
     if (isPhone) {
       return (
         <div
@@ -157,7 +156,7 @@ export default function DualFontClock() {
           <div style={{ display: 'flex' }}>{[...ampm].map(stackedChar)}</div>
         </div>
       );
-    } else {
+    } 
       const chars = [...h, ':', ...m, ':', ...s, ...ampm];
       return (
         <div
@@ -173,7 +172,7 @@ export default function DualFontClock() {
           ))}
         </div>
       );
-    }
+    
   };
 
   return (

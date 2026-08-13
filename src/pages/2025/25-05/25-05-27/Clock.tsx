@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundImage from '@/assets/images/25_images/25-05/25-05-27/dot.jpg';
 import dotsFont from '@/assets/fonts/25fonts/25-05-27-dots.otf?url';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Font loading configuration (memoized)
   const fontConfigs = useMemo<FontConfig[]>(
     () => [
@@ -22,7 +22,7 @@ const Clock: React.FC = () => {
   );
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useClockTime();
+  const time = useMillisecondClock();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
 
   useEffect(() => {
@@ -99,8 +99,7 @@ const Clock: React.FC = () => {
   );
 
   return (
-    <>
-      <div
+    <div
         style={{
           position: 'relative',
           width: '100vw',
@@ -135,7 +134,6 @@ const Clock: React.FC = () => {
           {renderTimeUnit(seconds)}
         </div>
       </div>
-    </>
   );
 };
 

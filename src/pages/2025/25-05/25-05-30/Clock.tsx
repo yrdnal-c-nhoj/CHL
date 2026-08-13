@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import issFont from '@/assets/fonts/25fonts/25-05-30-iss.ttf';
 import styles from './Clock.module.css';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -18,7 +18,7 @@ const Clock: React.FC = () => {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   const formatDigit = (value) => String(value).padStart(2, '0').split('');
 

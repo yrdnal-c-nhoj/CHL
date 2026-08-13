@@ -27,7 +27,7 @@ function DigitalTime() {
 
   useSuspenseFontLoader(fontConfigs);
 
-  const updateTime: React.FC = () => {
+  const updateTime =  () => {
     const now = new Date();
     const pastDate = new Date(now.getTime() - ANIMATION_DURATION);
     const hours24 = pastDate.getHours();
@@ -124,15 +124,13 @@ function DigitalTime() {
   };
 
   return (
-    <>
-      <div style={containerStyle} aria-live="polite">
+    <div style={containerStyle} aria-live="polite">
         {letters.map((l, idx) => (
           <span key={idx} style={l.style}>
             {l.char}
           </span>
         ))}
       </div>
-    </>
   );
 }
 

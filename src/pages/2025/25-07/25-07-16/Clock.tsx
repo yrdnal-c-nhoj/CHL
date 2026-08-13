@@ -5,7 +5,7 @@ import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeom
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import mobFontUrl from '@/assets/fonts/25fonts/25-07-16-mob.otf';
 
-const MobiusStripClock: React.FC = () => {
+const MobiusStripClock =  () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [timeString, setTimeString] = useState<string>('');
 

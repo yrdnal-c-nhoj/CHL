@@ -20,7 +20,7 @@ const ImageLayout = React.memo(() => (
   </div>
 ));
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useMillisecondClock();
 
   const formattedTime = useMemo(() => {

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/26_images/26-04/26-04-07/wall.webp';
@@ -12,14 +12,14 @@ const DigitBox: React.FC<{ value: string }> = ({ value }) => (
   <span className={styles.digitBox}>{value}</span>
 );
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const fontConfigs = useMemo<FontConfig[]>(
     () => [{ fontFamily: 'Wall_26-04-07', fontUrl: wallFont }],
     [],
   );
 
   useSuspenseFontLoader(fontConfigs);
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   // Better digit extraction
   const displayTime = useMemo(() => {

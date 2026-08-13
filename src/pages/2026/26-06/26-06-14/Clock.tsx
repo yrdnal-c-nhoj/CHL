@@ -2,7 +2,7 @@ import fontUrl from '@/assets/fonts/26fonts/26-06-14.ttf?url';
 import jumpVideo from '@/assets/images/26_images/26-06/26-06-14/carflood.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMemo } from 'react';
 
 const CLOCK_CONFIG = {
@@ -132,7 +132,7 @@ const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
 };
 
 const AnalogClock = () => {
-  const currentTime = useClockTime();
+  const currentTime = useMillisecondClock();
   useSuspenseFontLoader(FONT_CONFIGS);
 
   const { hr, min, sec } = calculateTimeValues(currentTime);

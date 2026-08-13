@@ -1,10 +1,10 @@
 import React from 'react';
-import { useClockTime } from '@/utils/hooks'; // Import the standardized clock hook
+import { useMillisecondClock } from '@/utils/hooks'; // Import the standardized clock hook
 
-const Clock: React.FC = () => {
-  const time = useClockTime(); // Use the standardized clock hook
+const Clock =  () => {
+  const time = useMillisecondClock(); // Use the standardized clock hook
 
-  const drawClock: React.FC = () => {
+  const drawClock =  () => {
     const hours = time.getHours() % 12;
     const minutes = time.getMinutes();
     const seconds = time.getSeconds();

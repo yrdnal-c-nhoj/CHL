@@ -1,7 +1,7 @@
 // BTS: Use named imports for hooks and types to satisfy the 'automatic' JSX runtime
 import { useMemo, type FC } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import heaFontUrl from '@/assets/fonts/25fonts/25-08-02-hea.ttf?url';
 import { formatTime } from '@/utils/clockUtils';
 // Standardized naming: YY-MM-DD-name.webp
@@ -21,7 +21,7 @@ export const fontConfigs = [
 ];
 
 const DigitalClock: FC = () => {
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   // BTS: Suspend until font is ready to prevent FOUC
   useSuspenseFontLoader(fontConfigs);

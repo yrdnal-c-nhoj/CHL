@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import flaFont from '../../../../assets/fonts/25fonts/25-10-05-do.ttf'; // Fallback to an existing font file
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Use the suspense-based font loader for consistency and reliability.
   useSuspenseFontLoader([
     {
@@ -39,7 +39,7 @@ const Clock: React.FC = () => {
     const clockTexture = new THREE.CanvasTexture(clockCanvas);
     clockTexture.minFilter = THREE.LinearFilter;
 
-    const updateClockCanvas: React.FC = () => {
+    const updateClockCanvas =  () => {
       ctx.clearRect(0, 0, 512, 512);
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, 512, 512);
@@ -102,7 +102,7 @@ const Clock: React.FC = () => {
 
     camera.position.z = 4;
 
-    const animate: React.FC = () => {
+    const animate =  () => {
       requestAnimationFrame(animate);
       tetrahedron.rotation.x += 0.01;
       tetrahedron.rotation.y += 0.01;
@@ -133,7 +133,7 @@ const Clock: React.FC = () => {
         animate();
       });
 
-    const handleResize: React.FC = () => {
+    const handleResize =  () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);

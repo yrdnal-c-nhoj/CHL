@@ -115,7 +115,7 @@ const useDigitOpacities = (digitCount: number) => {
 };
 
 // ---------------- COMPONENTS ----------------
-const StarField: React.FC = memo(() => {
+const StarField =  memo(() => {
   const stars = useMemo(
     () =>
       Array.from({ length: NIGHT_SKY_CONFIG.STAR_COUNT }, (_, i) =>
@@ -155,7 +155,7 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
-const NightSkyInner: React.FC = () => {
+const NightSkyInner =  () => {
   const currentTime = useSecondClock();
 
   // Load date-specific font via Suspense
@@ -192,7 +192,7 @@ const NightSkyInner: React.FC = () => {
   );
 };
 
-const NightSky: React.FC = () => (
+const NightSky =  () => (
   <Suspense fallback={<ClockLoadingFallback />}>
     <NightSkyInner />
   </Suspense>

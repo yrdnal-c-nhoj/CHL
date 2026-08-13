@@ -4,7 +4,7 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import laikaFont from '@/assets/fonts/25fonts/25-08-06-laika.ttf'; // Yourquo vadis
 import featuredImage from '@/assets/images/25_images/25-08/25-08-06/Laika.jpeg'; // Your local image file
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {

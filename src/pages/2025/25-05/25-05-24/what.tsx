@@ -5,7 +5,7 @@ import nanumCoding from './NanumGothicCoding.ttf';
 import oxanium from './Oxanium-VariableFont_wght.ttf';
 import robotoSlab from './RobotoSlab-VariableFont_wght.ttf';
 
-const BounceClock: React.FC = () => {
+const BounceClock =  () => {
   const roomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

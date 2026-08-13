@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import medievalFont from '@/assets/fonts/25fonts/25-09-11-ren.ttf';
 import backgroundImage from '@/assets/images/25_images/25-09/25-09-11/ren.jpg';
 import MedievalSVG from '@/assets/images/25_images/25-09/25-09-11/MedievalSVG.jsx';
 
-const MedievalBanner: React.FC = () => {
-  const time = useClockTime();
+const MedievalBanner =  () => {
+  const time = useMillisecondClock();
 
   // Load font for this specific clock
   useEffect(() => {

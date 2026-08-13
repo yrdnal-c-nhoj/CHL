@@ -1,4 +1,4 @@
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 
 import React, { useEffect } from 'react';
 // Fixed: Imported the correct hook used in the component body
@@ -10,7 +10,7 @@ import background2 from '@/assets/images/25_images/25-07/25-07-25/bb.webp'; // f
 // Asset exports for preloading
 export const assets = [background1, background2, background3, customFont];
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -27,7 +27,7 @@ const Clock: React.FC = () => {
   // Use a simple placeholder boolean instead so production build can complete.
   const fontsLoaded = true;
 
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   useEffect(() => {
     const style = document.createElement('style');

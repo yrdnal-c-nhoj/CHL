@@ -12,7 +12,7 @@ export default function PanoramaClock() {
   const fontLoaded = useEnhancedFontLoader(uniqueFontFamily, panFont);
 
   // 1. Calculate Background Speed based on Image Width
-  const handleImageLoad: React.FC = () => {
+  const handleImageLoad =  () => {
     if (imgRef.current) {
       const width = imgRef.current.offsetWidth;
       const speed = 9; // Pixels per second (very slow scrolling)
@@ -72,7 +72,7 @@ export default function PanoramaClock() {
 
   // 3. Update Time
   useEffect(() => {
-    const updateTime: React.FC = () => {
+    const updateTime =  () => {
       const now = new Date();
       setTimeString(
         now

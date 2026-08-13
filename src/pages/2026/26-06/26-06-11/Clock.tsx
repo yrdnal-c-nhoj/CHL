@@ -11,7 +11,7 @@ import styles from './Clock.module.css';
  */
 export const assets = [backgroundImage, clockFont];
 
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   const time = useSecondClock();
   const tileSize = 80; // Size in pixels
   const [dimensions, setDimensions] = useState({ cols: 1, rows: 1 });

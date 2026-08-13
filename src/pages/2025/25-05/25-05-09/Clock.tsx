@@ -48,8 +48,7 @@ const Clock: React.FC<ClockProps> = () => {
   const radiusVW = 20;
 
   return (
-    <>
-      <div
+    <div
         style={{
           margin: 0,
           display: 'flex',
@@ -229,7 +228,6 @@ const Clock: React.FC<ClockProps> = () => {
           }
         `}</style>
       </div>
-    </>
   );
 };
 

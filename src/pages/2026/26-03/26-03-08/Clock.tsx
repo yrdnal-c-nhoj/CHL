@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 // Asset names should be standardized to YY-MM-DD-name format
@@ -10,7 +10,7 @@ import handImg from '@/assets/images/26_images/26-03/26-03-08/hand.webp';
 import dragonFont from '@/assets/fonts/26fonts/26-03-08-dragon.ttf';
 import dragonVideo from '@/assets/images/26_images/26-03/26-03-08/dragon1.mp4';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const fontConfigs = [
     {
       fontFamily: 'Dragon',
@@ -22,7 +22,7 @@ const Clock: React.FC = () => {
     },
   ];
   useSuspenseFontLoader(fontConfigs);
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();

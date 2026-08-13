@@ -75,7 +75,7 @@ export default function HexAnalogClock() {
           fontSize: '4vh',
           fontFamily: 'sans-serif',
         }}
-      ></div>
+       />
     );
   }
 
@@ -226,12 +226,12 @@ export default function HexAnalogClock() {
         </div>
 
         <div style={styles.progressContainer}>
-          <div style={styles.progressBar}></div>
+          <div style={styles.progressBar} />
         </div>
       </div>
 
       <div style={styles.clockContainer}>
-        <div style={styles.clockFaceBackground}></div>
+        <div style={styles.clockFaceBackground} />
 
         <svg viewBox={`0 0 ${clockSize} ${clockSize}`} style={styles.svg}>
           <circle

@@ -8,7 +8,7 @@ export const assets = [carVideo];
 
 const fontConfigs: FontConfig[] = [{ fontFamily: 'ClockFont', fontUrl }];
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const rafRef = useRef<number | null>(null);
   const [, forceRender] = React.useReducer((x) => x + 1, 0);
   const [isMobile, setIsMobile] = useState(false);

@@ -66,7 +66,7 @@ const throwTimeCharacters = (timeStr, throwContainer) => {
   }
 };
 
-const NumberTossClock: React.FC = () => {
+const NumberTossClock =  () => {
   // Inject animation styles globally
   useGlobalStyles(
     `
@@ -184,7 +184,7 @@ const NumberTossClock: React.FC = () => {
     }, 1000);
 
     let animationFrame;
-    const loop: React.FC = () => {
+    const loop =  () => {
       throwTimeCharacters(getTimeString(), throwContainer);
       animationFrame = setTimeout(() => requestAnimationFrame(loop), 2000);
     };

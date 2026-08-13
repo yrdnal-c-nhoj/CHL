@@ -23,7 +23,7 @@ const romanNumerals = [
   'xi',
 ];
 
-const KlaxonClock: React.FC = () => {
+const KlaxonClock =  () => {
   useEffect(() => {
     const fontStyle = document.createElement('style');
     fontStyle.textContent = `
@@ -62,7 +62,7 @@ const KlaxonClock: React.FC = () => {
     const flashEndOffset = 6;
     const lingerDuration = 300;
 
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const ms = now.getMilliseconds();
       const sec = now.getSeconds() + ms / 1000;
@@ -84,8 +84,8 @@ const KlaxonClock: React.FC = () => {
 
       numberElements.forEach((el) => {
         const numAngle = parseFloat(el.dataset.angle);
-        let startAngle = (numAngle - flashStartOffset + 360) % 360;
-        let endAngle = (numAngle + flashEndOffset) % 360;
+        const startAngle = (numAngle - flashStartOffset + 360) % 360;
+        const endAngle = (numAngle + flashEndOffset) % 360;
 
         let insideZone = false;
         if (startAngle < endAngle) {
@@ -125,9 +125,9 @@ const KlaxonClock: React.FC = () => {
 
   return (
     <div style={styles.body}>
-      <div style={styles.bgImage}></div>
+      <div style={styles.bgImage} />
 
-      <div style={styles.overlay}></div>
+      <div style={styles.overlay} />
 
       <div style={styles.clockWrapper}>
         <div style={styles.clock} id="clock">

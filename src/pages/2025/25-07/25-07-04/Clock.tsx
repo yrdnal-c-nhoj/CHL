@@ -29,7 +29,7 @@ const COLORS = [
   '#12F5DBFF',
 ];
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useSmoothClock();
   const requestRef = useRef<number | null>(null);
 

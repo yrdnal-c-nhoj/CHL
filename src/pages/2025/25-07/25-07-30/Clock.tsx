@@ -5,7 +5,7 @@ import clockBg from '@/assets/images/25_images/25-07/25-07-30/ca.gif';
 import fullBg from '@/assets/images/25_images/25-07/25-07-30/ca.gif';
 import myFont from '@/assets/fonts/25fonts/25-07-30-Cam.ttf'; // Import font
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -32,7 +32,7 @@ const Clock: React.FC = () => {
     };
   }, []);
 
-  const getRotationStyles: React.FC = () => {
+  const getRotationStyles =  () => {
     const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
     const minutes = time.getMinutes() + seconds / 60;
     const hours = (time.getHours() % 12) + minutes / 60;
@@ -146,10 +146,10 @@ const Clock: React.FC = () => {
             {i + 1}
           </div>
         ))}
-        <div style={hourHand}></div>
-        <div style={minuteHand}></div>
-        <div style={secondHand}></div>
-        <div style={centerDot}></div>
+        <div style={hourHand} />
+        <div style={minuteHand} />
+        <div style={secondHand} />
+        <div style={centerDot} />
       </div>
     </div>
   );

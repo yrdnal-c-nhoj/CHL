@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 interface DigitProps {
@@ -10,7 +10,7 @@ const Digit: React.FC<DigitProps> = ({ digit }) => (
   <span className={styles.digit}>{digit}</span>
 );
 
-const BackgroundLayers: React.FC = () => (
+const BackgroundLayers =  () => (
   <>
     <div className={styles['clock-bg-back']} />
     <div className={styles['clock-bg-middle']} />
@@ -27,8 +27,8 @@ const formatTimeDigits = (time: Date) => {
   };
 };
 
-const Clock: React.FC = () => {
-  const time = useClockTime();
+const Clock =  () => {
+  const time = useMillisecondClock();
   const { hourDigits, minDigits } = useMemo(
     () => formatTimeDigits(time),
     [time],

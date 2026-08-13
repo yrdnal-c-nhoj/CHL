@@ -1,10 +1,10 @@
-import { useClockTime } from '@/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 import { GRID, HOUR_WORDS, MAPPING } from './clockConstants'; // Import constants
 
-const WordClock: React.FC = () => {
-  const now = useClockTime();
+const WordClock =  () => {
+  const now = useMillisecondClock();
 
   const activeIndices = useMemo(() => {
     const h = now.getHours();

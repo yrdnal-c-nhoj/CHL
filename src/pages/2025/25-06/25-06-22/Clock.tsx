@@ -1,4 +1,4 @@
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 
 const widthVW = 1; // abstract width unit for SVG
 const heightVH = 6; // abstract height unit for SVG
@@ -54,9 +54,9 @@ function DigitSVG({ digit }) {
 }
 
 export default function ParallelLineClock() {
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
-  let h = time.getHours() % 12 || 12;
+  const h = time.getHours() % 12 || 12;
   const m = time.getMinutes().toString().padStart(2, '0');
   const s = time.getSeconds().toString().padStart(2, '0');
 

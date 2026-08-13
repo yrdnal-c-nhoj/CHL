@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import DigitalClockFont from '@/assets/fonts/25fonts/25-09-05-swi.ttf';
 import DigitalClockBg from '@/assets/images/25_images/25-09/25-09-05/swiss.jpg';
@@ -18,7 +18,7 @@ export default function DigitalClock() {
     },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-  const now = useClockTime();
+  const now = useMillisecondClock();
   const [bgReady, setBgReady] = useState<boolean>(false);
   const [imgReady, setImgReady] = useState<boolean>(false);
 
@@ -116,7 +116,7 @@ export default function DigitalClock() {
           { x: 60, y: 17 },
           { x: 89, y: 30 },
         ];
-        let z = i < 2 ? 4 : i < 4 ? 3 : 2;
+        const z = i < 2 ? 4 : i < 4 ? 3 : 2;
         return (
           <div
             key={`d${i}`}

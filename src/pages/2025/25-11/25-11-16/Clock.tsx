@@ -12,7 +12,7 @@ export default function AnalogClock() {
   const [isShortScreen, setIsShortScreen] = useState<boolean>(false);
 
   useEffect(() => {
-    const checkScreenSize: React.FC = () => {
+    const checkScreenSize =  () => {
       setIsMobile(window.innerWidth <= 768);
       setIsShortScreen(window.innerHeight <= 600);
     };

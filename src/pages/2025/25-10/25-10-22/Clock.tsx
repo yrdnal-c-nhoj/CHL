@@ -77,7 +77,7 @@ const clockContainerStyle: React.CSSProperties = {
   willChange: 'transform',
 };
 
-const ClockWithVideo: React.FC = () => {
+const ClockWithVideo =  () => {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const time = useMillisecondClock();
   const videoRef = useRef<HTMLVideoElement>(null);

@@ -124,7 +124,7 @@ const DisplayDigits: React.FC<{ hours: string; minutes: string; seconds: string;
 );
 DisplayDigits.displayName = 'DisplayDigits';
 
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useMillisecondClock(16); // ~60fps for smooth updates
 

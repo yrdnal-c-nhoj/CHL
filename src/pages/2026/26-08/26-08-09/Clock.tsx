@@ -13,7 +13,7 @@ const FONT_FAMILY = 'IBM Plex Mono';
 // 1. Asset Exports (Required for preloading pipeline)
 export const assets: string[] = [hoursVideo, minutesVideo, secondsVideo];
 
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   const time = useSecondClock();
 
   const fontConfigs = useMemo<FontConfig[]>(

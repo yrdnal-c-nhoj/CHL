@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import cus250903font from '@/assets/fonts/25fonts/25-09-03-mau.ttf';
 import cornerImage from '@/assets/images/25_images/25-09/25-09-03/corner.gif';
@@ -18,7 +18,7 @@ function DigitalClock() {
     },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-  const time = useClockTime();
+  const time = useMillisecondClock();
   const [loaded, setLoaded] = useState<boolean>(false);
 
   useEffect(() => {

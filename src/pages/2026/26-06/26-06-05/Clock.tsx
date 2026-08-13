@@ -11,7 +11,7 @@ import styles from './Clock.module.css';
 
 export const assets = [brainGif, sliceImg, clockFont];
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useSecondClock();
   
   const fontConfigs: FontConfig[] = useMemo(() => [

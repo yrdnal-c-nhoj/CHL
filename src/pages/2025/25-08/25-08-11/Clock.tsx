@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import customFont from '@/assets/fonts/25fonts/25-08-11-wash.otf';
@@ -17,7 +17,7 @@ import img9 from '@/assets/images/25_images/25-08/25-08-11/q.gif';
 import img10 from '@/assets/images/25_images/25-08/25-08-11/x.webp';
 import img11 from '@/assets/images/25_images/25-08/25-08-11/y.gif';
 
-const SwirlingImages: React.FC = () => {
+const SwirlingImages =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -36,7 +36,7 @@ const SwirlingImages: React.FC = () => {
     width: window.innerWidth,
     height: window.innerHeight,
   });
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   const imagesRef = useRef(null);
 
@@ -220,7 +220,7 @@ const SwirlingImages: React.FC = () => {
     animation: `self-spin-${img.id} ${img.selfSpinSpeed}s linear infinite`,
   });
 
-  const generateKeyframes: React.FC = () => {
+  const generateKeyframes =  () => {
     let keyframes = `
       /* Font loading handled by useMultipleFontLoader */
     `;

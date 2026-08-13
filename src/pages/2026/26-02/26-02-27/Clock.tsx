@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import abuVideo from '@/assets/images/26_images/26-02/26-02-27/abu.mp4';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useSecondClock();
 
   const seconds = time.getSeconds();
@@ -34,7 +34,7 @@ const Clock: React.FC = () => {
     position: 'absolute',
     bottom: '50%',
     left: '50%',
-    width: width,
+    width,
     height: length,
     backgroundColor: color,
     transform: `translateX(-50%) rotate(${angle}deg)`,

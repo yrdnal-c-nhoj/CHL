@@ -8,7 +8,7 @@ import styles from './Clock.module.css';
 
 const NUM_PARTICLES = 100;
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // 1. Font Loading
   const fontConfigs = useMemo<FontConfig[]>(
     () => [
@@ -57,7 +57,7 @@ const Clock: React.FC = () => {
 
   useEffect(() => {
     let animationFrame: number;
-    let startTime = Date.now();
+    const startTime = Date.now();
 
     const animate = () => {
       const elapsed = (Date.now() - startTime) / 1000;

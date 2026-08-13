@@ -121,7 +121,7 @@ export default function PixelInverseClock() {
     if (video.readyState >= 3) attemptPlay();
 
     /* ---------- RESIZE & DPI SCALING ---------- */
-    const resize: React.FC = () => {
+    const resize =  () => {
       const dpr = window.devicePixelRatio || 1;
       const w = window.innerWidth;
       const h = window.innerHeight;
@@ -136,7 +136,7 @@ export default function PixelInverseClock() {
     resize();
 
     /* ================= DRAW LOOP ================= */
-    const draw: React.FC = () => {
+    const draw =  () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
       const cx = w / 2;

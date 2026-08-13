@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
-const RainCanvas: React.FC = () => {
+const RainCanvas =  () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const time = useSecondClock();
 

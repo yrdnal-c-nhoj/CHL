@@ -23,7 +23,7 @@ const fontConfigs: FontConfig[] = [
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
 

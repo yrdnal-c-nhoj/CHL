@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import gridImage from '@/assets/images/25_images/25-10/25-10-02/lan.gif';
 
 // Counting rod digit map
@@ -22,8 +22,8 @@ const toCountingRod = (number) =>
     .split('')
     .map((digit) => digitMap[digit]);
 
-const DigitalClock: React.FC = () => {
-  const time = useClockTime();
+const DigitalClock =  () => {
+  const time = useMillisecondClock();
   const [digitOpacities, setDigitOpacities] = useState<any>({
     hours: [1, 1],
     minutes: [1, 1],

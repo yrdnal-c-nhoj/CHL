@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMultipleFontLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
 import hummFont from '@/assets/fonts/25fonts/25-06-14-humm.ttf';
 import hmmGif from '@/assets/images/25_images/25-06/25-06-14/hmm.gif';
 import hummPng from '@/assets/images/25_images/25-06/25-06-14/humm.png';
@@ -23,7 +22,7 @@ const floatingImages = [
   { src: hum9, animation: 'motion7' },
 ];
 
-const HummingbirdClock: React.FC = () => {
+const HummingbirdClock =  () => {
   useEffect(() => {
     // Inject font-face and animations
     const style = document.createElement('style');
@@ -77,7 +76,7 @@ const HummingbirdClock: React.FC = () => {
     `;
     document.head.appendChild(style);
 
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const s = now.getSeconds();
       const m = now.getMinutes();
@@ -130,7 +129,7 @@ const HummingbirdClock: React.FC = () => {
       }, duration);
     };
 
-    const initializeImages: React.FC = () => {
+    const initializeImages =  () => {
       floatingImages.forEach((_, i) => {
         const el = document.getElementById(`float-${i}`);
         if (el) {

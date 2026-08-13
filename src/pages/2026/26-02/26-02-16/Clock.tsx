@@ -69,7 +69,7 @@ export const fontConfigs = [
   },
 ];
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   useSuspenseFontLoader(fontConfigs);
 
   const time = useSecondClock();

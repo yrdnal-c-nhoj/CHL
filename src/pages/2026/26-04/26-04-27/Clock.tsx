@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import leverFont from '@/assets/fonts/26fonts/26-04-27-lever.ttf';
 import styles from './Clock.module.css';
@@ -30,8 +30,8 @@ const getRandomFilter = () => {
   return `saturate(${saturation})`;
 };
 
-const Clock: React.FC = () => {
-  const time = useClockTime();
+const Clock =  () => {
+  const time = useMillisecondClock();
 
   const fontConfigs = useMemo(
     () => [

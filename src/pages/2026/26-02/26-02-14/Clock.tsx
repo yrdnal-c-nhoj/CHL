@@ -11,7 +11,7 @@ interface SubstitutionMap {
   [key: number]: string;
 }
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   const time = useSecondClock();
 
   const fontConfigs = useMemo(

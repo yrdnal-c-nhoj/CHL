@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import { formatTime } from '@/utils/clockUtils';
 import dogFontUrl from '@/assets/fonts/25fonts/25-12-03-dog.ttf?url';
@@ -10,14 +10,14 @@ export const fontConfigs: FontConfig[] = [
   { fontFamily: 'CustomFont', fontUrl: dogFontUrl },
 ];
 
-const PuppyClockComponent: React.FC = () => {
+const PuppyClockComponent =  () => {
   const [images, setImages] = useState<{ current: string; next: string }>({
     current: '',
     next: '',
   });
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const transitionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   useSuspenseFontLoader(fontConfigs);
 

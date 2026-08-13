@@ -15,7 +15,7 @@ const STYLE_CONFIG = {
   glowColor: 'rgb(255, 253, 208)',
 };
 
-const TrocClock: React.FC = () => {
+const TrocClock =  () => {
   const fontConfigs = useMemo(
     () => [
       {

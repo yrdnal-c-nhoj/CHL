@@ -4,7 +4,7 @@ import backgroundImage from '@/assets/images/25_images/25-12/25-12-29/shrine.web
 import shrineFont from '@/assets/fonts/25fonts/25-12-29-shrine.ttf?url';
 import { useSecondClock } from '@/utils/hooks';
 
-const DynamicClockComponent: React.FC = () => {
+const DynamicClockComponent =  () => {
   const FONT_FAMILY = 'ShrineFont_20251229';
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);

@@ -3,7 +3,7 @@ import { useMultipleFontLoader } from '@/utils/fontLoader';
 import sliFont from '@/assets/fonts/25fonts/25-07-10-sli.otf';
 import sli2Font from '@/assets/fonts/25fonts/25-07-10-sli2.ttf';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const digitGroups = [
     'hour-tens',
     'hour-ones',
@@ -60,7 +60,7 @@ const Clock: React.FC = () => {
     `;
     document.head.appendChild(styleSheet);
 
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       let h = now.getHours();
       const m = now.getMinutes().toString().padStart(2, '0');

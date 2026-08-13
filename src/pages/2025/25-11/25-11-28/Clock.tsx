@@ -1,7 +1,7 @@
 import li251128font from '@/assets/fonts/25fonts/25-11-28-line.otf?url';
 import patternImg from '@/assets/images/25_images/25-11/25-11-28/line.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import React, { useEffect, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -17,7 +17,7 @@ export const fontConfigs = [
 ];
 
 export default function TimelineClock() {
-  const now = useClockTime();
+  const now = useMillisecondClock();
   const [isVertical, setIsVertical] = useState<boolean>(false);
   const [flash, setFlash] = useState<boolean>(false);
   const [comet, setComet] = useState<number>(-100);
@@ -34,7 +34,7 @@ export default function TimelineClock() {
 
   // EXISTING: Comet sweep
   useEffect(() => {
-    const triggerComet: React.FC = () => {
+    const triggerComet =  () => {
       setComet(-20);
       const duration = 800 + Math.random() * 700;
       const timer = setTimeout(() => setComet(120), 50);

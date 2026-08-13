@@ -7,7 +7,7 @@ import arm3 from '@/assets/images/25_images/25-05/25-05-25/arm3.gif';
 // Use the ttf font instead of corrupted woff2
 import botFontUrl from '@/assets/fonts/25fonts/25-05-25-bot.ttf';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -24,7 +24,7 @@ const Clock: React.FC = () => {
   // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const second = now.getSeconds();
       const minute = now.getMinutes();

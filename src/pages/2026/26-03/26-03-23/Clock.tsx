@@ -38,7 +38,7 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Load fonts via Suspense-compatible loader
   useSuspenseFontLoader(fontConfigs);
 

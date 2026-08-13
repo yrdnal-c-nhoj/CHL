@@ -6,7 +6,7 @@ import c251004font from '@/assets/fonts/25fonts/25-10-04-iss.ttf';
 import bgMp4 from '@/assets/images/25_images/25-10/25-10-04/waterfall.mp4';
 import bgWebp from '@/assets/images/25_images/25-10/25-10-04/waterfall.webp';
 
-const ClockVideoBackground: React.FC = () => {
+const ClockVideoBackground =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {

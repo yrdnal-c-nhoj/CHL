@@ -3,7 +3,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import f251023 from '@/assets/fonts/25fonts/25-10-23-gr.ttf';
 import bgImage from '@/assets/images/25_images/25-10/25-10-23/bg.gif';
 
-const Clockgrid: React.FC = () => {
+const Clockgrid =  () => {
   const [time, setTime] = useState<any>({
     hours: '',
     minutes: '',
@@ -18,7 +18,7 @@ const Clockgrid: React.FC = () => {
   });
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       let hours = now.getHours();
       const minutes = now.getMinutes();
@@ -42,7 +42,7 @@ const Clockgrid: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const handleResize: React.FC = () => {
+    const handleResize =  () => {
       setViewport({
         width: window.innerWidth,
         height: window.innerHeight,

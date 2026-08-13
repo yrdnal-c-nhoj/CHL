@@ -26,7 +26,7 @@ interface GridSize {
 
 export const background = backgroundImage;
 
-const ImageGridClock: React.FC = () => {
+const ImageGridClock =  () => {
   const fontConfigs = useMemo(
     () => [
       {

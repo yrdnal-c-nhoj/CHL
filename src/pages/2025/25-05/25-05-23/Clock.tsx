@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/25_images/25-05/25-05-23/blank.jpg';
 import crossFont from '@/assets/fonts/25fonts/25-05-23-Cross.otf';
 
-const CrossClock: React.FC = () => {
-  const time = useClockTime();
+const CrossClock =  () => {
+  const time = useMillisecondClock();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -65,16 +65,16 @@ const CrossClock: React.FC = () => {
           color: '#fff',
           background: '#000',
         }}
-      ></div>
+       />
     );
   }
 
-  const getRandomBrightColor: React.FC = () => {
+  const getRandomBrightColor =  () => {
     const hue = Math.floor(Math.random() * 360);
     return `hsl(${hue}, 85%, 60%)`; // Good saturation and moderate lightness for actual colors
   };
 
-  const formatTime: React.FC = () => {
+  const formatTime =  () => {
     let hours = time.getHours();
     const ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12 || 12;

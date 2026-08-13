@@ -1,11 +1,11 @@
 import chandelierBg from '@/assets/images/26_images/26-06/26-06-20/chandelier.webp';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 export const assets = [chandelierBg];
 
-const AnalogClock: React.FC = () => {
-  const time = useClockTime();
+const AnalogClock =  () => {
+  const time = useMillisecondClock();
 
   // Calculate rotation angles for the clock hands
   const { hourDegrees, minuteDegrees, secondDegrees } = useMemo(() => {

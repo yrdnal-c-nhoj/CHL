@@ -5,7 +5,7 @@ import FONT_PATH from '@/assets/fonts/25fonts/25-12-19-hour.ttf?url';
 
 const FONT_FAMILY = 'DateFont';
 
-const HourglassTimer: React.FC = () => {
+const HourglassTimer =  () => {
   const [percentDayPassed, setPercentDayPassed] = useState<number>(0);
 
   const fontConfigs = useMemo(
@@ -22,7 +22,7 @@ const HourglassTimer: React.FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateSand: React.FC = () => {
+    const updateSand =  () => {
       const now = new Date();
       const secondsPassed =
         now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();

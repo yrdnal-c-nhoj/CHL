@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import backFont from '@/assets/fonts/25fonts/25-06-17-back.ttf';
 
-const BackslantClock: React.FC = () => {
+const BackslantClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -45,7 +45,7 @@ const BackslantClock: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const createDigitLine: React.FC = () => {
+    const createDigitLine =  () => {
       const frag = document.createDocumentFragment();
       for (let i = 0; i < 50; i++) {
         const span = document.createElement('span');
@@ -80,7 +80,7 @@ const BackslantClock: React.FC = () => {
       return currentPos;
     };
 
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const digits = [
         ...now.getHours().toString().padStart(2, '0'),
@@ -153,7 +153,7 @@ const BackslantClock: React.FC = () => {
                 id={`${id}train`}
                 className="digitTrain"
                 style={styles.digitTrain}
-              ></div>
+               />
             </div>
           ))}
         </div>

@@ -2,7 +2,7 @@ import fontUrl from '@/assets/fonts/26fonts/26-05-23.ttf';
 import lavaVideoSrc from '@/assets/images/26_images/26-05/26-05-23/lava.mp4';
 import type { FontConfig } from '@/types/clock';
 import { ClockLoadingFallback, useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 
 // =========================
@@ -69,14 +69,14 @@ const inlineStyles: Record<string, React.CSSProperties> = {
   },
 };
 
-const ClockInner: React.FC = () => {
+const ClockInner =  () => {
   const fontConfigs = useMemo<FontConfig[]>(
     () => [{ fontFamily: 'Clock26-05-23', fontUrl }],
     []
   );
 
   useSuspenseFontLoader(fontConfigs);
-  const time = useClockTime();
+  const time = useMillisecondClock();
   const [isReady, setIsReady] = useState(false);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
@@ -159,7 +159,7 @@ const ClockInner: React.FC = () => {
   );
 };
 
-const Clock: React.FC = () => (
+const Clock =  () => (
   <Suspense fallback={<ClockLoadingFallback />}>
     <ClockInner />
   </Suspense>

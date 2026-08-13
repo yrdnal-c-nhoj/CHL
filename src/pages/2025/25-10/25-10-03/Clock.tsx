@@ -36,7 +36,7 @@ const numberImages = [
   num11,
 ];
 
-const AnalogClockWithImages: React.FC = () => {
+const AnalogClockWithImages =  () => {
   const time = useSmoothClock();
   const [ready, setReady] = useState<boolean>(false);
 

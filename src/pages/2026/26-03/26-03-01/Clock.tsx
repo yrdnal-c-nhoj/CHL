@@ -7,7 +7,7 @@ import styles from './Clock.module.css';
 
 const TILE_SIZE = 100;
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const time = useMillisecondClock();
 
   const angles = useMemo(() => {
@@ -62,14 +62,14 @@ const AnalogClock: React.FC = () => {
   );
 };
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
 
   useEffect(() => {
-    const handleResize: React.FC = () => {
+    const handleResize =  () => {
       setDimensions({ width: window.innerWidth, height: window.innerHeight });
     };
     window.addEventListener('resize', handleResize);

@@ -54,7 +54,7 @@ export default function Clock() {
   useEffect(() => {
     if (!loaded) return;
 
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const second = now.getSeconds();
       const minute = now.getMinutes();

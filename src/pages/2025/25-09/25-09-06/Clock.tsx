@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import font_06_09_2025 from '@/assets/fonts/25fonts/25-09-06-boom.ttf';
 import bgImage from '@/assets/images/25_images/25-09/25-09-06/boo.jpg';
@@ -8,7 +8,7 @@ import minuteHandImg from '@/assets/images/25_images/25-09/25-09-06/b1.gif';
 import secondHandImg from '@/assets/images/25_images/25-09/25-09-06/b2.gif';
 import tickImg from '@/assets/images/25_images/25-09/25-09-06/b3.gif';
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -21,7 +21,7 @@ const AnalogClock: React.FC = () => {
     },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   const clockSize = 50; // in vh
   const radius = clockSize / 2;

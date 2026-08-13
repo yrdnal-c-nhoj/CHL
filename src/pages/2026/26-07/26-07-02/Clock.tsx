@@ -44,7 +44,7 @@ const formatTime = (date: Date) => {
   return `${hoursStr}:${minutes}:${seconds} ${ampm}`;
 };
 
-const FloatingDigitalClocks: React.FC = () => {
+const FloatingDigitalClocks =  () => {
   useSuspenseFontLoader(fontConfigs);
 
   const videoRef = useRef<HTMLVideoElement>(null);

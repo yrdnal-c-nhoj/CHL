@@ -40,7 +40,7 @@ const ClockUranus = memo(() => (
   </>
 ));
 
-const AnalogUranusClock: React.FC = () => {
+const AnalogUranusClock =  () => {
   const now = useMillisecondClock();
   const [bgRotation, setBgRotation] = useState<number>(0);
 

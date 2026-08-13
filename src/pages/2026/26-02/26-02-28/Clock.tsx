@@ -11,7 +11,7 @@ interface Dimensions {
   height: number;
 }
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   const time = useMillisecondClock();
 
   const formatTime = (date) => {
@@ -29,7 +29,7 @@ const DigitalClock: React.FC = () => {
   );
 };
 
-const ImageGrid: React.FC = () => {
+const ImageGrid =  () => {
   const [dimensions, setDimensions] = useState<Dimensions>({
     width: window.innerWidth,
     height: window.innerHeight,

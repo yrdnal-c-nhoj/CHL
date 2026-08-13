@@ -1,5 +1,5 @@
 import React from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 
@@ -48,7 +48,7 @@ const fontConfigs = [
 ];
 
 export default function DigitalClock() {
-  const time = useClockTime();
+  const time = useMillisecondClock();
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   // Style constants

@@ -307,7 +307,7 @@ const Glyph: React.FC<GlyphProps> = ({ char }) => {
 
 /* ---------------- CLOCK ---------------- */
 
-const Clock3D: React.FC = () => {
+const Clock3D =  () => {
   const time = useSecondClock();
 
   const chars = useMemo(() => {

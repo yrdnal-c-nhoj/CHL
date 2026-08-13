@@ -8,7 +8,7 @@ import styles from './Clock.module.css';
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useSecondClock();
 
   const { hours, minutes } = useMemo(() => {

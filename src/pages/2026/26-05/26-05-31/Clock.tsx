@@ -58,7 +58,7 @@ const FONT_CONFIGS: FontConfig[] = [
   },
 ];
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 // import styles from '../../styles/Tagger.module.css'; // Temporarily removed for debugging
 
-const AdminDashboard: React.FC = () => {
+const AdminDashboard =  () => {
   return (
     <div style={{
       minHeight: '100dvh',

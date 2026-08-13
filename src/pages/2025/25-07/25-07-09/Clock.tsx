@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-const BlobClock: React.FC = () => {
+const BlobClock =  () => {
   const canvasRef = useRef(null);
   const digitStatesRef = useRef([]);
   const animationStartTimeRef = useRef(0);
@@ -155,7 +155,7 @@ const BlobClock: React.FC = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
-    const resizeCanvas: React.FC = () => {
+    const resizeCanvas =  () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };

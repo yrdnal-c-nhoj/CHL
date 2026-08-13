@@ -12,7 +12,7 @@ import secondHand from '@/assets/images/25_images/25-09/25-09-10/sec.gif';
 // Local font
 import customLavaFont from '@/assets/fonts/25fonts/25-09-10-lava.otf?url';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {

@@ -36,7 +36,7 @@ const useIsMobile = (breakpoint = 768) => {
   return isMobile;
 };
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
   const isMobile = useIsMobile();

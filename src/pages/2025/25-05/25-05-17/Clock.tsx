@@ -5,7 +5,7 @@ import layer5Gif from '@/assets/images/25_images/25-05/25-05-17/e0435fd452bbed15
 import layer3Gif from '@/assets/images/25_images/25-05/25-05-17/giphy-3181726992.webp';
 import rectangleGif from '@/assets/images/25_images/25-05/25-05-17/tumblr_53c27c64cc9f17a0880aff18b8f6d934_d138a0cd_500.gif';
 
-const PrimaryClock: React.FC = () => {
+const PrimaryClock =  () => {
   useEffect(() => {
     const secondHand = document.querySelector('.second-hand');
     const minsHand = document.querySelector('.min-hand');
@@ -43,9 +43,9 @@ const PrimaryClock: React.FC = () => {
 
       <div style={styles.centerContainer}>
         <div style={styles.clock}>
-          <div className="hand min-hand" style={styles.minHand}></div>
-          <div className="hand hour-hand" style={styles.hourHand}></div>
-          <div className="hand second-hand" style={styles.secondHand}></div>
+          <div className="hand min-hand" style={styles.minHand} />
+          <div className="hand hour-hand" style={styles.hourHand} />
+          <div className="hand second-hand" style={styles.secondHand} />
         </div>
       </div>
     </div>

@@ -19,7 +19,7 @@ export default function Clock() {
 
   useSuspenseFontLoader(fontConfigs);
 
-  const updateTime: React.FC = () => {
+  const updateTime =  () => {
     const now = new Date();
     const hours24 = now.getHours();
     const minutes = now.getMinutes();

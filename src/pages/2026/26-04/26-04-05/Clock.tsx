@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundVideo from '@/assets/images/26_images/26-04/26-04-05/meteor1.mp4';
@@ -7,8 +7,8 @@ import middleVideo from '@/assets/images/26_images/26-04/26-04-05/meteor2.mp4';
 import meteorFont from '@/assets/fonts/26fonts/26-04-05-meteor.ttf';
 import styles from './Clock.module.css';
 
-const Clock: React.FC = () => {
-  const time = useClockTime();
+const Clock =  () => {
+  const time = useMillisecondClock();
 
   // Load the meteor font using useSuspenseFontLoader
   const fontConfigs = useMemo<FontConfig[]>(

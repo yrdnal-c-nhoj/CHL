@@ -30,10 +30,10 @@ export default function FallClock() {
 
   // Update digits every second
   useEffect(() => {
-    const updateTimeDigits: React.FC = () => {
+    const updateTimeDigits =  () => {
       const now = new Date();
-      let hours = now.getHours() % 12 || 12;
-      let minutes = now.getMinutes();
+      const hours = now.getHours() % 12 || 12;
+      const minutes = now.getMinutes();
       timeDigitsRef.current = `${hours}${minutes
         .toString()
         .padStart(2, '0')}`.split('');
@@ -126,7 +126,7 @@ export default function FallClock() {
       }
     }
 
-    const resizeCanvas: React.FC = () => {
+    const resizeCanvas =  () => {
       const dpr = Math.max(1, window.devicePixelRatio || 1);
       const width = canvas.clientWidth * dpr;
       const height = canvas.clientHeight * dpr;
@@ -149,7 +149,7 @@ export default function FallClock() {
       );
     });
 
-    const update: React.FC = () => {
+    const update =  () => {
       const width = canvas.clientWidth;
       const height = canvas.clientHeight;
 
@@ -171,7 +171,7 @@ export default function FallClock() {
         ctx.fillRect(0, 0, width, height);
       }
 
-      for (let d of digits) {
+      for (const d of digits) {
         d.update(width, height);
         d.draw(ctx);
       }

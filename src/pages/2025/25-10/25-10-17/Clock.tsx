@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import fontLatin from '@/assets/fonts/25fonts/25-10-17-word.ttf?url';
 import backgroundImage from '@/assets/images/25_images/25-10/25-10-17/words.jpg';
 
 export default function TimeWordsClock() {
-  const now = useClockTime();
+  const now = useMillisecondClock();
   const [langIndex, setLangIndex] = useState<number>(0);
 
   // 30 most popular Internet languages
@@ -412,7 +412,7 @@ export default function TimeWordsClock() {
   type LangCode = keyof typeof translations;
   const timeToWords = (date: Date, lang: LangCode) => {
     const t = translations[lang]!;
-    let hours = date.getHours(),
+    const hours = date.getHours(),
       minutes = date.getMinutes(),
       seconds = date.getSeconds();
 

@@ -7,7 +7,7 @@ import React, { useEffect, useMemo, useRef } from 'react';
 
 export const assets = [chandelierBg, hourImg, minImg, secImg];
 
-const VideoBackground: React.FC = () => {
+const VideoBackground =  () => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const VideoBackground: React.FC = () => {
     </div>
   );
 };
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   // Use a standardized hook for smooth time updates for consistency.
   const now = useSmoothClock();
 
@@ -164,7 +164,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 };
 
-const ClockPage: React.FC = () => {
+const ClockPage =  () => {
   return (
     <>
       <VideoBackground />

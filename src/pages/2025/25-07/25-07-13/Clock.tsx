@@ -2,9 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import rorFontUrl from '@/assets/fonts/25fonts/25-07-13-ror.ttf';
 
-const RorschachClock: React.FC = () => {
-  const clockRef = useRef();
-  const mirrorRef = useRef();
+const RorschachClock =  () => {
+  const clockRef = useRef(null);
+  const mirrorRef = useRef(null);
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -58,7 +58,7 @@ const RorschachClock: React.FC = () => {
     };
   };
 
-  const fadeUpdateClock: React.FC = () => {
+  const fadeUpdateClock =  () => {
     if (!clockRef.current || !mirrorRef.current) return;
 
     clockRef.current.style.opacity = 0;
@@ -120,11 +120,11 @@ const RorschachClock: React.FC = () => {
           ref={mirrorRef}
           style={clockStyle('-90deg', true)}
           id="mirrorClock"
-        ></div>
+         />
       </div>
 
       <div style={{ ...clockContainerStyle, right: 'calc(50% - 20vw)' }}>
-        <div ref={clockRef} style={clockStyle('90deg', false)} id="clock"></div>
+        <div ref={clockRef} style={clockStyle('90deg', false)} id="clock" />
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import styles from './Clock.module.css';
 
 export const assets = [backgroundImage];
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const time = useMillisecondClock();
 
   const { hourDeg, minuteDeg, secondDeg, isoTime } = useMemo(() => {

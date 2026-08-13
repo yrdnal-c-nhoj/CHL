@@ -7,7 +7,7 @@ import bgImage from '@/assets/images/26_images/26-03/26-03-28/h2o.webp';
 import clockFont from '@/assets/fonts/26fonts/26-03-28-h2o.ttf';
 import styles from './Clock.module.css';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useMillisecondClock();
 
   // Font configuration with Suspense loading

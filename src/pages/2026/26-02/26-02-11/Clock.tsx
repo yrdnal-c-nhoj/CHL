@@ -88,7 +88,7 @@ const BackgroundLayers = () => (
   </>
 );
 
-const ClockNumerals: React.FC = () => {
+const ClockNumerals =  () => {
   const numerals = useMemo(() => {
     return Array.from({ length: 12 }, (_, i) => {
       const num = i + 1;
@@ -133,7 +133,7 @@ const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
 
 const CenterDot = () => <div style={styles.centerDot} />;
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const currentTime = useSecondClock();
   const { hr, min, sec } = calculateTimeValues(currentTime);
 

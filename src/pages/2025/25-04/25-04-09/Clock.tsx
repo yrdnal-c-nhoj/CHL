@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import roomImage from '@/assets/images/25_images/25-04/25-04-09/room.webp';
 
 export { roomImage }; // Export for preloading pipeline
@@ -10,7 +10,7 @@ interface WindowSize {
   height: number;
 }
 
-const EmptyRoomClock: React.FC = () => {
+const EmptyRoomClock =  () => {
   const hourRef = useRef<HTMLDivElement>(null);
   const minuteRef = useRef<HTMLDivElement>(null);
   const secondRef = useRef<HTMLDivElement>(null);
@@ -21,7 +21,7 @@ const EmptyRoomClock: React.FC = () => {
   });
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useClockTime();
+  const currentTime = useMillisecondClock();
 
   useEffect(() => {
     const handleResize = () =>

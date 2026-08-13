@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import bg3 from '@/assets/images/25_images/25-08/25-08-18/target.gif';
@@ -31,13 +31,13 @@ export default function ClockLetters({
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const now = useClockTime();
+  const now = useMillisecondClock();
   const [rotation, setRotation] = useState<any>({ layer1: 0, layer2: 0 });
 
   // Animate rotating layers
   useEffect(() => {
     let frame;
-    const animate: React.FC = () => {
+    const animate =  () => {
       setRotation((r) => ({
         layer1: r.layer1 + 0.1, // clockwise
         layer2: r.layer2 + 0.06, // counterclockwise

@@ -2,7 +2,7 @@ import fontUrl from '@/assets/fonts/26fonts/26-05-03-dolphin.ttf?url';
 import jumpVideo from '@/assets/images/26_images/26-05/26-05-26/drip.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import { memo, useMemo } from 'react';
 import styles from './Clock.module.css'; // Import CSS module
 
@@ -50,7 +50,7 @@ const ClockHand = ({ type, rotation }) => {
 };
 
 const AnalogClock = () => {
-  const currentTime = useClockTime();
+  const currentTime = useMillisecondClock();
 
   const fontConfigs = useMemo<FontConfig[]>(
     () => [{ fontFamily: FONT_FAMILY, fontUrl }],

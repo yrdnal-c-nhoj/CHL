@@ -9,7 +9,7 @@ import overlayImage from '@/assets/images/26_images/26-04/26-04-14/haumea.webp';
 // Export assets for preloading
 export { bgVideo, overlayImage };
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useMillisecondClock(16);
   const ms = time.getMilliseconds();
 

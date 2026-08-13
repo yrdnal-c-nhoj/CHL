@@ -1,5 +1,5 @@
 import React from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import customFontUrl from '@/assets/fonts/25fonts/25-08-12-cubic.ttf'; // local font file
 import backgroundImage from '@/assets/images/25_images/25-08/25-08-12/earth.webp'; // local background image
@@ -27,9 +27,9 @@ export default function BiteviteHexahedron() {
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
-  const formatTime: React.FC = () => {
+  const formatTime =  () => {
     let hours = time.getHours();
     const minutes = time.getMinutes();
     if (hours === 0) hours = 12;

@@ -5,7 +5,7 @@ import fontUrl from '@/assets/fonts/25fonts/25-06-15-ZombieStitch.ttf';
 import bgImageUrl from '@/assets/images/25_images/25-06/25-06-15/stin.webp';
 import overlayImageUrl from '@/assets/images/25_images/25-06/25-06-15/stit.jpeg';
 
-const StitchesClock: React.FC = () => {
+const StitchesClock =  () => {
   useEffect(() => {
     // Load font with unique name
     const font = new FontFace('ZombieStitch_2025_10_29', `url(${fontUrl})`);
@@ -13,7 +13,7 @@ const StitchesClock: React.FC = () => {
       document.fonts.add(loadedFont);
     });
 
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       let h = now.getHours();
       const m = now.getMinutes();
@@ -55,7 +55,7 @@ const StitchesClock: React.FC = () => {
         alt="stitched overlay"
         style={styles.bgOverlay}
       />
-      <div id="clockRow" style={styles.clockRow}></div>
+      <div id="clockRow" style={styles.clockRow} />
     </div>
   );
 };

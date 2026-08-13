@@ -3,7 +3,7 @@ import gearsGif from '@/assets/images/25_images/25-05/25-05-29/gears-13950_128.g
 import watchFont from '@/assets/fonts/25fonts/25-05-29-watch.ttf?url';
 import { Color } from 'three';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [hoursDigits, setHoursDigits] = useState<any>([]);
   const [minutesDigits, setMinutesDigits] = useState<any>([]);
@@ -47,9 +47,9 @@ const Clock: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
-      let hours = now.getHours() % 12 || 12;
+      const hours = now.getHours() % 12 || 12;
       const minutes = String(now.getMinutes()).padStart(2, '0');
       const seconds = String(now.getSeconds()).padStart(2, '0');
 
@@ -154,7 +154,7 @@ const Clock: React.FC = () => {
             ))}
           </div>
         </div>
-        <div className="divider"></div>
+        <div className="divider" />
         <div className="unit" id="minutes">
           <div className="value">
             {minutesDigits.map((d, i) => (
@@ -164,7 +164,7 @@ const Clock: React.FC = () => {
             ))}
           </div>
         </div>
-        <div className="divider"></div>
+        <div className="divider" />
         <div className="unit" id="seconds">
           <div className="value">
             {secondsDigits.map((d, i) => (

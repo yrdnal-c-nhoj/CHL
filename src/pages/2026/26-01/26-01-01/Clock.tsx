@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useEnhancedFontLoader } from '@/utils/enhancedFontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 
 // === Local assets ===
 import bg1 from '@/assets/images/26_images/26-01/26-01-01/fan.webp';
 import myFontUrl from '@/assets/fonts/26fonts/26-01-01-fan.otf';
 
-const InvertedClock: React.FC = () => {
+const InvertedClock =  () => {
   const fontLoaded = useEnhancedFontLoader('MyFontScoped', myFontUrl);
 
-  const time = useClockTime('ms'); // Request higher precision for smooth hands
+  const time = useMillisecondClock(); // Request higher precision for smooth hands
   const secondHandRef = useRef<HTMLDivElement>(null);
   const minHandRef = useRef<HTMLDivElement>(null);
   const hourHandRef = useRef<HTMLDivElement>(null);

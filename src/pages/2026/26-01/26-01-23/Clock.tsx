@@ -1,4 +1,5 @@
-import React, { useState, useEffect, CSSProperties } from 'react';
+import type { CSSProperties } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Asset imports
 import clockDigitImage from '@/assets/images/26_images/26-01/26-01-23/eye.gif';
@@ -9,7 +10,7 @@ interface CustomStyle extends CSSProperties {
   '--rotation'?: string;
 }
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const [time, setTime] = useState(new Date());
   const [bgReady, setBgReady] = useState<boolean>(false);
 

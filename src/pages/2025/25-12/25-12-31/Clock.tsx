@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/25_images/25-12/25-12-31/shadow.jpg';
 import d250916font from '@/assets/fonts/25fonts/25-12-31-shadow.otf';
@@ -19,8 +19,8 @@ const DIGIT_TO_LETTER: Record<string, string> = {
   '9': 'C',
 };
 
-const Clock: React.FC = () => {
-  const time = useClockTime();
+const Clock =  () => {
+  const time = useMillisecondClock();
   const [isLargeScreen, setIsLargeScreen] = useState<boolean>(
     window.innerWidth > 768,
   );

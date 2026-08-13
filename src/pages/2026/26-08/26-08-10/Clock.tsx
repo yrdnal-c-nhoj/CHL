@@ -7,7 +7,7 @@ import styles from './Clock.module.css';
 
 export const assets: string[] = [strawImage];
 
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   const time = useSecondClock();
   const { hourAngle, minAngle, secAngle } = useClockAngles(time);
 

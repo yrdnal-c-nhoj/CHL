@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 // Import number images
@@ -24,7 +24,7 @@ import backgroundVideo from '@/assets/images/25_images/25-10/25-10-01/small.mp4'
 import fallbackGif from '@/assets/images/25_images/25-10/25-10-01/small.webp';
 
 export default function ImageAnalogClock() {
-  const time = useClockTime();
+  const time = useMillisecondClock();
   const [rotation, setRotation] = useState<number>(0);
 
   // Rotate face slowly
@@ -64,7 +64,7 @@ export default function ImageAnalogClock() {
 
   const metallicHandStyle = (width, length, angle) => ({
     position: 'absolute',
-    width: width,
+    width,
     height: length,
     top: '50%',
     left: '50%',
@@ -95,8 +95,8 @@ export default function ImageAnalogClock() {
 
   const metallicNumberStyle = (width, height) => ({
     position: 'absolute',
-    width: width,
-    height: height,
+    width,
+    height,
     left: '50%',
     top: '50%',
     transform: 'translate(-50%, -50%)',

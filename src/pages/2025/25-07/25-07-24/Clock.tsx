@@ -5,7 +5,7 @@ import hourHandImgSrc from '@/assets/images/25_images/25-07/25-07-24/ha.gif';
 import minuteHandImgSrc from '@/assets/images/25_images/25-07/25-07-24/had.gif';
 import secondHandImgSrc from '@/assets/images/25_images/25-07/25-07-24/hand.gif';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const faceRef = useRef(null);
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
@@ -55,7 +55,7 @@ const Clock: React.FC = () => {
     secondImg.src = secondHandImgSrc;
 
     let imagesLoaded = 0;
-    const onLoad: React.FC = () => {
+    const onLoad =  () => {
       imagesLoaded += 1;
       if (imagesLoaded === 3) startClock();
     };
@@ -65,7 +65,7 @@ const Clock: React.FC = () => {
     secondImg.onload = onLoad;
 
     // Draw static clock face once
-    const drawClockFace: React.FC = () => {
+    const drawClockFace =  () => {
       faceCtx.save();
       faceCtx.translate(radius, radius);
 
@@ -121,10 +121,10 @@ const Clock: React.FC = () => {
       ctx.restore();
     };
 
-    const startClock: React.FC = () => {
+    const startClock =  () => {
       drawClockFace();
 
-      const updateClock: React.FC = () => {
+      const updateClock =  () => {
         const now = new Date();
         const hours =
           (now.getHours() % 12) +

@@ -1,11 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+import { useMultipleFontLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
 const mat250918font = '../../../assets/fonts/2025/25-09-18-matrix.ttf'; // Your Matrix-style font
 
 export default function MatrixRain() {
-  const time = useClockTime();
+  const time = useMillisecondClock();
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -22,14 +21,14 @@ export default function MatrixRain() {
     `;
     document.head.appendChild(style);
 
-    const resizeCanvas: React.FC = () => {
+    const resizeCanvas =  () => {
       canvas.height = window.innerHeight;
       canvas.width = window.innerWidth;
     };
     resizeCanvas();
 
     // Clock string → ["0","7","3","5","P","M"]
-    const getTimeChars: React.FC = () => {
+    const getTimeChars =  () => {
       let hours = time.getHours();
       const minutes = time.getMinutes();
       const ampm = hours >= 12 ? 'PM' : 'AM';
@@ -46,7 +45,7 @@ export default function MatrixRain() {
 
     // Initialize drops
     const drops = [];
-    const initDrops: React.FC = () => {
+    const initDrops =  () => {
       const chars = getTimeChars();
       for (let i = 0; i < columns; i++) {
         drops[i] = {
@@ -61,7 +60,7 @@ export default function MatrixRain() {
 
     let animationId;
 
-    const draw: React.FC = () => {
+    const draw =  () => {
       // trail effect
       ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -107,7 +106,7 @@ export default function MatrixRain() {
       animationId = requestAnimationFrame(draw);
     };
 
-    const handleResize: React.FC = () => {
+    const handleResize =  () => {
       resizeCanvas();
       fontSize = Math.max(44, canvas.width / 40);
       columns = Math.floor(canvas.width / fontSize);

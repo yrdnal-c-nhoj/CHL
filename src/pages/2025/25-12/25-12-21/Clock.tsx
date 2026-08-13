@@ -1,12 +1,12 @@
 import React, { useMemo, useEffect } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import background from '@/assets/images/25_images/25-12/25-12-21/cass.webp';
 import backgroundImage from '@/assets/images/25_images/25-12/25-12-21/tape.gif';
 import FONT_PATH from '@/assets/fonts/25fonts/25-12-21-cas.ttf?url';
 
-const Clock: React.FC = () => {
-  const time = useClockTime();
+const Clock =  () => {
+  const time = useMillisecondClock();
   const fontFamily = 'CasFont_251221';
 
   const fontConfigs = useMemo(

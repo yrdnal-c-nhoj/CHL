@@ -32,7 +32,7 @@ const GoldenHourClock: React.FC<GoldenHourClockProps> = () => {
   const currentTime = useSecondClock();
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const pad = (n) => String(n).padStart(2, '0');
       document.getElementById('hours').textContent = pad(now.getHours());
@@ -262,10 +262,10 @@ const GoldenHourClock: React.FC<GoldenHourClockProps> = () => {
       <div className="light">
         <div className="flare one">
           <div className="flare two">
-            <div className="flare five"></div>
-            <div className="flare six"></div>
+            <div className="flare five" />
+            <div className="flare six" />
             <div className="flare three">
-              <div className="flare four"></div>
+              <div className="flare four" />
             </div>
           </div>
         </div>

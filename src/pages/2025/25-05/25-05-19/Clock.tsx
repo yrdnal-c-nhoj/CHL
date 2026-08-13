@@ -2,9 +2,9 @@ import antFontUrl from '@/assets/fonts/25fonts/25-05-19-Ant.ttf';
 import bg1 from '@/assets/images/25_images/25-05/25-05-19/ants.gif';
 import bg2 from '@/assets/images/25_images/25-05/25-05-19/ants1.gif';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -18,7 +18,7 @@ const Clock: React.FC = () => {
   ];
   // Font loading handled by useMultipleFontLoader
   useMultipleFontLoader(fontConfigs);
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();

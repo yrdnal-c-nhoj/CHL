@@ -15,7 +15,7 @@ interface ClockInstance {
   direction: 'right-to-left' | 'left-to-right';
 }
 
-const RollingAnalogClock: React.FC = () => {
+const RollingAnalogClock =  () => {
   const [clocks, setClocks] = useState<ClockInstance[]>([]);
 
   /* ------------------------------------------------------------------

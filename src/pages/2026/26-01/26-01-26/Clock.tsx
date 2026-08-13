@@ -6,7 +6,7 @@ import { useSecondClock } from '@/utils/hooks';
 import top260126Font from '@/assets/fonts/26fonts/26-01-26-halfb.ttf?url';
 import bottom260126Font from '@/assets/fonts/26fonts/26-01-26-halft.ttf?url';
 
-const DynamicComponent: React.FC = () => {
+const DynamicComponent =  () => {
   const [time, setTime] = useState(new Date());
 
   const fontsLoaded = useMultipleFontLoader(

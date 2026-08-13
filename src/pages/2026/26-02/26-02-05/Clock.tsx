@@ -18,7 +18,7 @@ export const fontConfigs = [
   },
 ];
 
-const OutwardDistortedClock: React.FC = () => {
+const OutwardDistortedClock =  () => {
   const time = useMillisecondClock();
 
   useSuspenseFontLoader(fontConfigs);

@@ -104,7 +104,7 @@ AnimatedHands.displayName = 'AnimatedHands';
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-const TangerineClock: React.FC = () => {
+const TangerineClock =  () => {
   const time = useMillisecondClock();
   const [clockSize, setClockSize] = useState<number>(300);
   const [isClient, setIsClient] = useState<boolean>(false);

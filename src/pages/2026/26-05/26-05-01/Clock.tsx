@@ -41,7 +41,7 @@ const ClockHand: React.FC<HandProps> = ({
   );
 };
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const time = useMillisecondClock();
 
   // Get current dimensions for oval calculations

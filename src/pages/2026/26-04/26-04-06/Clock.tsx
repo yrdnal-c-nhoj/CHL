@@ -24,7 +24,7 @@ const getRandomPosition = () => ({
   transform: `scale(${0.5 + Math.random()})`,
 });
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useSmoothClock();
 
   // Start with all images loaded at random positions

@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 import bgImage from '@/assets/images/26_images/26-04/26-04-25/magnify.jpg';
 
-const Clock: React.FC = () => {
-  const time = useClockTime();
+const Clock =  () => {
+  const time = useMillisecondClock();
 
   const angles = useMemo(() => {
     const h = time.getHours();

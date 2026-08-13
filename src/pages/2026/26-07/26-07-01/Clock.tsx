@@ -28,7 +28,7 @@ const fontConfigs: FontConfig[] = [
 
 const formatDigits = (num: number): string => num.toString().padStart(2, '0');
 
-const AlphaCentauriClock: React.FC = () => {
+const AlphaCentauriClock =  () => {
   const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
 

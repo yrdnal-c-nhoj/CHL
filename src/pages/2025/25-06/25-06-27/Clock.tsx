@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import morseFont from '@/assets/fonts/25fonts/25-06-27-morse.ttf';
 import birdsGif from '@/assets/images/25_images/25-06/25-06-27/birds.gif';
@@ -31,8 +31,8 @@ function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const MorseClock: React.FC = () => {
-  const time = useClockTime();
+const MorseClock =  () => {
+  const time = useMillisecondClock();
   const [digits, setDigits] = useState(Array(6).fill('0'));
   const [changingIndices, setChangingIndices] = useState(new Set());
   const wiresRef = useRef([]);
@@ -240,7 +240,7 @@ const MorseClock: React.FC = () => {
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
         preserveAspectRatio="none"
         style={styles.svg}
-      ></svg>
+       />
       <div style={styles.clock} aria-label="Morse Code Clock">
         {digits.map((digit, i) => (
           <div key={i} style={styles.digitBox} aria-live="polite">

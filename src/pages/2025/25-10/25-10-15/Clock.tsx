@@ -118,9 +118,9 @@ export default function BrahmiClock() {
 
   return (
     <div style={containerStyle}>
-      <div style={gradientStyle}></div>
-      <div style={gridStyle}></div>
-      <div style={holeStyle}></div>
+      <div style={gradientStyle} />
+      <div style={gridStyle} />
+      <div style={holeStyle} />
       <div style={clockStyle}>
         {hours.map((h, i) => (
           <div key={`h${i}`} style={digitBoxStyle}>

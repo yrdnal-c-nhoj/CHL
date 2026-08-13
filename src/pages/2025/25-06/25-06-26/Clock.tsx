@@ -5,7 +5,7 @@ import bg1 from '@/assets/images/25_images/25-06/25-06-26/co.png';
 import bg2 from '@/assets/images/25_images/25-06/25-06-26/cos.png';
 import wheFont from '@/assets/fonts/25fonts/25-06-26-whe.ttf';
 
-const CosmicWheelClock: React.FC = () => {
+const CosmicWheelClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -22,7 +22,7 @@ const CosmicWheelClock: React.FC = () => {
   // Font loading handled by useMultipleFontLoader
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       let hours = now.getHours();
       const minutes = now.getMinutes();
@@ -162,7 +162,7 @@ const CosmicWheelClock: React.FC = () => {
         {['hours', 'minutes', 'seconds'].map((section) => (
           <div style={timeSection} id={section} key={section}>
             {[0, 1].map((i) => (
-              <div key={i} className="digit-box" style={digitBox(i)}></div>
+              <div key={i} className="digit-box" style={digitBox(i)} />
             ))}
           </div>
         ))}

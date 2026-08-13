@@ -18,7 +18,7 @@ const colors = {
 
 type SpinPhase = 0 | 1 | 2 | 3;
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useMillisecondClock();
 
   const [phase, setPhase] = useState<SpinPhase>(0);

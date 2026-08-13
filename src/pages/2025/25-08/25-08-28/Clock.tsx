@@ -1,11 +1,11 @@
 import React from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/25_images/25-08/25-08-28/gob.jpg';
 import clockFontFile from '@/assets/fonts/25fonts/25-08-28-gob.ttf';
 
 export default function DigitalClock() {
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -89,7 +89,7 @@ export default function DigitalClock() {
 
   return (
     <div style={containerStyle}>
-      <div style={backgroundStyle}></div>
+      <div style={backgroundStyle} />
       <div style={timeStyle}>
         {timeString.map((char, idx) => {
           const isSeparator = char === ':' || char === '.';

@@ -58,11 +58,11 @@ export default function VideoClock() {
     // Handle video loading / failure
     const v = videoRef.current;
     if (v) {
-      const onLoadedData: React.FC = () => {
+      const onLoadedData =  () => {
         videoLoaded = true;
         checkReady();
       };
-      const onError: React.FC = () => {
+      const onError =  () => {
         setVideoFailed(true);
         setShowPlayButton(true);
         videoLoaded = false;

@@ -98,7 +98,7 @@ const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }: Comp
   );
 };
 
-const ManyHandClock: React.FC = () => {
+const ManyHandClock =  () => {
   const now = useSecondClock();
 
   const [clockSize, setClockSize] = useState<number>(90);

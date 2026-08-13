@@ -3,7 +3,7 @@ import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import font20250924 from '@/assets/fonts/25fonts/25-09-24-cora.ttf?url';
 
-const HorizontalProportionalGradientClock: React.FC = () => {
+const HorizontalProportionalGradientClock =  () => {
   const time = useSmoothClock();
 
   // Load font via Suspense

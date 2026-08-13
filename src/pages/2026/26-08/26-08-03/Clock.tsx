@@ -17,7 +17,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 // 3. Main Component
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   // Use the standardized time hook
   const time = useSecondClock(); // or useMillisecondClock() for smooth
 

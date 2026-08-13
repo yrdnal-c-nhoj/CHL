@@ -31,7 +31,7 @@ const ClockNumbers = memo(({ fontFamily }) => (
   </>
 ));
 
-const AnalogBirdMigrateClock: React.FC = () => {
+const AnalogBirdMigrateClock =  () => {
   const [time, setTime] = useState(new Date());
 
   useSuspenseFontLoader(fontConfigs);

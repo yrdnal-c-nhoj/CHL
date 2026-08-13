@@ -3,7 +3,7 @@ import { useSecondClock } from '@/utils/hooks';
 import cocteauVideo from '@/assets/images/26_images/26-02/26-02-25/cocteau.mp4';
 import starWebp from '@/assets/images/26_images/26-02/26-02-25/star.webp';
 
-const CocteauClock: React.FC = () => {
+const CocteauClock =  () => {
   const time = useSecondClock();
   const videoRef = useRef(null);
 
@@ -28,7 +28,7 @@ const CocteauClock: React.FC = () => {
     position: 'absolute',
     bottom: '50%',
     left: '50%',
-    width: width,
+    width,
     height: length,
     backgroundColor: color,
     borderRadius: '50% 50% 2px 2px',

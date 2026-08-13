@@ -89,7 +89,7 @@ const fontConfigs = [
   },
 ];
 
-const VIPParallaxClock: React.FC = () => {
+const VIPParallaxClock =  () => {
   useSuspenseFontLoader(fontConfigs);
 
   const time = useSecondClock();

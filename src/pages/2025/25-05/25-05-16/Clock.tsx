@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useClockTime } from '@/utils/hooks/useClockTime';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import braiFont from '@/assets/fonts/25fonts/25-05-16-brai.ttf';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -16,7 +16,7 @@ const Clock: React.FC = () => {
     },
   ];
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
-  const time = useClockTime();
+  const time = useMillisecondClock();
 
   const pad = (n) => n.toString().padStart(2, '0');
 

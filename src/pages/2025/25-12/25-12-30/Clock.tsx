@@ -11,7 +11,7 @@ export const fontConfigs: FontConfig[] = [
   { fontFamily: 'AnalemmaText', fontUrl: fontAnaUrl },
 ];
 
-const RotatingAnalemmaClock: React.FC = () => {
+const RotatingAnalemmaClock =  () => {
   const time = useSecondClock();
   const rotationRef = useRef(0);
   const rotatingGroupRef = useRef<SVGGElement | null>(null);

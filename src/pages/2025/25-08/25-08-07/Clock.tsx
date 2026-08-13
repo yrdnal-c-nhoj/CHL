@@ -7,7 +7,7 @@ import hourHandImageUrl from '@/assets/images/25_images/25-08/25-08-07/ggg.gif';
 import minuteHandImageUrl from '@/assets/images/25_images/25-08/25-08-07/gun.gif';
 import secondHandImageUrl from '@/assets/images/25_images/25-08/25-08-07/gunn.gif';
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -51,7 +51,7 @@ const AnalogClock: React.FC = () => {
     const pivots = { hour: 1, minute: 1, second: 1 };
     let dpr = window.devicePixelRatio || 1;
 
-    const resizeCanvas: React.FC = () => {
+    const resizeCanvas =  () => {
       dpr = window.devicePixelRatio || 1;
       canvas.width = Math.round(window.innerWidth * dpr);
       canvas.height = Math.round(window.innerHeight * dpr);
@@ -61,7 +61,7 @@ const AnalogClock: React.FC = () => {
       drawClock();
     };
 
-    const drawClock: React.FC = () => {
+    const drawClock =  () => {
       if (!canvas) return;
 
       const now = new Date();

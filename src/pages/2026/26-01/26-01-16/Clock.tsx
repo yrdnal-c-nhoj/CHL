@@ -37,7 +37,7 @@ const LEAP_SECOND_DATES = [
   '2026-12-31T23:59:59Z',
 ].map((d) => new Date(d).getTime());
 
-const LeapClock: React.FC = () => {
+const LeapClock =  () => {
   const [now, setNow] = useState(new Date());
   const [gateReady, setGateReady] = useState<boolean>(false);
 
@@ -322,7 +322,7 @@ const InfoTile = ({ label, value, color = '#086143', isStatus = false }) => (
         fontFamily: 'Questrial, sans-serif',
         fontWeight: 'bold',
         fontSize: 'clamp(13px, 1.2vw, 18px)',
-        color: color,
+        color,
       }}
     >
       {value}

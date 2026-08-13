@@ -161,9 +161,9 @@ export default function ImageAnalogClock() {
           />
         ))}
 
-        <div ref={hourRef} style={hourHand}></div>
-        <div ref={minuteRef} style={minuteHand}></div>
-        <div ref={secondRef} style={secondHand}></div>
+        <div ref={hourRef} style={hourHand} />
+        <div ref={minuteRef} style={minuteHand} />
+        <div ref={secondRef} style={secondHand} />
       </div>
     </div>
   );

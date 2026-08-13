@@ -2,7 +2,7 @@
 
 import bgImage from '@/assets/images/26_images/26-05/26-05-29/granite.webp';
 
-import { useClockTime } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import React, { useEffect } from 'react';
 import styles from './Clock.module.css';
 
@@ -11,8 +11,8 @@ export const assets = [bgImage];
 const GOOGLE_FONTS_URL =
   'https://fonts.googleapis.com/css2?family=Bentham&display=swap';
 
-const DigitalClock: React.FC = () => {
-  const currentTime = useClockTime();
+const DigitalClock =  () => {
+  const currentTime = useMillisecondClock();
 
   useEffect(() => {
     const link = document.createElement('link');

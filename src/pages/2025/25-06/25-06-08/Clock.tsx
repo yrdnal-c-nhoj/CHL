@@ -30,13 +30,13 @@ const images = [
   img11,
 ];
 
-const FaceCardClock: React.FC = () => {
-  const hourRef = useRef();
-  const minuteRef = useRef();
-  const secondRef = useRef();
+const FaceCardClock =  () => {
+  const hourRef = useRef(null);
+  const minuteRef = useRef(null);
+  const secondRef = useRef(null);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const ms = now.getMilliseconds();
       const seconds = now.getSeconds() + ms / 1000;
@@ -189,7 +189,7 @@ const FaceCardClock: React.FC = () => {
             transform: 'translateX(-50%)',
           }}
         />
-        <div style={centerDot}></div>
+        <div style={centerDot} />
       </div>
 
       <style>

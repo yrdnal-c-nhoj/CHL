@@ -5,7 +5,7 @@ import coffeeFont from '@/assets/fonts/25fonts/25-06-04-cof.ttf';
 import bgStill from '@/assets/images/25_images/25-06/25-06-04/coff.png';
 import bgAnimated from '@/assets/images/25_images/25-06/25-06-04/coff.gif';
 
-const CoffeeClock: React.FC = () => {
+const CoffeeClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -37,7 +37,7 @@ const CoffeeClock: React.FC = () => {
       };
     }
 
-    const loop: React.FC = () => {
+    const loop =  () => {
       const t = performance.now() / 30;
       jitterSettings.current.forEach((j, idx) => {
         const dx = Math.sin(t * j.freq + j.phase) * j.ampX + 'vw';
@@ -55,7 +55,7 @@ const CoffeeClock: React.FC = () => {
 
   // Clock hands
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       const sec = now.getSeconds();
       const min = now.getMinutes();
@@ -198,16 +198,16 @@ const CoffeeClock: React.FC = () => {
         <div
           ref={hourHandRef}
           style={{ ...handBase, width: '20vmin', height: '3.8vmin' }}
-        ></div>
+         />
         <div
           ref={minuteHandRef}
           style={{ ...handBase, width: '30vmin', height: '1.9vmin' }}
-        ></div>
+         />
         <div
           ref={secondHandRef}
           style={{ ...handBase, width: '45vmin', height: '0.9vmin' }}
-        ></div>
-        <div style={dotStyle}></div>
+         />
+        <div style={dotStyle} />
       </div>
     </div>
   );

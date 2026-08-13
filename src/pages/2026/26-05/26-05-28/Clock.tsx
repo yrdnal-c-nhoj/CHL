@@ -1,5 +1,5 @@
 import bgImage from '@/assets/images/26_images/26-05/26-05-28/boom.webp';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -205,8 +205,8 @@ const ClockFace = React.memo(({ faceIndices }: { faceIndices: number[] }) => (
 ));
 ClockFace.displayName = 'ClockFace';
 
-const Clock: React.FC = () => {
-  const time = useClockTime();
+const Clock =  () => {
+  const time = useMillisecondClock();
   const [gameState, setGameState] = useState<{ face: number[]; spare: number }>({
     face: [],
     spare: -1,

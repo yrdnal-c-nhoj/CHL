@@ -24,7 +24,7 @@ export default function AnalogClock() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
-    const drawClock: React.FC = () => {
+    const drawClock =  () => {
       const { width, height } = dimensions;
       canvas.width = width;
       canvas.height = height;

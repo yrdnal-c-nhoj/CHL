@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgVideo from '@/assets/images/26_images/26-04/26-04-26/jetson.mp4';
 import jetFont from '@/assets/fonts/26fonts/26-04-26-jet.ttf?url';
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
-const Clock: React.FC = () => {
-  const time = useClockTime();
+const Clock =  () => {
+  const time = useMillisecondClock();
   const fontConfigs = useMemo(
     () => [
       {

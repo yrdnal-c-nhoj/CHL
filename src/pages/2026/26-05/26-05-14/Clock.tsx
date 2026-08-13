@@ -33,7 +33,7 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const time = useMillisecondClock();
   useSuspenseFontLoader(fontConfigs);
 

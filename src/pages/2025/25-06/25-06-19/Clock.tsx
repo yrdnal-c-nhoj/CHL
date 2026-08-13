@@ -2,7 +2,7 @@ import { useMillisecondClock } from '@/utils/hooks';
 import React, { useEffect, useRef } from 'react';
 import styles from './Clock.module.css';
 
-const CmykClock: React.FC = () => {
+const CmykClock =  () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const clockRef = useRef<HTMLDivElement>(null);
 

@@ -6,7 +6,7 @@ import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const fontConfigs = useMemo<FontConfig[]>(
     () => [
       {

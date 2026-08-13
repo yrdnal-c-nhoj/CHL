@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import videoBg from '@/assets/images/26_images/26-04/26-04-22/steamroller.mp4';
 import styles from './Clock.module.css';
 
 export const assets = [videoBg];
 
-const Clock: React.FC = () => {
-  const time = useClockTime();
+const Clock =  () => {
+  const time = useMillisecondClock();
 
   const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
     const h = time.getHours() % 12;

@@ -16,7 +16,7 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
-const Clock_26_08_10: React.FC = () => {
+const Clock_26_08_10 =  () => {
   const time = useMillisecondClock();
   useSuspenseFontLoader(fontConfigs);
 

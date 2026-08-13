@@ -33,9 +33,9 @@ export default function AnalogClock() {
   // Hand style helper
   const handStyle = (width, height, top, rotateDeg) => ({
     position: 'absolute',
-    width: width,
-    height: height,
-    top: top,
+    width,
+    height,
+    top,
     left: '50%',
     transformOrigin: '50% 100%',
     transform: `rotate(${rotateDeg}deg)`,
@@ -140,7 +140,7 @@ export default function AnalogClock() {
                     backgroundRepeat: 'no-repeat',
                     WebkitMaskImage: mask,
                     maskImage: mask,
-                    filter: filter,
+                    filter,
                     opacity: 0.5,
                     transform: flipped ? 'scaleX(-1)' : 'none',
                   }}

@@ -21,7 +21,7 @@ const romanNumerals = [
   'k',
 ];
 
-const AnalogClock: React.FC = () => {
+const AnalogClock =  () => {
   const time = useSmoothClock();
   const [numerals, setNumerals] = useState(
     romanNumerals.map(() => ({
@@ -50,7 +50,7 @@ const AnalogClock: React.FC = () => {
 
   useEffect(() => {
     let animationFrameId;
-    const updateAngles: React.FC = () => {
+    const updateAngles =  () => {
       setNumerals((prev) =>
         prev.map((num) => ({
           ...num,
@@ -66,7 +66,7 @@ const AnalogClock: React.FC = () => {
   useEffect(() => {
     const timers = [];
     romanNumerals.forEach((_, i) => {
-      const changeSpeedRandomly: React.FC = () => {
+      const changeSpeedRandomly =  () => {
         setNumerals((prev) => {
           const newNumerals = [...prev];
           const current = newNumerals[i];
@@ -221,8 +221,7 @@ const AnalogClock: React.FC = () => {
   });
 
   return (
-    <>
-      <div
+    <div
         style={{
           ...wrapperStyle,
           opacity: fontsLoaded ? 1 : 0,
@@ -307,7 +306,6 @@ const AnalogClock: React.FC = () => {
           })}
         </div>
       </div>
-    </>
   );
 };
 

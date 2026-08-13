@@ -9,7 +9,7 @@ import React, { useMemo } from 'react';
  */
 export const assets = [fontUrl];
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useSecondClock();
 
   // Define the font configuration for the suspense-based loader

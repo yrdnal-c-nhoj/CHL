@@ -65,7 +65,7 @@ const cellStyle: CSSProperties = {
 
 // --- Component ---
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useSecondClock();
   const [dimensions, setDimensions] = useState({ cols: 1, rows: 1 });
 

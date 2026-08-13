@@ -7,13 +7,13 @@ import fish from '@/assets/images/26_images/26-01/26-01-07/fish.gif';
 import gfish from '@/assets/images/26_images/26-01/26-01-07/gfish.gif';
 import aquarium from '@/assets/images/26_images/26-01/26-01-07/aquarium.gif';
 
-const AquariumClock: React.FC = () => {
+const AquariumClock =  () => {
   const hourHandRef = useRef<HTMLImageElement>(null);
   const minHandRef = useRef<HTMLImageElement>(null);
   const secondHandRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    const setDate: React.FC = () => {
+    const setDate =  () => {
       const now = new Date();
       const seconds = now.getSeconds();
       const mins = now.getMinutes();

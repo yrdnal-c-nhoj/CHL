@@ -179,7 +179,7 @@ type CharacterStates = FallState[];
 // -----------------------------------------------------------------------------
 // COMPONENT
 // -----------------------------------------------------------------------------
-const Clock_26_08_07: React.FC = () => {
+const Clock_26_08_07 =  () => {
   const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
 

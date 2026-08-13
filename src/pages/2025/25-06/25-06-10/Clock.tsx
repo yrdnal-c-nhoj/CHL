@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useMultipleFontLoader } from '@/utils/fontLoader';
 import shaFont from '@/assets/fonts/25fonts/25-06-10-sha.ttf';
 
-const ShapesClock: React.FC = () => {
+const ShapesClock =  () => {
   const [time, setTime] = useState<any>({
     hours: '00',
     minutes: '00',
@@ -23,7 +23,7 @@ const ShapesClock: React.FC = () => {
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       setTime({
         hours: String(now.getHours()).padStart(2, '0'),

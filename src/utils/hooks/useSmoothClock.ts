@@ -10,7 +10,7 @@ import { useState, useEffect, useRef } from 'react';
 export function useSmoothClock(updateInterval: number = 1000): Date {
   const [time, setTime] = useState(new Date());
   const lastUpdateRef = useRef<number>(0);
-  const rafIdRef = useRef<number>();
+  const rafIdRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     const animate = (timestamp: number = performance.now()) => {
@@ -43,7 +43,7 @@ export function useSmoothClock(updateInterval: number = 1000): Date {
 export function useSecondClock(): Date {
   const [time, setTime] = useState(new Date());
   const lastSecondRef = useRef<number>(-1);
-  const rafIdRef = useRef<number>();
+  const rafIdRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     const animate = (_timestamp: number) => {

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import backgroundImg from '@/assets/images/26_images/26-04/26-04-28/2021-07-06-0012.jpg';
-import { useClockTime, calculateAngles } from '@/utils/clockUtils';
+import { calculateAngles, useMillisecondClock } from '@/utils/hooks';
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Use useClockTime with 'ms' precision for smooth analog hand movement
-  const time = useClockTime('ms');
+  const time = useMillisecondClock();
 
   const hourHandRef = useRef<HTMLDivElement>(null);
   const minuteHandRef = useRef<HTMLDivElement>(null);
@@ -93,10 +93,10 @@ const Clock: React.FC = () => {
       `}</style>
 
       <div className="analog-clock-container">
-        <div ref={hourHandRef} className="hand hour-hand"></div>
-        <div ref={minuteHandRef} className="hand minute-hand"></div>
-        <div ref={secondHandRef} className="hand second-hand"></div>
-        <div className="center-dot"></div>
+        <div ref={hourHandRef} className="hand hour-hand" />
+        <div ref={minuteHandRef} className="hand minute-hand" />
+        <div ref={secondHandRef} className="hand second-hand" />
+        <div className="center-dot" />
       </div>
     </main>
   );

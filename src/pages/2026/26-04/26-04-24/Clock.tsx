@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useClockTime } from '@/utils/clockUtils';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
@@ -59,8 +59,8 @@ function useLissajousPath(ref: React.RefObject<HTMLDivElement>) {
   return path;
 }
 
-const LissajousClock: React.FC = () => {
-  const time = useClockTime();
+const LissajousClock =  () => {
+  const time = useMillisecondClock();
   const containerRef = useRef<HTMLDivElement>(null);
   const path = useLissajousPath(containerRef);
 

@@ -75,7 +75,7 @@ const Digit: React.FC<DigitProps> = React.memo(
   },
 );
 
-const Manufactured: React.FC = () => {
+const Manufactured =  () => {
   const currentTime = useMillisecondClock();
 
   /*

@@ -6,7 +6,7 @@ import nepBg from '@/assets/images/26_images/26-02/26-02-23/nept.webp';
 import loopBg from '@/assets/images/26_images/26-02/26-02-23/swirl.gif';
 import triBg from '@/assets/images/26_images/26-02/26-02-23/tri.webp';
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   const time = useSecondClock();
   const [showContent, setShowContent] = useState(false);
 

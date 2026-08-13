@@ -15,7 +15,7 @@ export default function AnalogClock() {
   const [, forceRender, set] = useState<number>(0);
   useEffect(() => {
     let frame;
-    const update: React.FC = () => {
+    const update =  () => {
       forceRender((x) => x + 1);
       frame = requestAnimationFrame(update);
     };

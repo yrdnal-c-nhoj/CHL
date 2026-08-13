@@ -92,7 +92,7 @@ export default function Clock() {
     let font1Loaded = false;
     let font2Loaded = false;
 
-    const checkReady: React.FC = () => {
+    const checkReady =  () => {
       if (imageLoaded && image2Loaded && font1Loaded && font2Loaded && mounted)
         setReady(true);
     };

@@ -147,7 +147,7 @@ const makeGroup = (str) => {
   return rows.join('\n');
 };
 
-const AsciiClock: React.FC = () => {
+const AsciiClock =  () => {
   const [timeParts, setTimeParts] = useState<any>([]);
 
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -164,7 +164,7 @@ const AsciiClock: React.FC = () => {
   const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock: React.FC = () => {
+    const updateClock =  () => {
       const now = new Date();
       let h = now.getHours();
       const m = String(now.getMinutes()).padStart(2, '0');

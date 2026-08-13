@@ -30,14 +30,14 @@ export const fontConfigs: FontConfig[] = [
 
 // ---------------- UTILITIES ----------------
 // ---------------- COMPONENTS ----------------
-const BackgroundLayers: React.FC = () => (
+const BackgroundLayers =  () => (
   <video className={styles.backgroundVideo} autoPlay loop muted playsInline>
     <source src={clockVideo} type="video/mp4" />
   </video>
 );
 
 // ---------------- MAIN CLOCK COMPONENT ----------------
-const ClockContent: React.FC = () => {
+const ClockContent =  () => {
   const currentTime = useSecondClock();
 
   // Use direct date methods to ensure "undefined" never appears
@@ -69,7 +69,7 @@ const ClockContent: React.FC = () => {
   );
 };
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   return (
     <div className={styles.container}>
       <Suspense

@@ -7,7 +7,7 @@ import styles from './Clock.module.css';
 
 export const assets = [portholeVideo];
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useMillisecondClock();
 
   const {
