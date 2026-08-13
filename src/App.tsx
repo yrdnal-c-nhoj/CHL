@@ -30,7 +30,7 @@ const Home = React.lazy(() => import('./pages/Home'));
 const ClockPage = React.lazy(() => import('./pages/ClockPage'));
 const Today = React.lazy(() => import('./pages/Today'));
 const Contact = React.lazy(() => import('./pages/Contact'));
-const ClockList = React.lazy(() => import('./pages/ClockList'));
+const ListPage = React.lazy(() => import('./pages/ListPage'));
 const TagList = React.lazy(() => import('./components/TagList'));
 const Tagger = React.lazy(() => import('./components/admin/Tagger'));
 const TagManager = React.lazy(() => import('./components/admin/TagManager'));
@@ -205,7 +205,7 @@ const App =  () => {
               <Route path="/:date" element={<ClockPage />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/today" element={<Today />} />
-              <Route path="/list" element={<ClockList />} />
+              <Route path="/list" element={<ListPage />} />
               <Route path="/tag/:tag" element={<TagList />} />
               <Route path="/tagger/:date" element={<Tagger />} />
               <Route path="/admin/tags" element={<TagManager />} />
