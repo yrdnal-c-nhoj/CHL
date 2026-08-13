@@ -6571,5 +6571,53 @@
       "roman-numeral",
       "lion"
     ]
+  },
+  {
+    "path": "26-08-09",
+    "date": "26-08-09",
+    "title": "Three Trees",
+    "tags": [
+      "digital",
+      "ampm",
+      "day-and-night",
+      "earth",  
+      "landscape",
+      "tree"
+    ]
+  },
+  {
+    "path": "26-08-10",
+    "date": "26-08-10",
+    "title": "Strawberry",
+    "tags": [
+      "analog",
+      "color",
+      "fruit",
+      "red",
+      "smell",
+      "fruit"
+    ]
+  },
+  {
+    "path": "26-08-11",
+    "date": "26-08-11",
+    "title": "Electric Tower",
+    "tags": [     
+      "digital",
+      "electricity",
+      "1901", 
+      "Buffalo"
+    ]
+  },
+  {
+    "path": "26-08-12",
+    "date": "26-08-12",
+    "title": "Rubik's Cube",
+    "tags": [
+      "digital",
+      "color",
+       "hand"
+    ]
+    
   }
 ]
