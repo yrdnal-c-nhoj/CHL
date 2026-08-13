@@ -7,18 +7,53 @@
   background-image: url('@/assets/images/26_images/26-08/26-08-10/straw.webp');
   background-size: cover;
   background-position: center;
-  color: #e0e0e0;
+  color: #D81B60; /* Strawberry Red */
   font-family: 'Courier New', Courier, monospace;
 }
 
-.digitalClock {
-  font-size: 18vmin;
-  font-weight: bold;
-  letter-spacing: 0.05em;
-  text-shadow:
-    0 0 5px #00bfff,
-    0 0 10px #00bfff,
-    0 0 20px #00bfff;
+.analogClock {
+  width: 80vmin;
+  height: 80vmin;
+  border: 4px solid #D81B60;
+  border-radius: 50%;
+  position: relative;
+  box-shadow:
+    0 0 10px rgba(0, 0, 0, 0.5),
+    inset 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.face {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  background-color: #D81B60;
+  border-radius: 2px;
+}
+
+.hourHand {
+  width: 6px;
+  height: 25%;
+  transform: translateX(-50%);
+}
+
+.minuteHand {
+  width: 4px;
+  height: 35%;
+  transform: translateX(-50%);
+}
+
+.secondHand {
+  width: 2px;
+  height: 40%;
+  background-color: #FF6F91; /* Lighter strawberry for contrast */
+  transform: translateX(-50%);
 }
 
 .srOnly {
@@ -31,4 +66,15 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background-color: #D81B60;
+  border-radius: 50%;
 }

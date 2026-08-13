@@ -1,4 +1,5 @@
 import strawImage from '@/assets/images/26_images/26-08/26-08-10/straw.webp';
+import { useClockAngles } from '@/hooks/useClockAngles';
 import { useSecondClock } from '@/utils/hooks';
 import React, { memo, useMemo } from 'react';
 import styles from './Clock.module.css';
@@ -8,6 +9,7 @@ export const assets: string[] = [strawImage];
 
 const ClockComponent: React.FC = () => {
   const time = useSecondClock();
+  const { hourAngle, minAngle, secAngle } = useClockAngles(time);
 
   const { timeString, accessibleTime } = useMemo(() => {
     const hours = String(time.getHours()).padStart(2, '0');
@@ -24,14 +26,28 @@ const ClockComponent: React.FC = () => {
 
   return (
     <main className={styles.container}>
-      <time dateTime={time.toISOString()} className={styles.digitalClock}>
-        {timeString}
-      </time>
+      <div className={styles.analogClock}>
+        <div className={styles.face}>
+          <div
+            className={`${styles.hand} ${styles.hourHand}`}
+            style={{ transform: `rotate(${hourAngle}deg)` }}
+          />
+          <div
+            className={`${styles.hand} ${styles.minuteHand}`}
+            style={{ transform: `rotate(${minAngle}deg)` }}
+          />
+          <div
+            className={`${styles.hand} ${styles.secondHand}`}
+            style={{ transform: `rotate(${secAngle}deg)` }}
+          />
+          <div className={styles.centerDot} />
+        </div>
+      </div>
 
       {/* Screen-reader only accessible time */}
-      <span className={styles.srOnly} aria-live="polite">
-        {accessibleTime}
-      </span>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {timeString}
+      </time>
     </main>
   );
 };
