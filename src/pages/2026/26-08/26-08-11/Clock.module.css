@@ -19,8 +19,8 @@
 .backgroundVideo {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: top; /* Align video to the top to prevent top clipping */
+  object-fit: contain; /* Ensures the entire video is visible without clipping */
+  object-position: center; /* Centers the video within its container */
 }
 
 .digitalClock {
