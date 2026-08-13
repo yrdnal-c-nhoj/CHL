@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import backgroundImg from '@/assets/images/25_images/25-11/25-11-25/npt.webp';
-import fontClockUrl from '@/assets/fonts/25fonts/25-11-25-ntp.ttf?url';
 import fontMarqueeUrl from '@/assets/fonts/25fonts/25-11-25-n2.ttf?url';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import fontClockUrl from '@/assets/fonts/25fonts/25-11-25-ntp.ttf?url';
+import backgroundImg from '@/assets/images/25_images/25-11/25-11-25/npt.webp';
 import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import styles from './Clock.module.css';
 
 export { backgroundImg };
@@ -96,7 +96,7 @@ export default function NtpClock() {
     };
 
     tick();
-    const interval = setInterval(tick, MS_PER_SECOND);
+    const interval: number = setInterval(tick, MS_PER_SECOND);
     return () => clearInterval(interval);
   }, [offset]);
 
