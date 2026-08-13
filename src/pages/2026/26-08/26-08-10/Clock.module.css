@@ -34,7 +34,7 @@
   height: 150%;
   top: -25%;
   left: -25%;
-  object-fit: cover;
+  object-fit: contain;
   opacity: 0.8; /* Optional: make the background image semi-transparent */
   /* The animation will be applied via the transform property */
   animation: spin-counter-clockwise 60s linear infinite;
