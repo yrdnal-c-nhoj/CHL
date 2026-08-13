@@ -4,8 +4,5 @@
     "env": {
       "NODE_VERSION": "22.x"
     }
-  },
-  "engines": {
-    "node": "22.x"
   }
 }
