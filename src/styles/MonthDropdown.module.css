@@ -16,7 +16,7 @@
 
 .dropdownButton {
   background-color: transparent;
-  font-size: clamp(1.2rem, 7vw, 1.7rem);
+  font-size: clamp(1.2rem, 6vw, 1.6rem);
   padding: clamp(0.1rem, 0.2vw, 0.3rem) clamp(1.5rem, 2.5vw, 3rem);
   border: 1px solid #d5d5d5; 
   border-radius: 3px;
