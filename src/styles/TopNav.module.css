@@ -10,20 +10,20 @@
 }
 
 .topnavchl {
-  color: #444544;
-  font-size: 0.8rem;
+  color: #616261;
+  font-size: 1.1rem;
   letter-spacing: 0.03rem;
   text-align: left;
   width: 100%;
   font-family: var(--font-roboto), serif;
-  padding: 0.2rem 1rem;
+  padding: 0.8rem 0.3rem;
 }
 
 .topnavbt {
   transform: skewX(-20deg);
   color: #343434;
-  font-size: 4rem;
-  letter-spacing: -0.2rem;
+  font-size: 4.2rem;
+  letter-spacing: -0.3rem;
   text-align: center;
   width: 100%;
   margin-top: -1rem;
@@ -37,25 +37,25 @@
 }
 
 .topnavtag {
-  transform: skewX(-10deg);
-  font-size: 0.8rem;
+  transform: skewX(-20deg);
+  font-size: 1rem;
   color: #8a8787;
   text-align: center;
   display: block;
   width: 100%;
-  margin-top: -1.3rem;
+  margin-top: -0.9rem;
   font-family: var(--font-oxanium), sans-serif;
 }
 
 .navbar {
   width: 100%;
-  margin-top: -0.4rem;
+  margin-top: -0.7rem;
 }
 
 .navMenu {
   font-family: var(--font-roboto), serif;
   font-weight: 700;
-  letter-spacing: 0.03rem;
+  letter-spacing: 0.04rem;
   list-style: none;
   color: rgba(59, 79, 129, 0.83);
   z-index: 999;
