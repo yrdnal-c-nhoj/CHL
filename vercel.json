@@ -1,12 +1,11 @@
 {
-  "rewrites": [
-    {
-      "source": "/test/:match*",
-      "destination": "https://chl-git-test-two-cubistheart.vercel.app/:match*"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "build": {
+    "env": {
+      "NODE_VERSION": "22.x"
     }
-  ]
+  },
+  "engines": {
+    "node": "22.x"
+  }
 }
