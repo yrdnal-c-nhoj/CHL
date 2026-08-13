@@ -29,8 +29,6 @@ const shouldSuppress = (msg: string) => {
     'email-autocomplete-relay',
     'newtabRefinedCardsLayout',
     'Referrer Policy:',
-    'Cookie “FPID” has been rejected',
-    'nimbusStore', // New pattern identified
     'feltPrivacy', // New pattern identified
     'SessionStore', // New pattern identified
     'Cookie “FPLC” has been rejected',
