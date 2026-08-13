@@ -1,10 +1,11 @@
 import hourHandImage from '@/assets/images/26_images/26-08/26-08-10/hour-hand.webp';
 import minuteHandImage from '@/assets/images/26_images/26-08/26-08-10/minute-hand.webp';
 import secondHandImage from '@/assets/images/26_images/26-08/26-08-10/second-hand.webp';
+
+import straw2Image from '@/assets/images/26_images/26-08/26-08-10/str.webp';
 import strawImage from '@/assets/images/26_images/26-08/26-08-10/straw.webp';
-import { useClockAngles } from '@/hooks/useClockAngles';
-import type { FontConfig } from '@/types/clock';
-import { useSecondClock } from '@/utils/hooks'; // Correctly using canonical hook
+import { useClockAngles } from '@/hooks/useClockAngles'; // This hook already supports millisecond precision
+import { useMillisecondClock } from '@/utils/hooks';
 import { memo, useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -15,11 +16,8 @@ export const assets: string[] = [
   secondHandImage,
 ];
 
-// Per ARCHITECTURE.md, font configuration is required even if empty.
-const fontConfigs: FontConfig[] = [];
-
-const ClockComponent = () => {
-  const time = useSecondClock();
+const ClockComponent =  () => {
+  const time = useMillisecondClock(); // Changed to useMillisecondClock for smooth second hand movement
   const { hourAngle, minAngle, secAngle } = useClockAngles(time);
 
   const { timeString, accessibleTime } = useMemo(() => {
@@ -37,24 +35,34 @@ const ClockComponent = () => {
 
   return (
     <main className={styles.container}>
+      <img
+        src={strawImage}
+        className={styles.backgroundImage}
+        alt="Straw texture background"
+      />
+       <img
+        src={straw2Image}
+        className={styles.backgroundImage2}
+        alt="Straw texture background"
+      />
       <div className={styles.analogClock}>
         <div className={styles.face}>
           <img
             src={hourHandImage}
             className={`${styles.hand} ${styles.hourHand}`}
-            style={{ transform: `rotate(${hourAngle}deg)` }}
+            style={{ transform: `translateX(-50%) rotate(${hourAngle}deg)` }}
             alt="Hour hand"
           />
           <img
             src={minuteHandImage}
             className={`${styles.hand} ${styles.minuteHand}`}
-            style={{ transform: `rotate(${minAngle}deg)` }}
+            style={{ transform: `translateX(-50%) rotate(${minAngle}deg)` }}
             alt="Minute hand"
           />
           <img
             src={secondHandImage}
             className={`${styles.hand} ${styles.secondHand}`}
-            style={{ transform: `rotate(${secAngle}deg)` }}
+            style={{ transform: `translateX(-50%) rotate(${secAngle}deg)` }}
             alt="Second hand"
           />
           <div className={styles.centerDot} />
@@ -69,11 +77,7 @@ const ClockComponent = () => {
   );
 };
 
-// Per ARCHITECTURE.md, wrapping in React.memo and setting a displayName is required.
 const MemoizedClock = memo(ClockComponent);
-MemoizedClock.displayName = 'Clock_26_08_10';
-
-export default MemoizedClock;
 MemoizedClock.displayName = 'Clock_26_08_10';
 
 export default MemoizedClock;

@@ -4,9 +4,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('@/assets/images/26_images/26-08/26-08-10/straw.webp');
-  background-size: cover;
-  background-position: center;
   color: #D81B60; /* Strawberry Red */
   font-family: 'Courier New', Courier, monospace;
 }
@@ -14,12 +11,27 @@
 .analogClock {
   width: 80vmin;
   height: 80vmin;
-  border: 4px solid #D81B60;
   border-radius: 50%;
   position: relative;
-  box-shadow:
-    0 0 10px rgba(0, 0, 0, 0.5),
-    inset 0 0 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backgroundImage {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.backgroundImage2 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* opacity: 0.9; */
+  animation: spin-counter-clockwise 60s linear infinite;
 }
 
 .face {
@@ -42,15 +54,18 @@
 }
 
 .hourHand {
-  transform: translateX(-50%);
+  width: 20%;
+  z-index: 3;
 }
 
 .minuteHand {
-  transform: translateX(-50%);
+  width: 35%;
+  z-index: 2;
 }
 
 .secondHand {
-  transform: translateX(-50%);
+  width: 50%;
+  z-index: 1;
 }
 
 .srOnly {
@@ -66,13 +81,11 @@
   border-width: 0;
 }
 
-.centerDot {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 12px;
-  height: 12px;
-  background-color: #D81B60;
-  border-radius: 50%;
+@keyframes spin-counter-clockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
 }
