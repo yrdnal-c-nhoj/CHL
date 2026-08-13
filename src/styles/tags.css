@@ -41,7 +41,9 @@
 
 .tag-bubble.active {
   background-color: var(--color-lab-blue-deep) !important;
-  color: #e0e0e2 !important;
+  color: #30190c !important;
+  background-color: rgb(210, 207, 207) !important;
+
 }
 
 /* Bubble variants */
