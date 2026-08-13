@@ -216,7 +216,7 @@ const ClockComponent: React.FC = () => {
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', handleResize);
-      renderer?.dispose();
+      if (renderer) renderer.dispose();
       if (container.contains(renderer?.domElement)) {
         container.removeChild(renderer.domElement);
       }
@@ -229,7 +229,7 @@ const ClockComponent: React.FC = () => {
     const minuteStr = formatMinute(time);
 
     const planetMap = planetMaterialRef.current?.map as THREE.CanvasTexture | undefined;
-    if (planetMap?.image) {
+    if (planetMap?.image instanceof HTMLCanvasElement) {
       updateSphereCanvas(
         planetMap.image,
         hourStr,
@@ -240,7 +240,7 @@ const ClockComponent: React.FC = () => {
     }
 
     const moonMap = moonMaterialRef.current?.map as THREE.CanvasTexture | undefined;
-    if (moonMap?.image) {
+    if (moonMap?.image instanceof HTMLCanvasElement) {
       updateSphereCanvas(
         moonMap.image,
         minuteStr,
