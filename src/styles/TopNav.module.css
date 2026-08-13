@@ -79,7 +79,7 @@
 
 .navLink:hover {
   color: #f35f02;
-  text-decoration: underline;
+  /* text-decoration: underline; */
 }
 
 .navLink.active {
