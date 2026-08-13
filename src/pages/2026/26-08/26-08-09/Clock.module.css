@@ -12,7 +12,8 @@
 
 .videoWrapper {
   display: flex;
-  width: 100%;
+  /* Stack vertically by default (mobile-first) */
+  flex-direction: column;
   height: 100%;
   position: relative;
 }
@@ -25,6 +26,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  /* Add a gray background for letterboxing when video doesn't fill the space */
+  background-color: #333; /* A dark gray */
 }
 
 .video {
@@ -33,7 +36,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* Use 'contain' to ensure the entire video is visible without being cropped.
+     This will letterbox the video if its aspect ratio differs from the container. */
+  object-fit: contain;
 }
 
 .timeOverlay {
@@ -62,4 +67,11 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* On larger screens (tablets/desktops), switch to side-by-side layout */
+@media (min-width: 768px) {
+  .videoWrapper {
+    flex-direction: row;
+  }
 }
