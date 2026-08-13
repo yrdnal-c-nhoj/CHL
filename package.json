@@ -18,9 +18,6 @@
     "clean": "rm -rf dist",
     "perf:analyze": "vite build --mode production && npx source-map-explorer 'dist/assets/*.js'",
     "optimize:images": "npx sharp-cli -i ./src/assets/images -o ./src/assets/images --webp",
-    "audit:fonts": "node scripts/audit-fonts.mjs",
-    "audit:images": "node scripts/audit-images.mjs",
-    "capture:thumbs": "node scripts/SocialMediaCap/capture-clocks.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
