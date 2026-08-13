@@ -35,6 +35,7 @@
   top: -25%;
   left: -25%;
   object-fit: cover;
+  opacity: 0.8; /* Optional: make the background image semi-transparent */
   /* The animation will be applied via the transform property */
   animation: spin-counter-clockwise 60s linear infinite;
 }
@@ -64,17 +65,22 @@
 
 .hourHand {
   width: 20%;
-  z-index: 3;
+  /* Highest z-index to appear on top */
+  z-index: 3; 
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
 }
 
 .minuteHand {
   width: 35%;
-  z-index: 2;
+  z-index: 2; 
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
 }
 
 .secondHand {
   width: 50%;
   z-index: 1;
+   opacity: 0.8;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
 }
 
 .srOnly {
