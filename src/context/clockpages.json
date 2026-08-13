@@ -5530,13 +5530,9 @@
       "bone",
       "cloth",
       "desert",
-      "film",
-      "light",
       "mummy",
-      "myth",
       "pyramid",
-      "scarab",
-      "stone"
+      "scarab"
     ]
   },
   {
@@ -6207,7 +6203,9 @@
     "tags": [
       "analog",
       "color",
+      "green",
       "ocean",
+      "red",
       "transport"
     ]
   },
@@ -6503,8 +6501,10 @@
     "tags": [
       "analog",
       "light",
+      "nature",
       "night",
-      "space"
+      "sky",
+      "weather"
     ]
   },
   {
@@ -6515,7 +6515,10 @@
       "digital",
       "color",
       "interior",
-      "pink"
+      "monochrome",
+      "paint",
+      "pink",
+      "wall"
     ]
   },
   {
@@ -6525,6 +6528,9 @@
     "tags": [
       "analog",
       "Buster-Keaton",
+      "b+w",
+      "body",
+      "drive",
       "film",
       "transport"
     ]
@@ -6537,7 +6543,8 @@
       "analog",
       "day-and-night",
       "earth",
-      "gravity"
+      "gravity",
+      "up-and-down"
     ]
   },
   {
@@ -6547,7 +6554,9 @@
     "tags": [
       "digital",
       "animal",
-      "fly"
+      "flower",
+      "fly",
+      "sound"
     ]
   },
   {
@@ -6566,10 +6575,10 @@
     "title": "337.5° North-Northwest",
     "tags": [
       "analog",
-      "wind",
       "cardinal-directions",
+      "lion",
       "roman-numeral",
-      "lion"
+      "wind"
     ]
   },
   {
@@ -6578,11 +6587,11 @@
     "title": "Three Trees",
     "tags": [
       "digital",
-      "ampm",
       "day-and-night",
-      "earth",  
       "landscape",
-      "tree"
+      "tree",
+      "trunk",
+      "wood"
     ]
   },
   {
@@ -6593,31 +6602,37 @@
       "analog",
       "color",
       "fruit",
+      "grow",
       "red",
-      "smell",
-      "fruit"
+      "smell"
     ]
   },
   {
     "path": "26-08-11",
     "date": "26-08-11",
     "title": "Electric Tower",
-    "tags": [     
+    "tags": [
       "digital",
+      "1901",
+      "Buffalo",
+      "b+w",
+      "day-and-night",
       "electricity",
-      "1901", 
-      "Buffalo"
+      "light",
+      "play"
     ]
   },
   {
     "path": "26-08-12",
     "date": "26-08-12",
-    "title": "Rubik's Cube",
+    "title": "Solve",
     "tags": [
       "digital",
       "color",
-       "hand"
+      "hand",
+      "play",
+      "spin",
+      "square"
     ]
-    
   }
 ]

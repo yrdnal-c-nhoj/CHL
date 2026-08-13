@@ -1,47 +1,31 @@
 .container {
-  height: 100vh;
   width: 100vw;
+  height: 100dvh;
+  position: relative;
   overflow: hidden;
-  background: linear-gradient(to top, #dcd5b4, #d6f1f1);
-  position: relative;
-  margin: 0;
-}
-
-.clockItem {
-  position: absolute;
-  border-radius: 50%;
-  border: 3px solid rgba(255, 255, 255, 0.5);
   display: flex;
-  align-items: center;
   justify-content: center;
-  transform-origin: bottom center;
-  will-change: transform;
+  align-items: center;
 }
 
-.clockFace {
-  position: relative;
+.background {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
 }
 
-.hand {
-  position: absolute;
-  bottom: 50%;
-  left: 50%;
-  transform-origin: bottom;
-  transform: translateX(-50%);
-}
-
-.hourHand {
-  width: 5px;
-  height: 28%;
-  background-color: #fff;
-  border-radius: 5px;
-}
-
-.minuteHand {
-  width: 3px;
-  height: 42%;
-  background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 3px;
+.textContainer {
+  position: relative;
+  z-index: 1;
+  font-family: 'LatinFont', sans-serif;
+  font-size: 2rem;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  padding: 1rem;
+  line-height: 1.5;
 }
