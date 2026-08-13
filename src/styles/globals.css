@@ -22,3 +22,11 @@
   --space-md: 1rem;
   --space-lg: 1.5rem;
 }
+
+/*
+ * Global element resets.
+ * Remove default browser margin from the body to prevent white borders.
+ */
+body {
+  margin: 0;
+}
