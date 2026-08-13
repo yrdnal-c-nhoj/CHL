@@ -1,12 +1,24 @@
+import hourHandImage from '@/assets/images/26_images/26-08/26-08-10/hour-hand.webp';
+import minuteHandImage from '@/assets/images/26_images/26-08/26-08-10/minute-hand.webp';
+import secondHandImage from '@/assets/images/26_images/26-08/26-08-10/second-hand.webp';
 import strawImage from '@/assets/images/26_images/26-08/26-08-10/straw.webp';
 import { useClockAngles } from '@/hooks/useClockAngles';
-import { useSecondClock } from '@/utils/hooks';
-import React, { memo, useMemo } from 'react';
+import type { FontConfig } from '@/types/clock';
+import { useSecondClock } from '@/utils/hooks'; // Correctly using canonical hook
+import { memo, useMemo } from 'react';
 import styles from './Clock.module.css';
 
-export const assets: string[] = [strawImage];
+export const assets: string[] = [
+  strawImage,
+  hourHandImage,
+  minuteHandImage,
+  secondHandImage,
+];
 
-const ClockComponent =  () => {
+// Per ARCHITECTURE.md, font configuration is required even if empty.
+const fontConfigs: FontConfig[] = [];
+
+const ClockComponent = () => {
   const time = useSecondClock();
   const { hourAngle, minAngle, secAngle } = useClockAngles(time);
 
@@ -27,17 +39,23 @@ const ClockComponent =  () => {
     <main className={styles.container}>
       <div className={styles.analogClock}>
         <div className={styles.face}>
-          <div
+          <img
+            src={hourHandImage}
             className={`${styles.hand} ${styles.hourHand}`}
             style={{ transform: `rotate(${hourAngle}deg)` }}
+            alt="Hour hand"
           />
-          <div
+          <img
+            src={minuteHandImage}
             className={`${styles.hand} ${styles.minuteHand}`}
             style={{ transform: `rotate(${minAngle}deg)` }}
+            alt="Minute hand"
           />
-          <div
+          <img
+            src={secondHandImage}
             className={`${styles.hand} ${styles.secondHand}`}
             style={{ transform: `rotate(${secAngle}deg)` }}
+            alt="Second hand"
           />
           <div className={styles.centerDot} />
         </div>
@@ -51,7 +69,11 @@ const ClockComponent =  () => {
   );
 };
 
+// Per ARCHITECTURE.md, wrapping in React.memo and setting a displayName is required.
 const MemoizedClock = memo(ClockComponent);
+MemoizedClock.displayName = 'Clock_26_08_10';
+
+export default MemoizedClock;
 MemoizedClock.displayName = 'Clock_26_08_10';
 
 export default MemoizedClock;
