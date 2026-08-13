@@ -97,7 +97,8 @@ patterns.push('ext-browser.js');
   patterns.push('JSProcessActor');
 
   const lowerMsg = msg.toLowerCase();
-  if (patterns.some((p) => lowerMsg.includes(p.toLowerCase()))) {
+  // Ensure the pattern is also a string before calling toLowerCase()
+  if (patterns.some((p) => typeof p === 'string' && lowerMsg.includes(p.toLowerCase()))) {
     return true;
   }
   return false;
