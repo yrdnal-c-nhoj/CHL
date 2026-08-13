@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@900&display=swap');
+
 .container {
   width: 100vw;
   height: 100dvh;
@@ -37,10 +39,17 @@
 .timeOverlay {
   position: relative;
   z-index: 1;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 25vmin;
-  font-weight: bold;
-  color: #7f5f35; /* A plain brown color */
+  font-family: 'Chivo Mono', monospace;
+  font-size: 27vmin;
+  font-weight: 900;
+  color: #7f5f35; /* Fallback color if image fails */
+  /* Apply wood texture to the digits */
+  background-image: url('@/assets/images/26_images/26-08/26-08-09/wood.webp');
+  background-size: cover; /* Adjust as needed, e.g., 'contain', '100% 100%' */
+  background-position: center; /* Adjust as needed */
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .srOnly {
