@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bananaGif from '@/assets/images/25_images/25-06/25-06-11/banana.gif';
 import spinningBanana from '@/assets/images/25_images/25-06/25-06-11/yellow-spinning-banana.gif';
 import hourHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
@@ -20,7 +20,7 @@ const BananaClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   useEffect(() => {
     const updateClock =  () => {
       const now = new Date();
@@ -97,7 +97,7 @@ const BananaClock =  () => {
       }}
     >
       <style>{`
-        /* Font loading handled by useMultipleFontLoader */
+        /* Font loading handled by useSuspenseFontLoader */
       `}</style>
 
       {/* Background tiles */}

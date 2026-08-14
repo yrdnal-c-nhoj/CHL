@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import penFontUrl from '@/assets/fonts/25fonts/25-07-11-Pen.ttf';
 
 const PenmanshipClock =  () => {
@@ -18,7 +18,7 @@ const PenmanshipClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   // Update time every second
   useEffect(() => {

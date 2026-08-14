@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 import backgroundImg from '@/assets/images/25_images/25-08/25-08-14/1.webp';
 import digit1 from '@/assets/images/25_images/25-08/25-08-14/1.gif';
@@ -58,7 +58,7 @@ const AnalogClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const time = useSmoothClock();
 
@@ -75,7 +75,7 @@ const AnalogClock =  () => {
       });
     }
 
-    // Font loading handled by useMultipleFontLoader
+    // Font loading handled by useSuspenseFontLoader
     const style = document.createElement('style');
     style.setAttribute('data-font', 'custom-clock-font');
     style.textContent = ``;

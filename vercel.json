@@ -1,12 +1,15 @@
 {
-  "rewrites": [
+  "builds": [
     {
-      "source": "/test/:match*",
-      "destination": "https://chl-git-test-two-cubistheart.vercel.app/:match*"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
     }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/index.html" }
   ]
 }

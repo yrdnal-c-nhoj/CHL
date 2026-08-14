@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
 // Asset Imports
@@ -32,7 +32,7 @@ const Clock =  () => {
     fontFamily: f.name,
     fontUrl: f.url,
   }));
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   const time = useSecondClock();
   const [index, setIndex] = useState(0);
   const [transform, setTransform] = useState({

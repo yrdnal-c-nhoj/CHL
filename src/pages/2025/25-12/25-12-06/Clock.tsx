@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // Image paths in public folder
 import bgImage from '@/assets/images/25_images/25-12/25-12-06/giraffe.webp';

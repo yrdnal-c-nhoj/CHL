@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import laikaFont from '@/assets/fonts/25fonts/25-08-06-laika.ttf'; // Yourquo vadis
 import featuredImage from '@/assets/images/25_images/25-08/25-08-06/Laika.jpeg'; // Your local image file
 
@@ -16,7 +16,7 @@ const DigitalClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   const time = useSmoothClock();
 
   const formatTime = (date) => {
@@ -86,7 +86,7 @@ const DigitalClock =  () => {
   return (
     <>
       <style>{`
-        /* Font loading handled by useMultipleFontLoader */
+        /* Font loading handled by useSuspenseFontLoader */
       `}</style>
 
       <div style={styles.container}>

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import camFont from '@/assets/fonts/25fonts/25-07-20-cam.otf';
 import bg1 from '@/assets/images/25_images/25-07/25-07-20/ca.webp';
 import bg2 from '@/assets/images/25_images/25-07/25-07-20/cam.webp';
@@ -19,7 +19,7 @@ const FStopClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   useEffect(() => {
     const hourHand = document.getElementById('fstop-hourHand');
     const minuteHand = document.getElementById('fstop-minuteHand');
@@ -93,7 +93,7 @@ const FStopClock =  () => {
       }}
     >
       <style>{`
-        /* Font loading handled by useMultipleFontLoader */
+        /* Font loading handled by useSuspenseFontLoader */
 
         .fstop-wrapper {
           font-size: 2vh;

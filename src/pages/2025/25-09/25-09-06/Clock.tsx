@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import font_06_09_2025 from '@/assets/fonts/25fonts/25-09-06-boom.ttf';
 import bgImage from '@/assets/images/25_images/25-09/25-09-06/boo.jpg';
 import hourHandImg from '@/assets/images/25_images/25-09/25-09-06/b.gif';
@@ -20,7 +20,7 @@ const AnalogClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   const time = useMillisecondClock();
 
   const clockSize = 50; // in vh
@@ -47,7 +47,7 @@ const AnalogClock =  () => {
     >
       {/* Scoped font */}
       <style>{`
-        /* Font loading handled by useMultipleFontLoader */
+        /* Font loading handled by useSuspenseFontLoader */
       `}</style>
 
       {/* Background */}

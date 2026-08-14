@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import customFontUrl from '@/assets/fonts/25fonts/25-08-15-dom.ttf';
 import backgroundImg from '@/assets/images/25_images/25-08/25-08-15/tabl.webp';
 
@@ -56,7 +56,7 @@ const DigitalClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const time = useMillisecondClock();
 

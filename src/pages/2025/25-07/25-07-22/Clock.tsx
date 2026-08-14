@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bardImg from '@/assets/images/25_images/25-07/25-07-22/bard.webp';
 import barrsImg from '@/assets/images/25_images/25-07/25-07-22/barrs.webp';
 import berFont from '@/assets/fonts/25fonts/25-07-22-ber.otf';
@@ -17,7 +17,7 @@ const BarrelrollClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   useEffect(() => {
     const updateClock =  () => {
       const now = new Date();
@@ -54,7 +54,7 @@ const BarrelrollClock =  () => {
       }}
     >
       <style>{`
-        /* Font loading handled by useMultipleFontLoader */
+        /* Font loading handled by useSuspenseFontLoader */
 
         * {
           margin: 0;

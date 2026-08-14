@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-09/25-09-19/oort.jpg';
 
 export default function AnalogClock() {

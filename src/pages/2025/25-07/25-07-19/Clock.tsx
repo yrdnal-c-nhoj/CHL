@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import cunFont from '@/assets/fonts/25fonts/25-07-19-cun.ttf';
 import bgOverlay from '@/assets/images/25_images/25-07/25-07-19/cun1.webp';
 
@@ -17,7 +17,7 @@ const CuneiformClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const updateClock =  () => {
@@ -46,7 +46,7 @@ const CuneiformClock =  () => {
       }}
     >
       <style>{`
-        /* Font loading handled by useMultipleFontLoader */
+        /* Font loading handled by useSuspenseFontLoader */
 
         .cunei-wrapper {
           font-size: 2vh;

@@ -118,14 +118,6 @@ export function useSuspenseFontLoader(fontConfigs: FontConfig[]): boolean {
   return true;
 }
 
-// --- Legacy Compatibility ---
-export const useMultipleFontLoader = useSuspenseFontLoader;
-
-export const useFontLoader = (fontFamily: string, fontUrl: string) => {
-  useSuspenseFontLoader([{ fontFamily, fontUrl }]);
-  return true;
-};
-
 // --- Fallback Component ---
 export const ClockLoadingFallback = () => (
   <div

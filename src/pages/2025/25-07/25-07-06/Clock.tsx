@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import polFont from '@/assets/fonts/25fonts/25-07-06-pol.otf';
 import polarisGif from '@/assets/images/25_images/25-07/25-07-06/polaris.gif';
 
@@ -33,7 +33,7 @@ const Clock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   // Calculate rotations
   const minutes = time.getMinutes();

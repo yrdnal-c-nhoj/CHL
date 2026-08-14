@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import asciiFontUrl from '@/assets/fonts/25fonts/25-07-15-ascii.ttf';
 import asciiImageUrl from '@/assets/images/25_images/25-07/25-07-15/ascii.jpg';
 
@@ -161,7 +161,7 @@ const AsciiClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const updateClock =  () => {

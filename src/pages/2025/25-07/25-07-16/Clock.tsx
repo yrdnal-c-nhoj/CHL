@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeometry.js';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import mobFontUrl from '@/assets/fonts/25fonts/25-07-16-mob.otf';
 
 const MobiusStripClock =  () => {
@@ -10,7 +10,7 @@ const MobiusStripClock =  () => {
   const [timeString, setTimeString] = useState<string>('');
 
   const fontConfigs = [{ fontFamily: 'mob', fontUrl: mobFontUrl }];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     // Wait until fonts are ready and container exists

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // Digit images (imported as modules)
 import digit0 from '@/assets/images/25_images/25-08/25-08-23/0.gif';
@@ -49,7 +49,7 @@ const fontConfigs = [
 
 export default function DigitalClock() {
   const time = useMillisecondClock();
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   // Style constants
   const fontSize = '2rem';
@@ -65,7 +65,7 @@ export default function DigitalClock() {
 
   // Scoped CSS for font and animation
   const scopedCSS = `
-    /* Font loading handled by useMultipleFontLoader */
+    /* Font loading handled by useSuspenseFontLoader */
 
     @keyframes float {
       0%, 100% { transform: translateY(0); }

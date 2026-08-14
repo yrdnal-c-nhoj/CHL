@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import highwayBg from '@/assets/images/26_images/26-03/26-03-26/highway.webp';
 import overFont from '@/assets/fonts/26fonts/26-03-26-over.otf';
@@ -14,7 +14,7 @@ const Clock =  () => {
       fontUrl: overFont,
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const fontFamily = fontsLoaded
     ? 'OverFont, Courier New, monospace'

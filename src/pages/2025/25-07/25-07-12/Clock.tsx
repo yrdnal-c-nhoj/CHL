@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import fibFont from '@/assets/fonts/25fonts/25-07-12-fib.otf';
 import fibImage from '@/assets/images/25_images/25-07/25-07-12/fib.gif';
 
@@ -15,7 +15,7 @@ const FibonacciClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const updateClock =  () => {
@@ -42,7 +42,7 @@ const FibonacciClock =  () => {
   }, []);
 
   const fontFace = `
-    /* Font loading handled by useMultipleFontLoader */
+    /* Font loading handled by useSuspenseFontLoader */
   `;
 
   const numbers = [
