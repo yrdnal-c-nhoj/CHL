@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
 import fontLatin from '@/assets/fonts/25fonts/25-10-17-word.ttf?url';
 import backgroundImage from '@/assets/images/25_images/25-10/25-10-17/words.jpg';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+import React, { useEffect, useMemo, useState } from 'react';
 
 export default function TimeWordsClock() {
   const now = useMillisecondClock();
@@ -402,11 +402,16 @@ export default function TimeWordsClock() {
 
   // Language rotation logic
   useEffect(() => {
-    const i = setInterval(() => {
-      setLangIndex((prev) => (prev + 1) % languages.length);
-    }, 1000);
-    return () => clearInterval(i);
-  }, [languages.length]);
+    const rotateLanguage = () => {
+      setLangIndex(prevIndex => (prevIndex + 1) % languages.length);
+    };
+
+    // Use a chain of timeouts which is safer and easier to manage in React's lifecycle
+    const timerId = setTimeout(rotateLanguage, 1000);
+
+    // Cleanup function to clear the timeout if the component unmounts
+    return () => clearTimeout(timerId);
+  }, [langIndex, languages.length]); // Re-trigger the effect when langIndex changes
 
   // --- Time to words conversion ---
   type LangCode = keyof typeof translations;
