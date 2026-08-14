@@ -1,0 +1,79 @@
+.container {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.backgroundVideo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.clockContainer {
+  position: absolute;
+  top: var(--space-xl, 0.1em);
+  right: var(--space-xl, 0.1em);
+  padding: var(--space-lg, 1.5rem);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- Analog Clock Styles --- */
+.analogClock {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border: 4px solid white;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom;
+  background-color: white;
+  border-radius: 2px;
+}
+
+.hourHand {
+  width: 6px;
+  height: 50px;
+  margin-left: -3px;
+  background-color: var(--color-lab-red, #ff4136);
+}
+
+.minuteHand {
+  width: 4px;
+  height: 75px;
+  margin-left: -2px;
+}
+
+.secondHand {
+  width: 2px;
+  height: 85px;
+  margin-left: -1px;
+  background-color: var(--color-lab-blue, #0074d9);
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background-color: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
