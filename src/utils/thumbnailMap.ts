@@ -1,25 +1,40 @@
 // Thumbnail mapping for clock pages
 //
 // This loader dynamically finds all clock images and maps them by date.
-// It looks for images in `/src/assets/images/YY_images/YY-MM/YY-MM-DD/`
-// and also checks the legacy `/src/assets/thumbnails/` directory.
+// It prioritizes images from the `/src/assets/thumbnails/` directory
+// and falls back to the main `/src/assets/images/` directory.
 
-const allImages = import.meta.glob(
-  '/src/assets/{images,thumbnails}/**/*.{webp,gif,jpg,jpeg,png}',
-  {
-    eager: true,
-    import: 'default',
-  },
-);
+// 1. Prioritize dedicated thumbnails
+const dedicatedThumbnails = import.meta.glob('/src/assets/thumbnails/**/*.{webp,gif,jpg,jpeg,png}', {
+  eager: true,
+  import: 'default',
+});
 
 const thumbnailCache = new Map<string, string>();
 
-for (const path in allImages) {
+for (const path in dedicatedThumbnails) {
   const match = path.match(/(\d{2}-\d{2}-\d{2})/);
   if (match) {
     const date = match[1];
     if (!thumbnailCache.has(date)) {
-      thumbnailCache.set(date, allImages[path] as string);
+      thumbnailCache.set(date, dedicatedThumbnails[path] as string);
+    }
+  }
+}
+
+// 2. Fill in missing thumbnails with fallback images
+const fallbackImages = import.meta.glob('/src/assets/images/**/*.{webp,gif,jpg,jpeg,png}', {
+  eager: true,
+  import: 'default',
+});
+
+for (const path in fallbackImages) {
+  const match = path.match(/(\d{2}-\d{2}-\d{2})/);
+  if (match) {
+    const date = match[1];
+    // Only add if a dedicated thumbnail wasn't already found
+    if (!thumbnailCache.has(date)) {
+      thumbnailCache.set(date, fallbackImages[path] as string);
     }
   }
 }
