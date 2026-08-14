@@ -1,0 +1,82 @@
+.container {
+  margin: 0;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #775011, #746c78);
+  height: 100dvh;
+  width: 100vw;
+  position: relative;
+  font-family: 'circle-local', sans-serif;
+}
+
+.clockWrapper {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: visible;
+}
+
+.clockSvg {
+  overflow: visible;
+  width: 82vh;
+  height: 82vh;
+  transform: translate(-50%, -50%);
+}
+
+.faceRing {
+  stroke: #9de2ac;
+  stroke-width: 0.1;
+  fill: transparent;
+  opacity: 0.2;
+}
+
+.tick {
+  stroke: #9de2ac;
+  stroke-width: 0.4;
+}
+
+.number {
+  font-size: 5px;
+  fill: #9de2ac;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  transform-origin: center;
+}
+
+.hourHand,
+.minuteHand,
+.secondHand {
+  stroke-linecap: round;
+  transform-origin: 50px 50px;
+  will-change: transform;
+}
+
+.hourHand {
+  stroke: #f9d63a;
+  stroke-width: 1.8;
+}
+
+.minuteHand {
+  stroke: #1147ea;
+  stroke-width: 1.2;
+}
+
+.secondHand {
+  stroke: #f00;
+  stroke-width: 0.4;
+}
+
+.centerPin {
+  fill: #333;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
