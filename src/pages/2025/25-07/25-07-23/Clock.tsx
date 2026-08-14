@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImg from '@/assets/images/25_images/25-07/25-07-23/bay01s52djxo1_400.webp';
 import bayFont from '@/assets/fonts/25fonts/25-07-23-bay.ttf';
 
@@ -17,7 +17,7 @@ const Clock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const updateClock =  () => {
@@ -37,7 +37,7 @@ const Clock =  () => {
     <div style={styles.body}>
       <style>
         {`
-          /* Font loading handled by useMultipleFontLoader */
+          /* Font loading handled by useSuspenseFontLoader */
         `}
       </style>
 

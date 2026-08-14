@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import clockBg from '@/assets/images/25_images/25-07/25-07-30/ca.gif';
 import fullBg from '@/assets/images/25_images/25-07/25-07-30/ca.gif';
 import myFont from '@/assets/fonts/25fonts/25-07-30-Cam.ttf'; // Import font
@@ -17,10 +18,10 @@ const Clock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   const time = useSmoothClock();
 
-  // Font loading handled by useMultipleFontLoader
+  // Font loading handled by useSuspenseFontLoader
   useEffect(() => {
     const style = document.createElement('style');
     style.innerHTML = `

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bg1 from '@/assets/images/25_images/25-07/25-07-26/tum.gif';
 import bg2 from '@/assets/images/25_images/25-07/25-07-26/tum2.gif';
 import myFontUrl from '@/assets/fonts/25fonts/25-07-26-sec.ttf';
@@ -24,7 +24,7 @@ const PrimaryColorClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const secondHandRef = useRef(null);
   const minHandRef = useRef(null);
@@ -88,7 +88,7 @@ const PrimaryColorClock =  () => {
   }, []);
 
   const fontFace = `
-    /* Font loading handled by useMultipleFontLoader */
+    /* Font loading handled by useSuspenseFontLoader */
   `;
 
   const styleTag = <style>{fontFace}</style>;

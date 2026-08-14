@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import rorFontUrl from '@/assets/fonts/25fonts/25-07-13-ror.ttf';
 
 const RorschachClock =  () => {
@@ -17,7 +17,7 @@ const RorschachClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const getRandomFontSize = (min = 5, max = 14) => {
     return (Math.random() * (max - min) + min).toFixed(2) + 'vh';

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // Import font and images as modules from the same folder
 import animFont from '@/assets/fonts/25fonts/25-07-17-ani.ttf';
@@ -21,7 +21,7 @@ import num12Img from '@/assets/images/25_images/25-07/25-07-17/gergfeds.gif';
 
 import bgImage from '@/assets/images/25_images/25-07/25-07-17/anim.webp';
 
-// Inject background rotation styles (font loading handled by useMultipleFontLoader)
+// Inject background rotation styles (font loading handled by useSuspenseFontLoader)
 const fontFaceStyle = `
 @keyframes rotateCCW {
   from {
@@ -96,7 +96,7 @@ const AnimatedClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const time = useSmoothClock();
 

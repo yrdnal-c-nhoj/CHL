@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-07/25-07-01/mu.jpg';
 import fontUrl from '@/assets/fonts/25fonts/25-07-01-mult.ttf';
 
@@ -17,7 +17,7 @@ const CinemaClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const updateClock =  () => {

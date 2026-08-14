@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import DigitalClockFont from '@/assets/fonts/25fonts/25-09-05-swi.ttf';
 import DigitalClockBg from '@/assets/images/25_images/25-09/25-09-05/swiss.jpg';
 import MovingImg from '@/assets/images/25_images/25-09/25-09-05/mouse.gif';
@@ -17,7 +18,7 @@ export default function DigitalClock() {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   const now = useMillisecondClock();
   const [bgReady, setBgReady] = useState<boolean>(false);
   const [imgReady, setImgReady] = useState<boolean>(false);

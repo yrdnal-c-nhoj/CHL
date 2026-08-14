@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import customFont from '@/assets/fonts/25fonts/25-08-11-wash.otf';
 import bgImage from '@/assets/images/25_images/25-08/25-08-11/mach.gif';
 import topImage from '@/assets/images/25_images/25-08/25-08-11/wash.gif';
@@ -29,7 +29,7 @@ const SwirlingImages =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const imageSizes = [9, 8, 10, 11, 9, 9, 9, 11, 9, 9, 8];
   const [viewport, setViewport] = useState<any>({
@@ -222,7 +222,7 @@ const SwirlingImages =  () => {
 
   const generateKeyframes =  () => {
     let keyframes = `
-      /* Font loading handled by useMultipleFontLoader */
+      /* Font loading handled by useSuspenseFontLoader */
     `;
 
     images.forEach((img) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-06/25-06-18/cis.jpg';
 import cisFont from '@/assets/fonts/25fonts/25-06-18-cis.ttf';
 
@@ -18,9 +18,9 @@ const CistercianClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
-  // Font loading handled by useMultipleFontLoader
+  // Font loading handled by useSuspenseFontLoader
 
   const pad = (n) => n.toString().padStart(2, '0');
 

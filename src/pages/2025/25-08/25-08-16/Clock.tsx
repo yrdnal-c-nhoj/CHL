@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import imageLeft from '@/assets/images/25_images/25-08/25-08-16/pal.webp';
 import clockFace from '@/assets/images/25_images/25-08/25-08-16/palm.webp';
 import customFontUrl from '@/assets/fonts/25fonts/25-08-16-palm.ttf';
@@ -23,11 +23,11 @@ const MirroredBackground =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const now = useMillisecondClock();
 
-  // Font loading handled by useMultipleFontLoader
+  // Font loading handled by useSuspenseFontLoader
   const fontFaceTag = useMemo(() => {
     const css = ``;
     return <style>{css}</style>;
