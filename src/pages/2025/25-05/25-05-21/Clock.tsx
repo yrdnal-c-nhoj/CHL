@@ -1,116 +1,55 @@
-import { useEffect, useState } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
-import background from '@/assets/images/25_images/25-05/25-05-21/signals.jpg';
-import semFont from '@/assets/fonts/25fonts/25-05-21-sem.ttf';
+import React from 'react';
 
-const Clock =  () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+import semFont from '@/assets/fonts/25fonts/25-05-21-sem.ttf';
+import background from '@/assets/images/25_images/25-05/25-05-21/signals.jpg';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+
+import styles from './Clock.module.css';
+
+const fontConfigs: FontConfig[] = [
     {
       fontFamily: 'sem',
       fontUrl: semFont,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
+      options: { weight: 'normal', style: 'normal' },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+
+const ClockComponent = () => {
+  useSuspenseFontLoader(fontConfigs);
   const time = useMillisecondClock();
-  const isMobile = window.innerWidth < 768;
 
-  // Font loading handled by useMultipleFontLoader
-
-  useEffect(() => {
-    // Font loading handled by useMultipleFontLoader
-    // Ensure the font is loaded and apply class when ready
-    if (document && document.fonts) {
-      document.fonts
-        .load('1rem sem')
-        .then(() => {
-          document.documentElement.classList.add('fonts-loaded-sem');
-        })
-        .catch(() => {
-          // ignore
-        });
-    }
-  }, []);
-
-  const getDigits = (value) => String(value).padStart(2, '0').split('');
+  const getDigits = (value: number) => String(value).padStart(2, '0').split('');
   const [hourTens, hourUnits] = getDigits(time.getHours());
   const [minuteTens, minuteUnits] = getDigits(time.getMinutes());
   const [secondTens, secondUnits] = getDigits(time.getSeconds());
 
-  const bodyStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100dvh',
-    width: '100vw',
-    margin: 0,
-    background: 'rgb(99, 93, 93)',
-    overflow: 'hidden',
-    position: 'relative',
-  };
-
-  const bgStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundImage: `url(${background})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    filter: 'invert(0.6) hue-rotate(180deg)',
-    // zIndex: 3,
-  };
-
-  const containerStyle = {
-    fontFamily: 'sem, sans-serif',
-    fontSize: isMobile ? '20vh' : '25vh',
-    color: 'rgb(245, 19, 19)',
-    textShadow:
-      '#fff000 2px 2px, #fff000 -2px 2px, #fff000 2px -2px, #fff000 -2px -2px',
-    display: 'flex',
-    flexDirection: isMobile ? 'column' : 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: '0.1vh',
-    zIndex: 1,
-  };
-
-  const timeGroupStyle = {
-    display: 'flex',
-    gap: isMobile ? '0.5ch' : '0.1ch',
-  };
-
-  const digitStyle = {
-    width: '1ch',
-    textAlign: 'center',
-  };
-
   return (
-    <div style={bodyStyle}>
-      <div style={bgStyle} />
-      <div style={containerStyle}>
-        <div style={timeGroupStyle}>
-          <div style={digitStyle}>{hourTens}</div>
-          <div style={digitStyle}>{hourUnits}</div>
+    <main className={styles.container}>
+      <div className={styles.bg} style={{ backgroundImage: `url(${background})` }} />
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
+      <div className={styles.clockFace} role="timer" aria-live="off">
+        <div className={styles.timeGroup}>
+          <div className={styles.digit}>{hourTens}</div>
+          <div className={styles.digit}>{hourUnits}</div>
         </div>
-        <div style={timeGroupStyle}>
-          <div style={digitStyle}>{minuteTens}</div>
-          <div style={digitStyle}>{minuteUnits}</div>
+        <div className={styles.timeGroup}>
+          <div className={styles.digit}>{minuteTens}</div>
+          <div className={styles.digit}>{minuteUnits}</div>
         </div>
-        <div style={timeGroupStyle}>
-          <div style={digitStyle}>{secondTens}</div>
-          <div style={digitStyle}>{secondUnits}</div>
+        <div className={styles.timeGroup}>
+          <div className={styles.digit}>{secondTens}</div>
+          <div className={styles.digit}>{secondUnits}</div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
-export default Clock;
+const MemoizedClock = React.memo(ClockComponent);
+MemoizedClock.displayName = 'Clock_25_05_21';
+
+export default MemoizedClock;

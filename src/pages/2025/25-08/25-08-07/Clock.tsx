@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import myFontUrl from '@/assets/fonts/25fonts/25-08-07-rope.ttf';
 import backgroundImageUrl from '@/assets/images/25_images/25-08/25-08-07/wes.webp';
 import hourHandImageUrl from '@/assets/images/25_images/25-08/25-08-07/ggg.gif';
@@ -19,7 +19,7 @@ const AnalogClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const canvasRef = useRef(null);
 
@@ -35,7 +35,7 @@ const AnalogClock =  () => {
     const secondHandImage = new Image();
     secondHandImage.src = secondHandImageUrl;
 
-    // Font loading handled by useMultipleFontLoader
+    // Font loading handled by useSuspenseFontLoader
     const loadResources = Promise.all([
       new Promise((resolve) => {
         hourHandImage.onload = resolve;

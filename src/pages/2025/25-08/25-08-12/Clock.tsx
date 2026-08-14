@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import customFontUrl from '@/assets/fonts/25fonts/25-08-12-cubic.ttf'; // local font file
 import backgroundImage from '@/assets/images/25_images/25-08/25-08-12/earth.webp'; // local background image
 
@@ -25,7 +25,7 @@ export default function BiteviteHexahedron() {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const time = useMillisecondClock();
 

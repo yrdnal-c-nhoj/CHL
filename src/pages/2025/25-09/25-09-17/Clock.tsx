@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 
-import { useMultipleFontLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/25_images/25-09/25-09-17/crush.jpg';
 import f250917fontt from '@/assets/fonts/25fonts/25-09-17-crush.ttf?url';
 import centerImage from '@/assets/images/25_images/25-09/25-09-17/cr.gif'; // middle image

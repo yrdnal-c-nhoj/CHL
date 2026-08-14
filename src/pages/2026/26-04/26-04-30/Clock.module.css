@@ -16,7 +16,7 @@
   transform: translate(-50%, -50%);
   font-family: 'Pleiades', serif;
   font-weight: 100;
-  color: #fff;
+  color: #f8f4f4;
   user-select: none;
   -webkit-user-select: none;
   animation: shimmer 3s ease-in-out infinite;

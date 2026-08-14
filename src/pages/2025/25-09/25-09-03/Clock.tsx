@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import cus250903font from '@/assets/fonts/25fonts/25-09-03-mau.ttf';
 import cornerImage from '@/assets/images/25_images/25-09/25-09-03/corner.gif';
 import backgroundImage from '@/assets/images/25_images/25-09/25-09-03/mau.gif'; // <-- your background image
@@ -17,7 +18,7 @@ function DigitalClock() {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   const time = useMillisecondClock();
   const [loaded, setLoaded] = useState<boolean>(false);
 
@@ -118,7 +119,7 @@ function DigitalClock() {
     <>
       <style>
         {`
-          /* Font loading handled by useMultipleFontLoader */
+          /* Font loading handled by useSuspenseFontLoader */
 
           /* On larger screens, reduce font size */
           @media (min-width: 700px) {

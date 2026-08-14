@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import stretchFont from '@/assets/fonts/25fonts/25-06-29-stretch.ttf';
 
 const StretchClock =  () => {
@@ -20,9 +20,9 @@ const StretchClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
-  // Font loading handled by useMultipleFontLoader
+  // Font loading handled by useSuspenseFontLoader
 
   useEffect(() => {
     const updateClock =  () => {

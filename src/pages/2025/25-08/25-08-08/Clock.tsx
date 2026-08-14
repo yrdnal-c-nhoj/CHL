@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-08/25-08-08/q.webp';
 import fontFile_2025_11_01 from '@/assets/fonts/25fonts/25-08-08-q.otf';
 
@@ -16,7 +16,7 @@ export default function DigitalClock() {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const time = useMillisecondClock();
   const [offsetX, setOffsetX] = useState<number>(0);
@@ -48,7 +48,7 @@ export default function DigitalClock() {
     <>
       <style>
         {`
-          /* Font loading handled by useMultipleFontLoader */
+          /* Font loading handled by useSuspenseFontLoader */
           html, body, #root {
             margin: 0; padding: 0; height: 100%;
             font-family: 'MyCustomFont', monospace, sans-serif;

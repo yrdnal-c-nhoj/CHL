@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import myFontWoff2 from '@/assets/fonts/25fonts/25-08-01-zod.ttf';
 import bg1 from '@/assets/images/25_images/25-08/25-08-01/stars.webp';
 import bg2 from '@/assets/images/25_images/25-08/25-08-01/zod.gif';
@@ -46,7 +46,7 @@ const AnalogClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     let animationFrameId;

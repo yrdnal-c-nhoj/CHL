@@ -3,7 +3,6 @@ import bgImage from '@/assets/images/25_images/25-08/25-08-20/24.webp'; // backg
 import SRTime from '@/components/SRTime';
 import { useClockAngles } from '@/hooks/useClockAngles';
 import type { FontConfig } from '@/types/clock';
-import { useDebounce } from '@/utils/debounce';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -42,8 +41,18 @@ const AnalogClock: React.FC<{ time: Date; zone: string; clockSize: number }> = (
   time,
   zone,
   clockSize,
-}) => {
-  const zonedTime = useMemo(() => new Date(time.toLocaleString('en-US', { timeZone: zone })), [time, zone]);
+}) => {  
+  const zonedTime = useMemo(() => {
+    // Create a formatter for the target timezone
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: zone,
+      hour12: false, hour: 'numeric', minute: 'numeric', second: 'numeric',
+    });
+    // Get the time parts in the target zone and construct a new Date object
+    const parts = formatter.formatToParts(time);
+    const find = (type: string) => parts.find(p => p.type === type)?.value ?? '0';
+    return new Date(time.getFullYear(), time.getMonth(), time.getDate(), parseInt(find('hour'), 10), parseInt(find('minute'), 10), parseInt(find('second'), 10));
+  }, [time, zone]);
   const { hourAngle, minAngle, secAngle } = useClockAngles(zonedTime);
 
   const hourHandHeight = clockSize * 0.4;
@@ -134,12 +143,10 @@ const WorldClockGrid =  () => {
     });
   }, []);
 
-  const debouncedResize = useDebounce(handleResize, 250);
-
   useEffect(() => {
-    window.addEventListener('resize', debouncedResize);
-    return () => window.removeEventListener('resize', debouncedResize);
-  }, [debouncedResize]);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [handleResize]);
 
   const isMobile = dimensions.width < 768;
   const cols = isMobile ? 6 : 12;

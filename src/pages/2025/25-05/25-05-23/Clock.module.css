@@ -1,0 +1,86 @@
+.container {
+  height: 100dvh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  font-family: 'Cross', sans-serif;
+}
+
+.bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.clockFace {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  font-size: 12rem;
+  line-height: 0.7;
+}
+
+.unit {
+  display: flex;
+  gap: 0.1em;
+  justify-content: center;
+}
+
+.digit {
+  display: inline-block;
+  width: 0.4em;
+  text-align: center;
+  user-select: none;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  animation: colorCycle 5s infinite linear;
+}
+
+.digit:nth-child(2) { animation-delay: -0.5s; }
+.digit:nth-child(3) { animation-delay: -1s; }
+.digit:nth-child(4) { animation-delay: -1.5s; }
+.digit:nth-child(5) { animation-delay: -2s; }
+.digit:nth-child(6) { animation-delay: -2.5s; }
+
+.ampm {
+  font-size: 0.001rem;
+  color: transparent;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+@keyframes colorCycle {
+  0%   { color: hsl(0, 85%, 60%); }
+  25%  { color: hsl(90, 85%, 60%); }
+  50%  { color: hsl(180, 85%, 60%); }
+  75%  { color: hsl(270, 85%, 60%); }
+  100% { color: hsl(360, 85%, 60%); }
+}
+
+@media (max-width: 768px) {
+  .clockFace {
+    flex-direction: column;
+    font-size: 12rem;
+    gap: 1rem;
+    align-items: center;
+  }
+}

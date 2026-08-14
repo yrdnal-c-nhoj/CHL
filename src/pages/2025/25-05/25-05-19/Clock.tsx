@@ -1,23 +1,22 @@
+import React from 'react';
+
 import antFontUrl from '@/assets/fonts/25fonts/25-05-19-Ant.ttf';
-import bg1 from '@/assets/images/25_images/25-05/25-05-19/ants.gif';
-import bg2 from '@/assets/images/25_images/25-05/25-05-19/ants1.gif';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 
-const Clock =  () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+import styles from './Clock.module.css';
+
+const fontConfigs: FontConfig[] = [
     {
       fontFamily: 'Ant',
       fontUrl: antFontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
+      options: { weight: 'normal', style: 'normal' },
     },
   ];
-  // Font loading handled by useMultipleFontLoader
-  useMultipleFontLoader(fontConfigs);
+
+const ClockComponent = () => {
+  useSuspenseFontLoader(fontConfigs);
   const time = useMillisecondClock();
 
   const hours = time.getHours() % 12;
@@ -31,159 +30,52 @@ const Clock =  () => {
   const radius = 45; // percent from center for numbers
 
   return (
-    <>
-      <style>{`
-        @font-face {
-          font-family: 'Ant';
-          src: url(${antFontUrl}) format('truetype');
-        }
-        body, #root {
-          margin: 0;
-          padding: 0;
-          height: 100%;
-        }
-      `}</style>
-
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100vw',
-          height: '100dvh',
-          position: 'relative',
-          overflow: 'hidden',
-          backgroundColor: 'rgb(255,254,254)',
-        }}
-      >
-        {/* Backgrounds */}
-        <div
-          style={{
-            backgroundImage: `url(${bg2})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 1,
-          }}
-        />
-        <div
-          style={{
-            backgroundImage: `url(${bg1})`,
-            backgroundRepeat: 'repeat',
-            backgroundSize: '35vh 45vh',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 2,
-          }}
-        />
-
-        {/* Clock */}
-        <div
-          style={{
-            position: 'relative',
-            width: '60vh',
-            height: '60vh',
-            minWidth: '200px',
-            minHeight: '200px',
-            maxWidth: '400px',
-            maxHeight: '400px',
-            borderRadius: '50%',
-            zIndex: 4,
-          }}
-        >
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
+      <div className={styles.bg2} />
+      <div className={styles.bg1} />
+      <div className={styles.clockFace} role="timer" aria-live="off">
+        <div className={styles.clockCenter}>
           {/* Numbers */}
           {[...Array(12)].map((_, i) => {
             const angle = (i + 1) * 30;
             const rad = (angle * Math.PI) / 180;
+            const style = {
+              left: `${50 + radius * Math.sin(rad)}%`,
+              top: `${50 - radius * Math.cos(rad)}%`,
+            };
             return (
-              <div
-                key={i}
-                style={{
-                  position: 'absolute',
-                  left: `${50 + radius * Math.sin(rad)}%`,
-                  top: `${50 - radius * Math.cos(rad)}%`,
-                  transform: 'translate(-50%, -50%)',
-                  fontFamily: 'Ant, sans-serif',
-                  fontSize: '18vh',
-                  color: 'black',
-                }}
-              >
+              <div key={i} style={style} className={styles.number}>
                 {i + 1}
               </div>
             );
           })}
-
           {/* Hour Hand */}
           <div
-            style={{
-              position: 'absolute',
-              width: '1vh',
-              height: '20vh',
-              backgroundColor: 'black',
-              bottom: '50%',
-              left: '50%',
-              transform: `translateX(-50%) rotate(${hourDeg}deg)`,
-              transformOrigin: '50% 100%',
-              borderRadius: '1vh',
-            }}
+            className={styles.hourHand}
+            style={{ transform: `translateX(-50%) rotate(${hourDeg}deg)` }}
           />
-
           {/* Minute Hand */}
           <div
-            style={{
-              position: 'absolute',
-              width: '0.8vh',
-              height: '28vh',
-              backgroundColor: 'black',
-              bottom: '50%',
-              left: '50%',
-              transform: `translateX(-50%) rotate(${minuteDeg}deg)`,
-              transformOrigin: '50% 100%',
-              borderRadius: '1vh',
-            }}
+            className={styles.minuteHand}
+            style={{ transform: `translateX(-50%) rotate(${minuteDeg}deg)` }}
           />
-
           {/* Second Hand */}
           <div
-            style={{
-              position: 'absolute',
-              width: '0.5vh',
-              height: '30vh',
-              backgroundColor: 'red',
-              bottom: '50%',
-              left: '50%',
-              transform: `translateX(-50%) rotate(${secondDeg}deg)`,
-              transformOrigin: '50% 100%',
-              borderRadius: '1vh',
-            }}
+            className={styles.secondHand}
+            style={{ transform: `translateX(-50%) rotate(${secondDeg}deg)` }}
           />
-
           {/* Center Dot */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              width: '2vh',
-              height: '2vh',
-              backgroundColor: 'black',
-              borderRadius: '50%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 10,
-            }}
-          />
+          <div className={styles.centerDot} />
         </div>
       </div>
-    </>
+    </main>
   );
 };
 
-export default Clock;
+const MemoizedClock = React.memo(ClockComponent);
+MemoizedClock.displayName = 'Clock_25_05_19';
+
+export default MemoizedClock;

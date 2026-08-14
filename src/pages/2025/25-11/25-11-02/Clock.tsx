@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgVideo from '@/assets/images/25_images/25-11/25-11-02/swim.mp4';
 import fallbackImg from '@/assets/images/25_images/25-11/25-11-02/swim.webp';
 import fontFile2025_11_04 from '@/assets/fonts/25fonts/25-11-02-sperm.ttf'; // Custom scientific font
@@ -18,7 +18,7 @@ export default function MonarchScene() {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const videoRef = useRef(null);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
@@ -26,7 +26,7 @@ export default function MonarchScene() {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState<boolean>(fontsLoaded);
 
-  // Font loading handled by useMultipleFontLoader
+  // Font loading handled by useSuspenseFontLoader
 
   // Adjust background video scaling to ensure full coverage
   const adjustVideoPosition = () => {
