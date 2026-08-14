@@ -1,13 +1,29 @@
 // Thumbnail mapping for clock pages
 //
-// For each clock date (format: YY-MM-DD), CHL shows a thumbnail image.
-// Historically the app looked in `/src/assets/thumbnails/`.
-//
-// Your 2026/26-06 artwork lives in `/src/assets/images/26_images/26-06/[date]/*.webp|*.gif|*.jpg|*.png`.
-// This loader maps date -> first matching file inside that folder.
-//
-// If a thumbnail can’t be found, Thumbnail will render its fallback UI.
+// This loader dynamically finds all clock images and maps them by date.
+// It looks for images in `/src/assets/images/YY_images/YY-MM/YY-MM-DD/`
+// and also checks the legacy `/src/assets/thumbnails/` directory.
+
+const allImages = import.meta.glob(
+  '/src/assets/{images,thumbnails}/**/*.{webp,gif,jpg,jpeg,png}',
+  {
+    eager: true,
+    import: 'default',
+  },
+);
+
+const thumbnailCache = new Map<string, string>();
+
+for (const path in allImages) {
+  const match = path.match(/(\d{2}-\d{2}-\d{2})/);
+  if (match) {
+    const date = match[1];
+    if (!thumbnailCache.has(date)) {
+      thumbnailCache.set(date, allImages[path] as string);
+    }
+  }
+}
 
 export const getThumbnailByDate = (date: string): string => {
-  return `/assets/thumbnails/${date}-thumb.webp`;
+  return thumbnailCache.get(date) || '';
 };
