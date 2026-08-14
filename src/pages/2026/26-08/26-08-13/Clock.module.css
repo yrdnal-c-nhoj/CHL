@@ -20,11 +20,11 @@
 
 .clockContainer {
   position: absolute;
-  top: var(--space-xl, 0.1em);
-  right: var(--space-xl, 0.1em);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   padding: var(--space-lg, 1.5rem);
   border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* --- Analog Clock Styles --- */
@@ -32,7 +32,6 @@
   position: relative;
   width: 20vw;
   height: 20vw;
-  border: 1px solid rgb(222, 13, 13);
   border-radius: 50%;
 
 }
@@ -49,32 +48,20 @@
 
 .hourHand {
   width: 3px;
-  height: 3vh;
+  height: 5vh;
   background-color: var(--color-lab-red, #ff4136);
 }
 
 .minuteHand {
   width: 2px;
-  height: 5vh;
+  height: 7vh;
   background-color: var(--color-lab-red, #ff4136);
 }
 
 .secondHand {
   width: 2px;
-  height: 6vh;
+  height: 8vh;
   background-color: var(--color-lab-red, #ff4136);
-}
-
-.centerDot {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0px;
-  height: 12px;
-  background-color: white;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
 }
 
 .srOnly {
