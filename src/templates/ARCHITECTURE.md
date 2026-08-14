@@ -198,8 +198,8 @@ export default MemoizedClock;
 ### 4.2. Core Requirements
 
 | Requirement | Standard | Notes |
-|------------|----------|-------|
-| **Asset Exports** | `export const assets: string[]` | Required for `useClockPage` preloading |
+|---|---|---|
+| **Asset Exports** | `export const assets: string[]` | **Recommended.** Required for preloading. |
 | **Styling** | CSS Modules (`Clock.module.css`) | Scoped styles, no global CSS leakage |
 | **Time Hook** | `useSecondClock()` or `useMillisecondClock()` from `@/utils/hooks` | Only these two hooks are canonical |
 | **Font Loading** | `useSuspenseFontLoader()` from `@/utils/fontLoader` | Suspends rendering until font is ready |
@@ -210,7 +210,7 @@ export default MemoizedClock;
 ### 4.3. Prohibited Patterns
 
 - ❌ **Do not** use `setInterval` or `requestAnimationFrame` directly in clock components — use the canonical hooks
-- ❌ **Do not** use inline `<style>` tags — use CSS Modules
+- ⚠️ **Avoid** inline `<style>` tags where possible. Prefer CSS Modules. They are acceptable for defining `@keyframes` that rely on dynamic CSS variables.
 - ❌ **Do not** use `useGlobalStyles` or `useKeyframes` from `enhancedFontLoader` — use CSS Modules
 - ❌ **Do not** import `useClockTime` from `@/utils/clockUtils` — import from `@/utils/hooks`
 - ❌ **Do not** use `any` types — prefer proper TypeScript interfaces
@@ -421,13 +421,13 @@ Tailwind is available but should be used sparingly — primarily for:
 
 ### 9.4. Inline Styles
 
-Inline styles are **only** acceptable for dynamic values that cannot be expressed in CSS:
+Inline style objects and `<style>` tags are acceptable for dynamic values that cannot be easily expressed in CSS Modules, such as animations or dimensions calculated in JavaScript. However, **CSS Modules should be your default choice.**
 
 ```typescript
 // ✅ Acceptable: Dynamic CSS transform
 <div style={{ transform: `rotate(${angle}deg)` }}>
 
-// ❌ Not acceptable: Static styles
+// ❌ Not acceptable: Static styles that can be moved to a CSS Module
 <div style={{ color: 'red', fontSize: '16px' }}>
 ```
 
