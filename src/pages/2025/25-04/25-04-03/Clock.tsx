@@ -135,40 +135,19 @@ const MobyDickClock: FC<MobyDickClockProps> = () => {
   }, [calculateNewPosition, applyPosition]);
 
   return (
-    <div
+    <main
       className={styles.container}
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        backgroundColor: '#000', // Fallback background
-      }}
+      style={{ backgroundImage: `url(${waves})` }}
     >
       <time
         ref={clockRef}
         className={styles.mobyClock}
         style={{
-          display: 'block',
           zIndex: 1,
           pointerEvents: 'none',
         }}
       />
-      <img
-        src={waves}
-        alt="waves"
-        className={styles.backgroundImage}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          zIndex: 0,
-        }}
-      />
-    </div>
+    </main>
   );
 };
 
