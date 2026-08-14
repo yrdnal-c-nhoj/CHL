@@ -9,13 +9,11 @@
     "build": "vite build",
     "build:with-types": "tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "type-check": "tsc --noEmit -p tsconfig.ci.json"
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
