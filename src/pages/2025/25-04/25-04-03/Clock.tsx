@@ -83,19 +83,18 @@ const MobyDickClock: FC<MobyDickClockProps> = () => {
 
   // State-driven position updates
   useEffect(() => {
-    // Set initial position
-    setPosition(calculateNewPosition());
-    
+    let timerId: number;
+    // A self-scheduling function for a clean animation loop.
     const scheduleNextMove = () => {
-      const delay = 4000 + Math.random() * 2000;
-      return setTimeout(() => {
-        setPosition(calculateNewPosition());
+      const delay = 4000 + Math.random() * 2000; // 4-6 seconds
+      timerId = window.setTimeout(() => {
+        setPosition(calculateNewPosition()); // Update position
+        scheduleNextMove(); // And schedule the next update
       }, delay);
-    };
-
-    const timerId = scheduleNextMove();
+    }
+    scheduleNextMove(); // Start the loop
     return () => clearTimeout(timerId);
-  }, [calculateNewPosition, position]); // Re-run when position changes to schedule the next move
+  }, [calculateNewPosition]); // Only run once on mount
 
   return (
     <main
