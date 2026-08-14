@@ -1,12 +1,12 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSecondClock } from '@/utils/hooks';
 import {
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
 } from 'react';
 import styles from './Clock.module.css';
 
@@ -31,7 +31,7 @@ const Clock =  () => {
   const timeRef = useRef<string>('');
   const animationRef = useRef<number>(0);
   const textPixelsRef = useRef<{ x: number; y: number }[]>([]);
-  const time = useMillisecondClock();
+  const time = useSecondClock();
   const [slowdownActive, setSlowdownActive] = useState(false);
   const [resetKey, setResetKey] = useState(0);
 
