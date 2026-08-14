@@ -4,7 +4,7 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import type { FC } from 'react';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
 // Component Props interface
@@ -45,13 +45,13 @@ const MobyDickClock: FC<MobyDickClockProps> = () => {
   useSuspenseFontLoader(fontConfigs);
 
   const clockRef = useRef<HTMLTimeElement>(null);
-  const positionRef = useRef<ClockPosition>({
+  const [position, setPosition] = useState<ClockPosition>({
     x: 0,
     y: 0,
     fontSize: 4,
     opacity: 1,
   });
-
+  
   // Use the standardized hook for smooth clock updates
   const currentTime = useSecondClock();
 
@@ -68,22 +68,6 @@ const MobyDickClock: FC<MobyDickClockProps> = () => {
     return { x, y, fontSize, opacity };
   }, []);
 
-  // Apply new position to the element
-  const applyPosition = useCallback((position: ClockPosition): void => {
-    const clock = clockRef.current;
-    if (!clock) return;
-
-    // Apply styles with smooth transition
-    clock.style.transition =
-      'left 3s ease-in-out, top 3s ease-in-out, font-size 3s ease-in-out, opacity 3s ease-in-out';
-
-    // Using top/left avoids conflict with the CSS 'float' animation transform
-    clock.style.left = `${position.x}%`;
-    clock.style.top = `${position.y}%`;
-    clock.style.fontSize = `${position.fontSize}rem`;
-    clock.style.opacity = position.opacity.toString();
-  }, []);
-
   // Separate effect for time updates to keep them efficient
   useEffect(() => {
     const clock = clockRef.current;
@@ -97,42 +81,21 @@ const MobyDickClock: FC<MobyDickClockProps> = () => {
     clock.dateTime = currentTime.toISOString();
   }, [currentTime]);
 
+  // State-driven position updates
   useEffect(() => {
-    let animationFrameId: number;
-    let lastMoveTime: number = 0;
-    let nextMoveDelay: number = 3000 + Math.random() * 2000;
-    let isInitialized: boolean = false;
-
-    const clock = clockRef.current;
-    if (clock) {
-      clock.style.position = 'absolute';
-    }
-
-    const animate = (timestamp: number): void => {
-      if (!isInitialized) {
-        const pos = calculateNewPosition();
-        positionRef.current = pos;
-        applyPosition(pos);
-        isInitialized = true;
-        lastMoveTime = timestamp;
-      } else if (timestamp - lastMoveTime >= nextMoveDelay) {
-        const pos = calculateNewPosition();
-        positionRef.current = pos;
-        applyPosition(pos);
-        lastMoveTime = timestamp;
-        nextMoveDelay = 4000 + Math.random() * 2000;
-      }
-
-      animationFrameId = requestAnimationFrame(animate);
+    // Set initial position
+    setPosition(calculateNewPosition());
+    
+    const scheduleNextMove = () => {
+      const delay = 4000 + Math.random() * 2000;
+      return setTimeout(() => {
+        setPosition(calculateNewPosition());
+      }, delay);
     };
 
-    // Start animation loop
-    animationFrameId = requestAnimationFrame(animate);
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [calculateNewPosition, applyPosition]);
+    const timerId = scheduleNextMove();
+    return () => clearTimeout(timerId);
+  }, [calculateNewPosition, position]); // Re-run when position changes to schedule the next move
 
   return (
     <main
@@ -143,8 +106,12 @@ const MobyDickClock: FC<MobyDickClockProps> = () => {
         ref={clockRef}
         className={styles.mobyClock}
         style={{
+          left: `${position.x}%`,
+          top: `${position.y}%`,
+          fontSize: `${position.fontSize}rem`,
+          opacity: position.opacity,
           zIndex: 1,
-          pointerEvents: 'none',
+          transition: 'left 3s ease-in-out, top 3s ease-in-out, font-size 3s ease-in-out, opacity 3s ease-in-out',
         }}
       />
     </main>
