@@ -1,45 +1,79 @@
 .container {
   width: 100vw;
   height: 100dvh;
-  min-height: 100dvh;
   margin: 0;
   padding: 0;
-  background-color: #222; /* Dark gray to make shadow visible */
   overflow: hidden;
-  position: relative;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 22dvh;
+  justify-content: center;
+  user-select: none;
+  perspective: 1000px;
+  perspective-origin: 50% 30%;
+  background-color: #9b9992;
+  background-size: cover;
+  background-position: center;
+}
+
+.floor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  z-index: 0;
+  background-size: 100% 100%;
+  background-position: center bottom;
 }
 
 .digitalClock {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  /* Apply perspective and rotation for a 3D "hanging" effect */
-  transform: perspective(600px) translate(-50%, -50%) rotateX(10deg);
-  z-index: 10;
-  color: #f0f0f0;
-  font-family: 'Courier New', Courier, monospace;
   display: flex;
   align-items: baseline;
-  /* Create a long-cast shadow to make letters appear to float off the wall */
+  justify-content: center;
+  font-family: 'ClockFont_26_08_07', 'Courier New', Courier, monospace;
+  font-variant-numeric: tabular-nums;
+  filter: contrast(1.08);
+  transform-style: preserve-3d;
+  transform: rotateX(2deg) translateZ(10px);
+}
+
+.textBase {
+  position: relative;
+  font-size: 15vmin;
+  font-weight: 900;
+  line-height: 0.9;
+  color: #ffc700; /* Main front face color: A richer, less yellow gold */
+  /* 
+   * Deep 3D Carved & Extruded Bevel Effect:
+   * 1. Top light highlights (-0.02em -0.02em) for sharp chiseled edges.
+   * 2. Multi-layered offset extrusion steps extending back toward the wall.
+   * 3. Wall ambient occlusion (dark shadow right behind the block).
+   * 4. Deep directional drop shadow projecting onto the wall surface.
+   */
   text-shadow:
-    1px -1px 1px #777,
-    /* Long shadow effect */
-    0px 4px 1px rgba(0, 0, 0, 0.5),
-    0px 8px 2px rgba(0, 0, 0, 0.4),
-    0px 12px 4px rgba(0, 0, 0, 0.3),
-    0px 16px 8px rgba(0, 0, 0, 0.2),
-    0px 20px 16px rgba(0, 0, 0, 0.2);
+    /* 1. Ultra-sharp top-left glint for a crisp, wet highlight */ -0.01em
+      -0.01em 0.01em rgba(255, 255, 255, 0.8),
+    /* 2. Softer, warmer bloom highlight to give a golden sheen */ 0.02em -0.01em
+      0.03em rgba(255, 215, 100, 0.5),
+    /* 3. Deeper, more pronounced gold beveling for a bigger 3D effect */ 0.01em
+      0.02em 0px #cd950c,
+    /* Richer Gold */ 0.02em 0.04em 0px #a9710a,
+    0.03em 0.06em 0px #865008, 0.04em 0.08em 0px #633c06,
+    0.05em 0.1em 0px #402804,
+    /* Deepest brown for max extrusion */ /* 4. A stronger, deeper, and slightly softer drop shadow for more depth */
+      0.08em 0.15em 15px rgba(0, 0, 0, 0.6);
+  transform-style: preserve-3d;
 }
 
 .time {
-  font-size: 15vmin;
-  font-weight: bold;
+  composes: textBase;
+  letter-spacing: 0.04em;
 }
 
 .ampm {
-  font-size: 15vmin;
-  margin-left: 1.5vmin;
-  font-weight: bold;
+  composes: textBase;
+  margin-left: 2.5vmin;
 }
 
 .srOnly {
@@ -51,5 +85,98 @@
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
-  border-width: 0;
+  border: 0;
+}
+
+.char {
+  display: inline-block;
+  transform-style: preserve-3d;
+  transform-origin: 50% 100%;
+  position: relative;
+}
+
+.shaking {
+  animation: shake 0.15s ease-in-out infinite;
+}
+
+.falling {
+  z-index: 10;
+  animation: realisticBounce 1.5s linear forwards;
+}
+
+.fading {
+  z-index: 10;
+  transform: translateY(48vh) translateZ(15px) rotateX(88deg) rotateY(15deg)
+    rotateZ(-20deg);
+  text-shadow: 10px 10px 8px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  15% {
+    transform: translate(-3px, 2px) rotate(-4deg);
+  }
+  30% {
+    transform: translate(3px, -2px) rotate(4deg);
+  }
+  45% {
+    transform: translate(-4px, -1px) rotate(-6deg);
+  }
+  60% {
+    transform: translate(4px, 2px) rotate(5deg);
+  }
+  75% {
+    transform: translate(-2px, 3px) rotate(-3deg);
+  }
+  90% {
+    transform: translate(2px, -3px) rotate(3deg);
+  }
+}
+
+@keyframes realisticBounce {
+  0% {
+    transform: translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg)
+      rotateZ(0deg) scale(1, 1);
+    animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  }
+  35% {
+    transform: translateY(49vh) translateZ(15px) rotateX(86deg) rotateY(-18deg)
+      rotateZ(-12deg) scale(1.1, 0.75);
+    text-shadow: -8px 6px 4px rgba(0, 0, 0, 0.6);
+    animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  52% {
+    transform: translateY(38vh) translateZ(35px) rotateX(78deg) rotateY(12deg)
+      rotateZ(-4deg) scale(0.95, 1.05);
+    text-shadow: -15px 22px 18px rgba(0, 0, 0, 0.2);
+    animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  }
+  68% {
+    transform: translateY(49vh) translateZ(12px) rotateX(88deg) rotateY(-10deg)
+      rotateZ(3deg) scale(1.04, 0.92);
+    text-shadow: -6px 8px 5px rgba(0, 0, 0, 0.5);
+    animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  80% {
+    transform: translateY(44vh) translateZ(20px) rotateX(84deg) rotateY(2deg)
+      rotateZ(8deg) scale(1, 1);
+    text-shadow: -9px 13px 10px rgba(0, 0, 0, 0.3);
+    animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  }
+  90% {
+    transform: translateY(49vh) translateZ(10px) rotateX(89deg) rotateY(-4deg)
+      rotateZ(9deg) scale(1, 1);
+    text-shadow: -4px 8px 6px rgba(0, 0, 0, 0.48);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: translateY(48vh) translateZ(15px) rotateX(88deg) rotateY(15deg)
+      rotateZ(-20deg) scale(1, 1);
+    text-shadow: 10px 10px 8px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.3);
+  }
 }

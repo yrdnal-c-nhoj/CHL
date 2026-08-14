@@ -4,171 +4,18 @@ import wallImage from '@/assets/images/26_images/26-08/26-08-07/wall.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import styles from './Clock.module.css';
 
 // -----------------------------------------------------------------------------
 // ASSETS
 // -----------------------------------------------------------------------------
 export const assets: string[] = [floorImage, wallImage, fontUrl];
-const fontConfigs: FontConfig[] = [
-  { fontFamily: 'ClockFont_26_08_07', fontUrl },
-];
+const fontConfigs: FontConfig[] = [{ fontFamily: 'ClockFont_26_08_07', fontUrl }];
 
 // -----------------------------------------------------------------------------
 // STYLES
 // -----------------------------------------------------------------------------
-const containerStyle: React.CSSProperties = {
-  width: '100vw',
-  height: '100dvh',
-  margin: 0,
-  padding: 0,
-  overflow: 'hidden',
-  display: 'flex',
-  alignItems: 'flex-start',
-  paddingTop: '22dvh',
-  justifyContent: 'center',
-  userSelect: 'none',
-  perspective: '1000px',
-  perspectiveOrigin: '50% 30%',
-  backgroundColor: '#9b9992',
-  backgroundImage: `url(${wallImage})`,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-};
-
-const floorStyle: React.CSSProperties = {
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  width: '100%',
-  height: '40%',
-  zIndex: 0,
-  backgroundImage: `url(${floorImage})`,
-  backgroundSize: '100% 100%',
-  backgroundPosition: 'center bottom',
-};
-
-const digitalClockStyle: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'baseline',
-  justifyContent: 'center',
-  fontFamily: "'ClockFont_26_08_07', 'Courier New', Courier, monospace",
-  fontVariantNumeric: 'tabular-nums',
-  filter: 'contrast(1.08)',
-  transformStyle: 'preserve-3d',
-  transform: 'rotateX(2deg) translateZ(10px)',
-};
-
-/* 
- * Deep 3D Carved & Extruded Bevel Effect:
- * 1. Top light highlights (-0.02em -0.02em) for sharp chiseled edges.
- * 2. Multi-layered offset extrusion steps extending back toward the wall.
- * 3. Wall ambient occlusion (dark shadow right behind the block).
- * 4. Deep directional drop shadow projecting onto the wall surface.
- */
-const textShadow = `
-  /* 1. Ultra-sharp top-left glint for a crisp, wet highlight */
-  -0.01em -0.01em 0.01em rgba(255, 255, 255, 0.8),
-  
-  /* 2. Softer, warmer bloom highlight to give a golden sheen */
-  0.02em -0.01em 0.03em rgba(255, 215, 100, 0.5),
-  
-  /* 3. Deeper, more pronounced gold beveling for a bigger 3D effect */
-  0.01em 0.02em 0px #CD950C,  /* Richer Gold */
-  0.02em 0.04em 0px #A9710A,
-  0.03em 0.06em 0px #865008,
-  0.04em 0.08em 0px #633C06,
-  0.05em 0.10em 0px #402804,  /* Deepest brown for max extrusion */
-  
-  /* 4. A stronger, deeper, and slightly softer drop shadow for more depth */
-  0.08em 0.15em 15px rgba(0, 0, 0, 0.6)
-`;
-
-const textBaseStyle: React.CSSProperties = {
-  position: 'relative',
-  fontSize: '15vmin',
-  fontWeight: 900,
-  lineHeight: 0.9,
-  color: '#FFC700', // Main front face color: A richer, less yellow gold
-  textShadow,
-  transformStyle: 'preserve-3d',
-};
-
-const timeStyle: React.CSSProperties = {
-  ...textBaseStyle,
-  letterSpacing: '0.04em',
-};
-
-const ampmStyle: React.CSSProperties = {
-  ...textBaseStyle,
-  marginLeft: '2.5vmin',
-};
-
-const srOnlyStyle: React.CSSProperties = {
-  position: 'absolute',
-  width: 1,
-  height: 1,
-  padding: 0,
-  margin: -1,
-  overflow: 'hidden',
-  clip: 'rect(0, 0, 0, 0)',
-  whiteSpace: 'nowrap',
-  border: 0,
-};
-
-// -----------------------------------------------------------------------------
-// KEYFRAMES
-// -----------------------------------------------------------------------------
-const keyframes = `
-  @keyframes shake {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    15%      { transform: translate(-3px, 2px) rotate(-4deg); }
-    30%      { transform: translate(3px, -2px) rotate(4deg); }
-    45%      { transform: translate(-4px, -1px) rotate(-6deg); }
-    60%      { transform: translate(4px, 2px) rotate(5deg); }
-    75%      { transform: translate(-2px, 3px) rotate(-3deg); }
-    90%      { transform: translate(2px, -3px) rotate(3deg); }
-  }
-
-  @keyframes realisticBounce {
-    0% {
-      transform: translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1, 1);
-      animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
-    }
-    35% {
-      transform: translateY(49vh) translateZ(15px) rotateX(86deg) rotateY(-18deg) rotateZ(-12deg) scale(1.1, 0.75);
-      text-shadow: -8px 6px 4px rgba(0,0,0,0.6);
-      animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    52% {
-      transform: translateY(38vh) translateZ(35px) rotateX(78deg) rotateY(12deg) rotateZ(-4deg) scale(0.95, 1.05);
-      text-shadow: -15px 22px 18px rgba(0,0,0,0.2);
-      animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
-    }
-    68% {
-      transform: translateY(49vh) translateZ(12px) rotateX(88deg) rotateY(-10deg) rotateZ(3deg) scale(1.04, 0.92);
-      text-shadow: -6px 8px 5px rgba(0,0,0,0.5);
-      animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    80% {
-      transform: translateY(44vh) translateZ(20px) rotateX(84deg) rotateY(2deg) rotateZ(8deg) scale(1, 1);
-      text-shadow: -9px 13px 10px rgba(0,0,0,0.3);
-      animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
-    }
-    90% {
-      transform: translateY(49vh) translateZ(10px) rotateX(89deg) rotateY(-4deg) rotateZ(9deg) scale(1, 1);
-      text-shadow: -4px 8px 6px rgba(0,0,0,0.48);
-      animation-timing-function: ease-out;
-    }
-    100% {
-      transform: translateY(48vh) translateZ(15px) rotateX(88deg) rotateY(15deg) rotateZ(-20deg) scale(1, 1);
-      text-shadow: 10px 10px 8px rgba(0,0,0,0.5), 0 0 1px rgba(0,0,0,0.3);
-    }
-  }
-`;
-
-const AnimationStyles = memo(() => <style>{keyframes}</style>);
-AnimationStyles.displayName = 'AnimationStyles';
 
 // -----------------------------------------------------------------------------
 // TYPES
@@ -179,7 +26,7 @@ type CharacterStates = FallState[];
 // -----------------------------------------------------------------------------
 // COMPONENT
 // -----------------------------------------------------------------------------
-const Clock_26_08_07 =  () => {
+const Clock_26_08_07 = () => {
   const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
 
@@ -325,74 +172,36 @@ const Clock_26_08_07 =  () => {
     };
   }, [fullString]); // Rerun if the time string format changes (e.g. 9:59 -> 10:00)
 
-  // Style for each character
-  const getCharStyle = useCallback(
-    (charIndex: number): React.CSSProperties => {
-      const state = charStates[charIndex] ?? 'idle';
-
-      if (state === 'idle') {
-        return { display: 'inline-block' };
-      }
-
-      const base: React.CSSProperties = {
-        display: 'inline-block',
-        transformStyle: 'preserve-3d',
-        transformOrigin: '50% 100%',
-        position: 'relative',
-      };
-
-      switch (state) {
-        case 'shaking':
-          return {
-            ...base,
-            animation: 'shake 0.15s ease-in-out infinite',
-          };
-        case 'falling':
-          return {
-            ...base,
-            zIndex: 10,
-            animation: 'realisticBounce 1.5s linear forwards',
-            // When the animation ends, it will hold the 100% frame style
-          };
-        case 'fading':
-          return {
-            ...base,
-            zIndex: 10,
-            transform: 'translateY(48vh) translateZ(15px) rotateX(88deg) rotateY(15deg) rotateZ(-20deg)',
-            textShadow: '10px 10px 8px rgba(0,0,0,0.5), 0 0 1px rgba(0,0,0,0.3)',
-            opacity: 0,
-            transition: 'opacity 0.2s ease-out',
-          };
-        default:
-          return base;
-      }
-    },
-    [charStates]
-  );
-
   return (
-    <main style={containerStyle}>
-      <AnimationStyles />
-      <div style={floorStyle} />
+    <main
+      className={styles.container}
+      style={{ backgroundImage: `url(${wallImage})` }}
+    >
+      <div className={styles.floor} style={{ backgroundImage: `url(${floorImage})` }} />
 
-      <time dateTime={time.toISOString()} style={srOnlyStyle}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
         {accessibleTime}
       </time>
 
-      <div style={digitalClockStyle}>
-        <div style={timeStyle}>
+      <div className={styles.digitalClock}>
+        <div className={styles.time}>
           {timeString.split('').map((char, i) => (
-            <span key={`t-${i}`} style={getCharStyle(i)}>
+            <span
+              key={`t-${i}`}
+              className={`${styles.char} ${styles[charStates[i]] ?? ''}`}
+            >
               {char}
             </span>
           ))}
         </div>
 
-        <div style={ampmStyle}>
+        <div className={styles.ampm}>
           {ampm.split('').map((char, i) => (
             <span
               key={`a-${i}`}
-              style={getCharStyle(i + timeString.length)}
+              className={`${styles.char} ${
+                styles[charStates[i + timeString.length]] ?? ''
+              }`}
             >
               {char}
             </span>
