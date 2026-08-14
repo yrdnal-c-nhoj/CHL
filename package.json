@@ -15,8 +15,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "type-check": "tsc --noEmit -p tsconfig.ci.json",
-    "clean": "rm -rf dist"
+    "type-check": "tsc --noEmit -p tsconfig.ci.json"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
