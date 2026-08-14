@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-09/25-09-07/wall.jpg'; // local background image
 import f250907 from '@/assets/fonts/25fonts/25-09-07-wall.ttf'; // local font file
 
@@ -18,10 +18,10 @@ export default function Clock() {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   const now = useMillisecondClock();
 
-  // Font loading handled by useMultipleFontLoader
+  // Font loading handled by useSuspenseFontLoader
 
   // 12-hour format, no leading zeros
   const hour24 = now.getHours();

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import fontFile from '@/assets/fonts/26fonts/26-01-02-cram.ttf';
 import backgroundImage from '@/assets/images/26_images/26-01/26-01-02/brick.webp';
 
@@ -15,7 +15,7 @@ const StretchedClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const [time, setTime] = useState(new Date());
   const [isLargeScreen, setIsLargeScreen] = useState<any>(
@@ -23,7 +23,7 @@ const StretchedClock =  () => {
   );
   const [bgReady, setBgReady] = useState<boolean>(false);
 
-  // Font loading handled by useMultipleFontLoader
+  // Font loading handled by useSuspenseFontLoader
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);

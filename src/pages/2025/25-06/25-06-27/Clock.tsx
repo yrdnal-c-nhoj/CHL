@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import morseFont from '@/assets/fonts/25fonts/25-06-27-morse.ttf';
 import birdsGif from '@/assets/images/25_images/25-06/25-06-27/birds.gif';
 
@@ -49,7 +49,7 @@ const MorseClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   // Initialize wires on mount
   useEffect(() => {

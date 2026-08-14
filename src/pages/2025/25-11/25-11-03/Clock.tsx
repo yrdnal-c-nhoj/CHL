@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import digi251103font from '@/assets/fonts/25fonts/25-11-03-bin3.ttf?url';
 import tec251103font from '@/assets/fonts/25fonts/25-11-03-bin1.otf?url';
 import styles from './Clock.module.css';
@@ -24,7 +24,7 @@ export default function BinaryClockWithColumns() {
     [],
   );
 
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   const [time, setTime] = useState(new Date());
   const [overlayVisible, setOverlayVisible] = useState(true);
 

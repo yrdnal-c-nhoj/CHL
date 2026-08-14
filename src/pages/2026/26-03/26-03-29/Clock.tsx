@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useMemo } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgVideo from '@/assets/images/26_images/26-03/26-03-29/sunrise1.mp4';
 import borderImage from '@/assets/images/26_images/26-03/26-03-29/horse.webp';
 import scarabImage from '@/assets/images/26_images/26-03/26-03-29/scarab.webp';
@@ -123,7 +123,7 @@ const Clock =  () => {
     () => [{ fontFamily: 'EastWind', fontUrl: eastFont }],
     [],
   );
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   const fontFamily = fontsLoaded
     ? 'EastWind, Georgia, serif'
     : 'Georgia, serif';

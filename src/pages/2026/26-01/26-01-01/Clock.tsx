@@ -121,7 +121,7 @@ const InvertedClock =  () => {
   return (
     <div style={containerStyle}>
       <style>{`
-        /* Font loading handled by useMultipleFontLoader */
+        /* Font loading handled by useSuspenseFontLoader */
       `}</style>
 
       <div style={bgMediaStyle} />

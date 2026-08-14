@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/25_images/25-08/25-08-28/gob.jpg';
 import clockFontFile from '@/assets/fonts/25fonts/25-08-28-gob.ttf';
 
@@ -18,7 +18,7 @@ export default function DigitalClock() {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const formatTime = (date) => {
     const h = date.getHours().toString().padStart(2, '0');

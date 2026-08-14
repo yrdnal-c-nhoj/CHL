@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import ionFont from '@/assets/fonts/25fonts/25-06-09-ion.ttf';
 import ionJpeg from '@/assets/images/25_images/25-06/25-06-09/ion.jpeg';
 import iskyWebp from '@/assets/images/25_images/25-06/25-06-09/isky.webp';
@@ -106,9 +106,9 @@ export default function IonosphereClock() {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
-  // Animations and global styles (font loading handled by useMultipleFontLoader)
+  // Animations and global styles (font loading handled by useSuspenseFontLoader)
   useEffect(() => {
     const styleEl = document.createElement('style');
     styleEl.innerHTML = `

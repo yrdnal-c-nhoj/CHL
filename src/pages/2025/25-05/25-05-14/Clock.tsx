@@ -30,7 +30,7 @@ const Clock: React.FC<ClockProps> = () => {
   // Use the standardized hook for smooth clock updates
   const currentTime = useSecondClock();
 
-  // Font loading handled by useMultipleFontLoader
+  // Font loading handled by useSuspenseFontLoader
 
   useEffect(() => {
     const SCOPE_ID = 'ri-clock-2025-11-01';

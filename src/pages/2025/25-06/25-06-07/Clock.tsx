@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/25_images/25-06/25-06-07/1937.696_print-scaled.jpg';
 import flakesGif from '@/assets/images/25_images/25-06/25-06-07/Z3ut.gif';
 import sgSnow from '@/assets/images/25_images/25-06/25-06-07/sg-snow.gif';
@@ -27,7 +27,7 @@ export default function BlizzardClock() {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   // ✅ Correct viewport height for mobile Chrome
   useEffect(() => {

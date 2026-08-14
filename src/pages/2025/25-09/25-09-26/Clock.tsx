@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 
-import { useMultipleFontLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage926 from '@/assets/images/25_images/25-09/25-09-26/wall.webp';
 import font20250926A from '@/assets/fonts/25fonts/25-09-26-not.otf?url'; // give date-specific names
 import font20250926B from '@/assets/fonts/25fonts/25-09-26-not2.otf?url';

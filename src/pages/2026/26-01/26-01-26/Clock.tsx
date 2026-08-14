@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
 // Explicit Asset Imports
@@ -9,7 +9,7 @@ import bottom260126Font from '@/assets/fonts/26fonts/26-01-26-halft.ttf?url';
 const DynamicComponent =  () => {
   const [time, setTime] = useState(new Date());
 
-  const fontsLoaded = useMultipleFontLoader(
+  const fontsLoaded = useSuspenseFontLoader(
     useMemo(
       () => [
         {

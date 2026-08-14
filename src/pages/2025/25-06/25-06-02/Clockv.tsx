@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '../../../utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import airFontUrl from './air.ttf';
 import stampImg from './stamp.png';
 import stamp2Img from './stamp2.png';
 import stamp3Img from './stamp3.png';
 import frameImg from './frame.jpg';
 
-// CSS animations (font loading handled by useMultipleFontLoader)
+// CSS animations (font loading handled by useSuspenseFontLoader)
 const styleSheet = new CSSStyleSheet();
 styleSheet.replaceSync(`
   @keyframes bounceJostle {
@@ -142,7 +142,7 @@ const Clock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   const time = useMillisecondClock();
 
   const timeStr = time
