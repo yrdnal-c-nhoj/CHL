@@ -1,10 +1,11 @@
 import mobyFont from '@/assets/fonts/25fonts/25-04-03-moby.ttf?url';
 import waves from '@/assets/images/25_images/25-04/25-04-03/waves.gif';
+import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import type { FC } from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
 // Component Props interface
@@ -44,7 +45,6 @@ const MobyDickClock: FC<MobyDickClockProps> = () => {
   // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);
 
-  const clockRef = useRef<HTMLTimeElement>(null);
   const [position, setPosition] = useState<ClockPosition>({
     x: 0,
     y: 0,
@@ -54,6 +54,16 @@ const MobyDickClock: FC<MobyDickClockProps> = () => {
   
   // Use the standardized hook for smooth clock updates
   const currentTime = useSecondClock();
+
+  // Memoize the formatted time string
+  const timeString = useMemo(
+    () =>
+      currentTime.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+      }),
+    [currentTime],
+  );
 
   // Calculate new clock position
   const calculateNewPosition = useCallback((): ClockPosition => {
@@ -67,19 +77,6 @@ const MobyDickClock: FC<MobyDickClockProps> = () => {
 
     return { x, y, fontSize, opacity };
   }, []);
-
-  // Separate effect for time updates to keep them efficient
-  useEffect(() => {
-    const clock = clockRef.current;
-    if (!clock) return;
-
-    clock.textContent = currentTime.toLocaleTimeString('en-US', {
-      hour12: false,
-      hour: 'numeric',
-      minute: 'numeric',
-    });
-    clock.dateTime = currentTime.toISOString();
-  }, [currentTime]);
 
   // State-driven position updates
   useEffect(() => {
@@ -101,18 +98,20 @@ const MobyDickClock: FC<MobyDickClockProps> = () => {
       className={styles.container}
       style={{ backgroundImage: `url(${waves})` }}
     >
-      <time
-        ref={clockRef}
+      {/* Accessible, screen-reader only time */}
+      <SRTime time={currentTime} />
+
+      {/* Visual time element */}
+      <div
         className={styles.mobyClock}
         style={{
           left: `${position.x}%`,
           top: `${position.y}%`,
           fontSize: `${position.fontSize}rem`,
           opacity: position.opacity,
-          zIndex: 1,
           transition: 'left 3s ease-in-out, top 3s ease-in-out, font-size 3s ease-in-out, opacity 3s ease-in-out',
         }}
-      />
+      >{timeString}</div>
     </main>
   );
 };
