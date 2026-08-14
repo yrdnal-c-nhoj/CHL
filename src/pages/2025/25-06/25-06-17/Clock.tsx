@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backFont from '@/assets/fonts/25fonts/25-06-17-back.ttf';
 
 const BackslantClock =  () => {
@@ -14,7 +14,7 @@ const BackslantClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const ids = ['h0', 'h1', 'm0', 'm1', 's0', 's1'];
   const trains = useRef({});
@@ -23,7 +23,7 @@ const BackslantClock =  () => {
   const targetOffsets = useRef({});
   const currentOffsets = useRef({});
 
-  // Font loading handled by useMultipleFontLoader
+  // Font loading handled by useSuspenseFontLoader
 
   useEffect(() => {
     const style = document.createElement('style');

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import myCustomFont from '@/assets/fonts/25fonts/25-07-27-som.ttf';
 import backgroundImage from '@/assets/images/25_images/25-07/25-07-27/met.jpg'; // Import your background image
 
@@ -23,7 +23,7 @@ const Clock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const [digits, setDigits] = useState<Digit[]>([]);
 
@@ -121,7 +121,7 @@ const Clock =  () => {
         ))}
       </div>
       <style>{`
-        /* Font loading handled by useMultipleFontLoader */
+        /* Font loading handled by useSuspenseFontLoader */
 
         .hour, .minuteTens, .minuteOnes {
           animation:

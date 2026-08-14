@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 // Local images
 import bgImage from '@/assets/images/25_images/25-09/25-09-10/bg.webp';
@@ -24,7 +24,7 @@ const Clock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   const time = useSmoothClock();
 
   const hourRef = useRef(null);
@@ -61,7 +61,7 @@ const Clock =  () => {
     >
       {/* Scoped font injection */}
       <style>{`
-        /* Font loading handled by useMultipleFontLoader */
+        /* Font loading handled by useSuspenseFontLoader */
       `}</style>
 
       {/* Background */}

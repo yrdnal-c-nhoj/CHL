@@ -1,6 +1,6 @@
 import paperFont from '@/assets/fonts/26fonts/26-03-03-paper.ttf';
 import paperflowerVideo from '@/assets/images/26_images/26-03/26-03-02/paperflower.mp4';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -15,7 +15,7 @@ const AnalogClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const time = useMillisecondClock();
   const [dimensions, setDimensions] = useState({ width: 300, height: 300 });
@@ -66,7 +66,7 @@ const AnalogClock =  () => {
   return (
     <div style={{ width, height, position: 'relative', pointerEvents: 'none' }}>
       <style>{`
-        /* Font loading handled by useMultipleFontLoader */
+        /* Font loading handled by useSuspenseFontLoader */
         .clock-hand {
           position: absolute;
           bottom: 50%;

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import fontUrl from '@/assets/fonts/25fonts/25-08-19-cas.ttf';
 import bgUrl from '@/assets/images/25_images/25-08/25-08-19/ap.jpeg';
 
@@ -15,10 +15,10 @@ const Pendulum =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    // Font loading handled by useMultipleFontLoader
+    // Font loading handled by useSuspenseFontLoader
     const style = document.createElement('style');
     style.textContent = ``;
     document.head.appendChild(style);

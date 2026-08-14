@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bg3 from '@/assets/images/25_images/25-08/25-08-18/target.gif';
 import bg1 from '@/assets/images/25_images/25-08/25-08-18/arrows.gif';
 import bg2 from '@/assets/images/25_images/25-08/25-08-18/ar.gif';
@@ -29,7 +29,7 @@ export default function ClockLetters({
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const now = useMillisecondClock();
   const [rotation, setRotation] = useState<any>({ layer1: 0, layer2: 0 });

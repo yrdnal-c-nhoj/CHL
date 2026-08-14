@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import castelImage from '@/assets/images/25_images/25-08/25-08-24/castel.jpg';
 import viaFont from '@/assets/fonts/25fonts/25-08-24-via.ttf';
 
@@ -41,7 +41,7 @@ const RomanClock = () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const [time, setTime] = useState('');
   const [fade, setFade] = useState(false);

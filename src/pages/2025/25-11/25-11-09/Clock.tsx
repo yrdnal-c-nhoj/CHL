@@ -1,6 +1,6 @@
 // src/components/DarkRomanClock.jsx
 import React, { useState, useEffect, useMemo } from 'react';
-import { useMultipleFontLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import Font20251111 from '@/assets/fonts/25fonts/25-11-09-disc.ttf'; // main Roman font
 import ActiveFont20251111 from '@/assets/fonts/25fonts/25-11-09-pin.ttf'; // active digit font
 import { useMillisecondClock } from '@/utils/hooks';

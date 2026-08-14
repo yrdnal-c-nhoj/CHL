@@ -29,8 +29,6 @@ const shouldSuppress = (msg: string) => {
     'email-autocomplete-relay',
     'newtabRefinedCardsLayout',
     'Referrer Policy:',
-    'Cookie “FPID” has been rejected',
-    'nimbusStore', // New pattern identified
     'feltPrivacy', // New pattern identified
     'SessionStore', // New pattern identified
     'Cookie “FPLC” has been rejected',
@@ -86,6 +84,8 @@ const shouldSuppress = (msg: string) => {
     'Empty string passed to getElementById()',
     'MerinoClient',
     'WindowGlobalParent',
+    'AbortError', // For PushService AbortError
+    'NS_ERROR_ILLEGAL_VALUE', // For favicon service errors
   ];
 patterns.push('ext-browser.js');
   patterns.push('unwatchFronts');
@@ -95,7 +95,8 @@ patterns.push('ext-browser.js');
   patterns.push('JSProcessActor');
 
   const lowerMsg = msg.toLowerCase();
-  if (patterns.some((p) => lowerMsg.includes(p.toLowerCase()))) {
+  // Ensure the pattern is also a string before calling toLowerCase()
+  if (patterns.some((p) => typeof p === 'string' && lowerMsg.includes(p.toLowerCase()))) {
     return true;
   }
   return false;

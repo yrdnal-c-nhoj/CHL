@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-08/25-08-03/sta.gif';
 import overlay2 from '@/assets/images/25_images/25-08/25-08-03/pro.gif';
 import overlay1 from '@/assets/images/25_images/25-08/25-08-03/cur.webp';
@@ -21,7 +21,7 @@ const OrnateClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
@@ -50,7 +50,7 @@ const OrnateClock =  () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Font loading handled by useMultipleFontLoader
+  // Font loading handled by useSuspenseFontLoader
 
   const styles = useMemo(
     () => ({

@@ -1,33 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import React from 'react';
+
 import issFont from '@/assets/fonts/25fonts/25-05-30-iss.ttf';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+
 import styles from './Clock.module.css';
 
-const Clock =  () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+const fontConfigs: FontConfig[] = [
     {
       fontFamily: 'iss',
       fontUrl: issFont,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
+      options: { weight: 'normal', style: 'normal' },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
+const ClockComponent = () => {
+  useSuspenseFontLoader(fontConfigs);
   const time = useMillisecondClock();
 
-  const formatDigit = (value) => String(value).padStart(2, '0').split('');
+  const formatDigit = (value: number) => String(value).padStart(2, '0').split('');
 
   const [h1, h2] = formatDigit(time.getHours());
   const [m1, m2] = formatDigit(time.getMinutes());
   const [s1, s2] = formatDigit(time.getSeconds());
 
   return (
-    <div className={styles.screen}>
+    <main className={styles.screen}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
       <iframe
         src="https://www.youtube.com/embed/iYmvCUonukw?autoplay=1&mute=1&controls=0&loop=1&playlist=iYmvCUonukw&rel=0&modestbranding=1"
         title="Background ambience"
@@ -37,7 +39,6 @@ const Clock =  () => {
 
       <div
         className={styles.clockWrapper}
-        style={{ opacity: fontsLoaded ? 1 : 0 }}
       >
         <div className={styles.clockContainer}>
           <div className={styles.digitBox}>{h1}</div>
@@ -48,8 +49,11 @@ const Clock =  () => {
           <div className={styles.digitBox}>{s2}</div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
-export default Clock;
+const MemoizedClock = React.memo(ClockComponent);
+MemoizedClock.displayName = 'Clock_25_05_30';
+
+export default MemoizedClock;

@@ -1,40 +1,26 @@
 import customFont from '@/assets/fonts/25fonts/25-08-09-box.ttf?url'; // Custom font file
+import { useClockAngles } from '@/hooks/useClockAngles';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import React from 'react';
 import styles from './Clock.module.css';
 
 // 1. Asset Exports
-export const assets = [customFont];
+export const assets = [customFont]; // Ensure customFont is correctly preloaded
 
 // Standardized font loading with font-display: swap to avoid FOUC
 const fontConfigs = [
   {
     fontFamily: 'MyCustomFont',
     fontUrl: customFont,
-    options: {
-      weight: 'normal',
-      style: 'normal',
-    },
+    options: { weight: 'normal', style: 'normal' },
   },
 ];
 
 const ClockComponent =  () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useMillisecondClock();
-
-  // Calculate hand angles
-  const calculateHandAngles = () => {
-    const ms = time.getMilliseconds();
-    const rawSeconds = time.getSeconds() + ms / 1000;
-    const rawMinutes = time.getMinutes() + rawSeconds / 60;
-    const rawHours = (time.getHours() % 12) + rawMinutes / 60;
-    return {
-      hour: rawHours * 30 - 90,
-      minute: rawMinutes * 6 - 90,
-      second: rawSeconds * 6 - 90,
-    };
-  };
+  const { hourAngle, minAngle, secAngle } = useClockAngles(time);
 
   // Render multi-angle clock hand
   const renderMultiAngleHand = (
@@ -169,14 +155,14 @@ const ClockComponent =  () => {
     ));
   };
 
-  const { hour, minute, second } = calculateHandAngles();
+  // Use the canonical angles from useClockAngles
   const handColor = '#22FB05FF';
   const handStroke = 0.4;
 
   return (
     <main className={styles.container}>
       {/* Accessible time element */}
-      <time dateTime={time.toISOString()} className={styles.semanticTime}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
       <svg
@@ -204,7 +190,7 @@ const ClockComponent =  () => {
         {renderGridLines()}
         {generateHourMarkers()}
         {renderMultiAngleHand(
-          hour,
+          hourAngle,
           18,
           6,
           11,
@@ -214,7 +200,7 @@ const ClockComponent =  () => {
           true,
         )}
         {renderMultiAngleHand(
-          minute,
+          minAngle,
           28,
           8,
           15,
@@ -224,7 +210,7 @@ const ClockComponent =  () => {
           false,
         )}
         {renderMultiAngleHand(
-          second,
+          secAngle,
           36,
           10,
           19,

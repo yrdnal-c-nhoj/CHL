@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import twentyFont from '@/assets/fonts/25fonts/25-06-28-twenty.otf';
 
 const Clock24 =  () => {
@@ -14,13 +14,13 @@ const Clock24 =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
 
-  // Font loading handled by useMultipleFontLoader
+  // Font loading handled by useSuspenseFontLoader
 
   useEffect(() => {
     const updateClock =  () => {

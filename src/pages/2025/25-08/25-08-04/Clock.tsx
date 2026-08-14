@@ -1,6 +1,6 @@
 import myFont from '@/assets/fonts/25fonts/25-08-04-Tr.ttf'; // Your custom font file
 import bgImage from '@/assets/images/25_images/25-08/25-08-04/shrub.jpeg'; // Your background image file
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
@@ -30,14 +30,14 @@ const DigitalClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   // Update fontLoaded state when fontsLoaded changes
   useEffect(() => {
     setFontLoaded(fontsLoaded);
   }, [fontsLoaded]);
 
-  // Font loading handled by useMultipleFontLoader
+  // Font loading handled by useSuspenseFontLoader
 
   const clocks = useMemo(
     () =>
@@ -74,7 +74,7 @@ const DigitalClock =  () => {
 
   return (
     <>
-      {/* Font loading handled by useMultipleFontLoader */}
+      {/* Font loading handled by useSuspenseFontLoader */}
 
       <div
         style={{

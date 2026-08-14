@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import sliFont from '@/assets/fonts/25fonts/25-07-10-sli.otf';
 import sli2Font from '@/assets/fonts/25fonts/25-07-10-sli2.ttf';
 
@@ -33,7 +33,7 @@ const Clock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 600);
@@ -46,7 +46,7 @@ const Clock =  () => {
 
     const styleSheet = document.createElement('style');
     styleSheet.textContent = `
-      /* Font loading handled by useMultipleFontLoader */
+      /* Font loading handled by useSuspenseFontLoader */
       .clock-component .digit {
         font-family: 'sli', cursive, sans-serif !important;
         font-size: 3.125rem !important;

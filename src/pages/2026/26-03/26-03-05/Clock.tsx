@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
 const Clock =  () => {
@@ -13,7 +13,7 @@ const Clock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const time = useSecondClock();
   const [bootText, setBootText] = useState('');
