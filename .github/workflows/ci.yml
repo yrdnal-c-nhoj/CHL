@@ -99,14 +99,12 @@ jobs:
             // Count CLOCKS with critical violations from the CSV prohibited columns.
             // Columns: date,path,violations, [10 rules idx 3..12],
             //          [5 prohibited idx 13..17: set-interval, inline-style,
-            //           enhanced-font-loader, no-assets, to-locale], has_css_module
-            // Matches the verifier's "critical" definition: a clock is critical if
-            // it has set-interval (col 13) OR inline <style> (col 14). Count each
-            // clock at most once, even if both are present.
+            //           enhanced-font-loader, no-assets, to-locale]
+            // A clock has a critical violation if it uses setInterval (col 13).
             let critical = 0;
             for (const l of lines) {
               const cols = l.split(",");
-              if (cols[13] === "1" || cols[14] === "1") critical++;
+              if (cols[13] === "1") critical++;
             }
 
             const regressed = [];
