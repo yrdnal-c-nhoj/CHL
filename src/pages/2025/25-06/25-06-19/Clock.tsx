@@ -1,10 +1,11 @@
+import React, { useEffect, useMemo, useRef } from 'react';
+
 import { useMillisecondClock } from '@/utils/hooks';
-import { useEffect, useMemo, useRef } from 'react';
+
 import styles from './Clock.module.css';
 
-const CmykClock = () => {
+const ClockComponent = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const clockRef = useRef<HTMLDivElement>(null);
 
   const resizeCanvas = () => {
     const canvas = canvasRef.current;
@@ -78,7 +79,10 @@ const CmykClock = () => {
   }, [time, secondDeg, minuteDeg, hourDeg]);
 
   return (
-    <div className={styles.clock} ref={clockRef}>
+    <main className={styles.clock}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
       <canvas ref={canvasRef} className={styles.canvas} />
       <div
         className={`${styles.hand} ${styles.hourHand}`}
@@ -93,8 +97,11 @@ const CmykClock = () => {
         style={{ transform: `translateX(-50%) rotate(${secondDeg}deg)` }}
       />
       <div className={styles.dateContainer}> {/* Optional date text can go here */}</div>
-    </div>
+    </main>
   );
 };
 
-export default CmykClock;
+const MemoizedClock = React.memo(ClockComponent);
+MemoizedClock.displayName = 'Clock_25_06_19';
+
+export default MemoizedClock;
