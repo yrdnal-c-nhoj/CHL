@@ -1,67 +1,60 @@
 .screen {
-  position: fixed;
-  inset: 0;
+  height: 100dvh;
+  width: 100vw;
   margin: 0;
   padding: 0;
-  width: 100vw;
-  height: 100dvh;
-  background-color: black;
-  overflow: visible;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  overflow: hidden;
+  background-color: black;
+  font-family: 'iss', monospace;
 }
 
 .backgroundIframe {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(1.1);
-  transform-origin: center;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  transform: translate(-50%, -50%);
   pointer-events: none;
-  z-index: 1;
-  overflow: visible;
+  z-index: 0;
 }
 
 .clockWrapper {
   position: relative;
-  z-index: 10;
+  z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
   height: 100%;
-  transition: opacity 0.8s ease-in-out;
+  width: 100%;
+  opacity: 1; /* Managed by React.Suspense */
 }
 
 .clockContainer {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1.5vw;
-  padding: 0 2vw;
-  margin-left: -3vw;
+  gap: 10px;
+  font-size: 15vh;
+  color: #00ff00;
+  text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
 }
 
 .digitBox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 0.8em;
-  height: 1.2em;
-  color: #8d6e6e;
-  font-family: 'iss', monospace;
-  font-size: clamp(3rem, 8vh, 12rem);
-  font-weight: 400;
-  line-height: 1;
   text-align: center;
-  font-variant-numeric: tabular-nums;
-  text-shadow:
-    0 0 20px #f1c120,
-    0 0 40px #cb5f26,
-    0 0 80px #f1c120,
-    0 0 60px #f3f7f8,
-    0 1px 1px #d4d6e0;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
