@@ -1,11 +1,11 @@
 import fontLatin from '@/assets/fonts/25fonts/25-10-17-word.ttf?url';
 import backgroundImage from '@/assets/images/25_images/25-10/25-10-17/words.jpg';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSecondClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
 
 export default function TimeWordsClock() {
-  const now = useMillisecondClock();
+  const now = useSecondClock();
   const [langIndex, setLangIndex] = useState<number>(0);
 
   // 30 most popular Internet languages
