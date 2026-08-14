@@ -1,8 +1,8 @@
 import { useMillisecondClock } from '@/utils/hooks';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import styles from './Clock.module.css';
 
-const CmykClock =  () => {
+const CmykClock = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const clockRef = useRef<HTMLDivElement>(null);
 
@@ -22,23 +22,27 @@ const CmykClock =  () => {
 
   const time = useMillisecondClock();
 
+  const { secondDeg, minuteDeg, hourDeg } = useMemo(() => {
+    const ms = time.getMilliseconds();
+    const sec = time.getSeconds() + ms / 1000;
+    const min = time.getMinutes() + sec / 60;
+    const hr = (time.getHours() % 12) + min / 60;
+
+    return {
+      secondDeg: sec * 6,
+      minuteDeg: (min / 60) * 360,
+      hourDeg: (hr / 12) * 360,
+    };
+  }, [time]);
+
   useEffect(() => {
     const canvas = canvasRef.current;
-    const clockEl = clockRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     const sectors = ['cyan', 'magenta', 'yellow'];
 
     const draw = () => {
-      const ms = time.getMilliseconds();
-      const sec = time.getSeconds() + ms / 1000;
-      const min = time.getMinutes() + sec / 60;
-      const hr = (time.getHours() % 12) + min / 60;
-
-      const secondDeg = sec * 6;
-      const minuteDeg = (min / 60) * 360;
-      const hourDeg = (hr / 12) * 360;
 
       const secondRad = ((secondDeg - 90) * Math.PI) / 180;
       const minuteRad = ((minuteDeg - 90) * Math.PI) / 180;
@@ -68,29 +72,28 @@ const CmykClock =  () => {
         ctx.fillStyle = sectors[i];
         ctx.fill();
       }
-
-      const sh = clockEl?.querySelector(`.${styles.secondHand}`) as HTMLElement;
-      const mh = clockEl?.querySelector(`.${styles.minuteHand}`) as HTMLElement;
-      const hh = clockEl?.querySelector(`.${styles.hourHand}`) as HTMLElement;
-      if (sh) sh.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
-      if (mh) mh.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
-      if (hh) hh.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
     };
 
     draw();
-  }, [time]);
+  }, [time, secondDeg, minuteDeg, hourDeg]);
 
   return (
     <div className={styles.clock} ref={clockRef}>
-        <canvas ref={canvasRef} className={styles.canvas} />
-        <div className={`${styles.hand} ${styles.hourHand}`} />
-        <div className={`${styles.hand} ${styles.minuteHand}`} />
-        <div className={`${styles.hand} ${styles.secondHand}`} />
-        <div className={styles.dateContainer}>
-          {' '}
-          {/* Optional date text can go here */}
-        </div>
-      </div>
+      <canvas ref={canvasRef} className={styles.canvas} />
+      <div
+        className={`${styles.hand} ${styles.hourHand}`}
+        style={{ transform: `translateX(-50%) rotate(${hourDeg}deg)` }}
+      />
+      <div
+        className={`${styles.hand} ${styles.minuteHand}`}
+        style={{ transform: `translateX(-50%) rotate(${minuteDeg}deg)` }}
+      />
+      <div
+        className={`${styles.hand} ${styles.secondHand}`}
+        style={{ transform: `translateX(-50%) rotate(${secondDeg}deg)` }}
+      />
+      <div className={styles.dateContainer}> {/* Optional date text can go here */}</div>
+    </div>
   );
 };
 
