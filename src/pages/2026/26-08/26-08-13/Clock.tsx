@@ -48,7 +48,6 @@ const ClockComponent = () => {
             className={`${styles.hand} ${styles.secondHand}`}
             style={{ transform: `rotate(${secAngle}deg)` }}
           />
-          <div className={styles.centerDot} />
         </div>
 
       </div>
