@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import customFontUrl from '@/assets/fonts/25fonts/25-08-17-scr.otf';
 import pageBg from '@/assets/images/25_images/25-08/25-08-17/bg.webp'; // full-screen background image
 
@@ -18,7 +18,7 @@ const StickyNoteClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const time = useMillisecondClock();
 
@@ -76,7 +76,7 @@ const StickyNoteClock =  () => {
       >
         <style>
           {`
-            /* Font loading handled by useMultipleFontLoader */
+            /* Font loading handled by useSuspenseFontLoader */
           `}
         </style>
 

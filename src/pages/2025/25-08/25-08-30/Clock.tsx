@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import Cu250830 from '@/assets/fonts/25fonts/25-08-30-mem.ttf'; // your font file
 import bgImage from '@/assets/images/25_images/25-08/25-08-30/mem.gif'; // your background image
 
@@ -16,7 +16,7 @@ export default function MessyClock() {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   const time = useMillisecondClock();
 
   let hours = time.getHours();
@@ -51,7 +51,7 @@ export default function MessyClock() {
 
   return (
     <div style={clockStyle}>
-      <style>/* Font loading handled by useMultipleFontLoader */</style>
+      <style>/* Font loading handled by useSuspenseFontLoader */</style>
       {timeString}
     </div>
   );

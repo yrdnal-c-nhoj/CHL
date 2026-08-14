@@ -1,265 +1,89 @@
-import React, { useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import React from 'react';
+
+import fatFont from '@/assets/fonts/25fonts/25-05-31-fat.otf';
 import elWebp from '@/assets/images/25_images/25-05/25-05-31/el.webp';
 import el1 from '@/assets/images/25_images/25-05/25-05-31/el1.png';
 import el2 from '@/assets/images/25_images/25-05/25-05-31/el2.png';
 import el3 from '@/assets/images/25_images/25-05/25-05-31/el3.png';
 import eleGif from '@/assets/images/25_images/25-05/25-05-31/ele.gif';
-import fatFont from '@/assets/fonts/25fonts/25-05-31-fat.otf';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
 
-const ElephantClock =  () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+import styles from './Clock.module.css';
+
+export const assets = [elWebp, el1, el2, el3, eleGif, fatFont];
+
+const fontConfigs: FontConfig[] = [
     {
       fontFamily: 'fat',
       fontUrl: fatFont,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
+      options: { weight: 'normal', style: 'normal' },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
 
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
-  const orbitRef = useRef(null);
+const ClockComponent = () => {
+  useSuspenseFontLoader(fontConfigs);
+  const time = useMillisecondClock(50); // Update at a reasonable frame rate
 
-  // Font loading handled by useMultipleFontLoader
+  const t = time.getTime();
+  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+  const minutes = time.getMinutes() + seconds / 60;
+  const hours = (time.getHours() % 12) + minutes / 60;
 
-  useEffect(() => {
-    const hourHand = hourRef.current;
-    const minuteHand = minuteRef.current;
-    const secondHand = secondRef.current;
-    const orbitingImage = orbitRef.current;
+  // Replicate original animation logic in a declarative way
+  const secondDeg = seconds * 6 + 5 * Math.sin(t / 150);
+  const hourDeg = hours * 30 + 3 * Math.sin(t * 0.001);
+  const minuteDeg = minutes * 6 + 4 * Math.sin(t * 0.002);
+  const orbitAngle = (t * -0.12) % 360;
 
-    const hourSway = { amplitude: 0, frequency: 0, nextUpdate: 0 };
-    const minuteSway = { amplitude: 0, frequency: 0, nextUpdate: 0 };
+  const orbitRadius = 40;
+  const orbitRad = (orbitAngle * Math.PI) / 180;
+  const orbitX = 50 + orbitRadius * Math.cos(orbitRad);
+  const orbitY = 50 + orbitRadius * Math.sin(orbitRad);
 
-    const randomizeSway = (sway) => {
-      sway.amplitude = Math.random() * 5;
-      sway.frequency = 0.001 + Math.random() * 0.003;
-      sway.nextUpdate = Date.now() + 3000 + Math.random() * 5000;
-    };
-
-    randomizeSway(hourSway);
-    randomizeSway(minuteSway);
-
-    let orbitAngle = 0;
-    const orbitRadius = 40;
-    let frameId;
-
-    const updateClock =  () => {
-      const now = new Date();
-      const seconds = now.getSeconds();
-      const milliseconds = now.getMilliseconds();
-      const preciseSeconds = seconds + milliseconds / 1000;
-      const minutes = now.getMinutes();
-      const hours = now.getHours();
-      const t = Date.now();
-
-      const secondDeg =
-        preciseSeconds * 6 + 5 * Math.sin(t / 150) + Math.random() * 1;
-
-      const minuteDegBase = minutes * 6 + seconds * 0.1;
-      const hourDegBase = (hours % 12) * 30 + minutes * 0.5;
-
-      if (t > hourSway.nextUpdate) randomizeSway(hourSway);
-      if (t > minuteSway.nextUpdate) randomizeSway(minuteSway);
-
-      const hourDeg =
-        hourDegBase + hourSway.amplitude * Math.sin(t * hourSway.frequency);
-      const minuteDeg =
-        minuteDegBase +
-        minuteSway.amplitude * Math.sin(t * minuteSway.frequency);
-
-      hourHand.style.transform = `translate(-50%, -50%) rotate(${hourDeg}deg)`;
-      minuteHand.style.transform = `translate(-50%, -50%) rotate(${minuteDeg}deg)`;
-      secondHand.style.transform = `translate(-50%, -50%) rotate(${secondDeg}deg)`;
-
-      orbitAngle -= 0.12;
-      const rad = (orbitAngle * Math.PI) / 180;
-      const x = 50 + orbitRadius * Math.cos(rad);
-      const y = 50 + orbitRadius * Math.sin(rad);
-      orbitingImage.style.left = `${x}%`;
-      orbitingImage.style.top = `${y}%`;
-      orbitingImage.style.transform = `translate(-50%, -50%) rotate(${orbitAngle + 90}deg)`;
-
-      frameId = requestAnimationFrame(updateClock);
-    };
-
-    updateClock();
-    return () => cancelAnimationFrame(frameId);
-  }, []);
-
-  const numbers = [];
-  for (let i = 1; i <= 12; i++) {
-    const angle = (i * 30 * Math.PI) / 180;
-    const x = 50 + 40 * Math.sin(angle) * (80 / 60);
-    const y = 50 - 40 * Math.cos(angle);
-    numbers.push(
-      <div
-        key={i}
-        style={{
-          position: 'absolute',
-          left: `${x}%`,
-          top: `${y}%`,
-          transform: 'translate(-50%, -50%)',
-          fontSize: '8vmin',
-          fontFamily: 'fat, sans-serif',
-          color: '#949393',
-          textShadow: '#0a0909 -1px 0px 0px',
-          width: '10vmin',
-          textAlign: 'center',
-        }}
-      >
-        {i}
-      </div>,
-    );
-  }
+  const orbitStyle = {
+    left: `${orbitX}%`,
+    top: `${orbitY}%`,
+    transform: `translate(-50%, -50%) rotate(${orbitAngle + 90}deg)`,
+  };
 
   return (
-    <div
-      style={{
-        margin: 0,
-        padding: 0,
-        height: '100dvh',
-        width: '100vw',
-        overflow: 'hidden',
-        background: '#7e7c79',
-        position: 'relative',
-        fontFamily: 'sans-serif',
-        opacity: fontsLoaded ? 1 : 0.3,
-        transition: 'opacity 0.3s ease',
-      }}
-    >
-      <img
-        decoding="async"
-        loading="lazy"
-        src={elWebp}
-        alt="Background"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          filter: 'saturate(50%)',
-          zIndex: 0,
-        }}
-      />
-
-      {/* Absolute centering for the clock face */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '80vmin',
-          height: '80vmin',
-        }}
-      >
-        <div
-          style={{
-            position: 'relative',
-            width: '100%',
-            height: '100%',
-            borderRadius: '50%',
-            zIndex: 2,
-          }}
-        >
-          {numbers}
-
-          <div style={handStyle}>
-            <img
-              decoding="async"
-              loading="lazy"
-              ref={hourRef}
-              src={el2}
-              alt="Hour Hand"
-              style={{
-                height: '45%',
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transformOrigin: 'bottom center',
-                transform: 'translate(-50%, -50%)',
-                filter: 'saturate(60%)',
-              }}
-            />
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
+      <img decoding="async" loading="lazy" src={elWebp} alt="" className={styles.bg} />
+      <div className={styles.clockFace}>
+        <div className={styles.clockCenter}>
+          {Array.from({ length: 12 }, (_, i) => {
+            const num = i + 1;
+            const angle = (num * 30 * Math.PI) / 180;
+            const x = 50 + 40 * Math.sin(angle) * (80 / 60);
+            const y = 50 - 40 * Math.cos(angle);
+            return (
+              <div key={num} style={{ left: `${x}%`, top: `${y}%` }} className={styles.number}>
+                {num}
+              </div>
+            );
+          })}
+          <div className={styles.handContainer}>
+            <img src={el2} alt="" className={styles.hourHand} style={{ transform: `translate(-50%, -50%) rotate(${hourDeg}deg)` }} />
           </div>
-          <div style={handStyle}>
-            <img
-              decoding="async"
-              loading="lazy"
-              ref={minuteRef}
-              src={el1}
-              alt="Minute Hand"
-              style={{
-                height: '55%',
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transformOrigin: 'bottom center',
-                transform: 'translate(-50%, -50%)',
-                filter: 'saturate(130%)',
-              }}
-            />
+          <div className={styles.handContainer}>
+            <img src={el1} alt="" className={styles.minuteHand} style={{ transform: `translate(-50%, -50%) rotate(${minuteDeg}deg)` }} />
           </div>
-          <div style={handStyle}>
-            <img
-              decoding="async"
-              loading="lazy"
-              ref={secondRef}
-              src={el3}
-              alt="Second Hand"
-              style={{
-                height: '65%',
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transformOrigin: 'bottom center',
-                transform: 'translate(-50%, -50%)',
-                filter: 'saturate(20%) contrast(70%)',
-              }}
-            />
+          <div className={styles.handContainer}>
+            <img src={el3} alt="" className={styles.secondHand} style={{ transform: `translate(-50%, -50%) rotate(${secondDeg}deg)` }} />
           </div>
-
-          <img
-            decoding="async"
-            loading="lazy"
-            ref={orbitRef}
-            src={eleGif}
-            alt=""
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              width: '20vmin',
-              height: '20vmin',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 1,
-              filter: 'saturate(20%)',
-              left: '50%',
-              top: '50%',
-            }}
-          />
+          <img src={eleGif} alt="" aria-hidden="true" className={styles.orbitingImage} style={orbitStyle} />
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
-const handStyle = {
-  position: 'absolute',
-  width: '100%',
-  height: '80%',
-  top: 0,
-  left: 0,
-  opacity: 0.8,
-  zIndex: 5,
-};
+const MemoizedClock = React.memo(ClockComponent);
+MemoizedClock.displayName = 'Clock_25_05_31';
 
-export default ElephantClock;
+export default MemoizedClock;

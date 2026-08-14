@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import mintFont from '@/assets/fonts/25fonts/25-07-08-mint.ttf';
 import hourImg from '@/assets/images/25_images/25-07/25-07-08/mint.png';
 import minuteImg from '@/assets/images/25_images/25-07/25-07-08/minty.webp';
@@ -19,7 +19,7 @@ const MintClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   useEffect(() => {
     const clock = document.getElementById('clock');
     for (let i = 1; i <= 12; i++) {
@@ -92,7 +92,7 @@ const MintClock =  () => {
     >
       <style>
         {`
-          /* Font loading handled by useMultipleFontLoader */
+          /* Font loading handled by useSuspenseFontLoader */
 
           .clock {
             z-index: 6;

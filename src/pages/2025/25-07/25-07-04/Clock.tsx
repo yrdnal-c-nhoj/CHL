@@ -6,7 +6,7 @@ import React, {
   useMemo,
 } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import kalFont from '@/assets/fonts/25fonts/25-07-04-kal.otf';
 import bgImage from '@/assets/images/25_images/25-07/25-07-04/7ZAx.webp';
 
@@ -45,7 +45,7 @@ const Clock =  () => {
     [],
   );
 
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   // 3. Loading State Guard
   if (!fontsLoaded) {

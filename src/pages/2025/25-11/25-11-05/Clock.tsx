@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import WebFonnov25ufuf from '@/assets/fonts/25fonts/25-11-05-webs1.ttf';
 import Webfont2511055 from '@/assets/fonts/25fonts/25-11-05-webs2.ttf';
 import w251105font from '@/assets/fonts/25fonts/25-11-05-webs3.ttf';
@@ -169,7 +169,7 @@ function ModernDigitalClock() {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
     // Migrated from legacy interval to canonical rAF hook (useMillisecondClock).
   // (was a pure 100ms state ticker; state now derived from the hook time)
@@ -254,10 +254,10 @@ function ModernDigitalClock() {
         boxSizing: 'border-box',
       }}
     >
-      {/* Font loading handled by useMultipleFontLoader */}
+      {/* Font loading handled by useSuspenseFontLoader */}
       <style>
         {`
-          /* Font loading handled by useMultipleFontLoader */
+          /* Font loading handled by useSuspenseFontLoader */
         `}
       </style>
 

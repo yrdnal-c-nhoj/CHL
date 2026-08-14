@@ -1,7 +1,7 @@
 import React, { useEffect, useState, memo } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import font250909 from '@/assets/fonts/25fonts/25-09-09-van.ttf?url';
 import bgImage2 from '@/assets/images/25_images/25-09/25-09-09/skull.jpg';
 import bgImage from '@/assets/images/25_images/25-09/25-09-09/va.webp';
@@ -70,7 +70,7 @@ export default function ClockWall() {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   // Preload images
   const loadImage = (src) =>
@@ -81,7 +81,7 @@ export default function ClockWall() {
     });
 
   const preloadAll = async () => {
-    // Font loading handled by useMultipleFontLoader
+    // Font loading handled by useSuspenseFontLoader
     await Promise.all([
       loadImage(bgImage),
       loadImage(bgImage2),

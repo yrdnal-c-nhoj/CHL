@@ -1,46 +1,44 @@
 // Thumbnail mapping for clock pages
 //
-// For each clock date (format: YY-MM-DD), CHL shows a thumbnail image.
-// Historically the app looked in `/src/assets/thumbnails/`.
-//
-// Your 2026/26-06 artwork lives in `/src/assets/images/26_images/26-06/[date]/*.webp|*.gif|*.jpg|*.png`.
-// This loader maps date -> first matching file inside that folder.
-//
-// If a thumbnail can’t be found, Thumbnail will render its fallback UI.
+// This loader dynamically finds all clock images and maps them by date.
+// It prioritizes images from the `/src/assets/thumbnails/` directory
+// and falls back to the main `/src/assets/images/` directory.
 
-import { normalizeDate } from './dateUtils';
+// 1. Prioritize dedicated thumbnails
+const dedicatedThumbnails = import.meta.glob('/src/assets/thumbnails/**/*.{webp,gif,jpg,jpeg,png}', {
+  eager: true,
+  import: 'default',
+});
 
-type ImageModule = { default: string };
+const thumbnailCache = new Map<string, string>();
 
-const allModules = import.meta.glob(
-  [
-    // IMPORTANT: thumbnails MUST come from /src/assets/thumbnails only
-    '/src/assets/thumbnails/*.{webp,gif,jpg,jpeg,png}',
-  ],
-  { eager: true },
-) as Record<string, ImageModule>;
-
-const thumbnailMap: Record<string, string> = {};
-
-for (const [filePath, mod] of Object.entries(allModules)) {
-  const imageUrl = mod.default;
-  if (!imageUrl) continue;
-
-  // Matches YY-MM-DD in the path.
-  const match = filePath.match(/(\d{2}-\d{2}-\d{2})/);
-  if (!match || !match[1]) continue;
-
-  const date = normalizeDate(match[1]);
-
-  // Keep first discovered asset for the date.
-  if (!thumbnailMap[date]) {
-    thumbnailMap[date] = imageUrl;
+for (const path in dedicatedThumbnails) {
+  const match = path.match(/(\d{2}-\d{2}-\d{2})/);
+  if (match) {
+    const date = match[1];
+    if (!thumbnailCache.has(date)) {
+      thumbnailCache.set(date, dedicatedThumbnails[path] as string);
+    }
   }
 }
 
-/**
- * Returns the thumbnail URL for a given date (YY-MM-DD).
- */
-export const getThumbnailByDate = (date: string): string | undefined => thumbnailMap[date];
+// 2. Fill in missing thumbnails with fallback images
+const fallbackImages = import.meta.glob('/src/assets/images/**/*.{webp,gif,jpg,jpeg,png}', {
+  eager: true,
+  import: 'default',
+});
 
-export { thumbnailMap };
+for (const path in fallbackImages) {
+  const match = path.match(/(\d{2}-\d{2}-\d{2})/);
+  if (match) {
+    const date = match[1];
+    // Only add if a dedicated thumbnail wasn't already found
+    if (!thumbnailCache.has(date)) {
+      thumbnailCache.set(date, fallbackImages[path] as string);
+    }
+  }
+}
+
+export const getThumbnailByDate = (date: string): string => {
+  return thumbnailCache.get(date) || '';
+};

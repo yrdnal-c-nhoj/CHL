@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import rrrrFont from '@/assets/fonts/25fonts/25-06-06-rrrr.ttf';
 
 const RollingClock =  () => {
@@ -16,7 +16,7 @@ const RollingClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   useEffect(() => {
     const ticker = document.getElementById('ticker');
     const clockSpeed = 40;

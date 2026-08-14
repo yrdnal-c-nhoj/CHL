@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import cloudyFont from '@/assets/fonts/25fonts/25-06-13-cloudy.ttf';
 import cmoon from '@/assets/images/25_images/25-06/25-06-13/cmoon.webp';
 import clouGif from '@/assets/images/25_images/25-06/25-06-13/clou.gif';

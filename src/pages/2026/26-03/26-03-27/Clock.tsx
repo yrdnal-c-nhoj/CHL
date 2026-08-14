@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import triFont from '@/assets/fonts/26fonts/26-03-27-tri.ttf';
 import styles from './Clock.module.css';
 
@@ -49,7 +49,7 @@ export default function TriangleClock() {
       fontUrl: triFont,
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const fontFamily = fontsLoaded ? 'TriFont, Georgia, serif' : 'Georgia, serif';
 

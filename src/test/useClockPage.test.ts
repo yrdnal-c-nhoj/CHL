@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useClockPage } from '../hooks/useClockPage';
 
 // Mock the dynamic import
@@ -117,11 +117,12 @@ describe('useClockPage', () => {
 
   it('should handle item with only path (no date)', async () => {
     const item = {
+      date: '26-03-05', // Add date to satisfy the ClockItem type
       path: '26-03-05',
       title: 'Path Only Clock',
     };
 
-    const { result } = renderHook(() => useClockPage(item as any));
+    const { result } = renderHook(() => useClockPage(item));
 
     await waitFor(
       () => {

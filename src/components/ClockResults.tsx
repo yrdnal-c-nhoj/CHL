@@ -116,10 +116,7 @@ const ClockResults: FC<ClockResultsProps> = ({ items, loading, error }) => {
                 <Thumbnail date={item.date} title={item.title || ''} />
               </div>
               <div className={listStyles.contentStack}>
-                <div className={listStyles.titleNumberRow}>
-                  <span className={listStyles.simpleListTitle}>{item.title || 'No Title'}</span>
-                  <span className={listStyles.simpleListNumber}>#{item.clockNumber}</span>
-                </div>
+                <span className={listStyles.simpleListTitle}>{item.title || 'No Title'}</span>
                 <div className="tag-wrapper">
                   {sortTags(item.tags || []).map((tag) => (
                     <Link
@@ -133,6 +130,7 @@ const ClockResults: FC<ClockResultsProps> = ({ items, loading, error }) => {
                   ))}
                 </div>
               </div>
+              <span className={listStyles.simpleListNumber}>#{item.clockNumber}</span>
             </div>
           </li>
         ))}

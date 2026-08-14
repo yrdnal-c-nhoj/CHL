@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import slotFont from '@/assets/fonts/25fonts/25-07-29-slot.otf';
 import bgImage from '@/assets/images/25_images/25-07/25-07-29/IMAGE_1688551792.webp';
 
@@ -15,7 +15,7 @@ const SlotMachineClock =  () => {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const [time, setTime] = useState<any>({
     hour: '',

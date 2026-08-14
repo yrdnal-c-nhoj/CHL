@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
-import { useMultipleFontLoader } from '@/utils/fontLoader';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import clockFont from '@/assets/fonts/25fonts/25-08-26-root.ttf';
 import bg0 from '@/assets/images/25_images/25-08/25-08-26/rrr.webp'; // bottom-most
 import bg1 from '@/assets/images/25_images/25-08/25-08-26/ro.gif'; // middle
@@ -20,7 +20,7 @@ export default function DigitalClock() {
       },
     },
   ];
-  const fontsLoaded = useMultipleFontLoader(fontConfigs);
+  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   // Clock ticking
   useEffect(() => {
@@ -103,7 +103,7 @@ export default function DigitalClock() {
       transform,
     }),
     styleTag: {
-      fontFace: `/* Font loading handled by useMultipleFontLoader */`,
+      fontFace: `/* Font loading handled by useSuspenseFontLoader */`,
     },
   };
 
