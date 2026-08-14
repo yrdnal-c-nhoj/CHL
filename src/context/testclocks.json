@@ -1094,6 +1094,7 @@
       "cyan",
       "image-free",
       "magenta",
+      "subtractive primary",
       "yellow"
     ]
   },
@@ -6644,8 +6645,8 @@
       "analog",
       "animal",
       "fly",
-      "sound",
-      "food"
+      "food",
+      "sound"
     ]
   }
 ]
