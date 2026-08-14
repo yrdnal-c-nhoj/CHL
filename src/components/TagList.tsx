@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useDataContext } from '../context/DataContext';
 import listStyles from '../styles/ClockList.module.css';
 import titleStyles from '../styles/ClockTitleTags.module.css';
+import type { ClockItem } from '../types/data';
 import ClockResults from './ClockResults';
 import Footer from './Footer';
 import TopNav from './TopNav';
