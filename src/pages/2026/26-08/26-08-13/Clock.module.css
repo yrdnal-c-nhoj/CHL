@@ -20,9 +20,11 @@
 
 .clockContainer {
   position: absolute;
-  top: var(--space-xl, 0.1em);
-  right: var(--space-xl, 0.1em);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   padding: var(--space-lg, 1.5rem);
+  border-radius: 1rem;
 }
 
 /* --- Analog Clock Styles --- */
