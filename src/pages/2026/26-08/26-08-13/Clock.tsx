@@ -14,7 +14,7 @@ const ClockComponent = () => {
   // 16ms interval targets ~60fps for continuous motion.
   const time = useMillisecondClock(16);
 
-  const { hourAngle, minuteAngle, secondAngle } = useClockAngles(time);
+  const { hourAngle, minAngle, secAngle } = useClockAngles(time);
 
   return (
     <main className={styles.container}>
@@ -42,11 +42,11 @@ const ClockComponent = () => {
           />
           <div
             className={`${styles.hand} ${styles.minuteHand}`}
-            style={{ transform: `rotate(${minuteAngle}deg)` }}
+            style={{ transform: `rotate(${minAngle}deg)` }}
           />
           <div
             className={`${styles.hand} ${styles.secondHand}`}
-            style={{ transform: `rotate(${secondAngle}deg)` }}
+            style={{ transform: `rotate(${secAngle}deg)` }}
           />
           <div className={styles.centerDot} />
         </div>
