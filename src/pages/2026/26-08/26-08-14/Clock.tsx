@@ -49,7 +49,7 @@ const ClockComponent: React.FC = () => {
   const seconds = String(time.getSeconds()).padStart(2, '0');
 
   // Memoize the grid of tiles, each containing a video and a clock.
-  const gridItems = useMemo(() => {
+  const gridTiles = useMemo(() => {
     const total = dimensions.cols * dimensions.rows;
     return Array.from({ length: total }, (_, i) => (
       <div key={i} className={styles.tile}>
@@ -61,24 +61,27 @@ const ClockComponent: React.FC = () => {
           muted
           playsInline
         />
-        <div className={styles.clockContainer}>
-          <div className={styles.digitalClock}>
-            {hours.split('').map((digit, i) => (
-              <span key={`h-${i}`} className={styles.digit}>{digit}</span>
-            ))}
-            <span className={styles.separator}>:</span>
-            {minutes.split('').map((digit, i) => (
-              <span key={`m-${i}`} className={styles.digit}>{digit}</span>
-            ))}
-            <span className={styles.separator}>:</span>
-            {seconds.split('').map((digit, i) => (
-              <span key={`s-${i}`} className={styles.digit}>{digit}</span>
-            ))}
-          </div>
-        </div>
       </div>
     ));
-  }, [dimensions.cols, dimensions.rows, hours, minutes, seconds]);
+  }, [dimensions.cols, dimensions.rows]);
+
+  const digitalClockDisplay = (
+    <div className={styles.clockContainer}>
+      <div className={styles.digitalClock}>
+        {hours.split('').map((digit, i) => (
+          <span key={`h-${i}`} className={styles.digit}>{digit}</span>
+        ))}
+        <span className={styles.separator}>:</span>
+        {minutes.split('').map((digit, i) => (
+          <span key={`m-${i}`} className={styles.digit}>{digit}</span>
+        ))}
+        <span className={styles.separator}>:</span>
+        {seconds.split('').map((digit, i) => (
+          <span key={`s-${i}`} className={styles.digit}>{digit}</span>
+        ))}
+      </div>
+    </div>
+  );
 
   return (
     <main
@@ -90,7 +93,8 @@ const ClockComponent: React.FC = () => {
         } as React.CSSProperties
       }
     >
-      <div className={styles.backgroundGrid}>{gridItems}</div>
+      <div className={styles.backgroundGrid}>{gridTiles}</div>
+      {digitalClockDisplay}
       {/* Semantic <time> element for accessibility (Required) */}
       <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
