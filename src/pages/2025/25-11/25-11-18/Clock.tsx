@@ -9,7 +9,7 @@ import styles from './Clock.module.css';
 
 export const assets = [bgImg];
 
-export default function RotatedClockGrid() {
+const RotatedClockGrid = () => {
   // Using the standardized BTS hook
   const time = useMillisecondClock();
   const timeStr = time.toLocaleTimeString('en-GB', { hour12: false });
@@ -139,4 +139,8 @@ export default function RotatedClockGrid() {
       </time>
     </main>
   );
-}
+};
+
+const MemoizedClock = React.memo(RotatedClockGrid);
+MemoizedClock.displayName = 'Clock_25_11_18';
+export default MemoizedClock;

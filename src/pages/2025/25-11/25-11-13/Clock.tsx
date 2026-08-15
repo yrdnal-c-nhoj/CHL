@@ -66,9 +66,9 @@ const RollingAnalogClock =  () => {
   }, []);
 
   return (
-    <div className={styles.container} style={{ backgroundImage: `url(${bgImage})` }}>
+    <main className={styles.container} style={{ backgroundImage: `url(${bgImage})` }}>
       {/* Accessible time element (Required) */}
-      <time dateTime={new Date().toISOString()} className={styles.semanticTime}>
+      <time dateTime={new Date().toISOString()} className={styles.semanticTime} className={styles.srOnly}>
         {new Date().toLocaleTimeString()}
       </time>
 

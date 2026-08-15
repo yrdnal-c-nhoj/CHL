@@ -81,13 +81,13 @@ const DigitalClock =  () => {
     .padStart(2, '0');
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <BackgroundLayers />
 
       <div className={styles.face}>
         <time
           dateTime={currentTime.toISOString()}
-          className={styles.digitalTime}
+          className={styles.digitalTime} className={styles.srOnly}
         >
           <span className={styles.digitGroup}>
             <span className={styles.digitBox}>{hours[0]}</span>

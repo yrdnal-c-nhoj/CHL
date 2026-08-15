@@ -41,6 +41,8 @@ const ClockComponent =  () => {
 
   return (
     <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       {/* StaticGlobalStyles component removed as per ARCHITECTURE.md */}
 
       <video

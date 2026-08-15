@@ -141,7 +141,7 @@ const ZoomClock =  () => {
   }, [time]);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <video
         ref={videoRef}
         src={zoomVideo}

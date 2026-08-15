@@ -7,6 +7,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 import braiFont from '@/assets/fonts/25fonts/25-05-16-brai.ttf';
 import styles from './Clock.module.css';
 
+export const assets = [];
+
 const fontConfigs: FontConfig[] = [
     {
       fontFamily: 'brai',
@@ -30,7 +32,7 @@ const ClockComponent = () => {
 
   return (
     <main
-        className={styles.clock}
+        className={styles.container}
         role="timer"
         aria-live="polite"
         aria-label={`Current time is ${hours} hours, ${minutes} minutes, and ${seconds} seconds`}

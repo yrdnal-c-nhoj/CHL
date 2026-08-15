@@ -4,6 +4,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
+export const assets = [];
+
 const ClockComponent = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -79,7 +81,7 @@ const ClockComponent = () => {
   }, [time, secondDeg, minuteDeg, hourDeg]);
 
   return (
-    <main className={styles.clock}>
+    <main className={styles.container}>
       <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>

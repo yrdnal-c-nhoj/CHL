@@ -115,7 +115,7 @@ const AnalogClock =  () => {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <div className={styles.videoOverlay} />
       <video
         className={styles.videoBackground}
@@ -125,7 +125,7 @@ const AnalogClock =  () => {
         playsInline
         src={carVideo}
       />
-      <time dateTime={isoTime} className={styles.timeWrapper}>
+      <time dateTime={isoTime} className={styles.timeWrapper} className={styles.srOnly}>
         <div className={styles.digitalTime}>
           <span className={styles.digitGroup}>
             <span className={styles.digitBox}>
@@ -159,4 +159,6 @@ const AnalogClock =  () => {
   );
 };
 
-export default AnalogClock;
+const MemoizedAnalogClock = React.memo(AnalogClock);
+MemoizedAnalogClock.displayName = 'Clock_26_05_02';
+export default MemoizedAnalogClock;

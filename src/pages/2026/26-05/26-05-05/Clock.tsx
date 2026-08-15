@@ -34,12 +34,12 @@ const Clock =  () => {
   const digits = timeString.split('');
 
   return (
-    <div className={styles.clockWrapper}>
+    <main className={styles.container}>
       <div className={styles.background} style={{ backgroundImage: `url(${clockImage})` }} />
       <time
         dateTime={time.toISOString()}
         aria-label={`Current time is ${time.toLocaleTimeString()}`}
-        className={styles.clockContainer}
+        className={styles.clockContainer} className={styles.srOnly}
       >
         {digits.map((digit, index) => (
           <div key={index} className={styles.digit}>
@@ -51,4 +51,6 @@ const Clock =  () => {
   );
 };
 
-export default Clock;
+const MemoizedClock = React.memo(Clock);
+MemoizedClock.displayName = 'Clock_26_05_05';
+export default MemoizedClock;

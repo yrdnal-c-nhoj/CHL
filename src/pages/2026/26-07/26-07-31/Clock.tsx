@@ -57,7 +57,7 @@ const PhobosClockComponent =  () => {
       <div className={styles.border} />
 
       {/* Accessible time for screen readers */}
-      <time dateTime={isoTime} className="sr-only">
+      <time dateTime={isoTime} className="sr-only" className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
 

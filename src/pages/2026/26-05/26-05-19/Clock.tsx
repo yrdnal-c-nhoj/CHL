@@ -31,7 +31,7 @@ const DigitalClock =  () => {
     .toLowerCase();
 
   return (
-    <div
+    <main
       className={styles.container}
       style={{ backgroundImage: `url(${bgImage})` }}
     >
@@ -39,7 +39,7 @@ const DigitalClock =  () => {
       <time
         dateTime={currentTime.toISOString()}
         className={styles.digitalTime}
-        style={{ fontFamily: 'ClockFont_26_05_19, sans-serif' }}
+        style={{ fontFamily: 'ClockFont_26_05_19, sans-serif' }} className={styles.srOnly}
       >
         {timeString
           .replace(/\./g, '')
@@ -61,4 +61,6 @@ const DigitalClock =  () => {
   );
 };
 
-export default DigitalClock;
+const MemoizedDigitalClock = React.memo(DigitalClock);
+MemoizedDigitalClock.displayName = 'Clock_26_05_19';
+export default MemoizedDigitalClock;

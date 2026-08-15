@@ -38,7 +38,7 @@ const MyClock =  () => {
 
   return (
     <main className={styles.container} style={{ backgroundImage: `url(${backgroundImage})` }}>
-      <time dateTime={isoTime} className={styles.semanticTime} aria-hidden="true">
+      <time dateTime={isoTime} className={styles.semanticTime} aria-hidden="true" className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
       <div className={styles.clockFace}>

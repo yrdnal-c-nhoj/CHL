@@ -31,7 +31,7 @@ const AnalogClock =  () => {
   const hourAngle = (hours % 12) * 30;
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <video
         className={styles.repeatingBackground}
         src={gyroVideo}
@@ -65,9 +65,11 @@ const AnalogClock =  () => {
         <div className={styles.centerDot} />
       </div>
       {/* Screen reader accessible time */}
-      <time dateTime={isoTime} className="sr-only" />
+      <time dateTime={isoTime} className="sr-only" className={styles.srOnly} />
     </div>
   );
 };
 
-export default AnalogClock;
+const MemoizedAnalogClock = React.memo(AnalogClock);
+MemoizedAnalogClock.displayName = 'Clock_26_07_21';
+export default MemoizedAnalogClock;
