@@ -66,7 +66,7 @@ const AnalogClock =  () => {
       </div>
       {/* Screen reader accessible time */}
       <time dateTime={isoTime} className="sr-only" className={styles.srOnly} />
-    </div>
+    </main>
   );
 };
 

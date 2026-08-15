@@ -155,7 +155,7 @@ const AnalogClock =  () => {
           </span>
         </div>
       </time>
-    </div>
+    </main>
   );
 };
 

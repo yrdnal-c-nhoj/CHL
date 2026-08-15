@@ -50,7 +50,7 @@ const DigitalClock = () => {
       <time dateTime={time.toISOString()} className={styles.srOnly}>
         {timeString}
       </time>
-    </div>
+    </main>
   );
 };
 

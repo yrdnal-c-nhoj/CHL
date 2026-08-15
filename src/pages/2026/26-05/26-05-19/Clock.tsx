@@ -57,7 +57,7 @@ const DigitalClock =  () => {
             </span>
           ))}
       </time>
-    </div>
+    </main>
   );
 };
 

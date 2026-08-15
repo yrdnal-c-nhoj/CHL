@@ -164,8 +164,6 @@ const Hand = React.memo(({ deg, width, height, z, isSec, ms, variant }: HandProp
     } as React.CSSProperties}
     aria-hidden="true"
   />
-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
-
 ));
 Hand.displayName = 'Hand';
 
@@ -252,6 +250,7 @@ const Clock =  () => {
 
   return (
     <main className={styles.container} role="timer" aria-label="Clock for May 28">
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
       <div
         className={styles.backgroundLayer}
         style={{
@@ -277,7 +276,7 @@ const Clock =  () => {
           variant="second"
         />
       </div>
-    </div>
+    </main>
   );
 };
 

@@ -192,7 +192,7 @@ function RococoDigitalClock() {
             </div>
           ))}
         </div>
-      </div>
+      </main>
     );
   }
 
