@@ -45,7 +45,7 @@ const AlphaCentauriClock =  () => {
   return (
     <main className={styles.container}>
       {/* Accessible time element (Required) */}
-      <time dateTime={time.toISOString()} className={styles.semanticTime}>
+      <time dateTime={time.toISOString()} className={styles.semanticTime} className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
       <div className={styles.stage}>

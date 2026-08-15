@@ -6,7 +6,7 @@ import styles from './Clock.module.css';
 
 export const assets = [phoneImg, officeImg];
 
-export default function DigitalClock() {
+const DigitalClock = () => {
   const time = useSecondClock();
   const tileSize = 100; // Matches the CSS 100px size
   const [dimensions, setDimensions] = useState({ cols: 0, rows: 0 });
@@ -77,4 +77,8 @@ export default function DigitalClock() {
       </time>
     </main>
   );
-}
+};
+
+const MemoizedClock = React.memo(DigitalClock);
+MemoizedClock.displayName = 'Clock_26_06_10';
+export default MemoizedClock;

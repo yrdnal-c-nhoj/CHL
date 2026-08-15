@@ -32,13 +32,13 @@ const Clock =  () => {
   }, [time]);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <div className={styles.catBox}>
         <img src={catUrl} alt="Random Cat" className={styles.catImage} />
       </div>
       <time
         dateTime={time.toISOString()}
-        className={styles.clock}
+        className={styles.clock} className={styles.srOnly}
       >
         <div className={styles.digitBox}>
           <span className={styles.digit}>{hours[0]}</span>
@@ -63,4 +63,6 @@ const Clock =  () => {
   );
 };
 
-export default Clock;
+const MemoizedClock = React.memo(Clock);
+MemoizedClock.displayName = 'Clock_26_04_15';
+export default MemoizedClock;

@@ -38,7 +38,7 @@ export default function DigitalClock() {
   }, [time]);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <div
         className={styles.backgroundLayer}
         style={{ '--bg-image': `url(${backgroundImage})` } as React.CSSProperties}
@@ -47,7 +47,7 @@ export default function DigitalClock() {
         className={styles.tileOverlay}
         style={{ '--tile-image': `url(${tileImage})` } as React.CSSProperties}
       />
-      <time dateTime={time.toISOString()} className={styles.digitalClock}>
+      <time dateTime={time.toISOString()} className={styles.digitalClock} className={styles.srOnly}>
         {timeString}
       </time>
     </div>

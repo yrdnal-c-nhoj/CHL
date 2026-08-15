@@ -24,7 +24,7 @@ const SweepClock = () => {
 
   return (
     <main className={styles.container}>
-      <time dateTime={isoTime} className={styles.aspectWrapper}>
+      <time dateTime={isoTime} className={styles.aspectWrapper} className={styles.srOnly}>
         {/* LAYER 1: OUTER RING - SECONDS (Full Size) */}
         <div
           className={`${styles.ring} ${styles.secondsRing}`}
@@ -56,4 +56,6 @@ const SweepClock = () => {
   );
 };
 
-export default SweepClock;
+const MemoizedSweepClock = React.memo(SweepClock);
+MemoizedSweepClock.displayName = 'Clock_26_07_19';
+export default MemoizedSweepClock;

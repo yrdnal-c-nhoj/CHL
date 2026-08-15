@@ -46,10 +46,10 @@ try {
     {
       id: 'asset-export',
       label: 'Standard Asset Export',
-      check: (code) => /export const assets\s*=\s*\[/.test(code),
+      check: (code) => /export const assets[^=]*=\s*\[/.test(code),
       hint: 'Expected "export const assets = [...];" for preloading.',
       fix: (code) => {
-        if (!/export const assets\s*=\s*\[/.test(code)) {
+        if (!/export const assets[^=]*=\s*\[/.test(code)) {
           // Find the last import statement and insert after it, or at the top if no imports.
           const lastImportMatch = [...code.matchAll(/import .* from .*;?\n/g)].pop();
           if (lastImportMatch) {
@@ -65,7 +65,7 @@ try {
     {
       id: 'canonical-hook',
       label: 'Canonical Time Hook',
-      check: (code) => /use(?:Second|Millisecond)Clock\(\)/.test(code),
+      check: (code) => /use(?:Second|Millisecond)Clock\([^)]*\)/.test(code),
       hint: 'Use useSecondClock() (default) or useMillisecondClock() (smooth/millisecond precision) from @/utils/hooks.'
     },
     {

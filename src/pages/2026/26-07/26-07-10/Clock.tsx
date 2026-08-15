@@ -204,7 +204,7 @@ const AnalogClock: FC = () => {
 
   return (
     <main
-      className={styles.mainContainer}
+      className={styles.container}
       role="img"
       aria-label="An analog clock with a stormy, rainy background."
     >

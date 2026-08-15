@@ -99,7 +99,7 @@ export default function TimelineClock() {
           </div>
         ))}
         
-        <time className={`${styles.nowLine} ${flash ? styles.flash : ''}`} style={dynamicStyles.nowLine} dateTime={now.toISOString()} />
+        <time className={`${styles.nowLine} ${flash ? styles.flash : ''}`} style={dynamicStyles.nowLine} dateTime={now.toISOString()} className={styles.srOnly} />
         <div className={styles.comet} style={dynamicStyles.comet} />
       </div>
     </main>

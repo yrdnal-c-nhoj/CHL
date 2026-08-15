@@ -32,7 +32,7 @@ const DigitalClock =  () => {
   return (
     <main className={styles.container}>
       {/* Accessible time for screen readers */}
-      <time dateTime={time.toISOString()} className={styles.semanticTime}>
+      <time dateTime={time.toISOString()} className={styles.semanticTime} className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
 

@@ -7,6 +7,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
+export const assets = [];
+
 const fontConfigs: FontConfig[] = [
     {
       fontFamily: 'iss',
@@ -26,7 +28,7 @@ const ClockComponent = () => {
   const [s1, s2] = formatDigit(time.getSeconds());
 
   return (
-    <main className={styles.screen}>
+    <main className={styles.container}>
       <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>

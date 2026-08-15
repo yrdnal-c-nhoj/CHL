@@ -21,6 +21,8 @@ const TickMarks =  () => (
             transform: `rotate(${i * 6}deg)`,
           }}
         />
+      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
+
       );
     })}
   </>
@@ -75,4 +77,6 @@ const AnalogClock =  () => {
   );
 };
 
-export default AnalogClock;
+const MemoizedAnalogClock = React.memo(AnalogClock);
+MemoizedAnalogClock.displayName = 'Clock_26_07_03';
+export default MemoizedAnalogClock;

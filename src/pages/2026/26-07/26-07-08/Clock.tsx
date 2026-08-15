@@ -147,12 +147,12 @@ const TangerineClock =  () => {
   const radius = clockSize * 0.42;
 
   if (!isClient) {
-    return <div style={{ position: 'fixed', inset: 0, backgroundColor: '#FFDAB9' }} />;
+    return <main style={{ position: 'fixed', inset: 0, backgroundColor: '#FFDAB9' }} />;
   }
 
   return (
     <main
-      className={styles.main}
+      className={styles.container}
       style={{
         backgroundImage: `url(${peachImg})`,
         opacity: isClient ? 1 : 0,

@@ -50,13 +50,13 @@ const RULES = [
   {
     id: 'asset-export',
     label: 'Standard Asset Export',
-    check: (code) => /export const assets\s*=\s*\[/.test(code),
-    hint: 'Expected "export const assets = [...];" for preloading pipeline.',
+      check: (code) => /export const assets[^=]*=\s*\[/.test(code),
+      hint: 'Expected "export const assets = [...];" for preloading pipeline.',
   },
   {
     id: 'canonical-hook',
     label: 'Canonical Time Hook',
-    check: (code) => /use(?:Second|Millisecond)Clock\(\)/.test(code),
+    check: (code) => /use(?:Second|Millisecond)Clock\([^)]*\)/.test(code),
     hint: 'Use useSecondClock() (default) or useMillisecondClock() from @/utils/hooks.',
   },
   {
@@ -139,7 +139,7 @@ const PROHIBITED = [
     id: 'no-assets',
     label: 'Missing export const assets',
     severity: 'major',
-    check: (code) => !/export const assets\s*=\s*\[/.test(code),
+    check: (code) => !/export const assets[^=]*=\s*\[/.test(code),
     hint: 'Export an assets array for the preloading pipeline.',
   },
   {

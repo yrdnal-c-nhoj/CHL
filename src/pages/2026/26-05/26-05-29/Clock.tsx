@@ -35,13 +35,13 @@ const DigitalClock =  () => {
   const [timePart, ampmPart] = timeString.split(/\s+/);
 
   return (
-    <div
+    <main
       className={styles.container}
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       <time
         dateTime={currentTime.toISOString()}
-        className={styles.digitalTime}
+        className={styles.digitalTime} className={styles.srOnly}
       >
         {timePart}
         {ampmPart && <span className={styles.ampm}> {ampmPart}</span>}
@@ -50,4 +50,6 @@ const DigitalClock =  () => {
   );
 };
 
-export default DigitalClock;
+const MemoizedDigitalClock = React.memo(DigitalClock);
+MemoizedDigitalClock.displayName = 'Clock_26_05_29';
+export default MemoizedDigitalClock;

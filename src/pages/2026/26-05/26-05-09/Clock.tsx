@@ -1,5 +1,5 @@
 import bgImage from '@/assets/images/26_images/26-05/26-05-09/lotus.webp';
-import { calculateAngles, formatTime } from '@/utils/clockUtils';
+import { calculateAngles, formatTime } from '@/utils/hooks';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
@@ -49,11 +49,13 @@ const CaptureClock =  () => {
           <div className={styles.center} />
         </div>
       </div>
-      <time dateTime={time.toISOString()} className="sr-only">
+      <time dateTime={time.toISOString()} className="sr-only" className={styles.srOnly}>
         {formatted}
       </time>
     </main>
   );
 };
 
-export default CaptureClock;
+const MemoizedCaptureClock = React.memo(CaptureClock);
+MemoizedCaptureClock.displayName = 'Clock_26_05_09';
+export default MemoizedCaptureClock;

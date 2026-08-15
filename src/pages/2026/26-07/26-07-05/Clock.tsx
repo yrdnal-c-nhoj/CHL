@@ -103,7 +103,7 @@ const DigitalClock: FC = () => {
   }, [time]);
 
   return (
-    <time className={styles.timeDisplay} dateTime={isoTime}>
+    <time className={styles.timeDisplay} dateTime={isoTime} className={styles.srOnly}>
       <div className={styles.digitGroup}>
         <div className={styles.digitBox}>{hours[0]}</div>
         <div className={styles.digitBox}>{hours[1]}</div>
@@ -121,10 +121,12 @@ const AmbientDisplayClock: FC = () => {
   useSuspenseFontLoader(fontConfigs);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <BackgroundLayers />
       <DigitalClock />
     </div>
   );
 };
-export default AmbientDisplayClock;
+const MemoizedAmbientDisplayClock = React.memo(AmbientDisplayClock);
+MemoizedAmbientDisplayClock.displayName = 'Clock_26_07_05';
+export default MemoizedAmbientDisplayClock;

@@ -84,7 +84,7 @@ const ClockInner =  () => {
           </div>
 
           <div className={styles.inside}>
-            <time className={styles.digitalClock} dateTime={isoTime}>
+            <time className={styles.digitalClock} dateTime={isoTime} className={styles.srOnly}>
               {formattedTime}
             </time>
           </div>
@@ -100,4 +100,6 @@ const Clock =  () => (
   </Suspense>
 );
 
-export default Clock;
+const MemoizedClock = React.memo(Clock);
+MemoizedClock.displayName = 'Clock_26_05_20';
+export default MemoizedClock;

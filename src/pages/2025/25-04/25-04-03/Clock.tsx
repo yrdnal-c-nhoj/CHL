@@ -98,6 +98,8 @@ const MobyDickClock: FC<MobyDickClockProps> = () => {
       className={styles.container}
       style={{ backgroundImage: `url(${waves})` }}
     >
+      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
+
       {/* Accessible, screen-reader only time */}
       <SRTime time={currentTime} />
 
@@ -116,4 +118,6 @@ const MobyDickClock: FC<MobyDickClockProps> = () => {
   );
 };
 
-export default MobyDickClock;
+const MemoizedMobyDickClock = React.memo(MobyDickClock);
+MemoizedMobyDickClock.displayName = 'Clock_25_04_03';
+export default MemoizedMobyDickClock;
