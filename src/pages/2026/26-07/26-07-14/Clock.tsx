@@ -27,7 +27,7 @@ const fontConfigs: FontConfig[] = [
  */
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
-export default function DigitalClock() {
+const DigitalClock = () => {
   const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
 
@@ -47,9 +47,13 @@ export default function DigitalClock() {
         className={styles.tileOverlay}
         style={{ '--tile-image': `url(${tileImage})` } as React.CSSProperties}
       />
-      <time dateTime={time.toISOString()} className={styles.digitalClock} className={styles.srOnly}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
         {timeString}
       </time>
     </div>
   );
-}
+};
+
+const MemoizedClock = React.memo(DigitalClock);
+MemoizedClock.displayName = 'Clock_26_07_14';
+export default MemoizedClock;
