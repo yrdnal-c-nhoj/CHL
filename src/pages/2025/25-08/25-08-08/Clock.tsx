@@ -2,12 +2,15 @@ import fontFile_2025_11_01 from '@/assets/fonts/25fonts/25-08-08-q.otf';
 import bgImage from '@/assets/images/25_images/25-08/25-08-08/q.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
-export default function DigitalClock() {
+// 1. Asset Exports (Required for preloading pipeline)
+export const assets = [bgImage, fontFile_2025_11_01];
+
+const DigitalClock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+  const fontConfigs = useMemo(() => [
     {
       fontFamily: 'MyCustomFont',
       fontUrl: fontFile_2025_11_01,
@@ -16,8 +19,8 @@ export default function DigitalClock() {
         style: 'normal',
       },
     },
-  ];
-  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
 
   const time = useMillisecondClock();
 
@@ -41,13 +44,23 @@ export default function DigitalClock() {
         backgroundPosition: `0px 0px`,
       }}
     >
-      <time dateTime={time.toISOString()}>
+      {/* Semantic <time> element for accessibility (Required) */}
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
+
+      <div className={styles.timeDisplay}>
         {timeString.split('').map((digit, index) => (
           <div key={index} className={styles.digitBox}>
             {digit}
           </div>
         ))}
-      </time>
+      </div>
     </main>
   );
-}
+};
+
+const MemoizedClock = React.memo(DigitalClock);
+MemoizedClock.displayName = 'Clock_25_08_08';
+
+export default MemoizedClock;

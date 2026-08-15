@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useMemo } from 'react';
 import styles from './Clock.module.css';
 
 import customFont from '@/assets/fonts/26fonts/26-05-31.ttf?url';
@@ -9,15 +9,7 @@ import hotwater from '@/assets/images/26_images/26-05/26-05-31/hotwater.webp';
 const accordionBg = hotwater;
 const bellImage2 = hotwater;
 
-// ======================================================
-// Config & Constants
-// ======================================================
-
 export const assets = [bellImage2, accordionBg];
-
-// ======================================================
-// Pure Presentational Components (Render Once)
-// ======================================================
 
 const BackgroundLayers = memo(() => (
   <>
@@ -47,10 +39,6 @@ const BackgroundLayers = memo(() => (
 ));
 BackgroundLayers.displayName = 'BackgroundLayers';
 
-// ======================================================
-// Main Component
-// ======================================================
-
 const FONT_CONFIGS: FontConfig[] = [
   {
     fontFamily: 'ClockFont',
@@ -58,18 +46,8 @@ const FONT_CONFIGS: FontConfig[] = [
   },
 ];
 
-const DigitalClock =  () => {
-  const [currentTime, setCurrentTime] = useState(new Date());
-
-  useEffect(() => {
-    let rafId: number;
-    const tick = () => {
-      setCurrentTime(new Date());
-      rafId = requestAnimationFrame(tick);
-    };
-    rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
-  }, []);
+const DigitalClock = () => {
+  const currentTime = useMillisecondClock(50);
 
   useSuspenseFontLoader(FONT_CONFIGS);
 
@@ -87,7 +65,7 @@ const DigitalClock =  () => {
       <div className={styles.face}>
         <time
           dateTime={currentTime.toISOString()}
-          className={styles.digitalTime} className={styles.srOnly}
+          className={styles.srOnly}
         >
           <span className={styles.digitGroup}>
             <span className={styles.digitBox}>{hours[0]}</span>
@@ -104,8 +82,10 @@ const DigitalClock =  () => {
           </span>
         </time>
       </div>
-    </div>
+    </main>
   );
 };
 
-export default memo(DigitalClock);
+const MemoizedClock = memo(DigitalClock);
+MemoizedClock.displayName = 'Clock_26_05_31';
+export default MemoizedClock;

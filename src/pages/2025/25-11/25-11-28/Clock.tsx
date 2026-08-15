@@ -2,13 +2,12 @@ import li251128font from '@/assets/fonts/25fonts/25-11-28-line.otf?url';
 import patternImg from '@/assets/images/25_images/25-11/25-11-28/line.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
-// Export assets for preloading
 export const assets = [patternImg];
 
-export const fontConfigs = [
+const fontConfigs = [
   {
     fontFamily: 'Li251128font',
     fontUrl: li251128font,
@@ -16,7 +15,7 @@ export const fontConfigs = [
   },
 ];
 
-export default function TimelineClock() {
+const TimelineClock = () => {
   const now = useMillisecondClock();
   const [isVertical, setIsVertical] = useState<boolean>(false);
   const [flash, setFlash] = useState<boolean>(false);
@@ -24,57 +23,55 @@ export default function TimelineClock() {
 
   useSuspenseFontLoader(fontConfigs);
 
-  // Orientation check
-  useEffect(() => {
-    const check = () => setIsVertical(window.innerWidth < window.innerHeight);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
+  const triggerComet = useCallback(() => {
+    setComet(-20);
+    const duration = 800 + Math.random() * 700;
+    const timer = setTimeout(() => setComet(120), 50);
+    setTimeout(() => setComet(-100), duration + 100);
+    return () => clearTimeout(timer);
   }, []);
 
-  // EXISTING: Comet sweep
   useEffect(() => {
-    const triggerComet =  () => {
-      setComet(-20);
-      const duration = 800 + Math.random() * 700;
-      const timer = setTimeout(() => setComet(120), 50);
-      setTimeout(() => setComet(-100), duration + 100);
+    const scheduleComet = () => {
+      triggerComet();
+      const delay = 4000 + Math.random() * 5000;
+      const timer = setTimeout(scheduleComet, delay);
       return () => clearTimeout(timer);
     };
-    triggerComet();
-    const interval = setInterval(triggerComet, 4000 + Math.random() * 5000);
-    return () => clearInterval(interval);
-  }, []);
+    const timer = setTimeout(scheduleComet, 0);
+    return () => clearTimeout(timer);
+  }, [triggerComet]);
 
-  // EXISTING: Flash heartbeat
   useEffect(() => {
-    const iv = setInterval(() => {
+    const scheduleFlash = () => {
       setFlash(true);
       setTimeout(() => setFlash(false), 300);
-    }, 3000);
-    return () => clearInterval(iv);
+      const timer = setTimeout(scheduleFlash, 3000);
+      return () => clearTimeout(timer);
+    };
+    const timer = setTimeout(scheduleFlash, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const seconds =
     now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
   const percent = (seconds / 86400) * 100;
-  
-  // Dynamic styles that cannot be easily moved to CSS Modules
-  const dynamicStyles = {
+
+  const dynamicStyles = useMemo(() => ({
     bar: { backgroundSize: isVertical ? '26vh 18vh' : '24vh 18vh' },
     nowLine: {
       top: isVertical ? `${percent}%` : 0,
       left: isVertical ? 0 : `${percent}%`,
       width: isVertical ? '100%' : '2.4px',
       height: isVertical ? '2.4px' : '100%',
-      backgroundColor: '#007bff', // A vibrant blue
+      backgroundColor: '#007bff',
     },
     comet: {
       top: isVertical ? `${comet}%` : '50%',
       left: isVertical ? '50%' : `${comet}%`,
       opacity: comet >= -20 && comet <= 120 ? 1 : 0,
     }
-  };
+  }), [isVertical, percent, comet]);
 
   const ticks = Array.from({ length: 25 }, (_, h) => ({
     hour: h,
@@ -84,24 +81,29 @@ export default function TimelineClock() {
   return (
     <main className={styles.container}>
       <div className={styles.timeline}>
-        <div 
+        <div
           className={styles.bar}
-          style={{ backgroundColor: '#007bff' }} 
+          style={{ backgroundColor: '#007bff' }}
         />
-        {/* Hour ticks (now diagonal) */}
         {ticks.map((t) => (
-          <div 
-            key={t.hour} 
-            className={styles.tick} 
+          <div
+            key={t.hour}
+            className={styles.tick}
             style={{ left: `${t.pos}%`, top: `${t.pos}%` }}
           >
             {String(t.hour).padStart(2, '0')}
           </div>
         ))}
-        
-        <time className={`${styles.nowLine} ${flash ? styles.flash : ''}`} style={dynamicStyles.nowLine} dateTime={now.toISOString()} className={styles.srOnly} />
+
+        <time className={styles.srOnly} dateTime={now.toISOString()}>
+          {now.toLocaleTimeString()}
+        </time>
         <div className={styles.comet} style={dynamicStyles.comet} />
       </div>
     </main>
   );
-}
+};
+
+const MemoizedTimelineClock = React.memo(TimelineClock);
+MemoizedTimelineClock.displayName = 'Clock_25_11_28';
+export default MemoizedTimelineClock;

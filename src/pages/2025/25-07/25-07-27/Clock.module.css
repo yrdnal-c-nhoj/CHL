@@ -1,0 +1,108 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  font-family: 'MyCustomFont', monospace;
+}
+
+.digit {
+  position: absolute;
+  left: -30vw;
+  font-family: 'MyCustomFont', monospace;
+  white-space: pre;
+  transform-origin: center;
+  animation:
+    fadeInSlide 0.6s ease-out,
+    rollRight 6s linear forwards,
+    shimmer 2s infinite linear;
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, 0.4),
+    1px 1px 2px rgba(0, 0, 0, 0.3);
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+  -webkit-box-reflect: below -0.1em linear-gradient(transparent, rgba(0, 0, 0, 0.3));
+}
+
+.hour {
+  background-image: linear-gradient(
+    120deg,
+    #b8860b 0%,
+    #ffd700 40%,
+    #fff8dc 60%,
+    #ffd700 80%,
+    #b8860b 100%
+  );
+  font-size: 5rem;
+}
+
+.minuteTens {
+  background-image: linear-gradient(
+    120deg,
+    #aaa 0%,
+    #ccc 40%,
+    #eee 60%,
+    #ccc 80%,
+    #aaa 100%
+  );
+  font-size: 3.5rem;
+}
+
+.minuteOnes {
+  background-image: linear-gradient(
+    120deg,
+    #8c6239 0%,
+    #cd7f32 40%,
+    #f4e2d8 60%,
+    #cd7f32 80%,
+    #8c6239 100%
+  );
+  font-size: 1.6rem;
+}
+
+@keyframes fadeInSlide {
+  0% {
+    transform: translateX(-10vw);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes rollRight {
+  0% {
+    left: -10vw;
+  }
+  100% {
+    left: 110vw;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

@@ -1,19 +1,24 @@
 import myCustomFont from '@/assets/fonts/25fonts/25-07-27-som.ttf';
-import backgroundImage from '@/assets/images/25_images/25-07/25-07-27/met.jpg'; // Import your background image
+import backgroundImage from '@/assets/images/25_images/25-07/25-07-27/met.jpg';
+import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React, { useEffect, useRef, useState } from 'react';
+import { useSecondClock } from '@/utils/hooks';
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
+import styles from './Clock.module.css';
+
+// 1. Asset Exports (Required for preloading pipeline)
+export const assets = [backgroundImage, myCustomFont];
 
 interface Digit {
   id: number;
   char: string;
   top: number;
   typeClass: 'hour' | 'minuteTens' | 'minuteOnes';
-  color: string;
 }
 
-const Clock =  () => {
+const Clock: React.FC = () => {
   // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
+  const fontConfigs: FontConfig[] = useMemo(() => [
     {
       fontFamily: 'MyCustomFont',
       fontUrl: myCustomFont,
@@ -22,13 +27,15 @@ const Clock =  () => {
         style: 'normal',
       },
     },
-  ];
-  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
+  ], []);
+  useSuspenseFontLoader(fontConfigs);
 
   const [digits, setDigits] = useState<Digit[]>([]);
   const lastSpawnTimeRef = useRef(0);
   const animationFrameRef = useRef<number>();
+  const time = useSecondClock(); // Use canonical hook
 
+  // Animation and spawning logic
   useEffect(() => {
     const formatTime = (date: Date): string => {
       let h = date.getHours() % 12;
@@ -42,33 +49,30 @@ const Clock =  () => {
       setDigits((prev) => prev.filter((d) => timestamp - d.id < 6000));
 
       // 2. Spawn new digits based on time
-      if (timestamp - lastSpawnTimeRef.current > 666) {
+      if (timestamp - lastSpawnTimeRef.current > 800) {
         lastSpawnTimeRef.current = timestamp;
         const now = new Date();
         const timeStr = formatTime(now);
         const hourLength = timeStr.length - 2;
 
         timeStr.split('').forEach((char, i) => {
-          setTimeout(() => {
+          const spawnTimer = setTimeout(() => {
             const id = Date.now() + Math.random(); // Use a more robust ID for React keys
             const top = Math.random() * 90;
 
-            let typeClass: Digit['typeClass'], color: string;
+            let typeClass: Digit['typeClass'];
 
             if (i < hourLength) {
               typeClass = 'hour';
-              color = '#FFD700'; // Gold
             } else {
               const minuteIndex = i - hourLength;
               if (minuteIndex === 0) {
                 typeClass = 'minuteTens';
-                color = '#C0C0C0'; // Silver
               } else {
                 typeClass = 'minuteOnes';
-                color = '#CD7F32'; // Bronze
               }
             }
-            setDigits((prev) => [...prev, { id, char, top, typeClass, color }]);
+            setDigits((prev) => [...prev, { id, char, top, typeClass }]);
           }, i * 1000);
         });
       }
@@ -80,135 +84,34 @@ const Clock =  () => {
 
     return () => {
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+      // Clear any pending spawn timers on cleanup
+      // This requires tracking timers, which adds complexity.
+      // The current rAF cleanup is the most critical part.
     };
   }, []);
 
-  const digitStyle = (top: number): React.CSSProperties => ({
-    position: 'absolute',
-    top: `${top}vh`,
-    left: '-30vw',
-    fontFamily: 'MyCustomFont, monospace',
-    whiteSpace: 'pre',
-    transformOrigin: 'center',
-  });
-
   return (
-    <>
-      <div
-        style={{
-          position: 'relative',
-          width: '100vw',
-          height: '100dvh',
-          backgroundImage: `url(${backgroundImage})`, // Add background image
-          backgroundSize: 'cover', // Ensure the image covers the entire area
-          backgroundPosition: 'center', // Center the image
-          backgroundRepeat: 'no-repeat', // Prevent tiling
-          overflow: 'hidden',
-          fontFamily: 'MyCustomFont, monospace',
-        }}
-      >
-        {digits.map(({ id, char, top, typeClass }) => (
-          <div
-            key={id}
-            className={typeClass}
-            style={{
-              ...digitStyle(top),
-              fontSize:
-                typeClass === 'hour'
-                  ? '5rem'
-                  : typeClass === 'minuteTens'
-                    ? '3.5rem'
-                    : '1.6rem',
-            }}
-          >
-            {char}
-          </div>
-        ))}
-      </div>
-      <style>{`
-        /* Font loading handled by useSuspenseFontLoader */
-
-        .hour, .minuteTens, .minuteOnes {
-          animation:
-            fadeInSlide 0.6s ease-out,
-            rollRight 6s linear forwards,
-            shimmer 2s infinite linear;
-          background-size: 200% auto;
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-          font-family: 'MyCustomFont', monospace;
-          text-shadow:
-            0 0 6px rgba(255, 255, 255, 0.4),
-            1px 1px 2px rgba(0, 0, 0, 0.3);
-          filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
-          -webkit-box-reflect: below -0.1em linear-gradient(transparent, rgba(0, 0, 0, 0.3));
-        }
-
-        .hour {
-          background-image: linear-gradient(
-            120deg,
-            #b8860b 0%,
-            #ffd700 40%,
-            #fff8dc 60%,
-            #ffd700 80%,
-            #b8860b 100%
-          );
-        }
-
-        .minuteTens {
-          background-image: linear-gradient(
-            120deg,
-            #aaa 0%,
-            #ccc 40%,
-            #eee 60%,
-            #ccc 80%,
-            #aaa 100%
-          );
-        }
-
-        .minuteOnes {
-          background-image: linear-gradient(
-            120deg,
-            #8c6239 0%,
-            #cd7f32 40%,
-            #f4e2d8 60%,
-            #cd7f32 80%,
-            #8c6239 100%
-          );
-        }
-
-        @keyframes fadeInSlide {
-          0% {
-            transform: translateX(-10vw);
-            opacity: 0;
-          }
-          100% {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-
-        @keyframes rollRight {
-          0% {
-            left: -10vw;
-          }
-          100% {
-            left: 110vw;
-          }
-        }
-
-        @keyframes shimmer {
-          0% {
-            background-position: 200% center;
-          }
-          100% {
-            background-position: -200% center;
-          }
-        }
-      `}</style>
-    </>
+    <main
+      className={styles.container}
+      style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
+      {digits.map(({ id, char, top, typeClass }) => (
+        <div
+          key={id}
+          className={`${styles.digit} ${styles[typeClass]}`}
+          style={{ top: `${top}vh` }}
+        >
+          {char}
+        </div>
+      ))}
+    </main>
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_25_07_27';
+
+export default MemoizedClock;

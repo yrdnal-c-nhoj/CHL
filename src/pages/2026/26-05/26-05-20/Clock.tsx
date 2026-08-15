@@ -40,16 +40,17 @@ const ClockInner =  () => {
 
       timeoutRef.current = window.setTimeout(() => {
         setIsOpen(false);
-      }, 2800); // slightly shorter than animation duration for snappier feel
+      }, 2800);
     };
 
-    openDoors();
-    const intervalId = window.setInterval(openDoors, 6200);
-
-    return () => {
-      window.clearInterval(intervalId);
-      if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+    const scheduleOpenDoors = () => {
+      openDoors();
+      const timer = setTimeout(scheduleOpenDoors, 6200);
+      return () => clearTimeout(timer);
     };
+
+    const timer = setTimeout(scheduleOpenDoors, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // Explicitly manage body background and cleanup

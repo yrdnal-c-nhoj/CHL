@@ -59,16 +59,19 @@ const RollingAnalogClock =  () => {
      REMOVE CLOCKS AFTER THEIR RANDOM DURATION
   ------------------------------------------------------------------ */
   useEffect(() => {
-    const cleaner = setInterval(() => {
+    const cleanClocks = () => {
       setClocks((prev) => prev.filter((c) => Date.now() - c.born < c.duration));
-    }, 200);
-    return () => clearInterval(cleaner);
+      const timer = setTimeout(cleanClocks, 200);
+      return () => clearTimeout(timer);
+    };
+    const timer = setTimeout(cleanClocks, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <main className={styles.container} style={{ backgroundImage: `url(${bgImage})` }}>
       {/* Accessible time element (Required) */}
-      <time dateTime={new Date().toISOString()} className={styles.semanticTime} className={styles.srOnly}>
+        <time className={styles.srOnly} dateTime={new Date().toISOString()}>
         {new Date().toLocaleTimeString()}
       </time>
 
@@ -79,7 +82,7 @@ const RollingAnalogClock =  () => {
           direction={clock.direction}
         />
       ))}
-    </div>
+    </main>
   );
 };
 
