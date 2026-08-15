@@ -8,8 +8,19 @@ import custom251112tz from '@/assets/fonts/25fonts/25-11-12-oct.ttf?url';
 
 export const assets = [];
 
-export default function TwoBackgroundOctahedron() {
+function TwoBackgroundOctahedron() {
   const threeRef = useRef(null);
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const tick = () => {
+      setTime(new Date());
+      const timer = setTimeout(tick, 1000);
+      return () => clearTimeout(timer);
+    };
+    const timer = setTimeout(tick, 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   const fontConfigs = useMemo(
     () => [
@@ -74,7 +85,12 @@ export default function TwoBackgroundOctahedron() {
     };
 
     updateClock();
-    const clockInterval = setInterval(updateClock, 1000);
+    const tick = () => {
+      updateClock();
+      const timer = setTimeout(tick, 1000);
+      return () => clearTimeout(timer);
+    };
+    const timer = setTimeout(tick, 0);
 
     const geometry = new THREE.OctahedronGeometry(2);
 
@@ -141,7 +157,7 @@ export default function TwoBackgroundOctahedron() {
     window.addEventListener('resize', handleResize);
 
     return () => {
-      clearInterval(clockInterval);
+      clearTimeout(timer);
       renderer.dispose();
       geometry.dispose();
       material.dispose();
@@ -152,7 +168,7 @@ export default function TwoBackgroundOctahedron() {
   }, []); // Dependencies cleared as font loading is handled by Suspense
 
   return (
-    <div
+    <main
       style={{
         width: '100vw',
         height: '100dvh',
@@ -213,3 +229,7 @@ export default function TwoBackgroundOctahedron() {
     </div>
   );
 }
+
+const MemoizedTwoBackgroundOctahedron = React.memo(TwoBackgroundOctahedron);
+MemoizedTwoBackgroundOctahedron.displayName = 'Clock_25_11_12';
+export default MemoizedTwoBackgroundOctahedron;

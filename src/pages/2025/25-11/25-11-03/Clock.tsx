@@ -9,7 +9,7 @@ export const assets = [];
 const digitalFont = 'digitalFont';
 const techFont = 'techFont';
 
-export default function BinaryClockWithColumns() {
+function BinaryClockWithColumns() {
   const fontConfigs = useMemo(
     () => [
       {
@@ -39,8 +39,13 @@ export default function BinaryClockWithColumns() {
   }, [fontsLoaded]);
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 50);
-    return () => clearInterval(interval);
+    const tick = () => {
+      setTime(new Date());
+      const timer = setTimeout(tick, 50);
+      return () => clearTimeout(timer);
+    };
+    const timer = setTimeout(tick, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const formatBinary = (num: number) =>
@@ -86,3 +91,7 @@ export default function BinaryClockWithColumns() {
     </div>
   );
 }
+
+const MemoizedBinaryClockWithColumns = React.memo(BinaryClockWithColumns);
+MemoizedBinaryClockWithColumns.displayName = 'Clock_25_11_03';
+export default MemoizedBinaryClockWithColumns;

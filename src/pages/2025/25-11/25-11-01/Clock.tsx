@@ -7,7 +7,7 @@ import styles from './Clock.module.css';
 
 export const assets = [];
 
-export default function EdgeClockWithHands() {
+function EdgeClockWithHands() {
   const fontConfigs: FontConfig[] = useMemo(
     () => [{ fontFamily: 'CustomClockFont', fontUrl: cus251101font }],
     [],
@@ -19,15 +19,13 @@ export default function EdgeClockWithHands() {
   const viewport = useWindowSize();
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 50);
-    const updateSize = () => {
-      /* Force re-render on resize if needed */
+    const tick = () => {
+      setTime(new Date());
+      const timer = setTimeout(tick, 50);
+      return () => clearTimeout(timer);
     };
-    window.addEventListener('resize', updateSize); // Kept for behavior compatibility
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener('resize', updateSize);
-    };
+    const timer = setTimeout(tick, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const { width, height } = viewport;
@@ -142,3 +140,7 @@ export default function EdgeClockWithHands() {
     </div>
   );
 }
+
+const MemoizedEdgeClockWithHands = React.memo(EdgeClockWithHands);
+MemoizedEdgeClockWithHands.displayName = 'Clock_25_11_01';
+export default MemoizedEdgeClockWithHands;
