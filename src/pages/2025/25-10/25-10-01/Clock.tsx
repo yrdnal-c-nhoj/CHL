@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultiAssetLoader } from '@/utils/fontLoader';
 
 // Import number images
 import one from '@/assets/images/25_images/25-10/25-10-01/1.png';
@@ -22,6 +22,8 @@ import clockFace from '@/assets/images/25_images/25-10/25-10-01/gears.webp';
 // Background video and fallback
 import backgroundVideo from '@/assets/images/25_images/25-10/25-10-01/small.mp4';
 import fallbackGif from '@/assets/images/25_images/25-10/25-10-01/small.webp';
+
+export const assets = [];
 
 export default function ImageAnalogClock() {
   const time = useMillisecondClock();
@@ -125,6 +127,8 @@ export default function ImageAnalogClock() {
         backgroundColor: '#111',
       }}
     >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       {/* Video background */}
       <video
         autoPlay

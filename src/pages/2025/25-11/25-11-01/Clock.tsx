@@ -5,6 +5,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
+export const assets = [];
+
 export default function EdgeClockWithHands() {
   const fontConfigs: FontConfig[] = useMemo(
     () => [{ fontFamily: 'CustomClockFont', fontUrl: cus251101font }],
@@ -116,7 +118,9 @@ export default function EdgeClockWithHands() {
   });
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       {/* Numbers at Rectangular Edges */}
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((n) => (
         <div key={n} className={styles.number} style={getNumberStyle(n)}>

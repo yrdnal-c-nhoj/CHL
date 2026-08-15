@@ -4,6 +4,8 @@ import digi251103font from '@/assets/fonts/25fonts/25-11-03-bin3.ttf?url';
 import tec251103font from '@/assets/fonts/25fonts/25-11-03-bin1.otf?url';
 import styles from './Clock.module.css';
 
+export const assets = [];
+
 const digitalFont = 'digitalFont';
 const techFont = 'techFont';
 
@@ -48,6 +50,8 @@ export default function BinaryClockWithColumns() {
     const bits = formatBinary(val);
     return (
       <div className={styles.column}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
         <div className={styles.binaryContainer}>
           {bits.map((bit, idx) => (
             <div
@@ -66,7 +70,7 @@ export default function BinaryClockWithColumns() {
   const ms = Math.floor(time.getMilliseconds() / 10);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       {/* Loading Overlay */}
       <div
         className={styles.loadingOverlay}

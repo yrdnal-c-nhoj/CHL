@@ -5,6 +5,8 @@ import bgVideo from '@/assets/images/25_images/25-10/25-10-18/total.mp4';
 import fallbackImg from '@/assets/images/25_images/25-10/25-10-18/tot.webp';
 import font_20251018 from '@/assets/fonts/25fonts/25-10-18-tot.ttf?url';
 
+export const assets = [];
+
 export default function MediaClock() {
   const [mediaReady, setMediaReady] = useState<boolean>(false);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
@@ -51,6 +53,8 @@ export default function MediaClock() {
         backgroundColor: '#F9F985FF',
       }}
     >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       {/* BACKGROUND MEDIA */}
       {!videoFailed ? (
         <video

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+export const assets = [];
+
 // Asset URLs (Vite-safe)
 const one = new URL(
   '../../../../assets/images/25_images/25-11/25-11-10/1.gif',
@@ -137,6 +139,8 @@ const Clock =  () => {
           fontSize: '1.2rem',
         }}
       >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
         Loading… {loadingProgress}%
       </div>
     );
@@ -306,4 +310,6 @@ const Clock =  () => {
   );
 };
 
-export default Clock;
+const MemoizedClock = React.memo(Clock);
+MemoizedClock.displayName = 'Clock_25_11_10';
+export default MemoizedClock;

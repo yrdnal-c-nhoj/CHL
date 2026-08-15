@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultiAssetLoader } from '@/utils/fontLoader';
 import blackImg from '@/assets/images/25_images/25-10/25-10-19/tile1.jpg'; // "1" squares
 import pinkImg from '@/assets/images/25_images/25-10/25-10-19/tile2.jpg'; // "0" squares
+
+export const assets = [];
 
 const GRID_SIZE = 5;
 const DIGIT_GAP = 3; // px between digits
@@ -199,6 +201,8 @@ export default function QuadrantClock() {
           height: '100%',
         }}
       >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
         {grid.flat().map((val, idx) => (
           <img
             decoding="async"

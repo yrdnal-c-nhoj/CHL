@@ -4,6 +4,8 @@ import font_25251115j from '@/assets/fonts/25fonts/25-11-15-rain.otf?url';
 import bgImage from '@/assets/images/25_images/25-11/25-11-15/fall.webp'; // local background image
 import type { FontConfig } from '@/types/clock';
 
+export const assets = [];
+
 export const fontConfigs: FontConfig[] = [
   {
     fontFamily: 'DigitFont_25251115j',
