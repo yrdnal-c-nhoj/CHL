@@ -99,7 +99,7 @@ const DigitalClock =  () => {
           <time
             className={styles.clockDisplay}
             dateTime={isoTime}
-            aria-label={ariaLabel}
+            aria-label={ariaLabel} className={styles.srOnly}
           >
             <span className={styles.timeSegment}>
               {hours}
@@ -113,4 +113,6 @@ const DigitalClock =  () => {
   );
 };
 
-export default DigitalClock;
+const MemoizedDigitalClock = React.memo(DigitalClock);
+MemoizedDigitalClock.displayName = 'Clock_26_05_15';
+export default MemoizedDigitalClock;

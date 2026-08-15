@@ -56,7 +56,7 @@ const Clock =  () => {
       <div className={styles.clockFace}>
         <time
           className={styles.digitalGrid}
-          dateTime={time.toISOString()}
+          dateTime={time.toISOString()} className={styles.srOnly}
         >
           {digits.map((digit, index) => (
             <div 
@@ -73,4 +73,6 @@ const Clock =  () => {
   );
 };
 
-export default Clock;
+const MemoizedClock = React.memo(Clock);
+MemoizedClock.displayName = 'Clock_26_05_22';
+export default MemoizedClock;

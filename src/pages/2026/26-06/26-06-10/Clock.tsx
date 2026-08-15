@@ -68,7 +68,7 @@ export default function DigitalClock() {
         <img src={phoneImg} alt="Retro Phone" className={styles.phoneImage} />
       </div>
 
-      <time className={styles.timeRow} dateTime={time.toLocaleTimeString()}>
+      <time className={styles.timeRow} dateTime={time.toLocaleTimeString()} className={styles.srOnly}>
         {timeParts.map((part, i) => (
           <div key={i} className={styles.digit}>
             {part}

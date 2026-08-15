@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import portholeVideo from '@/assets/images/26_images/26-07/26-07-25/porthole.mp4';
-import { calculateAngles } from '@/utils/clockUtils';
+import { calculateAngles } from '@/utils/hooks';
 import { useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
@@ -72,7 +72,7 @@ const Clock =  () => {
         </div>
       </div>
       {/* Accessible time element, hidden from view but available to screen readers */}
-      <time dateTime={time.toISOString()} className={styles.semanticTime}>
+      <time dateTime={time.toISOString()} className={styles.semanticTime} className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
     </main>

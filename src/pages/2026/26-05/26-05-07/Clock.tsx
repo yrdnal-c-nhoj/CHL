@@ -137,7 +137,7 @@ const AnalogClock =  () => {
       <time
         dateTime={isoTime}
         aria-label={`Current time: ${hours}:${minutes}`}
-        className={styles.timeWrapper}
+        className={styles.timeWrapper} className={styles.srOnly}
       >
         <div className={styles.clockFace}>
           {tickMarks.map((tick) => (
@@ -210,4 +210,6 @@ const AnalogClock =  () => {
   );
 };
 
-export default memo(AnalogClock);
+const MemoizedClock = memo(AnalogClock);
+MemoizedClock.displayName = 'Clock_26_05_07';
+export default MemoizedClock;

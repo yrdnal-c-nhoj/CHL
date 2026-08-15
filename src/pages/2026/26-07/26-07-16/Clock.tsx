@@ -83,7 +83,7 @@ const Clock =  () => {
   }, [phase, animate]);
 
   return (
-    <div
+    <main
       className={styles.container}
     >
       <div ref={containerRef} className={styles.clockWrapper}>
@@ -101,4 +101,6 @@ const Clock =  () => {
   );
 };
 
-export default Clock;
+const MemoizedClock = React.memo(Clock);
+MemoizedClock.displayName = 'Clock_26_07_16';
+export default MemoizedClock;

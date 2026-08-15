@@ -33,7 +33,7 @@ const AnalogClock =  () => {
       )}
 
       <div className={styles.analogClock}>
-        <time className={styles.face} dateTime={isoTime}>
+        <time className={styles.face} dateTime={isoTime} className={styles.srOnly}>
           {/* Hands */}
           <div
             className={styles.hourHand}
@@ -56,4 +56,6 @@ const AnalogClock =  () => {
   );
 };
 
-export default AnalogClock;
+const MemoizedClock = React.memo(AnalogClock);
+MemoizedClock.displayName = 'Clock_26_05_16';
+export default MemoizedClock;

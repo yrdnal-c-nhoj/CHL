@@ -1,4 +1,4 @@
-import { formatTime as utilFormatTime } from '@/utils/clockUtils'; // Alias to avoid conflict with local formatTime
+import { formatTime as utilFormatTime } from '@/utils/hooks'; // Alias to avoid conflict with local formatTime
 import { useMillisecondClock } from '@/utils/hooks'; // Use the standardized hook
 import React, {
   useCallback,
@@ -279,4 +279,6 @@ const Clock =  () => {
   );
 };
 
-export default Clock;
+const MemoizedClock = React.memo(Clock);
+MemoizedClock.displayName = 'Clock_26_01_24';
+export default MemoizedClock;

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import bgImage from '@/assets/images/25_images/25-08/25-08-08/q.webp';
 import fontFile_2025_11_01 from '@/assets/fonts/25fonts/25-08-08-q.otf';
+import bgImage from '@/assets/images/25_images/25-08/25-08-08/q.webp';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+import { useMemo } from 'react';
+import styles from './Clock.module.css';
 
 export default function DigitalClock() {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -19,7 +20,6 @@ export default function DigitalClock() {
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const time = useMillisecondClock();
-  const [offsetX, setOffsetX] = useState<number>(0);
 
   const hours = time.getHours().toString().padStart(2, '0');
   const minutes = time.getMinutes().toString().padStart(2, '0');
@@ -28,62 +28,26 @@ export default function DigitalClock() {
     .toString()
     .padStart(2, '0');
 
-  const DigitBox: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div
-      style={{
-        width: '1.5ch',
-        textAlign: 'center',
-        display: 'inline-block',
-        userSelect: 'none',
-        fontFamily: "'MyCustomFont', monospace, sans-serif", // Explicitly apply font
-        fontWeight: 'normal',
-        fontStyle: 'normal',
-      }}
-    >
-      {children}
-    </div>
-  );
+  // Memoize the time string to prevent re-renders if the time hasn't changed
+  const timeString = useMemo(() => `${hours}${minutes}${seconds}${hundredths}`, [hours, minutes, seconds, hundredths]);
 
   return (
-    <>
-      <style>
-        {`
-          /* Font loading handled by useSuspenseFontLoader */
-          html, body, #root {
-            margin: 0; padding: 0; height: 100%;
-            font-family: 'MyCustomFont', monospace, sans-serif;
-            background: black;
-          }
-        `}
-      </style>
-
-      <div
-        style={{
-          height: '100vh',
-          width: '100vw',
-          backgroundImage: `url(${bgImage})`,
-          backgroundSize: '110% 110%',
-          backgroundPosition: `${offsetX}px 0px`,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontSize: '10vh',
-          color: '#fff',
-          textShadow: '2px 2px 4px rgba(0,0,0,0.7)',
-          userSelect: 'none',
-          transition: 'none',
-          fontFamily: "'MyCustomFont', monospace, sans-serif", // Ensure font is applied
-        }}
-      >
-        <DigitBox>{hours[0]}</DigitBox>
-        <DigitBox>{hours[1]}</DigitBox>
-        <DigitBox>{minutes[0]}</DigitBox>
-        <DigitBox>{minutes[1]}</DigitBox>
-        <DigitBox>{seconds[0]}</DigitBox>
-        <DigitBox>{seconds[1]}</DigitBox>
-        <DigitBox>{hundredths[0]}</DigitBox>
-        <DigitBox>{hundredths[1]}</DigitBox>
-      </div>
-    </>
+    <main
+      className={styles.container}
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        // The offsetX state was unused, so I've set it to 0.
+        // If you plan to animate this, you can re-introduce the state.
+        backgroundPosition: `0px 0px`,
+      }}
+    >
+      <time dateTime={time.toISOString()}>
+        {timeString.split('').map((digit, index) => (
+          <div key={index} className={styles.digitBox}>
+            {digit}
+          </div>
+        ))}
+      </time>
+    </main>
   );
 }

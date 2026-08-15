@@ -140,7 +140,7 @@ const AnalogClock =  () => {
   }, [currentTime]);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <BackgroundLayers />
 
       <div
@@ -153,7 +153,7 @@ const AnalogClock =  () => {
           } as React.CSSProperties
         }
       >
-        <time dateTime={currentTime.toISOString()} className={styles.timeA11y}>
+        <time dateTime={currentTime.toISOString()} className={styles.srOnly}>
           {currentTime.toTimeString()}
         </time>
 
@@ -169,4 +169,6 @@ const AnalogClock =  () => {
   );
 };
 
-export default memo(AnalogClock);
+const MemoizedClock = memo(AnalogClock);
+MemoizedClock.displayName = 'Clock_26_05_18';
+export default MemoizedClock;

@@ -39,7 +39,7 @@ const Clock =  () => {
   }, [time]);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <video
         className={styles.video}
         autoPlay
@@ -71,4 +71,6 @@ const Clock =  () => {
   );
 };
 
-export default Clock;
+const MemoizedClock = React.memo(Clock);
+MemoizedClock.displayName = 'Clock_26_06_04';
+export default MemoizedClock;
