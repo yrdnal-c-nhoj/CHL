@@ -4,6 +4,8 @@ import * as THREE from 'three';
 import OrbitronFont20251012 from '@/assets/fonts/25fonts/25-10-14-air.ttf';
 import bgImage from '@/assets/images/25_images/25-10/25-10-14/air.webp';
 
+export const assets = [];
+
 const SpinningDodecahedronClock =  () => {
   const containerRef = useRef(null);
   const bgRef = useRef(null);
@@ -242,6 +244,8 @@ const SpinningDodecahedronClock =  () => {
         backgroundColor: '#000',
       }}
     >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       {!ready && (
         <div
           style={{
@@ -297,4 +301,6 @@ const SpinningDodecahedronClock =  () => {
   );
 };
 
-export default SpinningDodecahedronClock;
+const MemoizedSpinningDodecahedronClock = React.memo(SpinningDodecahedronClock);
+MemoizedSpinningDodecahedronClock.displayName = 'Clock_25_10_14';
+export default MemoizedSpinningDodecahedronClock;

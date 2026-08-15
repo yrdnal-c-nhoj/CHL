@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultiAssetLoader } from '@/utils/fontLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgVideo from '@/assets/images/25_images/25-10/25-10-26/monarch.mp4';
 import fallbackImg from '@/assets/images/25_images/25-10/25-10-26/monarch.webp';
 import romanFont2025_10_27 from '@/assets/fonts/25fonts/25-10-26-roman.otf'; // Optimized OTF
 import type { FontConfig } from '@/types/clock';
+
+export const assets = [];
 
 const fontConfigs: FontConfig[] = [
   {
@@ -183,6 +185,8 @@ export default function MonarchClock() {
         backgroundColor: '#000',
       }}
     >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       {!videoFailed ? (
         <video
           ref={videoRef}

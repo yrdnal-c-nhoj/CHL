@@ -6,6 +6,8 @@ import bgFull from '@/assets/images/25_images/25-11/25-11-12/octo.webp'; // full
 import bgTile from '@/assets/images/25_images/25-11/25-11-12/octoh.webp'; // repeating/tiled background
 import custom251112tz from '@/assets/fonts/25fonts/25-11-12-oct.ttf?url';
 
+export const assets = [];
+
 export default function TwoBackgroundOctahedron() {
   const threeRef = useRef(null);
 
@@ -159,6 +161,8 @@ export default function TwoBackgroundOctahedron() {
         backgroundColor: '#000',
       }}
     >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       {/* FULL IMAGE BACKGROUND */}
       <div
         style={{

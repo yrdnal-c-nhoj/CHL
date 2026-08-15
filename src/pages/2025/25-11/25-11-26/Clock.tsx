@@ -7,6 +7,8 @@ import videoWebM from '@/assets/images/25_images/25-11/25-11-26/esp.mp4';
 import fallbackImg from '@/assets/images/25_images/25-11/25-11-26/birds.webp';
 import fontUrl_20251128 from '@/assets/fonts/25fonts/25-11-26-bird.ttf?url';
 
+export const assets = [];
+
 // Export assets for preloading
 export { videoFile, videoWebM, fallbackImg };
 
@@ -125,6 +127,8 @@ function DigitalTime() {
 
   return (
     <div style={containerStyle} aria-live="polite">
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
         {letters.map((l, idx) => (
           <span key={idx} style={l.style}>
             {l.char}

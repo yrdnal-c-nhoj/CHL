@@ -21,16 +21,21 @@ const fontConfigs: FontConfig[] = [{ fontFamily: 'ClockFont_26_08_07', fontUrl }
 // TYPES
 // -----------------------------------------------------------------------------
 type FallState = 'idle' | 'shaking' | 'falling' | 'fading';
-type CharacterStates = FallState[];
+
+interface CharacterState {
+  state: FallState;
+  fallAt: number; // Timestamp to start falling
+  shakeAt: number; // Timestamp to start shaking
+}
 
 // -----------------------------------------------------------------------------
 // COMPONENT
 // -----------------------------------------------------------------------------
 const Clock_26_08_07 = () => {
-  const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
+  const time = useSecondClock();
 
-  const [charStates, setCharStates] = useState<CharacterStates>([]);
+  const [charStates, setCharStates] = useState<CharacterState[]>([]);
 
   // Ref to hold timers to ensure they are cleared on unmount/re-run
   const animationTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -53,123 +58,79 @@ const Clock_26_08_07 = () => {
 
   // Initialize or update character states when the string length changes
   useEffect(() => {
-    setCharStates(Array(fullString.length).fill('idle'));
+    setCharStates(
+      Array(fullString.length)
+        .fill(null)
+        .map(() => ({ state: 'idle', fallAt: Infinity, shakeAt: Infinity })),
+    );
   }, [fullString.length]);
 
-  // Animation cycle: trigger a full cascade of falling characters
+  // Animation cycle: trigger a full cascade of falling characters using rAF
   useEffect(() => {
-    // Function to clear all scheduled animation timers
-    const clearTimers = () => {
-      animationTimers.current.forEach(clearTimeout);
-      animationTimers.current = [];
-    };
+    let animationFrameId: number;
+    let lastCascadeTime = 0;
+    const CASCADE_INTERVAL = 10000; // Start a new cascade every 10 seconds
 
-    // Main animation sequence orchestrator
-    const startCascade = () => {
-      clearTimers(); // Ensure no old timers are running
+    const animate = (timestamp: number) => {
+      // 1. Trigger a new cascade at intervals
+      if (timestamp - lastCascadeTime > CASCADE_INTERVAL) {
+        lastCascadeTime = timestamp;
 
-      // --- New Randomized Timing Logic ---
-      // 1. All characters are now eligible to be part of the main animation group.
-      const allIndices = fullString.split('').map((_, i) => i);
+        const indices = fullString.split('').map((_, i) => i);
+        const shuffled = indices.sort(() => Math.random() - 0.5);
 
-      // 2. Shuffle all indices to randomize their roles.
-      for (let i = allIndices.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [allIndices[i], allIndices[j]] = [allIndices[j], allIndices[i]];
-      }
+        const hasDelayedFinale = Math.random() > 0.25;
+        const lastToFallIndex = hasDelayedFinale ? shuffled.pop() : null;
 
-      // 3. Decide if there will be a delayed final character.
-      const hasDelayedFinale = Math.random() > 0.25; // 75% chance of a finale
-      let lastToFallIndex: number | null = null;
-      const mainGroupIndices = allIndices;
-
-      if (hasDelayedFinale && allIndices.length > 1) {
-        lastToFallIndex = allIndices.pop()!;
-      }
-
-      if (mainGroupIndices.length === 0) return;
-
-      // Function to trigger a character's fall sequence
-      const triggerFall = (charIndex: number) => {
-        const SHAKE_DURATION = 1800; // ms
-        // Start shaking
         setCharStates((prev) => {
           const next = [...prev];
-          if (next[charIndex] === 'idle') next[charIndex] = 'shaking';
+          let maxFallDelay = 0;
+
+          // Schedule main group
+          shuffled.forEach((charIndex) => {
+            const fallDelay = 1000 + Math.random() * 2000;
+            if (fallDelay > maxFallDelay) maxFallDelay = fallDelay;
+            if (next[charIndex]) {
+              next[charIndex]!.shakeAt = timestamp + fallDelay;
+              next[charIndex]!.fallAt = timestamp + fallDelay + 1800;
+            }
+          });
+
+          // Schedule finale
+          if (lastToFallIndex !== null && next[lastToFallIndex]) {
+            const lastFallTime = maxFallDelay + 1800 + 1500 + 2000;
+            next[lastToFallIndex]!.shakeAt = timestamp + lastFallTime;
+            next[lastToFallIndex]!.fallAt = timestamp + lastFallTime + 1800;
+          }
+
           return next;
         });
-        // After shaking, start falling
-        const fallAnimTimer = setTimeout(() => {
-          setCharStates((prev) => {
-            const next = [...prev];
-            if (next[charIndex] === 'shaking') next[charIndex] = 'falling';
-            return next;
-          });
-          // After falling, start fading immediately
-          const fadeTimer = setTimeout(() => {
-            setCharStates((prev) => {
-              const next = [...prev];
-              if (next[charIndex] === 'falling') next[charIndex] = 'fading';
-              return next;
-            });
-          }, FALL_ANIMATION_DURATION);
-          animationTimers.current.push(fadeTimer);
-        }, SHAKE_DURATION);
-        animationTimers.current.push(fallAnimTimer);
-      };
-
-      // 4. The first character from the shuffled main group falls immediately.
-      const firstToFallIndex = mainGroupIndices.shift()!;
-      triggerFall(firstToFallIndex);
-
-      // 5. Trigger the rest of the main group at random intervals.
-      let maxFallDelay = 0;
-      mainGroupIndices.forEach((charIndex) => {
-        // Stagger the rest of the falls over a random window starting after the first one.
-        const fallDelay = 1000 + Math.random() * 2000; // Random delay between 1 and 3 seconds
-        if (fallDelay > maxFallDelay) maxFallDelay = fallDelay;
-
-        const fallTimer = setTimeout(() => {
-          triggerFall(charIndex);
-        }, fallDelay);
-        animationTimers.current.push(fallTimer);
-      });
-
-      // --- Sequence Finale: Last Character Fall, Fade Out, and Reset ---
-
-      const FALL_ANIMATION_DURATION = 1500;
-      const SHAKE_DURATION = 1800;
-      const FADE_DURATION = 200;
-
-      // Time when the last character of the main group has finished its fall animation
-      const lastDigitLandedTime = maxFallDelay + SHAKE_DURATION + FALL_ANIMATION_DURATION;
-
-      // 6. Schedule the final, randomly chosen character to fall after the main group lands.
-      if (lastToFallIndex !== null) {
-        const lastFallTimer = setTimeout(() => {
-          triggerFall(lastToFallIndex!);
-        }, lastDigitLandedTime + 2000);
-        animationTimers.current.push(lastFallTimer);
       }
 
-      // Schedule the final reset after all animations (including fade) are complete for the colon.
-      const resetTimer = setTimeout(() => {
-        setCharStates(Array(fullString.length).fill('idle'));
+      // 2. Update character states based on timestamps
+      setCharStates((prev) =>
+        prev.map((char, i) => {
+          if (char.state === 'fading' && timestamp > char.fallAt + 1500 + 200) {
+            return { state: 'idle', fallAt: Infinity, shakeAt: Infinity };
+          }
+          if (char.state === 'falling' && timestamp > char.fallAt + 1500) {
+            return { ...char, state: 'fading' };
+          }
+          if (char.state === 'shaking' && timestamp > char.fallAt) {
+            return { ...char, state: 'falling' };
+          }
+          if (char.state === 'idle' && timestamp > char.shakeAt) {
+            return { ...char, state: 'shaking' };
+          }
+          return char;
+        }),
+      );
 
-        // Schedule the next cascade to start 1 second after this reset.
-        const nextCascadeTimer = setTimeout(startCascade, 1000);
-        animationTimers.current.push(nextCascadeTimer);
-      }, lastDigitLandedTime + 2000 + SHAKE_DURATION + FALL_ANIMATION_DURATION + FADE_DURATION);
-      animationTimers.current.push(resetTimer);
+      animationFrameId = requestAnimationFrame(animate);
     };
 
-    // Start the first cascade after an initial delay. Subsequent cascades are chained.
-    const initial = setTimeout(startCascade, 2500);
-    animationTimers.current.push(initial);
-
-    return () => {
-      clearTimers();
-    };
+    animationFrameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrameId);
   }, [fullString]); // Rerun if the time string format changes (e.g. 9:59 -> 10:00)
 
   return (
@@ -188,7 +149,7 @@ const Clock_26_08_07 = () => {
           {timeString.split('').map((char, i) => (
             <span
               key={`t-${i}`}
-              className={`${styles.char} ${styles[charStates[i]] ?? ''}`}
+              className={`${styles.char} ${styles[charStates[i]?.state] ?? ''}`}
             >
               {char}
             </span>
@@ -199,8 +160,7 @@ const Clock_26_08_07 = () => {
           {ampm.split('').map((char, i) => (
             <span
               key={`a-${i}`}
-              className={`${styles.char} ${
-                styles[charStates[i + timeString.length]] ?? ''
+              className={`${styles.char} ${styles[charStates[i + timeString.length]?.state] ?? ''
               }`}
             >
               {char}

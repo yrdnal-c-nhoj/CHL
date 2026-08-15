@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import rai251027font from '@/assets/fonts/25fonts/25-10-27-wish.otf';
 import sfont251027 from '@/assets/fonts/25fonts/25-10-27-wish.ttf';
 
+export const assets = [];
+
 export default function SkyClock() {
   const [localTime, setLocalTime] = useState<any>('');
   const [skyGradient, setSkyGradient] = useState<any>('');
@@ -376,6 +378,8 @@ export default function SkyClock() {
   if (!fontsLoaded) {
     return (
       <div style={{ width: '100vw', height: '100dvh', background: '#000' }} />
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
     );
   }
 

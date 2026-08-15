@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultiAssetLoader } from '@/utils/fontLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage2 from '@/assets/images/25_images/25-10/25-10-13/ro.jpeg';
 import bgImage from '@/assets/images/25_images/25-10/25-10-13/roundhay.webp'; // second background
 import roundhayFont from '@/assets/fonts/25fonts/25-10-13-rou.ttf';
 import ifont25100013 from '@/assets/fonts/25fonts/25-10-13-line.otf';
+
+export const assets = [];
 
 export default function Clock() {
   const [ready, setReady] = useState<boolean>(false);
@@ -160,6 +162,8 @@ export default function Clock() {
 
   const renderDigits = (value) => (
     <div style={digitsRowStyle}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       {String(value)
         .split('')
         .map((digit, i) => (

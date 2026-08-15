@@ -5,6 +5,8 @@ import type { FontConfig } from '@/types/clock';
 import backgroundImg from '@/assets/images/25_images/25-11/25-11-29/squ.webp';
 import fontUrl_20251128 from '@/assets/fonts/25fonts/25-11-29-roc.ttf?url';
 
+export const assets = [];
+
 export default function RococoDigitalClock() {
   const now = useMillisecondClock();
   const [morph, setMorph] = useState<number>(0);
@@ -90,6 +92,8 @@ export default function RococoDigitalClock() {
           opacity: 1,
         }}
       >
+      <time dateTime={now.toISOString()} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
+
         {/* Font face is now loaded in the main effect */}
         <div style={{ display: 'flex', position: 'relative' }}>
           {hours.split('').map((char, i) => (

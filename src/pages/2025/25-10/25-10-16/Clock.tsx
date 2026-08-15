@@ -1,11 +1,13 @@
 // VenusClock.jsx
 import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useMultiAssetLoader } from '@/utils/fontLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgLayer1 from '@/assets/images/25_images/25-10/25-10-16/venus2.webp';
 import bgLayer2 from '@/assets/images/25_images/25-10/25-10-16/venus.webp';
 import fullBg from '@/assets/images/25_images/25-10/25-10-16/ve.jpg';
 import font20251015 from '@/assets/fonts/25fonts/25-10-16-venus.ttf';
+
+export const assets = [];
 
 export default function VenusClock() {
   const [ready, setReady] = useState<boolean>(false);
@@ -117,7 +119,9 @@ export default function VenusClock() {
     requestAnimationFrame(scroll);
   }, [ready]);
 
-  if (!ready) return <div>Loading...</div>;
+  if (!ready) return <div>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+Loading...</div>;
 
   // --- Styles ---
   const outerWrapperStyle = {

@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import f251023 from '@/assets/fonts/25fonts/25-10-23-gr.ttf';
 import bgImage from '@/assets/images/25_images/25-10/25-10-23/bg.gif';
 
+export const assets = [];
+
 const Clockgrid =  () => {
   const [time, setTime] = useState<any>({
     hours: '',
@@ -123,6 +125,8 @@ const Clockgrid =  () => {
       const char = timeCharacters[i % patternLength];
       return (
         <div key={i} style={styles.characterCell}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
           {char}
         </div>
       );
@@ -137,4 +141,6 @@ const Clockgrid =  () => {
   );
 };
 
-export default Clockgrid;
+const MemoizedClockgrid = React.memo(Clockgrid);
+MemoizedClockgrid.displayName = 'Clock_25_10_23';
+export default MemoizedClockgrid;

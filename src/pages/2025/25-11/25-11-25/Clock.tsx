@@ -7,6 +7,8 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import styles from './Clock.module.css';
 
+export const assets = [];
+
 export { backgroundImg };
 
 const NTP_EPOCH_OFFSET = 2208988800;
@@ -113,6 +115,8 @@ export default function NtpClock() {
       className={styles.wrapper}
       style={{ '--bg-img': `url(${backgroundImg})` } as React.CSSProperties}
     >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <div
         className={`${styles.clock} ${isPortrait ? styles.portrait : styles.landscape}`}
       >

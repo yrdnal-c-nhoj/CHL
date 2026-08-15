@@ -6,6 +6,8 @@ import type { CSSProperties } from 'react';
 import coinGif from '@/assets/images/25_images/25-04/25-04-27/coin.gif';
 import spinWebp from '@/assets/images/25_images/25-04/25-04-27/spin.webp';
 
+export const assets = [];
+
 // Component Props interface
 interface SpinningCoinClockProps {
   // No props required for this component
@@ -74,6 +76,8 @@ const SpinningCoinClock: React.FC<SpinningCoinClockProps> = () => {
         position: 'relative',
       }}
     >
+      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
+
       <img
         decoding="async"
         loading="lazy"
@@ -204,4 +208,6 @@ const SpinningCoinClock: React.FC<SpinningCoinClockProps> = () => {
   );
 };
 
-export default SpinningCoinClock;
+const MemoizedSpinningCoinClock = React.memo(SpinningCoinClock);
+MemoizedSpinningCoinClock.displayName = 'Clock_25_04_27';
+export default MemoizedSpinningCoinClock;
