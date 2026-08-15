@@ -226,7 +226,7 @@ function TwoBackgroundOctahedron() {
           }
         `}
       </style>
-    </div>
+    </main>
   );
 }
 

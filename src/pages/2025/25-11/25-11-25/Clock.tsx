@@ -163,7 +163,7 @@ function NtpClock() {
           5,
         )}
       </div>
-    </div>
+    </main>
   );
 }
 

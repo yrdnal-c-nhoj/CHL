@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { useSecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [];
@@ -76,20 +76,20 @@ const extraBg = new URL(
   import.meta.url,
 ).href;
 
-const Clock =  () => {
-  const [time, setTime] = useState(new Date());
+const Clock = () => {
+  const time = useSecondClock();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [loadingProgress, setLoadingProgress] = useState<number>(0);
   const [loadingError, setLoadingError] = useState<any>(null);
 
   // Smooth animation loop
   useEffect(() => {
-    const tick = () => {
-      setTime(new Date());
-      const timer = setTimeout(tick, 100);
+    const scheduleFrame = () => {
+      setLoadingProgress((prev) => (prev >= 100 ? 0 : prev + 1));
+      const timer = setTimeout(scheduleFrame, 100);
       return () => clearTimeout(timer);
     };
-    const timer = setTimeout(tick, 0);
+    const timer = setTimeout(scheduleFrame, 0);
     return () => clearTimeout(timer);
   }, []);
 
@@ -134,6 +134,7 @@ const Clock =  () => {
   if (!isLoaded) {
     return (
       <main
+        className={styles.container}
         style={{
           height: '100dvh',
           display: 'flex',
@@ -147,7 +148,7 @@ const Clock =  () => {
       <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
 
         Loading… {loadingProgress}%
-      </div>
+      </main>
     );
   }
 
@@ -185,6 +186,7 @@ const Clock =  () => {
 
   return (
     <main
+      className={styles.container}
       style={{
         position: 'fixed',
         inset: 0,
@@ -311,7 +313,7 @@ const Clock =  () => {
           {loadingError}
         </div>
       )}
-    </div>
+    </main>
   );
 };
 
