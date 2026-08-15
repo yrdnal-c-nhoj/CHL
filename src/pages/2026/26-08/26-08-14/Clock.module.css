@@ -59,7 +59,7 @@
 
 /* --- Digital Clock Styles --- */
 .digitalClock {
-  font-family: 'ClockFont_26_08_13', var(--font-oxanium, monospace);
+  font-family: 'ClockFont_26_08_14', var(--font-oxanium, monospace);
   font-size: 13vh;
   display: flex;
   align-items: center;
