@@ -13,11 +13,22 @@ export const fontConfigs: FontConfig[] = [
   },
 ];
 
-export default function FallClock() {
+function FallClock() {
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
   const timeDigitsRef = useRef([]);
   const bgRef = useRef(null);
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const tick = () => {
+      setTime(new Date());
+      const timer = setTimeout(tick, 1000);
+      return () => clearTimeout(timer);
+    };
+    const timer = setTimeout(tick, 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Use standardized font loader
   useSuspenseFontLoader(fontConfigs);
@@ -32,17 +43,19 @@ export default function FallClock() {
 
   // Update digits every second
   useEffect(() => {
-    const updateTimeDigits =  () => {
+    const tick = () => {
       const now = new Date();
       const hours = now.getHours() % 12 || 12;
       const minutes = now.getMinutes();
       timeDigitsRef.current = `${hours}${minutes
         .toString()
         .padStart(2, '0')}`.split('');
+      const timer = setTimeout(tick, 1000);
+      return () => clearTimeout(timer);
     };
-    updateTimeDigits();
-    const interval = setInterval(updateTimeDigits, 1000);
-    return () => clearInterval(interval);
+    tick();
+    const timer = setTimeout(tick, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -212,10 +225,17 @@ export default function FallClock() {
   );
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={canvasStyle}
-      aria-label="Digit leaf animation"
-    />
+    <main>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+      <canvas
+        ref={canvasRef}
+        style={canvasStyle}
+        aria-label="Digit leaf animation"
+      />
+    </main>
   );
 }
+
+const MemoizedFallClock = React.memo(FallClock);
+MemoizedFallClock.displayName = 'Clock_25_11_15';
+export default MemoizedFallClock;

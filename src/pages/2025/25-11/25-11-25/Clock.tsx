@@ -60,7 +60,7 @@ export const fontConfigs: FontConfig[] = [
   },
 ];
 
-export default function NtpClock() {
+function NtpClock() {
   const { offset, isSynced } = useNtpOffset();
   useSuspenseFontLoader(fontConfigs);
 
@@ -71,6 +71,17 @@ export default function NtpClock() {
   const [marqueePos, setMarqueePos] = useState<number>(0);
   const [displayTime, setDisplayTime] = useState('');
   const [isPortrait, setIsPortrait] = useState(false);
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const tick = () => {
+      setTime(new Date());
+      const timer = setTimeout(tick, 1000);
+      return () => clearTimeout(timer);
+    };
+    const timer = setTimeout(tick, 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     setIsPortrait(window.innerHeight > window.innerWidth);
@@ -98,8 +109,8 @@ export default function NtpClock() {
     };
 
     tick();
-    const interval: number = setInterval(tick, MS_PER_SECOND);
-    return () => clearInterval(interval);
+    const tickInterval = setInterval(tick, MS_PER_SECOND);
+    return () => clearInterval(tickInterval);
   }, [offset]);
 
   useEffect(() => {
@@ -111,7 +122,7 @@ export default function NtpClock() {
   }, []);
 
   return (
-    <div
+    <main
       className={styles.wrapper}
       style={{ '--bg-img': `url(${backgroundImg})` } as React.CSSProperties}
     >
@@ -155,3 +166,7 @@ export default function NtpClock() {
     </div>
   );
 }
+
+const MemoizedNtpClock = React.memo(NtpClock);
+MemoizedNtpClock.displayName = 'Clock_25_11_25';
+export default MemoizedNtpClock;

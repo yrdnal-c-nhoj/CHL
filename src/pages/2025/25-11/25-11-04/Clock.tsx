@@ -6,8 +6,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader'; // Nautical font
 
 export const assets = [];
 
-export default function OceanStorm() {
-  // Standardized font loading with font-display: swap to avoid FOUC
+function OceanStorm() {
   const fontConfigs = useMemo(
     () => [
       {
@@ -24,6 +23,7 @@ export default function OceanStorm() {
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const [vh, setVh] = useState<any>(window.innerHeight);
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
     // Update vh dynamically
@@ -33,10 +33,20 @@ export default function OceanStorm() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    const tick = () => {
+      setTime(new Date());
+      const timer = setTimeout(tick, 1000);
+      return () => clearTimeout(timer);
+    };
+    const timer = setTimeout(tick, 0);
+    return () => clearTimeout(timer);
+  }, []);
+
   const clockSize = '60vmin';
 
   return (
-    <div
+    <main
       style={{
         position: 'relative',
         width: '100vw',
@@ -143,8 +153,13 @@ function ClockFace() {
     };
 
     updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
+    const tick = () => {
+      updateClock();
+      const timer = setTimeout(tick, 1000);
+      return () => clearTimeout(timer);
+    };
+    const timer = setTimeout(tick, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   const brassHand = (widthVmin, heightVmin, shadow) => ({

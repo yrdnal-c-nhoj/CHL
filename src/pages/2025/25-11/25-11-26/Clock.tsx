@@ -23,11 +23,22 @@ export const fontConfigs = [
 function DigitalTime() {
   const [timeText, setTimeText] = useState<any>('');
   const [letters, setLetters] = useState<any>([]);
+  const [time, setTime] = useState(new Date());
 
   const ANIMATION_DURATION = 10000; // 10 seconds
   const STAGGER_DELAY = 800;
 
   useSuspenseFontLoader(fontConfigs);
+
+  useEffect(() => {
+    const tick = () => {
+      setTime(new Date());
+      const timer = setTimeout(tick, 1000);
+      return () => clearTimeout(timer);
+    };
+    const timer = setTimeout(tick, 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   const updateTime =  () => {
     const now = new Date();
@@ -45,8 +56,13 @@ function DigitalTime() {
 
   useEffect(() => {
     updateTime();
-    const interval = setInterval(updateTime, ANIMATION_DURATION);
-    return () => clearInterval(interval);
+    const tick = () => {
+      updateTime();
+      const timer = setTimeout(tick, ANIMATION_DURATION);
+      return () => clearTimeout(timer);
+    };
+    const timer = setTimeout(tick, ANIMATION_DURATION);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -139,7 +155,7 @@ function DigitalTime() {
 }
 
 // --- Background Video Component ---
-export default function BackgroundVideo() {
+function BackgroundVideo() {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const videoRef = useRef(null);
 
@@ -191,7 +207,7 @@ export default function BackgroundVideo() {
   };
 
   return (
-    <div
+    <main
       style={containerStyle}
       role="region"
       aria-label="Background video and time"
@@ -214,6 +230,10 @@ export default function BackgroundVideo() {
           <span style={{ display: 'none' }}>Fallback background image</span>
         )}
       </div>
-    </div>
+    </main>
   );
 }
+
+const MemoizedBackgroundVideo = React.memo(BackgroundVideo);
+MemoizedBackgroundVideo.displayName = 'Clock_25_11_26';
+export default MemoizedBackgroundVideo;

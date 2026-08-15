@@ -7,7 +7,7 @@ import fontUrl_20251128 from '@/assets/fonts/25fonts/25-11-29-roc.ttf?url';
 
 export const assets = [];
 
-export default function RococoDigitalClock() {
+function RococoDigitalClock() {
   const now = useMillisecondClock();
   const [morph, setMorph] = useState<number>(0);
   const [isVertical, setIsVertical] = useState<boolean>(false);
@@ -26,15 +26,16 @@ export default function RococoDigitalClock() {
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    // Set up morph interval
-    const morphInterval = setInterval(() => {
-      setMorph((m) => m + 1);
-    }, 5000);
     setMorph(1);
+    const tick = () => {
+      setMorph((m) => m + 1);
+      const timer = setTimeout(tick, 5000);
+      return () => clearTimeout(timer);
+    };
+    const timer = setTimeout(tick, 5000);
 
-    // Cleanup
     return () => {
-      clearInterval(morphInterval);
+      clearTimeout(timer);
     };
   }, []);
 
@@ -74,7 +75,7 @@ export default function RococoDigitalClock() {
 
   if (isVertical) {
     return (
-      <div
+      <main
         style={{
           width: '100vw',
           height: '100dvh',
@@ -196,7 +197,7 @@ export default function RococoDigitalClock() {
   }
 
   return (
-    <div
+    <main
       style={{
         width: '100vw',
         height: '100dvh',
@@ -211,6 +212,7 @@ export default function RococoDigitalClock() {
         overflow: 'hidden',
       }}
     >
+      <time dateTime={now.toISOString()} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
       <div
         style={{
           display: 'flex',
@@ -248,6 +250,10 @@ export default function RococoDigitalClock() {
           </div>
         ))}
       </div>
-    </div>
+    </main>
   );
 }
+
+const MemoizedRococoDigitalClock = React.memo(RococoDigitalClock);
+MemoizedRococoDigitalClock.displayName = 'Clock_25_11_29';
+export default MemoizedRococoDigitalClock;

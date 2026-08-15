@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import styles from './Clock.module.css';
+
 export const assets = [];
 
 // Asset URLs (Vite-safe)
@@ -82,10 +84,13 @@ const Clock =  () => {
 
   // Smooth animation loop
   useEffect(() => {
-    const interval = setInterval(() => {
+    const tick = () => {
       setTime(new Date());
-    }, 100); // Update every 100ms for smooth time display
-    return () => clearInterval(interval);
+      const timer = setTimeout(tick, 100);
+      return () => clearTimeout(timer);
+    };
+    const timer = setTimeout(tick, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // Preload images
@@ -128,7 +133,7 @@ const Clock =  () => {
 
   if (!isLoaded) {
     return (
-      <div
+      <main
         style={{
           height: '100dvh',
           display: 'flex',
@@ -179,7 +184,7 @@ const Clock =  () => {
   ];
 
   return (
-    <div
+    <main
       style={{
         position: 'fixed',
         inset: 0,
