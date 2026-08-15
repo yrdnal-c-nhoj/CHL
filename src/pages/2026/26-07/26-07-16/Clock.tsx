@@ -97,7 +97,7 @@ const Clock =  () => {
           <span>{timeUnits.seconds}</span>
         </time>
       </div>
-    </div>
+    </main>
   );
 };
 

@@ -124,7 +124,7 @@ const AmbientDisplayClock: FC = () => {
     <main className={styles.container}>
       <BackgroundLayers />
       <DigitalClock />
-    </div>
+    </main>
   );
 };
 const MemoizedAmbientDisplayClock = React.memo(AmbientDisplayClock);

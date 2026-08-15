@@ -21,8 +21,6 @@ const TickMarks =  () => (
             transform: `rotate(${i * 6}deg)`,
           }}
         />
-      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
-
       );
     })}
   </>
@@ -45,6 +43,7 @@ const AnalogClock =  () => {
 
   return (
     <main className={styles.container}>
+      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
       <div className={styles.videoBackground}>
         <video autoPlay loop muted playsInline className={styles.videoLayer}>
           <source src={fireworksVideo1} type="video/mp4" />

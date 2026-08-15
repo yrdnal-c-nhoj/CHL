@@ -47,7 +47,7 @@ const Clock =  () => {
           </div>
         ))}
       </time>
-    </div>
+    </main>
   );
 };
 

@@ -67,7 +67,7 @@ const Clock =  () => {
         <span className={`${styles.digit} ${styles.ampm}`}>{ampm[0]}</span>
         <span className={`${styles.digit} ${styles.ampm}`}>{ampm[1]}</span>
       </time>
-    </div>
+    </main>
   );
 };
 

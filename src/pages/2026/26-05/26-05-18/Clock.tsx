@@ -165,7 +165,7 @@ const AnalogClock =  () => {
 
         <CenterDot />
       </div>
-    </div>
+    </main>
   );
 };
 

@@ -161,7 +161,7 @@ const ZoomClock =  () => {
         <DigitGroup value={seconds} />
         <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
       </time>
-    </div>
+    </main>
   );
 };
 

@@ -46,7 +46,7 @@ const DigitalClock =  () => {
         {timePart}
         {ampmPart && <span className={styles.ampm}> {ampmPart}</span>}
       </time>
-    </div>
+    </main>
   );
 };
 

@@ -59,7 +59,7 @@ const Clock =  () => {
           <span className={styles.digit}>{seconds[1]}</span>
         </div>
       </time>
-    </div>
+    </main>
   );
 };
 
