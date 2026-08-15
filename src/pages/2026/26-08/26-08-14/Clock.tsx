@@ -63,7 +63,7 @@ const ClockComponent: React.FC = () => {
         />
       </div>
     ));
-  }, [dimensions.cols, dimensions.rows]);
+  }, [dimensions.cols, dimensions.rows, backgroundImage]);
 
   const digitalClockDisplay = (
     <div className={styles.clockContainer}>
