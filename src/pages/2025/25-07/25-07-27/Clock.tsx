@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import myCustomFont from '@/assets/fonts/25fonts/25-07-27-som.ttf';
 import backgroundImage from '@/assets/images/25_images/25-07/25-07-27/met.jpg'; // Import your background image
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface Digit {
   id: number;
@@ -26,6 +26,8 @@ const Clock =  () => {
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const [digits, setDigits] = useState<Digit[]>([]);
+  const lastSpawnTimeRef = useRef(0);
+  const animationFrameRef = useRef<number>();
 
   useEffect(() => {
     const formatTime = (date: Date): string => {
@@ -35,47 +37,50 @@ const Clock =  () => {
       return `${h}${m}`;
     };
 
-    const addDigit = (char: string, index: number, hourLength: number) => {
-      const id = Date.now() + Math.random();
-      const top = Math.random() * 90;
+    const animate = (timestamp: number) => {
+      // 1. Clean up old digits
+      setDigits((prev) => prev.filter((d) => timestamp - d.id < 6000));
 
-      let typeClass: Digit['typeClass'], color: string;
+      // 2. Spawn new digits based on time
+      if (timestamp - lastSpawnTimeRef.current > 666) {
+        lastSpawnTimeRef.current = timestamp;
+        const now = new Date();
+        const timeStr = formatTime(now);
+        const hourLength = timeStr.length - 2;
 
-      if (index < hourLength) {
-        typeClass = 'hour';
-        color = '#FFD700'; // Gold
-      } else {
-        const minuteIndex = index - hourLength;
-        if (minuteIndex === 0) {
-          typeClass = 'minuteTens';
-          color = '#C0C0C0'; // Silver
-        } else {
-          typeClass = 'minuteOnes';
-          color = '#CD7F32'; // Bronze
-        }
+        timeStr.split('').forEach((char, i) => {
+          setTimeout(() => {
+            const id = Date.now() + Math.random(); // Use a more robust ID for React keys
+            const top = Math.random() * 90;
+
+            let typeClass: Digit['typeClass'], color: string;
+
+            if (i < hourLength) {
+              typeClass = 'hour';
+              color = '#FFD700'; // Gold
+            } else {
+              const minuteIndex = i - hourLength;
+              if (minuteIndex === 0) {
+                typeClass = 'minuteTens';
+                color = '#C0C0C0'; // Silver
+              } else {
+                typeClass = 'minuteOnes';
+                color = '#CD7F32'; // Bronze
+              }
+            }
+            setDigits((prev) => [...prev, { id, char, top, typeClass, color }]);
+          }, i * 1000);
+        });
       }
 
-      setDigits((prev) => [...prev, { id, char, top, typeClass, color }]);
-
-      setTimeout(() => {
-        setDigits((prev) => prev.filter((d) => d.id !== id));
-      }, 6000);
+      animationFrameRef.current = requestAnimationFrame(animate);
     };
 
-    const showTimeDigits =  () => {
-      const now = new Date();
-      const timeStr = formatTime(now);
-      const hourLength = timeStr.length - 2;
+    animationFrameRef.current = requestAnimationFrame(animate);
 
-      [...timeStr].forEach((char, i) => {
-        setTimeout(() => addDigit(char, i, hourLength), i * 1000);
-      });
+    return () => {
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
     };
-
-    showTimeDigits();
-    const interval = setInterval(showTimeDigits, 666);
-
-    return () => clearInterval(interval);
   }, []);
 
   const digitStyle = (top: number): React.CSSProperties => ({

@@ -272,4 +272,6 @@ const AnalogClock: FC = () => {
   );
 };
 
-export default AnalogClock;
+const MemoizedAnalogClock = React.memo(AnalogClock);
+MemoizedAnalogClock.displayName = 'Clock_26_07_10';
+export default MemoizedAnalogClock;

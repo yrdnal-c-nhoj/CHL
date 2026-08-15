@@ -63,6 +63,8 @@ const AnalogClock: React.FC<{ time: Date; zone: string; clockSize: number }> = (
 
   return (
     <div className={styles.clockContainer}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <div
         className={styles.clockFace}
         style={{ width: `${clockSize}px`, height: `${clockSize}px` }}

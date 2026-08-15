@@ -1,0 +1,30 @@
+.container {
+  height: 100vh;
+  width: 100vw;
+  background-size: 110% 110%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10vh;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  user-select: none;
+  transition: none;
+  font-family: 'MyCustomFont', monospace, sans-serif;
+}
+
+.digitBox {
+  width: 1.5ch;
+  text-align: center;
+  display: inline-block;
+  user-select: none;
+  font-family: 'MyCustomFont', monospace, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* This style should be moved to a global stylesheet if it's truly needed everywhere */
+.globalFont {
+  font-family: 'MyCustomFont', monospace, sans-serif;
+  background: black;
+}

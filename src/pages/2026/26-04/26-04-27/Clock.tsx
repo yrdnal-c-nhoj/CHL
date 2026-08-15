@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import leverFont from '@/assets/fonts/26fonts/26-04-27-lever.ttf';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+import React, { useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
 // Dynamically import all images from the assets folder
@@ -63,11 +63,16 @@ const Clock =  () => {
 
   // Track which image index to load next (sequential)
   const [imageIndex, setImageIndex] = useState(0);
+  const lastUpdateSecondRef = React.useRef<number | null>(null);
 
   // Use the raw seconds value to trigger the effect
   const seconds = time.getSeconds();
 
   useEffect(() => {
+    // Only run the effect once per second
+    if (seconds === lastUpdateSecondRef.current) return;
+    lastUpdateSecondRef.current = seconds;
+
     setDisplayedImages((prev) => {
       const nextSrc = IMAGES[imageIndex % IMAGES.length];
       if (!nextSrc) return prev;
@@ -88,7 +93,7 @@ const Clock =  () => {
     });
 
     setImageIndex((prev) => prev + 1);
-  }, [seconds]);
+  }, [time, imageIndex]); // Depend on time to get updates, and imageIndex to use the latest value
 
   // Format digital time
   const { hours, minutes, iso } = useMemo(() => {

@@ -8,6 +8,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
+export const assets = [semFont, background];
+
 const fontConfigs: FontConfig[] = [
     {
       fontFamily: 'sem',

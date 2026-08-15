@@ -4,6 +4,8 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import styles from './Clock.module.css';
 
+export const assets = [];
+
 // --- Project Standards ---
 
 // 1. Asset Exports (for preloading)

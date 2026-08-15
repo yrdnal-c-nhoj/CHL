@@ -8,6 +8,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
+export const assets = [dirFontUrl, sunGif];
+
 const romanNumerals = [
   'XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI',
 ];

@@ -10,6 +10,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
+export const assets = [botFontUrl, arm, arm2, arm3];
+
 const fontConfigs: FontConfig[] = [
     {
       fontFamily: 'bot',

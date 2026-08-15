@@ -10,6 +10,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
+export const assets = [bluFont, image1, image2, image3];
+
 const fontConfigs: FontConfig[] = [
     {
       fontFamily: 'blu',
