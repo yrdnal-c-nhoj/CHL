@@ -13,7 +13,7 @@ export const assets = [backgroundImage, fontUrl];
 
 // 2. Font Configuration
 const fontConfigs: FontConfig[] = [
-  { fontFamily: 'ClockFont_26_08_13', fontUrl },
+  { fontFamily: 'ClockFont_26_08_14', fontUrl },
 ];
 
 // The desired size for each video tile in pixels.
