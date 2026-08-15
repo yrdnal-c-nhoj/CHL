@@ -377,9 +377,10 @@ export default function SkyClock() {
 
   if (!fontsLoaded) {
     return (
-      <div style={{ width: '100vw', height: '100dvh', background: '#000' }} />
-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
-
+      <>
+        <div style={{ width: '100vw', height: '100dvh', background: '#000' }} />
+        <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+      </>
     );
   }
 

@@ -119,11 +119,11 @@ function OceanStorm() {
           );
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
-          text-shadow: 0 0 2px rgba(255, 220, 120, 0.5);
+           text-shadow: 0 0 2px rgba(255, 220, 120, 0.5);
         }
-    
-      `}</style>
-    </div>
+      `}
+      </style>
+    </main>
   );
 }
 

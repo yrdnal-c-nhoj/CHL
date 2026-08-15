@@ -88,7 +88,7 @@ function BinaryClockWithColumns() {
         {renderColumn(time.getSeconds())}
         {renderColumn(ms)}
       </div>
-    </div>
+    </main>
   );
 }
 

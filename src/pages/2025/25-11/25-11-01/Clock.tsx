@@ -137,7 +137,7 @@ function EdgeClockWithHands() {
       {/* Second */}
       {/* Center Cap */}
       <div className={styles.centerDot} />
-    </div>
+    </main>
   );
 }
 
