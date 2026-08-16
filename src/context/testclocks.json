@@ -6662,5 +6662,46 @@
       "string",
       "up-and-down"
     ]
+  },
+  {
+    "path": "26-08-15",
+    "date": "26-08-15",
+    "title": "Digital Color Wheel",
+    "tags": [
+      "digital",
+      "color",
+      "image-free"
+    ]
+  },
+  {
+    "path": "26-08-16",
+    "date": "26-08-16",
+    "title": "Crescent",
+    "tags": [    
+      "analog",
+      "day-and-night",
+      "earth",
+      "moon"
+    ]
+  },
+  {
+    "path": "26-08-17",
+    "date": "26-08-17",
+    "title": "Digital Color Wheel II",
+    "tags": [
+      "digital",
+      "color",
+      "image-free"
+    ]
+  },
+    {
+    "path": "26-08-18",
+    "date": "26-08-18",
+    "title": "Digital Color Wheel III",
+    "tags": [
+      "digital",
+      "color",
+      "image-free"
+    ]
   }
 ]
