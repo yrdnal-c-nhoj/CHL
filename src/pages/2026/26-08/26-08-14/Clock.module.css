@@ -1,62 +1,60 @@
 .container {
+  position: relative;
   width: 100vw;
   height: 100dvh;
-  position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #000; /* Fallback color */
 }
 
-.backgroundVideo {
+.tiledBackgroundContainer {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  display: grid;
+  /* grid-template-columns will be set via inline style */
+  /* grid-template-rows will be set via inline style */
+  z-index: 1;
+}
+
+.tiledVideo {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  z-index: 1; }
+  transform: scale(1.01); /* Slightly scale up to prevent grid lines/gaps */
+}
 
 .digitalClock {
   position: relative;
   z-index: 2;
-  font-family: 'ClockFont_26_08_14', monospace;
-  font-size: 15vw;
-  color: #b8d9f8;
-  text-shadow: 0 0 15px rgba(9, 0, 0, 0.991);
+  font-family: 'ClockFont_26_08_14', sans-serif;
+  font-size: clamp(3rem, 25vmin, 18rem);
+  color: rgb(214, 232, 245);
+  text-shadow: 0 1px 0px rgb(27, 2, 2), 0 0 20px rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
 }
 
-/* Each digit is in an invisible, fixed-width box to prevent jumping. */
 .digit {
   display: inline-block;
-  width: 0.6em; /* Scales the box relative to the font size */
+  width: 0.5em; /* Set a fixed width relative to the font size to prevent jumping */
   text-align: center;
 }
 
 .separator {
-  /* Stop the colon from flashing and make it smaller */
-  transform: scale(0.8);
-  margin: 0 -0.1em; /* Tuck digits in closer */
 }
 
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
-
-/* Standard from ARCHITECTURE.md for accessible, visually-hidden elements */
 .srOnly {
-  position: absolute;
-  width: 1px;
+  border: 0;
+  clip: rect(0 0 0 0);
   height: 1px;
-  padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  padding: 0;
+  position: absolute;
+  width: 1px;
   white-space: nowrap;
-  border-width: 0;
 }

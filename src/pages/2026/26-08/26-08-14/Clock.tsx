@@ -3,7 +3,6 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
-
 // 1. Asset Exports (for preloading)
 import fontUrl from '@/assets/fonts/26fonts/26-08-14-halo.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-08/26-08-14/angel.mp4';
@@ -18,6 +17,11 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
+// Grid dimensions for tiling
+const GRID_ROWS = 3;
+const GRID_COLS = 3;
+const TILE_COUNT = GRID_ROWS * GRID_COLS;
+
 // 3. Main Component
 const ClockComponent: React.FC = () => {
   // Use the canonical hook to get time that updates every second.
@@ -31,24 +35,36 @@ const ClockComponent: React.FC = () => {
     minutes: String(time.getMinutes()).padStart(2, '0'),
     seconds: String(time.getSeconds()).padStart(2, '0'),
   }), [time]);
+
   return (
-    <main
-      className={styles.container}
-    >
-      <video
-        className={styles.backgroundVideo}
-        src={backgroundImage}
-        autoPlay
-        loop
-        muted
-        playsInline
-      />
-      {/* Semantic <time> element for accessibility (Required) */}
+    <main className={styles.container}>
+      {/* Tiled Background Video Container */}
+      <div
+        className={styles.tiledBackgroundContainer}
+        style={{
+          gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)`,
+          gridTemplateRows: `repeat(${GRID_ROWS}, 1fr)`,
+        }}
+      >
+        {Array.from({ length: TILE_COUNT }).map((_, index) => (
+          <video
+            key={index}
+            className={styles.tiledVideo}
+            src={backgroundImage}
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+        ))}
+      </div>
+
+      {/* Semantic <time> element for accessibility */}
       <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
 
-      {/* A simple digital clock display, centered on the screen. */}
+      {/* Digital clock display */}
       <time className={styles.digitalClock}>
         <span className={styles.digit}>{hours[0]}</span>
         <span className={styles.digit}>{hours[1]}</span>
@@ -63,7 +79,7 @@ const ClockComponent: React.FC = () => {
   );
 };
 
-// 4. Performance: Wrap in React.memo + set displayName (Required)
+// 4. Performance: Wrap in React.memo + set displayName
 const MemoizedClock = React.memo(ClockComponent);
 MemoizedClock.displayName = 'Clock_26_08_14';
 
