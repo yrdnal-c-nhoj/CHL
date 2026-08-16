@@ -1,5 +1,5 @@
 import { useDataContext } from '@/context/DataContext';
-import { useState } from 'react';
+import { useState, type MouseEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from '../styles/TopNav.module.css';
 
@@ -14,7 +14,8 @@ const TopNav =  () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  const handleRandomClick = () => {
+  const handleRandomClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault(); // Prevent navigation to the href '#'
     if (items.length > 0) {
       const randomItem = items[Math.floor(Math.random() * items.length)];
       if (randomItem?.date) {
@@ -63,10 +64,11 @@ const TopNav =  () => {
 
           </li>
           <li className={styles.navItem}>
-            <button
+            <Link
+              to="#"
               onClick={handleRandomClick}
-              className={`${styles.navLink} ${styles.navButton}`}
-            >RANDOM</button>
+              className={styles.navLink}
+            >RANDOM</Link>
           </li>
         </ul>
       </nav>
