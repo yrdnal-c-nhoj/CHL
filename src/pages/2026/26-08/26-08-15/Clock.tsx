@@ -1,32 +1,21 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-// 1. Asset Exports (for preloading)
-// NOTE: Please replace these placeholder paths with your actual assets.
-import backgroundImage from '@/assets/images/26_images/26-08/26-08-10/straw.webp';
-
-// In a portable component, asset handling is simplified.
-// The original preloading export is removed.
-// export const assets = [backgroundImage, fontUrl];
-
-// 2. Inline Styles
-// All styles from the original `Clock.module.css` are now defined as JS objects.
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
-    width: '100%',
-    height: '100dvh',
+    width: '100vw',
+    height: '100vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
     fontFamily: 'ClockFont_26_08_13, sans-serif',
+    backgroundColor: '#117771',
   },
   srOnly: {
     position: 'absolute',
-    width: '1px',
-    height: '1px',
+    width: '1vw',
+    height: '1vh',
     padding: 0,
-    margin: '-1px',
+    margin: '-1vh',
     overflow: 'hidden',
     clip: 'rect(0, 0, 0, 0)',
     whiteSpace: 'nowrap',
@@ -34,158 +23,184 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   clockContainer: {
     position: 'relative',
+    width: '100vmin',
+    height: '100vmin',
     display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
-    gap: '2rem',
-    padding: '2rem',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    borderRadius: '1rem',
-  },
-  analogClock: {
-    position: 'relative',
-    width: '200px',
-    height: '200px',
-    border: '4px solid white',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(172, 75, 75, 0.65)',
     borderRadius: '50%',
+    border: '0.2vmin solid rgba(214, 210, 210, 0.2)',
+    boxShadow: '0 0.8vmin 3.2vmin rgba(0, 0, 0, 0.5)',
   },
-  hand: {
+  centerLine: {
     position: 'absolute',
-    width: '50%',
-    height: '6px',
-    top: '50%',
-    left: '0',
-    transformOrigin: '100%',
-    backgroundColor: 'white',
-    borderRadius: '3px',
+    bottom: '50%',
+    left: '50%',
+    width: '0.5vmin',
+    height: '60vh',
+    backgroundColor: 'rgba(255, 71, 87, 0.5)',
+    transform: 'translateX(-50%)',
+    zIndex: 4,
+    pointerEvents: 'none',
   },
-  hourHand: { height: '6px', width: '35%', left: '15%', backgroundColor: 'white' },
-  minuteHand: { height: '4px', width: '45%', left: '5%', backgroundColor: 'white' },
-  secondHand: { height: '2px', width: '50%', backgroundColor: 'red' },
-  centerDot: {
+  ring: {
+    position: 'absolute',
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'transform 0.05s linear',
+  },
+  number: {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    width: '12px',
-    height: '12px',
-    backgroundColor: 'red',
+    transformOrigin: 'center center',
+    fontWeight: 'bold',
+    userSelect: 'none',
+  },
+  centerDot: {
+    position: 'absolute',
+    width: '1.2vmin',
+    height: '1.2vmin',
+    backgroundColor: '#ff4757',
     borderRadius: '50%',
-    transform: 'translate(-50%, -50%)',
-  },
-  digitalClock: {
-    display: 'flex',
-    alignItems: 'center',
-    fontSize: '2.5rem',
-    color: 'white',
-    letterSpacing: '0.1em',
-  },
-  digit: {
-    minWidth: '2ch',
-    textAlign: 'center',
-  },
-  separator: {
-    margin: '0 0.25rem',
+    zIndex: 5,
   },
 };
 
-// 3. Main Component
+const HOURS = Array.from({ length: 12 }, (_, i) => i + 1);
+const MINUTES = Array.from({ length: 12 }, (_, i) => (i + 1) * 5);
+const SECONDS = Array.from({ length: 60 }, (_, i) => i + 1);
+
 const ClockComponent: React.FC = () => {
-  // Inlined time hook logic using standard React hooks for portability.
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    // Use setInterval for a simple, portable ticker.
     const intervalId = setInterval(() => {
       setTime(new Date());
-    }, 16); // ~60fps update rate
+    }, 16);
 
     return () => clearInterval(intervalId);
   }, []);
 
-  // Memoize expensive calculations for both digital and analog clocks
-  const { digital, hourAngle, minuteAngle, secondAngle } = useMemo(() => {
+  const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
     const hours = time.getHours();
     const minutes = time.getMinutes();
     const seconds = time.getSeconds();
     const milliseconds = time.getMilliseconds();
 
-    // Digital part
-    const h = String(hours).padStart(2, '0');
-    const m = String(minutes).padStart(2, '0');
-    const s = String(seconds).padStart(2, '0');
-
-    // Analog part (inlined from useClockAngles)
-    // Add milliseconds for smoother sweep
     const smoothSecond = seconds + milliseconds / 1000;
     const smoothMinute = minutes + smoothSecond / 60;
     const smoothHour = (hours % 12) + smoothMinute / 60;
 
-    const secondAngle = smoothSecond * 6;
-    const minuteAngle = smoothMinute * 6;
-    const hourAngle = smoothHour * 30;
-
     return {
-      digital: { hours: h, minutes: m, seconds: s },
-      hourAngle,
-      minuteAngle,
-      secondAngle,
+      hourAngle: -smoothHour * 30,
+      minuteAngle: -smoothMinute * 6,
+      secondAngle: -smoothSecond * 6,
     };
   }, [time]);
 
   return (
-    <main
-      style={{
-        ...styles.container,
-        backgroundImage: `url(${backgroundImage})`,
-      }}
-    >
-      {/* Semantic <time> element for accessibility (Required) */}
+    <main style={styles.container}>
+      {/* Semantic <time> element for accessibility */}
       <time dateTime={time.toISOString()} style={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
 
-      {/* --- Clock UI --- */}
       <div style={styles.clockContainer}>
-        {/* Analog Clock */}
-        <div style={styles.analogClock}>
-          <div
-            style={{
-              ...styles.hand,
-              ...styles.hourHand,
-              transform: `rotate(${hourAngle}deg)`,
-            }}
-          />
-          <div
-            style={{
-              ...styles.hand,
-              ...styles.minuteHand,
-              transform: `rotate(${minuteAngle}deg)`,
-            }}
-          />
-          <div
-            style={{
-              ...styles.hand,
-              ...styles.secondHand,
-              transform: `rotate(${secondAngle}deg)`,
-            }}
-          />
-          <div style={styles.centerDot} />
+      
+        {/* Center Reference Line */}
+        <div style={styles.centerLine} />
+
+        {/* 1. Innermost Circle: Hours */}
+        <div
+          style={{
+            ...styles.ring,
+            width: '28vmin',
+            height: '28vmin',
+            transform: `rotate(${hourAngle}deg)`,
+          }}
+        >
+          {HOURS.map((num, i) => {
+            const angle = (i + 1) * 30;
+            return (
+              <span
+                key={`h-${num}`}
+                style={{
+                  ...styles.number,
+                  fontSize: '2vmin',
+                  color: '#ffffff',
+                  transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-10vmin)`,
+                }}
+              >
+                {num}
+              </span>
+            );
+          })}
         </div>
 
-        {/* Digital Clock */}
-        <div style={styles.digitalClock}>
-          <span style={styles.digit}>{digital.hours}</span>
-          <span style={styles.separator}>:</span>
-          <span style={styles.digit}>{digital.minutes}</span>
-          <span style={styles.separator}>:</span>
-          <span style={styles.digit}>{digital.seconds}</span>
+        {/* 2. Middle Circle: Minutes */}
+        <div
+          style={{
+            ...styles.ring,
+            width: '52vmin',
+            height: '52vmin',
+            transform: `rotate(${minuteAngle}deg)`,
+          }}
+        >
+          {MINUTES.map((num, i) => {
+            const angle = (i + 1) * 30;
+            return (
+              <span
+                key={`m-${num}`}
+                style={{
+                  ...styles.number,
+                  fontSize: '1.8vmin',
+                  color: '#a4b0be',
+                  transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-21vmin)`,
+                }}
+              >
+                {num}
+              </span>
+            );
+          })}
         </div>
+
+        {/* 3. Outermost Circle: Seconds (Maximized Radius) */}
+        <div
+          style={{
+            ...styles.ring,
+            width: '99vmin',
+            height: '99vmin',
+            transform: `rotate(${secondAngle}deg)`,
+          }}
+        >
+          {SECONDS.map((num) => {
+            const angle = num * 6;
+            return (
+              <span
+                key={`s-${num}`}
+                style={{
+                  ...styles.number,
+                  fontSize: '3.3vmin',
+                  color: '#ff4757',
+                  transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-49vmin)`,
+                }}
+              >
+                {num}
+              </span>
+            );
+          })}
+        </div>
+
+    
       </div>
     </main>
   );
 };
 
-// 4. Performance: Wrap in React.memo + set displayName (Required)
 const MemoizedClock = React.memo(ClockComponent);
 MemoizedClock.displayName = 'PortableClock';
 
