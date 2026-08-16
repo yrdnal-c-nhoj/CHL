@@ -90,8 +90,8 @@
 
 .footerCenter {
   display: grid;
-  /* Row 1 (Date/Number): 1.2rem | Row 2 (Title): 1.3rem | Row 3 (Tags Zone): 2.4rem */
-  grid-template-rows: 1.2rem 1.3rem 2.4rem; 
+  /* Row 1 (Date/Number): 1.2rem | Row 2 (Title): 1.3rem | Row 3 (Tags Zone): min-height 2.4rem, expandable */
+  grid-template-rows: 1.2rem 1.3rem minmax(2.4rem, auto);
   align-items: center;
   width: 100%;
   box-sizing: border-box;
@@ -144,8 +144,9 @@
   align-content: center;     /* Centers tags vertically (perfect for 1 or 2 rows) */
   gap: 0.2rem;
   width: 100%;
-  height: 100%;              /* Completely fills the 2.4rem grid row allocation */
-  overflow: hidden;          /* Prevents a 3rd row of tags from breaking the layout */
+  min-height: 2.4rem;        /* Matches original grid row allocation */
+  padding: 0.2rem 0;         /* Small vertical padding for breathing room */
+  box-sizing: border-box;
 }
 
 .tagItem {
