@@ -1,16 +1,36 @@
-import React from 'react';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
 // 1. Asset Exports (for preloading)
-// NOTE: Please replace these placeholder paths with your actual assets.
+import fontUrl from '@/assets/fonts/26fonts/26-08-14-halo.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-08/26-08-14/angel.mp4';
 
-export const assets = [backgroundImage];
+export const assets = [backgroundImage, fontUrl];
+
+// 2. Font Configuration
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'ClockFont_26_08_14',
+    fontUrl,
+  },
+];
 
 // 3. Main Component
 const ClockComponent: React.FC = () => {
-  // Get the current time once for the accessibility element. No hook needed.
-  const time = new Date();
+  // Use the canonical hook to get time that updates every second.
+  const time = useSecondClock();
+
+  useSuspenseFontLoader(fontConfigs);
+
+  // Memoize the formatted time to prevent recalculating on every render.
+  const { hours, minutes, seconds } = useMemo(() => ({
+    hours: String(time.getHours()).padStart(2, '0'),
+    minutes: String(time.getMinutes()).padStart(2, '0'),
+    seconds: String(time.getSeconds()).padStart(2, '0'),
+  }), [time]);
   return (
     <main
       className={styles.container}
@@ -26,6 +46,15 @@ const ClockComponent: React.FC = () => {
       {/* Semantic <time> element for accessibility (Required) */}
       <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
+      </time>
+
+      {/* A simple digital clock display, centered on the screen. */}
+      <time className={styles.digitalClock}>
+        <span>{hours}</span>
+        <span className={styles.separator}>:</span>
+        <span>{minutes}</span>
+        <span className={styles.separator}>:</span>
+        <span>{seconds}</span>
       </time>
     </main>
   );
