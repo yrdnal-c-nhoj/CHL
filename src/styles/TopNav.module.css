@@ -72,6 +72,17 @@
   transition: color 0.3s ease-in-out;
 }
 
+/* Style for button elements to look like nav links */
+.navButton {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
 .navLink:focus {
   outline: 2px solid #0536b3;
   outline-offset: 2px;
