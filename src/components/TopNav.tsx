@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useDataContext } from '@/context/DataContext';
+import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from '../styles/TopNav.module.css';
 
 const TopNav =  () => {
+  const { items = [] } = useDataContext();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
@@ -10,6 +13,16 @@ const TopNav =  () => {
   const closeMenu = () => setIsOpen(false);
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleRandomClick = () => {
+    if (items.length > 0) {
+      const randomItem = items[Math.floor(Math.random() * items.length)];
+      if (randomItem?.date) {
+        navigate(`/${randomItem.date}`);
+      }
+    }
+    closeMenu();
+  };
 
   return (
     <div className={styles.topnavContainer}>
@@ -49,6 +62,13 @@ const TopNav =  () => {
             <Link to="/today" className={`${styles.navLink} ${isActive('/today') ? styles.active : ''}`} onClick={closeMenu}>TODAY</Link>
 
           </li>
+          <li className={styles.navItem}>
+            <button
+              onClick={handleRandomClick}
+              className={styles.navLink}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'inherit', fontWeight: 'bold' }}
+            >RANDOM</button>
+          </li>
         </ul>
       </nav>
     </div>
@@ -56,4 +76,3 @@ const TopNav =  () => {
 };
 
 export default TopNav;
-
