@@ -31,8 +31,17 @@
   align-items: center;
 }
 
+/* Each digit is in an invisible, fixed-width box to prevent jumping. */
+.digit {
+  display: inline-block;
+  width: 0.6em; /* Scales the box relative to the font size */
+  text-align: center;
+}
+
 .separator {
-  animation: blink 1s step-start infinite;
+  /* Stop the colon from flashing and make it smaller */
+  transform: scale(0.8);
+  margin: 0 -0.1em; /* Tuck digits in closer */
 }
 
 @keyframes blink {

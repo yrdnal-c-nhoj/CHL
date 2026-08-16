@@ -50,11 +50,14 @@ const ClockComponent: React.FC = () => {
 
       {/* A simple digital clock display, centered on the screen. */}
       <time className={styles.digitalClock}>
-        <span>{hours}</span>
+        <span className={styles.digit}>{hours[0]}</span>
+        <span className={styles.digit}>{hours[1]}</span>
         <span className={styles.separator}>:</span>
-        <span>{minutes}</span>
+        <span className={styles.digit}>{minutes[0]}</span>
+        <span className={styles.digit}>{minutes[1]}</span>
         <span className={styles.separator}>:</span>
-        <span>{seconds}</span>
+        <span className={styles.digit}>{seconds[0]}</span>
+        <span className={styles.digit}>{seconds[1]}</span>
       </time>
     </main>
   );
