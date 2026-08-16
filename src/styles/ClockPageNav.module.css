@@ -13,7 +13,7 @@
   left: 0;
   right: 0;
   width: 100%;
-  height: var(--nav-height);
+  height: auto;
   display: flex;
   justify-content: space-between;
   align-items: stretch;
@@ -24,6 +24,7 @@
   pointer-events: auto;
   will-change: opacity;
   transition: opacity var(--nav-transition), transform var(--nav-transition);
+  overflow: visible;
 }
 
 /* --- Visibility states --- */
@@ -58,7 +59,7 @@
   color: var(--nav-text);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   text-align: center;
   width: 100%;
@@ -141,7 +142,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;   /* Centers tags horizontally */
-  align-content: center;     /* Centers tags vertically (perfect for 1 or 2 rows) */
+  align-content: flex-start; /* Packs wrapped rows from top to bottom */
   gap: 0.2rem;
   width: 100%;
   min-height: 2.4rem;        /* Matches original grid row allocation */
