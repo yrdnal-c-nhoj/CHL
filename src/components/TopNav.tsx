@@ -65,8 +65,7 @@ const TopNav =  () => {
           <li className={styles.navItem}>
             <button
               onClick={handleRandomClick}
-              className={styles.navLink}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'inherit', fontWeight: 'bold' }}
+              className={`${styles.navLink} ${styles.navButton}`}
             >RANDOM</button>
           </li>
         </ul>

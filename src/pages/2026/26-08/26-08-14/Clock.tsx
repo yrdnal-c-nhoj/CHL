@@ -41,7 +41,7 @@ const ClockComponent: React.FC = () => {
     updateGrid();
     window.addEventListener('resize', updateGrid);
     return () => window.removeEventListener('resize', updateGrid);
-  }, [TILE_SIZE]);
+  }, []);
 
   // Format time for the digital display
   const hours = String(time.getHours()).padStart(2, '0');
