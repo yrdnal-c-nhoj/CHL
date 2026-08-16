@@ -134,11 +134,15 @@ const AnalogClock =  () => {
           backgroundImage: `url(${backgroundImage})`,
         }}
       />
+      {/* Accessible time for screen readers */}
       <time
         dateTime={isoTime}
         aria-label={`Current time: ${hours}:${minutes}`}
-        className={styles.timeWrapper} className={styles.srOnly}
+        className={styles.srOnly}
       >
+        {`${hours}:${minutes}`}
+      </time>
+      <div className={styles.timeWrapper}>
         <div className={styles.clockFace}>
           {tickMarks.map((tick) => (
             <div
@@ -189,23 +193,10 @@ const AnalogClock =  () => {
             color="#8B4513"
           />
 
-          {/* FIX: Center Cap / Pin to neatly cover the overlapping hand bases */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              width: 'calc(var(--clock-radius) * 0.06)',
-              height: 'calc(var(--clock-radius) * 0.06)',
-              backgroundColor: '#4A2C17',
-              borderRadius: '50%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 40,
-              boxShadow: '0 2px 4px rgba(0,0,0,0.5)',
-            }}
-          />
+          {/* Center Cap / Pin to neatly cover the overlapping hand bases */}
+          <div className={styles.centerCap} />
         </div>
-      </time>
+      </div>
     </main>
   );
 };
