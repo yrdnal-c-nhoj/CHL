@@ -65,7 +65,7 @@ const ClockComponent: React.FC = () => {
       </time>
 
       {/* Digital clock display */}
-      <time className={styles.digitalClock}>
+      <div className={styles.digitalClock}>
         <span className={styles.digit}>{hours[0]}</span>
         <span className={styles.digit}>{hours[1]}</span>
         <span className={styles.separator}>:</span>
@@ -74,7 +74,7 @@ const ClockComponent: React.FC = () => {
         <span className={styles.separator}>:</span>
         <span className={styles.digit}>{seconds[0]}</span>
         <span className={styles.digit}>{seconds[1]}</span>
-      </time>
+      </div>
     </main>
   );
 };
