@@ -1,14 +1,32 @@
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
 import * as d3 from 'd3';
 import React, { useEffect, useMemo, useRef } from 'react';
 import styles from './Clock.module.css';
 
-const PARTICLE_COUNT = 400;
+// =========================
+// ASSET EXPORTS (Required)
+// =========================
+export const assets: string[] = [];
+
+// =========================
+// FONT CONFIGURATION
+// =========================
+const fontConfigs: FontConfig[] = [];
+
+const PARTICLE_COUNT = 200;
 
 const ClockComponent: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationFrameId = useRef<number>();
+  // Use refs to persist particle state across re-renders without triggering them.
+  const sitesRef = useRef<[number, number][] | null>(null);
+  const speedRef = useRef<{ x: number; y: number }[] | null>(null);
+  const dimensionsRef = useRef({ width: 0, height: 0 });
 
-  const time = new Date(); // Using a static time for now, can be replaced with a time hook
+  const time = useMillisecondClock(50); // Use canonical hook for smooth animation
+  useSuspenseFontLoader(fontConfigs); // Use canonical font loader
+
   const { isoTime, displayTime } = useMemo(() => {
     return {
       isoTime: time.toISOString(),
@@ -16,66 +34,80 @@ const ClockComponent: React.FC = () => {
     };
   }, [time]);
 
+  const digitalTime = useMemo(() => {
+    const hours = String(time.getHours()).padStart(2, '0');
+    const minutes = String(time.getMinutes()).padStart(2, '0');
+    const seconds = String(time.getSeconds()).padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+  }, [time]);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const context = canvas.getContext('2d');
+    if (!context) return;
 
-    let width = window.innerWidth;
-    let height = window.innerHeight;
+    // Initialize particles only once
+    if (!sitesRef.current) {
+      dimensionsRef.current = {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      };
+      canvas.width = dimensionsRef.current.width;
+      canvas.height = dimensionsRef.current.height;
 
-    canvas.width = width;
-    canvas.height = height;
+      sitesRef.current = Array.from({ length: PARTICLE_COUNT }, () => [
+        Math.random() * dimensionsRef.current.width,
+        Math.random() * dimensionsRef.current.height,
+      ]);
 
-    // Initialize sites and speed arrays[cite: 2]
-    const sites: [number, number][] = Array.from({ length: PARTICLE_COUNT }, () => [
-      Math.random() * width,
-      Math.random() * height,
-    ]);
+      const speedFactor = 0.5; // Restored to a visible speed
+      speedRef.current = Array.from({ length: PARTICLE_COUNT }, () => {
+        const angle = Math.random() * 2 * Math.PI;
+        const velocity = (Math.random() * 0.5 + 0.2) * speedFactor;
+        return { x: Math.cos(angle) * velocity, y: Math.sin(angle) * velocity };
+      });
+    }
 
-    const speedFactor = 0.2;
-    const speed = Array.from({ length: PARTICLE_COUNT }, () => {
-      const angle = Math.random() * 2 * Math.PI;
-      const velocity = (Math.random() * 0.5 + 0.2) * speedFactor;
-      return { x: Math.cos(angle) * velocity, y: Math.sin(angle) * velocity };
-    });
+    const sites = sitesRef.current;
+    const speed = speedRef.current;
 
-    // Handle canvas resizing[cite: 2]
+    // Handle canvas resizing
     const handleResize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
+      const oldWidth = dimensionsRef.current.width;
+      const oldHeight = dimensionsRef.current.height;
+
+      dimensionsRef.current = {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      };
+      canvas.width = dimensionsRef.current.width;
+      canvas.height = dimensionsRef.current.height;
 
       // Scale particle positions instead of resetting
-      const oldWidth = canvas.width;
-      const oldHeight = canvas.height;
-      const scaleX = width / oldWidth;
-      const scaleY = height / oldHeight;
-      sites.forEach(site => {
+      const scaleX = dimensionsRef.current.width / oldWidth;
+      const scaleY = dimensionsRef.current.height / oldHeight;
+      sites?.forEach(site => {
         site[0] *= scaleX;
         site[1] *= scaleY;
       });
     };
 
-    window.addEventListener('resize', handleResize);
-
-    // Boundary bounce physics[cite: 2]
+    // Boundary bounce physics
     const rebondOnScreen = () => {
-      for (let i = 0; i < sites.length; i++) {
-        if (sites[i][0] < 0 || sites[i][0] > width) {
+      if (!sites || !speed) return;
+      const { width, height } = dimensionsRef.current;
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        if (sites[i][0] < 0 || sites[i][0] > width)
           speed[i].x *= -1;
-        }
-        if (sites[i][1] < 0 || sites[i][1] > height) {
+        if (sites[i][1] < 0 || sites[i][1] > height)
           speed[i].y *= -1;
-        }
 
         sites[i][0] += speed[i].x;
         sites[i][1] += speed[i].y;
       }
     };
 
-    // Draw individual Voronoi cell paths[cite: 2]
     const drawCell = (cell: d3.VoronoiPolygon<[number, number]>) => {
       if (!cell) return false;
       context.moveTo(cell[0][0], cell[0][1]);
@@ -86,44 +118,42 @@ const ClockComponent: React.FC = () => {
       return true;
     };
 
-    // Render loop[cite: 2]
     const redraw = () => {
+      if (!sites) return;
+      const { width, height } = dimensionsRef.current;
       const delaunay = d3.Delaunay.from(sites);
-      const voronoi = delaunay.voronoi([0, 0, width, height]);
+      const voronoi = delaunay.voronoi([0, 0, width, height]); // Use current dimensions
 
       context.clearRect(0, 0, width, height);
       context.beginPath();
 
-      // Create gradient stroke[cite: 2]
+      // Create gradient stroke
       const gradient = context.createLinearGradient(0, 0, width, 0);
-      gradient.addColorStop('0', '#e72150');
-      gradient.addColorStop('1', '#46bfee');
+      gradient.addColorStop('0', '#08ECEC');
+      gradient.addColorStop('1', '#60F715');
 
       for (const cell of voronoi.cellPolygons()) {
         drawCell(cell);
       }
 
-      context.lineWidth = 2;
+      context.lineWidth = 0.5;
       context.strokeStyle = gradient;
       context.stroke();
     };
 
-    const animate = () => {
-      rebondOnScreen();
-      redraw();
-      animationFrameId.current = requestAnimationFrame(animate);
-    };
+    window.addEventListener('resize', handleResize);
 
-    animate();
+    // The animation is now driven by the useEffect dependency on `time`
+    rebondOnScreen();
+    redraw();
 
     // Cleanup on component unmount
     return () => {
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+    // The `time` dependency from the canonical hook now drives the animation.
+    // The other variables are stable and don't need to be in the dependency array.
+  }, [time]);
 
   return (
     <main className={styles.container}>
@@ -132,16 +162,18 @@ const ClockComponent: React.FC = () => {
       </time>
       <canvas ref={canvasRef} className={styles.canvas} />
       <div className={styles.quoteOverlay}>
-        <div>
-          <p className={styles.quoteText}>
-            δὶς ἐς τὸν αὐτὸν ποταμὸν οὐκ ἂν ἐμβαίης.
+        <div className={styles.quoteBlock}>
+          <p className={styles.quoteOriginal}>
+            δὶς ἐς τὸν αὐτὸν ποταμὸν οὐκ ἂν ἐμβαίης.*
           </p>
-          <p className={styles.quoteAuthor}>-Heraclitus</p>
-          <p className={styles.quoteText}>
-            You can't step in the same river twice.
+          <p className={styles.quoteTranslation}>
+            You can't step in the same river twice.*
           </p>
-          <p className={styles.quoteAuthor}>-Heraclitus</p>
+          <p className={styles.author}>-Heraclitus</p>
         </div>
+      </div>
+      <div className={styles.digitalClock}>
+       * {digitalTime}
       </div>
     </main>
   );

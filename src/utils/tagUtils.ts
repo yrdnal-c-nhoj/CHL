@@ -15,10 +15,7 @@ export function normalizeTags(input: string): string[] {
 /**
  * Sorts tags alphabetically but keeps priority tags at the beginning.
  */
-export function sortTags(tags: string[] | Set<string>): string[] {
-  const tagArray = Array.from(tags).sort();
-  const priority = ['analog', 'digital'];
-  const head = priority.filter((p) => tagArray.includes(p));
-  const tail = tagArray.filter((s) => !priority.includes(s));
-  return [...head, ...tail];
+export function sortTags(tags: string[] | Set<string>): string[] {  
+  // Simply sort alphabetically without any priority tags.
+  return Array.from(tags).sort();
 }

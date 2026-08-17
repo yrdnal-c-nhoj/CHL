@@ -1,12 +1,14 @@
 .container {
-  background-color: rgb(238, 217, 234);
+  /* Replace background-color with a linear gradient */
+  background: linear-gradient(180deg, rgb(147, 178, 237) 0%, rgb(110, 125, 155) 100%);
   overflow: hidden;
   width: 100vw;
   height: 100vh;
   margin: 0;
   padding: 0;
   position: relative;
-  color: white;
+  color: rgb(74, 71, 71);
+  text-shadow: 0 4px rgb(243, 239, 239);
 }
 
 .canvas {
@@ -25,21 +27,33 @@
   align-items: center;
   inset: 0;
   text-align: center;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   pointer-events: none;
   z-index: 10;
 }
 
-.quoteText {
-  font-size: 2rem;
+.quoteBlock {
+  /* A max-width prevents the text from becoming too wide on large screens */
+  max-width: 80vw;
+}
+
+.quoteOriginal {
+  font-size: 3rem;
   margin: 0;
   padding: 0;
 }
 
-.quoteAuthor {
-  font-size: 1.2rem;
+.quoteTranslation {
+  font-size: 2rem;
   font-style: italic;
-  margin-top: 0.5em;
+  margin: 0.5em 0 0 0;
+  padding: 0;
+}
+
+.author {
+  font-size: 2rem;
+  margin-top: 1em;
+  text-transform: uppercase;
+  text-align: right; /* Align author to the right */
 }
 
 /* Standard from ARCHITECTURE.md for accessible, visually-hidden elements */
@@ -54,4 +68,13 @@
   width: 1px;
   white-space: nowrap;
   word-wrap: normal;
+}
+
+.digitalClock {
+  position: absolute;
+  bottom: 20px;
+  right: 30px;
+  font-family: monospace;
+  font-size: 2rem;
+  z-index: 10;
 }
