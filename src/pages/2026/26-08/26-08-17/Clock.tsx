@@ -1,66 +1,68 @@
+import * as d3 from 'd3';
 import React, { useEffect, useRef } from 'react';
 import styles from './Clock.module.css';
-
-const PARTICLE_COUNT = 150;
-const CONNECTION_DIST = 120;
 
 const ClockComponent: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas) return; // Exit if canvas is not yet available
 
     const context = canvas.getContext('2d');
     if (!context) return;
 
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
+    const nbParticles = 400;
 
-    let sites = Array.from({ length: PARTICLE_COUNT }, () => [
-      Math.random() * width,
-      Math.random() * height,
-    ]);
-    const speeds = sites.map(() => ({
-      x: (Math.random() - 0.5) * 1.5,
-      y: (Math.random() - 0.5) * 1.5,
+    // Create particles and their speeds
+    let sites = d3
+      .range(nbParticles)
+      .map(() => [Math.random() * width, Math.random() * height]);
+    const speeds = sites.map((_, i) => ({
+      x: (Math.random() - 0.5) * 2,
+      y: (Math.random() - 0.5) * 2,
     }));
 
+    // Main animation loop
     let animationFrameId: number;
 
     const redraw = () => {
-      context.clearRect(0, 0, width, height);
+      const voronoi = d3.voronoi().extent([
+        [-1, -1],
+        [width + 1, height + 1],
+      ]);
 
+      const diagram = voronoi(sites);
+      const polygons = diagram.polygons();
+
+      context.clearRect(0, 0, width, height);
+      context.beginPath();
+
+      // Create a gradient for the strokes
       const gradient = context.createLinearGradient(0, 0, width, 0);
       gradient.addColorStop('0', '#e72150');
       gradient.addColorStop('1', '#46bfee');
 
-      context.lineWidth = 1;
-      for (let i = 0; i < sites.length; i++) {
-        for (let j = i + 1; j < sites.length; j++) {
-          const dx = sites[i][0] - sites[j][0];
-          const dy = sites[i][1] - sites[j][1];
-          const distSq = dx * dx + dy * dy;
-          if (distSq < CONNECTION_DIST * CONNECTION_DIST) {
-            context.beginPath();
-            context.moveTo(sites[i][0], sites[i][1]);
-            context.lineTo(sites[j][0], sites[j][1]);
-            const alpha = 0.4 * (1 - Math.sqrt(distSq) / CONNECTION_DIST);
-            context.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
-            context.stroke();
-          }
+      // Draw each Voronoi cell
+      for (let i = 0; i < polygons.length; i++) {
+        const cell = polygons[i];
+        if (!cell) continue;
+        context.moveTo(cell[0][0], cell[0][1]);
+        for (let j = 1; j < cell.length; j++) {
+          context.lineTo(cell[j][0], cell[j][1]);
         }
+        context.closePath();
       }
 
-      for (let i = 0; i < sites.length; i++) {
-        context.beginPath();
-        context.arc(sites[i][0], sites[i][1], 2, 0, Math.PI * 2);
-        context.fillStyle = 'rgba(255, 255, 255, 0.8)';
-        context.fill();
-      }
+      context.lineWidth = 2;
+      context.strokeStyle = gradient;
+      context.stroke();
     };
 
     const animate = () => {
+      // Update particle positions
       for (let i = 0; i < sites.length; i++) {
         const site = sites[i];
         const speed = speeds[i];
@@ -76,18 +78,22 @@ const ClockComponent: React.FC = () => {
       animationFrameId = requestAnimationFrame(animate);
     };
 
+    // Handle window resizing
     const handleResize = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
-      sites = Array.from({ length: PARTICLE_COUNT }, () => [
-        Math.random() * width,
-        Math.random() * height,
-      ]);
+      // Re-initialize sites on resize to prevent them from being off-screen
+      sites = d3
+        .range(nbParticles)
+        .map(() => [Math.random() * width, Math.random() * height]);
     };
 
     window.addEventListener('resize', handleResize);
+
+    // Start the animation
     animate();
 
+    // Cleanup function to stop the animation and remove the listener
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
