@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 
 import portholeVideo from '@/assets/images/26_images/26-07/26-07-25/porthole.mp4';
-import { calculateAngles } from '@/utils/hooks';
-import { useMillisecondClock } from '@/utils/hooks';
+import { calculateAngles , useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [portholeVideo];
