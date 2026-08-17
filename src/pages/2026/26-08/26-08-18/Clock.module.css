@@ -50,8 +50,8 @@
   align-items: center;
   justify-content: space-evenly;
   font-family: 'ClockFont_26_08_18', sans-serif;
-  font-size: 5rem;
-  color: #e4801a;
+  font-size: 6rem;
+  color: #cf7f2fd2;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   z-index: 1;
@@ -63,7 +63,7 @@
   width: 1.2ch; /* Set a fixed width for one character */
   text-align: center;
   /* padding: 0.1em 0.3em; Add some vertical and horizontal padding */
-  margin: 0 0.1em; /* Add a small margin between digits */
-  border: 1px solid rgb(212, 25, 25); /* A subtle border for the box */
+  /* margin: 0 0.1em; Add a small margin between digits */
+  /* border: 1px solid rgb(212, 25, 25); A subtle border for the box */
   line-height: 1; /* Ensure consistent vertical alignment */
 }
