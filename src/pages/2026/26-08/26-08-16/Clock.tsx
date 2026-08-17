@@ -21,7 +21,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 // 2. Main Component
-const FullscreenVideoComponent: React.FC = () => {
+const ClockComponent: React.FC = () => {
   const time = useSecondClock();
 
   // Load font via Suspense
@@ -63,7 +63,7 @@ const FullscreenVideoComponent: React.FC = () => {
 };
 
 // 3. Performance Wrapper
-const MemoizedFullscreenVideo = React.memo(FullscreenVideoComponent);
-MemoizedFullscreenVideo.displayName = 'Clock_26_08_18';
+const MemoizedClock = React.memo(ClockComponent);
+MemoizedClock.displayName = 'Clock_26_08_16';
 
-export default MemoizedFullscreenVideo;
+export default MemoizedClock;
