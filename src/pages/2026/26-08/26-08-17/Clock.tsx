@@ -104,22 +104,32 @@ const ClockComponent: React.FC = () => {
     const rebondOnScreen = () => {
       if (!sites || !speed) return;
       const { width, height } = dimensionsRef.current;
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
-        if (sites[i][0] < 0 || sites[i][0] > width)
-          speed[i].x *= -1;
-        if (sites[i][1] < 0 || sites[i][1] > height)
-          speed[i].y *= -1;
+      sites.forEach((site, i) => {
+        const particleSpeed = speed[i];
+        if (!site || !particleSpeed) return;
 
-        sites[i][0] += speed[i].x;
-        sites[i][1] += speed[i].y;
-      }
+        if (site[0] < 0 || site[0] > width) {
+          particleSpeed.x *= -1;
+        }
+        if (site[1] < 0 || site[1] > height) {
+          particleSpeed.y *= -1;
+        }
+        site[0] += particleSpeed.x;
+        site[1] += particleSpeed.y;
+      });
     };
 
     const drawCell = (cell: d3.VoronoiPolygon<[number, number]>) => {
-      if (!cell) return false;
-      context.moveTo(cell[0][0], cell[0][1]);
+      if (!cell || cell.length === 0) return false;
+      const startPoint = cell[0];
+      if (!startPoint) return false;
+
+      context.moveTo(startPoint[0], startPoint[1]);
       for (let j = 1, m = cell.length; j < m; ++j) {
-        context.lineTo(cell[j][0], cell[j][1]);
+        const point = cell[j];
+        if (point) {
+          context.lineTo(point[0], point[1]);
+        }
       }
       context.closePath();
       return true;
