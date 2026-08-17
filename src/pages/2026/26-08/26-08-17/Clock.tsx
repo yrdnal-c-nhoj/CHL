@@ -137,6 +137,10 @@ const ClockComponent: React.FC = () => {
             δὶς ἐς τὸν αὐτὸν ποταμὸν οὐκ ἂν ἐμβαίης.
           </p>
           <p className={styles.quoteAuthor}>-Heraclitus</p>
+          <p className={styles.quoteText}>
+            You can't step in the same river twice.
+          </p>
+          <p className={styles.quoteAuthor}>-Heraclitus</p>
         </div>
       </div>
     </main>
