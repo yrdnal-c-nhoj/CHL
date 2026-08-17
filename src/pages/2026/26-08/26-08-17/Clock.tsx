@@ -133,8 +133,8 @@ const ClockComponent: React.FC = () => {
 
       // Create gradient stroke
       const gradient = context.createLinearGradient(0, 0, width, 0);
-      gradient.addColorStop('0', '#C792ED');
-      gradient.addColorStop('1', '#8AE2E6');
+      gradient.addColorStop('0', '#AE54EF');
+      gradient.addColorStop('1', '#40CCD4');
 
       for (const cell of voronoi.cellPolygons()) {
         drawCell(cell);
