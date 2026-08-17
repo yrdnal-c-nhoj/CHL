@@ -5,25 +5,17 @@ import * as d3 from 'd3';
 import React, { useEffect, useMemo, useRef } from 'react';
 import styles from './Clock.module.css';
 
-// Import the font file so it's included in the build
-import fontUrl from '@/assets/fonts/26fonts/26-08-17.ttf?url';
-
 // =========================
 // ASSET EXPORTS (Required)
 // =========================
-export const assets: string[] = [fontUrl];
+export const assets: string[] = [];
 
 // =========================
 // FONT CONFIGURATION (defined outside the component to be stable)
 // =========================
-const fontConfigs: FontConfig[] = [
-  {
-    fontFamily: 'ClockFont_26_08_17',
-    fontUrl,
-  },
-];
+const fontConfigs: FontConfig[] = [];
 
-const PARTICLE_COUNT = 200;
+const PARTICLE_COUNT = 100;
 
 const ClockComponent: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -141,14 +133,14 @@ const ClockComponent: React.FC = () => {
 
       // Create gradient stroke
       const gradient = context.createLinearGradient(0, 0, width, 0);
-      gradient.addColorStop('0', '#0B8080');
-      gradient.addColorStop('1', '#296909');
+      gradient.addColorStop('0', '#C792ED');
+      gradient.addColorStop('1', '#8AE2E6');
 
       for (const cell of voronoi.cellPolygons()) {
         drawCell(cell);
       }
 
-      context.lineWidth = 0.5;
+      context.lineWidth = 1;
       context.strokeStyle = gradient;
       context.stroke();
     };
@@ -185,7 +177,7 @@ const ClockComponent: React.FC = () => {
         </div>
       </div>
       <div className={styles.digitalClock}>
-       * {digitalTime}
+       *{digitalTime}
       </div>
     </main>
   );
