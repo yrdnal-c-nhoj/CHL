@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 // 1. Asset Exports (for preloading)
 // NOTE: Please replace these placeholder paths with your actual assets.
-import backgroundImage from '@/assets/images/26_images/26-08/26-08-10/straw.webp';
+import backgroundImage from '@/assets/images/26_images/26-08/26-08-18/eclipse.webm';
 
 // In a portable component, asset handling is simplified.
 // The original preloading export is removed.
@@ -19,6 +19,17 @@ const styles: { [key: string]: React.CSSProperties } = {
     justifyContent: 'center',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+    fontFamily: 'ClockFont_26_08_13, sans-serif',
+    position: 'relative', // Needed for video positioning
+    overflow: 'hidden', // Hide video overflow
+  },
+  backgroundVideo: {
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
     fontFamily: 'ClockFont_26_08_13, sans-serif',
   },
   srOnly: {
@@ -133,17 +144,21 @@ const ClockComponent: React.FC = () => {
   }, [time]);
 
   return (
-    <main
-      style={{
-        ...styles.container,
-        backgroundImage: `url(${backgroundImage})`,
-      }}
-    >
+    <main style={styles.container}>
       {/* Semantic <time> element for accessibility (Required) */}
       <time dateTime={time.toISOString()} style={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
 
+      <video
+        style={styles.backgroundVideo}
+        src={backgroundImage}
+        autoPlay
+        loop
+        muted
+        playsInline
+        aria-hidden="true"
+      />
       {/* --- Clock UI --- */}
       <div style={styles.clockContainer}>
         {/* Analog Clock */}
