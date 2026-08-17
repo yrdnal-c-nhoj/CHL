@@ -3,6 +3,7 @@ import phoneImg from '@/assets/images/26_images/26-06/26-06-10/phone.webp';
 import { useSecondClock } from '@/utils/hooks/useSmoothClock';
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
+import { useSecondClock } from '@/utils/hooks';
 
 export const assets = [phoneImg, officeImg];
 

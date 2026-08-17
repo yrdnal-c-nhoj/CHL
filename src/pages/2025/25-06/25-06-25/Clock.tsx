@@ -6,6 +6,8 @@ import bone from '@/assets/images/25_images/25-06/25-06-25/bone.png';
 import bone1 from '@/assets/images/25_images/25-06/25-06-25/bone1.png';
 import bone2 from '@/assets/images/25_images/25-06/25-06-25/bone2.png';
 import bgImage from '@/assets/images/25_images/25-06/25-06-25/bon.png';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const BoneClock =  () => {
   const hourRef = useRef(null);
@@ -14,53 +16,8 @@ const BoneClock =  () => {
   const numberContainerRef = useRef(null);
 
   useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      const seconds = now.getSeconds();
-      const minutes = now.getMinutes();
-      const hours = now.getHours();
-
-      const secondDeg = seconds * 6;
-      const minuteDeg = minutes * 6 + seconds * 0.1;
-      const hourDeg = (hours % 12) * 30 + minutes * 0.5;
-
-      if (secondRef.current)
-        secondRef.current.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
-      if (minuteRef.current)
-        minuteRef.current.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
-      if (hourRef.current)
-        hourRef.current.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
-    };
-
-    const placeClockNumbers =  () => {
-      const container = numberContainerRef.current;
-      if (!container) return;
-
-      const radius = 45; // percent of size
-      for (let i = 1; i <= 12; i++) {
-        const angle = (i - 3) * 30 * (Math.PI / 180);
-        const x = 50 + radius * Math.cos(angle);
-        const y = 50 + radius * Math.sin(angle);
-
-        const span = document.createElement('span');
-        span.textContent = i;
-        span.style.position = 'absolute';
-        span.style.left = `${x}%`;
-        span.style.top = `${y}%`;
-        span.style.transform = 'translate(-50%, -50%)';
-        span.style.fontSize = '3.5rem';
-        span.style.fontFamily = 'bone, sans-serif';
-        span.style.color = 'rgb(223, 213, 187)';
-        span.style.textShadow = '#1b1b1a 1px 1px 0px, #141412 -1px -1px 0px';
-        container.appendChild(span);
-      }
-    };
-
-    placeClockNumbers();
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   return (
     <div

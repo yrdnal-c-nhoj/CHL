@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const RandomColorClock =  () => {
   const hourRef = useRef(null);
@@ -94,21 +96,8 @@ const RandomColorClock =  () => {
   };
 
   useEffect(() => {
-    createDots();
-    positionSquares();
-    const interval = setInterval(updateClock, 1000);
-    updateClock();
-
-    window.addEventListener('resize', () => {
-      createDots();
-      positionSquares();
-    });
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener('resize', () => {});
-    };
-  }, []);
+      updateClock();
+    }, [time]);
 
   return (
     <div

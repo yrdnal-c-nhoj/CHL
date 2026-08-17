@@ -4,6 +4,8 @@ import type { FontConfig } from '@/types/clock';
 import videoFile from '@/assets/images/25_images/25-12/25-12-28/coaster.mp4';
 import fallbackImg from '@/assets/images/25_images/25-12/25-12-28/coaster.webp';
 import fontUrl_20251128 from '@/assets/fonts/25fonts/25-12-28-coaster.ttf?url';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 export default function Clock() {
   const [timeText, setTimeText] = useState<any>('');
@@ -35,69 +37,8 @@ export default function Clock() {
 
   // Corrected shake animation loop
   useEffect(() => {
-    const intensity = 35;
-
-    const animate = (time: number) => {
-      const t = time * 0.002; // Slower time multiplier for smoother oscillations
-
-      // X movement
-      const x1 = Math.sin(t * 1.8) * intensity * 2.2;
-      const x2 = Math.sin(t * 0.7) * intensity * 1.3;
-      const x = (x1 + x2) * 0.7;
-
-      // Y movement
-      const y1 = Math.sin(t * 1.2) * intensity * 1.8;
-      const y2 = Math.cos(t * 0.5) * intensity * 1.1;
-      const y = (y1 + y2) * 0.6;
-
-      // Rotation
-      const rotate1 = Math.sin(t * 1.4) * 18;
-      const rotate2 = Math.cos(t * 0.3) * 8;
-      const rotate = (rotate1 + rotate2) * 0.7;
-
-      const randomX = (Math.random() - 0.5) * 10;
-      const randomY = (Math.random() - 0.5) * 5;
-
-      setShake({ x: x + randomX, y: y + randomY, rotate });
-
-      animationFrameId.current = requestAnimationFrame(animate);
-    };
-
-    animationFrameId.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
-    };
-  }, []);
-
-  // Time update and video management effect
-  useEffect(() => {
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-
-    const v = videoRef.current;
-    if (!v) return;
-
-    const onError = () => setVideoFailed(true);
-    const onCanPlay = () => setVideoFailed(false);
-
-    v.addEventListener('error', onError);
-    v.addEventListener('stalled', onError);
-    v.addEventListener('canplay', onCanPlay);
-
-    v.play?.().catch(onError);
-
-    return () => {
-      clearInterval(interval);
-      if (v) {
-        v.removeEventListener('error', onError);
-        v.removeEventListener('stalled', onError);
-        v.removeEventListener('canplay', onCanPlay);
-      }
-    };
-  }, []);
+      updateTime();
+    }, [time]);
 
   const containerStyle = {
     width: '100vw',

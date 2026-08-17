@@ -5,32 +5,15 @@ import cloudyFont from '@/assets/fonts/25fonts/25-06-13-cloudy.ttf';
 import cmoon from '@/assets/images/25_images/25-06/25-06-13/cmoon.webp';
 import clouGif from '@/assets/images/25_images/25-06/25-06-13/clou.gif';
 import clll from '@/assets/images/25_images/25-06/25-06-13/clll.webp';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const CloudyNightClock =  () => {
   const clockRef = useRef(null);
 
   useEffect(() => {
-    // Inject font
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'cloudy';
-        src: url(${cloudyFont}) format('truetype');
-      }
-    `;
-    document.head.appendChild(style);
-
-    const updateClock =  () => {
-      const now = new Date();
-      const hours = now.getHours() % 12 || 12;
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      clockRef.current.textContent = `${hours}:${minutes}`;
-    };
-
-    const interval = setInterval(updateClock, 1000);
-    updateClock();
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   const containerStyle = {
     margin: 0,

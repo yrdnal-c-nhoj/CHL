@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import stretchFont from '@/assets/fonts/25fonts/25-06-29-stretch.ttf';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const StretchClock =  () => {
   const [time, setTime] = useState<any>({
@@ -25,26 +27,8 @@ const StretchClock =  () => {
   // Font loading handled by useSuspenseFontLoader
 
   useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      const hours = now.getHours() % 12 || 12;
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      const seconds = now.getSeconds();
-
-      setTime((prev) => ({
-        hours: prev.hours !== hours.toString() ? hours.toString() : prev.hours,
-        minutes: prev.minutes !== minutes ? minutes : prev.minutes,
-        seconds:
-          prev.seconds !== seconds.toString()
-            ? seconds.toString()
-            : prev.seconds,
-      }));
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   const clockStyle = {
     height: '100dvh',

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import penFontUrl from '@/assets/fonts/25fonts/25-07-11-Pen.ttf';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const PenmanshipClock =  () => {
   const [timeString, setTimeString] = useState<any>('--:--');
@@ -22,21 +24,8 @@ const PenmanshipClock =  () => {
 
   // Update time every second
   useEffect(() => {
-    const updateTime =  () => {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes();
-      const ampmVal = hours >= 12 ? 'pm' : 'am';
-      hours = hours % 12 || 12; // Convert 0 -> 12
-      const paddedMinutes = String(minutes).padStart(2, '0');
-      setTimeString(`${hours}:${paddedMinutes}`);
-      setAmpm(ampmVal);
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
+      updateTime();
+    }, [time]);
 
   // Calculate grid size
   useEffect(() => {

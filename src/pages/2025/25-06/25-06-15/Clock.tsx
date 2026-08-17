@@ -4,44 +4,13 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import fontUrl from '@/assets/fonts/25fonts/25-06-15-ZombieStitch.ttf';
 import bgImageUrl from '@/assets/images/25_images/25-06/25-06-15/stin.webp';
 import overlayImageUrl from '@/assets/images/25_images/25-06/25-06-15/stit.jpeg';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const StitchesClock =  () => {
   useEffect(() => {
-    // Load font with unique name
-    const font = new FontFace('ZombieStitch_2025_10_29', `url(${fontUrl})`);
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-    });
-
-    const updateClock =  () => {
-      const now = new Date();
-      let h = now.getHours();
-      const m = now.getMinutes();
-      const ampm = h >= 12 ? 'PM' : 'AM';
-
-      h = h % 12 || 12;
-      const hStr = String(h);
-      const mStr = String(m).padStart(2, '0');
-      const allChars = hStr + mStr + ampm;
-
-      const container = document.getElementById('clockRow');
-      if (!container) return;
-      container.innerHTML = '';
-
-      for (let i = 0; i < allChars.length; i++) {
-        const ch = allChars[i];
-        const span = document.createElement('span');
-        span.className = 'digit';
-        span.textContent = ch;
-        Object.assign(span.style, styles.digit);
-        container.appendChild(span);
-      }
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 10000);
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   return (
     <div style={styles.body}>

@@ -5,6 +5,8 @@ import bgLayer1 from '@/assets/images/25_images/25-10/25-10-16/venus2.webp';
 import bgLayer2 from '@/assets/images/25_images/25-10/25-10-16/venus.webp';
 import fullBg from '@/assets/images/25_images/25-10/25-10-16/ve.jpg';
 import font20251015 from '@/assets/fonts/25fonts/25-10-16-venus.ttf';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 export const assets = [];
 
@@ -18,91 +20,8 @@ export default function VenusClock() {
 
   // --- Responsive clock size ---
   useEffect(() => {
-    const handleResize =  () => {
-      const vw = window.innerWidth;
-      if (vw < 768)
-        setClockSizeVh(30); // phones
-      else setClockSizeVh(40); // laptops/desktops
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // --- Preload font + images ---
-  useEffect(() => {
-    const styleEl = document.createElement('style');
-    styleEl.setAttribute('data-venus-font', '1');
-    styleEl.innerHTML = `
-      @font-face {
-        font-family: 'VenusFont';
-        src: url('${font20251015}') format('truetype');
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
-      }
-    `;
-    document.head.appendChild(styleEl);
-
-    let imagesLoaded = 0;
-    const totalImages = 3;
-    let fontLoaded = false;
-
-    const checkReady =  () => {
-      if (imagesLoaded >= totalImages && fontLoaded) setReady(true);
-    };
-
-    const img1 = new Image();
-    const img2 = new Image();
-    const img3 = new Image();
-    img1.src = bgLayer1;
-    img2.src = bgLayer2;
-    img3.src = fullBg;
-    img1.onload =
-      img2.onload =
-      img3.onload =
-        () => {
-          imagesLoaded++;
-          checkReady();
-        };
-    img1.onerror =
-      img2.onerror =
-      img3.onerror =
-        () => {
-          imagesLoaded++;
-          checkReady();
-        };
-
-    try {
-      const fontFace = new FontFace('VenusFont', `url(${font20251015})`);
-      fontFace
-        .load()
-        .then((loadedFace) => {
-          document.fonts.add(loadedFace);
-          fontLoaded = true;
-          checkReady();
-        })
-        .catch(() => {
-          fontLoaded = true;
-          checkReady();
-        });
-    } catch {
-      fontLoaded = true;
-      checkReady();
-    }
-
-    return () => {
-      if (styleEl && styleEl.parentNode)
-        styleEl.parentNode.removeChild(styleEl);
-    };
-  }, []);
-
-  // --- Update current time ---
-  useEffect(() => {
-    if (!ready) return;
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, [ready]);
+      setTime(time);
+    }, [time]);
 
   // --- Scrolling background ---
   useEffect(() => {

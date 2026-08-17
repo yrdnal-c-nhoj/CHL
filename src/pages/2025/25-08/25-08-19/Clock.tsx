@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import fontUrl from '@/assets/fonts/25fonts/25-08-19-cas.ttf';
 import bgUrl from '@/assets/images/25_images/25-08/25-08-19/ap.jpeg';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const Pendulum =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -18,31 +20,8 @@ const Pendulum =  () => {
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    // Font loading handled by useSuspenseFontLoader
-    const style = document.createElement('style');
-    style.textContent = ``;
-    document.head.appendChild(style);
-
-    const updateTimeOnBalls =  () => {
-      const now = new Date();
-      let hours = now.getHours();
-      hours = hours % 12 || 12;
-      hours = String(hours).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      const timeString = `${hours}${minutes}${seconds}`;
-      const pieces = document.querySelectorAll('.piece');
-      pieces.forEach((piece, index) => {
-        piece.setAttribute('data-digit', timeString[index]);
-      });
-    };
-    updateTimeOnBalls();
-    const interval = setInterval(updateTimeOnBalls, 1000);
-    return () => {
-      clearInterval(interval);
-      document.head.removeChild(style);
-    };
-  }, []);
+      updateTimeOnBalls();
+    }, [time]);
 
   const styles = {
     pendulumApp: {

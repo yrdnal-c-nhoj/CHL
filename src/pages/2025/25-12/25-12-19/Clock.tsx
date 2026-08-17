@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import sandTexture from '@/assets/images/25_images/25-12/25-12-19/sand.webp';
 import FONT_PATH from '@/assets/fonts/25fonts/25-12-19-hour.ttf?url';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const FONT_FAMILY = 'DateFont';
 
@@ -22,17 +24,8 @@ const HourglassTimer =  () => {
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateSand =  () => {
-      const now = new Date();
-      const secondsPassed =
-        now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-      setPercentDayPassed((secondsPassed / 86400) * 100);
-    };
-
-    updateSand();
-    const interval = setInterval(updateSand, 1000);
-    return () => clearInterval(interval);
-  }, []);
+      updateSand();
+    }, [time]);
 
   const formatTimeLabel = (h) => {
     if (h === 0 || h === 24) return '12';

@@ -5,6 +5,8 @@ import clockFont from '@/assets/fonts/26fonts/26-01-30-ne.ttf';
 import bgLayer1 from '@/assets/images/26_images/26-01/26-01-30/new.webp';
 import bgLayer2 from '@/assets/images/26_images/26-01/26-01-30/nes.gif';
 // import bgLayer3 from '@/assets/images/26_images/26-01/26-01-30/ne3.gif';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const DigitalClock =  () => {
   const [time, setTime] = useState(new Date());
@@ -23,112 +25,8 @@ const DigitalClock =  () => {
   });
 
   useEffect(() => {
-    const styleSheet = document.createElement('style');
-    styleSheet.textContent = `
-      @keyframes tileMove {
-        0% { background-position: 0 0; }
-        100% { background-position: -200px 200px; }
-      }
-    `;
-    document.head.appendChild(styleSheet);
-
-    const font = new FontFace(
-      'MyCustomFont',
-      `url(${clockFont}) format('truetype')`,
-    );
-    font
-      .load()
-      .then((f) => {
-        document.fonts.add(f);
-        setFontLoaded(true);
-      })
-      .catch(() => setFontLoaded(true));
-
-    const timer = setInterval(() => setTime(new Date()), 1000);
-
-    const animate =  () => {
-      const b = brain.current;
-      b.confusionTimer--;
-
-      if (b.confusionTimer <= 0) {
-        b.targetAngle = Math.random() * Math.PI * 2;
-        b.speed = 0.08 + Math.random() * 0.32; // 0.08–0.40 range
-        b.confusionTimer = Math.floor(Math.random() * 80) + 40; // ~0.7–2s
-      }
-
-      // Smooth angle lerp
-      let angleDiff = b.targetAngle - b.angle;
-      while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
-      while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
-      b.angle += angleDiff * b.turnStrength;
-
-      // Move
-      pos.current.x += Math.cos(b.angle) * b.speed;
-      pos.current.y += Math.sin(b.angle) * b.speed;
-
-      // ── Containment logic ────────────────────────────────────────
-      const limitX = 34; // vw — feels good on most screens
-      const limitY = 28; // vh — slightly tighter vertically
-
-      let bounced = false;
-
-      if (pos.current.x > limitX) {
-        pos.current.x = limitX * 0.96; // soft push inside
-        b.targetAngle = Math.atan2(-pos.current.y, -pos.current.x);
-        b.speed = 0.5;
-        bounced = true;
-      } else if (pos.current.x < -limitX) {
-        pos.current.x = -limitX * 0.96;
-        b.targetAngle = Math.atan2(-pos.current.y, -pos.current.x);
-        b.speed = 0.5;
-        bounced = true;
-      }
-
-      if (pos.current.y > limitY) {
-        pos.current.y = limitY * 0.96;
-        b.targetAngle = Math.atan2(-pos.current.y, -pos.current.x);
-        b.speed = 0.5;
-        bounced = true;
-      } else if (pos.current.y < -limitY) {
-        pos.current.y = -limitY * 0.96;
-        b.targetAngle = Math.atan2(-pos.current.y, -pos.current.x);
-        b.speed = 0.5;
-        bounced = true;
-      }
-
-      // Nervous reset on bounce
-      if (bounced) {
-        b.confusionTimer = Math.floor(Math.random() * 45) + 20;
-        b.turnStrength = 0.12 + Math.random() * 0.08; // temporary snappier turn
-        setTimeout(() => {
-          b.turnStrength = 0.08;
-        }, 800); // reset after ~0.8s
-      }
-
-      // Final safety clamp (prevents any rare overshoot)
-      pos.current.x = Math.max(
-        -limitX * 1.05,
-        Math.min(limitX * 1.05, pos.current.x),
-      );
-      pos.current.y = Math.max(
-        -limitY * 1.05,
-        Math.min(limitY * 1.05, pos.current.y),
-      );
-
-      setBgPos({ x: pos.current.x, y: pos.current.y });
-
-      requestRef.current = requestAnimationFrame(animate);
-    };
-
-    requestRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      clearInterval(timer);
-      cancelAnimationFrame(requestRef.current);
-      if (document.head.contains(styleSheet))
-        document.head.removeChild(styleSheet);
-    };
-  }, []);
+      setTime(time);
+    }, [time]);
 
   const rawHours = time.getHours();
   const hours = rawHours % 12 || 12;

@@ -2,25 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-06/25-06-12/auth.jpg';
 import cattleFont from '@/assets/fonts/25fonts/25-06-12-cattle.ttf';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const CattleBrandClock =  () => {
   const [time, setTime] = useState<any>({ hours: 12, minutes: '00' });
 
   useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes();
-
-      hours = hours % 12 || 12;
-      const minStr = minutes.toString().padStart(2, '0');
-      setTime({ hours, minutes: minStr });
-    };
-
-    updateClock();
-    const intervalId = setInterval(updateClock, 1000);
-    return () => clearInterval(intervalId);
-  }, []);
+      updateClock();
+    }, [time]);
 
   const style = {
     '@font-face': [

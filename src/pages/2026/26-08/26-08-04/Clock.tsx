@@ -8,6 +8,7 @@ import styles from './Clock.module.css';
 
 // Import the font with the corresponding date from the assets folder
 import fontUrl from '@/assets/fonts/26fonts/26-08-04.ttf?url';
+import { useMillisecondClock } from '@/utils/hooks';
 
 // 1. Asset Exports (Required for preloading pipeline)
 

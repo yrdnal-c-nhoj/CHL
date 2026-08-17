@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import fontFile from '@/assets/fonts/26fonts/26-01-02-cram.ttf';
 import backgroundImage from '@/assets/images/26_images/26-01/26-01-02/brick.webp';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const StretchedClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -26,15 +28,8 @@ const StretchedClock =  () => {
   // Font loading handled by useSuspenseFontLoader
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    const handleResize = () => setIsLargeScreen(window.innerWidth > 768);
-
-    window.addEventListener('resize', handleResize);
-    return () => {
-      clearInterval(timer);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+      setTime(time);
+    }, [time]);
 
   // Load background to avoid flashing
   useEffect(() => {

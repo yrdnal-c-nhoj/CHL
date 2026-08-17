@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-07/25-07-18/558074085193-ezgif.com-optiwebp-1.webp';
 import xrayFontUrl from '@/assets/fonts/25fonts/25-07-18-xray.ttf';
+import { useMillisecondClock } from '@/utils/hooks';
+const { time } = useMillisecondClock(50);
 
 const HospitalClock =  () => {
   const [time, setTime] = useState<any>('');
@@ -20,19 +22,8 @@ const HospitalClock =  () => {
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      const h = String(now.getHours()).padStart(2, '0');
-      const m = String(now.getMinutes()).padStart(2, '0');
-      const s = String(now.getSeconds()).padStart(2, '0');
-      const ms = String(now.getMilliseconds()).padStart(3, '0').slice(0, 2);
-      setTime(`${h}:${m}:${s}.${ms}`);
-    };
-
-    const interval = setInterval(updateClock, 50);
-    updateClock();
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   return (
     <div style={styles.body}>

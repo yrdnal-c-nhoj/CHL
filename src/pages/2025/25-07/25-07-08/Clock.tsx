@@ -6,6 +6,8 @@ import hourImg from '@/assets/images/25_images/25-07/25-07-08/mint.png';
 import minuteImg from '@/assets/images/25_images/25-07/25-07-08/minty.webp';
 import secondImg from '@/assets/images/25_images/25-07/25-07-08/min.png';
 import bgImage from '@/assets/images/25_images/25-07/25-07-08/candy.jpg';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const MintClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -21,61 +23,8 @@ const MintClock =  () => {
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   useEffect(() => {
-    const clock = document.getElementById('clock');
-    for (let i = 1; i <= 12; i++) {
-      const numberDiv = document.createElement('div');
-      numberDiv.className = 'number';
-      numberDiv.style.transform = `rotate(${i * 30}deg) skew(-15deg)`;
-      const span = document.createElement('span');
-      span.textContent = i;
-      numberDiv.appendChild(span);
-      clock.appendChild(numberDiv);
-    }
-
-    const hourHand = document.querySelector('.hand.hour');
-    const minuteHand = document.querySelector('.hand.minute');
-    const secondHand = document.querySelector('.hand.second');
-
-    const updateClock =  () => {
-      const now = new Date();
-      const seconds = now.getSeconds();
-      const minutes = now.getMinutes();
-      const hours = now.getHours();
-      const secDeg = seconds * 6;
-      const minDeg = minutes * 6 + seconds * 0.1;
-      const hrDeg = (hours % 12) * 30 + minutes * 0.5;
-
-      secondHand.style.transform = `translateX(-50%) rotate(${secDeg}deg)`;
-      minuteHand.style.transform = `translateX(-50%) rotate(${minDeg}deg)`;
-      hourHand.style.transform = `translateX(-50%) rotate(${hrDeg}deg)`;
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-
-    [hourHand, minuteHand, secondHand].forEach((hand) => {
-      hand.onerror = () => {
-        console.error(`Failed to load image for ${hand.alt} at ${hand.src}`);
-        hand.style.background = hand.classList.contains('hour')
-          ? 'blue'
-          : hand.classList.contains('minute')
-            ? 'green'
-            : 'red';
-        hand.style.width = hand.classList.contains('hour')
-          ? '0.3rem'
-          : hand.classList.contains('minute')
-            ? '0.2rem'
-            : '0.1rem';
-        hand.style.height = hand.classList.contains('hour')
-          ? '6rem'
-          : hand.classList.contains('minute')
-            ? '8rem'
-            : '10rem';
-      };
-    });
-
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   return (
     <div

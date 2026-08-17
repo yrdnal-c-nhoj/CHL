@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import shaFont from '@/assets/fonts/25fonts/25-06-10-sha.ttf';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const ShapesClock =  () => {
   const [time, setTime] = useState<any>({
@@ -23,19 +25,8 @@ const ShapesClock =  () => {
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      setTime({
-        hours: String(now.getHours()).padStart(2, '0'),
-        minutes: String(now.getMinutes()).padStart(2, '0'),
-        seconds: String(now.getSeconds()).padStart(2, '0'),
-      });
-    };
-
-    const interval = setInterval(updateClock, 1000);
-    updateClock();
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   const bodyStyle = {
     margin: 0,

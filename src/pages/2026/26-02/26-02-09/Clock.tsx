@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import customFont from '@/assets/fonts/26fonts/26-02-09-spin.otf?url';
 import type { FontConfig } from '@/types/clock';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 interface Glyph {
   type: 'hour' | 'minute' | 'period';
@@ -63,18 +65,8 @@ export default function CenteredLightClock() {
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateAria = () => {
-      setAriaTime(
-        new Date().toLocaleTimeString([], {
-          hour: 'numeric',
-          minute: '2-digit',
-        }),
-      );
-    };
-    updateAria();
-    const interval = setInterval(updateAria, 60000);
-    return () => clearInterval(interval);
-  }, []);
+      updateAria();
+    }, [time]);
 
   useEffect(() => {
     const canvas = canvasRef.current;

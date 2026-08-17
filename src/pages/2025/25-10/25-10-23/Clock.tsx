@@ -2,6 +2,8 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import f251023 from '@/assets/fonts/25fonts/25-10-23-gr.ttf';
 import bgImage from '@/assets/images/25_images/25-10/25-10-23/bg.gif';
+import { useMillisecondClock } from '@/utils/hooks';
+const { time } = useMillisecondClock(10);
 
 export const assets = [];
 
@@ -20,28 +22,8 @@ const Clockgrid =  () => {
   });
 
   useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes();
-      const seconds = now.getSeconds();
-      const millis = Math.floor(now.getMilliseconds() / 10);
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12 || 12;
-
-      setTime({
-        hours: String(hours).padStart(2, '0'),
-        minutes: String(minutes).padStart(2, '0'),
-        seconds: String(seconds).padStart(2, '0'),
-        millis: String(millis).padStart(2, '0'),
-        ampm,
-      });
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 10);
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   useEffect(() => {
     const handleResize =  () => {

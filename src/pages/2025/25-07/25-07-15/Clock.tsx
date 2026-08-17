@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import asciiFontUrl from '@/assets/fonts/25fonts/25-07-15-ascii.ttf';
 import asciiImageUrl from '@/assets/images/25_images/25-07/25-07-15/ascii.jpg';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const DIGITS = {
   0: [
@@ -164,20 +166,8 @@ const AsciiClock =  () => {
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      let h = now.getHours();
-      const m = String(now.getMinutes()).padStart(2, '0');
-      const s = String(now.getSeconds()).padStart(2, '0');
-      const isPM = h >= 12;
-      h = h % 12 || 12;
-      setTimeParts([String(h), m, s, isPM ? 'PM' : 'AM']);
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   const containerStyle = {
     backgroundColor: 'rgb(32, 31, 31)',

@@ -4,6 +4,7 @@ import { useSecondClock } from '@/utils/hooks/useSmoothClock';
 import bgImg from '@/assets/images/25_images/25-12/25-12-01/shark.webp';
 import clockfoont12012 from '@/assets/fonts/25fonts/25-12-01-shark.ttf?url';
 import type { FontConfig } from '@/types/clock';
+import { useSecondClock } from '@/utils/hooks';
 
 const fontConfigs: FontConfig[] = [
   {

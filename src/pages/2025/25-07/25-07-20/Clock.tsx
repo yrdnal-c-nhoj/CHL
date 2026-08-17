@@ -6,6 +6,8 @@ import bg1 from '@/assets/images/25_images/25-07/25-07-20/ca.webp';
 import bg2 from '@/assets/images/25_images/25-07/25-07-20/cam.webp';
 import bg3 from '@/assets/images/25_images/25-07/25-07-20/camer.webp';
 import bg4 from '@/assets/images/25_images/25-07/25-07-20/camr.webp';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const FStopClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -21,25 +23,8 @@ const FStopClock =  () => {
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   useEffect(() => {
-    const hourHand = document.getElementById('fstop-hourHand');
-    const minuteHand = document.getElementById('fstop-minuteHand');
-    const secondHand = document.getElementById('fstop-secondHand');
-
-    const updateClock =  () => {
-      const now = new Date();
-      const sec = now.getSeconds();
-      const min = now.getMinutes();
-      const hr = now.getHours() % 12;
-
-      hourHand.style.transform = `rotate(${(hr + min / 60) * 30}deg)`;
-      minuteHand.style.transform = `rotate(${(min + sec / 60) * 6}deg)`;
-      secondHand.style.transform = `rotate(${sec * 6}deg)`;
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   useEffect(() => {
     const clock = document.querySelector('.fstop-clock');

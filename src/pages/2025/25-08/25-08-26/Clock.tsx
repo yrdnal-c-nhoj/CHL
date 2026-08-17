@@ -5,6 +5,8 @@ import clockFont from '@/assets/fonts/25fonts/25-08-26-root.ttf';
 import bg0 from '@/assets/images/25_images/25-08/25-08-26/rrr.webp'; // bottom-most
 import bg1 from '@/assets/images/25_images/25-08/25-08-26/ro.gif'; // middle
 import bg3 from '@/assets/images/25_images/25-08/25-08-26/root.webp'; // top foreground
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 export default function DigitalClock() {
   const [time, setTime] = useState<any>(getTimeParts);
@@ -24,24 +26,8 @@ export default function DigitalClock() {
 
   // Clock ticking
   useEffect(() => {
-    const tick = () => setTime(getTimeParts());
-    const now = Date.now();
-    const delay = 1000 - (now % 1000);
-
-    const align = setTimeout(() => {
       tick();
-      const id = setInterval(tick, 1000);
-      (window.__digitalClockIntervals ||= new Set()).add(id);
-    }, delay);
-
-    return () => {
-      clearTimeout(align);
-      if (window.__digitalClockIntervals) {
-        for (const id of window.__digitalClockIntervals) clearInterval(id);
-        window.__digitalClockIntervals.clear();
-      }
-    };
-  }, []);
+    }, [time]);
 
   const styles = {
     root: {

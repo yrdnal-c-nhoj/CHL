@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import suvFont from '@/assets/fonts/25fonts/25-07-07-suv.ttf';
 import suvImage from '@/assets/images/25_images/25-07/25-07-07/suv.gif';
 import suvBackground from '@/assets/images/25_images/25-07/25-07-07/suvx.jpg';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const Clock =  () => {
   const [time, setTime] = useState<any>({
@@ -26,26 +28,8 @@ const Clock =  () => {
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes();
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-
-      hours = hours % 12;
-      hours = hours ? hours : 12;
-
-      setTime({
-        h: String(hours).padStart(2, '0'),
-        m: String(minutes).padStart(2, '0'),
-        ampm,
-      });
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   const containerStyle = {
     margin: 0,

@@ -4,24 +4,15 @@ import anglerfishIdle from '@/assets/images/25_images/25-07/25-07-21/anglerfish-
 import anglerfishFuse from '@/assets/images/25_images/25-07/25-07-21/Deep-Sea-Anglerfish-Fuse.webp';
 import patternOverlay from '@/assets/images/25_images/25-07/25-07-21/qsxwwd.webp';
 import spinGif from '@/assets/images/25_images/25-07/25-07-21/spin.gif';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const AnglerfishClock =  () => {
   const [time, setTime] = useState<any>('');
 
   useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      let hours = now.getHours();
-      let minutes = now.getMinutes();
-      hours = hours % 24;
-      minutes = minutes < 10 ? '0' + minutes : minutes;
-      setTime(`${hours} ${minutes}`);
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   return (
     <div
