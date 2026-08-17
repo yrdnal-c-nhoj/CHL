@@ -1,6 +1,5 @@
 import bgImage from '@/assets/images/26_images/26-05/26-05-09/lotus.webp';
-import { calculateAngles, formatTime } from '@/utils/hooks';
-import { useSecondClock } from '@/utils/hooks';
+import { calculateAngles, formatTime , useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
