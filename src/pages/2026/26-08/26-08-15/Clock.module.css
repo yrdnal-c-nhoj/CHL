@@ -6,9 +6,9 @@
   justify-content: center;
   background: repeating-radial-gradient(
     circle,
-    hsl(115, 59%, 75%) 0% calc(100% / 33),
-    hsl(147, 62%, 69%) calc(100% / 33) calc(100% / 33 * 2),
-    hsl(163, 35%, 82%) calc(100% / 33 * 2) calc(100% / 33 * 3)
+    hsl(263, 58%, 31%) 0% calc(100% / 100),
+    hsl(294, 83%, 24%) calc(100% / 100) calc(100% / 100 * 2),
+    hsl(276, 92%, 31%) calc(100% / 100 * 2) calc(100% / 100 * 3)
   );
 }
 
@@ -38,9 +38,9 @@
   position: absolute;
   bottom: 50%;
   left: 50%;
-  width: 0.2vmin;
-  height: 60vh;
-  background-color: rgb(247, 3, 23);
+  width: 0.3vmin;
+  height: 49vh;
+  background-color: rgba(248, 193, 12, 0.679);
   transform: translateX(-50%);
   z-index: 4;
   pointer-events: none;
@@ -59,25 +59,29 @@
   position: absolute;
   top: 50%;
   left: 50%;
+  text-shadow: 3px 0px 0px rgb(1, 0, 0);
   transform-origin: center center;
   user-select: none;
+}
+
+.hourNumber {
   font-family: 'ClockFont_26_08_15_Hour', sans-serif;
-  font-size: 12vmin;
-  text-shadow: 1px 1px 0 #000, -1px -1px 0 #fff;
-  color: #3b79f3;
+  font-size: 15vmin;
+  letter-spacing: -0.15em;
+  color: #f9f004;
+  
 }
 
 .minuteNumber {
   font-family: 'ClockFont_26_08_15_Min', sans-serif;
-  font-size: 6.5vmin;
+  font-size: 7.3vmin;
   letter-spacing: -0.2em;
-  color: #65658e;
+  color: #e7f309;
 }
 
 .secondNumber {
   font-family: 'ClockFont_26_08_15_Sec', sans-serif;
   font-size: 11vmin;
   letter-spacing: -0.04em;
-  color: #ce2a38;
-  text-shadow: 2px 0px 0 #000, -3px -0px 0 #fff;
+  color: #ffdd00;
 }
