@@ -5,15 +5,23 @@ import * as d3 from 'd3';
 import React, { useEffect, useMemo, useRef } from 'react';
 import styles from './Clock.module.css';
 
+// Import the font file so it's included in the build
+import fontUrl from '@/assets/fonts/26fonts/26-08-17.ttf?url';
+
 // =========================
 // ASSET EXPORTS (Required)
 // =========================
-export const assets: string[] = [];
+export const assets: string[] = [fontUrl];
 
 // =========================
-// FONT CONFIGURATION
+// FONT CONFIGURATION (defined outside the component to be stable)
 // =========================
-const fontConfigs: FontConfig[] = [];
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'ClockFont_26_08_17',
+    fontUrl,
+  },
+];
 
 const PARTICLE_COUNT = 200;
 
@@ -35,10 +43,14 @@ const ClockComponent: React.FC = () => {
   }, [time]);
 
   const digitalTime = useMemo(() => {
-    const hours = String(time.getHours()).padStart(2, '0');
+    let hours = time.getHours();
     const minutes = String(time.getMinutes()).padStart(2, '0');
-    const seconds = String(time.getSeconds()).padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
+    const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
+
+    hours = hours % 12;
+    hours = hours ? hours : 12; // The hour '0' should be '12'
+
+    return `${hours}:${minutes} ${ampm}`;
   }, [time]);
 
   useEffect(() => {
@@ -129,8 +141,8 @@ const ClockComponent: React.FC = () => {
 
       // Create gradient stroke
       const gradient = context.createLinearGradient(0, 0, width, 0);
-      gradient.addColorStop('0', '#08ECEC');
-      gradient.addColorStop('1', '#60F715');
+      gradient.addColorStop('0', '#0B8080');
+      gradient.addColorStop('1', '#296909');
 
       for (const cell of voronoi.cellPolygons()) {
         drawCell(cell);
