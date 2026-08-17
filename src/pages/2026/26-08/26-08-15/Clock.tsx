@@ -19,9 +19,9 @@ const fontConfigs: FontConfig[] = [
   { fontFamily: 'ClockFont_26_08_15_Sec', fontUrl: secondFontUrl },
 ];
 
-const HOURS = Array.from({ length: 12 }, (_, i) => i + 1);
-const MINUTES = Array.from({ length: 12 }, (_, i) => (i + 1) * 5);
-const SECONDS = Array.from({ length: 60 }, (_, i) => i + 1);
+const HOURS = Array.from({ length: 12 }, (_, i) => String(i + 1));
+const MINUTES = Array.from({ length: 12 }, (_, i) => String((i + 1) * 5).padStart(2, '0'));
+const SECONDS = Array.from({ length: 60 }, (_, i) => String(i + 1).padStart(2, '0'));
 
 const ClockComponent: React.FC = () => {
   // Use the canonical hook for time updates
@@ -68,7 +68,7 @@ const ClockComponent: React.FC = () => {
             return (
               <span
                 key={`h-${num}`}
-                className={styles.number}
+                className={`${styles.number} ${styles.hourNumber}`}
                 style={{ transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-26vmin)` }}
               >
                 {num}
