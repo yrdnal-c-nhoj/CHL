@@ -7,8 +7,8 @@ import { useSecondClock } from '@/utils/hooks';
 
 // 1. Asset Exports
 import fontUrl from '@/assets/fonts/26fonts/26-08-16.ttf?url';
-import backgroundImage from '@/assets/images/26_images/26-08/26-08-18/crab.webm';
-import moonImage from '@/assets/images/26_images/26-08/26-08-18/moon.webp';
+import backgroundImage from '@/assets/images/26_images/26-08/26-08-16/crab.webm';
+import moonImage from '@/assets/images/26_images/26-08/26-08-16/moon.webp';
 
 // --- Styles ---
 import styles from './Clock.module.css';
@@ -51,7 +51,11 @@ const ClockComponent: React.FC = () => {
       />
 
       {/* This div will handle the single, centered image */}
-      <div aria-hidden="true" className={styles.centeredOverlay} />
+      <div
+        aria-hidden="true"
+        className={styles.centeredOverlay}
+        style={{ backgroundImage: `url(${moonImage})` }}
+      />
 
       {/* Digital Clock Display */}
       <div className={styles.digitalClock}>

@@ -37,7 +37,7 @@ const ClockComponent: React.FC = () => {
   const digitalTime = useMemo(() => {
     let hours = time.getHours();
     const minutes = String(time.getMinutes()).padStart(2, '0');
-    const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
+    const ampm = hours >= 12 ? 'PM' : 'AM.';
 
     hours = hours % 12;
     hours = hours ? hours : 12; // The hour '0' should be '12'
