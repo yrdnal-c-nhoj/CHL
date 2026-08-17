@@ -32,7 +32,7 @@
 
 .centeredOverlay {
   composes: baseOverlay;
-  background-image: url('@/assets/images/26_images/26-08/26-08-18/moon.webp');
+  background-image: url('@/assets/images/26_images/26-08/26-08-16/moon.webp');
   background-repeat: no-repeat;
   background-size: 80%; /* Make the image larger than its container */
   background-position: center;
