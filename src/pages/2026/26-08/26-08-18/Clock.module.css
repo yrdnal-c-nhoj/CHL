@@ -51,11 +51,11 @@
   justify-content: space-evenly;
   font-family: 'ClockFont_26_08_18', sans-serif;
   font-size: 6rem;
-  color: #cf7f2fd2;
+  color: #f89d42d9;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   z-index: 1;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  text-shadow: 0 1px rgb(26, 7, 7);
 }
 
 .digit {
