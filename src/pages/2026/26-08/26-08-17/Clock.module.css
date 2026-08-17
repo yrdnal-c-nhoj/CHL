@@ -1,14 +1,14 @@
 .container {
   /* Replace background-color with a linear gradient */
-  background: linear-gradient(180deg, rgb(147, 178, 237) 0%, rgb(110, 125, 155) 100%);
+  background: linear-gradient(180deg, rgb(240, 201, 8) 0%, rgb(239, 152, 37) 100%);
   overflow: hidden;
   width: 100vw;
   height: 100vh;
   margin: 0;
   padding: 0;
   position: relative;
-  color: rgb(74, 71, 71);
-  text-shadow: 0 4px rgb(243, 239, 239);
+  color: rgb(60, 2, 2);
+  text-shadow: 0 1px rgb(243, 239, 239);
 }
 
 .canvas {
