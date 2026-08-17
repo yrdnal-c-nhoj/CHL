@@ -26,7 +26,7 @@
   height: 100%;
   object-fit: cover;
   mix-blend-mode: screen;
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
 .srOnly {
@@ -43,7 +43,6 @@
 
 .digitalClock {
   position: absolute;
-  top: 2rem;
   left: 0;
   right: 0;
   display: flex;
@@ -62,8 +61,5 @@
   display: inline-block;
   width: 1.2ch; /* Set a fixed width for one character */
   text-align: center;
-  /* padding: 0.1em 0.3em; Add some vertical and horizontal padding */
-  /* margin: 0 0.1em; Add a small margin between digits */
-  /* border: 1px solid rgb(212, 25, 25); A subtle border for the box */
   line-height: 1; /* Ensure consistent vertical alignment */
 }
