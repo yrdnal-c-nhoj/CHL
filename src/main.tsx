@@ -24,13 +24,10 @@ import './styles/tags.css';
 import { installConsoleFilters } from './utils/consoleFilters';
 
 // Reduce known third-party / browser-internal console noise.
-// Enabled in PROD or if explicitly requested via a query param/env (useful for capture scripts).
-if (import.meta.env.PROD || window.location.search.includes('filter_console=true')) {
-  try {
-    installConsoleFilters();
-  } catch {
-    // no-op
-  }
+try {
+  installConsoleFilters();
+} catch {
+  // no-op. Never let a filter crash the app.
 }
 
 window.addEventListener(
