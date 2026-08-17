@@ -1,59 +1,106 @@
 import * as d3 from 'd3';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import styles from './Clock.module.css';
+
+const PARTICLE_COUNT = 400;
 
 const ClockComponent: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationFrameId = useRef<number>();
+
+  const time = new Date(); // Using a static time for now, can be replaced with a time hook
+  const { isoTime, displayTime } = useMemo(() => {
+    return {
+      isoTime: time.toISOString(),
+      displayTime: time.toLocaleTimeString(),
+    };
+  }, [time]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return; // Exit if canvas is not yet available
-
+    if (!canvas) return;
     const context = canvas.getContext('2d');
-    if (!context) return;
 
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
-    const nbParticles = 400;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
 
-    // Create particles and their speeds
-    let sites = d3
-      .range(nbParticles)
-      .map(() => [Math.random() * width, Math.random() * height]);
-    const speeds = sites.map((_, i) => ({
-      x: (Math.random() - 0.5) * 2,
-      y: (Math.random() - 0.5) * 2,
-    }));
+    canvas.width = width;
+    canvas.height = height;
 
-    // Main animation loop
-    let animationFrameId: number;
+    // Initialize sites and speed arrays[cite: 2]
+    const sites: [number, number][] = Array.from({ length: PARTICLE_COUNT }, () => [
+      Math.random() * width,
+      Math.random() * height,
+    ]);
 
+    const speedFactor = 0.2;
+    const speed = Array.from({ length: PARTICLE_COUNT }, () => {
+      const angle = Math.random() * 2 * Math.PI;
+      const velocity = (Math.random() * 0.5 + 0.2) * speedFactor;
+      return { x: Math.cos(angle) * velocity, y: Math.sin(angle) * velocity };
+    });
+
+    // Handle canvas resizing[cite: 2]
+    const handleResize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+
+      // Scale particle positions instead of resetting
+      const oldWidth = canvas.width;
+      const oldHeight = canvas.height;
+      const scaleX = width / oldWidth;
+      const scaleY = height / oldHeight;
+      sites.forEach(site => {
+        site[0] *= scaleX;
+        site[1] *= scaleY;
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Boundary bounce physics[cite: 2]
+    const rebondOnScreen = () => {
+      for (let i = 0; i < sites.length; i++) {
+        if (sites[i][0] < 0 || sites[i][0] > width) {
+          speed[i].x *= -1;
+        }
+        if (sites[i][1] < 0 || sites[i][1] > height) {
+          speed[i].y *= -1;
+        }
+
+        sites[i][0] += speed[i].x;
+        sites[i][1] += speed[i].y;
+      }
+    };
+
+    // Draw individual Voronoi cell paths[cite: 2]
+    const drawCell = (cell: d3.VoronoiPolygon<[number, number]>) => {
+      if (!cell) return false;
+      context.moveTo(cell[0][0], cell[0][1]);
+      for (let j = 1, m = cell.length; j < m; ++j) {
+        context.lineTo(cell[j][0], cell[j][1]);
+      }
+      context.closePath();
+      return true;
+    };
+
+    // Render loop[cite: 2]
     const redraw = () => {
-      const voronoi = d3.voronoi().extent([
-        [-1, -1],
-        [width + 1, height + 1],
-      ]);
-
-      const diagram = voronoi(sites);
-      const polygons = diagram.polygons();
+      const delaunay = d3.Delaunay.from(sites);
+      const voronoi = delaunay.voronoi([0, 0, width, height]);
 
       context.clearRect(0, 0, width, height);
       context.beginPath();
 
-      // Create a gradient for the strokes
+      // Create gradient stroke[cite: 2]
       const gradient = context.createLinearGradient(0, 0, width, 0);
       gradient.addColorStop('0', '#e72150');
       gradient.addColorStop('1', '#46bfee');
 
-      // Draw each Voronoi cell
-      for (let i = 0; i < polygons.length; i++) {
-        const cell = polygons[i];
-        if (!cell) continue;
-        context.moveTo(cell[0][0], cell[0][1]);
-        for (let j = 1; j < cell.length; j++) {
-          context.lineTo(cell[j][0], cell[j][1]);
-        }
-        context.closePath();
+      for (const cell of voronoi.cellPolygons()) {
+        drawCell(cell);
       }
 
       context.lineWidth = 2;
@@ -62,47 +109,36 @@ const ClockComponent: React.FC = () => {
     };
 
     const animate = () => {
-      // Update particle positions
-      for (let i = 0; i < sites.length; i++) {
-        const site = sites[i];
-        const speed = speeds[i];
-
-        if (site[0] < 0 || site[0] > width) speed.x *= -1;
-        if (site[1] < 0 || site[1] > height) speed.y *= -1;
-
-        site[0] += speed.x;
-        site[1] += speed.y;
-      }
-
+      rebondOnScreen();
       redraw();
-      animationFrameId = requestAnimationFrame(animate);
+      animationFrameId.current = requestAnimationFrame(animate);
     };
 
-    // Handle window resizing
-    const handleResize = () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      // Re-initialize sites on resize to prevent them from being off-screen
-      sites = d3
-        .range(nbParticles)
-        .map(() => [Math.random() * width, Math.random() * height]);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    // Start the animation
     animate();
 
-    // Cleanup function to stop the animation and remove the listener
+    // Cleanup on component unmount
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
       window.removeEventListener('resize', handleResize);
     };
   }, []);
 
   return (
     <main className={styles.container}>
+      <time dateTime={isoTime} className={styles.srOnly}>
+        {displayTime}
+      </time>
       <canvas ref={canvasRef} className={styles.canvas} />
+      <div className={styles.quoteOverlay}>
+        <div>
+          <p className={styles.quoteText}>
+            δὶς ἐς τὸν αὐτὸν ποταμὸν οὐκ ἂν ἐμβαίης.
+          </p>
+          <p className={styles.quoteAuthor}>-Heraclitus</p>
+        </div>
+      </div>
     </main>
   );
 };
