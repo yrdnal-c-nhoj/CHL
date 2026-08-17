@@ -27,11 +27,10 @@ const FullscreenVideoComponent: React.FC = () => {
   // Load font via Suspense
   useSuspenseFontLoader(fontConfigs);
 
-  const { hours, minutes, seconds } = useMemo(() => {
+  const { hours, minutes } = useMemo(() => {
     const h = String(time.getHours()).padStart(2, '0');
     const m = String(time.getMinutes()).padStart(2, '0');
-    const s = String(time.getSeconds()).padStart(2, '0');
-    return { hours: h, minutes: m, seconds: s };
+    return { hours: h, minutes: m };
   }, [time]);
 
   return (
@@ -51,8 +50,8 @@ const FullscreenVideoComponent: React.FC = () => {
         aria-hidden="true"
       />
 
-        {/* This div will handle the single, centered image */}
-        <div aria-hidden="true" className={styles.centeredOverlay} />
+      {/* This div will handle the single, centered image */}
+      <div aria-hidden="true" className={styles.centeredOverlay} />
 
       {/* Digital Clock Display */}
       <div className={styles.digitalClock}>
