@@ -1,99 +1,34 @@
 .container {
   width: 100%;
   height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background-size: cover;
   background-position: center;
-  color: white;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-.clockContainer {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-xl, 2rem);
-  padding: var(--space-lg, 1.5rem);
-  background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 1rem;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* --- Analog Clock Styles --- */
-.analogClock {
+  justify-content: center;
   position: relative;
-  width: 200px;
-  height: 200px;
-  border: 4px solid white;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.2);
+  overflow: hidden;
 }
 
-.hand {
+.backgroundVideo {
   position: absolute;
-  bottom: 50%;
-  left: 50%;
-  transform-origin: bottom;
-  background-color: white;
-  border-radius: 2px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.hourHand {
-  width: 6px;
-  height: 50px;
-  margin-left: -3px;
-  background-color: var(--color-lab-red, #ff4136);
-}
-
-.minuteHand {
-  width: 4px;
-  height: 75px;
-  margin-left: -2px;
-}
-
-.secondHand {
-  width: 2px;
-  height: 85px;
-  margin-left: -1px;
-  background-color: var(--color-lab-blue, #0074d9);
-}
-
-.centerDot {
+.imageOverlay {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 12px;
-  height: 12px;
-  background-color: white;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: screen;
+  opacity: 0.7;
 }
 
-/* --- Digital Clock Styles --- */
-.digitalClock {
-  font-family: 'ClockFont_26_08_13', var(--font-oxanium, monospace);
-  font-size: 3rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  display: flex;
-  align-items: center;
-}
-
-.separator {
-  animation: blink 1s steps(1) infinite;
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
-
-/* --- Accessibility --- */
 .srOnly {
   position: absolute;
   width: 1px;
@@ -104,4 +39,31 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+.digitalClock {
+  position: absolute;
+  top: 2rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  font-family: 'ClockFont_26_08_18', sans-serif;
+  font-size: 5rem;
+  color: #e4801a;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  z-index: 1;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+.digit {
+  display: inline-block;
+  width: 1.2ch; /* Set a fixed width for one character */
+  text-align: center;
+  /* padding: 0.1em 0.3em; Add some vertical and horizontal padding */
+  margin: 0 0.1em; /* Add a small margin between digits */
+  border: 1px solid rgb(212, 25, 25); /* A subtle border for the box */
+  line-height: 1; /* Ensure consistent vertical alignment */
 }
