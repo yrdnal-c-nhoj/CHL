@@ -34,17 +34,14 @@ const ClockComponent: React.FC = () => {
     };
   }, [time]);
 
-  const digitalTime = useMemo(() => {
   const { hoursMinutes, ampm } = useMemo(() => {
     let hours = time.getHours();
     const minutes = String(time.getMinutes()).padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM.';
     const ampmString = hours >= 12 ? 'PM' : 'AM.';
 
     hours = hours % 12;
     hours = hours ? hours : 12; // The hour '0' should be '12'
 
-    return `${hours}:${minutes} ${ampm}`;
     return {
       hoursMinutes: `${hours}:${minutes}`,
       ampm: ampmString,
@@ -183,7 +180,6 @@ const ClockComponent: React.FC = () => {
         </div>
       </div>
       <div className={styles.digitalClock}>
-       *{digitalTime}
         *{hoursMinutes} <span className={styles.ampm}>{ampm}</span>
       </div>
     </main>

@@ -84,5 +84,5 @@
 
 .ampm {
   font-size: 1.5rem; /* Slightly smaller than the 2rem of the main time */
-  margin-left: 0.25em;
+  /* margin-left: 0.25em; */
 }
