@@ -11,6 +11,8 @@ import hum4 from '@/assets/images/25_images/25-06/25-06-14/hum4.gif';
 import hum7 from '@/assets/images/25_images/25-06/25-06-14/hum7.webp';
 import hum8 from '@/assets/images/25_images/25-06/25-06-14/hum8.gif';
 import hum9 from '@/assets/images/25_images/25-06/25-06-14/hum9.webp';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const floatingImages = [
   { src: hum1, animation: 'motion1' },
@@ -24,134 +26,8 @@ const floatingImages = [
 
 const HummingbirdClock =  () => {
   useEffect(() => {
-    // Inject font-face and animations
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'humm';
-        src: url(${hummFont}) format('truetype');
-      }
-
-      @keyframes motion1 {
-        0% { transform: translate(0, 0); }
-        50% { transform: translate(0.3rem, 0.3rem); }
-        100% { transform: translate(0, 0); }
-      }
-
-      @keyframes motion2 {
-        0% { transform: translate(0, 0); }
-        50% { transform: translate(-0.2rem, 0.4rem); }
-        100% { transform: translate(0, 0); }
-      }
-
-      @keyframes motion3 {
-        0% { transform: translate(0, 0); }
-        50% { transform: translate(0.5rem, -0.2rem); }
-        100% { transform: translate(0, 0); }
-      }
-
-      @keyframes motion4 {
-        0% { transform: translate(0, 0); }
-        50% { transform: translate(0.4rem, 0); }
-        100% { transform: translate(0, 0); }
-      }
-
-      @keyframes motion5 {
-        0% { transform: translate(0, 0); }
-        50% { transform: translate(-0.3rem, 0.6rem); }
-        100% { transform: translate(0, 0); }
-      }
-
-      @keyframes motion6 {
-        0% { transform: translate(0, 0); }
-        50% { transform: translate(0, 0.5rem); }
-        100% { transform: translate(0, 0); }
-      }
-
-      @keyframes motion7 {
-        0% { transform: translate(0, 0); }
-        50% { transform: translate(0.6rem, 0.3rem); }
-        100% { transform: translate(0, 0); }
-      }
-    `;
-    document.head.appendChild(style);
-
-    const updateClock =  () => {
-      const now = new Date();
-      const s = now.getSeconds();
-      const m = now.getMinutes();
-      const h = now.getHours() % 12;
-      const secDeg = s * 6;
-      const minDeg = m * 6 + s / 10;
-      const hourDeg = h * 30 + m / 2;
-
-      document.getElementById('second-hand').style.transform =
-        `translateX(-50%) rotate(${secDeg}deg)`;
-      document.getElementById('minute-hand').style.transform =
-        `translateX(-50%) rotate(${minDeg}deg)`;
-      document.getElementById('hour-hand').style.transform =
-        `translateX(-50%) rotate(${hourDeg}deg)`;
-    };
-
-    const interval = setInterval(updateClock, 1000);
-    updateClock();
-
-    const moveImage = (el, animation, index) => {
-      const newX = Math.random() * (window.innerWidth - 80);
-      const newY = Math.random() * (window.innerHeight - 80);
-      // Unique durations and easing for each hummingbird
-      const durations = [1200, 1500, 1000, 1300, 800, 1100, 1400];
-      const easings = [
-        'ease-in-out',
-        'ease-out',
-        'linear',
-        'ease-in',
-        'linear',
-        'ease-in-out',
-        'ease-out',
-      ];
-      const duration = Math.random() * 600 + durations[index];
-      const easing = easings[index];
-
-      // Apply transition and position
-      el.style.transition = `all ${duration}ms ${easing}`;
-      el.style.left = `${newX}px`;
-      el.style.top = `${newY}px`;
-
-      // Apply vibration animation
-      const vibrationDurations = [0.2, 0.18, 0.15, 0.22, 0.12, 0.17, 0.14];
-      const vibrationEasing = index < 4 ? 'ease-in-out' : 'linear';
-      el.style.animation = `${animation} ${vibrationDurations[index]}s infinite alternate ${vibrationEasing}`;
-
-      // Schedule next move
-      setTimeout(() => {
-        moveImage(el, animation, index);
-      }, duration);
-    };
-
-    const initializeImages =  () => {
-      floatingImages.forEach((_, i) => {
-        const el = document.getElementById(`float-${i}`);
-        if (el) {
-          el.style.position = 'absolute'; // Ensure position is set
-          // Set initial position immediately
-          const initialX = Math.random() * (window.innerWidth - 80);
-          const initialY = Math.random() * (window.innerHeight - 80);
-          el.style.left = `${initialX}px`;
-          el.style.top = `${initialY}px`;
-          // Start movement and vibration immediately
-          requestAnimationFrame(() => {
-            moveImage(el, el.dataset.animation, i);
-          });
-        }
-      });
-    };
-
-    // Initialize immediately
-    requestAnimationFrame(initializeImages);
-
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   return (
     <div style={styles.body}>

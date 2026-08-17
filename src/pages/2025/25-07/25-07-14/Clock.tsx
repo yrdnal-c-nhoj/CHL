@@ -19,6 +19,8 @@ import img9 from '@/assets/images/25_images/25-07/25-07-14/dancing-number-dancin
 import img10 from '@/assets/images/25_images/25-07/25-07-14/goura-goura12.gif';
 import img11 from '@/assets/images/25_images/25-07/25-07-14/agencylife-kochstrasse.gif';
 import img12 from '@/assets/images/25_images/25-07/25-07-14/agenturleben-agencylife.gif';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const digitImages = [
   img1,
@@ -42,41 +44,8 @@ const Clock =  () => {
   const secRef = useRef(null);
 
   useEffect(() => {
-    const update =  () => {
-      const now = new Date();
-      const seconds = now.getSeconds();
-      const minutes = now.getMinutes();
-      const hours = now.getHours() % 12 || 12;
-
-      const secDeg = (seconds / 60) * 360;
-      const minDeg = (minutes / 60) * 360 + (seconds / 60) * 6;
-      const hourDeg = (hours / 12) * 360 + (minutes / 60) * 30;
-
-      if (secRef.current) {
-        secRef.current.style.transition =
-          seconds === 0 ? 'none' : 'transform 0.1s linear';
-        secRef.current.style.transform = `rotate(${secDeg}deg)`;
-      }
-      if (minRef.current) {
-        minRef.current.style.transition =
-          minutes === 0 && seconds === 0
-            ? 'none'
-            : 'transform 0.5s ease-in-out';
-        minRef.current.style.transform = `rotate(${minDeg}deg)`;
-      }
-      if (hourRef.current) {
-        hourRef.current.style.transition =
-          hours === 12 && minutes === 0 && seconds === 0
-            ? 'none'
-            : 'transform 0.5s ease-in-out';
-        hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
-      }
-    };
-
-    const interval = setInterval(update, 1000);
-    update();
-    return () => clearInterval(interval);
-  }, []);
+      update();
+    }, [time]);
 
   return (
     <div

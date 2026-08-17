@@ -5,6 +5,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/26_images/26-01/26-01-05/pyr.webp';
 import gizaFont from '@/assets/fonts/26fonts/26-01-06-26-01-05-giza.otf?url';
 import type { FontConfig } from '@/types/clock';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 export default function PyramidzBackground() {
   const [timeString, setTimeString] = useState<any>('');
@@ -26,75 +28,8 @@ export default function PyramidzBackground() {
 
   // 2. Inject marquee styles (cleaned up on unmount)
   useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      .pz-marquee-wrapper {
-        display: flex;
-        width: fit-content;
-        animation: pz-marquee 1000s linear infinite;
-        margin-top: 12vh;
-      }
-      .pz-marquee-group {
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        white-space: nowrap;
-        
-        /* 1. LOWER TEXT OPACITY: Reduced from 58 to 15 (hex) */
-        color: rgba(242, 208, 38, 0.04); 
-        
-        font-family: '${uniqueFontFamily}', system-ui, sans-serif;
-        font-size: 130vh;
-        letter-spacing: -3vh;
-
-        /* 2. STRONGER SHADOWS: Increased alpha values significantly */
-        text-shadow:
-          -1vh -1vh 0vh rgba(65, 106, 241, 0.29),   /* Deep Blue - 80% opaque */
-          1vh 1vh 0vh rgba(249, 200, 23, 0.12);   /* Red - 60% opaque */
-      }
-      @keyframes pz-marquee {
-        0%   { transform: translateX(0);    }
-        100% { transform: translateX(-50%); }
-      }
-    `;
-    document.head.appendChild(style);
-
-    // Cleanup
-    return () => {
-      if (style.parentNode) {
-        style.parentNode.removeChild(style);
-      }
-    };
-  }, [uniqueFontFamily]);
-
-  // 2b. Preload background to avoid flash
-  useEffect(() => {
-    const img = new Image();
-    const done = () => setBgReady(true);
-    img.onload = done;
-    img.onerror = done;
-    img.src = backgroundImage;
-    const timeout = setTimeout(done, 1200);
-    return () => clearTimeout(timeout);
-  }, []);
-
-  // 3. Clock update
-  useEffect(() => {
-    const updateTime =  () => {
-      const now = new Date();
-      const time = now.toLocaleTimeString('en-US', {
-        hour12: true,
-        hour: 'numeric',
-        minute: '2-digit',
-      });
-      const formatted = time.replace(/^0/, '').replace(/\s+/g, '');
-      setTimeString(formatted);
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
+      updateTime();
+    }, [time]);
 
   // Block render until bg is confirmed loaded
   if (!bgReady) return null;

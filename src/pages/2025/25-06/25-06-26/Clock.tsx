@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bg1 from '@/assets/images/25_images/25-06/25-06-26/co.png';
 import bg2 from '@/assets/images/25_images/25-06/25-06-26/cos.png';
 import wheFont from '@/assets/fonts/25fonts/25-06-26-whe.ttf';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const CosmicWheelClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -22,31 +24,8 @@ const CosmicWheelClock =  () => {
   // Font loading handled by useSuspenseFontLoader
 
   useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes();
-      const seconds = now.getSeconds();
-      hours = hours % 12 || 12;
-
-      const pad = (num, digits) => String(num).padStart(digits, '0');
-      const set = (id, val) => {
-        const section = document.getElementById(id);
-        if (section) {
-          const boxes = section.getElementsByClassName('digit-box');
-          [...boxes].forEach((box, i) => (box.textContent = val[i]));
-        }
-      };
-
-      set('hours', pad(hours, 2));
-      set('minutes', pad(minutes, 2));
-      set('seconds', pad(seconds, 2));
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   const containerStyle = {
     margin: 0,

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import bgImage from '@/assets/images/26_images/26-01/26-01-12/lala.jpg';
 import customFont_2025_1210 from '@/assets/fonts/26fonts/26-01-12-26-01-19-lala.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+const { time } = useMillisecondClock(100);
 
 const elementColor = '#885B5D';
 
@@ -25,26 +27,8 @@ export default function DigitalClock() {
   const [bgReady, setBgReady] = useState<boolean>(false);
 
   useEffect(() => {
-    // Load font before showing content
-    const font = new FontFace('MuybridgeFont', `url(${customFont_2025_1210})`);
-
-    font
-      .load()
-      .then(() => {
-        document.fonts.add(font);
-        setFontLoaded(true);
-      })
-      .catch((err) => {
-        console.error('Font loading failed:', err);
-        setFontLoaded(true); // Show content anyway after error
-      });
-  }, []);
-
-  useEffect(() => {
-    if (!fontLoaded) return;
-    const interval = setInterval(() => setTime(new Date()), 100);
-    return () => clearInterval(interval);
-  }, [fontLoaded]);
+      setTime(time);
+    }, [time]);
 
   // Preload background to avoid flash
   useEffect(() => {

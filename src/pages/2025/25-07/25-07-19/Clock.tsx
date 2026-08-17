@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import cunFont from '@/assets/fonts/25fonts/25-07-19-cun.ttf';
 import bgOverlay from '@/assets/images/25_images/25-07/25-07-19/cun1.webp';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const CuneiformClock =  () => {
   const [time, setTime] = useState<any>('');
@@ -20,17 +22,8 @@ const CuneiformClock =  () => {
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      const hours = now.getHours() % 12 || 12;
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      setTime(`${hours}:${minutes}`);
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   return (
     <div

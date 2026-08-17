@@ -16,6 +16,8 @@ import img12 from '@/assets/images/25_images/25-06/25-06-30/12.gif';
 import hourHand from '@/assets/images/25_images/25-06/25-06-30/whis.gif';
 import minuteHand from '@/assets/images/25_images/25-06/25-06-30/w.gif';
 import secondHand from '@/assets/images/25_images/25-06/25-06-30/whi.gif';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const allImages = [
   bgImage,
@@ -40,45 +42,8 @@ export default function Clock() {
   const [loaded, setLoaded] = useState<boolean>(false);
 
   useEffect(() => {
-    let loadedCount = 0;
-    allImages.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        loadedCount++;
-        if (loadedCount === allImages.length) setLoaded(true);
-      };
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!loaded) return;
-
-    const updateClock =  () => {
-      const now = new Date();
-      const second = now.getSeconds();
-      const minute = now.getMinutes();
-      const hour = now.getHours() % 12;
-
-      const secondDeg = second * 6;
-      const minuteDeg = minute * 6 + second * 0.1;
-      const hourDeg = hour * 30 + minute * 0.5;
-
-      const sec = document.getElementById('second');
-      const min = document.getElementById('minute');
-      const hr = document.getElementById('hour');
-
-      if (sec && min && hr) {
-        sec.style.transform = `translate(-50%, 0%) rotate(${secondDeg}deg)`;
-        min.style.transform = `translate(-50%, 0%) rotate(${minuteDeg}deg)`;
-        hr.style.transform = `translate(-50%, 0%) rotate(${hourDeg}deg)`;
-      }
-    };
-
-    const interval = setInterval(updateClock, 1000);
-    updateClock();
-    return () => clearInterval(interval);
-  }, [loaded]);
+      updateClock();
+    }, [time]);
 
   const eggBackground = {
     position: 'absolute',

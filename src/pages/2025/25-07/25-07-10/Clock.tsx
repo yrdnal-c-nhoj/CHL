@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import sliFont from '@/assets/fonts/25fonts/25-07-10-sli.otf';
 import sli2Font from '@/assets/fonts/25fonts/25-07-10-sli2.ttf';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const Clock =  () => {
   const digitGroups = [
@@ -36,87 +38,8 @@ const Clock =  () => {
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 600);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    const digitSize = 2.375 * 16;
-
-    const styleSheet = document.createElement('style');
-    styleSheet.textContent = `
-      /* Font loading handled by useSuspenseFontLoader */
-      .clock-component .digit {
-        font-family: 'sli', cursive, sans-serif !important;
-        font-size: 3.125rem !important;
-        color: rgb(246, 187, 244) !important;
-      }
-      .clock-component .digit-strip .digit.current {
-        font-family: 'sli2', Courier, monospace !important;
-        font-size: 1.4375rem !important;
-        color: rgb(98, 105, 174) !important;
-      }
-    `;
-    document.head.appendChild(styleSheet);
-
-    const updateClock =  () => {
-      const now = new Date();
-      let h = now.getHours();
-      const m = now.getMinutes().toString().padStart(2, '0');
-      const s = now.getSeconds().toString().padStart(2, '0');
-      const ampm = h >= 12 ? 'P' : 'A';
-      h = h % 12 || 12;
-      const hStr = h.toString().padStart(2, '0');
-      const digits = [...hStr, ...m, ...s];
-
-      digitGroups.forEach((id, i) => {
-        const group = document.getElementById(id);
-        const strip = group?.querySelector('.digit-strip');
-        const digitElements = strip?.querySelectorAll('.digit');
-        const val = parseInt(digits[i]);
-        const groupRect = group?.getBoundingClientRect();
-        const offset = isMobile
-          ? window.innerWidth / 2 -
-            (groupRect?.left + val * digitSize + digitSize / 2)
-          : window.innerHeight / 2 -
-            (groupRect?.top + val * digitSize + digitSize / 2);
-        strip.style.transform = isMobile
-          ? `translateX(${offset / 16}rem)`
-          : `translateY(${offset / 16}rem)`;
-        digitElements?.forEach((d, j) => {
-          d.classList.toggle('current', j === val);
-        });
-      });
-
-      const ampmGroup = document.getElementById('ampm-indicator');
-      const ampmStrip = ampmGroup?.querySelector('.digit-strip');
-      const ampmDigits = ampmStrip?.querySelectorAll('.digit');
-      const ampmIndex = ampm === 'A' ? 0 : 1;
-      const ampmRect = ampmGroup?.getBoundingClientRect();
-      const ampmOffset = isMobile
-        ? window.innerWidth / 2 -
-          (ampmRect?.left + ampmIndex * digitSize + digitSize / 2)
-        : window.innerHeight / 2 -
-          (ampmRect?.top + ampmIndex * digitSize + digitSize / 2);
-      ampmStrip.style.transform = isMobile
-        ? `translateX(${ampmOffset / 16}rem)`
-        : `translateY(${ampmOffset / 16}rem)`;
-      ampmDigits?.forEach((d, i) => {
-        d.classList.toggle('current', i === ampmIndex);
-      });
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    window.addEventListener('resize', updateClock);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener('resize', updateClock);
-      document.head.removeChild(styleSheet);
-    };
-  }, [isMobile]);
+      updateClock();
+    }, [time]);
 
   const createDigitStrip = (id) => {
     const maxDigit = id === 'hour-tens' ? 2 : 9;

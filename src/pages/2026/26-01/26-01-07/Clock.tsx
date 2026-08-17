@@ -6,6 +6,8 @@ import bubl from '@/assets/images/26_images/26-01/26-01-07/bubl.gif';
 import fish from '@/assets/images/26_images/26-01/26-01-07/fish.gif';
 import gfish from '@/assets/images/26_images/26-01/26-01-07/gfish.gif';
 import aquarium from '@/assets/images/26_images/26-01/26-01-07/aquarium.gif';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const AquariumClock =  () => {
   const hourHandRef = useRef<HTMLImageElement>(null);
@@ -13,37 +15,8 @@ const AquariumClock =  () => {
   const secondHandRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    const setDate =  () => {
-      const now = new Date();
-      const seconds = now.getSeconds();
-      const mins = now.getMinutes();
-      const hour = now.getHours();
-
-      // -90 degrees shifts the 0 position from 3 o'clock to 12 o'clock
-      const secondsDeg = (seconds / 60) * 360 - 90;
-      const minsDeg = (mins / 60) * 360 + (seconds / 60) * 6 - 90;
-      const hourDeg = ((hour % 12) / 12) * 360 + (mins / 60) * 30 - 90;
-
-      // Handle the 354° -> -90° jump to prevent the hand from spinning backwards
-      if (secondHandRef.current) {
-        secondHandRef.current.style.transition =
-          seconds === 0 ? 'none' : 'all 0.5s cubic-bezier(0.1, 2.7, 0.58, 1)';
-        secondHandRef.current.style.transform = `translateY(-50%) rotate(${secondsDeg}deg)`;
-      }
-
-      if (minHandRef.current) {
-        minHandRef.current.style.transform = `translateY(-50%) rotate(${minsDeg}deg)`;
-      }
-
-      if (hourHandRef.current) {
-        hourHandRef.current.style.transform = `translateY(-50%) rotate(${hourDeg}deg)`;
-      }
-    };
-
-    const interval = setInterval(setDate, 1000);
-    setDate();
-    return () => clearInterval(interval);
-  }, []);
+      setDate();
+    }, [time]);
 
   const handStyle = {
     position: 'absolute',

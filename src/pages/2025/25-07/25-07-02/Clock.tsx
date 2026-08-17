@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bakFont from '@/assets/fonts/25fonts/25-07-02-bak.ttf';
 import backgroundGif from '@/assets/images/25_images/25-07/25-07-02/ba.gif';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 export default function Clock() {
   const hourRef = useRef(null);
@@ -23,43 +25,8 @@ export default function Clock() {
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    // --- Clock update loop ---
-    const updateClock =  () => {
-      const now = new Date();
-      const seconds = now.getSeconds();
-      const minutes = now.getMinutes();
-      const hours = now.getHours() % 12;
-
-      const secondDeg = (seconds / 60) * 360;
-      const minuteDeg = (minutes / 60) * 360 + (seconds / 60) * 6;
-      const hourDeg = (hours / 12) * 360 + (minutes / 60) * 30;
-
-      if (secondRef.current)
-        secondRef.current.style.transform = `rotate(${secondDeg}deg)`;
-      if (minuteRef.current)
-        minuteRef.current.style.transform = `rotate(${minuteDeg}deg)`;
-      if (hourRef.current)
-        hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
-
-      numberRefs.current.forEach((number) => {
-        const numberAngle = parseFloat(number.getAttribute('data-angle'));
-        const angleDiff = Math.abs(secondDeg - numberAngle);
-        const isNear = angleDiff < 5 || angleDiff > 355;
-
-        if (isNear && !number.classList.contains('spin')) {
-          number.classList.add('spin');
-          setTimeout(() => {
-            number.classList.remove('spin');
-            number.style.transform = `translate(-50%, -50%) scaleX(-1)`;
-          }, 5000);
-        }
-      });
-    };
-
-    const interval = setInterval(updateClock, 1000);
-    updateClock();
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   // --- Layout Styles ---
   const containerStyle = {

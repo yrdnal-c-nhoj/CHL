@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import gearsGif from '@/assets/images/25_images/25-05/25-05-29/gears-13950_128.gif';
 import watchFont from '@/assets/fonts/25fonts/25-05-29-watch.ttf?url';
 import { Color } from 'three';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const Clock =  () => {
   const [loaded, setLoaded] = useState<boolean>(false);
@@ -12,57 +14,8 @@ const Clock =  () => {
 
   // Load local font file
   useEffect(() => {
-    const font = new FontFace('WatchFont', `url(${watchFont})`);
-    font
-      .load()
-      .then((loaded) => {
-        document.fonts.add(loaded);
-      })
-      .catch(() => {
-        // Font failed to load, will use fallback
-      });
-  }, []);
-
-  // Character map for digits
-  const charMap = {
-    0: 'zero',
-    1: 'one',
-    2: 'two',
-    3: 'three',
-    4: 'four',
-    5: 'five',
-    6: 'six',
-    7: 'seven',
-    8: 'eight',
-    9: 'nine',
-  };
-
-  const substituteDigit = (str) => str.split('').map((d) => charMap[d] || d);
-
-  useEffect(() => {
-    // Update vh on resize for mobile viewport issues
-    const onResize = () => setVh(window.innerHeight);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
-
-  useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      const hours = now.getHours() % 12 || 12;
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-
-      setHoursDigits(substituteDigit(String(hours)));
-      setMinutesDigits(substituteDigit(minutes));
-      setSecondsDigits(substituteDigit(seconds));
-    };
-
-    updateClock(); // initial render
-    setLoaded(true);
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   // Clock always visible - removed loading condition
 

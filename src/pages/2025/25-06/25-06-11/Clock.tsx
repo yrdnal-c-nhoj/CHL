@@ -7,6 +7,8 @@ import hourHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
 import minuteHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
 import secondHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
 import banFont from '@/assets/fonts/25fonts/25-06-11-Ban.ttf';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const BananaClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -22,46 +24,8 @@ const BananaClock =  () => {
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      const seconds = now.getSeconds();
-      const minutes = now.getMinutes();
-      const hours = now.getHours() % 12;
-
-      const secondDeg = seconds * 6;
-      const minuteDeg = minutes * 6 + seconds * 0.1;
-      const hourDeg = hours * 30 + minutes * 0.5;
-
-      const secondHand = document.getElementById('secondHand');
-      const minuteHand = document.getElementById('minuteHand');
-      const hourHand = document.getElementById('hourHand');
-
-      // Add null checks before accessing style properties
-      if (secondHand)
-        secondHand.style.transform = `translate(-50%, -100%) rotate(${secondDeg}deg)`;
-      if (minuteHand)
-        minuteHand.style.transform = `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
-      if (hourHand)
-        hourHand.style.transform = `translate(-50%, -100%) rotate(${hourDeg}deg)`;
-    };
-
-    // Ensure DOM elements exist before starting clock
-    const startClock = () => {
-      const secondHand = document.getElementById('secondHand');
-      const minuteHand = document.getElementById('minuteHand');
-      const hourHand = document.getElementById('hourHand');
-
-      if (secondHand && minuteHand && hourHand) {
-        const interval = setInterval(updateClock, 1000);
-        updateClock();
-        return () => clearInterval(interval);
-      }
-    };
-
-    // Delay start to ensure DOM is ready
-    const timeout = setTimeout(startClock, 100);
-    return () => clearTimeout(timeout);
-  }, []);
+      updateClock();
+    }, [time]);
 
   // Create banana tiles dynamically
   const tileCount = 8 * 8;

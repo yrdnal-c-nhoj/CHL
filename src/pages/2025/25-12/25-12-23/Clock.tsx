@@ -1,22 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import symJpg from '@/assets/images/25_images/25-12/25-12-23/sym.jpg';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const DigitalClock =  () => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    if (!document.getElementById('google-font-space-mono')) {
-      const link = document.createElement('link');
-      link.id = 'google-font-space-mono';
-      link.rel = 'stylesheet';
-      link.href =
-        'https://fonts.googleapis.com/css2?family=Space+Mono&display=swap';
-      document.head.appendChild(link);
-    }
-
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+      setTime(time);
+    }, [time]);
 
   const hours = time.getHours().toString().padStart(2, '0');
   const minutes = time.getMinutes().toString().padStart(2, '0');

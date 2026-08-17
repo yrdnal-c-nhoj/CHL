@@ -4,6 +4,7 @@ import { useSecondClock } from '@/utils/hooks/useSmoothClock';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import styles from './Clock.module.css';
+import { useSecondClock } from '@/utils/hooks';
 
 // Asset exports for preloading pipeline
 export const assets = [bgImage];

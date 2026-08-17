@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import coffeeFont from '@/assets/fonts/25fonts/25-06-04-cof.ttf';
 import bgStill from '@/assets/images/25_images/25-06/25-06-04/coff.png';
 import bgAnimated from '@/assets/images/25_images/25-06/25-06-04/coff.gif';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const CoffeeClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -27,56 +29,8 @@ const CoffeeClock =  () => {
 
   // Animate numbers jitter
   useEffect(() => {
-    for (let i = 0; i < 12; i++) {
-      jitterSettings.current[i] = {
-        phase: Math.random() * Math.PI * 2,
-        freq: 1 + Math.random(),
-        ampX: Math.random() * 0.12 + 0.09,
-        ampY: Math.random() * 0.12 + 0.09,
-        ampR: Math.random() * 2 + 0.9,
-      };
-    }
-
-    const loop =  () => {
-      const t = performance.now() / 30;
-      jitterSettings.current.forEach((j, idx) => {
-        const dx = Math.sin(t * j.freq + j.phase) * j.ampX + 'vw';
-        const dy = Math.cos(t * j.freq + j.phase) * j.ampY + 'vh';
-        const rot = Math.sin(t * j.freq * 0.9 + j.phase) * j.ampR;
-        const el = numberRefs.current[idx];
-        if (el) {
-          el.style.transform = `translate(calc(-50% + ${dx}), calc(-50% + ${dy})) rotate(${rot}deg)`;
-        }
-      });
-      requestAnimationFrame(loop);
-    };
-    loop();
-  }, []);
-
-  // Clock hands
-  useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      const sec = now.getSeconds();
-      const min = now.getMinutes();
-      const hr = now.getHours();
-
-      const secDeg = sec * 6;
-      const minDeg = min * 6 + sec * 0.1;
-      const hrDeg = ((hr % 12) + min / 60) * 30;
-
-      if (secondHandRef.current)
-        secondHandRef.current.style.transform = `rotate(${secDeg}deg)`;
-      if (minuteHandRef.current)
-        minuteHandRef.current.style.transform = `rotate(${minDeg}deg)`;
-      if (hourHandRef.current)
-        hourHandRef.current.style.transform = `rotate(${hrDeg}deg)`;
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   // Styles
   const numberStyle = {

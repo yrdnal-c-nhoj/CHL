@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bardImg from '@/assets/images/25_images/25-07/25-07-22/bard.webp';
 import barrsImg from '@/assets/images/25_images/25-07/25-07-22/barrs.webp';
 import berFont from '@/assets/fonts/25fonts/25-07-22-ber.otf';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const BarrelrollClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -19,29 +21,8 @@ const BarrelrollClock =  () => {
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
   useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      const second = now.getSeconds();
-      const minute = now.getMinutes();
-      const hour = now.getHours();
-
-      const secondDeg = second * 6;
-      const minuteDeg = minute * 6 + second * 0.1;
-      const hourDeg = ((hour % 12) / 12) * 360 + (minute / 60) * 30;
-
-      document.getElementById('second').style.transform =
-        `translateX(-50%) rotate(${secondDeg}deg)`;
-      document.getElementById('minute').style.transform =
-        `translateX(-50%) rotate(${minuteDeg}deg)`;
-      document.getElementById('hour').style.transform =
-        `translateX(-50%) rotate(${hourDeg}deg)`;
-    };
-
-    const interval = setInterval(updateClock, 1000);
-    updateClock();
-
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   return (
     <div

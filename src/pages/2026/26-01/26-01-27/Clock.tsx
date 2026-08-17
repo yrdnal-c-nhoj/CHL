@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 
 import backgroundImage from '@/assets/images/26_images/26-01/26-01-27/pan.jpg';
 import panFont from '@/assets/fonts/26fonts/26-01-27-pan.ttf';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 export default function PanoramaClock() {
   const [timeString, setTimeString] = useState<any>('');
@@ -22,72 +24,8 @@ export default function PanoramaClock() {
 
   // 2. Inject Styles (animation only, no font-face)
   useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      /* Background scrolls LEFT (0 to -50%) */
-      .pz-bg-container {
-        display: flex;
-        height: 100dvh;
-        width: max-content;
-        animation: pz-bg-scroll  linear infinite;
-        will-change: transform;
-      }
-
-      @keyframes pz-bg-scroll {
-        0%   { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-      }
-
-      /* Clock scrolls RIGHT (-50% to 0) */
-      .pz-clock-wrapper {
-        display: flex;
-        width: max-content;
-        animation: clockScroll 120s linear infinite;
-        will-change: transform;
-      }
-
-      @keyframes clockScroll {
-        0%   { transform: translateX(-50%); } 
-        100% { transform: translateX(0); }
-      }
-
-      .pz-clock-display {
-        color: rgba(10, 152, 168, 0.9);
-        font-family: ${fontLoaded ? `'${uniqueFontFamily}', monospace` : 'monospace'};
-        font-size: 15vh; 
-        padding-right: 2vh;
-        text-shadow:
-          0px 2px 0vh rgba(235, 236, 240, 0.99),
-          0px -2px 0vh rgba(247, 247, 245, 0.98);
-        user-select: none;
-        white-space: nowrap;
-        opacity: 0.8;
-      }
-    `;
-    document.head.appendChild(style);
-    return () => {
-      if (style.parentNode) document.head.removeChild(style);
-    };
-  }, [uniqueFontFamily, fontLoaded]);
-
-  // 3. Update Time
-  useEffect(() => {
-    const updateTime =  () => {
-      const now = new Date();
-      setTimeString(
-        now
-          .toLocaleTimeString('en-US', {
-            hour12: true,
-            hour: 'numeric',
-            minute: '2-digit',
-          })
-          .replace(' ', ''),
-      );
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
+      updateTime();
+    }, [time]);
 
   if (!fontLoaded) return null;
 

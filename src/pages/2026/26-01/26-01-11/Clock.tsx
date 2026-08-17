@@ -9,6 +9,8 @@ import fontflam251211 from '@/assets/fonts/26fonts/26-01-11-flam.ttf';
 import hourHandImg from '@/assets/images/26_images/26-01/26-01-11/leg1.webp';
 import minuteHandImg from '@/assets/images/26_images/26-01/26-01-11/leg2.webp';
 import secondHandImg from '@/assets/images/26_images/26-01/26-01-11/flam.webp';
+import { useMillisecondClock } from '@/utils/hooks';
+const { time } = useMillisecondClock(50);
 
 // --- CONFIG ---
 const CONFIG = {
@@ -39,13 +41,8 @@ const CONFIG = {
 function useTime() {
   const [time, setTime] = useState(() => new Date());
   useEffect(() => {
-    let intervalId;
-    const updateTime =  () => {
-      setTime(new Date());
-    };
-    intervalId = setInterval(updateTime, 50);
-    return () => clearInterval(intervalId);
-  }, []);
+      updateTime();
+    }, [time]);
   return time;
 }
 

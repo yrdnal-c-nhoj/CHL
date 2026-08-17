@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import fibFont from '@/assets/fonts/25fonts/25-07-12-fib.otf';
 import fibImage from '@/assets/images/25_images/25-07/25-07-12/fib.gif';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const FibonacciClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -18,28 +20,8 @@ const FibonacciClock =  () => {
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      const seconds = now.getSeconds();
-      const minutes = now.getMinutes();
-      const hours = now.getHours() % 12;
-
-      const secondDeg = (seconds / 60) * 360;
-      const minuteDeg = (minutes / 60) * 360 + (seconds / 60) * 6;
-      const hourDeg = (hours / 12) * 360 + (minutes / 60) * 30;
-
-      document.querySelector('.second-hand').style.transform =
-        `rotate(${secondDeg}deg)`;
-      document.querySelector('.minute-hand').style.transform =
-        `rotate(${minuteDeg}deg)`;
-      document.querySelector('.hour-hand').style.transform =
-        `rotate(${hourDeg}deg)`;
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+      updateClock();
+    }, [time]);
 
   const fontFace = `
     /* Font loading handled by useSuspenseFontLoader */

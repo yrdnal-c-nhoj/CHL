@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import arrowImg from '@/assets/images/26_images/26-03/26-03-23/arrow.webp?url';
 import fontUrl from '@/assets/fonts/26fonts/26-03-24-26-03-23-arrow.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
+const { time } = useSecondClock();
 
 const FONT_FAMILY = 'ClockFont_Arrow';
 const LOOP_MS = 10000;
@@ -127,32 +129,8 @@ const ExplodingClock =  () => {
   loopKeyRef.current = loopKey;
 
   useEffect(() => {
-    let nextLoop = Date.now() + LOOP_MS;
-
-    const tick = () => {
-      const now = Date.now();
-      const t = getTime();
-      const cs = [...t.hh, ...t.mm, ...t.period];
-      const newLoop = now >= nextLoop;
-
-      if (newLoop) nextLoop += LOOP_MS;
-
-      setState((prev) => {
-        const newFlights = newLoop
-          ? cs.map(() => ({ top: getFlight(), bottom: getFlight() }))
-          : prev.flights;
-
-        return {
-          chars: cs,
-          flights: newFlights,
-          loopKey: newLoop ? prev.loopKey + 1 : prev.loopKey,
-        };
-      });
-    };
-
-    const timer = setInterval(tick, 1000);
-    return () => clearInterval(timer);
-  }, []);
+      tick();
+    }, [time]);
 
   return (
     <div

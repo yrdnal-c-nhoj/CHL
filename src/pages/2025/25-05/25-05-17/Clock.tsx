@@ -4,33 +4,13 @@ import bgGif from '@/assets/images/25_images/25-05/25-05-17/2501912_2ddac-564534
 import layer5Gif from '@/assets/images/25_images/25-05/25-05-17/e0435fd452bbed155b5b3c5128b4f7c5.gif';
 import layer3Gif from '@/assets/images/25_images/25-05/25-05-17/giphy-3181726992.webp';
 import rectangleGif from '@/assets/images/25_images/25-05/25-05-17/tumblr_53c27c64cc9f17a0880aff18b8f6d934_d138a0cd_500.gif';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const PrimaryClock =  () => {
   useEffect(() => {
-    const secondHand = document.querySelector('.second-hand');
-    const minsHand = document.querySelector('.min-hand');
-    const hourHand = document.querySelector('.hour-hand');
-
-    function setDate() {
-      const now = new Date();
-      const seconds = now.getSeconds();
-      const secondsDegrees = (seconds / 60) * 360 + 90;
-      secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
-
-      const mins = now.getMinutes();
-      const minsDegrees = (mins / 60) * 360 + (seconds / 60) * 6 + 90;
-      minsHand.style.transform = `rotate(${minsDegrees}deg)`;
-
-      const hour = now.getHours();
-      const hourDegrees = (hour / 12) * 360 + (mins / 60) * 30 + 90;
-      hourHand.style.transform = `rotate(${hourDegrees}deg)`;
-    }
-
-    const interval = setInterval(setDate, 1000);
-    setDate();
-
-    return () => clearInterval(interval);
-  }, []);
+      setDate();
+    }, [time]);
 
   return (
     <div style={styles.body}>

@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import castelImage from '@/assets/images/25_images/25-08/25-08-24/castel.jpg';
 import viaFont from '@/assets/fonts/25fonts/25-08-24-via.ttf';
+import { useSecondClock } from '@/utils/hooks';
+const { time } = useSecondClock();
 
 const toRoman = (num: number) => {
   const romanMap = [
@@ -48,26 +50,8 @@ const RomanClock = () => {
   const timeoutRef = useRef<any | null>(null);
 
   useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      const newTime = `${toRoman(now.getHours())}.${toRoman(
-        now.getMinutes(),
-      )}.${toRoman(now.getSeconds())}`;
-      setFade(true);
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => {
-        setTime(newTime);
-        setFade(false);
-      }, 500);
-    };
-
-    updateClock();
-    const interval = setInterval(updateClock, 5000);
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timeoutRef.current);
-    };
-  }, []);
+      updateClock();
+    }, [time]);
 
   const containerStyle = {
     position: 'relative' as const,
