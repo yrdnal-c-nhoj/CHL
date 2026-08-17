@@ -5,8 +5,8 @@ import React, { useMemo } from 'react';
 
 // 1. Asset Exports (for preloading)
 import fontUrl from '@/assets/fonts/26fonts/26-08-18.ttf?url';
+import backgroundImage from '@/assets/images/26_images/26-08/26-08-18/eclipse.webm';
 import overlayImage from '@/assets/images/26_images/26-08/26-08-18/eclipse.webp';
-import backgroundImage from '@/assets/images/26_images/26-08/26-08-18/eclipse2.webm';
 
 // According to ARCHITECTURE.md, assets should be exported for the preloading pipeline.
 export const assets = [backgroundImage, overlayImage, fontUrl];
