@@ -78,6 +78,9 @@
   }
   .centeredOverlay {
   background-size: 120%; /* Make the image larger than its container */
- 
- }
+  }
+  .digitalClock {
+  font-family: 'ClockFont_26_08_16', var(--font-oxanium, monospace);
+  font-size: 8vh;  display: flex;
+  }
 }
