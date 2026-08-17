@@ -56,6 +56,7 @@
   letter-spacing: 0.1em;
   z-index: 1;
   text-shadow: 0 1px rgb(26, 7, 7);
+  animation: pulseClockOpacity 15s ease-in-out infinite;
 }
 
 .digit {
@@ -72,5 +73,15 @@
   }
   50% {
     opacity: 1;
+  }
+}
+
+@keyframes pulseClockOpacity {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 }
