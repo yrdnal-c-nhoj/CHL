@@ -1,89 +1,34 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
+import styles from './Clock.module.css';
 
-const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    width: '100vw',
-    height: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: 'ClockFont_26_08_13, sans-serif',
-    backgroundColor: '#117771',
-  },
-  srOnly: {
-    position: 'absolute',
-    width: '1vw',
-    height: '1vh',
-    padding: 0,
-    margin: '-1vh',
-    overflow: 'hidden',
-    clip: 'rect(0, 0, 0, 0)',
-    whiteSpace: 'nowrap',
-    borderWidth: 0,
-  },
-  clockContainer: {
-    position: 'relative',
-    width: '100vmin',
-    height: '100vmin',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(172, 75, 75, 0.65)',
-    borderRadius: '50%',
-    border: '0.2vmin solid rgba(214, 210, 210, 0.2)',
-    boxShadow: '0 0.8vmin 3.2vmin rgba(0, 0, 0, 0.5)',
-  },
-  centerLine: {
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    width: '0.5vmin',
-    height: '60vh',
-    backgroundColor: 'rgba(255, 71, 87, 0.5)',
-    transform: 'translateX(-50%)',
-    zIndex: 4,
-    pointerEvents: 'none',
-  },
-  ring: {
-    position: 'absolute',
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transition: 'transform 0.05s linear',
-  },
-  number: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transformOrigin: 'center center',
-    fontWeight: 'bold',
-    userSelect: 'none',
-  },
-  centerDot: {
-    position: 'absolute',
-    width: '1.2vmin',
-    height: '1.2vmin',
-    backgroundColor: '#ff4757',
-    borderRadius: '50%',
-    zIndex: 5,
-  },
-};
+// Import the font file. The '?url' suffix is a Vite convention to get the asset URL.
+import hourFontUrl from '@/assets/fonts/26fonts/26-08-15hour.ttf?url';
+import minuteFontUrl from '@/assets/fonts/26fonts/26-08-15min.ttf?url';
+import secondFontUrl from '@/assets/fonts/26fonts/26-08-15sec.ttf?url';
+
+// 1. Asset Exports (Required for preloading pipeline)
+export const assets = [hourFontUrl, minuteFontUrl, secondFontUrl];
+
+// 2. Font Configuration
+const fontConfigs: FontConfig[] = [
+  { fontFamily: 'ClockFont_26_08_15_Hour', fontUrl: hourFontUrl },
+  { fontFamily: 'ClockFont_26_08_15_Min', fontUrl: minuteFontUrl },
+  { fontFamily: 'ClockFont_26_08_15_Sec', fontUrl: secondFontUrl },
+];
 
 const HOURS = Array.from({ length: 12 }, (_, i) => i + 1);
 const MINUTES = Array.from({ length: 12 }, (_, i) => (i + 1) * 5);
 const SECONDS = Array.from({ length: 60 }, (_, i) => i + 1);
 
 const ClockComponent: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+  // Use the canonical hook for time updates
+  const time = useMillisecondClock(16);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTime(new Date());
-    }, 16);
-
-    return () => clearInterval(intervalId);
-  }, []);
+  // Use the canonical hook for font loading
+  useSuspenseFontLoader(fontConfigs);
 
   const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
     const hours = time.getHours();
@@ -103,37 +48,28 @@ const ClockComponent: React.FC = () => {
   }, [time]);
 
   return (
-    <main style={styles.container}>
+    <main className={styles.container}>
       {/* Semantic <time> element for accessibility */}
-      <time dateTime={time.toISOString()} style={styles.srOnly}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
 
-      <div style={styles.clockContainer}>
-      
+      <div className={styles.clockContainer}>
         {/* Center Reference Line */}
-        <div style={styles.centerLine} />
+        <div className={styles.centerLine} />
 
         {/* 1. Innermost Circle: Hours */}
         <div
-          style={{
-            ...styles.ring,
-            width: '28vmin',
-            height: '28vmin',
-            transform: `rotate(${hourAngle}deg)`,
-          }}
+          className={styles.ring}
+          style={{ width: '28vmin', height: '28vmin', transform: `rotate(${hourAngle}deg)` }}
         >
           {HOURS.map((num, i) => {
             const angle = (i + 1) * 30;
             return (
               <span
                 key={`h-${num}`}
-                style={{
-                  ...styles.number,
-                  fontSize: '2vmin',
-                  color: '#ffffff',
-                  transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-10vmin)`,
-                }}
+                className={styles.number}
+                style={{ transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-26vmin)` }}
               >
                 {num}
               </span>
@@ -143,24 +79,16 @@ const ClockComponent: React.FC = () => {
 
         {/* 2. Middle Circle: Minutes */}
         <div
-          style={{
-            ...styles.ring,
-            width: '52vmin',
-            height: '52vmin',
-            transform: `rotate(${minuteAngle}deg)`,
-          }}
+          className={styles.ring}
+          style={{ width: '52vmin', height: '52vmin', transform: `rotate(${minuteAngle}deg)` }}
         >
           {MINUTES.map((num, i) => {
             const angle = (i + 1) * 30;
             return (
               <span
                 key={`m-${num}`}
-                style={{
-                  ...styles.number,
-                  fontSize: '1.8vmin',
-                  color: '#a4b0be',
-                  transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-21vmin)`,
-                }}
+                className={`${styles.number} ${styles.minuteNumber}`}
+                style={{ transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-38vmin)` }}
               >
                 {num}
               </span>
@@ -170,23 +98,17 @@ const ClockComponent: React.FC = () => {
 
         {/* 3. Outermost Circle: Seconds (Maximized Radius) */}
         <div
-          style={{
-            ...styles.ring,
-            width: '99vmin',
-            height: '99vmin',
-            transform: `rotate(${secondAngle}deg)`,
-          }}
+          className={styles.ring}
+          style={{ width: '99vmin', height: '99vmin', transform: `rotate(${secondAngle}deg)` }}
         >
           {SECONDS.map((num) => {
             const angle = num * 6;
             return (
               <span
                 key={`s-${num}`}
+                className={`${styles.number} ${styles.secondNumber}`}
                 style={{
-                  ...styles.number,
-                  fontSize: '3.3vmin',
-                  color: '#ff4757',
-                  transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-49vmin)`,
+                  transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-45vmin)`,
                 }}
               >
                 {num}
@@ -194,14 +116,12 @@ const ClockComponent: React.FC = () => {
             );
           })}
         </div>
-
-    
       </div>
     </main>
   );
 };
 
 const MemoizedClock = React.memo(ClockComponent);
-MemoizedClock.displayName = 'PortableClock';
+MemoizedClock.displayName = 'Clock_26_08_15';
 
 export default MemoizedClock;

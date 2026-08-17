@@ -1,0 +1,83 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: repeating-radial-gradient(
+    circle,
+    hsl(115, 59%, 75%) 0% calc(100% / 33),
+    hsl(147, 62%, 69%) calc(100% / 33) calc(100% / 33 * 2),
+    hsl(163, 35%, 82%) calc(100% / 33 * 2) calc(100% / 33 * 3)
+  );
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.clockContainer {
+  position: relative;
+  width: 100vmin;
+  height: 100vmin;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.centerLine {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  width: 0.2vmin;
+  height: 60vh;
+  background-color: rgb(247, 3, 23);
+  transform: translateX(-50%);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.05s linear;
+}
+
+.number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center center;
+  user-select: none;
+  font-family: 'ClockFont_26_08_15_Hour', sans-serif;
+  font-size: 12vmin;
+  text-shadow: 1px 1px 0 #000, -1px -1px 0 #fff;
+  color: #3b79f3;
+}
+
+.minuteNumber {
+  font-family: 'ClockFont_26_08_15_Min', sans-serif;
+  font-size: 6.5vmin;
+  letter-spacing: -0.2em;
+  color: #65658e;
+}
+
+.secondNumber {
+  font-family: 'ClockFont_26_08_15_Sec', sans-serif;
+  font-size: 11vmin;
+  letter-spacing: -0.04em;
+  color: #ce2a38;
+  text-shadow: 2px 0px 0 #000, -3px -0px 0 #fff;
+}
