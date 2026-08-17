@@ -26,7 +26,8 @@
   height: 100%;
   object-fit: cover;
   mix-blend-mode: screen;
-  opacity: 0.5;
+  opacity: 0.0;
+  animation: pulseOpacity 15s ease-in-out infinite;
 }
 
 .srOnly {
@@ -62,4 +63,14 @@
   width: 1.2ch; /* Set a fixed width for one character */
   text-align: center;
   line-height: 1; /* Ensure consistent vertical alignment */
+}
+
+@keyframes pulseOpacity {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 1;
+  }
 }
