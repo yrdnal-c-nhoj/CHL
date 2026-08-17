@@ -61,7 +61,7 @@ const ClockComponent: React.FC = () => {
         {/* 1. Innermost Circle: Hours */}
         <div
           className={styles.ring}
-          style={{ width: '28vmin', height: '28vmin', transform: `rotate(${hourAngle}deg)` }}
+          style={{ width: '25vmin', height: '25vmin', transform: `rotate(${hourAngle}deg)` }}
         >
           {HOURS.map((num, i) => {
             const angle = (i + 1) * 30;
@@ -69,7 +69,7 @@ const ClockComponent: React.FC = () => {
               <span
                 key={`h-${num}`}
                 className={`${styles.number} ${styles.hourNumber}`}
-                style={{ transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-26vmin)` }}
+                style={{ transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-24vmin)` }}
               >
                 {num}
               </span>
@@ -80,7 +80,7 @@ const ClockComponent: React.FC = () => {
         {/* 2. Middle Circle: Minutes */}
         <div
           className={styles.ring}
-          style={{ width: '52vmin', height: '52vmin', transform: `rotate(${minuteAngle}deg)` }}
+          style={{ width: '50vmin', height: '50vmin', transform: `rotate(${minuteAngle}deg)` }}
         >
           {MINUTES.map((num, i) => {
             const angle = (i + 1) * 30;
@@ -88,7 +88,7 @@ const ClockComponent: React.FC = () => {
               <span
                 key={`m-${num}`}
                 className={`${styles.number} ${styles.minuteNumber}`}
-                style={{ transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-38vmin)` }}
+                style={{ transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-36vmin)` }}
               >
                 {num}
               </span>
@@ -99,7 +99,7 @@ const ClockComponent: React.FC = () => {
         {/* 3. Outermost Circle: Seconds (Maximized Radius) */}
         <div
           className={styles.ring}
-          style={{ width: '99vmin', height: '99vmin', transform: `rotate(${secondAngle}deg)` }}
+          style={{ width: '95vmin', height: '95vmin', transform: `rotate(${secondAngle}deg)` }}
         >
           {SECONDS.map((num) => {
             const angle = num * 6;
@@ -108,7 +108,7 @@ const ClockComponent: React.FC = () => {
                 key={`s-${num}`}
                 className={`${styles.number} ${styles.secondNumber}`}
                 style={{
-                  transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-45vmin)`,
+                  transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-43vmin)`,
                 }}
               >
                 {num}
