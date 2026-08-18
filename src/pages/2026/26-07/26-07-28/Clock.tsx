@@ -72,7 +72,7 @@ const ClockComponent =  () => {
       </div>
 
       {/* Accessible time element as per ARCHITECTURE.md */}
-      <time dateTime={isoTime} className={styles.semanticTime} className={styles.srOnly}>
+      <time dateTime={isoTime} className={styles.semanticTime}>
         {currentTime.toLocaleTimeString()}
       </time>
     </main>

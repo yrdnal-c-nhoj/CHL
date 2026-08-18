@@ -75,7 +75,7 @@ const ClockComponent =  () => {
       />
 
       {/* Accessible time element (Required) */}
-      <time dateTime={time.toISOString()} className={styles.semanticTime} className={styles.srOnly}>
+      <time dateTime={time.toISOString()} className={styles.semanticTime}>
         {time.toLocaleTimeString()}
       </time>
 
