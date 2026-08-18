@@ -12,7 +12,7 @@ import styles from './Clock.module.css';
 //    - The `?url` suffix is required for fonts.
 // ====================================================================================
 import fontUrl from '@/assets/fonts/26fonts/26-07-10.ttf?url';
-import backgroundImage from '@/assets/images/26_images/26-08/26-08-19/map.webp';
+import backgroundImage from '@/assets/images/26_images/26-08/26-08-19/map3.webp';
 
 export const assets = [backgroundImage, fontUrl];
 
@@ -38,7 +38,29 @@ const AnalogClockComponent: React.FC = () => {
   // C. Use the shared `useClockAngles` hook for memoized angle calculations.
   const { hourAngle, minAngle, secAngle } = useClockAngles(time);
 
-  // D. Memoize dynamic style objects to prevent re-creation on every render.
+  const numerals = useMemo(() => {
+    // Babylonian cuneiform numerals 1-12.
+    // The number 12 is at the top (0 degrees rotation).
+    const babylonianNumerals = [
+      '𒌋𒁹𒁹', // 12
+      '𒁹',   // 1
+      '𒈫',   // 2
+      '𒐈',   // 3
+      '𒃻',   // 4
+      '𒐊',   // 5
+      '𒐋',   // 6
+      '𒐌',   // 7
+      '𒐍',   // 8
+      '𒑆',   // 9
+      '𒌋',   // 10
+      '𒌋𒁹',  // 11
+    ];
+    return babylonianNumerals.map((numeral, index) => ({
+      numeral,
+      rotation: index * 30,
+    }));
+  }, []);
+
   const hourHandStyle = useMemo(() => ({
     transform: `rotate(${hourAngle}deg)`,
   }), [hourAngle]);
@@ -62,6 +84,19 @@ const AnalogClockComponent: React.FC = () => {
 
       <div className={styles.clockFace}>
         {/* You can add clock face markings here (e.g., 12, 3, 6, 9) */}
+        <div className={styles.numeralContainer}>
+          {numerals.map(({ numeral, rotation }) => (
+            <div
+              key={numeral}
+              className={styles.numeral}
+              style={{ transform: `rotate(${rotation}deg)` }}
+            >
+              <span style={{ transform: `rotate(${-rotation}deg)` }}>
+                {numeral}
+              </span>
+            </div>
+          ))}
+        </div>
 
         <div className={styles.centerDot} />
 
