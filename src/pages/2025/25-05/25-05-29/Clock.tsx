@@ -1,20 +1,49 @@
-import { useEffect, useState } from 'react';
+import watchFont from '@/assets/fonts/25fonts/25-05-29-watch.ttf';
 import gearsGif from '@/assets/images/25_images/25-05/25-05-29/gears-13950_128.gif';
-import watchFont from '@/assets/fonts/25fonts/25-05-29-watch.ttf?url';
-import { Color } from 'three';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
+import { memo, useEffect, useState } from 'react';
+import styles from './Clock.module.css';
+
+// 1. Asset Exports (Required for preloading pipeline)
+export const assets = [gearsGif, watchFont];
+
+const DIGIT_MAP: { [key: string]: string } = {
+  '0': 'ZERO',
+  '1': 'ONE',
+  '2': 'TWO',
+  '3': 'THREE',
+  '4': 'FOUR',
+  '5': 'FIVE',
+  '6': 'SIX',
+  '7': 'SEVEN',
+  '8': 'EIGHT',
+  '9': 'NINE',
+};
+
 const Clock =  () => {
-  const [loaded, setLoaded] = useState<boolean>(false);
-  const [hoursDigits, setHoursDigits] = useState<any>([]);
-  const [minutesDigits, setMinutesDigits] = useState<any>([]);
-  const [secondsDigits, setSecondsDigits] = useState<any>([]);
-  const [vh, setVh] = useState<any>(window.innerHeight);
+  // 2. Use canonical font loader
+  useSuspenseFontLoader([
+    { fontFamily: 'WatchFont', fontUrl: watchFont },
+  ]);
 
-  // Load local font file
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  const time = useSecondClock(); // Use canonical hook for time
+  const [hoursDigits, setHoursDigits] = useState<string[]>([]);
+  const [minutesDigits, setMinutesDigits] = useState<string[]>([]);
+  const [secondsDigits, setSecondsDigits] = useState<string[]>([]);
 
-  // Clock always visible - removed loading condition
+  // 3. Update time digits when the time changes
+  useEffect(() => {
+    const hours = time.getHours().toString().padStart(2, '0');
+    const minutes = time.getMinutes().toString().padStart(2, '0');
+    const seconds = time.getSeconds().toString().padStart(2, '0');
 
+    setHoursDigits(hours.split(''));
+    setMinutesDigits(minutes.split(''));
+    setSecondsDigits(seconds.split(''));
+  }, [time]);
+
+  // Background styles remain the same
   const backgroundStyle = {
     position: 'fixed',
     width: '100%',
@@ -29,18 +58,11 @@ const Clock =  () => {
   };
 
   return (
-    <div
-      style={{
-        height: vh,
-        margin: 0,
-        padding: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
+    // 4. Use semantic <main> and add accessibility <time> element
+    <main className={styles.container}>
       {/* Background Layers */}
       <div
+        aria-hidden="true"
         style={{
           ...backgroundStyle,
           backgroundSize: '22vw 18vw',
@@ -49,6 +71,7 @@ const Clock =  () => {
         }}
       />
       <div
+        aria-hidden="true"
         style={{
           ...backgroundStyle,
           backgroundSize: '21vw 17vw',
@@ -57,75 +80,48 @@ const Clock =  () => {
         }}
       />
 
-      {/* Clock Styles */}
-      <style>{`
-        .clock {
-          font-family: 'WatchFont', 'Orbitron', sans-serif !important;
-          color: rgb(29, 2, 84);
-          text-shadow: rgb(238, 87, 5) 1px 1px 0px, white -1px 0px 0px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          font-size: 15vh;
-          text-align: center;
-          z-index: 10;
-        }
+      {/* Accessible time for screen readers */}
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
 
-        .unit { display: flex; flex-direction: column; }
-        .value { display: flex; flex-direction: column; align-items: center; }
-        .digit-box { display: inline-flex; justify-content: center; align-items: center; height: 3rem; user-select: none; }
-        .divider { height: 1px; width: 30vw; background-color: rgb(52, 1, 77); margin: 0.5rem auto; }
-
-        @media (max-width: 600px) {
-          .clock { font-size: 12vh; }
-          .digit-box { height: 9vh; }
-          .divider { width: 50vw; }
-        }
-      `}</style>
-      <div
-        style={{
-          ...backgroundStyle,
-          backgroundSize: '20vw 16vw',
-          opacity: 0.4,
-          zIndex: 3,
-        }}
-      />
-
-      {/* Clock */}
-      <div className="clock">
-        <div className="unit" id="hours">
-          <div className="value">
+      <div className={styles.clock}>
+        <div className={styles.unit} id="hours">
+          <div className={styles.value}>
             {hoursDigits.map((d, i) => (
-              <span key={i} className="digit-box">
-                {d}
+              <span key={i} className={styles.digitBox}>
+                {DIGIT_MAP[d]}
               </span>
             ))}
           </div>
         </div>
-        <div className="divider" />
-        <div className="unit" id="minutes">
-          <div className="value">
+        <div className={styles.divider} />
+        <div className={styles.unit} id="minutes">
+          <div className={styles.value}>
             {minutesDigits.map((d, i) => (
-              <span key={i} className="digit-box">
-                {d}
+              <span key={i} className={styles.digitBox}>
+                {DIGIT_MAP[d]}
               </span>
             ))}
           </div>
         </div>
-        <div className="divider" />
-        <div className="unit" id="seconds">
-          <div className="value">
+        <div className={styles.divider} />
+        <div className={styles.unit} id="seconds">
+          <div className={styles.value}>
             {secondsDigits.map((d, i) => (
-              <span key={i} className="digit-box">
-                {d}
+              <span key={i} className={styles.digitBox}>
+                {DIGIT_MAP[d]}
               </span>
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
-export default Clock;
+// 5. Memoize component and add display name for compliance
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_25_05_29';
+
+export default MemoizedClock;

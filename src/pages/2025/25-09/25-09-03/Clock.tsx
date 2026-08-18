@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import cus250903font from '@/assets/fonts/25fonts/25-09-03-mau.ttf';
 import cornerImage from '@/assets/images/25_images/25-09/25-09-03/corner.gif';
-import backgroundImage from '@/assets/images/25_images/25-09/25-09-03/mau.gif'; // <-- your background image
+import styles from './Clock.module.css';
 
 function DigitalClock() {
-  // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
       fontFamily: 'Digital7',
@@ -18,7 +16,7 @@ function DigitalClock() {
       },
     },
   ];
-  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
+  useSuspenseFontLoader(fontConfigs);
   const time = useMillisecondClock();
   const [loaded, setLoaded] = useState<boolean>(false);
 
@@ -38,134 +36,42 @@ function DigitalClock() {
 
   const { hours, minutes, ampm } = getTimeParts(time);
 
-  const containerStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100dvh',
-    width: '100vw',
-    margin: 0,
-    padding: 0,
-    backgroundColor: '#b784a7',
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundAttachment: 'fixed',
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    position: 'relative',
-    overflow: 'hidden',
-    opacity: loaded ? 1 : 0,
-    transition: 'opacity 0.5s ease-in-out',
-  };
-
-  const clockStyle = {
-    fontFamily: 'Digital7, sans-serif',
-    fontSize: '18vw', // default for phones
-    color: '#E1B6FEFF',
-    textAlign: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    lineHeight: 1.25,
-    letterSpacing: '0.05em',
-    textShadow: '1px 1px 2px rgba(0,0,0,0.4)',
-  };
-
-  const ampmStyle = {
-    fontSize: '16vw',
-  };
-
-  const cornerStyle = (position) => {
-    switch (position) {
-      case 'top-left':
-        return {
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '12rem',
-          transform: 'rotate(0deg)',
-        };
-      case 'top-right':
-        return {
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          width: '12rem',
-          transform: 'rotate(90deg)',
-        };
-      case 'bottom-left':
-        return {
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          width: '12rem',
-          transform: 'rotate(-90deg)',
-        };
-      case 'bottom-right':
-        return {
-          position: 'absolute',
-          bottom: 0,
-          right: 0,
-          width: '12rem',
-          transform: 'rotate(180deg)',
-        };
-      default:
-        return {};
-    }
-  };
-
   return (
     <>
-      <style>
-        {`
-          /* Font loading handled by useSuspenseFontLoader */
-
-          /* On larger screens, reduce font size */
-          @media (min-width: 700px) {
-            .clock-text {
-              font-size: 18vh !important;
-            }
-            .clock-ampm {
-              font-size: 16vh !important;
-            }
-          }
-        `}
-      </style>
-      <div style={containerStyle}>
+      <div className={`${styles.container} ${loaded ? styles.containerLoaded : ''}`}>
         <img
           decoding="async"
           loading="lazy"
           src={cornerImage}
           alt="Corner"
-          style={cornerStyle('top-left')}
+          className={styles.cornerTopLeft}
         />
         <img
           decoding="async"
           loading="lazy"
           src={cornerImage}
           alt="Corner"
-          style={cornerStyle('top-right')}
+          className={styles.cornerTopRight}
         />
         <img
           decoding="async"
           loading="lazy"
           src={cornerImage}
           alt="Corner"
-          style={cornerStyle('bottom-left')}
+          className={styles.cornerBottomLeft}
         />
         <img
           decoding="async"
           loading="lazy"
           src={cornerImage}
           alt="Corner"
-          style={cornerStyle('bottom-right')}
+          className={styles.cornerBottomRight}
         />
 
-        <div style={clockStyle} className="clock-text">
+        <div className={styles.clockText}>
           <div>{hours}</div>
           <div>{minutes}</div>
-          <div style={ampmStyle} className="clock-ampm">
+          <div className={styles.clockAmpm}>
             {ampm}
           </div>
         </div>
