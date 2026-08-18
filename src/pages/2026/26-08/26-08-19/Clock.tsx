@@ -3,7 +3,7 @@ import { useClockAngles } from '@/hooks/useClockAngles';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import styles from './Clock.module.css';
 
 // ====================================================================================
@@ -37,6 +37,15 @@ const AnalogClockComponent: React.FC = () => {
 
   // C. Use the shared `useClockAngles` hook for memoized angle calculations.
   const { hourAngle, minAngle, secAngle } = useClockAngles(time);
+
+  // D. Hide body scrollbars while this full-screen component is mounted.
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    // Restore default on unmount
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
 
   const numerals = useMemo(() => {
     // Babylonian cuneiform numerals 1-12.
