@@ -4,15 +4,15 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
-import styles from './AnalogClockTemplate.module.css';
+import styles from './Clock.module.css';
 
 // ====================================================================================
 // 1. ASSET EXPORTS (Required for preloading)
 //    - Import your background images and font files here.
 //    - The `?url` suffix is required for fonts.
 // ====================================================================================
-import fontUrl from '@/assets/fonts/placeholder.otf?url'; // Replace with your font
-import backgroundImage from '@/assets/images/placeholder.webp'; // Replace with your image
+import fontUrl from '@/assets/fonts/26fonts/26-07-10.ttf?url';
+import backgroundImage from '@/assets/images/26_images/26-08/26-08-19/map.webp';
 
 export const assets = [backgroundImage, fontUrl];
 
@@ -88,6 +88,6 @@ const AnalogClockComponent: React.FC = () => {
 //    - Set a unique `displayName` for easier debugging in React DevTools.
 // ====================================================================================
 const MemoizedAnalogClock = React.memo(AnalogClockComponent);
-MemoizedAnalogClock.displayName = 'AnalogClockTemplate'; // Replace with 'Clock_YY_MM_DD'
+MemoizedAnalogClock.displayName = 'Clock_26_08_19';
 
 export default MemoizedAnalogClock;

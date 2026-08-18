@@ -12,7 +12,7 @@
   justify-content: center;
   background-size: cover;
   background-position: center;
-  background-color: #1a1a1a; /* Fallback color */
+  background-color: #fff; /* Fallback color */
 
   /* Reference the font loaded via useSuspenseFontLoader */
   font-family: 'MyAnalogClockFont', sans-serif;
