@@ -1,0 +1,40 @@
+:global(body) {
+  margin: 0;
+  background: black;
+}
+
+.container {
+  position: fixed;
+  inset: 0;
+  background-color: #5669c8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.backgroundLayer {
+  position: absolute;
+  inset: 0;
+  background-image: url('@/assets/images/26_images/26-02/26-02-02/boom.webp');
+  background-size: contain;
+  background-position: center;
+  background-repeat: repeat;
+  filter: contrast(1.5) saturate(2.5);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.digitContainer {
+  font-family: 'Syne Mono', monospace;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+.digit {
+  display: inline-block;
+  color: #d0d6f2;
+  text-shadow: 0 0 15px rgba(10, 63, 240, 0.4);
+  letter-spacing: -0.1em;
+}
