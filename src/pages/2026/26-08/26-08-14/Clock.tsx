@@ -5,7 +5,7 @@ import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 // 1. Asset Exports (for preloading)
 import fontUrl from '@/assets/fonts/26fonts/26-08-14-halo.ttf?url';
-import backgroundImage from '@/assets/images/26_images/26-08/26-08-14/angel.mp4';
+import backgroundImage from '@/assets/images/26_images/26-08/26-08-14/angel.webm?url';
 
 export const assets = [backgroundImage, fontUrl];
 
