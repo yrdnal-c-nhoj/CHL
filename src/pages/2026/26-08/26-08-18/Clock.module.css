@@ -27,7 +27,7 @@
   object-fit: cover;
   mix-blend-mode: screen;
   opacity: 0.0;
-  animation: pulseOpacity 15s ease-in-out infinite;
+  animation: pulseOpacity 20s ease-in-out infinite;
 }
 
 .srOnly {
