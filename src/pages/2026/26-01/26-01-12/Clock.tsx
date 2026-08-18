@@ -3,8 +3,6 @@ import bgImage from '@/assets/images/26_images/26-01/26-01-12/lala.jpg';
 import customFont_2025_1210 from '@/assets/fonts/26fonts/26-01-12-26-01-19-lala.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-const { time } = useMillisecondClock(100);
-
 const elementColor = '#885B5D';
 
 const digitBoxStyle = {

@@ -3,8 +3,6 @@ import { useState, useEffect, useRef } from 'react';
 import backgroundImage from '@/assets/images/26_images/26-01/26-01-27/pan.jpg';
 import panFont from '@/assets/fonts/26fonts/26-01-27-pan.ttf';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 export default function PanoramaClock() {
   const [timeString, setTimeString] = useState<any>('');
   const [bgDuration, setBgDuration] = useState<number>(0);

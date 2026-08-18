@@ -6,8 +6,6 @@ import bg0 from '@/assets/images/25_images/25-08/25-08-26/rrr.webp'; // bottom-m
 import bg1 from '@/assets/images/25_images/25-08/25-08-26/ro.gif'; // middle
 import bg3 from '@/assets/images/25_images/25-08/25-08-26/root.webp'; // top foreground
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 export default function DigitalClock() {
   const [time, setTime] = useState<any>(getTimeParts);
 

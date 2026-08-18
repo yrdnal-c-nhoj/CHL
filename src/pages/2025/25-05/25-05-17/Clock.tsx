@@ -5,8 +5,6 @@ import layer5Gif from '@/assets/images/25_images/25-05/25-05-17/e0435fd452bbed15
 import layer3Gif from '@/assets/images/25_images/25-05/25-05-17/giphy-3181726992.webp';
 import rectangleGif from '@/assets/images/25_images/25-05/25-05-17/tumblr_53c27c64cc9f17a0880aff18b8f6d934_d138a0cd_500.gif';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const PrimaryClock =  () => {
   useEffect(() => {
       setDate();

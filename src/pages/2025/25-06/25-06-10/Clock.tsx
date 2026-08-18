@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import shaFont from '@/assets/fonts/25fonts/25-06-10-sha.ttf';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const ShapesClock =  () => {
   const [time, setTime] = useState<any>({
     hours: '00',
@@ -23,10 +21,7 @@ const ShapesClock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-      updateClock();
-    }, [time]);
+  // useEffect for updateClock removed - time is reactive via useSecondClock
 
   const bodyStyle = {
     margin: 0,

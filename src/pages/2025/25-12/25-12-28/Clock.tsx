@@ -5,8 +5,6 @@ import videoFile from '@/assets/images/25_images/25-12/25-12-28/coaster.mp4';
 import fallbackImg from '@/assets/images/25_images/25-12/25-12-28/coaster.webp';
 import fontUrl_20251128 from '@/assets/fonts/25fonts/25-12-28-coaster.ttf?url';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 export default function Clock() {
   const [timeText, setTimeText] = useState<any>('');
   const [videoFailed, setVideoFailed] = useState<boolean>(false);

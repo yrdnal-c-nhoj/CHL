@@ -3,8 +3,6 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import fontUrl from '@/assets/fonts/25fonts/25-08-19-cas.ttf';
 import bgUrl from '@/assets/images/25_images/25-08/25-08-19/ap.jpeg';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const Pendulum =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [

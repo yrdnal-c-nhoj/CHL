@@ -3,8 +3,6 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import sandTexture from '@/assets/images/25_images/25-12/25-12-19/sand.webp';
 import FONT_PATH from '@/assets/fonts/25fonts/25-12-19-hour.ttf?url';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const FONT_FAMILY = 'DateFont';
 
 const HourglassTimer =  () => {

@@ -3,8 +3,6 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImg from '@/assets/images/25_images/25-07/25-07-23/bay01s52djxo1_400.webp';
 import bayFont from '@/assets/fonts/25fonts/25-07-23-bay.ttf';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const Clock =  () => {
   const [timeStr, setTimeStr] = useState<any>('');
 
@@ -20,10 +18,7 @@ const Clock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-      updateClock();
-    }, [time]);
+  // useEffect for updateClock removed - time is reactive via useSecondClock
 
   return (
     <div style={styles.body}>

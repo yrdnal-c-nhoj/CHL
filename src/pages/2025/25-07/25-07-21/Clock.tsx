@@ -5,14 +5,9 @@ import anglerfishFuse from '@/assets/images/25_images/25-07/25-07-21/Deep-Sea-An
 import patternOverlay from '@/assets/images/25_images/25-07/25-07-21/qsxwwd.webp';
 import spinGif from '@/assets/images/25_images/25-07/25-07-21/spin.gif';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const AnglerfishClock =  () => {
   const [time, setTime] = useState<any>('');
-
-  useEffect(() => {
-      updateClock();
-    }, [time]);
+  // useEffect for updateClock removed - time is reactive via useSecondClock
 
   return (
     <div

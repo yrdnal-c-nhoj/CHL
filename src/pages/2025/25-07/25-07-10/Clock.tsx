@@ -3,8 +3,6 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import sliFont from '@/assets/fonts/25fonts/25-07-10-sli.otf';
 import sli2Font from '@/assets/fonts/25fonts/25-07-10-sli2.ttf';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const Clock =  () => {
   const digitGroups = [
     'hour-tens',
@@ -36,10 +34,7 @@ const Clock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-      updateClock();
-    }, [time]);
+  // useEffect for updateClock removed - time is reactive via useSecondClock
 
   const createDigitStrip = (id) => {
     const maxDigit = id === 'hour-tens' ? 2 : 9;

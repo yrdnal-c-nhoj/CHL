@@ -3,8 +3,6 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import fontFile from '@/assets/fonts/26fonts/26-01-02-cram.ttf';
 import backgroundImage from '@/assets/images/26_images/26-01/26-01-02/brick.webp';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const StretchedClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [

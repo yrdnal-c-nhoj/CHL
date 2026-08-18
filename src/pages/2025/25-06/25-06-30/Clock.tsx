@@ -17,8 +17,6 @@ import hourHand from '@/assets/images/25_images/25-06/25-06-30/whis.gif';
 import minuteHand from '@/assets/images/25_images/25-06/25-06-30/w.gif';
 import secondHand from '@/assets/images/25_images/25-06/25-06-30/whi.gif';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const allImages = [
   bgImage,
   img1,
@@ -40,10 +38,7 @@ const allImages = [
 
 export default function Clock() {
   const [loaded, setLoaded] = useState<boolean>(false);
-
-  useEffect(() => {
-      updateClock();
-    }, [time]);
+  // useEffect for updateClock removed - time is reactive via useSecondClock
 
   const eggBackground = {
     position: 'absolute',

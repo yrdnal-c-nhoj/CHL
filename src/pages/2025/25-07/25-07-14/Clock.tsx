@@ -20,8 +20,6 @@ import img10 from '@/assets/images/25_images/25-07/25-07-14/goura-goura12.gif';
 import img11 from '@/assets/images/25_images/25-07/25-07-14/agencylife-kochstrasse.gif';
 import img12 from '@/assets/images/25_images/25-07/25-07-14/agenturleben-agencylife.gif';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const digitImages = [
   img1,
   img2,
