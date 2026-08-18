@@ -6,14 +6,9 @@ import cmoon from '@/assets/images/25_images/25-06/25-06-13/cmoon.webp';
 import clouGif from '@/assets/images/25_images/25-06/25-06-13/clou.gif';
 import clll from '@/assets/images/25_images/25-06/25-06-13/clll.webp';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const CloudyNightClock =  () => {
   const clockRef = useRef(null);
-
-  useEffect(() => {
-      updateClock();
-    }, [time]);
+  // useEffect for updateClock removed - time is reactive via useSecondClock
 
   const containerStyle = {
     margin: 0,

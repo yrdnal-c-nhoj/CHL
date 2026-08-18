@@ -3,8 +3,6 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bakFont from '@/assets/fonts/25fonts/25-07-02-bak.ttf';
 import backgroundGif from '@/assets/images/25_images/25-07/25-07-02/ba.gif';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 export default function Clock() {
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
@@ -23,10 +21,7 @@ export default function Clock() {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-      updateClock();
-    }, [time]);
+  // useEffect for updateClock removed - time is reactive via useSecondClock
 
   // --- Layout Styles ---
   const containerStyle = {

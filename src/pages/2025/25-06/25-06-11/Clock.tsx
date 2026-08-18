@@ -8,8 +8,6 @@ import minuteHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
 import secondHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
 import banFont from '@/assets/fonts/25fonts/25-06-11-Ban.ttf';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const BananaClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -23,9 +21,7 @@ const BananaClock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  useEffect(() => {
-      updateClock();
-    }, [time]);
+  // useEffect for updateClock removed - time is reactive via useSecondClock
 
   // Create banana tiles dynamically
   const tileCount = 8 * 8;

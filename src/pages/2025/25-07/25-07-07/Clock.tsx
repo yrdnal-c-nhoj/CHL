@@ -5,8 +5,6 @@ import suvFont from '@/assets/fonts/25fonts/25-07-07-suv.ttf';
 import suvImage from '@/assets/images/25_images/25-07/25-07-07/suv.gif';
 import suvBackground from '@/assets/images/25_images/25-07/25-07-07/suvx.jpg';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const Clock =  () => {
   const [time, setTime] = useState<any>({
     h: '00',
@@ -26,10 +24,7 @@ const Clock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-      updateClock();
-    }, [time]);
+  // useEffect for updateClock removed - time is reactive via useSecondClock
 
   const containerStyle = {
     margin: 0,

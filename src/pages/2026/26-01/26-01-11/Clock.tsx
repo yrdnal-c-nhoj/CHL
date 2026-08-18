@@ -10,8 +10,6 @@ import hourHandImg from '@/assets/images/26_images/26-01/26-01-11/leg1.webp';
 import minuteHandImg from '@/assets/images/26_images/26-01/26-01-11/leg2.webp';
 import secondHandImg from '@/assets/images/26_images/26-01/26-01-11/flam.webp';
 import { useMillisecondClock } from '@/utils/hooks';
-const { time } = useMillisecondClock(50);
-
 // --- CONFIG ---
 const CONFIG = {
   clockSize: 'min(90vw, 90vh)',

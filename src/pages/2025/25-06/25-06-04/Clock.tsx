@@ -5,9 +5,9 @@ import coffeeFont from '@/assets/fonts/25fonts/25-06-04-cof.ttf';
 import bgStill from '@/assets/images/25_images/25-06/25-06-04/coff.png';
 import bgAnimated from '@/assets/images/25_images/25-06/25-06-04/coff.gif';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
 
 const CoffeeClock =  () => {
+  const { time } = useSecondClock();
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -28,9 +28,7 @@ const CoffeeClock =  () => {
   const secondHandRef = useRef(null);
 
   // Animate numbers jitter
-  useEffect(() => {
-      updateClock();
-    }, [time]);
+  // Removed updateClock effect - time is already reactive via useSecondClock
 
   // Styles
   const numberStyle = {

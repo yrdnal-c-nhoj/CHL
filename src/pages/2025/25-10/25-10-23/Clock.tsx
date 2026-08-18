@@ -3,8 +3,6 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import f251023 from '@/assets/fonts/25fonts/25-10-23-gr.ttf';
 import bgImage from '@/assets/images/25_images/25-10/25-10-23/bg.gif';
 import { useMillisecondClock } from '@/utils/hooks';
-const { time } = useMillisecondClock(10);
-
 export const assets = [];
 
 const Clockgrid =  () => {
@@ -20,10 +18,7 @@ const Clockgrid =  () => {
     width: window.innerWidth,
     height: window.innerHeight,
   });
-
-  useEffect(() => {
-      updateClock();
-    }, [time]);
+  // useEffect for updateClock removed - time is reactive via useSecondClock
 
   useEffect(() => {
     const handleResize =  () => {

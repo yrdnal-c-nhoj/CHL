@@ -7,8 +7,6 @@ import fish from '@/assets/images/26_images/26-01/26-01-07/fish.gif';
 import gfish from '@/assets/images/26_images/26-01/26-01-07/gfish.gif';
 import aquarium from '@/assets/images/26_images/26-01/26-01-07/aquarium.gif';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const AquariumClock =  () => {
   const hourHandRef = useRef<HTMLImageElement>(null);
   const minHandRef = useRef<HTMLImageElement>(null);

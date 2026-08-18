@@ -4,8 +4,6 @@ import fontUrl from '@/assets/fonts/26fonts/26-03-24-26-03-23-arrow.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
-const { time } = useSecondClock();
-
 const FONT_FAMILY = 'ClockFont_Arrow';
 const LOOP_MS = 10000;
 const ANIMATION_DURATION_MS = 4200;

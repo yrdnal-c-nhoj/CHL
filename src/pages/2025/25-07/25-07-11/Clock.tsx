@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import penFontUrl from '@/assets/fonts/25fonts/25-07-11-Pen.ttf';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const PenmanshipClock =  () => {
   const [timeString, setTimeString] = useState<any>('--:--');
   const [ampm, setAmpm] = useState<any>('--');

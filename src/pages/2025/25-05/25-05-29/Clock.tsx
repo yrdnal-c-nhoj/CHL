@@ -3,8 +3,6 @@ import gearsGif from '@/assets/images/25_images/25-05/25-05-29/gears-13950_128.g
 import watchFont from '@/assets/fonts/25fonts/25-05-29-watch.ttf?url';
 import { Color } from 'three';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const Clock =  () => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [hoursDigits, setHoursDigits] = useState<any>([]);
@@ -13,9 +11,7 @@ const Clock =  () => {
   const [vh, setVh] = useState<any>(window.innerHeight);
 
   // Load local font file
-  useEffect(() => {
-      updateClock();
-    }, [time]);
+  // useEffect for updateClock removed - time is reactive via useSecondClock
 
   // Clock always visible - removed loading condition
 

@@ -3,8 +3,6 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-07/25-07-01/mu.jpg';
 import fontUrl from '@/assets/fonts/25fonts/25-07-01-mult.ttf';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const CinemaClock =  () => {
   const [time, setTime] = useState<any>({ hours: '', minutes: '' });
 
@@ -20,10 +18,7 @@ const CinemaClock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-      updateClock();
-    }, [time]);
+  // useEffect for updateClock removed - time is reactive via useSecondClock
 
   const fontFace = `
     @font-face {

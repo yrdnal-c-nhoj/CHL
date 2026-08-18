@@ -3,8 +3,6 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import castelImage from '@/assets/images/25_images/25-08/25-08-24/castel.jpg';
 import viaFont from '@/assets/fonts/25fonts/25-08-24-via.ttf';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const toRoman = (num: number) => {
   const romanMap = [
     [1000, 'M'],
@@ -48,10 +46,7 @@ const RomanClock = () => {
   const [time, setTime] = useState('');
   const [fade, setFade] = useState(false);
   const timeoutRef = useRef<any | null>(null);
-
-  useEffect(() => {
-      updateClock();
-    }, [time]);
+  // useEffect for updateClock removed - time is reactive via useSecondClock
 
   const containerStyle = {
     position: 'relative' as const,

@@ -3,8 +3,6 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-07/25-07-18/558074085193-ezgif.com-optiwebp-1.webp';
 import xrayFontUrl from '@/assets/fonts/25fonts/25-07-18-xray.ttf';
 import { useMillisecondClock } from '@/utils/hooks';
-const { time } = useMillisecondClock(50);
-
 const HospitalClock =  () => {
   const [time, setTime] = useState<any>('');
 
@@ -20,10 +18,7 @@ const HospitalClock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-      updateClock();
-    }, [time]);
+  // useEffect for updateClock removed - time is reactive via useSecondClock
 
   return (
     <div style={styles.body}>

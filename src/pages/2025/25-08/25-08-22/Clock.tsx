@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSecondClock } from '@/utils/hooks';
-const { time } = useSecondClock();
-
 const RandomColorClock =  () => {
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
