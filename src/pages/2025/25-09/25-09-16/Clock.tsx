@@ -1,110 +1,58 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import type { FontConfig } from '@/types/clock';
-import bgImage from '@/assets/images/25_images/25-09/25-09-16/bg.jpg';
+import React, { useMemo } from 'react';
+
+// 1. Asset Exports
 import d250916font from '@/assets/fonts/25fonts/25-09-16-baud.ttf?url';
+import bgImage from '@/assets/images/25_images/25-09/25-09-16/bg.jpg';
 
-const Clock =  () => {
+export const assets = [bgImage, d250916font];
+
+// 2. Styles
+import styles from './Clock.module.css';
+
+// --- Font Configuration ---
+const fontConfigs: FontConfig[] = [
+  { fontFamily: 'MyD250916font', fontUrl: d250916font },
+];
+
+// 3. Main Component
+const ClockComponent: React.FC = () => {
   const time = useMillisecondClock();
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [{ fontFamily: 'MyD250916font', fontUrl: d250916font }],
-    [],
-  );
-
   useSuspenseFontLoader(fontConfigs);
 
-  // Handle background image preloading separately as font is handled by Suspense
-  useEffect(() => {
-    const img = new Image();
-    img.src = bgImage;
-    img.onload = () => setIsLoaded(true);
-    img.onerror = () => setIsLoaded(true);
-  }, []);
-
   // Format time
-  const hours = String(((time.getHours() + 11) % 12) + 1).padStart(2, '0');
-  const minutes = String(time.getMinutes()).padStart(2, '0');
-  const seconds = String(time.getSeconds()).padStart(2, '0');
-
-  const digitBox: React.CSSProperties = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontFamily: "'MyD250916font', sans-serif", // Use the loaded custom font
-    fontSize: '10vmin', // Standardize on vmin for responsive sizing
-    color: '#ffffff',
-    margin: '0 0.5vw',
-    minWidth: '8vw',
-    textShadow: `
-      0 0 5px #ff0000,
-      0 0 10px #ff9900,
-      0 0 15px #ffff00,
-      0 0 20px #00ff00,
-      0 0 25px #00ffff,
-      0 0 30px #0000ff,
-      0 0 35px #ff00ff,
-      0 0 45px #ff0000,
-      0 0 50px #ff9900,
-      0 0 55px #ffff00,
-      0 0 60px #00ff00,
-      0 0 65px #00ffff,
-      0 0 70px #0000ff,
-      0 0 75px #ff00ff,
-      0 0 80px #ffffff,
-      0 0 90px #ffffff,
-      0 0 99px #ffffff
-    `,
-  };
-
-  const containerStyle: React.CSSProperties = {
-    height: '100dvh',
-    width: '100vw',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'black', // fallback black until loaded
-    backgroundImage: isLoaded ? `url(${bgImage})` : 'none',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  };
-
-  const faceStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  };
+  const { hours, minutes, seconds } = useMemo(() => {
+    const h = String(((time.getHours() + 11) % 12) + 1).padStart(2, '0');
+    const m = String(time.getMinutes()).padStart(2, '0');
+    const s = String(time.getSeconds()).padStart(2, '0');
+    return { hours: h, minutes: m, seconds: s };
+  }, [time]);
 
   const renderDigits = (value: string) =>
     value.split('').map((d, i) => (
-      <div key={i} style={digitBox}>
+      <div key={i} className={styles.digitBox}>
         {d}
       </div>
     ));
 
-  // Show black screen until everything is ready
-  if (!isLoaded) {
-    return (
-      <div
-        style={{ height: '100dvh', width: '100vw', backgroundColor: 'black' }}
-      />
-    );
-  }
-
   return (
-    <main style={containerStyle}>
-      <time dateTime={time.toISOString()} style={faceStyle}>
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.face}>
+        <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
         {renderDigits(hours)}
-        <div style={digitBox}>:</div>
+        <div className={styles.digitBox}>:</div>
         {renderDigits(minutes)}
-        <div style={digitBox}>:</div>
+        <div className={styles.digitBox}>:</div>
         {renderDigits(seconds)}
       </time>
     </main>
   );
 };
 
-export default Clock;
+// 4. Performance: Wrap in React.memo + set displayName (Required)
+const MemoizedClock = React.memo(ClockComponent);
+MemoizedClock.displayName = 'Clock_25_09_16';
+
+export default MemoizedClock;
