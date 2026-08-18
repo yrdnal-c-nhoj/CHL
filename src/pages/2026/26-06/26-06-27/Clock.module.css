@@ -1,0 +1,66 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100dvh;
+  background-color: #000;
+  overflow: hidden;
+  position: relative;
+}
+
+.backgroundVideo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100dvh;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.analogClock {
+  width: 90vmin;
+  height: 90vmin;
+  max-width: 800px;
+  max-height: 800px;
+  z-index: 2;
+  position: relative;
+}
+
+.numberText {
+  font-family: 'ClockFont_26_06_27', monospace;
+  font-size: 43vh;
+  fill: #359c45;
+  text-anchor: middle;
+  dominant-baseline: central;
+  user-select: none;
+  opacity: 0.6;
+  filter: drop-shadow(0 4px 0px rgba(233, 220, 220, 0.7));
+}
+
+.hourHand,
+.minuteHand,
+.secondHand {
+  stroke-linecap: round;
+  opacity: 0.6;
+  filter: drop-shadow(-3px 4px 0px rgba(233, 220, 220, 0.88));
+  transform-origin: 400px 400px;
+  transition: transform 0.5s cubic-bezier(0.4, 2.3, 0.6, 1);
+}
+
+.hourHand {
+  stroke-width: 66;
+  stroke: #359c45;
+}
+
+.minuteHand {
+  stroke-width: 42;
+  stroke: #359c45;
+}
+
+.secondHand {
+  stroke-width: 16;
+  stroke: #359c45;
+}

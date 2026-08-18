@@ -1,8 +1,11 @@
 import chandelierBg from '@/assets/images/26_images/26-06/26-06-27/clover.mp4';
+import SRTime from '@/components/SRTime';
+import { useClockAngles } from '@/hooks/useClockAngles';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
-import React, { useEffect, useMemo, useRef } from 'react';
+import { useSecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
+import styles from './Clock.module.css';
 
 import fontUrl from '@/assets/fonts/26fonts/26-06-27.otf?url';
 
@@ -36,138 +39,55 @@ const generateNumbers = () => {
   }).filter(Boolean) as { key: number; x: number; y: number; number: number }[];
 };
 
-const AnalogClock =  () => {
+const AnalogClockComponent = () => {
   useSuspenseFontLoader(fontConfigs);
 
-  const now = useMillisecondClock();
-  const videoRef = useRef<HTMLVideoElement>(null);
+  // Use the more performant hook since smooth motion is handled by CSS transitions
+  const time = useSecondClock();
   const clockNumbers = useMemo(() => generateNumbers(), []);
-
-  useEffect(() => {
-    const videoElement = videoRef.current;
-    if (videoElement) {
-      const playPromise = videoElement.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(error => console.error("Video play failed:", error));
-      }
-    }
-  }, []);
-
-  // Smooth hand movements
-  const s = now.getSeconds() + now.getMilliseconds() / 1000;
-  const m = now.getMinutes() + s / 60;
-  const h = now.getHours() + m / 60;
-
-  const secondDegrees = (s / 60) * 360;
-  const minuteDegrees = (m / 60) * 360;
-  const hourDegrees = (h / 12) * 360;
+  const { hourAngle, minuteAngle, secondAngle } = useClockAngles(time);
 
   return (
-    <div style={styles.container}>
+    <main className={styles.container}>
+      {/* Accessible time element (Required) */}
+      <SRTime time={time} />
+
       <video
-        ref={videoRef}
         src={chandelierBg}
         autoPlay
         loop
         muted
         playsInline
         preload="auto"
-        style={styles.backgroundVideo}
+        className={styles.backgroundVideo}
       />
       <svg
         width="400"
         height="400"
         viewBox="0 0 800 800"
-        style={styles.analogClock}
+        className={styles.analogClock}
       >
         {/* Clock Face */}
         <g>
           {clockNumbers.map(({ key, x, y, number }) => (
-            <text key={key} x={x} y={y} style={styles.numberText}>
+            <text key={key} x={x} y={y} className={styles.numberText}>
               {number}
             </text>
           ))}
         </g>
 
-        {/* Hands — Center point shifted to 400 400 */}
+        {/* Hands */}
         <g>
-          <line
-            x1="400" y1="400" x2="400" y2="260"
-            style={{ ...styles.hand, ...styles.hourHand }}
-            transform={`rotate(${hourDegrees} 400 400)`}
-          />
-          <line
-            x1="400" y1="400" x2="400" y2="180"
-            style={{ ...styles.hand, ...styles.minuteHand }}
-            transform={`rotate(${minuteDegrees} 400 400)`}
-          />
-          <line
-            x1="400" y1="400" x2="400" y2="140"
-            style={{ ...styles.hand, ...styles.secondHand }}
-            transform={`rotate(${secondDegrees} 400 400)`}
-          />
+          <line x1="400" y1="400" x2="400" y2="260" className={styles.hourHand} style={{ transform: `rotate(${hourAngle}deg)` }} />
+          <line x1="400" y1="400" x2="400" y2="180" className={styles.minuteHand} style={{ transform: `rotate(${minuteAngle}deg)` }} />
+          <line x1="400" y1="400" x2="400" y2="140" className={styles.secondHand} style={{ transform: `rotate(${secondAngle}deg)` }} />
         </g>
       </svg>
-    </div>
+    </main>
   );
 };
 
-const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100vw',
-    height: '100dvh',
-    backgroundColor: '#000',
-    overflow: 'hidden',
-    position: 'relative',
-  },
-  backgroundVideo: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '100vw',
-    height: '100dvh',
-    objectFit: 'cover',
-    zIndex: 1,
-  },
-  analogClock: {
-    width: '90vmin',
-    height: '90vmin',
-    maxWidth: '800px',
-    maxHeight: '800px',
-    zIndex: 2,
-    position: 'relative',
-  },
-  numberText: {
-    fontFamily: "'ClockFont_26_06_27', monospace",
-    fontSize: '43vh',
-    fill: '#359C45',
-    textAnchor: 'middle',
-    dominantBaseline: 'central',
-    userSelect: 'none',
-    opacity: 0.6,
-    filter: 'drop-shadow(0 4px 0px rgba(233, 220, 220, 0.7))',
-  },
-  hand: {
-    strokeLinecap: 'round',
-    opacity: 0.6,
-    filter: 'drop-shadow(-3px 4px 0px rgba(233, 220, 220, 0.88))',
-  },
-  hourHand: {
-    strokeWidth: 66,
-    stroke: '#359C45',
-  },
-  minuteHand: {
-    strokeWidth: 42,
-    stroke: '#359C45',
-  },
-  secondHand: {
-    strokeWidth: 16,
-    stroke: '#359C45',
-  },
-};
+const MemoizedClock = React.memo(AnalogClockComponent);
+MemoizedClock.displayName = 'Clock_26_06_27';
 
-export default AnalogClock;
+export default MemoizedClock;
