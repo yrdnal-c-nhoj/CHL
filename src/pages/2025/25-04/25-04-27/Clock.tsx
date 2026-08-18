@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import type { CSSProperties } from 'react';
 import coinGif from '@/assets/images/25_images/25-04/25-04-27/coin.gif';
 import spinWebp from '@/assets/images/25_images/25-04/25-04-27/spin.webp';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
+import styles from './Clock.module.css';
 
-export const assets = [];
+export const assets = [coinGif, spinWebp];
 
 // Component Props interface
 interface SpinningCoinClockProps {
@@ -14,68 +14,28 @@ interface SpinningCoinClockProps {
 }
 
 const SpinningCoinClock: React.FC<SpinningCoinClockProps> = () => {
-  const clockRef = useRef<HTMLDivElement>(null);
-  const componentId = useRef(`coin-clock-${Date.now()}`);
-  const fontName = `CoinClockFont-${componentId.current}`;
-
   // Font loading configuration (memoized) - no custom fonts needed to avoid network errors
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
 
   // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);
 
-  // Use the standardized hook for smooth clock updates
+  // Use the standardized hook for time updates
   const currentTime = useSecondClock();
-  const updateClock = useCallback((): void => {
-    const clock = clockRef.current;
-    if (!clock) return;
 
+  const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
     const hours = currentTime.getHours() % 12;
     const minutes = currentTime.getMinutes();
     const seconds = currentTime.getSeconds();
-
-    const hourDeg = hours * 30 + minutes * 0.5;
-    const minuteDeg = minutes * 6;
-    const secondDeg = seconds * 6;
-
-    const hourHand = clock.querySelector('.hour-hand') as HTMLElement;
-    const minuteHand = clock.querySelector('.minute-hand') as HTMLElement;
-    const secondHand = clock.querySelector('.second-hand') as HTMLElement;
-
-    if (hourHand) {
-      hourHand.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
-    }
-    if (minuteHand) {
-      minuteHand.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
-    }
-    if (secondHand) {
-      secondHand.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
-    }
+    return {
+      hourAngle: hours * 30 + minutes * 0.5,
+      minuteAngle: minutes * 6,
+      secondAngle: seconds * 6,
+    };
   }, [currentTime]);
 
-  useEffect(() => {
-    // Update clock immediately and then every second
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-
-    return () => clearInterval(interval);
-  }, [updateClock]);
-
   return (
-    <div
-      style={{
-        backgroundColor: '#060606',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100dvh',
-        width: '100vw',
-        margin: 0,
-        perspective: '100vw',
-        overflow: 'hidden',
-        position: 'relative',
-      }}
-    >
+    <main className={styles.container}>
       <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
 
       <img
@@ -83,131 +43,41 @@ const SpinningCoinClock: React.FC<SpinningCoinClockProps> = () => {
         loading="lazy"
         src={coinGif}
         alt="coin background"
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          objectFit: 'cover',
-          zIndex: -1,
-        }}
+        className={styles.backgroundImage}
       />
-      <div
-        ref={clockRef}
-        id="clock"
-        style={{
-          width: '80vh',
-          height: '80vh',
-          borderRadius: '50%',
-          position: 'relative',
-          transformStyle: 'preserve-3d',
-          animation: 'spin 7s linear infinite',
-        }}
-      >
+      <div id="clock" className={styles.clockFace}>
         <div
-          className="hour-hand"
+          className={`${styles.hand} ${styles.hourHand}`}
           style={{
-            position: 'absolute',
-            bottom: '50%',
-            left: '50%',
-            transformOrigin: 'bottom center',
-            backgroundColor: '#d3ad62',
-            width: '0.6vw',
-            height: '12vw',
-            transform: 'translateX(-50%)',
+            transform: `translateX(-50%) rotate(${hourAngle}deg)`,
           }}
         />
         <div
-          className="minute-hand"
+          className={`${styles.hand} ${styles.minuteHand}`}
           style={{
-            position: 'absolute',
-            bottom: '50%',
-            left: '50%',
-            transformOrigin: 'bottom center',
-            backgroundColor: '#d3ad62',
-            width: '0.4vw',
-            height: '16vw',
-            transform: 'translateX(-50%)',
+            transform: `translateX(-50%) rotate(${minuteAngle}deg)`,
           }}
         />
         <div
-          className="second-hand"
+          className={`${styles.hand} ${styles.secondHand}`}
           style={{
-            position: 'absolute',
-            bottom: '50%',
-            left: '50%',
-            transformOrigin: 'bottom center',
-            backgroundColor: '#d3ad62',
-            width: '0.2vw',
-            height: '18vw',
-            transform: 'translateX(-50%)',
+            transform: `translateX(-50%) rotate(${secondAngle}deg)`,
           }}
         />
         <div
-          className="center"
+          className={styles.center}
           style={{
-            width: '8vh',
-            height: '8vh',
             backgroundImage: `url(${spinWebp})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            borderRadius: '50%',
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            zIndex: 10,
           }}
          />
       </div>
-      <style>{`
-        @keyframes spin {
-          0% { transform: rotateY(0deg); }
-          100% { transform: rotateY(360deg); }
-        }
-
-        .hand {
-          position: absolute;
-          bottom: 50%;
-          left: 50%;
-          transform-origin: bottom center;
-          background-color: #d3ad62;
-        }
-
-        .hour-hand {
-          width: 0.6vw;
-          height: 12vw;
-          transform: translateX(-50%);
-        }
-
-        .minute-hand {
-          width: 0.4vw;
-          height: 16vw;
-          transform: translateX(-50%);
-        }
-
-        .second-hand {
-          width: 0.2vw;
-          height: 18vw;
-          transform: translateX(-50%);
-        }
-
-        .number {
-          font-family: cursive,
-          position: absolute;
-          font-size: 6.2vw;
-          color: #d3ad62;
-          text-align: center;
-          width: auto;
-          pointer-events: none;
-        }
-      `}</style>
-    </div>
+    </main>
   );
 };
 
+const MemoizedSpinningCoinClock = React.memo(SpinningCoinClock);
+MemoizedSpinningCoinClock.displayName = 'Clock_25_04_27';
+export default MemoizedSpinningCoinClock;
 const MemoizedSpinningCoinClock = React.memo(SpinningCoinClock);
 MemoizedSpinningCoinClock.displayName = 'Clock_25_04_27';
 export default MemoizedSpinningCoinClock;

@@ -3,6 +3,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import styles from './Clock.module.css';
 
 // Component Props interface
 interface CubeClockProps {
