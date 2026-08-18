@@ -4,8 +4,8 @@ import glassbreak from '@/assets/images/26_images/26-07/26-07-10/sunrise.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import type { CSSProperties, FC } from 'react';
-import { useEffect, useMemo, useRef } from 'react';
+import type { CSSProperties, FC, MemoExoticComponent } from 'react';
+import { memo, useEffect, useMemo, useRef } from 'react';
 import styles from './Clock.module.css';
 
 // =========================
@@ -272,6 +272,6 @@ const AnalogClock: FC = () => {
   );
 };
 
-const MemoizedAnalogClock = React.memo(AnalogClock);
+const MemoizedAnalogClock = memo(AnalogClock);
 MemoizedAnalogClock.displayName = 'Clock_26_07_10';
 export default MemoizedAnalogClock;
