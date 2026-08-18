@@ -10,70 +10,79 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
   background-color: #fff; /* Fallback color */
+  filter: contrast(1.8);
 
   /* Reference the font loaded via useSuspenseFontLoader */
   font-family: 'MyAnalogClockFont', sans-serif;
 }
 
 .clockFace {
-  --clock-size: 80vmin;
-  --clock-bg-color: rgba(255, 255, 255, 0.1);
-  --clock-border-color: #fff;
-  --clock-border-width: 4px;
-
+  --clock-size: 110vmin;
   position: relative;
   width: var(--clock-size);
   height: var(--clock-size);
-  background-color: var(--clock-bg-color);
-  border: var(--clock-border-width) solid var(--clock-border-color);
   border-radius: 50%;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
+ }
 
 .hand {
-  --hour-hand-color: #ff6347;
-  --minute-hand-color: #87ceeb;
-  --second-hand-color: #f0e68c;
+  --hour-hand-color: #ffffff;
+  --minute-hand-color: #ffffff;
+  --second-hand-color: #ffffff;
 
   position: absolute;
   bottom: 50%;
   left: 50%;
   transform-origin: bottom;
-  border-radius: 2px;
+  border-radius: 0.5px;
+  filter: drop-shadow(1px 0 0 #000) drop-shadow(-1px 0 0 #000) drop-shadow(0 1px 0 #000) drop-shadow(0 -1px 0 #000) drop-shadow(1px 1px 0 #000) drop-shadow(-1px 1px 0 #000) drop-shadow(1px -1px 0 #000) drop-shadow(-1px -1px 0 #000);
 }
 
 .hourHand {
-  width: 1.5%;
+  width: 1%;
   height: 25%;
   background-color: var(--hour-hand-color);
   transform: translateX(-50%);
 }
 
 .minuteHand {
-  width: 1%;
+  width: 0.7%;
   height: 35%;
   background-color: var(--minute-hand-color);
   transform: translateX(-50%);
 }
 
 .secondHand {
-  width: 0.5%;
+  width: 0.2%;
   height: 40%;
   background-color: var(--second-hand-color);
   transform: translateX(-50%);
 }
 
-.centerDot {
+.numeralContainer {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 3%;
-  height: 3%;
-  background-color: var(--second-hand-color);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.numeral {
+  font-family: 'MyAnalogClockFont', sans-serif;
+  font-size: clamp(1rem, 11vmin, 9rem);
+  color: #096df8;
+  -webkit-text-stroke: 1px #fff;
+  filter: drop-shadow(1px 0 0 #000) drop-shadow(-1px 0 0 #000) drop-shadow(0 1px 0 #000) drop-shadow(0 -1px 0 #000) drop-shadow(1px 1px 0 #000) drop-shadow(-1px 1px 0 #000) drop-shadow(1px -1px 0 #000) drop-shadow(-1px -1px 0 #000);
+  user-select: none;
+  text-align: center;
+  position: absolute;
+  bottom: 50%;
+  height: 50%;
+  transform-origin: bottom center;
+  z-index: 30;
 }
