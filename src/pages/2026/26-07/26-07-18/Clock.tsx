@@ -3,6 +3,7 @@ import akiraVideo from '@/assets/images/26_images/26-07/26-07-18/ak2.mp4';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
+import styles from './Clock.module.css';
 
 // --- CONFIGURATION ---
 const CONFIG = {

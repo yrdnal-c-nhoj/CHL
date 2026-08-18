@@ -4,6 +4,7 @@ import minImg from '@/assets/images/26_images/26-07/26-07-12/min.webp';
 import secImg from '@/assets/images/26_images/26-07/26-07-12/sec.webp';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import React, { useEffect, useMemo, useRef } from 'react';
+import styles from './Clock.module.css';
 
 export const assets = [chandelierBg, hourImg, minImg, secImg];
 

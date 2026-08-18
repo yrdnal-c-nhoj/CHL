@@ -5,6 +5,7 @@ import type { FontConfig } from '@/types/clock';
 import sys1 from '@/assets/images/25_images/25-04/25-04-07/sys1.gif';
 import sys2 from '@/assets/images/25_images/25-04/25-04-07/sys2.gif';
 import sys3 from '@/assets/images/25_images/25-04/25-04-07/sys3.gif';
+import styles from './Clock.module.css';
 
 // Component Props interface
 interface SolarSystemClockProps {

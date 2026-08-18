@@ -1,5 +1,6 @@
 /** @jsxImportSource react */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import styles from './Clock.module.css';
 
 /* =========================
    CONFIG

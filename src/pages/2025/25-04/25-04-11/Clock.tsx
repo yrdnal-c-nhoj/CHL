@@ -6,6 +6,7 @@ import hand1 from '@/assets/images/25_images/25-04/25-04-11/hand1.webp';
 import hand2 from '@/assets/images/25_images/25-04/25-04-11/hand2.webp';
 import hand3 from '@/assets/images/25_images/25-04/25-04-11/hand3.webp';
 import inst from '@/assets/images/25_images/25-04/25-04-11/inst.webp';
+import styles from './Clock.module.css';
 
 // Component Props interface
 interface BoringClockProps {

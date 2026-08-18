@@ -3,6 +3,7 @@ import carVideo from '@/assets/images/26_images/26-07/26-07-09/city.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import styles from './Clock.module.css';
 
 export const assets = [carVideo];
 
