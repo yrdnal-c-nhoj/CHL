@@ -1,3 +1,13 @@
+.container {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
 .mobyClock {
   font-family: 'MobyClockFont', cursive;
   color: #a1b4b4;
