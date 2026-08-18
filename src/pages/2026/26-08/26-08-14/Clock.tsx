@@ -42,9 +42,9 @@ const ClockComponent: React.FC = () => {
       <div
         className={styles.tiledBackgroundContainer}
         style={{
-          gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)`,
-          gridTemplateRows: `repeat(${GRID_ROWS}, 1fr)`,
-        }}
+          '--grid-cols': GRID_COLS,
+          '--grid-rows': GRID_ROWS,
+        } as React.CSSProperties}
       >
         {Array.from({ length: TILE_COUNT }).map((_, index) => (
           <video
