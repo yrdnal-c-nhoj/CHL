@@ -14,11 +14,10 @@ const thumbnailCache = new Map<string, string>();
 
 for (const path in dedicatedThumbnails) {
   const match = path.match(/(\d{2}-\d{2}-\d{2})/);
-  if (match) {
-    const date = match[1];
-    if (!thumbnailCache.has(date)) {
-      thumbnailCache.set(date, dedicatedThumbnails[path] as string);
-    }
+  if (!match) continue;
+  const date = match[1]!;
+  if (!thumbnailCache.has(date)) {
+    thumbnailCache.set(date, dedicatedThumbnails[path] as string);
   }
 }
 
@@ -30,12 +29,10 @@ const fallbackImages = import.meta.glob('/src/assets/images/**/*.{webp,gif,jpg,j
 
 for (const path in fallbackImages) {
   const match = path.match(/(\d{2}-\d{2}-\d{2})/);
-  if (match) {
-    const date = match[1];
-    // Only add if a dedicated thumbnail wasn't already found
-    if (!thumbnailCache.has(date)) {
-      thumbnailCache.set(date, fallbackImages[path] as string);
-    }
+  if (!match) continue;
+  const date = match[1]!;
+  if (!thumbnailCache.has(date)) {
+    thumbnailCache.set(date, fallbackImages[path] as string);
   }
 }
 

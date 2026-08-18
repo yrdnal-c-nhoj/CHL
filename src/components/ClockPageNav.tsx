@@ -34,7 +34,7 @@ const ClockPageNav = ({
   const [isInHotZone, setIsInHotZone] = useState(false);
   const navigate = useNavigate();
   // Using a ref for the timer to avoid unnecessary re-renders when setting the state. Browser `setTimeout` returns a number.
-  const timerRef = useRef<number | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastActivityRef = useRef<number>(0);
 
   // Initialize last activity time on mount
