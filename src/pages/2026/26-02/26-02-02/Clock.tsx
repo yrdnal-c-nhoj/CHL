@@ -1,6 +1,7 @@
 import React from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import digitalBgImage from '@/assets/images/26_images/26-02/26-02-02/boom.webp';
+import styles from './Clock.module.css';
 
 const SonicBoomClock =  () => {
   const time = useMillisecondClock();
@@ -14,38 +15,9 @@ const SonicBoomClock =  () => {
   const digits = timeString.split('');
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        backgroundColor: '#5669C8',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        overflow: 'hidden',
-      }}
-    >
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${digitalBgImage})`,
-          backgroundSize: 'contain',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'repeat',
-          filter: 'contrast(1.5) saturate(2.5)',
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}
-      />
-      <div
-        style={{
-          fontFamily: `"Syne Mono", monospace`,
-          display: 'flex',
-          alignItems: 'center',
-          zIndex: 10,
-        }}
-      >
+    <div className={styles.container}>
+      <div className={styles.backgroundLayer} />
+      <div className={styles.digitContainer}>
         {digits.map((digit: string, index: number) => {
           const reverseIndex = digits.length - index - 1;
           const fontSize = 40 + reverseIndex * -4.5;
@@ -54,13 +26,10 @@ const SonicBoomClock =  () => {
           return (
             <span
               key={index}
+              className={styles.digit}
               style={{
                 fontSize: `${fontSize}vmin`,
                 opacity,
-                color: '#D0D6F2',
-                textShadow: '0 0 15px rgba(10, 63, 240, 0.4)',
-                letterSpacing: '-0.1em',
-                display: 'inline-block',
                 marginLeft: index > 0 ? '-0.2em' : '0',
               }}
             >
@@ -69,8 +38,6 @@ const SonicBoomClock =  () => {
           );
         })}
       </div>
-
-      <style>{`body { margin: 0; background: black; }`}</style>
     </div>
   );
 };
