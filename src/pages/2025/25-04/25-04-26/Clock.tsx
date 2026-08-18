@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { useSecondClock } from '@/utils/hooks';
+import styles from './Clock.module.css';
 
 // Component Props interface
 interface SkewClockProps {
@@ -108,34 +109,7 @@ const SkewClock: React.FC<SkewClockProps> = () => {
   }, [updateClock]);
 
   return (
-    <div className="skew-wrapper" style={{ fontFamily: "'Stick', sans-serif" }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Stick&display=swap');
-
-        .skew-wrapper, .skew-wrapper * {
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-        }
-
-        .skew-wrapper {
-          background: black;
-          height: 100dvh;
-          width: 100vw;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: relative;
-        }
-
-        canvas {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100dvh;
-        }
-      `}</style>
+    <div className={styles.skewWrapper}>
       <canvas ref={canvasRef} />
     </div>
   );
