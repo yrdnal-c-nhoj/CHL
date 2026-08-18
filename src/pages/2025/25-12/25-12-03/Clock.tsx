@@ -3,19 +3,21 @@ import type { FontConfig } from '@/types/clock';
 import { formatTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
-export const fontConfigs: FontConfig[] = [
+// 1. Asset Exports
+export const assets = [dogFontUrl];
+
+const fontConfigs: FontConfig[] = [
   { fontFamily: 'CustomFont', fontUrl: dogFontUrl },
 ];
 
-const PuppyClockComponent =  () => {
+const ClockComponent: React.FC = () => {
   const [images, setImages] = useState<{ current: string; next: string }>({
     current: '',
     next: '',
   });
-  const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const transitionTimerRef = useRef<number | null>(null);
   const time = useSecondClock();
   const lastFetchSecondRef = useRef<number | null>(null);
@@ -36,20 +38,20 @@ const PuppyClockComponent =  () => {
         img.onload = () => {
           // Set the 'next' image behind the current one
           setImages((prev) => ({ ...prev, next: nextUrl }));
-
-          // 2. Trigger the fade transition
-          setIsTransitioning(true);
-
-          // 3. After CSS transition finishes (500ms), swap them permanently
+ 
           if (transitionTimerRef.current) {
             clearTimeout(transitionTimerRef.current);
           }
-
+ 
+          // After the CSS transition finishes (600ms), swap them permanently
           transitionTimerRef.current = window.setTimeout(() => {
             setImages({ current: nextUrl, next: '' });
-            setIsTransitioning(false);
           }, 600);
         };
+        img.onerror = () => {
+          // If the image fails to load, clear the 'next' state to prevent a broken UI
+          setImages((prev) => ({ ...prev, next: '' }));
+        }
       }
     } catch (error) {
       console.error('Error fetching puppy:', error);
@@ -92,7 +94,7 @@ const PuppyClockComponent =  () => {
 
       {/* BACKGROUND LAYER 2: The "New" incoming Image */}
       <div
-        className={`${styles.layer} ${styles.nextLayer} ${isTransitioning ? styles.active : ''}`}
+        className={`${styles.layer} ${styles.nextLayer} ${images.next ? styles.active : ''}`}
         style={{
           backgroundImage: `url(${images.next})`,
         }}
@@ -100,10 +102,14 @@ const PuppyClockComponent =  () => {
 
       {/* TIME OVERLAY */}
       <time dateTime={time.toISOString()} className={styles.clock}>
+        <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
         {formatTime(time, '12h')}
       </time>
     </main>
   );
 };
 
-export default PuppyClockComponent;
+const MemoizedClock = React.memo(ClockComponent);
+MemoizedClock.displayName = 'Clock_25_12_03';
+
+export default MemoizedClock;
