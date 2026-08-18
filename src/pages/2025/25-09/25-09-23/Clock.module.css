@@ -1,0 +1,75 @@
+.container {
+  height: 100dvh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, rgba(123, 120, 120, 0.8) 0%, rgba(159, 116, 10, 0.3) 80%);
+}
+
+.clockFace {
+  position: relative;
+  border-radius: 50%;
+  box-shadow:
+    inset -1.2rem -1.2rem 2.4rem rgba(0, 0, 0, 0.15),
+    inset 1.2rem 1.2rem 2.4rem rgba(220, 235, 255, 0.15),
+    0 1.5rem 3rem rgba(90, 0, 0, 0.15);
+  background: radial-gradient(circle at center, rgba(210, 260, 10, 0.15) 10%, rgba(260, 280, 60, 0.15) 90%);
+  width: 100vw;
+  height: 100vw;
+}
+
+.clockDigit {
+  height: 16vh;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  will-change: transform;
+}
+
+.hourHand {
+  opacity: 0.9;
+  width: 9vmin;
+  height: 22vmin;
+}
+
+.minuteHand {
+  opacity: 0.8;
+  width: 12vmin;
+  height: 35vmin;
+}
+
+.secondHand {
+  width: 32vmin;
+  height: 40vmin;
+}
+
+@media (min-width: 768px) {
+  .clockFace {
+    width: 90vh;
+    height: 90vh;
+  }
+
+  .clockDigit {
+    height: 12vw;
+  }
+
+  .hourHand {
+    width: 16vh;
+    height: 17vh;
+  }
+
+  .minuteHand {
+    width: 12vh;
+    height: 33vh;
+  }
+
+  .secondHand {
+    width: 32vh;
+    height: 38vh;
+  }
+}

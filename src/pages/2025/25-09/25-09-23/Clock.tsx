@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
+import styles from './Clock.module.css';
 
 // digits
 import digit1 from '@/assets/images/25_images/25-09/25-09-23/z.gif';
@@ -76,7 +77,7 @@ export default function AnalogClock() {
           key={i}
           src={src}
           alt={`digit-${i}`}
-          className="clock-digit"
+          className={styles.clockDigit}
           style={{
             position: 'absolute',
             top: `${y}%`,
@@ -120,18 +121,8 @@ export default function AnalogClock() {
   if (!ready) return null;
 
   return (
-    <div
-      style={{
-        height: '100dvh',
-        width: '100vw',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        background:
-          'radial-gradient(circle, rgba(123,120,120,0.8) 0%, rgba(159,116,10,0.3) 80%)',
-      }}
-    >
-      <div className="clock-face">
+    <div className={styles.container}>
+      <div className={styles.clockFace}>
         {digitElements}
 
         <img
@@ -140,7 +131,7 @@ export default function AnalogClock() {
           ref={hourRef}
           src={hourHandImg}
           alt="hour-hand"
-          className="hour-hand"
+          className={styles.hourHand}
         />
         <img
           decoding="async"
@@ -148,7 +139,7 @@ export default function AnalogClock() {
           ref={minuteRef}
           src={minuteHandImg}
           alt="minute-hand"
-          className="minute-hand"
+          className={styles.minuteHand}
         />
         <img
           decoding="async"
@@ -156,78 +147,9 @@ export default function AnalogClock() {
           ref={secondRef}
           src={secondHandImg}
           alt="second-hand"
-          className="second-hand"
+          className={styles.secondHand}
         />
       </div>
-
-      <style>{`
-        /* Clock Face */
-        .clock-face {
-          position: relative;
-          border-radius: 50%;
-          box-shadow: inset -1.2rem -1.2rem 2.4rem rgba(0,0,0,0.15),
-                      inset 1.2rem 1.2rem 2.4rem rgba(220,235,255,0.15),
-                      0 1.5rem 3rem rgba(90,0,0,0.15);
-          background: radial-gradient(circle at center,
-                      rgba(210,260,10,0.15) 10%,
-                      rgba(260,280,60,0.15) 90%);
-          width: 100vw;
-          height: 100vw;
-        }
-
-        /* Digits */
-        .clock-digit {
-          height:16vh; /* phones */
-        }
-        @media (min-width: 768px) {
-          .clock-face {
-            width: 90vh;
-            height: 90vh;
-          }
-          .clock-digit {
-            height: 12vw; /* laptops/desktops */
-          }
-        }
-
-        /* Hands */
-        .hour-hand, .minute-hand, .second-hand {
-          position: absolute;
-          bottom: 50%;
-          left: 50%;
-          transform-origin: bottom center;
-          will-change: transform;
-        }
-
-        .hour-hand {
-          opacity: 0.9;
-          width: 9vmin;
-          height: 22vmin;
-        }
-        .minute-hand {
-          opacity: 0.8;
-          width: 12vmin;
-          height: 35vmin;
-        }
-        .second-hand {
-          width: 32vmin;
-          height: 40vmin;
-        }
-
-        @media (min-width: 768px) {
-          .hour-hand {
-            width: 16vh;
-            height: 17vh;
-          }
-          .minute-hand {
-            width: 12vh;
-            height: 33vh;
-          }
-          .second-hand {
-            width: 32vh;
-            height: 38vh;
-          }
-        }
-      `}</style>
     </div>
   );
 }
