@@ -1,0 +1,79 @@
+/* ==========================================================================
+   Analog Clock Template Styles
+   - Uses CSS Modules for scoped styling.
+   - Uses CSS variables for easy theme customization.
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  background-color: #1a1a1a; /* Fallback color */
+
+  /* Reference the font loaded via useSuspenseFontLoader */
+  font-family: 'MyAnalogClockFont', sans-serif;
+}
+
+.clockFace {
+  --clock-size: 80vmin;
+  --clock-bg-color: rgba(255, 255, 255, 0.1);
+  --clock-border-color: #fff;
+  --clock-border-width: 4px;
+
+  position: relative;
+  width: var(--clock-size);
+  height: var(--clock-size);
+  background-color: var(--clock-bg-color);
+  border: var(--clock-border-width) solid var(--clock-border-color);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.hand {
+  --hour-hand-color: #ff6347;
+  --minute-hand-color: #87ceeb;
+  --second-hand-color: #f0e68c;
+
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom;
+  border-radius: 2px;
+}
+
+.hourHand {
+  width: 1.5%;
+  height: 25%;
+  background-color: var(--hour-hand-color);
+  transform: translateX(-50%);
+}
+
+.minuteHand {
+  width: 1%;
+  height: 35%;
+  background-color: var(--minute-hand-color);
+  transform: translateX(-50%);
+}
+
+.secondHand {
+  width: 0.5%;
+  height: 40%;
+  background-color: var(--second-hand-color);
+  transform: translateX(-50%);
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3%;
+  height: 3%;
+  background-color: var(--second-hand-color);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
