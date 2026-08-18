@@ -34,7 +34,7 @@ const DigitalClock =  () => {
     <main className={styles.container}>
       <div className={styles.blurStrip} />
       <img src={decoImage} alt="" className={styles.backgroundImage} />
-      <time dateTime={isoTime} className={styles.timeWrapper} className={styles.srOnly}>
+      <time dateTime={isoTime} className={styles.timeWrapper}>
         <div className={styles.digitalTime}>
           {digits.map((digit, index) => (
             <span key={index} className={styles.digitBox}>
