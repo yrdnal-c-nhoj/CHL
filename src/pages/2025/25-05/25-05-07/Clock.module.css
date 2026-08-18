@@ -1,0 +1,100 @@
+:root {
+  --hand-color: #0bf226;
+  --clock-gray: #1a1a1a;
+  --line-color: rgba(255, 255, 255, 0.1);
+}
+
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fullPageImage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  filter: contrast(230%) brightness(50%);
+  z-index: 1;
+}
+
+.clock {
+  position: relative;
+  z-index: 2;
+}
+
+.radar {
+  position: relative;
+  width: 85vmin;
+  aspect-ratio: 1;
+  background-color: var(--clock-gray);
+  border: 1vmin solid var(--clock-gray);
+  border-radius: 50%;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+}
+
+.radar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to bottom, transparent 49.8%, var(--line-color) 50%, transparent 50.2%),
+    linear-gradient(to right, transparent 49.8%, var(--line-color) 50%, transparent 50.2%),
+    repeating-radial-gradient(circle, transparent 0, transparent 9.8%, var(--line-color) 10%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.radarSweep {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    from -90deg at 50% 50%,
+    rgba(11, 242, 38, 0) 270deg,
+    rgba(11, 242, 38, 0.4) 360deg
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.clockFace {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  background-color: var(--hand-color);
+}
+
+.hourHand {
+  width: 1.8vmin;
+  height: 25%;
+  border-radius: 2px;
+}
+
+.minuteHand {
+  width: 1.2vmin;
+  height: 38%;
+  border-radius: 2px;
+}
