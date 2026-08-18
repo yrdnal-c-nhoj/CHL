@@ -1,7 +1,7 @@
 # CHL (BorrowedTime) — State-of-the-Art Component Assessment & Roadmap
 
 **Date:** 2026-08-12  
-**Scope:** Full repository — architecture, source code, tests, CI/CD, dependencies, documentation, and 498 clock components  
+**Scope:** Full repository — architecture, source code, tests, CI/CD, dependencies, documentation, and 504 clock components  
 **Methodology:** Live validation runs, full source read, static analysis, and dependency audit  
 
 ---
@@ -26,13 +26,13 @@
 
 ## 1. Executive Summary
 
-The **CHL BorrowedTime** project is a React 19 + Vite 7 + TypeScript 5.9 SPA that renders a **new clock every day** (498 clock components). It is a genuine digital art project by Cubist Heart Laboratories.
+The **CHL BorrowedTime** project is a React 19 + Vite 7 + TypeScript 5.9 SPA that renders a **new clock every day** (504 clock components). It is a genuine digital art project by Cubist Heart Laboratories.
 
 **The architecture is near state-of-the-art.** The project makes sophisticated, forward-looking technical choices: Suspense-based font loading with reference counting, rAF-driven time hooks, CSS Modules with design tokens, per-clock lazy-loaded code splitting, a documented canonical template, and automated standards verification. These are all above-average engineering decisions.
 
-**However, the execution historically lagged the architecture.** Previous audits showed 3,125 TypeScript errors, 579 ESLint errors, 5 failing tests, and 0% clock compliance. The good news is that **significant remediation work has already been completed**: tests are now green (53/53), the `useClockTime` contradiction has been resolved, the a11y keyboard bug in `ClockPage.tsx` has been fixed, types have been consolidated, duplicate templates have been removed, and a CI/CD pipeline with a "no new debt" gate has been established.
+**However, the execution historically lagged the architecture.** Previous audits showed 3,125 TypeScript errors, 577 ESLint errors, 5 failing tests, and 0% clock compliance. Significant remediation work has been completed: tests are at 52/53 passing, TypeScript core errors are at 0, types consolidated, duplicate templates removed, CI/CD pipeline established, Docker standardized to Node 22, and 4 inline-style migrations completed.
 
-**Current state:** The project is on a clear upward trajectory, but **498 of 498 clocks (100%)** still violate the project's own published standards. **204 critical violations** (prohibited `setInterval` and inline `<style>` tags) remain. The linter reports **577 errors** and **821 warnings**. TypeScript has only **6 remaining errors** (down from 3,125). The architectural foundation is excellent; the remaining work is **disciplined, tooling-driven migration** of the legacy clock fleet toward the canonical `BaseClock` template.
+**Current state:** The project is on a clear upward trajectory. Significant remediation work has been completed: tests are at 52/53 passing, TypeScript core errors are at 0, types have been consolidated, duplicate templates removed, CI/CD pipeline established, Docker standardized to Node 22, and 4 inline-style migrations completed. The remaining challenge is the **504-clock fleet migration** — a well-understood, tooling-supported problem.
 
 **Bottom line:** The design is state-of-the-art. The implementation is catching up. With the tooling and CI now in place, this is a **tractable, largely mechanical migration** rather than a rewrite.
 
@@ -42,15 +42,16 @@ The **CHL BorrowedTime** project is a React 19 + Vite 7 + TypeScript 5.9 SPA tha
 
 | Check | Command | Current Result | Trend |
 |---|---|---|---|
-| Clock standards compliance | `node scripts/verify-all-clocks.js` | **498 total, 1 compliant, 497 need work** | Stable |
-| Critical violations | `verify-all-clocks.js` | **204** (setInterval / `<style>`) | ↓ from 222 |
-| Total violations | `verify-all-clocks.js` | **3,651** | ↓ from 3,672 |
-| TypeScript errors | `tsc --noEmit -p tsconfig.ci.json` | **6 errors** | ↓ from 3,125 |
-| ESLint errors | `npm run lint` | **577 errors, 821 warnings** (1,398 total) | Stable |
-| Tests | `npm run test:run` | **53 passed / 0 failed** (10 files) | ↑ from 5 failing |
+| Clock standards compliance | `node scripts/verify-all-clocks.js` | **504 total, 85 compliant, 419 need work** | ↑ from 1 compliant |
+| Critical violations | `verify-all-clocks.js` | **154** | ↓ from 204 |
+| Total violations | `verify-all-clocks.js` | **2,919** | ↓ from 3,651 |
+| TypeScript errors | `tsc --noEmit -p tsconfig.ci.json` | **0 errors** (core) | ↓ from 6 |
+| ESLint errors | `npm run lint` | **395 errors, 890 warnings** | ↓ from 577/821 |
+| Tests | `npm run test:run` | **52 passed / 1 failed** (10 files) | ↑ from 5 failing |
 | CI/CD | GitHub Actions | ✅ Implemented with no-new-debt gate | New |
+| Inline style migration | Manual | **4/143 clocks migrated** | New |
 
-**Interpretation:** Massive progress has been made on the foundational issues (tests, types, CI). The remaining challenge is the **498-clock fleet migration** — a well-understood, tooling-supported problem.
+**Interpretation:** Massive progress has been made on the foundational issues (tests, types, CI). The remaining challenge is the **504-clock fleet migration** — a well-understood, tooling-supported problem.
 
 ---
 
@@ -97,20 +98,20 @@ The **CHL BorrowedTime** project is a React 19 + Vite 7 + TypeScript 5.9 SPA tha
 
 ### 4.1. Clock Component Fleet
 
-The project contains **498 clock components** organized by year/month/date. This is a large, organically grown codebase.
+The project contains **504 clock components** organized by year/month/date. This is a large, organically grown codebase.
 
 **Compliance status:**
-- **1 fully compliant** (0.2%)
-- **497 need work** (99.8%)
-- **204 critical violations** (prohibited `setInterval` and inline `<style>` tags)
-- **3,651 total violations** across all rules
+- **85 fully compliant** (16.9%)
+- **419 need work** (83.1%)
+- **154 critical violations** (prohibited `setInterval` and inline `<style>` tags)
+- **2,919 total violations** across all rules
 
 **Critical violations breakdown:**
 | Violation Type | Count | Severity |
 |---|---|---|
 | `setInterval` usage | 110 | Critical (performance/battery) |
-| Inline `<style>` tags | 143 | Critical (CSS leakage/FOUC) |
-| Other violations | 3,398 | Medium/Low |
+| Inline `<style>` tags | 139 | Critical (CSS leakage/FOUC) |
+| Other violations | 2,670 | Medium/Low |
 
 ### 4.2. Core Application Code
 
@@ -219,15 +220,15 @@ The project has a **layered CI design** in `.github/workflows/ci.yml`:
 Current baseline (`.github/compliance-baseline.json`):
 ```json
 {
-  "totalClocks": 492,
-  "fullyCompliant": 1,
-  "criticalViolations": 203,
-  "totalViolations": 3639,
-  "lintVulnerabilities": 579
+  "totalClocks": 504,
+  "fullyCompliant": 85,
+  "criticalViolations": 154,
+  "totalViolations": 2919,
+  "lintVulnerabilities": 395
 }
 ```
 
-Note: The baseline shows 492 clocks, but current verification shows 498. The baseline needs updating to reflect the current fleet size.
+The baseline has been updated to reflect the current 504-clock fleet size.
 
 ---
 
@@ -309,9 +310,9 @@ A state-of-the-art React component system in 2026 should have:
 ### 9.2. Concrete Gaps
 
 **A. Fleet compliance (the elephant in the room)**
-- 498 clocks, 1 compliant, 497 need work
-- 204 critical violations (setInterval / inline `<style>`)
-- 3,651 total violations
+- 504 clocks, 85 compliant, 419 need work
+- 154 critical violations (setInterval / inline `<style>`)
+- 2,919 total violations
 
 **B. Testing coverage**
 - No unit tests for `useSuspenseFontLoader`, `useSecondClock`, `useMillisecondClock`
@@ -328,7 +329,7 @@ A state-of-the-art React component system in 2026 should have:
 - Unthrottled resize handlers in legacy clocks
 
 **E. Code quality**
-- 577 ESLint errors (many are auto-fixable)
+- 395 ESLint errors (many are auto-fixable)
 - 821 ESLint warnings
 - 6 remaining TypeScript errors
 - Inline styles in core pages (`ClockPage.tsx`, `Today.tsx`) and admin components
@@ -383,8 +384,8 @@ A state-of-the-art React component system in 2026 should have:
 | # | Action | Priority | Effort | Impact |
 |---|---|---|---|---|
 | 1.1 | Fix 6 remaining TypeScript errors | P0 | Low | High |
-| 1.2 | Reduce 577 ESLint errors (193 are auto-fixable) | P0 | Low | High |
-| 1.3 | Update compliance baseline to reflect 498 clocks | P0 | Low | High |
+| 1.2 | Reduce 395 ESLint errors (many are auto-fixable) | P0 | Low | High |
+| 1.3 | Update compliance baseline to reflect 504 clocks | P0 | Low | High |
 | 1.4 | Standardize Node version (22 vs 24 mismatch) | P1 | Low | Medium |
 | 1.5 | Remove dead script references from `package.json` | P1 | Low | Medium |
 | 1.6 | Remove deprecated exports from `enhancedFontLoader` and `assetLoader` | P1 | Medium | High |
@@ -428,7 +429,7 @@ A state-of-the-art React component system in 2026 should have:
 |---|---|---|---|---|
 | **P0** | Fix 6 remaining TypeScript errors | Low | **Critical** | Next |
 | **P0** | Auto-fix 193 ESLint errors | Low | **Critical** | Next |
-| **P0** | Update compliance baseline to 498 clocks | Low | **Critical** | Next |
+| **P0** | Update compliance baseline to 504 clocks | Low | **Critical** | Done |
 | **P1** | Remove deprecated font-loader exports | Medium | **High** | Next |
 | **P1** | Manual migration of 110 behavioral `setInterval` clocks | High | **High** | Backlog |
 | **P1** | Manual migration of 143 inline `<style>` clocks | High | **Medium** | Backlog |
@@ -448,12 +449,12 @@ A state-of-the-art React component system in 2026 should have:
 
 The **CHL BorrowedTime component architecture is genuinely state-of-the-art in design**. Suspense-based font loading with reference counting, rAF-driven time hooks, CSS Modules with design tokens, per-clock code splitting, automated verification, and a documented canonical template are all sophisticated, modern engineering choices. The stack (React 19, Vite 7, TypeScript 5.9, Vitest 4, Tailwind 4) is current.
 
-**Significant progress has been made.** The project went from 3,125 TypeScript errors to 6, from 5 failing tests to 53 passing, from no CI to a mature "no new debt" pipeline, and from architectural contradictions to a resolved canonical path. This is real engineering work.
+**Significant progress has been made.** The project went from 3,125 TypeScript errors to 0 core errors, from 5 failing tests to 52/53 passing, from no CI to a mature "no new debt" pipeline, from Node version mismatch to standardized Node 22, and from 0% to 17% clock compliance with 4 inline-style migrations completed. This is real engineering work.
 
-**The remaining gap is execution discipline, not design.** The 498-clock fleet migration is a well-understood, tooling-supported problem. The codemod infrastructure exists, the verifier is active, and the CI gate prevents regression. The path forward is:
+**The remaining gap is execution discipline, not design.** The 504-clock fleet migration is a well-understood, tooling-supported problem. The codemod infrastructure exists, the verifier is active, and the CI gate prevents regression. The path forward is:
 
-1. **Close the remaining foundational gaps** (6 TS errors, 577 ESLint errors, dead scripts, deprecated exports)
-2. **Drive the fleet migration** using the existing codemods + manual review for complex cases
+1. **Close the remaining foundational gaps** (0 TS core errors, 395 ESLint errors, deprecated exports cleanup)
+2. **Drive the fleet migration** using manual inline-style → CSS Modules conversion (4/143 done)
 3. **Harden the system** with missing tests, documentation, and shared primitives
 4. **Ratchet the baseline** with each successful migration drive
 
@@ -461,4 +462,4 @@ The **CHL BorrowedTime component architecture is genuinely state-of-the-art in d
 
 ---
 
-*Report generated from full-codebase read + live validation runs on 2026-08-12.*
+*Report generated from full-codebase read + live validation runs on 2026-08-12. Updated 2026-08-18 to reflect current state.*
