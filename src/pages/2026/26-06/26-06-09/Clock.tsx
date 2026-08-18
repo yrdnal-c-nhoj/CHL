@@ -5,9 +5,8 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 
-import styles from './Clock.module.css';
-
 import fontUrl from '@/assets/fonts/26fonts/26-06-09.otf?url';
+import styles from './Clock.module.css';
 
 // Load all images from the corresponding folder
 const imageModules = import.meta.glob(
