@@ -57,6 +57,7 @@ const ClockComponent: React.FC = () => {
         playsInline
         aria-hidden="true"
       />
+      <div className={styles.shadowLiftOverlay} aria-hidden="true" />
       <img
         src={overlayImage}
         className={styles.imageOverlay}
