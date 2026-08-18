@@ -5,7 +5,7 @@ import React, { useMemo } from 'react';
 
 // Assets
 import fontUrl from '@/assets/fonts/26fonts/26-08-05.ttf?url';
-import backgroundVideo from '@/assets/images/26_images/26-08/26-08-05/gravity.mp4';
+import backgroundVideo from '@/assets/images/26_images/26-08/26-08-05/gravity.webm';
 import styles from './Clock.module.css';
 
 export const assets: string[] = [backgroundVideo];
