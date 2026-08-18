@@ -146,8 +146,8 @@ const ClockComponent: React.FC = () => {
 
       // Create gradient stroke
       const gradient = context.createLinearGradient(0, 0, width, 0);
-      gradient.addColorStop('0', '#AE54EF');
-      gradient.addColorStop('1', '#40CCD4');
+      gradient.addColorStop('0', '#A349E4');
+      gradient.addColorStop('1', '#49DDE2');
 
       for (const cell of voronoi.cellPolygons()) {
         drawCell(cell);
@@ -184,7 +184,7 @@ const ClockComponent: React.FC = () => {
             δὶς ἐς τὸν αὐτὸν ποταμὸν οὐκ ἂν ἐμβαίης.*
           </p>
           <p className={styles.quoteTranslation}>
-            You can't step in the same river twice.*
+            You can't step in<wbr /> the same river twice.*
           </p>
           <p className={styles.author}>-Heraclitus</p>
         </div>
