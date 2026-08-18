@@ -1,0 +1,11 @@
+:global(body) {
+  margin: 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, #b20832, #541c08);
+}
+
+.container {
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+}

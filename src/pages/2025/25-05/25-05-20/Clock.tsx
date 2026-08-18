@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import flaFont from '../../../../assets/fonts/25fonts/25-10-05-do.ttf'; // Fallback to an existing font file
+import flaFont from '../../../../assets/fonts/25fonts/25-10-05-do.ttf';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
+import styles from './Clock.module.css';
 
 const Clock =  () => {
   // Use the suspense-based font loader for consistency and reliability.
@@ -46,7 +47,7 @@ const Clock =  () => {
 
       ctx.shadowColor = 'black';
       ctx.shadowBlur = 1;
-      ctx.font = '80px "fla", Arial, sans-serif';
+      ctx.font = 'normal 80px "fla", Arial, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = textColor;
@@ -121,18 +122,9 @@ const Clock =  () => {
       renderer.render(scene, camera);
     };
 
-    document.fonts
-      .load('bold 80px "fla"')
-      .then(() => {
-        updateClockCanvas();
-        animate();
-      })
-      .catch((err) => {
-        console.warn('Font loading failed:', err);
-        updateClockCanvas();
-        animate();
-      });
-
+    // The useSuspenseFontLoader hook ensures the font is loaded before this effect runs.
+    updateClockCanvas(); // Initial draw
+    animate(); // Start animation
     const handleResize =  () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -148,17 +140,7 @@ const Clock =  () => {
   }, []);
 
   return (
-    <>
-      {/* The font is loaded via useSuspenseFontLoader, so the inline @font-face is not needed. */}
-      <style>{`
-        body {
-          margin: 0;
-          overflow: hidden;
-          background: linear-gradient(135deg, #b20832, #541c08);
-        }
-      `}</style>
-      <div ref={mountRef} style={{ width: '100vw', height: '100dvh', overflow: 'hidden' }} />
-    </>
+    <div ref={mountRef} className={styles.container} />
   );
 };
 
