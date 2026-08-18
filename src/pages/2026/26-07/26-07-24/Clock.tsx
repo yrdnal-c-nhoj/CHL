@@ -71,7 +71,7 @@ const Clock =  () => {
         </div>
       </div>
       {/* Accessible time element, hidden from view but available to screen readers */}
-      <time dateTime={time.toISOString()} className={styles.semanticTime} className={styles.srOnly}>
+      <time dateTime={time.toISOString()} className={styles.semanticTime}>
         {time.toLocaleTimeString()}
       </time>
     </main>
