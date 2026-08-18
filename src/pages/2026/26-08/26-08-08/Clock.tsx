@@ -9,7 +9,7 @@ import styles from './Clock.module.css';
 
 // Import the local font file from the assets folder using the ?url suffix.
 import fontUrl from '@/assets/fonts/26fonts/26-08-08.ttf?url';
-import { useMillisecondClock } from '@/utils/hooks';
+
 
 // 1. Asset Exports (Required for preloading pipeline)
 
