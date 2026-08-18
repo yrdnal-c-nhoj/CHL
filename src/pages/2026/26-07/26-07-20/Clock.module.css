@@ -47,6 +47,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transform: translate(-5%, 15%);
 }
 
 .digitalTime {
