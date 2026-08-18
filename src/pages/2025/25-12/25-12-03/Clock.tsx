@@ -154,7 +154,7 @@ const ClockComponent: React.FC = () => {
           fontSize: '7vh',
           color: '#f9ebe5',
           textShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
-          transform: 'translateY(12vh)',
+          transform: 'translateY(-35vh)',
           pointerEvents: 'none',
         }}
       >
