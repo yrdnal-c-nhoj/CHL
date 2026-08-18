@@ -37,8 +37,7 @@ function DigitalClock() {
   const { hours, minutes, ampm } = getTimeParts(time);
 
   return (
-    <>
-      <div className={`${styles.container} ${loaded ? styles.containerLoaded : ''}`}>
+    <div className={`${styles.container} ${loaded ? styles.containerLoaded : ''}`}>
         <img
           decoding="async"
           loading="lazy"
@@ -76,7 +75,6 @@ function DigitalClock() {
           </div>
         </div>
       </div>
-    </>
   );
 }
 
