@@ -40,10 +40,11 @@ const AnalogClockComponent: React.FC = () => {
 
   // D. Hide body scrollbars while this full-screen component is mounted.
   useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     // Restore default on unmount
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = originalOverflow;
     };
   }, []);
 
