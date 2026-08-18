@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import type { CSSProperties } from 'react';
 import bgImage from '@/assets/images/25_images/25-05/25-05-07/water.webp';
+import styles from './Clock.module.css';
 
 // Component Props interface
 interface ClockProps {
@@ -53,124 +53,22 @@ const Clock: React.FC<ClockProps> = () => {
   }, []);
 
   return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <img src={bgImage} alt="background" className="full-page-image" />
+    <div className={styles.container}>
+      <img src={bgImage} alt="background" className={styles.fullPageImage} />
 
-      <div className="clock">
-        <div id="radar">
+      <div className={styles.clock}>
+        <div id="radar" className={styles.radar}>
           {/* The trailing glow effect */}
-          <div className="radar-sweep" />
+          <div className={styles.radarSweep} />
 
-          <div className="clock-face">
-            <div className="hand hour-hand" />
-            <div className="hand minute-hand" />
+          <div className={styles.clockFace}>
+            <div className={`${styles.hand} ${styles.hourHand}`} />
+            <div className={`${styles.hand} ${styles.minuteHand}`} />
             {/* <div className="hand second-hand"></div> */}
             {/* <div className="center"></div> */}
           </div>
         </div>
       </div>
-
-      <style>{`
-        :root {
-          --hand-color: #0bf226;
-          --clock-gray: #1a1a1a; 
-          --line-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .full-page-image {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          object-fit: cover;
-          filter: contrast(230%) brightness(50%);
-          z-index: 1;
-        }
-
-        #radar {
-          position: relative;
-          width: 85vmin;
-          aspect-ratio: 1;
-          background-color: var(--clock-gray);
-          border: 1vmin solid var(--clock-gray); 
-          border-radius: 50%;
-          z-index: 3;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          overflow: hidden;
-          box-shadow: 0 0 40px rgba(0,0,0,0.8);
-        }
-
-        /* Subtle Grid Overlay */
-        #radar::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background-image:
-            linear-gradient(to bottom, transparent 49.8%, var(--line-color) 50%, transparent 50.2%),
-            linear-gradient(to right, transparent 49.8%, var(--line-color) 50%, transparent 50.2%),
-            repeating-radial-gradient(circle, transparent 0, transparent 9.8%, var(--line-color) 10%);
-          z-index: 2;
-          pointer-events: none;
-        }
-
-        /* The Sonar Trail */
-        .radar-sweep {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 100%;
-          height: 100%;
-          /* Starts transparent, ends at hand-color, sweeping backwards 90 degrees */
-          background: conic-gradient(
-            from -90deg at 50% 50%,
-            rgba(11, 242, 38, 0) 270deg,
-            rgba(11, 242, 38, 0.4) 360deg
-          );
-          z-index: 1;
-          pointer-events: none;
-        }
-
-        .clock-face {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          z-index: 10;
-        }
-
-        .hand {
-          position: absolute;
-          bottom: 50%;
-          left: 50%;
-          transform-origin: bottom center;
-          background-color: var(--hand-color);
-        }
-
-        .hour-hand {
-          width: 1.8vmin;
-          height: 25%;
-          border-radius: 2px;
-        }
-
-        .minute-hand {
-          width: 1.2vmin;
-          height: 38%;
-          border-radius: 2px;
-        }
-
-      `}</style>
     </div>
   );
 };
