@@ -1,0 +1,67 @@
+.clock {
+  /* Existing styles for the clock element */
+  font-family: 'WatchFont', 'Orbitron', sans-serif;
+  color: rgb(29, 2, 84);
+  text-shadow: rgb(238, 87, 5) 1px 1px 0px, white -1px 0px 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 10vh;
+  text-align: center;
+  z-index: 10;
+  line-height: 1;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh; /* Ensure it takes full viewport height */
+  width: 100vw; /* Ensure it takes full viewport width */
+  position: relative; /* For z-index of clock relative to background */
+  overflow: hidden; /* Hide any overflow from background layers */
+}
+
+.unit {
+  display: flex;
+  flex-direction: column;
+}
+
+.digitBox {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+}
+
+.srOnly {
+  /* Visually hide content, but keep it accessible to screen readers */
+}
+
+.divider {
+  height: 1px;
+  width: 50vw;
+  background-color: rgb(52, 1, 77);
+  margin: 0.5rem auto;
+}
+
+@media (max-width: 600px) {
+  .clock {
+    font-size: 8vh;
+  }
+
+  .digitBox {
+    /* No height override needed */
+ }
+
+  .divider {
+    width: 80vw;
+  }
+}
+
+.value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
