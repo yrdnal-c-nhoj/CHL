@@ -1,12 +1,10 @@
 import dogFontUrl from '@/assets/fonts/25fonts/25-12-03-dog.ttf?url';
 import type { FontConfig } from '@/types/clock';
-import { formatTime } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
-// 1. Asset Exports
 export const assets = [dogFontUrl];
 
 const fontConfigs: FontConfig[] = [
@@ -18,7 +16,6 @@ const ClockComponent: React.FC = () => {
     current: '',
     next: '',
   });
-  const transitionTimerRef = useRef<number | null>(null);
   const time = useSecondClock();
   const lastFetchSecondRef = useRef<number | null>(null);
 
@@ -32,79 +29,137 @@ const ClockComponent: React.FC = () => {
       if (data.status === 'success') {
         const nextUrl = data.message;
 
-        // PRELOADER: Create an off-screen image to "warm" the cache
         const img = new Image();
         img.src = nextUrl;
         img.onload = () => {
-          // Set the 'next' image behind the current one
           setImages((prev) => ({ ...prev, next: nextUrl }));
- 
-          if (transitionTimerRef.current) {
-            clearTimeout(transitionTimerRef.current);
-          }
- 
-          // After the CSS transition finishes (600ms), swap them permanently
-          transitionTimerRef.current = window.setTimeout(() => {
+
+          setTimeout(() => {
             setImages({ current: nextUrl, next: '' });
           }, 600);
         };
         img.onerror = () => {
-          // If the image fails to load, clear the 'next' state to prevent a broken UI
           setImages((prev) => ({ ...prev, next: '' }));
-        }
+        };
       }
     } catch (error) {
       console.error('Error fetching puppy:', error);
     }
   }, []);
 
-  // Image rotation logic
   useEffect(() => {
     const currentSecond = time.getSeconds();
 
-    // Initial fetch on component mount
     if (lastFetchSecondRef.current === null) {
       getNewPuppy();
       lastFetchSecondRef.current = currentSecond;
       return;
     }
 
-    // Fetch every 5 seconds, avoiding re-fetch in the same second
     if (currentSecond % 5 === 0 && lastFetchSecondRef.current !== currentSecond) {
       lastFetchSecondRef.current = currentSecond;
       getNewPuppy();
     }
-
-    return () => {
-      if (transitionTimerRef.current) {
-        clearTimeout(transitionTimerRef.current);
-      }
-    };
   }, [time, getNewPuppy]);
+
+  const containerStyle: React.CSSProperties = {
+    position: 'relative',
+    width: '100vw',
+    height: '100vh',
+    backgroundColor: '#1a1a1a',
+    overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
+
+  const layerStyle: React.CSSProperties = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    transition: 'opacity 0.6s ease-in-out',
+  };
+
+  const currentLayerStyle: React.CSSProperties = {
+    ...layerStyle,
+    backgroundImage: `url(${images.current})`,
+    opacity: 1,
+    zIndex: 1,
+  };
+
+  const nextLayerStyle: React.CSSProperties = {
+    ...layerStyle,
+    backgroundImage: `url(${images.next})`,
+    opacity: images.next ? 1 : 0,
+    zIndex: 2,
+  };
+
+  const clockStyle: React.CSSProperties = {
+    position: 'relative',
+    zIndex: 10,
+    fontFamily: 'CustomFont, sans-serif',
+    fontSize: '7vh',
+    color: '#f9ebe5',
+    textShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
+    transform: 'translateY(12vh)',
+    pointerEvents: 'none',
+  };
+
+  const srOnlyStyle: React.CSSProperties = {
+    border: 0,
+    clip: 'rect(0 0 0 0)',
+    height: '1px',
+    margin: '-1px',
+    overflow: 'hidden',
+    padding: 0,
+    position: 'absolute',
+    width: '1px',
+    whiteSpace: 'nowrap',
+    wordWrap: 'normal',
+  };
+
+  const hours24 = time.getHours();
+  const minutes = time.getMinutes();
+  const hours12 = hours24 % 12 || 12;
+  const ampm = hours24 >= 12 ? 'PM' : 'AM';
+  const timeString = `${hours12.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${ampm}`;
 
   return (
     <main className={styles.container}>
-      {/* BACKGROUND LAYER 1: The "Old" or Static Image */}
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
       <div
-        className={`${styles.layer} ${styles.currentLayer}`}
-        style={{
-          backgroundImage: `url(${images.current})`,
-        }}
+        className={styles.layer}
+        style={{ backgroundImage: `url(${images.current})` }}
       />
-
-      {/* BACKGROUND LAYER 2: The "New" incoming Image */}
       <div
-        className={`${styles.layer} ${styles.nextLayer} ${images.next ? styles.active : ''}`}
+        className={styles.layer}
         style={{
           backgroundImage: `url(${images.next})`,
+          opacity: images.next ? 1 : 0,
         }}
       />
 
       {/* TIME OVERLAY */}
-      <time dateTime={time.toISOString()} className={styles.clock}>
-        <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
-        {formatTime(time, '12h')}
-      </time>
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          fontFamily: 'CustomFont, sans-serif',
+          fontSize: '7vh',
+          color: '#f9ebe5',
+          textShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
+          transform: 'translateY(12vh)',
+          pointerEvents: 'none',
+        }}
+      >
+        {timeString}
+      </div>
     </main>
   );
 };
