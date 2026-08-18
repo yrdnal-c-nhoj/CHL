@@ -78,6 +78,3 @@ const SpinningCoinClock: React.FC<SpinningCoinClockProps> = () => {
 const MemoizedSpinningCoinClock = React.memo(SpinningCoinClock);
 MemoizedSpinningCoinClock.displayName = 'Clock_25_04_27';
 export default MemoizedSpinningCoinClock;
-const MemoizedSpinningCoinClock = React.memo(SpinningCoinClock);
-MemoizedSpinningCoinClock.displayName = 'Clock_25_04_27';
-export default MemoizedSpinningCoinClock;
