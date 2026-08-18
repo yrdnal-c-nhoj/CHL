@@ -8,7 +8,7 @@ import fontUrl from '@/assets/fonts/26fonts/26-08-05.ttf?url';
 import backgroundVideo from '@/assets/images/26_images/26-08/26-08-05/gravity.webm';
 import styles from './Clock.module.css';
 
-export const assets: string[] = [backgroundVideo];
+export const assets: string[] = [backgroundVideo, fontUrl];
 
 const fontConfigs: FontConfig[] = [
   { fontFamily: 'ClockFont_26_08_05', fontUrl },
@@ -16,118 +16,30 @@ const fontConfigs: FontConfig[] = [
 
 // --- GRID & SPACING CONFIGURATION ---
 const CLOCKS_PER_SET = 10;
-// 20vh per clock leaves 20% of viewport height per slot.
-const SPACING_VH = 20; 
-const TOTAL_TRAVEL_VH = CLOCKS_PER_SET * SPACING_VH;
-
-const KEYFRAMES_STYLE = `
-@keyframes floatUp {
-  0% {
-    transform: translate(-50%, 0);
-  }
-  100% {
-    transform: translate(-50%, -${TOTAL_TRAVEL_VH}vh);
-  }
-}
-`;
-
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100vw',
-    height: '100dvh',
-    backgroundColor: '#000',
-    color: '#000',
-    overflow: 'hidden',
-    position: 'relative',
-  },
-  videoWrapper: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    filter: 'brightness(1.1) saturate(1.3) contrast(1.4)', // Adjusted for better visibility of the clocks
-    zIndex: 1,
-  },
-  backgroundVideo: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'contain',
-  },
-  clockContainer: {
-    position: 'absolute',
-    top: 0, // Changed from '100vh' to 0 so clocks pre-fill the viewport immediately
-    left: '50%',
-    width: '100%',
-    zIndex: 2,
-    animation: 'floatUp 25s linear infinite',
-    willChange: 'transform',
-  },
-  clockFace: {
-    position: 'absolute',
-    top: 0,
-    left: '50%',
-    transform: 'translateX(-50%)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: "'ClockFont_26_08_05', sans-serif",
-    fontSize: 'min(20vw, 13vh)',
-    lineHeight: 1,
-    whiteSpace: 'nowrap',
-    textShadow: '18px 0px 0px #f97316, -18px 0px 0px #7799E1',
-    height: `${SPACING_VH}vh`,
-  },
-  digitBox: {
-    display: 'inline-block',
-    width: '0.55em',
-    textAlign: 'center',
-  },
-  separator: {
-    display: 'inline-block',
-    width: '0.25em',
-    textAlign: 'center',
-    transform: 'scale(1.2)',
-    margin: '0 -0.02em',
-  },
-  srOnly: {
-    position: 'absolute',
-    width: '1px',
-    height: '1px',
-    padding: 0,
-    margin: '-1px',
-    overflow: 'hidden',
-    clip: 'rect(0, 0, 0, 0)',
-    whiteSpace: 'nowrap',
-    borderWidth: 0,
-  },
-};
+const SPACING_VH = 20;
 
 const DisplayDigits: React.FC<{ hours: string; minutes: string; seconds: string; milliseconds: string }> = React.memo(
   ({ hours, minutes, seconds, milliseconds }) => (
     <>
-      <span style={styles.digitBox}>{hours[0]}</span>
-      <span style={styles.digitBox}>{hours[1]}</span>
-      <span style={styles.separator}>:</span>
-      <span style={styles.digitBox}>{minutes[0]}</span>
-      <span style={styles.digitBox}>{minutes[1]}</span>
-      <span style={styles.separator}>:</span>
-      <span style={styles.digitBox}>{seconds[0]}</span>
-      <span style={styles.digitBox}>{seconds[1]}</span>
-      <span style={styles.separator}>:</span>
-      <span style={styles.digitBox}>{milliseconds[0]}</span>
-      <span style={styles.digitBox}>{milliseconds[1]}</span>
+      <span className={styles.digitBox}>{hours[0]}</span>
+      <span className={styles.digitBox}>{hours[1]}</span>
+      <span className={styles.separator}>:</span>
+      <span className={styles.digitBox}>{minutes[0]}</span>
+      <span className={styles.digitBox}>{minutes[1]}</span>
+      <span className={styles.separator}>:</span>
+      <span className={styles.digitBox}>{seconds[0]}</span>
+      <span className={styles.digitBox}>{seconds[1]}</span>
+      <span className={styles.separator}>:</span>
+      <span className={styles.digitBox}>{milliseconds[0]}</span>
+      <span className={styles.digitBox}>{milliseconds[1]}</span>
     </>
   ),
 );
 DisplayDigits.displayName = 'DisplayDigits';
 
-const ClockComponent =  () => {
+const ClockComponent = () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock(16); // ~60fps for smooth updates
+  const time = useMillisecondClock(16);
 
   const clocks = useMemo(
     () =>
@@ -153,13 +65,11 @@ const ClockComponent =  () => {
   }, [time]);
 
   return (
-    <main style={styles.container}>
-      <style>{KEYFRAMES_STYLE}</style>
-
-      <div style={styles.videoWrapper}>
+    <main className={styles.container}>
+      <div className={styles.videoWrapper}>
         <video
           src={backgroundVideo}
-          style={styles.backgroundVideo}
+          className={styles.backgroundVideo}
           autoPlay
           loop
           muted
@@ -167,13 +77,13 @@ const ClockComponent =  () => {
         />
       </div>
 
-      <time dateTime={isoTime} style={styles.srOnly}>
+      <time dateTime={isoTime} className={styles.srOnly}>
         {isoTime}
       </time>
 
-      <div style={styles.clockContainer}>
+      <div className={styles.clockContainer}>
         {clocks.map(({ id, topOffset }) => (
-          <div key={id} style={{ ...styles.clockFace, top: topOffset }}>
+          <div key={id} className={styles.clockFace} style={{ top: topOffset }}>
             <DisplayDigits hours={hours} minutes={minutes} seconds={seconds} milliseconds={milliseconds} />
           </div>
         ))}
