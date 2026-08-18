@@ -1,0 +1,63 @@
+.container {
+  height: 100dvh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3efef;
+  transition: filter 100ms linear;
+}
+
+.backgroundGrid {
+  height: 200dvh;
+  width: 200vw;
+  background-image: url('@/assets/images/25_images/25-09/25-09-15/plaid.jpg');
+  background-repeat: repeat;
+  background-size: 15rem 15rem;
+  transform: rotate(-17deg);
+  transform-origin: center;
+  position: relative;
+}
+
+.tartanGrid {
+  font-family: 'PlaidFont', monospace;
+  font-size: 2.6rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+  translate: -50% -50%;
+}
+
+.tartanGrid div {
+  white-space: nowrap;
+  line-height: 1.05;
+}
+
+.tartanGrid span {
+  display: inline-block;
+  margin-right: 0.1rem;
+  opacity: 0.65;
+}
+
+.horizontal {
+  transform: rotate(0deg);
+}
+
+.vertical {
+  transform: rotate(90deg);
+}
+
+/* --- Accessibility --- */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
