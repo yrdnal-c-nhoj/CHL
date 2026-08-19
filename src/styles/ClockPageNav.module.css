@@ -91,8 +91,8 @@
 
 .footerCenter {
   display: grid;
-  /* Row 1 (Date/Number): 1.2rem | Row 2 (Title): 1.3rem | Row 3 (Tags Zone): min-height 2.4rem, expandable */
-  grid-template-rows: 1.2rem 1.3rem minmax(2.4rem, auto);
+  /* Row 1 (Date/Number): 1.2rem | Row 2 (Title): 1.3rem min, expands when wrapped | Row 3 (Tags Zone): min-height 2.4rem, expandable */
+  grid-template-rows: 1.2rem minmax(1.3rem, auto) minmax(2.4rem, auto);
   align-items: center;
   width: 100%;
   box-sizing: border-box;
@@ -108,7 +108,6 @@
 
 /* Reset all element margins to 0 to prevent text from shifting or breaking rules */
 .footerDate,
-.footerTitle,
 .footerNumber {
   margin: 0;
   padding: 0;
@@ -132,6 +131,12 @@
 
 /* Row 2: Title */
 .footerTitle {
+  margin: 0;
+  padding: 0;
+  line-height: 1.1;
+  white-space: normal; /* Allow the title to wrap onto multiple lines */
+  overflow-wrap: break-word;
+  word-break: break-word;
   font-size: 1.2rem;
   letter-spacing: 0.04rem;
   text-align: center;
