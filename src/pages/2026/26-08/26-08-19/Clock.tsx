@@ -13,8 +13,9 @@ import styles from './Clock.module.css';
 // ====================================================================================
 import fontUrl from '@/assets/fonts/26fonts/26-07-10.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-08/26-08-19/map3.webp';
+import wallImage from '@/assets/images/26_images/26-08/26-08-19/wall.webp';
 
-export const assets = [backgroundImage, fontUrl];
+export const assets = [backgroundImage, wallImage, fontUrl];
 
 // ====================================================================================
 // 2. FONT CONFIGURATION (Required for custom fonts)
@@ -87,7 +88,11 @@ const AnalogClockComponent: React.FC = () => {
     // E. Root element must be `<main>`.
     <main
       className={styles.container}
-      style={{ backgroundImage: `url(${backgroundImage})` }}
+      style={{
+        backgroundImage: `url(${backgroundImage}), url(${wallImage})`,
+        backgroundRepeat: 'no-repeat, repeat', // Do not repeat the map, but repeat the wall texture
+        backgroundSize: 'contain, auto', // Contain the map, use original size for the wall texture
+      }}
     >
       {/* F. Use the shared <SRTime> component for accessibility. */}
       <SRTime time={time} />
