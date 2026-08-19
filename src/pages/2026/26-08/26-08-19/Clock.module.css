@@ -126,33 +126,3 @@
   transform-origin: bottom center;
   z-index: 30;
 }
-
-.digitalClock {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 12dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'MyAnalogClockFont', sans-serif;
-  font-size: clamp(1.5rem, 6vmin, 5rem);
-  color: #fff;
-  letter-spacing: 0.15em;
-  z-index: 40;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-}
-
-.digit {
-  display: inline-block;
-  width: 1.3ch;
-  text-align: center;
-  line-height: 1;
-}
-
-.colon {
-  display: inline-block;
-  width: 0.8ch;
-  text-align: center;
-  line-height: 1;
-}
