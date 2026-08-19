@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { useSecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 // digits
@@ -21,12 +21,15 @@ import hourHandImg from '@/assets/images/25_images/25-09/25-09-23/steth.png';
 import minuteHandImg from '@/assets/images/25_images/25-09/25-09-23/sss.webp';
 import secondHandImg from '@/assets/images/25_images/25-09/25-09-23/ste.gif';
 
-export default function AnalogClock() {
+export const assets = [];
+
+function AnalogClock() {
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
   const animationFrameRef = useRef(null);
   const [ready, setReady] = useState<boolean>(false);
+  const time = useSecondClock();
 
   // Digits array
   const digits = useMemo(
@@ -121,7 +124,9 @@ export default function AnalogClock() {
   if (!ready) return null;
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <div className={styles.clockFace}>
         {digitElements}
 
@@ -150,6 +155,10 @@ export default function AnalogClock() {
           className={styles.secondHand}
         />
       </div>
-    </div>
+    </main>
   );
 }
+
+const MemoizedAnalogClock = React.memo(AnalogClock);
+MemoizedAnalogClock.displayName = 'Clock_25_09_23';
+export default MemoizedAnalogClock;
