@@ -2,13 +2,12 @@ import clockVideo from '@/assets/images/26_images/26-08/26-08-04/buster.mp4';
 import { useClockAngles } from '@/hooks/useClockAngles';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks/useSmoothClock';
+import { useMillisecondClock } from '@/utils/hooks';
 import React, { memo } from 'react';
 import styles from './Clock.module.css';
 
 // Import the font with the corresponding date from the assets folder
 import fontUrl from '@/assets/fonts/26fonts/26-08-04.ttf?url';
-import { useMillisecondClock } from '@/utils/hooks';
 
 // 1. Asset Exports (Required for preloading pipeline)
 
