@@ -87,12 +87,11 @@ const AnalogClockComponent: React.FC = () => {
   return (
     // E. Root element must be `<main>`.
     <main
-      className={styles.container}
       style={{
-        backgroundImage: `url(${backgroundImage}), url(${wallImage})`,
-        backgroundRepeat: 'no-repeat, repeat', // Do not repeat the map, but repeat the wall texture
-        backgroundSize: 'contain, auto', // Contain the map, use original size for the wall texture
-      }}
+        '--background-image-map': `url(${backgroundImage})`,
+        '--background-image-wall': `url(${wallImage})`,
+      } as React.CSSProperties}
+      className={styles.container}
     >
       {/* F. Use the shared <SRTime> component for accessibility. */}
       <SRTime time={time} />
