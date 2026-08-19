@@ -1,0 +1,72 @@
+.container {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  overflow: hidden;
+  font-family: 'ClockFont_26_08_20', 'Courier New', Courier, monospace;
+}
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;  filter: brightness(0.9) contrast(1.5);
+  object-fit: cover;
+  z-index: 0;
+}
+
+.digitalClock {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: clamp(3rem, 10vw, 8rem);
+  font-weight: 700;
+  color: #b0b3b2;
+  text-shadow: 0 0 10px rgba(175, 208, 7, 0.5), 0 0 20px rgba(0, 255, 204, 0.3);
+  letter-spacing: 0.1em;
+  z-index: 1;
+}
+
+.digit {
+  display: inline-block;
+  /* Give each digit a fixed-width box to prevent layout shifts */
+  width: 1.2ch;
+  text-align: center;
+}
+
+
+
+
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+  padding: 0;
+  margin: -1px;
+}
+
+@media (max-width: 767px) {
+  .container {
+    /* Set a gray background for mobile */
+    /* A two-tone background with gray on top and yellow on the bottom */
+    /* A sharp two-tone background with gray on top and yellow on the bottom */
+    background: linear-gradient(to bottom, rgb(142, 141, 141) 50%, #be9245 50%);
+  }
+
+  .video {
+    /* Make the video smaller and not touch the sides */
+    /* Zoom in on the video on mobile */
+    object-fit: contain;
+    transform: scale(1.8);
+  }
+}
