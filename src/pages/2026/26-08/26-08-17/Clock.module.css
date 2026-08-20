@@ -36,7 +36,7 @@
 
 .quoteBlock {
   /* A max-width prevents the text from becoming too wide on large screens */
-  max-width: 80vw;
+  max-width: 90vw;
 }
 
 .quoteOriginal {
@@ -78,6 +78,6 @@
   bottom: 20px;
   right: 30px;
   font-family: 'Cardo', serif;
-  font-size: 2vh;
+  font-size: 3vh;
   z-index: 10;
 }
