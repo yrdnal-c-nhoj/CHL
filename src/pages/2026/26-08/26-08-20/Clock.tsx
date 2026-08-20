@@ -30,15 +30,18 @@ const ClockComponent: React.FC = () => {
 
   return (
     <main className={styles.container}>
-      <video
-        className={styles.video}
-        src={tornadoVideo}
-        autoPlay
-        loop
-        muted
-        playsInline
-        aria-hidden="true"
-      />
+      <div className={styles.videoWrapper}>
+        <video
+          className={styles.video}
+          src={tornadoVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
+      </div>
 
       <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
