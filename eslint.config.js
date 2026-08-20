@@ -316,9 +316,10 @@ export default tseslint.config(
     },
   },
 
-  // Disable style-related warnings for all files
+  // Suppress style-related rules for legacy clock fleet (2025/2026)
+  // Core pages and components are checked by the rules above.
   {
-    files: ['**/*.{js,mjs,cjs,jsx,ts,tsx}'],
+    files: ['src/pages/2025/**/*.{js,jsx,ts,tsx}', 'src/pages/2026/**/*.{js,jsx,ts,tsx}'],
     rules: {
       'react/jsx-no-styles': 'off',
       'react/no-inline-styles': 'off',
@@ -335,7 +336,14 @@ export default tseslint.config(
       'react/jsx-max-props-per-line': 'off',
       'react/jsx-newline': 'off',
       'react/jsx-wrap-multilines': 'off',
-      // Disable any CSS-in-JS or style warnings
+      'no-inline-styles': 'off',
+      'react/forbid-component-props': ['off', { forbid: ['style'] }],
+      'react/jsx-props-no-multi-spaces': 'off',
+      'react/jsx-equals-spacing': 'off',
+      'react/jsx-tag-spacing': 'off',
+      'react/jsx-curly-spacing': 'off',
+      'react/jsx-space-before-closing': 'off',
+      'react/jsx-closing-tag-location': 'off',
       'css/no-empty-blocks': 'off',
       'css/no-duplicate-selectors': 'off',
       'css/no-invalid-properties': 'off',
@@ -356,15 +364,6 @@ export default tseslint.config(
       'stylelint-unit-no-unknown': 'off',
       'stylelint-value-no-unknown': 'off',
       'stylelint-at-rule-no-unknown': 'off',
-      // General style suppression
-      'no-inline-styles': 'off',
-      'react/forbid-component-props': ['off', { forbid: ['style'] }],
-      'react/jsx-props-no-multi-spaces': 'off',
-      'react/jsx-equals-spacing': 'off',
-      'react/jsx-tag-spacing': 'off',
-      'react/jsx-curly-spacing': 'off',
-      'react/jsx-space-before-closing': 'off',
-      'react/jsx-closing-tag-location': 'off',
     },
   },
 
