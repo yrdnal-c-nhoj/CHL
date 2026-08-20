@@ -1,0 +1,67 @@
+.page {
+  min-height: 100dvh;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px;
+  background: #f7f7f7;
+}
+
+.card {
+  width: min(980px, 100%);
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.04);
+}
+
+.title {
+  font-size: 1.4rem;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #222;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+}
+
+.listItem {
+  margin: 15px 0;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.listLink {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  display: block;
+}
+
+.listMeta {
+  font-size: 0.8rem;
+  color: #888;
+  font-family: monospace;
+  display: block;
+  margin-top: 4px;
+}
+
+.backMargin {
+  margin-top: 30px;
+}
+
+.backLink {
+  color: #666;
+  font-size: 0.9rem;
+}

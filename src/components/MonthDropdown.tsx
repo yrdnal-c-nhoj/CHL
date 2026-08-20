@@ -82,27 +82,14 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
 
   return (
     <div ref={containerRef} className={styles.monthDropdownContainer}>
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: '50%',
-          width: isHovered ? '100vw' : '0',
-          height: '100%',
-          backgroundColor: '#e5e7eb',
-          transform: 'translateX(-50%)',
-          transition: 'width 0.2s ease',
-          zIndex: 0,
-          pointerEvents: 'none',
-        }}
-      />
+      <div className={styles.hoverBackground} />
       <button
         onClick={toggleExpanded}
         className={`${styles.dropdownButton} ${isHovered ? styles.dropdownButtonHovered : ''} ${isExpanded ? styles.dropdownButtonExpanded : ''}`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <span style={{ textAlign: 'center' }}>{monthName}</span>
+        <span className={styles.monthName}>{monthName}</span>
       
       </button>
 
@@ -131,23 +118,20 @@ const MonthDropdown: React.FC<MonthDropdownProps> = ({
               {sortedItems.map((item) => (
                 <div
                   key={item.date}
-                  className={homeStyles.monthItem}
+                  className={`${homeStyles.monthItem} ${styles.monthItemClickable}`}
                   onClick={() => navigate(`/${item.date}`)}
                   role="button"
                   tabIndex={0}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') navigate(`/${item.date}`);
                   }}
-                  style={{ cursor: 'pointer', minWidth: 0 }}
                 >
                   {/* Image at top */}
                   <div className={homeStyles.monthItemImage}>
                     <Thumbnail
                       date={item.date}
                       title={item.title || ''}
-                      style={{
-                        opacity: 1,
-                      }}
+                      className={styles.thumbnailOpacity}
                     />
                   </div>
 

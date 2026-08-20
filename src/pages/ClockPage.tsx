@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import ClockPageNav from '@/components/ClockPageNav';
 import { useDataContext } from '@/context/DataContext';
 import { useClockPage } from '@/hooks/useClockPage';
+import styles from './ClockPage.module.css';
 
 /**
  * Dynamic clock route page.
-
  *
  * Expects the route param:
  *   /:date  where date is typically YY-MM-DD
@@ -21,21 +21,6 @@ export default function ClockPage() {
   const navigate = useNavigate();
 
   const { items = [] } = useDataContext();
-
-  // Inject a global style to remove the default body margin, fixing whitespace issues.
-  useEffect(() => {
-    const styleId = 'global-body-margin-reset';
-    if (document.getElementById(styleId)) return; // Avoid adding duplicate styles
-
-    const style = document.createElement('style');
-    style.id = styleId;
-    style.innerHTML = `
-      body {
-        margin: 0;
-      }
-    `;
-    document.head.appendChild(style);
-  }, []);
 
   const currentItem = React.useMemo(() => {
     if (!date) return null;
@@ -91,41 +76,17 @@ export default function ClockPage() {
       role="button"
       tabIndex={0}
       aria-label="Return to home"
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100%',
-        minHeight: '100dvh',
-      }}
+      className={styles.container}
     >
       {/* Loading overlay */}
       {overlayVisible && !isReady && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            backgroundColor: '#000',
-            color: '#fff',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 9999,
-            fontFamily: 'monospace',
-          }}
-        >
+        <div className={styles.loadingOverlay}>
           Loading...
         </div>
       )}
 
       {error ? (
-        <div
-          style={{
-            padding: '2rem',
-            fontFamily: 'monospace',
-            color: '#fff',
-            background: '#000',
-          }}
-        >
+        <div className={styles.errorBox}>
           Error: {error}
         </div>
       ) : ClockComponent ? (
