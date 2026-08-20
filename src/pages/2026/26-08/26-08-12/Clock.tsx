@@ -5,7 +5,7 @@ import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
 // 1. Asset Exports
-import tileVideo from '@/assets/images/26_images/26-08/26-08-12/tile.mp4';
+import tileVideo from '@/assets/images/26_images/26-08/26-08-12/tile.webm';
 // Import the font with the corresponding date from the assets folder
 import fontUrl from '@/assets/fonts/26fonts/26-08-12.ttf?url';
 
