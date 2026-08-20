@@ -1,20 +1,19 @@
-import dodecahedronFontFile from '@/assets/fonts/25fonts/25-08-27-root.ttf'; // fixed path for existing asset
+import dodecahedronFontFile from '@/assets/fonts/25fonts/25-08-27-root.ttf';
 import backgroundImage from '@/assets/images/25_images/25-08/25-08-27/rootsu.gif';
 import { useSuspenseFontLoader, ClockLoadingFallback } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, memo } from 'react';
+import styles from './Clock.module.css';
 
-// Asset exports for preloading pipeline
 export const assets = [backgroundImage, dodecahedronFontFile];
 
-export default function TwelfthRootsOfUnityWithClock() {
+const TwelfthRootsOfUnityWithClock = memo(function TwelfthRootsOfUnityWithClock() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const clockRef = useRef<HTMLCanvasElement>(null);
-  const fontRef = useRef<string>('sans-serif'); // fallback
+  const fontRef = useRef<string>('sans-serif');
   const time = useMillisecondClock();
   const timeRef = useRef(time);
 
-  // Keep time ref updated for the animation loop
   useEffect(() => {
     timeRef.current = time;
   }, [time]);
@@ -23,10 +22,7 @@ export default function TwelfthRootsOfUnityWithClock() {
     {
       fontFamily: 'DodecahedronFont',
       fontUrl: dodecahedronFontFile,
-      options: {
-        weight: 'normal',
-        style: 'normal'
-      }
+      options: { weight: 'normal', style: 'normal' }
     }
   ], []);
 
@@ -35,14 +31,10 @@ export default function TwelfthRootsOfUnityWithClock() {
   useEffect(() => {
     const canvas = canvasRef.current;
     const clock = clockRef.current;
-
-    // Safely exit if canvas elements are not yet available
     if (!canvas || !clock) return;
 
     const ctx = canvas.getContext('2d');
     const cctx = clock.getContext('2d');
-
-    // Safely exit if contexts cannot be obtained
     if (!ctx || !cctx) return;
 
     const n = 12;
@@ -52,22 +44,17 @@ export default function TwelfthRootsOfUnityWithClock() {
     const fadeSpeed = 0.01;
     let frameCount = 0;
 
-    // Ensure font name is ready for canvas
     fontRef.current = 'DodecahedronFont';
 
     const resize = () => {
-      const containerSize =
-        Math.min(window.innerWidth, window.innerHeight) * 0.8;
+      const containerSize = Math.min(window.innerWidth, window.innerHeight) * 0.8;
       const dpr = window.devicePixelRatio || 1;
-
       canvas.width = containerSize * dpr;
       canvas.height = containerSize * dpr;
       clock.width = containerSize * dpr;
       clock.height = containerSize * dpr;
-
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       cctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
       canvas.style.width = `${containerSize}px`;
       canvas.style.height = `${containerSize}px`;
       clock.style.width = `${containerSize}px`;
@@ -165,10 +152,7 @@ export default function TwelfthRootsOfUnityWithClock() {
       const drawHand = (angle: number, length: number, color: string, width: number) => {
         cctx.beginPath();
         cctx.moveTo(centerX, centerY);
-        cctx.lineTo(
-          centerX + length * Math.cos(angle),
-          centerY + length * Math.sin(angle),
-        );
+        cctx.lineTo(centerX + length * Math.cos(angle), centerY + length * Math.sin(angle));
         cctx.strokeStyle = color;
         cctx.lineWidth = width;
         cctx.stroke();
@@ -186,74 +170,25 @@ export default function TwelfthRootsOfUnityWithClock() {
       animationId = requestAnimationFrame(animate);
     };
 
-    // Start the animation
     animate();
 
     return () => {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationId);
     };
-  }, []); // Only run setup once
+  }, []);
 
   return (
-    <main
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        background: 'radial-gradient(circle, #F9C7B4 0%, #D8CFCF 90%)',
-      }}
-    >
-      <time dateTime={time.toISOString()} style={{ display: 'none' }}>{time.toLocaleTimeString()}</time>
-      <div
-        style={{
-          position: 'relative',
-          width: '80vmin',
-          height: '80vmin',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <img
-          decoding="async"
-          loading="lazy"
-          src={backgroundImage}
-          alt="Background"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '95%',
-            objectFit: 'contain',
-            zIndex: 2,
-          }}
-        />
-        <canvas
-          ref={canvasRef}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            zIndex: 1,
-          }}
-        />
-        <canvas
-          ref={clockRef}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            pointerEvents: 'none',
-            zIndex: 3,
-          }}
-        />
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+      <div className={styles.canvasWrapper}>
+        <img src={backgroundImage} alt="Background" className={styles.backgroundImage} />
+        <canvas ref={canvasRef} className={styles.canvas} />
+        <canvas ref={clockRef} className={styles.clockCanvas} />
       </div>
     </main>
   );
-}
+});
+
+TwelfthRootsOfUnityWithClock.displayName = 'Clock_25_08_27';
+export default TwelfthRootsOfUnityWithClock;

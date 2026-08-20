@@ -1,0 +1,33 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  background-color: #000;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  background-image: url('/src/assets/images/26_images/26-07/26-07-03/kitty.webp');
+  background-size: cover;
+  filter: contrast(0.9) brightness(1.1);
+  background-position: center;
+}
+
+.digitalClock {
+  font-family: 'ClockFont_26_06_19', monospace;
+  font-size: 8vh;
+  color: #B4D0F1BF;
+  font-variant-numeric: tabular-nums;
+  position: absolute;
+  z-index: 2;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

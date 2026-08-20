@@ -1,7 +1,7 @@
 import leverFont from '@/assets/fonts/26fonts/26-04-27-lever.ttf';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, memo } from 'react';
 import styles from './Clock.module.css';
 
 // Dynamically import all images from the assets folder
@@ -17,7 +17,7 @@ const IMAGES = Object.values(imageModules).filter(
   (src): src is string => typeof src === 'string' && !src.includes('.DS_Store'),
 );
 
-export const assets = IMAGES;
+export const assets = [...IMAGES];
 
 const getRandomPosition = () => ({
   top: `${Math.random() * 90}%`,
@@ -104,6 +104,8 @@ const Clock =  () => {
 
   return (
     <main className={styles.container}>
+      <time dateTime={iso} className={styles.srOnly}>{hours}:{minutes}:00</time>
+
       {/* Background Images Layer */}
       {displayedImages.map((img) => (
         <img
@@ -125,4 +127,6 @@ const Clock =  () => {
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_04_27';
+export default MemoizedClock;

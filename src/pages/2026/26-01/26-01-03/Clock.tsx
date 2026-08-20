@@ -59,17 +59,18 @@ const Clock =  () => {
   });
 
   return (
-    <main
-      className={`${styles.container} ${isShaking ? styles.cameraShake : ''}`}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: '#000',
-        overflow: 'hidden',
-      }}
-    >
+    <main className={styles.container}>
       <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
 
+      <div
+        className={isShaking ? styles.cameraShake : ''}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          background: '#000',
+          overflow: 'hidden',
+        }}
+      >
       <div
         style={{
           position: 'absolute',
@@ -148,6 +149,7 @@ const Clock =  () => {
             );
           })}
         </div>
+      </div>
       </div>
     </main>
   );

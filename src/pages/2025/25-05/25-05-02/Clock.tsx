@@ -17,6 +17,8 @@ import minuteHandImage from '@/assets/images/25_images/25-05/25-05-02/giphy1-ezg
 import secondHandImage from '@/assets/images/25_images/25-05/25-05-02/giphy1-ezgif.com-rotate(1).gif?url';
 import fontFile from '@/assets/fonts/25fonts/25-05-02-scorp.ttf?url';
 
+export const assets = [scorpImage, hourHandImage, minuteHandImage, secondHandImage, fontFile];
+
 // Component Props interface
 interface ClockProps {
   // No props required for this component
@@ -129,22 +131,11 @@ const Clock: React.FC<ClockProps> = () => {
 
   return (
     <main className={styles.container}>
-      <img
-        decoding="async"
-        loading="lazy"
-        src={scorpImage}
-        alt="Background"
-        className={styles.background}
-      />
+      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
 
-      <time
-        dateTime={currentTime.toISOString()}
-        className={styles.clockContainer}
-      >
-        <span style={{ display: 'none' }}>
-          {currentTime.toLocaleTimeString()}
-        </span>
-        {/* Clock numbers */}
+      <img src={scorpImage} alt="Background" className={styles.background} />
+
+      <time dateTime={currentTime.toISOString()} className={styles.clockContainer}>
         {numbers.map((num) => (
           <div
             key={num.value}
@@ -157,42 +148,22 @@ const Clock: React.FC<ClockProps> = () => {
           </div>
         ))}
 
-        {/* Minute Hand */}
         <div className={styles.minuteHand} ref={minuteHandRef}>
-          <img
-            decoding="async"
-            loading="lazy"
-            src={minuteHandImage}
-            alt="Minute Hand"
-            className={styles.handImage}
-          />
+          <img src={minuteHandImage} alt="Minute Hand" className={styles.handImage} />
         </div>
 
-        {/* Second Hand */}
         <div className={styles.secondHand} ref={secondHandRef}>
-          <img
-            decoding="async"
-            loading="lazy"
-            src={secondHandImage}
-            alt="Second Hand"
-            style={{ zIndex: 5 }}
-            className={styles.handImage}
-          />
+          <img src={secondHandImage} alt="Second Hand" style={{ zIndex: 5 }} className={styles.handImage} />
         </div>
 
-        {/* Hour Hand */}
         <div className={styles.hourHand} ref={hourHandRef}>
-          <img
-            decoding="async"
-            loading="lazy"
-            src={hourHandImage}
-            alt="Hour Hand"
-            className={styles.handImage}
-          />
+          <img src={hourHandImage} alt="Hour Hand" className={styles.handImage} />
         </div>
       </time>
     </main>
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_25_05_02';
+export default MemoizedClock;

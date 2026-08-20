@@ -1,7 +1,7 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState, memo } from 'react';
 import styles from './Clock.module.css';
 
 import m1 from '@/assets/images/26_images/26-06/26-06-02/1.webp';
@@ -10,13 +10,12 @@ import m4 from '@/assets/images/26_images/26-06/26-06-02/4.webp';
 import m5 from '@/assets/images/26_images/26-06/26-06-02/5.webp';
 import tile from '@/assets/images/26_images/26-06/26-06-02/tile.webp';
 
-// Import the font with the corresponding date from the assets folder
 const fontUrl = new URL(
   '../../../../assets/fonts/26fonts/26-06-02.otf',
   import.meta.url,
 ).href;
 
-const ALL_IMAGES = [m1, m3, m4, m5] as const; // Explicitly list the 4 imported images
+const ALL_IMAGES = [m1, m3, m4, m5] as const;
 export const assets = [...ALL_IMAGES, tile];
 
 interface ImageData {
@@ -28,8 +27,7 @@ interface ImageData {
 const fontConfigs: FontConfig[] = [
   {
     fontFamily: 'ClockFont_26_06_02',
-    // eslint tooling may not understand the ?url import; runtime font loader still expects a string.
-    fontUrl, // fontUrl is always a string from new URL().href
+    fontUrl,
   },
 ];
 
@@ -39,13 +37,13 @@ const VTEC =  () => {
   const [visibleImages, setVisibleImages] = useState<ImageData[]>([]);
   const idCounter = useRef(0);
   const [hasMounted, setHasMounted] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setTimeout>>();
 
-  // Load and suspend rendering until the custom font is ready
   useSuspenseFontLoader(fontConfigs);
 
   const createRandomImage = useCallback((src: string): ImageData => {
-    const size = Math.random() * 25 + 15; // Random size between 15% and 40% vmin
-    const rotation = Math.random() * 360; // Full 360 degree random angle
+    const size = Math.random() * 25 + 15;
+    const rotation = Math.random() * 360;
 
     return {
       id: idCounter.current++,
@@ -69,10 +67,10 @@ const VTEC =  () => {
       next[replaceIndex] = createRandomImage(randomImg);
       return next;
     });
+    intervalRef.current = setTimeout(cycleImage, 1000);
   }, [createRandomImage]);
 
   useEffect(() => {
-    // Create the initial pool: m1 (1.webp) 6 times, others 3 times
     const initialSet = ALL_IMAGES.flatMap((src) => {
       const count = src === m1 ? 6 : 3;
       return Array.from({ length: count }, () => createRandomImage(src));
@@ -80,14 +78,15 @@ const VTEC =  () => {
 
     setVisibleImages(initialSet);
     setHasMounted(true);
+    intervalRef.current = setTimeout(cycleImage, 1000);
 
-    // Start cycling every 1 second
-    const interval = setInterval(cycleImage, 1000);
-    return () => clearInterval(interval);
+    return () => {
+      if (intervalRef.current) clearTimeout(intervalRef.current);
+    };
   }, [cycleImage, createRandomImage]);
 
   return (
-    <div
+    <main
       className={styles.container}
       style={{
         backgroundImage: `url(${tile})`,
@@ -95,6 +94,8 @@ const VTEC =  () => {
         backgroundSize: '15vh',
       }}
     >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <time
         className={styles.digitalClock}
         dateTime={time.toISOString()}
@@ -121,8 +122,10 @@ const VTEC =  () => {
           alt=""
         />
       ))}
-    </div>
+    </main>
   );
 };
 
-export default VTEC;
+const MemoizedVTEC = memo(VTEC);
+MemoizedVTEC.displayName = 'Clock_26_06_02';
+export default MemoizedVTEC;

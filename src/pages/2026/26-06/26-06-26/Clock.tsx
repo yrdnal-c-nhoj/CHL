@@ -6,11 +6,11 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, memo } from 'react';
+import styles from './Clock.module.css';
 
 export const assets = [backgroundImage, urnImage, windflowerVideo, fontUrl];
 
-// Constant — no reason to live inside the component
 const FONT_FAMILY = 'ClockFont_26_06_26';
 const fontConfigs: FontConfig[] = [
   {
@@ -21,8 +21,6 @@ const fontConfigs: FontConfig[] = [
 
 const TILE_WIDTH = 50;
 const TILE_HEIGHT = 70;
-
-// --- Static styles ---
 
 const videoStyle: CSSProperties = {
   position: 'absolute',
@@ -74,8 +72,8 @@ const middleLayerStyle: CSSProperties = {
 };
 
 const timeStyle: CSSProperties = {
-  position: 'absolute', // Absolute positioning matches the true bounding space of the container
-  inset: 0,             // Spans full container width/height
+  position: 'absolute',
+  inset: 0,
   zIndex: 3,
   color: '#BCDBFBB7',
   textShadow: '0 1px 2px rgba(5, 2, 20, 0.99)',
@@ -84,31 +82,27 @@ const timeStyle: CSSProperties = {
   userSelect: 'none',
   fontFamily: `'${FONT_FAMILY}', serif`,
   mixBlendMode: 'overlay',
-  display: 'flex',       // Centers child elements flawlessly
+  display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
 };
 
 const digitBoxStyle: CSSProperties = {
-  width: '5vh',          // Sized appropriately for numbers
+  width: '5vh',
   textAlign: 'center',
   display: 'inline-block',
 };
 
 const colonBoxStyle: CSSProperties = {
-  width: '2vh',          // Thinner bounding box ensures colons don't cause visual shift
+  width: '2vh',
   textAlign: 'center',
   display: 'inline-block',
 };
 
-// --- Component ---
-
 const Clock =  () => {
-  const time = useSecondClock(); 
+  const time = useSecondClock();
   const [dimensions, setDimensions] = useState({ cols: 1, rows: 1 });
   const [rotationAngle, setRotationAngle] = useState(0);
-
-  useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
     const update = () =>
@@ -121,26 +115,26 @@ const Clock =  () => {
     return () => window.removeEventListener('resize', update);
   }, []);
 
-  // Animation loop for smooth rotation
-  useEffect(() => {
-    let frameId: number;
-    const animate = () => {
-      const now = new Date();
-      const secondsWithMs = now.getSeconds() + now.getMilliseconds() / 1000;
-      const angle = -(secondsWithMs * 6); // -360 degrees over 60 seconds
-      setRotationAngle(angle);
-      frameId = requestAnimationFrame(animate);
-    };
+  const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
-    frameId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frameId);
+  useEffect(() => {
+    const tick = () => {
+      setRotationAngle((prev) => (prev + 1) % 360);
+      timerRef.current = setTimeout(tick, 50);
+    };
+    timerRef.current = setTimeout(tick, 50);
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
   }, []);
 
+  useSuspenseFontLoader(fontConfigs);
+
   const timeString = useMemo(() => {
-    const hh = time.getHours().toString().padStart(2, '0');
-    const mm = time.getMinutes().toString().padStart(2, '0');
-    const ss = time.getSeconds().toString().padStart(2, '0');
-    return `${hh}:${mm}:${ss}`;
+    const h = time.getHours().toString().padStart(2, '0');
+    const m = time.getMinutes().toString().padStart(2, '0');
+    const s = time.getSeconds().toString().padStart(2, '0');
+    return `${h}:${m}:${s}`;
   }, [time]);
 
   const backgroundTiles = useMemo(() => {
@@ -163,15 +157,15 @@ const Clock =  () => {
   }, [dimensions]);
 
   return (
-    <main
-      style={{
-        ...containerStyle,
-        '--tile-width': `${TILE_WIDTH}px`,
-        '--tile-height': `${TILE_HEIGHT}px`,
-        '--grid-cols': String(dimensions.cols),
-        '--grid-rows': String(dimensions.rows),
-      } as CSSProperties}
-    >
+    <main className={styles.container} style={{
+      ...containerStyle,
+      '--tile-width': `${TILE_WIDTH}px`,
+      '--tile-height': `${TILE_HEIGHT}px`,
+      '--grid-cols': String(dimensions.cols),
+      '--grid-rows': String(dimensions.rows),
+    } as CSSProperties}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <video
         src={windflowerVideo}
         style={videoStyle}
@@ -189,8 +183,8 @@ const Clock =  () => {
 
       <time dateTime={time.toISOString()} style={timeStyle}>
         {timeString.split('').map((char, index) => (
-          <span 
-            key={index} 
+          <span
+            key={index}
             style={char === ':' ? colonBoxStyle : digitBoxStyle}
           >
             {char}
@@ -201,4 +195,6 @@ const Clock =  () => {
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_06_26';
+export default MemoizedClock;

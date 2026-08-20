@@ -40,7 +40,9 @@ const SimpleBackground =  () => {
   const rotations = [0, 45, 90, 135, 0, 225, 270, 315, 0];
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <div className={styles.layerColor} />
       <div className={styles.layerTiling} />
       <div className={styles.layerLemon} />
@@ -62,8 +64,10 @@ const SimpleBackground =  () => {
           </div>
         ))}
       </div>
-    </div>
+    </main>
   );
 };
 
-export default SimpleBackground;
+const MemoizedSimpleBackground = memo(SimpleBackground);
+MemoizedSimpleBackground.displayName = 'Clock_26_01_31';
+export default MemoizedSimpleBackground;

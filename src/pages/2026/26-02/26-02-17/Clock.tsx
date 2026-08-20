@@ -115,15 +115,14 @@ const AsteriskClock =  () => {
   }, []);
 
   useEffect(() => {
-    const shuffleInterval = setInterval(() => {
+    if (time.getSeconds() % 3 === 0) {
       setVisible(false);
       setTimeout(() => {
         setClockChars(generateChars());
         setVisible(true);
       }, 400);
-    }, 3000);
-    return () => clearInterval(shuffleInterval);
-  }, []);
+    }
+  }, [time]);
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();

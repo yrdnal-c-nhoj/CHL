@@ -1,6 +1,6 @@
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 
 import dripFont from '@/assets/fonts/26fonts/26-05-13.otf?url';
 import bgVideo from '@/assets/images/26_images/26-05/26-05-13/26-05-13-yves.mp4?url';
@@ -43,7 +43,9 @@ const AnalogClock =  () => {
   }, [now]);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
+      <time dateTime={now.toISOString()} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
+
       {/* Video Layer (behind background image) */}
       <video
         className={styles.videoLayer}
@@ -62,7 +64,7 @@ const AnalogClock =  () => {
       />
       {/* Digital Time Layer */}
       <div className={styles.face}>
-        <div className={styles.digitalTime} aria-label={`Current time ${timeText}`}>
+        <time className={styles.digitalTime} dateTime={now.toISOString()} aria-label={`Current time ${timeText}`}>
           <span className={styles.digitGroup} aria-hidden="true">
             <span className={styles.digitBox}>{hours[0]}</span>
             <span className={styles.digitBox}>{hours[1]}</span>
@@ -71,10 +73,12 @@ const AnalogClock =  () => {
             <span className={styles.digitBox}>{seconds[0]}</span>
             <span className={styles.digitBox}>{seconds[1]}</span>
           </span>
-        </div>
+        </time>
       </div>
-    </div>
+    </main>
   );
 };
 
-export default AnalogClock;
+const MemoizedAnalogClock = memo(AnalogClock);
+MemoizedAnalogClock.displayName = 'Clock_26_05_13';
+export default MemoizedAnalogClock;

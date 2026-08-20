@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 import digi251103font from '@/assets/fonts/25fonts/25-11-03-bin3.ttf?url';
 import tec251103font from '@/assets/fonts/25fonts/25-11-03-bin1.otf?url';
 import styles from './Clock.module.css';
 
-export const assets = [];
+export const assets = [digi251103font, tec251103font];
 
 const digitalFont = 'digitalFont';
 const techFont = 'techFont';
@@ -27,26 +28,15 @@ function BinaryClockWithColumns() {
   );
 
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  const [time, setTime] = useState(new Date());
+  const time = useSecondClock();
   const [overlayVisible, setOverlayVisible] = useState(true);
 
-  // Fade out overlay once fonts are ready
   useEffect(() => {
     if (fontsLoaded) {
       const timer = setTimeout(() => setOverlayVisible(false), 100);
       return () => clearTimeout(timer);
     }
   }, [fontsLoaded]);
-
-  useEffect(() => {
-    const tick = () => {
-      setTime(new Date());
-      const timer = setTimeout(tick, 50);
-      return () => clearTimeout(timer);
-    };
-    const timer = setTimeout(tick, 0);
-    return () => clearTimeout(timer);
-  }, []);
 
   const formatBinary = (num: number) =>
     num.toString(2).padStart(8, '0').split('');

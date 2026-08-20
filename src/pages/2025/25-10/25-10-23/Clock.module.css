@@ -1,0 +1,52 @@
+@font-face {
+  font-family: 'mult';
+  src: url('/src/assets/fonts/25fonts/25-10-23-gr.ttf') format('truetype');
+}
+
+.container {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-image: url('/src/assets/images/25_images/25-10/25-10-23/bg.gif');
+  background-repeat: repeat;
+  background-size: 90vh 100vh;
+  background-position: center center;
+  font-family: 'mult', monospace;
+  position: relative;
+}
+
+.clockGrid {
+  display: grid;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  gap: 0;
+}
+
+.characterCell {
+  color: rgb(237, 333, 93);
+  font-size: 13.5vh;
+  display: flex;
+  opacity: 0.8;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

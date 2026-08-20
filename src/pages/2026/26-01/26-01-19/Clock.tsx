@@ -1,22 +1,17 @@
-import bgImage from '@/assets/images/26_images/26-01/26-01-19/hands.webp';
-
-import { useSecondClock } from '@/utils/hooks/useSmoothClock';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-
-import styles from './Clock.module.css';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useSecondClock } from '@/utils/hooks';
+import bgImage from '@/assets/images/26_images/26-01/26-01-19/hands.webp';
+import styles from './Clock.module.css';
 
-// Asset exports for preloading pipeline
 export const assets = [bgImage];
 
 const COLORS = {
   bg: '#FFFFFF',
-  secondHand: '#F1E206', // Bright Yellow
+  secondHand: '#F1E206',
   mainHands: '#1E293B',
-  border: '#330202', // Darker border for contrast
+  border: '#330202',
 };
 
-// --- Physics deviation functions ---
 const getJumpOvershoot = (f: number) => (f < 0.2 ? f * 10 : f < 0.5 ? 2 : 0);
 const getSlowWiggle = (f: number) => Math.sin(f * Math.PI * 2) * 12;
 const getElasticStretch = (f: number) => (f < 0.7 ? -f * 8 : -5.6 + (f - 0.7) * 40);
@@ -31,7 +26,6 @@ type ComplexYellowHandProps = {
 };
 
 const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }: ComplexYellowHandProps) => {
-
   const r = size / 2;
   const handWidth = size * 0.008;
   const outlineWidth = useMemo(() => `${size * 0.0015}vh` as const, [size]);
@@ -45,7 +39,6 @@ const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }: Comp
       transformOrigin: 'bottom center', transform: `translateX(-50%) rotate(${rotation}deg)` as const,
       zIndex, transition
     }}>
-      {/* Arrow Heads */}
       <div style={{
         ...arrowBase,
         borderLeft: `${size * 0.09}vh solid transparent`,
@@ -58,8 +51,6 @@ const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }: Comp
         borderRight: `${size * 0.08}vh solid transparent`,
         borderBottom: `${size * 0.074}vh solid ${COLORS.secondHand}`,
       }} />
-
-      {/* Main Blade */}
       <div style={{
         position: 'absolute', bottom: 0, left: 0, width: '100%', height: `${r * 0.8}vh`,
         background: COLORS.secondHand, boxSizing: 'border-box',
@@ -67,8 +58,6 @@ const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }: Comp
         borderLeft: `${outlineWidth} solid ${COLORS.border}`,
         borderRight: `${outlineWidth} solid ${COLORS.border}`,
       }} />
-
-      {/* Tail */}
       <div style={{
         position: 'absolute', top: 0, left: 0, width: '100%', height: `${r * 0.3}vh`,
         background: COLORS.secondHand, boxSizing: 'border-box' as const,
@@ -76,8 +65,6 @@ const ComplexYellowHand = ({ rotation, zIndex, transition = 'none', size }: Comp
         borderLeft: `${outlineWidth} solid ${COLORS.border}`,
         borderRight: `${outlineWidth} solid ${COLORS.border}`,
       }} />
-
-      {/* Tail Ball */}
       <div style={{
         position: 'absolute', top: `${r * 0.4}vh`, left: '50%', transform: 'translateX(-50%)',
         width: `${size * 0.08}vh`, height: `${size * 0.08}vh`,
@@ -92,17 +79,14 @@ const ManyHandClock =  () => {
   const now = useSecondClock();
 
   const [clockSize, setClockSize] = useState<number>(90);
-
-  // Hand positions
   const [forgetfulPos, setForgetfulPos] = useState<number>(0);
   const [sleepyPos1, setSleepyPos1] = useState<number>(0);
   const [sleepyPos2, setSleepyPos2] = useState<number>(0);
   const [panickedPos, setPanickedPos] = useState<number>(0);
 
-  // --- Behavior Refs & State ---
   const nextChangeRef = useRef(0);
   const isFrozenRef = useRef(false);
-  const frozenAtRef = useRef(0); // For 'forgetful' hand
+  const frozenAtRef = useRef(0);
   const sleepyRefs = useRef([
     { frozen: false, at: 0, next: 0, shaking: false, start: 0 },
     { frozen: false, at: 0, next: 0, shaking: false, start: 0 },
@@ -110,7 +94,7 @@ const ManyHandClock =  () => {
   const panicStateRef = useRef('normal');
   const panicStuckAtRef = useRef(0);
   const panicState = panicStateRef.current;
-  
+
   useEffect(() => {
     const updateSize = () => {
       const vmin = Math.min(window.innerWidth, window.innerHeight);
@@ -121,13 +105,11 @@ const ManyHandClock =  () => {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
-  // --- Derived time values ---
   const sFraction = now.getSeconds() + now.getMilliseconds() / 1000;
   const baseRotation = (sFraction / 60) * 360;
   const currentTime = now.getTime();
   const s = now.getSeconds();
 
-  // --- Behavior Logic: Using currentTime as the primary driver for physics ---
   useEffect(() => {
     if (currentTime > nextChangeRef.current) {
       isFrozenRef.current = !isFrozenRef.current;
@@ -188,114 +170,29 @@ const ManyHandClock =  () => {
   ];
 
   return (
-    <div
-      className={styles.container}
-      style={{
-        backgroundImage: `radial-gradient(circle at center, rgba(135, 168, 126, 0.73) 0%, rgba(123, 135, 87, 0.4) 100%), url(${bgImage})`,
-      }}
-    >
-      <div
-        style={{
-          position: 'relative',
-          width: `${clockSize}vh`,
-          height: `${clockSize}vh`,
-        }}
-      >
-        {/* Main Hands (Hour/Minute) */}
-        <div
-          className={styles.hand}
-          style={{
-            height: `${clockSize * 0.25}vh`,
-            width: `${clockSize * 0.015}vh`,
-            background: COLORS.mainHands,
-            transform: `translateX(-50%) rotate(${hourRot}deg)`,
-          }}
-        />
-        <div
-          className={styles.hand}
-          style={{
-            height: `${clockSize * 0.4}vh`,
-            width: `${clockSize * 0.01}vh`,
-            background: COLORS.mainHands,
-            transform: `translateX(-50%) rotate(${minuteRot}deg)`,
-            zIndex: 11,
-          }}
-        />
+    <main className={styles.container} style={{ backgroundImage: `radial-gradient(circle at center, rgba(135, 168, 126, 0.73) 0%, rgba(123, 135, 87, 0.4) 100%), url(${bgImage})` }}>
+      <time dateTime={now.toISOString()} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
 
-        {/* --- YELLOW HAND ARMY --- */}
+      <div style={{ position: 'relative', width: `${clockSize}vh`, height: `${clockSize}vh` }}>
+        <div className={styles.hand} style={{ height: `${clockSize * 0.25}vh`, width: `${clockSize * 0.015}vh`, background: COLORS.mainHands, transform: `translateX(-50%) rotate(${hourRot}deg)` }} />
+        <div className={styles.hand} style={{ height: `${clockSize * 0.4}vh`, width: `${clockSize * 0.01}vh`, background: COLORS.mainHands, transform: `translateX(-50%) rotate(${minuteRot}deg)`, zIndex: 11 }} />
 
-        {/* Regular Second Hand (At the very bottom of the yellow pile) */}
-        <ComplexYellowHand
-          rotation={baseSecondRot}
-          size={clockSize}
-          zIndex={1}
-          transition="none"
-        />
-
-        {/* Deviation Hands */}
+        <ComplexYellowHand rotation={baseSecondRot} size={clockSize} zIndex={1} transition="none" />
         {deviations.map((dev, i) => (
-          <ComplexYellowHand
-            key={i}
-            rotation={baseSecondRot + dev}
-            size={clockSize}
-            zIndex={20 + i}
-            transition="transform 0.1s ease-out"
-          />
+          <ComplexYellowHand key={i} rotation={baseSecondRot + dev} size={clockSize} zIndex={20 + i} transition="transform 0.1s ease-out" />
         ))}
+        <ComplexYellowHand rotation={forgetfulPos} size={clockSize} zIndex={40} transition="transform 0.5s ease-out" />
+        <ComplexYellowHand rotation={sleepyPos1} size={clockSize} zIndex={41} transition="transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)" />
+        <ComplexYellowHand rotation={sleepyPos2} size={clockSize} zIndex={42} transition="transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)" />
+        <ComplexYellowHand rotation={tickingRot} size={clockSize} zIndex={90} transition="transform 0.15s cubic-bezier(0.2, 2, 0.4, 1)" />
+        <ComplexYellowHand rotation={panickedPos} size={clockSize} zIndex={150} transition={(panicState === 'rushing' ? 'transform 0.4s cubic-bezier(0.17, 0.67, 0.6, 1.3)' : 'none') as React.CSSProperties['transition']} />
 
-        {/* Forgetful Hand */}
-        <ComplexYellowHand
-          rotation={forgetfulPos}
-          size={clockSize}
-          zIndex={40}
-          transition="transform 0.5s ease-out"
-        />
-
-        {/* Sleepy Hands */}
-        <ComplexYellowHand
-          rotation={sleepyPos1}
-          size={clockSize}
-          zIndex={41}
-          transition="transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)"
-        />
-        <ComplexYellowHand
-          rotation={sleepyPos2}
-          size={clockSize}
-          zIndex={42}
-          transition="transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)"
-        />
-
-        {/* Ticking Hand */}
-        <ComplexYellowHand
-          rotation={tickingRot}
-          size={clockSize}
-          zIndex={90}
-          transition="transform 0.15s cubic-bezier(0.2, 2, 0.4, 1)"
-        />
-
-        {/* Panicked Hand (Topmost) */}
-        <ComplexYellowHand
-          rotation={panickedPos}
-          size={clockSize}
-          zIndex={150}
-          transition={(
-            panicState === 'rushing'
-              ? 'transform 0.4s cubic-bezier(0.17, 0.67, 0.6, 1.3)'
-              : 'none'
-          ) as React.CSSProperties['transition']}
-        />
-
-        {/* Center Dot */}
-        <div
-          className={styles.centerDot}
-          style={{
-            width: `${clockSize * 0.02}vh`,
-            height: `${clockSize * 0.02}vh`,
-          }}
-        />
+        <div className={styles.centerDot} style={{ width: `${clockSize * 0.02}vh`, height: `${clockSize * 0.02}vh` }} />
       </div>
-    </div>
+    </main>
   );
 };
 
-export default ManyHandClock;
+const MemoizedManyHandClock = memo(ManyHandClock);
+MemoizedManyHandClock.displayName = 'Clock_26_01_19';
+export default MemoizedManyHandClock;

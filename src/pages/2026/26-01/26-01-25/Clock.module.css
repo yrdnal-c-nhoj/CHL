@@ -1,0 +1,40 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background-image: url('/assets/images/26_images/26-01/26-01-25/mirage.webp');
+  background-size: cover;
+  background-position: center;
+  background-color: #000;
+}
+
+.faceContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 110vmin;
+  height: 110vmin;
+  border-radius: 50%;
+  will-change: opacity;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+  border-radius: 999px;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

@@ -49,6 +49,8 @@ const AnalogClockComponent = () => {
 
   return (
     <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       {/* Accessible time element (Required) */}
       <SRTime time={time} />
 

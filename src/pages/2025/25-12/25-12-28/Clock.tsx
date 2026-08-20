@@ -127,7 +127,7 @@ const Clock =  () => {
   });
 
   return (
-    <main style={containerStyle} role="region" aria-label="Background video and time">
+    <main className={styles.container} style={containerStyle} role="region" aria-label="Background video and time">
       <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
 
       <div style={timeContainerStyle} aria-live="polite">

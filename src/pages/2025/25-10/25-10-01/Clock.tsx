@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/fontLoader';
+import styles from './Clock.module.css';
 
-// Import number images
 import one from '@/assets/images/25_images/25-10/25-10-01/1.png';
 import two from '@/assets/images/25_images/25-10/25-10-01/12.png';
 import three from '@/assets/images/25_images/25-10/25-10-01/11.png';
@@ -16,25 +16,28 @@ import ten from '@/assets/images/25_images/25-10/25-10-01/4.png';
 import eleven from '@/assets/images/25_images/25-10/25-10-01/3.png';
 import twelve from '@/assets/images/25_images/25-10/25-10-01/2.png';
 
-// Clock face
 import clockFace from '@/assets/images/25_images/25-10/25-10-01/gears.webp';
 
-// Background video and fallback
 import backgroundVideo from '@/assets/images/25_images/25-10/25-10-01/small.mp4';
 import fallbackGif from '@/assets/images/25_images/25-10/25-10-01/small.webp';
 
-export const assets = [];
+export const assets = [one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, clockFace, backgroundVideo, fallbackGif];
 
-export default function ImageAnalogClock() {
+const ImageAnalogClock = () => {
   const time = useMillisecondClock();
   const [rotation, setRotation] = useState<number>(0);
 
-  // Rotate face slowly
   useEffect(() => {
-    const rotateInterval = setInterval(() => {
-      setRotation((prev) => (prev - 0.1) % 360);
-    }, 16);
-    return () => clearInterval(rotateInterval);
+    let frameId: number;
+    let lastTime = performance.now();
+    const animate = (now: number) => {
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+      setRotation((prev) => prev - 6 * dt);
+      frameId = requestAnimationFrame(animate);
+    };
+    frameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   const clockSize = 'min(80vw, 80vh)';
@@ -65,7 +68,7 @@ export default function ImageAnalogClock() {
   const secondAngle = seconds * 6;
 
   const metallicHandStyle = (width, length, angle) => ({
-    position: 'absolute',
+    position: 'absolute' as const,
     width,
     height: length,
     top: '50%',
@@ -90,22 +93,22 @@ export default function ImageAnalogClock() {
       0 0 8px #fff,
       0 0 12px #bbb
     `,
-    pointerEvents: 'none',
+    pointerEvents: 'none' as const,
     border: '0.05rem solid #999',
     opacity: 1.0,
   });
 
   const metallicNumberStyle = (width, height) => ({
-    position: 'absolute',
+    position: 'absolute' as const,
     width,
     height,
     left: '50%',
     top: '50%',
     transform: 'translate(-50%, -50%)',
-    objectFit: 'contain',
+    objectFit: 'contain' as const,
     filter: `
-      grayscale(80%) 
-      contrast(80%) 
+      grayscale(80%)
+      contrast(80%)
       brightness(1.1)
       drop-shadow(2px 2px 0 #1E1E1E)
       drop-shadow(-2px -2px 0 #E2E2E1)
@@ -114,19 +117,7 @@ export default function ImageAnalogClock() {
   });
 
   return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        overflow: 'hidden',
-        isolation: 'isolate',
-        backgroundColor: '#111',
-      }}
-    >
+    <main className={styles.container}>
       <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
 
       {/* Video background */}
@@ -221,6 +212,10 @@ export default function ImageAnalogClock() {
         <div style={metallicHandStyle('0.5rem', '36dvh', minuteAngle)} />
         <div style={metallicHandStyle('0.15rem', '40dvh', secondAngle)} />
       </div>
-    </div>
+    </main>
   );
-}
+};
+
+const MemoizedImageAnalogClock = memo(ImageAnalogClock);
+MemoizedImageAnalogClock.displayName = 'Clock_25_10_01';
+export default MemoizedImageAnalogClock;

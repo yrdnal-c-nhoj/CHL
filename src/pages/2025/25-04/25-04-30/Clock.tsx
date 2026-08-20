@@ -5,9 +5,19 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState
+  useState,
+  memo
 } from 'react';
 import styles from './Clock.module.css';
+
+import secondImg from '@/assets/images/25_images/25-04/25-04-16/20.webp';
+import minuteImg from '@/assets/images/25_images/25-04/25-04-16/200w.webp';
+import hourImg from '@/assets/images/25_images/25-04/25-04-16/2hhj.webp';
+import cakeGif from '@/assets/images/25_images/25-04/25-04-16/cake.gif';
+import confGif from '@/assets/images/25_images/25-04/25-04-16/conf.gif';
+import confJpg from '@/assets/images/25_images/25-04/25-04-16/conf.jpg';
+
+export const assets = [cakeGif, minuteImg, hourImg, secondImg, confGif, confJpg];
 
 interface ClockData {
   id: string;
@@ -131,9 +141,7 @@ const GravityClock: React.FC<GravityClockProps> = () => {
 
   return (
     <main ref={containerRef} className={styles.container}>
-      <time dateTime={currentTime.toISOString()} style={{ display: 'none' }}>
-        {currentTime.toLocaleTimeString()}
-      </time>
+      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
       {clocks.map((clock) => (
         <ClockItem key={clock.id} clock={clock} currentTime={currentTime} />
       ))}
@@ -143,15 +151,13 @@ const GravityClock: React.FC<GravityClockProps> = () => {
 
 interface ClockItemProps {
   clock: ClockData;
-  currentTime: Date; // Pass currentTime as a prop
+  currentTime: Date;
 }
 
 const ClockItem: React.FC<ClockItemProps> = React.memo(({ clock, currentTime }) => {
   const h = (currentTime.getHours() % 12) * 30 + currentTime.getMinutes() * 0.5;
   const m = currentTime.getMinutes() * 6;
 
-  // Calculate the scale: squash affects Y, and to preserve volume, X does the opposite
-  // (Traditional animation rule: if height goes down, width goes out)
   const scaleX = 1 / clock.squash;
   const scaleY = clock.squash;
 
@@ -167,23 +173,14 @@ const ClockItem: React.FC<ClockItemProps> = React.memo(({ clock, currentTime }) 
       }}
     >
       <div className={styles.clockFace}>
-        {/* Hour Hand */}
-        <div
-          className={`${styles.hand} ${styles.hourHand}`}
-          style={{
-            transform: `translateX(-50%) rotate(${h}deg)`,
-          }}
-        />
-        {/* Minute Hand */}
-        <div
-          className={`${styles.hand} ${styles.minuteHand}`}
-          style={{
-            transform: `translateX(-50%) rotate(${m}deg)`,
-          }}
-        />
+        <div className={`${styles.hand} ${styles.hourHand}`} style={{ transform: `translateX(-50%) rotate(${h}deg)` }} />
+        <div className={`${styles.hand} ${styles.minuteHand}`} style={{ transform: `translateX(-50%) rotate(${m}deg)` }} />
       </div>
     </div>
   );
 });
+ClockItem.displayName = 'ClockItem';
 
-export default GravityClock;
+const MemoizedGravityClock = memo(GravityClock);
+MemoizedGravityClock.displayName = 'Clock_25_04_30';
+export default MemoizedGravityClock;

@@ -1,9 +1,8 @@
 import chandelierBg from '@/assets/images/26_images/26-07/26-07-02/dive1.mp4';
 import type { FontConfig } from '@/types/clock';
-import { installConsoleFilters } from '@/utils/consoleFilters';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, memo } from 'react';
 
 import fontUrl from '@/assets/fonts/26fonts/26-07-02.ttf?url';
 import styles from './Clock.module.css';
@@ -19,16 +18,14 @@ const fontConfigs: FontConfig[] = [
 
 interface FloatingClock {
   id: number;
-  x: number; 
-  y: number; 
+  x: number;
+  y: number;
   speed: number;
   scale: number;
   opacity: number;
-  // Current angles for each axis
   rotX: number;
   rotY: number;
   rotZ: number;
-  // Unique slow rotation velocities per frame
   velX: number;
   velY: number;
   velZ: number;
@@ -39,44 +36,36 @@ const formatTime = (date: Date) => {
   const minutes = String(date.getMinutes()).padStart(2, '0');
   const seconds = String(date.getSeconds()).padStart(2, '0');
   const ampm = hours >= 12 ? 'PM' : 'AM';
-  
+
   hours = hours % 12;
-  hours = hours ? hours : 12; 
+  hours = hours ? hours : 12;
   const hoursStr = String(hours).padStart(2, '0');
 
   return `${hoursStr}:${minutes}:${seconds} ${ampm}`;
 };
 
-const FloatingDigitalClocks =  () => {
-  // Install console filters to reduce browser noise during development
-  installConsoleFilters();
+const getRandomVelocity = () => (Math.random() * 0.001 - 0.05);
 
+const FloatingDigitalClocks =  () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useSecondClock();
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const [clocks, setClocks] = useState<FloatingClock[]>([]);
 
-  // 1. Derive the time string from the canonical hook
   const timeString = formatTime(time);
 
-  // Helper to generate a slow random velocity between -0.3 and +0.3 degrees per frame
-  const getRandomVelocity = () => (Math.random() * 0.001 - 0.05);
-
-  // 2. Initialize floating clocks with random positions, initial rotations, and spin rates
   useEffect(() => {
     const initialClocks: FloatingClock[] = Array.from({ length: 10 }, (_, i) => ({
       id: i,
-      x: Math.random() * 80 + 10,         
-      y: Math.random() * 120,             
-      speed: Math.random() * 0.05 + 0.03, 
-      scale: Math.random() * 0.5 + 0.6,   
-      opacity: Math.random() * 0.4 + 0.3, 
-      // Initialize random start angles spanning a full 3D space
+      x: Math.random() * 80 + 10,
+      y: Math.random() * 120,
+      speed: Math.random() * 0.05 + 0.03,
+      scale: Math.random() * 0.5 + 0.6,
+      opacity: Math.random() * 0.4 + 0.3,
       rotX: Math.random() * 360,
       rotY: Math.random() * 360,
       rotZ: Math.random() * 180 - 90,
-      // Slow structural velocities
       velX: getRandomVelocity(),
       velY: getRandomVelocity(),
       velZ: getRandomVelocity(),
@@ -84,7 +73,6 @@ const FloatingDigitalClocks =  () => {
     setClocks(initialClocks);
   }, []);
 
-  // 3. High-performance Animation Loop handling positional float and 3D rotations
   useEffect(() => {
     let animationFrameId: number;
 
@@ -93,8 +81,7 @@ const FloatingDigitalClocks =  () => {
         prevClocks.map((clock) => {
           let nextY = clock.y - clock.speed;
           let nextX = clock.x;
-          
-          // Increment rotations steadily
+
           let nextRotX = (clock.rotX + clock.velX) % 360;
           let nextRotY = (clock.rotY + clock.velY) % 360;
           let nextRotZ = (clock.rotZ + clock.velZ) % 360;
@@ -103,11 +90,9 @@ const FloatingDigitalClocks =  () => {
           let nextVelY = clock.velY;
           let nextVelZ = clock.velZ;
 
-          // Recycle when leaving top boundary
           if (nextY < -10) {
             nextY = 110;
             nextX = Math.random() * 80 + 10;
-            // Mix up the rotation values and dynamics on respawn
             nextRotX = Math.random() * 360;
             nextRotY = Math.random() * 360;
             nextRotZ = Math.random() * 180 - 90;
@@ -116,16 +101,16 @@ const FloatingDigitalClocks =  () => {
             nextVelZ = getRandomVelocity();
           }
 
-          return { 
-            ...clock, 
-            y: nextY, 
-            x: nextX, 
-            rotX: nextRotX, 
-            rotY: nextRotY, 
+          return {
+            ...clock,
+            y: nextY,
+            x: nextX,
+            rotX: nextRotX,
+            rotY: nextRotY,
             rotZ: nextRotZ,
             velX: nextVelX,
             velY: nextVelY,
-            velZ: nextVelZ
+            velZ: nextVelZ,
           };
         })
       );
@@ -136,7 +121,6 @@ const FloatingDigitalClocks =  () => {
     return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
-  // 4. Handle video playback safely
   useEffect(() => {
     const videoElement = videoRef.current;
     if (videoElement) {
@@ -147,7 +131,9 @@ const FloatingDigitalClocks =  () => {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <video
         ref={videoRef}
         src={chandelierBg}
@@ -168,7 +154,6 @@ const FloatingDigitalClocks =  () => {
             style={{
               left: `${clock.x}%`,
               top: `${clock.y}%`,
-              // Chains 3D translates and custom rotation properties sequentially
               transform: `translate(-50%, -50%) scale(${clock.scale}) rotateX(${clock.rotX}deg) rotateY(${clock.rotY}deg) rotateZ(${clock.rotZ}deg)`,
               opacity: clock.opacity,
             }}
@@ -181,8 +166,10 @@ const FloatingDigitalClocks =  () => {
           </div>
         ))}
       </div>
-    </div>
+    </main>
   );
 };
 
-export default FloatingDigitalClocks;
+const MemoizedFloatingDigitalClocks = memo(FloatingDigitalClocks);
+MemoizedFloatingDigitalClocks.displayName = 'Clock_26_07_02';
+export default MemoizedFloatingDigitalClocks;

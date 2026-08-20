@@ -1,26 +1,28 @@
-import React from 'react';
+import { memo, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
-// Asset names should be standardized to YY-MM-DD-name format
 import hand1Img from '@/assets/images/26_images/26-03/26-03-08/hand2.png';
 import hand2Img from '@/assets/images/26_images/26-03/26-03-08/hand1.webp';
 import handImg from '@/assets/images/26_images/26-03/26-03-08/hand.webp';
-import dragonFont from '@/assets/fonts/26fonts/26-03-08-dragon.ttf';
+import dragonFont from '@/assets/fonts/26fonts/26-03-08-dragon.ttf?url';
 import dragonVideo from '@/assets/images/26_images/26-03/26-03-08/dragon1.mp4';
 
-const Clock =  () => {
-  const fontConfigs = [
-    {
-      fontFamily: 'Dragon',
-      fontUrl: dragonFont,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
+export const assets = [hand1Img, hand2Img, handImg, dragonFont, dragonVideo];
+
+const fontConfigs = [
+  {
+    fontFamily: 'Dragon',
+    fontUrl: dragonFont,
+    options: {
+      weight: 'normal',
+      style: 'normal',
     },
-  ];
+  },
+];
+
+const Clock =  () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useMillisecondClock();
 
@@ -68,12 +70,7 @@ const Clock =  () => {
 
   return (
     <main className={styles.container}>
-      <time
-        dateTime={time.toISOString().split('.')[0] + 'Z'}
-        className={styles.semanticTime}
-      >
-        {time.toLocaleTimeString()}
-      </time>
+      <time dateTime={time.toISOString().split('.')[0] + 'Z'} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
 
       <video autoPlay loop muted playsInline className={styles.videoBackground}>
         <source src={dragonVideo} type="video/mp4" />
@@ -123,4 +120,6 @@ const Clock =  () => {
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_03_08';
+export default MemoizedClock;

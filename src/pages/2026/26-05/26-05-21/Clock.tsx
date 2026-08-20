@@ -1,15 +1,14 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import canisBg from '@/assets/images/26_images/26-05/26-05-21/canis.webp';
 import canisComponent from '@/assets/images/26_images/26-05/26-05-21/canis2.webp';
-import canisComponent4 from '@/assets/images/26_images/26-05/26-05-21/canis4.webp'; // // Corrected image path
-import fontUrl from '@/assets/fonts/26fonts/26-05-21.otf?url'; // Uses existing font file
+import canisComponent4 from '@/assets/images/26_images/26-05/26-05-21/canis4.webp';
+import fontUrl from '@/assets/fonts/26fonts/26-05-21.otf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSmoothClock } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
 
-// BTS: Export assets and fonts for the preloading pipeline
-export const assets = [canisBg, canisComponent];
+export const assets = [canisBg, canisComponent, fontUrl];
 
 export const fontConfigs: FontConfig[] = [
   {
@@ -18,7 +17,6 @@ export const fontConfigs: FontConfig[] = [
   },
 ];
 
-// ---------------- COMPONENTS ----------------
 const BackgroundLayers =  () => (
   <div
     className={styles.backgroundImage}
@@ -41,10 +39,11 @@ const ComponentLayers =  () => (
 );
 
 const ClockFace: React.FC<{ fontFamily: string }> = ({ fontFamily }) => {
-  const time = useSmoothClock(50);
+  const time = useMillisecondClock();
 
   const { hourDeg, minuteDeg, secondDeg, isoTime } = useMemo(() => {
-    const s = time.getSeconds() + time.getMilliseconds() / 1000;
+    const ms = time.getMilliseconds();
+    const s = time.getSeconds() + ms / 1000;
     const m = time.getMinutes() + s / 60;
     const h = (time.getHours() % 12) + m / 60;
 
@@ -92,16 +91,18 @@ const ClockFace: React.FC<{ fontFamily: string }> = ({ fontFamily }) => {
 };
 
 const AnalogClock =  () => {
-  // Load the date-specific font
   useSuspenseFontLoader(fontConfigs);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
+      <time dateTime={new Date().toISOString()} className={styles.srOnly}>{new Date().toLocaleTimeString()}</time>
       <BackgroundLayers />
       <ComponentLayers />
       <ClockFace fontFamily="26-05-21" />
-    </div>
+    </main>
   );
 };
 
-export default AnalogClock;
+const MemoizedAnalogClock = memo(AnalogClock);
+MemoizedAnalogClock.displayName = 'Clock_26_05_21';
+export default MemoizedAnalogClock;

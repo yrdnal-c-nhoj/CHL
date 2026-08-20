@@ -1,9 +1,11 @@
+import { memo, useEffect, useState } from 'react';
+import { useMillisecondClock } from '@/utils/hooks';
 import overlayBg from '@/assets/images/26_images/26-01/26-01-15/red.gif';
 import baseBg from '@/assets/images/26_images/26-01/26-01-15/sph.gif';
-import { useMillisecondClock } from '@/utils/hooks';
-import React, { memo, useEffect, useState } from 'react';
+import styles from './Clock.module.css';
 
-// Centralized color control for all clock hands
+export const assets = [overlayBg, baseBg];
+
 const handColors = {
   hour: '#F39191B3',
   minute: '#F39191B3',
@@ -13,11 +15,9 @@ const handColors = {
 };
 
 const Clock =  () => {
-  // Migrated from legacy interval ticker to canonical rAF hook (useMillisecondClock).
   const time = useMillisecondClock(100);
-  const [bgReady, setBgReady] = useState<boolean>(false);
+  const [bgReady, setBgReady] = useState(false);
 
-  // Preload backgrounds to avoid FOUC
   useEffect(() => {
     const imgs = [overlayBg, baseBg];
     let loaded = 0;
@@ -63,14 +63,9 @@ const Clock =  () => {
   ];
 
   return (
-    <main
-      style={{
-        ...styles.wrapper,
-        opacity: bgReady ? 1 : 0,
-        visibility: bgReady ? 'visible' : 'hidden',
-        transition: 'opacity 0.3s ease',
-      }}
-    >
+    <main className={styles.container} style={{ ...styles.wrapper, opacity: bgReady ? 1 : 0, visibility: bgReady ? 'visible' : 'hidden', transition: 'opacity 0.3s ease' }}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <div style={styles.baseBackground} />
       {overlayLayers.map((layer, index) => (
         <div
@@ -174,4 +169,6 @@ const styles = {
   },
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_01_15';
+export default MemoizedClock;

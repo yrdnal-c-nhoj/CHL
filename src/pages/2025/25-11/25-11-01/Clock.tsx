@@ -2,10 +2,11 @@
 import cus251101font from '@/assets/fonts/25fonts/25-11-01-edgecase.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useSecondClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
-export const assets = [];
+export const assets = [cus251101font];
 
 function EdgeClockWithHands() {
   const fontConfigs: FontConfig[] = useMemo(
@@ -14,19 +15,8 @@ function EdgeClockWithHands() {
   );
 
   useSuspenseFontLoader(fontConfigs);
-
-  const [time, setTime] = useState(new Date());
+  const time = useSecondClock();
   const viewport = useWindowSize();
-
-  useEffect(() => {
-    const tick = () => {
-      setTime(new Date());
-      const timer = setTimeout(tick, 50);
-      return () => clearTimeout(timer);
-    };
-    const timer = setTimeout(tick, 0);
-    return () => clearTimeout(timer);
-  }, []);
 
   const { width, height } = viewport;
   const padding = 40; // Space from the literal edge of the screen in pixels

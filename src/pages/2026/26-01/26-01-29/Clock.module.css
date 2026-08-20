@@ -1,0 +1,70 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #4DA7E8;
+}
+
+.bgLayer {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.tileOverlay {
+  background-size: contain;
+  opacity: 0.7;
+}
+
+.clockFace {
+  position: relative;
+  z-index: 10;
+  width: min(110vw, 110vh);
+  height: min(110vw, 110vh);
+}
+
+.hourMark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.hourImage {
+  width: min(33vw, 33vh);
+  height: min(33vw, 33vh);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  user-select: none;
+}
+
+.hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: bottom center;
+  border-radius: 10px;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

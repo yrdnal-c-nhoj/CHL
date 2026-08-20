@@ -1,87 +1,35 @@
-import React from 'react';
+import { memo, useMemo } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-
-// Asset imports
 import backgroundUrl from '@/assets/images/26_images/26-01/26-01-22/1974.jpg';
 import digitTextureUrl from '@/assets/images/26_images/26-01/26-01-22/liq.webp';
-import fontUrl from '@/assets/fonts/26fonts/26-01-22-1974.ttf';
+import fontUrl from '@/assets/fonts/26fonts/26-01-22-1974.ttf?url';
+import styles from './Clock.module.css';
+
+export const assets = [backgroundUrl, digitTextureUrl, fontUrl];
 
 const FONT_FAMILY = '1974';
 
-const DynamicClock =  () => {
-  // BTS Standard: FOUC Prevention via Suspense
-  useSuspenseFontLoader([{ fontFamily: FONT_FAMILY, fontUrl }]);
+const fontConfigs = [{ fontFamily: FONT_FAMILY, fontUrl }];
 
-  // BTS Standard: Frame-perfect time synchronization
+const DynamicClock =  () => {
+  useSuspenseFontLoader(fontConfigs);
   const time = useMillisecondClock();
   const dateTime = time.toISOString();
 
-  const timeString = [time.getHours(), time.getMinutes(), time.getSeconds()]
+  const timeString = useMemo(() => [time.getHours(), time.getMinutes(), time.getSeconds()]
     .map((n) => n.toString().padStart(2, '0'))
-    .join('');
-
-  // ────────────────────────────────────────────────
-  // Styles
-  // ────────────────────────────────────────────────
-
-  const containerStyle = {
-    width: '100vw',
-    height: '100dvh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundImage: `url(${backgroundUrl})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    filter: 'contrast(0.7) brightness(1.15)',
-    fontFamily: `'${FONT_FAMILY}', sans-serif`,
-  };
-
-  const digitsRowStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 'clamp(1.0vw, 2vw, 4vw)', // space between boxes
-    padding: '0 2vw',
-    width: '100%',
-    maxWidth: '99vw',
-    marginTop: '-65vh',
-  };
-
-  const digitBoxStyle = {
-    width: 'clamp(22vw, 22vw, 222px)', // fixed width — biggest factor in preventing jump
-    height: 'clamp(29vw, 29vw, 340px)', // fixed height
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden', // keeps content insideoptional depth
-  };
-
-  const digitStyle = {
-    fontSize: 'clamp(20vw, 26vw, 260px)', // large enough to mostly fill the box
-    // fontWeight: 'bold',
-    lineHeight: '1',
-    backgroundImage: `url(${digitTextureUrl})`,
-    backgroundSize: '180% 180%',
-    backgroundPosition: 'center',
-    backgroundClip: 'text',
-    WebkitBackgroundClip: 'text',
-    color: 'transparent',
-    WebkitTextFillColor: 'transparent',
-    filter: 'contrast(2.2) brightness(1.1)',
-    // WebkitTextStroke: '1.5px rgba(255, 255, 255, 0.5)',
-    userSelect: 'none',
-    textAlign: 'center',
-  };
+    .join(''), [time]);
 
   return (
-    <main style={containerStyle}>
-      <div style={digitsRowStyle}>
-        <time dateTime={dateTime} style={{ display: 'flex', gap: 'inherit' }}>
+    <main className={styles.container} style={{ backgroundImage: `url(${backgroundUrl})` }}>
+      <time dateTime={dateTime} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
+      <div className={styles.digitsRow}>
+        <time dateTime={dateTime}>
           {timeString.split('').map((char, i) => (
-            <div key={i} style={digitBoxStyle}>
-              <div style={digitStyle}>{char}</div>
+            <div key={i} className={styles.digitBox}>
+              <div className={styles.digit} style={{ backgroundImage: `url(${digitTextureUrl})` }}>{char}</div>
             </div>
           ))}
         </time>
@@ -90,4 +38,6 @@ const DynamicClock =  () => {
   );
 };
 
-export default DynamicClock;
+const MemoizedDynamicClock = memo(DynamicClock);
+MemoizedDynamicClock.displayName = 'Clock_26_01_22';
+export default MemoizedDynamicClock;

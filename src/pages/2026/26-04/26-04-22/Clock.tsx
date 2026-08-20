@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import videoBg from '@/assets/images/26_images/26-04/26-04-22/steamroller.mp4';
 import styles from './Clock.module.css';
@@ -20,7 +20,9 @@ const Clock =  () => {
   }, [time]);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <div className={styles.contentBox}>
         <video
           src={videoBg}
@@ -33,28 +35,17 @@ const Clock =  () => {
         <div className={styles.clockContainer}>
           <div className={styles.clockFace}>
             <div className={styles.twelveDot} />
-            <div
-              className={`${styles.handBase} ${styles.hourHand}`}
-              style={{ transform: `translateX(-50%) rotate(${hourAngle}deg)` }}
-            />
-            <div
-              className={`${styles.handBase} ${styles.minuteHand}`}
-              style={{
-                transform: `translateX(-50%) rotate(${minuteAngle}deg)`,
-              }}
-            />
-            <div
-              className={`${styles.handBase} ${styles.secondHand}`}
-              style={{
-                transform: `translateX(-50%) rotate(${secondAngle}deg)`,
-              }}
-            />
+            <div className={`${styles.handBase} ${styles.hourHand}`} style={{ transform: `translateX(-50%) rotate(${hourAngle}deg)` }} />
+            <div className={`${styles.handBase} ${styles.minuteHand}`} style={{ transform: `translateX(-50%) rotate(${minuteAngle}deg)` }} />
+            <div className={`${styles.handBase} ${styles.secondHand}`} style={{ transform: `translateX(-50%) rotate(${secondAngle}deg)` }} />
             <div className={styles.centerDot} />
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_04_22';
+export default MemoizedClock;

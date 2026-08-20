@@ -1,45 +1,60 @@
 // VenusClock.jsx
-import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
+import React, { useEffect, useRef, memo } from 'react';
+import { useMultiAssetLoader, useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 import bgLayer1 from '@/assets/images/25_images/25-10/25-10-16/venus2.webp';
 import bgLayer2 from '@/assets/images/25_images/25-10/25-10-16/venus.webp';
 import fullBg from '@/assets/images/25_images/25-10/25-10-16/ve.jpg';
-import font20251015 from '@/assets/fonts/25fonts/25-10-16-venus.ttf';
-import { useSecondClock } from '@/utils/hooks';
-export const assets = [];
+import font20251015 from '@/assets/fonts/25fonts/25-10-16-venus.ttf?url';
+import styles from './Clock.module.css';
 
-export default function VenusClock() {
+export const assets = [bgLayer1, bgLayer2, fullBg, font20251015];
+
+const fontConfigs = [
+  {
+    fontFamily: 'VenusFont',
+    fontUrl: font20251015,
+    options: { weight: 'normal', style: 'normal' },
+  },
+];
+
+const VenusClock =  () => {
+  useSuspenseFontLoader(fontConfigs);
+  const time = useSecondClock();
   const [ready, setReady] = useState<boolean>(false);
-  const [time, setTime] = useState(new Date());
-  const [clockSizeVh, setClockSizeVh] = useState<number>(30); // default phone size
+  const [clockSizeVh, setClockSizeVh] = useState<number>(30);
 
   const clockRadiusVh = clockSizeVh / 1.1;
   const symbols = ['y', 'Q', 'C', 'D', 'E', '9', 'G', 'H', 'I', 'p', '1', '5'];
 
-  // --- Responsive clock size ---
   useEffect(() => {
-      setTime(time);
-    }, [time]);
+    setClockSizeVh(Math.min(window.innerWidth, window.innerHeight) * 0.08);
+    const handleResize = () => {
+      setClockSizeVh(Math.min(window.innerWidth, window.innerHeight) * 0.08);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  // --- Scrolling background ---
+  useEffect(() => {
+    setReady(true);
+  }, []);
+
   useEffect(() => {
     if (!ready) return;
     let posX = 0;
     const speed = -0.1;
+    let frameId: number;
     const scroll =  () => {
       posX -= speed;
       const bgEl = document.getElementById('venus-scroll-bg');
       if (bgEl) bgEl.style.backgroundPosition = `${posX}vh 50%`;
-      requestAnimationFrame(scroll);
+      frameId = requestAnimationFrame(scroll);
     };
-    requestAnimationFrame(scroll);
+    frameId = requestAnimationFrame(scroll);
+    return () => cancelAnimationFrame(frameId);
   }, [ready]);
 
-  if (!ready) return <div>
-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
-Loading...</div>;
-
-  // --- Styles ---
   const outerWrapperStyle = {
     width: '100vw',
     height: '100dvh',
@@ -177,7 +192,9 @@ Loading...</div>;
   };
 
   return (
-    <div style={outerWrapperStyle}>
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <img
         decoding="async"
         loading="lazy"
@@ -211,13 +228,10 @@ Loading...</div>;
           opacity: 0.9,
           zIndex: 1,
           pointerEvents: 'none',
-          ////////////////////////////////////
-          filter:
-            'brightness(1.1) contrast(1.4) saturate(1.2) hue-rotate(80deg)',
+          filter: 'brightness(1.1) contrast(1.4) saturate(1.2) hue-rotate(80deg)',
         }}
       />
       <div style={containerStyle}>
-        {/* translucent white disc behind face */}
         <div
           style={{
             position: 'absolute',
@@ -244,6 +258,10 @@ Loading...</div>;
         <div style={minuteStyle} />
         <div style={secondStyle} />
       </div>
-    </div>
+    </main>
   );
-}
+};
+
+const MemoizedVenusClock = memo(VenusClock);
+MemoizedVenusClock.displayName = 'Clock_25_10_16';
+export default MemoizedVenusClock;

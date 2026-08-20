@@ -1,30 +1,21 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { memo, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { formatTime, useMillisecondClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
-import d25090120font from '@/assets/fonts/26fonts/26-01-20-hairdo.ttf';
+import d25090120font from '@/assets/fonts/26fonts/26-01-20-hairdo.ttf?url';
 import styles from './Clock.module.css';
+
+export const assets = [d25090120font];
 
 type DigitChar = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
 
 const DIGIT_MAP: Record<DigitChar, string> = {
-  '0': 'B',
-  '1': 'V',
-  '2': 'A',
-  '3': 'X',
-  '4': 'D',
-  '5': 'Q',
-  '6': 'M',
-  '7': 'G',
-  '8': 'H',
-  '9': 'T',
+  '0': 'B', '1': 'V', '2': 'A', '3': 'X', '4': 'D',
+  '5': 'Q', '6': 'M', '7': 'G', '8': 'H', '9': 'T',
 };
 
 const fontConfigs: FontConfig[] = [
-  {
-    fontFamily: 'MyD25090120font',
-    fontUrl: d25090120font,
-  },
+  { fontFamily: 'MyD25090120font', fontUrl: d25090120font },
 ];
 
 const Clock =  () => {
@@ -48,11 +39,10 @@ const Clock =  () => {
 
   return (
     <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <div className={styles.background} aria-hidden="true" />
-      <time
-        className={styles.content}
-        dateTime={`${hours}:${minutes}:${seconds}`}
-      >
+      <time className={styles.content} dateTime={`${hours}:${minutes}:${seconds}`}>
         {renderUnit(hours)}
         {renderUnit(minutes)}
         {renderUnit(seconds)}
@@ -61,4 +51,6 @@ const Clock =  () => {
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_01_20';
+export default MemoizedClock;

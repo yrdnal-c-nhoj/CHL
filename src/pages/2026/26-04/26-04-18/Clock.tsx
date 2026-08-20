@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -6,7 +6,7 @@ import styles from './Clock.module.css';
 import fontUrl from '@/assets/fonts/26fonts/26-04-18-h1.ttf?url';
 import bgImg from '@/assets/images/26_images/26-04/26-04-18/radio.webp';
 
-export const assets = [bgImg];
+export const assets = [fontUrl, bgImg];
 
 const Clock =  () => {
   const time = useMillisecondClock();
@@ -25,10 +25,9 @@ const Clock =  () => {
   const cell = `calc(${size} / 2)`;
 
   return (
-    <div
-      className={styles.container}
-      style={{ '--cell': cell } as React.CSSProperties}
-    >
+    <main className={styles.container} style={{ '--cell': cell } as React.CSSProperties}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <div
         className={styles.bgImage}
         style={{ backgroundImage: `url(${bgImg})` }}
@@ -48,8 +47,10 @@ const Clock =  () => {
           <div className={styles.radioDigit}>{minutes[1]}</div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_04_18';
+export default MemoizedClock;

@@ -86,39 +86,27 @@ const AnalogClock =  () => {
   useSuspenseFontLoader(fontConfigs);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
+      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
+
       <BackgroundLayers />
 
-      {/* Analog Clock Construction */}
       <div className={styles.clockFace}>
-        {/* Roman Numerals for the South Wind */}
         {ROMAN_NUMERALS.map((num, i) => (
-          <div
-            key={num}
-            className={styles.numeral}
-            style={{
-              transform: `rotate(${i * 30}deg) translateY(-135px) rotate(-${i * 30}deg)`,
-            }}
-          >
+          <div key={num} className={styles.numeral} style={{ transform: `rotate(${i * 30}deg) translateY(-135px) rotate(-${i * 30}deg)` }}>
             {num}
           </div>
         ))}
 
         <div className={styles.centerPin} />
-        <div
-          className={`${styles.hand} ${styles.hour}`}
-          style={{ transform: `rotate(${rotations.hr}deg)` }}
-        />
-        <div
-          className={`${styles.hand} ${styles.minute}`}
-          style={{ transform: `rotate(${rotations.min}deg)` }}
-        />
-        <div
-          className={`${styles.hand} ${styles.second}`}
-          style={{ transform: `rotate(${rotations.sec}deg)` }}
-        />
+        <div className={`${styles.hand} ${styles.hour}`} style={{ transform: `rotate(${rotations.hr}deg)` }} />
+        <div className={`${styles.hand} ${styles.minute}`} style={{ transform: `rotate(${rotations.min}deg)` }} />
+        <div className={`${styles.hand} ${styles.second}`} style={{ transform: `rotate(${rotations.sec}deg)` }} />
       </div>
-    </div>
+    </main>
   );
 };
-export default AnalogClock;
+
+const MemoizedAnalogClock = memo(AnalogClock);
+MemoizedAnalogClock.displayName = 'Clock_26_05_12';
+export default MemoizedAnalogClock;

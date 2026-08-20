@@ -1,0 +1,96 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(180deg, #4C6DF3 0%, #798158A2 100%);
+}
+
+.wrapper {
+  composes: container;
+}
+
+.gpuLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
+}
+
+.backgroundLayer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.5);
+}
+
+.tileBase {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+}
+
+.clockFace {
+  position: relative;
+  z-index: 10;
+  width: min(85vw, 85vh);
+  height: min(85vw, 85vh);
+}
+
+.numberSlot {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 2%;
+}
+
+.number {
+  font-size: min(11vw, 11vh);
+  color: #830DD2;
+  text-shadow: 0 0 15px #8B5CF6;
+  user-select: none;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  border-radius: 10px;
+  background-color: #830DD2;
+  box-shadow: 0 0 20px #8B5CF6;
+  z-index: 15;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.8vh;
+  height: 0.8vh;
+  background-color: #830DD2;
+  border: 0.15vh solid #8B5CF6;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+}

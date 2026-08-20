@@ -1,34 +1,31 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, memo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import bgImage from '@/assets/images/25_images/25-11/25-11-07/birds.webp';
 import clockFontUrl from '@/assets/fonts/25fonts/25-11-07-twobirds.ttf?url';
-import { formatTime as utilFormatTime } from '@/utils/clockUtils'; // Import the utility formatTime
 import styles from './Clock.module.css';
 
-// Asset exports for preloading
 export const assets = [bgImage];
 
-export default function PanicAnalogClock() {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = useMemo(
-    () => [
-      {
-        fontFamily: 'CustomClockFont',
-        fontUrl: clockFontUrl,
-        options: {
-          weight: '900',
-          style: 'normal',
-        },
+const fontConfigs = useMemo(
+  () => [
+    {
+      fontFamily: 'CustomClockFont',
+      fontUrl: clockFontUrl,
+      options: {
+        weight: '900',
+        style: 'normal',
       },
-    ],
-    [],
-  );
-  useSuspenseFontLoader(fontConfigs);
+    },
+  ],
+  [],
+);
 
+const PanicAnalogClock =  () => {
+  useSuspenseFontLoader(fontConfigs);
   const now = useMillisecondClock();
 
-  const rightImageDelay = 500; // 0.5s delay for right image
+  const rightImageDelay = 500;
   const bottomImageOpacity = 1.0;
   const topImageOpacity = 0.5;
   const fontName = 'CustomClockFont';
@@ -38,24 +35,25 @@ export default function PanicAnalogClock() {
   const [showImages, setShowImages] = useState<{
     left: boolean;
     right: boolean;
-  }>({ left: false, right: false }); // Restore staggered image timing
-  const [fadeBlack, setFadeBlack] = useState<boolean>(false); // Black overlay fade
-  const [rightImageLoaded, setRightImageLoaded] = useState<boolean>(false); // Track right image load
+  }>({ left: false, right: false });
+  const [fadeBlack, setFadeBlack] = useState<boolean>(false);
+  const [rightImageLoaded, setRightImageLoaded] = useState<boolean>(false);
   const urlsRef = useRef<{ left: string | null; right: string | null }>({
     left: null,
     right: null,
   });
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Standardized time formatting and ISO string for accessibility
-  const { timeStr, isoTime } = useMemo(() => ({
-    timeStr: utilFormatTime(now, '12h-stylized'),
-    isoTime: now.toISOString()
-  }), [now]);
+  const { timeStr, isoTime } = useMemo(() => {
+    const h = now.getHours();
+    const hours12 = h % 12 || 12;
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const timeStr = `${hours12}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')} ${ampm}`;
+    return { timeStr, isoTime: now.toISOString() };
+  }, [now]);
 
   useEffect(() => {
     let aborted = false;
-    // Using async fetch to create unique ObjectURLs staggers GIF starts
     (async () => {
       try {
         const imgRes = await fetch(bgImage, { cache: 'no-store' });
@@ -81,7 +79,6 @@ export default function PanicAnalogClock() {
         timerRef.current = setTimeout(() => {
           if (!aborted) {
             setShowImages({ left: true, right: true });
-            // Only fade black overlay after right image is shown and loaded
             if (rightImageLoaded) {
               setFadeBlack(true);
             }
@@ -96,7 +93,6 @@ export default function PanicAnalogClock() {
         timerRef.current = setTimeout(() => {
           if (!aborted) {
             setShowImages({ left: true, right: true });
-            // Only fade black overlay after right image is shown and loaded
             if (rightImageLoaded) {
               setFadeBlack(true);
             }
@@ -174,7 +170,9 @@ export default function PanicAnalogClock() {
   };
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
+      <time dateTime={isoTime} className={styles.srOnly}>{timeStr}</time>
+
       {/* Left background */}
       <img
         decoding="async"
@@ -195,7 +193,6 @@ export default function PanicAnalogClock() {
         alt="reversed background"
         onLoad={() => {
           setRightImageLoaded(true);
-          // If right image is already shown (post-delay), fade black now
           if (showImages.right) {
             setFadeBlack(true);
           }
@@ -246,6 +243,10 @@ export default function PanicAnalogClock() {
           transition: 'opacity 0.2s ease-in',
         }}
       />
-    </div>
+    </main>
   );
-}
+};
+
+const MemoizedPanicAnalogClock = memo(PanicAnalogClock);
+MemoizedPanicAnalogClock.displayName = 'Clock_25_11_07';
+export default MemoizedPanicAnalogClock;

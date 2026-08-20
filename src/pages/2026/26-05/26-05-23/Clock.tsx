@@ -1,73 +1,14 @@
-import fontUrl from '@/assets/fonts/26fonts/26-05-23.ttf';
+import fontUrl from '@/assets/fonts/26fonts/26-05-23.ttf?url';
 import lavaVideoSrc from '@/assets/images/26_images/26-05/26-05-23/lava.mp4';
 import type { FontConfig } from '@/types/clock';
 import { ClockLoadingFallback, useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useRef, useState, memo } from 'react';
+import styles from './Clock.module.css';
 
-// =========================
-// ASSET EXPORTS (Required)
-// =========================
 export const assets: string[] = [lavaVideoSrc, fontUrl];
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
-
-const inlineStyles: Record<string, React.CSSProperties> = {
-  container: {
-    width: '100vw',
-    height: '100dvh',
-    position: 'relative',
-    overflow: 'hidden',
-    backgroundColor: '#000',
-  },
-  videoStack: {
-    position: 'absolute',
-    inset: 0,
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    zIndex: 0,
-  },
-  videoSlot: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-    position: 'relative',
-    flex: '0 0 auto',
-  },
-  video: {
-    width: 'auto',
-    height: 'auto',
-    maxWidth: '100vw',
-    maxHeight: '100dvh',
-    objectFit: 'contain',
-    display: 'block',
-  },
-  digitsContainer: {
-    position: 'relative',
-    zIndex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100dvh',
-    WebkitUserSelect: 'none',
-    userSelect: 'none',
-  },
-  digitBox: {
-    fontSize: 'calc(100dvh / 8)',
-    fontWeight: 300,
-    fontFamily: 'Clock26-05-23, monospace',
-    color: '#f20a0a',
-    textShadow: '0 3px 2px rgba(2, 46, 27, 0.963)',
-    lineHeight: 0.9,
-    fontVariantNumeric: 'tabular-nums',
-  },
-};
 
 const ClockInner =  () => {
   const fontConfigs = useMemo<FontConfig[]>(
@@ -112,14 +53,16 @@ const ClockInner =  () => {
   const isoTime = time.toISOString();
 
   return (
-    <div style={inlineStyles.container}>
+    <main className={styles.container}>
+      <time dateTime={isoTime} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       {/* Tiled Maximized Videos */}
-      <div style={inlineStyles.videoStack}>
+      <div className={styles.videoStack}>
         {[...Array(12)].map((_, i) => (
-          <div key={i} style={inlineStyles.videoSlot}>
+          <div key={i} className={styles.videoSlot}>
             <video
               ref={(el) => (videoRefs.current[i] = el)}
-              style={inlineStyles.video}
+              className={styles.video}
               muted
               loop
               playsInline
@@ -129,9 +72,9 @@ const ClockInner =  () => {
       </div>
 
       {/* Clock Digits */}
-      <time dateTime={isoTime} style={inlineStyles.digitsContainer}>
+      <time dateTime={isoTime} className={styles.digitsContainer}>
         {allDigits.map((digit, index) => (
-          <span key={index} style={inlineStyles.digitBox}>
+          <span key={index} className={styles.digitBox}>
             {digit}
           </span>
         ))}
@@ -140,22 +83,12 @@ const ClockInner =  () => {
       {/* Loading Overlay */}
       {!isReady && (
         <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'rgba(0,0,0,0.7)',
-            color: 'white',
-            fontSize: '1.2rem',
-          }}
+          className={styles.loadingOverlay}
         >
           Loading lava atmosphere...
         </div>
       )}
-    </div>
+    </main>
   );
 };
 
@@ -165,4 +98,6 @@ const Clock =  () => (
   </Suspense>
 );
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_05_23';
+export default MemoizedClock;
