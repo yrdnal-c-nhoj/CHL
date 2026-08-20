@@ -1,0 +1,119 @@
+.topExplanationBar {
+  width: 100vw;
+  margin: 0 auto;
+  background-color: #565656;
+  color: #A2A0A0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  padding: 8px 16px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #343232;
+  text-align: center;
+  letter-spacing: 0.2px;
+  text-wrap: balance;
+}
+
+.techShadow {
+  text-shadow:
+    1px 1px 0px #000000,
+    -1px -1px 0px #FFFFFF,
+    1px -1px 0px #FFFFFF,
+    -1px 1px 0px #FFFFFF,
+    0px -1px 0px #FFFFFF,
+    -1px 0px 0px #FFFFFF;
+}
+
+.readoutsWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  margin-top: auto;
+  margin-bottom: auto;
+  box-sizing: border-box;
+}
+
+.digitalTimeContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 6vw;
+  box-sizing: border-box;
+}
+
+.digitalBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(3rem, 10vw, 8rem);
+  height: clamp(4.5rem, 13vh, 10rem);
+  font-size: clamp(3.5rem, 10vh, 7.5rem);
+  font-weight: 900;
+  font-family: 'ClockFont_26_07_25', sans-serif;
+}
+
+.digitalColon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(3.5rem, 10vh, 7.5rem);
+  font-weight: 900;
+  font-family: 'ClockFont_26_07_25', sans-serif;
+  width: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.hexCodeContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 6vw;
+  box-sizing: border-box;
+}
+
+.hexBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(2.2rem, 8vw, 6rem);
+  height: clamp(3.5rem, 9vh, 7rem);
+  font-size: clamp(2.8rem, 8vh, 5.5rem);
+  font-weight: 800;
+  font-family: 'ClockFont_26_07_25', sans-serif;
+}
+
+.hexStrip {
+  position: relative;
+  width: 100vw;
+  height: clamp(42px, 7vh, 65px);
+  overflow: hidden;
+  margin-top: auto;
+}
+
+.hexStripCell {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: calc(100vw / 13);
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'ClockFont_26_07_25', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  font-size: clamp(0.45rem, 1.1vh, 0.75rem);
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  will-change: transform;
+}
+
+.isCurrent {
+  font-size: clamp(0.55rem, 1.3vh, 0.9rem);
+  border: 2px solid currentColor;
+  border-radius: 6px;
+}

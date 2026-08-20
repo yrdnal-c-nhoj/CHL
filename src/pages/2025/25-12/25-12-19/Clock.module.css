@@ -1,0 +1,8 @@
+@keyframes flow {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 50px; }
+}
+
+.flow {
+  animation: flow 0.5s linear infinite;
+}

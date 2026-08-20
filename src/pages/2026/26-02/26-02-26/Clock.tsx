@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { memo, useState, useEffect, useMemo, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import backgroundImage from '@/assets/images/26_images/26-02/26-02-26/26-02-26-f.webp';
 import fuFont from '@/assets/fonts/26fonts/26-02-26-fu.ttf';
+import styles from './Clock.module.css';
 
 interface ViteModule {
   default: string;
@@ -25,6 +26,8 @@ interface GridSize {
 }
 
 export const background = backgroundImage;
+
+export const assets = [];
 
 const ImageGridClock =  () => {
   const fontConfigs = useMemo(
@@ -191,10 +194,8 @@ const ImageGridClock =  () => {
     return <div style={{ background: '#000', height: '100vh' }} />;
 
   return (
-    <div style={containerStyle}>
-      <style>{`
-        .grid-img { transition: opacity 0.5s ease-in-out; object-fit: cover; width: 100%; height: 100%; }
-      `}</style>
+    <main style={containerStyle} className={styles.container}>
+      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
 
       <div style={gridStyle}>
         {imageAssignments.map((src, i) => {
@@ -205,7 +206,7 @@ const ImageGridClock =  () => {
             <div key={i} style={{ background: 'fuchsia', overflow: 'hidden' }}>
               <img
                 src={imageToShow}
-                className="grid-img"
+                className={styles.gridImg}
                 style={{
                   opacity: loadedImages.has(i) ? 1 : 0,
                   transition: 'opacity 0.5s ease-in-out',
@@ -234,8 +235,10 @@ const ImageGridClock =  () => {
       />
 
       <div style={clockStyle}>{formatTime(currentTime)}</div>
-    </div>
+    </main>
   );
 };
 
-export default ImageGridClock;
+const MemoizedImageGridClock = memo(ImageGridClock);
+MemoizedImageGridClock.displayName = 'Clock_26_02_26';
+export default MemoizedImageGridClock;

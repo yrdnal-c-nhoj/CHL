@@ -1,0 +1,44 @@
+@keyframes jossel {
+  0%, 100% {
+    transform: 
+      translateY(0) 
+      rotate(0deg) 
+      scale(1) 
+      translateZ(0);
+    text-shadow: 
+      1px 0 0 white, 
+      0 0 15px rgba(255,255,255,0.4),
+      0 0 30px rgba(255, 200, 200, 0.3);
+  }
+  25% {
+    transform: 
+      translateY(-25px) 
+      rotate(5deg) 
+      scale(1.1)
+      translateZ(10px);
+    text-shadow: 
+      3px 0 8px rgba(255,255,255,0.7), 
+      0 0 25px rgba(255,255,255,0.6),
+      0 0 40px rgba(255, 200, 200, 0.4);
+  }
+  50% {
+    transform: 
+      translateY(15px) 
+      rotate(-4deg) 
+      scale(0.95)
+      translateZ(5px);
+    text-shadow: 
+      -2px 0 4px rgba(255,255,255,0.6),
+      0 0 20px rgba(255, 200, 200, 0.3);
+  }
+  75% {
+    transform: 
+      translateY(-10px) 
+      rotate(3deg) 
+      scale(1.05)
+      translateZ(8px);
+    text-shadow: 
+      2px 0 6px rgba(255,255,255,0.6),
+      0 0 25px rgba(255,255,255,0.5);
+  }
+}

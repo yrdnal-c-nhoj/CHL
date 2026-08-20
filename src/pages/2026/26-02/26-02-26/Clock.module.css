@@ -1,0 +1,6 @@
+.gridImg {
+  transition: opacity 0.5s ease-in-out;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}

@@ -1,0 +1,24 @@
+@keyframes moonRise {
+  0% { top: 100vh; opacity: 0; }
+  25% { top: 32vh; opacity: 1; }
+  50% { top: 32vh; opacity: 1; }
+  60% { top: 32vh; opacity: 0; }
+  100% { top: 100vh; opacity: 0; }
+}
+
+@keyframes cloudSweep {
+  0% { transform: translateX(-90vw); opacity: 0; }
+  40% { transform: translateX(-90vw); opacity: 0; }
+  50% { transform: translateX(0); opacity: 1; }
+  65% { transform: translateX(0); opacity: 1; }
+  80% { transform: translateX(90vw); opacity: 0; }
+  100% { transform: translateX(90vw); opacity: 0; }
+}
+
+.moonRise {
+  animation: moonRise 15s infinite ease-in-out;
+}
+
+.cloudSweep {
+  animation: cloudSweep 15s infinite ease-in-out;
+}

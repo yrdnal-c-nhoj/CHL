@@ -1,0 +1,8 @@
+@keyframes rotate {
+  0% { transform: rotateX(0deg) rotateY(0deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg); }
+}
+
+.rotate {
+  animation: rotate 123s linear infinite;
+}

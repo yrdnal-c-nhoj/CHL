@@ -1,29 +1,35 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { memo, useEffect, useState, useMemo, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 import sandTexture from '@/assets/images/25_images/25-12/25-12-19/sand.webp';
 import FONT_PATH from '@/assets/fonts/25fonts/25-12-19-hour.ttf?url';
-import { useSecondClock } from '@/utils/hooks';
+import styles from './Clock.module.css';
+
 const FONT_FAMILY = 'DateFont';
 
-const HourglassTimer =  () => {
-  const [percentDayPassed, setPercentDayPassed] = useState<number>(0);
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: FONT_FAMILY,
+    fontUrl: FONT_PATH,
+    options: { weight: 'normal', style: 'normal' },
+  },
+];
 
-  const fontConfigs = useMemo(
-    () => [
-      {
-        fontFamily: FONT_FAMILY,
-        fontUrl: FONT_PATH,
-        options: { weight: 'normal', style: 'normal' },
-      },
-    ],
-    [],
-  );
+export const assets = [sandTexture, FONT_PATH];
+
+const HourglassTimer =  () => {
+  const time = useSecondClock();
+  const [percentDayPassed, setPercentDayPassed] = useState<number>(0);
 
   useSuspenseFontLoader(fontConfigs);
 
   useEffect(() => {
-      updateSand();
-    }, [time]);
+    const now = new Date();
+    const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+    const minutes = now.getMinutes() + seconds / 60;
+    const hours = (now.getHours() % 12) + minutes / 60;
+    setPercentDayPassed((hours / 12) * 100);
+  }, [time]);
 
   const formatTimeLabel = (h) => {
     if (h === 0 || h === 24) return '12';
@@ -65,9 +71,7 @@ const HourglassTimer =  () => {
     backgroundSize: 'cover',
     backgroundRepeat: 'repeat',
     transition: 'height 1s linear',
-    // backgroundColor: '#F5E1CEFF',
     backgroundBlendMode: 'multiply',
-    // opacity: 0.9,
     backgroundPosition: 'bottom',
     zIndex: 5,
     filter: 'contrast(0.8) brightness(1.3) saturate(1.3)',
@@ -75,13 +79,11 @@ const HourglassTimer =  () => {
 
   const timeLabelStyle = {
     fontSize: 'min(26px, 3.9vh)',
-    // fontWeight: 'bold',
     padding: '0 5px',
     textAlign: 'center',
     fontFamily: `'${FONT_FAMILY}', monospace`,
     letterSpacing: '0.1px',
     lineHeight: '1.2',
-    // backgroundColor: 'rgba(40,0,0)',
     borderRadius: '4px',
   };
 
@@ -130,13 +132,8 @@ const HourglassTimer =  () => {
   };
 
   return (
-    <div style={containerStyle}>
-      <style>{`
-        @keyframes flow {
-          0% { background-position: 0 0; }
-          100% { background-position: 0 50px; }
-        }
-      `}</style>
+    <main className={styles.container} style={containerStyle}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
 
       <div
         style={{
@@ -145,7 +142,6 @@ const HourglassTimer =  () => {
           alignItems: 'center',
         }}
       >
-        {/* TOP BULB */}
         <div
           style={{
             ...bulbStyle,
@@ -156,7 +152,6 @@ const HourglassTimer =  () => {
           {renderBulbMarkings(true)}
         </div>
 
-        {/* DYNAMIC NECK & STREAM */}
         <div
           style={{
             height: '1vh',
@@ -167,28 +162,23 @@ const HourglassTimer =  () => {
             overflow: 'visible',
           }}
         >
-          {/* The constant stream of falling sand */}
           <div
+            className={styles.flow}
             style={{
               width: '4px',
-              height: '46vh', // Reaches into the bottom bulb
+              height: '46vh',
               position: 'absolute',
               top: 0,
               backgroundImage: `url(${sandTexture})`,
               backgroundSize: '10px 50px',
               backgroundColor: '#ECE7E1FF',
               backgroundBlendMode: 'multiply',
-              animation: 'flow 0.5s linear infinite',
               zIndex: 1,
-
               filter: 'contrast(0.8) brightness(1.3) saturate(1.3)',
-
-              // boxShadow: '0 0 5px rgba(245, 225, 206, 0.9)'
             }}
           />
         </div>
 
-        {/* BOTTOM BULB */}
         <div
           style={{
             ...bulbStyle,
@@ -199,8 +189,10 @@ const HourglassTimer =  () => {
           {renderBulbMarkings(false)}
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
-export default HourglassTimer;
+const MemoizedHourglassTimer = memo(HourglassTimer);
+MemoizedHourglassTimer.displayName = 'Clock_25_12_19';
+export default MemoizedHourglassTimer;

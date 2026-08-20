@@ -1,0 +1,8 @@
+@keyframes slow-rotate {
+  0% { transform: translate(-50%, -50%) rotate(0deg) scale(1.5); }
+  100% { transform: translate(-50%, -50%) rotate(360deg) scale(1.5); }
+}
+
+.slowRotate {
+  animation: slow-rotate 60s linear infinite;
+}

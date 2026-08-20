@@ -3,7 +3,7 @@ import clockVideo from '@/assets/images/26_images/26-07/26-07-13/click.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import React, { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import styles from './Clock.module.css';
 
 export const assets = [clockVideo, shapesFont];
@@ -19,8 +19,6 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
-// This mapping converts numeric digits to the corresponding characters in the "ShapesFont".
-// Defined outside the component to prevent re-declaration on every render.
 const DIGIT_TO_SHAPE_MAP: Record<string, string> = {
   '0': 'A',
   '1': 'R',
@@ -34,7 +32,7 @@ const DIGIT_TO_SHAPE_MAP: Record<string, string> = {
   '9': '3',
 };
 
-const styles: Record<string, React.CSSProperties> = {
+const clockStyles: Record<string, React.CSSProperties> = {
   clockWrapper: {
     position: 'relative',
     width: '100vw',
@@ -59,17 +57,16 @@ const styles: Record<string, React.CSSProperties> = {
     objectFit: 'cover',
     filter: 'brightness(1) contrast(1.2) saturate(6)',
   },
-clockContainer: {
-  fontFamily: 'ShapesFont, monospace',
-  position: 'relative',
-  zIndex: 2,
-  display: 'grid',
-  color: '#FBA433',
-  justifyItems: 'center',
-  alignItems: 'center',
-  // Standard Web CSS Text Shadow syntax: "h-offset v-offset blur-radius color"
-  textShadow: '2px 2px 0px #C5B0F0, -2px 2px 0px #22045F',
-},
+  clockContainer: {
+    fontFamily: 'ShapesFont, monospace',
+    position: 'relative',
+    zIndex: 2,
+    display: 'grid',
+    color: '#FBA433',
+    justifyItems: 'center',
+    alignItems: 'center',
+    textShadow: '2px 2px 0px #C5B0F0, -2px 2px 0px #22045F',
+  },
   digit: {
     lineHeight: 1,
     display: 'flex',
@@ -97,34 +94,12 @@ const Clock =  () => {
     [digits]);
 
   return (
-    <div style={styles.clockWrapper}>
-      {/* Injected responsive layout styles */}
-      <style>{`
-        /* Laptop / Desktop (Default): All 6 digits in 1 row */
-        .responsive-clock-grid {
-          grid-template-columns: repeat(6, 1fr);
-          gap: 4vw;
-        }
-        .responsive-digit {
-          font-size: clamp(3rem, 15vw, 12rem);
-        }
+    <main style={clockStyles.clockWrapper} className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
 
-        /* Phone: 2 columns, 3 rows */
-        @media (max-width: 768px) {
-          .responsive-clock-grid {
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            gap: 3vh 15vw;
-          }
-          .responsive-digit {
-            font-size: clamp(4rem, 33vh, 8rem);
-          }
-        }
-      `}</style>
-
-      <div style={styles.background}>
+      <div style={clockStyles.background}>
         <video
-          style={styles.backgroundVideo}
+          style={clockStyles.backgroundVideo}
           src={clockVideo}
           autoPlay
           loop
@@ -136,17 +111,19 @@ const Clock =  () => {
       <time
         dateTime={time.toISOString()}
         aria-label="A digital clock displaying the time using abstract shapes."
-        style={styles.clockContainer}
-        className="responsive-clock-grid"
+        style={clockStyles.clockContainer}
+        className={styles.responsiveClockGrid}
       >
         {displayed.map((letter, index) => (
-          <div key={index} style={styles.digit} className="responsive-digit">
+          <div key={index} style={clockStyles.digit} className={styles.responsiveDigit}>
             {letter}
           </div>
         ))}
       </time>
-    </div>
+    </main>
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_07_13';
+export default MemoizedClock;

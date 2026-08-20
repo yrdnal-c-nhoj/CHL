@@ -1,40 +1,29 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { memo, useEffect, useRef, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 import * as THREE from 'three';
+import styles from './Clock.module.css';
 
-import bgFull from '@/assets/images/25_images/25-11/25-11-12/octo.webp'; // full-size background
-import bgTile from '@/assets/images/25_images/25-11/25-11-12/octoh.webp'; // repeating/tiled background
+import bgFull from '@/assets/images/25_images/25-11/25-11-12/octo.webp';
+import bgTile from '@/assets/images/25_images/25-11/25-11-12/octoh.webp';
 import custom251112tz from '@/assets/fonts/25fonts/25-11-12-oct.ttf?url';
 
-export const assets = [];
+export const assets = [bgFull, bgTile, custom251112tz];
+
+const fontConfigs = [
+  {
+    fontFamily: 'OctahedronFont',
+    fontUrl: custom251112tz,
+    options: { weight: 'normal', style: 'normal' },
+  },
+];
 
 function TwoBackgroundOctahedron() {
   const threeRef = useRef(null);
-  const [time, setTime] = useState(new Date());
+  const time = useSecondClock();
 
-  useEffect(() => {
-    const tick = () => {
-      setTime(new Date());
-      const timer = setTimeout(tick, 1000);
-      return () => clearTimeout(timer);
-    };
-    const timer = setTimeout(tick, 0);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const fontConfigs = useMemo(
-    () => [
-      {
-        fontFamily: 'OctahedronFont',
-        fontUrl: custom251112tz,
-        options: { weight: 'normal', style: 'normal' },
-      },
-    ],
-    [],
-  );
   useSuspenseFontLoader(fontConfigs);
 
-  // THREE.js Octahedron (unchanged)
   useEffect(() => {
     const mount = threeRef.current;
     if (!mount) return;
@@ -60,7 +49,7 @@ function TwoBackgroundOctahedron() {
     const ctx = canvas.getContext('2d');
     const texture = new THREE.CanvasTexture(canvas);
 
-    const fontName = 'OctahedronFont'; // Use the same name as the loaded font
+    const fontName = 'OctahedronFont';
 
     const updateClock =  () => {
       const now = new Date();
@@ -69,7 +58,6 @@ function TwoBackgroundOctahedron() {
       const txt = `${h}:${m < 10 ? '0' + m : m}`;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // Font is guaranteed loaded by Suspense
       ctx.font = `110px 'OctahedronFont', Arial`;
 
       ctx.fillStyle = '#043D91FF';
@@ -94,7 +82,6 @@ function TwoBackgroundOctahedron() {
 
     const geometry = new THREE.OctahedronGeometry(2);
 
-    // reassign UVs (unchanged)
     const uv = geometry.attributes.uv.array;
     for (let i = 0; i < uv.length; i += 6) {
       uv[i] = 0;
@@ -110,7 +97,6 @@ function TwoBackgroundOctahedron() {
       color: 0xfff0f0,
       shininess: 100,
       transparent: true,
-      // opacity: 0.6,
       side: THREE.DoubleSide,
       map: texture,
     });
@@ -165,10 +151,11 @@ function TwoBackgroundOctahedron() {
       mount.removeChild(renderer.domElement);
       window.removeEventListener('resize', handleResize);
     };
-  }, []); // Dependencies cleared as font loading is handled by Suspense
+  }, []);
 
   return (
     <main
+      className={styles.container}
       style={{
         width: '100vw',
         height: '100dvh',
@@ -187,21 +174,20 @@ function TwoBackgroundOctahedron() {
           backgroundImage: `url(${bgFull})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          // opacity: 0.55,          // <--- adjust
           zIndex: 0,
         }}
       />
 
       {/* FLOATING TILED BACKGROUND */}
       <div
+        className={styles.floatUp}
         style={{
           position: 'absolute',
           inset: 0,
           backgroundImage: `url(${bgTile})`,
           backgroundRepeat: 'repeat',
           backgroundSize: '100px 100px',
-          animation: 'floatUp 45s linear infinite',
-          opacity: 0.3, // <--- adjust
+          opacity: 0.3,
           zIndex: 0,
         }}
       />
@@ -216,20 +202,10 @@ function TwoBackgroundOctahedron() {
           pointerEvents: 'none',
         }}
       />
-
-      {/* FLOATING ANIMATION KEYFRAME */}
-      <style>
-        {`
-          @keyframes floatUp {
-            0% { background-position-y: 0px; }
-            100% { background-position-y: -1000px; }
-          }
-        `}
-      </style>
     </main>
   );
 }
 
-const MemoizedTwoBackgroundOctahedron = React.memo(TwoBackgroundOctahedron);
+const MemoizedTwoBackgroundOctahedron = memo(TwoBackgroundOctahedron);
 MemoizedTwoBackgroundOctahedron.displayName = 'Clock_25_11_12';
 export default MemoizedTwoBackgroundOctahedron;

@@ -1,9 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import backgroundImg from '@/assets/images/26_images/26-04/26-04-28/2021-07-06-0012.jpg';
 import { calculateAngles, useMillisecondClock } from '@/utils/hooks';
+import styles from './Clock.module.css';
+
+export const assets = [backgroundImg];
 
 const Clock =  () => {
-  // Use useClockTime with 'ms' precision for smooth analog hand movement
   const time = useMillisecondClock();
 
   const hourHandRef = useRef<HTMLDivElement>(null);
@@ -22,7 +24,7 @@ const Clock =  () => {
     if (secondHandRef.current) {
       secondHandRef.current.style.transform = `translateX(-50%) rotate(${second}deg)`;
     }
-  }, [time]); // Dependency array includes 'time' to re-run on every time update
+  }, [time]);
 
   const containerStyle: React.CSSProperties = {
     width: '100vw',
@@ -38,68 +40,19 @@ const Clock =  () => {
   };
 
   return (
-    <main style={containerStyle}>
-      <style>{`
-        .analog-clock-container {
-          position: relative;
-          width: 500px;
-          height: 500px;
-          border-radius: 50%;
-        }
+    <main style={containerStyle} className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
 
-        .center-dot {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 4px;
-          height: 4px;
-          background-color: #CE8C56;
-          border-radius: 50%;
-          z-index: 10;
-        }
-
-        .hand {
-          position: absolute;
-          bottom: 50%; /* Position base of hand at center */
-          left: 50%;
-          transform-origin: 50% 100%; /* Pivot from the bottom center of the hand div */
-          background-color: #333333;
-          border-radius: 5px;
-          z-index: 5;
-        }
-
-        .hour-hand {
-          width: 6px;
-          height: 150px;
-          background-color: #D36D39;
-          box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
-        }
-
-        .minute-hand {
-          width: 4px;
-          height: 200px;
-          background-color: #C97F41;
-          box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
-        }
-
-        .second-hand {
-          width: 2px;
-          height: 200px;
-          background-color: #e74c3c;
-          z-index: 6;
-          box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
-        }
-      `}</style>
-
-      <div className="analog-clock-container">
-        <div ref={hourHandRef} className="hand hour-hand" />
-        <div ref={minuteHandRef} className="hand minute-hand" />
-        <div ref={secondHandRef} className="hand second-hand" />
-        <div className="center-dot" />
+      <div className={styles.analogClockContainer}>
+        <div ref={hourHandRef} className={`${styles.hand} ${styles.hourHand}`} />
+        <div ref={minuteHandRef} className={`${styles.hand} ${styles.minuteHand}`} />
+        <div ref={secondHandRef} className={`${styles.hand} ${styles.secondHand}`} />
+        <div className={styles.centerDot} />
       </div>
     </main>
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_04_28';
+export default MemoizedClock;

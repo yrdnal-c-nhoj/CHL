@@ -26,6 +26,18 @@
   object-fit: cover;
 }
 
+@media (max-width: 600px) {
+  .backgroundVideo {
+    object-fit: contain;
+    height: 50% !important;
+    top: 25% !important;
+  }
+
+  .mobileOverlay {
+    display: block !important;
+  }
+}
+
 @media (max-width: 768px) {
   .backgroundVideo {
     object-fit: contain;
