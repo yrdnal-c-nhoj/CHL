@@ -1,48 +1,25 @@
-import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { memo, useEffect, useRef, useMemo } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import type { CSSProperties } from 'react';
 import tumbGif from '@/assets/images/25_images/25-05/25-05-04/tumb-ezgif.com-optimize.gif';
 import spinnGif from '@/assets/images/25_images/25-05/25-05-04/spinn.gif';
 import edGif from '@/assets/images/25_images/25-05/25-05-04/ed-ezgif.com-optimize.gif';
 import wallpaperGif from '@/assets/images/25_images/25-05/25-05-04/wallpapaer-ezgif.com-optimize.gif';
+import styles from './Clock.module.css';
 
-// Component Props interface
-interface ClockProps {
-  // No props required for this component
-}
+export const assets = [tumbGif, spinnGif, edGif, wallpaperGif];
 
-const Clock: React.FC<ClockProps> = () => {
-  // Font loading configuration (memoized) - no custom fonts needed
-  const fontConfigs = useMemo<FontConfig[]>(() => [], []);
+const fontConfigs: FontConfig[] = [];
+
+const Clock =  () => {
   useSuspenseFontLoader(fontConfigs);
-
-  // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const time = useSecondClock();
   const clockRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const updateClock =  () => {
-      const now = new Date();
-      const sec = now.getSeconds();
-      const min = now.getMinutes();
-      const hr = now.getHours();
 
-      const secDeg = sec * 6;
-      const minDeg = min * 6 + sec * 0.1;
-      const hrDeg = hr * 30 + min * 0.5;
-
-      document.getElementById('second').style.transform =
-        `rotate(${secDeg}deg)`;
-      document.getElementById('minute').style.transform =
-        `rotate(${minDeg}deg)`;
-      document.getElementById('hour').style.transform = `rotate(${hrDeg}deg)`;
-    };
-
-    const interval = setInterval(updateClock, 1000);
-    updateClock();
-    return () => clearInterval(interval);
-  }, []);
+  const secDeg = time.getSeconds() * 6;
+  const minDeg = time.getMinutes() * 6 + time.getSeconds() * 0.1;
+  const hrDeg = (time.getHours() % 12) * 30 + time.getMinutes() * 0.5;
 
   const containerStyle = {
     margin: 0,
@@ -60,19 +37,6 @@ const Clock: React.FC<ClockProps> = () => {
     overflow: 'hidden',
     zIndex: 5,
   };
-
-  const imageStyle = (index) => ({
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    maxWidth: '100%',
-    maxHeight: '100%',
-    objectFit: 'contain',
-    opacity: 0,
-    animation: `fade 9s infinite`,
-    animationDelay: `${index * 3}s`,
-  });
 
   const clockStyle = {
     width: '87vh',
@@ -105,7 +69,9 @@ const Clock: React.FC<ClockProps> = () => {
   };
 
   return (
-    <div style={containerStyle}>
+    <main className={styles.container} style={containerStyle}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <div style={slideshowStyle}>
         {[tumbGif, spinnGif, edGif].map((src, i) => (
           <img
@@ -114,7 +80,8 @@ const Clock: React.FC<ClockProps> = () => {
             key={i}
             src={src}
             alt={`frame-${i}`}
-            style={imageStyle(i)}
+            className={styles.fade}
+            style={{ animationDelay: `${i * 3}s` }}
           />
         ))}
       </div>
@@ -122,20 +89,16 @@ const Clock: React.FC<ClockProps> = () => {
       <div style={clockStyle}>
         <div
           id="hour"
-          style={{
-            ...handStyle,
-            height: '6px',
-            background: 'rgb(113, 107, 113)',
-          }}
-         />
+          style={{ ...handStyle, height: '6px', background: 'rgb(113, 107, 113)', transform: `translateX(-50%) rotate(${hrDeg}deg)` }}
+        />
         <div
           id="minute"
-          style={{ ...handStyle, background: 'rgb(65, 69, 69)' }}
-         />
+          style={{ ...handStyle, background: 'rgb(65, 69, 69)', transform: `translateX(-50%) rotate(${minDeg}deg)` }}
+        />
         <div
           id="second"
-          style={{ ...handStyle, height: '1px', background: 'rgb(65, 69, 69)' }}
-         />
+          style={{ ...handStyle, height: '1px', background: 'rgb(65, 69, 69)', transform: `translateX(-50%) rotate(${secDeg}deg)` }}
+        />
       </div>
 
       <img
@@ -145,18 +108,10 @@ const Clock: React.FC<ClockProps> = () => {
         alt="background"
         style={wallpaperStyle}
       />
-
-      <style>{`
-        @keyframes fade {
-          0% { opacity: 0; }
-          11.1% { opacity: 1; }
-          33.3% { opacity: 1; }
-          44.4% { opacity: 0; }
-          100% { opacity: 0; }
-        }
-      `}</style>
-    </div>
+    </main>
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_25_05_04';
+export default MemoizedClock;

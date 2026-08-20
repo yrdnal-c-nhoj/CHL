@@ -1,20 +1,24 @@
-import React, { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import medievalFont from '@/assets/fonts/25fonts/25-09-11-ren.ttf';
+import type { FontConfig } from '@/types/clock';
+import medievalFont from '@/assets/fonts/25fonts/25-09-11-ren.ttf?url';
 import backgroundImage from '@/assets/images/25_images/25-09/25-09-11/ren.jpg';
 import MedievalSVG from '@/assets/images/25_images/25-09/25-09-11/MedievalSVG.jsx';
+import styles from './Clock.module.css';
+
+export const assets = [medievalFont, backgroundImage];
+
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'ClockFont_25_09_18',
+    fontUrl: medievalFont,
+  },
+];
 
 const MedievalBanner =  () => {
   const time = useMillisecondClock();
-
-  // Load font for this specific clock
-  useEffect(() => {
-    const font = new FontFace('ClockFont_25_09_18', `url(${medievalFont})`);
-    font.load().then(() => {
-      document.fonts.add(font);
-    });
-  }, []);
+  useSuspenseFontLoader(fontConfigs);
 
   const formatTime = (date) => {
     const hours = (date.getHours() % 12 || 12).toString();
@@ -25,18 +29,17 @@ const MedievalBanner =  () => {
   const { hours, minutes } = formatTime(time);
 
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        margin: 0,
-        padding: 0,
-        overflow: 'hidden',
-        position: 'relative',
-        backgroundColor: 'black', // fallback while rendering
-      }}
-    >
-      {/* Background */}
+    <main className={styles.container} style={{
+      width: '100vw',
+      height: '100dvh',
+      margin: 0,
+      padding: 0,
+      overflow: 'hidden',
+      position: 'relative',
+      backgroundColor: 'black',
+    }}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <div
         style={{
           position: 'absolute',
@@ -48,12 +51,11 @@ const MedievalBanner =  () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           zIndex: 1,
-          transform: 'scaleX(-1)', // <-- flips horizonta
+          transform: 'scaleX(-1)',
           filter: 'brightness(1.7) saturate(0.1)',
         }}
       />
 
-      {/* Medieval SVG */}
       <div
         style={{
           position: 'absolute',
@@ -68,8 +70,8 @@ const MedievalBanner =  () => {
         <MedievalSVG />
       </div>
 
-      {/* Centered Clock */}
       <div
+        className={styles.sparkle}
         style={{
           position: 'absolute',
           top: '50%',
@@ -84,30 +86,15 @@ const MedievalBanner =  () => {
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           letterSpacing: '0.1em',
-          textShadow: `
-            0 0 0.5rem #fff8dc,
-            0 0 1rem #FFD700,
-            0 0 1.5rem #FFA500,
-            0 0 2rem #FFD700
-          `,
-          animation: 'sparkle 1.5s infinite alternate',
           fontFamily: 'ClockFont_25_09_18, monospace',
         }}
       >
-        <style>
-          {`
-            @keyframes sparkle {
-              0% { text-shadow: 0 0 0.5rem #fff8dc, 0 0 1rem #FFD700, 0 0 1.5rem #FFA500, 0 0 2rem #FFD700; }
-              50% { text-shadow: 0 0 1rem #fff8dc, 0 0 2rem #FFD700, 0 0 3rem #FFA500, 0 0 4rem #FFD700; }
-              100% { text-shadow: 0 0 0.5rem #fff8dc, 0 0 1rem #FFD700, 0 0 1.5rem #FFA500, 0 0 2rem #FFD700; }
-            }
-          `}
-        </style>
-        {hours}
-        {minutes}
+        {hours}{minutes}
       </div>
-    </div>
+    </main>
   );
 };
 
-export default MedievalBanner;
+const MemoizedMedievalBanner = memo(MedievalBanner);
+MemoizedMedievalBanner.displayName = 'Clock_25_09_11';
+export default MemoizedMedievalBanner;

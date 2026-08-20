@@ -1,19 +1,11 @@
-.style-1 {
-  transform: scale(1);
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  20% { transform: scale(1.2); }
+  40% { transform: scale(0.95); }
+  60% { transform: scale(1.1); }
+  80% { transform: scale(1.03); }
 }
 
-.style-2 {
-  transform: scale(1.2);
-}
-
-.style-3 {
-  transform: scale(0.95);
-}
-
-.style-4 {
-  transform: scale(1.1);
-}
-
-.style-5 {
-  transform: scale(1.03);
+.heartbeat {
+  animation: heartbeat 1s infinite;
 }

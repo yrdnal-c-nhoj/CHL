@@ -1,0 +1,9 @@
+@keyframes sparkle {
+  0% { text-shadow: 0 0 0.5rem #fff8dc, 0 0 1rem #FFD700, 0 0 1.5rem #FFA500, 0 0 2rem #FFD700; }
+  50% { text-shadow: 0 0 1rem #fff8dc, 0 0 2rem #FFD700, 0 0 3rem #FFA500, 0 0 4rem #FFD700; }
+  100% { text-shadow: 0 0 0.5rem #fff8dc, 0 0 1rem #FFD700, 0 0 1.5rem #FFA500, 0 0 2rem #FFD700; }
+}
+
+.sparkle {
+  animation: sparkle 1.5s infinite alternate;
+}

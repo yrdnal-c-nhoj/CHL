@@ -1,12 +1,13 @@
-.style-1 {
-  transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+@keyframes spinClock {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+  }
 }
 
-.style-2 {
-  transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
-}
-
-.inlineStyle {
+.spinClock {
   display: flex;
   justify-content: center;
   align-items: center;

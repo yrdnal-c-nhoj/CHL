@@ -1,30 +1,19 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { memo, useEffect, useState, useMemo, useCallback } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundImage from '@/assets/images/25_images/25-04/25-04-14/bricks.webp';
+import styles from './Clock.module.css';
 
-// Time interface
-interface TimeState {
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
-
-// Component Props interface
-interface BlueBrickClockProps {
-  // No props required for this component
-}
+export const assets = [backgroundImage];
 
 const BlueBrickClock = () => {
-  // Font loading configuration (memoized) - no custom fonts needed
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
   useSuspenseFontLoader(fontConfigs);
 
-  // Use the standardized hook for smooth clock updates
   const currentTime = useSecondClock();
 
-  const [time, setTime] = useState<TimeState>({
+  const [time, setTime] = useState({
     hours: currentTime.getHours(),
     minutes: currentTime.getMinutes(),
     seconds: currentTime.getSeconds(),
@@ -47,29 +36,27 @@ const BlueBrickClock = () => {
     height: '3vw',
     background: 'radial-gradient(circle at 30% 30%, #7d9ac9, #a5c1e6)',
     boxShadow: '0 0 1vw 0.4vw rgba(117, 151, 215, 0.8)',
-    animation: 'pop 0.6s cubic-bezier(0.28, 0.84, 0.42, 1)',
   };
 
-  const renderBalls = useCallback(
-    (count: number) =>
-      Array.from({ length: count }, (_, i) => (
-        <div key={i} style={ballStyle} />
-      )),
+  const renderBalls = useCallback((count: number) =>
+    Array.from({ length: count }, (_, i) => (
+      <div key={i} className={styles.pop} style={ballStyle} />
+    )),
     [ballStyle],
   );
 
   return (
-    <div
-      style={{
-        margin: 0,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100dvh',
-        position: 'relative',
-        boxSizing: 'border-box',
-      }}
-    >
+    <main className={styles.container} style={{
+      margin: 0,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100dvh',
+      position: 'relative',
+      boxSizing: 'border-box',
+    }}>
+      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
+
       <div
         style={{
           position: 'fixed',
@@ -96,7 +83,7 @@ const BlueBrickClock = () => {
           zIndex: 2,
         }}
       >
-        {['hours', 'seconds', 'minutes'].map((unit, idx) => (
+        {['hours', 'seconds', 'minutes'].map((unit) => (
           <div
             key={unit}
             style={{ position: 'relative', width: '90vw', marginBottom: '2vh' }}
@@ -119,25 +106,10 @@ const BlueBrickClock = () => {
           </div>
         ))}
       </div>
-
-      {/* Keyframes style */}
-      <style>
-        {`
-          @keyframes pop {
-            0% { transform: scale(0); }
-            70% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-          }
-
-          @media (max-width: 60vw) {
-            div[style*="flex-direction: row"] {
-              flex-direction: column !important;
-            }
-          }
-        `}
-      </style>
-    </div>
+    </main>
   );
 };
 
-export default BlueBrickClock;
+const MemoizedBlueBrickClock = memo(BlueBrickClock);
+MemoizedBlueBrickClock.displayName = 'Clock_25_04_14';
+export default MemoizedBlueBrickClock;
