@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { memo, useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import cylFont from '@/assets/fonts/25fonts/25-06-03-cyl.ttf';
+import styles from './Clock.module.css';
 
-// Standardized font loading with font-display: swap to avoid FOUC
-export const fontConfigs = [
+export const assets = [cylFont];
+
+const fontConfigs = [
   {
     fontFamily: 'cyl',
     fontUrl: cylFont,
@@ -15,35 +17,12 @@ export const fontConfigs = [
 ];
 
 const FiligreeClock =  () => {
-  const [digits, setDigits] = useState(Array(16).fill('0'));
-
   useSuspenseFontLoader(fontConfigs);
 
-  // Update time digits every second
-  useEffect(() => {
-    let frameId: number;
-    const tick = () => {
-      const now = new Date();
-      const timeStr = now
-        .toLocaleTimeString('en-GB', { hour12: false })
-        .replace(/:/g, '');
-      const fullDigits = timeStr
-        .repeat(Math.ceil(16 / timeStr.length))
-        .slice(0, 16)
-        .split('');
-      setDigits(fullDigits);
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
-
-  // Inline styles
-  const styles = {
-    root: {
+  return (
+    <main className={styles.container} style={{
       fontFamily: "'cyl', sans-serif",
-      background:
-        'radial-gradient(circle, rgba(163, 91, 111, 1) 0%, rgba(145, 81, 144, 1) 100%)',
+      background: 'radial-gradient(circle, rgba(163, 91, 111, 1) 0%, rgba(145, 81, 144, 1) 100%)',
       width: '100vw',
       height: '100dvh',
       margin: 0,
@@ -52,83 +31,74 @@ const FiligreeClock =  () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-    },
-    container: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      perspective: '300vw',
-      width: '100vw',
-      height: '100vh',
-    },
-    box: {
-      transformStyle: 'preserve-3d',
-      animation: 'rotate 123s linear infinite',
-      position: 'relative',
-      width: '100vw',
-      height: '100vh',
-    },
-    face: (i) => ({
-      position: 'absolute',
-      left: '50%',
-      top: '50%',
-      display: 'flex',
-      gap: '1rem',
-      transformStyle: 'preserve-3d',
-      transform: `translate(-50%, -50%) rotateX(calc(${i + 1} * 22.5deg)) translateZ(15vw)`,
-    }),
-    digit: {
-      color: '#D0C7C7FF',
-      textShadow: '#14170EFF 0.2rem 0.2rem 0, #2C2D29FF -0.2rem -0.2rem 0',
-      position: 'relative',
-      transformStyle: 'preserve-3d',
-      width: '0.3rem',
-      height: '1rem',
-      fontSize: '4.8rem',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    faceFront: {
-      position: 'absolute',
-      width: '100%',
-      height: '100%',
-      backfaceVisibility: 'hidden',
-      color: 'white',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      fontSize: '4.8rem',
-    },
-    faceBack: {
-      position: 'absolute',
-      width: '100%',
-      height: '100%',
-      backfaceVisibility: 'hidden',
-      color: '#080D01FF',
-      textShadow: '#EBE7E7FF 0.3rem 0.3rem 0, #F0EEEEFF -0.3rem -0.3rem 0',
-      backgroundColor: 'rgba(27, 5, 117, 0.2)',
-      transform: 'rotateY(180deg)',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      fontSize: '4.8rem',
-    },
-  };
+    }}>
+      <time dateTime={new Date().toISOString()} className={styles.srOnly}>{new Date().toLocaleTimeString()}</time>
 
-  return (
-    <div style={styles.root}>
-      <div style={styles.container}>
-        <div id="clockBox" style={styles.box}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        perspective: '300vw',
+        width: '100vw',
+        height: '100vh',
+      }}>
+        <div id="clockBox" className={styles.rotate} style={{
+          transformStyle: 'preserve-3d',
+          position: 'relative',
+          width: '100vw',
+          height: '100vh',
+        }}>
           {[...Array(16)].map((_, i) => (
-            <div key={i} className="face" style={styles.face(i)}>
+            <div key={i} className="face" style={{
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              display: 'flex',
+              gap: '1rem',
+              transformStyle: 'preserve-3d',
+              transform: `translate(-50%, -50%) rotateX(calc(${i + 1} * 22.5deg)) translateZ(15vw)`,
+            }}>
               {[...Array(6)].map((__, j) => (
-                <div key={j} className="digit" style={styles.digit}>
-                  <div className="face-front" style={styles.faceFront}>
-                    {digits[j] || '0'}
+                <div key={j} className="digit" style={{
+                  color: '#D0C7C7FF',
+                  textShadow: '#14170EFF 0.2rem 0.2rem 0, #2C2D29FF -0.2rem -0.2rem 0',
+                  position: 'relative',
+                  transformStyle: 'preserve-3d',
+                  width: '0.3rem',
+                  height: '1rem',
+                  fontSize: '4.8rem',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                  <div className="face-front" style={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    backfaceVisibility: 'hidden',
+                    color: 'white',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    fontSize: '4.8rem',
+                  }}>
+                    0
                   </div>
-                  <div className="face-back" style={styles.faceBack}>
-                    {digits[j] || '0'}
+                  <div className="face-back" style={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    backfaceVisibility: 'hidden',
+                    color: '#080D01FF',
+                    textShadow: '#EBE7E7FF 0.3rem 0.3rem 0, #F0EEEEFF -0.3rem -0.3rem 0',
+                    backgroundColor: 'rgba(27, 5, 117, 0.2)',
+                    transform: 'rotateY(180deg)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    fontSize: '4.8rem',
+                  }}>
+                    0
                   </div>
                 </div>
               ))}
@@ -136,15 +106,10 @@ const FiligreeClock =  () => {
           ))}
         </div>
       </div>
-
-      <style>{`
-        @keyframes rotate {
-          0% { transform: rotateX(0deg) rotateY(0deg); }
-          100% { transform: rotateX(360deg) rotateY(360deg); }
-        }
-      `}</style>
-    </div>
+    </main>
   );
 };
 
-export default FiligreeClock;
+const MemoizedFiligreeClock = memo(FiligreeClock);
+MemoizedFiligreeClock.displayName = 'Clock_25_06_03';
+export default MemoizedFiligreeClock;

@@ -1,21 +1,28 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import { memo, useEffect, useRef, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import videoFile from '@/assets/images/25_images/25-12/25-12-28/coaster.mp4';
 import fallbackImg from '@/assets/images/25_images/25-12/25-12-28/coaster.webp';
 import fontUrl_20251128 from '@/assets/fonts/25fonts/25-12-28-coaster.ttf?url';
 import { useSecondClock } from '@/utils/hooks';
-export default function Clock() {
+import styles from './Clock.module.css';
+
+export const assets = [videoFile, fallbackImg, fontUrl_20251128];
+
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'CustomFont_20251128',
+    fontUrl: fontUrl_20251128,
+  },
+];
+
+const Clock =  () => {
+  const time = useSecondClock();
   const [timeText, setTimeText] = useState<any>('');
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [shake, setShake] = useState<any>({ x: 0, y: 0, rotate: 0 });
   const videoRef = useRef(null);
   const animationFrameId = useRef<number | null>(null);
-
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [{ fontFamily: 'CustomFont_20251128', fontUrl: fontUrl_20251128 }],
-    [],
-  );
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -33,10 +40,9 @@ export default function Clock() {
     setTimeText(formattedTime);
   };
 
-  // Corrected shake animation loop
   useEffect(() => {
-      updateTime();
-    }, [time]);
+    updateTime();
+  }, [time]);
 
   const containerStyle = {
     width: '100vw',
@@ -113,96 +119,44 @@ export default function Clock() {
 
   const digitStyle = (index) => ({
     display: 'inline-block',
-    animation: `
-      jossel 1.2s infinite 
-      cubic-bezier(0.4, 0, 0.2, 1) 
-      ${index * 0.03}s
-    `,
+    animation: 'jossel 1.2s infinite cubic-bezier(0.4, 0, 0.2, 1) ' + (index * 0.03) + 's',
     transformOrigin: 'center center',
     willChange: 'transform',
-    transform: 'translateZ(0)', // Force hardware acceleration
-    backfaceVisibility: 'hidden', // Prevent flickering
+    transform: 'translateZ(0)',
+    backfaceVisibility: 'hidden',
   });
 
   return (
-    <>
-      <style>
-        {`
-          @keyframes jossel {
-            0%, 100% {
-              transform: 
-                translateY(0) 
-                rotate(0deg) 
-                scale(1) 
-                translateZ(0);
-              text-shadow: 
-                1px 0 0 white, 
-                0 0 15px rgba(255,255,255,0.4),
-                0 0 30px rgba(255, 200, 200, 0.3);
-            }
-            25% {
-              transform: 
-                translateY(-25px) 
-                rotate(5deg) 
-                scale(1.1)
-                translateZ(10px);
-              text-shadow: 
-                3px 0 8px rgba(255,255,255,0.7), 
-                0 0 25px rgba(255,255,255,0.6),
-                0 0 40px rgba(255, 200, 200, 0.4);
-            }
-            50% {
-              transform: 
-                translateY(15px) 
-                rotate(-4deg) 
-                scale(0.95)
-                translateZ(5px);
-              text-shadow: 
-                -2px 0 4px rgba(255,255,255,0.6),
-                0 0 20px rgba(255, 200, 200, 0.3);
-            }
-            75% {
-              transform: 
-                translateY(-10px) 
-                rotate(3deg) 
-                scale(1.05)
-                translateZ(8px);
-              text-shadow: 
-                2px 0 6px rgba(255,255,255,0.6),
-                0 0 25px rgba(255,255,255,0.5);
-            }
-          }
-        `}
-      </style>
-      <div
-        style={containerStyle}
-        role="region"
-        aria-label="Background video and time"
-      >
-        <div style={timeContainerStyle} aria-live="polite">
-          {timeText.split('').map((char, index) => (
-            <span key={index} style={digitStyle(index)}>
-              {char}
-            </span>
-          ))}
-        </div>
-        <video
-          ref={videoRef}
-          style={videoStyle}
-          loop
-          muted
-          playsInline
-          autoPlay
-          preload="metadata"
-        >
-          <source src={videoFile} type="video/mp4" />
-        </video>
-        <div style={fallbackStyle} aria-hidden={!videoFailed}>
-          {videoFailed && (
-            <span style={{ display: 'none' }}>Fallback background image</span>
-          )}
-        </div>
+    <main style={containerStyle} role="region" aria-label="Background video and time">
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
+      <div style={timeContainerStyle} aria-live="polite">
+        {timeText.split('').map((char, index) => (
+          <span key={index} style={digitStyle(index)}>
+            {char}
+          </span>
+        ))}
       </div>
-    </>
+      <video
+        ref={videoRef}
+        style={videoStyle}
+        loop
+        muted
+        playsInline
+        autoPlay
+        preload="metadata"
+      >
+        <source src={videoFile} type="video/mp4" />
+      </video>
+      <div style={fallbackStyle} aria-hidden={!videoFailed}>
+        {videoFailed && (
+          <span style={{ display: 'none' }}>Fallback background image</span>
+        )}
+      </div>
+    </main>
   );
-}
+};
+
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_25_12_28';
+export default MemoizedClock;

@@ -1,48 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import { memo, useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import polFont from '@/assets/fonts/25fonts/25-07-06-pol.otf';
 import polarisGif from '@/assets/images/25_images/25-07/25-07-06/polaris.gif';
+import styles from './Clock.module.css';
 
-const CLOCK_NUMBERS = [
-  { num: '12', top: '5%', left: '50%' },
-  { num: '1', top: '16%', left: '78%' },
-  { num: '2', top: '30%', left: '89%' },
-  { num: '3', top: '50%', left: '95%' },
-  { num: '4', top: '70%', left: '89%' },
-  { num: '5', top: '84%', left: '78%' },
-  { num: '6', top: '94%', left: '50%' },
-  { num: '7', top: '84%', left: '22%' },
-  { num: '8', top: '70%', left: '11%' },
-  { num: '9', top: '50%', left: '5%' },
-  { num: '10', top: '30%', left: '11%' },
-  { num: '11', top: '16%', left: '22%' },
+export const assets = [polFont, polarisGif];
+
+const fontConfigs = [
+  {
+    fontFamily: 'pol',
+    fontUrl: polFont,
+    options: {
+      weight: 'normal',
+      style: 'normal',
+    },
+  },
 ];
 
 const Clock =  () => {
   const time = useMillisecondClock();
-
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'pol',
-      fontUrl: polFont,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
-  // Calculate rotations
   const minutes = time.getMinutes();
   const hours = time.getHours();
   const minRotation = minutes * 6;
   const hrRotation = (hours % 12) * 30 + minutes * 0.5;
 
   return (
-    <div
+    <main
+      className={styles.container}
       style={{
         margin: 0,
         padding: 0,
@@ -56,9 +43,12 @@ const Clock =  () => {
         position: 'relative',
       }}
     >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <img
         src={polarisGif}
         alt="Background"
+        className={styles.slowRotate}
         style={{
           position: 'absolute',
           top: '50%',
@@ -68,7 +58,6 @@ const Clock =  () => {
           transform: 'translate(-50%, -50%)',
           filter: 'brightness(140%) saturate(30%)',
           zIndex: 1,
-          animation: 'slow-rotate 60s linear infinite',
           pointerEvents: 'none',
         }}
       />
@@ -115,7 +104,20 @@ const Clock =  () => {
           }}
         />
 
-        {CLOCK_NUMBERS.map(({ num, top, left }) => (
+        {[
+          { num: '12', top: '5%', left: '50%' },
+          { num: '1', top: '16%', left: '78%' },
+          { num: '2', top: '30%', left: '89%' },
+          { num: '3', top: '50%', left: '95%' },
+          { num: '4', top: '70%', left: '89%' },
+          { num: '5', top: '84%', left: '78%' },
+          { num: '6', top: '94%', left: '50%' },
+          { num: '7', top: '84%', left: '22%' },
+          { num: '8', top: '70%', left: '11%' },
+          { num: '9', top: '50%', left: '5%' },
+          { num: '10', top: '30%', left: '11%' },
+          { num: '11', top: '16%', left: '22%' },
+        ].map(({ num, top, left }) => (
           <div
             key={num}
             className="number"
@@ -139,15 +141,10 @@ const Clock =  () => {
           </div>
         ))}
       </div>
-
-      <style>{`
-        @keyframes slow-rotate {
-          0% { transform: translate(-50%, -50%) rotate(0deg) scale(1.5); }
-          100% { transform: translate(-50%, -50%) rotate(360deg) scale(1.5); }
-        }
-      `}</style>
-    </div>
+    </main>
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_25_07_06';
+export default MemoizedClock;

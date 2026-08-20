@@ -1,14 +1,30 @@
-import React, { useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { memo, useEffect, useRef, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 import cloudyFont from '@/assets/fonts/25fonts/25-06-13-cloudy.ttf';
 import cmoon from '@/assets/images/25_images/25-06/25-06-13/cmoon.webp';
 import clouGif from '@/assets/images/25_images/25-06/25-06-13/clou.gif';
 import clll from '@/assets/images/25_images/25-06/25-06-13/clll.webp';
-import { useSecondClock } from '@/utils/hooks';
+import styles from './Clock.module.css';
+
+export const assets = [cloudyFont, cmoon, clouGif, clll];
+
+const fontConfigs = [
+  {
+    fontFamily: 'cloudy',
+    fontUrl: cloudyFont,
+    options: {
+      weight: 'normal',
+      style: 'normal',
+    },
+  },
+];
+
 const CloudyNightClock =  () => {
   const clockRef = useRef(null);
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  const time = useSecondClock();
+
+  useSuspenseFontLoader(fontConfigs);
 
   const containerStyle = {
     margin: 0,
@@ -35,7 +51,6 @@ const CloudyNightClock =  () => {
     justifyContent: 'center',
     alignItems: 'center',
     transform: 'translateX(-50%)',
-    animation: 'moonRise 15s infinite ease-in-out',
     zIndex: 5,
   };
 
@@ -59,7 +74,6 @@ const CloudyNightClock =  () => {
     backgroundImage: `url(${clouGif})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    animation: 'cloudSweep 15s infinite ease-in-out',
     zIndex: 10,
     filter:
       'brightness(40%) contrast(200%) sepia(1) hue-rotate(190deg) saturate(2)',
@@ -141,7 +155,9 @@ const CloudyNightClock =  () => {
   };
 
   return (
-    <div style={containerStyle}>
+    <main className={styles.container} style={containerStyle}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <img
         decoding="async"
         loading="lazy"
@@ -150,55 +166,17 @@ const CloudyNightClock =  () => {
         style={bgImageStyle}
       />
 
-      <div style={moonStyle}>
+      <div style={moonStyle} className={styles.moonRise}>
         <div style={clockRef ? clockStyle : {}} ref={clockRef}>
           12:00
         </div>
       </div>
 
-      <div style={cloudStyle} />
-
-      <style>{`
-        @keyframes moonRise {
-          0% { top: 100vh; opacity: 0; }
-          25% { top: 32vh; opacity: 1; }
-          50% { top: 32vh; opacity: 1; }
-          60% { top: 32vh; opacity: 0; }
-          100% { top: 100vh; opacity: 0; }
-        }
-
-        @keyframes cloudSweep {
-          0% {
-            transform: translateX(-90vw);
-            opacity: 0;
-          }
-          40% {
-            transform: translateX(-90vw);
-            opacity: 0;
-          }
-          50% {
-            transform: translateX(0);
-            opacity: 1;
-          }
-          65% {
-            transform: translateX(0);
-            opacity: 1;
-          }
-          80% {
-            transform: translateX(90vw);
-            opacity: 0;
-          }
-          100% {
-            transform: translateX(90vw);
-            opacity: 0;
-          }
-        }
-
-        
-       
-      `}</style>
-    </div>
+      <div style={cloudStyle} className={styles.cloudSweep} />
+    </main>
   );
 };
 
-export default CloudyNightClock;
+const MemoizedCloudyNightClock = memo(CloudyNightClock);
+MemoizedCloudyNightClock.displayName = 'Clock_25_06_13';
+export default MemoizedCloudyNightClock;
