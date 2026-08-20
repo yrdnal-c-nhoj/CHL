@@ -2,7 +2,7 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataContext } from '../../context/DataContext';
 import sortStyles from '../../styles/SortControls.module.css';
-import styles from '../../styles/Tagger.module.css'; // Reusing Tagger styles for consistency
+import styles from './TagManager.module.css';
 import type { DataContextType } from '../../types/data';
 import { normalizeTags, sortTags } from '../../utils/tagUtils';
 import Thumbnail from '../Thumbnail';
@@ -175,7 +175,7 @@ export default function TagManager() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.card} style={{ maxWidth: '1000px' }}>
+      <div className={styles.card}>
         <div className={styles.headerRow}>
           <h1 className={styles.title}>Bulk Tag Manager</h1>
           <button className={styles.buttonSecondary} onClick={() => navigate(-1)}>
@@ -183,16 +183,15 @@ export default function TagManager() {
           </button>
         </div>
 
-        <div className={styles.field} style={{ marginBottom: '1rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <input 
-            className={styles.input}
-            style={{ flex: 1 }}
+        <div className={styles.fieldRow}>
+          <input
+            className={`${styles.input} ${styles.searchInput}`}
             placeholder="Search by title or date (YY-MM-DD)..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          
-          <div className={sortStyles.sortContainer} style={{ margin: 0 }}>
+
+          <div className={sortStyles.sortContainer}>
             <button
               type="button"
               onClick={() => handleSort('date')}
@@ -211,113 +210,93 @@ export default function TagManager() {
             </button>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <button className={styles.buttonSecondary} onClick={expandAll} style={{ whiteSpace: 'nowrap', padding: '0.5rem' }}>
+          <div className={styles.actionButtons}>
+            <button className={styles.buttonSecondary} onClick={expandAll}>
               Expand All
             </button>
-            <button className={styles.buttonSecondary} onClick={collapseAll} style={{ whiteSpace: 'nowrap', padding: '0.5rem' }}>
+            <button className={styles.buttonSecondary} onClick={collapseAll}>
               Collapse All
             </button>
           </div>
         </div>
 
-        <div style={{ maxHeight: '60vh', overflowY: 'auto', marginBottom: '2rem', paddingRight: '10px' }}>
+        <div className={styles.scrollContainer}>
           {groupedByMonth.map(([monthKey, monthItems]) => (
-            <div key={monthKey} style={{ marginBottom: '1rem', border: '1px solid #eee', borderRadius: '8px', overflow: 'hidden' }}>
-              <button 
+            <div key={monthKey} className={styles.monthGroup}>
+              <button
                 onClick={() => toggleMonth(monthKey)}
-                style={{
-                  width: '100%', padding: '0.75rem 1.25rem', background: '#fcfcfc', border: 'none',
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  cursor: 'pointer', fontWeight: 'bold', borderBottom: expandedMonths[monthKey] ? '1px solid #eee' : 'none'
-                }}
+                className={`${styles.monthHeader} ${expandedMonths[monthKey] ? '' : styles.monthHeaderCollapsed}`}
               >
-                <span style={{ fontSize: '1.1rem', color: '#333' }}>
-                  {sortConfig.key === 'date' ? `Month: ${monthKey}` : `Starting with: ${monthKey}`} 
-                  <small style={{ marginLeft: '10px', color: '#888', fontWeight: 'normal' }}>({monthItems.length} clocks)</small>
+                <span className={styles.monthLabel}>
+                  {sortConfig.key === 'date' ? `Month: ${monthKey}` : `Starting with: ${monthKey}`}
+                  <small className={styles.monthCount}>({monthItems.length} clocks)</small>
                 </span>
-                <span style={{ fontSize: '1.4rem' }}>{expandedMonths[monthKey] ? '−' : '+'}</span>
+                <span className={styles.monthToggle}>{expandedMonths[monthKey] ? '−' : '+'}</span>
               </button>
-              
+
               {expandedMonths[monthKey] && (
-                <div style={{ padding: '0.5rem' }}>
+                <div className={styles.monthContent}>
                   {monthItems.map((item) => (
-                    <div key={item.date} style={{ 
-                      display: 'flex', 
-                      gap: '1.5rem', 
-                      padding: '1rem', 
-                      borderBottom: '1px solid #f0f0f0',
-                      alignItems: 'flex-start'
-                    }}>
-                      {/* Left: Thumbnail Link */}
-                      <a 
-                        href={`/${item.date}`} 
-                        target="_blank" 
+                    <div key={item.date} className={styles.itemRow}>
+                      <a
+                        href={`/${item.date}`}
+                        target="_blank"
                         rel="noopener noreferrer"
-                        style={{ width: '100px', flexShrink: 0, display: 'block' }}
+                        className={styles.thumbnailLink}
                         title="View clock in new window"
                       >
-                        <Thumbnail date={item.date} title={item.title} style={{ borderRadius: '6px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />
+                        <Thumbnail date={item.date} title={item.title} className={styles.thumbnailStyle} />
                       </a>
 
-                      {/* Right: Info and Tagging */}
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                          <span style={{ fontWeight: 'bold', color: '#333' }}>
+                      <div className={styles.infoColumn}>
+                        <div className={styles.titleRow}>
+                          <span className={styles.itemTitle}>
                             {item.title}{' '}
-                            <small style={{ color: '#888', fontWeight: 'normal' }}>#{item.clockNumber}</small>
+                            <small className={styles.clockNumber}>#{item.clockNumber}</small>
                           </span>
-                          <code style={{ fontSize: '0.85rem', color: '#666' }}>{item.date}</code>
+                          <code className={styles.itemDate}>{item.date}</code>
                         </div>
 
-                        <div className={styles.field} style={{ margin: 0 }}>
-                          {/* Active Tags */}
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '10px' }}>
+                        <div className={styles.tagField}>
+                          <div className={styles.tagButtonsRow}>
                             {normalizeTags(localTags[item.date] ?? '').length > 0 ? (
                               normalizeTags(localTags[item.date] ?? '').map(tag => (
-                                <button 
-                                  key={tag} 
+                                <button
+                                  key={tag}
                                   onClick={() => toggleTag(item.date, tag)}
-                                  className="tag-bubble"
-                                  style={{ border: '1px solid #222', cursor: 'pointer', fontSize: '11px' }}
+                                  className={styles.tagBubble}
                                   title="Click to remove"
                                 >
                                   {tag} ({tagCounts[tag] ?? 0}) ×
                                 </button>
                               ))
                             ) : (
-                              <span style={{ fontSize: '11px', color: '#999', fontStyle: 'italic' }}>No tags selected</span>
+                              <span className={styles.noTags}>No tags selected</span>
                             )}
                           </div>
 
-                          {/* Input and Selection */}
-                          <div style={{ display: 'flex', gap: '0.5rem' }}>
+                          <div className={styles.inputSelectRow}>
                             <input
-                              className={styles.input}
-                              style={{ flex: 1, margin: 0, fontSize: '0.9rem' }}
+                              className={`${styles.input} ${styles.tagInput}`}
                               value={localTags[item.date] ?? ''}
                               onChange={(e) => handleTagChange(item.date, e.target.value)}
                               placeholder="Type tags (comma separated)..."
                             />
-                            
+
                             <select
-                              className={styles.select}
+                              className={`${styles.select} ${styles.tagSelect}`}
                               multiple
                               value={[]}
                               aria-label={`Add tags for ${item.date}`}
                               onChange={(e) => {
                                 const selected = Array.from(e.target.selectedOptions).map(o => o.value);
                                 if (selected.length) {
-                                  // Apply all selections as toggles.
                                   selected.forEach(tag => toggleTag(item.date, tag));
                                 }
-
-                                // Clear selection so the next interaction can re-select the same tags.
                                 Array.from(e.target.options).forEach(opt => {
                                   opt.selected = false;
                                 });
                               }}
-                              style={{ width: 'auto', minWidth: '140px', height: '10rem' }}
                             >
                               {allExistingTags.map(({ name, count }) => (
                                 <option key={name} value={name}>{name} ({count})</option>
@@ -325,25 +304,12 @@ export default function TagManager() {
                             </select>
                           </div>
 
-                          {/* Quick Select Panel (Optional/Suggested) */}
-                          <div style={{ 
-                            marginTop: '8px', 
-                            maxHeight: '40px', 
-                            overflowY: 'auto', 
-                            display: 'flex', 
-                            flexWrap: 'wrap', 
-                            gap: '4px' 
-                          }}>
+                          <div className={styles.quickSelect}>
                             {allExistingTags.slice(0, 15).map(({ name, count }) => (
                               <button
                                 key={name}
                                 onClick={() => toggleTag(item.date, name)}
-                                style={{ 
-                                  fontSize: '10px', padding: '2px 6px', borderRadius: '4px', 
-                                  background: 'none', border: '1px solid #ddd', cursor: 'pointer',
-                                  color: normalizeTags(localTags[item.date] ?? '').includes(name) ? '#000' : '#888',
-                                  backgroundColor: normalizeTags(localTags[item.date] ?? '').includes(name) ? '#eee' : 'transparent'
-                                }}
+                                className={`${styles.quickSelectButton} ${normalizeTags(localTags[item.date] ?? '').includes(name) ? styles.quickSelectActive : styles.quickSelectInactive}`}
                               >
                                 {name} ({count})
                               </button>
@@ -358,25 +324,16 @@ export default function TagManager() {
             </div>
           ))}
 
-          <div style={{ marginTop: '2rem' }}>
-            <h2 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>Generated JSON (preview only)</h2>
+          <div className={styles.jsonSection}>
+            <h2 className={styles.jsonHeading}>Generated JSON (preview only)</h2>
             <textarea
               readOnly
               value={editedClockPagesJson}
-              style={{
-                width: '100%',
-                minHeight: '160px',
-                fontFamily: 'monospace',
-                fontSize: '0.8rem',
-                padding: '0.75rem',
-                border: '1px solid #e5e7eb',
-                borderRadius: '8px',
-                resize: 'vertical',
-              }}
+              className={styles.jsonTextarea}
             />
           </div>
 
-          <div className={styles.actions} style={{ marginTop: '1rem' }}>
+          <div className={styles.actions}>
             <button
               className={styles.button}
               onClick={async () => {

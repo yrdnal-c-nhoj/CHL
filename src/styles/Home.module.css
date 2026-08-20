@@ -21,6 +21,12 @@
   width: 100%;
   min-height: 100dvh;
   overflow-y: auto;
+  opacity: 1;
+  transition: opacity 0.4s ease-in;
+}
+
+.fadeOut {
+  opacity: 0;
 }
 
 .homeCenteredContent {

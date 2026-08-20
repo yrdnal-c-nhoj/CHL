@@ -79,44 +79,42 @@ export default function TagByImage() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.card} style={{ maxWidth: '1200px' }}>
+      <div className={`${styles.card} ${styles.tagByImageCard}`}>
         <div className={styles.headerRow}>
           <h1 className={styles.title}>Tag by Image</h1>
           <button className={styles.buttonSecondary} onClick={() => navigate(-1)}>Back</button>
         </div>
 
-        <div style={{ position: 'sticky', top: 0, backgroundColor: '#fff', zIndex: 10, padding: '1rem 0', borderBottom: '1px solid #eee', marginBottom: '1rem' }}>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-end', flexWrap: 'wrap' }}>
-            <div style={{ flex: 1, minWidth: '200px' }}>
+        <div className={styles.stickyHeader}>
+          <div className={styles.stickyHeaderRow}>
+            <div className={styles.stickyField}>
               <div className={styles.label}>1. Set active tag</div>
-              <input 
-                className={styles.input}
+              <input
+                className={`${styles.input} ${styles.activeTagInput}`}
                 placeholder="e.g. 'neon', 'analog'..."
                 value={activeTag}
                 onChange={(e) => setActiveTag(e.target.value)}
-                style={{ margin: 0, border: '2px solid #007bff' }}
               />
             </div>
 
-            <div style={{ flex: 1, minWidth: '200px' }}>
+            <div className={styles.stickyField}>
               <div className={styles.label}>2. Filter/Search</div>
-              <input 
-                className={styles.input}
+              <input
+                className={`${styles.input} ${styles.filterInput}`}
                 placeholder="Search clocks..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                style={{ margin: 0 }}
               />
             </div>
 
-            <div className={sortStyles.sortContainer} style={{ margin: 0 }}>
-              <button 
+            <div className={`${sortStyles.sortContainer} ${styles.sortRow}`}>
+              <button
                 className={`${sortStyles.sortButton} ${sortOrder === 'date' ? sortStyles.active : ''}`}
                 onClick={() => { setSortOrder('date'); setDirection(d => d === 'asc' ? 'desc' : 'asc'); }}
               >
                 Date {sortOrder === 'date' && (direction === 'asc' ? '↓' : '↑')}
               </button>
-              <button 
+              <button
                 className={`${sortStyles.sortButton} ${sortOrder === 'title' ? sortStyles.active : ''}`}
                 onClick={() => { setSortOrder('title'); setDirection(d => d === 'asc' ? 'desc' : 'asc'); }}
               >
@@ -125,45 +123,38 @@ export default function TagByImage() {
             </div>
           </div>
           {activeTag && (
-            <div style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: '#666' }}>
+            <div className={styles.hint}>
               Clicking an image below will add <strong>"{activeTag}"</strong> to that clock.
             </div>
           )}
         </div>
 
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', 
-          gap: '1rem', 
-          maxHeight: '60vh', 
-          overflowY: 'auto',
-          padding: '10px'
-        }}>
+        <div className={styles.imageGrid}>
           {sortedItems.map(item => (
-            <div 
-              key={item.date} 
+            <div
+              key={item.date}
+              className={styles.imageCard}
               onClick={() => handleImageClick(item.date)}
-              style={{ cursor: 'pointer', textAlign: 'center', transition: 'transform 0.1s' }}
               onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
               onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
             >
-              <Thumbnail date={item.date} title={item.title} style={{ borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />
-              <div style={{ fontSize: '0.7rem', marginTop: '4px', fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.title}</div>
-              <div style={{ fontSize: '0.6rem', color: '#888' }}>{item.date}</div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2px', marginTop: '4px', justifyContent: 'center' }}>
+              <Thumbnail date={item.date} title={item.title} className={styles.imageCardThumb} />
+              <div className={styles.imageCardTitle}>{item.title}</div>
+              <div className={styles.imageCardDate}>{item.date}</div>
+              <div className={styles.tagChips}>
                 {normalizeTags(localTags[item.date] ?? '').map(t => (
-                  <span key={t} style={{ fontSize: '8px', padding: '1px 3px', backgroundColor: t === activeTag.toLowerCase() ? '#e7f3ff' : '#f0f0f0', borderRadius: '2px', border: t === activeTag.toLowerCase() ? '1px solid #007bff' : '1px solid #ddd' }}>{t}</span>
+                  <span key={t} className={`${styles.tagChip} ${t === activeTag.toLowerCase() ? styles.tagChipActive : styles.tagChipInactive}`}>{t}</span>
                 ))}
               </div>
             </div>
           ))}
         </div>
 
-        <div style={{ marginTop: '2rem', borderTop: '2px solid #eee', paddingTop: '1rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-            <h2 style={{ fontSize: '1.1rem' }}>Generated JSON</h2>
-            <button 
-              className={styles.button} 
+        <div className={styles.jsonSection}>
+          <div className={styles.jsonHeader}>
+            <h2 className={styles.jsonHeading}>Generated JSON</h2>
+            <button
+              className={styles.button}
               onClick={() => {
                 navigator.clipboard.writeText(editedClockPagesJson);
                 alert('Copied!');
@@ -172,11 +163,10 @@ export default function TagByImage() {
               Copy to Clipboard
             </button>
           </div>
-          <textarea 
-            readOnly 
-            value={editedClockPagesJson} 
-            className={styles.textarea} 
-            style={{ height: '150px' }}
+          <textarea
+            readOnly
+            value={editedClockPagesJson}
+            className={`${styles.textarea} ${styles.jsonTextarea}`}
           />
         </div>
       </div>
