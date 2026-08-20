@@ -10,12 +10,19 @@
   font-family: 'ClockFont_26_08_20', 'Courier New', Courier, monospace;
 }
 
+.videoWrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
 .video {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;  filter: brightness(0.9) contrast(1.5);
+  height: 100%;
+  filter: brightness(0.9) contrast(1.5);
   object-fit: cover;
   z-index: 0;
 }
@@ -57,16 +64,14 @@
 
 @media (max-width: 767px) {
   .container {
-    /* Set a gray background for mobile */
-    /* A two-tone background with gray on top and yellow on the bottom */
-    /* A sharp two-tone background with gray on top and yellow on the bottom */
     background: linear-gradient(to bottom, rgb(130, 131, 139) 50%, #a28443 50%);
   }
 
-  .video {
-    /* Make the video smaller and not touch the sides */
-    /* Zoom in on the video on mobile */
-    object-fit: contain;
+  .videoWrapper {
     transform: scale(1.8);
+  }
+
+  .video {
+    object-fit: contain;
   }
 }
