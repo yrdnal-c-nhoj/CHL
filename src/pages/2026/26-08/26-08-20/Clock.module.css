@@ -6,7 +6,6 @@
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-  overflow: hidden;
   font-family: 'ClockFont_26_08_20', 'Courier New', Courier, monospace;
 }
 
@@ -23,7 +22,7 @@
   width: 100%;
   height: 100%;
   filter: brightness(0.9) contrast(1.5);
-  object-fit: cover;
+  object-fit: contain;
   z-index: 0;
 }
 
@@ -65,13 +64,5 @@
 @media (max-width: 767px) {
   .container {
     background: linear-gradient(to bottom, rgb(130, 131, 139) 50%, #a28443 50%);
-  }
-
-  .videoWrapper {
-    transform: scale(1.8);
-  }
-
-  .video {
-    object-fit: contain;
   }
 }
