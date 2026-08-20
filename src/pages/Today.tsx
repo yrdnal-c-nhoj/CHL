@@ -1,6 +1,7 @@
 import { useDataContext } from '@/context/DataContext';
 import { useClockPage } from '@/hooks/useClockPage';
 import React, { useMemo } from 'react';
+import styles from './Today.module.css';
 
 /**
  * A page that displays either the clock for the current date or,
@@ -37,13 +38,13 @@ const TodayPage =  () => {
   const errorMessage = dataError?.message || clockError;
 
   return (
-    <div style={{ width: '100%', height: '100dvh', background: '#000' }}>
+    <div className={styles.container}>
       {/* Loading overlay */}
       {overlayVisible && !isReady && (
-        <div style={{ position: 'fixed', inset: 0, background: '#000', zIndex: 9999 }} />
+        <div className={styles.loadingOverlay} />
       )}
       {errorMessage ? (
-        <div style={{ padding: '2rem', fontFamily: 'monospace', color: '#fff' }}>
+        <div className={styles.errorBox}>
           Error: {errorMessage}
         </div>
       ) : ClockComponent ? (

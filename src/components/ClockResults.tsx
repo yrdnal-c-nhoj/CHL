@@ -49,7 +49,6 @@ const SortControls: FC<SortControlsProps> = React.memo(({ sortBy, onSortChange }
       type="button"
       onClick={() => onSortChange('date')}
       className={`${sortStyles.sortButton} ${sortBy.startsWith('date') ? sortStyles.active : ''}`}
-      style={{ textTransform: 'uppercase' }}
       aria-label={`Sort by date, current direction: ${sortBy === 'date-desc' ? 'descending' : 'ascending'}`}
     >
       date
@@ -57,7 +56,6 @@ const SortControls: FC<SortControlsProps> = React.memo(({ sortBy, onSortChange }
     </button>
     <button
       type="button"
-      style={{ textTransform: 'uppercase' }}
       onClick={() => onSortChange('title')}
       className={`${sortStyles.sortButton} ${sortBy.startsWith('title') ? sortStyles.active : ''}`}
       aria-label={`Sort by title, current direction: ${sortBy === 'title-asc' ? 'ascending' : 'descending'}`}
