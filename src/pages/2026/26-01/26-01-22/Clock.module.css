@@ -1,0 +1,57 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  filter: contrast(0.7) brightness(1.15);
+  font-family: '1974', sans-serif;
+  position: relative;
+}
+
+.digitsRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(1vw, 2vw, 4vw);
+  padding: 0 2vw;
+  width: 100%;
+  max-width: 99vw;
+  margin-top: -65vh;
+}
+
+.digitBox {
+  width: clamp(22vw, 22vw, 222px);
+  height: clamp(29vw, 29vw, 340px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.digit {
+  font-size: clamp(20vw, 26vw, 260px);
+  line-height: 1;
+  background-size: 180% 180%;
+  background-position: center;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: contrast(2.2) brightness(1.1);
+  user-select: none;
+  text-align: center;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

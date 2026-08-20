@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, memo } from 'react';
 
 import type { FontConfig } from '@/types/clock';
 
@@ -8,24 +8,16 @@ import { useSecondClock } from '@/utils/hooks';
 import fontUrl from '@/assets/fonts/26fonts/26-06-09.otf?url';
 import styles from './Clock.module.css';
 
-// Load all images from the corresponding folder
 const imageModules = import.meta.glob(
   '@/assets/images/26_images/26-06/26-06-09/*.{webp,png,jpg,jpeg,gif}',
   { eager: true, query: '?url', import: 'default' },
 );
 const imageUrls = Object.values(imageModules) as string[];
 
-/**
- * TACTICAL STANDARD: Export assets for preloader synchronization
- */
 export const assets = [fontUrl, ...imageUrls];
 
 const NightSky =  () => {
-  const currentTime = useSecondClock();
-
-  /*
-   * FONT LOADING
-   */
+  const time = useSecondClock();
 
   const fontConfigs: FontConfig[] = useMemo(
     () => [
@@ -38,10 +30,6 @@ const NightSky =  () => {
   );
 
   useSuspenseFontLoader(fontConfigs);
-
-  /*
-   * MOBILE DETECTION
-   */
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -59,26 +47,19 @@ const NightSky =  () => {
     };
   }, []);
 
-  /*
-   * FORMATTED TIME
-   */
-
   const formattedTime = useMemo(() => {
-    if (!currentTime) {
-      return { hours: '00', minutes: '00', seconds: '00', meridian: 'AM' };
-    }
-
-    const hours24 = currentTime.getHours();
+    const hours24 = time.getHours();
     const hours12 = hours24 % 12 || 12;
     const meridian = hours24 >= 12 ? 'PM' : 'AM';
 
     return {
       hours: hours12.toString().padStart(2, '0'),
-      minutes: currentTime.getMinutes().toString().padStart(2, '0'),
-      seconds: currentTime.getSeconds().toString().padStart(2, '0'),
+      minutes: time.getMinutes().toString().padStart(2, '0'),
+      seconds: time.getSeconds().toString().padStart(2, '0'),
       meridian,
     };
-  }, [currentTime]);
+  }, [time]);
+
   const clockCharacters = useMemo(() => {
     const { hours, minutes, seconds, meridian } = formattedTime;
 
@@ -93,11 +74,6 @@ const NightSky =  () => {
       meridian[1],
     ].map((c) => c ?? '0');
   }, [formattedTime]);
-
-  /*
-   * OPTIMIZED GRID MAP CALCULATION
-   * Memoized to prevent recalculations on every render
-   */
 
   const gridMap = useMemo(() => {
     return isMobile
@@ -123,10 +99,6 @@ const NightSky =  () => {
         ];
   }, [isMobile]);
 
-  /*
-   * BACKGROUND GRID IMAGE STATE
-   * Managed via state to allow for per-second individual cell updates.
-   */
   const [gridImages, setGridImages] = useState<(string | null)[]>(() => {
     if (imageUrls.length === 0) return Array(15).fill(null);
     const shuffled = [...imageUrls].sort(() => Math.random() - 0.5);
@@ -135,48 +107,47 @@ const NightSky =  () => {
     return result;
   });
 
-  /*
-   * PER-SECOND INDIVIDUAL CELL REFRESH
-   * Wait 1s after load, then swap one random cell's image every second.
-   */
   useEffect(() => {
+    const timerRef = { current: null as ReturnType<typeof setTimeout> | null };
+    
     const startDelay = setTimeout(() => {
-      const interval = setInterval(() => {
+      const cycle = () => {
         setGridImages((prev) => {
           const next = [...prev];
           const randomIndex = Math.floor(Math.random() * 15);
-          
-          // Identify images currently NOT in the grid to ensure "not been used yet"
           const usedSet = new Set(prev);
           const available = imageUrls.filter((url) => !usedSet.has(url));
-          
           if (available.length > 0) {
             const newImg = available[Math.floor(Math.random() * available.length)];
             next[randomIndex] = newImg;
           }
-          
           return next;
         });
-      }, 700);
-
-      return () => clearInterval(interval);
+        timerRef.current = setTimeout(cycle, 700);
+      };
+      cycle();
     }, 1000);
 
-    return () => clearTimeout(startDelay);
+    return () => {
+      clearTimeout(startDelay);
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
   }, []);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <div className={styles.backgroundGrid}>
         {gridImages.map((src, i) => (
-          <div 
-            key={i} 
-            className={styles.gridCell} 
+          <div
+            key={i}
+            className={styles.gridCell}
             style={src ? { backgroundImage: `url(${src})` } : {}}
           />
         ))}
       </div>
-      <time dateTime={currentTime?.toISOString()} aria-live="polite">
+      <time dateTime={time.toISOString()} aria-live="polite">
         <div className={styles.timeGrid}>
           {clockCharacters.map((char, index) => (
             <div
@@ -203,8 +174,10 @@ const NightSky =  () => {
           ))}
         </div>
       </time>
-    </div>
+    </main>
   );
 };
 
-export default NightSky;
+const MemoizedNightSky = memo(NightSky);
+MemoizedNightSky.displayName = 'Clock_26_06_09';
+export default MemoizedNightSky;

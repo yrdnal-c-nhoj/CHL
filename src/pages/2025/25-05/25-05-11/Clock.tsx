@@ -1,26 +1,17 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import clockTax from './tax';
 import styles from './Clock.module.css';
 
-/**
- * Recycled Internet Clock (25-05-11)
- *
- * Features:
- * - Converted to a robust React/TypeScript component.
- * - Utilizes project-standard hooks for time synchronization.
- * - Follows BTS standards with CSS Modules and semantic HTML.
- */
+export const assets = [];
+
 const Clock =  () => {
-  // Synchronize time using the standard hook
   const time = useMillisecondClock();
 
-  // Setup font loading configuration (memoized)
   const fontConfigs = useMemo<any[]>(() => [], []);
   useSuspenseFontLoader(fontConfigs);
 
-  // Format components using memoization (BaseClock pattern)
   const { hours, minutes, seconds, isoTime } = useMemo(() => {
     const h = time.getHours().toString().padStart(2, '0');
     const m = time.getMinutes().toString().padStart(2, '0');
@@ -30,6 +21,8 @@ const Clock =  () => {
 
   return (
     <main className={styles.container}>
+      <time dateTime={isoTime} className={styles.srOnly}>{hours}:{minutes}:{seconds}</time>
+
       <div className={styles.displayBox}>
         <header className={styles.title}>{clockTax.title}</header>
         <time dateTime={isoTime} className={styles.timeDisplay}>
@@ -41,4 +34,6 @@ const Clock =  () => {
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_25_05_11';
+export default MemoizedClock;

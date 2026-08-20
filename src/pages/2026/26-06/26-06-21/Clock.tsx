@@ -3,18 +3,16 @@ import backgroundImage from '@/assets/images/26_images/26-06/26-06-21/birdhaus.w
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, memo } from 'react';
+import styles from './Clock.module.css';
 
 export const assets = [backgroundImage, clockFont];
 
-// Constant — no reason to live inside the component
 const TILE_SIZE = 50;
 
 const NUMBERS = ['N', 'm', '1', 'R', 't', 'F', '8', 'Q', 'E', 'v'] as const;
 
 const FONT_CONFIGS = [{ fontFamily: 'ClockFont_26_06_21', fontUrl: clockFont }];
-
-// --- Static styles ---
 
 const containerStyle: CSSProperties = {
   position: 'relative',
@@ -48,6 +46,7 @@ const digitalGridStyle: CSSProperties = {
   position: 'relative',
   zIndex: 1,
   display: 'grid',
+  gridTemplateColumns: 'repeat(6, 1fr)',
   gridTemplateRows: 'repeat(6, 1fr)',
   gap: '2dvh',
   color: '#111111',
@@ -62,8 +61,6 @@ const cellStyle: CSSProperties = {
   lineHeight: 1,
   userSelect: 'none',
 };
-
-// --- Component ---
 
 const Clock =  () => {
   const time = useSecondClock();
@@ -110,14 +107,14 @@ const Clock =  () => {
   }, [dimensions]);
 
   return (
-    <main
-      style={{
-        ...containerStyle,
-        '--tile-size': `${TILE_SIZE}px`,
-        '--grid-cols': String(dimensions.cols),
-        '--grid-rows': String(dimensions.rows),
-      } as CSSProperties}
-    >
+    <main className={styles.container} style={{
+      ...containerStyle,
+      '--tile-size': `${TILE_SIZE}px`,
+      '--grid-cols': String(dimensions.cols),
+      '--grid-rows': String(dimensions.rows),
+    } as CSSProperties}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <div style={backgroundGridStyle}>{backgroundTiles}</div>
 
       <time
@@ -134,4 +131,6 @@ const Clock =  () => {
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_06_21';
+export default MemoizedClock;

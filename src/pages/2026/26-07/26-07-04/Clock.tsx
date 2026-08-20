@@ -2,15 +2,12 @@ import glassbreak from '@/assets/images/26_images/26-07/26-07-03/kitty.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, memo } from 'react';
 
-// Import the font with the corresponding date from the assets folder
 import fontUrl from '@/assets/fonts/26fonts/26-07-03.ttf?url';
+import styles from './Clock.module.css';
 
-// =========================
-// ASSET EXPORTS (Required)
-// =========================
-export const assets = [glassbreak];
+export const assets = [glassbreak, fontUrl];
 
 const fontConfigs: FontConfig[] = [
   {
@@ -47,7 +44,7 @@ const DigitalClock =  () => {
 
     const ampm = h >= 12 ? 'pm' : 'am';
     let hours12 = h % 12;
-    if (hours12 === 0) hours12 = 12; // Handle midnight (0) and noon (12)
+    if (hours12 === 0) hours12 = 12;
 
     return {
       hours: hours12.toString(),
@@ -56,35 +53,14 @@ const DigitalClock =  () => {
     };
   }, [time]);
 
-  // Shared styles for the clock face background numbers
-  const markerStyle: React.CSSProperties = {
-    position: 'absolute',
-    fontFamily: 'ClockFont_26_06_19, monospace',
-    fontSize: isMobile ? '6vh' : '10vh',
-    color: 'rgba(180, 208, 241, 0.3)', // Semi-transparent so it acts as a background
-    zIndex: 1,
-    userSelect: 'none',
-  };
-
   return (
-    <main
-      style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        backgroundColor: '#000',
-        overflow: 'hidden',
-        margin: 0,
-        padding: 0,
-        backgroundImage: `url(${glassbreak})`,
-        backgroundSize: 'cover',
-        filter: 'contrast(0.9) brightness(1.1)',
-        backgroundPosition: 'center',
-      }}
-    >
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       {/* Current Time Display */}
       <time
         dateTime={time.toISOString()}
+        className={styles.digitalClock}
         style={{
           fontFamily: 'ClockFont_26_06_19, monospace',
           fontSize: '8vh',
@@ -92,13 +68,11 @@ const DigitalClock =  () => {
           fontVariantNumeric: 'tabular-nums',
           position: 'absolute',
           zIndex: 2,
-          // Centered on mobile
           ...(isMobile && {
             bottom: '2vh',
             left: '50%',
             transform: 'translateX(-50%)',
           }),
-          // Flushed right on desktop
           ...(!isMobile && {
             bottom: '2vh',
             right: '2vw',
@@ -114,4 +88,6 @@ const DigitalClock =  () => {
   );
 };
 
-export default DigitalClock;
+const MemoizedDigitalClock = memo(DigitalClock);
+MemoizedDigitalClock.displayName = 'Clock_26_07_04';
+export default MemoizedDigitalClock;

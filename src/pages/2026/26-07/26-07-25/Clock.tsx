@@ -1,6 +1,7 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useEffect, useRef, useState, memo } from 'react';
+import { useEffect, useState, memo } from 'react';
+import { useSecondClock, useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 import fontUrl from '@/assets/fonts/26fonts/26-07-25.otf?url';
@@ -33,11 +34,8 @@ const BUFFER_CELLS = 5;
 const STRIP_RADIUS = Math.floor(VISIBLE_CELLS / 2) + BUFFER_CELLS;
 
 function HexClock() {
-  const [now, setNow] = useState(() => new Date());
-  const [subSecondProgress, setSubSecondProgress] = useState(0);
-
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
-  const animationFrameRef = useRef<number | null>(null);
+  const now = useSecondClock();
+  const subSecondProgress = useMillisecondClock().getMilliseconds() / 1000;
 
   useSuspenseFontLoader(fontConfigs);
 
@@ -50,39 +48,6 @@ function HexClock() {
 
     return () => {
       document.head.removeChild(link);
-    };
-  }, []);
-
-  useEffect(() => {
-    const scheduleNextTick = () => {
-      const current = new Date();
-      const msUntilNextSecond = 1000 - current.getMilliseconds();
-
-      timeoutRef.current = setTimeout(() => {
-        setNow(new Date());
-        scheduleNextTick();
-      }, msUntilNextSecond);
-    };
-
-    scheduleNextTick();
-
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    const updateFrame = () => {
-      setSubSecondProgress(new Date().getMilliseconds() / 1000);
-      animationFrameRef.current = requestAnimationFrame(updateFrame);
-    };
-
-    animationFrameRef.current = requestAnimationFrame(updateFrame);
-
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
     };
   }, []);
 

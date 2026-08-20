@@ -1,17 +1,17 @@
-import { useSecondClock, useMillisecondClock } from '@/utils/hooks';
-import React from 'react';
-import { BackgroundGrid } from './BackgroundGrid'; // Import the extracted component
+import { memo, useMemo } from 'react';
+import { useSecondClock } from '@/utils/hooks';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { BackgroundGrid } from './BackgroundGrid';
+import styles from './Clock.module.css';
 
-// TicTacToeClock component
-// This component displays a clock in a Tic-Tac-Toe grid style.
-export default function TicTacToeClock() {
-  const time = useSecondClock('ms');
+export const assets = [];
 
-  // Font is loaded by useSuspenseFontLoader in BackgroundGrid component
+const fontConfigs = [{ fontFamily: 'CustomClockFont', fontUrl: '' }];
 
-  const fontFamily = 'CustomClockFont, monospace';
-  // This formatTime is specific to this clock and differs from the one in clockUtils.ts.
-  // It's fine to keep it local if it's not reusable elsewhere, or move to a specific utility.
+const TicTacToeClock = () => {
+  useSuspenseFontLoader(fontConfigs);
+  const time = useSecondClock();
+
   const formatTime = (date: Date) => {
     const hours = date.getHours();
     const minutes = date.getMinutes();
@@ -26,82 +26,24 @@ export default function TicTacToeClock() {
       m2: minutes % 10,
       s1: Math.floor(seconds / 10),
       s2: seconds % 10,
-      ms1: 0, // Milliseconds not available with useClockTime
+      ms1: 0,
       ampm,
     };
   };
 
-  // Update display time when time changes
-  const displayTime = React.useMemo(() => formatTime(time), [time]);
+  const displayTime = useMemo(() => formatTime(time), [time]);
 
-  const clockContainerStyle = {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    opacity: 1,
-    transition: 'opacity 0.3s ease-in-out',
-    fontFamily,
-    position: 'relative',
-    zIndex: 10,
-    pointerEvents: 'none',
-    WebkitTapHighlightColor: 'transparent',
-    WebkitTouchCallout: 'none',
-    WebkitUserSelect: 'none',
-    userSelect: 'none',
-    touchAction: 'manipulation',
-    WebkitFontSmoothing: 'antialiased',
-    MozOsxFontSmoothing: 'grayscale',
-  };
-
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gridTemplateRows: 'repeat(3, 1fr)',
-    gap: '1px',
-    width: '90vmin',
-    height: '90vmin',
-    maxWidth: '500px',
-    maxHeight: '500px',
-    padding:
-      'env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)',
-  };
-
-  const cellStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: 'clamp(24px, 25vmin, 120px)',
-    color: '#00ff88',
-    fontVariantNumeric: 'tabular-nums',
-    lineHeight: 1,
-    textAlign: 'center',
-    textRendering: 'optimizeLegibility',
-    WebkitFontSmoothing: 'antialiased',
-    MozOsxFontSmoothing: 'grayscale',
-  };
-
-  // Memoize time values array to prevent unnecessary re-renders
-  const timeValues = React.useMemo(
-    () => [
-      displayTime.h1,
-      displayTime.h2,
-      displayTime.m1,
-      displayTime.m2,
-      displayTime.s1,
-      displayTime.s2,
-      displayTime.ms1,
-      displayTime.ampm.charAt(0),
-      displayTime.ampm.charAt(1),
-    ],
-    [displayTime],
-  );
+  const timeValues = useMemo(() => [
+    displayTime.h1, displayTime.h2, displayTime.m1, displayTime.m2,
+    displayTime.s1, displayTime.s2, displayTime.ms1,
+    ...displayTime.ampm,
+  ], [displayTime]);
 
   return (
     <BackgroundGrid>
-      <div style={clockContainerStyle}>
-        <div style={gridStyle}>
+      <main className={styles.container}>
+        <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+        <div className={styles.grid}>
           {timeValues.map((value, index) => {
             const isEven = index % 2 === 0;
             const color = isEven ? '#ff4444' : '#4444ff';
@@ -110,13 +52,8 @@ export default function TicTacToeClock() {
             return (
               <div
                 key={index}
-                style={{
-                  ...cellStyle,
-                  color,
-                  textShadow: `0 0 10px rgba(${shadowColor}, 0.5)`,
-                  willChange: 'transform',
-                  transform: 'translateZ(0)', // Promote to own layer for better performance
-                }}
+                className={styles.cell}
+                style={{ color, textShadow: `0 0 10px rgba(${shadowColor}, 0.5)` }}
                 aria-hidden="true"
               >
                 {value}
@@ -124,7 +61,11 @@ export default function TicTacToeClock() {
             );
           })}
         </div>
-      </div>
+      </main>
     </BackgroundGrid>
   );
-}
+};
+
+const MemoizedTicTacToeClock = memo(TicTacToeClock);
+MemoizedTicTacToeClock.displayName = 'Clock_26_01_09';
+export default MemoizedTicTacToeClock;

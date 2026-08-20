@@ -2,17 +2,14 @@ import fontUrl from '@/assets/fonts/26fonts/26-06-15.otf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
+import styles from './Clock.module.css';
 
-/**
- * Assets to be preloaded for this clock.
- */
 export const assets = [fontUrl];
 
 const Clock =  () => {
   const time = useSecondClock();
 
-  // Define the font configuration for the suspense-based loader
   const fontConfigs: FontConfig[] = useMemo(
     () => [
       {
@@ -23,10 +20,8 @@ const Clock =  () => {
     []
   );
 
-  // Load and suspend rendering until the custom font is ready
   useSuspenseFontLoader(fontConfigs);
 
-  // Format the time components as both decimal and 2-digit hexadecimal strings
   const timeParts = useMemo(() => {
     const toHex2 = (num: number): string => num.toString(16).toUpperCase().padStart(2, '0');
     const toDec2 = (num: number): string => num.toString().padStart(2, '0');
@@ -38,28 +33,10 @@ const Clock =  () => {
     };
   }, [time]);
 
-  // FIXED: Consolidated into a single valid object literal
-
-    const styles: Record<string, React.CSSProperties> = {
-    container: {
-      width: '100vw',
-      height: '100dvh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: '#A007B4',
-      // CHANGED: Use 'background' or 'backgroundImage' instead of 'gradient'
-      background: 'radial-gradient(circle, #FFFC66 0%, #AFADAA 100%)',
-      margin: 0,
-      padding: 0,
-      overflow: 'hidden',
-      textShadow: '1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000',
-    },
-    // ... rest of your styles remain exactly the same
+  const inlineStyles: Record<string, React.CSSProperties> = {
     clockWrapper: {
       display: 'flex',
       alignItems: 'flex-end',
-      // gap: '1.5vw',
     },
     unitContainer: {
       display: 'flex',
@@ -107,60 +84,64 @@ const Clock =  () => {
       letterSpacing: '0.25em',
       marginTop: '1.5vh',
       marginBottom: '4vh',
-    }
+    },
   };
 
   const DigitBox: React.FC<{ char: string; isSmall?: boolean }> = ({ char, isSmall }) => (
-    <div style={isSmall ? styles.digitBoxSmall : styles.digitBox}>{char}</div>
+    <div style={isSmall ? inlineStyles.digitBoxSmall : inlineStyles.digitBox}>{char}</div>
   );
 
   return (
-    <main style={styles.container}>
-      <time dateTime={time.toISOString()} style={styles.clockWrapper}>
-        <div style={styles.unitContainer}>
-          <div style={styles.hexRow}>
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
+      <time dateTime={time.toISOString()} style={inlineStyles.clockWrapper}>
+        <div style={inlineStyles.unitContainer}>
+          <div style={inlineStyles.hexRow}>
             <DigitBox char={timeParts.h.hex[0]} isSmall />
             <DigitBox char={timeParts.h.hex[1]} isSmall />
-            <span style={styles.baseIndicator}>16</span>
+            <span style={inlineStyles.baseIndicator}>16</span>
           </div>
-              <span style={styles.unitLabel}>Hours</span>
-      
-          <div style={styles.digitRow}>
+          <span style={inlineStyles.unitLabel}>Hours</span>
+
+          <div style={inlineStyles.digitRow}>
             <DigitBox char={timeParts.h.dec[0]} />
             <DigitBox char={timeParts.h.dec[1]} />
           </div>
         </div>
 
-        <div style={styles.unitContainer}>
-          <div style={styles.hexRow}>
+        <div style={inlineStyles.unitContainer}>
+          <div style={inlineStyles.hexRow}>
             <DigitBox char={timeParts.m.hex[0]} isSmall />
             <DigitBox char={timeParts.m.hex[1]} isSmall />
-            <span style={styles.baseIndicator}>16</span>
+            <span style={inlineStyles.baseIndicator}>16</span>
           </div>
-                    <span style={styles.unitLabel}>Minutes</span>
-          <div style={styles.digitRow}>
+          <span style={inlineStyles.unitLabel}>Minutes</span>
+          <div style={inlineStyles.digitRow}>
             <DigitBox char={timeParts.m.dec[0]} />
             <DigitBox char={timeParts.m.dec[1]} />
           </div>
 
         </div>
 
-        <div style={styles.unitContainer}>
-          <div style={styles.hexRow}>
+        <div style={inlineStyles.unitContainer}>
+          <div style={inlineStyles.hexRow}>
             <DigitBox char={timeParts.s.hex[0]} isSmall />
             <DigitBox char={timeParts.s.hex[1]} isSmall />
-            <span style={styles.baseIndicator}>16</span>
+            <span style={inlineStyles.baseIndicator}>16</span>
           </div>
-            <span style={styles.unitLabel}>Seconds</span>
-  
-          <div style={styles.digitRow}>
+          <span style={inlineStyles.unitLabel}>Seconds</span>
+
+          <div style={inlineStyles.digitRow}>
             <DigitBox char={timeParts.s.dec[0]} />
             <DigitBox char={timeParts.s.dec[1]} />
           </div>
-              </div>
+        </div>
       </time>
     </main>
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_06_15';
+export default MemoizedClock;

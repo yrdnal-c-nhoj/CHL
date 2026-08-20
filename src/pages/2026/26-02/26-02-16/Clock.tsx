@@ -1,13 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 import mazeImage from '@/assets/images/26_images/26-02/26-02-16/puzzle.webp';
 import loopImage from '@/assets/images/26_images/26-02/26-02-16/loop.webp';
-import mazeFont from '@/assets/fonts/26fonts/26-02-16-maze.ttf';
+import mazeFont from '@/assets/fonts/26fonts/26-02-16-maze.ttf?url';
 
-export { mazeImage };
+export const assets = [mazeImage, loopImage, mazeFont];
 
 const getBackgroundStyle = (isFlipped) => ({
   position: 'absolute' as const,
@@ -22,31 +22,25 @@ const getBackgroundStyle = (isFlipped) => ({
   zIndex: isFlipped ? 2 : 1,
 });
 
-const BackgroundLayers = React.memo(() => (
+const BackgroundLayers = memo(() => (
   <>
-    {/* Full-cover background - no tiling */}
-    <div
-      style={{
-        position: 'absolute' as const,
-        inset: 0,
-        backgroundImage: `url(${loopImage})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        filter: 'saturate(5.8)',
-        // opacity: 0.5,
-        zIndex: 0,
-      }}
-    />
-    {/* First image - original background */}
+    <div style={{
+      position: 'absolute' as const,
+      inset: 0,
+      backgroundImage: `url(${loopImage})`,
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      filter: 'saturate(5.8)',
+      zIndex: 0,
+    }} />
     <div style={getBackgroundStyle(false)} />
-    {/* Second image - flipped background */}
     <div style={getBackgroundStyle(true)} />
   </>
 ));
 BackgroundLayers.displayName = 'BackgroundLayers';
 
-const Digit = React.memo(({ char }: { char: string }) => {
+const Digit = memo(({ char }: { char: string }) => {
   const isColon = char === ':';
   return (
     <div className={styles.digitBox}>
@@ -71,7 +65,6 @@ export const fontConfigs = [
 
 const DigitalClock =  () => {
   useSuspenseFontLoader(fontConfigs);
-
   const time = useSecondClock();
 
   const timeParts = useMemo(() => {
@@ -83,6 +76,7 @@ const DigitalClock =  () => {
 
   return (
     <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
       <BackgroundLayers />
       <div className={styles.digitalContainer}>
         <div className={styles.timeWrapper}>
@@ -95,4 +89,6 @@ const DigitalClock =  () => {
   );
 };
 
-export default DigitalClock;
+const MemoizedDigitalClock = memo(DigitalClock);
+MemoizedDigitalClock.displayName = 'Clock_26_02_16';
+export default MemoizedDigitalClock;

@@ -1,11 +1,12 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, memo } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundImg from '@/assets/images/25_images/25-11/25-11-29/squ.webp';
 import fontUrl_20251128 from '@/assets/fonts/25fonts/25-11-29-roc.ttf?url';
+import styles from './Clock.module.css';
 
-export const assets = [];
+export const assets = [backgroundImg, fontUrl_20251128];
 
 function RococoDigitalClock() {
   const now = useMillisecondClock();
@@ -75,25 +76,23 @@ function RococoDigitalClock() {
 
   if (isVertical) {
     return (
-      <main
-        style={{
-          width: '100vw',
-          height: '100dvh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundImage: `url(${backgroundImg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'brightness(1.2) contrast(1.4)',
-          fontFamily: "'RococoBlob', serif",
-          overflow: 'hidden',
-          gap: '2vh',
-          opacity: 1,
-        }}
-      >
-      <time dateTime={now.toISOString()} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
+      <main className={styles.container} style={{
+        width: '100vw',
+        height: '100dvh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundImage: `url(${backgroundImg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        filter: 'brightness(1.2) contrast(1.4)',
+        fontFamily: "'RococoBlob', serif",
+        overflow: 'hidden',
+        gap: '2vh',
+        opacity: 1,
+      }}>
+        <time dateTime={now.toISOString()} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
 
         {/* Font face is now loaded in the main effect */}
         <div style={{ display: 'flex', position: 'relative' }}>
@@ -197,21 +196,19 @@ function RococoDigitalClock() {
   }
 
   return (
-    <main
-      style={{
-        width: '100vw',
-        height: '100dvh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundImage: `url(${backgroundImg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        // filter: "brightness(1.2) contrast(1.4)",
-        fontFamily: "'RococoBlob', serif",
-        overflow: 'hidden',
-      }}
-    >
+    <main className={styles.container} style={{
+      width: '100vw',
+      height: '100dvh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundImage: `url(${backgroundImg})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      // filter: "brightness(1.2) contrast(1.4)",
+      fontFamily: "'RococoBlob', serif",
+      overflow: 'hidden',
+    }}>
       <time dateTime={now.toISOString()} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
       <div
         style={{
@@ -254,6 +251,6 @@ function RococoDigitalClock() {
   );
 }
 
-const MemoizedRococoDigitalClock = React.memo(RococoDigitalClock);
+const MemoizedRococoDigitalClock = memo(RococoDigitalClock);
 MemoizedRococoDigitalClock.displayName = 'Clock_25_11_29';
 export default MemoizedRococoDigitalClock;

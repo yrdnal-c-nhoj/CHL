@@ -1,167 +1,59 @@
-import React, { useState, useEffect, useMemo, memo } from 'react';
+import { memo, useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-// Explicit Asset Imports
+import { useMillisecondClock } from '@/utils/hooks';
 import backgroundImage from '@/assets/images/26_images/26-01/26-01-21/fllap.webp';
 import tileImage from '@/assets/images/26_images/26-01/26-01-21/flap.webp';
-import custom260121Font from '@/assets/fonts/26fonts/26-01-21-migrate.ttf';
+import custom260121Font from '@/assets/fonts/26fonts/26-01-21-migrate.ttf?url';
+import styles from './Clock.module.css';
 
-// Export assets for preloading
-export { backgroundImage, tileImage };
+export const assets = [backgroundImage, tileImage, custom260121Font];
 
 const fontFamilyName = 'Custom260121Font';
 
-export const fontConfigs = [
+const fontConfigs = [
   { fontFamily: fontFamilyName, fontUrl: custom260121Font },
 ];
 
-// Memoize the Numbers so they don't re-render every second
 const ClockNumbers = memo(({ fontFamily }) => (
   <>
     {[...Array(12)].map((_, i) => (
-      <div
-        key={i}
-        style={{
-          ...styles.numberSlot,
-          transform: `rotate(${i * 30}deg)`,
-        }}
-      >
-        <span style={{ ...styles.number, fontFamily }}>{i === 0 ? 12 : i}</span>
+      <div key={i} className={styles.numberSlot} style={{ transform: `rotate(${i * 30}deg)` }}>
+        <span className={styles.number} style={{ fontFamily }}>{i === 0 ? 12 : i}</span>
       </div>
     ))}
   </>
 ));
+ClockNumbers.displayName = 'ClockNumbers';
 
 const AnalogBirdMigrateClock =  () => {
-  const [time, setTime] = useState(new Date());
-
+  const clockTime = useMillisecondClock();
   useSuspenseFontLoader(fontConfigs);
 
-  useEffect(() => {
-    let frameId: number;
-    const tick = () => {
-      setTime(new Date());
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, []);
-
-  const hourDeg = (time.getHours() % 12) * 30 + time.getMinutes() * 0.5;
-  const minuteDeg = time.getMinutes() * 6;
+  const hourDeg = (clockTime.getHours() % 12) * 30 + clockTime.getMinutes() * 0.5;
+  const minuteDeg = clockTime.getMinutes() * 6;
 
   return (
-    <div style={styles.wrapper}>
-      {/* PERFORMANCE FIX: Isolated Background Layer */}
-      <div style={styles.gpuAcceleratedLayer}>
-        <div style={styles.backgroundLayer} />
-        <div style={styles.backgroundLayer2} />
-        <div
-          style={{ ...styles.tileBase, backgroundSize: '600px', opacity: 0.8 }}
-        />
+    <main className={styles.container}>
+      <time dateTime={clockTime.toISOString()} className={styles.srOnly}>{clockTime.toLocaleTimeString()}</time>
+
+      <div className={styles.gpuLayer}>
+        <div className={styles.backgroundLayer} style={{ backgroundImage: `url(${backgroundImage})` }} />
+        <div className={styles.backgroundLayer} style={{ backgroundImage: `url(${backgroundImage})` }} />
+        <div className={styles.tileBase} style={{ backgroundImage: `url(${tileImage})`, backgroundSize: '600px', opacity: 0.8 }} />
       </div>
 
-      <div style={styles.clockFace}>
+      <div className={styles.clockFace}>
         <ClockNumbers fontFamily={fontFamilyName} />
 
-        {/* Hour Hand */}
-        <div
-          style={{
-            ...styles.hand,
-            height: '24%',
-            width: 'min(1.8vw, 3px)',
-            transform: `translateX(-50%) rotate(${hourDeg}deg)`,
-          }}
-        />
+        <div className={styles.hand} style={{ height: '24%', width: 'min(1.8vw, 3px)', transform: `translateX(-50%) rotate(${hourDeg}deg)` }} />
+        <div className={styles.hand} style={{ height: '45%', width: 'min(1.2vw, 2px)', transform: `translateX(-50%) rotate(${minuteDeg}deg)` }} />
 
-        {/* Minute Hand */}
-        <div
-          style={{
-            ...styles.hand,
-            height: '45%',
-            width: 'min(1.2vw, 2px)',
-            transform: `translateX(-50%) rotate(${minuteDeg}deg)`,
-          }}
-        />
-
-        <div style={styles.pin} />
+        <div className={styles.pin} />
       </div>
-    </div>
+    </main>
   );
 };
 
-const styles = {
-  wrapper: {
-    width: '100vw',
-    height: '100dvh',
-    position: 'relative',
-    overflow: 'hidden',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    background: 'linear-gradient(180deg, #4C6DF3 0%, #798158A2 100%)', // Blue to Dark Blue
-  },
-  gpuAcceleratedLayer: {
-    position: 'absolute',
-    inset: 0,
-    zIndex: 1,
-    // Forces the GIF to be rendered by the GPU
-    transform: 'translateZ(0)',
-    willChange: 'transform',
-    pointerEvents: 'none',
-  },
-  backgroundLayer: {
-    position: 'absolute',
-    inset: 0,
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    filter: 'brightness(0.5)',
-  },
-  backgroundLayer2: {
-    position: 'absolute',
-    inset: 0,
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    filter: 'brightness(0.5)',
-  },
-  tileBase: {
-    position: 'absolute',
-    inset: 0,
-    backgroundImage: `url(${tileImage})`,
-    backgroundRepeat: 'repeat',
-    mixBlendMode: 'overlay',
-  },
-  clockFace: {
-    position: 'relative',
-    zIndex: 10,
-    width: 'min(85vw, 85vh)',
-    height: 'min(85vw, 85vh)',
-  },
-  numberSlot: {
-    position: 'absolute',
-    inset: 0,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    paddingTop: '2%',
-  },
-  number: {
-    fontSize: 'min(11vw, 11vh)',
-    color: '#830DD2',
-    textShadow: '0 0 15px #8B5CF6',
-    userSelect: 'none',
-  },
-  hand: {
-    position: 'absolute',
-    bottom: '50%',
-    left: '50%',
-    transformOrigin: 'bottom center',
-    borderRadius: '10px',
-    backgroundColor: '#830DD2',
-    boxShadow: '0 0 20px #8B5CF6',
-    zIndex: 15,
-  },
-};
-
-export default AnalogBirdMigrateClock;
+const MemoizedAnalogBirdMigrateClock = memo(AnalogBirdMigrateClock);
+MemoizedAnalogBirdMigrateClock.displayName = 'Clock_26_01_21';
+export default MemoizedAnalogBirdMigrateClock;

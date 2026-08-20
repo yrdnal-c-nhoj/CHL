@@ -39,7 +39,7 @@ const RococoClock = () => {
   const allChars = [...hourDigits, ...minuteDigits, ...ampmDigits];
 
   return (
-    <main style={{
+    <main className={styles.container} style={{
       ...containerStyle,
       opacity: 1,
       transition: 'opacity 0.4s ease',

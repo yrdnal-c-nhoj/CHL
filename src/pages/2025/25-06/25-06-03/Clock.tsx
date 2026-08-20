@@ -1,6 +1,7 @@
 import { memo, useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import cylFont from '@/assets/fonts/25fonts/25-06-03-cyl.ttf';
+import { useSecondClock } from '@/utils/hooks';
+import cylFont from '@/assets/fonts/25fonts/25-06-03-cyl.ttf?url';
 import styles from './Clock.module.css';
 
 export const assets = [cylFont];
@@ -18,6 +19,7 @@ const fontConfigs = [
 
 const FiligreeClock =  () => {
   useSuspenseFontLoader(fontConfigs);
+  const time = useSecondClock();
 
   return (
     <main className={styles.container} style={{
@@ -32,7 +34,7 @@ const FiligreeClock =  () => {
       justifyContent: 'center',
       alignItems: 'center',
     }}>
-      <time dateTime={new Date().toISOString()} className={styles.srOnly}>{new Date().toLocaleTimeString()}</time>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
 
       <div style={{
         display: 'flex',

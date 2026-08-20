@@ -1,57 +1,50 @@
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
   width: 100vw;
   height: 100dvh;
-  background-color: #000;
   overflow: hidden;
-  position: relative;
-  /* Adds depth perception so the X and Y rotations look accurately three-dimensional */
-  perspective: 1000px;
+  background-color: #000;
 }
 
 .backgroundVideo {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100vw;
-  height: 100dvh;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  z-index: 1;
+  z-index: 0;
+  opacity: 0.6;
 }
 
 .clocksLayer {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
   height: 100%;
-  z-index: 2;
-  pointer-events: none;
-  /* Ensures nested 3D spaces are preserved */
-  transform-style: preserve-3d;
+  z-index: 1;
 }
 
 .digitalClock {
   position: absolute;
-  font-family: 'ClockFont_26_06_27', monospace;
-  font-size: 19vh;
-  color: #35359c;
-  white-space: nowrap;
-  user-select: none;
   display: flex;
-  font-weight: bold;
-  flex-direction: row;
-  align-items: center;
-  text-shadow: 0 1px 0px rgba(215, 228, 217, 0.6),
-    0 1px 0px rgba(233, 220, 220, 0.5);
-  transform-style: preserve-3d;
+  gap: 0.2rem;
+  font-family: 'ClockFont_26_06_27', monospace;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
 }
 
 .digitBox {
   display: inline-block;
-  width: 11vh;
-  text-align: center;
+  font-size: 1.5rem;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }

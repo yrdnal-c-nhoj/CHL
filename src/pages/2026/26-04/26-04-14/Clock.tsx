@@ -1,13 +1,11 @@
-import React, { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
-// Asset imports
 import bgVideo from '@/assets/images/26_images/26-04/26-04-14/haumeas.mp4';
 import overlayImage from '@/assets/images/26_images/26-04/26-04-14/haumea.webp';
 
-// Export assets for preloading
-export { bgVideo, overlayImage };
+export const assets = [bgVideo, overlayImage];
 
 const Clock =  () => {
   const time = useMillisecondClock(16);
@@ -29,6 +27,8 @@ const Clock =  () => {
 
   return (
     <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <video
         src={bgVideo}
         autoPlay
@@ -80,4 +80,6 @@ const Clock =  () => {
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_04_14';
+export default MemoizedClock;

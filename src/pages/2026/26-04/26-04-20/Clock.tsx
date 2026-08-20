@@ -20,25 +20,20 @@ const Clock =  () => {
   }, [time]);
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <div className={styles.bg} style={{ backgroundImage: `url(${bgImg})` }} />
       <div className={styles.clockFace}>
-        <div
-          className={`${styles.hand} ${styles.hourHand}`}
-          style={{ transform: `translateX(-50%) rotate(${hourDeg}deg)` }}
-        />
-        <div
-          className={`${styles.hand} ${styles.minuteHand}`}
-          style={{ transform: `translateX(-50%) rotate(${minuteDeg}deg)` }}
-        />
-        <div
-          className={`${styles.hand} ${styles.secondHand}`}
-          style={{ transform: `translateX(-50%) rotate(${secondDeg}deg)` }}
-        />
+        <div className={`${styles.hand} ${styles.hourHand}`} style={{ transform: `translateX(-50%) rotate(${hourDeg}deg)` }} />
+        <div className={`${styles.hand} ${styles.minuteHand}`} style={{ transform: `translateX(-50%) rotate(${minuteDeg}deg)` }} />
+        <div className={`${styles.hand} ${styles.secondHand}`} style={{ transform: `translateX(-50%) rotate(${secondDeg}deg)` }} />
         <div className={styles.centerDot} />
       </div>
-    </div>
+    </main>
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_04_20';
+export default MemoizedClock;

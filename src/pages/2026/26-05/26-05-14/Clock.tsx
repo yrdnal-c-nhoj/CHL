@@ -1,7 +1,7 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import styles from './Clock.module.css';
 
 // Hardcode the 3 images in this folder so we don't scan the folder at runtime.
@@ -24,7 +24,7 @@ const assetConfigs = [
   { src: background1, hue: 280, saturation: 1.1, zIndex: 4, opacity: 1.0 },
 ];
 
-export const assets = assetConfigs.map((c) => c.src);
+export const assets = [balloon, balloon2, balloon3, balloon4];
 
 const fontConfigs: FontConfig[] = [
   {
@@ -57,6 +57,8 @@ const AnalogClock =  () => {
 
   return (
     <main className={styles.container}>
+      <time dateTime={isoTime} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       {/* Render layered background images with custom filters and z-index order */}
       {assetConfigs.map((config, idx) => (
         <img
@@ -109,4 +111,6 @@ const AnalogClock =  () => {
   );
 };
 
-export default AnalogClock;
+const MemoizedAnalogClock = memo(AnalogClock);
+MemoizedAnalogClock.displayName = 'Clock_26_05_14';
+export default MemoizedAnalogClock;

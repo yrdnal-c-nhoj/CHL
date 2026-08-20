@@ -93,6 +93,8 @@ const AnalogClockComponent: React.FC = () => {
       } as React.CSSProperties}
       className={styles.container}
     >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       {/* F. Use the shared <SRTime> component for accessibility. */}
       <SRTime time={time} />
 

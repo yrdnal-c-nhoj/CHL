@@ -1,24 +1,31 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useMemo, memo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import f251023 from '@/assets/fonts/25fonts/25-10-23-gr.ttf';
-import bgImage from '@/assets/images/25_images/25-10/25-10-23/bg.gif';
 import { useMillisecondClock } from '@/utils/hooks';
-export const assets = [];
+import f251023 from '@/assets/fonts/25fonts/25-10-23-gr.ttf?url';
+import bgImage from '@/assets/images/25_images/25-10/25-10-23/bg.gif';
+import styles from './Clock.module.css';
+
+export const assets = [f251023, bgImage];
+
+const fontConfigs = [
+  {
+    fontFamily: 'mult',
+    fontUrl: f251023,
+    options: { weight: 'normal', style: 'normal' },
+  },
+];
 
 const Clockgrid =  () => {
-  const [time, setTime] = useState<any>({
-    hours: '',
-    minutes: '',
-    seconds: '',
-    millis: '',
-    ampm: '',
-  });
+  useSuspenseFontLoader(fontConfigs);
+  const time = useMillisecondClock();
 
-  const [viewport, setViewport] = useState<any>({
+  const [viewport, setViewport] = useState<{
+    width: number;
+    height: number;
+  }>({
     width: window.innerWidth,
     height: window.innerHeight,
   });
-  // useEffect for updateClock removed - time is reactive via useSecondClock
 
   useEffect(() => {
     const handleResize =  () => {
@@ -31,11 +38,19 @@ const Clockgrid =  () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const timeCharacters = useMemo(() => {
-    const timeString =
-      time.hours + time.minutes + time.seconds + time.millis + time.ampm;
-    return timeString.toUpperCase().split('');
+  const { hours, minutes, seconds, millis, ampm } = useMemo(() => {
+    const h = time.getHours().toString().padStart(2, '0');
+    const m = time.getMinutes().toString().padStart(2, '0');
+    const s = time.getSeconds().toString().padStart(2, '0');
+    const ms = Math.floor(time.getMilliseconds() / 10).toString().padStart(2, '0');
+    const ap = time.getHours() >= 12 ? 'PM' : 'AM';
+    return { hours: h, minutes: m, seconds: s, millis: ms, ampm: ap };
   }, [time]);
+
+  const timeCharacters = useMemo(() => {
+    const timeString = hours + minutes + seconds + millis + ampm;
+    return timeString.toUpperCase().split('');
+  }, [hours, minutes, seconds, millis, ampm]);
 
   const patternLength = timeCharacters.length;
 
@@ -48,62 +63,13 @@ const Clockgrid =  () => {
   const repeatCount = Math.ceil(totalCells / patternLength);
   const totalCharactersToRender = repeatCount * patternLength;
 
-  const fontFace = `
-    @font-face {
-      font-family: 'mult';
-      src: url(${f251023}) format('truetype');
-    }
-  `;
-
-  const styles = {
-    htmlBody: {
-      margin: 0,
-      padding: 0,
-      height: '100vh',
-      width: '100vw',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      overflow: 'hidden',
-      backgroundImage: `url(${bgImage})`,
-      backgroundRepeat: 'repeat', // tile the image
-      backgroundSize: `${CELL_VH * 9}vh ${CELL_VH * 10}vh`, // width = 3 digits, height = 1 digit
-      backgroundPosition: 'center center', // start tiling from the middle
-      fontFamily: 'mult, monospace',
-      position: 'relative',
-    },
-
-    clockGrid: {
-      display: 'grid',
-      gridTemplateColumns: `repeat(${COLUMNS}, ${CELL_VH}vh)`,
-      gridTemplateRows: `repeat(${ROWS}, ${CELL_VH}vh)`,
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      gap: '0',
-    },
-
-    characterCell: {
-      color: 'rgb(237, 333, 93)',
-      fontSize: `${CELL_VH * 1.35}vh`,
-      display: 'flex',
-      opacity: 0.8,
-      justifyContent: 'center',
-      alignItems: 'center',
-      textTransform: 'uppercase',
-      lineHeight: 1,
-    },
-  };
-
   const allCharacters = Array.from(
     { length: totalCharactersToRender },
     (_, i) => {
       const char = timeCharacters[i % patternLength];
       return (
-        <div key={i} style={styles.characterCell}>
-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
-
+        <div key={i} className={styles.characterCell}>
+          <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
           {char}
         </div>
       );
@@ -111,13 +77,20 @@ const Clockgrid =  () => {
   );
 
   return (
-    <div style={styles.htmlBody}>
-      <div style={styles.clockGrid}>{allCharacters}</div>
-      <style>{fontFace}</style>
-    </div>
+    <main className={styles.container}>
+      <div
+        className={styles.clockGrid}
+        style={{
+          gridTemplateColumns: `repeat(${COLUMNS}, ${CELL_VH}vh)`,
+          gridTemplateRows: `repeat(${ROWS}, ${CELL_VH}vh)`,
+        }}
+      >
+        {allCharacters}
+      </div>
+    </main>
   );
 };
 
-const MemoizedClockgrid = React.memo(Clockgrid);
+const MemoizedClockgrid = memo(Clockgrid);
 MemoizedClockgrid.displayName = 'Clock_25_10_23';
 export default MemoizedClockgrid;
