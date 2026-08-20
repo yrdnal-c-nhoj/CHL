@@ -152,14 +152,14 @@ export default function Tagger() {
           </button>
         </div>
 
-      <div style={{ display: 'flex', gap: '2rem', marginBottom: '2rem', alignItems: 'flex-start' }}>
-          <Thumbnail 
+      <div className={styles.editorRow}>
+          <Thumbnail
           date={currentItem.date}
-          title={currentItem.title} 
-          style={{ flexShrink: 0, width: '110px' }}
+          title={currentItem.title}
+          className={styles.thumbnailWrapper}
         />
 
-        <div style={{ flex: 1 }}>
+        <div className={styles.editorColumn}>
           <div className={styles.metaRow}>
             <div>
               <div className={styles.label}>Date</div>
@@ -171,7 +171,7 @@ export default function Tagger() {
               <div className={styles.label}>Title</div>
               <div className={styles.value}>
                 {currentItem.title}{' '}
-                <small style={{ color: '#888', fontWeight: 'normal' }}>#{currentItem.clockNumber}</small>
+                <small className={styles.clockNumber}>#{currentItem.clockNumber}</small>
               </div>
             </div>
           </div>
@@ -186,17 +186,16 @@ export default function Tagger() {
           <label className={styles.srOnly} htmlFor="tagInput">
             Tags input
           </label>
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <div className={styles.tagRow}>
           <input
             id="tagInput"
-            className={styles.input}
-            style={{ flex: 1, margin: 0 }}
+            className={`${styles.input} ${styles.tagInput}`}
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
             placeholder="tag1, tag2"
           />
           <select
-            className={styles.select}
+            className={`${styles.select} ${styles.tagSelect}`}
             multiple
             value={[]}
             aria-label="Add tags"
@@ -209,12 +208,10 @@ export default function Tagger() {
                 setTagInput(newTags);
               }
 
-              // Clear selection so the next interaction can re-select the same tags.
               Array.from(e.target.options).forEach(opt => {
                 opt.selected = false;
               });
             }}
-            style={{ width: 'auto', minWidth: '150px', height: '10rem' }} // Unified with TagManager
           >
             {allExistingTags.map(({ name, count }) => (
               <option key={name} value={name}>{name} ({count})</option>

@@ -1,0 +1,296 @@
+.container {
+  min-height: 100dvh;
+  width: 100%;
+  padding: 24px 16px;
+  background: #f7f7f7;
+}
+
+.card {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.04);
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.title {
+  font-size: 1.4rem;
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #222;
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+.fieldRow {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.searchInput {
+  flex: 1;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.actionButton {
+  white-space: nowrap;
+  padding: 0.5rem;
+}
+
+.scrollContainer {
+  max-height: 60vh;
+  overflow-y: auto;
+  margin-bottom: 2rem;
+  padding-right: 10px;
+}
+
+.monthGroup {
+  margin-bottom: 1rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.monthHeader {
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  background: #fcfcfc;
+  border: none;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.monthHeaderCollapsed {
+  border-bottom: none;
+}
+
+.monthLabel {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.monthCount {
+  margin-left: 10px;
+  color: #888;
+  font-weight: normal;
+}
+
+.monthToggle {
+  font-size: 1.4rem;
+}
+
+.monthContent {
+  padding: 0.5rem;
+}
+
+.itemRow {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  align-items: flex-start;
+}
+
+.thumbnailLink {
+  width: 100px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.thumbnailStyle {
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.infoColumn {
+  flex: 1;
+  min-width: 0;
+}
+
+.titleRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.itemTitle {
+  font-weight: bold;
+  color: #333;
+}
+
+.clockNumber {
+  color: #888;
+  font-weight: normal;
+}
+
+.itemDate {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.tagField {
+  margin: 0;
+}
+
+.tagButtonsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.tagBubble {
+  border: 1px solid #222;
+  cursor: pointer;
+  font-size: 11px;
+  background: none;
+}
+
+.noTags {
+  font-size: 11px;
+  color: #999;
+  font-style: italic;
+}
+
+.inputSelectRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tagInput {
+  flex: 1;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.tagSelect {
+  width: auto;
+  min-width: 140px;
+  height: 10rem;
+}
+
+.quickSelect {
+  margin-top: 8px;
+  max-height: 40px;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.quickSelectButton {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: none;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.quickSelectActive {
+  color: #000;
+  background-color: #eee;
+}
+
+.quickSelectInactive {
+  color: #888;
+  background-color: transparent;
+}
+
+.jsonSection {
+  margin-top: 2rem;
+}
+
+.jsonHeading {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.jsonTextarea {
+  width: 100%;
+  min-height: 160px;
+  font-family: monospace;
+  font-size: 0.8rem;
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  resize: vertical;
+}
+
+.actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #999;
+}
+
+.select {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 8px;
+  font-size: 14px;
+  outline: none;
+}
+
+.button {
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.buttonSecondary {
+  background: #fff;
+  color: #111;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.button:hover,
+.buttonSecondary:hover {
+  transform: translateY(-1px);
+}

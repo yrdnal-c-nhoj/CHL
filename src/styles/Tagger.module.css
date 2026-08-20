@@ -126,3 +126,161 @@
   font-size:12.5px;
 }
 
+.tagRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tagInput {
+  flex: 1;
+  margin: 0;
+}
+
+.tagSelect {
+  width: auto;
+  min-width: 150px;
+  height: 10rem;
+}
+
+.editorRow {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  align-items: flex-start;
+}
+
+.thumbnailWrapper {
+  flex-shrink: 0;
+  width: 110px;
+}
+
+.editorColumn {
+  flex: 1;
+}
+
+.clockNumber {
+  color: #888;
+  font-weight: normal;
+}
+
+.stickyHeader {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 10;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 1rem;
+}
+
+.stickyHeaderRow {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.stickyField {
+  flex: 1;
+  min-width: 200px;
+}
+
+.activeTagInput {
+  margin: 0;
+  border: 2px solid #007bff;
+}
+
+.filterInput {
+  margin: 0;
+}
+
+.sortRow {
+  margin: 0;
+}
+
+.hint {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.imageGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.imageCard {
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.1s;
+}
+
+.imageCardThumb {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.imageCardTitle {
+  font-size: 0.7rem;
+  margin-top: 4px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.imageCardDate {
+  font-size: 0.6rem;
+  color: #888;
+}
+
+.tagChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin-top: 4px;
+  justify-content: center;
+}
+
+.tagChip {
+  font-size: 8px;
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+
+.tagChipActive {
+  background-color: #e7f3ff;
+  border: 1px solid #007bff;
+}
+
+.tagChipInactive {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+}
+
+.jsonSection {
+  margin-top: 2rem;
+  border-top: 2px solid #eee;
+  padding-top: 1rem;
+}
+
+.jsonHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.jsonHeading {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.jsonTextarea {
+  height: 150px;
+}
+

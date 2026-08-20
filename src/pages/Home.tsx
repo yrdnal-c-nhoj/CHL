@@ -167,11 +167,7 @@ const Home: FC = () => {
 
   return (
     <div
-      className={styles.homeContainer}
-      style={{
-        opacity: fontsReady ? 1 : 0,
-        transition: 'opacity 0.4s ease-in',
-      }}
+      className={`${styles.homeContainer} ${fontsReady ? '' : styles.fadeOut}`}
     >
       <TopNav />
       <div className={styles.homeCenteredContent}>
