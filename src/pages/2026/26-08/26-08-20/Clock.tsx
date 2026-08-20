@@ -3,12 +3,13 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
-import tornadoVideo from '@/assets/images/26_images/26-08/26-08-20/tornado.webm';
+import tornadoVideo from '@/assets/images/26_images/26-08/26-08-20/tornado.mp4';
+import tornadoVideoWebM from '@/assets/images/26_images/26-08/26-08-20/tornado.webm';
 // Assuming a font exists for this date in the assets folder
 import fontUrl from '@/assets/fonts/26fonts/26-08-20.ttf?url';
 import styles from './Clock.module.css';
 
-export const assets: string[] = [tornadoVideo, fontUrl];
+export const assets: string[] = [tornadoVideo, tornadoVideoWebM, fontUrl];
 
 const fontConfigs: FontConfig[] = [
   {
@@ -33,14 +34,16 @@ const ClockComponent: React.FC = () => {
       <div className={styles.videoWrapper}>
         <video
           className={styles.video}
-          src={tornadoVideo}
           autoPlay
           loop
           muted
           playsInline
           preload="auto"
           aria-hidden="true"
-        />
+        >
+          <source src={tornadoVideo} type="video/mp4" />
+          <source src={tornadoVideoWebM} type="video/webm" />
+        </video>
       </div>
 
       <time dateTime={time.toISOString()} className={styles.srOnly}>
