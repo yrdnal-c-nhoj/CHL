@@ -6739,5 +6739,37 @@
       "weather",
       "wind"
     ]
+  },
+  {
+    "path": "26-08-21",
+    "date": "26-08-21",
+    "title": "Horrrr",
+    "tags": [
+      "analog",
+      "constellations",
+      "myth",
+      "zodiac"
+    ]
+  },
+  {
+    "path": "26-08-22",
+    "date": "26-08-22",
+    "title": "Crescent Moon",
+    "tags": [
+      "analog",
+      "moon",
+      "night",
+      "sky"
+    ]
+  },
+  {
+    "path": "26-08-23",
+    "date": "26-08-23",
+    "title": "Footnote #3",
+    "tags": [
+      "digital",
+      "image-free",
+      "words"
+    ]
   }
 ]
