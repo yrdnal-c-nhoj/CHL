@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { memo, useEffect, useRef } from 'react';
+import { useSecondClock } from '@/utils/hooks';
 import bgImage from '@/assets/images/25_images/25-06/25-06-08/bg.webp';
+import styles from './Clock.module.css';
 
 import img12 from '@/assets/images/25_images/25-06/25-06-08/qspades.jpg';
 import img1 from '@/assets/images/25_images/25-06/25-06-08/JSpades.png';
@@ -15,25 +16,15 @@ import img9 from '@/assets/images/25_images/25-06/25-06-08/Qclu.gif';
 import img10 from '@/assets/images/25_images/25-06/25-06-08/Qdi.gif';
 import img11 from '@/assets/images/25_images/25-06/25-06-08/Qhea.gif';
 
-const images = [
-  img12,
-  img1,
-  img2,
-  img3,
-  img4,
-  img5,
-  img6,
-  img7,
-  img8,
-  img9,
-  img10,
-  img11,
-];
+export const assets = [bgImage, img12, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
+
+const images = [img12, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
 
 const FaceCardClock =  () => {
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
+  const hourRef = useRef<HTMLDivElement>(null);
+  const minuteRef = useRef<HTMLDivElement>(null);
+  const secondRef = useRef<HTMLDivElement>(null);
+  const time = useSecondClock();
 
   useEffect(() => {
     const updateClock =  () => {
@@ -42,18 +33,14 @@ const FaceCardClock =  () => {
       const seconds = now.getSeconds() + ms / 1000;
       const minutes = now.getMinutes() + seconds / 60;
       const hours = (now.getHours() % 12) + minutes / 60;
-
       const secondDeg = (seconds / 60) * 360;
       const minuteDeg = (minutes / 60) * 360;
       const hourDeg = (hours / 12) * 360;
-
-      secondRef.current.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
-      minuteRef.current.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
-      hourRef.current.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
-
+      if (secondRef.current) secondRef.current.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
+      if (minuteRef.current) minuteRef.current.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
+      if (hourRef.current) hourRef.current.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
       requestAnimationFrame(updateClock);
     };
-
     requestAnimationFrame(updateClock);
   }, []);
 
@@ -68,7 +55,6 @@ const FaceCardClock =  () => {
     zIndex: 0,
     transform: 'translate(-50%, -50%)',
     transformOrigin: 'center center',
-    animation: 'slow-rotate 720s linear infinite',
   };
 
   const clockContainer = {
@@ -100,8 +86,7 @@ const FaceCardClock =  () => {
     left: '50%',
     transformOrigin: 'bottom',
     borderRadius: '5px',
-    boxShadow:
-      '1px 1px 1px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(205, 201, 201)',
+    boxShadow: '1px 1px 1px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(205, 201, 201)',
   };
 
   const centerDot = {
@@ -116,25 +101,26 @@ const FaceCardClock =  () => {
   };
 
   return (
-    <div
-      style={{
-        margin: 0,
-        padding: 0,
-        height: '100dvh',
-        width: '100dvw',
-        overflow: 'hidden',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'relative',
-      }}
-    >
+    <main className={styles.container} style={{
+      margin: 0,
+      padding: 0,
+      height: '100dvh',
+      width: '100dvw',
+      overflow: 'hidden',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      position: 'relative',
+    }}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <img
         decoding="async"
         loading="lazy"
         src={bgImage}
-        style={bgStyle}
         alt="Background"
+        className={styles.slowRotate}
+        style={bgStyle}
       />
 
       <div style={clockContainer}>
@@ -191,17 +177,10 @@ const FaceCardClock =  () => {
         />
         <div style={centerDot} />
       </div>
-
-      <style>
-        {`
-          @keyframes slow-rotate {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(-360deg); }
-          }
-        `}
-      </style>
-    </div>
+    </main>
   );
 };
 
-export default FaceCardClock;
+const MemoizedFaceCardClock = memo(FaceCardClock);
+MemoizedFaceCardClock.displayName = 'Clock_25_06_08';
+export default MemoizedFaceCardClock;

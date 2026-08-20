@@ -1,91 +1,55 @@
-import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { memo, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import sageFontUrl from '@/assets/fonts/25fonts/25-04-08-sage.ttf?url';
+import styles from './Clock.module.css';
 
-// Component Props interface
-interface TripleCactusClockProps {
-  // No props required for this component
-}
+export const assets = [sageFontUrl];
 
-// Clock refs interface
-interface ClockRefs {
-  hours: React.RefObject<HTMLDivElement | null>;
-  minutes: React.RefObject<HTMLDivElement | null>;
-  seconds: React.RefObject<HTMLDivElement | null>;
-  milliseconds: React.RefObject<HTMLDivElement | null>;
-}
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'CactusClockFont',
+    fontUrl: sageFontUrl,
+    options: { weight: 'normal', style: 'normal' },
+  },
+];
 
 const TripleCactusClock = () => {
-  const clockRefs: ClockRefs = {
+  const clockRefs = {
     hours: useRef<HTMLDivElement>(null),
     minutes: useRef<HTMLDivElement>(null),
     seconds: useRef<HTMLDivElement>(null),
     milliseconds: useRef<HTMLDivElement>(null),
   };
 
-  // Font loading configuration (memoized)
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [
-      {
-        fontFamily: 'CactusClockFont',
-        fontUrl: sageFontUrl,
-        options: {
-          weight: 'normal',
-          style: 'normal',
-        },
-      },
-    ],
-    [],
-  );
-
-  // Load fonts using suspense-based loader
   useSuspenseFontLoader(fontConfigs);
-
-  // Use the standardized hook for smooth millisecond clock updates
   const currentTime = useMillisecondClock();
-  const componentId = useRef(`cactus-clock-${Date.now()}`);
 
-  const setDigits = useCallback(
-    (container: HTMLDivElement | null, text: string): void => {
-      if (!container) return;
-      container.innerHTML = '';
-      for (const char of text) {
-        const span = document.createElement('span');
-        span.textContent = char;
-        Object.assign(span.style, {
-          color: '#f3f586',
-          fontSize: '12vh',
-          lineHeight: '8vh',
-          textAlign: 'center',
-          fontVariantNumeric: 'tabular-nums',
-          fontFeatureSettings: '"tnum"',
-          fontFamily: 'CactusClockFont, sans-serif',
-        });
-        container.appendChild(span);
-      }
-    },
-    [],
-  );
+  const setDigits = useCallback((container: HTMLDivElement | null, text: string): void => {
+    if (!container) return;
+    container.innerHTML = '';
+    for (const char of text) {
+      const span = document.createElement('span');
+      span.textContent = char;
+      Object.assign(span.style, {
+        color: '#f3f586',
+        fontSize: '12vh',
+        lineHeight: '8vh',
+        textAlign: 'center',
+        fontVariantNumeric: 'tabular-nums',
+        fontFeatureSettings: '"tnum"',
+        fontFamily: 'CactusClockFont, sans-serif',
+      });
+      container.appendChild(span);
+    }
+  }, []);
 
   const updateClock = useCallback((): void => {
-    setDigits(
-      clockRefs.hours.current,
-      String(currentTime.getHours()).padStart(2, '0'),
-    );
-    setDigits(
-      clockRefs.minutes.current,
-      String(currentTime.getMinutes()).padStart(2, '0'),
-    );
-    setDigits(
-      clockRefs.seconds.current,
-      String(currentTime.getSeconds()).padStart(2, '0'),
-    );
-    setDigits(
-      clockRefs.milliseconds.current,
-      String(currentTime.getMilliseconds()).padStart(3, '0'),
-    );
+    setDigits(clockRefs.hours.current, String(currentTime.getHours()).padStart(2, '0'));
+    setDigits(clockRefs.minutes.current, String(currentTime.getMinutes()).padStart(2, '0'));
+    setDigits(clockRefs.seconds.current, String(currentTime.getSeconds()).padStart(2, '0'));
+    setDigits(clockRefs.milliseconds.current, String(currentTime.getMilliseconds()).padStart(3, '0'));
   }, [currentTime, setDigits]);
 
   useEffect(() => {
@@ -93,34 +57,18 @@ const TripleCactusClock = () => {
   }, [updateClock]);
 
   return (
-    <div
-      style={{
-        margin: 0,
-        padding: 0,
-        boxSizing: 'border-box',
-        height: '100%',
-        overflow: 'hidden',
-        background: '#01151d',
-      }}
-    >
-      <style>{`
-        @keyframes skyCycle {
-          0% { background: #3bbdf0; }
-          15% { background: #8fbee2; }
-          25% { background: #e8a30d; }
-          50% { background: #fd1d1d; }
-          60% { background: #b43a87; }
-          75% { background: #833ab4; }
-          90% { background: #02027f; }
-          100% { background: #010102; }
-        }
-        @keyframes sunVertical {
-          0% { top: 10%; opacity: 1; }
-          45% { top: 50%; opacity: 1; }
-          100% { top: 90%; opacity: 0; }
-        }
-      `}</style>
+    <main className={styles.container} style={{
+      margin: 0,
+      padding: 0,
+      boxSizing: 'border-box',
+      height: '100%',
+      overflow: 'hidden',
+      background: '#01151d',
+    }}>
+      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
+
       <div
+        className={styles.skyCycle}
         style={{
           position: 'relative',
           width: '100vw',
@@ -129,16 +77,14 @@ const TripleCactusClock = () => {
           justifyContent: 'center',
           alignItems: 'flex-end',
           flexDirection: 'column',
-          animation: 'skyCycle 20s ease-in-out infinite alternate',
         }}
       >
-        {/* Sun / Clock */}
         <div
+          className={styles.sunVertical}
           style={{
             position: 'absolute',
             left: '50%',
             transform: 'translateX(-50%)',
-            animation: 'sunVertical 20s linear infinite alternate',
             zIndex: 2,
           }}
         >
@@ -150,26 +96,13 @@ const TripleCactusClock = () => {
               fontFamily: 'CactusClockFont',
             }}
           >
-            <div
-              style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }}
-              ref={clockRefs.hours}
-             />
-            <div
-              style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }}
-              ref={clockRefs.minutes}
-             />
-            <div
-              style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }}
-              ref={clockRefs.seconds}
-             />
-            <div
-              style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }}
-              ref={clockRefs.milliseconds}
-             />
+            <div style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }} ref={clockRefs.hours} />
+            <div style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }} ref={clockRefs.minutes} />
+            <div style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }} ref={clockRefs.seconds} />
+            <div style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }} ref={clockRefs.milliseconds} />
           </div>
         </div>
 
-        {/* Mountains */}
         <div
           style={{
             position: 'absolute',
@@ -197,7 +130,6 @@ const TripleCactusClock = () => {
           ))}
         </div>
 
-        {/* Ground and Cacti */}
         <div
           style={{
             position: 'absolute',
@@ -245,7 +177,7 @@ const TripleCactusClock = () => {
                     transform: 'rotate(-40deg)',
                     transformOrigin: 'bottom right',
                   }}
-                 />
+                />
                 <div
                   style={{
                     position: 'absolute',
@@ -258,14 +190,16 @@ const TripleCactusClock = () => {
                     transform: 'rotate(40deg)',
                     transformOrigin: 'bottom left',
                   }}
-                 />
+                />
               </div>
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
-export default TripleCactusClock;
+const MemoizedTripleCactusClock = memo(TripleCactusClock);
+MemoizedTripleCactusClock.displayName = 'Clock_25_04_08';
+export default MemoizedTripleCactusClock;

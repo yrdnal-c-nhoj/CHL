@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import { memo, useEffect, useState } from 'react';
+import { useSecondClock } from '@/utils/hooks';
 import bgImage from '@/assets/images/25_images/25-06/25-06-30/fried-egg.gif';
+import { useMultiAssetLoader } from '@/utils/assetLoader';
 import img1 from '@/assets/images/25_images/25-06/25-06-30/1.gif';
 import img2 from '@/assets/images/25_images/25-06/25-06-30/2.gif';
 import img3 from '@/assets/images/25_images/25-06/25-06-30/3.gif';
@@ -16,29 +17,27 @@ import img12 from '@/assets/images/25_images/25-06/25-06-30/12.gif';
 import hourHand from '@/assets/images/25_images/25-06/25-06-30/whis.gif';
 import minuteHand from '@/assets/images/25_images/25-06/25-06-30/w.gif';
 import secondHand from '@/assets/images/25_images/25-06/25-06-30/whi.gif';
-import { useSecondClock } from '@/utils/hooks';
-const allImages = [
-  bgImage,
-  img1,
-  img2,
-  img3,
-  img4,
-  img5,
-  img6,
-  img7,
-  img8,
-  img9,
-  img10,
-  img11,
-  img12,
-  hourHand,
-  minuteHand,
-  secondHand,
-];
+import styles from './Clock.module.css';
 
-export default function Clock() {
+export const assets = [bgImage, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, hourHand, minuteHand, secondHand];
+
+const allImages = [bgImage, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, hourHand, minuteHand, secondHand];
+
+const Clock =  () => {
   const [loaded, setLoaded] = useState<boolean>(false);
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  const time = useSecondClock();
+
+  useEffect(() => {
+    let loadedCount = 0;
+    allImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = img.onerror = () => {
+        loadedCount++;
+        if (loadedCount === allImages.length) setLoaded(true);
+      };
+    });
+  }, []);
 
   const eggBackground = {
     position: 'absolute',
@@ -48,7 +47,6 @@ export default function Clock() {
     height: '100%',
     objectFit: 'cover',
     zIndex: 1,
-    animation: 'slow-rotate 60s linear infinite',
     transformOrigin: 'center center',
     willChange: 'transform',
   };
@@ -87,21 +85,20 @@ export default function Clock() {
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: 'rgb(240, 203, 36)',
-        backgroundImage:
-          "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'%3E%3Ctext x='25' y='35' font-size='30' text-anchor='middle' dominant-baseline='middle' font-family='Arial, sans-serif'%3E🥚%3C/text%3E%3C/svg%3E\")",
-        backgroundRepeat: 'repeat',
-        backgroundSize: '15vw 15vw',
-        height: '100dvh',
-        width: '100%',
-        overflow: 'hidden',
-        fontSize: '1rem',
-        position: 'relative',
-        touchAction: 'none',
-      }}
-    >
+    <main className={styles.container} style={{
+      backgroundColor: 'rgb(240, 203, 36)',
+      backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'%3E%3Ctext x='25' y='35' font-size='30' text-anchor='middle' dominant-baseline='middle' font-family='Arial, sans-serif'%3E🥚%3C/text%3E%3C/svg%3E\")",
+      backgroundRepeat: 'repeat',
+      backgroundSize: '15vw 15vw',
+      height: '100dvh',
+      width: '100%',
+      overflow: 'hidden',
+      fontSize: '1rem',
+      position: 'relative',
+      touchAction: 'none',
+    }}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       {!loaded && (
         <div
           style={{
@@ -125,37 +122,17 @@ export default function Clock() {
         loading="lazy"
         src={bgImage}
         alt="Egg background"
+        className={styles.slowRotate}
         style={eggBackground}
       />
 
       <div style={clockStyle}>
-        {[
-          img1,
-          img2,
-          img3,
-          img4,
-          img5,
-          img6,
-          img7,
-          img8,
-          img9,
-          img10,
-          img11,
-          img12,
-        ].map((img, i) => {
+        {[img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12].map((img, i) => {
           const positions = [
-            { top: '13%', left: '73%' },
-            { top: '29%', left: '85%' },
-            { top: '50%', left: '92%' },
-            { top: '73%', left: '85%' },
-            { top: '85%', left: '73%' },
-            { top: '90%', left: '50%' },
-            { top: '85%', left: '27%' },
-            { top: '73%', left: '15%' },
-            { top: '50%', left: '9%' },
-            { top: '29%', left: '15%' },
-            { top: '15%', left: '27%' },
-            { top: '10%', left: '50%' },
+            { top: '13%', left: '73%' }, { top: '29%', left: '85%' }, { top: '50%', left: '92%' },
+            { top: '73%', left: '85%' }, { top: '85%', left: '73%' }, { top: '90%', left: '50%' },
+            { top: '85%', left: '27%' }, { top: '73%', left: '15%' }, { top: '50%', left: '9%' },
+            { top: '29%', left: '15%' }, { top: '15%', left: '27%' }, { top: '10%', left: '50%' },
           ];
           return (
             <img
@@ -199,15 +176,10 @@ export default function Clock() {
           }}
         />
       </div>
-
-      <style>
-        {`
-          @keyframes slow-rotate {
-            0% { transform: rotate(0deg) scale(1.5); }
-            100% { transform: rotate(-360deg) scale(1.5); }
-          }
-        `}
-      </style>
-    </div>
+    </main>
   );
-}
+};
+
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_25_06_30';
+export default MemoizedClock;
