@@ -1,29 +1,31 @@
-import React, { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 import bgVideo from '@/assets/images/26_images/26-04/26-04-26/jetson.mp4';
 import jetFont from '@/assets/fonts/26fonts/26-04-26-jet.ttf?url';
+import styles from './Clock.module.css';
+
+export const assets = [bgVideo, jetFont];
+
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
+
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'Jet',
+    fontUrl: jetFont,
+    options: { weight: 'normal', style: 'normal' },
+  },
+];
+
 const Clock =  () => {
   const time = useMillisecondClock();
-  const fontConfigs = useMemo(
-    () => [
-      {
-        fontFamily: 'Jet',
-        fontUrl: jetFont,
-        options: {
-          weight: 'normal',
-          style: 'normal',
-        },
-      },
-    ],
-    [],
-  );
   useSuspenseFontLoader(fontConfigs);
+
   const { displayHours, displayMinutes, displaySeconds, ampm } = useMemo(() => {
     const rawHours = time.getHours();
     const ampm = rawHours >= 12 ? 'PM' : 'AM';
-    const h = rawHours % 12 || 12; // Convert to 12-hour format, 0 becomes 12
+    const h = rawHours % 12 || 12;
     return {
       displayHours: formatTime(h),
       displayMinutes: formatTime(time.getMinutes()),
@@ -31,7 +33,8 @@ const Clock =  () => {
       ampm,
     };
   }, [time]);
-  const containerStyle: React.CSSProperties = {
+
+  const containerStyle = {
     width: '100vw',
     height: '100dvh',
     display: 'flex',
@@ -43,7 +46,7 @@ const Clock =  () => {
     padding: 0,
   };
 
-  const videoStyle: React.CSSProperties = {
+  const videoStyle = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -53,22 +56,22 @@ const Clock =  () => {
     zIndex: 0,
   };
 
-  const baseDigitStyle: React.CSSProperties = {
+  const baseDigitStyle = {
     fontSize: 'clamp(2rem, 8vw, 6rem)',
     color: '#fff',
     minWidth: '0.8em',
     lineHeight: 1,
   };
 
-  const timeStyle: React.CSSProperties = {
+  const timeStyle = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: '0.5rem', // Spacing between digit boxes and separators
+    gap: '0.5rem',
     fontFamily: 'Jet',
   };
 
-  const digitStyle: React.CSSProperties = {
+  const digitStyle = {
     ...baseDigitStyle,
     textShadow: `
       0 0 10px rgba(255, 100, 50, 0.8),
@@ -80,78 +83,67 @@ const Clock =  () => {
     WebkitTextStroke: '1px rgba(0, 0, 0, 0.3)',
   };
 
-  const separatorStyle: React.CSSProperties = {
-    ...digitStyle, // Inherit all digit styles including shadow and stroke
-    margin: '0 0.25rem', // Adjust margin
+  const separatorStyle = {
+    ...digitStyle,
+    margin: '0 0.25rem',
   };
 
-  const ampmStyle: React.CSSProperties = {
-    ...digitStyle, // Inherit all digit styles including shadow and stroke
-    fontSize: 'clamp(1.5rem, 6vw, 4rem)', // Smaller for AM/PM
+  const ampmStyle = {
+    ...digitStyle,
+    fontSize: 'clamp(1.5rem, 6vw, 4rem)',
     marginLeft: '0.5rem',
   };
 
-  const baseDigitBoxStyle: React.CSSProperties = {
+  const baseDigitBoxStyle = {
     width: 'clamp(1.5rem, 7vw, 5rem)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   };
 
-  const digitBoxStyle: React.CSSProperties = {
-    ...baseDigitBoxStyle,
-  };
+  const digitBoxStyle = { ...baseDigitBoxStyle };
+  const ampmBoxStyle = { ...baseDigitBoxStyle, width: 'clamp(2rem, 10vw, 6rem)', marginLeft: '0.5rem' };
 
-  const ampmBoxStyle: React.CSSProperties = {
-    ...baseDigitBoxStyle,
-    width: 'clamp(2rem, 10vw, 6rem)', // Wider for AM/PM
-    marginLeft: '0.5rem',
-  };
-
-  const clockWrapperStyle: React.CSSProperties = {
+  const clockWrapperStyle = {
     position: 'relative',
     zIndex: 1,
     width: '90vw',
     maxWidth: '800px',
-    height: 'auto', // Let content define height
+    height: 'auto',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   };
 
   return (
-    <main style={containerStyle}>
+    <main className={styles.container} style={containerStyle}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+
       <video src={bgVideo} autoPlay loop muted playsInline style={videoStyle} />
-      <style>{`
-        @keyframes blink {
-          0%, 100% { opacity: 0.6; }
-          50% { opacity: 0.2; }
-        }
-      `}</style>
       <div style={clockWrapperStyle}>
         <time style={timeStyle} dateTime={time.toISOString()}>
           <div style={digitBoxStyle}>
-            <span style={digitStyle}>{displayHours[0]}</span>
+            <span className={styles.blink} style={{ animationDelay: '0s' }}>{displayHours[0]}</span>
           </div>
           <div style={digitBoxStyle}>
-            <span style={digitStyle}>{displayHours[1]}</span>
-          </div>
-          <span style={separatorStyle}>:</span>
-          <div style={digitBoxStyle}>
-            <span style={digitStyle}>{displayMinutes[0]}</span>
-          </div>
-          <div style={digitBoxStyle}>
-            <span style={digitStyle}>{displayMinutes[1]}</span>
+            <span className={styles.blink} style={{ animationDelay: '0.1s' }}>{displayHours[1]}</span>
           </div>
           <span style={separatorStyle}>:</span>
           <div style={digitBoxStyle}>
-            <span style={digitStyle}>{displaySeconds[0]}</span>
+            <span className={styles.blink} style={{ animationDelay: '0.2s' }}>{displayMinutes[0]}</span>
           </div>
           <div style={digitBoxStyle}>
-            <span style={digitStyle}>{displaySeconds[1]}</span>
+            <span className={styles.blink} style={{ animationDelay: '0.3s' }}>{displayMinutes[1]}</span>
+          </div>
+          <span style={separatorStyle}>:</span>
+          <div style={digitBoxStyle}>
+            <span className={styles.blink} style={{ animationDelay: '0.4s' }}>{displaySeconds[0]}</span>
+          </div>
+          <div style={digitBoxStyle}>
+            <span className={styles.blink} style={{ animationDelay: '0.5s' }}>{displaySeconds[1]}</span>
           </div>
           <div style={ampmBoxStyle}>
-            <span style={ampmStyle}>{ampm}</span>
+            <span className={styles.blink} style={{ animationDelay: '0.6s' }}>{ampm}</span>
           </div>
         </time>
       </div>
@@ -159,4 +151,6 @@ const Clock =  () => {
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_04_26';
+export default MemoizedClock;

@@ -1,0 +1,9 @@
+@keyframes rococoFloat {
+  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  33% { transform: translate(var(--rx), var(--ry)) rotate(var(--rot)) scale(var(--sc)); }
+  66% { transform: translate(calc(var(--rx) * -0.8), calc(var(--ry) * 1.2)) rotate(calc(var(--rot) * -0.5)) scale(0.95); }
+}
+
+.rococoFloat {
+  animation: rococoFloat 8s infinite cubic-bezier(0.45, 0, 0.55, 1);
+}
