@@ -32,6 +32,7 @@ const DigitalClock =  () => {
 
   return (
     <main className={styles.container}>
+      <time dateTime={isoTime} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
       <div className={styles.blurStrip} />
       <img src={decoImage} alt="" className={styles.backgroundImage} />
       <time dateTime={isoTime} className={styles.timeWrapper}>
