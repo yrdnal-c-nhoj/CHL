@@ -126,7 +126,7 @@
 }
 
 /* Visually hidden class for accessible time element */
-.semanticTime {
+.srOnly {
   position: absolute;
   width: 1px;
   height: 1px;
