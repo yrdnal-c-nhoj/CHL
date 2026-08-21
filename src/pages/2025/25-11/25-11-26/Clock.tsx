@@ -1,16 +1,14 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, memo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 
-// Media file paths in public folder
 import videoFile from '@/assets/images/25_images/25-11/25-11-26/esp.mp4';
 import videoWebM from '@/assets/images/25_images/25-11/25-11-26/esp.mp4';
 import fallbackImg from '@/assets/images/25_images/25-11/25-11-26/birds.webp';
 import fontUrl_20251128 from '@/assets/fonts/25fonts/25-11-26-bird.ttf?url';
+import styles from './Clock.module.css';
 
-export const assets = [];
-
-// Export assets for preloading
-export { videoFile, videoWebM, fallbackImg };
+export const assets = [videoFile, videoWebM, fallbackImg, fontUrl_20251128];
 
 export const fontConfigs = [
   {
@@ -19,52 +17,10 @@ export const fontConfigs = [
   },
 ];
 
-// --- Digital Time Component ---
-function DigitalTime() {
-  const [timeText, setTimeText] = useState<any>('');
-  const [letters, setLetters] = useState<any>([]);
-  const [time, setTime] = useState(new Date());
+const ANIMATION_DURATION = 10000;
+const STAGGER_DELAY = 800;
 
-  const ANIMATION_DURATION = 10000; // 10 seconds
-  const STAGGER_DELAY = 800;
-
-  useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-    const tick = () => {
-      setTime(new Date());
-      const timer = setTimeout(tick, 1000);
-      return () => clearTimeout(timer);
-    };
-    const timer = setTimeout(tick, 0);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const updateTime =  () => {
-    const now = new Date();
-    const pastDate = new Date(now.getTime() - ANIMATION_DURATION);
-    const hours24 = pastDate.getHours();
-    const minutes = pastDate.getMinutes();
-    const seconds = pastDate.getSeconds();
-
-    let hour12 = hours24 % 12;
-    if (hour12 === 0) hour12 = 12;
-
-    const formattedTime = `${String(hour12).padStart(2, '0')}${String(minutes).padStart(2, '0')}${String(seconds).padStart(2, '0')}`;
-    setTimeText(formattedTime);
-  };
-
-  useEffect(() => {
-    updateTime();
-    const tick = () => {
-      updateTime();
-      const timer = setTimeout(tick, ANIMATION_DURATION);
-      return () => clearTimeout(timer);
-    };
-    const timer = setTimeout(tick, ANIMATION_DURATION);
-    return () => clearTimeout(timer);
-  }, []);
-
+function DigitalTime({ time, timeText, setLetters }: { time: Date; timeText: string; setLetters: (letters: any[]) => void }) {
   useEffect(() => {
     if (!timeText) return;
 
@@ -89,7 +45,6 @@ function DigitalTime() {
     });
     setLetters(lettersArr);
 
-    // Fly in
     lettersArr.forEach((_, i) => {
       setTimeout(() => {
         setLetters((prev) => {
@@ -104,7 +59,6 @@ function DigitalTime() {
       }, i * STAGGER_DELAY);
     });
 
-    // Fly out
     const flyOutDelay = TOTAL_FLY_IN_TIME + SIT_DURATION;
     lettersArr.forEach((letter, i) => {
       setTimeout(
@@ -122,39 +76,21 @@ function DigitalTime() {
         flyOutDelay + i * STAGGER_DELAY,
       );
     });
-  }, [timeText]);
-
-  const containerStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    zIndex: 10,
-    color: '#8D6222FF',
-    fontSize: '10vh',
-    textAlign: 'center',
-    letterSpacing: '0.05em',
-    textShadow: '1px 0 0 white',
-    width: '100%',
-    whiteSpace: 'nowrap',
-    overflow: 'visible',
-    fontFamily: `"CustomFont_20251128", sans-serif`,
-  };
+  }, [timeText, setLetters]);
 
   return (
-    <div style={containerStyle} aria-live="polite">
+    <div className={styles.timeContainer} aria-live="polite">
       <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
 
-        {letters.map((l, idx) => (
-          <span key={idx} style={l.style}>
-            {l.char}
-          </span>
-        ))}
-      </div>
+      {timeText.split('').map((l, idx) => (
+        <span key={idx} className={styles.timeLetter}>
+          {l}
+        </span>
+      ))}
+    </div>
   );
 }
 
-// --- Background Video Component ---
 function BackgroundVideo() {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const videoRef = useRef(null);
@@ -179,43 +115,11 @@ function BackgroundVideo() {
     };
   }, []);
 
-  const containerStyle = {
-    width: '100vw',
-    height: '100dvh',
-    position: 'relative',
-    overflow: 'hidden',
-    backgroundColor: '#000',
-  };
-
-  const videoStyle = {
-    position: 'absolute',
-    inset: 0,
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    zIndex: 0,
-  };
-
-  const fallbackStyle = {
-    position: 'absolute',
-    inset: 0,
-    backgroundImage: `url(${fallbackImg})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    display: videoFailed ? 'block' : 'none',
-    zIndex: 5,
-  };
-
   return (
-    <main
-      style={containerStyle}
-      role="region"
-      aria-label="Background video and time"
-    >
-      <DigitalTime />
+    <>
       <video
         ref={videoRef}
-        style={videoStyle}
+        className={styles.video}
         loop
         muted
         playsInline
@@ -225,15 +129,57 @@ function BackgroundVideo() {
         <source src={videoFile} type="video/mp4" />
         <source src={videoWebM} type="video/webm" />
       </video>
-      <div style={fallbackStyle} aria-hidden={!videoFailed}>
+      <div className={styles.fallback} aria-hidden={!videoFailed}>
         {videoFailed && (
           <span style={{ display: 'none' }}>Fallback background image</span>
         )}
       </div>
+    </>
+  );
+}
+
+function NtpClock() {
+  useSuspenseFontLoader(fontConfigs);
+  const time = useSecondClock();
+
+  const [timeText, setTimeText] = useState('');
+  const [letters, setLetters] = useState<any[]>([]);
+
+  const updateTime = () => {
+    const now = new Date();
+    const pastDate = new Date(now.getTime() - ANIMATION_DURATION);
+    const hours24 = pastDate.getHours();
+    const minutes = pastDate.getMinutes();
+    const seconds = pastDate.getSeconds();
+
+    let hour12 = hours24 % 12;
+    if (hour12 === 0) hour12 = 12;
+
+    const formattedTime = `${String(hour12).padStart(2, '0')}${String(minutes).padStart(2, '0')}${String(seconds).padStart(2, '0')}`;
+    setTimeText(formattedTime);
+  };
+
+  useEffect(() => {
+    updateTime();
+    const timerRef = { current: null as ReturnType<typeof setTimeout> | null };
+    const scheduleUpdate = () => {
+      updateTime();
+      timerRef.current = setTimeout(scheduleUpdate, ANIMATION_DURATION);
+    };
+    timerRef.current = setTimeout(scheduleUpdate, ANIMATION_DURATION);
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  return (
+    <main className={styles.container}>
+      <DigitalTime time={time} timeText={timeText} setLetters={setLetters} />
+      <BackgroundVideo />
     </main>
   );
 }
 
-const MemoizedBackgroundVideo = React.memo(BackgroundVideo);
-MemoizedBackgroundVideo.displayName = 'Clock_25_11_26';
-export default MemoizedBackgroundVideo;
+const MemoizedNtpClock = memo(NtpClock);
+MemoizedNtpClock.displayName = 'Clock_25_11_26';
+export default MemoizedNtpClock;

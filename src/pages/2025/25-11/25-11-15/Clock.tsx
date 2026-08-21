@@ -1,10 +1,12 @@
-import React, { useRef, useEffect, useMemo } from 'react';
+import React, { useRef, useEffect, useMemo, memo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 import font_25251115j from '@/assets/fonts/25fonts/25-11-15-rain.otf?url';
-import bgImage from '@/assets/images/25_images/25-11/25-11-15/fall.webp'; // local background image
+import bgImage from '@/assets/images/25_images/25-11/25-11-15/fall.webp';
 import type { FontConfig } from '@/types/clock';
+import styles from './Clock.module.css';
 
-export const assets = [];
+export const assets = [font_25251115j, bgImage];
 
 export const fontConfigs: FontConfig[] = [
   {
@@ -18,19 +20,8 @@ function FallClock() {
   const rafRef = useRef(null);
   const timeDigitsRef = useRef([]);
   const bgRef = useRef(null);
-  const [time, setTime] = useState(new Date());
+  const time = useSecondClock();
 
-  useEffect(() => {
-    const tick = () => {
-      setTime(new Date());
-      const timer = setTimeout(tick, 1000);
-      return () => clearTimeout(timer);
-    };
-    const timer = setTimeout(tick, 0);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Use standardized font loader
   useSuspenseFontLoader(fontConfigs);
 
   const GRAVITY = 9.0;
@@ -41,29 +32,19 @@ function FallClock() {
   const DRAG = 0.1;
   const HORIZONTAL_SWAY_STRENGTH = 6.5;
 
-  // Update digits every second
   useEffect(() => {
-    const tick = () => {
-      const now = new Date();
-      const hours = now.getHours() % 12 || 12;
-      const minutes = now.getMinutes();
-      timeDigitsRef.current = `${hours}${minutes
-        .toString()
-        .padStart(2, '0')}`.split('');
-      const timer = setTimeout(tick, 1000);
-      return () => clearTimeout(timer);
-    };
-    tick();
-    const timer = setTimeout(tick, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+    const hours = time.getHours() % 12 || 12;
+    const minutes = time.getMinutes();
+    timeDigitsRef.current = `${hours}${minutes
+      .toString()
+      .padStart(2, '0')}`.split('');
+  }, [time]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: false });
 
-    // Load background image
     const bg = new Image();
     bg.src = bgImage;
     bg.onload = () => {
@@ -168,18 +149,16 @@ function FallClock() {
       const width = canvas.clientWidth;
       const height = canvas.clientHeight;
 
-      // Draw background flush left, maintaining aspect ratio and covering full height
       if (bgRef.current) {
         ctx.clearRect(0, 0, width, height);
         const img = bgRef.current;
         const iw = img.naturalWidth || img.width;
         const ih = img.naturalHeight || img.height;
-        // Calculate scale to cover full height while maintaining aspect ratio
         const scale = height / ih;
         const dw = iw * scale;
-        const dh = height; // Full viewport height
-        const dx = 0; // Flush left
-        const dy = 0; // Align to top
+        const dh = height;
+        const dx = 0;
+        const dy = 0;
         ctx.drawImage(img, dx, dy, dw, dh);
       } else {
         ctx.fillStyle = '#BDE4F0FF';
@@ -214,28 +193,18 @@ function FallClock() {
     };
   }, []);
 
-  const canvasStyle = useMemo(
-    () => ({
-      display: 'block',
-      width: '100vw',
-      height: '100dvh',
-      margin: 0,
-    }),
-    [],
-  );
-
   return (
-    <main>
+    <main className={styles.container}>
       <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
       <canvas
         ref={canvasRef}
-        style={canvasStyle}
+        className={styles.canvas}
         aria-label="Digit leaf animation"
       />
     </main>
   );
 }
 
-const MemoizedFallClock = React.memo(FallClock);
+const MemoizedFallClock = memo(FallClock);
 MemoizedFallClock.displayName = 'Clock_25_11_15';
 export default MemoizedFallClock;

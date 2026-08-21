@@ -73,3 +73,14 @@
   color: #11e9c8; /* Fallback color */
   text-shadow: 1px 1px 1px #dcdbf3;
 }
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

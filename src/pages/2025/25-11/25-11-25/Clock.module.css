@@ -1,4 +1,4 @@
-.wrapper {
+.container {
   width: 100vw;
   height: 100dvh;
   display: flex;
@@ -22,6 +22,17 @@
   filter: invert(1) saturate(7);
   overflow: hidden;
   position: relative;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }
 
 .clock {

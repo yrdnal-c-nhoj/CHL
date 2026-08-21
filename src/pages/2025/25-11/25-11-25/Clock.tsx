@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 
 import fontMarqueeUrl from '@/assets/fonts/25fonts/25-11-25-n2.ttf?url';
 import fontClockUrl from '@/assets/fonts/25fonts/25-11-25-ntp.ttf?url';
 import backgroundImg from '@/assets/images/25_images/25-11/25-11-25/npt.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
-export const assets = [];
+export const assets = [fontMarqueeUrl, fontClockUrl, backgroundImg];
 
 export { backgroundImg };
 
@@ -63,6 +64,7 @@ export const fontConfigs: FontConfig[] = [
 function NtpClock() {
   const { offset, isSynced } = useNtpOffset();
   useSuspenseFontLoader(fontConfigs);
+  const time = useSecondClock();
 
   const [ntpSeconds, setNtpSeconds] = useState<number>(0);
   const [digitColors, setDigitColors] = useState<
@@ -71,21 +73,12 @@ function NtpClock() {
   const [marqueePos, setMarqueePos] = useState<number>(0);
   const [displayTime, setDisplayTime] = useState('');
   const [isPortrait, setIsPortrait] = useState(false);
-  const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    const tick = () => {
-      setTime(new Date());
-      const timer = setTimeout(tick, 1000);
-      return () => clearTimeout(timer);
-    };
-    const timer = setTimeout(tick, 0);
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     setIsPortrait(window.innerHeight > window.innerWidth);
+  }, []);
 
+  useEffect(() => {
     const tick = () => {
       const nowTime = Date.now() + offset;
       const newSeconds = Math.floor(nowTime / MS_PER_SECOND) + NTP_EPOCH_OFFSET;
@@ -96,7 +89,6 @@ function NtpClock() {
         new Date(nowTime).toLocaleString([], { timeZoneName: 'short' }),
       );
 
-      // Generate colors only for the length of the current timestamp
       setDigitColors(
         Array.from({ length: strSec.length }, () => {
           const h = Math.random() * 360;
@@ -109,23 +101,27 @@ function NtpClock() {
     };
 
     tick();
-    const tickInterval = setInterval(tick, MS_PER_SECOND);
-    return () => clearInterval(tickInterval);
+    const timerRef = { current: null as ReturnType<typeof setTimeout> | null };
+    const scheduleTick = () => {
+      tick();
+      timerRef.current = setTimeout(scheduleTick, MS_PER_SECOND);
+    };
+    timerRef.current = setTimeout(scheduleTick, MS_PER_SECOND);
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
   }, [offset]);
 
   useEffect(() => {
     let frame = requestAnimationFrame(function step() {
-      setMarqueePos((prev) => (prev > 200 ? 0 : prev + 0.7)); // Reset loop at 200 units
+      setMarqueePos((prev) => (prev > 200 ? 0 : prev + 0.7));
       frame = requestAnimationFrame(step);
     });
     return () => cancelAnimationFrame(frame);
   }, []);
 
   return (
-    <main
-      className={styles.wrapper}
-      style={{ '--bg-img': `url(${backgroundImg})` } as React.CSSProperties}
-    >
+    <main className={styles.container} style={{ '--bg-img': `url(${backgroundImg})` } as React.CSSProperties}>
       <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
 
       <div
@@ -167,6 +163,6 @@ function NtpClock() {
   );
 }
 
-const MemoizedNtpClock = React.memo(NtpClock);
+const MemoizedNtpClock = memo(NtpClock);
 MemoizedNtpClock.displayName = 'Clock_25_11_25';
 export default MemoizedNtpClock;
