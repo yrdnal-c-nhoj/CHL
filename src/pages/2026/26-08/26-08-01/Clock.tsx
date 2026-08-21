@@ -3,9 +3,9 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useEffect } from 'react';
 
-import secondsFont from '@/assets/fonts/26fonts/26--08-01-seconds.ttf?url';
 import hoursFont from '@/assets/fonts/26fonts/26-08-01-hours.ttf?url';
 import minutesFont from '@/assets/fonts/26fonts/26-08-01-minutes.ttf?url';
+import secondsFont from '@/assets/fonts/26fonts/26-08-01-seconds.ttf?url';
 import bgImage from '@/assets/images/26_images/26-08/26-08-01/bg.webp';
 import styles from './Clock.module.css';
 

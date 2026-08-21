@@ -1,7 +1,10 @@
 import { formatTime } from '@/utils/clockUtils';
-import { useSmoothClock } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Clock.module.css';
+
+import fontUrl from '@/assets/fonts/26fonts/26-08-21.ttf?url';
 
 // Dynamically import all images from the assets folder
 const imageModules = import.meta.glob(
@@ -16,7 +19,14 @@ const IMAGES = Object.values(imageModules).filter(
   (src): src is string => typeof src === 'string' && !src.includes('.DS_Store'),
 );
 
-export const assets = IMAGES;
+export const assets = [...IMAGES, fontUrl];
+
+const fontConfigs = [
+  {
+    fontFamily: 'ClockFont_26_08_21',
+    fontUrl,
+  },
+];
 
 const getRandomPosition = () => ({
   top: `${Math.random() * 70}%`,
@@ -25,7 +35,8 @@ const getRandomPosition = () => ({
 });
 
 const Clock =  () => {
-  const time = useSmoothClock();
+  useSuspenseFontLoader(fontConfigs);
+  const time = useMillisecondClock();
 
   // Start with all images loaded at random positions
   const [displayedImages, setDisplayedImages] = useState<
@@ -43,12 +54,13 @@ const Clock =  () => {
   const lastUpdateSecondRef = useRef<number | null>(null);
 
   // Use the raw seconds value to trigger the effect
-  const seconds = time.getSeconds();
+  const secondsInt = time.getSeconds();
+  const smoothSeconds = secondsInt + time.getMilliseconds() / 1000;
 
   useEffect(() => {
     // Only run the effect once per second
-    if (seconds === lastUpdateSecondRef.current) return;
-    lastUpdateSecondRef.current = seconds;
+    if (secondsInt === lastUpdateSecondRef.current) return;
+    lastUpdateSecondRef.current = secondsInt;
 
     setDisplayedImages((prev) => {
       const nextSrc = IMAGES[imageIndex % IMAGES.length];
@@ -69,7 +81,7 @@ const Clock =  () => {
     });
 
     setImageIndex((prev) => prev + 1);
-  }, [time, imageIndex, seconds]);
+  }, [time, imageIndex, secondsInt]);
 
   // Clock Hand Calculations
   const secondDegrees = (time.getSeconds() + time.getMilliseconds() / 1000) * 6;
@@ -105,19 +117,13 @@ const Clock =  () => {
         role="img"
         aria-label={`Time: ${timeLabel}`}
       >
-        {/* Markers */}
-        {[...Array(12)].map((_, i) => (
-          <line
-            key={i}
-            x1="50"
-            y1="5"
-            x2="50"
-            y2={i % 3 === 0 ? '10' : '8'}
-            stroke="#000"
-            strokeWidth={i % 3 === 0 ? '1' : '0.5'}
-            transform={`rotate(${i * 30} 50 50)`}
-          />
-        ))}
+        <g transform={`rotate(${smoothSeconds * 6} 50 50)`}>
+
+        {/* Cardinal numbers */}
+        <text x="50" y="16" textAnchor="middle" fontSize="12" fill="#000" className={styles.clockNumber}>12</text>
+        <text x="84" y="54" textAnchor="middle" fontSize="12" fill="#000" className={styles.clockNumber}>3</text>
+        <text x="50" y="90" textAnchor="middle" fontSize="12" fill="#000" className={styles.clockNumber}>6</text>
+        <text x="16" y="54" textAnchor="middle" fontSize="12" fill="#000" className={styles.clockNumber}>9</text>
 
         {/* Hands */}
         <line
@@ -152,6 +158,7 @@ const Clock =  () => {
         />
 
         <circle cx="50" cy="50" r="2" fill="#000" />
+        </g>
       </svg>
     </div>
   );

@@ -6183,7 +6183,10 @@
     "title": "Wedge",
     "tags": [
       "analog",
-      "six-simple-machines"
+      "six-simple-machines",
+      "generative",
+      "random",
+      "mechanical"
     ]
   },
   {
@@ -6738,6 +6741,20 @@
       "spin",
       "weather",
       "wind"
+    ]
+  },
+  {
+    "path": "26-08-21",
+    "date": "26-08-21",
+    "title": "Screw",
+    "tags": [
+    "analog",
+     "six-simple-machines",
+     "hand",
+     "metal",
+     "generative",
+     "random",
+     "mechanical"
     ]
   }
 ]
