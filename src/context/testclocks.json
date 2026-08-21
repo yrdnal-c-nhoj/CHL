@@ -6183,7 +6183,10 @@
     "title": "Wedge",
     "tags": [
       "analog",
-      "six-simple-machines"
+      "six-simple-machines",
+      "generative",
+      "random",
+      "mechanical"
     ]
   },
   {
@@ -6743,12 +6746,15 @@
   {
     "path": "26-08-21",
     "date": "26-08-21",
-    "title": "Horrrr",
+    "title": "Screw",
     "tags": [
-      "analog",
-      "constellations",
-      "myth",
-      "zodiac"
+    "analog",
+     "six-simple-machines",
+     "hand",
+     "metal",
+     "generative",
+     "random",
+     "mechanical"
     ]
   },
   {

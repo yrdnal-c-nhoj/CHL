@@ -20,11 +20,10 @@
   z-index: 0;
 }
 
-.semanticTime {
+.srOnly {
   position: absolute;
   opacity: 0;
   pointer-events: none;
-  /* Per verify-clock.js, this is the standard for sr-only text */
   width: 1px;
   height: 1px;
   margin: -1px;
