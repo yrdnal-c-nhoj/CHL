@@ -25,3 +25,7 @@
   width: 70vmin;
   height: 70vmin;
 }
+
+.clockNumber {
+  font-family: 'ClockFont_26_08_21', serif;
+}
