@@ -1,7 +1,6 @@
-import { formatTime } from '@/utils/clockUtils';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useMillisecondClock, formatTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState, memo } from 'react';
 import styles from './Clock.module.css';
 
 import fontUrl from '@/assets/fonts/26fonts/26-08-21.ttf?url';
@@ -37,7 +36,6 @@ const getRandomPosition = () => ({
 const Clock =  () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useMillisecondClock();
-
   // Start with all images loaded at random positions
   const [displayedImages, setDisplayedImages] = useState<
     Array<{ src: string; pos: React.CSSProperties; id: number }>
@@ -94,11 +92,15 @@ const Clock =  () => {
   }, [time]);
 
   return (
-    <div
+    <main
       className={styles.container}
       role="img"
       aria-label={`Analog clock showing ${timeLabel}`}
     >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
+
       {/* Background Images Layer */}
       {displayedImages.map((img) => (
         <img
@@ -120,48 +122,23 @@ const Clock =  () => {
         <g transform={`rotate(${smoothSeconds * 6} 50 50)`}>
 
         {/* Cardinal numbers */}
-        <text x="50" y="16" textAnchor="middle" fontSize="12" fill="#000" className={styles.clockNumber}>12</text>
-        <text x="84" y="54" textAnchor="middle" fontSize="12" fill="#000" className={styles.clockNumber}>3</text>
-        <text x="50" y="90" textAnchor="middle" fontSize="12" fill="#000" className={styles.clockNumber}>6</text>
-        <text x="16" y="54" textAnchor="middle" fontSize="12" fill="#000" className={styles.clockNumber}>9</text>
+        <text x="50" y="16" className={styles.clockNumber}>12</text>
+        <text x="84" y="54" className={styles.clockNumber}>3</text>
+        <text x="50" y="90" className={styles.clockNumber}>6</text>
+        <text x="16" y="54" className={styles.clockNumber}>9</text>
 
         {/* Hands */}
-        <line
-          x1="50"
-          y1="50"
-          x2="50"
-          y2="25"
-          stroke="#000"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          transform={`rotate(${hourDegrees} 50 50)`}
-        />
-        <line
-          x1="50"
-          y1="50"
-          x2="50"
-          y2="15"
-          stroke="#000"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          transform={`rotate(${minuteDegrees} 50 50)`}
-        />
-        <line
-          x1="50"
-          y1="55"
-          x2="50"
-          y2="8"
-          stroke="#f00"
-          strokeWidth="0.7"
-          strokeLinecap="round"
-          transform={`rotate(${secondDegrees} 50 50)`}
-        />
+        <line className={styles.hourHand} transform={`rotate(${hourDegrees} 50 50)`} x1="50" y1="50" x2="50" y2="25" />
+        <line className={styles.minuteHand} transform={`rotate(${minuteDegrees} 50 50)`} x1="50" y1="50" x2="50" y2="15" />
+        <line className={styles.secondHand} transform={`rotate(${secondDegrees} 50 50)`} x1="50" y1="55" x2="50" y2="8" />
 
-        <circle cx="50" cy="50" r="2" fill="#000" />
+        <circle className={styles.centerDot} cx="50" cy="50" r="2" />
         </g>
       </svg>
-    </div>
+    </main>
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_08_21';
+export default MemoizedClock;
