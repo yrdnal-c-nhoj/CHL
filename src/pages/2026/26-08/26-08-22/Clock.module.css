@@ -1,9 +1,9 @@
 @keyframes panBackground {
   0% {
-    transform: translateX(-50%);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(0);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
@@ -13,6 +13,8 @@
   position: relative;
   overflow: hidden;
   background-color: #000;
+  display: grid;
+  place-items: center;
   touch-action: none;
   -webkit-user-select: none;
   user-select: none;
@@ -26,7 +28,7 @@
   height: 100%;
   min-width: 200vw;
   will-change: transform;
-  animation: panBackground 10s linear infinite;
+  animation: panBackground 20s linear infinite;
 }
 
 .bgImage {
@@ -37,29 +39,50 @@
   filter: brightness(1) contrast(1.2) saturate(1.3);
 }
 
-.clockContainer {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
+.clockWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: 'Wall_26-08-22', monospace;
+  font-size: 22vh;
+  position: relative;
   pointer-events: none;
 }
 
-.clockInstance {
+.clockWrapper.stacked {
+  flex-direction: column;
+  font-size: 12vh;
+  gap: 0.5vh;
+}
+
+.digitRow {
   display: flex;
-  font-family: 'Wall_26-04-07', monospace;
-  font-size: 18vh;
-  color: #fff;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
   white-space: nowrap;
+  border-width: 0;
 }
 
 .digitBox {
   display: inline-block;
-  width: 0.6ch;
+  width: 0.8em;
   text-align: center;
   padding: 0.1em 0.05em;
-  margin: 0 0.1em;
-  color: #d3560d;
+  margin: 0 0.05em;
   border: 1px solid #d3560d;
+  border-radius: 0.2em;
+  box-shadow: 0 0 0.2em #d3560d;
+}
+
+.digitBox span {
+  color: #ffffff;
+  mix-blend-mode: difference;
 }
