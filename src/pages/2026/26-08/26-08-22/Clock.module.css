@@ -1,62 +1,54 @@
-@keyframes panBackground {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-
-.container {
+.clockWrapper {
+  position: relative;
   width: 100vw;
   height: 100dvh;
-  position: relative;
   overflow: hidden;
-  background-color: #000;
-  display: grid;
-  place-items: center;
-  touch-action: none;
-  -webkit-user-select: none;
-  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #191b1b;
 }
 
-.backgroundWrapper {
+.background {
   position: absolute;
   top: 0;
   left: 0;
-  display: flex;
-  height: 100%;
-  min-width: 200vw;
-  will-change: transform;
-  animation: panBackground 20s linear infinite;
-}
-
-.bgImage {
-  height: 100%;
   width: 100%;
-  object-fit: cover;
-  flex-shrink: 0;
-  filter: brightness(1) contrast(1.2) saturate(1.3);
+  height: 100%;
+  z-index: 1;
 }
 
-.clockWrapper {
+.backgroundVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(1) contrast(1.2) saturate(6);
+}
+
+.clockContainer {
+  font-family: 'ShapesFont', monospace;
+  position: relative;
+  z-index: 2;
+  color: #fba433;
+  text-shadow: 2px 2px 0px #c5b0f0, -2px 2px 0px #22045f;
+
+  /* Force single horizontal row for Laptop / Desktop */
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
-  font-family: 'Wall_26-08-22', monospace;
-  font-size: 22vh;
-  position: relative;
-  pointer-events: none;
+  gap: 3vw;
 }
 
-.clockWrapper.stacked {
-  flex-direction: column;
-  font-size: 12vh;
-  gap: 0.5vh;
-}
-
-.digitRow {
+.digit {
+  line-height: 1;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1ch;
+  font-variant-numeric: tabular-nums;
+  /* Sized to fit 6 digits horizontally across desktop screens */
+  font-size: clamp(3rem, 10vw, 10rem);
 }
 
 .srOnly {
@@ -68,21 +60,20 @@
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
-  border-width: 0;
+  border: 0;
 }
 
-.digitBox {
-  display: inline-block;
-  width: 0.8em;
-  text-align: center;
-  padding: 0.1em 0.05em;
-  margin: 0 0.05em;
-  border: 1px solid #d3560d;
-  border-radius: 0.2em;
-  box-shadow: 0 0 0.2em #d3560d;
-}
+/* Mobile Screens (Phone): Switch to 2 columns, 3 rows */
+@media (max-width: 768px) {
+  .clockContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    justify-items: center;
+    gap: 2vh 10vw;
+  }
 
-.digitBox span {
-  color: #ffffff;
-  mix-blend-mode: difference;
+  .digit {
+    font-size: clamp(3.5rem, 25vh, 7rem);
+  }
 }

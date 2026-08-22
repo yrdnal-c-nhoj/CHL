@@ -1,90 +1,86 @@
-import wallFont from '@/assets/fonts/26fonts/26-08-22.ttf';
-import bgImage from '@/assets/images/26_images/26-08/26-08-22/mars.webp';
+import shapesFont from '@/assets/fonts/26fonts/26-07-13.ttf?url';
+import clockVideo from '@/assets/images/26_images/26-07/26-07-13/click.mp4';
 import type { FontConfig } from '@/types/clock';
-import { useSecondClock, useIsDesktop } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import React, { useMemo } from 'react';
+import { useSecondClock } from '@/utils/hooks';
+import { memo, useMemo } from 'react';
 import styles from './Clock.module.css';
 
-export const assets = [bgImage, wallFont];
+export const assets = [clockVideo, shapesFont];
 
 const fontConfigs: FontConfig[] = [
-  { fontFamily: 'Wall_26-08-22', fontUrl: wallFont },
+  {
+    fontFamily: 'ShapesFont',
+    fontUrl: shapesFont,
+    options: {
+      weight: 'normal',
+      style: 'normal',
+    },
+  },
 ];
 
-const formatDigit = (num: number) => num.toString().padStart(2, '0');
+const DIGIT_TO_SHAPE_MAP: Record<string, string> = {
+  '0': 'A',
+  '1': 'R',
+  '2': 'j',
+  '3': '8',
+  '4': 'm',
+  '5': 'l',
+  '6': '6',
+  '7': 'o',
+  '8': 'K',
+  '9': '3',
+};
 
-interface DigitBoxProps {
-  value: string;
-}
-
-const DigitBox: React.FC<DigitBoxProps> = React.memo(({ value }) => (
-  <div className={styles.digitBox}>
-    <span>{value}</span>
-  </div>
-));
-
-DigitBox.displayName = 'DigitBox';
-
-const ClockComponent: React.FC = () => {
+const Clock = () => {
   useSuspenseFontLoader(fontConfigs);
+
   const time = useSecondClock();
-  const isDesktop = useIsDesktop();
 
-  const hours = formatDigit(time.getHours());
-  const minutes = formatDigit(time.getMinutes());
-  const seconds = formatDigit(time.getSeconds());
+  const timeString = useMemo(() => {
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return pad(time.getHours()) + pad(time.getMinutes()) + pad(time.getSeconds());
+  }, [time]);
 
-  const timeString = useMemo(
-    () => `${hours}:${minutes}:${seconds}`,
-    [hours, minutes, seconds],
+  const digits = timeString.split('');
+
+  const displayed = useMemo(
+    () => digits.map((d) => DIGIT_TO_SHAPE_MAP[d] ?? d),
+    [digits]
   );
 
   return (
-    <main className={styles.container}>
+    <main className={styles.clockWrapper}>
       <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
 
-      <div className={styles.backgroundWrapper} aria-hidden="true">
-        <img src={bgImage} className={styles.bgImage} alt="" />
-        <img src={bgImage} className={styles.bgImage} alt="" />
+      <div className={styles.background}>
+        <video
+          className={styles.backgroundVideo}
+          src={clockVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
       </div>
 
-      <div
-        className={`${styles.clockWrapper}${isDesktop ? '' : ` ${styles.stacked}`}`}
+      <time
+        dateTime={time.toISOString()}
+        aria-label="A digital clock displaying the time using abstract shapes."
+        className={styles.clockContainer}
       >
-        {isDesktop ? (
-          <>
-            {[...hours, ...minutes, ...seconds].map((digit, i) => (
-              <DigitBox key={i} value={digit} />
-            ))}
-          </>
-        ) : (
-          <>
-            <div className={styles.digitRow}>
-              {[...hours].map((digit, i) => (
-                <DigitBox key={`h${i}`} value={digit} />
-              ))}
-            </div>
-            <div className={styles.digitRow}>
-              {[...minutes].map((digit, i) => (
-                <DigitBox key={`m${i}`} value={digit} />
-              ))}
-            </div>
-            <div className={styles.digitRow}>
-              {[...seconds].map((digit, i) => (
-                <DigitBox key={`s${i}`} value={digit} />
-              ))}
-            </div>
-          </>
-        )}
-      </div>
+        {displayed.map((letter, index) => (
+          <div key={index} className={styles.digit}>
+            {letter}
+          </div>
+        ))}
+      </time>
     </main>
   );
 };
 
-const Clock = React.memo(ClockComponent);
-Clock.displayName = 'Clock_26_08_22';
-
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_07_13';
+export default MemoizedClock;
