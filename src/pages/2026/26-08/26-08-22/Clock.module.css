@@ -9,7 +9,6 @@
 
 .container {
   width: 100vw;
-  height: 100vh;
   height: 100dvh;
   position: relative;
   overflow: hidden;
@@ -35,6 +34,7 @@
   width: 100%;
   object-fit: cover;
   flex-shrink: 0;
+  filter: brightness(1) contrast(1.2) saturate(1.3);
 }
 
 .clockContainer {
@@ -61,4 +61,7 @@
   padding: 0.1em 0.2em;
   margin: 0 0.1em;
   color: #d3560d;
+  border: 1px solid #d3560d;
+  border-radius: 0.2em;
+  box-shadow: 0 0 0.2em #d3560d;
 }
