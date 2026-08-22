@@ -12,7 +12,7 @@ const DigitBox: React.FC<{ value: string }> = ({ value }) => (
   <span className={styles.digitBox}>{value}</span>
 );
 
-const Clock =  () => {
+const Clock = () => {
   const fontConfigs = useMemo<FontConfig[]>(
     () => [{ fontFamily: 'Wall_26-04-07', fontUrl: wallFont }],
     [],

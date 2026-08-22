@@ -49,7 +49,7 @@
 .clockInstance {
   display: flex;
   font-family: 'Wall_26-04-07', monospace;
-  font-size: clamp(3rem, 12vw, 7rem);
+  font-size: 18vh;
   color: #fff;
   white-space: nowrap;
 }
@@ -58,10 +58,8 @@
   display: inline-block;
   width: 0.6ch;
   text-align: center;
-  padding: 0.1em 0.2em;
+  padding: 0.1em 0.05em;
   margin: 0 0.1em;
   color: #d3560d;
   border: 1px solid #d3560d;
-  border-radius: 0.2em;
-  box-shadow: 0 0 0.2em #d3560d;
 }
