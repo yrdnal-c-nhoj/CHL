@@ -1,168 +1,128 @@
 import wallFont from '@/assets/fonts/26fonts/26-08-22.ttf';
-import bgImage from '@/assets/images/26_images/26-08/26-08-22/mars.webp';
+import bgImage from '@/assets/images/26_images/26-08/26-08-22/mar.webp';
+
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useEffect, useState, memo } from 'react';
+import { useSecondClock } from '@/utils/hooks';
 
-const FONT_CONFIGS: FontConfig[] = [{ fontFamily: 'Wall_26-08-22', fontUrl: wallFont }];
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
+
+import styles from './Clock.module.css';
+
+export const assets: string[] = [bgImage, wallFont];
+
+const FONT_CONFIGS: FontConfig[] = [
+  {
+    fontFamily: 'Wall_26-08-22',
+    fontUrl: wallFont,
+  },
+];
 
 const padZero = (num: number) => (num < 10 ? `0${num}` : `${num}`);
 
 const Clock = () => {
   useSuspenseFontLoader(FONT_CONFIGS);
 
-  const [time, setTime] = useState(() => new Date());
+  const time = useSecondClock();
+  const [offset, setOffset] = useState(0);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const imageWidthRef = useRef(0);
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    const img = imgRef.current;
+    if (!img) return;
+
+    const onLoad = () => {
+      imageWidthRef.current = img.offsetWidth;
+    };
+    img.addEventListener('load', onLoad);
+    if (img.complete && img.naturalWidth !== 0) {
+      onLoad();
+    }
+    return () => img.removeEventListener('load', onLoad);
   }, []);
 
-  const hours = padZero(time.getHours());
-  const minutes = padZero(time.getMinutes());
-  const seconds = padZero(time.getSeconds());
+  useEffect(() => {
+    let animationFrameId: number;
+    let lastTime = performance.now();
 
-  const digits = [
-    hours[0],
-    hours[1],
-    minutes[0],
-    minutes[1],
-    seconds[0],
-    seconds[1],
-  ];
+    const speed = 10;
+
+    const animate = (currentTime: number) => {
+      const delta = currentTime - lastTime;
+      lastTime = currentTime;
+
+      setOffset((previousOffset) => {
+        const nextOffset = previousOffset + (delta * speed) / 1000;
+        const limit = imageWidthRef.current || window.innerWidth * 2;
+        return nextOffset >= limit ? 0 : nextOffset;
+      });
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  const formattedTime = useMemo(() => {
+    const hours = padZero(time.getHours());
+    const minutes = padZero(time.getMinutes());
+    const seconds = padZero(time.getSeconds());
+
+    return {
+      hours,
+      minutes,
+      seconds,
+      isoString: time.toISOString(),
+      displayString: `${hours}:${minutes}:${seconds}`,
+    };
+  }, [time]);
 
   return (
-    <>
-      <style>{`
-        @keyframes panBackground {
-          0% { transform: translate3d(0, 0, 0); }
-          100% { transform: translate3d(-50%, 0, 0); }
-        }
-      `}</style>
-
+    <main className={styles.container}>
       <div
+        className={styles.panorama}
         style={{
-          position: 'relative',
-          width: '100vw',
-          height: '100dvh',
-          overflow: 'hidden',
-          backgroundColor: '#000',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          touchAction: 'none',
-          userSelect: 'none',
-          WebkitUserSelect: 'none',
+          transform: `translate3d(${-offset}px, 0, 0)`,
         }}
-        role="img"
-        aria-label={`Current time: ${hours}:${minutes}:${seconds}`}
       >
-        {/* Seamless Panorama Track */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: '0 auto auto 0',
-            height: '100%',
-            width: '400%',
-            display: 'flex',
-            willChange: 'transform',
-            animation: 'panBackground 40s linear infinite',
-          }}
-          aria-hidden="true"
-        >
-          <img
-            src={bgImage}
-            style={{
-              height: '100%',
-              width: '25%',
-              objectFit: 'cover',
-              flexShrink: 0,
-              filter: 'brightness(1) contrast(1.2) saturate(1.3)',
-            }}
-            alt=""
-          />
-          <img
-            src={bgImage}
-            style={{
-              height: '100%',
-              width: '25%',
-              objectFit: 'cover',
-              flexShrink: 0,
-              filter: 'brightness(1) contrast(1.2) saturate(1.3)',
-              transform: 'scaleX(-1)',
-            }}
-            alt=""
-          />
-          <img
-            src={bgImage}
-            style={{
-              height: '100%',
-              width: '25%',
-              objectFit: 'cover',
-              flexShrink: 0,
-              filter: 'brightness(1) contrast(1.2) saturate(1.3)',
-            }}
-            alt=""
-          />
-          <img
-            src={bgImage}
-            style={{
-              height: '100%',
-              width: '25%',
-              objectFit: 'cover',
-              flexShrink: 0,
-              filter: 'brightness(1) contrast(1.2) saturate(1.3)',
-              transform: 'scaleX(-1)',
-            }}
-            alt=""
-          />
-        </div>
-
-        {/* Vertical Column of 6 Digits */}
-        <div
-          style={{
-            position: 'relative',
-            zIndex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontFamily: "'Wall_26-08-22', monospace",
-            fontSize: '13vh',
-            lineHeight: 1,
-            pointerEvents: 'none',
-            color: '#ffffff',
-            mixBlendMode: 'difference',
-          }}
-        >
-          {digits.map((digit, index) => (
-            <div key={index} style={{ textAlign: 'center' }}>
-              {digit}
-            </div>
-          ))}
-        </div>
-
-        <time
-          dateTime={time.toISOString()}
-          style={{
-            position: 'absolute',
-            width: '1px',
-            height: '1px',
-            padding: 0,
-            margin: '-1px',
-            overflow: 'hidden',
-            clip: 'rect(0, 0, 0, 0)',
-            whiteSpace: 'nowrap',
-            borderWidth: 0,
-          }}
-        >
-          {`${hours}:${minutes}:${seconds}`}
-        </time>
+        <img
+          src={bgImage}
+          alt=""
+          draggable={false}
+          ref={imgRef}
+          className={styles.panoramaImage}
+        />
+        <img
+          src={bgImage}
+          alt=""
+          draggable={false}
+          className={styles.panoramaImage}
+        />
       </div>
-    </>
+
+      <div className={styles.clockGrid}>
+        <div className={styles.digitWrapper}>{formattedTime.hours[0]}</div>
+        <div className={styles.digitWrapper}>{formattedTime.hours[1]}</div>
+        <div className={styles.digitWrapper}>{formattedTime.minutes[0]}</div>
+        <div className={styles.digitWrapper}>{formattedTime.minutes[1]}</div>
+        <div className={styles.digitWrapper}>{formattedTime.seconds[0]}</div>
+        <div className={styles.digitWrapper}>{formattedTime.seconds[1]}</div>
+      </div>
+
+      <time dateTime={formattedTime.isoString} className={styles.srOnly}>
+        {formattedTime.displayString}
+      </time>
+    </main>
   );
 };
 
 const MemoizedClock = memo(Clock);
+
 MemoizedClock.displayName = 'Clock_26_08_22';
+
 export default MemoizedClock;
