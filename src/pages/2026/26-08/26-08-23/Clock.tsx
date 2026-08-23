@@ -16,10 +16,10 @@ export const assets: string[] = [];
 // Add/remove/reorder entries and change hex values to customize.
 // Position is 0 (left) to 1 (right).
 const GRADIENT_STOPS: { position: number; color: string }[] = [
-  { position: 0.0, color: '#8F3838' },
-  { position: 0.33, color: '#489448' },
-  { position: 0.67, color: '#4E7495' },
-  { position: 1.0, color: '#774D9B' },
+  { position: 0.0, color: '#e2a8a8' },
+  { position: 0.33, color: '#515229' },
+  { position: 0.67, color: '#A2EC92' },
+  { position: 1.0, color: '#082B51' },
 ];
 
 // Clock digit cells: null = auto-invert background, or provide explicit gradient
