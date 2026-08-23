@@ -39,13 +39,13 @@
   justify-items: center;
   column-gap: 0;
   font-family: 'Wall_26-08-22', monospace;
-  font-size: 26dvh;
+  font-size: 30dvh;
   line-height: 1.05;
   pointer-events: none;
   color: #ffffff;
-  letter-spacing: -5dvh;
+  letter-spacing: -10dvh;
   mix-blend-mode: difference;
-  margin-left: 36px;
+  margin-left: 3dvh;
 }
 
 .digitWrapper {
