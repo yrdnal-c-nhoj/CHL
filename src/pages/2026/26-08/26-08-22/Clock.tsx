@@ -1,5 +1,5 @@
 import wallFont from '@/assets/fonts/26fonts/26-08-22.ttf';
-import bgImage from '@/assets/images/26_images/26-08/26-08-22/mar.webp';
+import bgImage from '@/assets/images/26_images/26-08/26-08-22/mars.webp';
 
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -46,7 +46,7 @@ const Clock = () => {
     let animationFrameId: number;
     let lastTime = performance.now();
 
-    const speed = 10;
+    const speed = 40;
 
     const animate = (currentTime: number) => {
       const delta = currentTime - lastTime;
