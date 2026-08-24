@@ -19,6 +19,21 @@ interface Bubble {
   colorT: number;
 }
 
+interface CanvasParams {
+  faceRadius: number;
+  faceStroke: string;
+  faceLineWidth: number;
+  hourColor: string;
+  hourWidth: number;
+  hourLength: number;
+  minuteColor: string;
+  minuteWidth: number;
+  minuteLength: number;
+  secondWidth: number;
+  secondLength: number;
+  scale: number;
+}
+
 function hexToRgb(hex: string): [number, number, number] {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   if (!result) return [0, 0, 0];
@@ -73,6 +88,40 @@ const BubbleClock: React.FC = () => {
 
   const widthRef = useRef(0);
   const heightRef = useRef(0);
+  const canvasParamsRef = useRef<CanvasParams>({
+    faceRadius: 36,
+    faceStroke: 'rgba(255, 255, 255, 0.25)',
+    faceLineWidth: 1.5,
+    hourColor: 'rgba(255, 255, 255, 0.8)',
+    hourWidth: 4,
+    hourLength: 14,
+    minuteColor: 'rgba(255, 255, 255, 0.7)',
+    minuteWidth: 3,
+    minuteLength: 22,
+    secondWidth: 2,
+    secondLength: 26,
+    scale: 40,
+  });
+
+  const readCssParams = () => {
+    const container = containerRef.current;
+    if (!container) return;
+    const style = getComputedStyle(container);
+    canvasParamsRef.current = {
+      faceRadius: parseFloat(style.getPropertyValue('--clock-face-radius')) || 36,
+      faceStroke: style.getPropertyValue('--clock-face-stroke').trim() || 'rgba(255, 255, 255, 0.25)',
+      faceLineWidth: parseFloat(style.getPropertyValue('--clock-face-line-width')) || 1.5,
+      hourColor: style.getPropertyValue('--clock-hour-color').trim() || 'rgba(255, 255, 255, 0.8)',
+      hourWidth: parseFloat(style.getPropertyValue('--clock-hour-width')) || 4,
+      hourLength: parseFloat(style.getPropertyValue('--clock-hour-length')) || 14,
+      minuteColor: style.getPropertyValue('--clock-minute-color').trim() || 'rgba(255, 255, 255, 0.7)',
+      minuteWidth: parseFloat(style.getPropertyValue('--clock-minute-width')) || 3,
+      minuteLength: parseFloat(style.getPropertyValue('--clock-minute-length')) || 22,
+      secondWidth: parseFloat(style.getPropertyValue('--clock-second-width')) || 2,
+      secondLength: parseFloat(style.getPropertyValue('--clock-second-length')) || 26,
+      scale: parseFloat(style.getPropertyValue('--clock-scale')) || 40,
+    };
+  };
 
   const { handHour, handMinute, handSecond, clocks } = useMemo(() => {
     const hours = time.getHours() % 12;
@@ -168,6 +217,7 @@ const BubbleClock: React.FC = () => {
     };
 
     resize();
+    readCssParams();
     const observer = new ResizeObserver(resize);
     observer.observe(container);
 
@@ -192,37 +242,38 @@ const BubbleClock: React.FC = () => {
       const { x, y, radius, colorT } = clock;
 
       const clockColor = getGradientColor(GRADIENT_STOPS, colorT);
+      const params = canvasParamsRef.current;
 
       ctx.save();
       ctx.translate(x, y);
-      ctx.scale(radius / 40, radius / 40);
+      ctx.scale(radius / params.scale, radius / params.scale);
 
       ctx.beginPath();
-      ctx.arc(0, 0, 36, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(255, 255, 255, 0.25)`;
-      ctx.lineWidth = 1.5;
+      ctx.arc(0, 0, params.faceRadius, 0, Math.PI * 2);
+      ctx.strokeStyle = params.faceStroke;
+      ctx.lineWidth = params.faceLineWidth;
       ctx.stroke();
 
-      ctx.strokeStyle = `rgba(255, 255, 255, 0.8)`;
-      ctx.lineWidth = 4;
+      ctx.strokeStyle = params.hourColor;
+      ctx.lineWidth = params.hourWidth;
       ctx.lineCap = 'round';
       ctx.beginPath();
       ctx.moveTo(0, 0);
-      ctx.lineTo(Math.cos(handHour) * 14, Math.sin(handHour) * 14);
+      ctx.lineTo(Math.cos(handHour) * params.hourLength, Math.sin(handHour) * params.hourLength);
       ctx.stroke();
 
-      ctx.strokeStyle = `rgba(255, 255, 255, 0.7)`;
-      ctx.lineWidth = 3;
+      ctx.strokeStyle = params.minuteColor;
+      ctx.lineWidth = params.minuteWidth;
       ctx.beginPath();
       ctx.moveTo(0, 0);
-      ctx.lineTo(Math.cos(handMinute) * 22, Math.sin(handMinute) * 22);
+      ctx.lineTo(Math.cos(handMinute) * params.minuteLength, Math.sin(handMinute) * params.minuteLength);
       ctx.stroke();
 
       ctx.strokeStyle = clockColor;
-      ctx.lineWidth = 2;
+      ctx.lineWidth = params.secondWidth;
       ctx.beginPath();
       ctx.moveTo(0, 0);
-      ctx.lineTo(Math.cos(handSecond) * 26, Math.sin(handSecond) * 26);
+      ctx.lineTo(Math.cos(handSecond) * params.secondLength, Math.sin(handSecond) * params.secondLength);
       ctx.stroke();
 
       ctx.restore();
