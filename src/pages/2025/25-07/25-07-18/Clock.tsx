@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-07/25-07-18/558074085193-ezgif.com-optiwebp-1.webp';
 import xrayFontUrl from '@/assets/fonts/25fonts/25-07-18-xray.ttf';
 import { useMillisecondClock } from '@/utils/hooks';
-const HospitalClock =  () => {
-  const [time, setTime] = useState<any>('');
 
-  // Standardized font loading with font-display: swap to avoid FOUC
+const HospitalClock = () => {
+  const time = useMillisecondClock();
+
+  const timeString = useMemo(() => {
+    const h = time.getHours().toString().padStart(2, '0');
+    const m = time.getMinutes().toString().padStart(2, '0');
+    const s = time.getSeconds().toString().padStart(2, '0');
+    return `${h}:${m}:${s}`;
+  }, [time]);
+
   const fontConfigs = [
     {
       fontFamily: 'xray',
@@ -18,7 +25,6 @@ const HospitalClock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  // useEffect for updateClock removed - time is reactive via useSecondClock
 
   return (
     <div style={styles.body}>
@@ -26,7 +32,7 @@ const HospitalClock =  () => {
         <div style={{ ...styles.screen, backgroundImage: `url(${bgImage})` }}>
           <div style={styles.flickerOverlay} />
           <div style={styles.clock}>
-            {time.split('').map((char, i) => (
+            {timeString.split('').map((char, i) => (
               <span key={i} style={styles.digit}>
                 {char}
               </span>
