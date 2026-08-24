@@ -5,18 +5,11 @@ import styles from './Clock.module.css';
 
 export const assets = [soapVideo];
 
-const GRADIENT_STOPS: { position: number; color: string }[] = [
-  { position: 0.0, color: '#ff6b6b' },
-  { position: 0.33, color: '#feca57' },
-  { position: 0.67, color: '#48dbfb' },
-  { position: 1.0, color: '#ff9ff3' },
-];
-
 interface Bubble {
   x: number;
   y: number;
   radius: number;
-  colorT: number;
+  secondColor: string;
 }
 
 interface CanvasParams {
@@ -34,49 +27,11 @@ interface CanvasParams {
   scale: number;
 }
 
-function hexToRgb(hex: string): [number, number, number] {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) return [0, 0, 0];
-  return [parseInt(result[1]!, 16), parseInt(result[2]!, 16), parseInt(result[3]!, 16)];
-}
-
-function rgbToHex(r: number, g: number, b: number): string {
-  return (
-    '#' +
-    [r, g, b]
-      .map((x) => Math.round(x).toString(16).padStart(2, '0'))
-      .join('')
-  );
-}
-
-function getGradientColor(
-  stops: { position: number; color: string }[],
-  t: number
-): string {
-  t = Math.max(0, Math.min(1, t));
-  if (stops.length === 0) return '#000000';
-  if (stops.length === 1) return stops[0]!.color;
-
-  let i = 0;
-  while (i < stops.length - 1 && stops[i + 1]!.position <= t) {
-    i++;
-  }
-  if (i >= stops.length - 1) return stops[stops.length - 1]!.color;
-
-  const s1 = stops[i]!;
-  const s2 = stops[i + 1]!;
-
-  const range = s2.position - s1.position;
-  const f = range > 0 ? (t - s1.position) / range : 0;
-
-  const [r1, g1, b1] = hexToRgb(s1.color);
-  const [r2, g2, b2] = hexToRgb(s2.color);
-
-  return rgbToHex(
-    r1 + (r2 - r1) * f,
-    g1 + (g2 - g1) * f,
-    b1 + (b2 - b1) * f
-  );
+function getRandomBrightColor(): string {
+  const h = Math.random() * 360;
+  const s = 80 + Math.random() * 20;
+  const l = 50 + Math.random() * 20;
+  return `hsl(${h}, ${s}%, ${l}%)`;
 }
 
 const BubbleClock: React.FC = () => {
@@ -90,12 +45,12 @@ const BubbleClock: React.FC = () => {
   const heightRef = useRef(0);
   const canvasParamsRef = useRef<CanvasParams>({
     faceRadius: 36,
-    faceStroke: 'rgba(255, 255, 255, 0.25)',
+    faceStroke: 'rgba(255, 255, 255, 0.45)',
     faceLineWidth: 1.5,
-    hourColor: 'rgba(255, 255, 255, 0.8)',
+    hourColor: 'rgba(255, 255, 255, 0.9)',
     hourWidth: 4,
     hourLength: 14,
-    minuteColor: 'rgba(255, 255, 255, 0.7)',
+    minuteColor: 'rgba(255, 255, 255, 0.8)',
     minuteWidth: 3,
     minuteLength: 22,
     secondWidth: 2,
@@ -109,12 +64,12 @@ const BubbleClock: React.FC = () => {
     const style = getComputedStyle(container);
     canvasParamsRef.current = {
       faceRadius: parseFloat(style.getPropertyValue('--clock-face-radius')) || 36,
-      faceStroke: style.getPropertyValue('--clock-face-stroke').trim() || 'rgba(255, 255, 255, 0.25)',
+      faceStroke: style.getPropertyValue('--clock-face-stroke').trim() || 'rgba(255, 255, 255, 0.45)',
       faceLineWidth: parseFloat(style.getPropertyValue('--clock-face-line-width')) || 1.5,
-      hourColor: style.getPropertyValue('--clock-hour-color').trim() || 'rgba(255, 255, 255, 0.8)',
+      hourColor: style.getPropertyValue('--clock-hour-color').trim() || 'rgba(255, 255, 255, 0.9)',
       hourWidth: parseFloat(style.getPropertyValue('--clock-hour-width')) || 4,
       hourLength: parseFloat(style.getPropertyValue('--clock-hour-length')) || 14,
-      minuteColor: style.getPropertyValue('--clock-minute-color').trim() || 'rgba(255, 255, 255, 0.7)',
+      minuteColor: style.getPropertyValue('--clock-minute-color').trim() || 'rgba(255, 255, 255, 0.8)',
       minuteWidth: parseFloat(style.getPropertyValue('--clock-minute-width')) || 3,
       minuteLength: parseFloat(style.getPropertyValue('--clock-minute-length')) || 22,
       secondWidth: parseFloat(style.getPropertyValue('--clock-second-width')) || 2,
@@ -143,23 +98,24 @@ const BubbleClock: React.FC = () => {
 
   const generateClocks = (width: number, height: number): Bubble[] => {
     const clocks: Bubble[] = [];
-    const minRadius = Math.max(25, Math.min(width, height) * 0.05);
-    const maxRadius = Math.max(minRadius * 1.8, Math.min(width, height) * 0.3);
-    const targetCount = Math.floor((width * height) / (Math.PI * (maxRadius * maxRadius) * 0.55));
-    const count = Math.max(15, Math.min(targetCount, 100));
+    const minRadius = 40;
+    const maxRadius = 90;
+    const avgRadius = (minRadius + maxRadius) / 2;
+    const targetCount = Math.floor((width * height) / (Math.PI * (avgRadius * avgRadius) * 0.45));
+    const count = Math.max(8, Math.min(targetCount, 35));
 
     const placed: { x: number; y: number; radius: number }[] = [];
-    const maxAttempts = 400;
+    const maxAttempts = 500;
 
     for (let i = 0; i < count; i++) {
       const radius = minRadius + Math.random() * (maxRadius - minRadius);
-      let bestX = radius + Math.random() * (width - radius * 2);
-      let bestY = radius + Math.random() * (height - radius * 2);
+      let bestX = -radius * 0.4 + Math.random() * (width + radius * 0.8);
+      let bestY = -radius * 0.4 + Math.random() * (height + radius * 0.8);
       let bestDist = placed.length === 0 ? 0 : Infinity;
 
       for (let attempt = 0; attempt < maxAttempts; attempt++) {
-        const x = radius + Math.random() * (width - radius * 2);
-        const y = radius + Math.random() * (height - radius * 2);
+        const x = -radius * 0.4 + Math.random() * (width + radius * 0.8);
+        const y = -radius * 0.4 + Math.random() * (height + radius * 0.8);
 
         let minFound = Infinity;
         for (const p of placed) {
@@ -181,12 +137,12 @@ const BubbleClock: React.FC = () => {
         }
       }
 
-      if (bestDist >= -1) {
+      if (bestDist >= 0) {
         clocks.push({
           x: bestX,
           y: bestY,
           radius,
-          colorT: Math.random(),
+          secondColor: getRandomBrightColor(),
         });
         placed.push({ x: bestX, y: bestY, radius });
       }
@@ -239,9 +195,8 @@ const BubbleClock: React.FC = () => {
     ctx.clearRect(0, 0, width, height);
 
     for (const clock of clocks) {
-      const { x, y, radius, colorT } = clock;
+      const { x, y, radius, secondColor } = clock;
 
-      const clockColor = getGradientColor(GRADIENT_STOPS, colorT);
       const params = canvasParamsRef.current;
 
       ctx.save();
@@ -252,7 +207,25 @@ const BubbleClock: React.FC = () => {
       ctx.arc(0, 0, params.faceRadius, 0, Math.PI * 2);
       ctx.strokeStyle = params.faceStroke;
       ctx.lineWidth = params.faceLineWidth;
+      ctx.fillStyle = secondColor.replace(')', ', 0.08)').replace('hsl', 'hsla');
+      ctx.fill();
       ctx.stroke();
+
+      const highlight = ctx.createRadialGradient(
+        -params.faceRadius * 0.25,
+        -params.faceRadius * 0.25,
+        params.faceRadius * 0.05,
+        0,
+        0,
+        params.faceRadius
+      );
+      highlight.addColorStop(0, 'rgba(255, 255, 255, 0.35)');
+      highlight.addColorStop(0.4, 'rgba(255, 255, 255, 0.08)');
+      highlight.addColorStop(1, 'rgba(255, 255, 255, 0.0)');
+      ctx.beginPath();
+      ctx.arc(0, 0, params.faceRadius, 0, Math.PI * 2);
+      ctx.fillStyle = highlight;
+      ctx.fill();
 
       ctx.strokeStyle = params.hourColor;
       ctx.lineWidth = params.hourWidth;
@@ -269,7 +242,7 @@ const BubbleClock: React.FC = () => {
       ctx.lineTo(Math.cos(handMinute) * params.minuteLength, Math.sin(handMinute) * params.minuteLength);
       ctx.stroke();
 
-      ctx.strokeStyle = clockColor;
+      ctx.strokeStyle = secondColor;
       ctx.lineWidth = params.secondWidth;
       ctx.beginPath();
       ctx.moveTo(0, 0);
