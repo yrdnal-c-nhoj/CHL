@@ -1,158 +1,126 @@
-import React, { useState, useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import clockFont from '@/assets/fonts/25fonts/25-08-26-root.ttf';
-import bg0 from '@/assets/images/25_images/25-08/25-08-26/rrr.webp'; // bottom-most
-import bg1 from '@/assets/images/25_images/25-08/25-08-26/ro.gif'; // middle
-import bg3 from '@/assets/images/25_images/25-08/25-08-26/root.webp'; // top foreground
 import { useSecondClock } from '@/utils/hooks';
-export default function DigitalClock() {
-  const [time, setTime] = useState<any>(getTimeParts);
+import clockFont from '@/assets/fonts/25fonts/25-08-26-root.ttf';
+import bg0 from '@/assets/images/25_images/25-08/25-08-26/rrr.webp';
+import bg1 from '@/assets/images/25_images/25-08/25-08-26/ro.gif';
+import bg3 from '@/assets/images/25_images/25-08/25-08-26/root.webp';
+import styles from './Clock.module.css';
 
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'ClockFontScoped_18_09_25',
-      fontUrl: clockFont,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
+export const assets: string[] = [clockFont, bg0, bg1, bg3];
 
-  // Clock ticking
-  useEffect(() => {
-      tick();
-    }, [time]);
+const fontConfigs = [
+  {
+    fontFamily: 'ClockFontScoped_18_09_25',
+    fontUrl: clockFont,
+    options: {
+      weight: 'normal',
+      style: 'normal',
+    },
+  },
+];
 
-  const styles = {
-    root: {
-      position: 'relative',
-      height: '100dvh',
-      width: '100vw',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontFamily: "'ClockFontScoped_18_09_25', sans-serif",
-      overflow: 'hidden',
-    },
-    clock: {
-      fontVariantNumeric: 'tabular-nums lining-nums',
-      fontSize: '14vw',
-      lineHeight: 1,
-      letterSpacing: '-0.05em',
-      color: '#BFBBAAFF',
-      textShadow: `
-        0.2rem 0.2rem 0 #373635FF,
-        -0.2rem -0.1rem 0.4rem #6B5D48FF,
-        0.1rem -0.2rem 0.4rem #403A30FF,
-        -0.1rem 0.2rem 0.4rem #3C362FFF
-      `,
-      transform: 'rotate(-1deg) skewX(-2deg) skewY(1deg)',
-      zIndex: 4,
-      userSelect: 'none',
-      filter: 'contrast(1.2) saturate(2.0)',
-    },
-    layer: ({
-      img,
-      opacity = 1,
-      zIndex = 0,
-      brightness = 1,
-      saturation = 1,
-      invert = 0,
-      hueRotate = 0,
-      transform = undefined,
-      width = '100%',
-      height = '100%',
-      top = 0,
-      left = 0,
-      backgroundSize = 'cover',
-      backgroundPosition = 'center',
-    }) => ({
-      position: 'absolute',
-      top,
-      left,
-      width,
-      height,
-      backgroundImage: `url(${img})`,
-      backgroundSize,
-      backgroundPosition,
-      backgroundRepeat: 'no-repeat',
-      opacity,
-      zIndex,
-      pointerEvents: 'none',
-      filter: `brightness(${brightness}) saturate(${saturation}) invert(${invert}%) hue-rotate(${hueRotate}deg)`,
-      transform,
-    }),
-    styleTag: {
-      fontFace: `/* Font loading handled by useSuspenseFontLoader */`,
-    },
-  };
-
-  const layers = [
-    {
-      img: bg0,
-      opacity: 1,
-      zIndex: 1,
-      width: '120%',
-      height: '110%',
-      top: '-5%',
-      left: '-10%',
-    },
-    {
-      img: bg1,
-      zIndex: 8,
-      width: '100%',
-      height: '120%',
-      top: '-10%',
-      left: '0%',
-    },
-    {
-      img: bg3,
-      opacity: 0.8,
-      zIndex: 6,
-      invert: 90,
-      brightness: 0.9,
-      saturation: 0.4,
-      width: '100%',
-      height: '170%',
-      top: '0%',
-      left: '0%',
-    },
-  ];
-
-  return (
-    <div style={styles.root}>
-      {layers.map((layerProps, i) => {
-        if (i === 1) {
-          return (
-            <React.Fragment key={i}>
-              <div style={styles.layer(layerProps)} />
-              <div
-                style={styles.layer({ ...layerProps, transform: 'scaleX(-1)' })}
-              />
-            </React.Fragment>
-          );
-        }
-        return <div key={i} style={styles.layer(layerProps)} />;
-      })}
-
-      <div style={styles.clock}>
-        {time.hh}
-        {time.mm}
-        {time.period}
-      </div>
-    </div>
-  );
-}
-
-function getTimeParts() {
-  const now = new Date();
+function getTimeParts(now: Date) {
   let h = now.getHours();
   const m = now.getMinutes();
   const period = h < 12 ? 'AM' : 'PM';
   h = h % 12 || 12;
   return { hh: String(h), mm: String(m).padStart(2, '0'), period };
 }
+
+const Clock = () => {
+  const now = useSecondClock();
+  const time = getTimeParts(now);
+
+  useSuspenseFontLoader(fontConfigs);
+
+  const layers = useMemo(
+    () => [
+      {
+        img: bg0,
+        opacity: 1,
+        zIndex: 1,
+        width: '120%',
+        height: '110%',
+        top: '-5%',
+        left: '-10%',
+      },
+      {
+        img: bg1,
+        zIndex: 8,
+        width: '100%',
+        height: '120%',
+        top: '-10%',
+        left: '0%',
+      },
+      {
+        img: bg3,
+        opacity: 0.8,
+        zIndex: 6,
+        invert: 90,
+        brightness: 0.9,
+        saturation: 0.4,
+        width: '100%',
+        height: '170%',
+        top: '0%',
+        left: '0%',
+      },
+    ],
+    []
+  );
+
+  return (
+    <main className={styles.container}>
+      {layers.map((layerProps, i) => {
+        if (i === 1) {
+          return (
+            <React.Fragment key={i}>
+              <div className={styles.layer} style={layerStyle(layerProps)} />
+              <div
+                className={styles.layer}
+                style={layerStyle({ ...layerProps, transform: 'scaleX(-1)' })}
+              />
+            </React.Fragment>
+          );
+        }
+        return (
+          <div key={i} className={styles.layer} style={layerStyle(layerProps)} />
+        );
+      })}
+
+      <div className={styles.clock}>
+        {time.hh}
+        {time.mm}
+        {time.period}
+      </div>
+
+      <time dateTime={now.toISOString()} className={styles.srOnly}>
+        {time.hh}:{time.mm} {time.period}
+      </time>
+    </main>
+  );
+};
+
+function layerStyle(layer) {
+  return {
+    position: 'absolute',
+    top: layer.top || 0,
+    left: layer.left || 0,
+    width: layer.width || '100%',
+    height: layer.height || '100%',
+    backgroundImage: `url(${layer.img})`,
+    backgroundSize: layer.backgroundSize || 'cover',
+    backgroundPosition: layer.backgroundPosition || 'center',
+    backgroundRepeat: 'no-repeat',
+    opacity: layer.opacity ?? 1,
+    zIndex: layer.zIndex || 0,
+    pointerEvents: 'none',
+    filter: `brightness(${layer.brightness ?? 1}) saturate(${layer.saturation ?? 1}) invert(${layer.invert ?? 0}%) hue-rotate(${layer.hueRotate ?? 0}deg)`,
+    transform: layer.transform,
+  };
+}
+
+const MemoizedClock = React.memo(Clock);
+MemoizedClock.displayName = 'Clock_25_08_26';
+
+export default MemoizedClock;

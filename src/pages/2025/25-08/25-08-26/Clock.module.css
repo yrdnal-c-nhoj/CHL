@@ -1,0 +1,45 @@
+.container {
+  position: relative;
+  height: 100dvh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'ClockFontScoped_18_09_25', sans-serif;
+  overflow: hidden;
+}
+
+.clock {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: 14vw;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: #bfbbaa;
+  text-shadow:
+    0.2rem 0.2rem 0 #373635,
+    -0.2rem -0.1rem 0.4rem #6b5d48,
+    0.1rem -0.2rem 0.4rem #403a30,
+    -0.1rem 0.2rem 0.4rem #3c362f;
+  transform: rotate(-1deg) skewX(-2deg) skewY(1deg);
+  z-index: 4;
+  user-select: none;
+  filter: contrast(1.2) saturate(2);
+}
+
+.layer {
+  position: absolute;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
