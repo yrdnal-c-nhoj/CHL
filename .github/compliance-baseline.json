@@ -1,1 +1,0 @@
-{"description":"Clock standards & lint compliance baseline for the 'no new debt' CI gate.","updated":"2026-08-21","baselines":{"totalClocks":507,"fullyCompliant":171,"criticalViolations":119,"totalViolations":2452,"lintVulnerabilities":355,"typeScriptErrors":0},"note":"Updated after migrating 3 clocks to full compliance (26-07-26, 26-07-27, 26-07-28)."}
