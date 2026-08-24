@@ -1,13 +1,9 @@
 import React, { useRef, useEffect, useMemo } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useMillisecondClock } from '@/utils/hooks';
 import soapVideo from '@/assets/images/26_images/26-08/26-08-24/soap.webm';
 import styles from './Clock.module.css';
 
-export const assets: string[] = [];
-
-// ---------------------------------------------------------------------------
-// Color configuration
-// ---------------------------------------------------------------------------
+export const assets = [soapVideo];
 
 const GRADIENT_STOPS: { position: number; color: string }[] = [
   { position: 0.0, color: '#ff6b6b' },
@@ -16,19 +12,17 @@ const GRADIENT_STOPS: { position: number; color: string }[] = [
   { position: 1.0, color: '#ff9ff3' },
 ];
 
-const CLOCK_GRADIENT_STOPS: { position: number; color: string }[] | null = null;
-
-const MASK_COLOR = '#ffffff';
-
-// ---------------------------------------------------------------------------
-// Color helpers
-// ---------------------------------------------------------------------------
+interface Bubble {
+  x: number;
+  y: number;
+  radius: number;
+  colorT: number;
+}
 
 function hexToRgb(hex: string): [number, number, number] {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)]
-    : [0, 0, 0];
+  if (!result) return [0, 0, 0];
+  return [parseInt(result[1]!, 16), parseInt(result[2]!, 16), parseInt(result[3]!, 16)];
 }
 
 function rgbToHex(r: number, g: number, b: number): string {
@@ -46,16 +40,17 @@ function getGradientColor(
 ): string {
   t = Math.max(0, Math.min(1, t));
   if (stops.length === 0) return '#000000';
-  if (stops.length === 1) return stops[0].color;
+  if (stops.length === 1) return stops[0]!.color;
 
   let i = 0;
-  while (i < stops.length - 1 && stops[i + 1].position <= t) {
+  while (i < stops.length - 1 && stops[i + 1]!.position <= t) {
     i++;
   }
-  if (i >= stops.length - 1) return stops[stops.length - 1].color;
+  if (i >= stops.length - 1) return stops[stops.length - 1]!.color;
 
-  const s1 = stops[i];
-  const s2 = stops[i + 1];
+  const s1 = stops[i]!;
+  const s2 = stops[i + 1]!;
+
   const range = s2.position - s1.position;
   const f = range > 0 ? (t - s1.position) / range : 0;
 
@@ -69,38 +64,34 @@ function getGradientColor(
   );
 }
 
-function invertColor(hex: string): string {
-  const [r, g, b] = hexToRgb(hex);
-  return rgbToHex(255 - r, 255 - g, 255 - b);
-}
-
-// ---------------------------------------------------------------------------
-// Bubble / Clock generation
-// ---------------------------------------------------------------------------
-
-interface Bubble {
-  x: number;
-  y: number;
-  radius: number;
-  colorT: number;
-}
-
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
-
 const BubbleClock: React.FC = () => {
-  const time = useSecondClock();
+  const time = useMillisecondClock();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const clocksRef = useRef<Bubble[]>([]);
-  const animFrameRef = useRef<number | null>(null);
 
   const widthRef = useRef(0);
   const heightRef = useRef(0);
 
-  // Generate clocks that fill the canvas area
+  const { handHour, handMinute, handSecond, clocks } = useMemo(() => {
+    const hours = time.getHours() % 12;
+    const minutes = time.getMinutes();
+    const seconds = time.getSeconds();
+    const milliseconds = time.getMilliseconds();
+
+    const smoothSeconds = seconds + milliseconds / 1000;
+    const smoothMinutes = minutes + smoothSeconds / 60;
+    const smoothHours = hours + smoothMinutes / 60;
+
+    return {
+      handHour: (smoothHours / 12) * Math.PI * 2 - Math.PI / 2,
+      handMinute: (smoothMinutes / 60) * Math.PI * 2 - Math.PI / 2,
+      handSecond: (smoothSeconds / 60) * Math.PI * 2 - Math.PI / 2,
+      clocks: clocksRef.current,
+    };
+  }, [time]);
+
   const generateClocks = (width: number, height: number): Bubble[] => {
     const clocks: Bubble[] = [];
     const minRadius = Math.max(25, Math.min(width, height) * 0.05);
@@ -155,7 +146,6 @@ const BubbleClock: React.FC = () => {
     return clocks;
   };
 
-  // Resize / init
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
@@ -183,98 +173,61 @@ const BubbleClock: React.FC = () => {
 
     return () => {
       observer.disconnect();
-      if (animFrameRef.current !== null) {
-        cancelAnimationFrame(animFrameRef.current);
-      }
     };
   }, []);
 
-  // Animation loop
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const draw = () => {
-      const width = widthRef.current;
-      const height = heightRef.current;
-      const clocks = clocksRef.current;
-      if (!width || !height) {
-        animFrameRef.current = requestAnimationFrame(draw);
-        return;
-      }
+    const width = widthRef.current;
+    const height = heightRef.current;
+    if (!width || !height) return;
 
-      ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, width, height);
 
-      const hours = time.getHours() % 12;
-      const minutes = time.getMinutes();
-      const seconds = time.getSeconds();
-      const milliseconds = time.getMilliseconds();
+    for (const clock of clocks) {
+      const { x, y, radius, colorT } = clock;
 
-      const smoothSeconds = seconds + milliseconds / 1000;
-      const smoothMinutes = minutes + smoothSeconds / 60;
-      const smoothHours = hours + smoothMinutes / 60;
+      const clockColor = getGradientColor(GRADIENT_STOPS, colorT);
 
-      const handHour = (smoothHours / 12) * Math.PI * 2 - Math.PI / 2;
-      const handMinute = (smoothMinutes / 60) * Math.PI * 2 - Math.PI / 2;
-      const handSecond = (smoothSeconds / 60) * Math.PI * 2 - Math.PI / 2;
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(radius / 40, radius / 40);
 
-      for (const clock of clocks) {
-        const { x, y, radius, colorT } = clock;
+      ctx.beginPath();
+      ctx.arc(0, 0, 36, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(255, 255, 255, 0.25)`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
 
-        const clockColor = getGradientColor(GRADIENT_STOPS, colorT);
+      ctx.strokeStyle = `rgba(255, 255, 255, 0.8)`;
+      ctx.lineWidth = 4;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(Math.cos(handHour) * 14, Math.sin(handHour) * 14);
+      ctx.stroke();
 
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.scale(radius / 40, radius / 40);
+      ctx.strokeStyle = `rgba(255, 255, 255, 0.7)`;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(Math.cos(handMinute) * 22, Math.sin(handMinute) * 22);
+      ctx.stroke();
 
-        // Clock face border only
-        ctx.beginPath();
-        ctx.arc(0, 0, 36, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(255, 255, 255, 0.25)`;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
+      ctx.strokeStyle = clockColor;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(Math.cos(handSecond) * 26, Math.sin(handSecond) * 26);
+      ctx.stroke();
 
-        // Hour hand
-        ctx.strokeStyle = `rgba(255, 255, 255, 0.8)`;
-        ctx.lineWidth = 4;
-        ctx.lineCap = 'round';
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(Math.cos(handHour) * 14, Math.sin(handHour) * 14);
-        ctx.stroke();
-
-        // Minute hand
-        ctx.strokeStyle = `rgba(255, 255, 255, 0.7)`;
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(Math.cos(handMinute) * 22, Math.sin(handMinute) * 22);
-        ctx.stroke();
-
-        // Second hand
-        ctx.strokeStyle = clockColor;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(Math.cos(handSecond) * 26, Math.sin(handSecond) * 26);
-        ctx.stroke();
-
-        ctx.restore();
-      }
-
-      animFrameRef.current = requestAnimationFrame(draw);
-    };
-
-    draw();
-
-    return () => {
-      if (animFrameRef.current !== null) {
-        cancelAnimationFrame(animFrameRef.current);
-      }
-    };
-  }, [time]);
+      ctx.restore();
+    }
+  }, [time, handHour, handMinute, handSecond, clocks]);
 
   return (
     <main ref={containerRef} className={styles.container}>
