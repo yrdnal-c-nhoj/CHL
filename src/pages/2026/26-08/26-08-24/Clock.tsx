@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useMemo } from 'react';
 import { useSecondClock } from '@/utils/hooks';
+import soapVideo from '@/assets/images/26_images/26-08/26-08-24/soap.webm';
 import styles from './Clock.module.css';
 
 export const assets: string[] = [];
@@ -91,29 +92,30 @@ interface Bubble {
 const BubbleClock: React.FC = () => {
   const time = useSecondClock();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const bubblesRef = useRef<Bubble[]>([]);
+  const clocksRef = useRef<Bubble[]>([]);
   const animFrameRef = useRef<number | null>(null);
 
   const widthRef = useRef(0);
   const heightRef = useRef(0);
 
-  // Generate bubbles that pack into the canvas area
-  const generateBubbles = (width: number, height: number): Bubble[] => {
-    const bubbles: Bubble[] = [];
-    const minRadius = Math.max(20, Math.min(width, height) * 0.04);
-    const maxRadius = Math.max(minRadius + 20, Math.min(width, height) * 0.18);
-    const targetCount = Math.floor((width * height) / (Math.PI * (maxRadius * maxRadius) * 1.2));
-    const count = Math.max(6, Math.min(targetCount, 60));
+  // Generate clocks that fill the canvas area
+  const generateClocks = (width: number, height: number): Bubble[] => {
+    const clocks: Bubble[] = [];
+    const minRadius = Math.max(25, Math.min(width, height) * 0.05);
+    const maxRadius = Math.max(minRadius * 1.8, Math.min(width, height) * 0.3);
+    const targetCount = Math.floor((width * height) / (Math.PI * (maxRadius * maxRadius) * 0.55));
+    const count = Math.max(15, Math.min(targetCount, 100));
 
     const placed: { x: number; y: number; radius: number }[] = [];
-    const maxAttempts = 200;
+    const maxAttempts = 400;
 
     for (let i = 0; i < count; i++) {
       const radius = minRadius + Math.random() * (maxRadius - minRadius);
-      let bestX = width * 0.5;
-      let bestY = height * 0.5;
-      let bestDist = Infinity;
+      let bestX = radius + Math.random() * (width - radius * 2);
+      let bestY = radius + Math.random() * (height - radius * 2);
+      let bestDist = placed.length === 0 ? 0 : Infinity;
 
       for (let attempt = 0; attempt < maxAttempts; attempt++) {
         const x = radius + Math.random() * (width - radius * 2);
@@ -131,7 +133,7 @@ const BubbleClock: React.FC = () => {
           minFound = Math.min(minFound, dist);
         }
 
-        if (minFound >= 0 && minFound < bestDist) {
+        if (placed.length === 0 || (minFound >= 0 && minFound < bestDist)) {
           bestDist = minFound;
           bestX = x;
           bestY = y;
@@ -139,8 +141,8 @@ const BubbleClock: React.FC = () => {
         }
       }
 
-      if (bestDist >= -1 || placed.length === 0) {
-        bubbles.push({
+      if (bestDist >= -1) {
+        clocks.push({
           x: bestX,
           y: bestY,
           radius,
@@ -150,7 +152,7 @@ const BubbleClock: React.FC = () => {
       }
     }
 
-    return bubbles;
+    return clocks;
   };
 
   // Resize / init
@@ -172,7 +174,7 @@ const BubbleClock: React.FC = () => {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       widthRef.current = rect.width;
       heightRef.current = rect.height;
-      bubblesRef.current = generateBubbles(rect.width, rect.height);
+      clocksRef.current = generateClocks(rect.width, rect.height);
     };
 
     resize();
@@ -197,7 +199,7 @@ const BubbleClock: React.FC = () => {
     const draw = () => {
       const width = widthRef.current;
       const height = heightRef.current;
-      const bubbles = bubblesRef.current;
+      const clocks = clocksRef.current;
       if (!width || !height) {
         animFrameRef.current = requestAnimationFrame(draw);
         return;
@@ -214,56 +216,28 @@ const BubbleClock: React.FC = () => {
       const smoothMinutes = minutes + smoothSeconds / 60;
       const smoothHours = hours + smoothMinutes / 60;
 
-      for (const bubble of bubbles) {
-        const { x, y, radius, colorT } = bubble;
+      const handHour = (smoothHours / 12) * Math.PI * 2 - Math.PI / 2;
+      const handMinute = (smoothMinutes / 60) * Math.PI * 2 - Math.PI / 2;
+      const handSecond = (smoothSeconds / 60) * Math.PI * 2 - Math.PI / 2;
 
-        // Bubble body
-        const bg = getGradientColor(GRADIENT_STOPS, colorT);
-        const clockColor = CLOCK_GRADIENT_STOPS
-          ? getGradientColor(CLOCK_GRADIENT_STOPS, colorT)
-          : invertColor(bg);
+      for (const clock of clocks) {
+        const { x, y, radius, colorT } = clock;
 
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
-        ctx.fillStyle = bg;
-        ctx.fill();
-
-        // Bubble highlight
-        const grad = ctx.createRadialGradient(
-          x - radius * 0.3, y - radius * 0.3, radius * 0.05,
-          x, y, radius
-        );
-        grad.addColorStop(0, 'rgba(255, 255, 255, 0.35)');
-        grad.addColorStop(1, 'rgba(255, 255, 255, 0.0)');
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
-        ctx.fillStyle = grad;
-        ctx.fill();
-
-        // Clock face
-        const handHour = (smoothHours / 12) * Math.PI * 2 - Math.PI / 2;
-        const handMinute = (smoothMinutes / 60) * Math.PI * 2 - Math.PI / 2;
-        const handSecond = (smoothSeconds / 60) * Math.PI * 2 - Math.PI / 2;
+        const clockColor = getGradientColor(GRADIENT_STOPS, colorT);
 
         ctx.save();
         ctx.translate(x, y);
         ctx.scale(radius / 40, radius / 40);
 
-        // Hour markers
-        ctx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
-        ctx.lineWidth = 2;
-        for (let i = 0; i < 12; i++) {
-          const angle = (i / 12) * Math.PI * 2 - Math.PI / 2;
-          const inner = 28;
-          const outer = 35;
-          ctx.beginPath();
-          ctx.moveTo(Math.cos(angle) * inner, Math.sin(angle) * inner);
-          ctx.lineTo(Math.cos(angle) * outer, Math.sin(angle) * outer);
-          ctx.stroke();
-        }
+        // Clock face border only
+        ctx.beginPath();
+        ctx.arc(0, 0, 36, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(255, 255, 255, 0.25)`;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
 
         // Hour hand
-        ctx.strokeStyle = 'rgba(0, 0, 0, 0.7)';
+        ctx.strokeStyle = `rgba(255, 255, 255, 0.8)`;
         ctx.lineWidth = 4;
         ctx.lineCap = 'round';
         ctx.beginPath();
@@ -272,7 +246,7 @@ const BubbleClock: React.FC = () => {
         ctx.stroke();
 
         // Minute hand
-        ctx.strokeStyle = 'rgba(0, 0, 0, 0.6)';
+        ctx.strokeStyle = `rgba(255, 255, 255, 0.7)`;
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(0, 0);
@@ -286,12 +260,6 @@ const BubbleClock: React.FC = () => {
         ctx.moveTo(0, 0);
         ctx.lineTo(Math.cos(handSecond) * 26, Math.sin(handSecond) * 26);
         ctx.stroke();
-
-        // Center dot
-        ctx.beginPath();
-        ctx.arc(0, 0, 3, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-        ctx.fill();
 
         ctx.restore();
       }
@@ -310,6 +278,16 @@ const BubbleClock: React.FC = () => {
 
   return (
     <main ref={containerRef} className={styles.container}>
+      <video
+        ref={videoRef}
+        className={styles.videoBackground}
+        autoPlay
+        loop
+        muted
+        playsInline
+      >
+        <source src={soapVideo} type="video/webm" />
+      </video>
       <canvas ref={canvasRef} className={styles.clockCanvas} />
       <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
