@@ -1,0 +1,87 @@
+.container {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.videoWrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  filter: brightness(0.9) contrast(1.9);
+  object-fit: fill;
+  object-position: center;
+  z-index: 0;
+}
+
+.analogClock {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  width: 12vh;
+  aspect-ratio: 1;
+  z-index: 2;
+}
+
+.clockFace {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 50%;
+  border: 2px solid rgba(176, 179, 178, 0.6);
+  background: rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 10px rgba(175, 208, 7, 0.3), 0 0 20px rgba(0, 255, 204, 0.15);
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  border-radius: 2px;
+}
+
+.hourHand {
+  width: 0.4vh;
+  height: 35%;
+  margin-left: -2px;
+  background: #e0e0e0;
+}
+
+.minuteHand {
+  width: 0.4vh;
+  height: 45%;
+  margin-left: -1.5px;
+  background: #cccccc;
+}
+
+.secondHand {
+  width: 0.2vh;
+  height: 50%;
+  margin-left: -0.5px;
+  background: #afd007;
+}
+
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+  padding: 0;
+  margin: -1px;
+}
