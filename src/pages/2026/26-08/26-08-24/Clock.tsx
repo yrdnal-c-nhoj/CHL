@@ -36,6 +36,8 @@ interface CanvasParams {
   highlightStartAngle: number;
   highlightEndAngle: number;
   highlightGap: number;
+  minRadius: number;
+  maxRadius: number;
 }
 
 function getRandomBrightColor(): string {
@@ -78,6 +80,8 @@ const BubbleClock: React.FC = () => {
     highlightStartAngle: 2.4,
     highlightEndAngle: 3.8,
     highlightGap: 0.5,
+    minRadius: 40,
+    maxRadius: 90,
   });
 
   const readCssParams = () => {
@@ -108,6 +112,8 @@ const BubbleClock: React.FC = () => {
       highlightStartAngle: parseFloat(style.getPropertyValue('--bubble-highlight-start-angle')) || 2.4,
       highlightEndAngle: parseFloat(style.getPropertyValue('--bubble-highlight-end-angle')) || 3.8,
       highlightGap: parseFloat(style.getPropertyValue('--bubble-highlight-gap')) || 0.5,
+      minRadius: parseFloat(style.getPropertyValue('--bubble-min-radius')) || 40,
+      maxRadius: parseFloat(style.getPropertyValue('--bubble-max-radius')) || 90,
     };
   };
 
@@ -131,8 +137,8 @@ const BubbleClock: React.FC = () => {
 
   const generateClocks = (width: number, height: number): Bubble[] => {
     const clocks: Bubble[] = [];
-    const minRadius = 40;
-    const maxRadius = 90;
+    const minRadius = canvasParamsRef.current.minRadius;
+    const maxRadius = canvasParamsRef.current.maxRadius;
     const avgRadius = (minRadius + maxRadius) / 2;
     const targetCount = Math.floor((width * height) / (Math.PI * (avgRadius * avgRadius) * 0.45));
     const count = Math.max(8, Math.min(targetCount, 35));
@@ -205,8 +211,8 @@ const BubbleClock: React.FC = () => {
       clocksRef.current = generateClocks(rect.width, rect.height);
     };
 
-    resize();
     readCssParams();
+    resize();
     const observer = new ResizeObserver(resize);
     observer.observe(container);
 
