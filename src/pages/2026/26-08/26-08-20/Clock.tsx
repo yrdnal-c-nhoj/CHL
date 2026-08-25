@@ -1,11 +1,10 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import tornadoVideo from '@/assets/images/26_images/26-08/26-08-20/tornado.mp4';
 import tornadoVideoWebM from '@/assets/images/26_images/26-08/26-08-20/tornado.webm';
-// Assuming a font exists for this date in the assets folder
 import fontUrl from '@/assets/fonts/26fonts/26-08-20.ttf?url';
 import styles from './Clock.module.css';
 
@@ -18,16 +17,13 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
-const ClockComponent: React.FC = () => {
+const ClockComponent = () => {
   const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
 
-  const { hours, minutes, seconds } = useMemo(() => {
-    const h = String(time.getHours()).padStart(2, '0');
-    const m = String(time.getMinutes()).padStart(2, '0');
-    const s = String(time.getSeconds()).padStart(2, '0');
-    return { hours: h, minutes: m, seconds: s };
-  }, [time]);
+  const hours = String(time.getHours()).padStart(2, '0');
+  const minutes = String(time.getMinutes()).padStart(2, '0');
+  const seconds = String(time.getSeconds()).padStart(2, '0');
 
   return (
     <main className={styles.container}>
@@ -64,7 +60,5 @@ const ClockComponent: React.FC = () => {
   );
 };
 
-const MemoizedClock = React.memo(ClockComponent);
-MemoizedClock.displayName = 'Clock_26_08_20';
-
-export default MemoizedClock;
+ClockComponent.displayName = 'Clock_26_08_20';
+export default ClockComponent;
