@@ -105,6 +105,8 @@ useSuspenseFontLoader(fontConfigs);
 
 - **Recommended:** For clocks using custom fonts.
 - **Required if used:** `?url` suffix for font imports.
+- **Font policy:** Minimal, local, subsetted WOFF2 only. Max 2 families per page.
+- **font-display:** Use `block` only for art-critical display fonts where design protection outweighs text delay. For most UI fonts, use `swap`, `fallback`, or `optional` for better perceived performance.
 
 ### 3.2 TypeScript
 
