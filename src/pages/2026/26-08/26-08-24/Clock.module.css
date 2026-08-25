@@ -1,20 +1,20 @@
 .container {
   --clock-face-radius: 36;
   --clock-face-stroke: rgba(255, 255, 255, 0.55);
-  --clock-face-line-width: 1;
+  --clock-face-line-width: 2;
   --clock-hour-color: rgba(255, 255, 255, 0.95);
-  --clock-hour-width: 1;
-  --clock-hour-length: 19;
+  --clock-hour-width: 4;
+  --clock-hour-length: 14;
   --clock-minute-color: rgba(255, 255, 255, 0.85);
-  --clock-minute-width: 1;
-  --clock-minute-length: 33;
+  --clock-minute-width: 3;
+  --clock-minute-length: 22;
   --clock-second-width: 2;
-  --clock-second-length: 35;
+  --clock-second-length: 26;
   --clock-scale: 40;
   --bubble-fill-opacity: 0.1;
   --bubble-highlight-opacity: 0.45;
   --bubble-gloss-opacity: 0.15;
-  --bubble-highlight-thickness: 3;
+  --bubble-highlight-thickness: 2.5;
   --bubble-highlight-opacity-2: 0.65;
   --bubble-highlight-offset-x: 0.08;
   --bubble-highlight-offset-y: -0.12;
@@ -22,6 +22,8 @@
   --bubble-highlight-start-angle: 2.4;
   --bubble-highlight-end-angle: 3.8;
   --bubble-highlight-gap: 0.5;
+  --bubble-min-radius: 40;
+  --bubble-max-radius: 90;
 
   position: fixed;
   top: 0;
