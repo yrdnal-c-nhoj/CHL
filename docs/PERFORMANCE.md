@@ -34,15 +34,26 @@ Choose intentionally based on font role:
 
 ## Cache Headers
 
+### Immutable assets
+
+All files under `/assets/` receive immutable caching because Vite hashes
+filenames by content (`index-[hash].js`, `style-[hash].css`, etc.).
+
 | Path | Policy | Rationale |
 |---|---|---|
-| `/assets/*.js` | `public, max-age=31536000, immutable` | Hashed filenames. |
-| `/assets/*.css` | `public, max-age=31536000, immutable` | Hashed filenames. |
-| `/assets/images/*.{webp,png,jpg}` | `public, max-age=31536000, immutable` | Immutable assets. |
-| `/assets/images/*.{mp4,webm}` | `public, max-age=31536000, immutable` | Immutable media. |
+| `/assets/*` | `public, max-age=31536000, immutable` | Hashed filenames are content-addressable. |
+| `/assets/images/*.mp4` | `Cache-Control: public, max-age=31536000, immutable` + `Content-Type: video/mp4` | Media files. |
+| `/assets/images/*.webm` | `Cache-Control: public, max-age=31536000, immutable` + `Content-Type: video/webm` | Media files. |
+
+### HTML / shell
+
+| Path | Policy | Rationale |
+|---|---|---|
+| `/` | `no-cache` | Must revalidate on every visit. |
 | `/index.html` | `no-cache` | Must revalidate on every visit. |
 
-Current implementation: `public/_headers` (Netlify). Vercel equivalent: `vercel.json` routes.
+**Current implementation:** `public/_headers` (Netlify). Vercel equivalent:
+`vercel.json` routes with `headers` config.
 
 ## Preload Policy
 
