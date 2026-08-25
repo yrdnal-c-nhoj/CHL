@@ -1,3 +1,6 @@
+> **HISTORICAL — snapshot**  
+> This report is retained for reference only. For the current source of truth, see [`docs/STATUS.md`](../STATUS.md).
+
 # BorrowedTime "Clock" Component — Best-Practices Audit & Improvement Report
 
 **Audited by:** Automated static analysis

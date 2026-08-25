@@ -1,3 +1,6 @@
+> **HISTORICAL — 2026-08-12 snapshot**  
+> This report is retained for reference only. For the current source of truth, see [`docs/STATUS.md`](../STATUS.md).
+
 # CHL (BorrowedTime) — State-of-the-Art Component Assessment & Roadmap
 
 **Date:** 2026-08-12  

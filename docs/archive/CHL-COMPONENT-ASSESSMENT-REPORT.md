@@ -1,3 +1,6 @@
+> **HISTORICAL — snapshot**  
+> This report is retained for reference only. For the current source of truth, see [`docs/STATUS.md`](../STATUS.md).
+
 # CHL (BorrowedTime) Component — Full-Codebase Assessment Report
 
 **Date:** 2026-02 (current audit)
