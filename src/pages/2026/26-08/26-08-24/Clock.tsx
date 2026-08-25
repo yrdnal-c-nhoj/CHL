@@ -336,7 +336,6 @@ const BubbleClock: React.FC = () => {
   );
 };
 
-const MemoizedBubbleClock = React.memo(BubbleClock);
-MemoizedBubbleClock.displayName = 'Clock_26_08_24';
+Clock.displayName = 'Clock_26_08_24';
 
-export default MemoizedBubbleClock;
+export default Clock;

@@ -13,11 +13,24 @@ Last reviewed: 2026-08-25
 
 ## Font Rules
 
+- **Count:** Max 2 custom font families per page. Fewer is better.
 - **Format:** WOFF2 only. No TTF/WOFF in production.
-- **Loading:** `font-display: swap` on every `@font-face`.
-- **Preload:** Only preload above-the-fold fonts via `<link rel="preload">`.
-- **Subsetting:** subset latin-ext by default; add subsets only when needed.
-- **Count:** Max 2 custom font families per page.
+- **Location:** Local files only. No remote font providers.
+- **Subsetting:** Subset to required Unicode ranges. Remove unused glyphs.
+- **Size:** `< 100KB` per font file. Split weights/styles into separate files.
+
+### font-display Policy
+
+Choose intentionally based on font role:
+
+| Value | Use case | Trade-off |
+|---|---|---|
+| `block` | Art-directed, brand-critical display fonts | Hides text until font loads; protects design |
+| `swap` | UI fonts, fallback-safe text | Shows text immediately with fallback, then swaps |
+| `fallback` | Non-critical text, captions | Short block period, then fallback for the page lifetime |
+| `optional` | Decorative fonts, experimental | May never load; fastest perceived performance |
+
+**Rule:** Use `block` only when the art direction genuinely requires it and the font is small/subset. For most clocks, `swap` or `fallback` gives better perceived performance without compromising the experience.
 
 ## Cache Headers
 

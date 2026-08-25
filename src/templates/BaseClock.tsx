@@ -1,7 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import React, { useMemo } from 'react';
 import styles from './BaseClock.module.css';
 
 /**
@@ -42,32 +41,18 @@ const formatDigits = (num: number): string => num.toString().padStart(2, '0');
 // =========================
 // MAIN COMPONENT
 // =========================
-const BaseClock =  () => {
-  // Use standardized hook (1-second updates by default)
+const BaseClock = () => {
   const time = useSecondClock();
 
-  // Load fonts via Suspense (component must be wrapped in <Suspense>)
   useSuspenseFontLoader(fontConfigs);
 
-  // Memoize formatted time to prevent unnecessary recalculations
-  const { hours, minutes, seconds, isoTime } = useMemo(() => {
-    const h = formatDigits(time.getHours());
-    const m = formatDigits(time.getMinutes());
-    const s = formatDigits(time.getSeconds());
-    return {
-      hours: h,
-      minutes: m,
-      seconds: s,
-      isoTime: time.toISOString(),
-    };
-  }, [time]);
+  const hours = formatDigits(time.getHours());
+  const minutes = formatDigits(time.getMinutes());
+  const seconds = formatDigits(time.getSeconds());
+  const isoTime = time.toISOString();
 
   return (
     <main className={styles.container}>
-      {/* 
-        Use <time> element for semantic HTML.
-        datetime attribute provides machine-readable format.
-      */}
       <time className={styles.timeDisplay} dateTime={isoTime}>
         <span className={styles.digitGroup}>
           <span className={styles.digit}>{hours[0]}</span>
