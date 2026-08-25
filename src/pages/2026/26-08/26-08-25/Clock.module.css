@@ -36,14 +36,14 @@
 .digitalClock {
   position: absolute;
   bottom: 25vh;
-  right: 15vw;
+  right: 3vw;
   z-index: 1;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 0;
-  font-size: 4vh;
+  font-size: 20vh;
   color: #ffffff;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5);
 }
@@ -68,7 +68,9 @@
   }
 
   .digitalClock {
-    font-size: 4vh;
+    font-size: 12vh;
+    right: 7vw;
+    bottom: 15vh;
   }
 }
 
