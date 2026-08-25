@@ -12,27 +12,22 @@ These results were generated automatically on 2026-08-25.
 | Check | Command | Result |
 |---|---|---|
 | Build | `npm run build` | ✅ Pass |
-
-| Tests | `npm run tests` | ❌ Failed |
-
+| Tests | `npm run test:run` | ❌ Failed |
 | Lint | `npm run lint` | ❌ Failed |
-
-| TypeScript | `npm run typescript` | ❌ Failed |
-
-| Clock verification | `npm run clock verification` | ❌ Failed |
-
+| TypeScript | `npx tsc --noEmit` | ❌ Failed |
+| Clock verification | `node scripts/verify-all-clocks.js` | ❌ Failed |
 
 ## Git State
 
 - **Branch:** main
 - **Recent commits:**
+  - `1f7122ee7 m`
   - `a227eb848 x`
   - `6d6522b0f x`
   - `f0d6e5465 m`
   - `004e09dee m`
-  - `676f26c38 z`
 - **Working tree:**
-  - `M package.json`
+  - `Clean`
 
 ## Related Docs
 
