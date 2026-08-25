@@ -2,66 +2,46 @@
   position: relative;
   width: 100%;
   height: 100dvh;
-  color: white;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .backgroundVideo {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transform: translate(-50%, -50%);
-  z-index: -1;
+  object-fit: fill;
+  object-position: center;
+  z-index: 0;
 }
 
-.clockContainer {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: var(--space-lg, 1.5rem);
-  border-radius: 1rem;
-}
-
-/* --- Analog Clock Styles --- */
-.analogClock {
+.digitalClock {
   position: relative;
-  width: 20vw;
-  height: 20vw;
-  border-radius: 50%;
-
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: clamp(3rem, 17vw, 8rem);
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.1em;
 }
 
-.hand {
-  position: absolute;
-  bottom: 50%;
-  left: 50%;
-  transform-origin: bottom;
-  transform: translateX(-50%); /* Center the hand horizontally */
-  background-color: white;
-  border-radius: 2px;
+.digit {
+  display: inline-block;
+  width: 1.7ch;
+  text-align: center;
 }
 
-.hourHand {
-  width: 3px;
-  height: 5vh;
-  background-color: var(--color-lab-red, #ff4136);
-}
-
-.minuteHand {
-  width: 2px;
-  height: 7vh;
-  background-color: var(--color-lab-red, #ff4136);
-}
-
-.secondHand {
-  width: 2px;
-  height: 8vh;
-  background-color: var(--color-lab-red, #ff4136);
+.colon {
+  display: inline-block;
+  width: 0.5ch;
+  text-align: center;
 }
 
 .srOnly {

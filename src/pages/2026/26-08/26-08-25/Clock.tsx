@@ -1,24 +1,18 @@
-import { useClockAngles } from '@/hooks/useClockAngles';
-import { useMillisecondClock } from '@/utils/hooks';
-import React from 'react';
+import { useSecondClock } from '@/utils/hooks';
+import backgroundVideo from '@/assets/images/26_images/26-08/26-08-25/radar.webm';
 import styles from './Clock.module.css';
 
-// 1. Asset Exports (for preloading)
-import backgroundVideo from '@/assets/images/26_images/26-08/26-08-25/radar.webm';
+export const assets: string[] = [backgroundVideo];
 
-export const assets = [backgroundVideo];
+const Clock = () => {
+  const time = useSecondClock();
 
-// 3. Main Component
-const ClockComponent = () => {
-  // Use the millisecond hook for a smooth, sweeping second hand.
-  // 16ms interval targets ~60fps for continuous motion.
-  const time = useMillisecondClock(16);
-
-  const { hourAngle, minAngle, secAngle } = useClockAngles(time);
+  const hours = String(time.getHours()).padStart(2, '0');
+  const minutes = String(time.getMinutes()).padStart(2, '0');
+  const seconds = String(time.getSeconds()).padStart(2, '0');
 
   return (
     <main className={styles.container}>
-      {/* Background Video */}
       <video
         autoPlay
         loop
@@ -26,37 +20,26 @@ const ClockComponent = () => {
         playsInline
         className={styles.backgroundVideo}
         src={backgroundVideo}
+        aria-hidden="true"
       />
-      {/* Semantic <time> element for accessibility (Required) */}
+
       <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
 
-      {/* --- Clock UI --- */}
-      <div className={styles.clockContainer}>
-        {/* Analog Clock */}
-        <div className={styles.analogClock}>
-          <div
-            className={`${styles.hand} ${styles.hourHand}`}
-            style={{ transform: `rotate(${hourAngle}deg)` }}
-          />
-          <div
-            className={`${styles.hand} ${styles.minuteHand}`}
-            style={{ transform: `rotate(${minAngle}deg)` }}
-          />
-          <div
-            className={`${styles.hand} ${styles.secondHand}`}
-            style={{ transform: `rotate(${secAngle}deg)` }}
-          />
-        </div>
-
+      <div className={styles.digitalClock}>
+        <span className={styles.digit}>{hours[0]}</span>
+        <span className={styles.digit}>{hours[1]}</span>
+        <span className={styles.colon}>:</span>
+        <span className={styles.digit}>{minutes[0]}</span>
+        <span className={styles.digit}>{minutes[1]}</span>
+        <span className={styles.colon}>:</span>
+        <span className={styles.digit}>{seconds[0]}</span>
+        <span className={styles.digit}>{seconds[1]}</span>
       </div>
     </main>
   );
 };
 
-// 4. Performance: Wrap in React.memo + set displayName (Required)
-const MemoizedClock = React.memo(ClockComponent);
-MemoizedClock.displayName = 'Clock_26_08_13';
-
-export default MemoizedClock;
+Clock.displayName = 'Clock_26_08_25';
+export default Clock;
