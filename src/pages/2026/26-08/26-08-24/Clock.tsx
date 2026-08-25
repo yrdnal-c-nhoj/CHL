@@ -25,6 +25,17 @@ interface CanvasParams {
   secondWidth: number;
   secondLength: number;
   scale: number;
+  fillOpacity: number;
+  highlightOpacity: number;
+  glossOpacity: number;
+  highlightThickness: number;
+  highlightOpacity2: number;
+  highlightOffsetX: number;
+  highlightOffsetY: number;
+  highlightRadiusScale: number;
+  highlightStartAngle: number;
+  highlightEndAngle: number;
+  highlightGap: number;
 }
 
 function getRandomBrightColor(): string {
@@ -45,17 +56,28 @@ const BubbleClock: React.FC = () => {
   const heightRef = useRef(0);
   const canvasParamsRef = useRef<CanvasParams>({
     faceRadius: 36,
-    faceStroke: 'rgba(255, 255, 255, 0.45)',
-    faceLineWidth: 1.5,
-    hourColor: 'rgba(255, 255, 255, 0.9)',
+    faceStroke: 'rgba(255, 255, 255, 0.55)',
+    faceLineWidth: 2,
+    hourColor: 'rgba(255, 255, 255, 0.95)',
     hourWidth: 4,
     hourLength: 14,
-    minuteColor: 'rgba(255, 255, 255, 0.8)',
+    minuteColor: 'rgba(255, 255, 255, 0.85)',
     minuteWidth: 3,
     minuteLength: 22,
     secondWidth: 2,
     secondLength: 26,
     scale: 40,
+    fillOpacity: 0.1,
+    highlightOpacity: 0.45,
+    glossOpacity: 0.15,
+    highlightThickness: 2.5,
+    highlightOpacity2: 0.65,
+    highlightOffsetX: 0.08,
+    highlightOffsetY: -0.12,
+    highlightRadiusScale: 0.82,
+    highlightStartAngle: 2.4,
+    highlightEndAngle: 3.8,
+    highlightGap: 0.5,
   });
 
   const readCssParams = () => {
@@ -64,17 +86,28 @@ const BubbleClock: React.FC = () => {
     const style = getComputedStyle(container);
     canvasParamsRef.current = {
       faceRadius: parseFloat(style.getPropertyValue('--clock-face-radius')) || 36,
-      faceStroke: style.getPropertyValue('--clock-face-stroke').trim() || 'rgba(255, 255, 255, 0.45)',
-      faceLineWidth: parseFloat(style.getPropertyValue('--clock-face-line-width')) || 1.5,
-      hourColor: style.getPropertyValue('--clock-hour-color').trim() || 'rgba(255, 255, 255, 0.9)',
+      faceStroke: style.getPropertyValue('--clock-face-stroke').trim() || 'rgba(255, 255, 255, 0.55)',
+      faceLineWidth: parseFloat(style.getPropertyValue('--clock-face-line-width')) || 2,
+      hourColor: style.getPropertyValue('--clock-hour-color').trim() || 'rgba(255, 255, 255, 0.95)',
       hourWidth: parseFloat(style.getPropertyValue('--clock-hour-width')) || 4,
       hourLength: parseFloat(style.getPropertyValue('--clock-hour-length')) || 14,
-      minuteColor: style.getPropertyValue('--clock-minute-color').trim() || 'rgba(255, 255, 255, 0.8)',
+      minuteColor: style.getPropertyValue('--clock-minute-color').trim() || 'rgba(255, 255, 255, 0.85)',
       minuteWidth: parseFloat(style.getPropertyValue('--clock-minute-width')) || 3,
       minuteLength: parseFloat(style.getPropertyValue('--clock-minute-length')) || 22,
       secondWidth: parseFloat(style.getPropertyValue('--clock-second-width')) || 2,
       secondLength: parseFloat(style.getPropertyValue('--clock-second-length')) || 26,
       scale: parseFloat(style.getPropertyValue('--clock-scale')) || 40,
+      fillOpacity: parseFloat(style.getPropertyValue('--bubble-fill-opacity')) || 0.1,
+      highlightOpacity: parseFloat(style.getPropertyValue('--bubble-highlight-opacity')) || 0.45,
+      glossOpacity: parseFloat(style.getPropertyValue('--bubble-gloss-opacity')) || 0.15,
+      highlightThickness: parseFloat(style.getPropertyValue('--bubble-highlight-thickness')) || 2.5,
+      highlightOpacity2: parseFloat(style.getPropertyValue('--bubble-highlight-opacity-2')) || 0.65,
+      highlightOffsetX: parseFloat(style.getPropertyValue('--bubble-highlight-offset-x')) || 0.08,
+      highlightOffsetY: parseFloat(style.getPropertyValue('--bubble-highlight-offset-y')) || -0.12,
+      highlightRadiusScale: parseFloat(style.getPropertyValue('--bubble-highlight-radius-scale')) || 0.82,
+      highlightStartAngle: parseFloat(style.getPropertyValue('--bubble-highlight-start-angle')) || 2.4,
+      highlightEndAngle: parseFloat(style.getPropertyValue('--bubble-highlight-end-angle')) || 3.8,
+      highlightGap: parseFloat(style.getPropertyValue('--bubble-highlight-gap')) || 0.5,
     };
   };
 
@@ -207,25 +240,49 @@ const BubbleClock: React.FC = () => {
       ctx.arc(0, 0, params.faceRadius, 0, Math.PI * 2);
       ctx.strokeStyle = params.faceStroke;
       ctx.lineWidth = params.faceLineWidth;
-      ctx.fillStyle = secondColor.replace(')', ', 0.08)').replace('hsl', 'hsla');
+      ctx.fillStyle = secondColor.replace(')', `, ${params.fillOpacity})`).replace('hsl', 'hsla');
       ctx.fill();
       ctx.stroke();
 
       const highlight = ctx.createRadialGradient(
-        -params.faceRadius * 0.25,
-        -params.faceRadius * 0.25,
+        -params.faceRadius * 0.3,
+        -params.faceRadius * 0.3,
         params.faceRadius * 0.05,
         0,
         0,
         params.faceRadius
       );
-      highlight.addColorStop(0, 'rgba(255, 255, 255, 0.35)');
-      highlight.addColorStop(0.4, 'rgba(255, 255, 255, 0.08)');
+      highlight.addColorStop(0, `rgba(255, 255, 255, ${params.highlightOpacity})`);
+      highlight.addColorStop(0.35, `rgba(255, 255, 255, ${params.glossOpacity})`);
       highlight.addColorStop(1, 'rgba(255, 255, 255, 0.0)');
       ctx.beginPath();
       ctx.arc(0, 0, params.faceRadius, 0, Math.PI * 2);
       ctx.fillStyle = highlight;
       ctx.fill();
+
+      ctx.strokeStyle = `rgba(255, 255, 255, ${params.highlightOpacity2})`;
+      ctx.lineWidth = params.highlightThickness;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.arc(
+        params.faceRadius * params.highlightOffsetX,
+        params.faceRadius * params.highlightOffsetY,
+        params.faceRadius * params.highlightRadiusScale,
+        params.highlightStartAngle,
+        params.highlightEndAngle,
+        false
+      );
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(
+        params.faceRadius * params.highlightOffsetX,
+        params.faceRadius * params.highlightOffsetY,
+        params.faceRadius * params.highlightRadiusScale,
+        params.highlightStartAngle + params.highlightGap,
+        params.highlightEndAngle - params.highlightGap,
+        false
+      );
+      ctx.stroke();
 
       ctx.strokeStyle = params.hourColor;
       ctx.lineWidth = params.hourWidth;
