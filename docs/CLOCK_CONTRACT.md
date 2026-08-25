@@ -74,6 +74,7 @@ export const assets = [backgroundImage, fontUrl];
 - **Required:** CSS Modules (`Clock.module.css`).
 - **Prohibited:** Inline style objects for static styles.
 - **Allowed:** Inline styles for dynamic values (e.g., canvas transforms, computed dimensions).
+- **Required:** Full-height containers must use `height: 100dvh`. Do not use `vh`, which does not account for mobile browser chrome.
 
 ### 2.6 Memoization
 

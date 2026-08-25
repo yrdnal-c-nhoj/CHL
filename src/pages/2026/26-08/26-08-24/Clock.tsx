@@ -1,6 +1,6 @@
-import React, { useRef, useEffect, useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
 import soapVideo from '@/assets/images/26_images/26-08/26-08-24/soap.webm';
+import { useMillisecondClock } from '@/utils/hooks';
+import React, { useEffect, useMemo, useRef } from 'react';
 import styles from './Clock.module.css';
 
 export const assets = [soapVideo];
@@ -58,15 +58,15 @@ const Clock: React.FC = () => {
   const heightRef = useRef(0);
   const canvasParamsRef = useRef<CanvasParams>({
     faceRadius: 36,
-    faceStroke: 'rgba(255, 255, 255, 0.55)',
-    faceLineWidth: 2,
-    hourColor: 'rgba(255, 255, 255, 0.95)',
-    hourWidth: 4,
+    faceStroke: 'rgba(255, 255, 255, 0.99)',
+    faceLineWidth: 1,
+    hourColor: 'rgba(255, 255, 255, 0.77)',
+    hourWidth: 1,
     hourLength: 14,
-    minuteColor: 'rgba(255, 255, 255, 0.85)',
-    minuteWidth: 3,
+    minuteColor: 'rgba(255, 255, 255, 0.55)',
+    minuteWidth: 1,
     minuteLength: 22,
-    secondWidth: 2,
+    secondWidth: 0.5,
     secondLength: 26,
     scale: 40,
     fillOpacity: 0.1,
