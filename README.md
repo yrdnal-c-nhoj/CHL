@@ -6,6 +6,8 @@ A new clock every day.
 
 ## Quick start
 
+Requires Node.js 22.x.
+
 ```bash
 npm ci
 npm run dev
