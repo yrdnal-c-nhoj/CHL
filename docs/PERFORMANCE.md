@@ -39,6 +39,13 @@ Choose intentionally based on font role:
 All files under `/assets/` receive immutable caching because Vite hashes
 filenames by content (`index-[hash].js`, `style-[hash].css`, etc.).
 
+This single glob covers:
+- JavaScript chunks (`/assets/*.js`)
+- CSS bundles (`/assets/*.css`)
+- Fonts (`/assets/fonts/*.woff2`)
+- Images (`/assets/images/*.{webp,png,jpg}`)
+- Media (`/assets/images/*.{mp4,webm}`)
+
 | Path | Policy | Rationale |
 |---|---|---|
 | `/assets/*` | `public, max-age=31536000, immutable` | Hashed filenames are content-addressable. |
