@@ -53,6 +53,8 @@ TAGS.md
 CHL-*.md
 ARCHITECTURE.md
 compliance-baseline.json
+!docs/
+!docs/**/*.md
 
 # Dev utilities
 capture.js

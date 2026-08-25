@@ -25,7 +25,7 @@ npm run dev
 ### 3) Run tests
 
 ```bash
-npm test
+npm run test:run
 ```
 
 ### 4) Build for production
@@ -38,7 +38,9 @@ npm run build
 
 ## Documentation
 
-Developer guides: `docs/`
+- Current status: [`docs/STATUS.md`](docs/STATUS.md)
+- Technical standards: [`src/templates/ARCHITECTURE.md`](src/templates/ARCHITECTURE.md)
+- Historical reports: [`docs/archive/`](docs/archive/)
 
 ---
 
@@ -46,7 +48,8 @@ Developer guides: `docs/`
 
 - `npm run dev` — start Vite dev server
 - `npm run build` — production build
-- `npm run test` — Vitest
+- `npm run test:run` — Vitest test suite
+- `npm run test:ui` — Vitest UI
 - `npm run lint` — ESLint
 - `npm run format` — Prettier
 
@@ -55,4 +58,3 @@ Developer guides: `docs/`
 ## License
 
 MIT — see [LICENSE](LICENSE)
-
