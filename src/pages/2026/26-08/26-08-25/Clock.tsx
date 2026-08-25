@@ -1,15 +1,27 @@
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
+import React from 'react';
+
 import backgroundVideo from '@/assets/images/26_images/26-08/26-08-25/radar.webm';
+import fontUrl from '@/assets/fonts/26fonts/26-08-25.ttf?url';
 import styles from './Clock.module.css';
 
-export const assets: string[] = [backgroundVideo];
+export const assets: string[] = [backgroundVideo, fontUrl];
+
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'ClockFont_26_08_25',
+    fontUrl,
+  },
+];
 
 const Clock = () => {
   const time = useSecondClock();
+  useSuspenseFontLoader(fontConfigs);
 
   const hours = String(time.getHours()).padStart(2, '0');
   const minutes = String(time.getMinutes()).padStart(2, '0');
-  const seconds = String(time.getSeconds()).padStart(2, '0');
 
   return (
     <main className={styles.container}>
@@ -28,14 +40,14 @@ const Clock = () => {
       </time>
 
       <div className={styles.digitalClock}>
-        <span className={styles.digit}>{hours[0]}</span>
-        <span className={styles.digit}>{hours[1]}</span>
-        <span className={styles.colon}>:</span>
-        <span className={styles.digit}>{minutes[0]}</span>
-        <span className={styles.digit}>{minutes[1]}</span>
-        <span className={styles.colon}>:</span>
-        <span className={styles.digit}>{seconds[0]}</span>
-        <span className={styles.digit}>{seconds[1]}</span>
+        <div className={styles.hourGroup}>
+          <span className={styles.digit}>{hours[0]}</span>
+          <span className={styles.digit}>{hours[1]}</span>
+        </div>
+        <div className={styles.minuteGroup}>
+          <span className={styles.digit}>{minutes[0]}</span>
+          <span className={styles.digit}>{minutes[1]}</span>
+        </div>
       </div>
     </main>
   );

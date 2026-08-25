@@ -6785,11 +6785,23 @@
     "date": "26-08-24",
     "title": "Bubbles",
     "tags": [
+      "air",
       "analog",
       "color",
-     "round",
-     "water",
-     "air"
+      "round",
+      "water"
+    ]
+  },
+  {
+    "path": "26-08-25",
+    "date": "26-08-25",
+    "title": "Tracking",
+    "tags": [
+      "digital",
+      "landscape",
+      "map",
+      "radar",
+      "waves"
     ]
   }
 ]
