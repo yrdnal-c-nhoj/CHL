@@ -1,11 +1,10 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
-import React from 'react';
 
+import fontUrl from '@/assets/fonts/26fonts/26-08-25a.otf?url';
 import backgroundVideo from '@/assets/images/26_images/26-08/26-08-25/radar.webm';
 import radarOverlay from '@/assets/images/26_images/26-08/26-08-25/radar3.webp';
-import fontUrl from '@/assets/fonts/26fonts/26-08-25.ttf?url';
 import styles from './Clock.module.css';
 
 export const assets: string[] = [backgroundVideo, radarOverlay, fontUrl];
