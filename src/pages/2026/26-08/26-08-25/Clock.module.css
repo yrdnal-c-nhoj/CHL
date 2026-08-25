@@ -17,8 +17,19 @@
   height: 100%;
   object-fit: fill;
   object-position: center;
-  filter: brightness(1) contrast(1.4) saturate(1.3);
   z-index: 0;
+}
+
+.overlayImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  object-position: center;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .digitalClock {
