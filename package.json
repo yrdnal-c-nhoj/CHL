@@ -13,7 +13,8 @@
     "test:run": "vitest run",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "status": "node scripts/generate-status.js"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
