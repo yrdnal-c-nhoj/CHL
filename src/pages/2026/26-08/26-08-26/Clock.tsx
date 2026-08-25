@@ -1,12 +1,11 @@
-import React from 'react';
-import { useSecondClock } from '@/utils/hooks';
 import { useClockAngles } from '@/hooks/useClockAngles';
+import { useSecondClock } from '@/utils/hooks';
+import React from 'react';
 
-import tornadoVideoWebM from '@/assets/images/26_images/26-08/26-08-20/tornado.webm';
 import tornadoVideo from '@/assets/images/26_images/26-08/26-08-26/mud.webm';
 import styles from './Clock.module.css';
 
-export const assets: string[] = [tornadoVideo, tornadoVideoWebM];
+export const assets: string[] = [tornadoVideo];
 
 const ClockComponent = () => {
   const time = useSecondClock();
@@ -25,8 +24,7 @@ const ClockComponent = () => {
           preload="auto"
           aria-hidden="true"
         >
-          <source src={tornadoVideo} type="video/mp4" />
-          <source src={tornadoVideoWebM} type="video/webm" />
+          <source src={tornadoVideo} type="video/webm" />
         </video>
       </div>
 
