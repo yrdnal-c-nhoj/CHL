@@ -29,6 +29,7 @@
   object-fit: fill;
   object-position: center;
   z-index: 1;
+  opacity: 0.8;
   pointer-events: none;
 }
 
@@ -48,7 +49,8 @@
 }
 
 .hourGroup,
-.minuteGroup {
+.minuteGroup,
+.secondGroup {
   display: flex;
   align-items: center;
   gap: 0;

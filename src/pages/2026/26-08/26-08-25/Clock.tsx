@@ -22,6 +22,7 @@ const Clock = () => {
 
   const hours = String(time.getHours()).padStart(2, '0');
   const minutes = String(time.getMinutes()).padStart(2, '0');
+  const seconds = String(time.getSeconds()).padStart(2, '0');
 
   return (
     <main className={styles.container}>
@@ -54,6 +55,10 @@ const Clock = () => {
         <div className={styles.minuteGroup}>
           <span className={styles.digit}>{minutes[0]}</span>
           <span className={styles.digit}>{minutes[1]}</span>
+        </div>
+        <div className={styles.secondGroup}>
+          <span className={styles.digit}>{seconds[0]}</span>
+          <span className={styles.digit}>{seconds[1]}</span>
         </div>
       </div>
     </main>
