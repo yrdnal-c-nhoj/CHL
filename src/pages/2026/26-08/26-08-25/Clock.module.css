@@ -1,0 +1,77 @@
+.container {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.backgroundVideo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.clockContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: var(--space-lg, 1.5rem);
+  border-radius: 1rem;
+}
+
+/* --- Analog Clock Styles --- */
+.analogClock {
+  position: relative;
+  width: 20vw;
+  height: 20vw;
+  border-radius: 50%;
+
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom;
+  transform: translateX(-50%); /* Center the hand horizontally */
+  background-color: white;
+  border-radius: 2px;
+}
+
+.hourHand {
+  width: 3px;
+  height: 5vh;
+  background-color: var(--color-lab-red, #ff4136);
+}
+
+.minuteHand {
+  width: 2px;
+  height: 7vh;
+  background-color: var(--color-lab-red, #ff4136);
+}
+
+.secondHand {
+  width: 2px;
+  height: 8vh;
+  background-color: var(--color-lab-red, #ff4136);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
