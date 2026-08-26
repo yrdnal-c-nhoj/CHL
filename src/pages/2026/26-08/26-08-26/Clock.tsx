@@ -14,21 +14,6 @@ const QUADRANT_TRANSFORMS = [
   'var(--bottom-right-transform)',
 ] as const;
 
-const VideoTile: React.FC<{ transform: string }> = ({ transform }) => (
-  <video
-    className={styles.video}
-    style={{ '--quadrant-transform': transform } as React.CSSProperties}
-    autoPlay
-    loop
-    muted
-    playsInline
-    preload="auto"
-    aria-hidden="true"
-  >
-    <source src={tornadoVideo} type="video/webm" />
-  </video>
-);
-
 const ClockComponent = () => {
   const time = useSecondClock();
   const { hourAngle, minAngle, secAngle } = useClockAngles(time);
@@ -37,7 +22,19 @@ const ClockComponent = () => {
     <main className={styles.container}>
       <div className={styles.videoWrapper}>
         {QUADRANT_TRANSFORMS.map((transform, index) => (
-          <VideoTile key={index} transform={transform} />
+          <video
+            key={index}
+            className={styles.video}
+            style={{ '--quadrant-transform': transform } as React.CSSProperties}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+          >
+            <source src={tornadoVideo} type="video/webm" />
+          </video>
         ))}
       </div>
 
