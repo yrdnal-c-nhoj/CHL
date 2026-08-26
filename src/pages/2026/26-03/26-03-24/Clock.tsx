@@ -126,10 +126,6 @@ const ExplodingClock =  () => {
   const loopKeyRef = useRef(loopKey);
   loopKeyRef.current = loopKey;
 
-  useEffect(() => {
-      tick();
-    }, [time]);
-
   return (
     <div
       className={styles.container}

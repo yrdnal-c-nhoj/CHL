@@ -16,7 +16,40 @@ const ClockComponent = () => {
     <main className={styles.container}>
       <div className={styles.videoWrapper}>
         <video
-          className={styles.video}
+          className={`${styles.video} ${styles.videoFlipped} ${styles.videoBorder}`}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        >
+          <source src={tornadoVideo} type="video/webm" />
+        </video>
+        <video
+          className={`${styles.video} ${styles.videoFlipped}`}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        >
+          <source src={tornadoVideo} type="video/webm" />
+        </video>
+        <video
+          className={`${styles.video} ${styles.videoRotated}`}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        >
+          <source src={tornadoVideo} type="video/webm" />
+        </video>
+        <video
+          className={`${styles.video} ${styles.videoRotated}`}
           autoPlay
           loop
           muted

@@ -10,19 +10,33 @@
 .videoWrapper {
   position: absolute;
   inset: 0;
+  display: flex;
+  flex-wrap: wrap;
   overflow: hidden;
 }
 
 .video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  width: 50%;
+  height: 50%;
   filter: brightness(0.9) contrast(1.9);
   object-fit: fill;
   object-position: center;
   z-index: 0;
+  display: block;
+  flex: 0 0 50%;
+}
+
+.videoFlipped {
+  transform: scaleX(-1);
+}
+
+.videoRotated {
+  transform: rotate(180deg);
+}
+
+.videoBorder {
+  border: 4px solid red;
+  box-sizing: border-box;
 }
 
 .analogClock {
