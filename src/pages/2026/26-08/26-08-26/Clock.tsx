@@ -16,7 +16,7 @@ const ClockComponent = () => {
     <main className={styles.container}>
       <div className={styles.videoWrapper}>
         <video
-          className={`${styles.video} ${styles.videoBorder}`}
+          className={styles.video}
           style={{ '--quadrant-transform': 'var(--top-left-transform)' } as React.CSSProperties}
           autoPlay
           loop

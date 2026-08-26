@@ -10,26 +10,31 @@
 .videoWrapper {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-wrap: wrap;
   overflow: hidden;
   --top-left-transform: none;
   --top-right-transform: scaleX(-1);
-  --bottom-left-transform: rotate(180deg);
+  --bottom-left-transform: rotate(180deg) scaleX(-1);
   --bottom-right-transform: rotate(180deg);
 }
 
 .video {
-  width: 50%;
-  height: 50%;
+  position: absolute;
+  width: 50.01%;
+  height: 50.01%;
   filter: brightness(0.9) contrast(1.9);
   object-fit: fill;
   object-position: center;
   z-index: 0;
   display: block;
-  flex: 0 0 50%;
+  border: none;
+  outline: none;
   transform: var(--quadrant-transform, none);
 }
+
+.video:nth-child(1) { top: 0; left: 0; }
+.video:nth-child(2) { top: 0; left: 50%; }
+.video:nth-child(3) { top: 50%; left: 0; }
+.video:nth-child(4) { top: 50%; left: 50%; }
 
 .videoBorder {
   border: 4px solid red;
