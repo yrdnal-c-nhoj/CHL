@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
 import { useClockAngles } from '@/hooks/useClockAngles';
 import { useSecondClock } from '@/utils/hooks';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import tornadoVideo from '@/assets/images/26_images/26-08/26-08-26/mud.webm';
 import styles from './Clock.module.css';
@@ -68,7 +67,6 @@ const ClockComponent = () => {
           <div className={`${styles.hand} ${styles.hourHand}`} style={{ transform: `rotate(${hourAngle}deg)` }} />
           <div className={`${styles.hand} ${styles.minuteHand}`} style={{ transform: `rotate(${minAngle}deg)` }} />
           <div className={`${styles.hand} ${styles.secondHand}`} style={{ transform: `rotate(${secAngle}deg)` }} />
-          <div className={styles.centerDot} />
         </div>
       </div>
     </main>
