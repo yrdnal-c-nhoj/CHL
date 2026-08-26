@@ -65,7 +65,8 @@
   left: 50%;
   transform-origin: bottom center;
   border-radius: 2px;
- background: #2e1102;
+  background: #2e1102;
+  filter: drop-shadow(0 0.4vh 0.3vh rgba(255, 255, 255, 0.7));
 }
 
 .hourHand {
