@@ -1,0 +1,75 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #2a293c;
+  contain: layout style paint;
+  isolation: isolate;
+}
+
+.tileBackground {
+  position: absolute;
+  inset: 0;
+  background-image: var(--tile-image);
+  background-repeat: repeat;
+  background-position: center;
+  background-size: 200px 100px;
+  z-index: -1;
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 0;
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  padding-top: 10vh;
+  color: #F5F5F0CB;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 10;
+  font-family: 'ClockFont', sans-serif;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.2), 0 0 30px rgba(255, 255, 255, 0.1);
+  filter: contrast(1.2) brightness(1.1);
+  opacity: 0.95;
+}
+
+.digitGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.05vmin;
+  position: relative;
+}
+
+.digitBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 8vh;
+  height: 12vh;
+  font-size: 10vh;
+  flex-shrink: 0;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+  filter: contrast(1.3) brightness(1.2);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
