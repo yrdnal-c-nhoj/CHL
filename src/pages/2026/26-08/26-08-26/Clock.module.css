@@ -13,16 +13,12 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  --top-left-transform: none;
-  --top-right-transform: scaleX(-1);
-  --bottom-left-transform: rotate(180deg) scaleX(-1);
-  --bottom-right-transform: rotate(180deg);
 }
 
 .video {
   position: absolute;
-  width: 50.2%;
-  height: 50.2%;
+  width: 50.5%;
+  height: 50.5%;
   filter: brightness(0.9) contrast(1.9);
   object-fit: fill;
   object-position: center;
@@ -66,26 +62,22 @@
   transform-origin: bottom center;
   border-radius: 2px;
   background: #2e1102;
-  filter: drop-shadow(0 0.4vh 0.3vh rgba(255, 255, 255, 0.7));
+  box-shadow: 0 0.2vh 0.4vh rgba(61, 35, 20, 0.6);
 }
 
 .hourHand {
   width: 0.6vh;
   height: 55%;
-  margin-left: -2px;
- 
 }
 
 .minuteHand {
   width: 0.5vh;
   height: 90%;
-  margin-left: -1.5px;
 }
 
 .secondHand {
   width: 0.3vh;
   height: 90%;
-  margin-left: -0.5px;
 }
 
 .srOnly {
