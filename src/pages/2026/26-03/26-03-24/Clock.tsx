@@ -140,7 +140,7 @@ const ExplodingClock =  () => {
                 delay={delay}
                 top={flights[i].top}
                 bottom={flights[i].bottom}
-                color={color}
+                color={color ?? '#FFFFFF'}
               />
             );
           })}
