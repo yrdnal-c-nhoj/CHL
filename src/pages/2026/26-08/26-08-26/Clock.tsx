@@ -1,6 +1,6 @@
 import { useClockAngles } from '@/hooks/useClockAngles';
-import { useSecondClock } from '@/utils/hooks';
-import React, { useEffect, useState } from 'react';
+import { useSecondClock, useVisibilitySchedule } from '@/utils/hooks';
+import React, { memo } from 'react';
 
 import tornadoVideo from '@/assets/images/26_images/26-08/26-08-26/mud.webm';
 import styles from './Clock.module.css';
@@ -15,28 +15,9 @@ const QUADRANT_TRANSFORMS = [
 ] as const;
 
 const ClockComponent = () => {
-  const [visible, setVisible] = useState(false);
+  const visible = useVisibilitySchedule();
   const time = useSecondClock();
   const { hourAngle, minAngle, secAngle } = useClockAngles(time);
-
-  useEffect(() => {
-    let showTimer: ReturnType<typeof setTimeout>;
-    let hideTimer: ReturnType<typeof setTimeout>;
-
-    const tick = () => {
-      showTimer = setTimeout(() => setVisible(true), 2500);
-      hideTimer = setTimeout(() => setVisible(false), 6500);
-    };
-
-    tick();
-    const interval = setInterval(tick, 11000);
-
-    return () => {
-      clearTimeout(showTimer);
-      clearTimeout(hideTimer);
-      clearInterval(interval);
-    };
-  }, []);
 
   return (
     <main className={styles.container}>
@@ -73,7 +54,7 @@ const ClockComponent = () => {
   );
 };
 
-const MemoizedClock = React.memo(ClockComponent);
+const MemoizedClock = memo(ClockComponent);
 MemoizedClock.displayName = 'Clock_26_08_20';
 
 export default MemoizedClock;
