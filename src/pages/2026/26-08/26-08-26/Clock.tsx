@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useClockAngles } from '@/hooks/useClockAngles';
 import { useSecondClock } from '@/utils/hooks';
 import React from 'react';
@@ -15,8 +16,28 @@ const QUADRANT_TRANSFORMS = [
 ] as const;
 
 const ClockComponent = () => {
+  const [visible, setVisible] = useState(false);
   const time = useSecondClock();
   const { hourAngle, minAngle, secAngle } = useClockAngles(time);
+
+  useEffect(() => {
+    let showTimer: ReturnType<typeof setTimeout>;
+    let hideTimer: ReturnType<typeof setTimeout>;
+
+    const tick = () => {
+      showTimer = setTimeout(() => setVisible(true), 2500);
+      hideTimer = setTimeout(() => setVisible(false), 6500);
+    };
+
+    tick();
+    const interval = setInterval(tick, 11000);
+
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <main className={styles.container}>
@@ -42,7 +63,7 @@ const ClockComponent = () => {
         {time.toLocaleTimeString()}
       </time>
 
-      <div className={styles.analogClock}>
+      <div className={`${styles.analogClock} ${visible ? styles.visible : ''}`}>
         <div className={styles.clockFace}>
           <div className={`${styles.hand} ${styles.hourHand}`} style={{ transform: `rotate(${hourAngle}deg)` }} />
           <div className={`${styles.hand} ${styles.minuteHand}`} style={{ transform: `rotate(${minAngle}deg)` }} />

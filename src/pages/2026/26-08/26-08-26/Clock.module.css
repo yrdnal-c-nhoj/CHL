@@ -41,13 +41,15 @@
 .video:nth-child(4) { top: 50%; left: 50%; }
 
 .analogClock {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   width: 12vh;
   aspect-ratio: 1;
   z-index: 2;
+  opacity: 0;
+  transition: opacity 1.5s ease-in;
+}
+
+.analogClock.visible {
+  opacity: 1;
 }
 
 .clockFace {
@@ -55,7 +57,6 @@
   height: 100%;
   position: relative;
   border-radius: 50%;
-  border: 1px solid rgba(238, 241, 240, 0.901);
 }
 
 .hand {
@@ -64,27 +65,26 @@
   left: 50%;
   transform-origin: bottom center;
   border-radius: 2px;
+ background: #2e1102;
 }
 
 .hourHand {
-  width: 0.4vh;
-  height: 35%;
+  width: 0.6vh;
+  height: 55%;
   margin-left: -2px;
-  background: #e0e0e0;
+ 
 }
 
 .minuteHand {
-  width: 0.4vh;
-  height: 45%;
+  width: 0.5vh;
+  height: 90%;
   margin-left: -1.5px;
-  background: #cccccc;
 }
 
 .secondHand {
-  width: 0.2vh;
-  height: 50%;
+  width: 0.3vh;
+  height: 90%;
   margin-left: -0.5px;
-  background: #afd007;
 }
 
 .srOnly {
