@@ -31,7 +31,7 @@
   position: absolute;
   inset: 0;
   padding-top: 10vh;
-  color: #F5F5F0CB;
+  color: #f5f5f096;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -53,9 +53,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 8vh;
+  width: 6vh;
   height: 12vh;
-  font-size: 10vh;
+  font-size: 16vh;
   flex-shrink: 0;
   text-align: center;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
