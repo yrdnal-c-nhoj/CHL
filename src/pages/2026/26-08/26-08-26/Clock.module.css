@@ -13,6 +13,10 @@
   display: flex;
   flex-wrap: wrap;
   overflow: hidden;
+  --top-left-transform: none;
+  --top-right-transform: scaleX(-1);
+  --bottom-left-transform: rotate(180deg);
+  --bottom-right-transform: rotate(180deg);
 }
 
 .video {
@@ -24,14 +28,7 @@
   z-index: 0;
   display: block;
   flex: 0 0 50%;
-}
-
-.videoFlipped {
-  transform: scaleX(-1);
-}
-
-.videoRotated {
-  transform: rotate(180deg);
+  transform: var(--quadrant-transform, none);
 }
 
 .videoBorder {
