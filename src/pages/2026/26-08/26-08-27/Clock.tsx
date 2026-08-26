@@ -1,25 +1,14 @@
 import type { FontConfig } from '@/types/clock';
+
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
 import { memo, useEffect, useRef } from 'react';
 
 import customFont from '@/assets/fonts/26fonts/26-08-27.ttf?url';
 import tileImage from '@/assets/images/26_images/26-08/26-08-27/1.webp?url';
 import seahorseVideo from '@/assets/images/26_images/26-08/26-08-27/2.webm';
-import { useMillisecondClock } from '@/utils/hooks';
 
 export const assets = [seahorseVideo, tileImage];
-
-const srOnlyStyle: React.CSSProperties = {
-  position: 'absolute',
-  width: '1px',
-  height: '1px',
-  padding: 0,
-  margin: '-1px',
-  overflow: 'hidden',
-  clip: 'rect(0, 0, 0, 0)',
-  whiteSpace: 'nowrap',
-  borderWidth: 0,
-};
 
 const containerStyle: React.CSSProperties = {
   position: 'relative',
