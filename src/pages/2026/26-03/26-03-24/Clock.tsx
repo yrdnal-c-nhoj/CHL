@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import arrowImg from '@/assets/images/26_images/26-03/26-03-23/arrow.webp?url';
 import fontUrl from '@/assets/fonts/26fonts/26-03-24-26-03-23-arrow.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 const FONT_FAMILY = 'ClockFont_Arrow';
-const LOOP_MS = 10000;
 const ANIMATION_DURATION_MS = 4200;
 const BASE_DELAY_S = 2.5;
 const STAGGER_S = 0.35;
@@ -113,7 +111,7 @@ const ExplodingClock =  () => {
   const fontConfigs = useMemo(() => [{ fontFamily: FONT_FAMILY, fontUrl }], []);
   useSuspenseFontLoader(fontConfigs);
 
-  const [{ chars, flights, loopKey }, setState] = useState(() => {
+  const [{ chars, flights, loopKey }] = useState(() => {
     const t = getTime();
     const cs = [...t.hh, ...t.mm, ...t.period];
     return {
@@ -122,9 +120,6 @@ const ExplodingClock =  () => {
       loopKey: 0,
     };
   });
-
-  const loopKeyRef = useRef(loopKey);
-  loopKeyRef.current = loopKey;
 
   return (
     <div
@@ -135,6 +130,7 @@ const ExplodingClock =  () => {
       <div className={styles.clock}>
         <div className={styles.digits}>
           {chars.map((char, i) => {
+            if (!flights[i]) return null;
             const delay = BASE_DELAY_S + (chars.length - 1 - i) * STAGGER_S;
             const color = DIGIT_COLORS[i % DIGIT_COLORS.length];
             return (
@@ -142,8 +138,8 @@ const ExplodingClock =  () => {
                 key={`${i}-${loopKey}`}
                 char={char}
                 delay={delay}
-                top={flights[i]!.top}
-                bottom={flights[i]!.bottom}
+                top={flights[i].top}
+                bottom={flights[i].bottom}
                 color={color}
               />
             );
