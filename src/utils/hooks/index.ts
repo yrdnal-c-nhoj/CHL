@@ -22,4 +22,5 @@ export {
   useMillisecondClock,
   useSecondClock, useSmoothClock
 } from './useSmoothClock';
+export { useVisibilitySchedule } from './useVisibilitySchedule';
 
