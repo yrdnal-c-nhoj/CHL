@@ -7,62 +7,38 @@ import styles from './Clock.module.css';
 
 export const assets: string[] = [tornadoVideo];
 
+const QUADRANT_TRANSFORMS = [
+  'var(--top-left-transform)',
+  'var(--top-right-transform)',
+  'var(--bottom-left-transform)',
+  'var(--bottom-right-transform)',
+] as const;
+
+const VideoTile: React.FC<{ transform: string }> = ({ transform }) => (
+  <video
+    className={styles.video}
+    style={{ '--quadrant-transform': transform } as React.CSSProperties}
+    autoPlay
+    loop
+    muted
+    playsInline
+    preload="auto"
+    aria-hidden="true"
+  >
+    <source src={tornadoVideo} type="video/webm" />
+  </video>
+);
+
 const ClockComponent = () => {
   const time = useSecondClock();
-
   const { hourAngle, minAngle, secAngle } = useClockAngles(time);
 
   return (
     <main className={styles.container}>
       <div className={styles.videoWrapper}>
-        <video
-          className={styles.video}
-          style={{ '--quadrant-transform': 'var(--top-left-transform)' } as React.CSSProperties}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-        >
-          <source src={tornadoVideo} type="video/webm" />
-        </video>
-        <video
-          className={styles.video}
-          style={{ '--quadrant-transform': 'var(--top-right-transform)' } as React.CSSProperties}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-        >
-          <source src={tornadoVideo} type="video/webm" />
-        </video>
-        <video
-          className={styles.video}
-          style={{ '--quadrant-transform': 'var(--bottom-left-transform)' } as React.CSSProperties}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-        >
-          <source src={tornadoVideo} type="video/webm" />
-        </video>
-        <video
-          className={styles.video}
-          style={{ '--quadrant-transform': 'var(--bottom-right-transform)' } as React.CSSProperties}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-        >
-          <source src={tornadoVideo} type="video/webm" />
-        </video>
+        {QUADRANT_TRANSFORMS.map((transform, index) => (
+          <VideoTile key={index} transform={transform} />
+        ))}
       </div>
 
       <time dateTime={time.toISOString()} className={styles.srOnly}>
