@@ -7,72 +7,9 @@ import { memo, useEffect, useRef } from 'react';
 import customFont from '@/assets/fonts/26fonts/26-08-27.ttf?url';
 import tileImage from '@/assets/images/26_images/26-08/26-08-27/1.webp?url';
 import seahorseVideo from '@/assets/images/26_images/26-08/26-08-27/2.webm';
+import styles from './Clock.module.css';
 
 export const assets = [seahorseVideo, tileImage];
-
-const containerStyle: React.CSSProperties = {
-  position: 'relative',
-  width: '100vw',
-  height: '100dvh',
-  overflow: 'hidden',
-  backgroundColor: '#2a293c',
-  contain: 'layout style paint',
-  isolation: 'isolate',
-};
-
-const tileBackgroundStyle: React.CSSProperties = {
-  position: 'absolute',
-  inset: 0,
-  backgroundImage: `url(${tileImage})`,
-  backgroundRepeat: 'repeat',
-  backgroundPosition: 'center',
-  backgroundSize: '200px 100px',
-  zIndex: -1,
-};
-
-const videoStyle: React.CSSProperties = {
-  position: 'absolute',
-  inset: 0,
-  width: '100%',
-  height: '100%',
-  objectFit: 'contain',
-  zIndex: 0,
-};
-
-const faceStyle: React.CSSProperties = {
-  position: 'absolute',
-  inset: 0,
-  paddingTop: '10vh',
-  color: '#D2D2B7CB',
-  display: 'flex',
-  alignItems: 'flex-start',
-  justifyContent: 'center',
-  zIndex: 10,
-  fontFamily: "'ClockFont', sans-serif",
-  textShadow: '0 1px 0px rgba(27, 24, 24, 0.94), 0 -1px 0 rgba(255, 255, 255, 0.96), 0 0 30px rgba(255,255,255,0.1)',
-  filter: 'contrast(1.2) brightness(1.1)',
-  opacity: 0.95,
-};
-
-const digitGroupStyle: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.05vmin',
-  position: 'relative',
-};
-
-const digitBoxStyle: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '8vh',
-  height: '12vh',
-  fontSize: '10vh',
-  flexShrink: 0,
-  textAlign: 'center',
-  textShadow: '0 0 10px rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.3)',
-  filter: 'contrast(1.3) brightness(1.2)',
-};
 
 const CenteredVideoBackground = memo(() => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -101,7 +38,7 @@ const CenteredVideoBackground = memo(() => {
   return (
     <video
       ref={videoRef}
-      style={videoStyle}
+      className={styles.video}
       muted
       loop
       playsInline
@@ -128,18 +65,22 @@ const DigitalClock = () => {
   const seconds = currentTime.getSeconds().toString().padStart(2, '0');
 
   return (
-    <main style={containerStyle}>
-      <div style={tileBackgroundStyle} aria-hidden="true" />
+    <main className={styles.container}>
+      <div
+        className={styles.tileBackground}
+        style={{ '--tile-image': `url(${tileImage})` } as React.CSSProperties}
+        aria-hidden="true"
+      />
       <CenteredVideoBackground />
 
-      <div style={faceStyle}>
-        <time dateTime={currentTime.toISOString()} style={digitGroupStyle}>
-          <span style={digitBoxStyle}>{hours[0]}</span>
-          <span style={digitBoxStyle}>{hours[1]}</span>
-          <span style={digitBoxStyle}>{minutes[0]}</span>
-          <span style={digitBoxStyle}>{minutes[1]}</span>
-          <span style={digitBoxStyle}>{seconds[0]}</span>
-          <span style={digitBoxStyle}>{seconds[1]}</span>
+      <div className={styles.face}>
+        <time dateTime={currentTime.toISOString()} className={styles.digitGroup}>
+          <span className={styles.digitBox}>{hours[0]}</span>
+          <span className={styles.digitBox}>{hours[1]}</span>
+          <span className={styles.digitBox}>{minutes[0]}</span>
+          <span className={styles.digitBox}>{minutes[1]}</span>
+          <span className={styles.digitBox}>{seconds[0]}</span>
+          <span className={styles.digitBox}>{seconds[1]}</span>
         </time>
       </div>
     </main>
