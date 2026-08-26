@@ -16,7 +16,8 @@ const ClockComponent = () => {
     <main className={styles.container}>
       <div className={styles.videoWrapper}>
         <video
-          className={`${styles.video} ${styles.videoFlipped} ${styles.videoBorder}`}
+          className={`${styles.video} ${styles.videoBorder}`}
+          style={{ '--quadrant-transform': 'var(--top-left-transform)' } as React.CSSProperties}
           autoPlay
           loop
           muted
@@ -27,7 +28,8 @@ const ClockComponent = () => {
           <source src={tornadoVideo} type="video/webm" />
         </video>
         <video
-          className={`${styles.video} ${styles.videoFlipped}`}
+          className={styles.video}
+          style={{ '--quadrant-transform': 'var(--top-right-transform)' } as React.CSSProperties}
           autoPlay
           loop
           muted
@@ -38,7 +40,8 @@ const ClockComponent = () => {
           <source src={tornadoVideo} type="video/webm" />
         </video>
         <video
-          className={`${styles.video} ${styles.videoRotated}`}
+          className={styles.video}
+          style={{ '--quadrant-transform': 'var(--bottom-left-transform)' } as React.CSSProperties}
           autoPlay
           loop
           muted
@@ -49,7 +52,8 @@ const ClockComponent = () => {
           <source src={tornadoVideo} type="video/webm" />
         </video>
         <video
-          className={`${styles.video} ${styles.videoRotated}`}
+          className={styles.video}
+          style={{ '--quadrant-transform': 'var(--bottom-right-transform)' } as React.CSSProperties}
           autoPlay
           loop
           muted
