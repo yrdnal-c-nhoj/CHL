@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import arrowImg from '@/assets/images/26_images/26-03/26-03-23/arrow.webp?url';
 import fontUrl from '@/assets/fonts/26fonts/26-03-24-26-03-23-arrow.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
