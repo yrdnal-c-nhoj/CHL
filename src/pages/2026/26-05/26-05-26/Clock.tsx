@@ -14,12 +14,12 @@ const CLOCK_CONFIG = {
     primary: '#0D3E9F56',
     shadow: 'drop-shadow(2px 2px 0px rgba(250, 249, 249, 0.8))',
   },
-};
+} as const;
 
 const HAND_DIMENSIONS = {
   hour: { width: '1.2vmin', height: '20vmin', zIndex: 3 },
   minute: { width: '0.8vmin', height: '32vmin', zIndex: 4 },
-};
+} as const;
 
 const BackgroundLayers = memo(() => (
   <video

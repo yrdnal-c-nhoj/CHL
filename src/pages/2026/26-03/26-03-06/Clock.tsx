@@ -85,7 +85,7 @@ const RocketGrid =  () => {
       </div>
     </div>
   );
-};
+}
 
 // --- STYLES ---
 
@@ -98,7 +98,7 @@ const containerStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-};
+}
 
 const gridWrapperStyle = {
   position: 'absolute',
@@ -111,13 +111,13 @@ const gridWrapperStyle = {
   // opacity: 0.8,
   // Using gap to keep them close without overlapping/clipping
   // gap: '10px'
-};
+}
 
 const rowStyle = {
   display: 'flex',
   flexDirection: 'row',
   // gap: '15px' // Space between rockets in a row
-};
+}
 
 const cellStyle = {
   width: '150px', // Increased from 100px for bigger rockets
@@ -126,7 +126,7 @@ const cellStyle = {
   alignItems: 'center',
   justifyContent: 'center',
   flexShrink: 0,
-};
+}
 
 const clockWrapperStyle = {
   position: 'relative',
@@ -134,7 +134,7 @@ const clockWrapperStyle = {
   height: '600px', // Increased from 450px
   zIndex: 10,
   filter: 'drop-shadow(0 0 40px rgb(0, 0, 0))',
-};
+}
 
 const handStyle = {
   position: 'absolute',
@@ -143,6 +143,6 @@ const handStyle = {
   transformOrigin: 'bottom center',
   zIndex: 15,
   willChange: 'transform',
-};
+}
 
 export default RocketGrid;

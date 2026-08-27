@@ -106,6 +106,6 @@ const styles = {
     opacity: 0.3,
     transformOrigin: 'center center',
   },
-};
+} as const;
 
 export default Clock;

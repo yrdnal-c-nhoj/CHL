@@ -179,7 +179,7 @@ const FaceCardClock =  () => {
       </div>
     </main>
   );
-};
+}
 
 const MemoizedFaceCardClock = memo(FaceCardClock);
 MemoizedFaceCardClock.displayName = 'Clock_25_06_08';

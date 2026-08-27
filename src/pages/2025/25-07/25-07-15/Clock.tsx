@@ -134,7 +134,7 @@ const DIGITS = {
     'P      ',
     '       ',
   ],
-};
+}
 
 const makeGroup = (str) => {
   const rows = Array(8).fill('');
@@ -233,6 +233,6 @@ const AsciiClock =  () => {
       ))}
     </div>
   );
-};
+}
 
 export default AsciiClock;

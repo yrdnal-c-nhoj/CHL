@@ -182,6 +182,6 @@ const InvertedClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default InvertedClock;

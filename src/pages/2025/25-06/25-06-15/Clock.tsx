@@ -75,6 +75,6 @@ const styles = {
     textShadow:
       'rgba(236, 15, 15, 0.85) 0.1rem -0.1rem 0.5rem, rgba(236, 15, 15, 0.85) -0.1rem 0.1rem 0.5rem, rgba(255,255,255,0.75) 0.05rem -0.05rem 0rem',
   },
-};
+} as const;
 
 export default StitchesClock;

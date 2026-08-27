@@ -12,7 +12,7 @@ const handColors = {
   second: '#F39191B3',
   center: '#F39191B3',
   centerBorder: '#F39191B3',
-};
+}
 
 const Clock =  () => {
   const time = useMillisecondClock(100);
@@ -88,7 +88,7 @@ const Clock =  () => {
       </div>
     </main>
   );
-};
+}
 
 const Hand = memo(({ type, rotation }) => {
   const isSecond = type === 'second';
@@ -167,7 +167,7 @@ const styles = {
     transform: 'translate(-50%, -50%)',
     zIndex: 20,
   },
-};
+}
 
 const MemoizedClock = memo(Clock);
 MemoizedClock.displayName = 'Clock_26_01_15';

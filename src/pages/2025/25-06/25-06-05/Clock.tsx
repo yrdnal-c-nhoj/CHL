@@ -133,6 +133,6 @@ const TreehouseClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default TreehouseClock;

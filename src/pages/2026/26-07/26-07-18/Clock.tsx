@@ -11,7 +11,7 @@ const CONFIG = {
   glowColor: 'rgba(255, 165, 0, 0.7)',
   bgColor: '#484F48', // Unified background control
   fontFamily: 'ClockFont_26-07-18',
-};
+} as const;
 
 const styles: Record<string, React.CSSProperties> = {
   container: {

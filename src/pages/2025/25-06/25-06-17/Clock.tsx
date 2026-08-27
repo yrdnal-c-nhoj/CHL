@@ -207,6 +207,6 @@ const styles = {
     whiteSpace: 'nowrap',
     transition: 'transform 0.4s linear',
   },
-};
+} as const;
 
 export default BackslantClock;

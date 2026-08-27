@@ -17,7 +17,7 @@ const CLOCK_CONFIG = {
     secondHand: 'linear-gradient(to top, #4B4C4F, #4F4F52)',
     centerDot: '#565856',
   },
-};
+} as const;
 
 // Interface for clock hand dimensions
 interface HandDimensions {
@@ -218,6 +218,6 @@ const styles = {
     transform: 'translate(-50%, -50%)',
     zIndex: 10,
   },
-};
+} as const;
 
 export default AnalogClock;

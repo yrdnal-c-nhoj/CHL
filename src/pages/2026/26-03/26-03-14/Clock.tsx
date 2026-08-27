@@ -64,6 +64,6 @@ const styles = {
     opacity: 0.8,
     filter: 'blur(0.6px)',
   },
-};
+} as const;
 
 export default Clock;

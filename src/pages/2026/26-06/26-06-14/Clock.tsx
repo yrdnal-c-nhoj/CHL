@@ -14,7 +14,7 @@ const CLOCK_CONFIG = {
     decayHighlight: 'rgba(255, 149, 0, 0.77)', // For subtle highlights of decay
     decayShadow: 'rgb(0, 0, 0)', // For subtle shadows of decay
   },
-};
+} as const;
 
 const FONT_CONFIGS: FontConfig[] = [
   {
@@ -171,6 +171,6 @@ const styles = {
     height: '100vmin',
     zIndex: 7,
   },
-};
+} as const;
 
 export default AnalogClock;

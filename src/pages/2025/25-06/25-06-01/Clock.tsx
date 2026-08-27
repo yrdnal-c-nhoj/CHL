@@ -131,7 +131,7 @@ const styles = {
     transformOrigin: 'center center',
     zIndex: 5,
   },
-};
+} as const;
 
 export default function Clock() {
   // Standardized font loading with font-display: swap to avoid FOUC

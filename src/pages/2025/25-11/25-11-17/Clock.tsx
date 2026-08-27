@@ -206,4 +206,4 @@ const localStyles = {
     whiteSpace: 'nowrap',
     textShadow: '-1px -1px 0 #040404FF, 1px 1px 0 #F7F8BFFF',
   },
-};
+} as const;

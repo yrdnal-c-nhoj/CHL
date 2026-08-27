@@ -18,7 +18,7 @@ const outerContainerStyle = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-};
+} as const;
 
 const clockContainerStyle = {
   width: '85vmin',
@@ -26,7 +26,7 @@ const clockContainerStyle = {
   borderRadius: '50%',
   position: 'relative',
   zIndex: 5,
-};
+} as const;
 
 const handStyle = (deg, width, height) => ({
   position: 'absolute',

@@ -108,7 +108,7 @@ const BlueBrickClock = () => {
       </div>
     </main>
   );
-};
+}
 
 const MemoizedBlueBrickClock = memo(BlueBrickClock);
 MemoizedBlueBrickClock.displayName = 'Clock_25_04_14';

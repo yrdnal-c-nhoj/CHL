@@ -119,6 +119,6 @@ const BarGraphClock = () => {
       </div>
     </div>
   );
-};
+}
 
 export default BarGraphClock;

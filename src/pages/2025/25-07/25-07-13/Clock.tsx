@@ -128,6 +128,6 @@ const RorschachClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default RorschachClock;

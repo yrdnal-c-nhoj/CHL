@@ -21,7 +21,7 @@ const COLORS = {
   hour: '#FFFFFF',
   minute: '#FFFFFF',
   period: '#FFFFFF',
-};
+} as const;
 
 const CONFIG = {
   SPAWN_INTERVAL_MS: 1800,
@@ -31,7 +31,7 @@ const CONFIG = {
   MAX_Z: 1.5,
   BASE_FONT_SIZE_FACTOR: 0.12,
   MIN_FONT_SIZE: 70,
-};
+} as const;
 
 export default function CenteredLightClock() {
   const canvasRef = useRef<HTMLCanvasElement>(null);

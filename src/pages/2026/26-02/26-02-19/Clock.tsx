@@ -251,7 +251,7 @@ const handBase = {
   transformOrigin: 'bottom center',
   borderRadius: '1vh',
   zIndex: 10,
-};
+} as const;
 
 const centerDot = {
   width: '2vh',
@@ -259,6 +259,6 @@ const centerDot = {
   backgroundColor: '#4F594F',
   borderRadius: '50%',
   zIndex: 15,
-};
+} as const;
 
 export default ImageDisplay;

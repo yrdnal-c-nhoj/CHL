@@ -25,7 +25,7 @@ interface TimeDigits {
 const CONFIG = {
   use24Hour: false,
   showSeconds: true,
-};
+}
 
 const DigitalClockTemplate =  () => {
   const time = useSecondClock();
@@ -154,14 +154,14 @@ const DigitalClockTemplate =  () => {
       </div>
     </div>
   );
-};
+}
 
 const clockWrapperStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   padding: '1.5rem',
-};
+}
 
 const digitBoxStyle = {
   display: 'flex',
@@ -171,6 +171,6 @@ const digitBoxStyle = {
   height: '1.1em',
   fontSize: 'clamp(4rem, 16vw, 10rem)',
   textAlign: 'center',
-};
+}
 
 export default DigitalClockTemplate;

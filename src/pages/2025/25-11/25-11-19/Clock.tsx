@@ -108,4 +108,4 @@ const styles = {
     textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
     transition: 'opacity 300ms ease-in-out',
   },
-};
+} as const;

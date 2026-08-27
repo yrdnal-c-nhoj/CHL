@@ -220,6 +220,6 @@ const PrimaryColorClock =  () => {
       </div>
     </>
   );
-};
+}
 
 export default PrimaryColorClock;

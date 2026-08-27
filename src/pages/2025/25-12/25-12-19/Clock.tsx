@@ -191,7 +191,7 @@ const HourglassTimer =  () => {
       </div>
     </main>
   );
-};
+}
 
 const MemoizedHourglassTimer = memo(HourglassTimer);
 MemoizedHourglassTimer.displayName = 'Clock_25_12_19';

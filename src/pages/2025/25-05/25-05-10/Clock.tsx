@@ -237,6 +237,6 @@ const styles = {
     userSelect: 'none',
     whiteSpace: 'nowrap',
   },
-};
+} as const;
 
 export default NumberTossClock;

@@ -241,6 +241,6 @@ const styles = {
   second: {
     background: 'rgb(250, 7, 3)',
   },
-};
+} as const;
 
 export default SolarSystemClock;

@@ -13,7 +13,7 @@ const STYLE_CONFIG = {
   brassColor: '#E8D183',
   accentColor: '#916567',
   glowColor: 'rgb(255, 253, 208)',
-};
+}
 
 const TrocClock =  () => {
   const fontConfigs = useMemo(
@@ -203,6 +203,6 @@ const TrocClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default TrocClock;

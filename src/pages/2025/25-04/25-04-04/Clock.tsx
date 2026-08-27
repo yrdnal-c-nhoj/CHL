@@ -102,7 +102,7 @@ const HeartbeatClock = () => {
       </div>
     </main>
   );
-};
+}
 
 const MemoizedHeartbeatClock = memo(HeartbeatClock);
 MemoizedHeartbeatClock.displayName = 'Clock_25_04_04';

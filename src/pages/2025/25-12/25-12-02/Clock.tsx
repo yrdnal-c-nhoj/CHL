@@ -182,6 +182,6 @@ const RotatingBackground =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default RotatingBackground;

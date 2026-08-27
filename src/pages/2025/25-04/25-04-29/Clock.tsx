@@ -200,6 +200,6 @@ const FireworksClock: React.FC<FireworksClockProps> = () => {
       `}</style>
     </div>
   );
-};
+}
 
 export default FireworksClock;

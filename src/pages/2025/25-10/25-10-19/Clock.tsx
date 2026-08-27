@@ -138,7 +138,7 @@ const DIGITS = {
             : 0,
         ),
     ),
-};
+} as const;
 
 export default function QuadrantClock() {
   const [time, setTime] = useState(getCurrentTime());

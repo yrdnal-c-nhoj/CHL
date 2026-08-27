@@ -129,6 +129,6 @@ const StretchedClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default StretchedClock;

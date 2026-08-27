@@ -217,6 +217,6 @@ const IndecisiveClock =  () => {
       </svg>
     </div>
   );
-};
+}
 
 export default IndecisiveClock;

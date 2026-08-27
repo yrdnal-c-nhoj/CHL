@@ -91,6 +91,6 @@ const HorizontalProportionalGradientClock =  () => {
       </div>
     </>
   );
-};
+}
 
 export default HorizontalProportionalGradientClock;

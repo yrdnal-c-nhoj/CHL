@@ -102,6 +102,6 @@ const styles = {
     justifyContent: 'center',
     willChange: 'transform', // Optimization for animations
   },
-};
+} as const;
 
 export default DiscClock;

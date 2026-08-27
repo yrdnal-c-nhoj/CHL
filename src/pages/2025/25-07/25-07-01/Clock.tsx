@@ -74,6 +74,6 @@ const CinemaClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default CinemaClock;

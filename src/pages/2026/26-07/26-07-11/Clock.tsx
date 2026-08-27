@@ -22,7 +22,7 @@ const MOTE_CONFIG = {
   SHADOW_BLUR: 4,
   SHADOW_COLOR: 'rgba(241, 219, 186, 0.3)',
   FILL_STYLE: 'rgba(226, 179, 110, %ALPHA%)',
-};
+} as const;
 
 // --- Mote Class Definition ---
 // Moved outside the component for better code organization and to prevent re-declaration.

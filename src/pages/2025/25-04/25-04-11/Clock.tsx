@@ -165,4 +165,4 @@ const styles = {
     height: '5rem',
     filter: 'contrast(170%) brightness(200%)',
   },
-};
+} as const;

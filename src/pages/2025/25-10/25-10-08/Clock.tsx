@@ -26,7 +26,7 @@ const digitMap = {
   7: digit7,
   8: digit8,
   9: digit9,
-};
+} as const;
 
 const getAllDigits = (t) => {
   const hours = String(t.getHours() % 12 || 12).padStart(2, '0');

@@ -258,6 +258,6 @@ const RotatingAnalemmaClock =  () => {
       <div style={{ height: '5dvh' }} />
     </div>
   );
-};
+}
 
 export default RotatingAnalemmaClock;

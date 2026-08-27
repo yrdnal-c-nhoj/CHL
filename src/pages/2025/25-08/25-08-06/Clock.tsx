@@ -111,6 +111,6 @@ const DigitalClock =  () => {
       </div>
     </>
   );
-};
+}
 
 export default DigitalClock;

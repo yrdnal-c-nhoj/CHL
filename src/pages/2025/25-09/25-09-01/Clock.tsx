@@ -16,7 +16,7 @@ const chineseDigits = {
   7: '七',
   8: '八',
   9: '九',
-};
+}
 
 const ChinaClock =  () => {
   const time = useMillisecondClock();
@@ -143,6 +143,6 @@ const ChinaClock =  () => {
       />
     </div>
   );
-};
+}
 
 export default ChinaClock;

@@ -149,7 +149,7 @@ const Clock =  () => {
       </div>
     </main>
   );
-};
+}
 
 const MemoizedClock = memo(Clock);
 MemoizedClock.displayName = 'Clock_26_04_26';

@@ -107,7 +107,7 @@ const TallClock = () => {
       <div style={{ ...styles.overlay, ...styles.overlay3 }} />
     </div>
   );
-};
+}
 
 // Style interfaces - simplified to avoid CSSProperties conflicts
 type ContainerStyle = React.CSSProperties;

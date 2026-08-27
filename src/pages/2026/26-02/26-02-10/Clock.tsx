@@ -11,7 +11,7 @@ const CLOCK_CONFIG = {
   COLORS: {
     silverText: '#58D5C0',
   },
-};
+} as const;
 
 const DigitalClock =  () => {
   const now = useSecondClock();
@@ -94,6 +94,6 @@ const styles = {
     letterSpacing: '0.05em',
     lineHeight: 1,
   },
-};
+} as const;
 
 export default DigitalClock;
