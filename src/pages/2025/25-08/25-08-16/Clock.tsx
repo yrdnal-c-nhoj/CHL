@@ -201,6 +201,6 @@ const MirroredBackground =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default MirroredBackground;

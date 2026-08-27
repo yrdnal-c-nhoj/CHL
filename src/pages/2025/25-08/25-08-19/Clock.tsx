@@ -144,6 +144,6 @@ const Pendulum =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default Pendulum;

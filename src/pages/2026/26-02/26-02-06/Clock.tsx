@@ -103,6 +103,6 @@ const Analog260205Clock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default Analog260205Clock;

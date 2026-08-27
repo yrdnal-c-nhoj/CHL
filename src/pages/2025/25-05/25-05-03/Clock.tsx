@@ -175,6 +175,6 @@ const FlyingPetalsClock: React.FC<FlyingPetalsClockProps> = () => {
       </div>
     </div>
   );
-};
+}
 
 export default FlyingPetalsClock;

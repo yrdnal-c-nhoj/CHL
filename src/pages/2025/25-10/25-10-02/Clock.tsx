@@ -14,7 +14,7 @@ const digitMap = {
   7: '\u{1D366}',
   8: '\u{1D367}',
   9: '\u{1D369}',
-};
+}
 
 const toCountingRod = (number) =>
   String(number)
@@ -152,6 +152,6 @@ const DigitalClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default DigitalClock;

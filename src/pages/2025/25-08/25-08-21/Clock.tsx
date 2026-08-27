@@ -166,6 +166,6 @@ const NumberLineClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default NumberLineClock;

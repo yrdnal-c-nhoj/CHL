@@ -99,6 +99,6 @@ const OrtogonalClock =  () => {
       />
     </div>
   );
-};
+}
 
 export default OrtogonalClock;

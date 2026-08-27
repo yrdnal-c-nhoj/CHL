@@ -212,7 +212,7 @@ const redOverlayStyle = {
   backgroundColor: 'rgba(249, 9, 9, 0.7)',
   mixBlendMode: 'multiply', // Creates a professional "printed" look
   zIndex: 1,
-};
+} as const;
 
 const digitBox: React.CSSProperties = {
   color: 'black',

@@ -252,6 +252,6 @@ const MorseClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default MorseClock;

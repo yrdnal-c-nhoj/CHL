@@ -32,7 +32,7 @@ const RAIN_CONSTANTS = {
   OPACITY_VARIANCE: 0.4,
   STROKE_WIDTH: 1.2,
   SHADOW_WIDTH: 3.5,
-};
+}
 
 const ROMAN_NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 
@@ -270,7 +270,7 @@ const AnalogClock: FC = () => {
       </div>
     </main>
   );
-};
+}
 
 const MemoizedAnalogClock = memo(AnalogClock);
 MemoizedAnalogClock.displayName = 'Clock_26_07_10';

@@ -63,7 +63,7 @@ const digitGlobs = {
     '../../../../assets/images/26_images/26-01/26-01-04/digits/9/*.{png,jpg,jpeg,gif,webp}',
     { eager: true, query: '?url', import: 'default' },
   ),
-};
+} as const;
 
 /* =========================
    LOAD FOLDERS
@@ -246,7 +246,7 @@ const styles = {
     background: '#000',
     color: '#fff',
   },
-};
+} as const;
 
 const css = `
 

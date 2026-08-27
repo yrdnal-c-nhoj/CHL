@@ -33,7 +33,7 @@ const CONFIG = {
     { text: '10', deg: 300 },
     { text: '11', deg: 330 },
   ],
-};
+} as const;
 
 // --- HOOKS ---
 function useTime() {

@@ -222,7 +222,7 @@ const styles = {
     fontSize: '4vh',
     lineHeight: '4vh',
   },
-};
+} as const;
 
 // Global CSS classes injected into the page for animation
 const globalCSS = document.createElement('style');

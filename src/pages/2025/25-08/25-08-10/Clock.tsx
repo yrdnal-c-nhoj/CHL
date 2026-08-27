@@ -25,7 +25,7 @@ const digitImages = {
   7: digit7,
   8: digit8,
   9: digit9,
-};
+} as const;
 
 const DigitalClock =  () => {
   const [time, setTime] = useState(getTimeParts());

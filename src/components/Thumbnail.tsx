@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 interface ThumbnailProps {
   date: string;
   title?: string;
-  className?: string;
+  className?: string | undefined;
   style?: React.CSSProperties;
 }
 

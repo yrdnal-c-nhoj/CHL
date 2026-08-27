@@ -1,7 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useId } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 
-const DigitalClock =  () => {
+const injectedStyles = new Set<string>();
+
+function useKeyframes(name: string, frames: string): string {
+  const id = useId();
+  const keyframeName = `${name}-${id.replace(/:/g, '')}`;
+
+  useEffect(() => {
+    if (injectedStyles.has(keyframeName)) return;
+    injectedStyles.add(keyframeName);
+
+    const style = document.createElement('style');
+    style.textContent = `@keyframes ${keyframeName} ${frames}`;
+    style.setAttribute('data-keyframe', keyframeName);
+    document.head.appendChild(style);
+
+    return () => {
+      injectedStyles.delete(keyframeName);
+      style.remove();
+    };
+  }, [keyframeName, frames]);
+
+  return keyframeName;
+}
+
+function useGlobalStyles(css: string, id: string): void {
+  useEffect(() => {
+    if (injectedStyles.has(id)) return;
+    injectedStyles.add(id);
+
+    const style = document.createElement('style');
+    style.textContent = css;
+    style.setAttribute('data-global', id);
+    document.head.appendChild(style);
+
+    return () => {
+      injectedStyles.delete(id);
+      style.remove();
+    };
+  }, [css, id]);
+}
+
+const DigitalClock = () => {
   const time = useMillisecondClock();
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -135,7 +176,7 @@ const DigitalClock =  () => {
     );
   }
 
-  const formatTime = (date) => {
+  const formatTime = (date: Date) => {
     let hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
@@ -321,6 +362,6 @@ const DigitalClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default DigitalClock;

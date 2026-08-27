@@ -11,7 +11,7 @@ export const assets = [font, backgroundImage];
 const fontConfig = {
   fontFamily: 'CustomFont',
   fontUrl: font,
-};
+} as const;
 
 const _clockSpacingVw = 15; // slightly less than font-size to bring them closer
 

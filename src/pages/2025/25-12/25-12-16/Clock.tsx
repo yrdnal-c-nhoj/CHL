@@ -186,6 +186,6 @@ const QuadClock =  () => {
       />
     </div>
   );
-};
+}
 
 export default QuadClock;

@@ -260,7 +260,7 @@ const VenusClock =  () => {
       </div>
     </main>
   );
-};
+}
 
 const MemoizedVenusClock = memo(VenusClock);
 MemoizedVenusClock.displayName = 'Clock_25_10_16';

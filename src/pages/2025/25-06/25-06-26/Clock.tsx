@@ -143,6 +143,6 @@ const CosmicWheelClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default CosmicWheelClock;

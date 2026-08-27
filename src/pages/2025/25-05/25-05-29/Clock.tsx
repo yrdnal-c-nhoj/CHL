@@ -118,7 +118,7 @@ const Clock =  () => {
       </div>
     </main>
   );
-};
+}
 
 // 5. Memoize component and add display name for compliance
 const MemoizedClock = memo(Clock);

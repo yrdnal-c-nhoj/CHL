@@ -102,6 +102,6 @@ const DynamicClockComponent =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default DynamicClockComponent;

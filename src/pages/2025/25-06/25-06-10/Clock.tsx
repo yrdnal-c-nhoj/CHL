@@ -76,6 +76,6 @@ const ShapesClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default ShapesClock;

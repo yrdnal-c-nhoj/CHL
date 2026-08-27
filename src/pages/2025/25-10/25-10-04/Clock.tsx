@@ -154,6 +154,6 @@ const ClockVideoBackground =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default ClockVideoBackground;

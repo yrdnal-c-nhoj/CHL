@@ -623,6 +623,6 @@ const WaterDropletsClock =  () => {
       aria-label="Water droplets clock"
     />
   );
-};
+}
 
 export default WaterDropletsClock;

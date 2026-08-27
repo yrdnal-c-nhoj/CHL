@@ -84,6 +84,6 @@ const DigitalClock =  () => {
       <Layer value={hours} size="25vh" zIndex={3} opacity={1} />
     </div>
   );
-};
+}
 
 export default DigitalClock;

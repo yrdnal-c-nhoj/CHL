@@ -267,6 +267,6 @@ const SlowLightningClock: React.FC<SlowLightningClockProps> = () => {
       <div ref={flashBlackRef} style={styles.flashBlack} />
     </>
   );
-};
+}
 
 export default SlowLightningClock;

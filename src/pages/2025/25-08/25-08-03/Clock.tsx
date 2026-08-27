@@ -237,6 +237,6 @@ const OrnateClock =  () => {
       <div style={styles.overlay2} />
     </div>
   );
-};
+}
 
 export default OrnateClock;

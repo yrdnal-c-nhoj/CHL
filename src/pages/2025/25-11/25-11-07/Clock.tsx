@@ -245,7 +245,7 @@ const PanicAnalogClock =  () => {
       />
     </main>
   );
-};
+}
 
 const MemoizedPanicAnalogClock = memo(PanicAnalogClock);
 MemoizedPanicAnalogClock.displayName = 'Clock_25_11_07';

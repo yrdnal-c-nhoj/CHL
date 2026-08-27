@@ -17,7 +17,7 @@ const CONFIG = {
   clockPadding: '0.1rem 0.1rem',
   symbolWidth: '0.6rem',
   gridGap: '1rem',
-};
+} as const;
 
 const Digit = memo(({ char }) => {
   const style = {

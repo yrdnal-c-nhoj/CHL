@@ -43,7 +43,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
   },
-};
+} as const;
 
 const DigitalClock =  () => {
   const fontConfigs = [

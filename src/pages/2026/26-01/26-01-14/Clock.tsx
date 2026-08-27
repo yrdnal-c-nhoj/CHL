@@ -127,7 +127,7 @@ const KurosawaClock = () => {
       </div>
     </main>
   );
-};
+}
 
 const MemoizedKurosawaClock = memo(KurosawaClock);
 MemoizedKurosawaClock.displayName = 'Clock_26_01_14';

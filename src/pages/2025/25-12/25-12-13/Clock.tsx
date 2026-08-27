@@ -89,7 +89,7 @@ const containerStyle = {
   backgroundColor: '#000',
   overflow: 'hidden',
   position: 'relative',
-};
+} as const;
 
 const rowStyle = {
   display: 'flex',
@@ -99,7 +99,7 @@ const rowStyle = {
   alignItems: 'center',
   width: '90%',
   gap: '1rem',
-};
+} as const;
 
 const baseDigitStyle = {
   display: 'inline-block',
@@ -112,7 +112,7 @@ const baseDigitStyle = {
     -0.2dvh -0.2dvh 0.4dvh rgba(50, 205, 50, 0.72)
   `,
   willChange: 'transform',
-};
+} as const;
 
 const MemoizedRococoClock = memo(RococoClock);
 MemoizedRococoClock.displayName = 'Clock_25_12_13';

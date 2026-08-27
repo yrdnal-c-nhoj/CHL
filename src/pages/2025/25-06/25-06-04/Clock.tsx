@@ -163,6 +163,6 @@ const CoffeeClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default CoffeeClock;

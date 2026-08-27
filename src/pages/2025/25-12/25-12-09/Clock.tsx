@@ -19,7 +19,7 @@ const digitBoxStyle = {
   flexShrink: 1,
   minWidth: 0,
   overflow: 'hidden',
-};
+} as const;
 
 export default function DigitalClock() {
   const time = useMillisecondClock();

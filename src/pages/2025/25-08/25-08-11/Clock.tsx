@@ -313,6 +313,6 @@ const SwirlingImages =  () => {
       <style>{generateKeyframes()}</style>
     </div>
   );
-};
+}
 
 export default SwirlingImages;

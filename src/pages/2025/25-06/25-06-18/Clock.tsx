@@ -73,6 +73,6 @@ const CistercianClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default CistercianClock;

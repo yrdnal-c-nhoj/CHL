@@ -121,6 +121,6 @@ const styles = {
     animation: 'flicker 0.3s infinite alternate',
     zIndex: 1,
   },
-};
+} as const;
 
 export default HospitalClock;

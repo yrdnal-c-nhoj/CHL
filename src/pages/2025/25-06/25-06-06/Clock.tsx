@@ -195,6 +195,6 @@ const styles = {
     position: 'relative',
     fontFamily: "'rrrr', sans-serif",
   },
-};
+} as const;
 
 export default RollingClock;

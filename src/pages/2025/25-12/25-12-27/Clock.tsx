@@ -101,6 +101,6 @@ const ConcentricClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default ConcentricClock;

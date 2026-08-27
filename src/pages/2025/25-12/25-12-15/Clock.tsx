@@ -98,4 +98,4 @@ const styles = {
     lineHeight: 1,
     flexShrink: 0,
   },
-};
+} as const;

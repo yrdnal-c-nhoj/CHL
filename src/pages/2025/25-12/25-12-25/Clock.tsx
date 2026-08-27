@@ -13,7 +13,7 @@ const COLORS = {
   border: '#e6e6e6',
   borderDashed: '#635354',
   barcode: '#000',
-};
+} as const;
 
 // Top 200 most popular airports in the world
 const TOP_AIRPORTS = [
@@ -669,7 +669,7 @@ const styles = {
       #000 90%, #000 93%, #fff 93%, #fff 96%,
       #000 96%, #000 98%, #fff 98%, #fff 100%)`,
   },
-};
+} as const;
 
 // Sub-components
 const InfoField = ({ label, value, style }) => (

@@ -10,7 +10,7 @@ const COLORS = {
   secondHand: '#F1E206',
   mainHands: '#1E293B',
   border: '#330202',
-};
+} as const;
 
 const getJumpOvershoot = (f: number) => (f < 0.2 ? f * 10 : f < 0.5 ? 2 : 0);
 const getSlowWiggle = (f: number) => Math.sin(f * Math.PI * 2) * 12;

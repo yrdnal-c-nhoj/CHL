@@ -270,6 +270,6 @@ const BlobClock =  () => {
       />
     </div>
   );
-};
+}
 
 export default BlobClock;

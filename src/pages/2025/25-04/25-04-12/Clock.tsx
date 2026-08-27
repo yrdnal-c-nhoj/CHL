@@ -21,7 +21,7 @@ const digitFontSizes = {
   7: '21vh',
   8: '17vh',
   9: '20vh',
-};
+}
 
 const mediaQueryFontSizes = {
   0: '33vh',
@@ -34,7 +34,7 @@ const mediaQueryFontSizes = {
   7: '26vh',
   8: '22vh',
   9: '25vh',
-};
+}
 
 // Digit font size interfaces
 interface DigitFontSizes {
@@ -215,6 +215,6 @@ const AngFontClock = () => {
       </style>
     </div>
   );
-};
+}
 
 export default AngFontClock;

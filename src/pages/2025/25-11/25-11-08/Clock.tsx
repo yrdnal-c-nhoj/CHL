@@ -147,6 +147,6 @@ const Clock: React.FC<ClockProps> = ({
       {renderTimerBoxed(elapsedMs)}
     </div>
   );
-};
+}
 
 export default Clock;

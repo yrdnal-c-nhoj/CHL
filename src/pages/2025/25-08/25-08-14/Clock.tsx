@@ -255,6 +255,6 @@ const AnalogClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default AnalogClock;

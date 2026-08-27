@@ -10,7 +10,7 @@ import backgroundImage from '@/assets/images/26_images/26-02/26-02-04/tran.jpg';
 
 const CONFIG = {
   use24Hour: false,
-};
+} as const;
 
 interface TimeFormat {
   hh: string;

@@ -187,6 +187,6 @@ const styles = {
     zIndex: 7,
     pointerEvents: 'none',
   },
-};
+} as const;
 
 export default HummingbirdClock;

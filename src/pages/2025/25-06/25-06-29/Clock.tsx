@@ -107,6 +107,6 @@ const StretchClock =  () => {
       `}</style>
     </div>
   );
-};
+}
 
 export default StretchClock;

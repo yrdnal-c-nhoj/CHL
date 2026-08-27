@@ -76,7 +76,7 @@ const ClockComponent =  () => {
       </div>
     </main>
   );
-};
+}
 
 const MemoizedClock = React.memo(ClockComponent);
 MemoizedClock.displayName = 'Clock_26_01_10';

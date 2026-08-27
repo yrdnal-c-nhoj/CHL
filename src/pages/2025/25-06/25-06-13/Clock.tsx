@@ -175,7 +175,7 @@ const CloudyNightClock =  () => {
       <div style={cloudStyle} className={styles.cloudSweep} />
     </main>
   );
-};
+}
 
 const MemoizedCloudyNightClock = memo(CloudyNightClock);
 MemoizedCloudyNightClock.displayName = 'Clock_25_06_13';

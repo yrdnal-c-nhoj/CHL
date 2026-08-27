@@ -198,6 +198,6 @@ const ErasingClock =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default ErasingClock;

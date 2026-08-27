@@ -14,7 +14,7 @@ const COLORS = {
   clockBorder: '#0ff',
   centerDot: '#ff00ff',
   centerDotGradient: '#800080',
-};
+} as const;
 
 const SIZES = {
   clock: 'clamp(30vw, 50vh, 80vh)',
@@ -25,7 +25,7 @@ const SIZES = {
   hourTick: { width: '0.5rem', height: '2rem' },
   minuteTick: { width: '0.3rem', height: '1rem' },
   number: { width: '2rem', height: '2rem', fontSize: '1.9rem' },
-};
+} as const;
 
 const NeonClock =  () => {
   const time = useSmoothClock();

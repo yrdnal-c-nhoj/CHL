@@ -159,6 +159,6 @@ const CheetahClock: React.FC<CheetahClockProps> = () => {
       </div>
     </div>
   );
-};
+}
 
 export default CheetahClock;

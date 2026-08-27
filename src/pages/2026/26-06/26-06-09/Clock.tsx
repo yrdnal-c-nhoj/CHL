@@ -176,7 +176,7 @@ const NightSky =  () => {
       </time>
     </main>
   );
-};
+}
 
 const MemoizedNightSky = memo(NightSky);
 MemoizedNightSky.displayName = 'Clock_26_06_09';

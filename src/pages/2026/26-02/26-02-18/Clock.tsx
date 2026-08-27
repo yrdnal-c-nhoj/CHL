@@ -110,6 +110,6 @@ const ImageDisplay =  () => {
       </div>
     </div>
   );
-};
+}
 
 export default ImageDisplay;

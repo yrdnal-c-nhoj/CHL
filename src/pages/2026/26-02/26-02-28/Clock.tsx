@@ -143,6 +143,6 @@ const styles = {
     width: '100%',
     textAlign: 'center',
   },
-};
+} as const;
 
 export default ImageGrid;

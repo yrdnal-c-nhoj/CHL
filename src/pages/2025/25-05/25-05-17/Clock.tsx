@@ -134,6 +134,6 @@ const styles = {
     right: '50%',
     zIndex: 10,
   },
-};
+} as const;
 
 export default PrimaryClock;

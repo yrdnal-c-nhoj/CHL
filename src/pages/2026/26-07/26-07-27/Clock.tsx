@@ -55,7 +55,7 @@ export const assets = [
 const BACKGROUND_SETTINGS = {
   contrast: '120%', // Example: Slightly higher contrast for the background
   brightness: '80%', // Example: Slightly darker background
-};
+} as const;
 
 // Base Digit Size (in vmin)
 const BASE_DIGIT_SIZE_VMIN = 16;

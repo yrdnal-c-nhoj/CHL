@@ -14,7 +14,7 @@ const CONFIG = {
   MAX_DYNAMIC_IMAGES: 10,
   COLLAGE_COUNT: 40,
   FONT_FAMILY: 'ClockCustom',
-};
+} as const;
 
 import img1 from '@/assets/images/26_images/26-02/26-02-21/123.webp';
 import img2 from '@/assets/images/26_images/26-02/26-02-21/1231.gif';

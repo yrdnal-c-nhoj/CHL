@@ -80,7 +80,7 @@ const numberSizes = {
   num10: { width: '19.5vh', height: '19vh' },
   num11: { width: '15.5vh', height: '13.5vh' },
   num12: { width: '19.5vh', height: '15.5vh' },
-};
+}
 
 const textRotationDegrees = Array.from({ length: 12 }, (_, i) => i * 30);
 
@@ -278,6 +278,6 @@ const AnimatedClock =  () => {
       </div>
     </>
   );
-};
+}
 
 export default AnimatedClock;
