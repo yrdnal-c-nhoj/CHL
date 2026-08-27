@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import water from '../../../../assets/images/26_images/26-08/26-08-28/water.webp';
 
 const TWO_PI = Math.PI * 2;
 const NUM_NODES = 19;
@@ -134,6 +135,21 @@ export default function SeaWavesTextClock() {
         position: 'relative',
       }}
     >
+      <img
+        src={water}
+        alt=""
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          display: 'block',
+          zIndex: 0,
+        }}
+      />
+
       <canvas
         ref={canvasRef}
         style={{
@@ -144,6 +160,7 @@ export default function SeaWavesTextClock() {
           height: '100%',
           display: 'block',
           filter: "url('#shadowed-goo')",
+          zIndex: 1,
         }}
       />
 
