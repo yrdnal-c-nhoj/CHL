@@ -5,10 +5,11 @@ import React from 'react';
 
 import backgroundVideo from '@/assets/images/26_images/26-08/26-08-25/radar.webm';
 import radarOverlay from '@/assets/images/26_images/26-08/26-08-25/radar3.webp';
+import waterBackground from '@/assets/images/26_images/26-08/26-08-28/water.webp';
 import fontUrl from '@/assets/fonts/26fonts/26-08-25.ttf?url';
 import styles from './Clock.module.css';
 
-export const assets: string[] = [backgroundVideo, radarOverlay, fontUrl];
+export const assets: string[] = [backgroundVideo, radarOverlay, waterBackground, fontUrl];
 
 const fontConfigs: FontConfig[] = [
   {
@@ -26,6 +27,13 @@ const Clock = () => {
 
   return (
     <main className={styles.container}>
+      <img
+        src={waterBackground}
+        className={styles.waterBackground}
+        alt=""
+        aria-hidden="true"
+      />
+
       <video
         autoPlay
         loop
