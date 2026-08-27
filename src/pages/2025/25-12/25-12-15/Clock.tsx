@@ -3,8 +3,7 @@ import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import iceFont from '@/assets/fonts/25fonts/25-12-15-ice.ttf?url'; // import font as module
 import BG_IMAGE_PATH from '@/assets/images/25_images/25-12/25-12-15/forest.jpeg';
-export const assets = [iceFont, font as module
-import BG_IMAGE_PATH];
+export const assets = [iceFont, BG_IMAGE_PATH];
 
 
 const FONT_FAMILY = 'DigitalClock';

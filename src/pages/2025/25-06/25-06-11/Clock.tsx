@@ -2,13 +2,12 @@ import React, { useEffect } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bananaGif from '@/assets/images/25_images/25-06/25-06-11/banana.gif';
-import spinningBanana from '@/assets/images/25_images/25-06/25-06-11/yellow-spinning-banana.gif';
 import hourHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
 import minuteHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
 import secondHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
 import banFont from '@/assets/fonts/25fonts/25-06-11-Ban.ttf';
 import { useSecondClock } from '@/utils/hooks';
-export const assets = [bananaGif, spinningBanana, hourHand, minuteHand, secondHand, banFont];
+export const assets = [bananaGif, hourHand, minuteHand, secondHand, banFont];
 
 const BananaClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
