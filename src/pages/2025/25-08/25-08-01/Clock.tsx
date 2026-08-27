@@ -5,6 +5,8 @@ import myFontWoff2 from '@/assets/fonts/25fonts/25-08-01-zod.ttf';
 import bg1 from '@/assets/images/25_images/25-08/25-08-01/stars.webp';
 import bg2 from '@/assets/images/25_images/25-08/25-08-01/zod.gif';
 import htmlLogo from '@/assets/images/25_images/25-08/25-08-01/st.gif';
+export const assets = [myFontWoff2, bg1, bg2, htmlLogo];
+
 
 const romanNumerals = [
   'l',
@@ -104,7 +106,7 @@ const AnalogClock =  () => {
     document.body.style.backgroundRepeat = 'no-repeat';
     document.body.style.margin = '0';
     document.body.style.padding = '0';
-    document.body.style.height = '100vh';
+    document.body.style.height = '100dvh';
     document.body.style.display = 'flex';
     document.body.style.justifyContent = 'center';
     document.body.style.alignItems = 'center';

@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import cus250903font from '@/assets/fonts/25fonts/25-09-03-mau.ttf';
 import cornerImage from '@/assets/images/25_images/25-09/25-09-03/corner.gif';
 import styles from './Clock.module.css';
+export const assets = [cus250903font, cornerImage];
+
 
 function DigitalClock() {
   const fontConfigs = [

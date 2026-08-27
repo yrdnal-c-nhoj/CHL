@@ -3,6 +3,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import centerImage from '@/assets/images/25_images/25-09/25-09-04/sky.gif';
 import bgImage from '@/assets/images/25_images/25-09/25-09-04/wood.jpeg';
+export const assets = [centerImage, bgImage];
+
 
 const AnalogClock =  () => {
   const time = useMillisecondClock();

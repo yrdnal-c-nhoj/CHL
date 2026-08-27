@@ -21,7 +21,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 // 2. Main Component
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   const time = useSecondClock();
 
   // Load font via Suspense

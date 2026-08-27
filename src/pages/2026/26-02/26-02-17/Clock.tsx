@@ -134,7 +134,7 @@ const AsteriskClock =  () => {
   return (
     <main className={styles.container} style={{
       width: '100vw',
-      height: '100vh',
+      height: '100dvh',
       minHeight: '100dvh',
       backgroundColor: '#CFF6DA',
       position: 'relative',
@@ -150,8 +150,8 @@ const AsteriskClock =  () => {
       <div
         style={{
           position: 'relative',
-          width: 'min(75vw, 75vh)',
-          height: 'min(75vw, 75vh)',
+          width: 'min(75vw, 75dvh)',
+          height: 'min(75vw, 75dvh)',
           zIndex: 10,
           border: '2px solid rgba(0,0,0,0.05)',
           borderRadius: '50%',
@@ -178,7 +178,7 @@ const AsteriskClock =  () => {
                   top: `${y}%`,
                   transform: 'translate(-50%, -50%)',
                   fontFamily: 'AsteriskFont2, sans-serif',
-                  fontSize: 'clamp(3rem, 14vh, 8rem)',
+                  fontSize: 'clamp(3rem, 14dvh, 8rem)',
                   color: '#1C1C19',
                   textShadow: '2px 2px 0px #FBEF05',
                   userSelect: 'none',

@@ -12,6 +12,8 @@ import snow7 from '@/assets/images/25_images/25-06/25-06-07/snow-gif-7.gif';
 import flakes from '@/assets/images/25_images/25-06/25-06-07/flakes.gif';
 import eref from '@/assets/images/25_images/25-06/25-06-07/eref.gif';
 import amaticRegular from '@/assets/fonts/25fonts/25-06-07-amati.ttf';
+export const assets = [backgroundImage, flakesGif, sgSnow, snow659, snow01, snow02, sno, snow7, flakes, eref, amaticRegular];
+
 
 export default function BlizzardClock() {
   const clockRef = useRef(null);
@@ -66,7 +68,7 @@ export default function BlizzardClock() {
       style={{
         margin: 0,
         padding: 0,
-        height: 'calc(var(--vh, 1vh) * 100)',
+        height: 'calc(var(--vh, 1dvh) * 100)',
         width: '100vw',
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
@@ -82,7 +84,7 @@ export default function BlizzardClock() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          height: 'calc(var(--vh, 1vh) * 100)',
+          height: 'calc(var(--vh, 1dvh) * 100)',
           width: '100vw',
           position: 'relative',
           zIndex: 2,
@@ -91,10 +93,10 @@ export default function BlizzardClock() {
         <table
           style={{
             width: '80vw',
-            height: '80vh',
+            height: '80dvh',
             backgroundColor: 'rgb(19, 83, 162)',
             borderCollapse: 'collapse',
-            border: '2vh solid #483206',
+            border: '2dvh solid #483206',
           }}
         >
           <tbody>
@@ -102,7 +104,7 @@ export default function BlizzardClock() {
               <td
                 style={{
                   ...cellStyle,
-                  height: '17vh',
+                  height: '17dvh',
                   width: '17vw',
                   backgroundImage: `url(${sgSnow}), url(${snow659})`,
                   backgroundRepeat: 'repeat, no-repeat',
@@ -120,7 +122,7 @@ export default function BlizzardClock() {
               <td
                 style={{
                   ...cellStyle,
-                  height: '17vh',
+                  height: '17dvh',
                   width: '17vw',
                   backgroundImage: `url(${sgSnow}), url(${snow659})`,
                   backgroundRepeat: 'repeat, no-repeat',
@@ -188,7 +190,7 @@ export default function BlizzardClock() {
               <td
                 style={{
                   ...cellStyle,
-                  height: '17vh',
+                  height: '17dvh',
                   width: '17vw',
                   backgroundImage: `url(${eref})`,
                   backgroundRepeat: 'repeat',
@@ -206,7 +208,7 @@ export default function BlizzardClock() {
           top: 0,
           left: 0,
           width: '200vw',
-          height: '200vh',
+          height: '200dvh',
           backgroundImage: `url(${flakesGif})`,
           backgroundSize: 'cover',
           opacity: 0.6,

@@ -8,6 +8,8 @@ import fallbackImg from '@/assets/images/25_images/25-10/25-10-24/esp.jpeg';
 import fontFile251024 from '@/assets/fonts/25fonts/25-10-24-esp.ttf';
 import cornerUL from '@/assets/images/25_images/25-10/25-10-24/ul.webp';
 import cornerLR from '@/assets/images/25_images/25-10/25-10-24/lr.webp';
+export const assets = [videoFile, videoWebM, fallbackImg, fontFile251024, cornerUL, cornerLR];
+
 export default function VictorianEsperantoClock() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
@@ -173,7 +175,7 @@ export default function VictorianEsperantoClock() {
     width: '90vw',
     left: '50%',
     transform: 'translateX(-50%)',
-    fontSize: '4vh',
+    fontSize: '4dvh',
     whiteSpace: 'nowrap',
     textShadow: textAndOrnamentShadow,
     fontWeight: 'normal',
@@ -217,7 +219,7 @@ export default function VictorianEsperantoClock() {
 
   const cornerImageStyle = {
     position: 'absolute',
-    width: '16vh',
+    width: '16dvh',
     height: 'auto',
     tint: textAndOrnamentColor,
   };
@@ -273,7 +275,7 @@ export default function VictorianEsperantoClock() {
           top: '8%',
           width: '100%',
           textAlign: 'center',
-          fontSize: '5vh',
+          fontSize: '5dvh',
           textShadow: textAndOrnamentShadow,
           fontWeight: 'normal',
           lineHeight: '1.2',

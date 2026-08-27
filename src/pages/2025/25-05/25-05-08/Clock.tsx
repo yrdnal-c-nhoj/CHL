@@ -5,6 +5,8 @@ import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
 import shinyFont from '@/assets/fonts/25fonts/25-05-08-Shiny.ttf?url';
 import bgGif from '@/assets/images/25_images/25-05/25-05-08/d7e781b32269a8a82b500c1a9dc97733-ezgif.com-optimize.gif';
+export const assets = [shinyFont, bgGif];
+
 
 // Component Props interface
 interface GoldenHourClockProps {
@@ -80,7 +82,7 @@ const GoldenHourClock: React.FC<GoldenHourClockProps> = () => {
           top: 0;
           left: 0;
           width: 100vw;
-          height: 100vh;
+          height: 100dvh;
           z-index: 0;
           filter: brightness(120%);
           transform: scaleX(-1);
@@ -129,8 +131,8 @@ const GoldenHourClock: React.FC<GoldenHourClockProps> = () => {
           position: absolute;
           top: 50%;
           left: 50%;
-          width: 1vh;
-          height: 1vh;
+          width: 1dvh;
+          height: 1dvh;
           margin: -100px 0 0 -100px;
           background: #f4ebac;
           box-shadow:

@@ -9,7 +9,9 @@ import secondHand from '@/assets/images/25_images/25-04/25-04-21/second.gif';
 import bgImage from '@/assets/images/25_images/25-04/25-04-21/pp.gif'; // spinning layer
 import mainBackground from '@/assets/images/25_images/25-04/25-04-21/p.jpg'; // static full-screen background
 import overlayTopLeft from '@/assets/images/25_images/25-04/25-04-21/Pea.gif'; // top-left overlay
-import overlayBottomRight from '@/assets/images/25_images/25-04/25-04-21/Pea2.gif'; // bottom-right overlay (different file)
+import overlayBottomRight from '@/assets/images/25_images/25-04/25-04-21/Pea2.gif';
+export const assets = [hourHand, minuteHand, secondHand, bgImage, mainBackground, overlayTopLeft, overlayBottomRight];
+ // bottom-right overlay (different file)
 
 // Clock refs interface
 interface ClockRefs {
@@ -122,11 +124,11 @@ export default function AnalogImageClock() {
           pointer-events: none;
         }
         .overlay.top-left {
-          top: 0vh;
+          top: 0dvh;
           left: 0vw;
         }
         .overlay.bottom-right {
-          bottom: 0vh;
+          bottom: 0dvh;
           right: 0vw;
         }
       `}</style>

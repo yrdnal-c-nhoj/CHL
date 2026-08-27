@@ -16,6 +16,8 @@ import digit10 from '@/assets/images/25_images/25-08/25-08-14/10.gif';
 import digit11 from '@/assets/images/25_images/25-08/25-08-14/11.gif';
 import digit12 from '@/assets/images/25_images/25-08/25-08-14/12.gif';
 import customFont from '@/assets/fonts/25fonts/25-08-14-bir.ttf';
+export const assets = [backgroundImg, digit1, digit2, digit3, digit4, digit5, digit6, digit7, digit8, digit9, digit10, digit11, digit12, customFont];
+
 
 const digitImages = [
   digit1,

@@ -11,6 +11,8 @@ import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
 import lightningImg from '@/assets/images/25_images/25-05/25-05-01/lightning.webp';
 import innerFontTTF from '@/assets/fonts/25fonts/25-05-01-Inner.ttf?url';
+export const assets = [lightningImg, innerFontTTF];
+
 
 // Time state interface
 interface TimeState {
@@ -136,7 +138,7 @@ const SlowLightningClock: React.FC<SlowLightningClockProps> = () => {
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       position: 'absolute',
-      height: '100vh',
+      height: '100dvh',
       width: '100vw',
       transform: 'scaleX(-1)',
       top: '50%',
@@ -160,7 +162,7 @@ const SlowLightningClock: React.FC<SlowLightningClockProps> = () => {
       color: 'rgb(244, 243, 230)',
       fontFamily: "'Inner', sans-serif",
       display: 'flex',
-      fontSize: '80vh',
+      fontSize: '80dvh',
       userSelect: 'none',
     },
     clockSpan: {
@@ -171,7 +173,7 @@ const SlowLightningClock: React.FC<SlowLightningClockProps> = () => {
       top: 0,
       left: 0,
       width: '100vw',
-      height: '100vh',
+      height: '100dvh',
       zIndex: 999,
       pointerEvents: 'none',
       backgroundColor: 'rgb(236, 241, 218)',
@@ -183,7 +185,7 @@ const SlowLightningClock: React.FC<SlowLightningClockProps> = () => {
       top: 0,
       left: 0,
       width: '100vw',
-      height: '100vh',
+      height: '100dvh',
       zIndex: 999,
       pointerEvents: 'none',
       backgroundColor: 'rgb(7, 5, 19)',
@@ -224,7 +226,7 @@ const SlowLightningClock: React.FC<SlowLightningClockProps> = () => {
           #clock {
             flex-direction: column;
             align-items: center;
-            gap: 2vh;
+            gap: 2dvh;
             font-size: 50vw !important;
           }
         }

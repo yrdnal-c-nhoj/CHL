@@ -5,6 +5,8 @@ import neptuneFont from '@/assets/fonts/26fonts/26-02-23-nep.ttf';
 import nepBg from '@/assets/images/26_images/26-02/26-02-23/nept.webp';
 import loopBg from '@/assets/images/26_images/26-02/26-02-23/swirl.gif';
 import triBg from '@/assets/images/26_images/26-02/26-02-23/tri.webp';
+export const assets = [neptuneFont, nepBg, loopBg, triBg];
+
 
 const DigitalClock =  () => {
   const time = useSecondClock();
@@ -50,12 +52,12 @@ const DigitalClock =  () => {
     >
       <div
         style={{
-          width: '5vh',
-          height: '10vh',
+          width: '5dvh',
+          height: '10dvh',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '7vh',
+          fontSize: '7dvh',
           // fontWeight: 'bold',
           // textShadow: '0 0 10px #7FFFD4, 0 0 20px #40E0D0',
           background:

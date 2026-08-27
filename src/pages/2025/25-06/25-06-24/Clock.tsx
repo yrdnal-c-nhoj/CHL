@@ -1,7 +1,9 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import squFontUrl from '@/assets/fonts/25fonts/25-06-24-squ.ttf';
-import bgImageUrl from '@/assets/images/25_images/25-06/25-06-24/tho.webp'; // Ensure this file exists
+import bgImageUrl from '@/assets/images/25_images/25-06/25-06-24/tho.webp';
+export const assets = [squFontUrl, bgImageUrl];
+ // Ensure this file exists
 
 const ThoughtBalloonClock =  () => {
   const time = useMillisecondClock();
@@ -84,7 +86,7 @@ const ThoughtBalloonClock =  () => {
             left: '50%',
             transform: 'translateX(-50%)',
             width: '100vw',
-            height: '100vh',
+            height: '100dvh',
             // objectFit: 'cover',
 
             zIndex: 1,

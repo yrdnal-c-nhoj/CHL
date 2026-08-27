@@ -3,6 +3,8 @@ import pluWebp from '@/assets/images/26_images/26-03/26-03-17/plu.webp';
 import tileBgGif from '@/assets/images/26_images/26-03/26-03-17/tile_bg.gif';
 import topImageWebp from '@/assets/images/26_images/26-03/26-03-17/0001-0160-ezgif.com-optiwebp-1.webp';
 import { useMillisecondClock } from '@/utils/hooks';
+export const assets = [pluWebp, tileBgGif, topImageWebp];
+
 
 const Clock =  () => {
   const time = useMillisecondClock();
@@ -33,7 +35,7 @@ const Clock =  () => {
         alignItems: 'center',
         justifyContent: 'center',
         color: digitColor,
-        fontSize: isMobile ? '16vw' : '10vh',
+        fontSize: isMobile ? '16vw' : '10dvh',
         fontFamily: 'Metamorphous, monospace',
         textShadow: '1px 9px 0px rgb(255, 255, 255)',
       }}
@@ -46,7 +48,7 @@ const Clock =  () => {
     <div
       style={{
         color: digitColor,
-        fontSize: isMobile ? '8vw' : '10vh',
+        fontSize: isMobile ? '8vw' : '10dvh',
         fontFamily: 'Metamorphous, monospace',
         margin: isMobile ? '0 1vw' : '0 2px',
         alignSelf: 'center',
@@ -170,7 +172,7 @@ const Clock =  () => {
             top: '50%',
             left: '50%',
             width: '200vw',
-            height: '200vh',
+            height: '200dvh',
             backgroundImage: `url(${topImageWebp})`,
             backgroundRepeat: 'repeat',
             backgroundSize: 'auto',

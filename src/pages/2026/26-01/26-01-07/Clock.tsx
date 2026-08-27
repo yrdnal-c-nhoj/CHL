@@ -19,9 +19,9 @@ const AquariumClock =  () => {
   const handFilter = 'drop-shadow(2px 1px 3px rgb(0, 3, 2)) drop-shadow(-1px 1px 1px rgb(6, 85, 31)) drop-shadow(1px -1px 1px rgb(10, 154, 109)) drop-shadow(-1px -1px 1px rgb(214, 227, 216))';
 
   const handSizes = {
-    hour: 'min(30vw, 30vh)',
-    minute: 'min(45vw, 45vh)',
-    second: 'min(48vw, 48vh)',
+    hour: 'min(30vw, 30dvh)',
+    minute: 'min(45vw, 45dvh)',
+    second: 'min(48vw, 48dvh)',
   };
 
   return (
@@ -31,7 +31,7 @@ const AquariumClock =  () => {
       <img src={aquarium} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.5, zIndex: 0 }} />
       <img src={aquarium} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9, transform: 'scaleX(-1)', zIndex: 1 }} />
 
-      <img src={spin} alt="" style={{ position: 'absolute', height: '80%', width: 'auto', left: '50%', transform: 'translateX(-50%)', opacity: 0.6, zIndex: 2, filter: 'sepia(100%) hue-rotate(-30deg) saturate(400%)', maxHeight: '80vh' }} />
+      <img src={spin} alt="" style={{ position: 'absolute', height: '80%', width: 'auto', left: '50%', transform: 'translateX(-50%)', opacity: 0.6, zIndex: 2, filter: 'sepia(100%) hue-rotate(-30deg) saturate(400%)', maxHeight: '80dvh' }} />
 
       <div className={styles.handsContainer}>
         <img ref={hourHandRef} src={fish} alt="hour" style={{ width: handSizes.hour, height: 'auto', filter: handFilter }} />

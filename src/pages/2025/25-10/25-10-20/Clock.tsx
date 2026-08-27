@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import treeImg from '@/assets/images/25_images/25-10/25-10-20/trees.jpg';
+export const assets = [treeImg];
+
 
 export default function ClockPage() {
   const hourRef = useRef<HTMLDivElement>(null);
@@ -72,8 +74,8 @@ export default function ClockPage() {
       {/* Clock container */}
       <div
         style={{
-          width: '50vh',
-          height: '50vh',
+          width: '50dvh',
+          height: '50dvh',
           borderRadius: '50%',
           position: 'absolute',
           top: '50%',

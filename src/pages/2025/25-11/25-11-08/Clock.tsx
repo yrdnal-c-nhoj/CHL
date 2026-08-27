@@ -5,6 +5,8 @@ import bgImageUrl from '@/assets/images/25_images/25-11/25-11-08/eye.gif';
 import dig2511088 from '@/assets/fonts/25fonts/25-11-08-eye3.ttf';
 import ti251108 from '@/assets/fonts/25fonts/25-11-08-eye.ttf';
 import styles from './Clock.module.css';
+export const assets = [bgImageUrl, dig2511088, ti251108];
+
 
 interface ClockProps {
   imageWidth?: string;
@@ -89,17 +91,17 @@ const Clock: React.FC<ClockProps> = ({
 
   const timerDigitBoxStyle = {
     fontFamily: `'${timerFontFamilyName}', monospace`,
-    fontSize: '14vh',
+    fontSize: '14dvh',
     lineHeight: '1',
     width: 'auto',
-    minWidth: '8vh',
-    padding: '0 0.1vh',
+    minWidth: '8dvh',
+    padding: '0 0.1dvh',
     color: '#ff0000',
-    textShadow: '0 0 1vh rgba(255, 0, 0, 0.7)',
+    textShadow: '0 0 1dvh rgba(255, 0, 0, 0.7)',
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    borderRadius: '1vh',
-    boxShadow: '0 0 1.5vh rgba(0, 0, 0, 0.5)',
-    margin: '0 0.6vh',
+    borderRadius: '1dvh',
+    boxShadow: '0 0 1.5dvh rgba(0, 0, 0, 0.5)',
+    margin: '0 0.6dvh',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -108,8 +110,8 @@ const Clock: React.FC<ClockProps> = ({
 
   const timerDotBoxStyle = {
     ...timerDigitBoxStyle,
-    width: '0.08vh',
-    minWidth: '0.08vh',
+    width: '0.08dvh',
+    minWidth: '0.08dvh',
     padding: 0,
     backgroundColor: 'transparent',
     boxShadow: 'none',

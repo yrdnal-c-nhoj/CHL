@@ -5,6 +5,8 @@ import { useSmoothClock } from '@/utils/hooks';
 import c251004font from '@/assets/fonts/25fonts/25-10-04-iss.ttf';
 import bgMp4 from '@/assets/images/25_images/25-10/25-10-04/waterfall.mp4';
 import bgWebp from '@/assets/images/25_images/25-10/25-10-04/waterfall.webp';
+export const assets = [c251004font, bgMp4, bgWebp];
+
 
 const ClockVideoBackground =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -79,22 +81,22 @@ const ClockVideoBackground =  () => {
     group: {
       display: 'flex',
       flexDirection: 'row',
-      gap: '0.01vh',
+      gap: '0.01dvh',
       justifyContent: 'center',
       alignItems: 'center',
     },
     digitBox: {
       color: '#0946C1FF',
       textShadow: `
-        0.1vh 0.1vh rgba(0,0,0,0.8),
-        -0.1vh -0.1vh rgba(255,220,220,0.9)
+        0.1dvh 0.1dvh rgba(0,0,0,0.8),
+        -0.1dvh -0.1dvh rgba(255,220,220,0.9)
       `,
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      fontSize: '33vh',
-      width: '14vh',
-      height: '19vh',
+      fontSize: '33dvh',
+      width: '14dvh',
+      height: '19dvh',
       textAlign: 'center',
       boxSizing: 'border-box',
     },

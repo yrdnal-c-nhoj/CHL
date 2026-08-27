@@ -3,6 +3,8 @@ import { useSecondClock } from '@/utils/hooks';
 
 import bellImage2 from '@/assets/images/26_images/26-02/26-02-11/bell.webp';
 import bellImage1 from '@/assets/images/26_images/26-02/26-02-11/bell.gif';
+export const assets = [bellImage2, bellImage1];
+
 
 const CLOCK_CONFIG = {
   NUMERAL_RADIUS: 40,

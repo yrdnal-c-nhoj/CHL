@@ -4,7 +4,9 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import { memo, useMemo } from 'react';
-import styles from './Clock.module.css'; // Import CSS module
+import styles from './Clock.module.css';
+export const assets = [fontUrl, jumpVideo];
+ // Import CSS module
 
 const FONT_FAMILY = 'ClockFont_26_05_26';
 

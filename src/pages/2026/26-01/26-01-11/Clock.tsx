@@ -10,9 +10,11 @@ import hourHandImg from '@/assets/images/26_images/26-01/26-01-11/leg1.webp';
 import minuteHandImg from '@/assets/images/26_images/26-01/26-01-11/leg2.webp';
 import secondHandImg from '@/assets/images/26_images/26-01/26-01-11/flam.webp';
 import { useMillisecondClock } from '@/utils/hooks';
+export const assets = [bg2, bg1, fontflam251211, hourHandImg, minuteHandImg, secondHandImg];
+
 // --- CONFIG ---
 const CONFIG = {
-  clockSize: 'min(90vw, 90vh)',
+  clockSize: 'min(90vw, 90dvh)',
   numeralRadius: 43,
   hands: [
     { img: secondHandImg, height: 'clamp(200px, 55vw, 350px)', zIndex: 12 },
@@ -115,8 +117,8 @@ const ClockNumeral = memo(({ text, x, y }) => (
       color: '#FC8EAC',
       opacity: 0.5,
       fontFamily: 'CustomFont251211, serif',
-      fontSize: '31vh',
-      textShadow: '-4vh -4vh 0px #3B020652, 4vh 4vh 0px #F5E5E8A8',
+      fontSize: '31dvh',
+      textShadow: '-4dvh -4dvh 0px #3B020652, 4dvh 4dvh 0px #F5E5E8A8',
       zIndex: 1,
       pointerEvents: 'none',
     }}

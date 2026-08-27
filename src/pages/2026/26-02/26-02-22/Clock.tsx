@@ -14,6 +14,8 @@ import digit5 from '@/assets/images/26_images/26-02/26-02-22/10.webp';
 import digit8 from '@/assets/images/26_images/26-02/26-02-22/11.webp';
 import digit11 from '@/assets/images/26_images/26-02/26-02-22/12.webp';
 import skinBg from '@/assets/images/26_images/26-02/26-02-22/skin.jpg';
+export const assets = [digit7, digit4, digit12, digit3, digit1, digit9, digit2, digit10, digit6, digit5, digit8, digit11, skinBg];
+
 
 const DIGITS = [
   digit12,

@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import font_2025_12_16 from '@/assets/fonts/25fonts/25-12-16-four.ttf?url';
 import type { FontConfig } from '@/types/clock';
+export const assets = [font_2025_12_16];
+
 
 const fontConfigs: FontConfig[] = [
   {
@@ -11,22 +14,10 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const QuadClock =  () => {
-  const [time, setTime] = useState(Date.now());
+  const time = useMillisecondClock(100);
 
   // Use standardized font loader
   useSuspenseFontLoader(fontConfigs);
-
-  // === Effect 2: Animation loop for smooth clock ===
-  useEffect(() => {
-    let animationId;
-    const updateTime =  () => {
-      setTime(Date.now());
-      animationId = setInterval(() => setTime(new Date()), 100);
-    };
-    updateTime();
-
-    return () => cancelAnimationFrame(animationId);
-  }, []); // Run once, continuously update
 
   // Time calculations
   const now = new Date(time);
@@ -81,7 +72,7 @@ const QuadClock =  () => {
         width: `calc(${CLOCK_SIZE}vmin - 4vmin)`,
         height: `calc(${CLOCK_SIZE}vmin - 4vmin)`,
         maxWidth: '96vw',
-        maxHeight: '96vh',
+        maxHeight: '96dvh',
         transform,
         opacity,
         pointerEvents: 'none',

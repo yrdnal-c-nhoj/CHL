@@ -33,7 +33,7 @@ const ClockComponent: React.FC<SkewFlatClockProps> = ({
   useSuspenseFontLoader(fontConfigs);
   const time = useSecondClock(); // UseSecondClock is sufficient for HH:MM
   const [hue, setHue] = useState<number>(0);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | null>(null);
 
   // Format time for display
   const timeStr = useMemo(() => {

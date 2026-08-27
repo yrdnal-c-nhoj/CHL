@@ -7,6 +7,8 @@ export { backgroundVideo }; // Export for preloading pipeline
 
 import waterFontUrl from '@/assets/fonts/26fonts/26-04-09-water.ttf?url';
 import styles from './Clock.module.css';
+export const assets = [backgroundVideo, waterFontUrl];
+
 
 const Clock =  () => {
   const [digitTransforms, setDigitTransforms] = useState([

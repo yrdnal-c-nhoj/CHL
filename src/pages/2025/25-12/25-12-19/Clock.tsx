@@ -46,7 +46,7 @@ const HourglassTimer =  () => {
     alignItems: 'center',
     backgroundColor: '#382938FF',
     margin: 0,
-    padding: '1vh',
+    padding: '1dvh',
     boxSizing: 'border-box',
     fontFamily: `'${FONT_FAMILY}', monospace`,
     color: '#C8C5C2FF',
@@ -56,8 +56,8 @@ const HourglassTimer =  () => {
 
   const bulbStyle = {
     position: 'relative',
-    width: 'min(70vw, 45vh)',
-    height: '48vh',
+    width: 'min(70vw, 45dvh)',
+    height: '48dvh',
     backgroundColor: ' #B8CCDAFF',
     overflow: 'hidden',
   };
@@ -78,7 +78,7 @@ const HourglassTimer =  () => {
   };
 
   const timeLabelStyle = {
-    fontSize: 'min(26px, 3.9vh)',
+    fontSize: 'min(26px, 3.9dvh)',
     padding: '0 5px',
     textAlign: 'center',
     fontFamily: `'${FONT_FAMILY}', monospace`,
@@ -154,7 +154,7 @@ const HourglassTimer =  () => {
 
         <div
           style={{
-            height: '1vh',
+            height: '1dvh',
             width: '100%',
             display: 'flex',
             justifyContent: 'center',
@@ -166,7 +166,7 @@ const HourglassTimer =  () => {
             className={styles.flow}
             style={{
               width: '4px',
-              height: '46vh',
+              height: '46dvh',
               position: 'absolute',
               top: 0,
               backgroundImage: `url(${sandTexture})`,

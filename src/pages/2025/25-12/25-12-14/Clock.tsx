@@ -7,6 +7,8 @@ import digitTexture from '@/assets/images/25_images/25-12/25-12-14/steel2.webp';
 
 // Font imported with today's date (DEC 16, 2025)
 import screw251214 from '@/assets/fonts/25fonts/25-12-14-steel.ttf?url';
+export const assets = [bgImage, digitTexture, screw251214];
+
 export default function DigitalClock() {
   const time = useMillisecondClock(); // Use the standardized clock hook
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
@@ -141,8 +143,8 @@ export default function DigitalClock() {
             color: transparent;
             -webkit-text-fill-color: transparent;
             filter: contrast(1.15) brightness(1.05);
-            text-shadow: -0.3vh -0.3vh 0.0vh rgba(255,255,255,0.35),
-                         0.3vh  0.3vh 0.0vh rgba(0,0,0,0.55);
+            text-shadow: -0.3dvh -0.3dvh 0.0dvh rgba(255,255,255,0.35),
+                         0.3dvh  0.3dvh 0.0dvh rgba(0,0,0,0.55);
             transform: translateZ(0);
             display: inline-block;
             white-space: nowrap;

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import rorFontUrl from '@/assets/fonts/25fonts/25-07-13-ror.ttf';
+export const assets = [rorFontUrl];
+
 
 const RorschachClock =  () => {
   const clockRef = useRef(null);

@@ -83,10 +83,10 @@ const AnalogClock =  () => {
         className="clock-svg"
         viewBox="0 0 200 200"
         style={{
-          width: 'min(88vw, 88vh, 600px)',
-          height: 'min(88vw, 88vh, 600px)',
+          width: 'min(88vw, 88dvh, 600px)',
+          height: 'min(88vw, 88dvh, 600px)',
           borderRadius: '50%',
-          marginTop: '-1vh',
+          marginTop: '-1dvh',
         }}
       >
         {/* Glow Filter Definition */}

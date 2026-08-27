@@ -6,6 +6,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 import bgWebp from '@/assets/images/25_images/25-10/25-10-10/roma.webp';
 import bgVideo from '@/assets/images/25_images/25-10/25-10-10/ro.mp4';
 import font_20251007 from '@/assets/fonts/25fonts/25-10-10-roma.ttf';
+export const assets = [bgWebp, bgVideo, font_20251007];
+
 
 export default function ProcessingCounterClock() {
   const [time, setTime] = useState(new Date());

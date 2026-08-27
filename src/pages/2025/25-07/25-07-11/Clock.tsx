@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import penFontUrl from '@/assets/fonts/25fonts/25-07-11-Pen.ttf';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [penFontUrl];
+
 const PenmanshipClock =  () => {
   const [timeString, setTimeString] = useState<any>('--:--');
   const [ampm, setAmpm] = useState<any>('--');
@@ -84,9 +86,9 @@ const PenmanshipClock =  () => {
         style={{
           display: 'grid',
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           columnGap: '9vw',
-          rowGap: '.1vh',
+          rowGap: '.1dvh',
           gridTemplateColumns: `repeat(${gridSize.columns}, 1fr)`,
           gridTemplateRows: `repeat(${gridSize.rows}, 1fr)`,
           position: 'absolute',

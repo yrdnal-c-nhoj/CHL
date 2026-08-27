@@ -4,6 +4,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
+export const assets = [backgroundImage];
+
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 

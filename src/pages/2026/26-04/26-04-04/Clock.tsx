@@ -5,6 +5,8 @@ import img3 from '@/assets/images/26_images/26-04/26-04-04/3.png';
 import img6 from '@/assets/images/26_images/26-04/26-04-04/6.jpg';
 import img9 from '@/assets/images/26_images/26-04/26-04-04/9.png';
 import styles from './Clock.module.css';
+export const assets = [img12, img3, img6, img9];
+
 
 const Clock =  () => {
   const time = useMillisecondClock();
@@ -22,7 +24,7 @@ const Clock =  () => {
   const minuteDeg = minutes * 6 + seconds * 0.1;
   const hourDeg = (hours % 12) * 30 + minutes * 0.5;
 
-  const clockSize = 'min(96vw, 96vh)';
+  const clockSize = 'min(96vw, 96dvh)';
   const imgSize = 34;
   const halfImg = imgSize / 2;
 

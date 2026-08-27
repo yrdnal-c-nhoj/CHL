@@ -19,7 +19,7 @@ const fontConfigs: FontConfig[] = [
   },
 ];
 
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   const time = useMillisecondClock();
 
   // BTS: Suspend until font is ready to prevent FOUC

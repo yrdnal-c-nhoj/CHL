@@ -5,6 +5,8 @@ import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/26_images/26-04/26-04-16/jamine.webp';
 import tileImage from '@/assets/images/26_images/26-04/26-04-16/pom.webp';
 import styles from './Clock.module.css';
+export const assets = [bgImage, tileImage];
+
 
 const ROMAN_NUMERALS = [
   'XII',

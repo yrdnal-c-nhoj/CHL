@@ -4,6 +4,8 @@ import backgroundImage from '@/assets/images/26_images/26-05/26-05-01/sampson-ra
 import { useMillisecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
+export const assets = [backgroundImage];
+
 
 interface HandProps {
   angle: number;
@@ -143,21 +145,21 @@ const AnalogClock =  () => {
             type="hour"
             angle={hourAngle}
             length={`${getOvalRadius(hourAngle) * 0.6}px`}
-            width="2vh"
+            width="2dvh"
             color="rgba(255, 255, 255, 0.42)"
           />
           <ClockHand
             type="minute"
             angle={minuteAngle}
             length={`${getOvalRadius(minuteAngle) * 0.85}px`}
-            width="1vh"
+            width="1dvh"
             color="rgba(255, 255, 255, 0.28)"
           />
           <ClockHand
             type="second"
             angle={secondAngle}
             length={`${getOvalRadius(secondAngle) * 0.98}px`}
-            width="0.5vh"
+            width="0.5dvh"
             color="#3A3A3C"
           />
         </div>

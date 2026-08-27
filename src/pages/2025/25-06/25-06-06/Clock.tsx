@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import rrrrFont from '@/assets/fonts/25fonts/25-06-06-rrrr.ttf';
+export const assets = [rrrrFont];
+
 
 const RollingClock =  () => {
   const time = useMillisecondClock();
@@ -185,7 +187,7 @@ const styles = {
     overflow: 'hidden',
     margin: 0,
     padding: 0,
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     backgroundImage:
       'radial-gradient(#301e01 11px, transparent 11px), radial-gradient(#301e01 11px, transparent 11px)',

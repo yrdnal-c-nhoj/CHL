@@ -5,6 +5,8 @@ import font20251016 from '@/assets/fonts/25fonts/25-10-15-brahmi.ttf?url';
 import image1 from '@/assets/images/25_images/25-10/25-10-15/palm.webp';
 import image2 from '@/assets/images/25_images/25-10/25-10-15/brahmi.webp';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [font20251016, image1, image2];
+
 
 const brahmiDigits = ['𑁦', '𑁧', '𑁨', '𑁩', '𑁪', '𑁫', '𑁬', '𑁭', '𑁮', '𑁯'];
 
@@ -44,9 +46,9 @@ export default function BrahmiClock() {
     justifyContent: 'center',
     alignItems: 'center',
     fontFamily: 'BrahmiFont, serif',
-    fontSize: '8vh',
+    fontSize: '8dvh',
     color: '#ffd700',
-    textShadow: '0 0 1vh #ffd700, 0 0 2vh #ffdd55, 0 0 3vh #ffaa00',
+    textShadow: '0 0 1dvh #ffd700, 0 0 2dvh #ffdd55, 0 0 3dvh #ffaa00',
     userSelect: 'none',
     overflow: 'hidden',
     background: 'black',
@@ -103,7 +105,7 @@ export default function BrahmiClock() {
     display: 'inline-flex',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '7vh',
+    width: '7dvh',
     height: '4rem',
     margin: '0 0.02rem',
   };

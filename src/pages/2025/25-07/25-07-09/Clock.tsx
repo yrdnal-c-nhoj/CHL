@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+export const assets: string[] = [];
+
 
 const BlobClock =  () => {
   const canvasRef = useRef(null);
@@ -261,12 +263,12 @@ const BlobClock =  () => {
         padding: 0,
         overflow: 'hidden',
         position: 'relative',
-        fontSize: '1.5vh',
+        fontSize: '1.5dvh',
       }}
     >
       <canvas
         ref={canvasRef}
-        style={{ width: '100vw', height: '100vh', display: 'block' }}
+        style={{ width: '100vw', height: '100dvh', display: 'block' }}
       />
     </div>
   );

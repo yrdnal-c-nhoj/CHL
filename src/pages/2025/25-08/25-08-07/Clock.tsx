@@ -7,6 +7,8 @@ import hourHandImageUrl from '@/assets/images/25_images/25-08/25-08-07/ggg.gif';
 import minuteHandImageUrl from '@/assets/images/25_images/25-08/25-08-07/gun.gif';
 import secondHandImageUrl from '@/assets/images/25_images/25-08/25-08-07/gunn.gif';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [myFontUrl, backgroundImageUrl, hourHandImageUrl, minuteHandImageUrl, secondHandImageUrl];
+
 const AnalogClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [

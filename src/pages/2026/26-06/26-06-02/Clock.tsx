@@ -91,7 +91,7 @@ const VTEC =  () => {
       style={{
         backgroundImage: `url(${tile})`,
         backgroundPosition: 'center',
-        backgroundSize: '15vh',
+        backgroundSize: '15dvh',
       }}
     >
       <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>

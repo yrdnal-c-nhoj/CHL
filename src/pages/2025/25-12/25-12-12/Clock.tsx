@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import bgImage from './wheel.svg';
+export const assets: string[] = [];
+
 
 export default function AnalogBackgroundClock() {
   const now = useMillisecondClock();
@@ -27,20 +29,20 @@ export default function AnalogBackgroundClock() {
       background: `rgb(${v},${v},${v})`,
       transformOrigin: '50% 100%',
       transform: `translate(-50%, -100%) rotate(${rotation}deg)`,
-      borderRadius: '1vh',
+      borderRadius: '1dvh',
       boxShadow: `0 4px 10px rgb(${255 - v},${255 - v},${255 - v})`,
       opacity: 0.85,
     };
   };
 
-  const hourHand = makeHand(getBrightness(0), '2vh', '14vh', hours * 30);
+  const hourHand = makeHand(getBrightness(0), '2dvh', '14dvh', hours * 30);
   const minuteHand = makeHand(
     getBrightness(0.25),
-    '1.5vh',
-    '20vh',
+    '1.5dvh',
+    '20dvh',
     minutes * 6,
   );
-  const secondHand = makeHand(getBrightness(0.5), '0.5vh', '30vh', seconds * 6);
+  const secondHand = makeHand(getBrightness(0.5), '0.5dvh', '30dvh', seconds * 6);
 
   /* ---------------- BACKGROUND ---------------- */
 
@@ -84,8 +86,8 @@ export default function AnalogBackgroundClock() {
         <div
           style={{
             position: 'relative',
-            width: '80vh',
-            height: '80vh',
+            width: '80dvh',
+            height: '80dvh',
             borderRadius: '50%',
           }}
         >

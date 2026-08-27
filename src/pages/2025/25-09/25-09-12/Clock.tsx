@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
+export const assets: string[] = [];
+
 
 const App =  () => {
   const time = useSmoothClock();

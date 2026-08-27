@@ -1,6 +1,8 @@
 import React from 'react';
 import bgImage from '@/assets/images/26_images/26-03/26-03-16/metrop.webp';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [bgImage];
+
 
 const Clock =  () => {
   const time = useSecondClock();

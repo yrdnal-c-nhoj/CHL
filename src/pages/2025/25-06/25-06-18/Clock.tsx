@@ -3,6 +3,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-06/25-06-18/cis.jpg';
 import cisFont from '@/assets/fonts/25fonts/25-06-18-cis.ttf';
+export const assets = [bgImage, cisFont];
+
 
 const CistercianClock =  () => {
   const time = useMillisecondClock();
@@ -53,7 +55,7 @@ const CistercianClock =  () => {
     top: 0,
     left: 0,
     width: '100vw',
-    height: '100vh', // Use exactly 100vh to match the viewport
+    height: '100dvh', // Use exactly 100dvh to match the viewport
     backgroundImage: `url(${bgImage})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover', // Ensures it stretches to cover the whole viewport

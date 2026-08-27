@@ -3,6 +3,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import morseFont from '@/assets/fonts/25fonts/25-06-27-morse.ttf';
 import birdsGif from '@/assets/images/25_images/25-06/25-06-27/birds.gif';
+export const assets = [morseFont, birdsGif];
+
 
 const colors = [
   '#c0c6c7',
@@ -176,7 +178,7 @@ const MorseClock =  () => {
       top: 0,
       left: 0,
       width: '100vw',
-      height: '60vh',
+      height: '60dvh',
       objectFit: 'cover',
       zIndex: 0,
       opacity: 0.5,
@@ -188,7 +190,7 @@ const MorseClock =  () => {
       top: 0,
       left: 0,
       width: '100vw',
-      height: '100vh', // increase from 50vh to 100vh or desired height
+      height: '100dvh', // increase from 50dvh to 100dvh or desired height
       zIndex: 1,
       pointerEvents: 'none',
     },

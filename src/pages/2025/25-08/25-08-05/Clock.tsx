@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+export const assets: string[] = [];
+
 
 const ClockGrid =  () => {
   const faceCanvasRef = useRef(null);
@@ -152,7 +154,7 @@ const ClockGrid =  () => {
     <div
       role="img"
       aria-label="Grid of analog clocks displaying the current time"
-      style={{ position: 'relative', width: '100vw', height: '100vh' }}
+      style={{ position: 'relative', width: '100vw', height: '100dvh' }}
     >
       <canvas
         ref={faceCanvasRef}

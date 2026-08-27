@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import gridImage from '@/assets/images/25_images/25-10/25-10-02/lan.gif';
+export const assets = [gridImage];
+
 
 // Counting rod digit map
 const digitMap = {

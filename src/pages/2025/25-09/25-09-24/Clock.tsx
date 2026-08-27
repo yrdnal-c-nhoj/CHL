@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import font20250924 from '@/assets/fonts/25fonts/25-09-24-cora.ttf?url';
+export const assets = [font20250924];
+
 
 const HorizontalProportionalGradientClock =  () => {
   const time = useSmoothClock();
@@ -38,7 +40,7 @@ const HorizontalProportionalGradientClock =  () => {
 
   const containerStyle = {
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     display: 'flex',
     flexDirection: 'row',
   };

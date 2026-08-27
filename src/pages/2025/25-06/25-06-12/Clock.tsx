@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-06/25-06-12/auth.jpg';
 import cattleFont from '@/assets/fonts/25fonts/25-06-12-cattle.ttf';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [bgImage, cattleFont];
+
 const CattleBrandClock =  () => {
   const [time, setTime] = useState<any>({ hours: 12, minutes: '00' });
   // useEffect for updateClock removed - time is reactive via useSecondClock
@@ -21,7 +23,7 @@ const CattleBrandClock =  () => {
       style={{
         fontSize: '1rem',
         margin: 0,
-        height: '100vh',
+        height: '100dvh',
         width: '100vw',
         fontFamily: 'cattle',
       }}
@@ -45,7 +47,7 @@ const CattleBrandClock =  () => {
           top: 0,
           left: 0,
           width: '120vw',
-          height: '110vh',
+          height: '110dvh',
           backgroundRepeat: 'repeat',
           zIndex: 1,
         }}
@@ -55,7 +57,7 @@ const CattleBrandClock =  () => {
         style={{
           position: 'relative',
           right: '-65vw',
-          bottom: '-60vh',
+          bottom: '-60dvh',
           fontSize: '4rem',
           display: 'flex',
           fontFamily: 'cattle',

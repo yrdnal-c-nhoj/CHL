@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import backgroundImg from '@/assets/images/25_images/25-04/25-04-18/Antarctica.jpg';
+export const assets = [backgroundImg];
+
 
 const AntarcticaClock =  () => {
   const clockRef = useRef(null);
@@ -59,15 +61,15 @@ const AntarcticaClock =  () => {
           .tick {
             position: absolute;
             width: 0.1vw;
-            height: 37.5vh;
+            height: 37.5dvh;
             background-color: #b6eef6;
-            top: 1.2vh;
+            top: 1.2dvh;
             left: 50%;
-            transform-origin: 50% 14.5vh;
+            transform-origin: 50% 14.5dvh;
           }
 
           .tick.major {
-            height: 58vh;
+            height: 58dvh;
             width: 0.1vw;
           }
 
@@ -81,24 +83,24 @@ const AntarcticaClock =  () => {
 
           .hour-hand {
             width: 3.7vw;
-            height: 17vh;
+            height: 17dvh;
           }
 
           .minute-hand {
             width: 2vw;
-            height: 33vh;
+            height: 33dvh;
           }
 
           .second-hand {
             width: 0.3vw;
-            height: 100vh;
+            height: 100dvh;
             background-color: rgb(72, 219, 242);
           }
 
           .center {
             position: absolute;
-            width: 1.5vh;
-            height: 1.5vh;
+            width: 1.5dvh;
+            height: 1.5dvh;
             background-color: #333;
             border-radius: 50%;
             top: 50%;
@@ -155,8 +157,8 @@ const AntarcticaClock =  () => {
           className="clock"
           style={{
             position: 'relative',
-            width: '50vh',
-            height: '30vh',
+            width: '50dvh',
+            height: '30dvh',
             borderRadius: '50%',
             zIndex: 1, // added this so clock is above background image
           }}

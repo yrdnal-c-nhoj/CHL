@@ -5,6 +5,8 @@ import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/26_images/26-04/26-04-07/wall.webp';
 import wallFont from '@/assets/fonts/26fonts/26-04-07-wall.ttf';
 import styles from './Clock.module.css';
+export const assets = [bgImage, wallFont];
+
 
 const formatDigit = (num: number) => num.toString().padStart(2, '0');
 

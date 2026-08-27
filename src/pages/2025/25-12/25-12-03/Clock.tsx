@@ -11,7 +11,7 @@ const fontConfigs: FontConfig[] = [
   { fontFamily: 'CustomFont', fontUrl: dogFontUrl },
 ];
 
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   const [images, setImages] = useState<{ current: string; next: string }>({
     current: '',
     next: '',
@@ -65,7 +65,7 @@ const ClockComponent: React.FC = () => {
   const containerStyle: React.CSSProperties = {
     position: 'relative',
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     backgroundColor: '#1a1a1a',
     overflow: 'hidden',
     display: 'flex',
@@ -102,10 +102,10 @@ const ClockComponent: React.FC = () => {
     position: 'relative',
     zIndex: 10,
     fontFamily: 'CustomFont, sans-serif',
-    fontSize: '7vh',
+    fontSize: '7dvh',
     color: '#f9ebe5',
     textShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
-    transform: 'translateY(12vh)',
+    transform: 'translateY(12dvh)',
     pointerEvents: 'none',
   };
 
@@ -151,10 +151,10 @@ const ClockComponent: React.FC = () => {
           position: 'relative',
           zIndex: 10,
           fontFamily: 'CustomFont, sans-serif',
-          fontSize: '7vh',
+          fontSize: '7dvh',
           color: '#f9ebe5',
           textShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
-          transform: 'translateY(-35vh)',
+          transform: 'translateY(-35dvh)',
           pointerEvents: 'none',
         }}
       >

@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import customFontUrl from '@/assets/fonts/26fonts/26-02-07-gear.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-02/26-02-07/gear.gif';
+export const assets = [customFontUrl, backgroundImage];
+
 
 const FullscreenClock =  () => {
   const [showContent, setShowContent] = useState(false);
@@ -77,7 +79,7 @@ const FullscreenClock =  () => {
           line-height: 1;
           animation: rotate 60s linear infinite;
           will-change: transform;
-          text-shadow: 14vh 14vh 0px #1111aa, -14vh 14vh 0px #1111aa, 14vh -14vh 0px #1111aa, -14vh -14vh 0px #1111aa; 
+          text-shadow: 14dvh 14dvh 0px #1111aa, -14dvh 14dvh 0px #1111aa, 14dvh -14dvh 0px #1111aa, -14dvh -14dvh 0px #1111aa; 
         }
 
         @media (min-width: 1024px) {
@@ -85,7 +87,7 @@ const FullscreenClock =  () => {
             grid-template-columns: repeat(4, 1fr); 
             grid-template-rows: repeat(2, 1fr); 
           }
-          .clock-digit { font-size: 28vh; }
+          .clock-digit { font-size: 28dvh; }
         }
 
         /* Tablet/Medium: Keep 4 columns */
@@ -94,7 +96,7 @@ const FullscreenClock =  () => {
             grid-template-columns: repeat(4, 1fr); 
             grid-template-rows: repeat(2, 1fr); 
           }
-          .clock-digit { font-size: 22vh; }
+          .clock-digit { font-size: 22dvh; }
         }
 
         /* Phone: 4 rows of 2 digits */
@@ -104,8 +106,8 @@ const FullscreenClock =  () => {
             grid-template-rows: repeat(4, 1fr); 
           }
           .clock-digit { 
-            font-size: 14vh; 
-            text-shadow: 14vh 14vh 0px #1111aa, -14vh 14vh 0px #1111aa, 14vh -14vh 0px #1111aa, -14vh -14vh 0px #1111aa;
+            font-size: 14dvh; 
+            text-shadow: 14dvh 14dvh 0px #1111aa, -14dvh 14dvh 0px #1111aa, 14dvh -14dvh 0px #1111aa, -14dvh -14dvh 0px #1111aa;
           }
         }
 
@@ -116,8 +118,8 @@ const FullscreenClock =  () => {
             grid-template-rows: repeat(4, 1fr); 
           }
           .clock-digit { 
-            font-size: 12vh; 
-            text-shadow: 8vh 8vh 0px #1111aa, -8vh 8vh 0px #1111aa, 8vh -8vh 0px #1111aa, -8vh -8vh 0px #1111aa;
+            font-size: 12dvh; 
+            text-shadow: 8dvh 8dvh 0px #1111aa, -8dvh 8dvh 0px #1111aa, 8dvh -8dvh 0px #1111aa, -8dvh -8dvh 0px #1111aa;
           }
         }
 
@@ -128,8 +130,8 @@ const FullscreenClock =  () => {
             grid-template-rows: repeat(4, 1fr); 
           }
           .clock-digit { 
-            font-size: 10vh; 
-            text-shadow: 4vh 4vh 0px #1111aa, -4vh 4vh 0px #1111aa, 4vh -4vh 0px #1111aa, -4vh -4vh 0px #1111aa;
+            font-size: 10dvh; 
+            text-shadow: 4dvh 4dvh 0px #1111aa, -4dvh 4dvh 0px #1111aa, 4dvh -4dvh 0px #1111aa, -4dvh -4dvh 0px #1111aa;
           }
         }
       `}</style>
@@ -152,7 +154,7 @@ const FullscreenClock =  () => {
           position: 'absolute',
           inset: 0,
           backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: '15vh 15vh',
+          backgroundSize: '15dvh 15dvh',
           backgroundRepeat: 'repeat',
           backgroundPosition: 'center',
           transform: 'scaleX(-1) translateZ(0)',

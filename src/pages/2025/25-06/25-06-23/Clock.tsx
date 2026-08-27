@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import squFontUrl from '@/assets/fonts/25fonts/25-06-23-squ.ttf';
+export const assets = [squFontUrl];
+
 
 const SquigglingClock =  () => {
   const canvasRef = useRef(null);
@@ -160,7 +162,7 @@ const SquigglingClock =  () => {
           width: '90vmin',
           height: '90vmin',
           maxWidth: '90vw',
-          maxHeight: '90vh',
+          maxHeight: '90dvh',
         }}
       />
     </div>

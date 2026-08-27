@@ -3,6 +3,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import triFont from '@/assets/fonts/26fonts/26-03-27-tri.ttf';
 import styles from './Clock.module.css';
+export const assets = [triFont];
+
 
 // Returns the max radius a hand at angle `theta` (radians, 0=up, CW) can extend
 // within the triangle defined by vertices relative to center cx, cy.

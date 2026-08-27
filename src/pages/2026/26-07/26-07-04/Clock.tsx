@@ -63,24 +63,24 @@ const DigitalClock =  () => {
         className={styles.digitalClock}
         style={{
           fontFamily: 'ClockFont_26_06_19, monospace',
-          fontSize: '8vh',
+          fontSize: '8dvh',
           color: '#B4D0F1BF',
           fontVariantNumeric: 'tabular-nums',
           position: 'absolute',
           zIndex: 2,
           ...(isMobile && {
-            bottom: '2vh',
+            bottom: '2dvh',
             left: '50%',
             transform: 'translateX(-50%)',
           }),
           ...(!isMobile && {
-            bottom: '2vh',
+            bottom: '2dvh',
             right: '2vw',
           }),
         }}
       >
         {hours}:{minutes}
-        <span style={{ fontSize: '6vh', marginLeft: '0.1em' }}>
+        <span style={{ fontSize: '6dvh', marginLeft: '0.1em' }}>
           {ampm}
         </span>
       </time>

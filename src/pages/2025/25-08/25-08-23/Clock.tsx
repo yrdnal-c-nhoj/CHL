@@ -21,6 +21,8 @@ import overlayImage from '@/assets/images/25_images/25-08/25-08-23/fog.gif';
 
 // Custom font (imported as module)
 import fogFont from '@/assets/fonts/25fonts/25-08-23-fog.ttf';
+export const assets = [digit0, digit1, digit2, digit3, digit4, digit5, digit6, digit7, digit8, digit9, backgroundImage, overlayImage, fogFont];
+
 
 // Map digits to their respective images
 const digitImages = {

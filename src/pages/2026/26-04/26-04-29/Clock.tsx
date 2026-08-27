@@ -4,6 +4,8 @@ import animalsVideo from '@/assets/images/26_images/26-04/26-04-29/animals.mp4';
 import { useMillisecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
+export const assets = [animalsVideo];
+
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 

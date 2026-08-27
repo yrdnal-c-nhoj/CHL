@@ -1,6 +1,8 @@
 /** @jsxImportSource react */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Clock.module.css';
+export const assets: string[] = [];
+
 
 /* =========================
    CONFIG
@@ -262,8 +264,8 @@ const css = `
 }
 
 .digit {
-  width: 18vh;
-  height: 26vh;
+  width: 18dvh;
+  height: 26dvh;
   object-fit: cover;
   border-radius: 8px;
   border: 2px solid #333;
@@ -271,7 +273,7 @@ const css = `
 }
 
 .colon {
-  font-size: 10vh;
+  font-size: 10dvh;
   color: #666;
 }
 

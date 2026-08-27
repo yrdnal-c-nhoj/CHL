@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
+export const assets: string[] = [];
+
 
 // Interface for Disc component props
 interface DiscProps {

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
+export const assets: string[] = [];
+
 
 // Component Props interface
 interface SkewClockProps {

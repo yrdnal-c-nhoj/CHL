@@ -42,13 +42,13 @@ const FiligreeClock =  () => {
         alignItems: 'center',
         perspective: '300vw',
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
       }}>
         <div id="clockBox" className={styles.rotate} style={{
           transformStyle: 'preserve-3d',
           position: 'relative',
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
         }}>
           {[...Array(16)].map((_, i) => (
             <div key={i} className="face" style={{

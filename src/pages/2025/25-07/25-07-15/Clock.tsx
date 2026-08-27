@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import asciiFontUrl from '@/assets/fonts/25fonts/25-07-15-ascii.ttf';
 import asciiImageUrl from '@/assets/images/25_images/25-07/25-07-15/ascii.jpg';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [asciiFontUrl, asciiImageUrl];
+
 const DIGITS = {
   0: [
     ' 00000 ',
@@ -187,7 +189,7 @@ const AsciiClock =  () => {
     top: 0,
     left: 0,
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     backgroundImage: `url(${asciiImageUrl})`,
     backgroundRepeat: 'repeat',
     transform: 'scaleX(-1)',
@@ -199,7 +201,7 @@ const AsciiClock =  () => {
     color: '#a2a2a0',
     textShadow: '#100f0f 0.1vw 0',
     position: 'absolute',
-    top: '0.5vh',
+    top: '0.5dvh',
     left: '50%',
     transform: 'translateX(-50%)',
     width: '98vw',
@@ -210,8 +212,8 @@ const AsciiClock =  () => {
 
   const chltitleStyle = {
     fontFamily: '"Roboto Slab", serif',
-    fontSize: '2.7vh',
-    letterSpacing: '0.1vh',
+    fontSize: '2.7dvh',
+    letterSpacing: '0.1dvh',
   };
 
   return (

@@ -10,7 +10,7 @@ import bg1 from '@/assets/images/25_images/25-12/25-12-20/nest.jpg';
 
 export const assets = [bg1, hourHandImg, minuteHandImg, secondHandImg, font251211];
 
-const CLOCK_SIZE = 'min(90vw, 90vh)';
+const CLOCK_SIZE = 'min(90vw, 90dvh)';
 const HAND_SPECS = [
   { img: secondHandImg, width: '22vw', max: '200px', zIndex: 9 },
   { img: minuteHandImg, width: '28vw', max: '200px', zIndex: 8 },

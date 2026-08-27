@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import backgroundImage from '@/assets/images/25_images/25-12/25-12-02/bg.webp';
+export const assets = [backgroundImage];
+
 
 const ROTATION_DURATION = 240; // seconds for a full rotation (quarter speed)
 const ZOOM_MULTIPLIER = 1.5;

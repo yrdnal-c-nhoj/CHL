@@ -6,6 +6,8 @@ import FontOne_2025_09_25 from '@/assets/fonts/25fonts/25-09-25-unix.otf?url';
 import FontTwo_2025_09_25 from '@/assets/fonts/25fonts/25-09-25-unix2.otf?url';
 import FontThree_2025_09_25 from '@/assets/fonts/25fonts/25-09-25-un.otf?url';
 import FontFour_2025_09_25 from '@/assets/fonts/25fonts/25-09-25-uunix.ttf?url';
+export const assets = [bgVideo, fallbackImage, FontOne_2025_09_25, FontTwo_2025_09_25, FontThree_2025_09_25, FontFour_2025_09_25];
+
 
 // Export assets for preloading
 export { bgVideo, fallbackImage };

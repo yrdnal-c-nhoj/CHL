@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bakFont from '@/assets/fonts/25fonts/25-07-02-bak.ttf';
 import backgroundGif from '@/assets/images/25_images/25-07/25-07-02/ba.gif';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [bakFont, backgroundGif];
+
 export default function Clock() {
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
@@ -28,7 +30,7 @@ export default function Clock() {
     position: 'fixed',
     top: 0,
     left: 0,
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     margin: 0,
     display: 'flex',
@@ -40,8 +42,8 @@ export default function Clock() {
 
   const clockStyle = {
     position: 'relative',
-    width: '70vh',
-    height: '70vh',
+    width: '70dvh',
+    height: '70dvh',
     borderRadius: '50%',
     transform: 'scaleX(-1)',
     perspective: '1000px',

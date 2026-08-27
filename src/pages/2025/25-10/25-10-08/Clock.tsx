@@ -14,6 +14,8 @@ import digit6 from '@/assets/images/25_images/25-10/25-10-08/6.jpg';
 import digit7 from '@/assets/images/25_images/25-10/25-10-08/7.webp';
 import digit8 from '@/assets/images/25_images/25-10/25-10-08/8.webp';
 import digit9 from '@/assets/images/25_images/25-10/25-10-08/9.gif';
+export const assets = [bgImg, digit0, digit1, digit2, digit3, digit4, digit5, digit6, digit7, digit8, digit9];
+
 
 const digitMap = {
   0: digit0,

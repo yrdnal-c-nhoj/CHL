@@ -4,6 +4,8 @@ import westVideo from '@/assets/images/26_images/26-03/26-03-01/west.mp4';
 import cloudGif from '@/assets/images/26_images/26-03/26-03-01/cloud.webp';
 import westtImage from '@/assets/images/26_images/26-03/26-03-01/westt.webp';
 import styles from './Clock.module.css';
+export const assets = [westVideo, cloudGif, westtImage];
+
 
 const TILE_SIZE = 100;
 

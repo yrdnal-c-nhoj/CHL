@@ -5,6 +5,8 @@ import rocketBg from '@/assets/images/26_images/26-03/26-03-06/rocket.gif';
 import hourHandImg from '@/assets/images/26_images/26-03/26-03-06/hand2.webp';
 import minuteHandImg from '@/assets/images/26_images/26-03/26-03-06/hand1.webp';
 import secondHandImg from '@/assets/images/26_images/26-03/26-03-06/hand3.webp';
+export const assets = [rocketBg, hourHandImg, minuteHandImg, secondHandImg];
+
 
 const RocketGrid =  () => {
   const time = useMillisecondClock();
@@ -57,7 +59,7 @@ const RocketGrid =  () => {
           alt="Hour"
           style={{
             ...handStyle,
-            height: '18vh',
+            height: '18dvh',
             transform: `translateX(-50%) rotate(${rotation.h}deg)`,
           }}
         />
@@ -67,7 +69,7 @@ const RocketGrid =  () => {
           alt="Minute"
           style={{
             ...handStyle,
-            height: '23vh',
+            height: '23dvh',
             transform: `translateX(-50%) rotate(${rotation.m}deg)`,
           }}
         />
@@ -77,7 +79,7 @@ const RocketGrid =  () => {
           alt="Second"
           style={{
             ...handStyle,
-            height: '25vh',
+            height: '25dvh',
             transform: `translateX(-50%) rotate(${rotation.s}deg)`,
             transition: 'none',
           }}

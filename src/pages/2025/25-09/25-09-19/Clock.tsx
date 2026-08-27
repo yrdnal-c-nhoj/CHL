@@ -3,6 +3,8 @@ import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-09/25-09-19/oort.jpg';
+export const assets = [bgImage];
+
 
 export default function AnalogClock() {
   const [ready, setReady] = useState<boolean>(false);
@@ -27,13 +29,13 @@ export default function AnalogClock() {
         color: #0BCAF5FF;
         z-index: 1;
         width: 70vw;   /* default for laptops */
-        height: 40vh;
+        height: 40dvh;
       }
 
       @media (max-width: 768px) {
         .clock-face {
           width: 60vw;   /* mobile width */
-          height: 90vh;  /* mobile taller height */
+          height: 90dvh;  /* mobile taller height */
         }
       }
     `;

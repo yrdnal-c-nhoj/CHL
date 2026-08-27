@@ -408,15 +408,15 @@ export default function SkyClock() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '2vh',
-          transform: 'translateY(-5vh)',
+          gap: '2dvh',
+          transform: 'translateY(-5dvh)',
         }}
       >
         {/* Time */}
         <div style={{ position: 'relative', display: 'inline-block' }}>
           <div
             style={{
-              fontSize: '16vh',
+              fontSize: '16dvh',
               fontFamily: `'ClockFont', system-ui`,
               color: '#fff',
               textShadow: '1px 1px 0 #041901FF, -1px -1px 0 #E9F2E8FF',
@@ -429,7 +429,7 @@ export default function SkyClock() {
           </div>
           <div
             style={{
-              fontSize: '16vh',
+              fontSize: '16dvh',
               fontFamily: `'ClockFont', system-ui`,
               backgroundImage: inverseGradient,
               WebkitBackgroundClip: 'text',
@@ -447,9 +447,9 @@ export default function SkyClock() {
           <div
             dangerouslySetInnerHTML={{ __html: skyPhrase }}
             style={{
-              fontSize: '7vh',
+              fontSize: '7dvh',
               fontFamily: `'Sfont251027', system-ui`,
-              lineHeight: '7.5vh',
+              lineHeight: '7.5dvh',
               backgroundImage: inverseGradient,
               WebkitBackgroundClip: 'text',
               backgroundClip: 'text',

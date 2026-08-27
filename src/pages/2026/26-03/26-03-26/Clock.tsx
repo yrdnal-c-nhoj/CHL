@@ -4,6 +4,8 @@ import { useSecondClock } from '@/utils/hooks';
 import highwayBg from '@/assets/images/26_images/26-03/26-03-26/highway.webp';
 import overFont from '@/assets/fonts/26fonts/26-03-26-over.otf';
 import styles from './Clock.module.css';
+export const assets = [highwayBg, overFont];
+
 
 const Clock =  () => {
   const time = useSecondClock();

@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
+export const assets = [fontUrl, akiraVideo];
+
 
 // --- CONFIGURATION ---
 const CONFIG = {
@@ -40,7 +42,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     width: '100%',
     backgroundColor: CONFIG.bgColor,
-    padding: '1vh',
+    padding: '1dvh',
     boxSizing: 'border-box',
     zIndex: 2,
   },
@@ -62,8 +64,8 @@ const styles: Record<string, React.CSSProperties> = {
   },
   analogClockContainer: {
     position: 'relative',
-    width: '10vh',
-    height: '10vh',
+    width: '10dvh',
+    height: '10dvh',
     borderRadius: '50%',
   },
   hand: {

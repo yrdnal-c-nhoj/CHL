@@ -1,6 +1,8 @@
 import { GLYPH_MAP } from '@/utils/glyphMap'; // Import the extracted data
 import { IsoEngine } from '@/utils/isoEngine'; // Import the extracted class
 import React, { useEffect, useRef } from 'react';
+export const assets: string[] = [];
+
 
 const OrtogonalClock =  () => {
   const canvasRef = useRef(null);

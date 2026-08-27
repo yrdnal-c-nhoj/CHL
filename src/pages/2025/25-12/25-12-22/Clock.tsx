@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import videoFile from '@/assets/images/25_images/25-12/25-12-22/candle.mp4';
 import fallbackImage from '@/assets/images/25_images/25-12/25-12-22/candle.webp';
 import fontFile from '@/assets/fonts/25fonts/25-12-22-candle.ttf';
+export const assets = [videoFile, fallbackImage, fontFile];
+
 
 const FONT_FAMILY = 'MyClockFont_20251120';
 
@@ -31,7 +33,7 @@ export default function PixelInverseClock() {
     backgroundColor: '#000',
     zIndex: 0,
     // Fallback for browsers that don't support dvh
-    minHeight: '100vh',
+    minHeight: '100dvh',
     // Handle mobile Safari viewport issues
     WebkitOverflowScrolling: 'touch',
   };

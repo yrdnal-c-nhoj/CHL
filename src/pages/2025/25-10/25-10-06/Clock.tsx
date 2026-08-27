@@ -3,6 +3,8 @@ import { useSecondClock } from '@/utils/hooks';
 
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import font20251006 from '@/assets/fonts/25fonts/25-10-06-shado.ttf';
+export const assets = [font20251006];
+
 
 export default function DigitalClock() {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -125,7 +127,7 @@ export default function DigitalClock() {
       fontSize: '88px',
       color: '#C40D53FF',
       textShadow: textShadows,
-      letterSpacing: '3vh',
+      letterSpacing: '3dvh',
       textAlign: 'center',
       display: 'inline-block',
     },

@@ -5,6 +5,8 @@ import bg1 from '@/assets/images/25_images/25-06/25-06-26/co.png';
 import bg2 from '@/assets/images/25_images/25-06/25-06-26/cos.png';
 import wheFont from '@/assets/fonts/25fonts/25-06-26-whe.ttf';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [bg1, bg2, wheFont];
+
 const CosmicWheelClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [

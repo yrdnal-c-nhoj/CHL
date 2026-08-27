@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImg from '@/assets/images/25_images/25-07/25-07-23/bay01s52djxo1_400.webp';
 import bayFont from '@/assets/fonts/25fonts/25-07-23-bay.ttf';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [backgroundImg, bayFont];
+
 const Clock =  () => {
   const [timeStr, setTimeStr] = useState<any>('');
 
@@ -100,7 +102,7 @@ const styles = {
     top: '50%',
     left: '50%',
     width: '150vw',
-    height: '150vh',
+    height: '150dvh',
     transform: 'translate(-50%, -50%)',
     zIndex: 1,
     opacity: 0.3,

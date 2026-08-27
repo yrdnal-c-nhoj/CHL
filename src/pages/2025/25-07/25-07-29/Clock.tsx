@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import slotFont from '@/assets/fonts/25fonts/25-07-29-slot.otf';
 import bgImage from '@/assets/images/25_images/25-07/25-07-29/IMAGE_1688551792.webp';
+export const assets = [slotFont, bgImage];
+
 
 const SlotMachineClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -223,7 +225,7 @@ const SlotMachineClock =  () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           position: 'absolute',
-          height: '100vh',
+          height: '100dvh',
           width: '43.75rem',
           top: '50%',
           left: '50%',

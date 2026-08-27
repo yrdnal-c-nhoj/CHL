@@ -151,7 +151,7 @@ const Clock =  () => {
           id="hour"
           src={hourHand}
           alt="Hour hand"
-          style={{ ...handStyle, height: '18vh', width: '12.8rem', zIndex: 2 }}
+          style={{ ...handStyle, height: '18dvh', width: '12.8rem', zIndex: 2 }}
         />
         <img
           decoding="async"
@@ -159,7 +159,7 @@ const Clock =  () => {
           id="minute"
           src={minuteHand}
           alt="Minute hand"
-          style={{ ...handStyle, height: '25vh', width: '5rem', zIndex: 1 }}
+          style={{ ...handStyle, height: '25dvh', width: '5rem', zIndex: 1 }}
         />
         <img
           decoding="async"
@@ -169,7 +169,7 @@ const Clock =  () => {
           alt="Second hand"
           style={{
             ...handStyle,
-            height: '30vh',
+            height: '30dvh',
             width: '7.2rem',
             zIndex: 3,
             filter: 'brightness(120%)',

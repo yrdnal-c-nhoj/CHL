@@ -51,7 +51,7 @@ const VTEC =  () => {
       {/* Checkerboard Grid Container */}
       <div style={{
         position: 'absolute',
-        inset: '-10vh',
+        inset: '-10dvh',
         display: 'grid',
         gridTemplateColumns: `repeat(${columns}, 1fr)`,
         gridTemplateRows: `repeat(${rows}, 1fr)`,

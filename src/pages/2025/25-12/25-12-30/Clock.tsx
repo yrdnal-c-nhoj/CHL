@@ -4,6 +4,8 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useRef } from 'react';
+export const assets = [fontAnaUrl, fontLemUrl];
+
 
 // 1. Define font configurations for the Suspense-based loader
 export const fontConfigs: FontConfig[] = [
@@ -128,7 +130,7 @@ const RotatingAnalemmaClock =  () => {
     clockContainer: {
       width: '100%', // padding: '0 2vw',
       boxSizing: 'border-box',
-      // marginTop: '2vh',
+      // marginTop: '2dvh',
       zIndex: 5,
     },
     clock: {

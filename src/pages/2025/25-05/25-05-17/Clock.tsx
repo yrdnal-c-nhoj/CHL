@@ -5,6 +5,8 @@ import layer5Gif from '@/assets/images/25_images/25-05/25-05-17/e0435fd452bbed15
 import layer3Gif from '@/assets/images/25_images/25-05/25-05-17/giphy-3181726992.webp';
 import rectangleGif from '@/assets/images/25_images/25-05/25-05-17/tumblr_53c27c64cc9f17a0880aff18b8f6d934_d138a0cd_500.gif';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [bgGif, layer5Gif, layer3Gif, rectangleGif];
+
 const PrimaryClock =  () => {
   useEffect(() => {
       setDate();
@@ -44,9 +46,9 @@ const styles = {
   bgimage: {
     position: 'fixed',
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     backgroundRepeat: 'repeat',
-    backgroundSize: '9vh 22vw',
+    backgroundSize: '9dvh 22vw',
     top: 0,
     left: 0,
     zIndex: 0,
@@ -56,7 +58,7 @@ const styles = {
     width: '100%',
     height: '100%',
     backgroundRepeat: 'repeat',
-    backgroundSize: '5vh 15vw',
+    backgroundSize: '5dvh 15vw',
     opacity: 0.6,
     zIndex: 2,
     top: 0,
@@ -67,7 +69,7 @@ const styles = {
     width: '100%',
     height: '100%',
     backgroundRepeat: 'repeat',
-    backgroundSize: '12vh 42vw',
+    backgroundSize: '12dvh 42vw',
     opacity: 0.9,
     zIndex: 12,
     top: 0,
@@ -76,7 +78,7 @@ const styles = {
   rectangle: {
     position: 'fixed',
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     backgroundSize: '200% 200%',
@@ -105,7 +107,7 @@ const styles = {
     opacity: 0.8,
   },
   minHand: {
-    height: '9vh',
+    height: '9dvh',
     width: '100%',
     background: '#0a2ef8',
     position: 'absolute',
@@ -115,7 +117,7 @@ const styles = {
     zIndex: 11,
   },
   hourHand: {
-    height: '11vh',
+    height: '11dvh',
     width: '72%',
     background: '#fbf703',
     position: 'absolute',
@@ -125,7 +127,7 @@ const styles = {
     zIndex: 18,
   },
   secondHand: {
-    height: '4vh',
+    height: '4dvh',
     width: '400%',
     background: '#f40606',
     position: 'absolute',

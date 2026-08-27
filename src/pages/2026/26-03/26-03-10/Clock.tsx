@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSecondClock } from '@/utils/hooks';
+export const assets: string[] = [];
+
 
 const ProgressClock =  () => {
   const time = useSecondClock();

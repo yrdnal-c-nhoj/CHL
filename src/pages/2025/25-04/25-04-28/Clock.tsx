@@ -10,6 +10,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
 import SkaterFont from '@/assets/fonts/25fonts/25-04-28-Skater.ttf?url';
+export const assets = [SkaterFont];
+
 
 const fontFaceStyle = `
   @font-face {

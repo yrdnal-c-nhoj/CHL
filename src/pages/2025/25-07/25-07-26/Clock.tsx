@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bg1 from '@/assets/images/25_images/25-07/25-07-26/tum.gif';
 import bg2 from '@/assets/images/25_images/25-07/25-07-26/tum2.gif';
 import myFontUrl from '@/assets/fonts/25fonts/25-07-26-sec.ttf';
+export const assets = [bg1, bg2, myFontUrl];
+
 
 const COLORS = ['#CB0BEDFF', '#25E90CFF', '#F58E0FFF'];
 
@@ -111,10 +113,10 @@ const PrimaryColorClock =  () => {
     top: 0,
     left: 0,
     width: '150vw',
-    height: '150vh',
+    height: '150dvh',
     backgroundImage: `url(${bg1})`,
     backgroundRepeat: 'repeat',
-    backgroundSize: '59vh 12vw',
+    backgroundSize: '59dvh 12vw',
     backgroundAttachment: 'fixed',
     zIndex: 1,
     pointerEvents: 'none',
@@ -156,7 +158,7 @@ const PrimaryColorClock =  () => {
 
   const secondHandStyle = {
     ...baseHandStyle,
-    height: '4vh',
+    height: '4dvh',
     width: '400%',
     background: handColors.second,
     zIndex: 18,
@@ -164,7 +166,7 @@ const PrimaryColorClock =  () => {
 
   const minHandStyle = {
     ...baseHandStyle,
-    height: '9vh',
+    height: '9dvh',
     width: '100%',
     background: handColors.minute,
     zIndex: 11,
@@ -172,7 +174,7 @@ const PrimaryColorClock =  () => {
 
   const hourHandStyle = {
     ...baseHandStyle,
-    height: '11vh',
+    height: '11dvh',
     width: '72%',
     background: handColors.hour,
     zIndex: 18,

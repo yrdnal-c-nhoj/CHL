@@ -5,6 +5,8 @@ import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
 
 import shapesFont from '@/assets/fonts/26fonts/26-03-21-shapes.ttf';
+export const assets = [shapesFont];
+
 
 const fontConfigs: FontConfig[] = [
   {

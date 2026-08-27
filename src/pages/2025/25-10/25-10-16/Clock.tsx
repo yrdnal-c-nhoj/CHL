@@ -114,10 +114,10 @@ const VenusClock =  () => {
       fontFamily: 'VenusFont, serif',
       color: '#5CC6AD',
       textShadow: `
-        0.5vh 0.2vh #F2EBEBFF,
-        -0.5vh -0.2vh  #000000,
-        0.09vh 0.09vh 1.9vh #E60B0BFF,
-        -0.09vh -0.09vh 1.8vh #ffffff
+        0.5dvh 0.2dvh #F2EBEBFF,
+        -0.5dvh -0.2dvh  #000000,
+        0.09dvh 0.09dvh 1.9dvh #E60B0BFF,
+        -0.09dvh -0.09dvh 1.8dvh #ffffff
       `,
       zIndex: 28,
       userSelect: 'none',
@@ -132,8 +132,8 @@ const VenusClock =  () => {
     borderRadius: '0.1rem',
     background: 'linear-gradient(180deg, #101110FF,  #5EC0A4FF)',
     boxShadow: `
-      0 0.2vh 0.5vh rgba(0,0,0,0.3),
-      inset 0 0.4vh 0.2vh rgba(255,255,255,0.9)
+      0 0.2dvh 0.5dvh rgba(0,0,0,0.3),
+      inset 0 0.4dvh 0.2dvh rgba(255,255,255,0.9)
     `,
   };
 
@@ -153,10 +153,10 @@ const VenusClock =  () => {
           background: '#5CC6ADFF',
           borderRadius: '0.05rem',
           boxShadow: `
-            0.2vh 0.2vh 0.25vh #F0EEEDFF,
-            -0.3vh 0.3vh 0.25vh #3f2e23,
-            0.1vh -0.1vh 0.25vh #3f2e23,
-            -0.1vh -0.1vh 0.25vh #3f2e23
+            0.2dvh 0.2dvh 0.25dvh #F0EEEDFF,
+            -0.3dvh 0.3dvh 0.25dvh #3f2e23,
+            0.1dvh -0.1dvh 0.25dvh #3f2e23,
+            -0.1dvh -0.1dvh 0.25dvh #3f2e23
           `,
           zIndex: 8,
         }}
@@ -170,21 +170,21 @@ const VenusClock =  () => {
 
   const hourStyle = {
     ...handCommonStyle,
-    width: '0.8vh',
+    width: '0.8dvh',
     height: `${clockRadiusVh * 0.5}vh`,
     transform: `translate(-50%, -50%) rotate(${hourDeg}deg)`,
     zIndex: 10,
   };
   const minuteStyle = {
     ...handCommonStyle,
-    width: '0.5vh',
+    width: '0.5dvh',
     height: `${clockRadiusVh * 0.75}vh`,
     transform: `translate(-50%, -50%) rotate(${minuteDeg}deg)`,
     zIndex: 11,
   };
   const secondStyle = {
     ...handCommonStyle,
-    width: '0.25vh',
+    width: '0.25dvh',
     height: `${clockRadiusVh * 0.85}vh`,
     background: '#5CC6AD',
     transform: `translate(-50%, -50%) rotate(${secondDeg}deg)`,
@@ -205,7 +205,7 @@ const VenusClock =  () => {
           left: 0,
           top: 0,
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           objectFit: 'cover',
           zIndex: 0,
           filter: 'saturate(0.1)',
@@ -237,14 +237,14 @@ const VenusClock =  () => {
             position: 'absolute',
             left: '50%',
             top: '50%',
-            width: `55vh`,
-            height: `55vh`,
+            width: `55dvh`,
+            height: `55dvh`,
             transform: 'translate(-50%, -50%)',
             borderRadius: '50%',
             background: 'white',
             opacity: 0.7,
             zIndex: 6,
-            boxShadow: 'inset 0 0 2vh rgba(0,0,0,0.3)',
+            boxShadow: 'inset 0 0 2dvh rgba(0,0,0,0.3)',
           }}
         />
 

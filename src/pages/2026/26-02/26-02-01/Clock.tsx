@@ -5,6 +5,8 @@ import styles from './Clock.module.css';
 
 import dripFont from '@/assets/fonts/26fonts/26-02-01-26-01-31-cond.ttf?url';
 import analogBgImage from '@/assets/images/26_images/26-02/26-02-01/rain.webp';
+export const assets = [dripFont, analogBgImage];
+
 
 export const background = analogBgImage;
 

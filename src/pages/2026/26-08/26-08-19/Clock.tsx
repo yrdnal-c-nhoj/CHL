@@ -28,7 +28,7 @@ const fontConfigs: FontConfig[] = [
 // ====================================================================================
 // 3. MAIN COMPONENT
 // ====================================================================================
-const AnalogClockComponent: React.FC = () => {
+const AnalogClockComponent =  () => {
   // A. Use the canonical time hook. `useMillisecondClock` provides smooth animation.
   //    For a ticking second hand, `useSecondClock` is more performant.
   const time = useMillisecondClock();

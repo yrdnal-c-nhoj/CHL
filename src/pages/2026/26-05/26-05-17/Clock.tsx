@@ -8,6 +8,8 @@ import styles from './Clock.module.css';
 // Reverting to the standard .otf extension without the extra suffix
 import clockFont from '@/assets/fonts/26fonts/26-05-17.otf?url';
 import clockVideo from '@/assets/images/26_images/26-05/26-05-17/26-05-17.mp4';
+export const assets = [clockFont, clockVideo];
+
 
 // ---------------- CONFIGURATION ----------------
 const CLOCK_CONFIG = {

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import roomImage from '@/assets/images/25_images/25-04/25-04-09/room.webp';
+export const assets = [roomImage];
+
 
 export { roomImage }; // Export for preloading pipeline
 

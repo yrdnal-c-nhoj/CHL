@@ -2,6 +2,8 @@ import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import ci2602Font from '@/assets/fonts/26fonts/26-02-05-pin.ttf?url';
+export const assets = [ci2602Font];
+
 
 const OVAL = {
   RADIUS_X: 800,
@@ -91,7 +93,7 @@ const Digit: React.FC<DigitProps> = ({ char, index, total, phase }) => {
 
 const containerStyle: React.CSSProperties = {
   width: '100vw',
-  height: '100vh',
+  height: '100dvh',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -113,7 +115,7 @@ const digitBaseStyle: React.CSSProperties = {
   position: 'absolute',
   top: '50%',
   left: '50%',
-  fontSize: '29vh',
+  fontSize: '29dvh',
   backfaceVisibility: 'visible',
   WebkitBackfaceVisibility: 'visible',
   whiteSpace: 'pre',

@@ -7,6 +7,8 @@ import hourHandImg from '@/assets/images/25_images/25-09/25-09-06/b.gif';
 import minuteHandImg from '@/assets/images/25_images/25-09/25-09-06/b1.gif';
 import secondHandImg from '@/assets/images/25_images/25-09/25-09-06/b2.gif';
 import tickImg from '@/assets/images/25_images/25-09/25-09-06/b3.gif';
+export const assets = [font_06_09_2025, bgImage, hourHandImg, minuteHandImg, secondHandImg, tickImg];
+
 
 const AnalogClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC

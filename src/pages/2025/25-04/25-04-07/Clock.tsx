@@ -6,6 +6,8 @@ import sys1 from '@/assets/images/25_images/25-04/25-04-07/sys1.gif';
 import sys2 from '@/assets/images/25_images/25-04/25-04-07/sys2.gif';
 import sys3 from '@/assets/images/25_images/25-04/25-04-07/sys3.gif';
 import styles from './Clock.module.css';
+export const assets = [sys1, sys2, sys3];
+
 
 // Component Props interface
 interface SolarSystemClockProps {
@@ -211,8 +213,8 @@ const styles = {
   },
   clock: {
     position: 'absolute',
-    width: '60vh',
-    height: '60vh',
+    width: '60dvh',
+    height: '60dvh',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -221,8 +223,8 @@ const styles = {
   },
   ball: {
     position: 'absolute',
-    width: '9vh',
-    height: '9vh',
+    width: '9dvh',
+    height: '9dvh',
     opacity: 1,
     borderRadius: '50%',
     top: '50%',

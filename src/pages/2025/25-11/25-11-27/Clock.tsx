@@ -9,6 +9,8 @@ import secondHandImg from '@/assets/images/25_images/25-11/25-11-27/french.webp'
 import backgroundImg from '@/assets/images/25_images/25-11/25-11-27/fr.jpg';
 import styles from './Clock.module.css';
 import { useMillisecondClock } from '@/utils/hooks';
+export const assets = [revolution251127font, line251127font, hourHandImg, minuteHandImg, secondHandImg, backgroundImg];
+
 
 const fontConfigs: FontConfig[] = [
   { fontFamily: 'RevolutionaryClock251127font', fontUrl: revolution251127font },

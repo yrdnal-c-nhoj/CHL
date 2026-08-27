@@ -24,6 +24,8 @@ import number12Img from '@/assets/images/25_images/25-06/25-06-02/num12.webp';
 import hourHandImg from '@/assets/images/25_images/25-06/25-06-02/hour.png';
 import minuteHandImg from '@/assets/images/25_images/25-06/25-06-02/min.png';
 import secondHandImg from '@/assets/images/25_images/25-06/25-06-02/min.png';
+export const assets = [bg1Img, bg2Img, bg3Img, bg4Img, number1Img, number2Img, number3Img, number4Img, number5Img, number6Img, number7Img, number8Img, number9Img, number10Img, number11Img, number12Img, hourHandImg, minuteHandImg, secondHandImg];
+
 
 export default function AnalogImageClock() {
   const time = useMillisecondClock();
@@ -106,7 +108,7 @@ export default function AnalogImageClock() {
       style={{
         position: 'relative',
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         background: `linear-gradient(${gradientShift}deg, #1a1a1a, #3a3a3a, #5a5a5a)`,
         transition: 'background 0.05s linear',
         overflow: 'hidden',

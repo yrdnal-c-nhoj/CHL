@@ -4,6 +4,8 @@ import tileImg from '@/assets/images/25_images/25-11/25-11-19/ap.webp';
 import overlayImg from '@/assets/images/25_images/25-11/25-11-19/app.webp';
 import customFontUrl from '@/assets/fonts/25fonts/25-11-19-apple.ttf?url';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [bgImg, tileImg, overlayImg, customFontUrl];
+
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
@@ -85,7 +87,7 @@ const styles = {
     inset: 0,
     backgroundImage: `url(${tileImg})`,
     backgroundRepeat: 'repeat',
-    backgroundSize: '10vh 10vh',
+    backgroundSize: '10dvh 10dvh',
     // opacity: 0.6,
     filter: 'brightness(1.1) contrast(1.2) saturate(1.5)',
     zIndex: 2,
@@ -103,7 +105,7 @@ const styles = {
   clock: {
     position: 'relative',
     zIndex: 10,
-    fontSize: '15vh', // Responsive font size
+    fontSize: '15dvh', // Responsive font size
     color: '#E1F3DD',
     textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
     transition: 'opacity 300ms ease-in-out',

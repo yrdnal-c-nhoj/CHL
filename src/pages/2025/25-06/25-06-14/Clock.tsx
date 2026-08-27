@@ -12,6 +12,8 @@ import hum7 from '@/assets/images/25_images/25-06/25-06-14/hum7.webp';
 import hum8 from '@/assets/images/25_images/25-06/25-06-14/hum8.gif';
 import hum9 from '@/assets/images/25_images/25-06/25-06-14/hum9.webp';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [hummFont, hmmGif, hummPng, hum1, hum2, hum3, hum4, hum7, hum8, hum9];
+
 const floatingImages = [
   { src: hum1, animation: 'motion1' },
   { src: hum2, animation: 'motion2' },
@@ -100,7 +102,7 @@ const styles = {
     top: 0,
     left: 0,
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     opacity: 0.8,
     backgroundRepeat: 'repeat',
     backgroundSize: 'auto',
@@ -112,14 +114,14 @@ const styles = {
     top: 0,
     left: 0,
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     opacity: 0.8,
     zIndex: 3,
     transform: 'scaleX(-1)',
   },
   clock: {
-    width: '95vh',
-    height: '90vh',
+    width: '95dvh',
+    height: '90dvh',
     borderRadius: '50%',
     position: 'relative',
     zIndex: 5,
@@ -127,7 +129,7 @@ const styles = {
   number: {
     position: 'absolute',
     fontFamily: 'humm',
-    fontSize: '14vh',
+    fontSize: '14dvh',
     color: '#0adb26',
     textShadow: '#f98f85 0 -2rem, #ed5ad2 0 2rem',
     opacity: 0.7,
@@ -180,8 +182,8 @@ const styles = {
   },
   floatingImage: {
     position: 'absolute',
-    width: '8vh',
-    height: '8vh',
+    width: '8dvh',
+    height: '8dvh',
     objectFit: 'cover',
     borderRadius: '1rem',
     zIndex: 7,

@@ -28,6 +28,8 @@ import m10 from '@/assets/images/26_images/26-04/26-04-12/10.gif';
 import m11 from '@/assets/images/26_images/26-04/26-04-12/11.gif';
 import m12 from '@/assets/images/26_images/26-04/26-04-12/12.webp';
 import m13 from '@/assets/images/26_images/26-04/26-04-12/13.webp';
+export const assets = [hourHandImg, minuteHandImg, secondHandImg, bgImage, centerImg, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13];
+
 
 const allMatchImages = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13];
 

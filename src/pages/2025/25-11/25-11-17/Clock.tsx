@@ -6,6 +6,8 @@ import bg3 from '@/assets/images/25_images/25-11/25-11-17/mars1.gif';
 import bg4 from '@/assets/images/25_images/25-11/25-11-17/mars5.webp';
 import font2025_11_18 from '@/assets/fonts/25fonts/25-11-17-mars.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+export const assets = [bg1, bg2, bg3, bg4, font2025_11_18];
+
 
 export { bg1, bg2, bg3, bg4 };
 
@@ -123,7 +125,7 @@ const localStyles = {
     fontFamily:
       "ClockFont, Inter, Roboto, system-ui, -apple-system, 'Segoe UI', sans-serif",
     overflow: 'hidden',
-    padding: '2vh',
+    padding: '2dvh',
     boxSizing: 'border-box',
     opacity: 1, // Font loading is handled by useSuspenseFontLoader
     transition: 'opacity 0.35s ease-out',
@@ -187,20 +189,20 @@ const localStyles = {
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '2vh',
+    gap: '2dvh',
   },
   group: {
     display: 'flex',
     flexDirection: 'row',
-    gap: '1vh',
+    gap: '1dvh',
   },
   digitBox: {
-    width: '10vh',
-    height: '11vh',
+    width: '10dvh',
+    height: '11dvh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: '11vh',
+    fontSize: '11dvh',
     color: '#EF2005FF',
     lineHeight: 1,
     whiteSpace: 'nowrap',

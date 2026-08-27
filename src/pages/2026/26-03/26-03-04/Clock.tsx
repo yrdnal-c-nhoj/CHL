@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import sunFont from '@/assets/fonts/26fonts/26-03-04-sun.ttf';
 import sunBg from '@/assets/images/26_images/26-03/26-03-04/sun.webp';
+export const assets = [sunFont, sunBg];
+
 
 const Clock =  () => {
   const fontConfigs = [
@@ -57,7 +59,7 @@ const Clock =  () => {
   const digits = time.toTimeString().split(' ')[0].replace(/:/g, '').split('');
 
   const boxWidth = isMobile ? '48vw' : '16vw';
-  const boxHeight = isMobile ? '25vh' : '40vh';
+  const boxHeight = isMobile ? '25dvh' : '40dvh';
 
   const backgroundStyle = {
     position: 'fixed',
@@ -100,7 +102,7 @@ const Clock =  () => {
     width: boxWidth,
     height: boxHeight,
     fontFamily: "'SunFont', monospace",
-    fontSize: isMobile ? '22vh' : '15vw',
+    fontSize: isMobile ? '22dvh' : '15vw',
     color: '#051160',
     lineHeight: 1,
     textAlign: 'center',

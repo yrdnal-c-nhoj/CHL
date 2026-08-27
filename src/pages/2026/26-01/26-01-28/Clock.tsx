@@ -109,7 +109,7 @@ const ThreeSingleHandClocks = () => {
     <main className={styles.container}>
       <time dateTime={new Date().toISOString()} className={styles.srOnly}>{new Date().toLocaleTimeString()}</time>
       <CheckerboardBackground />
-      <div className={styles.clockGrid} style={{ flexDirection: layout, gap: layout === 'column' ? '0vh' : '0vw', zIndex: 10 }}>
+      <div className={styles.clockGrid} style={{ flexDirection: layout, gap: layout === 'column' ? '0dvh' : '0vw', zIndex: 10 }}>
         <Clock label="SECONDS" angle={secAngle} color="#FAD903" thickness="14%" maxUnits={60} step={1} smooth={false} clockSize={clockSize} font260128Name={font260128Name} />
         <Clock label="HOURS" angle={hourAngle} color="#FF0000" thickness="18%" maxUnits={24} step={1} clockSize={clockSize} font260128Name={font260128Name} />
         <Clock label="MINUTES" angle={minAngle} color="#1693FA" thickness="16%" maxUnits={60} step={1} clockSize={clockSize} font260128Name={font260128Name} />
@@ -139,7 +139,7 @@ const Clock = ({ angle, color, thickness, smooth = true, maxUnits, step, clockSi
 
   const transitionStyle = smooth ? 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)' : 'none';
   const borderWeight = 6;
-  const massiveHeight = '200vh';
+  const massiveHeight = '200dvh';
 
   return (
     <div className={styles.face} style={{ width: clockSize, height: clockSize }}>

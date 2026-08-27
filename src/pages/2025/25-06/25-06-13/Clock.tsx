@@ -41,9 +41,9 @@ const CloudyNightClock =  () => {
   const moonStyle = {
     position: 'absolute',
     left: '50%',
-    top: '120vh',
-    width: '32vh',
-    height: '32vh',
+    top: '120dvh',
+    width: '32dvh',
+    height: '32dvh',
     backgroundImage: `url(${cmoon})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -70,7 +70,7 @@ const CloudyNightClock =  () => {
 
   const cloudStyle = {
     width: '120vw',
-    height: '90vh',
+    height: '90dvh',
     backgroundImage: `url(${clouGif})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -82,9 +82,9 @@ const CloudyNightClock =  () => {
 
   const bgImageStyle = {
     position: 'fixed',
-    top: '-19vh',
+    top: '-19dvh',
     left: 0,
-    height: '150vh',
+    height: '150dvh',
     backgroundImage: `url(${clll})`,
     backgroundRepeat: 'repeat',
     zIndex: 2,
@@ -96,7 +96,7 @@ const CloudyNightClock =  () => {
     color: '#7e7f84',
     textShadow: '#100f0f 0.1rem 0',
     position: 'absolute',
-    top: '1vh',
+    top: '1dvh',
     left: '50%',
     transform: 'translateX(-50%)',
     width: '98%',
@@ -106,24 +106,24 @@ const CloudyNightClock =  () => {
 
   const chltitleStyle = {
     fontFamily: '"Roboto Slab", serif',
-    fontSize: '2.1vh',
+    fontSize: '2.1dvh',
     position: 'absolute',
-    top: '0.5vh',
-    right: '1vh',
-    letterSpacing: '0.1vh',
+    top: '0.5dvh',
+    right: '1dvh',
+    letterSpacing: '0.1dvh',
   };
 
   const bttitleStyle = {
     fontFamily: '"Oxanium", serif',
-    fontSize: '2.7vh',
+    fontSize: '2.7dvh',
     fontStyle: 'italic',
-    letterSpacing: '-0.1vh',
+    letterSpacing: '-0.1dvh',
   };
 
   const dateContainerStyle = {
     color: '#ebf9fb',
     position: 'absolute',
-    bottom: '0.5vh',
+    bottom: '0.5dvh',
     left: '50%',
     transform: 'translateX(-50%)',
     width: '98%',
@@ -136,19 +136,19 @@ const CloudyNightClock =  () => {
     position: 'fixed',
     left: '50%',
     transform: 'translateX(-50%)',
-    fontSize: '4vh',
-    lineHeight: '4vh',
+    fontSize: '4dvh',
+    lineHeight: '4dvh',
   };
 
   const dateLeftStyle = {
-    fontSize: '3vh',
+    fontSize: '3dvh',
     fontFamily: '"Nanum Gothic Coding", monospace',
     position: 'relative',
     left: 0,
   };
 
   const dateRightStyle = {
-    fontSize: '3vh',
+    fontSize: '3dvh',
     fontFamily: '"Nanum Gothic Coding", monospace',
     position: 'absolute',
     right: 0,

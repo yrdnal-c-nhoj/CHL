@@ -4,6 +4,8 @@ import minuteHand from '@/assets/images/26_images/26-04/26-04-10/minute.webp';
 import secondHand from '@/assets/images/26_images/26-04/26-04-10/second.webp';
 import backgroundImage from '@/assets/images/26_images/26-04/26-04-10/sand.jpg';
 import styles from './Clock.module.css';
+export const assets = [hourHand, minuteHand, secondHand, backgroundImage];
+
 
 const Clock = () => {
   const now = useMillisecondClock();

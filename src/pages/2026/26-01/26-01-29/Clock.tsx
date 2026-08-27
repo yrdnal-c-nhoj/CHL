@@ -54,7 +54,7 @@ const AnalogUranusClock =  () => {
         <div className={styles.tileOverlay} style={{ backgroundImage: `url(${tileOverlay})` }} />
       </div>
 
-      <div className={styles.bgLayer} style={{ backgroundImage: `url(${backgroundGif3})`, backgroundSize: '50vh 50vh', filter: 'contrast(1.8) brightness(0.5) saturate(2.0)', zIndex: 5, opacity: 0.5 }} />
+      <div className={styles.bgLayer} style={{ backgroundImage: `url(${backgroundGif3})`, backgroundSize: '50dvh 50dvh', filter: 'contrast(1.8) brightness(0.5) saturate(2.0)', zIndex: 5, opacity: 0.5 }} />
 
       <div className={styles.clockFace}>
         <ClockUranus />

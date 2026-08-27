@@ -13,6 +13,8 @@ import KittiesFont from '@/assets/fonts/26fonts/26-03-09-Kitties.ttf';
 import meFont from '@/assets/fonts/26fonts/26-03-09-me.ttf';
 import OrienightFont from '@/assets/fonts/26fonts/26-03-09-Orienight.otf';
 import PurrfectFont from '@/assets/fonts/26fonts/26-03-09-Purrfect.ttf';
+export const assets = [catFont, SwatsFont, cat1Font, catzFont, katFont, katzzFont, KittiesFont, meFont, OrienightFont, PurrfectFont];
+
 
 const FONT_DATA = [
   { name: 'cat', url: catFont, maxSize: 0.4 },

@@ -8,6 +8,8 @@ import {
 } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
+export const assets = [backgroundVideo, fontUrl];
+
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 const formatMs = (num: number): string => num.toString().padStart(3, '0');

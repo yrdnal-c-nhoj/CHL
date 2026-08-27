@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import clouds from '@/assets/images/25_images/25-04/25-04-20/clouds.webp';
 import cloFont from '@/assets/fonts/25fonts/25-04-20-clo.ttf?url';
+export const assets = [clouds, cloFont];
+
 
 // Component Props interface
 interface CloudClockProps {
@@ -162,7 +164,7 @@ const CloudClock = () => {
             top: 0,
             left: 0,
             width: '100vw',
-            height: '100vh',
+            height: '100dvh',
             zIndex: 2,
             objectFit: 'cover',
           }}
@@ -177,7 +179,7 @@ const CloudClock = () => {
             top: 0,
             left: 0,
             width: '100vw',
-            height: '100vh',
+            height: '100dvh',
             zIndex: 2,
             objectFit: 'cover',
             transform: 'scaleX(-1)',

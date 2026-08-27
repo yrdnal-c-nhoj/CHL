@@ -32,15 +32,15 @@ const Clock =  () => {
 
   const slideshowStyle = {
     position: 'relative',
-    width: '90vh',
-    height: '90vh',
+    width: '90dvh',
+    height: '90dvh',
     overflow: 'hidden',
     zIndex: 5,
   };
 
   const clockStyle = {
-    width: '87vh',
-    height: '87vh',
+    width: '87dvh',
+    height: '87dvh',
     borderRadius: '50%',
     position: 'fixed',
     top: '50%',

@@ -43,7 +43,7 @@ const AnalogClock =  () => {
         <div
           className={styles.clockFace}
           style={{
-            transform: isMobile ? 'translateY(5vh)' : 'translateY(1vh)',
+            transform: isMobile ? 'translateY(5dvh)' : 'translateY(1dvh)',
           }}
         >
         <div className={`${styles.hand} ${styles.hourHand}`} style={{ transform: `translateX(-50%) rotate(${hourAngle}deg)` }} />

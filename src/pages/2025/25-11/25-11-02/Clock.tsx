@@ -5,6 +5,8 @@ import bgVideo from '@/assets/images/25_images/25-11/25-11-02/swim.mp4';
 import fallbackImg from '@/assets/images/25_images/25-11/25-11-02/swim.webp';
 import fontFile2025_11_04 from '@/assets/fonts/25fonts/25-11-02-sperm.ttf'; // Custom scientific font
 import { useMillisecondClock } from '@/utils/hooks';
+export const assets = [bgVideo, fallbackImg, fontFile2025_11_04];
+
 
 export default function MonarchScene() {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -82,7 +84,7 @@ export default function MonarchScene() {
         top: 0,
         left: 0,
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         overflow: 'hidden',
         backgroundColor: '#000',
         fontFamily: "'MedTech2025_11_04', monospace",
@@ -139,7 +141,7 @@ export default function MonarchScene() {
           justifyContent: 'center',
           alignItems: 'center',
           color: '#00FFFF',
-          textShadow: '0 0 1vh #00FFFF',
+          textShadow: '0 0 1dvh #00FFFF',
           userSelect: 'none',
           zIndex: 10,
           width: '90vw',
@@ -147,10 +149,10 @@ export default function MonarchScene() {
           transition: 'opacity 0.6s ease',
         }}
       >
-        <div style={timeRowStyle('15vh')}>{h}</div>
-        <div style={timeRowStyle('15vh')}>{m}</div>
-        <div style={timeRowStyle('15vh')}>{s}</div>
-        <div style={timeRowStyle('15vh')}>{ms}</div>
+        <div style={timeRowStyle('15dvh')}>{h}</div>
+        <div style={timeRowStyle('15dvh')}>{m}</div>
+        <div style={timeRowStyle('15dvh')}>{s}</div>
+        <div style={timeRowStyle('15dvh')}>{ms}</div>
       </div>
     </div>
   );

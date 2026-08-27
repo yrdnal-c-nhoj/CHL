@@ -129,7 +129,7 @@ function invertColor(hex: string): string {
 // Component
 // ---------------------------------------------------------------------------
 
-export const DissolvingDiffusionClock: React.FC = () => {
+export const DissolvingDiffusionClock =  () => {
   const time = useSecondClock();
   const timeRef = useRef(time);
   timeRef.current = time;

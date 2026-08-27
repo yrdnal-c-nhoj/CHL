@@ -75,7 +75,7 @@ const Clock =  () => {
     position: 'absolute',
     left: 0,
     width: '100vw',
-    height: '25vh',
+    height: '25dvh',
     pointerEvents: 'none',
     zIndex: 10,
     display: 'none',

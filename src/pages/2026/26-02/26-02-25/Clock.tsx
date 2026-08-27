@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import cocteauVideo from '@/assets/images/26_images/26-02/26-02-25/cocteau.mp4';
 import starWebp from '@/assets/images/26_images/26-02/26-02-25/star.webp';
+export const assets = [cocteauVideo, starWebp];
+
 
 const CocteauClock =  () => {
   const time = useSecondClock();
@@ -88,8 +90,8 @@ const CocteauClock =  () => {
         style={{
           position: 'relative',
           zIndex: 10,
-          width: 'min(75vw, 75vh)',
-          height: 'min(75vw, 75vh)',
+          width: 'min(75vw, 75dvh)',
+          height: 'min(75vw, 75dvh)',
           borderRadius: '52% 48% 51% 49% / 49% 52% 48% 51%',
           filter: 'url(#cocteau-line)',
           opacity: 0.7,

@@ -7,6 +7,8 @@ import bone1 from '@/assets/images/25_images/25-06/25-06-25/bone1.png';
 import bone2 from '@/assets/images/25_images/25-06/25-06-25/bone2.png';
 import bgImage from '@/assets/images/25_images/25-06/25-06-25/bon.png';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [boneFont, bone, bone1, bone2, bgImage];
+
 const BoneClock =  () => {
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
@@ -20,7 +22,7 @@ const BoneClock =  () => {
         margin: 0,
         padding: 0,
         background: '#757272',
-        height: '100vh',
+        height: '100dvh',
         width: '100vw',
         display: 'flex',
         justifyContent: 'center',

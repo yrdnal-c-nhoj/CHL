@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSecondClock } from '@/utils/hooks';
+export const assets: string[] = [];
+
 const RandomColorClock =  () => {
   const hourRef = useRef(null);
   const minuteRef = useRef(null);

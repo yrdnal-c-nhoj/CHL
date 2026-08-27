@@ -8,6 +8,8 @@ import pirateCutlass from '@/assets/images/25_images/25-04/25-04-23/pirate_foam.
 import pirateKnife from '@/assets/images/25_images/25-04/25-04-23/cut.gif';
 import pirateOverlay from '@/assets/images/25_images/25-04/25-04-23/sasasd.gif';
 import pirateBackground from '@/assets/images/25_images/25-04/25-04-23/water.webp';
+export const assets = [pirateHook, pirateCutlass, pirateKnife, pirateOverlay, pirateBackground];
+
 
 // Component Props interface
 interface PirateClockProps {
@@ -183,8 +185,8 @@ const PirateClock: React.FC<PirateClockProps> = () => {
           ref={clockRef}
           style={{
             position: 'relative',
-            width: 'min(80vw, 80vh)',
-            height: 'min(80vw, 80vh)',
+            width: 'min(80vw, 80dvh)',
+            height: 'min(80vw, 80dvh)',
             borderRadius: '50%',
             fontFamily: 'Metamorphous, serif',
             zIndex: 2,

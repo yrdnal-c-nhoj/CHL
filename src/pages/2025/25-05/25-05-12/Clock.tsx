@@ -5,6 +5,8 @@ import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
 import A3ui from '@/assets/images/25_images/25-05/25-05-12/A3ui.gif';
 import leoFont from '@/assets/fonts/25fonts/25-05-12-leo.ttf?url';
+export const assets = [A3ui, leoFont];
+
 
 // Component Props interface
 interface CheetahClockProps {
@@ -72,8 +74,8 @@ const CheetahClock: React.FC<CheetahClockProps> = () => {
 
   const vars = {
     '--digit-width': isMobile ? '29vw' : '13vw', // reduce in landscape
-    '--digit-height': '18vh',
-    '--font-size': isMobile ? '14vh' : '11vh', // optional tweak for spacing
+    '--digit-height': '18dvh',
+    '--font-size': isMobile ? '14dvh' : '11dvh', // optional tweak for spacing
   };
 
   const sharedDigitStyle = {
@@ -138,7 +140,7 @@ const CheetahClock: React.FC<CheetahClockProps> = () => {
           top: 0,
           left: 0,
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           backgroundRepeat: 'repeat',
           zIndex: 1,
         }}

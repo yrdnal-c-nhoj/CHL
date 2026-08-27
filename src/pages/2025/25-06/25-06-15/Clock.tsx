@@ -5,6 +5,8 @@ import fontUrl from '@/assets/fonts/25fonts/25-06-15-ZombieStitch.ttf';
 import bgImageUrl from '@/assets/images/25_images/25-06/25-06-15/stin.webp';
 import overlayImageUrl from '@/assets/images/25_images/25-06/25-06-15/stit.jpeg';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [fontUrl, bgImageUrl, overlayImageUrl];
+
 const StitchesClock =  () => {
   // useEffect for updateClock removed - time is reactive via useSecondClock
 
@@ -40,7 +42,7 @@ const styles = {
     top: 0,
     left: 0,
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     zIndex: 0,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
@@ -51,7 +53,7 @@ const styles = {
     top: 0,
     left: 0,
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     zIndex: 1,
     objectFit: 'cover',
     filter: 'brightness(120%) hue-rotate(18deg) saturate(20%)',
@@ -70,7 +72,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: '26vh',
+    fontSize: '26dvh',
     color: '#1f1d52',
     textShadow:
       'rgba(236, 15, 15, 0.85) 0.1rem -0.1rem 0.5rem, rgba(236, 15, 15, 0.85) -0.1rem 0.1rem 0.5rem, rgba(255,255,255,0.75) 0.05rem -0.05rem 0rem',

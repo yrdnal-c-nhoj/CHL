@@ -3,6 +3,8 @@ import { useSuspenseFontLoader , useSuspenseFontLoader } from '@/utils/fontLoade
 import backgroundImage from '@/assets/images/25_images/25-12/25-12-18/ci.webp';
 import FONT_PATH from '@/assets/fonts/25fonts/25-12-18-cine.ttf?url';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [backgroundImage, FONT_PATH];
+
 
 const TiltedReverseClock =  () => {
   const [time, setTime] = useState(new Date());
@@ -79,13 +81,13 @@ const TiltedReverseClock =  () => {
       <div
         style={{
           position: 'absolute',
-          top: '4vh',
-          right: '0vh',
+          top: '4dvh',
+          right: '0dvh',
           display: 'flex',
           alignItems: 'center',
           transformStyle: 'preserve-3d',
           transform: `
-            perspective(220vh)
+            perspective(220dvh)
             rotateX(222deg)
             rotateY(-148deg)
           `,
@@ -96,12 +98,12 @@ const TiltedReverseClock =  () => {
             key={`h-${i}`}
             className="flicker"
             style={{
-              width: '7vh',
-              height: '22vh',
+              width: '7dvh',
+              height: '22dvh',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '8vh',
+              fontSize: '8dvh',
               fontFamily: "'speed', 'Courier New', monospace",
               lineHeight: 1,
               color: '#F0DBB6FF',
@@ -119,12 +121,12 @@ const TiltedReverseClock =  () => {
             key={`m-${i}`}
             className="flicker"
             style={{
-              width: '7vh',
-              height: '22vh',
+              width: '7dvh',
+              height: '22dvh',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '8vh',
+              fontSize: '8dvh',
               fontFamily: "'speed', 'Courier New', monospace",
               lineHeight: 1,
               color: '#F0DBB6FF',

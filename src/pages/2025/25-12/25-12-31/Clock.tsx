@@ -4,6 +4,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/25_images/25-12/25-12-31/shadow.jpg';
 import d250916font from '@/assets/fonts/25fonts/25-12-31-shadow.otf';
+export const assets = [bgImage, d250916font];
+
 
 // 1. LETTER MAPPING: Move outside to prevent recreation on every render
 const DIGIT_TO_LETTER: Record<string, string> = {
@@ -48,11 +50,11 @@ const Clock =  () => {
     justifyContent: 'center',
     alignItems: 'center',
     fontFamily: "'MyD250916font', sans-serif",
-    fontSize: '22vh',
+    fontSize: '22dvh',
     color: 'rgba(0, 0, 0, 0.4)',
     // Fixed width ensures 'I' takes as much space as 'W'
-    width: '20vh',
-    height: '20vh',
+    width: '20dvh',
+    height: '20dvh',
     textAlign: 'center',
     textShadow: `
       2px 2px 8px rgba(0, 0, 0, 0.1),
@@ -82,7 +84,7 @@ const Clock =  () => {
     display: 'flex',
     flexDirection: isLargeScreen ? 'row' : 'column',
     alignItems: 'center',
-    gap: isLargeScreen ? '2vw' : '1vh',
+    gap: isLargeScreen ? '2vw' : '1dvh',
   };
 
   const groupStyle = {

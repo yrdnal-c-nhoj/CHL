@@ -63,7 +63,7 @@ const BlueBrickClock = () => {
           top: 0,
           left: 0,
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           transform: 'rotate(180deg)',
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: '33% 33%',
@@ -86,7 +86,7 @@ const BlueBrickClock = () => {
         {['hours', 'seconds', 'minutes'].map((unit) => (
           <div
             key={unit}
-            style={{ position: 'relative', width: '90vw', marginBottom: '2vh' }}
+            style={{ position: 'relative', width: '90vw', marginBottom: '2dvh' }}
           >
             <div
               style={{
@@ -98,7 +98,7 @@ const BlueBrickClock = () => {
                 gap: '3vw',
                 zIndex: 2,
                 pointerEvents: 'none',
-                height: '23vh',
+                height: '23dvh',
               }}
             >
               {renderBalls(time[unit])}

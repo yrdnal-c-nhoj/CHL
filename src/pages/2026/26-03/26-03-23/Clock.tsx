@@ -6,6 +6,8 @@ import type { FontConfig } from '@/types/clock';
 import exoFont from '@/assets/fonts/26fonts/26-03-23-26-03-24-exo.ttf?url';
 import StarsBackground from './StarsBackground';
 import styles from './Clock.module.css';
+export const assets = [exoFont];
+
 
 // Internal coordinate system constants
 const BASE_SIZE = 500;

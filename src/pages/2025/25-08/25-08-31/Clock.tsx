@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
+export const assets: string[] = [];
+
 
 const UltraElaborateAnalogClock =  () => {
   const time = useSmoothClock();

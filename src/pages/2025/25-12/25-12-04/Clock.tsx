@@ -3,6 +3,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import sloanFont_2025_1204 from '@/assets/fonts/25fonts/25-12-04-ichart.otf?url';
 import type { FontConfig } from '@/types/clock';
+export const assets = [sloanFont_2025_1204];
+
 
 const fontFamilyName = 'SloanOptotype_2025_1204';
 
@@ -53,7 +55,7 @@ export default function EyeChart() {
   };
 
   const card = {
-    width: '40vh',
+    width: '40dvh',
     maxWidth: '65vw',
     display: 'flex',
     flexDirection: 'column',
@@ -67,32 +69,32 @@ export default function EyeChart() {
     justifyContent: 'center',
     width: '100%',
     position: 'relative',
-    margin: '0.5vh 0',
+    margin: '0.5dvh 0',
   };
 
   const letterStyle = {
     fontFamily: fontFamilyName,
     textTransform: 'uppercase',
     lineHeight: 1,
-    letterSpacing: '0.1vh',
+    letterSpacing: '0.1dvh',
     margin: 0,
     padding: 0,
   };
 
   const leftLabel = {
     position: 'absolute',
-    left: '-8vh',
-    fontSize: '2vh',
+    left: '-8dvh',
+    fontSize: '2dvh',
     opacity: 0.55,
-    letterSpacing: '0.15vh',
+    letterSpacing: '0.15dvh',
   };
 
   const rightLabel = {
     position: 'absolute',
-    right: '-8vh',
-    fontSize: '2vh',
+    right: '-8dvh',
+    fontSize: '2dvh',
     opacity: 0.55,
-    letterSpacing: '0.15vh',
+    letterSpacing: '0.15dvh',
   };
 
   return (

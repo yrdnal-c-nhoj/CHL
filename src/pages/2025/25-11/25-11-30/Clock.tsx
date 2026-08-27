@@ -6,6 +6,8 @@ import font251130 from '@/assets/fonts/25fonts/25-11-30-nono.ttf?url';
 import backgroundImg from '@/assets/images/25_images/25-11/25-11-30/crax.jpg';
 import styles from './Clock.module.css';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [font251130, backgroundImg];
+
 
 export default function DigitalClock() {
   const [now, setNow] = useState(() => new Date());

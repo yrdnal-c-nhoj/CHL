@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import ionFont from '@/assets/fonts/25fonts/25-06-09-ion.ttf';
 import ionJpeg from '@/assets/images/25_images/25-06/25-06-09/ion.jpeg';
 import iskyWebp from '@/assets/images/25_images/25-06/25-06-09/isky.webp';
+export const assets = [ionFont, ionJpeg, iskyWebp];
+
 
 const CLOCK_BACKGROUND = 'rgba(0, 255, 255, 0.0)';
 const CLOCK_COUNT_PER_DIRECTION = 2;
@@ -113,7 +115,7 @@ export default function IonosphereClock() {
     const styleEl = document.createElement('style');
     styleEl.innerHTML = `
       body, html, #root {
-        margin: 0; padding: 0; height: 100vh; width: 100vw; overflow: hidden;
+        margin: 0; padding: 0; height: 100dvh; width: 100vw; overflow: hidden;
         background: rgb(4, 30, 60);
         perspective: 1000px;
         font-size: 16px;
@@ -223,7 +225,7 @@ export default function IonosphereClock() {
           top: 0,
           left: 0,
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           objectFit: 'fill',
           filter: 'contrast(90%) saturate(200%)',
           zIndex: 1,
@@ -240,7 +242,7 @@ export default function IonosphereClock() {
           top: 0,
           left: 0,
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           objectFit: 'cover',
           filter: 'contrast(90%) saturate(90%)',
           opacity: 0.5,

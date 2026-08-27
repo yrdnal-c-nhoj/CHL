@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundImage from '@/assets/images/25_images/25-05/25-05-27/dot.jpg';
 import dotsFont from '@/assets/fonts/25fonts/25-05-27-dots.otf?url';
+export const assets = [backgroundImage, dotsFont];
+
 
 const Clock =  () => {
   // Font loading configuration (memoized)
@@ -103,7 +105,7 @@ const Clock =  () => {
         style={{
           position: 'relative',
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           overflow: 'hidden',
           opacity: 1,
           transition: 'opacity 0.3s ease',

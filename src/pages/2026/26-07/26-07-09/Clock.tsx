@@ -41,7 +41,7 @@ const AnalogClock =  () => {
     display: 'grid',
     gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
     gridTemplateRows: isMobile ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)',
-    gap: '-0.5vh',
+    gap: '-0.5dvh',
     padding: '0rem',
     borderRadius: '10px',
     opacity: 0.7,

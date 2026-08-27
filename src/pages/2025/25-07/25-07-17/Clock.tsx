@@ -20,6 +20,8 @@ import num11Img from '@/assets/images/25_images/25-07/25-07-17/African-Elephant-
 import num12Img from '@/assets/images/25_images/25-07/25-07-17/gergfeds.gif';
 
 import bgImage from '@/assets/images/25_images/25-07/25-07-17/anim.webp';
+export const assets = [animFont, num1Img, num2Img, num3Img, num4Img, num5Img, num6Img, num7Img, num8Img, num9Img, num10Img, num11Img, num12Img, bgImage];
+
 
 // Inject background rotation styles (font loading handled by useSuspenseFontLoader)
 const fontFaceStyle = `
@@ -68,18 +70,18 @@ const images = [
 ];
 
 const numberSizes = {
-  num1: { width: '19.5vh', height: '19.5vh' },
-  num2: { width: '19.5vh', height: '17.5vh' },
-  num3: { width: '19.5vh', height: '17.5vh' },
-  num4: { width: '22.5vh', height: '14.5vh' },
-  num5: { width: '19.5vh', height: '16.5vh' },
-  num6: { width: '17.5vh', height: '15.5vh' },
-  num7: { width: '17.5vh', height: '16.5vh' },
-  num8: { width: '19.5vh', height: '19.5vh' },
-  num9: { width: '12.5vh', height: '12.5vh' },
-  num10: { width: '19.5vh', height: '19vh' },
-  num11: { width: '15.5vh', height: '13.5vh' },
-  num12: { width: '19.5vh', height: '15.5vh' },
+  num1: { width: '19.5dvh', height: '19.5dvh' },
+  num2: { width: '19.5dvh', height: '17.5dvh' },
+  num3: { width: '19.5dvh', height: '17.5dvh' },
+  num4: { width: '22.5dvh', height: '14.5dvh' },
+  num5: { width: '19.5dvh', height: '16.5dvh' },
+  num6: { width: '17.5dvh', height: '15.5dvh' },
+  num7: { width: '17.5dvh', height: '16.5dvh' },
+  num8: { width: '19.5dvh', height: '19.5dvh' },
+  num9: { width: '12.5dvh', height: '12.5dvh' },
+  num10: { width: '19.5dvh', height: '19dvh' },
+  num11: { width: '15.5dvh', height: '13.5dvh' },
+  num12: { width: '19.5dvh', height: '15.5dvh' },
 }
 
 const textRotationDegrees = Array.from({ length: 12 }, (_, i) => i * 30);
@@ -119,8 +121,8 @@ const AnimatedClock =  () => {
 
   const clockStyle = {
     position: 'relative',
-    width: '100vh',
-    height: '100vh',
+    width: '100dvh',
+    height: '100dvh',
     borderRadius: '50%',
     zIndex: 10,
   };
@@ -141,8 +143,8 @@ const AnimatedClock =  () => {
 
   const hourHandStyle = {
     ...handCommonStyle,
-    width: '5vh',
-    height: '25vh',
+    width: '5dvh',
+    height: '25dvh',
     background: '#A5A1A1FF',
     zIndex: 3,
     opacity: 0.8,
@@ -150,8 +152,8 @@ const AnimatedClock =  () => {
 
   const minuteHandStyle = {
     ...handCommonStyle,
-    width: '2.7vh',
-    height: '34vh',
+    width: '2.7dvh',
+    height: '34dvh',
     background: '#7C7979FF',
     zIndex: 2,
     opacity: 0.7,
@@ -159,8 +161,8 @@ const AnimatedClock =  () => {
 
   const secondHandStyle = {
     ...handCommonStyle,
-    width: '0.0vh',
-    height: '0vh',
+    width: '0.0dvh',
+    height: '0dvh',
     background: 'rgb(248, 122, 4)',
     zIndex: 7,
     opacity: 1,
@@ -171,8 +173,8 @@ const AnimatedClock =  () => {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    width: '2vh',
-    height: '45vh',
+    width: '2dvh',
+    height: '45dvh',
     color: '#040404',
     textShadow: '#f8f7f7 -1px 0px',
     fontSize: '0.7rem',
@@ -264,8 +266,8 @@ const AnimatedClock =  () => {
           <div
             style={{
               position: 'absolute',
-              width: '0.01vh',
-              height: '0.01vh',
+              width: '0.01dvh',
+              height: '0.01dvh',
               backgroundColor: '#222',
               borderRadius: '50%',
               top: '50%',

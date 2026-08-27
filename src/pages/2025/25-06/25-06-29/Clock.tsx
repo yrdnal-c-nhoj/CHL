@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import stretchFont from '@/assets/fonts/25fonts/25-06-29-stretch.ttf';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [stretchFont];
+
 const StretchClock =  () => {
   const [time, setTime] = useState<any>({
     hours: '',

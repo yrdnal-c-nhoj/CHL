@@ -4,6 +4,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 /* ---------- Font ---------- */
 const FONT_FAMILY = 'Newla';
 import FONT_PATH from '@/assets/fonts/25fonts/25-12-24-lapse.otf?url';
+export const assets = [FONT_PATH];
+
 
 /* ---------- Timing ---------- */
 const ERASE = 60000;

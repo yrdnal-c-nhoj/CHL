@@ -5,7 +5,7 @@ import TopNav from '../components/TopNav';
 import { useDataContext } from '../context/DataContext';
 import listStyles from '../styles/ClockList.module.css';
 
-const ListPage: React.FC = () => {
+const ListPage =  () => {
   const { items, loading, error } = useDataContext();
 
   return (

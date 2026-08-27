@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import twentyFont from '@/assets/fonts/25fonts/25-06-28-twenty.otf';
+export const assets = [twentyFont];
+
 
 const Clock24 =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC

@@ -4,7 +4,9 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import font1 from '@/assets/fonts/25fonts/25-08-25-code.ttf';
 import font2 from '@/assets/fonts/25fonts/25-08-25-bar.ttf';
 import bgImage2 from '@/assets/images/25_images/25-08/25-08-25/bgla.webp'; // Bottom background
-import bgImage from '@/assets/images/25_images/25-08/25-08-25/wh.webp'; // Top background
+import bgImage from '@/assets/images/25_images/25-08/25-08-25/wh.webp';
+export const assets = [font1, font2, bgImage2, bgImage];
+ // Top background
 
 export default function DigitalClock() {
   // Standardized font loading with font-display: swap to avoid FOUC

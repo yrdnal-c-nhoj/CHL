@@ -5,6 +5,8 @@ import backgroundImg from '@/assets/images/25_images/25-10/25-10-21/bg.jpg';
 import hourHandImg from '@/assets/images/25_images/25-10/25-10-21/hour.gif';
 import minuteHandImg from '@/assets/images/25_images/25-10/25-10-21/min.gif';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [backgroundImg, hourHandImg, minuteHandImg];
+
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());

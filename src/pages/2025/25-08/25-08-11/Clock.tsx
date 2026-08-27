@@ -16,6 +16,8 @@ import img8 from '@/assets/images/25_images/25-08/25-08-11/i.png';
 import img9 from '@/assets/images/25_images/25-08/25-08-11/q.gif';
 import img10 from '@/assets/images/25_images/25-08/25-08-11/x.webp';
 import img11 from '@/assets/images/25_images/25-08/25-08-11/y.gif';
+export const assets = [customFont, bgImage, topImage, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
+
 
 const SwirlingImages =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -117,7 +119,7 @@ const SwirlingImages =  () => {
     top: '50%',
     left: '50%',
     width: '130vw',
-    height: '130vh',
+    height: '130dvh',
     objectFit: 'cover',
     transform: 'translate(-50%, -50%)',
     opacity: 1.0,

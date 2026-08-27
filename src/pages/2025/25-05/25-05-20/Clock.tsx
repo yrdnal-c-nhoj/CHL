@@ -3,6 +3,8 @@ import * as THREE from 'three';
 import flaFont from '../../../../assets/fonts/25fonts/25-10-05-do.ttf';
 import { useSuspenseFontLoader } from '../../../../utils/fontLoader';
 import styles from './Clock.module.css';
+export const assets = [flaFont];
+
 
 const Clock =  () => {
   // Use the suspense-based font loader for consistency and reliability.

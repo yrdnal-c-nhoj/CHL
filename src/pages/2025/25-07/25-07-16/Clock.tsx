@@ -5,6 +5,8 @@ import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeom
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import mobFontUrl from '@/assets/fonts/25fonts/25-07-16-mob.otf';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [mobFontUrl];
+
 const MobiusStripClock =  () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [timeString, setTimeString] = useState<string>('');

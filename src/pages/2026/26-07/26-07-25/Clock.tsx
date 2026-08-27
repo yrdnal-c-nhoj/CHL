@@ -78,7 +78,7 @@ function HexClock() {
       style={{
         backgroundColor: hexCode,
         color: invertedHex,
-        height: '100vh',
+        height: '100dvh',
         width: '100vw',
         display: 'flex',
         flexDirection: 'column',
@@ -86,7 +86,7 @@ function HexClock() {
         alignItems: 'center',
         fontFamily: "'Manrope', sans-serif",
         textAlign: 'center',
-        paddingBottom: '3vh',
+        paddingBottom: '3dvh',
         boxSizing: 'border-box',
         overflow: 'hidden',
       }}

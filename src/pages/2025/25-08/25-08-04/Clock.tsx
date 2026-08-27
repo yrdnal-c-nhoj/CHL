@@ -3,6 +3,8 @@ import bgImage from '@/assets/images/25_images/25-08/25-08-04/shrub.jpeg'; // Yo
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useEffect, useMemo, useRef, useState } from 'react';
+export const assets = [myFont, bgImage];
+
 
 const getRandomPosition = () => ({
   top: `${Math.random() * 80 + 10}%`,

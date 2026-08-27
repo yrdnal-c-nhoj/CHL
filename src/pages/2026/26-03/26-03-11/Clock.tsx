@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSecondClock } from '@/utils/hooks';
+export const assets: string[] = [];
+
 
 const fontVersion = '2026-03-11';
 const FONT_NAME = `XanhMono_${fontVersion}`;
@@ -54,7 +56,7 @@ const BorrowedTimeClock =  () => {
 
   const frameStyle: React.CSSProperties = {
     width: 'min(75vmin, 75%)',
-    height: 'min(56.25vmin, 37.5vh)',
+    height: 'min(56.25vmin, 37.5dvh)',
     maxWidth: '500px',
     maxHeight: '375px',
     border: '1px solid #F2F7F1',
