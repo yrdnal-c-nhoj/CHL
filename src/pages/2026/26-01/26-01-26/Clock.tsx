@@ -27,7 +27,7 @@ const DynamicComponent =  () => {
       <time dateTime={clockTime.toISOString()} className={styles.srOnly}>{clockTime.toLocaleTimeString()}</time>
 
       <div className={styles.clockWrapper}>
-        <div className={styles.horizontalClock} style={{ fontFamily: 'TopFont', textShadow: '-0px 34.5vh 1.7vh rgba(0, 0, 0, 0.9), 0px 2px 12px rgb(240, 7, 7)' }}>
+        <div className={styles.horizontalClock} style={{ fontFamily: 'TopFont', textShadow: '-0px 34.5dvh 1.7dvh rgba(0, 0, 0, 0.9), 0px 2px 12px rgb(240, 7, 7)' }}>
           {timeString.split('').map((d, i) => (
             <div key={`l-${i}`} className={styles.digitBox}>{d}</div>
           ))}
@@ -37,7 +37,7 @@ const DynamicComponent =  () => {
       <div style={{ flex: 1 }} />
 
       <div className={styles.clockWrapper}>
-        <div className={styles.horizontalClock} style={{ fontFamily: 'BottomFont', textShadow: '0px -34.5vh 1.7vh rgba(0, 0, 0, 0.9), 0px -2px 12px rgb(238, 9, 9)' }}>
+        <div className={styles.horizontalClock} style={{ fontFamily: 'BottomFont', textShadow: '0px -34.5dvh 1.7dvh rgba(0, 0, 0, 0.9), 0px -2px 12px rgb(238, 9, 9)' }}>
           {timeString.split('').map((d, i) => (
             <div key={`r-${i}`} className={styles.digitBox}>{d}</div>
           ))}

@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import platFont from '@/assets/fonts/26fonts/26-02-19-plat.ttf';
+export const assets = [platFont];
+
 
 const ImageDisplay =  () => {
   const time = useSecondClock();
@@ -98,12 +100,12 @@ const ImageDisplay =  () => {
                        0px 0.9vw 0px #B67423, 0px -0.9vw 0px #B67423;
           align-self: flex-start;
           margin-left: 5vw; /* Flush left relative to the digits */
-          margin-top: -1vh;
+          margin-top: -1dvh;
         }
 
         /* ANALOG SECTION */
         .analog-section {
-          margin-top: 6vh;
+          margin-top: 6dvh;
           perspective: 1200px;
           display: flex;
           justify-content: center;
@@ -111,11 +113,11 @@ const ImageDisplay =  () => {
         }
 
         .clock-face {
-          width: 35vh;
-          height: 35vh;
+          width: 35dvh;
+          height: 35dvh;
           border-radius: 50%;
           backgroundColor: #FFFEFA;
-          border: 1.5vh solid #EAD534;
+          border: 1.5dvh solid #EAD534;
           position: relative;
           display: flex;
           justify-content: center;
@@ -134,14 +136,14 @@ const ImageDisplay =  () => {
           }
           .digital-group { width: auto; align-items: flex-start; }
           .digits-container { width: auto; gap: 2vw; }
-          .digit-box { font-size: 20vh; flex: none; }
-          .ampm-box { font-size: 12vh; margin-left: 0; }
-          .analog-section { position: absolute; bottom: 10vh; right: 10vh; margin-top: 0; }
-          .clock-face { width: 55vh; height: 55vh; }
+          .digit-box { font-size: 20dvh; flex: none; }
+          .ampm-box { font-size: 12dvh; margin-left: 0; }
+          .analog-section { position: absolute; bottom: 10dvh; right: 10dvh; margin-top: 0; }
+          .clock-face { width: 55dvh; height: 55dvh; }
           
           /* Fix tick marks for larger desktop clock */
           .analog-section .clock-face div[style*="transform: rotate"] {
-            transform-origin: 50% 27.25vh !important;
+            transform-origin: 50% 27.25dvh !important;
           }
           
           /* Fix hand origins for larger desktop clock */
@@ -156,10 +158,10 @@ const ImageDisplay =  () => {
           }
           
           /* Larger main hour ticks for desktop */
-          .analog-section .clock-face div[style*="width: '1.2vh'"] {
-            width: 1.8vh !important;
-            height: 5vh !important;
-            left: calc(50% - 0.9vh) !important;
+          .analog-section .clock-face div[style*="width: '1.2dvh'"] {
+            width: 1.8dvh !important;
+            height: 5dvh !important;
+            left: calc(50% - 0.9dvh) !important;
             background-color: #FF8C00 !important;    
           }
         }
@@ -188,15 +190,15 @@ const ImageDisplay =  () => {
                   key={i}
                   style={{
                     position: 'absolute',
-                    width: isMainHour ? '1.2vh' : '0.8vh',
-                    height: isMainHour ? '4vh' : '2vh',
+                    width: isMainHour ? '1.2dvh' : '0.8dvh',
+                    height: isMainHour ? '4dvh' : '2dvh',
                     backgroundColor: isMainHour ? '#B67423' : '#FFFFFF',
-                    top: '0.5vh',
+                    top: '0.5dvh',
                     left:
-                      'calc(50% - ' + (isMainHour ? '0.6vh' : '0.4vh') + ')',
-                    transformOrigin: '50% 17.25vh',
+                      'calc(50% - ' + (isMainHour ? '0.6dvh' : '0.4dvh') + ')',
+                    transformOrigin: '50% 17.25dvh',
                     transform: `rotate(${i * 30}deg)`,
-                    borderRadius: '1vh',
+                    borderRadius: '1dvh',
                   }}
                 />
               );
@@ -207,7 +209,7 @@ const ImageDisplay =  () => {
               style={{
                 ...handBase,
                 height: '22%',
-                width: '1.4vh',
+                width: '1.4dvh',
                 backgroundColor: '#2D312D',
                 transform: `rotate(${hrDegrees}deg)`,
               }}
@@ -218,7 +220,7 @@ const ImageDisplay =  () => {
               style={{
                 ...handBase,
                 height: '35%',
-                width: '0.8vh',
+                width: '0.8dvh',
                 backgroundColor: '#202220',
                 transform: `rotate(${minDegrees}deg)`,
               }}
@@ -229,7 +231,7 @@ const ImageDisplay =  () => {
               style={{
                 ...handBase,
                 height: '42%',
-                width: '0.4vh',
+                width: '0.4dvh',
                 backgroundColor: '#B67423',
                 transform: `rotate(${secDegrees}deg)`,
                 transition: 'transform 0.1s cubic-bezier(0.4, 0.0, 0.2, 1)',
@@ -249,13 +251,13 @@ const handBase = {
   position: 'absolute',
   bottom: '50%',
   transformOrigin: 'bottom center',
-  borderRadius: '1vh',
+  borderRadius: '1dvh',
   zIndex: 10,
 } as const;
 
 const centerDot = {
-  width: '2vh',
-  height: '2vh',
+  width: '2dvh',
+  height: '2dvh',
   backgroundColor: '#4F594F',
   borderRadius: '50%',
   zIndex: 15,

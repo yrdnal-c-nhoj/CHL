@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
 import dottedFont from '@/assets/fonts/25fonts/25-05-14-dotted.ttf?url';
+export const assets = [dottedFont];
+
 
 // Component Props interface
 interface ClockProps {
@@ -53,7 +55,7 @@ const Clock: React.FC<ClockProps> = () => {
       return `hsl(${hues[Math.floor(Math.random() * hues.length)]}, 70%, 50%)`;
     };
 
-    const randomFontSizeVH = () => `28vh`;
+    const randomFontSizeVH = () => `28dvh`;
     const randomScale = () => (Math.random() * 0.5 + 0.75).toFixed(2);
     const randomRotation = () => `${Math.floor(Math.random() * 720 - 360)}deg`;
     const randomFinalAngle = () => `${Math.floor(Math.random() * 31 - 15)}deg`;
@@ -66,15 +68,15 @@ const Clock: React.FC<ClockProps> = () => {
         vh = 100;
       switch (side) {
         case 'top':
-          return { x: `${(Math.random() * vw).toFixed(2)}vw`, y: `-10vh` };
+          return { x: `${(Math.random() * vw).toFixed(2)}vw`, y: `-10dvh` };
         case 'bottom':
-          return { x: `${(Math.random() * vw).toFixed(2)}vw`, y: `110vh` };
+          return { x: `${(Math.random() * vw).toFixed(2)}vw`, y: `110dvh` };
         case 'left':
           return { x: `-10vw`, y: `${(Math.random() * vh).toFixed(2)}vh` };
         case 'right':
           return { x: `110vw`, y: `${(Math.random() * vh).toFixed(2)}vh` };
         default:
-          return { x: '0vw', y: '0vh' };
+          return { x: '0vw', y: '0dvh' };
       }
     }
 
@@ -161,14 +163,14 @@ const Clock: React.FC<ClockProps> = () => {
         font-display: swap;
       }
       #${SCOPE_ID} {
-        width: 100vw; height: 100vh; overflow: hidden;
+        width: 100vw; height: 100dvh; overflow: hidden;
         position: relative; font-family: 'DottedRough2025_11_01', system-ui;
         background-image: linear-gradient(180deg, rgb(21 84 89) 0%, rgb(228 207 249) 100%);
       }
       #${SCOPE_ID} .digit {
         position: absolute; left: 0; top: 0; will-change: transform, opacity;
         pointer-events: none; white-space: pre;
-        font-size: var(--digit-fs, clamp(4rem, 6vh, 6rem));
+        font-size: var(--digit-fs, clamp(4rem, 6dvh, 6rem));
         transform-origin: center center;
         transform-style: preserve-3d;
         animation: ri-fly-up var(--anim-duration, 12s) cubic-bezier(.2,.9,.3,1) forwards;

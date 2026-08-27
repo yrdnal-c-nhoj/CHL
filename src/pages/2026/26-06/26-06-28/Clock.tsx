@@ -3,6 +3,8 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { CSSProperties } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+export const assets = [fontUrl];
+
 
 const CONFIG = {
   UPDATE_RATE_MS: 500,
@@ -164,7 +166,7 @@ const styles: Record<string, CSSProperties> = {
     overflow: 'visible',
   },
   textTrack: {
-    fontSize: '28vh',
+    fontSize: '28dvh',
     fill: CONFIG.COLOR,
     fontWeight: 400,
     // Note: Heavy text-shadows on large SVG text tracks can impact rendering performance.

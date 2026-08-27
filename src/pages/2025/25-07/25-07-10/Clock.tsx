@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import sliFont from '@/assets/fonts/25fonts/25-07-10-sli.otf';
 import sli2Font from '@/assets/fonts/25fonts/25-07-10-sli2.ttf';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [sliFont, sli2Font];
+
 const Clock =  () => {
   const digitGroups = [
     'hour-tens',

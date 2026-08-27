@@ -114,11 +114,11 @@ export default function MediaClock() {
         >
           <span
             style={{
-              fontSize: '14vh',
+              fontSize: '14dvh',
               fontWeight: 700,
               color: '#2B2626FF',
               textShadow: '0.25px -0.25px #F1E499FF',
-              letterSpacing: '2.6vh',
+              letterSpacing: '2.6dvh',
               fontFamily:
                 "'SereneFont', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace",
               textAlign: 'center',

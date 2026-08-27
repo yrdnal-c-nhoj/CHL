@@ -62,8 +62,8 @@ const HeartbeatClock = () => {
 
   const clockStyle = {
     position: 'relative',
-    width: '50vh',
-    height: '50vh',
+    width: '50dvh',
+    height: '50dvh',
     backgroundImage: `url(${tumblrImg})`,
     filter: 'hue-rotate(200deg)',
     backgroundSize: 'cover',

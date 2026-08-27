@@ -10,6 +10,8 @@ import portImg from '@/assets/images/25_images/25-12/25-12-10/eagle.webp';
 import hourHandImg from '@/assets/images/25_images/25-12/25-12-10/oa.gif';
 import minuteHandImg from '@/assets/images/25_images/25-12/25-12-10/oak.gif';
 import secondHandImg from '@/assets/images/25_images/25-12/25-12-10/nk.gif';
+export const assets = [bg1, bg2, portImg, hourHandImg, minuteHandImg, secondHandImg];
+
 const font251211Url = new URL(
   '@/assets/fonts/25fonts/25-12-10-jup.ttf',
   import.meta.url,
@@ -17,7 +19,7 @@ const font251211Url = new URL(
 
 // --- CONFIG ---
 const CONFIG = {
-  clockSize: 'min(90vw, 90vh)',
+  clockSize: 'min(90vw, 90dvh)',
   numeralRadius: 43,
   hands: [
     { img: secondHandImg, width: '22vw', max: '200px' },

@@ -7,6 +7,8 @@ import minuteImg from '@/assets/images/25_images/25-07/25-07-08/minty.webp';
 import secondImg from '@/assets/images/25_images/25-07/25-07-08/min.png';
 import bgImage from '@/assets/images/25_images/25-07/25-07-08/candy.jpg';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [mintFont, hourImg, minuteImg, secondImg, bgImage];
+
 const MintClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -26,7 +28,7 @@ const MintClock =  () => {
     <div
       style={{
         margin: 0,
-        height: '100vh',
+        height: '100dvh',
         width: '100vw',
         display: 'flex',
         alignItems: 'center',
@@ -104,7 +106,7 @@ const MintClock =  () => {
             background-size: cover;
             background-position: center;
             position: fixed;
-            height: 100vh;
+            height: 100dvh;
             width: 100vw;
             top: 50%;
             left: 50%;

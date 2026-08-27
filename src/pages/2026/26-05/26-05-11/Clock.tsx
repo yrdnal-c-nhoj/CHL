@@ -8,6 +8,8 @@ import { useSecondClock } from '@/utils/hooks';
 import React, { memo, Suspense, useEffect, useMemo, useState } from 'react';
 
 import styles from './Clock.module.css';
+export const assets = [clockFont];
+
 
 // ---------------- INTERFACES ----------------
 interface Star {

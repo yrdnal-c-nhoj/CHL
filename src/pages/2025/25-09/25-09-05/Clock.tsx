@@ -5,6 +5,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import DigitalClockFont from '@/assets/fonts/25fonts/25-09-05-swi.ttf';
 import DigitalClockBg from '@/assets/images/25_images/25-09/25-09-05/swiss.jpg';
 import MovingImg from '@/assets/images/25_images/25-09/25-09-05/mouse.gif';
+export const assets = [DigitalClockFont, DigitalClockBg, MovingImg];
+
 
 export default function DigitalClock() {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -89,7 +91,7 @@ export default function DigitalClock() {
 
   const movingStyle = {
     position: 'absolute',
-    bottom: '19vh',
+    bottom: '19dvh',
     left: '-20%',
     width: '11vw',
     height: 'auto',

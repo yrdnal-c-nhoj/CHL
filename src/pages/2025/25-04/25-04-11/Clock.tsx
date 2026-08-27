@@ -7,6 +7,8 @@ import hand2 from '@/assets/images/25_images/25-04/25-04-11/hand2.webp';
 import hand3 from '@/assets/images/25_images/25-04/25-04-11/hand3.webp';
 import inst from '@/assets/images/25_images/25-04/25-04-11/inst.webp';
 import styles from './Clock.module.css';
+export const assets = [hand1, hand2, hand3, inst];
+
 
 // Component Props interface
 interface BoringClockProps {
@@ -124,13 +126,13 @@ const styles = {
     opacity: 0.5,
     filter: 'contrast(130%) brightness(200%)',
     width: '180vw',
-    height: '140vh',
+    height: '140dvh',
     zIndex: 1,
     pointerEvents: 'none',
   },
   clock: {
     width: '80vw',
-    height: '80vh',
+    height: '80dvh',
     position: 'absolute',
     top: '50%',
     left: '50%',

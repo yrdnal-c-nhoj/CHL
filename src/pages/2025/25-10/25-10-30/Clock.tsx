@@ -5,6 +5,8 @@ import bgImage from '@/assets/images/25_images/25-10/25-10-30/turq.webp';
 import clockFaceImage from '@/assets/images/25_images/25-10/25-10-30/tur.jpg';
 import customFont2025_10_31 from '@/assets/fonts/25fonts/25-10-30-turqs.ttf?url';
 import { useMillisecondClock } from '@/utils/hooks';
+export const assets = [bgImage, clockFaceImage, customFont2025_10_31];
+
 
 export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
@@ -71,7 +73,7 @@ export default function AnalogClock() {
   const secondDeg = seconds * 6;
   const minuteDeg = minutes * 6;
   const hourDeg = hours * 30;
-  const radius = 'min(50vh, 50vw)';
+  const radius = 'min(50dvh, 50vw)';
   const clockSize = `calc(2 * ${radius})`;
 
   // Style definitions
@@ -79,7 +81,7 @@ export default function AnalogClock() {
     background:
       'linear-gradient(135deg, #847979 0%, #C9C6C6 25%, #ffffff 50%, #C8C8C8 75%, #836F6F 100%)',
     boxShadow:
-      '0 0.2vh 0.8vh rgba(0,0,0,0.3), inset -0.1vh 0 0.9vh rgba(255,255,255,0.9), inset 0.1vh 0 0.3vh rgba(0,0,0,0.9)',
+      '0 0.2dvh 0.8dvh rgba(0,0,0,0.3), inset -0.1dvh 0 0.9dvh rgba(255,255,255,0.9), inset 0.1dvh 0 0.3dvh rgba(0,0,0,0.9)',
   };
   const FILIGREE = {
     ...METALLIC,
@@ -164,7 +166,7 @@ export default function AnalogClock() {
     top: '50%',
     transform: `translate(-50%, -100%) rotate(${secondDeg}deg)`,
     transformOrigin: 'center bottom',
-    borderRadius: '0 0 0.2vh 0.2vh',
+    borderRadius: '0 0 0.2dvh 0.2dvh',
     zIndex: 3,
   };
 

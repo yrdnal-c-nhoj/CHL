@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import backgroundImage from '@/assets/images/26_images/26-02/26-02-15/caldera.webp';
 import fontFile from '@/assets/fonts/26fonts/26-02-15-fire.ttf';
+export const assets = [backgroundImage, fontFile];
+
 
 const FONT_FAMILY = 'FireFont';
 

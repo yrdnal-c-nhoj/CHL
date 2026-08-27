@@ -4,6 +4,8 @@ import background from '@/assets/images/25_images/25-12/25-12-17/swagr.webp';
 import FONT_PATH from '@/assets/fonts/25fonts/25-12-17-facexxxx.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [background, FONT_PATH];
+
 
 const fontFamilyName = 'ClockComponentFont';
 
@@ -122,7 +124,7 @@ export default function App() {
     alignItems: 'center',
     height: '100%',
     color: 'white',
-    fontSize: isLargeScreen ? '15vw' : '20vh',
+    fontSize: isLargeScreen ? '15vw' : '20dvh',
     fontFamily: `${fontFamilyName}, monospace`,
     opacity: 1,
     transition: 'opacity 0.3s ease',
@@ -131,8 +133,8 @@ export default function App() {
     textAlign: 'center',
     whiteSpace: 'nowrap',
     flexDirection: isLargeScreen ? 'row' : 'column',
-    gap: isLargeScreen ? '0.1vh' : '0.5vh',
-    letterSpacing: '0.3vh',
+    gap: isLargeScreen ? '0.1dvh' : '0.5dvh',
+    letterSpacing: '0.3dvh',
   };
 
   return (

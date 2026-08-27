@@ -4,6 +4,8 @@ import { useSecondClock } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import styles from './Clock.module.css';
+export const assets: string[] = [];
+
 
 // Component Props interface
 interface CubeClockProps {

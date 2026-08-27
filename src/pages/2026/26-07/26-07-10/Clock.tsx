@@ -37,7 +37,7 @@ const RAIN_CONSTANTS = {
 const ROMAN_NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 
 const CLOCK_VARIABLES = {
-  '--clock-size': 'min(78vw, 72vh)',
+  '--clock-size': 'min(78vw, 72dvh)',
   '--font-size': 'clamp(0.95rem, 8vw, 2.35rem)',
   '--radius': '45',
   '--h-width': '6px', 

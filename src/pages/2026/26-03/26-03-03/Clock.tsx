@@ -3,6 +3,8 @@ import paperflowerVideo from '@/assets/images/26_images/26-03/26-03-02/paperflow
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
+export const assets = [paperFont, paperflowerVideo];
+
 
 const AnalogClock =  () => {
   const fontConfigs = [

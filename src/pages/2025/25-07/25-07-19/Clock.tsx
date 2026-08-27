@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import cunFont from '@/assets/fonts/25fonts/25-07-19-cun.ttf';
 import bgOverlay from '@/assets/images/25_images/25-07/25-07-19/cun1.webp';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [cunFont, bgOverlay];
+
 const CuneiformClock =  () => {
   const [time, setTime] = useState<any>('');
 
@@ -37,7 +39,7 @@ const CuneiformClock =  () => {
         /* Font loading handled by useSuspenseFontLoader */
 
         .cunei-wrapper {
-          font-size: 2vh;
+          font-size: 2dvh;
         }
 
         .cunei-container {
@@ -73,7 +75,7 @@ const CuneiformClock =  () => {
           top: 50%;
           left: 50%;
           width: 150vw;
-          height: 150vh;
+          height: 150dvh;
           object-fit: cover;
           transform: translate(-50%, -50%) rotate(0deg);
           transform-origin: center;

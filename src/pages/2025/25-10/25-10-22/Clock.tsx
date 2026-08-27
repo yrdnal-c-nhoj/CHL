@@ -5,6 +5,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import videoFile from '@/assets/images/25_images/25-10/25-10-22/bg.mp4';
 import fallbackImg from '@/assets/images/25_images/25-10/25-10-22/bg.webp';
 import fundyFont from '@/assets/fonts/25fonts/25-10-22-fundy.ttf?url';
+export const assets = [videoFile, fallbackImg, fundyFont];
+
 
 /**
  * Constants and Styles defined outside the component to prevent

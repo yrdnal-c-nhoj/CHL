@@ -5,6 +5,8 @@ import fireVideo from '@/assets/images/26_images/26-06/26-06-13/fire.mp4';
 import { useSecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
+export const assets = [animalsVideo, fireVideo];
+
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 

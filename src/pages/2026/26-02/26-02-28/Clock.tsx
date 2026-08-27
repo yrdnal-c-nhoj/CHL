@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import atomicWebp from '@/assets/images/26_images/26-02/26-02-28/atomic.webp';
 import atomicFont from '@/assets/fonts/26fonts/26-02-28-atomic.ttf';
+export const assets = [atomicWebp, atomicFont];
+
 
 const TILE_SIZE = 140;
 

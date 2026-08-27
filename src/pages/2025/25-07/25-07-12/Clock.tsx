@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import fibFont from '@/assets/fonts/25fonts/25-07-12-fib.otf';
 import fibImage from '@/assets/images/25_images/25-07/25-07-12/fib.gif';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [fibFont, fibImage];
+
 const FibonacciClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -73,8 +75,8 @@ const FibonacciClock =  () => {
       />
       <div
         style={{
-          width: '40vh',
-          height: '40vh',
+          width: '40dvh',
+          height: '40dvh',
           borderRadius: '50%',
           position: 'relative',
           zIndex: 3,
@@ -99,7 +101,7 @@ const FibonacciClock =  () => {
             <div
               style={{
                 position: 'absolute',
-                transform: 'translate(-50%, -21vh)',
+                transform: 'translate(-50%, -21dvh)',
               }}
             >
               {value}
@@ -113,11 +115,11 @@ const FibonacciClock =  () => {
             position: 'absolute',
             bottom: '50%',
             left: '50%',
-            width: '0.7vh',
-            height: '6.5vh',
+            width: '0.7dvh',
+            height: '6.5dvh',
             backgroundColor: '#191918',
             transformOrigin: 'bottom',
-            borderRadius: '0.3vh',
+            borderRadius: '0.3dvh',
             filter: 'drop-shadow(0.15rem 0.04rem rgb(231, 196, 23))',
           }}
         />
@@ -127,11 +129,11 @@ const FibonacciClock =  () => {
             position: 'absolute',
             bottom: '50%',
             left: '50%',
-            width: '0.5vh',
-            height: '13vh',
+            width: '0.5dvh',
+            height: '13dvh',
             backgroundColor: '#191918',
             transformOrigin: 'bottom',
-            borderRadius: '0.25vh',
+            borderRadius: '0.25dvh',
             filter: 'drop-shadow(0.15rem 0.04rem rgb(231, 196, 23))',
           }}
         />
@@ -141,18 +143,18 @@ const FibonacciClock =  () => {
             position: 'absolute',
             bottom: '50%',
             left: '50%',
-            width: '0.2vh',
-            height: '8vh',
+            width: '0.2dvh',
+            height: '8dvh',
             backgroundColor: 'transparent',
             transformOrigin: 'bottom',
-            borderRadius: '0.2vh',
+            borderRadius: '0.2dvh',
             filter: 'drop-shadow(0.15rem 0.04rem rgb(231, 196, 23))',
           }}
         />
         <div
           style={{
-            width: '2.6vh',
-            height: '2.6vh',
+            width: '2.6dvh',
+            height: '2.6dvh',
             borderRadius: '50%',
             position: 'absolute',
             top: '50%',

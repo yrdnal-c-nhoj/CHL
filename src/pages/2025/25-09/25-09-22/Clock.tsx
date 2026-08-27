@@ -11,6 +11,8 @@ import type { FontConfig } from '@/types/clock';
 import bgVideo from '@/assets/images/25_images/25-09/25-09-22/deex.mp4';
 import fallbackImage from '@/assets/images/25_images/25-09/25-09-22/deex.gif';
 import customFontmmm from '@/assets/fonts/25fonts/25-09-22-disney.ttf?url';
+export const assets = [bgVideo, fallbackImage, customFontmmm];
+
 
 export default function DigitalClockVideo() {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);

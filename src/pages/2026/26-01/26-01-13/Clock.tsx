@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+export const assets: string[] = [];
+
 
 const DiscClock =  () => {
   const [rotation, setRotation] = useState<any>({ h: 0, m: 0, s: 0 });

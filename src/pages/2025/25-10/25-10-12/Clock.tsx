@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import bgVideo from '@/assets/images/25_images/25-10/25-10-12/rose.mp4';
 import bgFallback from '@/assets/images/25_images/25-10/25-10-12/rose.webp';
+export const assets = [bgVideo, bgFallback];
+
 
 export default function AnalogClock() {
   const [videoPlayable, setVideoPlayable] = useState<boolean>(false);
@@ -118,42 +120,42 @@ export default function AnalogClock() {
     bottom: '50%',
     left: '50%',
     transformOrigin: '50% 100%',
-    borderRadius: '0.6vh',
+    borderRadius: '0.6dvh',
     willChange: 'transform',
     background: 'rgba(255, 0, 40, 0.95)',
     opacity: 0.9,
     boxShadow: `
-    0 0 3vh rgba(255, 20, 20, 0.8),
-      0 0 6vh rgba(255, 40, 60, 0.6),
-      0 0 10vh rgba(255, 0, 0, 0.5)
+    0 0 3dvh rgba(255, 20, 20, 0.8),
+      0 0 6dvh rgba(255, 40, 60, 0.6),
+      0 0 10dvh rgba(255, 0, 0, 0.5)
     `,
   };
 
   const hourStyle = {
     ...handCommon,
-    width: '1.6vh',
+    width: '1.6dvh',
     height: '12vmin',
     transform: `translate(-50%, 0) rotate(${hourDeg}deg)`,
   };
 
   const minuteStyle = {
     ...handCommon,
-    width: '0.9vh',
+    width: '0.9dvh',
     height: '28vmin',
     transform: `translate(-50%, 0) rotate(${minuteDeg}deg)`,
   };
 
   const secondStyle = {
     ...handCommon,
-    width: '0.4vh',
+    width: '0.4dvh',
     height: '44vmin',
     opacity: 0.85,
     boxShadow: `
-      0 0 3vh rgba(255, 20, 20, 0.8),
-      0 0 6vh rgba(255, 40, 60, 0.6),
-      0 0 10vh rgba(255, 0, 0, 0.5)
+      0 0 3dvh rgba(255, 20, 20, 0.8),
+      0 0 6dvh rgba(255, 40, 60, 0.6),
+      0 0 10dvh rgba(255, 0, 0, 0.5)
     `,
-    filter: 'blur(0.4vh)',
+    filter: 'blur(0.4dvh)',
     transform: `translate(-50%, 0) rotate(${secondDeg}deg)`,
   };
 

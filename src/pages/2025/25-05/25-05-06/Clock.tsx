@@ -3,6 +3,8 @@ import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
+export const assets: string[] = [];
+
 
 const googleFonts = [
   'Kablammo',
@@ -83,7 +85,7 @@ const UnrulyClock =  () => {
       <style>{`
         .container {
           background: #4C514C;
-          height: 100vh;
+          height: 100dvh;
           width: 100vw;
           display: flex;
           justify-content: center;
@@ -120,11 +122,11 @@ const UnrulyClock =  () => {
             grid-template-rows: repeat(3, 1fr);
             gap: 2rem;
             width: 90vw;
-            height: 80vh;
+            height: 80dvh;
           }
           .digit {
             width: 40vw;
-            height: 20vh;
+            height: 20dvh;
             font-size: 35vw;
           }
         }

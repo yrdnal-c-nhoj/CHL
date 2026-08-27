@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
+export const assets: string[] = [];
+
 
 const Clock =  () => {
   const fontConfigs = [
@@ -71,21 +73,21 @@ const Clock =  () => {
       height: '95%',
       backgroundColor: '#001a00',
       position: 'relative',
-      borderRadius: '2vh',
+      borderRadius: '2dvh',
       border: '20px solid #1a1a1a',
       boxShadow: '0 0 50px rgba(0,0,0,1), inset 0 0 100px rgba(0,0,0,1)',
       overflow: 'hidden',
     },
     output: {
-      // padding: '4vh',
+      // padding: '4dvh',
       height: '100%',
       boxSizing: 'border-box',
       textShadow: '0 0 8px rgba(0, 250, 0, 0.75)',
       animation: 'flicker 0.15s infinite',
     },
     timeHeader: {
-      fontSize: '10vh',
-      margin: '0 0 2vh 0',
+      fontSize: '10dvh',
+      margin: '0 0 2dvh 0',
       letterSpacing: '2px',
     },
     scanlines: {
@@ -159,7 +161,7 @@ const Clock =  () => {
         <div style={styles.output}>
           <h1 style={styles.timeHeader}>{timeString}</h1>
 
-          <div style={{ fontSize: '2.3vh', lineHeight: '1.1' }}>
+          <div style={{ fontSize: '2.3dvh', lineHeight: '1.1' }}>
             <p dangerouslySetInnerHTML={{ __html: bootText }} />
 
             {showEmail && (
@@ -173,7 +175,7 @@ const Clock =  () => {
             )}
 
             {showFooter && (
-              <p style={{ marginTop: '2vh', color: 'rgba(0, 250, 0, 0.5)' }}>
+              <p style={{ marginTop: '2dvh', color: 'rgba(0, 250, 0, 0.5)' }}>
                 PRESS ANY KEY TO EXIT...
               </p>
             )}

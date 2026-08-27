@@ -10,6 +10,8 @@ import fontFileUrl from '@/assets/fonts/25fonts/25-08-18-targ.otf';
 import hourHandImg from '@/assets/images/25_images/25-08/25-08-18/aro.gif';
 import minuteHandImg from '@/assets/images/25_images/25-08/25-08-18/arrr.gif';
 import secondHandImg from '@/assets/images/25_images/25-08/25-08-18/ar9.gif';
+export const assets = [bg3, bg1, bg2, bg4, fontFileUrl, hourHandImg, minuteHandImg, secondHandImg];
+
 
 const CLOCK_FONT_FAMILY = 'ClockFont__Scoped_7t3';
 
@@ -152,7 +154,7 @@ export default function ClockLetters({
   const bgLayerStyle = (layer) => ({
     position: 'absolute',
     width: '150vw',
-    height: '150vh',
+    height: '150dvh',
     top: '50%',
     left: '50%',
     transform: layer.rotate

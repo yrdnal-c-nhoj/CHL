@@ -3,6 +3,8 @@ import walkVideo from '@/assets/images/26_images/26-03/26-03-18/walk.mp4';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import walkFont from '@/assets/fonts/26fonts/26-03-18-walk.ttf?url';
+export const assets = [walkVideo, walkFont];
+
 
 const Clock =  () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -32,7 +34,7 @@ const Clock =  () => {
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   const clockSize = isMobile ? 300 : 500;
-  const numberSize = isMobile ? '10vh' : '12vh';
+  const numberSize = isMobile ? '10dvh' : '12dvh';
   const handScale = isMobile ? 0.7 : 1;
 
   useEffect(() => {
@@ -106,7 +108,7 @@ const Clock =  () => {
           top: 0,
           left: 0,
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           objectFit: 'cover',
           filter: 'contrast(140%) brightness(120%)',
         }}

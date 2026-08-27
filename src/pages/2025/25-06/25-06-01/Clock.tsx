@@ -6,6 +6,8 @@ import stamp3Img from '@/assets/images/25_images/25-06/25-06-01/stamp3.png';
 
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+export const assets = [airFontUrl, frameImg, stampImg, stamp2Img, stamp3Img];
+
 
 // Font loading handled by useSuspenseFontLoader
 const styleSheet = new CSSStyleSheet();
@@ -27,23 +29,23 @@ styleSheet.replaceSync(`
   }
 
   @media (max-width: 600px) {
-    .stamp { top: 1vh; right: 5vw; width: 4rem; height: 2.5rem; }
-    .stamp2 { top: 3vh; right: 2vw; width: 3rem; height: 2.5rem; }
-    .stamp3 { top: 1.5vh; right: 2vw; width: 4rem; height: 2rem; }
+    .stamp { top: 1dvh; right: 5vw; width: 4rem; height: 2.5rem; }
+    .stamp2 { top: 3dvh; right: 2vw; width: 3rem; height: 2.5rem; }
+    .stamp3 { top: 1.5dvh; right: 2vw; width: 4rem; height: 2rem; }
     .bgimage { maxHeight: 80dvh; maxWidth: 90vw; }
     .digitBox { fontSize: 4rem; width: 1.5rem; }
     .colon { fontSize: 4rem; width: 0.8rem; height: 4rem; }
-    .clock { margin-top: 15vh; } /* Increased margin for smaller screens */
+    .clock { margin-top: 15dvh; } /* Increased margin for smaller screens */
   }
 
   @media (max-width: 400px) {
-    .stamp { top: 0.5vh; right: 3vw; width: 3rem; height: 2rem; }
-    .stamp2 { top: 2vh; right: 1vw; width: 2.5rem; height: 2rem; }
-    .stamp3 { top: 1vh; right: 1vw; width: 3rem; height: 1.5rem; }
+    .stamp { top: 0.5dvh; right: 3vw; width: 3rem; height: 2rem; }
+    .stamp2 { top: 2dvh; right: 1vw; width: 2.5rem; height: 2rem; }
+    .stamp3 { top: 1dvh; right: 1vw; width: 3rem; height: 1.5rem; }
     .bgimage { maxHeight: 75dvh; maxWidth: 85vw; }
     .digitBox { fontSize: 3rem; width: 1.2rem; }
     .colon { fontSize: 3rem; width: 0.6rem; height: 3rem; }
-    .clock { margin-top: 20vh; } /* Further increased margin for very small screens */
+    .clock { margin-top: 20dvh; } /* Further increased margin for very small screens */
   }
 `);
 
@@ -67,7 +69,7 @@ const styles = {
   clock: {
     display: 'flex',
     zIndex: 10,
-    marginTop: '10vh', // Prevent overlap with stamps
+    marginTop: '10dvh', // Prevent overlap with stamps
   },
   digitBox: {
     width: '2rem',

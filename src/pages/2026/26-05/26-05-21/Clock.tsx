@@ -65,7 +65,7 @@ const ClockFace: React.FC<{ fontFamily: string }> = ({ fontFamily }) => {
             key={num}
             className={styles.number}
             style={{
-              transform: `translate(-50%, -50%) rotate(${num * 30}deg) translateY(-35vh)`,
+              transform: `translate(-50%, -50%) rotate(${num * 30}deg) translateY(-35dvh)`,
               fontFamily: `${fontFamily}, sans-serif`,
             }}
           >

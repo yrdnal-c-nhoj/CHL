@@ -49,7 +49,7 @@ const ClockComponent =  () => {
       {/* Clock UI */}
       <div
         className={styles.clockFace}
-        style={{ fontFamily: 'ClockFont_26_08_03', fontSize: 'min(40vw, 35vh)', color: '#FF91AF' }}
+        style={{ fontFamily: 'ClockFont_26_08_03', fontSize: 'min(40vw, 35dvh)', color: '#FF91AF' }}
       >
         <span>{hours}:{minutes}</span>
       </div>

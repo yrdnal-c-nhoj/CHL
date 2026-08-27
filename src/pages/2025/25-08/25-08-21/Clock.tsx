@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import customFont821 from '@/assets/fonts/25fonts/25-08-21-wide.ttf?url';
 import styles from './Clock.module.css';
+export const assets = [customFont821];
+
 
 export const fontConfigs: FontConfig[] = [
   { fontFamily: 'CustomFont', fontUrl: customFont821 },

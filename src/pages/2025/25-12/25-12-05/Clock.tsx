@@ -5,6 +5,8 @@ import type { FontConfig } from '@/types/clock';
 import font_2025_12_06 from '@/assets/fonts/25fonts/25-12-05-magic.ttf?url';
 import bgImage from '@/assets/images/25_images/25-12/25-12-05/magic.webp';
 import styles from './Clock.module.css';
+export const assets = [font_2025_12_06, bgImage];
+
 
 export default function BoxedDigitalClock() {
   const time = useMillisecondClock();

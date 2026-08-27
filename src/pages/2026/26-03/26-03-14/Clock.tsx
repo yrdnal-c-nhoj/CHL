@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
 import backgroundImage from '@/assets/images/26_images/26-03/26-03-14/mother.webp';
 import { useMillisecondClock } from '@/utils/hooks';
+export const assets = [backgroundImage];
+
 
 const ImageLayout = React.memo(() => (
   <div style={{ position: 'fixed', inset: 0, zIndex: 0, background: '#000' }}>
@@ -56,7 +58,7 @@ const styles = {
     top: '1px',
     left: '20px',
     color: '#DFECD7',
-    fontSize: '2vh',
+    fontSize: '2dvh',
     fontFamily: 'monospace',
     textShadow: '0 0 10px rgba(255,255,255,0.5)',
     zIndex: 10,

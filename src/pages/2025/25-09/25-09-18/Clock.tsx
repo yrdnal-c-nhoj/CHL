@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+export const assets: string[] = [];
+
 const mat250918font = '../../../assets/fonts/2025/25-09-18-matrix.ttf'; // Your Matrix-style font
 
 export default function MatrixRain() {

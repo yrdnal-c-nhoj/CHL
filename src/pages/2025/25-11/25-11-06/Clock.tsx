@@ -1,5 +1,7 @@
 import React from 'react';
-import { useMillisecondClock } from '@/utils/hooks'; // Import the standardized clock hook
+import { useMillisecondClock } from '@/utils/hooks';
+export const assets: string[] = [];
+ // Import the standardized clock hook
 
 const Clock =  () => {
   const time = useMillisecondClock(); // Use the standardized clock hook
@@ -101,7 +103,7 @@ const Clock =  () => {
         fontFamily: 'monospace',
         whiteSpace: 'pre',
         overflow: 'auto',
-        fontSize: 'clamp(8px, 1.5vh, 16px)',
+        fontSize: 'clamp(8px, 1.5dvh, 16px)',
         lineHeight: '1',
       }}
     >

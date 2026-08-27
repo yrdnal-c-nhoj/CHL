@@ -15,6 +15,8 @@ import num9 from '@/assets/images/25_images/25-11/25-11-14/9.webp';
 import num10 from '@/assets/images/25_images/25-11/25-11-14/10.jpg';
 import num11 from '@/assets/images/25_images/25-11/25-11-14/11.webp';
 import num12 from '@/assets/images/25_images/25-11/25-11-14/12.webp';
+export const assets = [bg, num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, num12];
+
 
 const numberImages = [
   num12,
@@ -65,7 +67,7 @@ export default function ImageAnalogClock() {
     return () => cancelAnimationFrame(rafRef.current);
   }, []);
 
-  const clockSize = 'min(190vw, 190vh)';
+  const clockSize = 'min(190vw, 190dvh)';
 
   const wrapper = {
     width: clockSize,
@@ -97,7 +99,7 @@ export default function ImageAnalogClock() {
       left: `${left}%`,
       transform: 'translate(-50%, -50%)',
 
-      width: '15vh',
+      width: '15dvh',
       height: 'auto',
 
       userSelect: 'none',
@@ -110,28 +112,28 @@ export default function ImageAnalogClock() {
     left: '50%',
     top: '50%',
     transformOrigin: '50% 100%',
-    borderRadius: '1vh',
+    borderRadius: '1dvh',
     background: '#C8E0EF',
   };
 
   const hourHand = {
     ...handCommon,
-    width: '1vh',
-    height: '15vh',
+    width: '1dvh',
+    height: '15dvh',
     zIndex: 10,
   };
 
   const minuteHand = {
     ...handCommon,
-    width: '0.7vh',
-    height: '22vh',
+    width: '0.7dvh',
+    height: '22dvh',
     zIndex: 11,
   };
 
   const secondHand = {
     ...handCommon,
-    width: '0.35vh',
-    height: '25vh',
+    width: '0.35dvh',
+    height: '25dvh',
     zIndex: 12,
     background: '#C8E0EF',
   };

@@ -3,15 +3,17 @@ import React from 'react';
 import { useSecondClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
+export const assets: string[] = [];
+
 
 const Clock =  () => {
   const time = useSecondClock();
 
   // Calculate grid dimensions based on viewport and tile size
-  const tileWidth = 26; // 26vh (260px / 10)
-  const tileHeight = 10; // 10vh (100px / 10)
+  const tileWidth = 26; // 26dvh (260px / 10)
+  const tileHeight = 10; // 10dvh (100px / 10)
   const viewportWidth = window.innerWidth / (window.innerHeight / 100); // Convert to vh
-  const viewportHeight = 100; // 100vh
+  const viewportHeight = 100; // 100dvh
   const cols = Math.ceil(viewportWidth / tileWidth) + 2; // Extra for centering
   const rows = Math.ceil(viewportHeight / tileHeight) + 2; // Extra for centering
 

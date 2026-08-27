@@ -5,6 +5,8 @@ import suvFont from '@/assets/fonts/25fonts/25-07-07-suv.ttf';
 import suvImage from '@/assets/images/25_images/25-07/25-07-07/suv.gif';
 import suvBackground from '@/assets/images/25_images/25-07/25-07-07/suvx.jpg';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [suvFont, suvImage, suvBackground];
+
 const Clock =  () => {
   const [time, setTime] = useState<any>({
     h: '00',
@@ -43,7 +45,7 @@ const Clock =  () => {
   const clockStyle = {
     position: 'fixed',
     left: '200px',
-    top: '51vh',
+    top: '51dvh',
     transform: 'translateY(-50%)',
     display: 'flex',
     textAlign: 'left',
@@ -86,11 +88,11 @@ const Clock =  () => {
     bottom: 0,
     left: 0,
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     backgroundImage: `url(${suvImage})`,
     backgroundPosition: 'right bottom',
     backgroundRepeat: 'no-repeat',
-    backgroundSize: 'auto 100vh', // ensures full vertical fit
+    backgroundSize: 'auto 100dvh', // ensures full vertical fit
     filter: 'brightness(160%) saturate(190%) hue-rotate(30deg)',
     zIndex: 2,
     pointerEvents: 'none',
@@ -102,7 +104,7 @@ const Clock =  () => {
     top: 0,
     left: 0,
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     backgroundImage: `url(${suvBackground})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',

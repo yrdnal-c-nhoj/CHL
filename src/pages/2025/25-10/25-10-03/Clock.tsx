@@ -20,6 +20,8 @@ import num12 from '@/assets/images/25_images/25-10/25-10-03/11.webp';
 import hourHand from '@/assets/images/25_images/25-10/25-10-03/hannd.gif';
 import minuteHand from '@/assets/images/25_images/25-10/25-10-03/haa.gif';
 import secondHand from '@/assets/images/25_images/25-10/25-10-03/han.gif';
+export const assets = [num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, num12, hourHand, minuteHand, secondHand];
+
 
 const numberImages = [
   num12,
@@ -72,7 +74,7 @@ const AnalogClockWithImages =  () => {
   const minuteAngle = (minutes + seconds / 60 + ms / 60000) * 6;
   const hourAngle = ((hours % 12) + minutes / 60 + seconds / 3600) * 30;
 
-  const clockFaceSize = 'min(90vw, 90vh)';
+  const clockFaceSize = 'min(90vw, 90dvh)';
 
   const numberStyle = (angleDeg) => {
     const radius = 40;

@@ -2,6 +2,8 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useEffect, useMemo } from 'react';
+export const assets: string[] = [];
+
 
 // Digit style interface
 interface DigitStyle {
@@ -73,7 +75,7 @@ export default function StripeClock() {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: '8vh',
+    fontSize: '8dvh',
     backgroundColor: digitStyles[char].bg,
     color: digitStyles[char].color,
     transition: 'all 0.5s ease',

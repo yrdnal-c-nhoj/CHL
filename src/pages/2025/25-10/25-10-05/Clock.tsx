@@ -6,6 +6,8 @@ import bgImage from '@/assets/images/25_images/25-10/25-10-05/16a.webp';
 import clockBgImage from '@/assets/images/25_images/25-10/25-10-05/16.webp';
 import diigi251005 from '@/assets/fonts/25fonts/25-10-05-dode.ttf';
 import ana251005font from '@/assets/fonts/25fonts/25-10-05-do.ttf';
+export const assets = [bgImage, clockBgImage, diigi251005, ana251005font];
+
 
 export default function HexAnalogClock() {
   const currentTime = useSmoothClock();
@@ -72,7 +74,7 @@ export default function HexAnalogClock() {
           justifyContent: 'center',
           background: '#000',
           color: '#fff',
-          fontSize: '4vh',
+          fontSize: '4dvh',
           fontFamily: 'sans-serif',
         }}
        />
@@ -116,8 +118,8 @@ export default function HexAnalogClock() {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      gap: '0.5vh',
-      padding: '0.5vh',
+      gap: '0.5dvh',
+      padding: '0.5dvh',
       boxSizing: 'border-box',
       overflow: 'hidden',
       backgroundImage: `url(${bgImage})`,
@@ -129,18 +131,18 @@ export default function HexAnalogClock() {
       background: '#fff',
       border: '4px solid #0E0404FF',
       borderRadius: '12px',
-      padding: '1vh 2vh',
+      padding: '1dvh 2dvh',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      fontSize: '6vh',
+      fontSize: '6dvh',
       zIndex: 2,
       maxWidth: '95vw',
-      transform: 'translateY(-3vh)', // <-- moves digital clock up
+      transform: 'translateY(-3dvh)', // <-- moves digital clock up
     },
     progressContainer: {
       width: '100%',
-      height: '6vh',
+      height: '6dvh',
       background: 'rgba(204, 187, 170, 0.2)',
       borderRadius: '12px',
       overflow: 'hidden',
@@ -195,12 +197,12 @@ export default function HexAnalogClock() {
     },
     hexDigitBox: (index) => ({
       width: '8vw',
-      height: '6vh',
+      height: '6dvh',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       fontFamily: 'DigitalFont',
-      fontSize: '7vh',
+      fontSize: '7dvh',
       background: 'linear-gradient(90deg, #00FF00, #FF0000, #0000FF, #FFFF00)',
       WebkitBackgroundClip: 'text',
       color: 'transparent',

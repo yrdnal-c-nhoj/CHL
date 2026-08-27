@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import Font20251111 from '@/assets/fonts/25fonts/25-11-09-disc.ttf'; // main Roman font
 import ActiveFont20251111 from '@/assets/fonts/25fonts/25-11-09-pin.ttf'; // active digit font
 import { useMillisecondClock } from '@/utils/hooks';
+export const assets = [Font20251111, ActiveFont20251111];
+
 
 const ROMAN_NUMERALS = [
   'I',
@@ -153,11 +155,11 @@ const DarkRomanClock =  () => {
             fontFamily: isActive
               ? 'ActiveFont20251111, serif'
               : 'RomanFont20251111, serif',
-            fontSize: isActive ? '11.0vh' : '1.5vh',
+            fontSize: isActive ? '11.0dvh' : '1.5dvh',
             color: isActive ? '#F664ECFF' : '#D2FC2AFF',
             textShadow: isActive
-              ? '3px 1px 0vh #EFE9ECFF, 2px -2px 0vh #110E09FF'
-              : '1px 1px 0.1vh #080102FF',
+              ? '3px 1px 0dvh #EFE9ECFF, 2px -2px 0dvh #110E09FF'
+              : '1px 1px 0.1dvh #080102FF',
             transition: 'all 0.12s linear',
             whiteSpace: 'nowrap',
             opacity: isActive ? 0.5 : 1.0, // active digit opacity updated here

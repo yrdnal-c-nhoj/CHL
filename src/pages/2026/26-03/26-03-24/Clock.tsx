@@ -3,6 +3,8 @@ import arrowImg from '@/assets/images/26_images/26-03/26-03-23/arrow.webp?url';
 import fontUrl from '@/assets/fonts/26fonts/26-03-24-26-03-23-arrow.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import styles from './Clock.module.css';
+export const assets = [arrowImg, fontUrl];
+
 const FONT_FAMILY = 'ClockFont_Arrow';
 const ANIMATION_DURATION_MS = 4200;
 const BASE_DELAY_S = 2.5;

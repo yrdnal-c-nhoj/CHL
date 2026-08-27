@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import symJpg from '@/assets/images/25_images/25-12/25-12-23/sym.jpg';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [symJpg];
+
 const DigitalClock =  () => {
   const [time, setTime] = useState(new Date());
 
@@ -17,7 +19,7 @@ const DigitalClock =  () => {
     top: 0,
     left: 0,
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     backgroundImage: `url(${symJpg})`,
     backgroundSize: '30px 15px',
     backgroundPosition: 'center',
@@ -53,7 +55,7 @@ const DigitalClock =  () => {
           top: 0,
           left: 0,
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -79,9 +81,9 @@ const DigitalClock =  () => {
       <div style={centerLineStyle} />
 
       {/* Clock Layers */}
-      <Layer value={seconds} size="80vh" zIndex={1} opacity={0.8} />
-      <Layer value={minutes} size="50vh" zIndex={2} opacity={0.9} />
-      <Layer value={hours} size="25vh" zIndex={3} opacity={1} />
+      <Layer value={seconds} size="80dvh" zIndex={1} opacity={0.8} />
+      <Layer value={minutes} size="50dvh" zIndex={2} opacity={0.9} />
+      <Layer value={hours} size="25dvh" zIndex={3} opacity={1} />
     </div>
   );
 }

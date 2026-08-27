@@ -7,6 +7,8 @@ import fontUrl from '@/assets/fonts/25fonts/25-04-29-bang.ttf?url';
 import gif1 from '@/assets/images/25_images/25-04/25-04-29/fw.webp';
 import gif2 from '@/assets/images/25_images/25-04/25-04-29/84298.gif';
 import gif3 from '@/assets/images/25_images/25-04/25-04-29/giphy.gif';
+export const assets = [fontUrl, gif1, gif2, gif3];
+
 
 // Component Props interface
 interface FireworksClockProps {
@@ -176,10 +178,10 @@ const FireworksClock: React.FC<FireworksClockProps> = () => {
 
         @keyframes ${componentId}-riseUp {
           0% {
-            transform: translateY(100vh);
+            transform: translateY(100dvh);
           }
           100% {
-            transform: translateY(-70vh);
+            transform: translateY(-70dvh);
           }
         }
 

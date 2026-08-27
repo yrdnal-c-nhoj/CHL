@@ -117,7 +117,7 @@ const VTEC =  () => {
         inset: 0,
         backgroundImage: `url(${tile})`,
         backgroundPosition: 'center',
-        backgroundSize: '45vh',
+        backgroundSize: '45dvh',
         filter: 'saturate(4) contrast(2.2) brightness(0.8)',
       }} />
       <div style={analogStyles.clock}>
@@ -165,7 +165,7 @@ const analogStyles: { [key: string]: React.CSSProperties } = {
   number: {
     position: 'absolute',
     fontFamily: 'ClockFont_26_07_07, sans-serif',
-    fontSize: '10vh',
+    fontSize: '10dvh',
     color: '#3B053F',
     transform: 'translate(-50%, -50%)',
     userSelect: 'none',
@@ -186,7 +186,7 @@ const analogStyles: { [key: string]: React.CSSProperties } = {
   minuteHand: { width: '4px', height: '90px', marginLeft: '-2px' },
   secondHand: {
     width: '2px',
-    height: '110vh',
+    height: '110dvh',
     marginLeft: '-1px',
     backgroundColor: '#f44336',
   },
@@ -194,8 +194,8 @@ const analogStyles: { [key: string]: React.CSSProperties } = {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    width: '12vh',
-    height: '12vh',
+    width: '12dvh',
+    height: '12dvh',
     opacity: 0.3,
     borderRadius: '50%',
     backgroundColor: '#f44336',
@@ -214,7 +214,7 @@ const vtecStyles: { [key: string]: React.CSSProperties } = {
     // pointerEvents: 'none', // Allow interaction for layout
     zIndex: 5,
     backgroundPosition: 'center',
-    backgroundSize: '15vh',
+    backgroundSize: '15dvh',
   },
   vtecImage: {
     position: 'absolute',

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
+export const assets: string[] = [];
+
 const o250920font = '../../../assets/fonts/2025/25-09-20-orb.ttf'; // Local font file
 
 const COLORS = {
@@ -17,7 +19,7 @@ const COLORS = {
 } as const;
 
 const SIZES = {
-  clock: 'clamp(30vw, 50vh, 80vh)',
+  clock: 'clamp(30vw, 50dvh, 80dvh)',
   hourHand: { width: '0.6rem', height: '5rem' },
   minuteHand: { width: '0.4rem', height: '7rem' },
   secondHand: { width: '0.3rem', height: '8.5rem' },

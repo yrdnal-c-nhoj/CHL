@@ -3,6 +3,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 import bgImage from '@/assets/images/25_images/25-12/25-12-09/muybridge.webp';
 import customFont_2025_1210 from '@/assets/fonts/25fonts/25-12-09-muy.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+export const assets = [bgImage, customFont_2025_1210];
+
 
 const elementColor = '#BBA8C8FF';
 
@@ -75,7 +77,7 @@ export default function DigitalClock() {
     boxSizing: 'border-box',
     transform: 'scale(0.9)',
     position: 'absolute',
-    bottom: '18vh',
+    bottom: '18dvh',
     left: 0,
     right: 0,
   };

@@ -4,6 +4,8 @@ import type { FontConfig } from '@/types/clock';
 import font20250119_primary from '@/assets/fonts/26fonts/26-01-16-leap.otf';
 import font20250119_secondary from '@/assets/fonts/25fonts/26-01-16-25-04-25-Oswald-Bold.ttf?url';
 import font20250119_mono from '@/assets/fonts/25fonts/26-01-16-25-05-10-Questrial.ttf?url';
+export const assets = [font20250119_primary, font20250119_secondary, font20250119_mono];
+
 import '@fontsource/roboto-mono';
 
 const LEAP_SECOND_DATES = [
@@ -155,7 +157,7 @@ const LeapClock =  () => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          padding: 'clamp(1rem, 5vh, 3rem) 0',
+          padding: 'clamp(1rem, 5dvh, 3rem) 0',
           boxSizing: 'border-box',
         }}
       >
@@ -165,7 +167,7 @@ const LeapClock =  () => {
             style={{
               maxWidth: '600px',
               fontFamily: 'Questrial, sans-serif',
-              fontSize: 'clamp(14px, 2vh, 18px)',
+              fontSize: 'clamp(14px, 2dvh, 18px)',
               margin: '0 auto 1.5rem',
               lineHeight: 1.4,
             }}
@@ -175,7 +177,7 @@ const LeapClock =  () => {
           </div>
           <div
             style={{
-              fontSize: 'clamp(32px, 6vh, 54px)',
+              fontSize: 'clamp(32px, 6dvh, 54px)',
               letterSpacing: '0.5rem',
             }}
           >
@@ -250,7 +252,7 @@ const LeapClock =  () => {
           <div
             style={{
               marginTop: '1rem',
-              fontSize: 'clamp(18px, 3vh, 34px)',
+              fontSize: 'clamp(18px, 3dvh, 34px)',
               letterSpacing: '0.5rem',
               textAlign: 'center',
             }}
@@ -262,7 +264,7 @@ const LeapClock =  () => {
               marginTop: '1rem',
               maxWidth: '600px',
               fontFamily: 'Questrial, sans-serif',
-              fontSize: 'clamp(14px, 2vh, 18px)',
+              fontSize: 'clamp(14px, 2dvh, 18px)',
               margin: '0 auto 1.5rem',
               lineHeight: 1.4,
               textAlign: 'center',

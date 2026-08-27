@@ -6,6 +6,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+export const assets = [lavaFont, lava1, lava3, lava2];
+
 
 // Time state interface
 interface TimeState {

@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
 import empireFont from '@/assets/fonts/26fonts/26-03-20-empire.otf';
+export const assets = [empireFont];
+
 
 interface HourMarker {
   value: number;

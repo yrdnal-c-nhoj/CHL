@@ -3,6 +3,8 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useRef } from 'react';
+export const assets = [vegasFont];
+
 
 // Declare global types for YouTube API
 declare global {

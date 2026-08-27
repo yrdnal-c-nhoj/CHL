@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import font20251027 from '@/assets/fonts/25fonts/25-10-25-fall.ttf?url'; // Local font file
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [font20251027];
+
 
 const EntropyClock =  () => {
   const [time, setTime] = useState(new Date());
@@ -286,7 +288,7 @@ const EntropyClock =  () => {
           borderRadius: '50%',
           opacity: showClock ? 1 : 0,
           transition: 'opacity 1s ease-in-out',
-          transform: 'translateY(-3vh)', // move entire clock up by 3vh
+          transform: 'translateY(-3dvh)', // move entire clock up by 3dvh
         }}
       >
         {/* === NUMBERS === */}
@@ -304,7 +306,7 @@ const EntropyClock =  () => {
                 left: `calc(50% + ${40 * Math.cos(rad)}vmin)`,
                 top: `calc(50% + ${40 * Math.sin(rad)}vmin)`,
                 transform: 'translate(-50%, -50%)',
-                fontSize: '7vh',
+                fontSize: '7dvh',
                 fontWeight: '900',
                 color: '#FFD700',
                 textShadow: digitTextShadow, // same shadow

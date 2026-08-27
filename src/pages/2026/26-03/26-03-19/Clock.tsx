@@ -3,6 +3,8 @@ import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import snowFont from '@/assets/fonts/26fonts/26-03-19-snow.otf?url';
+export const assets = [snowFont];
+
 
 interface Flake {
   x: number;

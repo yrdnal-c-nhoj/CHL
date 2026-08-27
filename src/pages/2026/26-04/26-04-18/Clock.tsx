@@ -21,7 +21,7 @@ const Clock =  () => {
   const hours = time.getHours().toString().padStart(2, '0');
   const minutes = time.getMinutes().toString().padStart(2, '0');
 
-  const size = 'min(100vw, 100vh)';
+  const size = 'min(100vw, 100dvh)';
   const cell = `calc(${size} / 2)`;
 
   return (

@@ -4,6 +4,8 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
+export const assets = [fontUrl, carVideo];
+
 
 // Distinct metallic steel profiles
 const STEEL_TEXTURES = [

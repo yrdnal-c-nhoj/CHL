@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import castelImage from '@/assets/images/25_images/25-08/25-08-24/castel.jpg';
 import viaFont from '@/assets/fonts/25fonts/25-08-24-via.ttf';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [castelImage, viaFont];
+
 const toRoman = (num: number) => {
   const romanMap = [
     [1000, 'M'],
@@ -53,7 +55,7 @@ const RomanClock = () => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
     fontFamily: fontsLoaded ? "'Via', serif" : 'serif',
     backgroundColor: '#1a1a1a',

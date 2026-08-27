@@ -1,7 +1,9 @@
 import { useMillisecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
-import { GRID, HOUR_WORDS, MAPPING } from './clockConstants'; // Import constants
+import { GRID, HOUR_WORDS, MAPPING } from './clockConstants';
+export const assets: string[] = [];
+ // Import constants
 
 const WordClock =  () => {
   const now = useMillisecondClock();

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import c250929 from '@/assets/fonts/25fonts/25-09-29-actionj.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
+export const assets = [c250929];
+
 
 export default function ComicClock() {
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
@@ -44,7 +46,7 @@ export default function ComicClock() {
 
   const digitStyle = {
     fontFamily: 'C250929, cursive',
-    fontSize: '11vh', // responsive font scaling
+    fontSize: '11dvh', // responsive font scaling
   };
 
   const digitBubbleStyle = {
@@ -69,7 +71,7 @@ export default function ComicClock() {
     borderRadius: '0.8rem',
     display: 'inline-block',
     textAlign: 'center',
-    fontSize: '2vh',
+    fontSize: '2dvh',
     lineHeight: 1.2,
     transform: 'skew(-10deg)', // visually italicizes text
     fontStyle: 'italic', // still included for completeness

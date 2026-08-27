@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import bgImageSrc from '@/assets/images/25_images/25-09/25-09-14/bg.gif';
+export const assets = [bgImageSrc];
+
 
 const GoldenChordsClock =  () => {
   const time = useSmoothClock();

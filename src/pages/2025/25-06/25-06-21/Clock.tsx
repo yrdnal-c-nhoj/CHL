@@ -8,6 +8,8 @@ import bgImage from '@/assets/images/25_images/25-06/25-06-21/mmm.gif';
 import hourImg from '@/assets/images/25_images/25-06/25-06-21/mercc.gif';
 import minuteImg from '@/assets/images/25_images/25-06/25-06-21/memm.gif';
 import secondImg from '@/assets/images/25_images/25-06/25-06-21/mmmm.png';
+export const assets = [fontUrl, bg1, bg2, bg3, bgImage, hourImg, minuteImg, secondImg];
+
 
 const MercuryClock =  () => {
   const hourRef = useRef(null);
@@ -87,7 +89,7 @@ const MercuryClock =  () => {
         backgroundColor: '#838b8f',
         backgroundImage: `url(${bg1}), url(${bg2}), url(${bg3})`,
         backgroundRepeat: 'repeat, repeat, repeat',
-        backgroundSize: '2.5vh auto, 5vh auto, 2.5vh auto',
+        backgroundSize: '2.5dvh auto, 5dvh auto, 2.5dvh auto',
         backgroundPosition: 'bottom right',
         backgroundAttachment: 'scroll',
         fontFamily: 'merc, serif',
@@ -104,7 +106,7 @@ const MercuryClock =  () => {
           top: 0,
           left: 0,
           width: '99vw',
-          height: '91vh',
+          height: '91dvh',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

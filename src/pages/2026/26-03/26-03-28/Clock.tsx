@@ -6,6 +6,8 @@ import bgVideo from '@/assets/images/26_images/26-03/26-03-28/water.mp4';
 import bgImage from '@/assets/images/26_images/26-03/26-03-28/h2o.webp';
 import clockFont from '@/assets/fonts/26fonts/26-03-28-h2o.ttf';
 import styles from './Clock.module.css';
+export const assets = [bgVideo, bgImage, clockFont];
+
 
 const Clock =  () => {
   const time = useMillisecondClock();

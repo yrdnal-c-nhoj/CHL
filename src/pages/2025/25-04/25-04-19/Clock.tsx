@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Clock.module.css';
+export const assets = [permanentMarkerFont];
+
 
 // --- Configuration & Types ---
 interface BallProperties {

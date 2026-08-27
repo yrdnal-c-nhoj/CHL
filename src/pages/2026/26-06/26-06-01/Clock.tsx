@@ -5,7 +5,9 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { memo, useMemo } from 'react';
-import styles from './Clock.module.css'; // Import CSS module
+import styles from './Clock.module.css';
+export const assets = [fontUrl, needleImage, jumpVideo];
+ // Import CSS module
 
 const FONT_FAMILY = 'ClockFont_26_05_26';
 
@@ -18,8 +20,8 @@ const CLOCK_CONFIG = {
 } as const;
 
 const HAND_DIMENSIONS = {
-  hour: { width: '0.4vh', height: '20vmin', zIndex: 3 },
-  minute: { width: '0.3vh', height: '32vmin', zIndex: 4 },
+  hour: { width: '0.4dvh', height: '20vmin', zIndex: 3 },
+  minute: { width: '0.3dvh', height: '32vmin', zIndex: 4 },
 } as const;
 
 const BackgroundLayers = memo(() => (

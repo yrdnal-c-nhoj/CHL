@@ -23,7 +23,7 @@ const HOURS = Array.from({ length: 12 }, (_, i) => String(i + 1));
 const MINUTES = Array.from({ length: 12 }, (_, i) => String((i + 1) * 5).padStart(2, '0'));
 const SECONDS = Array.from({ length: 60 }, (_, i) => String(i + 1).padStart(2, '0'));
 
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   // Use the canonical hook for time updates
   const time = useMillisecondClock(16);
 

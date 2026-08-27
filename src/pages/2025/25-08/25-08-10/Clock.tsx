@@ -13,6 +13,8 @@ import digit6 from '@/assets/images/25_images/25-08/25-08-10/6-6.webp';
 import digit7 from '@/assets/images/25_images/25-08/25-08-10/7-6.webp';
 import digit8 from '@/assets/images/25_images/25-08/25-08-10/8-6.webp';
 import digit9 from '@/assets/images/25_images/25-08/25-08-10/9-6.webp';
+export const assets = [bgImage, digit0, digit1, digit2, digit3, digit4, digit5, digit6, digit7, digit8, digit9];
+
 
 const digitImages = {
   0: digit0,
@@ -57,7 +59,7 @@ const DigitalClock =  () => {
         src={digitImages[char]}
         alt={char}
         style={{
-          height: '14vh',
+          height: '14dvh',
           // margin: '0 0.3vw',
           filter: 'brightness(1.6)', // <<< Brightness filter on digit images
         }}

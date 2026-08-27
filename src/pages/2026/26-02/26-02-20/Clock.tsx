@@ -10,6 +10,8 @@ const FONT_NAME = 'Forum';
 import backgroundImage from '@/assets/images/26_images/26-02/26-02-20/forum2.webp';
 import topImage from '@/assets/images/26_images/26-02/26-02-20/forum.webp';
 import forumFont from '@/assets/fonts/26fonts/26-02-20-forum.otf';
+export const assets = [backgroundImage, topImage, forumFont];
+
 
 export { backgroundImage, topImage };
 
@@ -81,7 +83,7 @@ export default function ClockTemplate() {
 
   const topImageStyle = {
     width: '100%',
-    height: '20vh',
+    height: '20dvh',
     objectFit: '100% auto',
     flexShrink: 0,
   };

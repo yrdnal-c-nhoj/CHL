@@ -4,6 +4,8 @@ import WebFonnov25ufuf from '@/assets/fonts/25fonts/25-11-05-webs1.ttf';
 import Webfont2511055 from '@/assets/fonts/25fonts/25-11-05-webs2.ttf';
 import w251105font from '@/assets/fonts/25fonts/25-11-05-webs3.ttf';
 import { useMillisecondClock } from '@/utils/hooks';
+export const assets = [WebFonnov25ufuf, Webfont2511055, w251105font];
+
 
 // Helper function remains the same
 function makeColumnsBackground(columns, gutterVw, marginVw) {
@@ -31,9 +33,9 @@ function Rulers({ viewportWidth, viewportHeight }) {
   const TICK_MINOR = 1.85; // 20px / 1080px * 100
   const COUNT = 200;
   const labelStyle = {
-    fontSize: '3.4vh',
+    fontSize: '3.4dvh',
     color: '#BBBBC7FF',
-    textShadow: '0 0.2vh 0.4vh rgba(233,90,0)',
+    textShadow: '0 0.2dvh 0.4dvh rgba(233,90,0)',
 
     fontWeight: 700,
     fontFamily: "'Teko', sans-serif",
@@ -49,9 +51,9 @@ function Rulers({ viewportWidth, viewportHeight }) {
           left: 0,
           right: 0,
           top: 0,
-          height: '3.2vh',
+          height: '3.2dvh',
           background: 'rgba(250,20,0,0.4)',
-          borderBottom: '0.2vh solid rgba(2,255,2)',
+          borderBottom: '0.2dvh solid rgba(2,255,2)',
           pointerEvents: 'none',
         }}
       >
@@ -65,7 +67,7 @@ function Rulers({ viewportWidth, viewportHeight }) {
                 left: `${x}vw`,
                 bottom: 0,
                 width: major ? '0.3vw' : '0.3vw',
-                height: major ? '2.4vh' : '1.6vh',
+                height: major ? '2.4dvh' : '1.6dvh',
                 background: major ? '#8b5cf6' : '#A9EF06FF',
               }}
             />
@@ -77,7 +79,7 @@ function Rulers({ viewportWidth, viewportHeight }) {
             style={{
               position: 'absolute',
               left: `${x + 0.6}vw`,
-              top: '4vh',
+              top: '4dvh',
               ...labelStyle,
             }}
           >
@@ -96,7 +98,7 @@ function Rulers({ viewportWidth, viewportHeight }) {
           left: 0,
           width: '2.4vw',
           background: '#D20B0B38',
-          borderRight: '0.3vh solid rgba(255,255,2)',
+          borderRight: '0.3dvh solid rgba(255,255,2)',
           pointerEvents: 'none',
         }}
       >
@@ -110,7 +112,7 @@ function Rulers({ viewportWidth, viewportHeight }) {
                 top: `${y}vh`,
                 right: 0,
                 width: major ? '3.8vw' : '3.6vw',
-                height: major ? '0.3vh' : '0.2vh',
+                height: major ? '0.3dvh' : '0.2dvh',
                 background: major ? '#8b5cf6' : '#3f3f46',
               }}
             />
@@ -121,7 +123,7 @@ function Rulers({ viewportWidth, viewportHeight }) {
             key={`label-y-${y}`}
             style={{
               position: 'absolute',
-              right: '0.4vh',
+              right: '0.4dvh',
               top: `${y + 0.4}vh`,
               transform: 'rotate(-90deg)',
               transformOrigin: 'top right',
@@ -289,12 +291,12 @@ function ModernDigitalClock() {
                 top: `${i * BASELINE}vh`,
                 left: 0,
                 width: '100%',
-                height: '0.1vh',
+                height: '0.1dvh',
                 // Brighter baseline colors and added box-shadow
                 background: thick
                   ? 'rgba(180, 80, 255, 0.8)'
                   : 'rgba(180, 80, 255, 0.55)',
-                boxShadow: thick ? '0 0 0.4vh rgba(180, 80, 255, 0.5)' : 'none',
+                boxShadow: thick ? '0 0 0.4dvh rgba(180, 80, 255, 0.5)' : 'none',
               }}
             />
           );
@@ -314,7 +316,7 @@ function ModernDigitalClock() {
             width: '0.5vw',
             height: '100%',
             background: 'rgba(6, 182, 212, 0.7)', // Brighter background
-            boxShadow: '0 0 1.2vh rgba(6, 182, 212, 0.7)', // Increased and brighter shadow
+            boxShadow: '0 0 1.2dvh rgba(6, 182, 212, 0.7)', // Increased and brighter shadow
           }}
         />
         <div
@@ -322,10 +324,10 @@ function ModernDigitalClock() {
             position: 'absolute',
             top: '50%',
             left: 0,
-            height: '0.5vh',
+            height: '0.5dvh',
             width: '100%',
             background: 'rgba(6, 182, 212, 0.9)', // Brighter background
-            boxShadow: '0 0 1.2vh rgba(6, 182, 212, 0.7)', // Increased and brighter shadow
+            boxShadow: '0 0 1.2dvh rgba(6, 182, 212, 0.7)', // Increased and brighter shadow
           }}
         />
         {/* Centerline labels */}
@@ -333,14 +335,14 @@ function ModernDigitalClock() {
           style={{
             position: 'absolute',
             left: '50%',
-            top: '25.2vh',
+            top: '25.2dvh',
             transform: 'translateX(-50%)',
-            fontSize: '3.6vh',
+            fontSize: '3.6dvh',
             color: '#06b6d4',
-            letterSpacing: '0.12vh',
+            letterSpacing: '0.12dvh',
             fontWeight: 700,
             fontFamily: LABEL_TYPEFACE,
-            textShadow: '0 0.2vh 0.4vh rgba(0,0,0,0.5)',
+            textShadow: '0 0.2dvh 0.4dvh rgba(0,0,0,0.5)',
           }}
         >
           <span>Centerline X • </span>
@@ -352,12 +354,12 @@ function ModernDigitalClock() {
             top: '50%',
             right: `${SAFE_INSET_H}vw`,
             transform: 'translateY(-50%)',
-            fontSize: '3.6vh',
+            fontSize: '3.6dvh',
             color: '#06b6d4',
-            letterSpacing: '0.12vh',
+            letterSpacing: '0.12dvh',
             fontWeight: 700,
             fontFamily: LABEL_TYPEFACE,
-            textShadow: '0 0.2vh 0.4vh rgba(0,0,0,0.5)',
+            textShadow: '0 0.2dvh 0.4dvh rgba(0,0,0,0.5)',
             maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
             whiteSpace: 'nowrap',
             overflow: 'hidden',
@@ -381,9 +383,9 @@ function ModernDigitalClock() {
             right: `${SAFE_INSET_H}vw`,
             top: `${SAFE_INSET_V}vh`,
             bottom: `${SAFE_INSET_V}vh`,
-            border: '0.2vh dashed rgba(16, 185, 129)',
+            border: '0.2dvh dashed rgba(16, 185, 129)',
             // background: "rgba(16, 185, 129, 0.03)",
-            boxShadow: 'inset 0 0 2vh rgba(16, 185, 129, 0.55)',
+            boxShadow: 'inset 0 0 2dvh rgba(16, 185, 129, 0.55)',
           }}
         />
         {/* Safe area corner labels */}
@@ -392,13 +394,13 @@ function ModernDigitalClock() {
             position: 'absolute',
             left: `${SAFE_INSET_H}vw`,
             top: `${SAFE_INSET_V}vh`,
-            fontSize: 'clamp(1.4vh, 2vw, 3vh)',
+            fontSize: 'clamp(1.4dvh, 2vw, 3dvh)',
             color: '#10b981',
-            letterSpacing: '0.1vh',
+            letterSpacing: '0.1dvh',
             fontWeight: 700,
-            transform: 'translate(0.8vh, 0.8vh)',
+            transform: 'translate(0.8dvh, 0.8dvh)',
             fontFamily: LABEL_TYPEFACE,
-            textShadow: '0 0.2vh 0.4vh rgba(220,0,0)',
+            textShadow: '0 0.2dvh 0.4dvh rgba(220,0,0)',
             maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
             whiteSpace: 'nowrap',
             overflow: 'hidden',
@@ -422,20 +424,20 @@ function ModernDigitalClock() {
             top: 0,
             height: `${SAFE_INSET_V}vh`,
             // background: "rgba(239, 68, 68, 0.05)",
-            borderBottom: '0.1vh solid rgba(239, 68, 68)',
+            borderBottom: '0.1dvh solid rgba(239, 68, 68)',
           }}
         >
           <div
             style={{
               position: 'absolute',
               right: `${SAFE_INSET_H}vw`,
-              top: '0.6vh',
-              fontSize: 'clamp(1.4vh, 2vw, 3vh)',
+              top: '0.6dvh',
+              fontSize: 'clamp(1.4dvh, 2vw, 3dvh)',
               color: '#ef4444',
-              letterSpacing: '0.12vh',
+              letterSpacing: '0.12dvh',
               fontWeight: 700,
               fontFamily: LABEL_TYPEFACE,
-              textShadow: '0 0.2vh 0.4vh rgba(0,0,0,0.5)',
+              textShadow: '0 0.2dvh 0.4dvh rgba(0,0,0,0.5)',
               maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
               whiteSpace: 'nowrap',
               overflow: 'hidden',
@@ -453,20 +455,20 @@ function ModernDigitalClock() {
             bottom: 0,
             height: `${SAFE_INSET_V}vh`,
             background: 'rgba(239, 68, 68, 0.08)',
-            borderTop: '0.1vh solid rgba(239, 68, 68, 0.3)',
+            borderTop: '0.1dvh solid rgba(239, 68, 68, 0.3)',
           }}
         >
           <div
             style={{
               position: 'absolute',
               left: `${SAFE_INSET_H}vw`,
-              bottom: '0.6vh',
-              fontSize: 'clamp(1.4vh, 2vw, 3vh)',
+              bottom: '0.6dvh',
+              fontSize: 'clamp(1.4dvh, 2vw, 3dvh)',
               color: '#ef4444',
-              letterSpacing: '0.12vh',
+              letterSpacing: '0.12dvh',
               fontWeight: 700,
               fontFamily: LABEL_TYPEFACE,
-              textShadow: '0 0.2vh 0.4vh rgba(0,0,0,0.5)',
+              textShadow: '0 0.2dvh 0.4dvh rgba(0,0,0,0.5)',
               maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
               whiteSpace: 'nowrap',
               overflow: 'hidden',
@@ -484,7 +486,7 @@ function ModernDigitalClock() {
             left: 0,
             width: `${SAFE_INSET_H}vw`,
             background: 'rgba(239, 68, 68, 0.08)',
-            borderRight: '0.1vh solid rgba(239, 68, 68, 0.3)',
+            borderRight: '0.1dvh solid rgba(239, 68, 68, 0.3)',
           }}
         />
         <div
@@ -495,7 +497,7 @@ function ModernDigitalClock() {
             right: 0,
             width: `${SAFE_INSET_H}vw`,
             background: 'rgba(239, 68, 68, 0.08)',
-            borderLeft: '0.1vh solid rgba(239, 68, 68, 0.3)',
+            borderLeft: '0.1dvh solid rgba(239, 68, 68, 0.3)',
           }}
         />
       </div>
@@ -516,7 +518,7 @@ function ModernDigitalClock() {
               viewportWidth >= bp.width * (viewportWidth / 100) ? 0.8 : 0.3,
             boxShadow:
               viewportWidth >= bp.width * (viewportWidth / 100)
-                ? `0 0 1.2vh ${bp.color}`
+                ? `0 0 1.2dvh ${bp.color}`
                 : 'none',
             pointerEvents: 'none',
             transition: 'opacity 0.3s ease',
@@ -525,21 +527,21 @@ function ModernDigitalClock() {
           <div
             style={{
               position: 'absolute',
-              top: '12vh',
-              left: '0.8vh',
+              top: '12dvh',
+              left: '0.8dvh',
               background: bp.color,
               color:
                 viewportWidth >= bp.width * (viewportWidth / 100)
                   ? '#fff'
                   : '#999',
-              padding: '0.4vh 0.8vh',
-              fontSize: '3.2vh',
+              padding: '0.4dvh 0.8dvh',
+              fontSize: '3.2dvh',
               fontWeight: 700,
-              letterSpacing: '0.1vh',
+              letterSpacing: '0.1dvh',
               opacity:
                 viewportWidth >= bp.width * (viewportWidth / 100) ? 1 : 0.5,
               fontFamily: LABEL_TYPEFACE,
-              textShadow: '0 0.2vh 0.4vh rgba(0,0,0,0.5)',
+              textShadow: '0 0.2dvh 0.4dvh rgba(0,0,0,0.5)',
             }}
           >
             <span>{bp.name} </span>
@@ -566,7 +568,7 @@ function ModernDigitalClock() {
             top: `${height}vh`,
             left: 0,
             width: '100%',
-            height: '0.1vh',
+            height: '0.1dvh',
             background: 'rgba(251, 191, 36, 0.9)',
             pointerEvents: 'none',
           }}
@@ -575,14 +577,14 @@ function ModernDigitalClock() {
             style={{
               position: 'absolute',
               right: `${SAFE_INSET_H}vw`,
-              top: '-1.1vh',
+              top: '-1.1dvh',
               color: '#F50DEDFF',
-              fontSize: 'clamp(2.2vh, 3vw, 2.9vh)',
+              fontSize: 'clamp(2.2dvh, 3vw, 2.9dvh)',
               fontWeight: 700,
 
-              letterSpacing: '0.1vh',
+              letterSpacing: '0.1dvh',
               fontFamily: LABEL_TYPEFACE,
-              textShadow: '0 0.2vh 0.4vh rgba(0,0,0,0.5)',
+              textShadow: '0 0.2dvh 0.4dvh rgba(0,0,0,0.5)',
               maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
               whiteSpace: 'nowrap',
               overflow: 'hidden',
@@ -602,14 +604,14 @@ function ModernDigitalClock() {
         style={{
           position: 'absolute',
           left: `${MARGIN_H}vw`,
-          bottom: '3.6vh',
-          fontSize: 'clamp(1.4vh, 4vw, 3vh)',
+          bottom: '3.6dvh',
+          fontSize: 'clamp(1.4dvh, 4vw, 3dvh)',
           color: '#1EFEE4FF',
-          letterSpacing: '0.12vh',
+          letterSpacing: '0.12dvh',
           fontWeight: 700,
           opacity: 0.7,
           fontFamily: LABEL_TYPEFACE,
-          textShadow: '0 0.2vh 0.4vh rgba(0,0,0,0.5)',
+          textShadow: '0 0.2dvh 0.4dvh rgba(0,0,0,0.5)',
           maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
           whiteSpace: 'nowrap',
           overflow: 'hidden',
@@ -627,14 +629,14 @@ function ModernDigitalClock() {
         style={{
           position: 'absolute',
           right: `${SAFE_INSET_H}vw`,
-          bottom: '3.6vh',
-          fontSize: 'clamp(1.4vh, 5vw, 3vh)',
+          bottom: '3.6dvh',
+          fontSize: 'clamp(1.4dvh, 5vw, 3dvh)',
           color: '#A957F5FF',
-          letterSpacing: '0.12vh',
+          letterSpacing: '0.12dvh',
           fontWeight: 700,
           opacity: 0.8,
           fontFamily: LABEL_TYPEFACE,
-          textShadow: '0 0.2vh 0.4vh rgba(0,0,0,0.5)',
+          textShadow: '0 0.2dvh 0.4dvh rgba(0,0,0,0.5)',
           maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
           whiteSpace: 'nowrap',
           overflow: 'hidden',
@@ -676,11 +678,11 @@ function ModernDigitalClock() {
             whiteSpace: 'nowrap',
             fontVariantNumeric: 'tabular-nums',
             maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
-            maxHeight: `calc(100vh - ${2 * SAFE_INSET_V}vh)`,
+            maxHeight: `calc(100dvh - ${2 * SAFE_INSET_V}vh)`,
             overflow: 'hidden',
             fontFamily: CLOCK_TYPEFACE,
             background: 'rgba(0,0,0,0.2)',
-            borderRadius: '0.8vh',
+            borderRadius: '0.8dvh',
           }}
         >
           <span>{pad(now.getHours())}</span>
@@ -696,16 +698,16 @@ function ModernDigitalClock() {
           top: 40,
           left: 0,
           right: 0,
-          height: '3.2vh',
+          height: '3.2dvh',
           background:
             'linear-gradient(180deg, rgba(220,0,220) 0%, transparent 100%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '2vh',
-          fontSize: '3.2vh',
+          gap: '2dvh',
+          fontSize: '3.2dvh',
           fontWeight: 700,
-          letterSpacing: '0.1vh',
+          letterSpacing: '0.1dvh',
           fontFamily: LABEL_TYPEFACE,
         }}
       >
@@ -726,14 +728,14 @@ function ModernDigitalClock() {
           position: 'absolute',
           right: `${SAFE_INSET_H}vw`,
           top: `${SAFE_INSET_V + 2}vh`,
-          fontSize: '3vh',
+          fontSize: '3dvh',
           color: '#F0EBEBFF',
           textAlign: 'right',
           lineHeight: 1.6,
-          letterSpacing: '0.08vh',
+          letterSpacing: '0.08dvh',
 
           fontFamily: LABEL_TYPEFACE,
-          textShadow: '0 0.2vh 0.4vh rgba(0,0,0,0.5)',
+          textShadow: '0 0.2dvh 0.4dvh rgba(0,0,0,0.5)',
           maxWidth: `calc(100vw - ${2 * SAFE_INSET_H}vw)`,
           overflow: 'hidden',
         }}

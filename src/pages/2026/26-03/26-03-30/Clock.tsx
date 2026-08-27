@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import origamiFont from '@/assets/fonts/26fonts/26-03-30-origami.ttf';
 import craneImg from '@/assets/images/26_images/26-03/26-03-30/1.webp';
 import styles from './Clock.module.css';
+export const assets = [origamiFont, craneImg];
+
 
 const LETTERS = ['b', 'f', 'c', 'j', 'i', 'n', 'q', 's', 'u', 'w'];
 

@@ -8,6 +8,8 @@ import hourHandSource from '@/assets/images/25_images/25-04/25-04-05/gr4.gif';
 import secondHandSource from '@/assets/images/25_images/25-04/25-04-05/gr5.gif';
 import minuteHandSource from '@/assets/images/25_images/25-04/25-04-05/gr99.webp';
 import styles from './Clock.module.css';
+export const assets = [overlayImg, hourHandSource, secondHandSource, minuteHandSource];
+
 
 // Component Props interface
 interface TallClockProps {

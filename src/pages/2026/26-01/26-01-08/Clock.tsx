@@ -19,6 +19,8 @@ import num11 from '@/assets/images/26_images/26-01/26-01-08/11.webp';
 import hourHandImg from '@/assets/images/26_images/26-01/26-01-08/hour.webp';
 import minuteHandImg from '@/assets/images/26_images/26-01/26-01-08/min.webp';
 import secondHandImg from '@/assets/images/26_images/26-01/26-01-08/seco.webp';
+export const assets = [backgroundImage, bgLayerTile, num12, num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, hourHandImg, minuteHandImg, secondHandImg];
+
 
 // --- CONSTANTS ---
 const CLOCK_LABELS = [

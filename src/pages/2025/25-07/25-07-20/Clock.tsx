@@ -7,6 +7,8 @@ import bg2 from '@/assets/images/25_images/25-07/25-07-20/cam.webp';
 import bg3 from '@/assets/images/25_images/25-07/25-07-20/camer.webp';
 import bg4 from '@/assets/images/25_images/25-07/25-07-20/camr.webp';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [camFont, bg1, bg2, bg3, bg4];
+
 const FStopClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -77,14 +79,14 @@ const FStopClock =  () => {
         /* Font loading handled by useSuspenseFontLoader */
 
         .fstop-wrapper {
-          font-size: 2vh;
+          font-size: 2dvh;
         }
 
         .fstop-clock {
           width: 80vw;
           height: 80vw;
-          max-width: 80vh;
-          max-height: 80vh;
+          max-width: 80dvh;
+          max-height: 80dvh;
           border-radius: 50%;
           position: relative;
           opacity: 0.6;
@@ -213,7 +215,7 @@ const FStopClock =  () => {
           top: 0;
           left: 0;
           width: 100vw;
-          height: 100vh;
+          height: 100dvh;
           object-fit: cover;
           filter: brightness(120%);
         }

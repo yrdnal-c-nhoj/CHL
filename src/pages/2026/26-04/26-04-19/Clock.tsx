@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import wobbleVideo from '@/assets/images/26_images/26-04/26-04-19/wobble2.mp4';
 import wobbleFont from '@/assets/fonts/26fonts/26-04-19-wobble.ttf';
 import styles from './Clock.module.css';
+export const assets = [wobbleVideo, wobbleFont];
+
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 

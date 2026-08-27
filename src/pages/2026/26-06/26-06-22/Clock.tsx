@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+export const assets: string[] = [];
+
 
 // ── constants ────────────────────────────────────────────────────────────────
 
@@ -218,7 +220,7 @@ const styles: Record<string, React.CSSProperties> = {
     display:         'flex',
     justifyContent:  'center',
     alignItems:      'center',
-    height:          '100vh',
+    height:          '100dvh',
     width:           '100vw',
     backgroundColor: '#787B80',
     fontFamily:      '"Bitcount Grid Double", monospace',

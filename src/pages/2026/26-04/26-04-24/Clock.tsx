@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
 import fontUrl from '@/assets/fonts/26fonts/26-04-24-lissa.ttf';
+export const assets = [fontUrl];
+
 
 const CONFIG = {
   a: 3,

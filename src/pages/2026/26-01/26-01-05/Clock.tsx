@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/26_images/26-01/26-01-06/aa.jpg';
 import gizaFont from '@/assets/fonts/26fonts/26-01-05-26-01-06-aa.ttf?url';
 import aaaImage from '@/assets/images/26_images/26-01/26-01-06/aaa.webp';
+export const assets = [backgroundImage, gizaFont, aaaImage];
+
 
 export default function AardvarkClock() {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -81,10 +83,10 @@ export default function AardvarkClock() {
     (((time.getHours() % 12) + time.getMinutes() / 60) / 12) * 360;
 
   const textOutline = `
-    -0.5vh 0 0 #F5F9F6,
-     0.3vh 0 0 #E7EDE7,
-     0 -0.3vh 0 #EFEAE8,
-     0  0.3vh 0 #151415
+    -0.5dvh 0 0 #F5F9F6,
+     0.3dvh 0 0 #E7EDE7,
+     0 -0.3dvh 0 #EFEAE8,
+     0  0.3dvh 0 #151415
   `;
 
   return (

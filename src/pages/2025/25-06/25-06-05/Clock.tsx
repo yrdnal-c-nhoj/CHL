@@ -5,6 +5,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import treeFont from '@/assets/fonts/25fonts/25-06-05-tree.ttf';
 import tree1Img from '@/assets/images/25_images/25-06/25-06-05/tree1.webp';
 import tree2Img from '@/assets/images/25_images/25-06/25-06-05/tree2.webp';
+export const assets = [treeFont, tree1Img, tree2Img];
+
 
 const TreehouseClock =  () => {
   const time = useMillisecondClock();
@@ -39,7 +41,7 @@ const TreehouseClock =  () => {
     position: 'absolute',
     left: '50%',
     top: '50%',
-    height: '92vh',
+    height: '92dvh',
     width: '95vw',
     transform: 'translate(-50%, -50%) scaleX(-1)',
     zIndex: 7,
@@ -50,7 +52,7 @@ const TreehouseClock =  () => {
     position: 'absolute',
     left: '52%',
     top: '50%',
-    height: '93vh',
+    height: '93dvh',
     width: '95vw',
     transform: 'translate(-50%, -50%)',
     zIndex: 2,
@@ -61,7 +63,7 @@ const TreehouseClock =  () => {
     position: 'absolute',
     left: '46%',
     top: '50%',
-    height: '94vh',
+    height: '94dvh',
     width: '93vw',
     transform: 'translate(-50%, -50%) scaleX(-1)',
     zIndex: 5,
@@ -87,7 +89,7 @@ const TreehouseClock =  () => {
     alignItems: 'center',
     position: 'relative',
     zIndex: 5,
-    top: '-9vh',
+    top: '-9dvh',
     gap: '0.3rem',
     left: '-4vw', // 👈 Move to the left
   };

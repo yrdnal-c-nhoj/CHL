@@ -5,6 +5,8 @@ import coffeeFont from '@/assets/fonts/25fonts/25-06-04-cof.ttf';
 import bgStill from '@/assets/images/25_images/25-06/25-06-04/coff.png';
 import bgAnimated from '@/assets/images/25_images/25-06/25-06-04/coff.gif';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [coffeeFont, bgStill, bgAnimated];
+
 
 const CoffeeClock =  () => {
   const { time } = useSecondClock();
@@ -33,13 +35,13 @@ const CoffeeClock =  () => {
   // Styles
   const numberStyle = {
     position: 'absolute',
-    width: '6vh',
-    height: '6vh',
+    width: '6dvh',
+    height: '6dvh',
     textAlign: 'center',
-    lineHeight: '6vh',
+    lineHeight: '6dvh',
     fontFamily: 'cof, sans-serif',
     fontWeight: 'bold',
-    fontSize: '13vh',
+    fontSize: '13dvh',
     color: 'rgb(235, 190, 7)',
     textShadow: '#3f2705 0 0.6rem 0, #fdddbc 0 -0.2rem 0',
     pointerEvents: 'none',

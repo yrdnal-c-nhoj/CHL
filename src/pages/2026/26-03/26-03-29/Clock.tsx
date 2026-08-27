@@ -5,6 +5,8 @@ import borderImage from '@/assets/images/26_images/26-03/26-03-29/horse.webp';
 import scarabImage from '@/assets/images/26_images/26-03/26-03-29/scarab.webp';
 import eastFont from '@/assets/fonts/26fonts/26-03-29-east.ttf';
 import styles from './Clock.module.css';
+export const assets = [bgVideo, borderImage, scarabImage, eastFont];
+
 
 // --- Optimized Rain Overlay ---
 const RainOverlay =  () => {
@@ -173,7 +175,7 @@ const Clock =  () => {
   const borderStyle: React.CSSProperties = useMemo(
     () => ({
       backgroundImage: `linear-gradient(rgba(255, 179, 0, 0.31), rgba(255, 179, 0, 0.31)), url(${borderImage})`,
-      backgroundSize: 'auto 7vh',
+      backgroundSize: 'auto 7dvh',
       backgroundRepeat: 'repeat-x',
       filter: 'contrast(1.1) brightness(0.9) saturate(3.7)',
     }),

@@ -58,7 +58,7 @@ const TimelineClock = () => {
   const percent = (seconds / 86400) * 100;
 
   const dynamicStyles = useMemo(() => ({
-    bar: { backgroundSize: isVertical ? '26vh 18vh' : '24vh 18vh' },
+    bar: { backgroundSize: isVertical ? '26dvh 18dvh' : '24dvh 18dvh' },
     nowLine: {
       top: isVertical ? `${percent}%` : 0,
       left: isVertical ? 0 : `${percent}%`,

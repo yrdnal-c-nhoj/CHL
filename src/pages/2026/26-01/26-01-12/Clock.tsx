@@ -3,6 +3,8 @@ import bgImage from '@/assets/images/26_images/26-01/26-01-12/lala.jpg';
 import customFont_2025_1210 from '@/assets/fonts/26fonts/26-01-12-26-01-19-lala.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
+export const assets = [bgImage, customFont_2025_1210];
+
 const elementColor = '#885B5D';
 
 const digitBoxStyle = {
@@ -11,7 +13,7 @@ const digitBoxStyle = {
   alignItems: 'center',
   justifyContent: 'center',
   fontFamily: 'MuybridgeFont, serif',
-  fontSize: '8vh',
+  fontSize: '8dvh',
   color: elementColor,
   textShadow: '0.5px 0.5px 0px white, -0.5px -0.5px 0px white',
   flexShrink: 1,
@@ -74,7 +76,7 @@ export default function DigitalClock() {
     boxSizing: 'border-box',
     transform: 'scale(0.9)',
     position: 'absolute',
-    bottom: '33vh',
+    bottom: '33dvh',
     left: -7,
     right: 0,
   };

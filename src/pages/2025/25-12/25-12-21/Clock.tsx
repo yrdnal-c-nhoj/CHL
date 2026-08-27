@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import background from '@/assets/images/25_images/25-12/25-12-21/cass.webp';
 import backgroundImage from '@/assets/images/25_images/25-12/25-12-21/tape.gif';
 import FONT_PATH from '@/assets/fonts/25fonts/25-12-21-cas.ttf?url';
+export const assets = [background, backgroundImage, FONT_PATH];
+
 
 const Clock =  () => {
   const time = useMillisecondClock();
@@ -28,7 +30,7 @@ const Clock =  () => {
 
   const digitStyle: React.CSSProperties = {
     display: 'inline-block',
-    width: '3vh',
+    width: '3dvh',
     textAlign: 'center',
     color: '#473803FF',
     textShadow: [
@@ -39,7 +41,7 @@ const Clock =  () => {
     ].join(','),
     transform: 'rotate(90deg)',
     transformOrigin: 'center center',
-    fontSize: '6vh',
+    fontSize: '6dvh',
     lineHeight: 1,
     WebkitUserSelect: 'none',
     userSelect: 'none',
@@ -57,7 +59,7 @@ const Clock =  () => {
 
   const timePartStyle: React.CSSProperties = {
     display: 'flex',
-    gap: '4vh',
+    gap: '4dvh',
   };
 
   const renderTimePart = (chars: (string | number)[]) => (
@@ -146,7 +148,7 @@ const Clock =  () => {
           style={{
             display: 'flex',
             flexDirection: 'row',
-            gap: '4vh',
+            gap: '4dvh',
           }}
         >
           {renderTimePart(clockData.h)}

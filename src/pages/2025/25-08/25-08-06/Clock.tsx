@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import laikaFont from '@/assets/fonts/25fonts/25-08-06-laika.ttf'; // Yourquo vadis
-import featuredImage from '@/assets/images/25_images/25-08/25-08-06/Laika.jpeg'; // Your local image file
+import featuredImage from '@/assets/images/25_images/25-08/25-08-06/Laika.jpeg';
+export const assets = [laikaFont, featuredImage];
+ // Your local image file
 
 const DigitalClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -52,7 +54,7 @@ const DigitalClock =  () => {
     },
     image: {
       width: '100%',
-      height: '100vh',
+      height: '100dvh',
       objectFit: 'cover',
     },
     clockContainer: {

@@ -45,7 +45,7 @@ const Clock =  () => {
     },
     hexRow: {
       display: 'flex',
-      marginBottom: '0.8vh',
+      marginBottom: '0.8dvh',
       gap: '-2vw',
     },
     digitRow: {
@@ -82,8 +82,8 @@ const Clock =  () => {
       fontFamily: 'monospace',
       textTransform: 'uppercase',
       letterSpacing: '0.25em',
-      marginTop: '1.5vh',
-      marginBottom: '4vh',
+      marginTop: '1.5dvh',
+      marginBottom: '4dvh',
     },
   };
 

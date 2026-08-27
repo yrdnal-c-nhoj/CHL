@@ -1,15 +1,18 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import videoFile from '@/assets/images/26_images/26-01/26-01-17/swww.mp4';
 import fallbackImg from '@/assets/images/26_images/26-01/26-01-17/sw.webp';
 import overlayImage from '@/assets/images/26_images/26-01/26-01-17/sw22.webp'; // Add your overlay image path here
 import font112425sput from '@/assets/fonts/26fonts/26-01-17-sw.ttf?url';
+export const assets = [videoFile, fallbackImg, overlayImage, font112425sput];
+
 
 export default function Clock() {
   const videoRef = useRef(null);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const [time, setTime] = useState(new Date());
+  const time = useMillisecondClock(100);
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
   const [contentReady, setContentReady] = useState<boolean>(false);
   const [mediaReady, setMediaReady] = useState<boolean>(false);
@@ -41,14 +44,6 @@ export default function Clock() {
     return () => {
       active = false;
     };
-  }, []);
-
-  // 2. Ultra-smooth clock loop
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 100); // Update every 100ms for smooth time display
-    return () => clearInterval(interval);
   }, []);
 
   // 3. Video error handling & readiness
@@ -122,7 +117,7 @@ export default function Clock() {
             top: 0,
             left: 0,
             width: '100vw',
-            height: '100vh',
+            height: '100dvh',
             zIndex: 1,
             overflow: 'hidden',
           }}
@@ -165,7 +160,7 @@ export default function Clock() {
             top: 0,
             left: 0,
             width: '100vw',
-            height: '100vh',
+            height: '100dvh',
             overflow: 'hidden',
             zIndex: 1,
           }}
@@ -264,7 +259,7 @@ export default function Clock() {
                     position: 'absolute',
                     left: `${x}%`,
                     top: `${y}%`,
-                    fontSize: '5vh',
+                    fontSize: '5dvh',
                     color: '#E9BB7A',
                     fontStyle: 'italic',
                     fontVariationSettings: "'slnt' -15, 'ital' 1",

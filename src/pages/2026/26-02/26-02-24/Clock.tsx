@@ -2,6 +2,8 @@ import React, { useEffect, useMemo } from 'react';
 import { useMillisecondClock } from '@/utils/hooks'; // Corrected import path
 // import { useSuspenseFontLoader } from '@/utils/fontLoader'; // Not suitable for external Google Fonts
 import futurBg from '@/assets/images/26_images/26-02/26-02-24/futur.jpg';
+export const assets = [futurBg];
+
 
 interface Position {
   top: string;

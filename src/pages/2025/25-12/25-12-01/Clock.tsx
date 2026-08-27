@@ -5,6 +5,8 @@ import bgImg from '@/assets/images/25_images/25-12/25-12-01/shark.webp';
 import clockfoont12012 from '@/assets/fonts/25fonts/25-12-01-shark.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [bgImg, clockfoont12012];
+
 
 const fontConfigs: FontConfig[] = [
   {
@@ -44,11 +46,11 @@ export default function DigitalClock() {
     justifyContent: 'center',
     alignItems: 'center',
     width: '0.6em',
-    fontSize: '10vh', // keep vh here — looks great and scales nicely
+    fontSize: '10dvh', // keep vh here — looks great and scales nicely
     color: '#EE4747',
-    textShadow: '0 0 1vh rgba(0,0,0,0.9)',
+    textShadow: '0 0 1dvh rgba(0,0,0,0.9)',
     // Remove the huge paddingTop — that's pushing it down too far!
-    // paddingTop: "45vh",   ← DELETE THIS LINE
+    // paddingTop: "45dvh",   ← DELETE THIS LINE
   };
 
   const digits = `${hours}${minutes}${seconds}`;

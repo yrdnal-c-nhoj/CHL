@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-07/25-07-18/558074085193-ezgif.com-optiwebp-1.webp';
 import xrayFontUrl from '@/assets/fonts/25fonts/25-07-18-xray.ttf';
 import { useMillisecondClock } from '@/utils/hooks';
+export const assets = [bgImage, xrayFontUrl];
+
 
 const HospitalClock = () => {
   const time = useMillisecondClock();
@@ -62,10 +64,10 @@ const styles = {
     borderRadius: '2rem',
     padding: '2rem',
     boxShadow:
-      'inset 0 0 6vh #000, 0 0 3vh rgba(0,255,255,0.1), 0 0 8vh rgba(0,255,255,0.2)',
+      'inset 0 0 6dvh #000, 0 0 3dvh rgba(0,255,255,0.1), 0 0 8dvh rgba(0,255,255,0.2)',
     width: '80vw',
     maxWidth: '90rem',
-    height: '60vh',
+    height: '60dvh',
     maxHeight: '50rem',
     display: 'flex',
     flexDirection: 'column',

@@ -1,6 +1,8 @@
 // GeologicTimeClock.jsx
 import React, { useMemo } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
+export const assets: string[] = [];
+
 
 // Static configuration moves outside the component lifecycle
 const GEOLOGIC_EVENTS = [
@@ -40,7 +42,7 @@ export default function GeologicTimeClock() {
   return (
     <div
       style={{
-        height: '100vh',
+        height: '100dvh',
         width: '100vw',
         position: 'relative',
         background: 'linear-gradient(90deg, #F5C280 0%, #F0E983FF 100%)',
@@ -98,7 +100,7 @@ const TimelineRow = React.memo(({ label, value, isLast }: TimelineRowProps) => {
         width: '100%',
         maxWidth: '800px',
         margin: '0 auto',
-        padding: '0.2vh 0',
+        padding: '0.2dvh 0',
         minHeight: 0, // Critical for nested flex scrolling behavior
         borderBottom: isLast ? 'none' : '1px solid rgba(17,58,102,0.2)',
       }}

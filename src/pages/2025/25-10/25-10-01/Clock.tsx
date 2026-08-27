@@ -40,7 +40,7 @@ const ImageAnalogClock = () => {
     return () => cancelAnimationFrame(frameId);
   }, []);
 
-  const clockSize = 'min(80vw, 80vh)';
+  const clockSize = 'min(80vw, 80dvh)';
   const center = { x: 50, y: 50 };
   const radius = 38;
 
@@ -157,8 +157,8 @@ const ImageAnalogClock = () => {
       <div
         style={{
           position: 'relative',
-          width: 'min(90vw, 90vh)',
-          height: 'min(90vw, 90vh)',
+          width: 'min(90vw, 90dvh)',
+          height: 'min(90vw, 90dvh)',
           borderRadius: '50%',
           overflow: 'visible',
           isolation: 'isolate',

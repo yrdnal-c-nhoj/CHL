@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import water from '../../../../assets/images/26_images/26-08/26-08-28/water.webp';
+export const assets = [water];
+
 
 const TWO_PI = Math.PI * 2;
 const NUM_NODES = 19;
@@ -141,7 +143,7 @@ export default function SeaWavesTextClock() {
         padding: 0,
         backgroundColor: 'hsl(195, 100%, 7%)',
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         overflow: 'hidden',
         position: 'relative',
       }}

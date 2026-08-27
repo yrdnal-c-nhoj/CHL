@@ -77,7 +77,7 @@ const timeStyle: CSSProperties = {
   zIndex: 3,
   color: '#BCDBFBB7',
   textShadow: '0 1px 2px rgba(5, 2, 20, 0.99)',
-  fontSize: '10vh',
+  fontSize: '10dvh',
   lineHeight: 1,
   userSelect: 'none',
   fontFamily: `'${FONT_FAMILY}', serif`,
@@ -88,13 +88,13 @@ const timeStyle: CSSProperties = {
 };
 
 const digitBoxStyle: CSSProperties = {
-  width: '5vh',
+  width: '5dvh',
   textAlign: 'center',
   display: 'inline-block',
 };
 
 const colonBoxStyle: CSSProperties = {
-  width: '2vh',
+  width: '2dvh',
   textAlign: 'center',
   display: 'inline-block',
 };

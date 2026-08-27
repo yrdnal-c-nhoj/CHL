@@ -5,6 +5,8 @@ import React, {
   useRef,
   useState
 } from 'react';
+export const assets: string[] = [];
+
 // Google Fonts URLs for Michroma, Economica, and Questrial
 const michromaFontUrl =
   'https://fonts.gstatic.com/s/michroma/v18/PN_zRfy9qWD8fE-oB4_J_Q.woff2';

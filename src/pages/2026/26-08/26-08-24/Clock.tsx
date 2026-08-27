@@ -47,7 +47,7 @@ function getRandomBrightColor(): string {
   return `hsl(${h}, ${s}%, ${l}%)`;
 }
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   const time = useMillisecondClock();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);

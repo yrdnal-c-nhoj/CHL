@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-09/25-09-07/wall.jpg'; // local background image
-import f250907 from '@/assets/fonts/25fonts/25-09-07-wall.ttf'; // local font file
+import f250907 from '@/assets/fonts/25fonts/25-09-07-wall.ttf';
+export const assets = [bgImage, f250907];
+ // local font file
 
 const fontVar = 'CustomFont20250908'; // custom variable name
 

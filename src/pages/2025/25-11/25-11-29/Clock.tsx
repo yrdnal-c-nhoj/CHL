@@ -89,7 +89,7 @@ function RococoDigitalClock() {
         filter: 'brightness(1.2) contrast(1.4)',
         fontFamily: "'RococoBlob', serif",
         overflow: 'hidden',
-        gap: '2vh',
+        gap: '2dvh',
         opacity: 1,
       }}>
         <time dateTime={now.toISOString()} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
@@ -101,8 +101,8 @@ function RococoDigitalClock() {
               key={i}
               style={{
                 position: 'relative',
-                width: '10vh',
-                height: '18vh',
+                width: '10dvh',
+                height: '18dvh',
                 flexShrink: 0,
               }}
             >
@@ -113,7 +113,7 @@ function RococoDigitalClock() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '15vh',
+                  fontSize: '15dvh',
                   lineHeight: '0.88',
                   opacity: 0.6,
                   color: '#352904FF',
@@ -133,8 +133,8 @@ function RococoDigitalClock() {
               key={i}
               style={{
                 position: 'relative',
-                width: '10vh',
-                height: '18vh',
+                width: '10dvh',
+                height: '18dvh',
                 flexShrink: 0,
               }}
             >
@@ -145,7 +145,7 @@ function RococoDigitalClock() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '15vh',
+                  fontSize: '15dvh',
                   lineHeight: '0.88',
                   opacity: 0.6,
                   color: '#352904FF',
@@ -165,8 +165,8 @@ function RococoDigitalClock() {
               key={i}
               style={{
                 position: 'relative',
-                width: '10vh',
-                height: '18vh',
+                width: '10dvh',
+                height: '18dvh',
                 flexShrink: 0,
               }}
             >
@@ -177,7 +177,7 @@ function RococoDigitalClock() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '15vh',
+                  fontSize: '15dvh',
                   lineHeight: '0.88',
                   opacity: 0.9,
                   color: '#746A4D',
@@ -221,8 +221,8 @@ function RococoDigitalClock() {
             key={i}
             style={{
               position: 'relative',
-              width: char === ':' ? '6vh' : '10vh',
-              height: '18vh',
+              width: char === ':' ? '6dvh' : '10dvh',
+              height: '18dvh',
               flexShrink: 0,
             }}
           >
@@ -233,7 +233,7 @@ function RococoDigitalClock() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: char === ':' ? '10vh' : '12vh',
+                fontSize: char === ':' ? '10dvh' : '12dvh',
                 lineHeight: '0.88',
                 opacity: 0.9,
                 color: '#806107',

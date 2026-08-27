@@ -8,6 +8,8 @@ import bg1 from '@/assets/images/25_images/25-05/25-05-03/petalos.gif';
 import bg2 from '@/assets/images/25_images/25-05/25-05-03/petals.gif';
 import bg3 from '@/assets/images/25_images/25-05/25-05-03/sakura-leaves.gif';
 import bg4 from '@/assets/images/25_images/25-05/25-05-03/talos.gif';
+export const assets = [fontUrl, bg1, bg2, bg3, bg4];
+
 
 // Component Props interface
 interface FlyingPetalsClockProps {
@@ -60,7 +62,7 @@ const FlyingPetalsClock: React.FC<FlyingPetalsClockProps> = () => {
     top: 0,
     left: 0,
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
   };
 
   const imageStyles = [

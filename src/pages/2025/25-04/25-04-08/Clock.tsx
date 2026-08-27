@@ -34,8 +34,8 @@ const TripleCactusClock = () => {
       span.textContent = char;
       Object.assign(span.style, {
         color: '#f3f586',
-        fontSize: '12vh',
-        lineHeight: '8vh',
+        fontSize: '12dvh',
+        lineHeight: '8dvh',
         textAlign: 'center',
         fontVariantNumeric: 'tabular-nums',
         fontFeatureSettings: '"tnum"',
@@ -96,17 +96,17 @@ const TripleCactusClock = () => {
               fontFamily: 'CactusClockFont',
             }}
           >
-            <div style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }} ref={clockRefs.hours} />
-            <div style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }} ref={clockRefs.minutes} />
-            <div style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }} ref={clockRefs.seconds} />
-            <div style={{ display: 'flex', gap: '1.3vh', margin: '1vh 0' }} ref={clockRefs.milliseconds} />
+            <div style={{ display: 'flex', gap: '1.3dvh', margin: '1dvh 0' }} ref={clockRefs.hours} />
+            <div style={{ display: 'flex', gap: '1.3dvh', margin: '1dvh 0' }} ref={clockRefs.minutes} />
+            <div style={{ display: 'flex', gap: '1.3dvh', margin: '1dvh 0' }} ref={clockRefs.seconds} />
+            <div style={{ display: 'flex', gap: '1.3dvh', margin: '1dvh 0' }} ref={clockRefs.milliseconds} />
           </div>
         </div>
 
         <div
           style={{
             position: 'absolute',
-            bottom: '40vh',
+            bottom: '40dvh',
             width: '100%',
             height: 0,
             zIndex: 1,
@@ -124,7 +124,7 @@ const TripleCactusClock = () => {
                 height: 0,
                 borderLeft: '15vw solid transparent',
                 borderRight: '15vw solid transparent',
-                borderBottom: `15vh solid ${color}`,
+                borderBottom: `15dvh solid ${color}`,
               }}
             />
           ))}
@@ -134,7 +134,7 @@ const TripleCactusClock = () => {
           style={{
             position: 'absolute',
             bottom: 0,
-            height: '27vh',
+            height: '27dvh',
             width: '100%',
             background: '#c5a770',
             zIndex: 2,
@@ -148,7 +148,7 @@ const TripleCactusClock = () => {
               display: 'flex',
               justifyContent: 'center',
               gap: '15vw',
-              marginBottom: '8vh',
+              marginBottom: '8dvh',
             }}
           >
             {Array.from({ length: 3 }).map((_, i) => (
@@ -156,7 +156,7 @@ const TripleCactusClock = () => {
                 key={i}
                 style={{
                   width: '2vw',
-                  height: '15vh',
+                  height: '15dvh',
                   background: '#228b22',
                   borderRadius: '1vw',
                   position: 'relative',
@@ -169,7 +169,7 @@ const TripleCactusClock = () => {
                   style={{
                     position: 'absolute',
                     width: '1vw',
-                    height: '6vh',
+                    height: '6dvh',
                     background: '#228b22',
                     borderRadius: '50% 50% 0 0',
                     left: '-1vw',
@@ -182,7 +182,7 @@ const TripleCactusClock = () => {
                   style={{
                     position: 'absolute',
                     width: '1vw',
-                    height: '6vh',
+                    height: '6dvh',
                     background: '#228b22',
                     borderRadius: '50% 50% 0 0',
                     right: '-1vw',

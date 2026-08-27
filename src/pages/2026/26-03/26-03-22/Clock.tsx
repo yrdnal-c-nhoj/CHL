@@ -4,6 +4,8 @@ import { useSecondClock } from '@/utils/hooks';
 import skyImage from '@/assets/images/26_images/26-03/26-03-22/sky.webp';
 import balloonFont from '@/assets/fonts/26fonts/26-03-22-balloon.ttf';
 import styles from './Clock.module.css';
+export const assets = [skyImage, balloonFont];
+
 
 const balloonColors = [
   '#FF2D2D',

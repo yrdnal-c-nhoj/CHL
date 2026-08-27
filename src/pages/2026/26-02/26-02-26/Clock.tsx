@@ -180,10 +180,10 @@ const ImageGridClock =  () => {
     transform: 'translate(-50%, -50%)',
     color: '#557F25',
     fontFamily: "'DateFont', monospace",
-    fontSize: '11vh',
+    fontSize: '11dvh',
     fontWeight: 'bold',
     zIndex: 10,
-    letterSpacing: '-1vh',
+    letterSpacing: '-1dvh',
     whiteSpace: 'nowrap',
     pointerEvents: 'none' as const,
     textShadow:
@@ -191,7 +191,7 @@ const ImageGridClock =  () => {
   };
 
   if (imageAssignments.length === 0)
-    return <div style={{ background: '#000', height: '100vh' }} />;
+    return <div style={{ background: '#000', height: '100dvh' }} />;
 
   return (
     <main style={containerStyle} className={styles.container}>
@@ -225,8 +225,8 @@ const ImageGridClock =  () => {
           position: 'absolute',
           top: 0,
           left: 0,
-          width: '30vh',
-          height: '30vh',
+          width: '30dvh',
+          height: '30dvh',
           zIndex: 11,
           filter:
             'drop-shadow(-11px 0 rgb(244, 240, 240)) drop-shadow(11px 0 rgb(28, 3, 3))',

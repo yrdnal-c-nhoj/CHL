@@ -4,6 +4,8 @@ import bgImage from '@/assets/images/25_images/25-07/25-07-24/em.png';
 import hourHandImgSrc from '@/assets/images/25_images/25-07/25-07-24/ha.gif';
 import minuteHandImgSrc from '@/assets/images/25_images/25-07/25-07-24/had.gif';
 import secondHandImgSrc from '@/assets/images/25_images/25-07/25-07-24/hand.gif';
+export const assets = [bgImage, hourHandImgSrc, minuteHandImgSrc, secondHandImgSrc];
+
 
 const Clock =  () => {
   const faceRef = useRef(null);

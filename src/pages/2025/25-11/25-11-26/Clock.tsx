@@ -38,7 +38,7 @@ function DigitalTime({ time, timeText, setLetters }: { time: Date; timeText: str
         style: {
           display: 'inline-block',
           opacity: 0,
-          transform: `translate(${enterFromRight ? '120vw' : '-120vw'}, -25vh)`,
+          transform: `translate(${enterFromRight ? '120vw' : '-120vw'}, -25dvh)`,
           transition: 'transform 0.8s ease-out, opacity 0.8s ease-out',
         },
       };
@@ -68,7 +68,7 @@ function DigitalTime({ time, timeText, setLetters }: { time: Date; timeText: str
             newArr[i].style = {
               ...newArr[i].style,
               opacity: 0,
-              transform: `translate(${letter.enterFromRight ? '-120vw' : '120vw'}, -25vh)`,
+              transform: `translate(${letter.enterFromRight ? '-120vw' : '120vw'}, -25dvh)`,
             };
             return newArr;
           });

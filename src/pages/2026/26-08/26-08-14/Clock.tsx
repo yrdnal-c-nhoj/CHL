@@ -23,7 +23,7 @@ const GRID_COLS = 3;
 const TILE_COUNT = GRID_ROWS * GRID_COLS;
 
 // 3. Main Component
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   // Use the canonical hook to get time that updates every second.
   const time = useSecondClock();
 

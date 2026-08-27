@@ -7,6 +7,8 @@ import hourHandImg from '@/assets/images/26_images/26-03/26-03-31/hour.webp';
 import minuteHandImg from '@/assets/images/26_images/26-03/26-03-31/minute.webp';
 import secondHandImg from '@/assets/images/26_images/26-03/26-03-31/second.webp';
 import styles from './Clock.module.css';
+export const assets = [bgVideo, crabFont, hourHandImg, minuteHandImg, secondHandImg];
+
 
 // ---- DRIFT CONFIGS ----
 const HAND_DRIFT = {
@@ -174,10 +176,10 @@ const Clock =  () => {
 
       <div className={styles.clockWrapper}>
         {/* Minute hand - bottom */}
-        {createHand(minuteHandImg, rotation.m, '22vh', 'minute')}
+        {createHand(minuteHandImg, rotation.m, '22dvh', 'minute')}
 
         {/* Hour hand - middle */}
-        {createHand(hourHandImg, rotation.h, '18vh', 'hour')}
+        {createHand(hourHandImg, rotation.h, '18dvh', 'hour')}
 
         {/* Numerals container */}
         <div style={{ position: 'absolute', inset: 0, zIndex: 100 }}>
@@ -185,7 +187,7 @@ const Clock =  () => {
         </div>
 
         {/* Second hand - top */}
-        {createHand(secondHandImg, rotation.s, '22vh', 'second')}
+        {createHand(secondHandImg, rotation.s, '22dvh', 'second')}
       </div>
     </div>
   );

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backFont from '@/assets/fonts/25fonts/25-06-17-back.ttf';
+export const assets = [backFont];
+
 
 const BackslantClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -170,7 +172,7 @@ const styles = {
     width: '100vw',
     backgroundImage:
       'linear-gradient(24deg, #211408 6.25%, #f3a64e 6.25%, #ea8007 25%, #fff 25%, #f9c2c2 31.25%, #e3630d 31.25%, #e3630d 50%, #211408 50%, #0b30ea 56.25%, #ed8917 56.25%, #ed8917 75%, #f60808 75%, #fff 81.25%, #e3630d 81.25%, #e3630d 100%)',
-    backgroundSize: '6vw 2vh',
+    backgroundSize: '6vw 2dvh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -181,7 +183,7 @@ const styles = {
     transform: 'translateX(25vw)',
     animation: 'rotateClock 17s ease-in-out infinite',
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

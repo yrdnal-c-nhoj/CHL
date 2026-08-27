@@ -10,6 +10,8 @@ import topImage from '@/assets/images/25_images/25-09/25-09-17/crr.gif'; // top 
 import overlay1 from '@/assets/images/25_images/25-09/25-09-17/ccr.gif';
 import overlay2 from '@/assets/images/25_images/25-09/25-09-17/cru.gif';
 import overlay3 from '@/assets/images/25_images/25-09/25-09-17/crush2.gif';
+export const assets = [backgroundImage, f250917fontt, centerImage, topImage, overlay1, overlay2, overlay3];
+
 
 const pad = (n) => n.toString().padStart(2, '0');
 
@@ -114,7 +116,7 @@ const DigitalClock =  () => {
       top: '25%',
       left: '65%',
       width: '30vw',
-      height: '30vh',
+      height: '30dvh',
       rotate: '35deg',
       opacity: 0.3,
       filter: 'saturate(150%) hue-rotate(50deg)',
@@ -125,7 +127,7 @@ const DigitalClock =  () => {
       top: '50%',
       left: '85%',
       width: '25vw',
-      height: '25vh',
+      height: '25dvh',
       rotate: '-30deg',
       opacity: 0.6,
       filter: 'saturate(120%) hue-rotate(180deg)',
@@ -136,7 +138,7 @@ const DigitalClock =  () => {
       top: '85%',
       left: '75%',
       width: '45vw',
-      height: '45vh',
+      height: '45dvh',
       rotate: '0deg',
       opacity: 0.4,
       filter: 'saturate(20%) hue-rotate(-260deg)',
@@ -177,7 +179,7 @@ const DigitalClock =  () => {
           left: '30%',
           transform: 'translate(-50%, -50%) rotate(-32deg)',
           width: '35vw',
-          height: '35vh',
+          height: '35dvh',
           // opacity: 0.5,
           filter: 'saturate(120%) hue-rotate(290deg)',
           zIndex: 2,
@@ -200,7 +202,7 @@ const DigitalClock =  () => {
           left: '40%',
           transform: 'translate(-50%, -50%) rotate(20deg)',
           width: '30vw',
-          height: '30vh',
+          height: '30dvh',
           // opacity: 0.3,
           filter: 'saturate(150%) hue-rotate(10deg)',
           zIndex: 4,
@@ -247,10 +249,10 @@ const DigitalClock =  () => {
         <div
           style={{
             position: 'absolute',
-            top: '1vh',
+            top: '1dvh',
             left: '2rem',
             transform: 'rotate(23deg)',
-            fontSize: '23vh',
+            fontSize: '23dvh',
             color: '#F65427FF',
             opacity: getOpacity(0, 0.9),
             transition: 'opacity 0.5s ease-in-out',
@@ -261,10 +263,10 @@ const DigitalClock =  () => {
         <div
           style={{
             position: 'absolute',
-            top: '16vh',
+            top: '16dvh',
             left: '10rem',
             transform: 'rotate(-20deg)',
-            fontSize: '29vh',
+            fontSize: '29dvh',
             color: '#589CE9FF',
             opacity: getOpacity(1, 0.8),
             transition: 'opacity 0.5s ease-in-out',
@@ -277,10 +279,10 @@ const DigitalClock =  () => {
         <div
           style={{
             position: 'absolute',
-            top: '33vh',
+            top: '33dvh',
             left: '4rem',
             transform: 'rotate(27deg) translateY(50%)',
-            fontSize: '33vh',
+            fontSize: '33dvh',
             color: '#07DFDFFF',
             opacity: getOpacity(2, 0.9),
             transition: 'opacity 0.5s ease-in-out',
@@ -291,10 +293,10 @@ const DigitalClock =  () => {
         <div
           style={{
             position: 'absolute',
-            top: '55vh',
+            top: '55dvh',
             left: '3rem',
             transform: 'rotate(-67deg) translateY(50%)',
-            fontSize: '33vh',
+            fontSize: '33dvh',
             color: '#F0F406FF',
             opacity: getOpacity(3, 1),
             transition: 'opacity 0.5s ease-in-out',
@@ -307,10 +309,10 @@ const DigitalClock =  () => {
         <div
           style={{
             position: 'absolute',
-            top: '1vh',
+            top: '1dvh',
             right: '28vw',
             transform: 'rotate(52deg)',
-            fontSize: '33vh',
+            fontSize: '33dvh',
             color: '#EB0CC5',
             opacity: getOpacity(4, 0.7),
             transition: 'opacity 0.5s ease-in-out',
@@ -321,10 +323,10 @@ const DigitalClock =  () => {
         <div
           style={{
             position: 'absolute',
-            top: '3vh',
+            top: '3dvh',
             right: '5vw',
             transform: 'rotate(-22deg)',
-            fontSize: '23vh',
+            fontSize: '23dvh',
             color: '#AEF606FF',
             opacity: getOpacity(5, 0.8),
             transition: 'opacity 0.5s ease-in-out',
@@ -337,10 +339,10 @@ const DigitalClock =  () => {
         <div
           style={{
             position: 'absolute',
-            top: '61vh',
+            top: '61dvh',
             right: '5vw',
             transform: 'rotate(-6deg)',
-            fontSize: '23vh',
+            fontSize: '23dvh',
             color: '#7A73E5FF',
             opacity: getOpacity(6, 0.7),
             transition: 'opacity 0.5s ease-in-out',
@@ -352,10 +354,10 @@ const DigitalClock =  () => {
         <div
           style={{
             position: 'absolute',
-            top: '78vh',
+            top: '78dvh',
             right: '3vw',
             transform: 'rotate(22deg)',
-            fontSize: '19vh',
+            fontSize: '19dvh',
             color: '#E50AD6FF',
             opacity: getOpacity(7, 0.8),
             transition: 'opacity 0.5s ease-in-out',

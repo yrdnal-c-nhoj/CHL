@@ -5,6 +5,8 @@ import { useSecondClock } from '@/utils/hooks';
 import mazeFont from '@/assets/fonts/26fonts/26-02-18-jelly.otf';
 import bg1 from '@/assets/images/26_images/26-02/26-02-18/jel.webp';
 import bg3 from '@/assets/images/26_images/26-02/26-02-18/jelly.webp';
+export const assets = [mazeFont, bg1, bg3];
+
 
 const ImageDisplay =  () => {
   const time = useSecondClock();

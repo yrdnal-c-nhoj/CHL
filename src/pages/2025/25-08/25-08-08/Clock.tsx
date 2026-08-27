@@ -8,7 +8,7 @@ import styles from './Clock.module.css';
 // 1. Asset Exports (Required for preloading pipeline)
 export const assets = [bgImage, fontFile_2025_11_01];
 
-const DigitalClock: React.FC = () => {
+const DigitalClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = useMemo(() => [
     {

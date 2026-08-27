@@ -112,7 +112,7 @@ const DeepSpaceClock =  () => {
     gridTemplateColumns: 'repeat(3, 1fr)',
     gridTemplateRows: 'repeat(5, 1fr)',
     width: '13vw',
-    height: '44vh',
+    height: '44dvh',
   };
 
   return (

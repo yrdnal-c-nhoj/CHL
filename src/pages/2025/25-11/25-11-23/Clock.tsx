@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImg from '@/assets/images/25_images/25-11/25-11-23/gs.webp'; // your background
 import font2025_11_24 from '@/assets/fonts/25fonts/25-11-23-gal.ttf?url'; // your custom font
 import { useMillisecondClock } from '@/utils/hooks';
+export const assets = [bgImg, font2025_11_24];
+
 
 export default function DigitalStackClock() {
   const [now, setNow] = useState(new Date());
@@ -38,27 +40,27 @@ export default function DigitalStackClock() {
     flexDirection: 'column', // mobile = stacked
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '3vh',
-    width: 'min(92vw, 70vh)',
-    padding: '3vh 2.5vw',
+    gap: '3dvh',
+    width: 'min(92vw, 70dvh)',
+    padding: '3dvh 2.5vw',
   };
 
   const digitRow = {
     display: 'flex',
-    gap: '1vh',
+    gap: '1dvh',
   };
 
   const digitStyle = {
-    width: '14vh',
-    height: '18vh',
+    width: '14dvh',
+    height: '18dvh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: '24vh',
+    fontSize: '24dvh',
     fontVariantNumeric: 'tabular-nums',
     color: '#07487DFF',
 
-    borderRadius: '1vh',
+    borderRadius: '1dvh',
     userSelect: 'none',
   };
 
@@ -96,9 +98,9 @@ export default function DigitalStackClock() {
               /* Tiny screens / landscape phones */
               @media (max-height: 420px) {
                 .digit-box {
-                  width: 6vh !important;
-                  height: 9vh !important;
-                  font-size: 7vh !important;
+                  width: 6dvh !important;
+                  height: 9dvh !important;
+                  font-size: 7dvh !important;
                 }
               }
             `,

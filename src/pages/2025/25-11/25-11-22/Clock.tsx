@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useMillisecondClock } from '@/utils/hooks';
 import { useMultiAssetLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
 import videoFile from '@/assets/images/25_images/25-11/25-11-22/sput.mp4';
 import fallbackImg from '@/assets/images/25_images/25-11/25-11-22/sput.webp';
@@ -10,7 +11,7 @@ export const assets = [];
 export default function Clock() {
   const videoRef = useRef(null);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const [time, setTime] = useState(new Date());
+  const time = useMillisecondClock(100);
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
   // Simple scoped font loading without leaks
@@ -31,14 +32,6 @@ export default function Clock() {
     };
 
     loadFont();
-  }, []);
-
-  // 2. Ultra-smooth clock loop
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 100); // Update every 100ms for smooth time display
-    return () => clearInterval(interval);
   }, []);
 
   // 3. Video error handling
@@ -94,7 +87,7 @@ export default function Clock() {
               top: '50%',
               left: '50%',
               height: '100vw', // swap axes for rotated fill
-              width: '100vh',
+              width: '100dvh',
               objectFit: 'cover',
               transform: 'translate(-50%, -50%) rotate(-90deg)',
             }}
@@ -136,7 +129,7 @@ export default function Clock() {
               top: '50%',
               left: '50%',
               height: '100vw',
-              width: '100vh',
+              width: '100dvh',
               objectFit: 'cover',
               transform: 'translate(-50%, -50%) rotate(-90deg)',
             }}

@@ -53,7 +53,7 @@ const CyanClock =  () => {
           height: '100%',
           backgroundImage: `url(${cyanImage})`,
           backgroundPosition: 'center',
-          backgroundSize: '17vh', // You can adjust the tile size here
+          backgroundSize: '17dvh', // You can adjust the tile size here
           backgroundRepeat: 'repeat',
           zIndex: 9,
         }}

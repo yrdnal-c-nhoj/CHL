@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/25_images/25-12/25-12-29/shrine.webp';
 import shrineFont from '@/assets/fonts/25fonts/25-12-29-shrine.ttf?url';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [backgroundImage, shrineFont];
+
 
 const DynamicClockComponent =  () => {
   const FONT_FAMILY = 'ShrineFont_20251229';
@@ -66,7 +68,7 @@ const DynamicClockComponent =  () => {
       zIndex: 0,
     },
     clockBase: {
-      fontSize: '12vh',
+      fontSize: '12dvh',
       color: 'white',
       textShadow:
         '2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000',

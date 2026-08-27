@@ -5,6 +5,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 // === Local assets ===
 import bg1 from '@/assets/images/26_images/26-01/26-01-01/fan.webp';
 import myFontUrl from '@/assets/fonts/26fonts/26-01-01-fan.otf';
+export const assets = [bg1, myFontUrl];
+
 
 const InvertedClock =  () => {
   const fontLoaded = useEnhancedFontLoader('MyFontScoped', myFontUrl);
@@ -85,8 +87,8 @@ const InvertedClock =  () => {
 
   const clockFaceStyle = {
     position: 'relative',
-    width: '50vh', // Larger container to accommodate numbers without clipping
-    height: '50vh',
+    width: '50dvh', // Larger container to accommodate numbers without clipping
+    height: '50dvh',
   };
 
   const handBaseStyle = {
@@ -111,7 +113,7 @@ const InvertedClock =  () => {
       left: `calc(50% + ${x}vh)`,
       transform: 'translate(-50%, -50%)',
       fontFamily: 'MyFontScoped, sans-serif',
-      fontSize: '7vh',
+      fontSize: '7dvh',
       color: 'white',
       lineHeight: 1,
       userSelect: 'none',
@@ -140,8 +142,8 @@ const InvertedClock =  () => {
             ref={hourHandRef}
             style={{
               ...handBaseStyle,
-              width: '18vh',
-              height: '2vh',
+              width: '18dvh',
+              height: '2dvh',
               zIndex: 10,
             }}
           />
@@ -149,8 +151,8 @@ const InvertedClock =  () => {
             ref={minHandRef}
             style={{
               ...handBaseStyle,
-              width: '24vh',
-              height: '1.2vh',
+              width: '24dvh',
+              height: '1.2dvh',
               zIndex: 11,
             }}
           />
@@ -158,8 +160,8 @@ const InvertedClock =  () => {
             ref={secondHandRef}
             style={{
               ...handBaseStyle,
-              width: '28vh',
-              height: '0.4vh',
+              width: '28dvh',
+              height: '0.4dvh',
               zIndex: 12,
             }}
           />
@@ -171,8 +173,8 @@ const InvertedClock =  () => {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: '2vh',
-              height: '2vh',
+              width: '2dvh',
+              height: '2dvh',
               borderRadius: '50%',
               backgroundColor: 'white',
               zIndex: 15,

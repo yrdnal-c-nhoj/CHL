@@ -4,6 +4,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 import cinzel20251010 from '@/assets/fonts/25fonts/25-10-09-d1.ttf';
 import roboto20251010 from '@/assets/fonts/25fonts/25-10-09-d2.ttf';
 import orbitron20251010 from '@/assets/fonts/25fonts/25-10-09-d3.otf';
+export const assets = [cinzel20251010, roboto20251010, orbitron20251010];
+
 
 interface TimeState {
   h: number;
@@ -92,7 +94,7 @@ export default function ConcentricClock() {
             top: '50%',
             transform: `translate(${x}vh, ${y}vh)`,
             fontFamily,
-            fontSize: type === 'h' ? '20vh' : type === 'm' ? '17vh' : '8vh',
+            fontSize: type === 'h' ? '20dvh' : type === 'm' ? '17dvh' : '8dvh',
             fontWeight: isCurrent ? 700 : 300,
             color: isCurrent ? '#F4800BFF' : 'rgba(255, 150, 200)',
             textShadow: isCurrent
@@ -101,12 +103,12 @@ export default function ConcentricClock() {
     1px -1px 0 #FFFFFF,
     -1px 1px 0 #FFFFFF,
     1px 1px 0 #FFFFFF,
-    0 0 0.5vh #FFFFFF,
-    0 0 2vh #00FF73FF,
-    0 0 4vh #00FFE5FF,
-    0 0 6vh #84FF00FF
+    0 0 0.5dvh #FFFFFF,
+    0 0 2dvh #00FF73FF,
+    0 0 4dvh #00FFE5FF,
+    0 0 6dvh #84FF00FF
   `
-              : '0 0 0.8vh rgba(25, 10, 80)',
+              : '0 0 0.8dvh rgba(25, 10, 80)',
 
             opacity: isCurrent ? 1 : 0.4,
             transition: 'all 0.4s ease',
@@ -137,7 +139,7 @@ export default function ConcentricClock() {
           position: 'fixed',
           inset: 0,
           width: '100vw',
-          height: 'calc(var(--vh, 1vh) * 100)',
+          height: 'calc(var(--vh, 1dvh) * 100)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -150,8 +152,8 @@ export default function ConcentricClock() {
         <div
           style={{
             position: 'relative',
-            width: '100vh',
-            height: '100vh',
+            width: '100dvh',
+            height: '100dvh',
           }}
         >
           {renderRing(12, 62, 'h', { x: -79, y: -42 })}

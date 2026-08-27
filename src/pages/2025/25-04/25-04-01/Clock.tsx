@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useId } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
+export const assets: string[] = [];
+
 
 const injectedStyles = new Set<string>();
 

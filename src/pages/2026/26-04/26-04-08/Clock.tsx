@@ -7,6 +7,8 @@ import React, {
 } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
+export const assets: string[] = [];
+
 
 const colors = {
   accent: '#54C75EAC',

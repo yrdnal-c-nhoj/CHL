@@ -3,6 +3,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 import busterImg from '@/assets/images/26_images/26-02/26-02-05/buster.webp';
 import hand1Img from '@/assets/images/26_images/26-02/26-02-05/hand1.webp';
 import hand2Img from '@/assets/images/26_images/26-02/26-02-05/hand2.webp';
+export const assets = [busterImg, hand1Img, hand2Img];
+
 
 // Interface for hand style function parameters
 interface HandStyleParams {
@@ -31,7 +33,7 @@ const Analog260205Clock =  () => {
 
   const containerStyle = {
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

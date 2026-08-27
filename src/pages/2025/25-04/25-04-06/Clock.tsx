@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import confFont from '@/assets/fonts/25fonts/25-04-06-conf.ttf?url';
 import confettiBg from '@/assets/images/25_images/25-04/25-04-06/conf2.gif';
+export const assets = [confFont, confettiBg];
+
 
 const TOTAL_DIGITS = 160;
 
@@ -87,7 +89,7 @@ const ConfettiClock = () => {
     containerRefs.digits.current.forEach((el, i) => {
       if (!el) return; // Skip null elements
 
-      const fontSize = Math.random() * 12 + 4; // 4vh to 16vh
+      const fontSize = Math.random() * 12 + 4; // 4dvh to 16dvh
       el.style.fontSize = `${fontSize}vh`;
       el.style.fontFamily = 'ConfettiClockFont, sans-serif' as string;
       el.style.color = colors[Math.floor(Math.random() * colors.length)];
@@ -194,13 +196,13 @@ const ConfettiClock = () => {
       <style>{`
         @keyframes fall3d {
           0% {
-            transform: translateY(-20vh) translateX(0vw)
+            transform: translateY(-20dvh) translateX(0vw)
                        rotateX(0) rotateY(0) rotateZ(0);
             opacity: 1;
           }
           100% {
             transform:
-              translateY(120vh) translateX(var(--translateX))
+              translateY(120dvh) translateX(var(--translateX))
               rotateX(var(--rotateX))
               rotateY(var(--rotateY))
               rotateZ(var(--rotateZ));
@@ -210,26 +212,26 @@ const ConfettiClock = () => {
 
         @keyframes leafFall {
           0% {
-            transform: translateY(-20vh) translateX(0vw)
+            transform: translateY(-20dvh) translateX(0vw)
                        rotateX(0) rotateY(0) rotateZ(0);
             opacity: 1;
           }
           25% {
-            transform: translateY(30vh) translateX(calc(var(--translateX) * 0.3))
+            transform: translateY(30dvh) translateX(calc(var(--translateX) * 0.3))
                        rotateX(calc(var(--rotateX) * 0.25))
                        rotateY(calc(var(--rotateY) * 0.25))
                        rotateZ(calc(var(--rotateZ) * 0.25));
             opacity: 1;
           }
           50% {
-            transform: translateY(60vh) translateX(calc(var(--translateX) * -0.3))
+            transform: translateY(60dvh) translateX(calc(var(--translateX) * -0.3))
                        rotateX(calc(var(--rotateX) * 0.5))
                        rotateY(calc(var(--rotateY) * 0.5))
                        rotateZ(calc(var(--rotateZ) * 0.5));
             opacity: 1;
           }
           75% {
-            transform: translateY(90vh) translateX(calc(var(--translateX) * 0.3))
+            transform: translateY(90dvh) translateX(calc(var(--translateX) * 0.3))
                        rotateX(calc(var(--rotateX) * 0.75))
                        rotateY(calc(var(--rotateY) * 0.75))
                        rotateZ(calc(var(--rotateZ) * 0.75));
@@ -237,7 +239,7 @@ const ConfettiClock = () => {
           }
           100% {
             transform:
-              translateY(120vh) translateX(var(--translateX))
+              translateY(120dvh) translateX(var(--translateX))
               rotateX(var(--rotateX))
               rotateY(var(--rotateY))
               rotateZ(var(--rotateZ));

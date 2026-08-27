@@ -3,6 +3,8 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
+export const assets = [mapFont];
+
 
 const WarholGraveCamClock =  () => {
   const fontConfigs = useMemo<FontConfig[]>(

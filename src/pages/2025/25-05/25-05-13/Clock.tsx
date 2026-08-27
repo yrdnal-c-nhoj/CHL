@@ -6,6 +6,8 @@ import type { CSSProperties } from 'react';
 import woodImg from '@/assets/images/25_images/25-05/25-05-13/wood.jpg';
 import tilesImg from '@/assets/images/25_images/25-05/25-05-13/tiles.jpg';
 import hydFont from '@/assets/fonts/25fonts/25-05-13-hyd.ttf?url';
+export const assets = [woodImg, tilesImg, hydFont];
+
 
 // Component Props interface
 interface FlatClockProps {
@@ -106,7 +108,7 @@ const FlatClock: React.FC<FlatClockProps> = () => {
           top: 50%;
           left: 50%;
           width: 100vw;
-          height: 100vh;
+          height: 100dvh;
           transform: translate(-50%, -50%) rotateX(75deg);
           background-image: url(${woodImg});
           background-size: 100% 100%;
@@ -121,14 +123,14 @@ const FlatClock: React.FC<FlatClockProps> = () => {
           left: 50%;
           width: 95vw;
           height: 95vw;
-          max-height: 95vh;
-          max-width: 95vh;
+          max-height: 95dvh;
+          max-width: 95dvh;
           background-image: url(${tilesImg});
           background-size: 100% 100%;
           border: 1vw solid #d3ab0d;
           border-radius: 50%;
           transform: translate(-50%, -50%) rotateX(75deg) translateZ(1px);
-          box-shadow: 0 3vh 5vh rgba(5, 6, 6, 0.3), 1px 1vh 1vh rgba(65, 33, 33);
+          box-shadow: 0 3dvh 5dvh rgba(5, 6, 6, 0.3), 1px 1dvh 1dvh rgba(65, 33, 33);
           overflow: visible;
           z-index: 9;
           filter: contrast(110%) brightness(90%);
@@ -136,7 +138,7 @@ const FlatClock: React.FC<FlatClockProps> = () => {
         .hand {
           position: absolute;
           width: 50%;
-          height: 0.7vh;
+          height: 0.7dvh;
           top: 50%;
           left: 50%;
           transform-origin: left center;
@@ -145,17 +147,17 @@ const FlatClock: React.FC<FlatClockProps> = () => {
         }
         .hour {
           width: 30%;
-          height: 3vh;
+          height: 3dvh;
           background: #067d79;
           box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
         }
         .minute {
-          height: 1.8vh;
+          height: 1.8dvh;
           background: #6c42ea;
           box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
         }
         .second {
-          height: 0.8vh;
+          height: 0.8dvh;
           background: red;
           box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
           transition: transform 0s;
@@ -172,7 +174,7 @@ const FlatClock: React.FC<FlatClockProps> = () => {
         .number {
           position: absolute;
           font-family: 'hyd', 'Roboto Slab', sans-serif;
-          font-size: 12vh;
+          font-size: 12dvh;
           color: #393705;
           text-shadow: rgb(135, 55, 46) 1px 1px 1px;
           text-align: center;

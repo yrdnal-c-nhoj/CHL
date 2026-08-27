@@ -5,6 +5,8 @@ import type { FontConfig } from '@/types/clock';
 import torGif from '@/assets/images/25_images/25-05/25-05-24/tor.gif';
 import speedFont from '@/assets/fonts/25fonts/25-05-24-speed.ttf';
 import styles from './Clock.module.css';
+export const assets = [torGif, speedFont];
+
 
 const NUM_PARTICLES = 100;
 

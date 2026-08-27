@@ -63,7 +63,7 @@ const updateSphereCanvas = (
 
 // --- Component ---
 
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const time = useMillisecondClock();
   const { formatHour, formatMinute } = useTimeFormatters();

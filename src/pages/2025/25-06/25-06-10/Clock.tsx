@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import shaFont from '@/assets/fonts/25fonts/25-06-10-sha.ttf';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [shaFont];
+
 const ShapesClock =  () => {
   const [time, setTime] = useState<any>({
     hours: '00',
@@ -57,7 +59,7 @@ const ShapesClock =  () => {
   };
 
   const spanStyle = {
-    fontSize: window.innerWidth >= 768 ? '15vw' : '23vh',
+    fontSize: window.innerWidth >= 768 ? '15vw' : '23dvh',
     transition: 'all 0.7s ease',
   };
 

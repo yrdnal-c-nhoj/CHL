@@ -12,6 +12,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 
 import styles from './Clock.module.css';
+export const assets = [pleiadesFont];
+
 
 // --- Types & Constants ---
 

@@ -7,6 +7,8 @@ import styles from './Clock.module.css';
 import digitalFontUrl from '@/assets/fonts/26fonts/26-02-04-trans.ttf?url';
 import digitalBgImage from '@/assets/images/26_images/26-02/26-02-04/trans.webp';
 import backgroundImage from '@/assets/images/26_images/26-02/26-02-04/tran.jpg';
+export const assets = [digitalFontUrl, digitalBgImage, backgroundImage];
+
 
 const CONFIG = {
   use24Hour: false,

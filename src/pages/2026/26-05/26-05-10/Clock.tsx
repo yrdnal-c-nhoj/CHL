@@ -9,6 +9,8 @@ import styles from './Clock.module.css';
 
 import fontUrl from '@/assets/fonts/26fonts/26-05-10.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-05/26-05-10/23.gif';
+export const assets = [fontUrl, backgroundImage];
+
 
 const NightSky =  () => {
   const currentTime = useSecondClock();
@@ -191,7 +193,7 @@ const NightSky =  () => {
                   userSelect: 'none',
                   mixBlendMode: 'screen',
                   fontFamily: 'ClockFont',
-                  fontSize: isMobile ? '58vh' : '58vw',
+                  fontSize: isMobile ? '58dvh' : '58vw',
                   lineHeight: 0.8,
                   color: '#2C2B2B52',
                   opacity: 0.6,

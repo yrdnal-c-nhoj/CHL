@@ -20,6 +20,8 @@ import img10 from '@/assets/images/25_images/25-07/25-07-14/goura-goura12.gif';
 import img11 from '@/assets/images/25_images/25-07/25-07-14/agencylife-kochstrasse.gif';
 import img12 from '@/assets/images/25_images/25-07/25-07-14/agenturleben-agencylife.gif';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [hourHand, minHand, secHand, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12];
+
 const digitImages = [
   img1,
   img2,
@@ -75,7 +77,7 @@ const Clock =  () => {
                 width: '100%',
                 height: '100%',
                 textAlign: 'center',
-                transform: `rotate(${(i + 1) * 30}deg) translateY(1vh)`,
+                transform: `rotate(${(i + 1) * 30}deg) translateY(1dvh)`,
                 inset: 0,
               }}
             >

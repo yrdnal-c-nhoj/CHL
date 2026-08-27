@@ -4,6 +4,8 @@ import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/26_images/26-04/26-04-13/bg.webp';
 import carFont from '@/assets/fonts/26fonts/26-04-13-car.otf';
 import styles from './Clock.module.css';
+export const assets = [bgImage, carFont];
+
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 

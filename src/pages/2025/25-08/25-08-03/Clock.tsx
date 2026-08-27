@@ -6,6 +6,8 @@ import overlay2 from '@/assets/images/25_images/25-08/25-08-03/pro.gif';
 import overlay1 from '@/assets/images/25_images/25-08/25-08-03/cur.webp';
 import clockFont from '@/assets/fonts/25fonts/25-08-03-st.ttf';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [bgImage, overlay2, overlay1, clockFont];
+
 const goldGradient =
   'linear-gradient(135deg, #ffd700, #ffec85, #b8860b, #f5d742)';
 
@@ -86,7 +88,7 @@ const OrnateClock =  () => {
         bottom: 0,
         left: 0,
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         backgroundImage: `url(${overlay1})`,
         backgroundSize: '100% 100%',
         backgroundRepeat: 'no-repeat',
@@ -100,7 +102,7 @@ const OrnateClock =  () => {
         top: 0,
         left: 0,
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         backgroundImage: `url(${overlay2})`,
         backgroundSize: '100% 100%',
         backgroundRepeat: 'no-repeat',
@@ -214,7 +216,7 @@ const OrnateClock =  () => {
   };
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
+    <div style={{ position: 'relative', width: '100%', height: '100dvh' }}>
       <div style={styles.background} />
       <div style={styles.clockContainer}>
         <div style={styles.clockFace}>

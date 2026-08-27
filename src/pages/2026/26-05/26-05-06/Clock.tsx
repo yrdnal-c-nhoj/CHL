@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import * as THREE from 'three';
 import fontUrl from '@/assets/fonts/26fonts/26-05-06-droplet.ttf';
 import backgroundImage from '@/assets/images/26_images/26-05/26-05-06/drops.jpg';
+export const assets = [fontUrl, backgroundImage];
+
 
 const MAX_DROPLETS = 40;
 const MAX_ENTRIES = MAX_DROPLETS * 2;

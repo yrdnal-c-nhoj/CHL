@@ -3,6 +3,8 @@ import { useSecondClock } from '@/utils/hooks';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
+export const assets = [boxImage];
+
 
 /* ---------------- FONT MAP ---------------- */
 

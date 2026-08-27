@@ -8,6 +8,8 @@ import customFontUrl from '@/assets/fonts/25fonts/25-08-16-palm.ttf';
 import hourHandImage from '@/assets/images/25_images/25-08/25-08-16/p1.gif';
 import minuteHandImage from '@/assets/images/25_images/25-08/25-08-16/p2.webp';
 import secondHandImage from '@/assets/images/25_images/25-08/25-08-16/p3.gif';
+export const assets = [imageLeft, clockFace, customFontUrl, hourHandImage, minuteHandImage, secondHandImage];
+
 
 const CLOCK_FONT_FAMILY = 'ClockFont__Scoped_9k2';
 
@@ -41,7 +43,7 @@ const MirroredBackground =  () => {
   const minDeg = minutes * 6;
   const hourDeg = hours * 30;
 
-  const clockSize = 'min(70vh, 70vw)';
+  const clockSize = 'min(70dvh, 70vw)';
   const bezel = '1rem';
   const centerDot = '0.01rem';
 

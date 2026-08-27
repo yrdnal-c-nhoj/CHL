@@ -9,31 +9,33 @@ import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import angFont from '@/assets/fonts/25fonts/25-04-12-ang.ttf?url';
+export const assets = [angFont];
+
 
 const digitFontSizes = {
-  0: '51vh',
-  1: '46vh',
-  2: '21vh',
-  3: '18vh',
-  4: '20vh',
-  5: '19vh',
-  6: '16vh',
-  7: '21vh',
-  8: '17vh',
-  9: '20vh',
+  0: '51dvh',
+  1: '46dvh',
+  2: '21dvh',
+  3: '18dvh',
+  4: '20dvh',
+  5: '19dvh',
+  6: '16dvh',
+  7: '21dvh',
+  8: '17dvh',
+  9: '20dvh',
 }
 
 const mediaQueryFontSizes = {
-  0: '33vh',
-  1: '29vh',
-  2: '26vh',
-  3: '23vh',
-  4: '25vh',
-  5: '24vh',
-  6: '21vh',
-  7: '26vh',
-  8: '22vh',
-  9: '25vh',
+  0: '33dvh',
+  1: '29dvh',
+  2: '26dvh',
+  3: '23dvh',
+  4: '25dvh',
+  5: '24dvh',
+  6: '21dvh',
+  7: '26dvh',
+  8: '22dvh',
+  9: '25dvh',
 }
 
 // Digit font size interfaces
@@ -116,8 +118,8 @@ const AngFontClock = () => {
     (digit: string): string => {
       const n = parseInt(digit, 10);
       return isSmallScreen
-        ? mediaQueryFontSizes[n] || '19vh'
-        : digitFontSizes[n] || '19vh';
+        ? mediaQueryFontSizes[n] || '19dvh'
+        : digitFontSizes[n] || '19dvh';
     },
     [isSmallScreen],
   );
@@ -147,8 +149,8 @@ const AngFontClock = () => {
   };
 
   const digitBoxStyle = {
-    width: isSmallScreen ? '15vw' : '13vh',
-    height: isSmallScreen ? '18vh' : 'auto',
+    width: isSmallScreen ? '15vw' : '13dvh',
+    height: isSmallScreen ? '18dvh' : 'auto',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

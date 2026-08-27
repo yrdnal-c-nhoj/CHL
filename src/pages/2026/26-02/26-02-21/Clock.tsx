@@ -25,6 +25,8 @@ import img6 from '@/assets/images/26_images/26-02/26-02-21/1235.webp';
 import img7 from '@/assets/images/26_images/26-02/26-02-21/1236.gif';
 import img8 from '@/assets/images/26_images/26-02/26-02-21/1237.webp';
 import customFont from '@/assets/fonts/26fonts/26-02-21-321.otf?url';
+export const assets = [img1, img2, img3, img4, img5, img6, img7, img8, customFont];
+
 
 export { img1, img2, img3, img4, img5, img6, img7, img8 };
 

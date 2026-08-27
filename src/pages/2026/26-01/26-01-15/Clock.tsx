@@ -47,19 +47,19 @@ const Clock =  () => {
   };
 
   const overlayLayers = [
-    { size: '32vh', color: '#F8062275', z: 2 },
-    { size: '31.5vh', color: 'transparent', z: 3 },
-    { size: '31vh', color: 'transparent', z: 3 },
-    { size: '29.5vh', color: 'transparent', z: 3 },
-    { size: '28vh', color: 'transparent', z: 3 },
-    { size: '25.5vh', color: 'transparent', z: 3 },
-    { size: '23vh', color: 'transparent', z: 3 },
-    { size: '20.5vh', color: 'transparent', z: 3 },
-    { size: '18vh', color: 'transparent', z: 3 },
-    { size: '15vh', color: 'transparent', z: 3 },
-    { size: '11vh', color: 'transparent', z: 3 },
-    { size: '8vh', color: 'transparent', z: 3 },
-    { size: '5vh', color: 'transparent', z: 3 },
+    { size: '32dvh', color: '#F8062275', z: 2 },
+    { size: '31.5dvh', color: 'transparent', z: 3 },
+    { size: '31dvh', color: 'transparent', z: 3 },
+    { size: '29.5dvh', color: 'transparent', z: 3 },
+    { size: '28dvh', color: 'transparent', z: 3 },
+    { size: '25.5dvh', color: 'transparent', z: 3 },
+    { size: '23dvh', color: 'transparent', z: 3 },
+    { size: '20.5dvh', color: 'transparent', z: 3 },
+    { size: '18dvh', color: 'transparent', z: 3 },
+    { size: '15dvh', color: 'transparent', z: 3 },
+    { size: '11dvh', color: 'transparent', z: 3 },
+    { size: '8dvh', color: 'transparent', z: 3 },
+    { size: '5dvh', color: 'transparent', z: 3 },
   ];
 
   return (
@@ -94,9 +94,9 @@ const Hand = memo(({ type, rotation }) => {
   const isSecond = type === 'second';
 
   const config = {
-    hour: { width: '0.4vh', height: '4.5vh', z: 5, tail: '0vh' },
-    minute: { width: '0.25vh', height: '7.5vh', z: 4, tail: '0vh' },
-    second: { width: '0.15vh', height: '10vh', z: 6, tail: '2.5vh' },
+    hour: { width: '0.4dvh', height: '4.5dvh', z: 5, tail: '0dvh' },
+    minute: { width: '0.25dvh', height: '7.5dvh', z: 4, tail: '0dvh' },
+    second: { width: '0.15dvh', height: '10dvh', z: 6, tail: '2.5dvh' },
   };
 
   const { width, height, z, tail } = config[type];
@@ -143,7 +143,7 @@ const styles = {
     inset: 0,
     backgroundColor: '#FF000035',
     backgroundImage: `url(${baseBg})`,
-    backgroundSize: '50vh',
+    backgroundSize: '50dvh',
     backgroundPosition: 'center center',
     backgroundBlendMode: 'overlay',
     backgroundRepeat: 'repeat',
@@ -159,10 +159,10 @@ const styles = {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    width: '0.8vh',
-    height: '0.8vh',
+    width: '0.8dvh',
+    height: '0.8dvh',
     backgroundColor: handColors.center,
-    border: `0.15vh solid ${handColors.centerBorder}`,
+    border: `0.15dvh solid ${handColors.centerBorder}`,
     borderRadius: '50%',
     transform: 'translate(-50%, -50%)',
     zIndex: 20,

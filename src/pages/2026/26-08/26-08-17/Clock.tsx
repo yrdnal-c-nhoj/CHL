@@ -17,7 +17,7 @@ const fontConfigs: FontConfig[] = [];
 
 const PARTICLE_COUNT = 100;
 
-const ClockComponent: React.FC = () => {
+const ClockComponent =  () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // Use refs to persist particle state across re-renders without triggering them.
   const sitesRef = useRef<[number, number][] | null>(null);

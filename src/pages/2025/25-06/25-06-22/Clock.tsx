@@ -1,4 +1,6 @@
 import { useMillisecondClock } from '@/utils/hooks';
+export const assets: string[] = [];
+
 
 const widthVW = 1; // abstract width unit for SVG
 const heightVH = 6; // abstract height unit for SVG
@@ -72,7 +74,7 @@ export default function ParallelLineClock() {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
+    height: '100dvh',
     width: '100vw',
   };
 

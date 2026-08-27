@@ -1,6 +1,8 @@
 import { useSecondClock } from '@/utils/hooks';
 import { useEffect, useRef } from 'react';
 import styles from './Clock.module.css';
+export const assets: string[] = [];
+
 
 // --- Constants for DustMotes Animation ---
 const MOTE_CONFIG = {

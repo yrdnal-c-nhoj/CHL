@@ -9,6 +9,8 @@ import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import kalFont from '@/assets/fonts/25fonts/25-07-04-kal.otf';
 import bgImage from '@/assets/images/25_images/25-07/25-07-04/7ZAx.webp';
+export const assets = [kalFont, bgImage];
+
 
 /** * CONFIGURATION
  * Defined outside to prevent re-allocation on every frame

@@ -5,6 +5,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 import backgroundVideo from '@/assets/images/25_images/25-10/25-10-07/big.mp4';
 import fallbackGif from '@/assets/images/25_images/25-10/25-10-07/big.webp';
 import O251007font from '@/assets/fonts/25fonts/25-10-07-str.ttf';
+export const assets = [backgroundVideo, fallbackGif, O251007font];
+
 
 export default function ImageAnalogClock() {
   const time = useMillisecondClock();

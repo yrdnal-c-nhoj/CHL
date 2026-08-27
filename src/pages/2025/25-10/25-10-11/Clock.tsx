@@ -6,6 +6,8 @@ import backgroundImg from '@/assets/images/25_images/25-10/25-10-11/ches.jpg'; /
 import customFont20251011 from '@/assets/fonts/25fonts/25-10-11-ch.ttf';
 import alphabetFont20251011 from '@/assets/fonts/25fonts/25-10-11-chess.ttf';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [bottomBackgroundImg, backgroundImg, customFont20251011, alphabetFont20251011];
+
 
 export default function FancyClock() {
   const [time, setTime] = useState(new Date());
@@ -79,7 +81,7 @@ export default function FancyClock() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: isMobile ? '10vw' : '10vh',
+          fontSize: isMobile ? '10vw' : '10dvh',
           fontFamily: 'AlphabetFont20251011',
           color: '#F4DDF7FF',
           zIndex: 2,
@@ -112,7 +114,7 @@ export default function FancyClock() {
             top: `0%`,
             left: `${((i + 0.5) / gridSize) * 100}%`,
             transform: 'translateX(-50%) translateY(-100%)',
-            fontSize: isMobile ? '3vw' : '3vh',
+            fontSize: isMobile ? '3vw' : '3dvh',
             fontFamily: 'CustomFont20251011',
             color: '#686464FF',
             zIndex: 3,
@@ -135,7 +137,7 @@ export default function FancyClock() {
             top: `${((i + 0.5) / gridSize) * 100}%`,
             left: `0%`,
             transform: 'translateX(-120%) translateY(-50%)',
-            fontSize: isMobile ? '3vw' : '3vh',
+            fontSize: isMobile ? '3vw' : '3dvh',
             fontFamily: 'CustomFont20251011',
             color: '#686464FF',
             zIndex: 3,
@@ -184,8 +186,8 @@ export default function FancyClock() {
           left: '50%',
           opacity: '0.8',
           transform: 'translate(-50%, -50%)',
-          width: isMobile ? '100vw' : '100vh',
-          height: isMobile ? '100vw' : '100vh',
+          width: isMobile ? '100vw' : '100dvh',
+          height: isMobile ? '100vw' : '100dvh',
           objectFit: 'cover',
           zIndex: 1,
         }}
@@ -197,8 +199,8 @@ export default function FancyClock() {
           top: '50%',
           left: '50%',
           transform: `translate(-50%, -50%) scale(${gridScale})`,
-          width: isMobile ? '100vw' : '100vh',
-          height: isMobile ? '100vw' : '100vh',
+          width: isMobile ? '100vw' : '100dvh',
+          height: isMobile ? '100vw' : '100dvh',
           zIndex: 2,
         }}
       >

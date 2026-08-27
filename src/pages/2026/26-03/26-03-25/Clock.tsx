@@ -3,6 +3,8 @@ import { useSecondClock } from '@/utils/hooks';
 import { calculateAngles } from '@/utils/clockUtils';
 import bgImage from '@/assets/images/26_images/26-03/26-03-25/ride.webp';
 import styles from './Clock.module.css';
+export const assets = [bgImage];
+
 
 const BASE_SIZE = 500;
 const CENTER = BASE_SIZE / 2;

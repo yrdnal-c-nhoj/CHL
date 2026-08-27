@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import Cu250830 from '@/assets/fonts/25fonts/25-08-30-mem.ttf'; // your font file
-import bgImage from '@/assets/images/25_images/25-08/25-08-30/mem.gif'; // your background image
+import bgImage from '@/assets/images/25_images/25-08/25-08-30/mem.gif';
+export const assets = [Cu250830, bgImage];
+ // your background image
 
 export default function MessyClock() {
   // Standardized font loading with font-display: swap to avoid FOUC
@@ -30,7 +32,7 @@ export default function MessyClock() {
 
   const clockStyle = {
     fontFamily: `'250930', sans-serif`,
-    fontSize: '20vh', // very large, scales with viewport height
+    fontSize: '20dvh', // very large, scales with viewport height
     color: '#B6C8C9FF', // golden color for drama
     textShadow: '1px 0 2rem #350342FF, 0 3px 4rem #AF0404FF', // dramatic glow
     display: 'flex',

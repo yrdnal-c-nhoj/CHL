@@ -5,6 +5,8 @@ import * as THREE from 'three';
 
 // Statically imported at build-time to prevent production race conditions
 import pyramidBgUrl from '@/assets/images/26_images/26-06/26-06-18/pyramid.webp?url';
+export const assets = [pyramidBgUrl];
+
 
 /**
  * Hook to manage the 2D clock texture generation and real-time updates
@@ -147,7 +149,7 @@ export default function SpinningPyramid() {
     <div
       style={{
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         position: 'relative',
         backgroundColor: '#151313',
         backgroundImage: `url(${pyramidBgUrl})`,

@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useCallback, useState } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import bgImg from '@/assets/images/25_images/25-11/25-11-16/ray.webp';
 import clockBg from '@/assets/images/25_images/25-11/25-11-16/ray2.webp';
+export const assets = [bgImg, clockBg];
+
 
 export default function AnalogClock() {
   const rafRef = useRef(null);
@@ -47,7 +49,7 @@ export default function AnalogClock() {
   // Main container: Ensures the clock is centered and fits the screen
   const containerStyle = {
     width: '100%',
-    height: isMobile ? '100vh' : '100dvh', // Use 100vh on mobile for better compatibility
+    height: isMobile ? '100dvh' : '100dvh', // Use 100dvh on mobile for better compatibility
     position: 'relative',
     display: 'flex',
     alignItems: 'center',

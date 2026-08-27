@@ -4,7 +4,9 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import clockBg from '@/assets/images/25_images/25-07/25-07-30/ca.gif';
 import fullBg from '@/assets/images/25_images/25-07/25-07-30/ca.gif';
-import myFont from '@/assets/fonts/25fonts/25-07-30-Cam.ttf'; // Import font
+import myFont from '@/assets/fonts/25fonts/25-07-30-Cam.ttf';
+export const assets = [clockBg, fullBg, myFont];
+ // Import font
 
 const Clock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC

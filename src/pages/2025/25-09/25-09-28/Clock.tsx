@@ -7,6 +7,8 @@ import skyImg from '@/assets/images/25_images/25-09/25-09-28/stars.gif';
 import nebulaImg from '@/assets/images/25_images/25-09/25-09-28/sta.gif';
 import cu250928fontont from '@/assets/fonts/25fonts/25-09-28-cow.ttf?url';
 import type { FontConfig } from '@/types/clock';
+export const assets = [ufoImg, skyImg, nebulaImg, cu250928fontont];
+
 
 const fontConfigs: FontConfig[] = [
   {

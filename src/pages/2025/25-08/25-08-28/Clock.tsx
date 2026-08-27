@@ -3,6 +3,8 @@ import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/25_images/25-08/25-08-28/gob.jpg';
 import clockFontFile from '@/assets/fonts/25fonts/25-08-28-gob.ttf';
+export const assets = [backgroundImage, clockFontFile];
+
 
 export default function DigitalClock() {
   const time = useMillisecondClock();

@@ -16,7 +16,7 @@ interface Digit {
   typeClass: 'hour' | 'minuteTens' | 'minuteOnes';
 }
 
-const Clock: React.FC = () => {
+const Clock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs: FontConfig[] = useMemo(() => [
     {
@@ -32,7 +32,7 @@ const Clock: React.FC = () => {
 
   const [digits, setDigits] = useState<Digit[]>([]);
   const lastSpawnTimeRef = useRef(0);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | null>(null);
   const time = useSecondClock(); // Use canonical hook
 
   // Animation and spawning logic

@@ -3,6 +3,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import videoFile from '@/assets/images/25_images/25-11/25-11-20/day.mp4';
 import fontFile from '@/assets/fonts/25fonts/25-11-20-day.ttf';
+export const assets = [videoFile, fontFile];
+
 
 const FONT_FAMILY = 'MyClockFont_20251120';
 const fontUrl = fontFile;
@@ -169,7 +171,7 @@ export default function PixelInverseClock() {
           top: 0,
           left: 0,
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           objectFit: 'cover',
           zIndex: 0,
           imageRendering: 'pixelated',

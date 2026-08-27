@@ -3,6 +3,8 @@ import backgroundImage from '@/assets/images/25_images/25-10/25-10-17/words.jpg'
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSecondClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
+export const assets = [fontLatin, backgroundImage];
+
 
 export default function TimeWordsClock() {
   const now = useSecondClock();

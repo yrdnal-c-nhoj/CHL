@@ -4,6 +4,8 @@ import { useSecondClock } from '@/utils/hooks';
 
 import teeVeeLoungeFont from '@/assets/fonts/26fonts/26-02-10-tv.ttf?url';
 import analogBgImage from '@/assets/images/26_images/26-02/26-02-10/tv.jpg';
+export const assets = [teeVeeLoungeFont, analogBgImage];
+
 
 export const background = analogBgImage;
 

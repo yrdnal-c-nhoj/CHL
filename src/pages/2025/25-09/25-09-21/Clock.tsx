@@ -7,6 +7,8 @@ import stripe1 from '@/assets/images/25_images/25-09/25-09-21/fire.gif?url';
 import stripe2 from '@/assets/images/25_images/25-09/25-09-21/air.webp?url';
 import stripe3 from '@/assets/images/25_images/25-09/25-09-21/h2o.webp?url';
 import stripe4 from '@/assets/images/25_images/25-09/25-09-21/earth.webp?url';
+export const assets = [cust250921font, stripe1, stripe2, stripe3, stripe4];
+
 
 export default function AnalogClock() {
   const time = useSmoothClock();
@@ -154,7 +156,7 @@ export default function AnalogClock() {
         <div
           style={{
             ...numberStyle,
-            top: '2vh',
+            top: '2dvh',
             left: '50%',
             transform: 'translateX(-50%) scaleX(-1)',
           }}
@@ -164,7 +166,7 @@ export default function AnalogClock() {
         <div
           style={{
             ...numberStyle,
-            bottom: '2vh',
+            bottom: '2dvh',
             left: '50%',
             transform: 'translateX(-50%)',
           }}

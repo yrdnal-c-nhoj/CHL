@@ -5,6 +5,8 @@ import { formatTime } from '@/utils/clockUtils'; // Keep formatTime for datetime
 import videoFile from '@/assets/images/25_images/25-10/25-10-31/mids.mp4';
 import fallbackImg from '@/assets/images/25_images/25-10/25-10-31/midsun.webp';
 import fontFile_2025_10_31 from '@/assets/fonts/25fonts/25-10-31-mi.otf?url';
+export const assets = [videoFile, fallbackImg, fontFile_2025_10_31];
+
 
 export default function VideoClock() {
   const [ready, setReady] = useState<boolean>(false);
@@ -134,7 +136,7 @@ export default function VideoClock() {
     display: 'grid',
     gridTemplateColumns: 'repeat(8, 1fr)',
     width: '98vw',
-    transform: 'rotate(180deg) translateY(3vh)',
+    transform: 'rotate(180deg) translateY(3dvh)',
     zIndex: 2,
     fontFamily: 'CustomFont, Arial, sans-serif',
     fontSize: '24vw',

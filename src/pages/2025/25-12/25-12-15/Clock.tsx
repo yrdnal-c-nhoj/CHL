@@ -3,6 +3,9 @@ import { useMillisecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import iceFont from '@/assets/fonts/25fonts/25-12-15-ice.ttf?url'; // import font as module
 import BG_IMAGE_PATH from '@/assets/images/25_images/25-12/25-12-15/forest.jpeg';
+export const assets = [iceFont, font as module
+import BG_IMAGE_PATH];
+
 
 const FONT_FAMILY = 'DigitalClock';
 
@@ -81,13 +84,13 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    gap: '0.5vh',
+    gap: '0.5dvh',
     maxHeight: '100%',
     padding: '20px',
     boxSizing: 'border-box',
   },
   digitBox: {
-    fontSize: 'min(15vh, 26vw)',
+    fontSize: 'min(15dvh, 26vw)',
     fontVariantNumeric: 'tabular-nums',
     fontFeatureSettings: '"tnum"',
     color: '#C2D2F5FF',

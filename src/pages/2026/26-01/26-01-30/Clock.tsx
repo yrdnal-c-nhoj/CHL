@@ -6,6 +6,8 @@ import bgLayer1 from '@/assets/images/26_images/26-01/26-01-30/new.webp';
 import bgLayer2 from '@/assets/images/26_images/26-01/26-01-30/nes.gif';
 // import bgLayer3 from '@/assets/images/26_images/26-01/26-01-30/ne3.gif';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [clockFont, bgLayer1, bgLayer2, bgLayer3];
+
 const DigitalClock =  () => {
   const [time, setTime] = useState(new Date());
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);

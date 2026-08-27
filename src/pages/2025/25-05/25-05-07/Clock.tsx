@@ -4,6 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/25_images/25-05/25-05-07/water.webp';
 import styles from './Clock.module.css';
+export const assets = [bgImage];
+
 
 // Component Props interface
 interface ClockProps {

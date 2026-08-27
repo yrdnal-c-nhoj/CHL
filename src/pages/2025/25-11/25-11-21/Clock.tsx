@@ -14,6 +14,8 @@ import img3 from '@/assets/images/25_images/25-11/25-11-21/3.jpg';
 import img4 from '@/assets/images/25_images/25-11/25-11-21/4.jpg';
 import img5 from '@/assets/images/25_images/25-11/25-11-21/5.jpg';
 import img6 from '@/assets/images/25_images/25-11/25-11-21/6.jpg';
+export const assets = [font_sdfsdfsdfsd, img1, img2, img3, img4, img5, img6];
+
 
 export { img1, img2, img3, img4, img5, img6 }; // Export for preloading pipeline
 const images = [img1, img2, img3, img4, img5, img6];

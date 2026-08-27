@@ -26,7 +26,7 @@ const RococoClock = () => {
       rangeY: 3 + Math.random() * 4,
       rotate: 5 + Math.random() * 15,
       scale: 1.05 + Math.random() * 0.1,
-      fontSize: i >= 4 ? 'clamp(4rem, 8vh, 12vh)' : 'clamp(6rem, 15vh, 25vh)',
+      fontSize: i >= 4 ? 'clamp(4rem, 8dvh, 12dvh)' : 'clamp(6rem, 15dvh, 25dvh)',
     })),
     [],
   );

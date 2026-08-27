@@ -4,6 +4,8 @@ import { useSecondClock } from '@/utils/hooks';
 import airportFont from '@/assets/fonts/26fonts/26-02-14-airport.ttf';
 import backgroundGif from '@/assets/images/26_images/26-02/26-02-14/prop.gif';
 import backgroundGif2 from '@/assets/images/26_images/26-02/26-02-14/runway.gif';
+export const assets = [airportFont, backgroundGif, backgroundGif2];
+
 
 export const background = backgroundGif;
 
@@ -107,12 +109,12 @@ const DigitalClock =  () => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      gap: '2vh',
+      gap: '2dvh',
       width: '100%',
     },
     digitGroup: {
       display: 'flex',
-      gap: '8vh',
+      gap: '8dvh',
       justifyContent: 'center',
     },
     digitBox: {
@@ -120,10 +122,10 @@ const DigitalClock =  () => {
       alignItems: 'center',
       justifyContent: 'center',
       width: 'clamp(90px, 22vw, 170px)',
-      height: 'clamp(80px, 22vh, 180px)',
+      height: 'clamp(80px, 22dvh, 180px)',
     },
     digit: {
-      fontSize: 'clamp(50px, 14vh, 140px)',
+      fontSize: 'clamp(50px, 14dvh, 140px)',
       color: '#D4D8E3',
       fontFamily: "'Airport', monospace",
       textAlign: 'center',

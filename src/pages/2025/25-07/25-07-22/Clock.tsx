@@ -5,6 +5,8 @@ import bardImg from '@/assets/images/25_images/25-07/25-07-22/bard.webp';
 import barrsImg from '@/assets/images/25_images/25-07/25-07-22/barrs.webp';
 import berFont from '@/assets/fonts/25fonts/25-07-22-ber.otf';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [bardImg, barrsImg, berFont];
+
 const BarrelrollClock =  () => {
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -42,7 +44,7 @@ const BarrelrollClock =  () => {
         .container {
           position: relative;
           width: 100vw;
-          height: 100vh;
+          height: 100dvh;
         }
 
         .spin-wrapper {
@@ -50,7 +52,7 @@ const BarrelrollClock =  () => {
           top: 50%;
           left: 50%;
           width: 380vw;
-          height: 280vh;
+          height: 280dvh;
           transform-origin: center;
           animation: spin 60s linear infinite;
           transform: translate(-50%, -50%);

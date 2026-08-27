@@ -7,6 +7,8 @@ import digitalBgImage from '@/assets/images/26_images/26-02/26-02-12/lit.webp';
 import extraBg1 from '@/assets/images/26_images/26-02/26-02-12/light.webp';
 import extraBg2 from '@/assets/images/26_images/26-02/26-02-12/li.gif';
 import extraBg3 from '@/assets/images/26_images/26-02/26-02-12/ball.webp';
+export const assets = [digitalFontUrl, digitalBgImage, extraBg1, extraBg2, extraBg3];
+
 
 const DISCO_COLORS = [
   '#FF00FF', // Neon Magenta

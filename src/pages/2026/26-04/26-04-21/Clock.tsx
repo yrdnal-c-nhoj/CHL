@@ -9,6 +9,8 @@ import {
   useState,
 } from 'react';
 import styles from './Clock.module.css';
+export const assets: string[] = [];
+
 
 interface Circle {
   x: number;

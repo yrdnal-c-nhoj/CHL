@@ -7,6 +7,8 @@ import pizzaFace from '@/assets/images/25_images/25-04/25-04-13/pie.webp';
 import hourSlice from '@/assets/images/25_images/25-04/25-04-13/s3.webp';
 import minuteSlice from '@/assets/images/25_images/25-04/25-04-13/s2.webp';
 import secondSlice from '@/assets/images/25_images/25-04/25-04-13/s1.webp';
+export const assets = [backgroundImage, pizzaFace, hourSlice, minuteSlice, secondSlice];
+
 
 // Component Props interface
 interface PizzaClockProps {

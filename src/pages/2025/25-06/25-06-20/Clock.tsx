@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+export const assets: string[] = [];
+
 
 // Using CSS @import instead of corrupted local fonts
 
@@ -66,8 +68,8 @@ const IndecisiveClock =  () => {
        linear-gradient(150deg, #888888 12%, transparent 12.5%, transparent 87%, #888888 87.5%, #888888),
        linear-gradient(60deg, #7B7E7A77 25%, transparent 25.5%, transparent 75%, #75787477 75%, #21351a77),
        linear-gradient(60deg, #71737077 25%, transparent 25.5%, transparent 75%, #6C6E6B77 75%, #21351a77)`,
-    backgroundSize: '24vw 42vh',
-    backgroundPosition: '0 0, 0 0, 12vw 21vh, 12vw 21vh, 0 0, 12vw 21vh',
+    backgroundSize: '24vw 42dvh',
+    backgroundPosition: '0 0, 0 0, 12vw 21dvh, 12vw 21dvh, 0 0, 12vw 21dvh',
     overflow: 'hidden',
     height: '100dvh',
     width: '100vw',
@@ -81,7 +83,7 @@ const IndecisiveClock =  () => {
     right: 0,
     margin: 'auto',
     width: '100vw',
-    height: '40vh',
+    height: '40dvh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

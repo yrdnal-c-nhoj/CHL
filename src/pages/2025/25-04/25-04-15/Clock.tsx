@@ -12,6 +12,8 @@ import {
   useRef,
   useState,
 } from 'react';
+export const assets = [horizonFontUrl, layer2, layer1, sdfwef];
+
 
 // Component Props interface
 interface HorizonClockProps {

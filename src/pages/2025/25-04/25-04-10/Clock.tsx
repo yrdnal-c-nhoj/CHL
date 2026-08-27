@@ -3,6 +3,8 @@ import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import monofettFont from '@/assets/fonts/25fonts/25-04-10-Monofett.ttf?url';
+export const assets = [monofettFont];
+
 
 // Component Props interface
 interface BarGraphClockProps {
@@ -72,7 +74,7 @@ const BarGraphClock = () => {
   const labelBaseStyle = {
     fontSize: '28vw',
     // lineHeight: '2',
-    marginBottom: '50vh',
+    marginBottom: '50dvh',
     textAlign: 'center',
   };
 

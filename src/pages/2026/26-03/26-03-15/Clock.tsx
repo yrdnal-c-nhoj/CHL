@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import fontUrl from '@/assets/fonts/26fonts/26-03-15-shadow.otf?url';
 import styles from './Clock.module.css';
+export const assets = [fontUrl];
+
 
 const MS_PER_ROTATION = 30000;
 

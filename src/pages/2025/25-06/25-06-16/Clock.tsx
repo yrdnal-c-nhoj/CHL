@@ -7,6 +7,8 @@ import klaxon from '@/assets/images/25_images/25-06/25-06-16/klaxon.png';
 import klaHand from '@/assets/images/25_images/25-06/25-06-16/kla.png';
 import klaxFont from '@/assets/fonts/25fonts/25-06-16-klax.ttf';
 import overlayImage from '@/assets/images/25_images/25-06/25-06-16/klax.webp';
+export const assets = [kla, klax, klaxon, klaHand, klaxFont, overlayImage];
+
 
 const romanNumerals = [
   'xii',
@@ -164,7 +166,7 @@ const KlaxonClock =  () => {
       <style>{`
         .number {
           position: absolute;
-          font-size: 29.5vh;
+          font-size: 29.5dvh;
           font-weight: bold;
           transform-origin: center center;
           z-index: 6;
@@ -211,7 +213,7 @@ const styles = {
     top: 0,
     left: 0,
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
@@ -225,7 +227,7 @@ const styles = {
     top: 0,
     left: 0,
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     backgroundSize: '190%', // Scale up the image
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
@@ -241,7 +243,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     zIndex: 5,
   },
   clock: {

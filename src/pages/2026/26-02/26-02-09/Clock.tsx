@@ -3,6 +3,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import customFont from '@/assets/fonts/26fonts/26-02-09-spin.otf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSecondClock } from '@/utils/hooks';
+export const assets = [customFont];
+
 interface Glyph {
   type: 'hour' | 'minute' | 'period';
   z: number;

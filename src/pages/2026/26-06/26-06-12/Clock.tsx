@@ -180,8 +180,8 @@ const styles = {
     transform: 'translate(-50%, -50%)',
     width: '90vw', // Scale up on wider screens
     height: '90vw', // Keep it square
-    // maxWidth: '90vh', // But don't let it exceed 90% of viewport height
-    // maxHeight: '90vh', // And don't let it exceed 90% of viewport height
+    // maxWidth: '90dvh', // But don't let it exceed 90% of viewport height
+    // maxHeight: '90dvh', // And don't let it exceed 90% of viewport height
     zIndex: 7,
     opacity: 0.7,
     fontFamily: `'ClockFont26_06_12', serif`,
