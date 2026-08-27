@@ -82,6 +82,9 @@ export default function SeaWavesTextClock() {
     window.addEventListener('resize', handleResize);
 
     // Optimized Animation Loop
+    let lastFont = '';
+    let lastFill = '';
+
     const loop = () => {
       context.clearRect(0, 0, canvas.width, canvas.height);
       const timeState = timeStateRef.current;
@@ -105,9 +108,17 @@ export default function SeaWavesTextClock() {
 
           node.angle += node.speed;
 
-          // Render Text Node
-          context.fillStyle = `hsl(195, 100%, ${size * 4}%)`;
-          context.font = `bold ${Math.max(12, size * 2.2)}px sans-serif`;
+          // Render Text Node (only touch context state when it actually changes)
+          const fill = `hsl(195, 100%, ${size * 4}%)`;
+          if (fill !== lastFill) {
+            context.fillStyle = fill;
+            lastFill = fill;
+          }
+          const font = `bold ${Math.max(12, size * 2.2)}px sans-serif`;
+          if (font !== lastFont) {
+            context.font = font;
+            lastFont = font;
+          }
           context.fillText(textToRender, posX, posY);
         }
       }
@@ -159,34 +170,9 @@ export default function SeaWavesTextClock() {
           width: '100%',
           height: '100%',
           display: 'block',
-          filter: "url('#shadowed-goo')",
           zIndex: 1,
         }}
       />
-
-      <svg style={{ display: 'none' }} xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <filter id="shadowed-goo">
-            <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="6" />
-            <feColorMatrix
-              in="blur"
-              mode="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-              result="goo"
-            />
-            <feGaussianBlur in="goo" stdDeviation="2" result="shadow" />
-            <feColorMatrix
-              in="shadow"
-              mode="matrix"
-              values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2"
-              result="shadow"
-            />
-            <feOffset in="shadow" dx="1" dy="1" result="shadow" />
-            <feBlend in2="shadow" in="goo" result="goo" />
-            <feBlend in2="goo" in="SourceGraphic" result="mix" />
-          </filter>
-        </defs>
-      </svg>
     </div>
   );
 }
