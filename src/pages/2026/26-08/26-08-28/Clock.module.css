@@ -4,6 +4,13 @@
   overflow: hidden;
   background-color: #c5c6c9;
   position: relative;
+  isolation: isolate;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .bgImage {
@@ -18,18 +25,25 @@
 
 .clockDisplay {
   position: absolute;
-  bottom: 55vh;
+  bottom: 68%;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 2;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: clamp(2rem, 5vw, 4.5rem);
-  font-weight: bold;
-  color: #e0e0e0;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.9);
-  letter-spacing: 0.15em;
+  z-index: 214;
+  font-family: 'MazeFont', 'Courier New', Courier, monospace;
+  font-size: 15vh;
+  color: #ffffff;
+  mix-blend-mode: difference;
+  letter-spacing: -0.05em;
   pointer-events: none;
-  opacity: 0.85;
+}
+
+.clockTiled {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  z-index: 2;
+  mix-blend-mode: difference;
+  pointer-events: none;
 }
 
 .srOnly {
