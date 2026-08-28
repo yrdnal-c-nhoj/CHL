@@ -1,0 +1,39 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MonthDropdown Snapshots > matches snapshot when collapsed 1`] = `
+<div
+  class="_monthDropdownContainer_470241"
+>
+  <div
+    class="_hoverBackground_470241"
+  />
+  <button
+    class="_dropdownButton_470241  "
+  >
+    <span
+      class="_monthName_470241"
+    >
+      MAR'26
+    </span>
+  </button>
+</div>
+`;
+
+exports[`MonthDropdown Snapshots > matches snapshot when onToggle is provided 1`] = `
+<div
+  class="_monthDropdownContainer_470241"
+>
+  <div
+    class="_hoverBackground_470241"
+  />
+  <button
+    class="_dropdownButton_470241  "
+  >
+    <span
+      class="_monthName_470241"
+    >
+      MAR'26
+    </span>
+  </button>
+</div>
+`;

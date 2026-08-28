@@ -1,0 +1,579 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ClockPageNav Snapshots > matches snapshot when current item is missing (returns null) 1`] = `null`;
+
+exports[`ClockPageNav Snapshots > matches snapshot with empty title 1`] = `
+<div
+  class="_footerStrip_527be0 _visible_527be0"
+>
+  <a
+    aria-label="Previous: Retro Terminal"
+    class="_navButton_527be0"
+    href="/26-03-05"
+  >
+    <span
+      aria-hidden="true"
+    >
+      ⇽
+    </span>
+  </a>
+  <button
+    aria-label="Go back"
+    class="_footerButton_527be0"
+    type="button"
+  >
+    <div
+      class="_footerCenter_527be0"
+    >
+      <div
+        class="_footerTopRow_527be0"
+      >
+        <span
+          class="_footerDate_527be0"
+        >
+          05 MAR '26
+        </span>
+        <span
+          class="_footerNumber_527be0"
+        >
+          #
+          1
+        </span>
+      </div>
+      <span
+        class="_footerTitle_527be0"
+      />
+      <div
+        class="_footerTags_527be0"
+      >
+        <a
+          class="_tagItem_527be0"
+          href="/tag/test"
+        >
+          test
+        </a>
+        <a
+          class="_tagItem_527be0"
+          href="/tag/snapshot"
+        >
+          snapshot
+        </a>
+      </div>
+    </div>
+  </button>
+  <a
+    aria-label="Next: Retro Terminal"
+    class="_navButton_527be0"
+    href="/26-03-05"
+  >
+    <span
+      aria-hidden="true"
+    >
+      ⇾
+    </span>
+  </a>
+</div>
+`;
+
+exports[`ClockPageNav Snapshots > matches snapshot with no next item 1`] = `
+<div
+  class="_footerStrip_527be0 _visible_527be0"
+>
+  <a
+    aria-label="Previous: Retro Terminal"
+    class="_navButton_527be0"
+    href="/26-03-05"
+  >
+    <span
+      aria-hidden="true"
+    >
+      ⇽
+    </span>
+  </a>
+  <button
+    aria-label="Go back"
+    class="_footerButton_527be0"
+    type="button"
+  >
+    <div
+      class="_footerCenter_527be0"
+    >
+      <div
+        class="_footerTopRow_527be0"
+      >
+        <span
+          class="_footerDate_527be0"
+        >
+          05 MAR '26
+        </span>
+        <span
+          class="_footerNumber_527be0"
+        >
+          #
+          1
+        </span>
+      </div>
+      <span
+        class="_footerTitle_527be0"
+      >
+        Retro Terminal
+      </span>
+      <div
+        class="_footerTags_527be0"
+      >
+        <a
+          class="_tagItem_527be0"
+          href="/tag/test"
+        >
+          test
+        </a>
+        <a
+          class="_tagItem_527be0"
+          href="/tag/snapshot"
+        >
+          snapshot
+        </a>
+      </div>
+    </div>
+  </button>
+  <a
+    aria-label="Home"
+    class="_navButton_527be0"
+    href="/"
+  >
+    <span
+      aria-hidden="true"
+    >
+      ⇾
+    </span>
+  </a>
+</div>
+`;
+
+exports[`ClockPageNav Snapshots > matches snapshot with no prev and no next items 1`] = `
+<div
+  class="_footerStrip_527be0 _visible_527be0"
+>
+  <a
+    aria-label="Home"
+    class="_navButton_527be0"
+    href="/"
+  >
+    <span
+      aria-hidden="true"
+    >
+      ⇽
+    </span>
+  </a>
+  <button
+    aria-label="Go back"
+    class="_footerButton_527be0"
+    type="button"
+  >
+    <div
+      class="_footerCenter_527be0"
+    >
+      <div
+        class="_footerTopRow_527be0"
+      >
+        <span
+          class="_footerDate_527be0"
+        >
+          05 MAR '26
+        </span>
+        <span
+          class="_footerNumber_527be0"
+        >
+          #
+          1
+        </span>
+      </div>
+      <span
+        class="_footerTitle_527be0"
+      >
+        Retro Terminal
+      </span>
+      <div
+        class="_footerTags_527be0"
+      >
+        <a
+          class="_tagItem_527be0"
+          href="/tag/test"
+        >
+          test
+        </a>
+        <a
+          class="_tagItem_527be0"
+          href="/tag/snapshot"
+        >
+          snapshot
+        </a>
+      </div>
+    </div>
+  </button>
+  <a
+    aria-label="Home"
+    class="_navButton_527be0"
+    href="/"
+  >
+    <span
+      aria-hidden="true"
+    >
+      ⇾
+    </span>
+  </a>
+</div>
+`;
+
+exports[`ClockPageNav Snapshots > matches snapshot with no prev item 1`] = `
+<div
+  class="_footerStrip_527be0 _visible_527be0"
+>
+  <a
+    aria-label="Home"
+    class="_navButton_527be0"
+    href="/"
+  >
+    <span
+      aria-hidden="true"
+    >
+      ⇽
+    </span>
+  </a>
+  <button
+    aria-label="Go back"
+    class="_footerButton_527be0"
+    type="button"
+  >
+    <div
+      class="_footerCenter_527be0"
+    >
+      <div
+        class="_footerTopRow_527be0"
+      >
+        <span
+          class="_footerDate_527be0"
+        >
+          05 MAR '26
+        </span>
+        <span
+          class="_footerNumber_527be0"
+        >
+          #
+          1
+        </span>
+      </div>
+      <span
+        class="_footerTitle_527be0"
+      >
+        Retro Terminal
+      </span>
+      <div
+        class="_footerTags_527be0"
+      >
+        <a
+          class="_tagItem_527be0"
+          href="/tag/test"
+        >
+          test
+        </a>
+        <a
+          class="_tagItem_527be0"
+          href="/tag/snapshot"
+        >
+          snapshot
+        </a>
+      </div>
+    </div>
+  </button>
+  <a
+    aria-label="Next: Retro Terminal"
+    class="_navButton_527be0"
+    href="/26-03-05"
+  >
+    <span
+      aria-hidden="true"
+    >
+      ⇾
+    </span>
+  </a>
+</div>
+`;
+
+exports[`ClockPageNav Snapshots > matches snapshot with no tags on current item 1`] = `
+<div
+  class="_footerStrip_527be0 _visible_527be0"
+>
+  <a
+    aria-label="Previous: Retro Terminal"
+    class="_navButton_527be0"
+    href="/26-03-05"
+  >
+    <span
+      aria-hidden="true"
+    >
+      ⇽
+    </span>
+  </a>
+  <button
+    aria-label="Go back"
+    class="_footerButton_527be0"
+    type="button"
+  >
+    <div
+      class="_footerCenter_527be0"
+    >
+      <div
+        class="_footerTopRow_527be0"
+      >
+        <span
+          class="_footerDate_527be0"
+        >
+          05 MAR '26
+        </span>
+        <span
+          class="_footerNumber_527be0"
+        >
+          #
+          1
+        </span>
+      </div>
+      <span
+        class="_footerTitle_527be0"
+      >
+        Retro Terminal
+      </span>
+    </div>
+  </button>
+  <a
+    aria-label="Next: Retro Terminal"
+    class="_navButton_527be0"
+    href="/26-03-05"
+  >
+    <span
+      aria-hidden="true"
+    >
+      ⇾
+    </span>
+  </a>
+</div>
+`;
+
+exports[`ClockPageNav Snapshots > matches snapshot with prev and next items 1`] = `
+<div
+  class="_footerStrip_527be0 _visible_527be0"
+>
+  <a
+    aria-label="Previous: Retro Terminal"
+    class="_navButton_527be0"
+    href="/26-03-05"
+  >
+    <span
+      aria-hidden="true"
+    >
+      ⇽
+    </span>
+  </a>
+  <button
+    aria-label="Go back"
+    class="_footerButton_527be0"
+    type="button"
+  >
+    <div
+      class="_footerCenter_527be0"
+    >
+      <div
+        class="_footerTopRow_527be0"
+      >
+        <span
+          class="_footerDate_527be0"
+        >
+          05 MAR '26
+        </span>
+        <span
+          class="_footerNumber_527be0"
+        >
+          #
+          1
+        </span>
+      </div>
+      <span
+        class="_footerTitle_527be0"
+      >
+        Retro Terminal
+      </span>
+      <div
+        class="_footerTags_527be0"
+      >
+        <a
+          class="_tagItem_527be0"
+          href="/tag/test"
+        >
+          test
+        </a>
+        <a
+          class="_tagItem_527be0"
+          href="/tag/snapshot"
+        >
+          snapshot
+        </a>
+      </div>
+    </div>
+  </button>
+  <a
+    aria-label="Next: Retro Terminal"
+    class="_navButton_527be0"
+    href="/26-03-05"
+  >
+    <span
+      aria-hidden="true"
+    >
+      ⇾
+    </span>
+  </a>
+</div>
+`;
+
+exports[`ClockPageNav Snapshots > matches snapshot with string clockNumber 1`] = `
+<div
+  class="_footerStrip_527be0 _visible_527be0"
+>
+  <a
+    aria-label="Previous: Retro Terminal"
+    class="_navButton_527be0"
+    href="/26-03-05"
+  >
+    <span
+      aria-hidden="true"
+    >
+      ⇽
+    </span>
+  </a>
+  <button
+    aria-label="Go back"
+    class="_footerButton_527be0"
+    type="button"
+  >
+    <div
+      class="_footerCenter_527be0"
+    >
+      <div
+        class="_footerTopRow_527be0"
+      >
+        <span
+          class="_footerDate_527be0"
+        >
+          05 MAR '26
+        </span>
+        <span
+          class="_footerNumber_527be0"
+        >
+          #
+          42
+        </span>
+      </div>
+      <span
+        class="_footerTitle_527be0"
+      >
+        Retro Terminal
+      </span>
+      <div
+        class="_footerTags_527be0"
+      >
+        <a
+          class="_tagItem_527be0"
+          href="/tag/test"
+        >
+          test
+        </a>
+        <a
+          class="_tagItem_527be0"
+          href="/tag/snapshot"
+        >
+          snapshot
+        </a>
+      </div>
+    </div>
+  </button>
+  <a
+    aria-label="Next: Retro Terminal"
+    class="_navButton_527be0"
+    href="/26-03-05"
+  >
+    <span
+      aria-hidden="true"
+    >
+      ⇾
+    </span>
+  </a>
+</div>
+`;
+
+exports[`ClockPageNav Snapshots > matches snapshot with undefined clockNumber 1`] = `
+<div
+  class="_footerStrip_527be0 _visible_527be0"
+>
+  <a
+    aria-label="Previous: Retro Terminal"
+    class="_navButton_527be0"
+    href="/26-03-05"
+  >
+    <span
+      aria-hidden="true"
+    >
+      ⇽
+    </span>
+  </a>
+  <button
+    aria-label="Go back"
+    class="_footerButton_527be0"
+    type="button"
+  >
+    <div
+      class="_footerCenter_527be0"
+    >
+      <div
+        class="_footerTopRow_527be0"
+      >
+        <span
+          class="_footerDate_527be0"
+        >
+          05 MAR '26
+        </span>
+      </div>
+      <span
+        class="_footerTitle_527be0"
+      >
+        Retro Terminal
+      </span>
+      <div
+        class="_footerTags_527be0"
+      >
+        <a
+          class="_tagItem_527be0"
+          href="/tag/test"
+        >
+          test
+        </a>
+        <a
+          class="_tagItem_527be0"
+          href="/tag/snapshot"
+        >
+          snapshot
+        </a>
+      </div>
+    </div>
+  </button>
+  <a
+    aria-label="Next: Retro Terminal"
+    class="_navButton_527be0"
+    href="/26-03-05"
+  >
+    <span
+      aria-hidden="true"
+    >
+      ⇾
+    </span>
+  </a>
+</div>
+`;
