@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import water from '../../../../assets/images/26_images/26-08/26-08-28/water.webp';
+import water from '../../../../assets/images/26_images/26-08/26-08-29/water.webp';
 export const assets = [water];
 
 

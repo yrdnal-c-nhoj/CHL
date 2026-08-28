@@ -1,5 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { useMillisecondClock } from '@/utils/hooks';
+import mazeImage from '@/assets/images/26_images/26-08/26-08-28/maze.webp';
+import styles from './Clock.module.css';
+
+export const assets = [mazeImage];
 
 const MAZE_SIZE = 8;
 const WALL_HEIGHT = 5;
@@ -23,20 +28,16 @@ type WallTransform = {
   horizontal: boolean;
 };
 
-export const InfiniteMaze: React.FC = () => {
+const InfiniteMaze = () => {
   const mountRef = useRef<HTMLDivElement | null>(null);
+  const time = useMillisecondClock();
 
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
 
-    // --------------------------------------------------
-    // SCENE & CAMERA
-    // --------------------------------------------------
-    const sceneColor = 0x0c0f17;
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(sceneColor);
-    scene.fog = new THREE.Fog(sceneColor, 35, 120);
+    scene.fog = new THREE.Fog(0x888888, 35, 120);
 
     const camera = new THREE.PerspectiveCamera(
       85,
@@ -45,11 +46,9 @@ export const InfiniteMaze: React.FC = () => {
       600
     );
 
-    // --------------------------------------------------
-    // RENDERER
-    // --------------------------------------------------
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
+      alpha: true,
       powerPreference: 'high-performance',
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -60,10 +59,10 @@ export const InfiniteMaze: React.FC = () => {
     renderer.toneMappingExposure = 1.4;
 
     container.appendChild(renderer.domElement);
+    (renderer.domElement as HTMLCanvasElement).style.position = 'absolute';
+    (renderer.domElement as HTMLCanvasElement).style.inset = '0';
+    (renderer.domElement as HTMLCanvasElement).style.zIndex = '1';
 
-    // --------------------------------------------------
-    // LIGHTING
-    // --------------------------------------------------
     const ambientLight = new THREE.AmbientLight(0x65789b, 1.5);
     const hemisphereLight = new THREE.HemisphereLight(0x7fbfff, 0x1a1a24, 1.2);
     const cameraLight = new THREE.PointLight(0x40a0ff, 4, 80);
@@ -78,9 +77,6 @@ export const InfiniteMaze: React.FC = () => {
 
     scene.add(ambientLight, hemisphereLight, cyanLight, magentaLight, cameraLight);
 
-    // --------------------------------------------------
-    // SHARED MATERIALS & GEOMETRIES
-    // --------------------------------------------------
     const wallMaterial = new THREE.MeshStandardMaterial({
       color: 0x485263,
       roughness: 0.38,
@@ -103,15 +99,12 @@ export const InfiniteMaze: React.FC = () => {
 
     const unitBoxGeo = new THREE.BoxGeometry(1, 1, 1);
     const floorGeometry = new THREE.PlaneGeometry(1000, 1000);
-    
+
     const floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.rotation.x = -Math.PI / 2;
     floor.receiveShadow = true;
     scene.add(floor);
 
-    // --------------------------------------------------
-    // PROCEDURAL MAZE GENERATOR
-    // --------------------------------------------------
     const generateMaze = (chunkX: number, chunkZ: number): Cell[][] => {
       let seed = Math.abs(Math.floor(Math.sin(chunkX * 127.1 + chunkZ * 311.7) * 100000));
       const random = () => {
@@ -174,9 +167,6 @@ export const InfiniteMaze: React.FC = () => {
       return grid;
     };
 
-    // --------------------------------------------------
-    // INSTANCED CHUNK BUILDER
-    // --------------------------------------------------
     const matrix = new THREE.Matrix4();
     const position = new THREE.Vector3();
     const scale = new THREE.Vector3();
@@ -213,7 +203,6 @@ export const InfiniteMaze: React.FC = () => {
       wallInstances.receiveShadow = true;
 
       walls.forEach((w, i) => {
-        // Position & Scale Wall
         position.set(w.x, WALL_HEIGHT / 2, w.z);
         scale.set(
           w.horizontal ? CELL_SIZE : WALL_THICKNESS,
@@ -223,7 +212,6 @@ export const InfiniteMaze: React.FC = () => {
         matrix.compose(position, quaternion, scale);
         wallInstances.setMatrixAt(i, matrix);
 
-        // Position & Scale Glow Accent
         position.set(w.x, WALL_HEIGHT + 0.03, w.z);
         scale.set(
           w.horizontal ? CELL_SIZE * 0.98 : WALL_THICKNESS * 1.2,
@@ -241,9 +229,6 @@ export const InfiniteMaze: React.FC = () => {
       return group;
     };
 
-    // --------------------------------------------------
-    // CHUNK STREAMING
-    // --------------------------------------------------
     const activeChunks = new Map<string, THREE.Group>();
     const renderDistanceX = 18;
     const renderDistanceZ = 16;
@@ -276,17 +261,16 @@ export const InfiniteMaze: React.FC = () => {
       });
     };
 
-    // --------------------------------------------------
-    // ANIMATION & LOOP
-    // --------------------------------------------------
-    const clock = new THREE.Clock();
-    let cameraZ = 4;
     let animationId: number;
+    let lastTime = performance.now();
     const EYE_HEIGHT = 16.0;
+    let cameraZ = 4;
 
     const animate = () => {
-      const delta = Math.min(clock.getDelta(), 0.05);
-      const elapsed = clock.getElapsedTime();
+      const now = performance.now();
+      const delta = Math.min((now - lastTime) / 1000, 0.05);
+      lastTime = now;
+      const elapsed = now / 1000;
 
       cameraZ -= FLY_SPEED * delta;
 
@@ -315,9 +299,6 @@ export const InfiniteMaze: React.FC = () => {
 
     animationId = requestAnimationFrame(animate);
 
-    // --------------------------------------------------
-    // RESIZE & CLEANUP
-    // --------------------------------------------------
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -330,12 +311,31 @@ export const InfiniteMaze: React.FC = () => {
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationId);
 
-      // Clean up GPU memory
+      scene.remove(floor);
+      floor.geometry.dispose();
+      floor.material.dispose();
+
+      scene.remove(ambientLight, hemisphereLight, cyanLight, magentaLight, cameraLight);
+
+      activeChunks.forEach((chunk) => {
+        scene.remove(chunk);
+        chunk.traverse((child) => {
+          if (child instanceof THREE.Mesh) {
+            child.geometry.dispose();
+            if (Array.isArray(child.material)) {
+              child.material.forEach((m) => m.dispose());
+            } else {
+              child.material.dispose();
+            }
+          }
+        });
+      });
+      activeChunks.clear();
+
       unitBoxGeo.dispose();
-      floorGeometry.dispose();
       wallMaterial.dispose();
-      floorMaterial.dispose();
       glowMaterial.dispose();
+
       renderer.dispose();
 
       if (renderer.domElement.parentNode === container) {
@@ -344,17 +344,19 @@ export const InfiniteMaze: React.FC = () => {
     };
   }, []);
 
+  const dateTime = time.toISOString();
+  const timeString = time.toLocaleTimeString();
+
   return (
-    <div
-      ref={mountRef}
-      style={{
-        width: '100vw',
-        height: '100vh',
-        overflow: 'hidden',
-        backgroundColor: '#0c0f17',
-      }}
-    />
+    <main ref={mountRef} className={styles.container}>
+      <img src={mazeImage} alt="" className={styles.bgImage} aria-hidden="true" />
+      <time dateTime={dateTime} className={styles.srOnly}>
+        {timeString}
+      </time>
+    </main>
   );
 };
 
-export default InfiniteMaze;
+const MemoizedInfiniteMaze = React.memo(InfiniteMaze);
+MemoizedInfiniteMaze.displayName = 'Clock_26_08_28';
+export default MemoizedInfiniteMaze;
