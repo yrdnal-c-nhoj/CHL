@@ -346,10 +346,17 @@ const InfiniteMaze = () => {
 
   const dateTime = time.toISOString();
   const timeString = time.toLocaleTimeString();
+  const hours = String(time.getHours()).padStart(2, '0');
+  const minutes = String(time.getMinutes()).padStart(2, '0');
+  const seconds = String(time.getSeconds()).padStart(2, '0');
+  const clockText = `${hours}:${minutes}:${seconds}`;
 
   return (
     <main ref={mountRef} className={styles.container}>
       <img src={mazeImage} alt="" className={styles.bgImage} aria-hidden="true" />
+      <div className={styles.clockDisplay} aria-label="Current time" role="timer">
+        {clockText}
+      </div>
       <time dateTime={dateTime} className={styles.srOnly}>
         {timeString}
       </time>
