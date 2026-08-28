@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import mazeImage from '@/assets/images/26_images/26-08/26-08-28/maze.webp';
 import mazeFontUrl from '@/assets/fonts/26fonts/26-08-28.woff2?url';
-import { useMazeRenderer } from './useMazeRenderer';
+import mazeImage from '@/assets/images/26_images/26-08/26-08-28/maze.webp';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+import React, { useRef } from 'react';
 import styles from './Clock.module.css';
+import { useMazeRenderer } from './useMazeRenderer';
 
 export const assets = [mazeImage, mazeFontUrl];
 
@@ -25,21 +25,22 @@ const InfiniteMaze = () => {
   const seconds = String(time.getSeconds()).padStart(2, '0');
   const clockText = `${hours}${minutes}${seconds}`;
 
-  useEffect(() => {
-    if (!tileRef.current) return;
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="80">
-      <text x="0" y="55" font-family="'MazeFont', 'Courier New', Courier, monospace" font-size="40" font-weight="bold" fill="white" letter-spacing="6">${clockText}</text>
-    </svg>`;
-    tileRef.current.style.backgroundImage = `url("data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}")`;
-  }, [clockText]);
-
   return (
     <main ref={mountRef} className={styles.container}>
       <img src={mazeImage} alt="" className={styles.bgImage} aria-hidden="true" />
-      <div ref={tileRef} className={styles.clockTiled} aria-hidden="true" />
-      <div className={styles.clockDisplay} aria-label="Current time" role="timer">
-        {clockText}
+      <div ref={tileRef} className={styles.clockTiled} aria-hidden="true">
+        <svg className={styles.tiledSvg} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <defs>
+            <pattern id="textPattern" x="0" y="0" width="180" height="70" patternUnits="userSpaceOnUse">
+              <text x="0" y="50" font-family="'MazeFont', monospace" font-size="38" font-weight="bold" fill="white" letter-spacing="2">
+                {clockText}
+              </text>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#textPattern)" />
+        </svg>
       </div>
+      
       <time dateTime={dateTime} className={styles.srOnly}>
         {timeString}
       </time>

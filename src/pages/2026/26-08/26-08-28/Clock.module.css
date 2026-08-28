@@ -5,6 +5,7 @@
   background-color: #c5c6c9;
   position: relative;
   isolation: isolate;
+  font-family: 'MazeFont', sans-serif;
 }
 
 .canvas {
@@ -23,27 +24,20 @@
   pointer-events: none;
 }
 
-.clockDisplay {
-  position: absolute;
-  bottom: 68%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 214;
-  font-family: 'MazeFont', 'Courier New', Courier, monospace;
-  font-size: 15vh;
-  color: #ffffff;
-  mix-blend-mode: difference;
-  letter-spacing: -0.05em;
-  pointer-events: none;
-}
-
 .clockTiled {
   position: absolute;
   inset: 0;
-  background-repeat: repeat;
   z-index: 2;
   mix-blend-mode: difference;
   pointer-events: none;
+  font-family: 'MazeFont', monospace;
+  overflow: hidden;
+}
+
+.tiledSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .srOnly {
