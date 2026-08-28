@@ -1,215 +1,180 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import { useEffect, useRef } from 'react';
+import water from '../../../../assets/images/26_images/26-08/26-08-28/water.webp';
+export const assets = [water];
 
-const MAZE_SIZE = 12; // Units per maze chunk
-const WALL_HEIGHT = 2.5;
-const WALL_THICKNESS = 0.4;
-const FLY_SPEED = 3.0;
 
-export const InfiniteMaze: React.FC = () => {
-  const mountRef = useRef<HTMLDivElement | null>(null);
+const TWO_PI = Math.PI * 2;
+const NUM_NODES = 19;
+const SINGLE_SLICE = TWO_PI / NUM_NODES;
+const BASE_RADIUS = 20;
+const BOUNCE_RADIUS = 150;
+const GRID_STEP = 100;
 
+export default function SeaWavesTextClock() {
+  const canvasRef = useRef(null);
+  const timeStateRef = useRef({ hours: '12', minutes: '00', ampm: 'AM' });
+
+  // Clock state synchronization (1s interval without triggering React re-renders)
   useEffect(() => {
-    const container = mountRef.current;
-    if (!container) return;
+    const updateClock = () => {
+      const now = new Date();
+      let rawHours = now.getHours();
+      const rawMinutes = now.getMinutes();
 
-    // --- Scene Setup ---
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x050508);
-    scene.fog = new THREE.FogExp2(0x050508, 0.025); // Soft atmospheric fade into horizon
+      const ampm = rawHours >= 12 ? 'PM' : 'AM';
+      rawHours = rawHours % 12 || 12;
 
-    const camera = new THREE.PerspectiveCamera(
-      60,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      200
-    );
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    container.appendChild(renderer.domElement);
-
-    // --- Lighting Setup ---
-    const ambientLight = new THREE.AmbientLight(0x1a1a24, 0.8);
-    scene.add(ambientLight);
-
-    // Left Light Source (Cyan / Cool Blue)
-    const leftLight = new THREE.DirectionalLight(0x00d2ff, 2.5);
-    leftLight.position.set(-20, 15, 0);
-    leftLight.castShadow = true;
-    leftLight.shadow.mapSize.width = 1024;
-    leftLight.shadow.mapSize.height = 1024;
-    scene.add(leftLight);
-
-    // Right Light Source (Warm Magenta / Orange)
-    const rightLight = new THREE.DirectionalLight(0xff5500, 2.5);
-    rightLight.position.set(20, 15, 0);
-    rightLight.castShadow = true;
-    rightLight.shadow.mapSize.width = 1024;
-    rightLight.shadow.mapSize.height = 1024;
-    scene.add(rightLight);
-
-    // --- Materials & Geometries ---
-    const wallMaterial = new THREE.MeshStandardMaterial({
-      color: 0x22252a,
-      roughness: 0.4,
-      metalness: 0.2,
-    });
-
-    const floorMaterial = new THREE.MeshStandardMaterial({
-      color: 0x0a0b0d,
-      roughness: 0.8,
-      metalness: 0.1,
-    });
-
-    // Floor Mesh
-    const floorGeometry = new THREE.PlaneGeometry(500, 500);
-    const floorMesh = new THREE.Mesh(floorGeometry, floorMaterial);
-    floorMesh.rotation.x = -Math.PI / 2;
-    floorMesh.receiveShadow = true;
-    scene.add(floorMesh);
-
-    // --- Chunk Procedural Generation ---
-    const activeChunks = new Map<string, THREE.Group>();
-
-    const createMazeChunk = (chunkX: number, chunkZ: number): THREE.Group => {
-      const chunkGroup = new THREE.Group();
-      chunkGroup.position.set(chunkX * MAZE_SIZE, 0, chunkZ * MAZE_SIZE);
-
-      // Simple grid-based wall placement using deterministic pseudo-random seed
-      const seed = Math.sin(chunkX * 12.9898 + chunkZ * 78.233) * 43758.5453;
-      const pseudoRandom = (offset: number) => {
-        const x = Math.sin(seed + offset) * 10000;
-        return x - Math.floor(x);
+      timeStateRef.current = {
+        hours: String(rawHours).padStart(2, '0'),
+        minutes: String(rawMinutes).padStart(2, '0'),
+        ampm,
       };
+    };
 
-      const wallGeometry = new THREE.BoxGeometry(MAZE_SIZE, WALL_HEIGHT, WALL_THICKNESS);
+    updateClock();
+    const intervalId = setInterval(updateClock, 1000);
+    return () => clearInterval(intervalId);
+  }, []);
 
-      // Grid walls within chunk
-      for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-          if (pseudoRandom(i * 3 + j) > 0.4) {
-            const wall = new THREE.Mesh(wallGeometry, wallMaterial);
-            wall.castShadow = true;
-            wall.receiveShadow = true;
+  // Canvas Animation Engine
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-            const isRotated = pseudoRandom(i + j * 10) > 0.5;
-            if (isRotated) wall.rotation.y = Math.PI / 2;
+    const context = canvas.getContext('2d');
+    let animationFrameId;
+    let containers = [];
 
-            const posX = (i - 1) * (MAZE_SIZE / 3);
-            const posZ = (j - 1) * (MAZE_SIZE / 3);
-            wall.position.set(posX, WALL_HEIGHT / 2, posZ);
+    // Re-build container grid data structures
+    const initGrid = (width, height) => {
+      containers = [];
+      let containerIdx = 0;
 
-            chunkGroup.add(wall);
-          }
+      for (let x = 0; x < width + GRID_STEP; x += GRID_STEP) {
+        for (let y = 0; y < height + GRID_STEP; y += GRID_STEP) {
+          const category = containerIdx % 3 === 0 ? 'hours' : containerIdx % 3 === 1 ? 'minutes' : 'ampm';
+          
+          // Generate node structure for this container cell
+          const nodes = Array.from({ length: NUM_NODES }, (_, i) => {
+            const angleCircle = i * SINGLE_SLICE;
+            return {
+              baseX: x,
+              baseY: y + Math.random(),
+              angleCircle,
+              cosAngleCircle: Math.cos(angleCircle),
+              sinAngleCircle: Math.sin(angleCircle),
+              angle: x + y,
+              speed: 0.01,
+            };
+          });
+
+          containers.push({ category, nodes });
+          containerIdx++;
         }
       }
-
-      return chunkGroup;
     };
 
-    // --- Flight Controller ---
-    let cameraZ = 0;
-    const renderDistance = 6; // Chunks to render in each direction
-
-    const updateChunks = (currentZ: number) => {
-      const centerChunkZ = Math.floor(currentZ / MAZE_SIZE);
-      const neededKeys = new Set<string>();
-
-      for (let x = -renderDistance; x <= renderDistance; x++) {
-        for (let z = -renderDistance; z <= renderDistance + 4; z++) {
-          const chunkX = x;
-          const chunkZ = centerChunkZ - z; // Generate ahead into the distance
-          const key = `${chunkX},${chunkZ}`;
-          neededKeys.add(key);
-
-          if (!activeChunks.has(key)) {
-            const chunk = createMazeChunk(chunkX, chunkZ);
-            scene.add(chunk);
-            activeChunks.set(key, chunk);
-          }
-        }
-      }
-
-      // Cleanup chunks that are out of range behind the camera
-      activeChunks.forEach((chunk, key) => {
-        if (!neededKeys.has(key)) {
-          scene.remove(chunk);
-          // Free geometry and material references in production loops
-          activeChunks.delete(key);
-        }
-      });
-    };
-
-    // --- Animation Loop ---
-    const clock = new THREE.Clock();
-
-    const animate = () => {
-      const delta = clock.getDelta();
-
-      // Advance camera position forward (into -Z)
-      cameraZ -= FLY_SPEED * delta;
-
-      // Gentle camera sway for floating effect
-      const swayX = Math.sin(clock.getElapsedTime() * 0.5) * 1.5;
-      const swayY = Math.cos(clock.getElapsedTime() * 0.8) * 0.5;
-
-      camera.position.set(swayX, 6 + swayY, cameraZ);
-      camera.lookAt(swayX * 0.5, 0, cameraZ - 20); // Look towards the horizon
-
-      // Keep light sources relative to the flying camera position
-      leftLight.position.set(-25 + swayX, 15, cameraZ - 10);
-      leftLight.target.position.set(0, 0, cameraZ - 10);
-      leftLight.target.updateMatrixWorld();
-
-      rightLight.position.set(25 + swayX, 15, cameraZ - 10);
-      rightLight.target.position.set(0, 0, cameraZ - 10);
-      rightLight.target.updateMatrixWorld();
-
-      // Keep floor aligned with flight
-      floorMesh.position.z = cameraZ;
-
-      updateChunks(cameraZ);
-
-      renderer.render(scene, camera);
-      requestAnimationFrame(animate);
-    };
-
-    const animId = requestAnimationFrame(animate);
-
-    // --- Window Resize Handling ---
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      const width = (canvas.width = window.innerWidth);
+      const height = (canvas.height = window.innerHeight);
+      initGrid(width, height);
     };
 
+    handleResize();
     window.addEventListener('resize', handleResize);
+
+    // Optimized Animation Loop
+    let lastFont = '';
+    let lastFill = '';
+
+    const loop = () => {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      const timeState = timeStateRef.current;
+
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+
+      for (let c = 0; c < containers.length; c++) {
+        const container = containers[c];
+        const textToRender = timeState[container.category];
+        const nodes = container.nodes;
+
+        for (let n = 0; n < nodes.length; n++) {
+          const node = nodes[n];
+
+          // Update motion dynamics
+          const bounceOffset = Math.sin(node.angle + node.angleCircle) * BOUNCE_RADIUS + BASE_RADIUS;
+          const posX = node.baseX + node.cosAngleCircle * bounceOffset;
+          const posY = node.baseY + node.sinAngleCircle * bounceOffset;
+          const size = Math.cos(node.angle) * 8 + 10;
+
+          node.angle += node.speed;
+
+          // Render Text Node (only touch context state when it actually changes)
+          const fill = `hsl(195, 100%, ${size * 4}%)`;
+          if (fill !== lastFill) {
+            context.fillStyle = fill;
+            lastFill = fill;
+          }
+          const font = `bold ${Math.max(12, size * 2.2)}px sans-serif`;
+          if (font !== lastFont) {
+            context.font = font;
+            lastFont = font;
+          }
+          context.fillText(textToRender, posX, posY);
+        }
+      }
+
+      animationFrameId = window.requestAnimationFrame(loop);
+    };
+
+    loop();
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animId);
-      container.removeChild(renderer.domElement);
-      renderer.dispose();
+      window.cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
   return (
     <div
-      ref={mountRef}
       style={{
-        width: '100vw',
-        height: '100vh',
-        overflow: 'hidden',
         margin: 0,
         padding: 0,
-        backgroundColor: '#050508',
+        backgroundColor: 'hsl(195, 100%, 7%)',
+        width: '100vw',
+        height: '100dvh',
+        overflow: 'hidden',
+        position: 'relative',
       }}
-    />
-  );
-};
+    >
+      <img
+        src={water}
+        alt=""
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          display: 'block',
+          zIndex: 0,
+        }}
+      />
 
-export default InfiniteMaze;
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          display: 'block',
+          zIndex: 1,
+        }}
+      />
+    </div>
+  );
+}
