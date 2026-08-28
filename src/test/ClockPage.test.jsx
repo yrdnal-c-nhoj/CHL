@@ -73,3 +73,131 @@ describe('ClockPage', () => {
     });
   });
 });
+
+describe('ClockPage Integration', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('renders error state when clock fails to load', async () => {
+    vi.mock('../hooks/useClockPage', () => ({
+      useClockPage: () => ({
+        ClockComponent: null,
+        isReady: false,
+        error: 'Clock loading timed out',
+        overlayVisible: false,
+      }),
+    }));
+
+    render(
+      <MemoryRouter initialEntries={['/26-03-05']}>
+        <Routes>
+          <Route path="/:date" element={<ClockPage />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Error: Clock loading timed out')).toBeInTheDocument();
+    });
+  });
+
+  it('renders loading overlay when clock is not ready', async () => {
+    vi.mock('../hooks/useClockPage', () => ({
+      useClockPage: () => ({
+        ClockComponent: null,
+        isReady: false,
+        error: null,
+        overlayVisible: true,
+      }),
+    }));
+
+    render(
+      <MemoryRouter initialEntries={['/26-03-05']}>
+        <Routes>
+          <Route path="/:date" element={<ClockPage />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Loading...')).toBeInTheDocument();
+    });
+  });
+
+  it('renders navigation when current item exists', async () => {
+    vi.mock('../hooks/useClockPage', () => ({
+      useClockPage: () => ({
+        ClockComponent: () => <div>Clock</div>,
+        isReady: true,
+        error: null,
+        overlayVisible: false,
+      }),
+    }));
+
+    render(
+      <MemoryRouter initialEntries={['/26-03-05']}>
+        <Routes>
+          <Route path="/:date" element={<ClockPage />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Clock')).toBeInTheDocument();
+    });
+  });
+
+  it('does not render navigation when no current item matches', async () => {
+    vi.mock('../context/DataContext', () => ({
+      useDataContext: () => ({
+        items: [],
+        loading: false,
+      }),
+    }));
+
+    vi.mock('../hooks/useClockPage', () => ({
+      useClockPage: () => ({
+        ClockComponent: null,
+        isReady: false,
+        error: null,
+        overlayVisible: false,
+      }),
+    }));
+
+    render(
+      <MemoryRouter initialEntries={['/26-03-05']}>
+        <Routes>
+          <Route path="/:date" element={<ClockPage />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(screen.queryByRole('button', { name: /Go back/i })).not.toBeInTheDocument();
+    });
+  });
+
+  it('handles timeout fallback by hiding overlay and setting error', async () => {
+    vi.mock('../hooks/useClockPage', () => ({
+      useClockPage: () => ({
+        ClockComponent: null,
+        isReady: false,
+        error: 'Clock loading timed out',
+        overlayVisible: false,
+      }),
+    }));
+
+    render(
+      <MemoryRouter initialEntries={['/99-99-99']}>
+        <Routes>
+          <Route path="/:date" element={<ClockPage />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Error: Clock loading timed out')).toBeInTheDocument();
+    });
+  });
+});
