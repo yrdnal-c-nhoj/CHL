@@ -17,6 +17,12 @@ type Cell = {
   west: boolean;
 };
 
+type WallTransform = {
+  x: number;
+  z: number;
+  horizontal: boolean;
+};
+
 export const InfiniteMaze: React.FC = () => {
   const mountRef = useRef<HTMLDivElement | null>(null);
 
@@ -27,11 +33,9 @@ export const InfiniteMaze: React.FC = () => {
     // --------------------------------------------------
     // SCENE & CAMERA
     // --------------------------------------------------
-    const scene = new THREE.Scene();
     const sceneColor = 0x0c0f17;
+    const scene = new THREE.Scene();
     scene.background = new THREE.Color(sceneColor);
-
-    // Linear Fog creates a thick haze layer precisely tuned to mask distant chunk generation
     scene.fog = new THREE.Fog(sceneColor, 35, 120);
 
     const camera = new THREE.PerspectiveCamera(
@@ -48,7 +52,6 @@ export const InfiniteMaze: React.FC = () => {
       antialias: true,
       powerPreference: 'high-performance',
     });
-
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
@@ -62,26 +65,21 @@ export const InfiniteMaze: React.FC = () => {
     // LIGHTING
     // --------------------------------------------------
     const ambientLight = new THREE.AmbientLight(0x65789b, 1.5);
-    scene.add(ambientLight);
-
     const hemisphereLight = new THREE.HemisphereLight(0x7fbfff, 0x1a1a24, 1.2);
-    scene.add(hemisphereLight);
+    const cameraLight = new THREE.PointLight(0x40a0ff, 4, 80);
 
     const cyanLight = new THREE.DirectionalLight(0x00ccff, 3.5);
     cyanLight.castShadow = true;
     cyanLight.shadow.mapSize.set(2048, 2048);
-    scene.add(cyanLight);
 
     const magentaLight = new THREE.DirectionalLight(0xff3399, 3.0);
     magentaLight.castShadow = true;
     magentaLight.shadow.mapSize.set(2048, 2048);
-    scene.add(magentaLight);
 
-    const cameraLight = new THREE.PointLight(0x40a0ff, 4, 80);
-    scene.add(cameraLight);
+    scene.add(ambientLight, hemisphereLight, cyanLight, magentaLight, cameraLight);
 
     // --------------------------------------------------
-    // MATERIALS & GEOMETRIES
+    // SHARED MATERIALS & GEOMETRIES
     // --------------------------------------------------
     const wallMaterial = new THREE.MeshStandardMaterial({
       color: 0x485263,
@@ -103,27 +101,24 @@ export const InfiniteMaze: React.FC = () => {
       opacity: 0.75,
     });
 
+    const unitBoxGeo = new THREE.BoxGeometry(1, 1, 1);
     const floorGeometry = new THREE.PlaneGeometry(1000, 1000);
+    
     const floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.rotation.x = -Math.PI / 2;
     floor.receiveShadow = true;
     scene.add(floor);
 
     // --------------------------------------------------
-    // PRNG PROCEDURAL MAZE GENERATOR
+    // PROCEDURAL MAZE GENERATOR
     // --------------------------------------------------
-    const createRandom = (chunkX: number, chunkZ: number) => {
-      let seed = Math.abs(
-        Math.floor(Math.sin(chunkX * 127.1 + chunkZ * 311.7) * 100000)
-      );
-      return () => {
+    const generateMaze = (chunkX: number, chunkZ: number): Cell[][] => {
+      let seed = Math.abs(Math.floor(Math.sin(chunkX * 127.1 + chunkZ * 311.7) * 100000));
+      const random = () => {
         seed = (seed * 1664525 + 1013904223) % 4294967296;
         return seed / 4294967296;
       };
-    };
 
-    const generateMaze = (chunkX: number, chunkZ: number): Cell[][] => {
-      const random = createRandom(chunkX, chunkZ);
       const grid: Cell[][] = Array.from({ length: GRID_SIZE }, () =>
         Array.from({ length: GRID_SIZE }, () => ({
           visited: false,
@@ -150,16 +145,10 @@ export const InfiniteMaze: React.FC = () => {
 
       while (stack.length > 0) {
         const current = stack[stack.length - 1];
-        const neighbors = directions.filter((direction) => {
-          const nx = current.x + direction.x;
-          const nz = current.z + direction.z;
-          return (
-            nx >= 0 &&
-            nx < GRID_SIZE &&
-            nz >= 0 &&
-            nz < GRID_SIZE &&
-            !grid[nz][nx].visited
-          );
+        const neighbors = directions.filter((dir) => {
+          const nx = current.x + dir.x;
+          const nz = current.z + dir.z;
+          return nx >= 0 && nx < GRID_SIZE && nz >= 0 && nz < GRID_SIZE && !grid[nz][nx].visited;
         });
 
         if (neighbors.length === 0) {
@@ -167,13 +156,12 @@ export const InfiniteMaze: React.FC = () => {
           continue;
         }
 
-        const direction =
-          neighbors[Math.floor(random() * neighbors.length)];
-        const nx = current.x + direction.x;
-        const nz = current.z + direction.z;
+        const dir = neighbors[Math.floor(random() * neighbors.length)];
+        const nx = current.x + dir.x;
+        const nz = current.z + dir.z;
 
-        grid[current.z][current.x][direction.wall] = false;
-        grid[nz][nx][direction.opposite] = false;
+        grid[current.z][current.x][dir.wall] = false;
+        grid[nz][nx][dir.opposite] = false;
         grid[nz][nx].visited = true;
 
         stack.push({ x: nx, z: nz });
@@ -187,57 +175,19 @@ export const InfiniteMaze: React.FC = () => {
     };
 
     // --------------------------------------------------
-    // CHUNK BUILDER
+    // INSTANCED CHUNK BUILDER
     // --------------------------------------------------
-    const wallGeometryHorizontal = new THREE.BoxGeometry(
-      CELL_SIZE,
-      WALL_HEIGHT,
-      WALL_THICKNESS
-    );
-    const wallGeometryVertical = new THREE.BoxGeometry(
-      WALL_THICKNESS,
-      WALL_HEIGHT,
-      CELL_SIZE
-    );
-    const glowGeometryHorizontal = new THREE.BoxGeometry(
-      CELL_SIZE * 0.98,
-      0.06,
-      WALL_THICKNESS * 1.2
-    );
-    const glowGeometryVertical = new THREE.BoxGeometry(
-      WALL_THICKNESS * 1.2,
-      0.06,
-      CELL_SIZE * 0.98
-    );
+    const matrix = new THREE.Matrix4();
+    const position = new THREE.Vector3();
+    const scale = new THREE.Vector3();
+    const quaternion = new THREE.Quaternion();
 
-    const createWall = (
-      group: THREE.Group,
-      x: number,
-      z: number,
-      horizontal: boolean
-    ) => {
-      const wall = new THREE.Mesh(
-        horizontal ? wallGeometryHorizontal : wallGeometryVertical,
-        wallMaterial
-      );
-      wall.position.set(x, WALL_HEIGHT / 2, z);
-      wall.castShadow = true;
-      wall.receiveShadow = true;
-      group.add(wall);
-
-      const glow = new THREE.Mesh(
-        horizontal ? glowGeometryHorizontal : glowGeometryVertical,
-        glowMaterial
-      );
-      glow.position.set(x, WALL_HEIGHT + 0.03, z);
-      group.add(glow);
-    };
-
-    const createMazeChunk = (chunkX: number, chunkZ: number) => {
+    const createMazeChunk = (chunkX: number, chunkZ: number): THREE.Group => {
       const group = new THREE.Group();
       group.position.set(chunkX * MAZE_SIZE, 0, chunkZ * MAZE_SIZE);
 
       const maze = generateMaze(chunkX, chunkZ);
+      const walls: WallTransform[] = [];
 
       for (let z = 0; z < GRID_SIZE; z++) {
         for (let x = 0; x < GRID_SIZE; x++) {
@@ -245,32 +195,62 @@ export const InfiniteMaze: React.FC = () => {
           const centerX = (x + 0.5) * CELL_SIZE - MAZE_SIZE / 2;
           const centerZ = (z + 0.5) * CELL_SIZE - MAZE_SIZE / 2;
 
-          if (cell.north) createWall(group, centerX, centerZ - CELL_SIZE / 2, true);
-          if (cell.west) createWall(group, centerX - CELL_SIZE / 2, centerZ, false);
+          if (cell.north) walls.push({ x: centerX, z: centerZ - CELL_SIZE / 2, horizontal: true });
+          if (cell.west) walls.push({ x: centerX - CELL_SIZE / 2, z: centerZ, horizontal: false });
           if (z === GRID_SIZE - 1 && cell.south) {
-            createWall(group, centerX, centerZ + CELL_SIZE / 2, true);
+            walls.push({ x: centerX, z: centerZ + CELL_SIZE / 2, horizontal: true });
           }
           if (x === GRID_SIZE - 1 && cell.east) {
-            createWall(group, centerX + CELL_SIZE / 2, centerZ, false);
+            walls.push({ x: centerX + CELL_SIZE / 2, z: centerZ, horizontal: false });
           }
         }
       }
+
+      const wallInstances = new THREE.InstancedMesh(unitBoxGeo, wallMaterial, walls.length);
+      const glowInstances = new THREE.InstancedMesh(unitBoxGeo, glowMaterial, walls.length);
+
+      wallInstances.castShadow = true;
+      wallInstances.receiveShadow = true;
+
+      walls.forEach((w, i) => {
+        // Position & Scale Wall
+        position.set(w.x, WALL_HEIGHT / 2, w.z);
+        scale.set(
+          w.horizontal ? CELL_SIZE : WALL_THICKNESS,
+          WALL_HEIGHT,
+          w.horizontal ? WALL_THICKNESS : CELL_SIZE
+        );
+        matrix.compose(position, quaternion, scale);
+        wallInstances.setMatrixAt(i, matrix);
+
+        // Position & Scale Glow Accent
+        position.set(w.x, WALL_HEIGHT + 0.03, w.z);
+        scale.set(
+          w.horizontal ? CELL_SIZE * 0.98 : WALL_THICKNESS * 1.2,
+          0.06,
+          w.horizontal ? WALL_THICKNESS * 1.2 : CELL_SIZE * 0.98
+        );
+        matrix.compose(position, quaternion, scale);
+        glowInstances.setMatrixAt(i, matrix);
+      });
+
+      wallInstances.instanceMatrix.needsUpdate = true;
+      glowInstances.instanceMatrix.needsUpdate = true;
+
+      group.add(wallInstances, glowInstances);
       return group;
     };
 
     // --------------------------------------------------
-    // CHUNK STREAMING (WIDE COVERAGE)
+    // CHUNK STREAMING
     // --------------------------------------------------
     const activeChunks = new Map<string, THREE.Group>();
-    
-    // Increased render distance to cover ultra-wide viewports
-    const renderDistanceX = 18; // Left/Right width
-    const renderDistanceZ = 16; // Forward/Backward depth
+    const renderDistanceX = 18;
+    const renderDistanceZ = 16;
 
     const updateChunks = (currentX: number, currentZ: number) => {
       const centerChunkX = Math.floor(currentX / MAZE_SIZE);
       const centerChunkZ = Math.floor(currentZ / MAZE_SIZE);
-
       const needed = new Set<string>();
 
       for (let x = -renderDistanceX; x <= renderDistanceX; x++) {
@@ -297,10 +277,11 @@ export const InfiniteMaze: React.FC = () => {
     };
 
     // --------------------------------------------------
-    // ANIMATION & CAMERA TRAVERSAL
+    // ANIMATION & LOOP
     // --------------------------------------------------
     const clock = new THREE.Clock();
     let cameraZ = 4;
+    let animationId: number;
     const EYE_HEIGHT = 16.0;
 
     const animate = () => {
@@ -312,14 +293,8 @@ export const InfiniteMaze: React.FC = () => {
       const driftX = Math.sin(elapsed * 0.22) * (MAZE_SIZE * 0.45);
       const bobY = Math.sin(elapsed * 1.2) * 0.35;
 
-      const currentCameraY = EYE_HEIGHT + bobY;
-      camera.position.set(driftX, currentCameraY, cameraZ);
-
-      camera.lookAt(
-        driftX * 0.7,
-        -2.0,
-        cameraZ - 75
-      );
+      camera.position.set(driftX, EYE_HEIGHT + bobY, cameraZ);
+      camera.lookAt(driftX * 0.7, -2.0, cameraZ - 75);
 
       cyanLight.position.set(-15, 30, cameraZ - 10);
       cyanLight.target.position.set(0, 0, cameraZ - 40);
@@ -330,26 +305,23 @@ export const InfiniteMaze: React.FC = () => {
       magentaLight.target.updateMatrixWorld();
 
       cameraLight.position.copy(camera.position);
-
       floor.position.set(0, 0, cameraZ);
 
       updateChunks(camera.position.x, camera.position.z);
       renderer.render(scene, camera);
 
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     };
 
-    const animationId = requestAnimationFrame(animate);
+    animationId = requestAnimationFrame(animate);
 
     // --------------------------------------------------
     // RESIZE & CLEANUP
     // --------------------------------------------------
     const handleResize = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      camera.aspect = width / height;
+      camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
+      renderer.setSize(window.innerWidth, window.innerHeight);
     };
 
     window.addEventListener('resize', handleResize);
@@ -358,12 +330,9 @@ export const InfiniteMaze: React.FC = () => {
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationId);
 
-      activeChunks.forEach((chunk) => scene.remove(chunk));
+      // Clean up GPU memory
+      unitBoxGeo.dispose();
       floorGeometry.dispose();
-      wallGeometryHorizontal.dispose();
-      wallGeometryVertical.dispose();
-      glowGeometryHorizontal.dispose();
-      glowGeometryVertical.dispose();
       wallMaterial.dispose();
       floorMaterial.dispose();
       glowMaterial.dispose();
@@ -380,10 +349,8 @@ export const InfiniteMaze: React.FC = () => {
       ref={mountRef}
       style={{
         width: '100vw',
-        height: '100dvh',
+        height: '100vh',
         overflow: 'hidden',
-        margin: 0,
-        padding: 0,
         backgroundColor: '#0c0f17',
       }}
     />
