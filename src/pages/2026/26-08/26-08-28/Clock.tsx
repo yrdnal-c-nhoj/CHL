@@ -1,180 +1,393 @@
-import { useEffect, useRef } from 'react';
-import water from '../../../../assets/images/26_images/26-08/26-08-28/water.webp';
-export const assets = [water];
+import React, { useEffect, useRef } from 'react';
+import * as THREE from 'three';
 
+const MAZE_SIZE = 8;
+const WALL_HEIGHT = 5;
+const WALL_THICKNESS = 0.05;
+const FLY_SPEED = 2.5;
 
-const TWO_PI = Math.PI * 2;
-const NUM_NODES = 19;
-const SINGLE_SLICE = TWO_PI / NUM_NODES;
-const BASE_RADIUS = 20;
-const BOUNCE_RADIUS = 150;
-const GRID_STEP = 100;
+const GRID_SIZE = 3;
+const CELL_SIZE = MAZE_SIZE / GRID_SIZE;
 
-export default function SeaWavesTextClock() {
-  const canvasRef = useRef(null);
-  const timeStateRef = useRef({ hours: '12', minutes: '00', ampm: 'AM' });
+type Cell = {
+  visited: boolean;
+  north: boolean;
+  east: boolean;
+  south: boolean;
+  west: boolean;
+};
 
-  // Clock state synchronization (1s interval without triggering React re-renders)
+export const InfiniteMaze: React.FC = () => {
+  const mountRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      let rawHours = now.getHours();
-      const rawMinutes = now.getMinutes();
+    const container = mountRef.current;
+    if (!container) return;
 
-      const ampm = rawHours >= 12 ? 'PM' : 'AM';
-      rawHours = rawHours % 12 || 12;
+    // --------------------------------------------------
+    // SCENE & CAMERA
+    // --------------------------------------------------
+    const scene = new THREE.Scene();
+    const sceneColor = 0x0c0f17;
+    scene.background = new THREE.Color(sceneColor);
 
-      timeStateRef.current = {
-        hours: String(rawHours).padStart(2, '0'),
-        minutes: String(rawMinutes).padStart(2, '0'),
-        ampm,
+    // Linear Fog creates a thick haze layer precisely tuned to mask distant chunk generation
+    scene.fog = new THREE.Fog(sceneColor, 35, 120);
+
+    const camera = new THREE.PerspectiveCamera(
+      85,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      600
+    );
+
+    // --------------------------------------------------
+    // RENDERER
+    // --------------------------------------------------
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      powerPreference: 'high-performance',
+    });
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.4;
+
+    container.appendChild(renderer.domElement);
+
+    // --------------------------------------------------
+    // LIGHTING
+    // --------------------------------------------------
+    const ambientLight = new THREE.AmbientLight(0x65789b, 1.5);
+    scene.add(ambientLight);
+
+    const hemisphereLight = new THREE.HemisphereLight(0x7fbfff, 0x1a1a24, 1.2);
+    scene.add(hemisphereLight);
+
+    const cyanLight = new THREE.DirectionalLight(0x00ccff, 3.5);
+    cyanLight.castShadow = true;
+    cyanLight.shadow.mapSize.set(2048, 2048);
+    scene.add(cyanLight);
+
+    const magentaLight = new THREE.DirectionalLight(0xff3399, 3.0);
+    magentaLight.castShadow = true;
+    magentaLight.shadow.mapSize.set(2048, 2048);
+    scene.add(magentaLight);
+
+    const cameraLight = new THREE.PointLight(0x40a0ff, 4, 80);
+    scene.add(cameraLight);
+
+    // --------------------------------------------------
+    // MATERIALS & GEOMETRIES
+    // --------------------------------------------------
+    const wallMaterial = new THREE.MeshStandardMaterial({
+      color: 0x485263,
+      roughness: 0.38,
+      metalness: 0.35,
+      emissive: 0x091018,
+      emissiveIntensity: 0.8,
+    });
+
+    const floorMaterial = new THREE.MeshStandardMaterial({
+      color: 0xd0d5dd,
+      roughness: 0.9,
+      metalness: 0.05,
+    });
+
+    const glowMaterial = new THREE.MeshBasicMaterial({
+      color: 0x00e1ff,
+      transparent: true,
+      opacity: 0.75,
+    });
+
+    const floorGeometry = new THREE.PlaneGeometry(1000, 1000);
+    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    floor.rotation.x = -Math.PI / 2;
+    floor.receiveShadow = true;
+    scene.add(floor);
+
+    // --------------------------------------------------
+    // PRNG PROCEDURAL MAZE GENERATOR
+    // --------------------------------------------------
+    const createRandom = (chunkX: number, chunkZ: number) => {
+      let seed = Math.abs(
+        Math.floor(Math.sin(chunkX * 127.1 + chunkZ * 311.7) * 100000)
+      );
+      return () => {
+        seed = (seed * 1664525 + 1013904223) % 4294967296;
+        return seed / 4294967296;
       };
     };
 
-    updateClock();
-    const intervalId = setInterval(updateClock, 1000);
-    return () => clearInterval(intervalId);
-  }, []);
+    const generateMaze = (chunkX: number, chunkZ: number): Cell[][] => {
+      const random = createRandom(chunkX, chunkZ);
+      const grid: Cell[][] = Array.from({ length: GRID_SIZE }, () =>
+        Array.from({ length: GRID_SIZE }, () => ({
+          visited: false,
+          north: true,
+          east: true,
+          south: true,
+          west: true,
+        }))
+      );
 
-  // Canvas Animation Engine
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+      const stack: { x: number; z: number }[] = [];
+      const startX = Math.floor(random() * GRID_SIZE);
+      const startZ = Math.floor(random() * GRID_SIZE);
 
-    const context = canvas.getContext('2d');
-    let animationFrameId;
-    let containers = [];
+      grid[startZ][startX].visited = true;
+      stack.push({ x: startX, z: startZ });
 
-    // Re-build container grid data structures
-    const initGrid = (width, height) => {
-      containers = [];
-      let containerIdx = 0;
+      const directions = [
+        { x: 0, z: -1, wall: 'north', opposite: 'south' },
+        { x: 1, z: 0, wall: 'east', opposite: 'west' },
+        { x: 0, z: 1, wall: 'south', opposite: 'north' },
+        { x: -1, z: 0, wall: 'west', opposite: 'east' },
+      ] as const;
 
-      for (let x = 0; x < width + GRID_STEP; x += GRID_STEP) {
-        for (let y = 0; y < height + GRID_STEP; y += GRID_STEP) {
-          const category = containerIdx % 3 === 0 ? 'hours' : containerIdx % 3 === 1 ? 'minutes' : 'ampm';
-          
-          // Generate node structure for this container cell
-          const nodes = Array.from({ length: NUM_NODES }, (_, i) => {
-            const angleCircle = i * SINGLE_SLICE;
-            return {
-              baseX: x,
-              baseY: y + Math.random(),
-              angleCircle,
-              cosAngleCircle: Math.cos(angleCircle),
-              sinAngleCircle: Math.sin(angleCircle),
-              angle: x + y,
-              speed: 0.01,
-            };
-          });
+      while (stack.length > 0) {
+        const current = stack[stack.length - 1];
+        const neighbors = directions.filter((direction) => {
+          const nx = current.x + direction.x;
+          const nz = current.z + direction.z;
+          return (
+            nx >= 0 &&
+            nx < GRID_SIZE &&
+            nz >= 0 &&
+            nz < GRID_SIZE &&
+            !grid[nz][nx].visited
+          );
+        });
 
-          containers.push({ category, nodes });
-          containerIdx++;
+        if (neighbors.length === 0) {
+          stack.pop();
+          continue;
         }
+
+        const direction =
+          neighbors[Math.floor(random() * neighbors.length)];
+        const nx = current.x + direction.x;
+        const nz = current.z + direction.z;
+
+        grid[current.z][current.x][direction.wall] = false;
+        grid[nz][nx][direction.opposite] = false;
+        grid[nz][nx].visited = true;
+
+        stack.push({ x: nx, z: nz });
       }
+
+      const entrance = Math.floor(GRID_SIZE / 2);
+      grid[0][entrance].north = false;
+      grid[GRID_SIZE - 1][entrance].south = false;
+
+      return grid;
     };
 
+    // --------------------------------------------------
+    // CHUNK BUILDER
+    // --------------------------------------------------
+    const wallGeometryHorizontal = new THREE.BoxGeometry(
+      CELL_SIZE,
+      WALL_HEIGHT,
+      WALL_THICKNESS
+    );
+    const wallGeometryVertical = new THREE.BoxGeometry(
+      WALL_THICKNESS,
+      WALL_HEIGHT,
+      CELL_SIZE
+    );
+    const glowGeometryHorizontal = new THREE.BoxGeometry(
+      CELL_SIZE * 0.98,
+      0.06,
+      WALL_THICKNESS * 1.2
+    );
+    const glowGeometryVertical = new THREE.BoxGeometry(
+      WALL_THICKNESS * 1.2,
+      0.06,
+      CELL_SIZE * 0.98
+    );
+
+    const createWall = (
+      group: THREE.Group,
+      x: number,
+      z: number,
+      horizontal: boolean
+    ) => {
+      const wall = new THREE.Mesh(
+        horizontal ? wallGeometryHorizontal : wallGeometryVertical,
+        wallMaterial
+      );
+      wall.position.set(x, WALL_HEIGHT / 2, z);
+      wall.castShadow = true;
+      wall.receiveShadow = true;
+      group.add(wall);
+
+      const glow = new THREE.Mesh(
+        horizontal ? glowGeometryHorizontal : glowGeometryVertical,
+        glowMaterial
+      );
+      glow.position.set(x, WALL_HEIGHT + 0.03, z);
+      group.add(glow);
+    };
+
+    const createMazeChunk = (chunkX: number, chunkZ: number) => {
+      const group = new THREE.Group();
+      group.position.set(chunkX * MAZE_SIZE, 0, chunkZ * MAZE_SIZE);
+
+      const maze = generateMaze(chunkX, chunkZ);
+
+      for (let z = 0; z < GRID_SIZE; z++) {
+        for (let x = 0; x < GRID_SIZE; x++) {
+          const cell = maze[z][x];
+          const centerX = (x + 0.5) * CELL_SIZE - MAZE_SIZE / 2;
+          const centerZ = (z + 0.5) * CELL_SIZE - MAZE_SIZE / 2;
+
+          if (cell.north) createWall(group, centerX, centerZ - CELL_SIZE / 2, true);
+          if (cell.west) createWall(group, centerX - CELL_SIZE / 2, centerZ, false);
+          if (z === GRID_SIZE - 1 && cell.south) {
+            createWall(group, centerX, centerZ + CELL_SIZE / 2, true);
+          }
+          if (x === GRID_SIZE - 1 && cell.east) {
+            createWall(group, centerX + CELL_SIZE / 2, centerZ, false);
+          }
+        }
+      }
+      return group;
+    };
+
+    // --------------------------------------------------
+    // CHUNK STREAMING (WIDE COVERAGE)
+    // --------------------------------------------------
+    const activeChunks = new Map<string, THREE.Group>();
+    
+    // Increased render distance to cover ultra-wide viewports
+    const renderDistanceX = 18; // Left/Right width
+    const renderDistanceZ = 16; // Forward/Backward depth
+
+    const updateChunks = (currentX: number, currentZ: number) => {
+      const centerChunkX = Math.floor(currentX / MAZE_SIZE);
+      const centerChunkZ = Math.floor(currentZ / MAZE_SIZE);
+
+      const needed = new Set<string>();
+
+      for (let x = -renderDistanceX; x <= renderDistanceX; x++) {
+        for (let z = -renderDistanceZ; z <= renderDistanceZ; z++) {
+          const chunkX = centerChunkX + x;
+          const chunkZ = centerChunkZ + z;
+          const key = `${chunkX},${chunkZ}`;
+          needed.add(key);
+
+          if (!activeChunks.has(key)) {
+            const chunk = createMazeChunk(chunkX, chunkZ);
+            scene.add(chunk);
+            activeChunks.set(key, chunk);
+          }
+        }
+      }
+
+      activeChunks.forEach((chunk, key) => {
+        if (!needed.has(key)) {
+          scene.remove(chunk);
+          activeChunks.delete(key);
+        }
+      });
+    };
+
+    // --------------------------------------------------
+    // ANIMATION & CAMERA TRAVERSAL
+    // --------------------------------------------------
+    const clock = new THREE.Clock();
+    let cameraZ = 4;
+    const EYE_HEIGHT = 16.0;
+
+    const animate = () => {
+      const delta = Math.min(clock.getDelta(), 0.05);
+      const elapsed = clock.getElapsedTime();
+
+      cameraZ -= FLY_SPEED * delta;
+
+      const driftX = Math.sin(elapsed * 0.22) * (MAZE_SIZE * 0.45);
+      const bobY = Math.sin(elapsed * 1.2) * 0.35;
+
+      const currentCameraY = EYE_HEIGHT + bobY;
+      camera.position.set(driftX, currentCameraY, cameraZ);
+
+      camera.lookAt(
+        driftX * 0.7,
+        -2.0,
+        cameraZ - 75
+      );
+
+      cyanLight.position.set(-15, 30, cameraZ - 10);
+      cyanLight.target.position.set(0, 0, cameraZ - 40);
+      cyanLight.target.updateMatrixWorld();
+
+      magentaLight.position.set(15, 28, cameraZ - 15);
+      magentaLight.target.position.set(0, 0, cameraZ - 40);
+      magentaLight.target.updateMatrixWorld();
+
+      cameraLight.position.copy(camera.position);
+
+      floor.position.set(0, 0, cameraZ);
+
+      updateChunks(camera.position.x, camera.position.z);
+      renderer.render(scene, camera);
+
+      requestAnimationFrame(animate);
+    };
+
+    const animationId = requestAnimationFrame(animate);
+
+    // --------------------------------------------------
+    // RESIZE & CLEANUP
+    // --------------------------------------------------
     const handleResize = () => {
-      const width = (canvas.width = window.innerWidth);
-      const height = (canvas.height = window.innerHeight);
-      initGrid(width, height);
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
     };
 
-    handleResize();
     window.addEventListener('resize', handleResize);
-
-    // Optimized Animation Loop
-    let lastFont = '';
-    let lastFill = '';
-
-    const loop = () => {
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      const timeState = timeStateRef.current;
-
-      context.textAlign = 'center';
-      context.textBaseline = 'middle';
-
-      for (let c = 0; c < containers.length; c++) {
-        const container = containers[c];
-        const textToRender = timeState[container.category];
-        const nodes = container.nodes;
-
-        for (let n = 0; n < nodes.length; n++) {
-          const node = nodes[n];
-
-          // Update motion dynamics
-          const bounceOffset = Math.sin(node.angle + node.angleCircle) * BOUNCE_RADIUS + BASE_RADIUS;
-          const posX = node.baseX + node.cosAngleCircle * bounceOffset;
-          const posY = node.baseY + node.sinAngleCircle * bounceOffset;
-          const size = Math.cos(node.angle) * 8 + 10;
-
-          node.angle += node.speed;
-
-          // Render Text Node (only touch context state when it actually changes)
-          const fill = `hsl(195, 100%, ${size * 4}%)`;
-          if (fill !== lastFill) {
-            context.fillStyle = fill;
-            lastFill = fill;
-          }
-          const font = `bold ${Math.max(12, size * 2.2)}px sans-serif`;
-          if (font !== lastFont) {
-            context.font = font;
-            lastFont = font;
-          }
-          context.fillText(textToRender, posX, posY);
-        }
-      }
-
-      animationFrameId = window.requestAnimationFrame(loop);
-    };
-
-    loop();
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      window.cancelAnimationFrame(animationFrameId);
+      cancelAnimationFrame(animationId);
+
+      activeChunks.forEach((chunk) => scene.remove(chunk));
+      floorGeometry.dispose();
+      wallGeometryHorizontal.dispose();
+      wallGeometryVertical.dispose();
+      glowGeometryHorizontal.dispose();
+      glowGeometryVertical.dispose();
+      wallMaterial.dispose();
+      floorMaterial.dispose();
+      glowMaterial.dispose();
+      renderer.dispose();
+
+      if (renderer.domElement.parentNode === container) {
+        container.removeChild(renderer.domElement);
+      }
     };
   }, []);
 
   return (
     <div
+      ref={mountRef}
       style={{
-        margin: 0,
-        padding: 0,
-        backgroundColor: 'hsl(195, 100%, 7%)',
         width: '100vw',
         height: '100dvh',
         overflow: 'hidden',
-        position: 'relative',
+        margin: 0,
+        padding: 0,
+        backgroundColor: '#0c0f17',
       }}
-    >
-      <img
-        src={water}
-        alt=""
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          display: 'block',
-          zIndex: 0,
-        }}
-      />
-
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          display: 'block',
-          zIndex: 1,
-        }}
-      />
-    </div>
+    />
   );
-}
+};
+
+export default InfiniteMaze;
