@@ -31,8 +31,8 @@ const InfiniteMaze = () => {
       <div ref={tileRef} className={styles.clockTiled} aria-hidden="true">
         <svg className={styles.tiledSvg} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
           <defs>
-            <pattern id="textPattern" x="0" y="0" width="180" height="70" patternUnits="userSpaceOnUse">
-              <text x="0" y="50" font-family="'MazeFont', monospace" font-size="38" font-weight="bold" fill="white" letter-spacing="2">
+            <pattern id="textPattern" x="-90" y="-35" width="180" height="70" patternUnits="userSpaceOnUse">
+               <text x="0" y="50" font-family="'MazeFont', monospace" font-size="48" font-weight="bold" fill="white" letter-spacing="2">
                 {clockText}
               </text>
             </pattern>
