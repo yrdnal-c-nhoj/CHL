@@ -24,7 +24,7 @@ const Clock = () => {
         <g clipPath="url(#clockClip)" className={styles.spin}>
           <image href={purpleImage} x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMid slice" />
         </g>
-        <circle cx="50" cy="50" r="48" fill="#c5c6c9" opacity="0.3" />
+
 
         {[1, 2, 4, 5, 7, 8, 10, 11].map((num) => (
           <line
