@@ -1,180 +1,133 @@
-import { useEffect, useRef } from 'react';
-import water from '../../../../assets/images/26_images/26-08/26-08-29/water.webp';
-export const assets = [water];
+import fontUrl from '@/assets/fonts/26fonts/26-08-29.ttf?url';
+import purpleImage from '@/assets/images/26_images/26-08/26-08-29/purple.webp';
+import shellsImage from '@/assets/images/26_images/26-08/26-08-29/shells1.webp';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useMillisecondClock } from '@/utils/hooks';
+import styles from './Clock.module.css';
 
+export const assets = [shellsImage, purpleImage, fontUrl];
 
-const TWO_PI = Math.PI * 2;
-const NUM_NODES = 19;
-const SINGLE_SLICE = TWO_PI / NUM_NODES;
-const BASE_RADIUS = 20;
-const BOUNCE_RADIUS = 150;
-const GRID_STEP = 100;
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'ClockFont_26_08_29',
+    fontUrl,
+  },
+];
 
-export default function SeaWavesTextClock() {
-  const canvasRef = useRef(null);
-  const timeStateRef = useRef({ hours: '12', minutes: '00', ampm: 'AM' });
+const Clock = () => {
+  const time = useMillisecondClock();
+  useSuspenseFontLoader(fontConfigs);
 
-  // Clock state synchronization (1s interval without triggering React re-renders)
-  useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      let rawHours = now.getHours();
-      const rawMinutes = now.getMinutes();
+  const hours = String(time.getHours()).padStart(2, '0');
+  const minutes = String(time.getMinutes()).padStart(2, '0');
+  const seconds = String(time.getSeconds()).padStart(2, '0');
 
-      const ampm = rawHours >= 12 ? 'PM' : 'AM';
-      rawHours = rawHours % 12 || 12;
-
-      timeStateRef.current = {
-        hours: String(rawHours).padStart(2, '0'),
-        minutes: String(rawMinutes).padStart(2, '0'),
-        ampm,
-      };
-    };
-
-    updateClock();
-    const intervalId = setInterval(updateClock, 1000);
-    return () => clearInterval(intervalId);
-  }, []);
-
-  // Canvas Animation Engine
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const context = canvas.getContext('2d');
-    let animationFrameId;
-    let containers = [];
-
-    // Re-build container grid data structures
-    const initGrid = (width, height) => {
-      containers = [];
-      let containerIdx = 0;
-
-      for (let x = 0; x < width + GRID_STEP; x += GRID_STEP) {
-        for (let y = 0; y < height + GRID_STEP; y += GRID_STEP) {
-          const category = containerIdx % 3 === 0 ? 'hours' : containerIdx % 3 === 1 ? 'minutes' : 'ampm';
-          
-          // Generate node structure for this container cell
-          const nodes = Array.from({ length: NUM_NODES }, (_, i) => {
-            const angleCircle = i * SINGLE_SLICE;
-            return {
-              baseX: x,
-              baseY: y + Math.random(),
-              angleCircle,
-              cosAngleCircle: Math.cos(angleCircle),
-              sinAngleCircle: Math.sin(angleCircle),
-              angle: x + y,
-              speed: 0.01,
-            };
-          });
-
-          containers.push({ category, nodes });
-          containerIdx++;
-        }
-      }
-    };
-
-    const handleResize = () => {
-      const width = (canvas.width = window.innerWidth);
-      const height = (canvas.height = window.innerHeight);
-      initGrid(width, height);
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    // Optimized Animation Loop
-    let lastFont = '';
-    let lastFill = '';
-
-    const loop = () => {
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      const timeState = timeStateRef.current;
-
-      context.textAlign = 'center';
-      context.textBaseline = 'middle';
-
-      for (let c = 0; c < containers.length; c++) {
-        const container = containers[c];
-        const textToRender = timeState[container.category];
-        const nodes = container.nodes;
-
-        for (let n = 0; n < nodes.length; n++) {
-          const node = nodes[n];
-
-          // Update motion dynamics
-          const bounceOffset = Math.sin(node.angle + node.angleCircle) * BOUNCE_RADIUS + BASE_RADIUS;
-          const posX = node.baseX + node.cosAngleCircle * bounceOffset;
-          const posY = node.baseY + node.sinAngleCircle * bounceOffset;
-          const size = Math.cos(node.angle) * 8 + 10;
-
-          node.angle += node.speed;
-
-          // Render Text Node (only touch context state when it actually changes)
-          const fill = `hsl(195, 100%, ${size * 4}%)`;
-          if (fill !== lastFill) {
-            context.fillStyle = fill;
-            lastFill = fill;
-          }
-          const font = `bold ${Math.max(12, size * 2.2)}px sans-serif`;
-          if (font !== lastFont) {
-            context.font = font;
-            lastFont = font;
-          }
-          context.fillText(textToRender, posX, posY);
-        }
-      }
-
-      animationFrameId = window.requestAnimationFrame(loop);
-    };
-
-    loop();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      window.cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
+  const secondDegrees = (time.getSeconds() + time.getMilliseconds() / 1000) * 6;
+  const minuteDegrees = (time.getMinutes() + time.getSeconds() / 60) * 6;
+  const hourDegrees = ((time.getHours() % 12) + time.getMinutes() / 60) * 30;
+  const timeLabel = time.toLocaleTimeString();
 
   return (
-    <div
-      style={{
-        margin: 0,
-        padding: 0,
-        backgroundColor: 'hsl(195, 100%, 7%)',
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        position: 'relative',
-      }}
-    >
-      <img
-        src={water}
-        alt=""
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          display: 'block',
-          zIndex: 0,
-        }}
-      />
+    <main className={styles.container}>
+      <svg className={styles.clockFace} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="clockClip">
+            <circle cx="50" cy="50" r="48" />
+          </clipPath>
+          <linearGradient id="goldGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#fff6c0" />
+            <stop offset="35%" stopColor="#f5c842" />
+            <stop offset="55%" stopColor="#d4a017" />
+            <stop offset="75%" stopColor="#b8860b" />
+            <stop offset="100%" stopColor="#8a6508" />
+          </linearGradient>
+        </defs>
+        <g clipPath="url(#clockClip)" className={styles.spin}>
+          <image href={purpleImage} x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMid slice" />
+        </g>
+        <circle cx="50" cy="50" r="48" fill="#c5c6c9" opacity="0.3" />
 
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          display: 'block',
-          zIndex: 1,
-        }}
-      />
-    </div>
+        {[
+          'XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI',
+        ].map((roman, i) => {
+          const angle = i * 30;
+          const radian = ((angle - 90) * Math.PI) / 180;
+          const cx = 50 + 40 * Math.cos(radian);
+          const cy = 50 + 40 * Math.sin(radian);
+          return (
+            <text
+              key={roman}
+              x={cx}
+              y={cy}
+              fill="url(#goldGradient)"
+              stroke="#8a6508"
+              strokeWidth="0.2"
+              fontSize="6"
+              fontWeight="bold"
+              textAnchor="middle"
+              dominantBaseline="central"
+            >
+              {roman}
+            </text>
+          );
+        })}
+
+        <line
+          x1="50"
+          y1="50"
+          x2="50"
+          y2="28"
+          stroke="#222"
+          strokeWidth="4"
+          strokeLinecap="round"
+          transform={`rotate(${hourDegrees} 50 50)`}
+        />
+        <line
+          x1="50"
+          y1="50"
+          x2="50"
+          y2="18"
+          stroke="#444"
+          strokeWidth="3"
+          strokeLinecap="round"
+          transform={`rotate(${minuteDegrees} 50 50)`}
+        />
+        <line
+          x1="50"
+          y1="55"
+          x2="50"
+          y2="5"
+          stroke="#D32F2F"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+          transform={`rotate(${secondDegrees} 50 50)`}
+        />
+
+        <circle cx="50" cy="50" r="2.5" fill="#222" />
+      </svg>
+
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {timeLabel}
+      </time>
+
+      <div className={styles.digitalClock}>
+        <div className={styles.hourGroup}>
+          <span className={styles.digit}>{hours[0]}</span>
+          <span className={styles.digit}>{hours[1]}</span>
+        </div>
+        <div className={styles.minuteGroup}>
+          <span className={styles.digit}>{minutes[0]}</span>
+          <span className={styles.digit}>{minutes[1]}</span>
+        </div>
+        <div className={styles.secondGroup}>
+          <span className={styles.digit}>{seconds[0]}</span>
+          <span className={styles.digit}>{seconds[1]}</span>
+        </div>
+      </div>
+    </main>
   );
-}
+};
+
+Clock.displayName = 'Clock_26_08_29';
+export default Clock;
