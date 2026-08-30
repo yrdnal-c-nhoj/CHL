@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
-import water from '../../../../assets/images/26_images/26-08/26-08-29/water.webp';
-export const assets = [water];
+import water from '../../../../assets/images/26_images/26-08/26-08-30/water.webp';
+import fontUrl from '@/assets/fonts/26fonts/26-08-30.otf?url';
+
+export const assets = [water, fontUrl];
 
 
 const TWO_PI = Math.PI * 2;
@@ -13,6 +15,12 @@ const GRID_STEP = 100;
 export default function SeaWavesTextClock() {
   const canvasRef = useRef(null);
   const timeStateRef = useRef({ hours: '12', minutes: '00', ampm: 'AM' });
+
+  // Load the date-matching font (non-suspending) so the canvas always renders
+  useEffect(() => {
+    const face = new FontFace('ClockFont_26_08_30', `url(${fontUrl})`, { display: 'block' });
+    face.load().then(() => document.fonts.add(face)).catch(() => {});
+  }, [fontUrl]);
 
   // Clock state synchronization (1s interval without triggering React re-renders)
   useEffect(() => {
@@ -116,7 +124,7 @@ export default function SeaWavesTextClock() {
             context.fillStyle = fill;
             lastFill = fill;
           }
-          const font = `bold ${Math.max(12, size * 2.2)}px sans-serif`;
+          const font = `bold ${Math.max(12, size * 2.2)}px 'ClockFont_26_08_30', sans-serif`;
           if (font !== lastFont) {
             context.font = font;
             lastFont = font;
