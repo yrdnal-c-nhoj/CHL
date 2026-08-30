@@ -81,21 +81,21 @@ const Clock = () => {
 
         <line
           x1="50" y1="50" x2="50" y2="28"
-          stroke="url(#goldGradient)" strokeWidth="4.2" strokeLinecap="round"
-          filter="url(#goldGlow)" transform={`rotate(${hours * 30} 50 50)`}
+          stroke="url(#goldGradient)" strokeWidth="2.2" strokeLinecap="round"
+          transform={`rotate(${hours * 30} 50 50)`}
         />
         <line
           x1="50" y1="50" x2="50" y2="18"
-          stroke="url(#goldGradient)" strokeWidth="3.2" strokeLinecap="round"
-          filter="url(#goldGlow)" transform={`rotate(${minutes * 6} 50 50)`}
+          stroke="url(#goldGradient)" strokeWidth="1.5" strokeLinecap="round"
+          transform={`rotate(${minutes * 6} 50 50)`}
         />
         <line
           x1="50" y1="55" x2="50" y2="5"
-          stroke="url(#goldGradient)" strokeWidth="1.6" strokeLinecap="round"
-          filter="url(#goldGlow)" transform={`rotate(${seconds * 6} 50 50)`}
+          stroke="url(#goldGradient)" strokeWidth="0.8" strokeLinecap="round"
+          transform={`rotate(${seconds * 6} 50 50)`}
         />
 
-        <circle cx="50" cy="50" r="2.8" fill="url(#goldGradient)" stroke="#8a6508" strokeWidth="0.3" filter="url(#goldGlow)" />
+        <circle cx="50" cy="50" r="1" fill="url(#goldGradient)" stroke="#8a6508" strokeWidth="0.2" />
       </svg>
 
       <time dateTime={time.toISOString()} className={styles.srOnly}>
