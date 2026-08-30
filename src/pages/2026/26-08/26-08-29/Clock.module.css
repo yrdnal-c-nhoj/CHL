@@ -3,6 +3,10 @@
   height: 100dvh;
   overflow: hidden;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
 }
 
 .container::before {
@@ -10,14 +14,28 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 200vmax;
-  height: 200vmax;
+  /* 142vmax ensures the image diagonal covers the screen during full rotation */
+  width: 142vmax;
+  height: 142vmax;
+  /* Stretches image to cover full pseudo-element bounds with zero blank space */
   background-image: var(--shells);
-  background-size: cover;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   background-position: center;
+  /* Continuous smooth rotation around center */
   animation: spinReverse 180s linear infinite;
+  will-change: transform;
+  pointer-events: none;
 }
 
+@keyframes spinReverse {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
 .clockFace {
   position: absolute;
   top: 50%;
@@ -51,14 +69,5 @@
   }
   to {
     transform: rotate(-360deg);
-  }
-}
-
-@keyframes spinReverse {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
   }
 }

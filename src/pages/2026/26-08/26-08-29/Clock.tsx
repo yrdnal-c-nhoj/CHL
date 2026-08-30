@@ -9,20 +9,18 @@ import styles from './Clock.module.css';
 export const assets = [shellImage, purpleImage, fontUrl];
 
 const fontConfigs: FontConfig[] = [
-  {
-    fontFamily: 'ClockFont_26_08_29',
-    fontUrl,
-  },
+  { fontFamily: 'ClockFont_26_08_29', fontUrl },
 ];
+
+const ROMAN_NUMERALS = ['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'];
 
 const Clock = () => {
   const time = useMillisecondClock();
   useSuspenseFontLoader(fontConfigs);
 
-  const secondDegrees = (time.getSeconds() + time.getMilliseconds() / 1000) * 6;
-  const minuteDegrees = (time.getMinutes() + time.getSeconds() / 60) * 6;
-  const hourDegrees = ((time.getHours() % 12) + time.getMinutes() / 60) * 30;
-  const timeLabel = time.toLocaleTimeString();
+  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+  const minutes = time.getMinutes() + seconds / 60;
+  const hours = (time.getHours() % 12) + minutes / 60;
 
   return (
     <main
@@ -41,7 +39,7 @@ const Clock = () => {
             <stop offset="75%" stopColor="#e0b34a" />
             <stop offset="100%" stopColor="#c79a2e" />
           </linearGradient>
-          <filter id="goldGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="1.2" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
@@ -49,16 +47,17 @@ const Clock = () => {
             </feMerge>
           </filter>
         </defs>
+
         <g clipPath="url(#clockClip)" className={styles.spin}>
           <image href={purpleImage} x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMid slice" />
         </g>
-        {[
-          'XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI',
-        ].map((roman, i) => {
-           const angle = i * 30;
+
+        {ROMAN_NUMERALS.map((roman, i) => {
+          const angle = i * 30;
           const radian = ((angle - 90) * Math.PI) / 180;
           const cx = 50 + 42 * Math.cos(radian);
           const cy = 50 + 42 * Math.sin(radian);
+
           return (
             <text
               key={roman}
@@ -81,44 +80,26 @@ const Clock = () => {
         })}
 
         <line
-          x1="50"
-          y1="50"
-          x2="50"
-          y2="28"
-          stroke="url(#goldGradient)"
-          strokeWidth="4.2"
-          strokeLinecap="round"
-          filter="url(#goldGlow)"
-          transform={`rotate(${hourDegrees} 50 50)`}
+          x1="50" y1="50" x2="50" y2="28"
+          stroke="url(#goldGradient)" strokeWidth="4.2" strokeLinecap="round"
+          filter="url(#goldGlow)" transform={`rotate(${hours * 30} 50 50)`}
         />
         <line
-          x1="50"
-          y1="50"
-          x2="50"
-          y2="18"
-          stroke="url(#goldGradient)"
-          strokeWidth="3.2"
-          strokeLinecap="round"
-          filter="url(#goldGlow)"
-          transform={`rotate(${minuteDegrees} 50 50)`}
+          x1="50" y1="50" x2="50" y2="18"
+          stroke="url(#goldGradient)" strokeWidth="3.2" strokeLinecap="round"
+          filter="url(#goldGlow)" transform={`rotate(${minutes * 6} 50 50)`}
         />
         <line
-          x1="50"
-          y1="55"
-          x2="50"
-          y2="5"
-          stroke="url(#goldGradient)"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          filter="url(#goldGlow)"
-          transform={`rotate(${secondDegrees} 50 50)`}
+          x1="50" y1="55" x2="50" y2="5"
+          stroke="url(#goldGradient)" strokeWidth="1.6" strokeLinecap="round"
+          filter="url(#goldGlow)" transform={`rotate(${seconds * 6} 50 50)`}
         />
 
         <circle cx="50" cy="50" r="2.8" fill="url(#goldGradient)" stroke="#8a6508" strokeWidth="0.3" filter="url(#goldGlow)" />
       </svg>
 
       <time dateTime={time.toISOString()} className={styles.srOnly}>
-        {timeLabel}
+        {time.toLocaleTimeString()}
       </time>
     </main>
   );
