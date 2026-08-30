@@ -1,12 +1,12 @@
 import fontUrl from '@/assets/fonts/26fonts/26-08-29.ttf?url';
 import purpleImage from '@/assets/images/26_images/26-08/26-08-29/purple.webp';
-import shellsImage from '@/assets/images/26_images/26-08/26-08-29/shell.webp';
+import shellImage from '@/assets/images/26_images/26-08/26-08-29/shell.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
-export const assets = [shellsImage, purpleImage, fontUrl];
+export const assets = [shellImage, purpleImage, fontUrl];
 
 const fontConfigs: FontConfig[] = [
   {
@@ -27,7 +27,7 @@ const Clock = () => {
   return (
     <main
       className={styles.container}
-      style={{ '--shells': `url(${shellsImage})` } as React.CSSProperties}
+      style={{ '--shells': `url(${shellImage})` } as React.CSSProperties}
     >
       <svg className={styles.clockFace} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <defs>

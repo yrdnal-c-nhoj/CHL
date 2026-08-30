@@ -5,7 +5,7 @@ import React from 'react';
 
 import backgroundVideo from '@/assets/images/26_images/26-08/26-08-25/radar.webm';
 import radarOverlay from '@/assets/images/26_images/26-08/26-08-25/radar3.webp';
-import waterBackground from '@/assets/images/26_images/26-08/26-08-29/water.webp';
+import waterBackground from '@/assets/images/26_images/26-08/26-08-30/water.webp';
 import fontUrl from '@/assets/fonts/26fonts/26-08-25.ttf?url';
 import styles from './Clock.module.css';
 
