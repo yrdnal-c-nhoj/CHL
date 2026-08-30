@@ -1,53 +1,73 @@
-import mazeFontUrl from '@/assets/fonts/26fonts/26-08-28.woff2?url';
-import mazeImage from '@/assets/images/26_images/26-08/26-08-28/maze.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
-import React, { useRef } from 'react';
+import { useSecondClock } from '@/utils/hooks';
+import React from 'react';
+
+import backgroundVideo from '@/assets/images/26_images/26-08/26-08-25/radar.webm';
+import radarOverlay from '@/assets/images/26_images/26-08/26-08-25/radar3.webp';
+import waterBackground from '@/assets/images/26_images/26-08/26-08-29/water.webp';
+import fontUrl from '@/assets/fonts/26fonts/26-08-25.ttf?url';
 import styles from './Clock.module.css';
-import { useMazeRenderer } from './useMazeRenderer';
 
-export const assets = [mazeImage, mazeFontUrl];
+export const assets: string[] = [backgroundVideo, radarOverlay, waterBackground, fontUrl];
 
-const InfiniteMaze = () => {
-  const mountRef = useRef<HTMLDivElement | null>(null);
-  const tileRef = useRef<HTMLDivElement | null>(null);
-  const time = useMillisecondClock();
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'ClockFont_26_08_25',
+    fontUrl,
+  },
+];
 
-  const fontConfigs: FontConfig[] = [{ fontFamily: 'MazeFont', fontUrl: mazeFontUrl }];
+const Clock = () => {
+  const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
-  useMazeRenderer(mountRef);
 
-  const dateTime = time.toISOString();
-  const timeString = time.toLocaleTimeString();
   const hours = String(time.getHours()).padStart(2, '0');
   const minutes = String(time.getMinutes()).padStart(2, '0');
-  const seconds = String(time.getSeconds()).padStart(2, '0');
-  const clockText = `${hours}${minutes}${seconds}`;
 
   return (
-    <main ref={mountRef} className={styles.container}>
-      <img src={mazeImage} alt="" className={styles.bgImage} aria-hidden="true" />
-      <div ref={tileRef} className={styles.clockTiled} aria-hidden="true">
-        <svg className={styles.tiledSvg} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-          <defs>
-            <pattern id="textPattern" x="-90" y="-35" width="180" height="70" patternUnits="userSpaceOnUse">
-               <text x="0" y="50" font-family="'MazeFont', monospace" font-size="48" font-weight="bold" fill="white" letter-spacing="2">
-                {clockText}
-              </text>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#textPattern)" />
-        </svg>
-      </div>
-      
-      <time dateTime={dateTime} className={styles.srOnly}>
-        {timeString}
+    <main className={styles.container}>
+      <img
+        src={waterBackground}
+        className={styles.waterBackground}
+        alt=""
+        aria-hidden="true"
+      />
+
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className={styles.backgroundVideo}
+        src={backgroundVideo}
+        aria-hidden="true"
+      />
+
+      <img
+        src={radarOverlay}
+        className={styles.overlayImage}
+        alt=""
+        aria-hidden="true"
+      />
+
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
       </time>
+
+      <div className={styles.digitalClock}>
+        <div className={styles.hourGroup}>
+          <span className={styles.digit}>{hours[0]}</span>
+          <span className={styles.digit}>{hours[1]}</span>
+        </div>
+        <div className={styles.minuteGroup}>
+          <span className={styles.digit}>{minutes[0]}</span>
+          <span className={styles.digit}>{minutes[1]}</span>
+        </div>
+      </div>
     </main>
   );
 };
 
-const MemoizedInfiniteMaze = React.memo(InfiniteMaze);
-MemoizedInfiniteMaze.displayName = 'Clock_26_08_28';
-export default MemoizedInfiniteMaze;
+Clock.displayName = 'Clock_26_08_25';
+export default Clock;

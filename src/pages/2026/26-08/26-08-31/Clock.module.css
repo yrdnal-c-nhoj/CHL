@@ -1,43 +1,83 @@
 .container {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background-color: #c5c6c9;
   position: relative;
-  isolation: isolate;
-  font-family: 'MazeFont', sans-serif;
-}
-
-.canvas {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
-
-.bgImage {
-  position: absolute;
-  inset: 0;
   width: 100%;
-  height: 38%;
-  object-fit: fill;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.clockTiled {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  mix-blend-mode: difference;
-  pointer-events: none;
-  font-family: 'MazeFont', monospace;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
+  font-family: 'ClockFont_26_08_25', 'Courier New', Courier, monospace;
 }
 
-.tiledSvg {
+.backgroundVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  display: block;
+  object-fit: fill;
+  object-position: center;
+  z-index: 0;
+}
+
+.waterBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: -1;
+}
+
+.overlayImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  object-position: center;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.digitalClock {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  font-size: 55vh;
+  color: #ffffff76;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.hourGroup,
+.minuteGroup {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.digit {
+  display: inline-block;
+  width: 1.2ch;
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  .digitalClock {
+    flex-direction: column;
+    gap: 11vh;
+  }
+
+  .digitalClock {
+    font-size: 34vh;
+  }
 }
 
 .srOnly {

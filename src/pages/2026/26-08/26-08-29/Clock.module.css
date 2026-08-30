@@ -1,0 +1,88 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  position: relative;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200vmax;
+  height: 200vmax;
+  background-image: url('@/assets/images/26_images/26-08/26-08-28/shells1.webp');
+  background-size: cover;
+  background-position: center;
+  animation: spinReverse 180s linear infinite;
+}
+
+.clockFace {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(100vw, 100vh);
+  height: min(100vw, 100vh);
+  z-index: 2;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.spin {
+  animation: spin 120s linear infinite;
+  transform-origin: 50px 50px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes spinReverse {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.digitalClock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, calc(-50% + 38vh));
+  display: flex;
+  gap: 2vw;
+  z-index: 3;
+  font-family: 'ClockFont_26_08_29', 'Courier New', Courier, monospace;
+  color: #f5c842;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+}
+
+.hourGroup,
+.minuteGroup,
+.secondGroup {
+  display: flex;
+}
+
+.digit {
+  font-size: 12vh;
+  line-height: 1;
+}
