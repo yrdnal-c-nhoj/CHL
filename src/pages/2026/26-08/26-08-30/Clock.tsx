@@ -1,6 +1,7 @@
 import fontUrl from '@/assets/fonts/26fonts/26-08-30.otf?url';
 import { useEffect, useRef } from 'react';
 import water from '../../../../assets/images/26_images/26-08/26-08-30/water.webp';
+import styles from './Clock.module.css';
 
 export const assets = [water, fontUrl];
 
@@ -12,7 +13,6 @@ const BASE_RADIUS = 20;
 const BOUNCE_RADIUS = 150;
 const GRID_STEP = 100;
 const NODE_SPEED = 0.01;
-const BACKGROUND_COLOR = 'hsl(195, 100%, 7%)';
 
 type TimeCategory = 'hours' | 'minutes' | 'ampm';
 
@@ -219,42 +219,16 @@ export default function SeaWavesTextClock() {
   useWaveTextAnimation(canvasRef, timeStateRef);
 
   return (
-    <div
-      style={{
-        margin: 0,
-        padding: 0,
-        backgroundColor: BACKGROUND_COLOR,
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        position: 'relative',
-      }}
-    >
+    <div className={styles.container}>
       <img
         src={water}
         alt=""
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          display: 'block',
-          zIndex: 0,
-        }}
+        className={styles.bgImage}
       />
+
       <canvas
         ref={canvasRef}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          display: 'block',
-          zIndex: 1,
-        }}
+        className={styles.canvas}
       />
     </div>
   );
