@@ -6835,7 +6835,9 @@
     "title": "Maze",
     "tags": [
       "digital",
-      "grid"
+      "grid",
+      "horizon",
+      "fly"
     ]
   },
   {
@@ -6849,6 +6851,18 @@
       "animal",
       "shell",
       "purple"
+    ]
+  },
+  {
+    "path": "26-08-30",
+    "date": "26-08-30",
+    "title": "Undulate",
+    "tags": [
+      "digital",
+      "water",
+      "waves",
+      "wind",
+      "ocean"
     ]
   }
 ]
