@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { useClockPage } from '../useClockPage';
+import { useClockPage } from './useClockPage';
 
 const mockModule = () => 'MockClockComponent';
 

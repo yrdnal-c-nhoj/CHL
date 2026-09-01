@@ -7,7 +7,7 @@ import styles from './Clock.module.css';
 
 export const assets = [backgroundImage, dodecahedronFontFile];
 
-const TwelfthRootsOfUnityWithClock = memo(function TwelfthRootsOfUnityWithClock() {
+const TwelfthRootsOfUnityWithClock = memo(() => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const clockRef = useRef<HTMLCanvasElement>(null);
   const fontRef = useRef<string>('sans-serif');
