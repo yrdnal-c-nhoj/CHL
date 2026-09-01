@@ -85,7 +85,7 @@ const ClockInner =  () => {
           </div>
 
           <div className={styles.inside}>
-            <time className={styles.digitalClock} dateTime={isoTime} className={styles.srOnly}>
+            <time className={styles.digitalClock} dateTime={isoTime}>
               {formattedTime}
             </time>
           </div>

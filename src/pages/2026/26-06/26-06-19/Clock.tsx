@@ -45,7 +45,7 @@ const DigitalClock =  () => {
   return (
     <main className={styles.container} style={{ backgroundImage: `url(${glassbreak})` }}>
       {/* Accessible time element (Required) */}
-      <time dateTime={time.toISOString()} className={styles.semanticTime} className={styles.srOnly}>
+      <time dateTime={time.toISOString()} className={styles.semanticTime}>
         {time.toLocaleTimeString()}
       </time>
 

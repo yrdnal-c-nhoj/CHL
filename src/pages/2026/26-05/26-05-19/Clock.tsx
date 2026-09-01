@@ -39,7 +39,7 @@ const DigitalClock =  () => {
       <time
         dateTime={currentTime.toISOString()}
         className={styles.digitalTime}
-        style={{ fontFamily: 'ClockFont_26_05_19, sans-serif' }} className={styles.srOnly}
+        style={{ fontFamily: 'ClockFont_26_05_19, sans-serif' }}
       >
         {timeString
           .replace(/\./g, '')
