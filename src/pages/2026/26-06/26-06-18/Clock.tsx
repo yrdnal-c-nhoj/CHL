@@ -75,6 +75,8 @@ const useClockTexture = () => {
       ctx.beginPath();
       ctx.arc(256, 256, 4, 0, Math.PI * 2);
       ctx.fill();
+
+      canvasTexture.needsUpdate = true;
     };
 
     return [canvasTexture, drawFn] as const;
@@ -137,7 +139,6 @@ const PyramidMesh = () => {
 
     if (draw && texture) {
       draw();
-      texture.needsUpdate = true;
     }
   });
 

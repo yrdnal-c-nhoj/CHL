@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useEffect, useRef, useMemo, useCallback , memo } from 'react';
 import { useSecondClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import { memo } from 'react';
 import styles from './Clock.module.css';
 
 import stars from '@/assets/images/25_images/25-04/25-04-02/stars.webp';
