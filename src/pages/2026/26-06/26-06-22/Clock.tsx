@@ -152,13 +152,14 @@ ClockCell.displayName = 'ClockCell';
 
 export default function DigitalClock() {
   const refsArr = useRef<NodeRefs[]>([]);
-  
-  if (refsArr.current.length === 0) {
-    refsArr.current = Array.from({ length: TOTAL_ELEMENTS }, () => ({ span: null, lens: null, prevW: -1 }));
-  }
-
   const bucketRef = useRef(-1);
   const rafRef    = useRef<number>(0);
+
+  useEffect(() => {
+    if (refsArr.current.length === 0) {
+      refsArr.current = Array.from({ length: TOTAL_ELEMENTS }, () => ({ span: null, lens: null, prevW: -1 }));
+    }
+  }, []);
 
   useEffect(() => {
     const linkId = 'google-font-bitcount';
