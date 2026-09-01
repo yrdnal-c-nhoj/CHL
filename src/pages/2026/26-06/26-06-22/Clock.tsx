@@ -122,16 +122,24 @@ interface ClockCellProps {
 }
 
 const ClockCell = React.memo(({ val, elRef }: ClockCellProps) => {
+  const spanRef = useRef<HTMLSpanElement>(null);
+  const lensRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    elRef.span = spanRef.current;
+    elRef.lens = lensRef.current;
+  }, [elRef]);
+
   return (
     <div style={styles.cell}>
       <span
-        ref={r => { elRef.span = r; }}
+        ref={spanRef}
         style={styles.span}
       >
         {val}
       </span>
       <div
-        ref={r => { elRef.lens = r; }}
+        ref={lensRef}
         style={styles.lens}
       />
     </div>
