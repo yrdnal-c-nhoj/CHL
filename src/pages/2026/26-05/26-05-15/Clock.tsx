@@ -99,7 +99,7 @@ const DigitalClock =  () => {
           <time
             className={styles.clockDisplay}
             dateTime={isoTime}
-            aria-label={ariaLabel} className={styles.srOnly}
+            aria-label={ariaLabel}
           >
             <span className={styles.timeSegment}>
               {hours}
