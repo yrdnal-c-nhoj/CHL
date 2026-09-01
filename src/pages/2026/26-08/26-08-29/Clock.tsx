@@ -3,7 +3,8 @@ import purpleImage from '@/assets/images/26_images/26-08/26-08-29/purple.webp';
 import shellImage from '@/assets/images/26_images/26-08/26-08-29/shell.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSecondClock } from '@/utils/hooks';
+import React from 'react';
 import styles from './Clock.module.css';
 
 export const assets = [shellImage, purpleImage, fontUrl];
@@ -12,20 +13,46 @@ const fontConfigs: FontConfig[] = [
   { fontFamily: 'ClockFont_26_08_29', fontUrl },
 ];
 
-const ROMAN_NUMERALS = ['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'];
+const pad = (n: number) => String(n).padStart(2, '0');
+
+const PHOENICIAN_STROKES: string[] = [
+  '',              // 0
+  '𐤖',             // 1
+  '𐤚',             // 2
+  '𐤛',             // 3
+  '𐤛𐤖',           // 4
+  '𐤛𐤚',           // 5
+  '𐤛𐤛',           // 6
+  '𐤛𐤛𐤖',         // 7
+  '𐤛𐤛𐤚',         // 8
+  '𐤛𐤛𐤛',         // 9
+];
+
+const PHOENICIAN_TEN = '𐤗';   // 10
+const PHOENICIAN_TWENTY = '𐤘'; // 20
+
+const toPhoenician = (n: number): string => {
+  if (n === 0) return '\u00A0';
+  const twenties = Math.floor(n / 20);
+  const remainder = n % 20;
+  const tens = remainder >= 10 ? 1 : 0;
+  const ones = remainder - tens * 10;
+  return PHOENICIAN_TWENTY.repeat(twenties) + (tens ? PHOENICIAN_TEN : '') + PHOENICIAN_STROKES[ones];
+};
 
 const Clock = () => {
-  const time = useMillisecondClock();
+  const time = useSecondClock();
   useSuspenseFontLoader(fontConfigs);
 
-  const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
-  const minutes = time.getMinutes() + seconds / 60;
-  const hours = (time.getHours() % 12) + minutes / 60;
+  const hours = pad(time.getHours());
+  const minutes = pad(time.getMinutes());
+  const seconds = pad(time.getSeconds());
+  const isoTime = time.toISOString();
 
   return (
     <main
       className={styles.container}
-      style={{ '--shells': `url(${shellImage})` } as React.CSSProperties}
+      style={{ '--shells': `url(${shellImage}) ` } as React.CSSProperties}
     >
       <svg className={styles.clockFace} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -52,53 +79,16 @@ const Clock = () => {
           <image href={purpleImage} x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMid slice" />
         </g>
 
-        {ROMAN_NUMERALS.map((roman, i) => {
-          const angle = i * 30;
-          const radian = ((angle - 90) * Math.PI) / 180;
-          const cx = 50 + 42 * Math.cos(radian);
-          const cy = 50 + 42 * Math.sin(radian);
-
-          return (
-            <text
-              key={roman}
-              x={cx}
-              y={cy}
-              fill="url(#goldGradient)"
-              stroke="#e0b34a"
-              strokeWidth="0.15"
-              fontSize="9"
-              fontWeight="bold"
-              fontFamily="ClockFont_26_08_29"
-              textAnchor="middle"
-              dominantBaseline="central"
-              transform={`rotate(${angle} ${cx} ${cy})`}
-              filter="url(#goldGlow)"
-            >
-              {roman}
-            </text>
-          );
-        })}
-
-        <line
-          x1="50" y1="50" x2="50" y2="28"
-          stroke="url(#goldGradient)" strokeWidth="2.2" strokeLinecap="round"
-          transform={`rotate(${hours * 30} 50 50)`}
-        />
-        <line
-          x1="50" y1="50" x2="50" y2="18"
-          stroke="url(#goldGradient)" strokeWidth="1.5" strokeLinecap="round"
-          transform={`rotate(${minutes * 6} 50 50)`}
-        />
-        <line
-          x1="50" y1="55" x2="50" y2="5"
-          stroke="url(#goldGradient)" strokeWidth="0.8" strokeLinecap="round"
-          transform={`rotate(${seconds * 6} 50 50)`}
-        />
-
         <circle cx="50" cy="50" r="1" fill="url(#goldGradient)" stroke="#8a6508" strokeWidth="0.2" />
       </svg>
 
-      <time dateTime={time.toISOString()} className={styles.srOnly}>
+      <div className={styles.digitalClock}>
+        <div className={styles.timeUnit}>{toPhoenician(parseInt(hours, 10))}</div>
+        <div className={styles.timeUnit}>{toPhoenician(parseInt(minutes, 10))}</div>
+        <div className={styles.timeUnit}>{toPhoenician(parseInt(seconds, 10))}</div>
+      </div>
+
+      <time dateTime={isoTime} className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
     </main>
