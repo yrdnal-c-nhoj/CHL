@@ -100,7 +100,7 @@ const TireTilingClock =  () => {
       })}
 
       {/* Digital Readout */}
-      <time dateTime={isoTime} className={styles.timeDisplay} className={styles.srOnly}>
+      <time dateTime={isoTime} className={styles.timeDisplay}>
         {time
           .toLocaleTimeString('en-GB', { hour12: false })
           .split('')

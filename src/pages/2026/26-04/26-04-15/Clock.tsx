@@ -37,9 +37,9 @@ const Clock =  () => {
         <img src={catUrl} alt="Random Cat" className={styles.catImage} />
       </div>
       <time
-        dateTime={time.toISOString()}
-        className={styles.clock} className={styles.srOnly}
-      >
+          dateTime={time.toISOString()}
+          className={styles.clock}
+        >
         <div className={styles.digitBox}>
           <span className={styles.digit}>{hours[0]}</span>
         </div>

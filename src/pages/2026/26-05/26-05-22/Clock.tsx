@@ -56,7 +56,7 @@ const Clock =  () => {
       <div className={styles.clockFace}>
         <time
           className={styles.digitalGrid}
-          dateTime={time.toISOString()} className={styles.srOnly}
+          dateTime={time.toISOString()}
         >
           {digits.map((digit, index) => (
             <div 

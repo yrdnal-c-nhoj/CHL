@@ -25,7 +25,7 @@ const SweepClock = () => {
 
   return (
     <main className={styles.container}>
-      <time dateTime={isoTime} className={styles.aspectWrapper} className={styles.srOnly}>
+      <time dateTime={isoTime} className={styles.aspectWrapper}>
         {/* LAYER 1: OUTER RING - SECONDS (Full Size) */}
         <div
           className={`${styles.ring} ${styles.secondsRing}`}

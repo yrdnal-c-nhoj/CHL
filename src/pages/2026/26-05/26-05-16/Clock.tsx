@@ -33,7 +33,7 @@ const AnalogClock =  () => {
       )}
 
       <div className={styles.analogClock}>
-        <time className={styles.face} dateTime={isoTime} className={styles.srOnly}>
+        <time className={styles.face} dateTime={isoTime}>
           {/* Hands */}
           <div
             className={styles.hourHand}

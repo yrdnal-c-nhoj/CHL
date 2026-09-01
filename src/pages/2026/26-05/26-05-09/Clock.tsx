@@ -48,7 +48,7 @@ const CaptureClock =  () => {
           <div className={styles.center} />
         </div>
       </div>
-      <time dateTime={time.toISOString()} className="sr-only" className={styles.srOnly}>
+      <time dateTime={time.toISOString()} className="sr-only">
         {formatted}
       </time>
     </main>

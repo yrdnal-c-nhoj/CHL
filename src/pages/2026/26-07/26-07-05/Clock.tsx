@@ -103,7 +103,7 @@ const DigitalClock: FC = () => {
   }, [time]);
 
   return (
-    <time className={styles.timeDisplay} dateTime={isoTime} className={styles.srOnly}>
+    <time className={styles.timeDisplay} dateTime={isoTime}>
       <div className={styles.digitGroup}>
         <div className={styles.digitBox}>{hours[0]}</div>
         <div className={styles.digitBox}>{hours[1]}</div>

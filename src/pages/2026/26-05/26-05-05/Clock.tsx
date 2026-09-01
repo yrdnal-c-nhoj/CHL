@@ -39,7 +39,7 @@ const Clock =  () => {
       <time
         dateTime={time.toISOString()}
         aria-label={`Current time is ${time.toLocaleTimeString()}`}
-        className={styles.clockContainer} className={styles.srOnly}
+        className={styles.clockContainer}
       >
         {digits.map((digit, index) => (
           <div key={index} className={styles.digit}>

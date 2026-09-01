@@ -125,7 +125,7 @@ const AnalogClock =  () => {
         playsInline
         src={carVideo}
       />
-      <time dateTime={isoTime} className={styles.timeWrapper} className={styles.srOnly}>
+      <time dateTime={isoTime} className={styles.timeWrapper}>
         <div className={styles.digitalTime}>
           <span className={styles.digitGroup}>
             <span className={styles.digitBox}>

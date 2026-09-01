@@ -41,7 +41,7 @@ const DigitalClock =  () => {
     >
       <time
         dateTime={currentTime.toISOString()}
-        className={styles.digitalTime} className={styles.srOnly}
+        className={styles.digitalTime}
       >
         {timePart}
         {ampmPart && <span className={styles.ampm}> {ampmPart}</span>}

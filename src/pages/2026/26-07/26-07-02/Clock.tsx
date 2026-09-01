@@ -71,8 +71,6 @@ const FloatingDigitalClocks =  () => {
   const timeString = formatTime(time);
 
   useEffect(() => {
-
-  useEffect(() => {
     let animationFrameId: number;
 
     const updatePosition = () => {

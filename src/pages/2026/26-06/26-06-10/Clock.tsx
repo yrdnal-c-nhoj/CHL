@@ -69,7 +69,7 @@ const DigitalClock = () => {
         <img src={phoneImg} alt="Retro Phone" className={styles.phoneImage} />
       </div>
 
-      <time className={styles.timeRow} dateTime={time.toLocaleTimeString()} className={styles.srOnly}>
+      <time className={styles.timeRow} dateTime={time.toLocaleTimeString()}>
         {timeParts.map((part, i) => (
           <div key={i} className={styles.digit}>
             {part}
