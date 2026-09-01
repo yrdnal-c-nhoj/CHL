@@ -132,7 +132,10 @@ function invertColor(hex: string): string {
 export const DissolvingDiffusionClock =  () => {
   const time = useSecondClock();
   const timeRef = useRef(time);
-  timeRef.current = time;
+
+  useEffect(() => {
+    timeRef.current = time;
+  }, [time]);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);

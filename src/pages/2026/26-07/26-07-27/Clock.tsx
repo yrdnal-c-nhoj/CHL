@@ -1,6 +1,6 @@
 import { useMillisecondClock } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
 // 1. Asset Exports
@@ -110,7 +110,7 @@ const ClockComponent =  () => {
   }, [time]);
 
   // Initial random hue tint
-  const randomStartHue = useMemo(() => Math.floor(Math.random() * 360), []);
+  const [randomStartHue] = useState(() => Math.floor(Math.random() * 360));
 
   return (
     <main className={styles.container} aria-label="Analog Clock">
