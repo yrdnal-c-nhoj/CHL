@@ -152,7 +152,7 @@ export const DissolvingDiffusionClock =  () => {
     animFrameId: null,
     isInitializing: false,
     phase: "DISPLAY",
-    phaseStartTime: Date.now(),
+    phaseStartTime: 0,
     swapHistory: [],
   });
 

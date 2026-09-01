@@ -106,17 +106,17 @@ AnimatedHands.displayName = 'AnimatedHands';
 
 const TangerineClock =  () => {
   const time = useMillisecondClock();
-  const [clockSize, setClockSize] = useState<number>(300);
+  const [clockSize, setClockSize] = useState<number>(() =>
+    Math.min(window.innerWidth * 0.9, window.innerHeight * 0.7, 600)
+  );
   const [isClient, setIsClient] = useState<boolean>(false);
+
+  const handleResize = () => {
+    setClockSize(Math.min(window.innerWidth * 0.9, window.innerHeight * 0.7, 600));
+  };
 
   useEffect(() => {
     setIsClient(true);
-    
-    const handleResize = () => {
-      setClockSize(Math.min(window.innerWidth * 0.9, window.innerHeight * 0.7, 600));
-    };
-
-    handleResize();
 
     let resizeTimer: ReturnType<typeof setTimeout>;
     const debouncedResize = () => {

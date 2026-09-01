@@ -51,12 +51,8 @@ const FloatingDigitalClocks =  () => {
   const time = useSecondClock();
 
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [clocks, setClocks] = useState<FloatingClock[]>([]);
-
-  const timeString = formatTime(time);
-
-  useEffect(() => {
-    const initialClocks: FloatingClock[] = Array.from({ length: 10 }, (_, i) => ({
+  const [clocks, setClocks] = useState<FloatingClock[]>(() =>
+    Array.from({ length: 10 }, (_, i) => ({
       id: i,
       x: Math.random() * 80 + 10,
       y: Math.random() * 120,
@@ -69,9 +65,12 @@ const FloatingDigitalClocks =  () => {
       velX: getRandomVelocity(),
       velY: getRandomVelocity(),
       velZ: getRandomVelocity(),
-    }));
-    setClocks(initialClocks);
-  }, []);
+    }))
+  );
+
+  const timeString = formatTime(time);
+
+  useEffect(() => {
 
   useEffect(() => {
     let animationFrameId: number;

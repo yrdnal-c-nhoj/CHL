@@ -45,7 +45,9 @@ const useIsMobile = (breakpoint = 768) => {
 
 const VTEC =  () => {
   const time = useMillisecondClock();
-  const [visibleImages, setVisibleImages] = useState<ImageData[]>([]);
+  const [visibleImages, setVisibleImages] = useState<ImageData[]>(() =>
+    ASSET_POOL.map((src) => createRandomImage(src))
+  );
   const idCounter = useRef(0);
   const isMobile = useIsMobile();
 
@@ -93,11 +95,9 @@ const VTEC =  () => {
   }, [createRandomImage]);
 
   useEffect(() => {
-    setVisibleImages(ASSET_POOL.map((src) => createRandomImage(src)));
-
     const interval = setInterval(cycleImage, 1000);
     return () => clearInterval(interval);
-  }, [cycleImage, createRandomImage]);
+  }, [cycleImage]);
 
   return (
     <div
