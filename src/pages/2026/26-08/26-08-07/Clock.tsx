@@ -35,11 +35,6 @@ const Clock_26_08_07 = () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useSecondClock();
 
-  const [charStates, setCharStates] = useState<CharacterState[]>([]);
-
-  // Ref to hold timers to ensure they are cleared on unmount/re-run
-  const animationTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
-
   // Current time string (always up-to-date)
   const { timeString, ampm, accessibleTime, fullString } = useMemo(() => {
     const hours = time.getHours();
@@ -56,14 +51,14 @@ const Clock_26_08_07 = () => {
     };
   }, [time]);
 
-  // Initialize or update character states when the string length changes
-  useEffect(() => {
-    setCharStates(
-      Array(fullString.length)
-        .fill(null)
-        .map(() => ({ state: 'idle', fallAt: Infinity, shakeAt: Infinity })),
-    );
-  }, [fullString.length]);
+  const [charStates, setCharStates] = useState<CharacterState[]>(() =>
+    Array(fullString.length)
+      .fill(null)
+      .map(() => ({ state: 'idle', fallAt: Infinity, shakeAt: Infinity }))
+  );
+
+  // Ref to hold timers to ensure they are cleared on unmount/re-run
+  const animationTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   // Animation cycle: trigger a full cascade of falling characters using rAF
   useEffect(() => {
