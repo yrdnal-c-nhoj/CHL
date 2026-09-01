@@ -55,10 +55,10 @@ const backgroundGridStyle: CSSProperties = {
 };
 
 const tileStyle: CSSProperties = {
-  backgroundImage: 'var(--tile-img)',
+  backgroundImage: `url("${backgroundImage}")`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
-  transform: 'scale(var(--sx), var(--sy))',
+  transform: 'scale(-1, -1)',
 };
 
 const middleLayerStyle: CSSProperties = {
@@ -99,11 +99,13 @@ const colonBoxStyle: CSSProperties = {
   display: 'inline-block',
 };
 
-const Clock =  () => {
+const Clock = () => {
   const time = useSecondClock();
   const [dimensions, setDimensions] = useState({ cols: 1, rows: 1 });
-  const [rotationAngle, setRotationAngle] = useState(0);
 
+  useSuspenseFontLoader(fontConfigs);
+
+  // Debounced grid dimension calculator
   useEffect(() => {
     const update = () =>
       setDimensions({
@@ -115,56 +117,36 @@ const Clock =  () => {
     return () => window.removeEventListener('resize', update);
   }, []);
 
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
-
-  useEffect(() => {
-    const tick = () => {
-      setRotationAngle((prev) => (prev + 1) % 360);
-      timerRef.current = setTimeout(tick, 50);
-    };
-    timerRef.current = setTimeout(tick, 50);
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, []);
-
-  useSuspenseFontLoader(fontConfigs);
-
-  const timeString = useMemo(() => {
+  // Format time digits into fixed-length array
+  const characters = useMemo(() => {
     const h = time.getHours().toString().padStart(2, '0');
     const m = time.getMinutes().toString().padStart(2, '0');
     const s = time.getSeconds().toString().padStart(2, '0');
-    return `${h}:${m}:${s}`;
+    return `${h}:${m}:${s}`.split('');
   }, [time]);
 
+  // Background tile grid rendering
   const backgroundTiles = useMemo(() => {
     const total = dimensions.cols * dimensions.rows;
-    return Array.from({ length: total }, (_, i) => {
-      const row = Math.floor(i / dimensions.cols);
-      const col = i % dimensions.cols;
-      return (
-        <div
-          key={i}
-          style={{
-            ...tileStyle,
-            '--tile-img': `url("${backgroundImage}")`,
-            '--sx': '-1',
-            '--sy': '-1',
-          } as CSSProperties}
-        />
-      );
-    });
+    return Array.from({ length: total }, (_, i) => (
+      <div key={i} style={tileStyle} />
+    ));
   }, [dimensions]);
 
   return (
-    <main className={styles.container} style={{
-      ...containerStyle,
-      '--tile-width': `${TILE_WIDTH}px`,
-      '--tile-height': `${TILE_HEIGHT}px`,
-      '--grid-cols': String(dimensions.cols),
-      '--grid-rows': String(dimensions.rows),
-    } as CSSProperties}>
-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+    <main
+      className={styles.container}
+      style={{
+        ...containerStyle,
+        '--tile-width': `${TILE_WIDTH}px`,
+        '--tile-height': `${TILE_HEIGHT}px`,
+        '--grid-cols': String(dimensions.cols),
+        '--grid-rows': String(dimensions.rows),
+      } as CSSProperties}
+    >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
 
       <video
         src={windflowerVideo}
@@ -177,12 +159,16 @@ const Clock =  () => {
 
       <div style={backgroundGridStyle}>{backgroundTiles}</div>
 
+      {/* Middle urn image rotated smoothly via CSS animation */}
       <div
-        style={{ ...middleLayerStyle, transform: `rotate(${rotationAngle}deg)` }}
+        style={{
+          ...middleLayerStyle,
+          animation: 'rotateUrn 18s linear infinite',
+        }}
       />
 
       <time dateTime={time.toISOString()} style={timeStyle}>
-        {timeString.split('').map((char, index) => (
+        {characters.map((char, index) => (
           <span
             key={index}
             style={char === ':' ? colonBoxStyle : digitBoxStyle}
