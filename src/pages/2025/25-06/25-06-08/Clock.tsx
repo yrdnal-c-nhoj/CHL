@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import bgImage from '@/assets/images/25_images/25-06/25-06-08/bg.webp';
 import styles from './Clock.module.css';
 
@@ -24,7 +24,7 @@ const FaceCardClock =  () => {
   const hourRef = useRef<HTMLDivElement>(null);
   const minuteRef = useRef<HTMLDivElement>(null);
   const secondRef = useRef<HTMLDivElement>(null);
-  const time = useSecondClock();
+  const time = useClock();
 
   useEffect(() => {
     const updateClock =  () => {

@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import background from '@/assets/images/25_images/25-12/25-12-21/cass.webp';
 import backgroundImage from '@/assets/images/25_images/25-12/25-12-21/tape.gif';
@@ -8,7 +8,7 @@ export const assets = [background, backgroundImage, FONT_PATH];
 
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const fontFamily = 'CasFont_251221';
 
   const fontConfigs = useMemo(

@@ -1,7 +1,7 @@
 import li251128font from '@/assets/fonts/25fonts/25-11-28-line.otf?url';
 import patternImg from '@/assets/images/25_images/25-11/25-11-28/line.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -16,7 +16,7 @@ const fontConfigs = [
 ];
 
 const TimelineClock = () => {
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
   const [isVertical, setIsVertical] = useState<boolean>(false);
   const [flash, setFlash] = useState<boolean>(false);
   const [comet, setComet] = useState<number>(-100);

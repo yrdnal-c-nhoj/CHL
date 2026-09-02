@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import bgImage from '@/assets/images/25_images/25-12/25-12-09/muybridge.webp';
 import customFont_2025_1210 from '@/assets/fonts/25fonts/25-12-09-muy.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -24,7 +24,7 @@ const digitBoxStyle = {
 } as const;
 
 export default function DigitalClock() {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
   useEffect(() => {

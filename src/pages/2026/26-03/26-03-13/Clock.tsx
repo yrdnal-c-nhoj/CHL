@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import veniceFont from '@/assets/fonts/26fonts/26-03-13-venice.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [veniceFont];
 
 
 const Clock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
   // The Live ID from your error message

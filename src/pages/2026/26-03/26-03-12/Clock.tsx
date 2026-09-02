@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import cocteauVideo from '@/assets/images/26_images/26-03/26-03-12/vr.mp4';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [cocteauVideo];
 
 
 const VirtualClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const videoRef = useRef(null);
 
   useEffect(() => {

@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
@@ -39,7 +39,7 @@ const RouletteClock: React.FC<RouletteClockProps> = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
 
   const [fontLoaded, setFontLoaded] = useState(true); // useSuspenseFontLoader handles font loading
 

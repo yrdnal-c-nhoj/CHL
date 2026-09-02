@@ -1,7 +1,7 @@
 import vegasFont from '@/assets/fonts/25fonts/25-07-05-vegas.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useRef } from 'react';
 export const assets = [vegasFont];
 
@@ -151,7 +151,7 @@ const Clock =  () => {
 
   const getTwo = (n: number) => String(n).padStart(2, '0');
 
-  const time = useSecondClock();
+  const time = useClock();
   const timeStr = `${getTwo(time.getHours())}${getTwo(time.getMinutes())}${getTwo(time.getSeconds())}`;
 
   return (

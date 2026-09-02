@@ -6,7 +6,7 @@ import bone from '@/assets/images/25_images/25-06/25-06-25/bone.png';
 import bone1 from '@/assets/images/25_images/25-06/25-06-25/bone1.png';
 import bone2 from '@/assets/images/25_images/25-06/25-06-25/bone2.png';
 import bgImage from '@/assets/images/25_images/25-06/25-06-25/bon.png';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [boneFont, bone, bone1, bone2, bgImage];
 
 const BoneClock =  () => {
@@ -14,7 +14,7 @@ const BoneClock =  () => {
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
   const numberContainerRef = useRef(null);
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  // useEffect for updateClock removed - time is reactive via useClock
 
   return (
     <div

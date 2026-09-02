@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 import spin from '@/assets/images/26_images/26-01/26-01-07/20206.gif';
@@ -14,7 +14,7 @@ const AquariumClock =  () => {
   const hourHandRef = useRef<HTMLImageElement>(null);
   const minHandRef = useRef<HTMLImageElement>(null);
   const secondHandRef = useRef<HTMLImageElement>(null);
-  const time = useSecondClock();
+  const time = useClock();
 
   const handFilter = 'drop-shadow(2px 1px 3px rgb(0, 3, 2)) drop-shadow(-1px 1px 1px rgb(6, 85, 31)) drop-shadow(1px -1px 1px rgb(10, 154, 109)) drop-shadow(-1px -1px 1px rgb(214, 227, 216))';
 

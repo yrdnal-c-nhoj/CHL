@@ -4,7 +4,7 @@ import fontUrl from '@/assets/fonts/26fonts/26-06-17.ttf?url';
 import carVideo from '@/assets/images/26_images/26-06/26-06-17/avalanche.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [carVideo, fontUrl];
@@ -17,7 +17,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const DigitalClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
 
   // Load fonts via Suspense, this will pause rendering until the font is ready
   useSuspenseFontLoader(fontConfigs);

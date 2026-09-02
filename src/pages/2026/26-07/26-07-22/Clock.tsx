@@ -1,5 +1,5 @@
 import zoomVideo from '@/assets/images/26_images/26-07/26-07-22/zoom.mp4';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useRef } from 'react';
 import styles from './Clock.module.css';
 
@@ -109,7 +109,7 @@ const DigitGroup: React.FC<{ value: string }> = React.memo(({ value }) => (
 DigitGroup.displayName = 'DigitGroup';
 
 const ZoomClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useVideoTiling(zoomVideo, canvasRef);
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { formatTime as formatClockTime } from '@/utils/clockUtils';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import videoFile from '@/assets/images/25_images/25-10/25-10-22/bg.mp4';
 import fallbackImg from '@/assets/images/25_images/25-10/25-10-22/bg.webp';
@@ -81,7 +81,7 @@ const clockContainerStyle: React.CSSProperties = {
 
 const ClockWithVideo =  () => {
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const fontConfigs = useMemo(

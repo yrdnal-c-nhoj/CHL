@@ -6,7 +6,7 @@ import sprou from '@/assets/images/25_images/25-05/25-05-26/sprou.gif';
 import sprout from '@/assets/images/25_images/25-05/25-05-26/sprout.gif';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
@@ -30,7 +30,7 @@ const fontConfigs: FontConfig[] = [
 
 const ClockComponent = () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock(33);
+  const time = useSmoothClock(33);
 
   const pad = (num: number, length: number) => num.toString().padStart(length, '0').split('');
 

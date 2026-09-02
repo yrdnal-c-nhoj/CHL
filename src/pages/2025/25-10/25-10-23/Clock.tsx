@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, memo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import f251023 from '@/assets/fonts/25fonts/25-10-23-gr.ttf?url';
 import bgImage from '@/assets/images/25_images/25-10/25-10-23/bg.gif';
 import styles from './Clock.module.css';
@@ -17,7 +17,7 @@ const fontConfigs = [
 
 const Clockgrid =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const [viewport, setViewport] = useState<{
     width: number;

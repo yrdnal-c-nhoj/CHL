@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import symJpg from '@/assets/images/25_images/25-12/25-12-23/sym.jpg';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [symJpg];
 
 const DigitalClock =  () => {

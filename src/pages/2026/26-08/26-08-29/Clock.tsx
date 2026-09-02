@@ -3,7 +3,7 @@ import purpleImage from '@/assets/images/26_images/26-08/26-08-29/purple.webp';
 import shellImage from '@/assets/images/26_images/26-08/26-08-29/shell.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React from 'react';
 import styles from './Clock.module.css';
 
@@ -41,7 +41,7 @@ const toPhoenician = (n: number): string => {
 };
 
 const Clock = () => {
-  const time = useSecondClock();
+  const time = useClock();
   useSuspenseFontLoader(fontConfigs);
 
   const hours = pad(time.getHours());

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import snowFont from '@/assets/fonts/26fonts/26-03-19-snow.otf?url';
@@ -29,7 +29,7 @@ interface ClockState {
 
 const Clock = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
 
   const fontConfigs = useMemo<FontConfig[]>(
     () => [

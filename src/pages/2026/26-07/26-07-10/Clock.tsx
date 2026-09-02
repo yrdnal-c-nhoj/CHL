@@ -3,7 +3,7 @@ import cloud from '@/assets/images/26_images/26-07/26-07-10/clouds.webp';
 import glassbreak from '@/assets/images/26_images/26-07/26-07-10/sunrise.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import type { CSSProperties, FC } from 'react';
 import { memo, useEffect, useMemo, useRef } from 'react';
 import styles from './Clock.module.css';
@@ -57,7 +57,7 @@ interface RainDrop {
 type StormState = 'calm' | 'rampUp' | 'downpour' | 'fade';
 
 const AnalogClock: FC = () => {
-  const time = useSecondClock();
+  const time = useClock();
   useSuspenseFontLoader(fontConfigs);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 

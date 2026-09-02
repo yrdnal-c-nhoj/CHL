@@ -1,5 +1,5 @@
 import type { FontConfig } from '@/types/clock';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React from 'react';
 import taurus from '../../../../assets/images/26_images/26-07/26-07-06/taurus.webp';
@@ -10,7 +10,7 @@ export const assets = [tile, taurus];
 const fontConfigs: FontConfig[] = [{ fontFamily: 'Rubik Dirt', fontUrl }];
 
 const VTEC =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   useSuspenseFontLoader(fontConfigs);
 
   const columns = 6;

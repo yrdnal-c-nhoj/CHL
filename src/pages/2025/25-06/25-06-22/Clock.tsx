@@ -1,4 +1,4 @@
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 export const assets: string[] = [];
 
 
@@ -56,7 +56,7 @@ function DigitSVG({ digit }) {
 }
 
 export default function ParallelLineClock() {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const h = time.getHours() % 12 || 12;
   const m = time.getMinutes().toString().padStart(2, '0');

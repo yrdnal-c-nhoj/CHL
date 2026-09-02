@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import morseFont from '@/assets/fonts/25fonts/25-06-27-morse.ttf';
 import birdsGif from '@/assets/images/25_images/25-06/25-06-27/birds.gif';
@@ -34,7 +34,7 @@ function randomInt(min, max) {
 }
 
 const MorseClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [digits, setDigits] = useState(Array(6).fill('0'));
   const [changingIndices, setChangingIndices] = useState(new Set());
   const wiresRef = useRef([]);

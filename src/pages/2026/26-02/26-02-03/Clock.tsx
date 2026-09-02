@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 export const assets: string[] = [];
 
@@ -68,7 +68,7 @@ const Clock =  () => {
 
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useSecondClock();
+  const time = useClock();
   const s = time.getSeconds();
   const m = time.getMinutes() + s / 60;
   const h = (time.getHours() % 12) + m / 60;

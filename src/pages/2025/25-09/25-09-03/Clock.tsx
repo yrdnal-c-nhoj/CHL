@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import cus250903font from '@/assets/fonts/25fonts/25-09-03-mau.ttf';
 import cornerImage from '@/assets/images/25_images/25-09/25-09-03/corner.gif';
@@ -19,7 +19,7 @@ function DigitalClock() {
     },
   ];
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [loaded, setLoaded] = useState<boolean>(false);
 
   useEffect(() => {

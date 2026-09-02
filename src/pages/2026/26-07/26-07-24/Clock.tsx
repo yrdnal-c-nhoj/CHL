@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react';
 
 import portholeVideo from '@/assets/images/26_images/26-07/26-07-25/porthole.mp4';
-import { calculateAngles , useMillisecondClock } from '@/utils/hooks';
+import { calculateAngles , useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [portholeVideo];
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const {
     hour: hourAngle,

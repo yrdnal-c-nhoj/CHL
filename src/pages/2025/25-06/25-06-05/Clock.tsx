@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import treeFont from '@/assets/fonts/25fonts/25-06-05-tree.ttf';
@@ -9,7 +9,7 @@ export const assets = [treeFont, tree1Img, tree2Img];
 
 
 const TreehouseClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [

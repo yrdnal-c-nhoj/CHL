@@ -1,6 +1,6 @@
 import clockFont from '@/assets/fonts/26fonts/26-05-22.otf?url';
 import cablesVideo from '@/assets/images/26_images/26-05/26-05-22/cable.mp4?url';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
@@ -12,7 +12,7 @@ import styles from './Clock.module.css';
 export const assets = [cablesVideo, clockFont];
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // Replace these with the specific characters you picked out for your font mapping
   const numbers = useMemo(

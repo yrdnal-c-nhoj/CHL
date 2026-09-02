@@ -1,7 +1,7 @@
 import watchFont from '@/assets/fonts/25fonts/25-05-29-watch.ttf';
 import gearsGif from '@/assets/images/25_images/25-05/25-05-29/gears-13950_128.gif';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { memo, useEffect, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -27,7 +27,7 @@ const Clock =  () => {
     { fontFamily: 'WatchFont', fontUrl: watchFont },
   ]);
 
-  const time = useSecondClock(); // Use canonical hook for time
+  const time = useClock(); // Use canonical hook for time
   const [hoursDigits, setHoursDigits] = useState<string[]>([]);
   const [minutesDigits, setMinutesDigits] = useState<string[]>([]);
   const [secondsDigits, setSecondsDigits] = useState<string[]>([]);

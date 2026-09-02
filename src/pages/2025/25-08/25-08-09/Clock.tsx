@@ -1,7 +1,7 @@
 import customFont from '@/assets/fonts/25fonts/25-08-09-box.ttf?url'; // Custom font file
 import { useClockAngles } from '@/hooks/useClockAngles';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React from 'react';
 import styles from './Clock.module.css';
 
@@ -19,7 +19,7 @@ const fontConfigs = [
 
 const ClockComponent =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const { hourAngle, minAngle, secAngle } = useClockAngles(time);
 
   // Render multi-angle clock hand

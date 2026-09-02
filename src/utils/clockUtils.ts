@@ -3,7 +3,7 @@
  *
  * Provides utility functions for clock pages.
  *
- * ⚠️ NOTE: For time hooks (useClockTime, useSecondClock, etc.),
+ * ⚠️ NOTE: For time hooks (useClock, useSmoothClock, useClockTime),
  * import from '@/utils/hooks' instead.
  * The useClockTime export here is maintained only for backward compatibility.
  */

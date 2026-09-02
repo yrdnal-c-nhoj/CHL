@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import bgVideo from '@/assets/images/26_images/26-03/26-03-28/water.mp4';
@@ -10,7 +10,7 @@ export const assets = [bgVideo, bgImage, clockFont];
 
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // Font configuration with Suspense loading
   const fontConfigs = useMemo<FontConfig[]>(

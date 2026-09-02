@@ -6,7 +6,7 @@ import hourImg from '@/assets/images/25_images/25-07/25-07-08/mint.png';
 import minuteImg from '@/assets/images/25_images/25-07/25-07-08/minty.webp';
 import secondImg from '@/assets/images/25_images/25-07/25-07-08/min.png';
 import bgImage from '@/assets/images/25_images/25-07/25-07-08/candy.jpg';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [mintFont, hourImg, minuteImg, secondImg, bgImage];
 
 const MintClock =  () => {
@@ -22,7 +22,7 @@ const MintClock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  // useEffect for updateClock removed - time is reactive via useClock
 
   return (
     <div

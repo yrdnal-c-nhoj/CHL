@@ -1,7 +1,7 @@
 // VenusClock.jsx
 import React, { useEffect, useRef, memo } from 'react';
 import { useMultiAssetLoader, useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import bgLayer1 from '@/assets/images/25_images/25-10/25-10-16/venus2.webp';
 import bgLayer2 from '@/assets/images/25_images/25-10/25-10-16/venus.webp';
 import fullBg from '@/assets/images/25_images/25-10/25-10-16/ve.jpg';
@@ -20,7 +20,7 @@ const fontConfigs = [
 
 const VenusClock =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useSecondClock();
+  const time = useClock();
   const [ready, setReady] = useState<boolean>(false);
   const [clockSizeVh, setClockSizeVh] = useState<number>(30);
 

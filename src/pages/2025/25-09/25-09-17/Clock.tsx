@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -16,7 +16,7 @@ export const assets = [backgroundImage, f250917fontt, centerImage, topImage, ove
 const pad = (n) => n.toString().padStart(2, '0');
 
 const DigitalClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [fadeIndex, setFadeIndex] = useState<number>(-1);
 

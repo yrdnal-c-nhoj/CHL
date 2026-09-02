@@ -1,5 +1,5 @@
 import { memo, useEffect, useState, useMemo } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import bgVideo from '@/assets/images/26_images/26-01/26-01-14/kuro.mp4';
@@ -17,7 +17,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const KurosawaClock = () => {
-  const clockTime = useSecondClock();
+  const clockTime = useClock();
   useSuspenseFontLoader(fontConfigs);
   const [videoError, setVideoError] = useState(false);
   const [mediaReady, setMediaReady] = useState(false);

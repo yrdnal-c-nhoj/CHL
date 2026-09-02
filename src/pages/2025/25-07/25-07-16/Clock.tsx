@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeometry.js';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import mobFontUrl from '@/assets/fonts/25fonts/25-07-16-mob.otf';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [mobFontUrl];
 
 const MobiusStripClock =  () => {
@@ -14,7 +14,7 @@ const MobiusStripClock =  () => {
   const fontConfigs = [{ fontFamily: 'mob', fontUrl: mobFontUrl }];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
-  // Removed undefined updateClock effect - time is reactive via useSecondClock
+  // Removed undefined updateClock effect - time is reactive via useClock
 
   return (
     <div

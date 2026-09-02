@@ -3,7 +3,7 @@ import React from 'react';
 import circleFont from '@/assets/fonts/25fonts/25-05-28-circle.ttf';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
@@ -79,7 +79,7 @@ const SingleClock: React.FC<{ time: Date; positionStyle: React.CSSProperties }> 
 
 const ClockComponent = () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   return (
     <main className={styles.container}>

@@ -1,6 +1,6 @@
 // GeologicTimeClock.jsx
 import React, { useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 export const assets: string[] = [];
 
 
@@ -15,7 +15,7 @@ const GEOLOGIC_EVENTS = [
 ];
 
 export default function GeologicTimeClock() {
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
 
   // Memoize the time formatting to separate data prep from rendering
   const timeData = useMemo(() => {

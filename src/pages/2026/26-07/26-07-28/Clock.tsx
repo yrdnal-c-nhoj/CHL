@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { memo, useMemo } from 'react';
 
 import fontUrl from '@/assets/fonts/26fonts/26-07-28.ttf?url';
@@ -25,7 +25,7 @@ const FONT_CONFIGS: FontConfig[] = [
 ];
 
 const ClockComponent =  () => {
-  const currentTime = useMillisecondClock();
+  const currentTime = useSmoothClock();
 
   useSuspenseFontLoader(FONT_CONFIGS);
 

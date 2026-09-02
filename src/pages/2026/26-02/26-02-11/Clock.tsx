@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 
 import bellImage2 from '@/assets/images/26_images/26-02/26-02-11/bell.webp';
 import bellImage1 from '@/assets/images/26_images/26-02/26-02-11/bell.gif';
@@ -136,7 +136,7 @@ const ClockHand: React.FC<ClockHandProps> = ({ type, rotation }) => {
 const CenterDot = () => <div style={styles.centerDot} />;
 
 const AnalogClock =  () => {
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
   const { hr, min, sec } = calculateTimeValues(currentTime);
 
   return (

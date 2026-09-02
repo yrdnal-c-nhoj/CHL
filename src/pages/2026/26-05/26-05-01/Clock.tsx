@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 
 import backgroundImage from '@/assets/images/26_images/26-05/26-05-01/sampson-radar-spinning-loop-1yfouy6i3iowbryl-ezgif.com-speed.webp';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 export const assets = [backgroundImage];
@@ -44,7 +44,7 @@ const ClockHand: React.FC<HandProps> = ({
 };
 
 const AnalogClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // Get current dimensions for oval calculations
   const [dims, setDims] = React.useState({

@@ -1,5 +1,5 @@
 import soapVideo from '@/assets/images/26_images/26-08/26-08-24/soap.webm';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useRef } from 'react';
 import styles from './Clock.module.css';
 
@@ -48,7 +48,7 @@ function getRandomBrightColor(): string {
 }
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);

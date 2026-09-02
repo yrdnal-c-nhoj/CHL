@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import platFont from '@/assets/fonts/26fonts/26-02-19-plat.ttf';
 export const assets = [platFont];
 
 
 const ImageDisplay =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const [showContent, setShowContent] = useState(false);
 
   const fontConfigs = useMemo(

@@ -1,4 +1,4 @@
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
 import React, { useMemo, useState } from 'react';
 import styles from './Clock.module.css';
@@ -93,7 +93,7 @@ const DIGIT_CONFIGS: DigitCustomization[] = [
 
 // 3. Main Component
 const ClockComponent =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // Calculate clock hand degrees efficiently
   const { hourDeg, minuteDeg, secondDeg } = useMemo(() => {

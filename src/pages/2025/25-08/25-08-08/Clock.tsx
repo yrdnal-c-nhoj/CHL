@@ -1,7 +1,7 @@
 import fontFile_2025_11_01 from '@/assets/fonts/25fonts/25-08-08-q.otf';
 import bgImage from '@/assets/images/25_images/25-08/25-08-08/q.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -22,7 +22,7 @@ const DigitalClock =  () => {
   ], []);
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const hours = time.getHours().toString().padStart(2, '0');
   const minutes = time.getMinutes().toString().padStart(2, '0');

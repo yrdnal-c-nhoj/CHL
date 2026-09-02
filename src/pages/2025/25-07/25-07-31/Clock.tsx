@@ -1,12 +1,12 @@
 import fontUrl from '@/assets/fonts/25fonts/25-07-31-bay.ttf';
 import bg from '@/assets/images/25_images/25-07/25-07-31/harold.webp';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React from 'react';
 export const assets = [fontUrl, bg];
 
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const formatTime = (n) => n.toString().padStart(2, '0');
 

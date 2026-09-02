@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 // 0. Hooks
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 
 // 1. Asset Exports
 import fontUrl from '@/assets/fonts/26fonts/26-08-16.ttf?url';
@@ -22,7 +22,7 @@ const fontConfigs: FontConfig[] = [
 
 // 2. Main Component
 const ClockComponent =  () => {
-  const time = useSecondClock();
+  const time = useClock();
 
   // Load font via Suspense
   useSuspenseFontLoader(fontConfigs);

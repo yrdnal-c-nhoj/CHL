@@ -4,7 +4,7 @@ import {
   ClockLoadingFallback,
   useSuspenseFontLoader,
 } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { memo, Suspense, useEffect, useMemo, useState } from 'react';
 
 import styles from './Clock.module.css';
@@ -158,7 +158,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const NightSkyInner =  () => {
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
 
   // Load date-specific font via Suspense
   useSuspenseFontLoader(fontConfigs);

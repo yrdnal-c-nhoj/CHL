@@ -2,7 +2,7 @@
 import heaFontUrl from '@/assets/fonts/25fonts/25-08-02-hea.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 // Standardized naming: YY-MM-DD-name.webp
 import bg2 from '@/assets/images/25_images/25-08/25-08-02/25-08-02-em.webp';
@@ -20,7 +20,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const ClockComponent =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // BTS: Suspend until font is ready to prevent FOUC
   useSuspenseFontLoader(fontConfigs);

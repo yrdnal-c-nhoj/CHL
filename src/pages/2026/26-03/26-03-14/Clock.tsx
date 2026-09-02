@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import backgroundImage from '@/assets/images/26_images/26-03/26-03-14/mother.webp';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 export const assets = [backgroundImage];
 
 
@@ -23,7 +23,7 @@ const ImageLayout = React.memo(() => (
 ));
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const formattedTime = useMemo(() => {
     const hours = time.getHours();

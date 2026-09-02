@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
@@ -71,7 +71,7 @@ const ClockApp: React.FC<ClockAppProps> = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
-  const clockTime = useSecondClock();
+  const clockTime = useClock();
 
   const getRandomPosition = useCallback((): { x: number; y: number } => {
     const x = Math.random() * (100 - 38.5);

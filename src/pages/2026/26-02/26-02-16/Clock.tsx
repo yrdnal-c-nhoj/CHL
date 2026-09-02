@@ -1,6 +1,6 @@
 import React, { useMemo, memo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 import mazeImage from '@/assets/images/26_images/26-02/26-02-16/puzzle.webp';
@@ -65,7 +65,7 @@ export const fontConfigs = [
 
 const DigitalClock =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useSecondClock();
+  const time = useClock();
 
   const timeParts = useMemo(() => {
     const h = time.getHours().toString().padStart(2, '0');

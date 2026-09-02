@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-07/25-07-01/mu.jpg';
 import fontUrl from '@/assets/fonts/25fonts/25-07-01-mult.ttf';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [bgImage, fontUrl];
 
 const CinemaClock =  () => {
@@ -20,7 +20,7 @@ const CinemaClock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  // useEffect for updateClock removed - time is reactive via useClock
 
   const fontFace = `
     @font-face {

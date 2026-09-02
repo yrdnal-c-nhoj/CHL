@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundUrl from '@/assets/images/26_images/26-01/26-01-22/1974.jpg';
 import digitTextureUrl from '@/assets/images/26_images/26-01/26-01-22/liq.webp';
@@ -14,7 +14,7 @@ const fontConfigs = [{ fontFamily: FONT_FAMILY, fontUrl }];
 
 const DynamicClock =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const dateTime = time.toISOString();
 
   const timeString = useMemo(() => [time.getHours(), time.getMinutes(), time.getSeconds()]

@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import {
   useCallback,
   useEffect,
@@ -33,7 +33,7 @@ const Clock =  () => {
   const timeRef = useRef<string>('');
   const animationRef = useRef<number>(0);
   const textPixelsRef = useRef<{ x: number; y: number }[]>([]);
-  const time = useSecondClock();
+  const time = useClock();
   const [slowdownActive, setSlowdownActive] = useState(false);
   const [resetKey, setResetKey] = useState(0);
 

@@ -1,6 +1,6 @@
 import customFont from '@/assets/fonts/26fonts/26-05-12.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -69,7 +69,7 @@ const BackgroundLayers =  () => (
 );
 
 const AnalogClock =  () => {
-  const currentTime = useMillisecondClock();
+  const currentTime = useSmoothClock();
 
   const rotations = useMemo(() => {
     const seconds =

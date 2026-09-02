@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 import walkVideo from '@/assets/images/26_images/26-03/26-03-18/walk.mp4';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import walkFont from '@/assets/fonts/26fonts/26-03-18-walk.ttf?url';
 export const assets = [walkVideo, walkFont];
 
 
 const Clock =  () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const hollywoodGold = '#FFD700';
   const vintageRose = '#FF69B4';

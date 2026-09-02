@@ -1,6 +1,6 @@
 import { memo, useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import cylFont from '@/assets/fonts/25fonts/25-06-03-cyl.ttf?url';
 import styles from './Clock.module.css';
 
@@ -19,7 +19,7 @@ const fontConfigs = [
 
 const FiligreeClock =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useSecondClock();
+  const time = useClock();
 
   return (
     <main className={styles.container} style={{

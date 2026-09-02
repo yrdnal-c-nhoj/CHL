@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 import carVideo from '@/assets/images/26_images/26-05/26-05-02/car.mp4';
@@ -73,7 +73,7 @@ const AnalogClock =  () => {
   useSuspenseFontLoader(fontConfigs);
 
   // This ensures the milliseconds update smoothly in the digital boxes.
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
   const hours = now.getHours();
   const minutes = now.getMinutes();
   const seconds = now.getSeconds();

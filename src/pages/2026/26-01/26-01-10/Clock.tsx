@@ -2,7 +2,7 @@ import d25090116font from '@/assets/fonts/26fonts/26-01-10-bit.ttf?url';
 import bgImage from '@/assets/images/26_images/26-01/26-01-10/moo.gif';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -15,7 +15,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const ClockComponent =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   useSuspenseFontLoader(fontConfigs);
 
   // LETTER MAPPING

@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
@@ -51,7 +51,7 @@ const Clock: React.FC<ClockProps> = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useMillisecondClock();
+  const currentTime = useSmoothClock();
   const animationFrameRef = useRef<number | null>(null);
   const secondHandRef = useRef<HTMLDivElement>(null);
   const minuteHandRef = useRef<HTMLDivElement>(null);

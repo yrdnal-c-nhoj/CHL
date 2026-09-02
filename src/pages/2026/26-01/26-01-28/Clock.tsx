@@ -1,6 +1,6 @@
 import { memo, useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import backgroundImage from '@/assets/images/26_images/26-01/26-01-28/three.webp';
 import styles from './Clock.module.css';
@@ -68,7 +68,7 @@ function CheckerboardBackground() {
 }
 
 function useClockAngles() {
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
   return useMemo(() => {
     const ms = now.getMilliseconds();
     const s = now.getSeconds() + ms / 1000;

@@ -7,7 +7,7 @@ import React, {
   useCallback,
 } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 
 const CONFIG = {
   UPDATE_INTERVAL: 1000,
@@ -100,7 +100,7 @@ const StaticCollage = memo<StaticCollageProps>(({ count }) => {
 });
 
 export default function RefactoredClock() {
-  const time = useSecondClock();
+  const time = useClock();
   const [dynamicImages, setDynamicImages] = useState<DynamicImages[]>([]);
   const [showContent, setShowContent] = useState(false);
 

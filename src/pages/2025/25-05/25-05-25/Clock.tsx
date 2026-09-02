@@ -6,7 +6,7 @@ import arm2 from '@/assets/images/25_images/25-05/25-05-25/arm2.gif';
 import arm3 from '@/assets/images/25_images/25-05/25-05-25/arm3.gif';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
@@ -22,7 +22,7 @@ const fontConfigs: FontConfig[] = [
 
 const ClockComponent = () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const second = time.getSeconds();
   const minute = time.getMinutes();

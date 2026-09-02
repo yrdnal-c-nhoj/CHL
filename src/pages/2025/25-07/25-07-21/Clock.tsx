@@ -1,5 +1,5 @@
 import { memo, useEffect, useState, useRef } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import anglerfishIdle from '@/assets/images/25_images/25-07/25-07-21/anglerfish-gif_anglerfish_idle_swim.webp';
 import anglerfishFuse from '@/assets/images/25_images/25-07/25-07-21/Deep-Sea-Anglerfish-Fuse.webp';
 import patternOverlay from '@/assets/images/25_images/25-07/25-07-21/qsxwwd.webp';
@@ -9,7 +9,7 @@ import styles from './Clock.module.css';
 export const assets = [anglerfishIdle, anglerfishFuse, patternOverlay, spinGif];
 
 const AnglerfishClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const timeText = time.toLocaleTimeString();
 
   return (

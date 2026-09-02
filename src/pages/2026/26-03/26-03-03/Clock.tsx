@@ -1,7 +1,7 @@
 import paperFont from '@/assets/fonts/26fonts/26-03-03-paper.ttf';
 import paperflowerVideo from '@/assets/images/26_images/26-03/26-03-02/paperflower.mp4';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
 export const assets = [paperFont, paperflowerVideo];
 
@@ -19,7 +19,7 @@ const AnalogClock =  () => {
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [dimensions, setDimensions] = useState({ width: 300, height: 300 });
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import customFontUrl from '@/assets/fonts/25fonts/25-08-17-scr.otf';
 import pageBg from '@/assets/images/25_images/25-08/25-08-17/bg.webp';
@@ -22,7 +22,7 @@ const StickyNoteClock =  () => {
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   let hours = time.getHours();
   const ampm = hours >= 12 ? 'PM' : 'AM';

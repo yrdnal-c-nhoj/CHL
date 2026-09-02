@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import airFontUrl from './air.ttf';
 import stampImg from './stamp.png';
@@ -143,7 +143,7 @@ const Clock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const timeStr = time
     .toLocaleTimeString('en-US', {

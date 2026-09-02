@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
@@ -9,7 +9,7 @@ import bgImg from '@/assets/images/26_images/26-04/26-04-18/radio.webp';
 export const assets = [fontUrl, bgImg];
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const fontConfigs = useMemo<FontConfig[]>(
     () => [{ fontFamily: 'H1', fontUrl }],

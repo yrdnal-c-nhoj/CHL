@@ -1,4 +1,4 @@
-import { useSecondClock } from "@/utils/hooks";
+import { useClock } from "@/utils/hooks";
 import React, { useEffect, useRef } from "react";
 import styles from './Clock.module.css';
 
@@ -130,7 +130,7 @@ function invertColor(hex: string): string {
 // ---------------------------------------------------------------------------
 
 export const DissolvingDiffusionClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const timeRef = useRef(time);
 
   useEffect(() => {

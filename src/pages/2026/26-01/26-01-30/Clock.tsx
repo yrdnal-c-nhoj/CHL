@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 
 // Asset Imports
 import clockFont from '@/assets/fonts/26fonts/26-01-30-ne.ttf';
@@ -12,7 +12,7 @@ export const assets = [clockFont, bgLayer1, bgLayer2];
 
 const DigitalClock: React.FC = () => {
   // Use custom hook to drive clock updates
-  const time = useSecondClock(); 
+  const time = useClock(); 
   
   // Font loader hook handling font availability
   const fontLoaded = useSuspenseFontLoader('MyCustomFont', clockFont);

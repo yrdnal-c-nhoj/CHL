@@ -1,7 +1,7 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useEffect, memo } from 'react';
-import { useSecondClock, useMillisecondClock } from '@/utils/hooks';
+import { useClock, useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 import fontUrl from '@/assets/fonts/26fonts/26-07-25.otf?url';
@@ -34,8 +34,8 @@ const BUFFER_CELLS = 5;
 const STRIP_RADIUS = Math.floor(VISIBLE_CELLS / 2) + BUFFER_CELLS;
 
 function HexClock() {
-  const now = useSecondClock();
-  const subSecondProgress = useMillisecondClock().getMilliseconds() / 1000;
+  const now = useClock();
+  const subSecondProgress = useSmoothClock().getMilliseconds() / 1000;
 
   useSuspenseFontLoader(fontConfigs);
 

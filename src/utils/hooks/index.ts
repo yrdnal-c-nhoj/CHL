@@ -5,22 +5,39 @@
  * All time hooks are rAF-based (no `setInterval`) and only re-render when the
  * relevant time unit changes, per ARCHITECTURE.md §4.3.
  *
- * - useSecondClock:      updates once per second (default for most clocks)
- * - useClockTime:        alias of useSecondClock (backward-compatible)
- * - useMillisecondClock: updates every ~50ms (smooth animations)
- * - useSmoothClock:      custom rAF interval (configurable)
- * - useIsDesktop:        matchMedia-based desktop breakpoint
+ * Canonical names:
+ * - useClock:          updates once per second (default for most clocks)
+ * - useSmoothClock:    updates every animation frame, throttled to a
+ *                      configurable interval (default 1000ms). Use for
+ *                      smooth hand rotations and sub-second animations.
+ *
+ * Deprecated aliases (kept as thin re-exports for backward compatibility —
+ * see CLOCK_CONTRACT.md §2.2 / §5):
+ * - useSecondClock       -> useClock
+ * - useMillisecondClock  -> useSmoothClock
+ * - useClockTime         -> useClock
  *
  * Usage:
- *   import { useSecondClock } from '@/utils/hooks';
- *   const time = useSecondClock(); // Returns Date object, updates every second
+ *   import { useClock } from '@/utils/hooks';
+ *   const time = useClock();           // Date, updates every second
+ *
+ *   import { useSmoothClock } from '@/utils/hooks';
+ *   const time = useSmoothClock(16);   // Date, updates ~60fps
  */
 
-export { useClockTime, formatTime, calculateAngles, generateTickMarks, isValidTime, timeStringToDate } from './useClockTime';
-export { useIsDesktop } from './useIsDesktop';
+export { useClock } from './useClock';
+export { useSmoothClock } from './useSmoothClock';
 export {
+  useSecondClock,
   useMillisecondClock,
-  useSecondClock, useSmoothClock
 } from './useSmoothClock';
+export {
+  useClockTime,
+  formatTime,
+  calculateAngles,
+  generateTickMarks,
+  isValidTime,
+  timeStringToDate,
+} from './useClockTime';
+export { useIsDesktop } from './useIsDesktop';
 export { useVisibilitySchedule } from './useVisibilitySchedule';
-

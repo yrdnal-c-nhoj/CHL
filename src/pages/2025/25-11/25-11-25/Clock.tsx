@@ -5,7 +5,7 @@ import fontClockUrl from '@/assets/fonts/25fonts/25-11-25-ntp.ttf?url';
 import backgroundImg from '@/assets/images/25_images/25-11/25-11-25/npt.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [fontMarqueeUrl, fontClockUrl, backgroundImg];
@@ -64,7 +64,7 @@ export const fontConfigs: FontConfig[] = [
 function NtpClock() {
   const { offset, isSynced } = useNtpOffset();
   useSuspenseFontLoader(fontConfigs);
-  const time = useSecondClock();
+  const time = useClock();
 
   const [ntpSeconds, setNtpSeconds] = useState<number>(0);
   const [digitColors, setDigitColors] = useState<

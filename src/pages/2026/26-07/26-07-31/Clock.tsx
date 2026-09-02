@@ -5,7 +5,7 @@ import borderImage from '@/assets/images/26_images/26-07/26-07-31/border.webp';
 import phobosVideo from '@/assets/images/26_images/26-07/26-07-31/phobos.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
@@ -23,7 +23,7 @@ const fontConfigs: FontConfig[] = [
 // 3. Main Component
 const PhobosClockComponent =  () => {
   // Use the standardized time hook
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // Load fonts via Suspense, this will pause rendering until the font is ready
   useSuspenseFontLoader(fontConfigs);

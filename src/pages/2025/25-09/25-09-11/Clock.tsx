@@ -1,5 +1,5 @@
 import { memo, useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import medievalFont from '@/assets/fonts/25fonts/25-09-11-ren.ttf?url';
@@ -17,7 +17,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const MedievalBanner =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   useSuspenseFontLoader(fontConfigs);
 
   const formatTime = (date) => {

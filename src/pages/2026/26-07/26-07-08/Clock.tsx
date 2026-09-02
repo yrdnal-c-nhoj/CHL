@@ -11,7 +11,7 @@ import num7 from '@/assets/images/26_images/26-07/26-07-08/7.webp';
 import num8 from '@/assets/images/26_images/26-07/26-07-08/8.webp';
 import num9 from '@/assets/images/26_images/26-07/26-07-08/9.webp';
 import peachImg from '@/assets/images/26_images/26-07/26-07-08/ocean.webp';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -105,7 +105,7 @@ AnimatedHands.displayName = 'AnimatedHands';
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 const TangerineClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [clockSize, setClockSize] = useState<number>(() =>
     Math.min(window.innerWidth * 0.9, window.innerHeight * 0.7, 600)
   );

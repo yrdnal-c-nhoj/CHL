@@ -4,7 +4,7 @@ import northImage from '@/assets/images/26_images/26-06/26-06-04/nort.webp';
 import animalsVideo from '@/assets/images/26_images/26-06/26-06-04/north.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
@@ -26,7 +26,7 @@ const fontConfigs: FontConfig[] = [
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   useSuspenseFontLoader(fontConfigs);
 
   const { hours, minutes, ampm } = useMemo(() => {

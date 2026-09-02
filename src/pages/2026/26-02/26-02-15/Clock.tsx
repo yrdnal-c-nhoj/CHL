@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import backgroundImage from '@/assets/images/26_images/26-02/26-02-15/caldera.webp';
 import fontFile from '@/assets/fonts/26fonts/26-02-15-fire.ttf';
 export const assets = [backgroundImage, fontFile];
@@ -87,7 +87,7 @@ export default function PixelInverseClock() {
     return () => window.removeEventListener('resize', handleResize);
   }, [assetsLoaded]);
 
-  const time = useSecondClock();
+  const time = useClock();
 
   const render = (ctx) => {
     const { width: w, height: h } = ctx.canvas;

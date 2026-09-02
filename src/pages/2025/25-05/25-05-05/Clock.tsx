@@ -1,7 +1,7 @@
 import mapFont from '@/assets/fonts/25fonts/25-05-05-Map.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 export const assets = [mapFont];
 
@@ -21,7 +21,7 @@ const WarholGraveCamClock =  () => {
     [],
   );
   useSuspenseFontLoader(fontConfigs);
-  const currentTime = useSecondClock(); // Standardized hook for smooth updates
+  const currentTime = useClock(); // Standardized hook for smooth updates
 
   const time = useMemo(() => {
     const now = currentTime;

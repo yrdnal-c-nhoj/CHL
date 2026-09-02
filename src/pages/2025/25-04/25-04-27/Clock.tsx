@@ -2,7 +2,7 @@ import coinGif from '@/assets/images/25_images/25-04/25-04-27/coin.gif';
 import spinWebp from '@/assets/images/25_images/25-04/25-04-27/spin.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -21,7 +21,7 @@ const SpinningCoinClock: React.FC<SpinningCoinClockProps> = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for time updates
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
 
   const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
     const hours = currentTime.getHours() % 12;

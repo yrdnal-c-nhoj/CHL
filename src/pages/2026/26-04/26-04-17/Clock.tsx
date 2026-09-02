@@ -1,6 +1,6 @@
 import backgroundImage from '@/assets/images/26_images/26-04/26-04-17/tati.webp';
 import type { FontConfig } from '@/types/clock';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
@@ -22,7 +22,7 @@ const Clock =  () => {
   );
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const { hours, minutes, seconds } = useMemo(() => {
     const h = formatTime(time.getHours());

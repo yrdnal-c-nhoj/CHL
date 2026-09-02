@@ -3,7 +3,7 @@ import floorImage from '@/assets/images/26_images/26-08/26-08-07/floor.webp';
 import wallImage from '@/assets/images/26_images/26-08/26-08-07/wall.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -33,7 +33,7 @@ interface CharacterState {
 // -----------------------------------------------------------------------------
 const Clock_26_08_07 = () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useSecondClock();
+  const time = useClock();
 
   // Current time string (always up-to-date)
   const { timeString, ampm, accessibleTime, fullString } = useMemo(() => {

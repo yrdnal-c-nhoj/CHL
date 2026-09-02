@@ -5,7 +5,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/26_images/26-01/26-01-05/pyr.webp';
 import gizaFont from '@/assets/fonts/26fonts/26-01-06-26-01-05-giza.otf?url';
 import type { FontConfig } from '@/types/clock';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [backgroundImage, gizaFont];
 
 export default function PyramidzBackground() {

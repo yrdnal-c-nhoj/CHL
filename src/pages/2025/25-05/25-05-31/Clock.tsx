@@ -8,7 +8,7 @@ import el3 from '@/assets/images/25_images/25-05/25-05-31/el3.png';
 import eleGif from '@/assets/images/25_images/25-05/25-05-31/ele.gif';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
@@ -24,7 +24,7 @@ const fontConfigs: FontConfig[] = [
 
 const ClockComponent = () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock(50); // Update at a reasonable frame rate
+  const time = useSmoothClock(50); // Update at a reasonable frame rate
 
   const t = time.getTime();
   const seconds = time.getSeconds() + time.getMilliseconds() / 1000;

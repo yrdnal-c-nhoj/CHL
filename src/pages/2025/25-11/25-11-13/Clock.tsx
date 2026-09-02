@@ -1,5 +1,5 @@
 import bgImage from '@/assets/images/25_images/25-11/25-11-13/bg.webp';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -108,7 +108,7 @@ function SingleSlowRollingClock({ duration, direction }: SingleClockProps) {
     minute: HTMLDivElement | null;
     second: HTMLDivElement | null;
   }>({ hour: null, minute: null, second: null });
-  const now = useMillisecondClock(); // Standardized animation loop
+  const now = useSmoothClock(); // Standardized animation loop
 
   // Set a large distance to ensure the clock travels completely off-screen
   const travelDistance = 150; // 150vw

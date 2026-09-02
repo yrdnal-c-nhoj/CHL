@@ -1,6 +1,7 @@
 import { memo, useEffect, useState, useMemo, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
+import { useClock } from '@/utils/hooks';
 import sandTexture from '@/assets/images/25_images/25-12/25-12-19/sand.webp';
 import FONT_PATH from '@/assets/fonts/25fonts/25-12-19-hour.ttf?url';
 import styles from './Clock.module.css';
@@ -18,7 +19,7 @@ const fontConfigs: FontConfig[] = [
 export const assets = [sandTexture, FONT_PATH];
 
 const HourglassTimer =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const [percentDayPassed, setPercentDayPassed] = useState<number>(0);
 
   useSuspenseFontLoader(fontConfigs);

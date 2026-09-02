@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import torGif from '@/assets/images/25_images/25-05/25-05-24/tor.gif';
@@ -24,7 +24,7 @@ const Clock =  () => {
   );
   useSuspenseFontLoader(fontConfigs);
 
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
   const flashRef = useRef<HTMLDivElement>(null);
 
   // 2. Initialize Particles (Ref-based to avoid re-renders during animation)

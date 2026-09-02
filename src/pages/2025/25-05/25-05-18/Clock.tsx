@@ -6,7 +6,7 @@ import image2 from '@/assets/images/25_images/25-05/25-05-18/8mMt.gif'; // middl
 import image3 from '@/assets/images/25_images/25-05/25-05-18/bloo.gif'; // top layer
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
@@ -22,7 +22,7 @@ const fontConfigs: FontConfig[] = [
 
 const ClockComponent = () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // Format time with leading zeros
   const formatTime = (unit: number) => String(unit).padStart(2, '0');

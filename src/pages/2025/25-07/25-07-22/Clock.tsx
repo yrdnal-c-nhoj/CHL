@@ -4,7 +4,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bardImg from '@/assets/images/25_images/25-07/25-07-22/bard.webp';
 import barrsImg from '@/assets/images/25_images/25-07/25-07-22/barrs.webp';
 import berFont from '@/assets/fonts/25fonts/25-07-22-ber.otf';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [bardImg, barrsImg, berFont];
 
 const BarrelrollClock =  () => {
@@ -20,7 +20,7 @@ const BarrelrollClock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  // useEffect for updateClock removed - time is reactive via useClock
 
   return (
     <div

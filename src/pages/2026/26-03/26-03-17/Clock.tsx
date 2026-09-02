@@ -2,12 +2,12 @@ import React from 'react';
 import pluWebp from '@/assets/images/26_images/26-03/26-03-17/plu.webp';
 import tileBgGif from '@/assets/images/26_images/26-03/26-03-17/tile_bg.gif';
 import topImageWebp from '@/assets/images/26_images/26-03/26-03-17/0001-0160-ezgif.com-optiwebp-1.webp';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 export const assets = [pluWebp, tileBgGif, topImageWebp];
 
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const digitColor = '#5D0DA8';
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;

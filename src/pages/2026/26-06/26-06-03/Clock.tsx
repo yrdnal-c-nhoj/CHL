@@ -2,7 +2,7 @@ import westtImage from '@/assets/images/26_images/26-06/26-06-03/timbrr.webp';
 import westVideo from '@/assets/images/26_images/26-06/26-06-03/tre.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -23,7 +23,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const AnalogClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   useSuspenseFontLoader(fontConfigs);
 
   const angles = useMemo(() => {

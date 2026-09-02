@@ -1,12 +1,12 @@
 import { memo, useEffect, useRef } from 'react';
 import backgroundImg from '@/assets/images/26_images/26-04/26-04-28/2021-07-06-0012.jpg';
-import { calculateAngles, useMillisecondClock } from '@/utils/hooks';
+import { calculateAngles, useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [backgroundImg];
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const hourHandRef = useRef<HTMLDivElement>(null);
   const minuteHandRef = useRef<HTMLDivElement>(null);

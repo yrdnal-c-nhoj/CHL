@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [];
@@ -77,7 +77,7 @@ const extraBg = new URL(
 ).href;
 
 const Clock = () => {
-  const time = useSecondClock();
+  const time = useClock();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [loadingProgress, setLoadingProgress] = useState<number>(0);
   const [loadingError, setLoadingError] = useState<any>(null);

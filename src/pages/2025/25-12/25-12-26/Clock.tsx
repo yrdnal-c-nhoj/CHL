@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 
 // Asset imports
 import bgImage from '@/assets/images/25_images/25-12/25-12-26/sat.webp';
@@ -13,12 +13,12 @@ export const assets = [bgImage, overlayImage, fontFile];
 const FONT_FAMILY = 'SaturnFont';
 
 // Custom hook for clock
-function useClock() {
+function useSaturnClock() {
   const [time, setTime] = useState(new Date());
 
-    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+    // Migrated from legacy interval to canonical rAF hook (useClock).
   // (was a pure 1000ms state ticker; state now derived from the hook time)
-  const clockTime = useSecondClock();
+  const clockTime = useClock();
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
   return time;
@@ -68,7 +68,7 @@ export default function SaturnClock() {
 
   useSuspenseFontLoader(fontConfigs);
 
-  const now = useClock();
+  const now = useSaturnClock();
 
   const { hours, minutes } = formatTime(now);
 

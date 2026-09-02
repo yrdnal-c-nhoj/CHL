@@ -5,7 +5,7 @@ import type { FontConfig } from '@/types/clock';
 import font251130 from '@/assets/fonts/25fonts/25-11-30-nono.ttf?url';
 import backgroundImg from '@/assets/images/25_images/25-11/25-11-30/crax.jpg';
 import styles from './Clock.module.css';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [font251130, backgroundImg];
 
 
@@ -29,9 +29,9 @@ export default function DigitalClock() {
   useSuspenseFontLoader(fontConfigs);
 
   // --- 2. Clock Update (Unchanged) ---
-    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+    // Migrated from legacy interval to canonical rAF hook (useClock).
   // (was a pure 1000ms state ticker; state now derived from the hook time)
-  const clockTime = useSecondClock();
+  const clockTime = useClock();
   useEffect(() => { setNow(clockTime); }, [clockTime, setNow]);
 
   // --- 3. Time Calculations and Leetspeak (Unchanged) ---

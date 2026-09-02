@@ -2,7 +2,7 @@ import gallopFont from '@/assets/fonts/26fonts/26-05-07-gallop.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-05/26-05-07/1gallop.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { memo, useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -53,7 +53,7 @@ const ClockHand: React.FC<HandProps> = ({
 };
 
 const AnalogClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const [dims, setDims] = useState({ w: 0, h: 0 });
   useEffect(() => {

@@ -1,7 +1,7 @@
 import dogFontUrl from '@/assets/fonts/25fonts/25-12-03-dog.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -16,7 +16,7 @@ const ClockComponent =  () => {
     current: '',
     next: '',
   });
-  const time = useSecondClock();
+  const time = useClock();
   const lastFetchSecondRef = useRef<number | null>(null);
 
   useSuspenseFontLoader(fontConfigs);

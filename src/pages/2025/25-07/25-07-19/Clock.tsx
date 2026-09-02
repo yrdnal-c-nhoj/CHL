@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import cunFont from '@/assets/fonts/25fonts/25-07-19-cun.ttf';
 import bgOverlay from '@/assets/images/25_images/25-07/25-07-19/cun1.webp';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [cunFont, bgOverlay];
 
 const CuneiformClock =  () => {
@@ -20,7 +20,7 @@ const CuneiformClock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  // useEffect for updateClock removed - time is reactive via useClock
 
   return (
     <div

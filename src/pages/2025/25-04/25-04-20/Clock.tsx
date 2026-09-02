@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import clouds from '@/assets/images/25_images/25-04/25-04-20/clouds.webp';
@@ -32,7 +32,7 @@ const CloudClock = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
 
   const [hoursHTML, setHoursHTML] = useState<string>('');
   const [minutesHTML, setMinutesHTML] = useState<string>('');

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import customFont from '@/assets/fonts/25fonts/25-08-11-wash.otf';
@@ -38,7 +38,7 @@ const SwirlingImages =  () => {
     width: window.innerWidth,
     height: window.innerHeight,
   });
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const imagesRef = useRef(null);
 

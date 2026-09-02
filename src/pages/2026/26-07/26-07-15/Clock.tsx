@@ -1,7 +1,7 @@
 import fontUrl from '@/assets/fonts/26fonts/26-07-15.ttf?url';
 import chandelierBg from '@/assets/images/26_images/26-07/26-07-15/root.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -10,7 +10,7 @@ export const assets = [chandelierBg, fontUrl];
 const FONT_FAMILY = 'CustomFont260715';
 
 const AnalogClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
 
   // Load the custom font using the suspense-based loader
   const fontConfigs = useMemo(

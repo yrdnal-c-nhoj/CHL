@@ -4,7 +4,7 @@ import tireImage from '@/assets/images/26_images/26-05/26-05-27/tire2.webp';
 import tireFlipImage from '@/assets/images/26_images/26-05/26-05-27/tireflip.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -12,7 +12,7 @@ import styles from './Clock.module.css';
 export const assets = [tire, tireImage, tireFlipImage, tireFont];
 
 const TireTilingClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 0,
     height: typeof window !== 'undefined' ? window.innerHeight : 0

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import lemonFont from '@/assets/fonts/26fonts/26-01-31-lemon.otf';
 import lemonBg from '@/assets/images/26_images/26-01/26-01-31/lemon.gif';
@@ -17,7 +17,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const SimpleBackground =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   useSuspenseFontLoader(fontConfigs);
 
   const cells = useMemo(() => {

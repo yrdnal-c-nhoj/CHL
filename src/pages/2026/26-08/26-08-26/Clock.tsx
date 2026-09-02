@@ -1,5 +1,5 @@
 import { useClockAngles } from '@/hooks/useClockAngles';
-import { useSecondClock, useVisibilitySchedule } from '@/utils/hooks';
+import { useClock, useVisibilitySchedule } from '@/utils/hooks';
 import React, { memo } from 'react';
 
 import tornadoVideo from '@/assets/images/26_images/26-08/26-08-26/mud.webm';
@@ -16,7 +16,7 @@ const QUADRANT_TRANSFORMS = [
 
 const ClockComponent = () => {
   const visible = useVisibilitySchedule();
-  const time = useSecondClock();
+  const time = useClock();
   const { hourAngle, minAngle, secAngle } = useClockAngles(time);
 
   return (

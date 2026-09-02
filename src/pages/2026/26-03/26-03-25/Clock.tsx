@@ -1,5 +1,5 @@
 import React, { useMemo, memo } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { calculateAngles } from '@/utils/clockUtils';
 import bgImage from '@/assets/images/26_images/26-03/26-03-25/ride.webp';
 import styles from './Clock.module.css';
@@ -94,7 +94,7 @@ const ClockFace = memo(() => {
 });
 
 const Clock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const { hour, minute, second } = calculateAngles(time);
 
   return (

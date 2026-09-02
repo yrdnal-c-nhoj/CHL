@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundVideo from '@/assets/images/26_images/26-04/26-04-05/meteor1.mp4';
@@ -10,7 +10,7 @@ export const assets = [backgroundVideo, middleVideo, meteorFont];
 
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // Load the meteor font using useSuspenseFontLoader
   const fontConfigs = useMemo<FontConfig[]>(

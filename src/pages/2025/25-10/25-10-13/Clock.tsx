@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useMultiAssetLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage2 from '@/assets/images/25_images/25-10/25-10-13/ro.jpeg';
 import bgImage from '@/assets/images/25_images/25-10/25-10-13/roundhay.webp'; // second background
@@ -10,7 +10,7 @@ export const assets = [];
 
 export default function Clock() {
   const [ready, setReady] = useState<boolean>(false);
-  const now = useMillisecondClock(25);
+  const now = useSmoothClock(25);
 
   const fontSizeVH = 4; // base size for digits and labels
   const dividerScale = 1.4; // divider scale relative to fontSizeVH

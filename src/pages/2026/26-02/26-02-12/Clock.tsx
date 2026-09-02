@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 
 import digitalFontUrl from '@/assets/fonts/26fonts/26-02-12-disco.otf';
 import digitalBgImage from '@/assets/images/26_images/26-02/26-02-12/lit.webp';
@@ -30,7 +30,7 @@ const CONFIG = {
 }
 
 const DigitalClockTemplate =  () => {
-  const time = useSecondClock();
+  const time = useClock();
 
   const fontConfigs = useMemo(
     () => [

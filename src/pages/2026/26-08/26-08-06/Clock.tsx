@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { Fragment, memo, useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -25,7 +25,7 @@ const fontConfigs: FontConfig[] = [
 const ClockComponent =  () => {
   // Use the standardized time hook
   // 16ms = ~60 FPS updates for perfectly smooth, continuous forward movement
-  const time = useMillisecondClock(16);
+  const time = useSmoothClock(16);
 
   // Load fonts via Suspense (component must be in <Suspense> boundary)
   useSuspenseFontLoader(fontConfigs);

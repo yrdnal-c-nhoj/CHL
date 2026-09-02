@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, memo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import skyImage from '@/assets/images/26_images/26-03/26-03-22/sky.webp';
 import balloonFont from '@/assets/fonts/26fonts/26-03-22-balloon.ttf';
 import styles from './Clock.module.css';
@@ -94,7 +94,7 @@ const fontConfigs = [
 const VIPParallaxClock =  () => {
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useSecondClock();
+  const time = useClock();
   const timeString = useMemo(() => {
     return time
       .toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })

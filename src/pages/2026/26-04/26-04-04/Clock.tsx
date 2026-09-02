@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import img12 from '@/assets/images/26_images/26-04/26-04-04/12.jpg';
 import img3 from '@/assets/images/26_images/26-04/26-04-04/3.png';
 import img6 from '@/assets/images/26_images/26-04/26-04-04/6.jpg';
@@ -9,7 +9,7 @@ export const assets = [img12, img3, img6, img9];
 
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // Calculate total elapsed values to prevent the 360 -> 0 reset glitch
   const seconds = time.getSeconds();

@@ -1,7 +1,7 @@
 import glassbreak from '@/assets/images/26_images/26-07/26-07-03/kitty.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState, memo } from 'react';
 
 import fontUrl from '@/assets/fonts/26fonts/26-07-03.ttf?url';
@@ -34,7 +34,7 @@ const useIsMobile = (breakpoint = 768) => {
 };
 
 const DigitalClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   useSuspenseFontLoader(fontConfigs);
   const isMobile = useIsMobile();
 

@@ -1,12 +1,12 @@
 import backgroundImage from '@/assets/images/26_images/26-05/26-05-16/depart.gif';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
 export const assets = [backgroundImage];
 
 const AnalogClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const { hourDeg, minuteDeg, secondDeg, isoTime } = useMemo(() => {
     // Get local time in milliseconds to ensure monotonic rotation.

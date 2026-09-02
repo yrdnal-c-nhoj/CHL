@@ -5,7 +5,7 @@ import bgImage from '@/assets/images/25_images/25-08/25-08-03/sta.gif';
 import overlay2 from '@/assets/images/25_images/25-08/25-08-03/pro.gif';
 import overlay1 from '@/assets/images/25_images/25-08/25-08-03/cur.webp';
 import clockFont from '@/assets/fonts/25fonts/25-08-03-st.ttf';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [bgImage, overlay2, overlay1, clockFont];
 
 const goldGradient =
@@ -28,7 +28,7 @@ const OrnateClock =  () => {
   const hourRef = useRef(null);
   const minuteRef = useRef(null);
   const secondRef = useRef(null);
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  // useEffect for updateClock removed - time is reactive via useClock
 
   // Font loading handled by useSuspenseFontLoader
 

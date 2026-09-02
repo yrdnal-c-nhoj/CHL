@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/26_images/26-04/26-04-07/wall.webp';
@@ -21,7 +21,7 @@ const Clock =  () => {
   );
 
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // Better digit extraction
   const displayTime = useMemo(() => {

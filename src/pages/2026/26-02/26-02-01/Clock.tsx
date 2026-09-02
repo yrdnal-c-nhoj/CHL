@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 import dripFont from '@/assets/fonts/26fonts/26-02-01-26-01-31-cond.ttf?url';
@@ -22,7 +22,7 @@ const CLOCK_CONFIG = {
 };
 
 const AnalogClock =  () => {
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
 
   const fontConfigs = useMemo(
     () => [

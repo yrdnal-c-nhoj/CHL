@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bakFont from '@/assets/fonts/25fonts/25-07-02-bak.ttf';
 import backgroundGif from '@/assets/images/25_images/25-07/25-07-02/ba.gif';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [bakFont, backgroundGif];
 
 export default function Clock() {
@@ -23,7 +23,7 @@ export default function Clock() {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  // useEffect for updateClock removed - time is reactive via useClock
 
   // --- Layout Styles ---
   const containerStyle = {

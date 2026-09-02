@@ -1,5 +1,5 @@
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import styles from './Clock.module.css';
@@ -65,7 +65,7 @@ const updateSphereCanvas = (
 
 const ClockComponent =  () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const { formatHour, formatMinute } = useTimeFormatters();
 
   // Use the standard font loader

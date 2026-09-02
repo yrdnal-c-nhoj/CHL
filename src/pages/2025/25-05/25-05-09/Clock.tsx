@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useMemo } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import KinaFont from '@/assets/fonts/25fonts/25-05-09-Kina.ttf?url';
@@ -18,7 +18,7 @@ const fontConfigs: FontConfig[] = [
 
 const Clock =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useSecondClock();
+  const time = useClock();
   const clockRef = useRef<HTMLDivElement>(null);
 
   const clockSizeVW = 100;

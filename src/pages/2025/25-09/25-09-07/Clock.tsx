@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-09/25-09-07/wall.jpg'; // local background image
 import f250907 from '@/assets/fonts/25fonts/25-09-07-wall.ttf';
@@ -21,7 +21,7 @@ export default function Clock() {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
 
   // Font loading handled by useSuspenseFontLoader
 

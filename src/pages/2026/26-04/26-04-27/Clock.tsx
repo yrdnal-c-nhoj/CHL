@@ -1,6 +1,6 @@
 import leverFont from '@/assets/fonts/26fonts/26-04-27-lever.ttf';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState, memo } from 'react';
 import styles from './Clock.module.css';
 
@@ -31,7 +31,7 @@ const getRandomFilter = () => {
 };
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const fontConfigs = useMemo(
     () => [

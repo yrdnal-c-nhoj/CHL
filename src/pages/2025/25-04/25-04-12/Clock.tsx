@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import angFont from '@/assets/fonts/25fonts/25-04-12-ang.ttf?url';
@@ -68,7 +68,7 @@ const AngFontClock = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
   const componentId = useRef(`angfont-clock-${Date.now()}`);
   const animationTimeouts = useRef<NodeJS.Timeout[]>([]);
 

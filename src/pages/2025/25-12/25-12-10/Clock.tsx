@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, memo, useRef } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
@@ -260,7 +260,7 @@ const ClockFace = memo(
 
 // --- MAIN COMPONENT ---
 export default function AnalogClock() {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const angles = useClockAngles(time);
   const preloadedRef = useRef(false);
 

@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { memo, useMemo } from 'react';
 
 import hoursVideo from '@/assets/images/26_images/26-08/26-08-09/hours.webm?url';
@@ -14,7 +14,7 @@ const FONT_FAMILY = 'IBM Plex Mono';
 export const assets: string[] = [hoursVideo, minutesVideo, secondsVideo];
 
 const ClockComponent =  () => {
-  const time = useSecondClock();
+  const time = useClock();
 
   const fontConfigs = useMemo<FontConfig[]>(
     () => [

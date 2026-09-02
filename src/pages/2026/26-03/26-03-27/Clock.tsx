@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import triFont from '@/assets/fonts/26fonts/26-03-27-tri.ttf';
 import styles from './Clock.module.css';
@@ -43,7 +43,7 @@ function maxRadiusInTriangle(
 }
 
 export default function TriangleClock() {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const fontConfigs = [
     {

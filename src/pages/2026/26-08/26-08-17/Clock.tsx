@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import * as d3 from 'd3';
 import React, { useEffect, useMemo, useRef } from 'react';
 import styles from './Clock.module.css';
@@ -24,7 +24,7 @@ const ClockComponent =  () => {
   const speedRef = useRef<{ x: number; y: number }[] | null>(null);
   const dimensionsRef = useRef({ width: 0, height: 0 });
 
-  const time = useMillisecondClock(50); // Use canonical hook for smooth animation
+  const time = useSmoothClock(50); // Use canonical hook for smooth animation
   useSuspenseFontLoader(fontConfigs); // Use canonical font loader
 
   const { isoTime, displayTime } = useMemo(() => {

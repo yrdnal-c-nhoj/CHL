@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import roomImage from '@/assets/images/25_images/25-04/25-04-09/room.webp';
 export const assets = [roomImage];
 
@@ -23,7 +23,7 @@ const EmptyRoomClock =  () => {
   });
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useMillisecondClock();
+  const currentTime = useSmoothClock();
 
   useEffect(() => {
     const handleResize = () =>

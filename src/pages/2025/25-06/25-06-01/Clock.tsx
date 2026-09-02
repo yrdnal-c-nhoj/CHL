@@ -4,7 +4,7 @@ import stampImg from '@/assets/images/25_images/25-06/25-06-01/stamp.png';
 import stamp2Img from '@/assets/images/25_images/25-06/25-06-01/stamp2.png';
 import stamp3Img from '@/assets/images/25_images/25-06/25-06-01/stamp3.png';
 
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 export const assets = [airFontUrl, frameImg, stampImg, stamp2Img, stamp3Img];
 
@@ -148,7 +148,7 @@ export default function Clock() {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const timeStr = time
     .toLocaleTimeString('en-US', {

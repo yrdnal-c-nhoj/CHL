@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useEffect } from 'react';
 
 import hoursFont from '@/assets/fonts/26fonts/26-08-01-hours.ttf?url';
@@ -19,7 +19,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const ClockComponent =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   useSuspenseFontLoader(fontConfigs);
 
   // This effect removes the default browser margin from the body, ensuring the component fills the viewport.

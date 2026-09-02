@@ -5,7 +5,7 @@ import styles from './Clock.module.css';
 
 import customFont from '@/assets/fonts/26fonts/26-05-31.ttf?url';
 import hotwater from '@/assets/images/26_images/26-05/26-05-31/hotwater.webp';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 const accordionBg = hotwater;
 const bellImage2 = hotwater;
@@ -48,7 +48,7 @@ const FONT_CONFIGS: FontConfig[] = [
 ];
 
 const DigitalClock = () => {
-  const currentTime = useMillisecondClock(50);
+  const currentTime = useSmoothClock(50);
 
   useSuspenseFontLoader(FONT_CONFIGS);
 

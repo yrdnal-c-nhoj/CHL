@@ -1,12 +1,12 @@
 import cyanVideo from '@/assets/images/26_images/26-06/26-06-30/cyan.mp4';
 import cyanImage from '@/assets/images/26_images/26-06/26-06-30/cyan.webp';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React from 'react';
 
 export const assets = [cyanImage, cyanVideo];
 
 const CyanClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
 
   const seconds = time.getSeconds();
   const minutes = time.getMinutes();

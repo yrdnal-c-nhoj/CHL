@@ -1,5 +1,5 @@
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useLayoutEffect, useMemo, useState } from 'react';
 
 // Image paths in public folder
@@ -128,7 +128,7 @@ const ClockNumerals =  () => {
 // ---------------- MAIN COMPONENT ----------------
 
 export default function AnalogClock() {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   
   // Load custom font using the project's suspense loader
   useSuspenseFontLoader(fontConfigs);

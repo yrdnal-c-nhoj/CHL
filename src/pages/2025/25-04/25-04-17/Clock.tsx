@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useEffect, useMemo } from 'react';
 export const assets: string[] = [];
 
@@ -43,7 +43,7 @@ export default function StripeClock() {
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useSecondClock();
+  const time = useClock();
   
   useEffect(() => {
     loadFont();

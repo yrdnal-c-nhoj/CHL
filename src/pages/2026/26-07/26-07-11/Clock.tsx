@@ -1,4 +1,4 @@
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useEffect, useRef } from 'react';
 import styles from './Clock.module.css';
 export const assets: string[] = [];
@@ -127,7 +127,7 @@ function DustMotes() {
 }
 
 export default function CurrentTimeClock() {
-  const time = useSecondClock();
+  const time = useClock();
   
   const hours = time.getHours().toString();
   const minutes = time.getMinutes().toString().padStart(2, '0');

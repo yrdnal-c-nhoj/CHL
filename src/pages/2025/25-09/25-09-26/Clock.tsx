@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage926 from '@/assets/images/25_images/25-09/25-09-26/wall.webp';
@@ -10,7 +10,7 @@ export const assets = [bgImage926, font20250926A, font20250926B];
 
 export default function DualFontClock() {
   const [ready, setReady] = useState<boolean>(false);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [isPhone, setIsPhone] = useState<any>(window.innerWidth < 768);
   const [fadeStarted, setFadeStarted] = useState<boolean>(false);
 

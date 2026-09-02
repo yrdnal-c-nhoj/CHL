@@ -1,5 +1,5 @@
 import TomWebp from '@/assets/images/26_images/26-07/26-07-16/tom.webp';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 export const assets: string[] = [TomWebp];
@@ -143,7 +143,7 @@ const KEYFRAMES = `
 `;
 
 const AnalogClock =  () => {
-  const now = useSecondClock();
+  const now = useClock();
 
   const { hourAngle, minuteAngle, secondAngle, currentSecond, isoTime } = useMemo(() => {
     const seconds = now.getSeconds();

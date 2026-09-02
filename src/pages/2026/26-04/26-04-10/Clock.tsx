@@ -1,4 +1,4 @@
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import hourHand from '@/assets/images/26_images/26-04/26-04-10/hour.webp';
 import minuteHand from '@/assets/images/26_images/26-04/26-04-10/minute.webp';
 import secondHand from '@/assets/images/26_images/26-04/26-04-10/second.webp';
@@ -8,7 +8,7 @@ export const assets = [hourHand, minuteHand, secondHand, backgroundImage];
 
 
 const Clock = () => {
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
 
   const ms = now.getMilliseconds();
   const s = now.getSeconds() + ms / 1000;

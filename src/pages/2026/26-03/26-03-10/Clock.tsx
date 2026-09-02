@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets: string[] = [];
 
 
 const ProgressClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
 
   useEffect(() => {
     const link = document.createElement('link');

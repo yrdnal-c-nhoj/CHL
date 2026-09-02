@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
@@ -21,7 +21,7 @@ export { img1, img2, img3, img4, img5, img6 }; // Export for preloading pipeline
 const images = [img1, img2, img3, img4, img5, img6];
 
 const DigitalGridClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [width, setWidth] = useState<number>(window.innerWidth);
 
   const fontConfigs = useMemo<FontConfig[]>(

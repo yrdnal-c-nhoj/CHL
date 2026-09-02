@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 import bgVideo from '@/assets/images/26_images/26-04/26-04-14/haumeas.mp4';
@@ -8,7 +8,7 @@ import overlayImage from '@/assets/images/26_images/26-04/26-04-14/haumea.webp';
 export const assets = [bgVideo, overlayImage];
 
 const Clock =  () => {
-  const time = useMillisecondClock(16);
+  const time = useSmoothClock(16);
   const ms = time.getMilliseconds();
 
   const { secDeg, minDeg, hourDeg } = useMemo(() => {

@@ -2,7 +2,7 @@ import fontAnaUrl from '@/assets/fonts/25fonts/25-12-30-ana.ttf?url';
 import fontLemUrl from '@/assets/fonts/25fonts/25-12-30-lem.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useRef } from 'react';
 export const assets = [fontAnaUrl, fontLemUrl];
 
@@ -14,7 +14,7 @@ export const fontConfigs: FontConfig[] = [
 ];
 
 const RotatingAnalemmaClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const rotationRef = useRef(0);
   const rotatingGroupRef = useRef<SVGGElement | null>(null);
 

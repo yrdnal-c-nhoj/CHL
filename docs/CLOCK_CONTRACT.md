@@ -53,7 +53,8 @@ const time = useSmoothClock();   // smooth: ~50ms updates
 ```
 
 - **Required:** Import from `@/utils/hooks` only.
-- **Prohibited:** `setInterval`, `requestAnimationFrame`, `useClockTime` from `@/utils/clockUtils`, `useSecondClock`, `useMillisecondClock` (the older names are deprecated; use `useClock` / `useSmoothClock`).
+- **Required:** Import only `useClock` and `useSmoothClock` from `@/utils/hooks`.
+- **Prohibited:** `setInterval`, `requestAnimationFrame` loops, `useClockTime` from `@/utils/clockUtils`, and the deprecated aliases `useSecondClock` / `useMillisecondClock` (still exported as thin re-exports but will be removed).
 
 ### 2.3 Asset Exports
 
@@ -152,7 +153,7 @@ useSuspenseFontLoader(fontConfigs);
 | `setInterval` / `setTimeout` in components | ❌ Prohibited | Drift, memory leaks |
 | `requestAnimationFrame` loops | ❌ Prohibited | Use canonical hooks |
 | `useClockTime` from `@/utils/clockUtils` | ❌ Prohibited | Deprecated; use `@/utils/hooks` |
-| `useSecondClock` / `useMillisecondClock` | ❌ Prohibited | Renamed; use `useClock` / `useSmoothClock` |
+| `useSecondClock` / `useMillisecondClock` | ❌ Prohibited | Deprecated aliases; use `useClock` / `useSmoothClock` |
 | Reading `ref.current` inside `useMemo`/`useState` initializer | ❌ Prohibited | Refs are not populated during render |
 | Unguarded index access (`arr[i]`) under `noUncheckedIndexedAccess` | ❌ Prohibited | Use optional chaining or guard explicitly |
 | `useGlobalStyles` / `useKeyframes` | ❌ Prohibited | Use CSS Modules |

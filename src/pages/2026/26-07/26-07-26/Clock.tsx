@@ -4,7 +4,7 @@ import gemImage from '@/assets/images/26_images/26-07/26-07-26/gem.webp';
 import backgroundVideo from '@/assets/images/26_images/26-07/26-07-26/gemini.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
@@ -20,7 +20,7 @@ const fontConfigs: FontConfig[] = [
 // 3. Main Component
 const ClockComponent =  () => {
   // 3a. Use standard hooks for time and font loading.
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   useSuspenseFontLoader(fontConfigs);
 
   // 3b. Memoize expensive calculations.

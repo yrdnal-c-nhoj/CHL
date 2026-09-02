@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import gridImage from '@/assets/images/25_images/25-10/25-10-02/lan.gif';
 export const assets = [gridImage];
 
@@ -25,7 +25,7 @@ const toCountingRod = (number) =>
     .map((digit) => digitMap[digit]);
 
 const DigitalClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [digitOpacities, setDigitOpacities] = useState<any>({
     hours: [1, 1],
     minutes: [1, 1],

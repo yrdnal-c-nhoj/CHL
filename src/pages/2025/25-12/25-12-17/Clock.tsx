@@ -3,7 +3,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import background from '@/assets/images/25_images/25-12/25-12-17/swagr.webp';
 import FONT_PATH from '@/assets/fonts/25fonts/25-12-17-facexxxx.ttf?url';
 import type { FontConfig } from '@/types/clock';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [background, FONT_PATH];
 
 
@@ -24,9 +24,9 @@ export default function App() {
 
   useSuspenseFontLoader(fontConfigs);
 
-    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+    // Migrated from legacy interval to canonical rAF hook (useClock).
   // (was a pure 1000ms state ticker; state now derived from the hook time)
-  const clockTime = useSecondClock();
+  const clockTime = useClock();
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
   useEffect(() => {

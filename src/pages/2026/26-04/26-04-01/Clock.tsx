@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 export const assets: string[] = [];
 
@@ -30,7 +30,7 @@ const formatTimeDigits = (time: Date) => {
 };
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const { hourDigits, minDigits } = useMemo(
     () => formatTimeDigits(time),
     [time],

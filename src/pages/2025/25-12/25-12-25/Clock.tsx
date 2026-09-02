@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import topoImage from '@/assets/images/25_images/25-12/25-12-25/topo.jpg';
 export const assets = [topoImage];
 
@@ -350,7 +350,7 @@ const BoardingPass =  () => {
   ]);
 
   // BTS Standard: RAF-based time hook
-  const currentDate = useMillisecondClock();
+  const currentDate = useSmoothClock();
 
   useEffect(() => {
     const randomAirports = getRandomAirports();

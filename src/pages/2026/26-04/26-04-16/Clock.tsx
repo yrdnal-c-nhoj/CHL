@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { calculateAngles, useMillisecondClock } from '@/utils/hooks';
+import { calculateAngles, useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/26_images/26-04/26-04-16/jamine.webp';
@@ -24,7 +24,7 @@ const ROMAN_NUMERALS = [
 ];
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const angles = useMemo(() => calculateAngles(time), [time]);
 
   // Load Cabin Sketch from Google Fonts

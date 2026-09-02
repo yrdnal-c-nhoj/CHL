@@ -1,7 +1,7 @@
 // src/components/CustomFontMirroredClock.jsx
 import React from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { formatTime, useMillisecondClock } from '@/utils/hooks';
+import { formatTime, useSmoothClock } from '@/utils/hooks';
 import todayFont251125 from '@/assets/fonts/25fonts/25-11-11-digi.ttf?url';
 import bgFront from '@/assets/images/25_images/25-11/25-11-11/bg.webp'; // top layer
 import bgBack from '@/assets/images/25_images/25-11/25-11-11/bg1.jpg';
@@ -24,7 +24,7 @@ export default function CustomFontMirroredClock() {
   useSuspenseFontLoader(fontConfigs);
 
   // Using the standardized BTS hook
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const { hours, minutes, seconds } = formatTime(time, '24h');
   const timeString = `${hours}:${minutes}:${seconds}`;
 

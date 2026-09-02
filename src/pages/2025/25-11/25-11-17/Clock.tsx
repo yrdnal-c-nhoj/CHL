@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import bg1 from '@/assets/images/25_images/25-11/25-11-17/mars2.webp';
 import bg2 from '@/assets/images/25_images/25-11/25-11-17/mars1.gif';
 import bg3 from '@/assets/images/25_images/25-11/25-11-17/mars1.gif';
@@ -29,7 +29,7 @@ const DigitBox = ({ children }) => (
 );
 
 export default function MarsDigitalClock() {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   useSuspenseFontLoader(fontConfigs);
 
   // Assume font is loaded by useSuspenseFontLoader for rendering purposes

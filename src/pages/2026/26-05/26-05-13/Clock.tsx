@@ -1,5 +1,5 @@
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo, memo } from 'react';
 
 import dripFont from '@/assets/fonts/26fonts/26-05-13.otf?url';
@@ -10,7 +10,7 @@ import styles from './Clock.module.css';
 export const assets = [dripFont, analogBgImage, bgVideo];
 
 const AnalogClock =  () => {
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
 
   if (!now) return null;
 

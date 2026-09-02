@@ -5,7 +5,7 @@ import {
   ClockLoadingFallback,
   useSuspenseFontLoader,
 } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { Suspense, useEffect, useMemo, useState, memo } from 'react';
 import styles from './Clock.module.css';
 
@@ -21,7 +21,7 @@ const formatMs = (num: number): string => num.toString().padStart(3, '0');
 const ClockInner =  () => {
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const h = formatTime(time.getHours());
   const m = formatTime(time.getMinutes());

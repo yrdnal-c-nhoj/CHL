@@ -1,12 +1,12 @@
 import React from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import digitalBgImage from '@/assets/images/26_images/26-02/26-02-02/boom.webp';
 import styles from './Clock.module.css';
 export const assets = [digitalBgImage];
 
 
 const SonicBoomClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const timeString =
     time.getHours().toString().padStart(2, '0') +

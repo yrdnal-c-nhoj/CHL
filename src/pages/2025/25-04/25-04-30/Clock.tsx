@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, {
   useEffect,
   useMemo,
@@ -43,7 +43,7 @@ const GravityClock: React.FC<GravityClockProps> = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
   const [clocks, setClocks] = useState<ClockData[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number | null>(null);

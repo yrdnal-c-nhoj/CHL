@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import bgImage from '@/assets/images/25_images/25-09/25-09-08/orange.webp';
 import img1 from '@/assets/images/25_images/25-09/25-09-08/1.webp';
@@ -18,7 +18,7 @@ export const assets = [bgImage, img1, img2, img3, img4, img5, img6, img7, img8, 
 
 
 export default function ImageAnalogClock() {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [loaded, setLoaded] = useState<boolean>(false);
 
   const images = [

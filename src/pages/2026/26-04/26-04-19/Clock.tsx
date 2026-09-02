@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import wobbleVideo from '@/assets/images/26_images/26-04/26-04-19/wobble2.mp4';
 import wobbleFont from '@/assets/fonts/26fonts/26-04-19-wobble.ttf';
@@ -11,7 +11,7 @@ const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
 const Clock =  () => {
   useSuspenseFontLoader([{ fontFamily: 'Wobble', fontUrl: wobbleFont }]);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const { hours, minutes, ampm } = useMemo(() => {
     let h = time.getHours();

@@ -4,7 +4,7 @@ import layer1 from '@/assets/images/25_images/25-04/25-04-15/ewfsdfsd.webp';
 import sdfwef from '@/assets/images/25_images/25-04/25-04-15/sdfwef.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import {
   useCallback,
   useEffect,
@@ -40,7 +40,7 @@ const HorizonClock = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
   const componentId = useRef(`horizon-clock-${Date.now()}`);
 
   const [time, setTime] = useState<string>('');

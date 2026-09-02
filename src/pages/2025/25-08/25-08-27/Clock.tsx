@@ -1,7 +1,7 @@
 import dodecahedronFontFile from '@/assets/fonts/25fonts/25-08-27-root.ttf';
 import backgroundImage from '@/assets/images/25_images/25-08/25-08-27/rootsu.gif';
 import { useSuspenseFontLoader, ClockLoadingFallback } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useEffect, useMemo, useRef, memo } from 'react';
 import styles from './Clock.module.css';
 
@@ -11,7 +11,7 @@ const TwelfthRootsOfUnityWithClock = memo(() => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const clockRef = useRef<HTMLCanvasElement>(null);
   const fontRef = useRef<string>('sans-serif');
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const timeRef = useRef(time);
 
   useEffect(() => {

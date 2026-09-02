@@ -1,5 +1,5 @@
 import { memo, useEffect, useState, useRef } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import one from '@/assets/images/26_images/26-01/26-01-03/1.webp';
 import two from '@/assets/images/26_images/26-01/26-01-03/2.webp';
 import three from '@/assets/images/26_images/26-01/26-01-03/3.webp';
@@ -25,7 +25,7 @@ const numbers = [
 ];
 
 const Clock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const [lightsOff, setLightsOff] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
 

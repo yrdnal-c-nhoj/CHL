@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import beat4 from '@/assets/images/25_images/25-04/25-04-04/beat4.webp';
@@ -18,7 +18,7 @@ const HeartbeatClock = () => {
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
   useSuspenseFontLoader(fontConfigs);
 
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
 
   const updateClock = useCallback((): void => {
     const seconds = currentTime.getSeconds();

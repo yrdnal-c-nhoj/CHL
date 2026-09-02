@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import backgroundImage from '@/assets/images/25_images/25-12/25-12-29/shrine.webp';
 import shrineFont from '@/assets/fonts/25fonts/25-12-29-shrine.ttf?url';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [backgroundImage, shrineFont];
 
 
@@ -30,9 +30,9 @@ const DynamicClockComponent =  () => {
     };
   }, []);
 
-    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+    // Migrated from legacy interval to canonical rAF hook (useClock).
   // (was a pure 1000ms state ticker; state now derived from the hook time)
-  const clockTime = useSecondClock();
+  const clockTime = useClock();
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
   const formattedTime = time

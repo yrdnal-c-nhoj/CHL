@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/25_images/25-12/25-12-13/roc.webp';
@@ -15,7 +15,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const RococoClock = () => {
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
   useSuspenseFontLoader(fontConfigs);
 
   const digitConfigs = useMemo(() =>

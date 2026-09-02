@@ -2,7 +2,7 @@ import fontUrl from '@/assets/fonts/26fonts/26-06-29.ttf?url';
 import carVideo from '@/assets/images/26_images/26-06/26-06-29/manufacture.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
 export const assets = [fontUrl, carVideo];
 
@@ -78,7 +78,7 @@ const Digit: React.FC<DigitProps> = React.memo(
 );
 
 const Manufactured =  () => {
-  const currentTime = useMillisecondClock();
+  const currentTime = useSmoothClock();
 
   /*
    * FONT LOADING

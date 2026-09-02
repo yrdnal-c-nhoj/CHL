@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
@@ -15,7 +15,7 @@ export const assets = [bgImage, hourHandImggir, minnnuteHandImg, secondHandImg, 
 
 
 export default function AnalogClock() {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [viewport, setViewport] = useState<any>({
     width: typeof window !== 'undefined' ? window.innerWidth : 1200,
     height: typeof window !== 'undefined' ? window.innerHeight : 800,

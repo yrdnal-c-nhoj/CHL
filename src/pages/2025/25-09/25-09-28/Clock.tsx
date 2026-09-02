@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import ufoImg from '@/assets/images/25_images/25-09/25-09-28/ufo.webp';
@@ -53,7 +53,7 @@ export default function DesertUFOSequence() {
   const [beam, setBeam] = useState<boolean>(false);
   const [clockVisible, setClockVisible] = useState<boolean>(true);
   const [clockOpacity, setClockOpacity] = useState<number>(1);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [clockText, setClockText] = useState(getClockTime());
   const [chaos, setChaos] = useState<number>(0);
   const [sparks, setSparks] = useState<any>([]);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundVideo from '@/assets/images/26_images/26-04/26-04-09/water.mp4';
@@ -19,7 +19,7 @@ const Clock =  () => {
   ]);
   const timeRef = useRef(0);
   const animationRef = useRef<number | undefined>(undefined);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const fontConfigs = useMemo<FontConfig[]>(
     () => [{ fontFamily: 'Water', fontUrl: waterFontUrl }],

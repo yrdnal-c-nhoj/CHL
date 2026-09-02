@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 export const assets: string[] = [];
 
@@ -13,7 +13,7 @@ const SkewClock: React.FC<SkewClockProps> = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
 
   const getRandomVibrantColor = useCallback((): string => {
     const hue = Math.floor(Math.random() * 360);

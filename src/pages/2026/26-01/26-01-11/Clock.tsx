@@ -9,7 +9,7 @@ import fontflam251211 from '@/assets/fonts/26fonts/26-01-11-flam.ttf';
 import hourHandImg from '@/assets/images/26_images/26-01/26-01-11/leg1.webp';
 import minuteHandImg from '@/assets/images/26_images/26-01/26-01-11/leg2.webp';
 import secondHandImg from '@/assets/images/26_images/26-01/26-01-11/flam.webp';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 export const assets = [bg2, bg1, fontflam251211, hourHandImg, minuteHandImg, secondHandImg];
 
 // --- CONFIG ---

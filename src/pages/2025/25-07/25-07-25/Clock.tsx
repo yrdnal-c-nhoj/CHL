@@ -1,4 +1,4 @@
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 import React, { useEffect } from 'react';
 // Fixed: Imported the correct hook used in the component body
@@ -27,7 +27,7 @@ const Clock =  () => {
   // Use a simple placeholder boolean instead so production build can complete.
   const fontsLoaded = true;
 
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   useEffect(() => {
     const style = document.createElement('style');

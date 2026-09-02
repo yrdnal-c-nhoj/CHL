@@ -5,7 +5,7 @@ import secondHandImage from '@/assets/images/26_images/26-08/26-08-10/second-han
 import straw2Image from '@/assets/images/26_images/26-08/26-08-10/str.webp';
 import strawImage from '@/assets/images/26_images/26-08/26-08-10/straw.webp';
 import { useClockAngles } from '@/hooks/useClockAngles'; // This hook already supports millisecond precision
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { memo, useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -17,7 +17,7 @@ export const assets: string[] = [
 ];
 
 const ClockComponent =  () => {
-  const time = useMillisecondClock(); // Changed to useMillisecondClock for smooth second hand movement
+  const time = useSmoothClock(); // Changed to useSmoothClock for smooth second hand movement
   const { hourAngle, minAngle, secAngle } = useClockAngles(time);
 
   const { timeString } = useMemo(() => {

@@ -2,7 +2,7 @@ import labelFont from '@/assets/fonts/26fonts/26-07-01.ttf?url';
 import digitFont from '@/assets/fonts/26fonts/26-07-01digit.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -29,7 +29,7 @@ const fontConfigs: FontConfig[] = [
 const formatDigits = (num: number): string => num.toString().padStart(2, '0');
 
 const AlphaCentauriClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   useSuspenseFontLoader(fontConfigs);
 
   const { hours, minutes, seconds } = useMemo(() => {

@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 // Asset Imports
@@ -141,7 +141,7 @@ const imageSettings = [
 ];
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // Initialize state for face indices and spare index
   const [faceIndices, setFaceIndices] = useState<number[]>([]);

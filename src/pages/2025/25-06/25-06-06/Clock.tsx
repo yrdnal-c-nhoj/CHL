@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import rrrrFont from '@/assets/fonts/25fonts/25-06-06-rrrr.ttf';
 export const assets = [rrrrFont];
 
 
 const RollingClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {

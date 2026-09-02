@@ -6,7 +6,7 @@ import hourHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
 import minuteHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
 import secondHand from '@/assets/images/25_images/25-06/25-06-11/ban.png';
 import banFont from '@/assets/fonts/25fonts/25-06-11-Ban.ttf';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [bananaGif, hourHand, minuteHand, secondHand, banFont];
 
 const BananaClock =  () => {
@@ -22,7 +22,7 @@ const BananaClock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  // useEffect for updateClock removed - time is reactive via useClock
 
   // Create banana tiles dynamically
   const tileCount = 8 * 8;

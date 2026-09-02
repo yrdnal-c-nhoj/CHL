@@ -2,7 +2,7 @@ import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useClockTime } from '../hooks/useClockTime';
 import { calculateAngles, formatTime } from '../utils/clockUtils';
-// useClockTime is now an alias of the canonical rAF-based useSecondClock
+// useClockTime is now an alias of the canonical rAF-based useClock
 // (no setInterval), so these tests exercise the rAF-driven 1-second updates.
 
 /**

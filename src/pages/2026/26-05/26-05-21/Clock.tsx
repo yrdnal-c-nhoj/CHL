@@ -4,7 +4,7 @@ import canisComponent from '@/assets/images/26_images/26-05/26-05-21/canis2.webp
 import canisComponent4 from '@/assets/images/26_images/26-05/26-05-21/canis4.webp';
 import fontUrl from '@/assets/fonts/26fonts/26-05-21.otf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
 
@@ -39,7 +39,7 @@ const ComponentLayers =  () => (
 );
 
 const ClockFace: React.FC<{ fontFamily: string }> = ({ fontFamily }) => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const { hourDeg, minuteDeg, secondDeg, isoTime } = useMemo(() => {
     const ms = time.getMilliseconds();

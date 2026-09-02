@@ -2,7 +2,7 @@ import fontUrl from '@/assets/fonts/26fonts/26-07-09.ttf?url';
 import carVideo from '@/assets/images/26_images/26-07/26-07-09/city.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState, memo } from 'react';
 import styles from './Clock.module.css';
 
@@ -25,7 +25,7 @@ const useIsMobile = (breakpoint = 640) => {
 };
 
 const AnalogClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const isMobile = useIsMobile();
 
   useSuspenseFontLoader(fontConfigs);
