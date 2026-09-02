@@ -25,8 +25,8 @@
   flex-direction: column;
   font-family: 'ClockFont_26_08_04', sans-serif;
   font-size: 10vh;
-  color: rgba(251, 222, 2, 0.928);
-  text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  color: rgb(251, 222, 2);
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
   z-index: 1;
   /* Start with opacity 0 to prevent FOUC, will be faded in by animation */
   opacity: 0;
