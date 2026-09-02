@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React from 'react';
 
 import tornadoVideo from '@/assets/images/26_images/26-08/26-08-20/tornado.mp4';
@@ -18,7 +18,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const ClockComponent = () => {
-  const time = useSecondClock();
+  const time = useClock();
   useSuspenseFontLoader(fontConfigs);
 
   const hours = String(time.getHours()).padStart(2, '0');

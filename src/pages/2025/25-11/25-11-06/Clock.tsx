@@ -1,10 +1,10 @@
 import React from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 export const assets: string[] = [];
  // Import the standardized clock hook
 
 const Clock =  () => {
-  const time = useMillisecondClock(); // Use the standardized clock hook
+  const time = useSmoothClock(); // Use the standardized clock hook
 
   const drawClock =  () => {
     const hours = time.getHours() % 12;

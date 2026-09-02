@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import top260126Font from '@/assets/fonts/26fonts/26-01-26-halfb.ttf?url';
 import bottom260126Font from '@/assets/fonts/26fonts/26-01-26-halft.ttf?url';
 import styles from './Clock.module.css';
@@ -14,7 +14,7 @@ const fontConfigs = useMemo(() => [
 
 const DynamicComponent =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const clockTime = useSecondClock();
+  const clockTime = useClock();
 
   const timeString = useMemo(() => clockTime.toLocaleTimeString('en-US', {
     hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit',

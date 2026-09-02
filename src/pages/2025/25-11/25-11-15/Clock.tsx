@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useMemo, memo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import font_25251115j from '@/assets/fonts/25fonts/25-11-15-rain.otf?url';
 import bgImage from '@/assets/images/25_images/25-11/25-11-15/fall.webp';
 import type { FontConfig } from '@/types/clock';
@@ -20,7 +20,7 @@ function FallClock() {
   const rafRef = useRef(null);
   const timeDigitsRef = useRef([]);
   const bgRef = useRef(null);
-  const time = useSecondClock();
+  const time = useClock();
 
   useSuspenseFontLoader(fontConfigs);
 

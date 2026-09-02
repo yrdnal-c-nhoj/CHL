@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import fontFile from '@/assets/fonts/26fonts/26-01-02-cram.ttf';
 import backgroundImage from '@/assets/images/26_images/26-01/26-01-02/brick.webp';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [fontFile, backgroundImage];
 
 const StretchedClock =  () => {

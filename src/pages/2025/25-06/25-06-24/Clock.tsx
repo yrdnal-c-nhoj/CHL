@@ -1,12 +1,12 @@
 import { useEffect, useState, useCallback } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import squFontUrl from '@/assets/fonts/25fonts/25-06-24-squ.ttf';
 import bgImageUrl from '@/assets/images/25_images/25-06/25-06-24/tho.webp';
 export const assets = [squFontUrl, bgImageUrl];
  // Ensure this file exists
 
 const ThoughtBalloonClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [bgImageError, setBgImageError] = useState<boolean>(false);
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 

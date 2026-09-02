@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets: string[] = [];
 
 
@@ -7,7 +7,7 @@ const fontVersion = '2026-03-11';
 const FONT_NAME = `XanhMono_${fontVersion}`;
 
 const BorrowedTimeClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const [imageUrl, setImageUrl] = useState(
     `https://picsum.photos/800/600?sig=${Date.now()}`,
   );

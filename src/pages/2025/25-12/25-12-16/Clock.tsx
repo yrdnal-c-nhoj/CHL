@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import font_2025_12_16 from '@/assets/fonts/25fonts/25-12-16-four.ttf?url';
 import type { FontConfig } from '@/types/clock';
@@ -14,7 +14,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const QuadClock =  () => {
-  const time = useMillisecondClock(100);
+  const time = useSmoothClock(100);
 
   // Use standardized font loader
   useSuspenseFontLoader(fontConfigs);

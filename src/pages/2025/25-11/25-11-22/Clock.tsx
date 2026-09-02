@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useMultiAssetLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
 import videoFile from '@/assets/images/25_images/25-11/25-11-22/sput.mp4';
 import fallbackImg from '@/assets/images/25_images/25-11/25-11-22/sput.webp';
@@ -11,7 +11,7 @@ export const assets = [];
 export default function Clock() {
   const videoRef = useRef(null);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const time = useMillisecondClock(100);
+  const time = useSmoothClock(100);
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
 
   // Simple scoped font loading without leaks

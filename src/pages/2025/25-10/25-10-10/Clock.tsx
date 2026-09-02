@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 // === Local assets ===
 import bgWebp from '@/assets/images/25_images/25-10/25-10-10/roma.webp';
 import bgVideo from '@/assets/images/25_images/25-10/25-10-10/ro.mp4';
@@ -31,9 +31,9 @@ export default function ProcessingCounterClock() {
   }, []);
 
   // === Time update ===
-    // Migrated from legacy interval to canonical rAF hook (useMillisecondClock).
+    // Migrated from legacy interval to canonical rAF hook (useSmoothClock).
   // (was a pure 100ms state ticker; state now derived from the hook time)
-  const clockTime = useMillisecondClock(100);
+  const clockTime = useSmoothClock(100);
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
   // === Mobile resize watcher ===

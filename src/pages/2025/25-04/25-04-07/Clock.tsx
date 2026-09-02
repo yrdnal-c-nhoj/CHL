@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import sys1 from '@/assets/images/25_images/25-04/25-04-07/sys1.gif';
@@ -46,7 +46,7 @@ const SolarSystemClock = ({
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
 
   const updateClock = useCallback((): void => {
     const seconds = currentTime.getSeconds();

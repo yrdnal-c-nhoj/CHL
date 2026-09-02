@@ -1,7 +1,7 @@
 import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -20,7 +20,7 @@ const fontConfigs: FontConfig[] = [
 const CLOCK_NUMBERS = Array.from({ length: 12 }, (_, i) => i + 1);
 
 const ClockComponent =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   useSuspenseFontLoader(fontConfigs);
 

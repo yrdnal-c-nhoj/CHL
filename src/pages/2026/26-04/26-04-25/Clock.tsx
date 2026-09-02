@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 import bgImage from '@/assets/images/26_images/26-04/26-04-25/magnify.jpg';
 export const assets = [bgImage];
 
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const angles = useMemo(() => {
     const h = time.getHours();

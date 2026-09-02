@@ -2,7 +2,7 @@
 import cus251101font from '@/assets/fonts/25fonts/25-11-01-edgecase.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -15,7 +15,7 @@ function EdgeClockWithHands() {
   );
 
   useSuspenseFontLoader(fontConfigs);
-  const time = useSecondClock();
+  const time = useClock();
   const viewport = useWindowSize();
 
   const { width, height } = viewport;

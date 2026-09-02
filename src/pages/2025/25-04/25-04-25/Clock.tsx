@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 import minuteHandImage from '@/assets/images/25_images/25-04/25-04-25/ba.gif';
@@ -21,7 +21,7 @@ const numerals = Array.from({ length: 12 }, (_, i) => i + 1);
 
 const MyClock =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useSecondClock();
+  const time = useClock();
 
   const { hourDeg, minuteDeg, secondDeg, isoTime } = useMemo(() => {
     const s = time.getSeconds();

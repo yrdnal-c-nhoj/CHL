@@ -1,7 +1,7 @@
 import chandelierBg from '@/assets/images/26_images/26-07/26-07-02/dive1.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useEffect, useRef, useState, memo } from 'react';
 
 import fontUrl from '@/assets/fonts/26fonts/26-07-02.ttf?url';
@@ -48,7 +48,7 @@ const getRandomVelocity = () => (Math.random() * 0.001 - 0.05);
 
 const FloatingDigitalClocks =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useSecondClock();
+  const time = useClock();
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const [clocks, setClocks] = useState<FloatingClock[]>(() =>

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import bgImage from './wheel.svg';
 export const assets: string[] = [];
 
 
 export default function AnalogBackgroundClock() {
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
 
   const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
   const minutes = now.getMinutes() + seconds / 60;

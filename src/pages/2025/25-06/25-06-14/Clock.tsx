@@ -11,7 +11,7 @@ import hum4 from '@/assets/images/25_images/25-06/25-06-14/hum4.gif';
 import hum7 from '@/assets/images/25_images/25-06/25-06-14/hum7.webp';
 import hum8 from '@/assets/images/25_images/25-06/25-06-14/hum8.gif';
 import hum9 from '@/assets/images/25_images/25-06/25-06-14/hum9.webp';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [hummFont, hmmGif, hummPng, hum1, hum2, hum3, hum4, hum7, hum8, hum9];
 
 const floatingImages = [
@@ -25,7 +25,7 @@ const floatingImages = [
 ];
 
 const HummingbirdClock =  () => {
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  // useEffect for updateClock removed - time is reactive via useClock
 
   return (
     <div style={styles.body}>

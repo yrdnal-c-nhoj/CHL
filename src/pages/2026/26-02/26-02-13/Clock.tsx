@@ -1,4 +1,4 @@
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 import { GRID, HOUR_WORDS, MAPPING } from './clockConstants';
@@ -6,7 +6,7 @@ export const assets: string[] = [];
  // Import constants
 
 const WordClock =  () => {
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
 
   const activeIndices = useMemo(() => {
     const h = now.getHours();

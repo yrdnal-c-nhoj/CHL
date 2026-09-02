@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 import hand1Img from '@/assets/images/26_images/26-03/26-03-08/hand2.png';
@@ -24,7 +24,7 @@ const fontConfigs = [
 
 const Clock =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();

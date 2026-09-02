@@ -1,7 +1,7 @@
 import clockFont from '@/assets/fonts/26fonts/26-06-21.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-06/26-06-21/birdhaus.webp';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
 import React, { useEffect, useMemo, useState, memo } from 'react';
 import styles from './Clock.module.css';
@@ -63,7 +63,7 @@ const cellStyle: CSSProperties = {
 };
 
 const Clock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const [dimensions, setDimensions] = useState({ cols: 1, rows: 1 });
 
   useEffect(() => {

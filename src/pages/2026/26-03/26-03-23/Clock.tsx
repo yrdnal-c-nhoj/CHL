@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { calculateAngles } from '@/utils/clockUtils';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -44,7 +44,7 @@ const Clock =  () => {
   // Load fonts via Suspense-compatible loader
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useSecondClock();
+  const time = useClock();
   const angles = calculateAngles(time);
 
   const staticElements = useMemo(

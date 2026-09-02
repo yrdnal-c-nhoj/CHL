@@ -1,14 +1,13 @@
 import officeImg from '@/assets/images/26_images/26-06/26-06-10/office.webp';
 import phoneImg from '@/assets/images/26_images/26-06/26-06-10/phone.webp';
-import { useSecondClock } from '@/utils/hooks/useSmoothClock';
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 
 export const assets = [phoneImg, officeImg];
 
 const DigitalClock = () => {
-  const time = useSecondClock();
+  const time = useClock();
   const tileSize = 100; // Matches the CSS 100px size
   const [dimensions, setDimensions] = useState({ cols: 0, rows: 0 });
 

@@ -1,5 +1,5 @@
 import { memo, useState, useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import backgroundGif3 from '@/assets/images/26_images/26-01/26-01-29/ur.png';
 import backgroundGif2 from '@/assets/images/26_images/26-01/26-01-29/ur.gif';
 import backgroundGif from '@/assets/images/26_images/26-01/26-01-29/uranu.gif';
@@ -20,7 +20,7 @@ const ClockUranus = memo(() => (
 ClockUranus.displayName = 'ClockUranus';
 
 const AnalogUranusClock =  () => {
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
   const [bgRotation, setBgRotation] = useState(0);
 
   useEffect(() => {

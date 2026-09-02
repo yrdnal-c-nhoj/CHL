@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
@@ -17,7 +17,7 @@ interface FlyingPetalsClockProps {
 }
 
 const FlyingPetalsClock: React.FC<FlyingPetalsClockProps> = () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // Font loading configuration (memoized)
   const fontConfigs = useMemo<FontConfig[]>(

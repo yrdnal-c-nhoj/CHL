@@ -4,7 +4,7 @@ import { useMultiAssetLoader } from '@/utils/assetLoader';
 import backgroundImg from '@/assets/images/25_images/25-10/25-10-21/bg.jpg';
 import hourHandImg from '@/assets/images/25_images/25-10/25-10-21/hour.gif';
 import minuteHandImg from '@/assets/images/25_images/25-10/25-10-21/min.gif';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [backgroundImg, hourHandImg, minuteHandImg];
 
 
@@ -12,9 +12,9 @@ export default function AnalogClock() {
   const [time, setTime] = useState(new Date());
   const [isWide, setIsWide] = useState<boolean>(true);
 
-    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+    // Migrated from legacy interval to canonical rAF hook (useClock).
   // (was a pure 60000ms state ticker; state now derived from the hook time)
-  const clockTime = useSecondClock();
+  const clockTime = useClock();
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
   useEffect(() => {

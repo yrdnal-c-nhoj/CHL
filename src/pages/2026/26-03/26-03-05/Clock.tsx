@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets: string[] = [];
 
 
@@ -17,7 +17,7 @@ const Clock =  () => {
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
-  const time = useSecondClock();
+  const time = useClock();
   const [bootText, setBootText] = useState('');
   const [showEmail, setShowEmail] = useState<boolean>(false);
   const [showFooter, setShowFooter] = useState<boolean>(false);

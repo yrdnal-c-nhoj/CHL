@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 
 import digit7 from '@/assets/images/26_images/26-02/26-02-22/1.webp';
 import digit4 from '@/assets/images/26_images/26-02/26-02-22/2.webp';
@@ -33,7 +33,7 @@ const DIGITS = [
 ];
 
 const SimpleClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const [hueRotation, setHueRotation] = useState(
     Math.floor(Math.random() * 360),
   );

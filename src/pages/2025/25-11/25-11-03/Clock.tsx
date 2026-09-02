@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import digi251103font from '@/assets/fonts/25fonts/25-11-03-bin3.ttf?url';
 import tec251103font from '@/assets/fonts/25fonts/25-11-03-bin1.otf?url';
 import styles from './Clock.module.css';
@@ -28,7 +28,7 @@ function BinaryClockWithColumns() {
   );
 
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  const time = useSecondClock();
+  const time = useClock();
   const [overlayVisible, setOverlayVisible] = useState(true);
 
   useEffect(() => {

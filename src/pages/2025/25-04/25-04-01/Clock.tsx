@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useId } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 export const assets: string[] = [];
 
 
@@ -45,7 +45,7 @@ function useGlobalStyles(css: string, id: string): void {
 }
 
 const DigitalClock = () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   // Generate unique keyframe names

@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 // Assuming an image exists in the corresponding folder for the date
@@ -28,7 +28,7 @@ const fontConfigs: FontConfig[] = [
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
 const DigitalClock = () => {
-  const time = useSecondClock();
+  const time = useClock();
   useSuspenseFontLoader(fontConfigs);
 
   const timeString = useMemo(() => {

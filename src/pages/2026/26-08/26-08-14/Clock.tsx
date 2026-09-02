@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 // 1. Asset Exports (for preloading)
@@ -25,7 +25,7 @@ const TILE_COUNT = GRID_ROWS * GRID_COLS;
 // 3. Main Component
 const ClockComponent =  () => {
   // Use the canonical hook to get time that updates every second.
-  const time = useSecondClock();
+  const time = useClock();
 
   useSuspenseFontLoader(fontConfigs);
 

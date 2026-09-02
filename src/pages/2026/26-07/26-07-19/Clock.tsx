@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 // Conforms to the project standard of exporting assets, even if empty.
@@ -7,7 +7,7 @@ export const assets: string[] = [];
 
 const SweepClock = () => {
   // Use the project's standardized hook for timekeeping.
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // 1. Seconds calculations (Continuous sweep)
   const seconds = time.getSeconds() + time.getMilliseconds() / 1000;

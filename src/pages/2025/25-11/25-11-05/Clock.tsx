@@ -3,7 +3,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import WebFonnov25ufuf from '@/assets/fonts/25fonts/25-11-05-webs1.ttf';
 import Webfont2511055 from '@/assets/fonts/25fonts/25-11-05-webs2.ttf';
 import w251105font from '@/assets/fonts/25fonts/25-11-05-webs3.ttf';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 export const assets = [WebFonnov25ufuf, Webfont2511055, w251105font];
 
 
@@ -173,9 +173,9 @@ function ModernDigitalClock() {
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
-    // Migrated from legacy interval to canonical rAF hook (useMillisecondClock).
+    // Migrated from legacy interval to canonical rAF hook (useSmoothClock).
   // (was a pure 100ms state ticker; state now derived from the hook time)
-  const clockTime = useMillisecondClock(100);
+  const clockTime = useSmoothClock(100);
   useEffect(() => { setNow(clockTime); }, [clockTime, setNow]);
 
   // Avoid FOUT: wait for fonts then reveal component

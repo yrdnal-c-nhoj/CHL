@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import fibFont from '@/assets/fonts/25fonts/25-07-12-fib.otf';
 import fibImage from '@/assets/images/25_images/25-07/25-07-12/fib.gif';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [fibFont, fibImage];
 
 const FibonacciClock =  () => {
@@ -18,7 +18,7 @@ const FibonacciClock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  // useEffect for updateClock removed - time is reactive via useClock
 
   const fontFace = `
     /* Font loading handled by useSuspenseFontLoader */

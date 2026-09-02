@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 // Assets
@@ -39,7 +39,7 @@ DisplayDigits.displayName = 'DisplayDigits';
 
 const ClockComponent = () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock(16);
+  const time = useSmoothClock(16);
 
   const clocks = useMemo(
     () =>

@@ -1,4 +1,4 @@
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useEffect, useState } from 'react';
 
 import nefertitiImage from '@/assets/images/26_images/26-07/26-07-23/nefertiti.webp';
@@ -22,7 +22,7 @@ const useIsMobile = (breakpoint = 768) => {
 };
 
 const AnalogClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const isMobile = useIsMobile();
 
   const seconds = time.getSeconds() + time.getMilliseconds() / 1000;

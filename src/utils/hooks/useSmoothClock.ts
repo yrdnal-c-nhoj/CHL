@@ -1,11 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 
 /**
- * Hook for smooth clock updates using requestAnimationFrame
- * Replaces setInterval for better performance and battery efficiency
+ * Canonical smooth / sub-second clock hook.
  *
- * @param updateInterval - Update interval in milliseconds (default: 1000 for seconds, use lower values for milliseconds)
- * @returns Current time
+ * Returns a `Date` that updates on every animation frame, throttled to
+ * `updateInterval` ms. Use this for smooth hand rotations, sub-second
+ * animations, and any visual that needs to track milliseconds.
+ *
+ * For simple second-tick clocks, prefer `useClock` (cheaper, only re-renders
+ * when the second changes).
+ *
+ * @param updateInterval - Update interval in milliseconds (default: 1000)
+ * @returns {Date} Current time
  */
 export function useSmoothClock(updateInterval: number = 1000): Date {
   const [time, setTime] = useState(new Date());
@@ -14,7 +20,6 @@ export function useSmoothClock(updateInterval: number = 1000): Date {
 
   useEffect(() => {
     const animate = (timestamp: number = performance.now()) => {
-      // Update based on interval to avoid excessive updates
       if (timestamp - lastUpdateRef.current >= updateInterval) {
         setTime(new Date());
         lastUpdateRef.current = timestamp;
@@ -25,7 +30,7 @@ export function useSmoothClock(updateInterval: number = 1000): Date {
     rafIdRef.current = requestAnimationFrame(animate);
 
     return () => {
-      if (rafIdRef.current) {
+      if (rafIdRef.current !== undefined) {
         cancelAnimationFrame(rafIdRef.current);
       }
     };
@@ -35,10 +40,8 @@ export function useSmoothClock(updateInterval: number = 1000): Date {
 }
 
 /**
- * Hook for smooth clock updates that only updates when seconds change
- * More efficient for clocks that don't need millisecond precision
- *
- * @returns Current time
+ * @deprecated Use `useClock` instead. This thin re-export is kept only for
+ * backward compatibility and will be removed in a future release.
  */
 export function useSecondClock(): Date {
   const [time, setTime] = useState(new Date());
@@ -50,7 +53,6 @@ export function useSecondClock(): Date {
       const now = new Date();
       const currentSecond = now.getSeconds();
 
-      // Only update when seconds change
       if (currentSecond !== lastSecondRef.current) {
         setTime(now);
         lastSecondRef.current = currentSecond;
@@ -62,7 +64,7 @@ export function useSecondClock(): Date {
     rafIdRef.current = requestAnimationFrame(animate);
 
     return () => {
-      if (rafIdRef.current) {
+      if (rafIdRef.current !== undefined) {
         cancelAnimationFrame(rafIdRef.current);
       }
     };
@@ -72,11 +74,8 @@ export function useSecondClock(): Date {
 }
 
 /**
- * Hook for smooth millisecond display
- * Optimized for clocks showing millisecond precision
- *
- * @param updateInterval - Update interval in milliseconds (default: 50)
- * @returns Current time
+ * @deprecated Use `useSmoothClock` instead. This thin re-export is kept only
+ * for backward compatibility and will be removed in a future release.
  */
 export function useMillisecondClock(updateInterval: number = 50): Date {
   return useSmoothClock(updateInterval);

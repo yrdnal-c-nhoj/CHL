@@ -1,5 +1,5 @@
 import type { FontConfig } from '@/types/clock';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React from 'react';
 
@@ -18,7 +18,7 @@ const fontConfigs: FontConfig[] = [
 const AnalogClock =  () => {
   useSuspenseFontLoader(fontConfigs);
 
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
   const isoTime = now.toISOString();
 
   // Calculate smooth hand rotations

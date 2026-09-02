@@ -4,7 +4,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgVideo from '@/assets/images/25_images/25-11/25-11-02/swim.mp4';
 import fallbackImg from '@/assets/images/25_images/25-11/25-11-02/swim.webp';
 import fontFile2025_11_04 from '@/assets/fonts/25fonts/25-11-02-sperm.ttf'; // Custom scientific font
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 export const assets = [bgVideo, fallbackImg, fontFile2025_11_04];
 
 
@@ -67,9 +67,9 @@ export default function MonarchScene() {
   }, []);
 
   // Update time every 25ms
-    // Migrated from legacy interval to canonical rAF hook (useMillisecondClock).
+    // Migrated from legacy interval to canonical rAF hook (useSmoothClock).
   // (was a pure 25ms state ticker; state now derived from the hook time)
-  const clockTime = useMillisecondClock(25);
+  const clockTime = useSmoothClock(25);
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
   const h = String(time.getHours()).padStart(2, '0');

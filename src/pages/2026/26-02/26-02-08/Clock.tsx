@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 
 import trocaderoFont from '@/assets/fonts/26fonts/26-02-08-eiffel.ttf?url';
 import analogBgImage from '@/assets/images/26_images/26-02/26-02-08/tower.webp';
@@ -34,7 +34,7 @@ const TrocClock =  () => {
 
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useSecondClock();
+  const time = useClock();
 
   const s = time.getSeconds();
   const m = time.getMinutes() + s / 60;

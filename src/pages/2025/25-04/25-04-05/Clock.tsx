@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 import overlayImg from '@/assets/images/25_images/25-04/25-04-05/gfccc.gif';
@@ -36,7 +36,7 @@ const getSecondRotation = (date: Date): number => {
 
 const TallClock = () => {
   // Use the standardized hook for smooth millisecond clock updates
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // Font loading configuration (memoized) - no custom fonts needed
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);

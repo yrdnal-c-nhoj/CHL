@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import overlayBg from '@/assets/images/26_images/26-01/26-01-15/red.gif';
 import baseBg from '@/assets/images/26_images/26-01/26-01-15/sph.gif';
 import styles from './Clock.module.css';
@@ -15,7 +15,7 @@ const handColors = {
 }
 
 const Clock =  () => {
-  const time = useMillisecondClock(100);
+  const time = useSmoothClock(100);
   const [bgReady, setBgReady] = useState(false);
 
   useEffect(() => {

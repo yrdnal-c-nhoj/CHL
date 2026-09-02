@@ -3,7 +3,7 @@ import bgImage from '@/assets/images/26_images/26-08/26-08-22/mars.webp';
 
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -23,7 +23,7 @@ const padZero = (num: number) => (num < 10 ? `0${num}` : `${num}`);
 const Clock = () => {
   useSuspenseFontLoader(FONT_CONFIGS);
 
-  const time = useSecondClock();
+  const time = useClock();
   const [offset, setOffset] = useState(0);
   const imgRef = useRef<HTMLImageElement>(null);
   const imageWidthRef = useRef(0);

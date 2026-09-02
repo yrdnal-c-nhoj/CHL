@@ -2,12 +2,12 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-07/25-07-18/558074085193-ezgif.com-optiwebp-1.webp';
 import xrayFontUrl from '@/assets/fonts/25fonts/25-07-18-xray.ttf';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 export const assets = [bgImage, xrayFontUrl];
 
 
 const HospitalClock = () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const timeString = useMemo(() => {
     const h = time.getHours().toString().padStart(2, '0');

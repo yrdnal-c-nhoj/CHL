@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 export const assets: string[] = [];
 
 
 const Clock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
 
   // Calculate grid dimensions based on viewport and tile size
   const tileWidth = 26; // 26dvh (260px / 10)

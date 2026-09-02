@@ -1,7 +1,7 @@
 import fontUrl from '@/assets/fonts/26fonts/26-07-18.ttf?url';
 import akiraVideo from '@/assets/images/26_images/26-07/26-07-18/ak2.mp4';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 export const assets = [fontUrl, akiraVideo];
@@ -110,7 +110,7 @@ const AnalogClock: React.FC<{ time: Date }> = ({ time }) => {
 const FONT_CONFIGS = [{ fontFamily: CONFIG.fontFamily, fontUrl }];
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   
   // Load custom font asset via suspense hook
   useSuspenseFontLoader(FONT_CONFIGS);

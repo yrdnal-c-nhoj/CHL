@@ -1,14 +1,14 @@
 import fontUrl from '@/assets/fonts/26fonts/26-06-15.otf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useMemo, memo } from 'react';
 import styles from './Clock.module.css';
 
 export const assets = [fontUrl];
 
 const Clock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
 
   const fontConfigs: FontConfig[] = useMemo(
     () => [

@@ -2,13 +2,13 @@ import customFont from '@/assets/fonts/26fonts/26-06-24.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-06/26-06-22/golf.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 export const assets = [backgroundImage, customFont];
 
 export default function DigitalClock() {
-  const time = useSecondClock();
+  const time = useClock();
 
   const fontConfigs = useMemo<FontConfig[]>(
     () => [

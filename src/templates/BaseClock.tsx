@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import styles from './BaseClock.module.css';
 
 /**
@@ -42,7 +42,7 @@ const formatDigits = (num: number): string => num.toString().padStart(2, '0');
 // MAIN COMPONENT
 // =========================
 const BaseClock = () => {
-  const time = useSecondClock();
+  const time = useClock();
 
   useSuspenseFontLoader(fontConfigs);
 

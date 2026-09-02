@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import cloudyFont from '@/assets/fonts/25fonts/25-06-13-cloudy.ttf';
 import cmoon from '@/assets/images/25_images/25-06/25-06-13/cmoon.webp';
 import clouGif from '@/assets/images/25_images/25-06/25-06-13/clou.gif';
@@ -22,7 +22,7 @@ const fontConfigs = [
 
 const CloudyNightClock =  () => {
   const clockRef = useRef(null);
-  const time = useSecondClock();
+  const time = useClock();
 
   useSuspenseFontLoader(fontConfigs);
 

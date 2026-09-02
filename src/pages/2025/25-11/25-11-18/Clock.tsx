@@ -4,14 +4,14 @@ import { useEffect, useMemo, useState } from 'react';
 
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [bgImg];
 
 const RotatedClockGrid = () => {
   // Using the standardized BTS hook
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const timeStr = time.toLocaleTimeString('en-GB', { hour12: false });
   
   // Ensure each part is a two-digit string, even if split returns fewer parts

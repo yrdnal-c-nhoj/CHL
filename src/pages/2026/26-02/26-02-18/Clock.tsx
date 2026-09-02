@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 
 import mazeFont from '@/assets/fonts/26fonts/26-02-18-jelly.otf';
 import bg1 from '@/assets/images/26_images/26-02/26-02-18/jel.webp';
@@ -9,7 +9,7 @@ export const assets = [mazeFont, bg1, bg3];
 
 
 const ImageDisplay =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const [showContent, setShowContent] = useState(false);
 
   const fontConfigs = useMemo(

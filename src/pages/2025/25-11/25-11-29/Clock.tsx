@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, memo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundImg from '@/assets/images/25_images/25-11/25-11-29/squ.webp';
@@ -9,7 +9,7 @@ import styles from './Clock.module.css';
 export const assets = [backgroundImg, fontUrl_20251128];
 
 function RococoDigitalClock() {
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
   const [morph, setMorph] = useState<number>(0);
   const [isVertical, setIsVertical] = useState<boolean>(false);
 

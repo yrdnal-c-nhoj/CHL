@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 
 // === Local assets ===
@@ -38,7 +38,7 @@ const getAllDigits = (t) => {
 };
 
 export default function DigitalImageClock() {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [prevDigits, setPrevDigits] = useState(() => getAllDigits(time));
   const [digitSize, setDigitSize] = useState<number>(0);
   const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768);

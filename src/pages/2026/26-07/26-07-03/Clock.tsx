@@ -1,4 +1,4 @@
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -27,7 +27,7 @@ const TickMarks =  () => (
 );
 
 const AnalogClock =  () => {
-  const currentTime = useMillisecondClock();
+  const currentTime = useSmoothClock();
 
   // Memoize angle calculations for performance
   const rotations = useMemo(() => {

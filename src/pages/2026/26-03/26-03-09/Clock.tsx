@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 
 // Asset Imports
 import catFont from '@/assets/fonts/26fonts/26-03-09-cat.ttf';
@@ -35,7 +35,7 @@ const Clock =  () => {
     fontUrl: f.url,
   }));
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  const time = useSecondClock();
+  const time = useClock();
   const [index, setIndex] = useState(0);
   const [transform, setTransform] = useState({
     scale: 1,

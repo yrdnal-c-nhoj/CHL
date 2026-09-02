@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import c250929 from '@/assets/fonts/25fonts/25-09-29-actionj.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 export const assets = [c250929];
@@ -7,7 +7,7 @@ export const assets = [c250929];
 
 export default function ComicClock() {
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // Load font
   useEffect(() => {

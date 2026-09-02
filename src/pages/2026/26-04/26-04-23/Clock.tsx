@@ -1,7 +1,7 @@
 import React, { Suspense, useMemo } from 'react';
 import backgroundVideo from '@/assets/images/26_images/26-04/26-04-23/sunflower.mp4';
 import fontUrl from '@/assets/fonts/26fonts/26-04-23.otf';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import {
   useSuspenseFontLoader,
   ClockLoadingFallback,
@@ -21,7 +21,7 @@ const ClockInner =  () => {
   );
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const h = formatTime(time.getHours());
   const m = formatTime(time.getMinutes());

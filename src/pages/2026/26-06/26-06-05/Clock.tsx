@@ -3,14 +3,14 @@ import brainGif from '@/assets/images/26_images/26-06/26-06-05/brain.webp';
 import sliceImg from '@/assets/images/26_images/26-06/26-06-05/slice.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useMemo, memo } from 'react';
 import styles from './Clock.module.css';
 
 export const assets = [brainGif, sliceImg, clockFont];
 
 const Clock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
 
   const fontConfigs: FontConfig[] = useMemo(() => [
     {

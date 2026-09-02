@@ -1,5 +1,5 @@
 import { formatTime as utilFormatTime } from '@/utils/hooks'; // Alias to avoid conflict with local formatTime
-import { useMillisecondClock } from '@/utils/hooks'; // Use the standardized hook
+import { useSmoothClock } from '@/utils/hooks'; // Use the standardized hook
 import React, {
   useCallback,
   useEffect,
@@ -13,7 +13,7 @@ export const assets = [];
 
 const Clock =  () => {
   // --- STATE MANAGEMENT ---
-  const time = useMillisecondClock(); // Centralized time source
+  const time = useSmoothClock(); // Centralized time source
   const [isLargeScreen, setIsLargeScreen] = useState(true);
   const [bgReady, setBgReady] = useState<boolean>(false);
 

@@ -3,7 +3,7 @@ import bgImg from '@/assets/images/25_images/25-11/25-11-19/apple.webp';
 import tileImg from '@/assets/images/25_images/25-11/25-11-19/ap.webp';
 import overlayImg from '@/assets/images/25_images/25-11/25-11-19/app.webp';
 import customFontUrl from '@/assets/fonts/25fonts/25-11-19-apple.ttf?url';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [bgImg, tileImg, overlayImg, customFontUrl];
 
 
@@ -27,9 +27,9 @@ export default function AnalogClock() {
   }, []);
 
   // 2. Manage Clock Timer
-    // Migrated from legacy interval to canonical rAF hook (useSecondClock).
+    // Migrated from legacy interval to canonical rAF hook (useClock).
   // (was a pure 1000ms state ticker; state now derived from the hook time)
-  const clockTime = useSecondClock();
+  const clockTime = useClock();
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
   // 3. Format Time

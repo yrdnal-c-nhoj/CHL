@@ -5,7 +5,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgVideo from '@/assets/images/25_images/25-10/25-10-29/tilt.mp4';
 import fallbackImg from '@/assets/images/25_images/25-10/25-10-29/tilt.webp';
 import romanFont2025_10_27 from '@/assets/fonts/25fonts/25-10-29-tilt.ttf';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 export const assets = [bgVideo, fallbackImg, romanFont2025_10_27];
 
 
@@ -18,9 +18,9 @@ export default function MonarchClock() {
   /* ------------------------------------------------------------------
      1. Update time frequently (25ms for smooth milliseconds)
   ------------------------------------------------------------------ */
-    // Migrated from legacy interval to canonical rAF hook (useMillisecondClock).
+    // Migrated from legacy interval to canonical rAF hook (useSmoothClock).
   // (was a pure 25ms state ticker; state now derived from the hook time)
-  const clockTime = useMillisecondClock(25);
+  const clockTime = useSmoothClock(25);
   useEffect(() => { setNow(clockTime); }, [clockTime, setNow]);
 
   /* ------------------------------------------------------------------

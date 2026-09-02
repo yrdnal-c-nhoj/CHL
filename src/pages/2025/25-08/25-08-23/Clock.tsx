@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
@@ -50,7 +50,7 @@ const fontConfigs = [
 ];
 
 export default function DigitalClock() {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   // Style constants

@@ -1,5 +1,5 @@
 import React, { useMemo, memo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import clockTax from './tax';
 import styles from './Clock.module.css';
@@ -7,7 +7,7 @@ import styles from './Clock.module.css';
 export const assets = [];
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const fontConfigs = useMemo<any[]>(() => [], []);
   useSuspenseFontLoader(fontConfigs);

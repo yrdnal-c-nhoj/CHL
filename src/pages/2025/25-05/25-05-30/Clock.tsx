@@ -3,7 +3,7 @@ import React from 'react';
 import issFont from '@/assets/fonts/25fonts/25-05-30-iss.ttf';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
@@ -19,7 +19,7 @@ const fontConfigs: FontConfig[] = [
 
 const ClockComponent = () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const formatDigit = (value: number) => String(value).padStart(2, '0').split('');
 

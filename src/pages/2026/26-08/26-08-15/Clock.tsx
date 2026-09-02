@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -25,7 +25,7 @@ const SECONDS = Array.from({ length: 60 }, (_, i) => String(i + 1).padStart(2, '
 
 const ClockComponent =  () => {
   // Use the canonical hook for time updates
-  const time = useMillisecondClock(16);
+  const time = useSmoothClock(16);
 
   // Use the canonical hook for font loading
   useSuspenseFontLoader(fontConfigs);

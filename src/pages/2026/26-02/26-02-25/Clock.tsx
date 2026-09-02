@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import cocteauVideo from '@/assets/images/26_images/26-02/26-02-25/cocteau.mp4';
 import starWebp from '@/assets/images/26_images/26-02/26-02-25/star.webp';
 export const assets = [cocteauVideo, starWebp];
 
 
 const CocteauClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const videoRef = useRef(null);
 
   useEffect(() => {

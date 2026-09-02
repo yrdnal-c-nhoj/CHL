@@ -1,7 +1,7 @@
 import type { FontConfig } from '@/types/clock';
 
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { memo, useEffect, useRef } from 'react';
 
 import customFont from '@/assets/fonts/26fonts/26-08-27.ttf?url';
@@ -56,7 +56,7 @@ const FONT_CONFIGS: FontConfig[] = [
 ];
 
 const DigitalClock = () => {
-  const currentTime = useMillisecondClock(50);
+  const currentTime = useSmoothClock(50);
 
   useSuspenseFontLoader(FONT_CONFIGS);
 

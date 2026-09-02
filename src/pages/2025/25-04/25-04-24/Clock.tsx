@@ -3,7 +3,7 @@ import { default as lava1, default as lava3 } from '@/assets/images/25_images/25
 import lava2 from '@/assets/images/25_images/25-04/25-04-24/vp2OVr.gif';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 export const assets = [lavaFont, lava1, lava3, lava2];
@@ -40,7 +40,7 @@ const LavaClock: React.FC<LavaClockProps> = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
 
   const [time, setTime] = useState<TimeState>({ hours: '00', minutes: '00' });
   const [showGif, setShowGif] = useState<boolean>(false);

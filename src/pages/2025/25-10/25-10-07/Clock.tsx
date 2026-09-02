@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 // === Local assets ===
 import backgroundVideo from '@/assets/images/25_images/25-10/25-10-07/big.mp4';
 import fallbackGif from '@/assets/images/25_images/25-10/25-10-07/big.webp';
@@ -9,7 +9,7 @@ export const assets = [backgroundVideo, fallbackGif, O251007font];
 
 
 export default function ImageAnalogClock() {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const fontConfigs = useMemo(
     () => [

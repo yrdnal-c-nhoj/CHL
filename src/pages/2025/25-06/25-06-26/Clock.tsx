@@ -4,7 +4,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bg1 from '@/assets/images/25_images/25-06/25-06-26/co.png';
 import bg2 from '@/assets/images/25_images/25-06/25-06-26/cos.png';
 import wheFont from '@/assets/fonts/25fonts/25-06-26-whe.ttf';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [bg1, bg2, wheFont];
 
 const CosmicWheelClock =  () => {
@@ -22,7 +22,7 @@ const CosmicWheelClock =  () => {
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   // Font loading handled by useSuspenseFontLoader
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  // useEffect for updateClock removed - time is reactive via useClock
 
   const containerStyle = {
     margin: 0,

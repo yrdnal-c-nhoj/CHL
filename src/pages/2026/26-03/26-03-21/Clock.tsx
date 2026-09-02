@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
@@ -23,7 +23,7 @@ const Clock =  () => {
   // Load fonts via Suspense-compatible loader
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useSecondClock();
+  const time = useClock();
 
   const pad = (n: number) => String(n).padStart(2, '0');
   const digits = (

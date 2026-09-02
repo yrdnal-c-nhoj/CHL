@@ -2,7 +2,7 @@ import SRTime from '@/components/SRTime';
 import { useClockAngles } from '@/hooks/useClockAngles';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useEffect, useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -29,9 +29,9 @@ const fontConfigs: FontConfig[] = [
 // 3. MAIN COMPONENT
 // ====================================================================================
 const AnalogClockComponent =  () => {
-  // A. Use the canonical time hook. `useMillisecondClock` provides smooth animation.
-  //    For a ticking second hand, `useSecondClock` is more performant.
-  const time = useMillisecondClock();
+  // A. Use the canonical time hook. `useSmoothClock` provides smooth animation.
+  //    For a ticking second hand, `useClock` is more performant.
+  const time = useSmoothClock();
 
   // B. Load fonts via Suspense. This will pause rendering until the font is ready.
   useSuspenseFontLoader(fontConfigs);

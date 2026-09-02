@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 // 1. Asset Exports
@@ -31,7 +31,7 @@ const ClockComponent: React.FC<SkewFlatClockProps> = ({
   horizontalRepeats = 30,
 }) => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useSecondClock(); // UseSecondClock is sufficient for HH:MM
+  const time = useClock(); // UseSecondClock is sufficient for HH:MM
   const [hue, setHue] = useState<number>(0);
   const animationFrameRef = useRef<number | null>(null);
 

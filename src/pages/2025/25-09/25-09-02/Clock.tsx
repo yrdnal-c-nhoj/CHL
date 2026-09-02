@@ -2,7 +2,7 @@ import hourHandImage from '@/assets/images/25_images/25-09/25-09-02/arm1.gif';
 import minuteHandImage from '@/assets/images/25_images/25-09/25-09-02/arm2.gif';
 import secondHandImage from '@/assets/images/25_images/25-09/25-09-02/arm3.gif';
 import bgImage from '@/assets/images/25_images/25-09/25-09-02/lp.webp';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -10,7 +10,7 @@ import styles from './Clock.module.css';
 export const assets = [bgImage, hourHandImage, minuteHandImage, secondHandImage];
 
 const ClockComponent =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const { hourAngle, minAngle, secAngle } = useMemo(() => {
     const seconds = time.getSeconds() + time.getMilliseconds() / 1000;

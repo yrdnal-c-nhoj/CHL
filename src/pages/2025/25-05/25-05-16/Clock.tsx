@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 import braiFont from '@/assets/fonts/25fonts/25-05-16-brai.ttf';
 import styles from './Clock.module.css';
@@ -22,7 +22,7 @@ const fontConfigs: FontConfig[] = [
 
 const ClockComponent = () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const pad = (n: number) => n.toString().padStart(2, '0');
 

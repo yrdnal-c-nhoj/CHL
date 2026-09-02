@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import animalsVideo from '@/assets/images/26_images/26-06/26-06-13/blacksmith.mp4';
 import fireVideo from '@/assets/images/26_images/26-06/26-06-13/fire.mp4';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 export const assets = [animalsVideo, fireVideo];
@@ -11,7 +11,7 @@ export const assets = [animalsVideo, fireVideo];
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
 const Clock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
 
   const { hours, minutes } = useMemo(() => {
     const h = formatTime(time.getHours());

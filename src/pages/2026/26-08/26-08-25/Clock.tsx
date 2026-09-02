@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 
 import fontUrl from '@/assets/fonts/26fonts/26-08-25a.otf?url';
 import backgroundVideo from '@/assets/images/26_images/26-08/26-08-25/radar.webm';
@@ -17,7 +17,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const Clock = () => {
-  const time = useSecondClock();
+  const time = useClock();
   useSuspenseFontLoader(fontConfigs);
 
   const hours = String(time.getHours()).padStart(2, '0');

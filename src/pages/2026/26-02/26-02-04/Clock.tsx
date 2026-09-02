@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
 
@@ -38,7 +38,7 @@ const DigitalClockTemplate =  () => {
 
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useSecondClock();
+  const time = useClock();
 
   const { hh, mm }: TimeFormat = useMemo(() => {
     const hours24 = time.getHours();

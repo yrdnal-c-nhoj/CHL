@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import neptuneFont from '@/assets/fonts/26fonts/26-02-23-nep.ttf';
 import nepBg from '@/assets/images/26_images/26-02/26-02-23/nept.webp';
 import loopBg from '@/assets/images/26_images/26-02/26-02-23/swirl.gif';
@@ -9,7 +9,7 @@ export const assets = [neptuneFont, nepBg, loopBg, triBg];
 
 
 const DigitalClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const [showContent, setShowContent] = useState(false);
 
   const fontConfigs = useMemo(

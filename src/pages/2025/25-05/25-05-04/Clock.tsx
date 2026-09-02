@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useMemo } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import tumbGif from '@/assets/images/25_images/25-05/25-05-04/tumb-ezgif.com-optimize.gif';
@@ -14,7 +14,7 @@ const fontConfigs: FontConfig[] = [];
 
 const Clock =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useSecondClock();
+  const time = useClock();
   const clockRef = useRef<HTMLDivElement>(null);
 
   const secDeg = time.getSeconds() * 6;

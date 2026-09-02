@@ -2,7 +2,7 @@ import fontUrl from '@/assets/fonts/26fonts/26-05-23.ttf?url';
 import lavaVideoSrc from '@/assets/images/26_images/26-05/26-05-23/lava.mp4';
 import type { FontConfig } from '@/types/clock';
 import { ClockLoadingFallback, useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { Suspense, useEffect, useMemo, useRef, useState, memo } from 'react';
 import styles from './Clock.module.css';
 
@@ -17,7 +17,7 @@ const ClockInner =  () => {
   );
 
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [isReady, setIsReady] = useState(false);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 

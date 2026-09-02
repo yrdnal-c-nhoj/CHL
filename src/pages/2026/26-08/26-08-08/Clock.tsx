@@ -2,7 +2,7 @@ import clockVideo from '@/assets/images/26_images/26-08/26-08-08/mount.mp4';
 import { useClockAngles } from '@/hooks/useClockAngles';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks/useSmoothClock';
+import { useSmoothClock } from '@/utils/hooks/useSmoothClock';
 import { ROMAN_NUMERALS } from '@/utils/romanNumerals';
 import React, { memo } from 'react';
 import styles from './Clock.module.css';
@@ -26,7 +26,7 @@ const fontConfigs: FontConfig[] = [
 const ClockComponent =  () => {
   // Use the standardized time hook
   // 16ms = ~60 FPS updates for perfectly smooth, continuous forward movement
-  const time = useMillisecondClock(16);
+  const time = useSmoothClock(16);
 
   // Load fonts via Suspense, the project's standard and correct method.
   useSuspenseFontLoader(fontConfigs);

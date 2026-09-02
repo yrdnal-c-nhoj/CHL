@@ -4,7 +4,7 @@ import balloon4 from '@/assets/images/26_images/26-06/26-06-16/fire.webp';
 import ram from '@/assets/images/26_images/26-06/26-06-16/ram.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { type FC } from 'react';
 import styles from './Clock.module.css';
 
@@ -24,7 +24,7 @@ function pad2(n: number) {
 
 const AnalogClock: FC = () => {
   useSuspenseFontLoader(fontConfigs);
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
 
   const h = now.getHours();
   const m = now.getMinutes();

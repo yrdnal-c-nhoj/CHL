@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import Cu250830 from '@/assets/fonts/25fonts/25-08-30-mem.ttf'; // your font file
 import bgImage from '@/assets/images/25_images/25-08/25-08-30/mem.gif';
@@ -19,7 +19,7 @@ export default function MessyClock() {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   let hours = time.getHours();
   const minutes = time.getMinutes();

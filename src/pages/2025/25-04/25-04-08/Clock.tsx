@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useMemo, useCallback } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import sageFontUrl from '@/assets/fonts/25fonts/25-04-08-sage.ttf?url';
@@ -24,7 +24,7 @@ const TripleCactusClock = () => {
   };
 
   useSuspenseFontLoader(fontConfigs);
-  const currentTime = useMillisecondClock();
+  const currentTime = useSmoothClock();
 
   const setDigits = useCallback((container: HTMLDivElement | null, text: string): void => {
     if (!container) return;

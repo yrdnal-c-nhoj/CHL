@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 export const assets: string[] = [];
 
@@ -21,7 +21,7 @@ const colors = {
 type SpinPhase = 0 | 1 | 2 | 3;
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const [phase, setPhase] = useState<SpinPhase>(0);
   const containerRef = useRef<HTMLDivElement>(null);

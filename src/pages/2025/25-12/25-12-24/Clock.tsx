@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 /* ---------- Font ---------- */
 const FONT_FAMILY = 'Newla';
 import FONT_PATH from '@/assets/fonts/25fonts/25-12-24-lapse.otf?url';
@@ -31,9 +31,9 @@ const ErasingClock =  () => {
   }, []);
 
   /* ---------- Tick Loop (60fps) ---------- */
-    // Migrated from legacy interval to canonical rAF hook (useMillisecondClock).
+    // Migrated from legacy interval to canonical rAF hook (useSmoothClock).
   // (was a pure 16ms state ticker; state now derived from the hook time)
-  const clockTime = useMillisecondClock(16);
+  const clockTime = useSmoothClock(16);
   useEffect(() => { setNow(clockTime); }, [clockTime, setNow]);
 
   /* ---------- Cycle Calculation ---------- */

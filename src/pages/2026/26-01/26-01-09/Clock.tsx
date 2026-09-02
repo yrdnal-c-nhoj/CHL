@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { BackgroundGrid } from './BackgroundGrid';
 import styles from './Clock.module.css';
@@ -10,7 +10,7 @@ const fontConfigs = [{ fontFamily: 'CustomClockFont', fontUrl: '' }];
 
 const TicTacToeClock = () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useSecondClock();
+  const time = useClock();
 
   const formatTime = (date: Date) => {
     const hours = date.getHours();

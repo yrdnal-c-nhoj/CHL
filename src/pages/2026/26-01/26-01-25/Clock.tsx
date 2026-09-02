@@ -1,12 +1,12 @@
 import { memo, useEffect, useRef, useState } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import analogBgImage from '@/assets/images/26_images/26-01/26-01-25/mirage.webp';
 import styles from './Clock.module.css';
 
 export const assets = [analogBgImage];
 
 const AnalogClockTemplate =  () => {
-  const clockTime = useSecondClock();
+  const clockTime = useClock();
   const [opacity, setOpacity] = useState(0.06);
 
   const rafRef = useRef(null);

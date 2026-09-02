@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 
@@ -38,7 +38,7 @@ export default function AnalogImageClock() {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth millisecond clock updates
-  const currentTime = useMillisecondClock();
+  const currentTime = useSmoothClock();
 
   const update = useCallback((): void => {
     const ms = currentTime.getMilliseconds();

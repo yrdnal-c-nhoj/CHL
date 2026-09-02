@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, memo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 
 import videoFile from '@/assets/images/25_images/25-11/25-11-26/esp.mp4';
 import videoWebM from '@/assets/images/25_images/25-11/25-11-26/esp.mp4';
@@ -140,7 +140,7 @@ function BackgroundVideo() {
 
 function NtpClock() {
   useSuspenseFontLoader(fontConfigs);
-  const time = useSecondClock();
+  const time = useClock();
 
   const [timeText, setTimeText] = useState('');
   const [letters, setLetters] = useState<any[]>([]);

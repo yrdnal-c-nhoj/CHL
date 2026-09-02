@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 export const assets: string[] = [];
 
 
 const RainCanvas =  () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const time = useSecondClock();
+  const time = useClock();
 
   const dropCountRef = useRef<number>(3);
   const dropsRef = useRef<DropType[]>([]);

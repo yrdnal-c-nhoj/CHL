@@ -6,7 +6,7 @@ import bg1 from '@/assets/images/25_images/25-07/25-07-20/ca.webp';
 import bg2 from '@/assets/images/25_images/25-07/25-07-20/cam.webp';
 import bg3 from '@/assets/images/25_images/25-07/25-07-20/camer.webp';
 import bg4 from '@/assets/images/25_images/25-07/25-07-20/camr.webp';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [camFont, bg1, bg2, bg3, bg4];
 
 const FStopClock =  () => {
@@ -22,7 +22,7 @@ const FStopClock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  // useEffect for updateClock removed - time is reactive via useClock
 
   useEffect(() => {
     const clock = document.querySelector('.fstop-clock');

@@ -3,7 +3,7 @@ import SRTime from '@/components/SRTime';
 import { useClockAngles } from '@/hooks/useClockAngles';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -43,7 +43,7 @@ const AnalogClockComponent = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the more performant hook since smooth motion is handled by CSS transitions
-  const time = useSecondClock();
+  const time = useClock();
   const clockNumbers = useMemo(() => generateNumbers(), []);
   const { hourAngle, minuteAngle, secondAngle } = useClockAngles(time);
 

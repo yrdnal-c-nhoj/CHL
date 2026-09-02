@@ -1,4 +1,4 @@
-import { useMillisecondClock, formatTime } from '@/utils/hooks';
+import { useSmoothClock, formatTime } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useEffect, useMemo, useRef, useState, memo } from 'react';
 import styles from './Clock.module.css';
@@ -35,7 +35,7 @@ const getRandomPosition = () => ({
 
 const Clock =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   // Start with all images loaded at random positions
   const [displayedImages, setDisplayedImages] = useState<
     Array<{ src: string; pos: React.CSSProperties; id: number }>

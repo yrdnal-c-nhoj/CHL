@@ -2,7 +2,7 @@ import shapesFont from '@/assets/fonts/26fonts/26-07-13.ttf?url';
 import clockVideo from '@/assets/images/26_images/26-07/26-07-13/click.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { memo, useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -80,7 +80,7 @@ const clockStyles: Record<string, React.CSSProperties> = {
 const Clock =  () => {
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useSecondClock();
+  const time = useClock();
 
   const timeString = useMemo(() => {
     const pad = (n: number) => String(n).padStart(2, '0');

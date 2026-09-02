@@ -1,5 +1,5 @@
 import type { FontConfig } from '@/types/clock';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -44,7 +44,7 @@ const useIsMobile = (breakpoint = 768) => {
 };
 
 const VTEC =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [visibleImages, setVisibleImages] = useState<ImageData[]>(() =>
     ASSET_POOL.map((src) => createRandomImage(src))
   );

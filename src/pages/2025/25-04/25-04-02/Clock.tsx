@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useMemo, useCallback , memo } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
@@ -75,7 +75,7 @@ const DeepSpaceClock =  () => {
     );
   }, []);
 
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
   useSuspenseFontLoader(fontConfigs);
 

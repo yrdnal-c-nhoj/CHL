@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 
 // 1. Asset Exports (for preloading)
@@ -23,7 +23,7 @@ const fontConfigs: FontConfig[] = [
 const ClockComponent =  () => {
   // Use the canonical, performant time hook instead of setInterval.
   useSuspenseFontLoader(fontConfigs);
-  const time = useSecondClock();
+  const time = useClock();
 
   // Memoize expensive calculations for both digital and analog clocks
   const { digital } = useMemo(() => {

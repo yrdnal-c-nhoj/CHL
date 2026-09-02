@@ -89,10 +89,14 @@ These results were generated on 2026-09-02 by running the live checks manually.
   missing. Without it, `npm run status` fails.
 - `.kilo/worktrees/juvenile-lip/` is being picked up by Vitest and is breaking
   the test run. Add it to the test ignore list or remove the worktree.
-- `docs/CLOCK_CONTRACT.md` describes canonical hooks as `useSecondClock` /
-  `useMillisecondClock`; the current canonical implementations live in
-  `src/utils/hooks/` as `useClock` / `useSmoothClock`. Doc needs an update
-  pass.
+- `docs/CLOCK_CONTRACT.md` and `src/utils/hooks/index.ts` now agree on the
+  canonical clock-hook API (`useClock` for 1-second updates,
+  `useSmoothClock` for sub-second / smooth animation). The previous names
+  (`useSecondClock`, `useMillisecondClock`) are still exported as
+  `@deprecated` thin re-exports for backward compatibility and will be
+  removed once all callers have been migrated.
+- Remaining clock files have been bulk-migrated to `useClock` /
+  `useSmoothClock`. Any new code must use the canonical names.
 - `docs/PERFORMANCE.md` lists a Three.js budget of `< 150KB` gzipped but the
   current `three-[hash].js` chunk is **190.66KB brotli / 859.55KB raw**. This
   exceeds the budget and should be split or its limit revisited.

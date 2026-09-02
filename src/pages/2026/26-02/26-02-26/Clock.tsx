@@ -1,6 +1,6 @@
 import { memo, useState, useEffect, useMemo, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import backgroundImage from '@/assets/images/26_images/26-02/26-02-26/26-02-26-f.webp';
 import fuFont from '@/assets/fonts/26fonts/26-02-26-fu.ttf';
 import styles from './Clock.module.css';
@@ -50,7 +50,7 @@ const ImageGridClock =  () => {
   const [gridSize, setGridSize] = useState<GridSize>({ rows: 0, cols: 0 });
   const [loadedImages, setLoadedImages] = useState(new Set());
   const [imageAssignments, setImageAssignments] = useState<number[]>([]);
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
   const [currentImageIndex, setCurrentImageIndex] = useState<
     Record<string, number>
   >({});

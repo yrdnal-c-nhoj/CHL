@@ -4,7 +4,7 @@ import type { FontConfig } from '@/types/clock';
 import videoFile from '@/assets/images/25_images/25-12/25-12-28/coaster.mp4';
 import fallbackImg from '@/assets/images/25_images/25-12/25-12-28/coaster.webp';
 import fontUrl_20251128 from '@/assets/fonts/25fonts/25-12-28-coaster.ttf?url';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [videoFile, fallbackImg, fontUrl_20251128];
@@ -17,7 +17,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const Clock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const [timeText, setTimeText] = useState<any>('');
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
   const [shake, setShake] = useState<any>({ x: 0, y: 0, rotate: 0 });

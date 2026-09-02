@@ -1,5 +1,5 @@
 import { memo, useEffect, useState, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import backgroundImage from '@/assets/images/25_images/25-04/25-04-14/bricks.webp';
@@ -11,7 +11,7 @@ const BlueBrickClock = () => {
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
   useSuspenseFontLoader(fontConfigs);
 
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
 
   const [time, setTime] = useState({
     hours: currentTime.getHours(),

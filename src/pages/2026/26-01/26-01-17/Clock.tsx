@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import videoFile from '@/assets/images/26_images/26-01/26-01-17/swww.mp4';
@@ -12,7 +12,7 @@ export const assets = [videoFile, fallbackImg, overlayImage, font112425sput];
 export default function Clock() {
   const videoRef = useRef(null);
   const [videoFailed, setVideoFailed] = useState<boolean>(false);
-  const time = useMillisecondClock(100);
+  const time = useSmoothClock(100);
   const [fontLoaded, setFontLoaded] = useState<boolean>(false);
   const [contentReady, setContentReady] = useState<boolean>(false);
   const [mediaReady, setMediaReady] = useState<boolean>(false);

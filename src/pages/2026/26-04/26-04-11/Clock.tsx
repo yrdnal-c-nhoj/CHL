@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import eyesFont from '@/assets/fonts/26fonts/26-04-11-eyes.ttf';
@@ -30,7 +30,7 @@ const fontConfigs: FontConfig[] = [{ fontFamily: 'Eyes', fontUrl: eyesFont }];
 
 const Clock =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const { hours, minutes, seconds } = useMemo(() => {
     const h = formatTime(time.getHours());

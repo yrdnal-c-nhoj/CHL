@@ -1,6 +1,6 @@
 import { memo, useEffect, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import backgroundImage from '@/assets/images/26_images/26-01/26-01-21/fllap.webp';
 import tileImage from '@/assets/images/26_images/26-01/26-01-21/flap.webp';
 import custom260121Font from '@/assets/fonts/26fonts/26-01-21-migrate.ttf?url';
@@ -26,7 +26,7 @@ const ClockNumbers = memo(({ fontFamily }) => (
 ClockNumbers.displayName = 'ClockNumbers';
 
 const AnalogBirdMigrateClock =  () => {
-  const clockTime = useMillisecondClock();
+  const clockTime = useSmoothClock();
   useSuspenseFontLoader(fontConfigs);
 
   const hourDeg = (clockTime.getHours() % 12) * 30 + clockTime.getMinutes() * 0.5;

@@ -1,5 +1,5 @@
 import { memo, useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import polFont from '@/assets/fonts/25fonts/25-07-06-pol.otf';
 import polarisGif from '@/assets/images/25_images/25-07/25-07-06/polaris.gif';
@@ -19,7 +19,7 @@ const fontConfigs = [
 ];
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   const minutes = time.getMinutes();

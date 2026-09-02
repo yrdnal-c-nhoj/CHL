@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import confFont from '@/assets/fonts/25fonts/25-04-06-conf.ttf?url';
@@ -46,7 +46,7 @@ const ConfettiClock = () => {
   const componentId = useRef(`confetti-clock-${Date.now()}`);
 
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
 
   const getCurrentTimeDigits = useCallback((): string[] => {
     const hours = currentTime.getHours().toString().padStart(2, '0').split('');

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 export const assets: string[] = [];
 
@@ -8,7 +8,7 @@ export const assets: string[] = [];
 export const fontConfigs: FontConfig[] = [];
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   useSuspenseFontLoader(fontConfigs);
 

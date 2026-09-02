@@ -1,7 +1,7 @@
 import clockFont from '@/assets/fonts/26fonts/26-06-11.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-06/26-06-11/ukulele.webp';
 import { useSuspenseFontLoader, ClockLoadingFallback } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -12,7 +12,7 @@ import styles from './Clock.module.css';
 export const assets = [backgroundImage, clockFont];
 
 const ClockComponent =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const tileSize = 80; // Size in pixels
   const [dimensions, setDimensions] = useState({ cols: 1, rows: 1 });
 

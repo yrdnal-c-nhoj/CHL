@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import sunFont from '@/assets/fonts/26fonts/26-03-04-sun.ttf';
 import sunBg from '@/assets/images/26_images/26-03/26-03-04/sun.webp';
 export const assets = [sunFont, sunBg];
@@ -19,7 +19,7 @@ const Clock =  () => {
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
-  const time = useSecondClock();
+  const time = useClock();
   const [isMobile, setIsMobile] = useState(
     typeof window !== 'undefined' && window.innerWidth < 768,
   );

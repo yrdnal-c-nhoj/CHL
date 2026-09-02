@@ -2,7 +2,7 @@ import mazeFontUrl from '@/assets/fonts/26fonts/26-08-28.woff2?url';
 import mazeImage from '@/assets/images/26_images/26-08/26-08-28/maze.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useRef } from 'react';
 import styles from './Clock.module.css';
 import { useMazeRenderer } from './useMazeRenderer';
@@ -12,7 +12,7 @@ export const assets = [mazeImage, mazeFontUrl];
 const InfiniteMaze = () => {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const tileRef = useRef<HTMLDivElement | null>(null);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const fontConfigs: FontConfig[] = [{ fontFamily: 'MazeFont', fontUrl: mazeFontUrl }];
   useSuspenseFontLoader(fontConfigs);

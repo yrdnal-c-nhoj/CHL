@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import bgImage from '@/assets/images/25_images/25-05/25-05-07/water.webp';
@@ -18,7 +18,7 @@ const Clock: React.FC<ClockProps> = () => {
   useSuspenseFontLoader(fontConfigs);
 
   // Use the standardized hook for smooth millisecond clock updates
-  const currentTime = useMillisecondClock();
+  const currentTime = useSmoothClock();
   const requestRef = useRef<number | null>(null);
 
   const updateClock =  () => {

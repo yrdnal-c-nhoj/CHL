@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import origamiFont from '@/assets/fonts/26fonts/26-03-30-origami.ttf';
 import craneImg from '@/assets/images/26_images/26-03/26-03-30/1.webp';
@@ -17,7 +17,7 @@ const Digit = React.memo(({ char }: { char: string }) => (
 ));
 
 const Clock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
 
   const fontConfigs = useMemo(
     () => [{ fontFamily: 'OrigamiFont', fontUrl: origamiFont }],

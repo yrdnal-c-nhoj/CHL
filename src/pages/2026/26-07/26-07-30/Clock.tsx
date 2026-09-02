@@ -14,7 +14,7 @@ import camo8 from '@/assets/images/26_images/26-07/26-07-30/camo9.webp';
 import clockVideo from '@/assets/images/26_images/26-07/26-07-30/tree.mp4';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [
@@ -55,7 +55,7 @@ const SLOT_KEYS = ['h1', 'h2', 'm1', 'm2', 's1', 's2'] as const;
 
 const ClockComponent: FC = () => {
   useSuspenseFontLoader(FONT_CONFIGS);
-  const time = useSecondClock();
+  const time = useClock();
 
   const h = time.getHours();
   const m = time.getMinutes();

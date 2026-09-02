@@ -2,7 +2,7 @@
 
 import bgImage from '@/assets/images/26_images/26-05/26-05-29/granite.webp';
 
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useEffect } from 'react';
 import styles from './Clock.module.css';
 
@@ -12,7 +12,7 @@ const GOOGLE_FONTS_URL =
   'https://fonts.googleapis.com/css2?family=Bentham&display=swap';
 
 const DigitalClock =  () => {
-  const currentTime = useMillisecondClock();
+  const currentTime = useSmoothClock();
 
   useEffect(() => {
     const link = document.createElement('link');

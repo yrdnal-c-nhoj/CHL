@@ -4,7 +4,7 @@ import dirFontUrl from '@/assets/fonts/25fonts/25-05-22-Dir.ttf';
 import sunGif from '@/assets/images/25_images/25-05/25-05-22/sun.gif'; // Use static import
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
@@ -24,7 +24,7 @@ const fontConfigs: FontConfig[] = [
 
 const ClockComponent = () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const sec = time.getSeconds();
   const min = time.getMinutes();

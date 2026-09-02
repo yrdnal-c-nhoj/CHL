@@ -6,7 +6,7 @@ import React, {
   useMemo,
 } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import type { FontConfig } from '@/types/clock';
 import bgVideo from '@/assets/images/25_images/25-09/25-09-22/deex.mp4';
 import fallbackImage from '@/assets/images/25_images/25-09/25-09-22/deex.gif';
@@ -19,7 +19,7 @@ export default function DigitalClockVideo() {
   const [isPhone, setIsPhone] = useState<boolean>(window.innerWidth <= 768);
   const videoRef = useRef<HTMLVideoElement>(null); // Ref for video element
 
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const fontConfigs = useMemo<FontConfig[]>(
     () => [

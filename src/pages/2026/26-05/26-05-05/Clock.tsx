@@ -4,7 +4,7 @@ import shapesFont from '@/assets/fonts/26fonts/26-05-05-dino.ttf?url';
 import clockImage from '@/assets/images/26_images/26-05/26-05-05/dino.webp';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [clockImage, shapesFont];
@@ -24,7 +24,7 @@ const Clock =  () => {
   // Load fonts via Suspense-compatible loader
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useSecondClock();
+  const time = useClock();
 
   const timeString = useMemo(() => {
     const pad = (n: number) => String(n).padStart(2, '0');

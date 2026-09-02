@@ -1,18 +1,17 @@
 import type { ClockTime, TimeFormat } from '@/types/clock';
-import { useSecondClock } from './useSmoothClock';
+import { useClock } from './useClock';
 
 /**
- * Hook that provides current time with automatic 1-second updates.
+ * @deprecated Use `useClock` from `@/utils/hooks` instead.
  *
- * Backed by the canonical rAF-based `useSecondClock` (no `setInterval`),
- * which only re-renders when the second actually changes. This keeps the
- * "basic 1-second clock" API while conforming to the project's
- * "no setInterval" standard (see ARCHITECTURE.md §4.3).
+ * This hook is kept only as a thin re-export of `useClock` (which is itself
+ * a 1-second, rAF-based hook that only re-renders when the second changes).
+ * New code should import `useClock` directly.
  *
  * @returns {Date} Current time
  */
 export function useClockTime(): Date {
-  return useSecondClock();
+  return useClock();
 }
 
 /**

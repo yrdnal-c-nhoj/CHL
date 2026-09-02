@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/fontLoader';
 import styles from './Clock.module.css';
 
@@ -24,7 +24,7 @@ import fallbackGif from '@/assets/images/25_images/25-10/25-10-01/small.webp';
 export const assets = [one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, clockFace, backgroundVideo, fallbackGif];
 
 const ImageAnalogClock = () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [rotation, setRotation] = useState<number>(0);
 
   useEffect(() => {

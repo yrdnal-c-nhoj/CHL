@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import bgImage from '@/assets/images/25_images/25-06/25-06-30/fried-egg.gif';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import img1 from '@/assets/images/25_images/25-06/25-06-30/1.gif';
@@ -25,7 +25,7 @@ const allImages = [bgImage, img1, img2, img3, img4, img5, img6, img7, img8, img9
 
 const Clock =  () => {
   const [loaded, setLoaded] = useState<boolean>(false);
-  const time = useSecondClock();
+  const time = useClock();
 
   useEffect(() => {
     let loadedCount = 0;

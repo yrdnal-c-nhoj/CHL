@@ -4,7 +4,7 @@ import SRTime from '@/components/SRTime';
 import { useClockAngles } from '@/hooks/useClockAngles';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -136,7 +136,7 @@ const WorldClockGrid =  () => {
   );
 
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const handleResize = useCallback(() => {
     setDimensions({

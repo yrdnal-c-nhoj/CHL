@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import bgImage from '@/assets/images/25_images/25-08/25-08-29/sun.jpg'; // background image
 import digitImage from '@/assets/images/25_images/25-08/25-08-29/sun.gif';
@@ -7,7 +7,7 @@ export const assets = [bgImage, digitImage];
  // image for all 12 numbers + center
 
 export default function AnalogClock() {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const seconds = time.getSeconds();
   const minutes = time.getMinutes();

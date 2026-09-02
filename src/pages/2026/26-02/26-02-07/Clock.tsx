@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import customFontUrl from '@/assets/fonts/26fonts/26-02-07-gear.ttf?url';
 import backgroundImage from '@/assets/images/26_images/26-02/26-02-07/gear.gif';
 export const assets = [customFontUrl, backgroundImage];
@@ -29,7 +29,7 @@ const FullscreenClock =  () => {
     setShowContent(true);
   }, []);
 
-  const time = useSecondClock();
+  const time = useClock();
 
   const digits = useMemo(() => {
     let hours = time.getHours();

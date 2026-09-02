@@ -1,5 +1,5 @@
 import { useClockAngles } from '@/hooks/useClockAngles';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React from 'react';
 import styles from './Clock.module.css';
 
@@ -12,7 +12,7 @@ export const assets = [backgroundVideo];
 const ClockComponent = () => {
   // Use the millisecond hook for a smooth, sweeping second hand.
   // 16ms interval targets ~60fps for continuous motion.
-  const time = useMillisecondClock(16);
+  const time = useSmoothClock(16);
 
   const { hourAngle, minAngle, secAngle } = useClockAngles(time);
 

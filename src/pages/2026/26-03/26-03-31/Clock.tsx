@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgVideo from '@/assets/images/26_images/26-03/26-03-31/seafloor.mp4';
 import crabFont from '@/assets/fonts/26fonts/26-03-31.ttf';
@@ -44,7 +44,7 @@ const NUMERAL_DRIFT = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((_, i) => ({
 }));
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // Load custom font via Suspense
   const fontConfigs = useMemo(

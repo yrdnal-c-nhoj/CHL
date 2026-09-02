@@ -1,7 +1,7 @@
 import myFont from '@/assets/fonts/25fonts/25-08-04-Tr.ttf'; // Your custom font file
 import bgImage from '@/assets/images/25_images/25-08/25-08-04/shrub.jpeg'; // Your background image file
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 export const assets = [myFont, bgImage];
 
@@ -16,7 +16,7 @@ const getRandomTilt = () => ({
 });
 
 const DigitalClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [fadeIndex, setFadeIndex] = useState<number>(0);
   const [fontLoaded, setFontLoaded] = useState(false);
   const componentId = useRef(`multi-clock-${Date.now()}`);

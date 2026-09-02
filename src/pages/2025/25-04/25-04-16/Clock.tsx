@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo, memo } from 'react';
 
 import secondImg from '@/assets/images/25_images/25-04/25-04-16/20.webp';
@@ -16,7 +16,7 @@ export const assets = [cakeGif, minuteImg, hourImg, secondImg, confGif, confJpg]
 const BirthdayCakeClock = () => {
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
   useSuspenseFontLoader(fontConfigs);
-  const currentTime = useMillisecondClock();
+  const currentTime = useSmoothClock();
 
   const { hourDeg, minuteDeg, secondDeg } = useMemo(() => {
     const ms = currentTime.getMilliseconds();

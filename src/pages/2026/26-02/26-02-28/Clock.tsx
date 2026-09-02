@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import atomicWebp from '@/assets/images/26_images/26-02/26-02-28/atomic.webp';
 import atomicFont from '@/assets/fonts/26fonts/26-02-28-atomic.ttf';
 export const assets = [atomicWebp, atomicFont];
@@ -14,7 +14,7 @@ interface Dimensions {
 }
 
 const DigitalClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const formatTime = (date) => {
     const h = date.getHours().toString().padStart(2, '0');

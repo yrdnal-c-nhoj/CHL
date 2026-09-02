@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import castelImage from '@/assets/images/25_images/25-08/25-08-24/castel.jpg';
 import viaFont from '@/assets/fonts/25fonts/25-08-24-via.ttf';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [castelImage, viaFont];
 
 const toRoman = (num: number) => {
@@ -48,7 +48,7 @@ const RomanClock = () => {
   const [time, setTime] = useState('');
   const [fade, setFade] = useState(false);
   const timeoutRef = useRef<any | null>(null);
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  // useEffect for updateClock removed - time is reactive via useClock
 
   const containerStyle = {
     position: 'relative' as const,

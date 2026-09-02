@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import Font20251111 from '@/assets/fonts/25fonts/25-11-09-disc.ttf'; // main Roman font
 import ActiveFont20251111 from '@/assets/fonts/25fonts/25-11-09-pin.ttf'; // active digit font
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 export const assets = [Font20251111, ActiveFont20251111];
 
 
@@ -78,9 +78,9 @@ const DarkRomanClock =  () => {
   const [time, setTime] = useState(new Date());
 
   // ~60fps update
-    // Migrated from legacy interval to canonical rAF hook (useMillisecondClock).
+    // Migrated from legacy interval to canonical rAF hook (useSmoothClock).
   // (was a pure 16ms state ticker; state now derived from the hook time)
-  const clockTime = useMillisecondClock(16);
+  const clockTime = useSmoothClock(16);
   useEffect(() => { setTime(clockTime); }, [clockTime, setTime]);
 
   const totalSeconds =

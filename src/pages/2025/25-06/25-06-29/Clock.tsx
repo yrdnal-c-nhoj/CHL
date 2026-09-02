@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import stretchFont from '@/assets/fonts/25fonts/25-06-29-stretch.ttf';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [stretchFont];
 
 const StretchClock =  () => {
@@ -25,7 +25,7 @@ const StretchClock =  () => {
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
   // Font loading handled by useSuspenseFontLoader
-  // useEffect for updateClock removed - time is reactive via useSecondClock
+  // useEffect for updateClock removed - time is reactive via useClock
 
   const clockStyle = {
     height: '100dvh',

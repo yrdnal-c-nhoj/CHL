@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import plateImage from '@/assets/images/25_images/25-12/25-12-08/plate.webp';
 import hourHand from '@/assets/images/25_images/25-12/25-12-08/hand.gif';
@@ -45,7 +45,7 @@ const handStyle = (deg, width, height) => ({
 });
 
 export default function AnalogClock() {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const now = time;
 

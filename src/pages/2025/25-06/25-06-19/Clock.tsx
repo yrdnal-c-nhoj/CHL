@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
@@ -23,7 +23,7 @@ const ClockComponent = () => {
     return () => window.removeEventListener('resize', resizeCanvas);
   }, []);
 
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const { secondDeg, minuteDeg, hourDeg } = useMemo(() => {
     const ms = time.getMilliseconds();

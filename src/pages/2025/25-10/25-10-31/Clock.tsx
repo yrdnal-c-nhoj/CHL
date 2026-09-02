@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks'; // Use useMillisecondClock for millisecond precision
+import { useSmoothClock } from '@/utils/hooks'; // Use useSmoothClock for millisecond precision
 import { formatTime } from '@/utils/clockUtils'; // Keep formatTime for datetime attribute
 import videoFile from '@/assets/images/25_images/25-10/25-10-31/mids.mp4';
 import fallbackImg from '@/assets/images/25_images/25-10/25-10-31/midsun.webp';
@@ -14,7 +14,7 @@ export default function VideoClock() {
   const [showPlayButton, setShowPlayButton] = useState<boolean>(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const time = useMillisecondClock(); // Get Date object with millisecond updates
+  const time = useSmoothClock(); // Get Date object with millisecond updates
 
   // Helper to format numbers with leading zeros
   const pad = (num: number, length: number = 2) =>

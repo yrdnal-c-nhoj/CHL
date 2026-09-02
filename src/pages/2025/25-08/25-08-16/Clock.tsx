@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useMultiAssetLoader } from '@/utils/assetLoader';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import imageLeft from '@/assets/images/25_images/25-08/25-08-16/pal.webp';
@@ -27,7 +27,7 @@ const MirroredBackground =  () => {
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
 
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
 
   // Font loading handled by useSuspenseFontLoader
   const fontFaceTag = useMemo(() => {

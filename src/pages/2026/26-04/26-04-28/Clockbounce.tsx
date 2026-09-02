@@ -5,13 +5,13 @@ import React, {
   useState,
   useCallback,
 } from 'react';
-import { formatTime as utilFormatTime, useMillisecondClock } from '@/utils/hooks';
+import { formatTime as utilFormatTime, useSmoothClock } from '@/utils/hooks';
 
 const GRAVITY = 0.6;
 const BOUNCE = -0.85;
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const { hours, minutes, seconds } = useMemo(
     () => utilFormatTime(time, '24h'),

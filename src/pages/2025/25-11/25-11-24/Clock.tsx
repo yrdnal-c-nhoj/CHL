@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 // Image imports with Vite ?url suffix
 import pageBgImgBase from '@/assets/images/25_images/25-11/25-11-24/skin.jpg?url';
@@ -14,7 +14,7 @@ export const assets = [pageBgImgBase, pageBgImg, clockFaceImg, hourHandImg, minu
 
 
 export default function AnalogClock() {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();

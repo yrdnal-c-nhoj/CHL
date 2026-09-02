@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import busterImg from '@/assets/images/26_images/26-02/26-02-05/buster.webp';
 import hand1Img from '@/assets/images/26_images/26-02/26-02-05/hand1.webp';
 import hand2Img from '@/assets/images/26_images/26-02/26-02-05/hand2.webp';
@@ -22,7 +22,7 @@ const Analog260205Clock =  () => {
     setShowContent(true);
   }, []);
 
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();

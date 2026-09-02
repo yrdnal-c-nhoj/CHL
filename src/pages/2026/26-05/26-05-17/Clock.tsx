@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { Suspense, useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -40,7 +40,7 @@ const BackgroundLayers =  () => (
 
 // ---------------- MAIN CLOCK COMPONENT ----------------
 const ClockContent =  () => {
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
 
   // Use direct date methods to ensure "undefined" never appears
   const timeString = useMemo(() => {

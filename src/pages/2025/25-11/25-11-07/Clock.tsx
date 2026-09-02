@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, memo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import bgImage from '@/assets/images/25_images/25-11/25-11-07/birds.webp';
 import clockFontUrl from '@/assets/fonts/25fonts/25-11-07-twobirds.ttf?url';
 import styles from './Clock.module.css';
@@ -23,7 +23,7 @@ const fontConfigs = useMemo(
 
 const PanicAnalogClock =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const now = useMillisecondClock();
+  const now = useSmoothClock();
 
   const rightImageDelay = 500;
   const bottomImageOpacity = 1.0;

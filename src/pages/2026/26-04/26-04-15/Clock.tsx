@@ -1,7 +1,7 @@
 import catFont from '@/assets/fonts/26fonts/26-04-15-cat.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -10,7 +10,7 @@ export const assets = [catFont];
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
 const Clock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   // Use a timestamp rounded to 3 seconds to prevent excessive network requests
   const catInterval = Math.floor(time.getTime() / 3000);
 

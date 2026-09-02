@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 // === Local assets ===
 import bg1 from '@/assets/images/26_images/26-01/26-01-01/fan.webp';
@@ -11,7 +11,7 @@ export const assets = [bg1, myFontUrl];
 const InvertedClock =  () => {
   const fontLoaded = useEnhancedFontLoader('MyFontScoped', myFontUrl);
 
-  const time = useMillisecondClock(); // Request higher precision for smooth hands
+  const time = useSmoothClock(); // Request higher precision for smooth hands
   const secondHandRef = useRef<HTMLDivElement>(null);
   const minHandRef = useRef<HTMLDivElement>(null);
   const hourHandRef = useRef<HTMLDivElement>(null);

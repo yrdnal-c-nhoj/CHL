@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import backgroundImage from '@/assets/images/25_images/25-12/25-12-02/bg.webp';
 export const assets = [backgroundImage];
 
@@ -11,7 +11,7 @@ const RotatingBackground =  () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [rotationAngle, setRotationAngle] = useState<number>(0);
   const [sideLength, setSideLength] = useState<number>(0);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   // Preload the background image and compute sizes
   useEffect(() => {

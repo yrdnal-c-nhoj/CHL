@@ -1,7 +1,7 @@
 import permanentMarkerFont from '@/assets/fonts/25fonts/25-04-19-sph.ttf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 export const assets = [permanentMarkerFont];
@@ -78,7 +78,7 @@ export default function SphereDropClock(): JSX.Element {
   );
   useSuspenseFontLoader(fontConfigs);
 
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
   const [isMobile, setIsMobile] = useState(false);
   
   const ballsMapRef = useRef<Record<string, BallInstance[]>>({ hours: [], minutes: [], seconds: [] });

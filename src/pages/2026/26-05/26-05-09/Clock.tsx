@@ -1,5 +1,5 @@
 import bgImage from '@/assets/images/26_images/26-05/26-05-09/lotus.webp';
-import { calculateAngles, formatTime , useSecondClock } from '@/utils/hooks';
+import { calculateAngles, formatTime , useClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
@@ -12,7 +12,7 @@ export const assets = [bgImage];
  * An analog clock with lotus background.
  */
 const CaptureClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
 
   const {
     hour: hourAngle,

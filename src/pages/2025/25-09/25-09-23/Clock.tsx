@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 // digits
@@ -29,7 +29,7 @@ function AnalogClock() {
   const secondRef = useRef(null);
   const animationFrameRef = useRef(null);
   const [ready, setReady] = useState<boolean>(false);
-  const time = useSecondClock();
+  const time = useClock();
 
   // Digits array
   const digits = useMemo(

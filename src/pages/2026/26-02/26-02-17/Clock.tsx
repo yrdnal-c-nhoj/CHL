@@ -1,5 +1,5 @@
 import { memo, useEffect, useMemo, useState } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import AsteriskFont1 from '@/assets/fonts/26fonts/26-02-17-ast.otf?url';
 import AsteriskFont2 from '@/assets/fonts/26fonts/26-02-17-aster.otf?url';
@@ -87,7 +87,7 @@ const BackgroundGrid = ({ windowSize, cellSize }) => {
 };
 
 const AsteriskClock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const [clockChars, setClockChars] = useState<string[]>(generateChars);
   const [visible, setVisible] = useState(true);
   const [windowSize, setWindowSize] = useState({

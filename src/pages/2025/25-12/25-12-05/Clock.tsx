@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import font_2025_12_06 from '@/assets/fonts/25fonts/25-12-05-magic.ttf?url';
@@ -9,7 +9,7 @@ export const assets = [font_2025_12_06, bgImage];
 
 
 export default function BoxedDigitalClock() {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   const [visible, setVisible] = useState<boolean>(false); // Clock visibility for glitch
   const [randomOpacity, setRandomOpacity] = useState<number>(0.2); // Random opacity for glitches
 

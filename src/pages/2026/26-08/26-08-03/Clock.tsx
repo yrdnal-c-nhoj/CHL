@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
  
@@ -19,7 +19,7 @@ const fontConfigs: FontConfig[] = [
 // 3. Main Component
 const ClockComponent =  () => {
   // Use the standardized time hook
-  const time = useSecondClock(); // or useMillisecondClock() for smooth
+  const time = useClock(); // or useSmoothClock() for smooth
 
   // Load fonts via Suspense (component must be in <Suspense> boundary)
   useSuspenseFontLoader(fontConfigs);

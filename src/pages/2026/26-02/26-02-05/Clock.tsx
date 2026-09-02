@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import ci2602Font from '@/assets/fonts/26fonts/26-02-05-pin.ttf?url';
 export const assets = [ci2602Font];
 
@@ -21,7 +21,7 @@ export const fontConfigs = [
 ];
 
 const OutwardDistortedClock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   useSuspenseFontLoader(fontConfigs);
 

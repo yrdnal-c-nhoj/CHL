@@ -2,7 +2,7 @@ import myCustomFont from '@/assets/fonts/25fonts/25-07-27-som.ttf';
 import backgroundImage from '@/assets/images/25_images/25-07/25-07-27/met.jpg';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -33,7 +33,7 @@ const Clock =  () => {
   const [digits, setDigits] = useState<Digit[]>([]);
   const lastSpawnTimeRef = useRef(0);
   const animationFrameRef = useRef<number | null>(null);
-  const time = useSecondClock(); // Use canonical hook
+  const time = useClock(); // Use canonical hook
 
   // Animation and spawning logic
   useEffect(() => {

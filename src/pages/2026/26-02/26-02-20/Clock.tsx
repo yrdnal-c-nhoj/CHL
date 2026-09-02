@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { spellTwoDigitNumber } from '@/utils/latinNumberSpelling';
 
 const UPDATE_INTERVAL = 1000;
@@ -43,7 +43,7 @@ export const fontConfigs = [
 ];
 
 export default function ClockTemplate() {
-  const time = useSecondClock();
+  const time = useClock();
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   useSuspenseFontLoader(fontConfigs);

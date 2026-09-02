@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
@@ -29,7 +29,7 @@ const Clock = () => {
   // Load fonts via Suspense-compatible loader
   useSuspenseFontLoader(fontConfigs);
 
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
 
   const calculateHandPositions = useCallback(() => {
     const hours = currentTime.getHours() % 12;

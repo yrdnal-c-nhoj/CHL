@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 
 import backgroundImage from '@/assets/images/26_images/26-01/26-01-27/pan.jpg';
 import panFont from '@/assets/fonts/26fonts/26-01-27-pan.ttf';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [backgroundImage, panFont];
 
 export default function PanoramaClock() {

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useMemo, memo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import * as THREE from 'three';
 import OrbitronFont20251012 from '@/assets/fonts/25fonts/25-10-14-air.ttf?url';
 import bgImage from '@/assets/images/25_images/25-10/25-10-14/air.webp';
@@ -21,7 +21,7 @@ const fontConfigs = useMemo(
 
 const SpinningDodecahedronClock =  () => {
   useSuspenseFontLoader(fontConfigs);
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);

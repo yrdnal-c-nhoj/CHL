@@ -1,5 +1,5 @@
 import { memo, useEffect, useState, useRef } from 'react';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import clockDigitImage from '@/assets/images/26_images/26-01/26-01-23/eye.gif';
 import clockBackground from '@/assets/images/26_images/26-01/26-01-23/eye.webp';
 import styles from './Clock.module.css';
@@ -11,7 +11,7 @@ interface CustomStyle extends React.CSSProperties {
 }
 
 const Clock =  () => {
-  const time = useSecondClock();
+  const time = useClock();
   const [bgReady, setBgReady] = useState(false);
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import fontUrl from '@/assets/fonts/26fonts/26-07-16.otf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
@@ -17,7 +17,7 @@ const fontConfigs: FontConfig[] = [
 type SpinPhase = 0 | 1 | 2 | 3;
 
 const Clock =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
   useSuspenseFontLoader(fontConfigs);
   const [phase, setPhase] = useState<SpinPhase>(0);
   

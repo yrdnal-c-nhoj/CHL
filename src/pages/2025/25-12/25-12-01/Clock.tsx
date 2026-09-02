@@ -1,10 +1,9 @@
 import React from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks/useSmoothClock';
 import bgImg from '@/assets/images/25_images/25-12/25-12-01/shark.webp';
 import clockfoont12012 from '@/assets/fonts/25fonts/25-12-01-shark.ttf?url';
 import type { FontConfig } from '@/types/clock';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [bgImg, clockfoont12012];
 
 
@@ -16,7 +15,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 export default function DigitalClock() {
-  const time = useSecondClock();
+  const time = useClock();
 
   useSuspenseFontLoader(fontConfigs);
 

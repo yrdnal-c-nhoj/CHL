@@ -3,7 +3,7 @@ import waves from '@/assets/images/25_images/25-04/25-04-03/waves.gif';
 import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './Clock.module.css';
@@ -53,7 +53,7 @@ const MobyDickClock: FC<MobyDickClockProps> = () => {
   });
   
   // Use the standardized hook for smooth clock updates
-  const currentTime = useSecondClock();
+  const currentTime = useClock();
 
   // Memoize the formatted time string
   const timeString = useMemo(

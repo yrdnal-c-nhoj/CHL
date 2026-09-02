@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import clockFont from '@/assets/fonts/25fonts/25-08-26-root.ttf';
 import bg0 from '@/assets/images/25_images/25-08/25-08-26/rrr.webp';
 import bg1 from '@/assets/images/25_images/25-08/25-08-26/ro.gif';
@@ -29,7 +29,7 @@ function getTimeParts(now: Date) {
 }
 
 const Clock = () => {
-  const now = useSecondClock();
+  const now = useClock();
   const time = getTimeParts(now);
 
   useSuspenseFontLoader(fontConfigs);

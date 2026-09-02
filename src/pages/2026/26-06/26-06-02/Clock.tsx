@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import React, { useCallback, useEffect, useRef, useState, memo } from 'react';
 import styles from './Clock.module.css';
 
@@ -32,7 +32,7 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const VTEC =  () => {
-  const time = useMillisecondClock();
+  const time = useSmoothClock();
 
   const [visibleImages, setVisibleImages] = useState<ImageData[]>([]);
   const idCounter = useRef(0);

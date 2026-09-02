@@ -4,12 +4,12 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import coffeeFont from '@/assets/fonts/25fonts/25-06-04-cof.ttf';
 import bgStill from '@/assets/images/25_images/25-06/25-06-04/coff.png';
 import bgAnimated from '@/assets/images/25_images/25-06/25-06-04/coff.gif';
-import { useSecondClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 export const assets = [coffeeFont, bgStill, bgAnimated];
 
 
 const CoffeeClock =  () => {
-  const { time } = useSecondClock();
+  const { time } = useClock();
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
     {
@@ -30,7 +30,7 @@ const CoffeeClock =  () => {
   const secondHandRef = useRef(null);
 
   // Animate numbers jitter
-  // Removed updateClock effect - time is already reactive via useSecondClock
+  // Removed updateClock effect - time is already reactive via useClock
 
   // Styles
   const numberStyle = {
