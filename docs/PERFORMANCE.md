@@ -1,6 +1,6 @@
 # Performance Delivery Rules
 
-Last reviewed: 2026-08-25
+Last reviewed: 2026-09-02
 
 ## Image & Video Budgets
 
@@ -78,18 +78,24 @@ This single glob covers:
 
 ## Route-Level Bundle Limits
 
-| Chunk | Limit | Current split |
-|---|---|---|
-| Framework (React/DOM) | `< 100KB` gzipped | `framework-[hash].js` |
-| Three.js | `< 150KB` gzipped | `three-[hash].js` |
-| Animation (GSAP/Framer) | `< 80KB` gzipped | `animation-[hash].js` |
-| Vendor | `< 120KB` gzipped | `vendor-[hash].js` |
-| Individual clock page | `< 50KB` gzipped | Dynamic import chunk |
-| Total initial JS | `< 150KB` gzipped | Sum of all sync chunks |
+| Chunk | Limit | Current (2026-09-02, brotli) | Status |
+|---|---|---|---|
+| Framework (React/DOM) | `< 100KB` gzipped | `framework-[hash].js` ≈ 50.89KB br | ✅ |
+| Three.js | `< 150KB` gzipped | `three-[hash].js` ≈ 190.66KB br (859.55KB raw) | ❌ Over budget |
+| Animation (GSAP/Framer) | `< 80KB` gzipped | (none observed in last build) | — |
+| Vendor | `< 120KB` gzipped | `vendor-[hash].js` ≈ 25.49KB br | ✅ |
+| Individual clock page | `< 50KB` gzipped | Dynamic import chunk; biggest observed `useClockPage-[hash].js` ≈ 15.99KB br | ✅ |
+| Total initial JS | `< 150KB` gzipped | framework + vendor + entry ≈ ~95KB br | ✅ |
 
 **Enforcement:**
 - `chunkSizeWarningLimit: 1000` in `vite.config.ts` warns during build.
 - Fail CI if any single chunk exceeds its limit.
+
+**Action item:** the Three.js chunk is now materially over budget
+(190.66KB br vs 150KB target). Options: (a) defer Three.js to a dynamic
+import that only loads on routes that use it, (b) split `@react-three/drei`
+submodules, (c) raise the budget and document the rationale. Recommend (a) or
+(b) before the next release.
 
 ## Other Rules
 
