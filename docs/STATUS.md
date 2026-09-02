@@ -2,9 +2,10 @@
 
 Last reviewed: 2026-09-02
 
-This file is the current source of truth for repository health. Historical audit
-reports live in `docs/archive/`. Refresh with `npm run status` (script pending —
-see "Known Gaps" below).
+This file is the current source of truth for repository health. For the full
+project roadmap, standards, and phased improvement plan, see
+[`docs/ROADMAP.md`](../ROADMAP.md). Historical audit reports live in
+`docs/archive/`. Refresh with `npm run status` (script pending — see Known Gaps).
 
 ## Live Check Summary
 

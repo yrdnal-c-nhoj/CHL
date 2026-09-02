@@ -2,6 +2,9 @@
 
 Last reviewed: 2026-09-02
 
+For project-level standards, roadmap, and enforcement plan, see
+[`docs/ROADMAP.md`](../ROADMAP.md).
+
 ## Image & Video Budgets
 
 | Asset type | Budget | Notes |

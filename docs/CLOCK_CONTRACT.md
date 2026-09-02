@@ -2,8 +2,9 @@
 
 Last reviewed: 2026-09-02
 
-This is the single source of truth for clock component structure and behavior.
-For architectural context, see `src/templates/BaseClock.tsx`.
+This is the source of truth for clock component structure and behavior.
+For architectural context, roadmap, and enforcement plan, see
+[`docs/ROADMAP.md`](../ROADMAP.md).
 
 ---
 

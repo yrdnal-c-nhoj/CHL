@@ -4,6 +4,15 @@ A new clock every day.
 
 [See it live](https://www.cubistheart.com) — an ongoing digital art project by [Cubist Heart Laboratories](https://cubistheart.com).
 
+## Documentation
+
+| Document | Purpose |
+|---|---|
+| `docs/ROADMAP.md` | **Single source of truth** — standards, current state, and phased plan |
+| `docs/CLOCK_CONTRACT.md` | Clock component structure, hooks, styling, and prohibited patterns |
+| `docs/PERFORMANCE.md` | Asset budgets, cache headers, compression, chunk limits |
+| `docs/STATUS.md` | Live check results, test details, lint details, clock inventory, known gaps |
+
 ## Quick start
 
 Requires Node.js 22.x.
@@ -24,6 +33,7 @@ Open [http://localhost:5173](http://localhost:5173).
 | `npm run preview` | Preview production build |
 | `npm run test:run` | Run tests |
 | `npm run lint` | ESLint check |
+| `npm run lint:fix` | ESLint auto-fix |
 | `npm run format` | Prettier format |
 | `npm run status` | Refresh `docs/STATUS.md` |
 
