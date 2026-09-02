@@ -30,7 +30,7 @@
 .digitalClock {
   position: relative;
   z-index: 1;
-  font-size: 12vmin;
+  font-size: 25vmin;
   font-family: 'Courier New', Courier, monospace;
   display: flex;
   align-items: center;
