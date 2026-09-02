@@ -55,7 +55,7 @@ const ClockComponent =  () => {
     const hh = d.getHours().toString().padStart(2, '0');
     const mm = d.getMinutes().toString().padStart(2, '0');
     const ss = d.getSeconds().toString().padStart(2, '0');
-    return (hh + mm + ss).split('').map((digit) => numbers[parseInt(digit)]);
+    return (hh + mm + ss).split('').map((digit) => numbers[parseInt(digit, 10)]);
   }, [secondTimestamp, numbers]);
 
   // Memoize tiles to prevent re-calculating on every clock tick

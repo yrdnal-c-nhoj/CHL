@@ -37,7 +37,7 @@ const Clock =  () => {
     const hh = time.getHours().toString().padStart(2, '0');
     const mm = time.getMinutes().toString().padStart(2, '0');
     const ss = time.getSeconds().toString().padStart(2, '0');
-    return (hh + mm + ss).split('').map((digit) => numbers[parseInt(digit)]);
+    return (hh + mm + ss).split('').map((digit) => numbers[parseInt(digit, 10)]);
   }, [time, numbers]);
 
   return (
