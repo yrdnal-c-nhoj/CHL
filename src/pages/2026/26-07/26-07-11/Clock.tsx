@@ -141,7 +141,7 @@ export default function CurrentTimeClock() {
       <div className={styles.quoteContainer}>
         {/* Spanish Original */}
         <p className={styles.title}>
-          "El tiempo es la sustancia de que estoy hecho. El tiempo es un río que me arrebata, pero yo soy el río; es un tigre que me destroza, pero yo soy el tigre; es un fuego que me consume, pero yo soy el fuego."*
+           &ldquo;El tiempo es la sustancia de que estoy hecho. El tiempo es un río que me arrebata, pero yo soy el río; es un tigre que me destroza, pero yo soy el tigre; es un fuego que me consume, pero yo soy el fuego.&rdquo;*
         </p>
         <span className={`${styles.sansAccents} ${styles.spanishAuthor}`}>
           — Jorge Luis Borges, <span className={styles.italic}>Nueva refutación del tiempo</span>
@@ -149,8 +149,8 @@ export default function CurrentTimeClock() {
 
         {/* English Translation */}
         <p className={`${styles.title} ${styles.englishQuote}`}>
-          "Time is the substance I am made of. Time is a river which sweeps me along, but I am the river; 
-          it is a tiger which destroys me, but I am the tiger; it is a fire which consumes me, but I am the fire."*
+          &ldquo;Time is the substance I am made of. Time is a river which sweeps me along, but I am the river; 
+           it is a tiger which destroys me, but I am the tiger; it is a fire which consumes me, but I am the fire.&rdquo;*
         </p>
         <span className={`${styles.sansAccents} ${styles.englishAuthor}`}>
           — Jorge Luis Borges, <span className={styles.italic}>A New Refutation of Time</span>
