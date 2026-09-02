@@ -1,15 +1,15 @@
 # Clock Component Contract
 
-Last reviewed: 2026-08-25
+Last reviewed: 2026-09-02
 
 This is the single source of truth for clock component structure and behavior.
-For architectural context, see `src/templates/ARCHITECTURE.md`.
+For architectural context, see `src/templates/BaseClock.tsx`.
 
 ---
 
 ## 1. File Structure
 
-Every clock **must** use this pair:
+Every clock **must** use this pair, located under the year/month for its date:
 
 ```
 src/pages/YYYY/YY-MM/YY-MM-DD/
@@ -17,7 +17,10 @@ src/pages/YYYY/YY-MM/YY-MM-DD/
   └── Clock.module.css
 ```
 
-No exceptions.
+No exceptions. Optional helper files (e.g. `useMazeRenderer.ts` for
+`2026/26-08/26-08-28/`) are allowed alongside `Clock.tsx` when they genuinely
+encapsulate non-trivial logic, but every clock directory **must** contain
+`Clock.tsx` and `Clock.module.css`.
 
 ---
 
@@ -37,17 +40,20 @@ Clock.displayName = 'Clock_YY_MM_DD';
 - **Recommended:** `React.memo` only if profiling shows unnecessary re-renders. Not blanket required.
 - **Recommended:** `displayName` for debugging.
 - **Required:** Export default the component.
+- **Required:** `displayName` matches the `YY_MM_DD` date.
 
 ### 2.2 Time Hook
 
 ```tsx
-const time = useSecondClock();        // default: 1s updates
+import { useClock, useSmoothClock } from '@/utils/hooks';
+
+const time = useClock();         // default: 1s updates
 // or
-const time = useMillisecondClock();   // smooth: ~50ms updates
+const time = useSmoothClock();   // smooth: ~50ms updates
 ```
 
 - **Required:** Import from `@/utils/hooks` only.
-- **Prohibited:** `setInterval`, `requestAnimationFrame`, `useClockTime` from `@/utils/clockUtils`.
+- **Prohibited:** `setInterval`, `requestAnimationFrame`, `useClockTime` from `@/utils/clockUtils`, `useSecondClock`, `useMillisecondClock` (the older names are deprecated; use `useClock` / `useSmoothClock`).
 
 ### 2.3 Asset Exports
 
@@ -67,7 +73,7 @@ export const assets = [backgroundImage, fontUrl];
 ```
 
 - **Required:** Semantic `<time>` element with valid `dateTime`.
-- **Required:** Visually hidden but screen-reader accessible class (`styles.srOnly`).
+- **Required:** Visually hidden but screen-reader accessible class (`styles.srOnly`). The shared `SRTime` component in `src/components/SRTime.tsx` already implements this — prefer reusing it.
 
 ### 2.5 Styling
 
@@ -80,6 +86,7 @@ export const assets = [backgroundImage, fontUrl];
 
 - **Recommended:** `useMemo` only for genuinely expensive calculations. Do **not** memoize simple string formatting or cheap derivations.
 - **Recommended:** `useCallback` only when passing handlers to memoized children or when the function is a dependency of another hook.
+- **Prohibited:** Reading `ref.current` from inside a `useMemo` / `useState` initializer body. Refs are not populated synchronously during render. Copy the ref value into state via `useEffect`, or compute in an event handler. (See the active error in `src/pages/2026/26-08/26-08-24/Clock.tsx:134`.)
 
 **Examples of appropriate use:**
 - Expensive geometry / packing algorithms
@@ -90,6 +97,11 @@ export const assets = [backgroundImage, fontUrl];
 - `String(time.getHours()).padStart(2, '0')`
 - Simple angle arithmetic
 - Inline arrow functions in render without memoized recipients
+- Reading a ref inside a memo body
+
+### 2.7 Strict Index Access
+
+- **Required:** Guard array/object index access against `undefined` (the project runs with `noUncheckedIndexedAccess` semantics). See the active TS errors in `src/pages/2026/26-08/26-08-23/Clock.tsx` and `…/26-08-28/useMazeRenderer.ts` for the canonical anti-pattern.
 
 ---
 
@@ -117,7 +129,7 @@ useSuspenseFontLoader(fontConfigs);
 
 ### 3.3 Canvas / Animation
 
-- **Required:** All animation must use canonical time hooks (`useSecondClock`, `useMillisecondClock`).
+- **Required:** All animation must use canonical time hooks (`useClock`, `useSmoothClock`).
 - **Required:** Clean up subscriptions/observers in `useEffect` return.
 - **Prohibited:** Direct `requestAnimationFrame` loops in components.
 
@@ -140,6 +152,9 @@ useSuspenseFontLoader(fontConfigs);
 | `setInterval` / `setTimeout` in components | ❌ Prohibited | Drift, memory leaks |
 | `requestAnimationFrame` loops | ❌ Prohibited | Use canonical hooks |
 | `useClockTime` from `@/utils/clockUtils` | ❌ Prohibited | Deprecated; use `@/utils/hooks` |
+| `useSecondClock` / `useMillisecondClock` | ❌ Prohibited | Renamed; use `useClock` / `useSmoothClock` |
+| Reading `ref.current` inside `useMemo`/`useState` initializer | ❌ Prohibited | Refs are not populated during render |
+| Unguarded index access (`arr[i]`) under `noUncheckedIndexedAccess` | ❌ Prohibited | Use optional chaining or guard explicitly |
 | `useGlobalStyles` / `useKeyframes` | ❌ Prohibited | Use CSS Modules |
 | Inline `<style>` tags for static CSS | ❌ Prohibited | Use CSS Modules |
 | `any` type | ❌ Prohibited | Type safety |
@@ -151,5 +166,5 @@ useSuspenseFontLoader(fontConfigs);
 ## 6. Enforcement
 
 - **CI:** `npm run test:run`, `npm run lint`, `npx tsc --noEmit`.
-- **Verification:** `node scripts/verify-all-clocks.js` checks compliance.
-- **Status:** `npm run status` refreshes `docs/STATUS.md`.
+- **Verification:** `node scripts/verify-all-clocks.js` — **script is currently missing** (see `docs/STATUS.md` Known Gaps). Either restore the script or remove the reference.
+- **Status:** `npm run status` — **script `scripts/generate-status.js` is currently missing.** Manual updates to `docs/STATUS.md` are being made in the interim.

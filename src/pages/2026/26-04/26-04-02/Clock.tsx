@@ -74,6 +74,8 @@ const ClockComponent =  () => {
   // Refs to Three.js objects for direct updates without re-renders
   const planetMaterialRef = useRef<THREE.MeshStandardMaterial | null>(null);
   const moonMaterialRef = useRef<THREE.MeshStandardMaterial | null>(null);
+  const planetNeedsUpdateRef = useRef(false);
+  const moonNeedsUpdateRef = useRef(false);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -177,6 +179,15 @@ const ClockComponent =  () => {
       animationId = requestAnimationFrame(animate);
       const elapsed = threeClock.getElapsedTime();
 
+      if (planetNeedsUpdateRef.current && planetMaterialRef.current?.map) {
+        planetMaterialRef.current.map.needsUpdate = true;
+        planetNeedsUpdateRef.current = false;
+      }
+      if (moonNeedsUpdateRef.current && moonMaterialRef.current?.map) {
+        moonMaterialRef.current.map.needsUpdate = true;
+        moonNeedsUpdateRef.current = false;
+      }
+
       // Slow rotation for the Planet + gentle floating drift
       if (planet) {
         planet.rotation.y += 0.005;
@@ -236,7 +247,7 @@ const ClockComponent =  () => {
         '#1034A6',
         '900 300px "Abril Fatface", serif',
       );
-      planetMap.needsUpdate = true;
+      planetNeedsUpdateRef.current = true;
     }
 
     const moonMap = moonMaterialRef.current?.map as THREE.CanvasTexture | undefined;
@@ -247,7 +258,7 @@ const ClockComponent =  () => {
         '#FF4500',
         'bold 120px "Space Mono", monospace',
       );
-      moonMap.needsUpdate = true;
+      moonNeedsUpdateRef.current = true;
     }
   }, [time, formatHour, formatMinute]);
 
