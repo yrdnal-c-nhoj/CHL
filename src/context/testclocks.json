@@ -6797,6 +6797,8 @@
     "date": "26-08-25",
     "title": "Tracking",
     "tags": [
+      "aerial",
+      "air",
       "digital",
       "landscape",
       "map",
@@ -6810,13 +6812,15 @@
     "title": "Island",
     "tags": [
       "analog",
+      "brown",
       "earth",
       "up-and-down",
-      "water"
+      "water",
+      "wet"
     ]
   },
   {
-        "path": "26-08-27",
+    "path": "26-08-27",
     "date": "26-08-27",
     "title": "Seahorse",
     "tags": [
@@ -6835,9 +6839,11 @@
     "title": "Maze",
     "tags": [
       "digital",
+      "fly",
       "grid",
       "horizon",
-      "fly"
+      "walk",
+      "wall"
     ]
   },
   {
@@ -6845,12 +6851,14 @@
     "date": "26-08-29",
     "title": "Tyrian Purple",
     "tags": [
+      "Phoenician",
       "analog",
+      "animal",
+      "cloth",
       "color",
       "exoskeletal",
-      "animal",
-      "shell",
-      "purple"
+      "purple",
+      "shell"
     ]
   },
   {
@@ -6858,11 +6866,12 @@
     "date": "26-08-30",
     "title": "Undulate",
     "tags": [
+      "bubble",
       "digital",
+      "ocean",
       "water",
       "waves",
-      "wind",
-      "ocean"
+      "wind"
     ]
   },
   {

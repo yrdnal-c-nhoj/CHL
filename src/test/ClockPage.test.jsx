@@ -3,31 +3,41 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import ClockPage from '../pages/ClockPage';
 
-// Mock the dynamic-clock loader hook used by ClockPage so we don't need to
-// exercise the real import.meta.glob registry (which is a build-time static).
-vi.mock('../hooks/useClockPage', () => ({
-  useClockPage: () => ({
-    ClockComponent: () => <div>Mock Clock Component</div>,
-    isReady: true,
-    error: null,
-    overlayVisible: false,
-  }),
+const useClockPageState = vi.hoisted(() => ({
+  ClockComponent: () => <div>Mock Clock Component</div>,
+  isReady: true,
+  error: null,
+  overlayVisible: false,
 }));
 
-// Mock DataContext shape consumed by ClockPage.
+const useDataContextState = vi.hoisted(() => ({
+  items: [
+    { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
+    { path: '26-03-04', date: '26-03-04', title: 'Sun Clock' },
+  ],
+  loading: false,
+}));
+
+vi.mock('../hooks/useClockPage', () => ({
+  useClockPage: () => ({ ...useClockPageState }),
+}));
+
 vi.mock('../context/DataContext', () => ({
-  useDataContext: () => ({
-    items: [
-      { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
-      { path: '26-03-04', date: '26-03-04', title: 'Sun Clock' },
-    ],
-    loading: false,
-  }),
+  useDataContext: () => ({ ...useDataContextState }),
 }));
 
 describe('ClockPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    useClockPageState.ClockComponent = () => <div>Mock Clock Component</div>;
+    useClockPageState.isReady = true;
+    useClockPageState.error = null;
+    useClockPageState.overlayVisible = false;
+    useDataContextState.items = [
+      { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
+      { path: '26-03-04', date: '26-03-04', title: 'Sun Clock' },
+    ];
+    useDataContextState.loading = false;
   });
 
   const renderAt = (route) =>
@@ -77,17 +87,22 @@ describe('ClockPage', () => {
 describe('ClockPage Integration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    useClockPageState.ClockComponent = () => <div>Mock Clock Component</div>;
+    useClockPageState.isReady = true;
+    useClockPageState.error = null;
+    useClockPageState.overlayVisible = false;
+    useDataContextState.items = [
+      { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
+      { path: '26-03-04', date: '26-03-04', title: 'Sun Clock' },
+    ];
+    useDataContextState.loading = false;
   });
 
   it('renders error state when clock fails to load', async () => {
-    vi.mock('../hooks/useClockPage', () => ({
-      useClockPage: () => ({
-        ClockComponent: null,
-        isReady: false,
-        error: 'Clock loading timed out',
-        overlayVisible: false,
-      }),
-    }));
+    useClockPageState.ClockComponent = null;
+    useClockPageState.isReady = false;
+    useClockPageState.error = 'Clock loading timed out';
+    useClockPageState.overlayVisible = false;
 
     render(
       <MemoryRouter initialEntries={['/26-03-05']}>
@@ -103,14 +118,10 @@ describe('ClockPage Integration', () => {
   });
 
   it('renders loading overlay when clock is not ready', async () => {
-    vi.mock('../hooks/useClockPage', () => ({
-      useClockPage: () => ({
-        ClockComponent: null,
-        isReady: false,
-        error: null,
-        overlayVisible: true,
-      }),
-    }));
+    useClockPageState.ClockComponent = null;
+    useClockPageState.isReady = false;
+    useClockPageState.error = null;
+    useClockPageState.overlayVisible = true;
 
     render(
       <MemoryRouter initialEntries={['/26-03-05']}>
@@ -126,14 +137,10 @@ describe('ClockPage Integration', () => {
   });
 
   it('renders navigation when current item exists', async () => {
-    vi.mock('../hooks/useClockPage', () => ({
-      useClockPage: () => ({
-        ClockComponent: () => <div>Clock</div>,
-        isReady: true,
-        error: null,
-        overlayVisible: false,
-      }),
-    }));
+    useClockPageState.ClockComponent = () => <div>Clock</div>;
+    useClockPageState.isReady = true;
+    useClockPageState.error = null;
+    useClockPageState.overlayVisible = false;
 
     render(
       <MemoryRouter initialEntries={['/26-03-05']}>
@@ -149,21 +156,12 @@ describe('ClockPage Integration', () => {
   });
 
   it('does not render navigation when no current item matches', async () => {
-    vi.mock('../context/DataContext', () => ({
-      useDataContext: () => ({
-        items: [],
-        loading: false,
-      }),
-    }));
-
-    vi.mock('../hooks/useClockPage', () => ({
-      useClockPage: () => ({
-        ClockComponent: null,
-        isReady: false,
-        error: null,
-        overlayVisible: false,
-      }),
-    }));
+    useDataContextState.items = [];
+    useDataContextState.loading = false;
+    useClockPageState.ClockComponent = null;
+    useClockPageState.isReady = false;
+    useClockPageState.error = null;
+    useClockPageState.overlayVisible = false;
 
     render(
       <MemoryRouter initialEntries={['/26-03-05']}>
@@ -179,14 +177,10 @@ describe('ClockPage Integration', () => {
   });
 
   it('handles timeout fallback by hiding overlay and setting error', async () => {
-    vi.mock('../hooks/useClockPage', () => ({
-      useClockPage: () => ({
-        ClockComponent: null,
-        isReady: false,
-        error: 'Clock loading timed out',
-        overlayVisible: false,
-      }),
-    }));
+    useClockPageState.ClockComponent = null;
+    useClockPageState.isReady = false;
+    useClockPageState.error = 'Clock loading timed out';
+    useClockPageState.overlayVisible = false;
 
     render(
       <MemoryRouter initialEntries={['/99-99-99']}>

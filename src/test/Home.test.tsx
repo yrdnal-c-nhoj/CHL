@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { DataProvider } from '../context/DataContext';
 import Home from '../pages/Home';
 import { useNavigationState } from '../hooks/useNavigationState';
+import { mockState } from './dataMocks';
 
 vi.mock('../hooks/useNavigationState', () => ({
   useNavigationState: () => ({
@@ -14,23 +15,15 @@ vi.mock('../hooks/useNavigationState', () => ({
   }),
 }));
 
-const mockData = [
-  { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
-  { path: '26-03-04', date: '26-03-04', title: 'Sun Clock' },
-  { path: '26-03-03', date: '26-03-03', title: 'Moon Clock' },
-];
-
-vi.mock('../context/clockpages.json', () => ({
-  default: mockData,
-}));
-
-vi.mock('../context/testclocks.json', () => ({
-  default: mockData,
-}));
-
 describe('Home Integration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockState.data = [
+      { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
+      { path: '26-03-04', date: '26-03-04', title: 'Sun Clock' },
+      { path: '26-03-03', date: '26-03-03', title: 'Moon Clock' },
+    ];
+    mockState.shouldThrow = false;
     sessionStorage.clear();
     Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: 0 });
     Object.defineProperty(window, 'scrollX', { writable: true, configurable: true, value: 0 });
@@ -49,9 +42,7 @@ describe('Home Integration', () => {
   });
 
   it('renders error state when data fails to load', async () => {
-    vi.mock('../context/testclocks.json', () => ({
-      default: undefined,
-    }));
+    mockState.data = undefined as any;
 
     render(
       <MemoryRouter>
@@ -112,9 +103,7 @@ describe('Home Integration', () => {
   });
 
   it('does not crash when data array is empty', async () => {
-    vi.mock('../context/testclocks.json', () => ({
-      default: [],
-    }));
+    mockState.data = [];
 
     render(
       <MemoryRouter>

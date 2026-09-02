@@ -1,26 +1,19 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DataProvider, useDataContext } from '../context/DataContext';
-
-vi.mock('../context/clockpages.json', () => ({
-  default: [
-    { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
-    { path: '26-03-04', date: '26-03-04', title: 'Sun Clock' },
-    { path: '26-03-03', date: '26-03-03', title: 'Moon Clock' },
-  ],
-}));
-
-vi.mock('../context/testclocks.json', () => ({
-  default: [
-    { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
-    { path: '26-03-04', date: '26-03-04', title: 'Sun Clock' },
-    { path: '26-03-03', date: '26-03-03', title: 'Moon Clock' },
-  ],
-}));
+import { mockState } from './dataMocks';
 
 describe('DataContext', () => {
   beforeEach(() => {
+    console.log('DC beforeEach start, data:', mockState.data.map(i => i.path).join(','));
     vi.clearAllMocks();
+    mockState.data = [
+      { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
+      { path: '26-03-04', date: '26-03-04', title: 'Sun Clock' },
+      { path: '26-03-03', date: '26-03-03', title: 'Moon Clock' },
+    ];
+    mockState.shouldThrow = false;
+    console.log('DC beforeEach end, data:', mockState.data.map(i => i.path).join(','));
   });
 
   it('should provide items through context', async () => {
@@ -95,8 +88,6 @@ describe('DataContext', () => {
       </DataProvider>,
     );
 
-    // DataProvider sorts items ascending by date, so the earliest date
-    // (26-03-03) is first.
     await waitFor(() => {
       expect(screen.getByTestId('first-path')).toHaveTextContent('26-03-03');
       expect(screen.getByTestId('first-date')).toHaveTextContent('26-03-03');
@@ -129,8 +120,6 @@ describe('DataContext', () => {
       </DataProvider>,
     );
 
-    // DataContext sorts ascending via localeCompare on the date string,
-    // so the earliest date comes first.
     await waitFor(() => {
       expect(screen.getByTestId('paths')).toHaveTextContent(
         '26-03-03,26-03-04,26-03-05',
