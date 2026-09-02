@@ -184,7 +184,7 @@ const ClockComponent =  () => {
             δὶς ἐς τὸν αὐτὸν ποταμὸν οὐκ ἂν ἐμβαίης.*
           </p>
           <p className={styles.quoteTranslation}>
-            You can't step in<wbr /> the same river twice.*
+            You can&apos;t step in<wbr /> the same river twice.*
           </p>
           <p className={styles.author}>-Heraclitus</p>
         </div>
