@@ -1,26 +1,19 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DataProvider, useDataContext } from '../context/DataContext';
-
-const mockData = [
-  { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
-  { path: '26-03-04', date: '26-03-04', title: 'Sun Clock' },
-  { path: '26-03-03', date: '26-03-03', title: 'Moon Clock' },
-  { path: '26-03-06', date: '26-03-06', title: 'Z Clock', tags: ['z'] },
-  { path: '26-03-01', date: '26-03-01', title: 'A Clock', tags: ['a'] },
-];
-
-vi.mock('../context/clockpages.json', () => ({
-  default: mockData,
-}));
-
-vi.mock('../context/testclocks.json', () => ({
-  default: mockData,
-}));
+import { mockState } from './dataMocks';
 
 describe('DataContext Loading', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockState.data = [
+      { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
+      { path: '26-03-04', date: '26-03-04', title: 'Sun Clock' },
+      { path: '26-03-03', date: '26-03-03', title: 'Moon Clock' },
+      { path: '26-03-06', date: '26-03-06', title: 'Z Clock', tags: ['z'] },
+      { path: '26-03-01', date: '26-03-01', title: 'A Clock', tags: ['a'] },
+    ];
+    mockState.shouldThrow = false;
   });
 
   it('should return loading: true before data arrives', async () => {
@@ -82,12 +75,18 @@ describe('DataContext Loading', () => {
 describe('DataContext Error State', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockState.data = [
+      { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
+      { path: '26-03-04', date: '26-03-04', title: 'Sun Clock' },
+      { path: '26-03-03', date: '26-03-03', title: 'Moon Clock' },
+      { path: '26-03-06', date: '26-03-06', title: 'Z Clock', tags: ['z'] },
+      { path: '26-03-01', date: '26-03-01', title: 'A Clock', tags: ['a'] },
+    ];
+    mockState.shouldThrow = false;
   });
 
   it('should handle API failures without crashing', async () => {
-    vi.mock('../context/testclocks.json', () => ({
-      default: undefined,
-    }));
+    mockState.data = undefined as any;
 
     const TestComponent = () => {
       const { error, loading } = useDataContext();
@@ -108,9 +107,7 @@ describe('DataContext Error State', () => {
   });
 
   it('should set error when JSON import throws', async () => {
-    vi.mock('../context/testclocks.json', () => {
-      throw new Error('Network failure');
-    });
+    mockState.shouldThrow = true;
 
     const TestComponent = () => {
       const { error, loading } = useDataContext();
@@ -130,9 +127,7 @@ describe('DataContext Error State', () => {
   });
 
   it('should not crash when error object is provided', async () => {
-    vi.mock('../context/testclocks.json', () => ({
-      default: undefined,
-    }));
+    mockState.data = undefined as any;
 
     const TestComponent = () => {
       const { error } = useDataContext();
@@ -154,6 +149,14 @@ describe('DataContext Error State', () => {
 describe('DataContext Data Formatting', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockState.data = [
+      { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
+      { path: '26-03-04', date: '26-03-04', title: 'Sun Clock' },
+      { path: '26-03-03', date: '26-03-03', title: 'Moon Clock' },
+      { path: '26-03-06', date: '26-03-06', title: 'Z Clock', tags: ['z'] },
+      { path: '26-03-01', date: '26-03-01', title: 'A Clock', tags: ['a'] },
+    ];
+    mockState.shouldThrow = false;
   });
 
   it('should sort raw input data ascending by date before exposing to components', async () => {
@@ -163,9 +166,7 @@ describe('DataContext Data Formatting', () => {
       { path: '26-03-03', date: '26-03-03', title: 'B' },
     ];
 
-    vi.mock('../context/testclocks.json', () => ({
-      default: unsortedData,
-    }));
+    mockState.data = unsortedData;
 
     const TestComponent = () => {
       const { items } = useDataContext();
@@ -217,9 +218,7 @@ describe('DataContext Data Formatting', () => {
       { path: 'also-empty', date: null as any, title: 'Also Invalid' },
     ];
 
-    vi.mock('../context/testclocks.json', () => ({
-      default: dataWithNulls,
-    }));
+    mockState.data = dataWithNulls;
 
     const TestComponent = () => {
       const { items } = useDataContext();
@@ -243,10 +242,10 @@ describe('DataContext Data Formatting', () => {
       const first = items[0];
       return (
         <div>
-          <div data-testid="path">{first.path}</div>
-          <div data-testid="title">{first.title}</div>
-          <div data-testid="clock-number">{first.clockNumber}</div>
-          <div data-testid="tags">{first.tags?.join(',') || 'none'}</div>
+          <div data-testid="path">{first?.path}</div>
+          <div data-testid="title">{first?.title}</div>
+          <div data-testid="clock-number">{first?.clockNumber}</div>
+          <div data-testid="tags">{first?.tags?.join(',') || 'none'}</div>
         </div>
       );
     };
