@@ -1,6 +1,6 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useEffect, useState, memo } from 'react';
+import { useEffect, memo } from 'react';
 import { useSecondClock, useMillisecondClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 

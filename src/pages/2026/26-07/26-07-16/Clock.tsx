@@ -2,7 +2,7 @@ import fontUrl from '@/assets/fonts/26fonts/26-07-16.otf?url';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useMillisecondClock } from '@/utils/hooks';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
 export const assets = [fontUrl];
@@ -36,12 +36,15 @@ const Clock =  () => {
     return progress ** 3 * (10 - 15 * progress + 6 * progress * progress);
   };
 
-  const animate = useCallback(
-    (timestamp: number) => {
+  useEffect(() => {
+    startRef.current = null;
+    if (animRef.current) cancelAnimationFrame(animRef.current);
+
+    function animate(timestamp: number) {
       if (!startRef.current) startRef.current = timestamp;
       const elapsed = timestamp - startRef.current;
       const container = containerRef.current;
-      
+
       if (!container) return;
 
       if (elapsed < 250) {
@@ -68,19 +71,14 @@ const Clock =  () => {
       }
 
       animRef.current = requestAnimationFrame(animate);
-    },
-    [phase],
-  );
+    }
 
-  useEffect(() => {
-    startRef.current = null;
-    if (animRef.current) cancelAnimationFrame(animRef.current);
     animRef.current = requestAnimationFrame(animate);
 
     return () => {
       if (animRef.current) cancelAnimationFrame(animRef.current);
     };
-  }, [phase, animate]);
+  }, [phase]);
 
   return (
     <main

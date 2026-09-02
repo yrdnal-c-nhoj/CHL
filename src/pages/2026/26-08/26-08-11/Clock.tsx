@@ -20,7 +20,7 @@ const Clock_26_08_10 =  () => {
   const time = useMillisecondClock();
   useSuspenseFontLoader(fontConfigs);
 
-  const { timeString, accessibleTime, timeChars } = useMemo(() => {
+  const { accessibleTime, timeChars } = useMemo(() => {
     const hours = String(time.getHours()).padStart(2, '0');
     const minutes = String(time.getMinutes()).padStart(2, '0');
     const seconds = String(time.getSeconds()).padStart(2, '0');
@@ -32,7 +32,6 @@ const Clock_26_08_10 =  () => {
     const hours12 = String(time.getHours() % 12 || 12);
 
     return {
-      timeString: `${hours}:${minutes}:${seconds}:${milliseconds}`,
       accessibleTime: `${hours12}:${minutes}:${seconds}.${milliseconds} ${ampm}`,
       timeChars: `${hours}:${minutes}:${seconds}:${milliseconds}`.split(''),
     };
