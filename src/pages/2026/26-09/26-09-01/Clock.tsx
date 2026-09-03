@@ -6,69 +6,36 @@ import styles from './Clock.module.css';
 
 export const assets: string[] = [headVideo];
 
-const CLOCK_COUNT = 8;
+const CLOCK_COUNT = 16;
 
+// Standard CSS Hex Color Palette
 const PALETTE = {
-    bg: 0x0a0c14,
-    rim: 0x8c6239,
-    face: 0x11141f,
-    tick: 0xd4af7a,
-    hourHand: 0xf2e4c9,
-    minuteHand: 0xd4af7a,
-    secondHand: 0x3aafa9,
-    glow: 0x3aafa9,
+    bg: '#c9a26e',
+    rim: '#071171',
+    face: '#1114aa',
+    tick: '#d4ae7a00',
+    hourHand: '#302715',
+    minuteHand: '#32230f',
+    secondHand: '#e21111',
+    glow: '#3aafa9',
 };
 
-function buildClock() {
-    const group = new THREE.Group();
+function createNumberTexture(number: string): THREE.Texture {
+    const canvas = document.createElement('canvas');
+    canvas.width = 128;
+    canvas.height = 128;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return new THREE.Texture();
 
-    const rim = new THREE.Mesh(
-        new THREE.RingGeometry(0.86, 1, 64),
-        new THREE.MeshBasicMaterial({ color: PALETTE.rim, side: THREE.DoubleSide })
-    );
-    group.add(rim);
+    ctx.fillStyle = PALETTE.tick;
+    ctx.font = '72px monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(number, 64, 64);
 
-    const face = new THREE.Mesh(
-        new THREE.CircleGeometry(0.86, 64),
-        new THREE.MeshBasicMaterial({ color: PALETTE.face, side: THREE.DoubleSide })
-    );
-    face.position.z = -0.005;
-    group.add(face);
-
-    const glow = new THREE.PointLight(PALETTE.glow, 0.6, 3);
-    glow.position.z = 0.3;
-    group.add(glow);
-
-    for (let i = 0; i < 12; i++) {
-        const angle = (i / 12) * Math.PI * 2;
-        const long = i % 3 === 0;
-        const tick = new THREE.Mesh(
-            new THREE.BoxGeometry(long ? 0.03 : 0.018, long ? 0.14 : 0.08, 0.01),
-            new THREE.MeshBasicMaterial({ color: PALETTE.tick })
-        );
-        tick.position.set(Math.sin(angle) * 0.74, Math.cos(angle) * 0.74, 0.01);
-        tick.rotation.z = -angle;
-        group.add(tick);
-    }
-
-    function makeHand(length: number, width: number, color: number) {
-        const pivot = new THREE.Group();
-        const mesh = new THREE.Mesh(
-            new THREE.BoxGeometry(width, length, 0.012),
-            new THREE.MeshBasicMaterial({ color })
-        );
-        mesh.position.y = length / 2 - width;
-        pivot.add(mesh);
-        pivot.position.z = 0.02;
-        group.add(pivot);
-        return pivot;
-    }
-
-    const hourHand = makeHand(0.42, 0.045, PALETTE.hourHand);
-    const minuteHand = makeHand(0.62, 0.03, PALETTE.minuteHand);
-    const secondHand = makeHand(0.68, 0.012, PALETTE.secondHand);
-
-    return { group, hourHand, minuteHand, secondHand };
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    return texture;
 }
 
 const Clock_26_09_01 = () => {
@@ -79,8 +46,16 @@ const Clock_26_09_01 = () => {
         const mount = mountRef.current;
         if (!mount) return;
 
+        // --- Textures & Scene Setup ---
+        const numberTextures: Record<string, THREE.Texture> = {
+            '12': createNumberTexture('12'),
+            '3': createNumberTexture('3'),
+            '6': createNumberTexture('6'),
+            '9': createNumberTexture('9'),
+        };
+
         const scene = new THREE.Scene();
-        scene.fog = new THREE.Fog(PALETTE.bg, 6, 16);
+        scene.fog = new THREE.Fog(new THREE.Color(PALETTE.bg), 6, 16);
 
         const camera = new THREE.PerspectiveCamera(
             50,
@@ -88,29 +63,138 @@ const Clock_26_09_01 = () => {
             0.1,
             100
         );
-        camera.position.set(0, 1.6, 7);
+        camera.position.set(0, 1.6, 14);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(mount.clientWidth, mount.clientHeight);
         mount.appendChild(renderer.domElement);
 
-        scene.add(new THREE.AmbientLight(0xffffff, 0.25));
+        scene.add(new THREE.AmbientLight(new THREE.Color('#ffffff'), 0.25));
 
         const ringGroup = new THREE.Group();
         scene.add(ringGroup);
 
-        const radius = 3.4;
+        // Shared Geometries
+        const rimGeo = new THREE.RingGeometry(0.86, 1, 64);
+        const faceGeo = new THREE.CircleGeometry(0.86, 64);
+        const longTickGeo = new THREE.BoxGeometry(0.03, 0.14, 0.01);
+        const shortTickGeo = new THREE.BoxGeometry(0.018, 0.08, 0.01);
+        const numGeo = new THREE.PlaneGeometry(0.35, 0.35);
+
+        function buildClock() {
+            const group = new THREE.Group();
+
+            const rimMaterial = new THREE.MeshBasicMaterial({
+                color: new THREE.Color(PALETTE.rim),
+                transparent: true,
+                side: THREE.DoubleSide,
+            });
+            const rim = new THREE.Mesh(rimGeo, rimMaterial);
+            group.add(rim);
+
+            const faceMat = new THREE.MeshBasicMaterial({
+                color: new THREE.Color(PALETTE.face),
+                transparent: true,
+                opacity: 0,
+                side: THREE.DoubleSide,
+            });
+            const face = new THREE.Mesh(faceGeo, faceMat);
+            face.position.z = -0.005;
+            group.add(face);
+
+            const glow = new THREE.PointLight(new THREE.Color(PALETTE.glow), 0.6, 3);
+            glow.position.z = 0.3;
+            group.add(glow);
+
+            const tickMeshes: THREE.Mesh[] = [];
+            for (let i = 0; i < 12; i++) {
+                const angle = (i / 12) * Math.PI * 2;
+                const isLong = i % 3 === 0;
+                const tickMat = new THREE.MeshBasicMaterial({
+                    color: new THREE.Color(PALETTE.tick),
+                    transparent: true,
+                });
+                const tick = new THREE.Mesh(isLong ? longTickGeo : shortTickGeo, tickMat);
+                tick.position.set(Math.sin(angle) * 0.74, Math.cos(angle) * 0.74, 0.01);
+                tick.rotation.z = -angle;
+                group.add(tick);
+                tickMeshes.push(tick);
+            }
+
+            const numberMeshes: THREE.Mesh[] = [];
+            const numPositions = [
+                { label: '12', x: 0, y: 0.62 },
+                { label: '3', x: 0.62, y: 0 },
+                { label: '6', x: 0, y: -0.62 },
+                { label: '9', x: -0.62, y: 0 },
+            ];
+
+            numPositions.forEach(({ label, x, y }) => {
+                const texture = numberTextures[label];
+                if (!texture) return;
+                const numMat = new THREE.MeshBasicMaterial({
+                    map: texture,
+                    transparent: true,
+                    depthWrite: false,
+                    side: THREE.DoubleSide,
+                });
+                const mesh = new THREE.Mesh(numGeo, numMat);
+                mesh.position.set(x, y, 0.01);
+                group.add(mesh);
+                numberMeshes.push(mesh);
+            });
+
+            function makeHand(length: number, width: number, hexColor: string) {
+                const pivot = new THREE.Group();
+                const handGeo = new THREE.BoxGeometry(width, length, 0.012);
+                const handMat = new THREE.MeshBasicMaterial({
+                    color: new THREE.Color(hexColor),
+                    transparent: true,
+                });
+                const mesh = new THREE.Mesh(handGeo, handMat);
+                mesh.position.y = length / 2 - width;
+                pivot.add(mesh);
+                pivot.position.z = 0.02;
+                group.add(pivot);
+                return { pivot, mesh, handGeo };
+            }
+
+            const hourHand = makeHand(0.42, 0.045, PALETTE.hourHand);
+            const minuteHand = makeHand(0.62, 0.03, PALETTE.minuteHand);
+            const secondHand = makeHand(0.68, 0.012, PALETTE.secondHand);
+
+            return {
+                group,
+                hourHand: hourHand.pivot,
+                minuteHand: minuteHand.pivot,
+                secondHand: secondHand.pivot,
+                rimMaterial,
+                faceMat,
+                tickMeshes,
+                numberMeshes,
+                hourHandMesh: hourHand.mesh,
+                minuteHandMesh: minuteHand.mesh,
+                secondHandMesh: secondHand.mesh,
+                geometriesToDispose: [hourHand.handGeo, minuteHand.handGeo, secondHand.handGeo],
+            };
+        }
+
+        const radius = window.innerWidth < 767 ? 4.5 : 6.8;
+        const clockScale = window.innerWidth < 767 ? 0.75 : 1;
         const clocks = Array.from({ length: CLOCK_COUNT }, (_, i) => {
-            const clock = buildClock();
             const angle = (i / CLOCK_COUNT) * Math.PI * 2;
-            clock.group.position.set(Math.sin(angle) * radius, 0, Math.cos(angle) * radius);
+            const initialZ = Math.cos(angle) * radius;
+            const clock = buildClock();
+            clock.group.scale.set(clockScale, clockScale, clockScale);
+            clock.group.position.set(Math.sin(angle) * radius, 0.5, initialZ);
             clock.group.lookAt(0, 0, 0);
             clock.group.rotateY(Math.PI);
             ringGroup.add(clock.group);
             return clock;
         });
 
+        // --- Controls ---
         let autoRotate = true;
         let targetAzimuth = 0;
         let currentAzimuth = 0;
@@ -125,6 +209,7 @@ const Clock_26_09_01 = () => {
             lastX = e.clientX;
             lastY = e.clientY;
         };
+
         const onPointerMove = (e: PointerEvent) => {
             if (!isDragging) return;
             const dx = e.clientX - lastX;
@@ -134,6 +219,7 @@ const Clock_26_09_01 = () => {
             targetAzimuth -= dx * 0.005;
             currentElevation = Math.max(0.05, Math.min(1.2, currentElevation - dy * 0.003));
         };
+
         const onPointerUp = () => {
             isDragging = false;
         };
@@ -145,20 +231,28 @@ const Clock_26_09_01 = () => {
         const resizeObserver = new ResizeObserver(() => {
             const w = mount.clientWidth;
             const h = mount.clientHeight;
+            if (w === 0 || h === 0) return;
             camera.aspect = w / h;
             camera.updateProjectionMatrix();
             renderer.setSize(w, h);
         });
         resizeObserver.observe(mount);
 
+        // --- Animation Loop ---
         let frameId: number;
+        const worldPos = new THREE.Vector3();
+
+        // Distance bounds for depth calculation
+        const minDist = 14.2 - radius; // ~7.4 (Closest/Largest)
+        const maxDist = 14.2 + radius; // ~21.0 (Furthest/Smallest)
+
         const animate = () => {
             frameId = requestAnimationFrame(animate);
 
             if (autoRotate) targetAzimuth += 0.0018;
             currentAzimuth += (targetAzimuth - currentAzimuth) * 0.08;
 
-            const camDist = 7.2;
+            const camDist = 14.2;
             camera.position.x = Math.sin(currentAzimuth) * camDist;
             camera.position.z = Math.cos(currentAzimuth) * camDist;
             camera.position.y = 1.2 + currentElevation * 3;
@@ -169,22 +263,83 @@ const Clock_26_09_01 = () => {
             const m = now.getMinutes();
             const s = now.getSeconds() + now.getMilliseconds() / 1000;
 
-            clocks.forEach(({ hourHand, minuteHand, secondHand }) => {
-                hourHand.rotation.z = -((h + m / 60) / 12) * Math.PI * 2;
-                minuteHand.rotation.z = -((m + s / 60) / 60) * Math.PI * 2;
-                secondHand.rotation.z = -(s / 60) * Math.PI * 2;
-            });
+            clocks.forEach(
+                ({
+                    group,
+                    hourHand,
+                    minuteHand,
+                    secondHand,
+                    rimMaterial,
+                    tickMeshes,
+                    numberMeshes,
+                    hourHandMesh,
+                    minuteHandMesh,
+                    secondHandMesh,
+                }) => {
+                    // Hand Rotations
+                    hourHand.rotation.z = -((h + m / 60) / 12) * Math.PI * 2;
+                    minuteHand.rotation.z = -((m + s / 60) / 60) * Math.PI * 2;
+                    secondHand.rotation.z = -(s / 60) * Math.PI * 2;
+
+                    // Distance-based Transparency Logic
+                    group.getWorldPosition(worldPos);
+                    const distanceToCamera = camera.position.distanceTo(worldPos);
+
+                    // Normalized factor: 1.0 (Closest/Largest) down to 0.0 (Furthest/Smallest)
+                    const normFactor = 1 - Math.max(0, Math.min(1, (distanceToCamera - minDist) / (maxDist - minDist)));
+
+                    // Clocks close to camera are 1.0 (Fully Solid), distant ones fade down to 0.15
+                    const opacity = 0.15 + 0.85 * normFactor;
+
+                    rimMaterial.opacity = opacity;
+
+                    tickMeshes.forEach((tick) => {
+                        (tick.material as THREE.MeshBasicMaterial).opacity = opacity;
+                    });
+                    numberMeshes.forEach((num) => {
+                        (num.material as THREE.MeshBasicMaterial).opacity = opacity;
+                    });
+                    [hourHandMesh, minuteHandMesh, secondHandMesh].forEach((mesh) => {
+                        if (mesh) {
+                            (mesh.material as THREE.MeshBasicMaterial).opacity = opacity;
+                        }
+                    });
+                }
+            );
 
             renderer.render(scene, camera);
         };
         animate();
 
+        // --- Cleanup ---
         return () => {
             cancelAnimationFrame(frameId);
             resizeObserver.disconnect();
+
             mount.removeEventListener('pointerdown', onPointerDown);
             window.removeEventListener('pointermove', onPointerMove);
             window.removeEventListener('pointerup', onPointerUp);
+
+            clocks.forEach((clock) => {
+                clock.geometriesToDispose.forEach((g) => g.dispose());
+                clock.group.traverse((child) => {
+                    if (child instanceof THREE.Mesh) {
+                        if (Array.isArray(child.material)) {
+                            child.material.forEach((m) => m.dispose());
+                        } else if (child.material) {
+                            child.material.dispose();
+                        }
+                    }
+                });
+            });
+
+            rimGeo.dispose();
+            faceGeo.dispose();
+            longTickGeo.dispose();
+            shortTickGeo.dispose();
+            numGeo.dispose();
+            Object.values(numberTextures).forEach((t) => t.dispose());
+
             renderer.dispose();
             if (mount.contains(renderer.domElement)) {
                 mount.removeChild(renderer.domElement);
@@ -209,26 +364,9 @@ const Clock_26_09_01 = () => {
             />
             <div ref={mountRef} className={styles.canvasMount} />
 
-            <time dateTime={time.toISOString()} className={styles.timeDisplay}>
-                <span className={styles.digitGroup}>
-                    <span className={styles.digit}>{hours[0]}</span>
-                    <span className={styles.digit}>{hours[1]}</span>
-                </span>
-                <span className={styles.separator}>:</span>
-                <span className={styles.digitGroup}>
-                    <span className={styles.digit}>{minutes[0]}</span>
-                    <span className={styles.digit}>{minutes[1]}</span>
-                </span>
-                <span className={styles.separator}>:</span>
-                <span className={styles.digitGroup}>
-                    <span className={styles.digit}>{seconds[0]}</span>
-                    <span className={styles.digit}>{seconds[1]}</span>
-                </span>
-            </time>
-
-            <span className={styles.srOnly} aria-live="polite">
+            <time dateTime={time.toISOString()} className={styles.srOnly}>
                 {accessibleTime}
-            </span>
+            </time>
         </main>
     );
 };
