@@ -2,12 +2,12 @@ import React, { useMemo } from 'react';
 import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import lavaImage from '@/assets/images/26_images/26-09/26-09-02/lava.webp';
-import eyesImage from '@/assets/images/26_images/26-09/26-09-02/eyes.webp';
-import ioImage from '@/assets/images/26_images/26-09/26-09-02/io.webp';
-import cowImage from '@/assets/images/26_images/26-09/26-09-02/cow.webm';
-import peacockImage from '@/assets/images/26_images/26-09/26-09-02/peacock.webp';
-import fontUrl from '@/assets/fonts/26fonts/26-09-02.otf?url';
+import lavaImage from '@/assets/images/26_images/26-09/26-09-03/lava.webp';
+import eyesImage from '@/assets/images/26_images/26-09/26-09-03/eyes.webp';
+import ioImage from '@/assets/images/26_images/26-09/26-09-03/io.webp';
+import cowImage from '@/assets/images/26_images/26-09/26-09-03/cow.webm';
+import peacockImage from '@/assets/images/26_images/26-09/26-09-03/peacock.webp';
+import fontUrl from '@/assets/fonts/26fonts/26-09-03.otf?url';
 
 export const assets: string[] = [lavaImage, eyesImage, ioImage, cowImage, peacockImage, fontUrl];
 
@@ -81,7 +81,7 @@ const styles = {
     position: 'absolute',
     inset: 0,
     backgroundImage: `url(${eyesImage})`,
-    backgroundSize: '60px 30px',
+    backgroundSize: '90px 50px',
     backgroundRepeat: 'repeat',
     backgroundPosition: 'center',
     zIndex: 4,
