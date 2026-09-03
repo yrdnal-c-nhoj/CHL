@@ -38,7 +38,7 @@
   filter: brightness(1.8) saturate(2) contrast(1.9);
 
   opacity: 0.4;
-  gap: 0.3em;
+  gap: 0.1em;
 }
 
 .fontLoaded {
