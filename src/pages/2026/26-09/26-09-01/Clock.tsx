@@ -14,9 +14,8 @@ const PALETTE = {
     bg: '#c9a26e',
     rim: '#9ea0b8',
     face: '#1114aa',
-    tick: '#d4ae7a00',
     hourHand: '#302715',
-    minuteHand: '#32230f',
+    minuteHand: '#2c1f0d',
     secondHand: '#e21111',
     glow: '#3aafa9',
 };
