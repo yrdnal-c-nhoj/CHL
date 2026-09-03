@@ -45,10 +45,3 @@
   white-space: nowrap;
   border-width: 0;
 }
-
-/* 
-@media (max-width: 767px) and (orientation: portrait) {
-  .container {
-    flex-direction: column;
-  }
-} */
