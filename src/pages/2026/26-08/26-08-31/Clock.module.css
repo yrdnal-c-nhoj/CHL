@@ -30,12 +30,12 @@
 .digitalClock {
   position: relative;
   z-index: 1;
-  font-size: 25vmin;
+  font-size: 20vmin;
   font-family: 'Courier New', Courier, monospace;
   display: flex;
   align-items: center;
   justify-content: center;
-    filter: brightness(1.8) saturate(2) contrast(1.9);
+  filter: brightness(1.8) saturate(2) contrast(1.9);
 
   opacity: 0.4;
   gap: 0.3em;
