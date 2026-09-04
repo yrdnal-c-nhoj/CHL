@@ -1,46 +1,27 @@
 import React, { useMemo } from 'react';
 import { useClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
-import lavaImage from '@/assets/images/26_images/26-09/26-09-03/lava.webp';
-import eyesImage from '@/assets/images/26_images/26-09/26-09-03/eyes.webp';
-import ioImage from '@/assets/images/26_images/26-09/26-09-03/io.webp';
-import cowImage from '@/assets/images/26_images/26-09/26-09-03/cow.webm';
 import peacockImage from '@/assets/images/26_images/26-09/26-09-03/peacock.webp';
-import fontUrl from '@/assets/fonts/26fonts/26-09-03.otf?url';
+import eyesImage from '@/assets/images/26_images/26-09/26-09-03/eyes.webp';
+import bullImage from '@/assets/images/26_images/26-09/26-09-03/bull.webp';
 
-export const assets: string[] = [lavaImage, eyesImage, ioImage, cowImage, peacockImage, fontUrl];
-
-const fontConfigs: FontConfig[] = [
-  {
-    fontFamily: 'ClockFont_26_09_02',
-    fontUrl,
-  },
-];
+export const assets: string[] = [eyesImage, bullImage, peacockImage];
 
 const Clock_26_09_02 = () => {
-  useSuspenseFontLoader(fontConfigs);
   const time = useClock();
 
   const timeString = useMemo(() => {
     const h = time.getHours().toString().padStart(2, '0');
     const m = time.getMinutes().toString().padStart(2, '0');
-    return `${h}:${m}`;
+    const s = time.getSeconds().toString().padStart(2, '0');
+    return `${h}:${m}:${s}`;
   }, [time]);
 
   return (
     <main style={styles.container}>
       <div style={styles.backgroundLayer} />
       <div style={styles.gridOverlay} />
-      <div style={styles.ioOverlay} />
-      <video
-        src={cowImage}
-        autoPlay
-        loop
-        muted
-        playsInline
-        style={styles.cowOverlay as React.CSSProperties}
-      />
+      <div style={styles.cowOverlay} />
+
       <div style={styles.digitalDisplay}>
         {timeString.split('').map((char, index) => (
           <span
@@ -50,10 +31,11 @@ const Clock_26_09_02 = () => {
             {char}
           </span>
         ))}
-        <time dateTime={time.toISOString()} style={styles.srOnly}>
-          {timeString}
-        </time>
       </div>
+
+      <time dateTime={time.toISOString()} style={styles.srOnly}>
+        {timeString}
+      </time>
     </main>
   );
 };
@@ -64,7 +46,7 @@ const styles = {
     width: '100vw',
     height: '100dvh',
     overflow: 'hidden',
-    backgroundColor: '#0a0c14',
+    backgroundColor: '#f5f5f8',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -72,10 +54,12 @@ const styles = {
   backgroundLayer: {
     position: 'absolute',
     inset: 0,
-    backgroundImage: `url(${lavaImage})`,
+    backgroundImage: `url(${peacockImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    zIndex: 0,
+    zIndex: 2,
+    filter: 'contrast(100%) saturate(150%) brightness(90%)',
+    opacity: 0.7,
   },
   gridOverlay: {
     position: 'absolute',
@@ -85,75 +69,54 @@ const styles = {
     backgroundRepeat: 'repeat',
     backgroundPosition: 'center',
     zIndex: 4,
+    opacity: 0.9,
     pointerEvents: 'none',
   },
   cowOverlay: {
     position: 'absolute',
     inset: 0,
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    objectPosition: 'top center',
-    opacity: 0.4,
-    zIndex: 2,
-    filter: 'contrast(400%) saturate(150%) brightness(60%)',
-    pointerEvents: 'none',
-  },
-  ioOverlay: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '150vmin',
-    height: '150vmin',
-    transform: 'translate(-50%, -50%) rotate(-90deg)',
-    backgroundImage: `url(${ioImage})`,
-    backgroundSize: '80px 80px',
-    backgroundRepeat: 'repeat',
-    backgroundPosition: 'center',
-    zIndex: 6,
+    backgroundImage: `url(${bullImage})`,
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center center',
+    zIndex: 1,
     pointerEvents: 'none',
   },
   digitalDisplay: {
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    gap: '0',
-    fontFamily: '"ClockFont_26_09_02", monospace',
-    fontSize: '16vh',
-    color: '#ffffff80',
-    textAlign: 'center',
-    lineHeight: 1,
+    justifyContent: 'center',
+    fontFamily: 'monospace, sans-serif',
+    fontSize: '12vmin',
+    fontWeight: 'bold',
     zIndex: 9,
-    textShadow: '0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.3)',
   },
   digitBox: {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '0.65em',
-    backgroundColor: 'transparent',
-    border: 'none',
-    backgroundImage: `url(${peacockImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    WebkitBackgroundClip: 'text',
-    backgroundClip: 'text',
-    color: 'transparent',
-    textShadow: 'none',
+    width: '0.7em',
+    color: '#ffffff',
+    textShadow: `
+    -3px -3px 0 #000,
+     3px -3px 0 #000,
+    -3px  3px 0 #000,
+     3px  3px 0 #000,
+     0px -3px 0 #000,
+     0px  3px 0 #000,
+    -3px  0px 0 #000,
+     3px  0px 0 #000
+  `,
   },
   colonBox: {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '0.25em',
-    transform: 'translateY(-0.1em)',
-    backgroundImage: `url(${peacockImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    WebkitBackgroundClip: 'text',
-    backgroundClip: 'text',
-    color: 'transparent',
-    textShadow: 'none',
+    width: '0.3em',
+    color: '#ffffff',
+    transform: 'translateY(-0.05em)',
+    textShadow: '0 0 12px rgba(255, 255, 255, 0.5)',
   },
   srOnly: {
     position: 'absolute',
@@ -170,4 +133,4 @@ const styles = {
 
 Clock_26_09_02.displayName = 'Clock_26_09_02';
 
-export default Clock_26_09_02;
+export default Clock_26_09_02; 

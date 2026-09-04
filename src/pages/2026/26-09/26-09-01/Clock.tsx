@@ -12,7 +12,7 @@ const CLOCK_COUNT = 12;
 // Standard CSS Hex Color Palette
 const PALETTE = {
     bg: '#c9a26e',
-    rim: '#9ea0b8',
+    rim: '#5d7dc2',
     face: '#1114aa',
     hourHand: '#302715',
     minuteHand: '#2c1f0d',
