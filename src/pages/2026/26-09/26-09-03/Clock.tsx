@@ -4,7 +4,7 @@ import { useSmoothClock } from '@/utils/hooks';
 import { memo, useMemo } from 'react';
 import peacockImage from '@/assets/images/26_images/26-09/26-09-03/peacock.webp';
 import eyesImage from '@/assets/images/26_images/26-09/26-09-03/eyes.webp';
-import fontUrl from '@/assets/fonts/26fonts/26-09-03.otf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-09-03.ttf?url';
 import styles from './Clock.module.css';
 
 export const assets = [peacockImage, eyesImage, fontUrl];
