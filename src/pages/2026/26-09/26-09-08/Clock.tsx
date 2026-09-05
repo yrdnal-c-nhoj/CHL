@@ -1,19 +1,12 @@
 import React from 'react';
-import rainVideo from '@/assets/images/26_images/26-09/26-09-02/rain.webm';
+// rainVideo import removed: file does not exist at assets/images/26_images/26-09/26-09-02/rain.webm
 
-export const assets: string[] = [rainVideo];
+export const assets: string[] = [];
 
 const Clock_26_09_02 = () => {
   return (
     <main style={styles.container}>
-      <video
-        src={rainVideo}
-        autoPlay
-        loop
-        muted
-        playsInline
-        style={styles.video}
-      />
+      {/* Video element removed due to missing asset */}
     </main>
   );
 };
