@@ -65,38 +65,41 @@
 }
 
 .simpleListRow {
-  display: grid;
-  /* Defines the four columns: Date | Image | Title/Tags | Number */
-  grid-template-columns: min-content 110px 1fr min-content;
-  align-items: center;
-  justify-items: stretch;
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   width: 100%;
-  padding: 0.3rem 0.3rem;
+  padding: 0.5rem 0.3rem;
   color: inherit;
   cursor: pointer;
   box-sizing: border-box;
   transition: background-color 0.2s;
 }
 
-.simpleListDate {
-  grid-column: 1;
+.simpleListRow:hover {
+  background-color: var(--color-lab-gray-light, #d7d7e2);
 }
-.thumbnailWrapper {
-  grid-column: 2;
+
+.simpleListTopRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
 }
 
 .contentStack {
   display: flex;
   flex-direction: column;
-  grid-column: 3;
   width: 100%;
-  align-self: start; /* Align this stack to the top */
-  min-width: 0; /* Important for ellipsis on Title */
+  align-self: start;
+  min-width: 0;
 }
 
-.simpleListRow:hover {
-  background-color: var(--color-lab-gray-light, #d7d7e2);
+.bottomRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
 }
 
 .thumbnailWrapper {
@@ -106,6 +109,7 @@
   overflow: hidden;
   box-sizing: border-box;
   border: 0.5px solid rgba(0, 0, 0, 0.572);
+  flex-shrink: 0;
 }
 
 .thumbnailWrapper > img {
@@ -115,6 +119,25 @@
   object-fit: cover;
 }
 
+.tagWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.simpleListTitle {
+  font-size: 1.5rem;
+  letter-spacing: 0.05rem;
+  font-weight: 400;
+  margin-bottom: 0.4rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
 .simpleListNumber {
   white-space: nowrap;
   text-align: right;
@@ -122,19 +145,7 @@
   font-family: var(--font-barlow-condensed);
   letter-spacing: 0.1rem;
   color: #5b5b5d;
-  grid-column: 4; /* Place in the fourth column */
-}
-
-.simpleListTitle {
-  font-size: 1.5rem;
-  letter-spacing: 0.05rem;
-  font-weight: 400;
-  margin-bottom: 0.6rem; /* Adjust this value to control the space */
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left;
+  margin-left: auto;
 }
 
 @media (min-width: 768px) {
@@ -144,7 +155,6 @@
   }
 
   .simpleListRow {
-    grid-template-columns: auto 100px 1fr auto;
     gap: 1rem;
   }
 

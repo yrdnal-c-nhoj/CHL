@@ -109,10 +109,6 @@ const ClockResults: FC<ClockResultsProps> = ({ items, loading, error }) => {
         {sortedItems.map((item) => (
           <li key={item.date} className={listStyles.simpleListItem} onClick={() => handleRowClick(item.date)}>
             <div className={listStyles.simpleListRow}>
-              <MemoizedFormattedDate date={item.date} />
-              <div className={listStyles.thumbnailWrapper}>
-                <Thumbnail date={item.date} title={item.title || ''} />
-              </div>
               <div className={listStyles.contentStack}>
                 <span className={listStyles.simpleListTitle}>{item.title || 'No Title'}</span>
                 <div className="tag-wrapper">
@@ -128,7 +124,13 @@ const ClockResults: FC<ClockResultsProps> = ({ items, loading, error }) => {
                   ))}
                 </div>
               </div>
-              <span className={listStyles.simpleListNumber}>#{item.clockNumber}</span>
+              <div className={listStyles.simpleListTopRow}>
+                <MemoizedFormattedDate date={item.date} />
+                <div className={listStyles.thumbnailWrapper}>
+                  <Thumbnail date={item.date} title={item.title || ''} />
+                </div>
+                <span className={listStyles.simpleListNumber}>#{item.clockNumber}</span>
+              </div>
             </div>
           </li>
         ))}
