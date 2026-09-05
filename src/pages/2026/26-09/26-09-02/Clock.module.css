@@ -3,21 +3,19 @@
   width: 100vw;
   height: 100dvh;
   overflow: hidden;
-  background-color: #514251;
+  background-color: #f5f5f8;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  /* padding-top: 0vh; */
 }
 
 .backgroundLayer {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  background-size: cover;
+  background-position: center;
   z-index: 2;
-  filter: contrast(160%) brightness(90%);
+  filter: contrast(100%) saturate(150%) brightness(90%);
 }
 
 .gridOverlay {
@@ -26,27 +24,52 @@
   background-repeat: repeat;
   background-position: center;
   z-index: 4;
-  opacity: 0.3;
+  opacity: 0.7;
   pointer-events: none;
 }
 
-.digitalDisplay {
+.clockFace {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'ClockFont_26_09_02', monospace, sans-serif;
-  font-size: 29vmin;
+  width: min(80vw, 80vh);
+  height: min(80vw, 80vh);
+  border-radius: 50%;
   z-index: 9;
 }
 
-.digitBox {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 0.3em;
-  color: #d4a27b;
-  text-shadow: -1px -1px 0 #000, 1px 1px 0 #fff;
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  width: var(--hand-width);
+  height: var(--hand-height);
+  background-color: var(--hand-color);
+  transform-origin: 50% 100%;
+  transform: translateX(-50%) rotate(var(--hand-rotate));
+  border-radius: 1vmin;
+  z-index: 5;
+  will-change: transform;
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2vmin;
+  height: 2vmin;
+  background-color: #971d2fcb;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.numeral {
+  position: absolute;
+  font-family: 'ClockFont_26_09_03', serif;
+  font-size: 19vmin;
+  color: #ffffffd9;
+  text-shadow: 0 0 1vmin rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  z-index: 8;
 }
 
 .srOnly {
