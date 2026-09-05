@@ -6901,18 +6901,6 @@
   {
     "path": "26-09-02",
     "date": "26-09-02",
-    "title": "Neurons",
-    "tags": [
-      "digital",
-      "fire",
-      "night",
-      "sky",
-      "color"
-    ]
-  },
-  {
-    "path": "26-09-03",
-    "date": "26-09-03",
     "title": "Argos Panoptes",
     "tags": [
       "digital",
@@ -6921,6 +6909,18 @@
       "myth",
       "Greece",
       "bird"
+    ]
+  },
+  {
+    "path": "26-09-03",
+    "date": "26-09-03",
+    "title": "Neurons",
+    "tags": [
+      "digital",
+      "fire",
+      "night",
+      "sky",
+      "color"
     ]
   }
 ]
