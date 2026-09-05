@@ -1,0 +1,88 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #f5f5f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backgroundLayer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 2;
+  filter: contrast(100%) saturate(150%) brightness(90%);
+}
+
+.gridOverlay {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  background-position: center;
+  z-index: 4;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.clockFace {
+  position: relative;
+  width: min(80vw, 80vh);
+  height: min(80vw, 80vh);
+  border-radius: 50%;
+  z-index: 9;
+  background: rgba(255, 255, 255, 0.1);
+  border: 0.5vmin solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 4vmin rgba(0, 0, 0, 0.3);
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  width: var(--hand-width);
+  height: var(--hand-height);
+  background-color: var(--hand-color);
+  transform-origin: 50% 100%;
+  transform: translateX(-50%) rotate(var(--hand-rotate));
+  border-radius: 1vmin;
+  z-index: 5;
+  will-change: transform;
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2vmin;
+  height: 2vmin;
+  background-color: #a12235;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.numeral {
+  position: absolute;
+  font-family: 'ClockFont_26_09_03', serif;
+  font-size: 3.5vmin;
+  color: #ffffff;
+  text-shadow: 0 0 1vmin rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  z-index: 8;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
