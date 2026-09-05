@@ -1,136 +1,120 @@
-import React, { useMemo } from 'react';
-import { useClock } from '@/utils/hooks';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSmoothClock } from '@/utils/hooks';
+import { memo, useMemo } from 'react';
 import peacockImage from '@/assets/images/26_images/26-09/26-09-03/peacock.webp';
 import eyesImage from '@/assets/images/26_images/26-09/26-09-03/eyes.webp';
-import bullImage from '@/assets/images/26_images/26-09/26-09-03/bull.webp';
+import fontUrl from '@/assets/fonts/26fonts/26-09-03.otf?url';
+import styles from './Clock.module.css';
 
-export const assets: string[] = [eyesImage, bullImage, peacockImage];
+export const assets = [peacockImage, eyesImage, fontUrl];
 
-const Clock_26_09_02 = () => {
-  const time = useClock();
+const FONT_FAMILY = 'ClockFont_26_09_03';
 
-  const timeString = useMemo(() => {
-    const h = time.getHours().toString().padStart(2, '0');
-    const m = time.getMinutes().toString().padStart(2, '0');
-    const s = time.getSeconds().toString().padStart(2, '0');
-    return `${h}:${m}:${s}`;
+const fontConfig: FontConfig = {
+  fontFamily: FONT_FAMILY,
+  fontUrl,
+};
+
+const Clock_26_09_03 = () => {
+  useSuspenseFontLoader([fontConfig]);
+
+  const time = useSmoothClock(50);
+
+  const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
+    const ms = time.getMilliseconds();
+    const s = time.getSeconds() + ms / 1000;
+    const m = time.getMinutes() + s / 60;
+    const h = (time.getHours() % 12) + m / 60;
+    return {
+      hourAngle: h * 30,
+      minuteAngle: m * 6,
+      secondAngle: s * 6,
+    };
   }, [time]);
 
-  return (
-    <main style={styles.container}>
-      <div style={styles.backgroundLayer} />
-      <div style={styles.gridOverlay} />
-      <div style={styles.cowOverlay} />
+  const numerals = useMemo(() => {
+    const ROMAN_NUMERALS = [
+      'XII', 'I', 'II', 'III', 'IV', 'V',
+      'VI', 'VII', 'VIII', 'IX', 'X', 'XI',
+    ] as const;
+    const RADIUS_PERCENT = 42;
+    return ROMAN_NUMERALS.map((numeral, i) => {
+      const angle = (i / 12) * 2 * Math.PI;
+      const x = 50 + RADIUS_PERCENT * Math.sin(angle);
+      const y = 50 - RADIUS_PERCENT * Math.cos(angle);
+      const rotation = (i / 12) * 360;
+      return { numeral, x, y, rotation, key: numeral };
+    });
+  }, []);
 
-      <div style={styles.digitalDisplay}>
-        {timeString.split('').map((char, index) => (
-          <span
-            key={index}
-            style={char === ':' ? styles.colonBox : styles.digitBox}
+  return (
+    <main className={styles.container}>
+      <div
+        className={styles.backgroundLayer}
+        style={{ backgroundImage: `url(${peacockImage})` }}
+      />
+      <div
+        className={styles.gridOverlay}
+        style={{
+          backgroundImage: `url(${eyesImage})`,
+          backgroundSize: '190px 100px',
+        }}
+      />
+
+      <div className={styles.clockFace}>
+        {numerals.map(({ numeral, x, y, rotation, key }) => (
+          <div
+            key={key}
+            className={styles.numeral}
+            style={{
+              left: `${x}%`,
+              top: `${y}%`,
+              transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
+            }}
           >
-            {char}
-          </span>
+            {numeral}
+          </div>
         ))}
+
+        <div
+          className={styles.hand}
+          style={{
+            '--hand-width': '1.4vmin',
+            '--hand-height': '22vmin',
+            '--hand-rotate': `${hourAngle}deg`,
+            '--hand-color': '#ffffff',
+          } as React.CSSProperties}
+        />
+        <div
+          className={styles.hand}
+          style={{
+            '--hand-width': '1vmin',
+            '--hand-height': '32vmin',
+            '--hand-rotate': `${minuteAngle}deg`,
+            '--hand-color': '#ffffff',
+          } as React.CSSProperties}
+        />
+        <div
+          className={styles.hand}
+          style={{
+            '--hand-width': '0.4vmin',
+            '--hand-height': '36vmin',
+            '--hand-rotate': `${secondAngle}deg`,
+            '--hand-color': '#a12235',
+          } as React.CSSProperties}
+        />
+        <div className={styles.centerDot} />
       </div>
 
-      <time dateTime={time.toISOString()} style={styles.srOnly}>
-        {timeString}
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
       </time>
     </main>
   );
 };
 
-const styles = {
-  container: {
-    position: 'relative',
-    width: '100vw',
-    height: '100dvh',
-    overflow: 'hidden',
-    backgroundColor: '#f5f5f8',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  backgroundLayer: {
-    position: 'absolute',
-    inset: 0,
-    backgroundImage: `url(${peacockImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    zIndex: 2,
-    filter: 'contrast(100%) saturate(150%) brightness(90%)',
-    opacity: 0.7,
-  },
-  gridOverlay: {
-    position: 'absolute',
-    inset: 0,
-    backgroundImage: `url(${eyesImage})`,
-    backgroundSize: '90px 50px',
-    backgroundRepeat: 'repeat',
-    backgroundPosition: 'center',
-    zIndex: 4,
-    opacity: 0.9,
-    pointerEvents: 'none',
-  },
-  cowOverlay: {
-    position: 'absolute',
-    inset: 0,
-    backgroundImage: `url(${bullImage})`,
-    backgroundSize: 'contain',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center center',
-    zIndex: 1,
-    pointerEvents: 'none',
-  },
-  digitalDisplay: {
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: 'monospace, sans-serif',
-    fontSize: '12vmin',
-    fontWeight: 'bold',
-    zIndex: 9,
-  },
-  digitBox: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '0.7em',
-    color: '#ffffff',
-    textShadow: `
-    -3px -3px 0 #000,
-     3px -3px 0 #000,
-    -3px  3px 0 #000,
-     3px  3px 0 #000,
-     0px -3px 0 #000,
-     0px  3px 0 #000,
-    -3px  0px 0 #000,
-     3px  0px 0 #000
-  `,
-  },
-  colonBox: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '0.3em',
-    color: '#ffffff',
-    transform: 'translateY(-0.05em)',
-    textShadow: '0 0 12px rgba(255, 255, 255, 0.5)',
-  },
-  srOnly: {
-    position: 'absolute',
-    width: '1px',
-    height: '1px',
-    padding: 0,
-    margin: '-1px',
-    overflow: 'hidden',
-    clip: 'rect(0, 0, 0, 0)',
-    whiteSpace: 'nowrap',
-    borderWidth: 0,
-  },
-} as const;
+const MemoizedClock = memo(Clock_26_09_03);
+MemoizedClock.displayName = 'Clock_26_09_03';
 
-Clock_26_09_02.displayName = 'Clock_26_09_02';
-
-export default Clock_26_09_02; 
+export default MemoizedClock;

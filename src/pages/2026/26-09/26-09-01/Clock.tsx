@@ -12,7 +12,7 @@ const CLOCK_COUNT = 12;
 // Standard CSS Hex Color Palette
 const PALETTE = {
     bg: '#c9a26e',
-    rim: '#5d7dc2',
+    rim: '#7e94c2',
     face: '#1114aa',
     hourHand: '#302715',
     minuteHand: '#2c1f0d',
@@ -27,7 +27,7 @@ function createNumberTexture(number: string): THREE.Texture {
     const ctx = canvas.getContext('2d');
     if (!ctx) return new THREE.Texture();
 
-    ctx.fillStyle = '#020e01';
+    ctx.fillStyle = '#71abdb';
     ctx.font = '172px "ClockFont_26_09_01"';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
