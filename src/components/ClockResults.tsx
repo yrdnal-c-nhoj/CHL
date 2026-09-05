@@ -109,28 +109,28 @@ const ClockResults: FC<ClockResultsProps> = ({ items, loading, error }) => {
         {sortedItems.map((item) => (
           <li key={item.date} className={listStyles.simpleListItem} onClick={() => handleRowClick(item.date)}>
             <div className={listStyles.simpleListRow}>
-              <div className={listStyles.contentStack}>
+              <MemoizedFormattedDate date={item.date} />
+              <div className={listStyles.centerColumn}>
                 <span className={listStyles.simpleListTitle}>{item.title || 'No Title'}</span>
-                <div className="tag-wrapper">
-                  {sortTags(item.tags || []).map((tag) => (
-                    <Link
-                      key={tag}
-                      to={`/tag/${tag}`}
-                      className="tag-bubble"
-                      onClick={(e: MouseEvent) => e.stopPropagation()}
-                    >
-                      {tag}
-                    </Link>
-                  ))}
+                <div className={listStyles.bottomRow}>
+                  <div className={listStyles.thumbnailWrapper}>
+                    <Thumbnail date={item.date} title={item.title || ''} />
+                  </div>
+                  <div className={listStyles.tagWrapper}>
+                    {sortTags(item.tags || []).map((tag) => (
+                      <Link
+                        key={tag}
+                        to={`/tag/${tag}`}
+                        className="tag-bubble"
+                        onClick={(e: MouseEvent) => e.stopPropagation()}
+                      >
+                        {tag}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
-              <div className={listStyles.simpleListTopRow}>
-                <MemoizedFormattedDate date={item.date} />
-                <div className={listStyles.thumbnailWrapper}>
-                  <Thumbnail date={item.date} title={item.title || ''} />
-                </div>
-                <span className={listStyles.simpleListNumber}>#{item.clockNumber}</span>
-              </div>
+              <span className={listStyles.simpleListNumber}>#{item.clockNumber}</span>
             </div>
           </li>
         ))}
