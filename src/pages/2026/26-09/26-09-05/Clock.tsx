@@ -5,8 +5,8 @@ import { useMemo } from 'react';
 import limesImage from '@/assets/images/26_images/26-09/26-09-05/limm.webp';
 import limeImage from '@/assets/images/26_images/26-09/26-09-05/lime2.webp';
 import limeslImage from '@/assets/images/26_images/26-09/26-09-05/lime3.webp';
-import hourDot from '@/assets/images/26_images/26-09/26-09-05/hour.webp';
-import minuteDot from '@/assets/images/26_images/26-09/26-09-05/minute.webp';
+import minuteDot from '@/assets/images/26_images/26-09/26-09-05/hour.webp';
+import hourDot from '@/assets/images/26_images/26-09/26-09-05/minute.webp';
 import secondDot from '@/assets/images/26_images/26-09/26-09-05/second.webp';
 import font from '@/assets/fonts/26fonts/26-09-05.ttf?url';
 import styles from './Clock.module.css';
@@ -28,21 +28,21 @@ const fontConfig: FontConfig = {
 
 const Clock_26_09_05 = () => {
   useSuspenseFontLoader([fontConfig]);
-
   const time = useSmoothClock(16);
 
+  // Calculates smooth, sub-second continuous angles
   const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
-    const s = time.getSeconds();
-    const m = time.getMinutes();
-    const h = time.getHours() % 12;
+    const ms = time.getMilliseconds();
+    const s = time.getSeconds() + ms / 1000;
+    const m = time.getMinutes() + s / 60;
+    const h = (time.getHours() % 12) + m / 60;
+
     return {
-      hourAngle: h * 30 + m * 0.5,
-      minuteAngle: m * 6 + s * 0.1,
+      hourAngle: h * 30,
+      minuteAngle: m * 6,
       secondAngle: s * 6,
     };
   }, [time]);
-
-  const fullTimeString = time.toLocaleTimeString();
 
   return (
     <main className={styles.container}>
@@ -63,7 +63,7 @@ const Clock_26_09_05 = () => {
         </defs>
       </svg>
 
-      {/* Primary lime image */}
+      {/* Primary background */}
       <img
         src={limesImage}
         alt=""
@@ -71,67 +71,47 @@ const Clock_26_09_05 = () => {
         className={styles.backgroundImagePrimary}
       />
 
-      {/* Secondary lime overlay */}
+      {/* Secondary & Tertiary background overlays */}
       <div
         aria-hidden="true"
         className={styles.backgroundImageSecondary}
-        style={{ backgroundImage: `url(${limeImage})` }}
+        style={{ '--bg-img': `url(${limeImage})` } as React.CSSProperties}
       />
-
-      {/* Tertiary lime slice overlay */}
       <div
         aria-hidden="true"
         className={styles.backgroundImageTertiary}
-        style={{ backgroundImage: `url(${limeslImage})` }}
+        style={{ '--bg-img': `url(${limeslImage})` } as React.CSSProperties}
       />
 
       {/* Analog clock */}
       <div className={styles.clockFace}>
         <div
-          className={styles.hand}
-          style={
-            {
-              '--hand-width': '0.5vmin',
-              '--hand-height': '18vmin',
-              '--hand-rotate': `${hourAngle}deg`,
-              '--hand-color': '#a3e635',
-            } as React.CSSProperties
-          }
+          className={`${styles.hand} ${styles.hourHand}`}
+          style={{ '--angle': `${hourAngle}deg` } as React.CSSProperties}
         >
           <img src={hourDot} alt="" className={styles.handDot} />
         </div>
+
         <div
-          className={styles.hand}
-          style={
-            {
-              '--hand-width': '0.35vmin',
-              '--hand-height': '26vmin',
-              '--hand-rotate': `${minuteAngle}deg`,
-              '--hand-color': '#a3e635',
-            } as React.CSSProperties
-          }
+          className={`${styles.hand} ${styles.minuteHand}`}
+          style={{ '--angle': `${minuteAngle}deg` } as React.CSSProperties}
         >
           <img src={minuteDot} alt="" className={styles.handDot} />
         </div>
+
         <div
-          className={styles.hand}
-          style={
-            {
-              '--hand-width': '0.2vmin',
-              '--hand-height': '32vmin',
-              '--hand-rotate': `${secondAngle}deg`,
-              '--hand-color': '#a3e635',
-            } as React.CSSProperties
-          }
+          className={`${styles.hand} ${styles.secondHand}`}
+          style={{ '--angle': `${secondAngle}deg` } as React.CSSProperties}
         >
           <img src={secondDot} alt="" className={styles.handDot} />
         </div>
+
         <div className={styles.centerDot} />
       </div>
 
-      {/* Screen-reader-only time */}
+      {/* Screen-reader accessibility time */}
       <time dateTime={time.toISOString()} className={styles.srOnly}>
-        {fullTimeString}
+        {time.toLocaleTimeString()}
       </time>
     </main>
   );
