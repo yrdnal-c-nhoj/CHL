@@ -16,11 +16,13 @@ const Clock_26_09_04 = () => {
   useSuspenseFontLoader([fontConfig]);
   const time = useClock();
 
-  const hours = time.getHours().toString().padStart(2, '0');
+  const rawHours = time.getHours();
+  const hours12 = rawHours % 12 || 12;
+  const hours = hours12.toString();
   const minutes = time.getMinutes().toString().padStart(2, '0');
-  const seconds = time.getSeconds().toString().padStart(2, '0');
+  const ampm = rawHours >= 12 ? 'PM' : 'AM';
 
-  const fullTimeString = `${hours}:${minutes}:${seconds}`;
+  const fullTimeString = `${hours}:${minutes} ${ampm}`;
 
   return (
     <main className={styles.container}>
@@ -41,11 +43,10 @@ const Clock_26_09_04 = () => {
             </span>
           ))}
         </div>
-        <span className={styles.colon}>:</span>
-        <div className={styles.timeGroup}>
-          {seconds.split('').map((d, i) => (
-            <span key={`s${i}`} className={styles.digitBox}>
-              {d}
+        <div className={styles.ampmGroup}>
+          {ampm.split('').map((char, i) => (
+            <span key={`ampm${i}`} className={styles.digitBox}>
+              {char}
             </span>
           ))}
         </div>
