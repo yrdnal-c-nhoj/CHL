@@ -1,5 +1,5 @@
 import React from 'react';
-import airpoImage from '@/assets/images/26_images/26-09/26-09-04/lime.webp';
+import airpoImage from '@/assets/images/26_images/26-09/26-09-04/dickson.webm';
 
 export const assets = [airpoImage];
 
