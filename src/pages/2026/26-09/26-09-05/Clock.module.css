@@ -1,9 +1,12 @@
 .container {
+  /* Centralized design tokens */
+  --hand-color: #a3e635;
+
   position: relative;
   width: 100vw;
   height: 100dvh;
   overflow: visible;
-  background-color: #000000;
+  background-color: #8fed4c;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,28 +19,28 @@
   overflow: hidden;
 }
 
+/* Background Layers */
 .backgroundImagePrimary {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.3;
+  opacity: 0.5;
   object-fit: cover;
-  z-index: 1;
+  z-index: 4;
 }
 
 .backgroundImageSecondary {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
+  background-image: var(--bg-img);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   z-index: 2;
-  opacity: 0.5;
+  opacity: 0.8;
   pointer-events: none;
 }
 
@@ -45,29 +48,29 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 190%;
-  height: 190%;
+  width: 230%;
+  height: 230%;
+  background-image: var(--bg-img);
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   z-index: 0;
-  /* opacity: 0.3; */
+  filter: contrast(150%) saturate(2.2);
   pointer-events: none;
-
-  filter: saturate(2.2);
-
   transform-origin: center;
-  animation: rotateCCW_26_09_05 60s linear infinite;
+  animation: rotateCCW 60s linear infinite;
 }
 
+/* Clock Structure */
 .clockFace {
   position: relative;
-  width: min(70vw, 70vh);
-  height: min(70vw, 70vh);
+  width: min(95vw, 95vh);
+  height: min(95vw, 95vh);
   border-radius: 50%;
-  z-index: 4;
+  z-index: 9;
 }
 
+/* Base Hand Styles */
 .hand {
   position: absolute;
   bottom: 50%;
@@ -76,12 +79,29 @@
   height: var(--hand-height);
   background-color: var(--hand-color);
   transform-origin: 50% 100%;
-  transform: translateX(-50%) rotate(var(--hand-rotate));
+  transform: translateX(-50%) rotate(var(--angle, 0deg));
   border-radius: 1vmin;
-  z-index: 5;
+  z-index: 8;
   will-change: transform;
 }
 
+/* Specific Hand Dimension Variants */
+.hourHand {
+  --hand-width: 0.5vmin;
+  --hand-height: 22vmin;
+}
+
+.minuteHand {
+  --hand-width: 0.5vmin;
+  --hand-height: 40vmin;
+}
+
+.secondHand {
+  --hand-width: 0.5vmin;
+  --hand-height: 43vmin;
+}
+
+/* Hand Accents & Center */
 .handDot {
   position: absolute;
   top: 0;
@@ -90,7 +110,7 @@
   height: 18vmin;
   object-fit: contain;
   transform: translate(-50%, -50%);
-  z-index: 6;
+  z-index: 9;
   pointer-events: none;
 }
 
@@ -98,14 +118,15 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 2vmin;
-  height: 2vmin;
-  background-color: #a3e635;
+  width: 1vmin;
+  height: 1vmin;
+  background-color: var(--hand-color);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
 }
 
+/* Utilities */
 .srOnly {
   position: absolute;
   width: 1px;
@@ -118,7 +139,7 @@
   border-width: 0;
 }
 
-@keyframes rotateCCW_26_09_05 {
+@keyframes rotateCCW {
   from {
     transform: translate(-50%, -50%) rotate(0deg);
   }
