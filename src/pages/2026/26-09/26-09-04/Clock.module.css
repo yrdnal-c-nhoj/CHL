@@ -87,17 +87,17 @@
 
 /* Specific Hand Dimension Variants */
 .hourHand {
-  --hand-width: 0.5vmin;
+  --hand-width: 0.2vmin;
   --hand-height: 22vmin;
 }
 
 .minuteHand {
-  --hand-width: 0.5vmin;
+  --hand-width: 0.2vmin;
   --hand-height: 40vmin;
 }
 
 .secondHand {
-  --hand-width: 0.5vmin;
+  --hand-width: 0.2vmin;
   --hand-height: 43vmin;
 }
 
