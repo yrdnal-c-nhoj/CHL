@@ -1,72 +1,73 @@
-import React, { useState, useEffect } from 'react';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClock } from '@/utils/hooks';
 import airpoImage from '@/assets/images/26_images/26-09/26-09-04/dickson.webm';
+import font from '@/assets/fonts/26fonts/26-09-04.ttf?url';
+import styles from './Clock.module.css';
 
-export const assets = [airpoImage];
+export const assets = [airpoImage, font];
 
-const Clock_26_09_04 = () => {
-    const [time, setTime] = useState<string>('');
-
-    useEffect(() => {
-        const updateClock = () => {
-            const now = new Date();
-            // Formats to HH:MM:SS format
-            setTime(now.toLocaleTimeString());
-        };
-
-        updateClock();
-        const interval = setInterval(updateClock, 1000);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    return (
-        <main style={styles.container}>
-            {/* Digital Clock Overlay */}
-            <div style={styles.clock}>{time}</div>
-
-            {/* Video Element */}
-            <video 
-                src={airpoImage} 
-                style={styles.image} 
-                autoPlay 
-                loop 
-                muted 
-                playsInline 
-            />
-        </main>
-    );
+const fontConfig: FontConfig = {
+  fontFamily: 'ClockFont_26_09_04',
+  fontUrl: font,
 };
 
-const styles = {
-    container: {
-        position: 'relative',
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        backgroundColor: '#000000',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    clock: {
-        position: 'absolute',
-        top: '20px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 10,
-        color: '#ffffff',
-        fontSize: '2rem',
-        fontWeight: 'bold',
-        fontFamily: 'monospace',
-        textShadow: '0px 2px 4px rgba(0, 0, 0, 0.8)',
-    },
-    image: {
-        width: '100%',
-        height: '100%',
-        objectFit: 'contain', // Changed from 'cover' to prevent cropping
-        display: 'block',
-    },
-} as const;
+const Clock_26_09_04 = () => {
+  useSuspenseFontLoader([fontConfig]);
+  const time = useClock();
+
+  const hours = time.getHours().toString().padStart(2, '0');
+  const minutes = time.getMinutes().toString().padStart(2, '0');
+  const seconds = time.getSeconds().toString().padStart(2, '0');
+
+  const fullTimeString = `${hours}:${minutes}:${seconds}`;
+
+  return (
+    <main className={styles.container}>
+      {/* Digital Clock Overlay */}
+      <div className={styles.clock}>
+        <div className={styles.timeGroup}>
+          {hours.split('').map((d, i) => (
+            <span key={`h${i}`} className={styles.digitBox}>
+              {d}
+            </span>
+          ))}
+        </div>
+        <span className={styles.colon}>:</span>
+        <div className={styles.timeGroup}>
+          {minutes.split('').map((d, i) => (
+            <span key={`m${i}`} className={styles.digitBox}>
+              {d}
+            </span>
+          ))}
+        </div>
+        <span className={styles.colon}>:</span>
+        <div className={styles.timeGroup}>
+          {seconds.split('').map((d, i) => (
+            <span key={`s${i}`} className={styles.digitBox}>
+              {d}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Video Element */}
+      <video
+        src={airpoImage}
+        className={styles.image}
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+
+      {/* Screen-reader-only time */}
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {fullTimeString}
+      </time>
+    </main>
+  );
+};
 
 Clock_26_09_04.displayName = 'Clock_26_09_04';
 
