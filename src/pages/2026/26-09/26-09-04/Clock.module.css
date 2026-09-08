@@ -1,0 +1,71 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clock {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  color: #e1dede;
+  font-size: 4rem;
+  font-weight: bold;
+  font-family: 'ClockFont_26_09_04', monospace;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  gap: 0.1em;
+}
+
+.digitBox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.4em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.colon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.2em;
+  height: 1em;
+  flex-shrink: 0;
+  position: relative;
+  top: -0.1em;
+}
+
+.timeGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.05em;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
