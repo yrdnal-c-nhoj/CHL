@@ -22,6 +22,7 @@
   left: 0;
   width: 100%;
   height: 100%;
+  opacity: 0.3;
   object-fit: cover;
   z-index: 1;
 }
@@ -44,13 +45,14 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 90%;
-  height: 90%;
+  width: 130%;
+  height: 130%;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  z-index: 3;
-  opacity: 0.3;
+  z-index: 0;
+  fil
+  /* opacity: 0.3; */
   pointer-events: none;
 
   filter: saturate(2.2);
@@ -85,8 +87,8 @@
   position: absolute;
   top: 0;
   left: 50%;
-  width: 3vmin;
-  height: 3vmin;
+  width: 18vmin;
+  height: 18vmin;
   object-fit: contain;
   transform: translate(-50%, -50%);
   z-index: 6;
