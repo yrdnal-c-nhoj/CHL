@@ -1,14 +1,37 @@
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClock } from '@/utils/hooks';
 import launchVideo from '@/assets/images/26_images/26-09/26-09-07/launch.webm';
-import { useState, useEffect, useRef } from 'react';
+import fontUrl from '@/assets/fonts/26fonts/26-09-07.ttf?url';
+import { useMemo, useState } from 'react';
 import styles from './Clock.module.css';
 
-export const assets = [launchVideo];
+export const assets = [launchVideo, fontUrl];
+
+const FONT_FAMILY = 'ClockFont_26_09_07';
+
+const fontConfig: FontConfig = {
+  fontFamily: FONT_FAMILY,
+  fontUrl,
+};
+
+const CYCLE_MS = 53000;
+const MIN_FALL_SECONDS = 8;
+const SLOWEST_FALL_SECONDS = 42;
+
+const seededRandom = (seed: number): number => {
+  let h = seed >>> 0;
+  h ^= h >>> 16;
+  h = (h * 0x45d9f3b) >>> 0;
+  h ^= h >>> 16;
+  h = (h * 0x45d9f3b) >>> 0;
+  h ^= h >>> 16;
+  return h / 4294967296;
+};
 
 const Clock_26_09_07 = () => {
+  useSuspenseFontLoader([fontConfig]);
   const time = useClock();
-  const [fallingIndex, setFallingIndex] = useState<number | null>(null);
-  const hasFallenRef = useRef(false);
 
   const hours = time.getHours().toString().padStart(2, '0');
   const minutes = time.getMinutes().toString().padStart(2, '0');
@@ -20,31 +43,29 @@ const Clock_26_09_07 = () => {
     ...seconds.split(''),
   ];
 
-  useEffect(() => {
-    if (hasFallenRef.current) return;
-    hasFallenRef.current = true;
+  const DIGIT_COUNT = allDigits.length;
+  const [mountTime] = useState(() => time.getTime());
+  const cycle = Math.floor((time.getTime() - mountTime) / CYCLE_MS);
 
-    const timer = setTimeout(() => {
-      const randomIndex = Math.floor(Math.random() * allDigits.length);
-      setFallingIndex(randomIndex);
-    }, 2000);
+  const durations = useMemo(() => {
+    const entries = Array.from({ length: DIGIT_COUNT }, (_, i) => ({
+      i,
+      r: seededRandom(cycle * 131 + i + 7),
+    }));
+    entries.sort((a, b) => a.r - b.r);
 
-    return () => clearTimeout(timer);
-  }, [allDigits.length]);
+    const minDuration = MIN_FALL_SECONDS + seededRandom(cycle * 97 + 5) * 2;
 
-  const renderDigits = (digits: string[], offset: number) =>
-    digits.map((d, i) => {
-      const globalIndex = offset + i;
-      const isFalling = fallingIndex === globalIndex;
-      return (
-        <span
-          key={`${offset}-${i}`}
-          className={`${styles.digitBox} ${isFalling ? styles.falling : ''}`}
-        >
-          {d}
-        </span>
-      );
+    const durs: number[] = [];
+    entries.forEach((entry, rank) => {
+      durs[entry.i] =
+        rank === DIGIT_COUNT - 1
+          ? SLOWEST_FALL_SECONDS
+          : minDuration +
+            (rank / (DIGIT_COUNT - 1)) * (SLOWEST_FALL_SECONDS - minDuration);
     });
+    return durs;
+  }, [cycle, DIGIT_COUNT]);
 
   const fullTimeString = `${hours}:${minutes}:${seconds}`;
 
@@ -61,17 +82,15 @@ const Clock_26_09_07 = () => {
       />
 
       <div className={styles.clock}>
-        <div className={styles.timeGroup}>
-          {renderDigits(hours.split(''), 0)}
-        </div>
-        <span className={styles.colon}>:</span>
-        <div className={styles.timeGroup}>
-          {renderDigits(minutes.split(''), 2)}
-        </div>
-        <span className={styles.colon}>:</span>
-        <div className={styles.timeGroup}>
-          {renderDigits(seconds.split(''), 4)}
-        </div>
+        {allDigits.map((digit, index) => (
+          <span
+            key={`${cycle}-${index}`}
+            className={`${styles.digitBox} ${styles.falling}`}
+            style={{ animationDuration: `${durations[index]}s` }}
+          >
+            {digit}
+          </span>
+        ))}
       </div>
 
       <time dateTime={time.toISOString()} className={styles.srOnly}>

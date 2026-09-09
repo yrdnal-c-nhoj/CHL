@@ -21,44 +21,27 @@
 
 .clock {
   position: absolute;
-  top: 20px;
+  top: 1vh;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
   color: #ffffff;
-  font-size: 4rem;
-  font-weight: bold;
-  font-family: monospace, system-ui, sans-serif;
+  font-size: 14vw;
+  font-family: 'ClockFont_26_09_07', monospace, system-ui, sans-serif;
   text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.8);
   display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: 0.1em;
+  /* gap: -10.05em; */
 }
 
 .digitBox {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 0.6em;
+  width: 1em;
   height: 1em;
   flex-shrink: 0;
-}
-
-.colon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 0.4em;
-  height: 1em;
-  flex-shrink: 0;
-  position: relative;
-  top: -0.1em;
-}
-
-.timeGroup {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.05em;
 }
 
 .srOnly {
@@ -74,14 +57,18 @@
 }
 
 .falling {
-  animation: fallOut 4s linear forwards;
+  animation: fallOut 12s linear forwards;
+  animation-delay: 5s;
 }
 
 @keyframes fallOut {
   from {
     transform: translateY(0);
+    opacity: 1;
   }
+
   to {
     transform: translateY(100dvh);
+    opacity: 0.1;
   }
 }
