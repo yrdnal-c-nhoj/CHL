@@ -2,27 +2,14 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
 import { useMemo } from 'react';
-import limesImage from '@/assets/images/26_images/26-09/26-09-05/limm.webp';
-import limeImage from '@/assets/images/26_images/26-09/26-09-05/lime2.webp';
-import limeslImage from '@/assets/images/26_images/26-09/26-09-05/lime3.webp';
-import minuteDot from '@/assets/images/26_images/26-09/26-09-05/hour.webp';
-import hourDot from '@/assets/images/26_images/26-09/26-09-05/minute.webp';
-import secondDot from '@/assets/images/26_images/26-09/26-09-05/second.webp';
-import font from '@/assets/fonts/26fonts/26-09-05.ttf?url';
+import limeVideo from '@/assets/images/26_images/26-09/26-09-06/phone.webm';
+import font from '@/assets/fonts/26fonts/26-09-06.ttf?url';
 import styles from './Clock.module.css';
 
-export const assets = [
-  limesImage,
-  limeImage,
-  limeslImage,
-  hourDot,
-  minuteDot,
-  secondDot,
-  font,
-];
+export const assets = [limeVideo, font];
 
 const fontConfig: FontConfig = {
-  fontFamily: 'ClockFont_26_09_05',
+  fontFamily: 'ClockFont_26_09_06',
   fontUrl: font,
 };
 
@@ -63,48 +50,53 @@ const Clock_26_09_05 = () => {
         </defs>
       </svg>
 
-      {/* Primary background */}
-      <img
-        src={limesImage}
-        alt=""
+      {/* WebM background video */}
+      <video
+        src={limeVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
         aria-hidden="true"
-        className={styles.backgroundImagePrimary}
-      />
-
-      {/* Secondary & Tertiary background overlays */}
-      <div
-        aria-hidden="true"
-        className={styles.backgroundImageSecondary}
-        style={{ '--bg-img': `url(${limeImage})` } as React.CSSProperties}
-      />
-      <div
-        aria-hidden="true"
-        className={styles.backgroundImageTertiary}
-        style={{ '--bg-img': `url(${limeslImage})` } as React.CSSProperties}
+        className={styles.backgroundVideo}
       />
 
       {/* Analog clock */}
       <div className={styles.clockFace}>
+        {/* Clock face numbers (1-12) */}
+        {Array.from({ length: 12 }, (_, i) => {
+          const n = i + 1;
+          const theta = ((n - 12) * 30 * Math.PI) / 180;
+          const radius = 36;
+          return (
+            <span
+              key={n}
+              className={styles.clockNumber}
+              style={{
+                left: `${50 + radius * Math.sin(theta)}%`,
+                top: `${50 - radius * Math.cos(theta)}%`,
+                transform: 'translate(-50%, -50%)',
+              }}
+            >
+              {n}
+            </span>
+          );
+        })}
+
         <div
           className={`${styles.hand} ${styles.hourHand}`}
           style={{ '--angle': `${hourAngle}deg` } as React.CSSProperties}
-        >
-          <img src={hourDot} alt="" className={styles.handDot} />
-        </div>
+        />
 
         <div
           className={`${styles.hand} ${styles.minuteHand}`}
           style={{ '--angle': `${minuteAngle}deg` } as React.CSSProperties}
-        >
-          <img src={minuteDot} alt="" className={styles.handDot} />
-        </div>
+        />
 
         <div
           className={`${styles.hand} ${styles.secondHand}`}
           style={{ '--angle': `${secondAngle}deg` } as React.CSSProperties}
-        >
-          <img src={secondDot} alt="" className={styles.handDot} />
-        </div>
+        />
 
         <div className={styles.centerDot} />
       </div>
