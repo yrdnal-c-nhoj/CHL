@@ -6948,15 +6948,24 @@
     ]
   },
   {
+    "path": "26-09-06",
+    "date": "26-09-06",
+    "title": "Phone Micro",
+    "tags": [
+      "analog",
+      "hand",
+      "sound"
+    ]
+  },
+  {
     "path": "26-09-07",
     "date": "26-09-07",
     "title": "Propulsion",
     "tags": [
       "digital",
-      "fire",
-      "night",
       "sky",
-      "color"
+      "up-and-down",
+      "gravity"
     ]
   }
 ]
