@@ -6879,11 +6879,11 @@
     "date": "26-08-31",
     "title": "Pyrotechnics",
     "tags": [
+      "color",
       "digital",
       "fire",
       "night",
-      "sky",
-      "color"
+      "sky"
     ]
   },
   {
@@ -6892,10 +6892,10 @@
     "title": "Continuum",
     "tags": [
       "analog",
-      "head",
       "body",
-      "rotation",
-      "orbit"
+      "head",
+      "orbit",
+      "rotation"
     ]
   },
   {
@@ -6903,12 +6903,12 @@
     "date": "26-09-02",
     "title": "Argos Panoptes",
     "tags": [
+      "Greece",
+      "bird",
       "digital",
-      "see",
       "eye",
       "myth",
-      "Greece",
-      "bird"
+      "see"
     ]
   },
   {
@@ -6916,35 +6916,34 @@
     "date": "26-09-03",
     "title": "Neurons",
     "tags": [
+      "color",
       "digital",
       "fire",
       "night",
-      "sky",
-      "color"
+      "sky"
     ]
   },
   {
     "path": "26-09-04",
     "date": "26-09-04",
-        "title": "Lime",
+    "title": "Lime",
     "tags": [
       "analog",
       "color",
-      "green",
       "food",
+      "green",
       "smell"
     ]
-   
   },
   {
     "path": "26-09-05",
     "date": "26-09-05",
- "title": "Playback",
+    "title": "Playback",
     "tags": [
-      "digital",
       "1894",
-      "sound",
-      "dance"
+      "dance",
+      "digital",
+      "sound"
     ]
   },
   {
@@ -6954,6 +6953,8 @@
     "tags": [
       "analog",
       "hand",
+      "info",
+      "screen",
       "sound"
     ]
   },
@@ -6963,9 +6964,9 @@
     "title": "Propulsion",
     "tags": [
       "digital",
+      "gravity",
       "sky",
-      "up-and-down",
-      "gravity"
+      "up-and-down"
     ]
   }
 ]
