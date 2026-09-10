@@ -6879,11 +6879,11 @@
     "date": "26-08-31",
     "title": "Pyrotechnics",
     "tags": [
-      "color",
       "digital",
       "fire",
       "night",
-      "sky"
+      "sky",
+      "color"
     ]
   },
   {
@@ -6892,10 +6892,10 @@
     "title": "Continuum",
     "tags": [
       "analog",
-      "body",
       "head",
-      "orbit",
-      "rotation"
+      "body",
+      "rotation",
+      "orbit"
     ]
   },
   {
@@ -6903,12 +6903,12 @@
     "date": "26-09-02",
     "title": "Argos Panoptes",
     "tags": [
-      "Greece",
-      "bird",
       "digital",
+      "see",
       "eye",
       "myth",
-      "see"
+      "Greece",
+      "bird"
     ]
   },
   {
@@ -6916,34 +6916,35 @@
     "date": "26-09-03",
     "title": "Neurons",
     "tags": [
-      "color",
       "digital",
       "fire",
       "night",
-      "sky"
+      "sky",
+      "color"
     ]
   },
   {
     "path": "26-09-04",
     "date": "26-09-04",
-    "title": "Lime",
+        "title": "Lime",
     "tags": [
       "analog",
       "color",
-      "food",
       "green",
+      "food",
       "smell"
     ]
+   
   },
   {
     "path": "26-09-05",
     "date": "26-09-05",
-    "title": "Playback",
+ "title": "Playback",
     "tags": [
-      "1894",
-      "dance",
       "digital",
-      "sound"
+      "1894",
+      "sound",
+      "dance"
     ]
   },
   {
@@ -6953,8 +6954,6 @@
     "tags": [
       "analog",
       "hand",
-      "info",
-      "screen",
       "sound"
     ]
   },
@@ -6964,9 +6963,53 @@
     "title": "Propulsion",
     "tags": [
       "digital",
-      "gravity",
       "sky",
-      "up-and-down"
+      "up-and-down",
+      "gravity"
+    ]
+  },
+ {
+    "path": "26-09-08",
+    "date": "26-09-08",
+    "title": "Propulsion",
+    "tags": [
+      "digital",
+      "sky",
+      "up-and-down",
+      "gravity"
+    ]
+  },
+  {
+    "path": "26-09-09",
+    "date": "26-09-09",
+    "title": "Propulsion",
+    "tags": [
+      "digital",
+      "sky",
+      "up-and-down",
+      "gravity"
+    ]
+  },
+  {
+    "path": "26-09-10",
+    "date": "26-09-10",
+    "title": "Propulsion",
+    "tags": [
+      "digital",
+      "sky",
+      "up-and-down",
+      "gravity"
+    ]
+  },
+  {
+    "path": "26-09-11",
+    "date": "26-09-11",
+    "title": "Propulsion",
+    "tags": [
+      "digital",
+      "sky",
+      "up-and-down",
+      "gravity"
     ]
   }
 ]
