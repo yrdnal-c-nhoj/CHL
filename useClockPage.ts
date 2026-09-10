@@ -1,11 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import type { AssetConfig } from '../utils/assetLoader';
-import { preloadAssets } from '../utils/assetLoader';
 
 interface ClockModule {
   default: React.ComponentType;
-  // Many clocks export assets as `string[]`.
-  // Some legacy clocks (or future ones) may export `assets` as already-structured configs.
   assets?: unknown;
 }
 
