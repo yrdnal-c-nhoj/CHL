@@ -9,7 +9,7 @@ import { useState, useEffect, useRef } from 'react';
  *
  * For smooth / sub-second animations, use `useSmoothClock` instead.
  *
- * @returns {Date} Current time, updates each second
+ * @returns {Date} Current time
  */
 export function useClock(): Date {
   const [time, setTime] = useState(() => new Date());
