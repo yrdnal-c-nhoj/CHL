@@ -5,10 +5,10 @@ import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
 import font from '@/assets/fonts/26fonts/26-09-02.ttf?url';
-import peacockVideo from '@/assets/images/26_images/26-09/26-09-02/brain.webm';
+import beachniteVideo from '@/assets/images/26_images/26-09/26-09-08/beachnite.webm';
 import eyesImage from '@/assets/images/26_images/26-09/26-09-02/brain2.webp';
 
-export const assets = [font, peacockVideo, eyesImage];
+export const assets = [font, beachniteVideo, eyesImage];
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
@@ -33,7 +33,7 @@ const Clock_26_09_02 = () => {
   return (
     <main className={styles.container}>
       <video
-        src={peacockVideo}
+        src={beachniteVideo}
         autoPlay
         loop
         muted
