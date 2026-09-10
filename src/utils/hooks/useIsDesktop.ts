@@ -42,4 +42,3 @@ export function useIsDesktop(): boolean {
 }
 
 export default useIsDesktop;
-
