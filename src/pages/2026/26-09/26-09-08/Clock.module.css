@@ -1,196 +1,97 @@
-/* -------------------------------------------------------------------------- */
-/* Keyframe Animations                                                        */
-/* -------------------------------------------------------------------------- */
-
-@keyframes ambientPulse {
-  0%, 100% {
-    opacity: 0.08;
-    transform: scale(0.92);
-  }
-  50% {
-    opacity: 0.32;
-    transform: scale(1.08);
-  }
-}
-
-@keyframes framePulse {
-  0%, 100% {
-    opacity: 0.25;
-    box-shadow:
-      0 0 3px rgba(210, 245, 255, 0.35),
-      inset 0 0 3px rgba(210, 245, 255, 0.2);
-  }
-  45% {
-    opacity: 0.95;
-    box-shadow:
-      0 0 6px rgba(230, 250, 255, 0.9),
-      0 0 12px rgba(80, 180, 255, 0.55),
-      inset 0 0 5px rgba(230, 250, 255, 0.7);
-  }
-}
-
-@keyframes markerPulse {
-  0%, 100% {
-    opacity: 0.2;
-    box-shadow: 0 0 2px rgba(220, 248, 255, 0.3);
-  }
-  60% {
-    opacity: 1;
-    box-shadow:
-      0 0 4px rgba(235, 252, 255, 0.95),
-      0 0 8px rgba(100, 190, 255, 0.65);
-  }
-}
-
-@keyframes handPulse {
-  0%, 100% {
-    opacity: 0.18;
-    box-shadow: 0 0 2px rgba(220, 248, 255, 0.35);
-  }
-  40% {
-    opacity: 1;
-    box-shadow:
-      0 0 4px rgba(255, 255, 255, 1),
-      0 0 8px rgba(225, 250, 255, 0.9),
-      0 0 14px rgba(90, 180, 255, 0.6);
-  }
-}
-
-@keyframes capPulse {
-  0%, 100% {
-    opacity: 0.25;
-    box-shadow: 0 0 3px rgba(220, 250, 255, 0.4);
-  }
-  50% {
-    opacity: 1;
-    box-shadow:
-      0 0 5px rgba(255, 255, 255, 1),
-      0 0 10px rgba(220, 250, 255, 0.95),
-      0 0 16px rgba(70, 175, 255, 0.7);
-  }
-}
-
-/* -------------------------------------------------------------------------- */
-/* Layout & Elements                                                          */
-/* -------------------------------------------------------------------------- */
-
-.clock-container {
-  position: relative;
+.container {
   width: 100vw;
   height: 100dvh;
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #02060d;
-  font-family: system-ui, -apple-system, sans-serif;
+  background-color: #030712;
+  position: relative;
+  overflow: hidden;
 }
 
-.clock-bg-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: saturate(1.35) contrast(0.9) brightness(1.55);
-  z-index: 1;
-}
-
-.ambient-glow {
-  position: absolute;
-  width: 360px;
-  height: 360px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    transparent 0%,
-    transparent 58%,
-    rgba(31, 95, 160, 0.45) 100%
-  );
-  z-index: 2;
-  animation: ambientPulse 8.3s ease-in-out infinite;
-}
-
-.clock-frame {
+.face {
   position: relative;
   width: 300px;
   height: 300px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border-radius: 50%;
-  border: 2px solid #6fb8e8;
-  z-index: 3;
-  animation: framePulse 6.7s ease-in-out infinite;
+  border: 2px solid rgba(100, 200, 255, 0.3);
+  background-color: rgba(3, 7, 18, 0.5);
 }
 
-.clock-face {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-}
-
-.marker {
+.markerMajor {
   position: absolute;
-  background-color: #bfefff;
-  border-radius: 2px;
-  animation: markerPulse 5.2s ease-in-out infinite;
-}
-
-.marker.major {
-  height: 14px;
-  width: 3px;
-}
-
-.marker.minor {
-  height: 8px;
-  width: 2px;
-}
-
-.hand {
-  position: absolute;
-  bottom: 50%;
+  top: 0;
   left: 50%;
-  transform-origin: bottom center;
-  border-radius: 4px;
-  will-change: transform, opacity;
-}
-
-.hour-hand {
-  width: 4px;
-  height: 70px;
-  margin-left: -2px;
-  background-color: #d9f7ff;
-  animation: handPulse 7.4s ease-in-out infinite;
-}
-
-.minute-hand {
-  width: 3px;
-  height: 100px;
-  margin-left: -1.5px;
-  background-color: #d9f7ff;
-  animation: handPulse 4.8s ease-in-out infinite;
-}
-
-.second-hand {
   width: 2px;
-  height: 115px;
+  height: 12px;
+  background-color: rgba(180, 220, 255, 0.8);
   margin-left: -1px;
-  background-color: #ffffff;
-  animation: handPulse 3.1s ease-in-out infinite;
+  transform-origin: 50% 150px;
 }
 
-.center-cap {
+.markerMinor {
   position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 6px;
+  background-color: rgba(180, 220, 255, 0.4);
+  margin-left: -0.5px;
+  transform-origin: 50% 150px;
+}
+
+.hourHand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 80px;
+  background-color: #d9f7ff;
+  border-radius: 2px;
+  transform-origin: 50% 100%;
+}
+
+.minuteHand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 110px;
+  background-color: #d9f7ff;
+  border-radius: 1px;
+  transform-origin: 50% 100%;
+}
+
+.secondHand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 120px;
+  background-color: #ffffff;
+  border-radius: 0.5px;
+  transform-origin: 50% 100%;
+}
+
+.centerCap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 12px;
   height: 12px;
   border-radius: 50%;
   background-color: #ffffff;
-  z-index: 4;
-  animation: capPulse 2.9s ease-in-out infinite;
+  transform: translate(-50%, -50%);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
