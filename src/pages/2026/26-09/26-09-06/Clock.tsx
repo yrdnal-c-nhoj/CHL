@@ -1,3 +1,4 @@
+import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
@@ -13,7 +14,7 @@ const fontConfig: FontConfig = {
   fontUrl: font,
 };
 
-const Clock_26_09_05 = () => {
+const Clock_26_09_06 = () => {
   useSuspenseFontLoader([fontConfig]);
   const time = useSmoothClock(16);
 
@@ -101,14 +102,11 @@ const Clock_26_09_05 = () => {
         <div className={styles.centerDot} />
       </div>
 
-      {/* Screen-reader accessibility time */}
-      <time dateTime={time.toISOString()} className={styles.srOnly}>
-        {time.toLocaleTimeString()}
-      </time>
+      <SRTime time={time} />
     </main>
   );
 };
 
-Clock_26_09_05.displayName = 'Clock_26_09_05';
+Clock_26_09_06.displayName = 'Clock_26_09_06';
 
-export default Clock_26_09_05;
+export default Clock_26_09_06;
