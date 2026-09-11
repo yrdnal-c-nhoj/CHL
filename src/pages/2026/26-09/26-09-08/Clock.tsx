@@ -1,46 +1,72 @@
-import React from 'react';
+import { useSmoothClock } from '@/utils/hooks';
+import SRTime from '@/components/SRTime';
 import backgroundVideo from '@/assets/images/26_images/26-09/26-09-08/beachnite.webm?url';
+import styles from './Clock.module.css';
 
 export const assets = [backgroundVideo];
 
-const Clock_26_09_02: React.FC = () => {
+const MARKERS = Array.from({ length: 12 }, (_, i) => ({
+  angle: i * 30,
+  isMajor: i % 3 === 0,
+}));
+
+const RADIUS = 120;
+
+const Clock_26_09_08 = () => {
+  const time = useSmoothClock();
+
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
+  const seconds = time.getSeconds();
+  const milliseconds = time.getMilliseconds();
+
+  const hourDeg = ((hours % 12) + minutes / 60) * 30;
+  const minuteDeg = (minutes + seconds / 60) * 6;
+  const secondDeg = (seconds + milliseconds / 1000) * 6;
+
   return (
-    <main style={styles.container}>
+    <main className={styles.container}>
       <video
+        className={styles.backgroundVideo}
         src={backgroundVideo}
         autoPlay
         loop
         muted
         playsInline
+        preload="none"
         aria-hidden="true"
-        style={styles.backgroundVideo}
       />
+
+      <SRTime time={time} />
+
+      <div className={styles.clockFace}>
+        {MARKERS.map(({ angle, isMajor }) => (
+          <div
+            key={angle}
+            className={isMajor ? styles.markerMajor : styles.markerMinor}
+            style={{ transform: `rotate(${angle}deg)` }}
+          />
+        ))}
+
+        <div
+          className={styles.hourHand}
+          style={{ transform: `rotate(${hourDeg}deg)` }}
+        />
+        <div
+          className={styles.minuteHand}
+          style={{ transform: `rotate(${minuteDeg}deg)` }}
+        />
+        <div
+          className={styles.secondHand}
+          style={{ transform: `rotate(${secondDeg}deg)` }}
+        />
+
+        <div className={styles.centerCap} />
+      </div>
     </main>
   );
 };
 
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    position: 'relative',
-    width: '100vw',
-    height: '100dvh',
-    overflow: 'hidden',
-    backgroundColor: '#02060d',
-  },
+Clock_26_09_08.displayName = 'Clock_26_09_08';
 
-  backgroundVideo: {
-    position: 'absolute',
-    inset: 0,
-
-    width: '100%',
-    height: '100%',
-
-    objectFit: 'fill',
-
-    filter: 'saturate(1.35) contrast(0.9) brightness(1.55)',
-  },
-};
-
-Clock_26_09_02.displayName = 'Clock_26_09_02';
-
-export default Clock_26_09_02;
+export default Clock_26_09_08;
