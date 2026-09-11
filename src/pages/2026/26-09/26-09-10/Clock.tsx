@@ -1,46 +1,44 @@
-import React from 'react';
-import backgroundVideo from '@/assets/images/26_images/26-09/26-09-09/robot.webm?url';
+import { useState } from 'react';
+import { useClock } from '@/utils/hooks';
+import SRTime from '@/components/SRTime';
+import backgroundVideo from '@/assets/images/26_images/26-09/26-09-10/parade.mp4?url';
+import poster from '@/assets/images/26_images/26-09/26-09-10/parade-poster.jpg?url';
+import styles from './Clock.module.css';
 
-export const assets = [backgroundVideo];
+export const assets = [backgroundVideo, poster];
 
-const Clock_26_09_02: React.FC = () => {
+const Clock_26_09_10 = () => {
+  const time = useClock();
+  const [videoFailed, setVideoFailed] = useState(false);
+
   return (
-    <main style={styles.container}>
-      <video
-        src={backgroundVideo}
-        autoPlay
-        loop
-        muted
-        playsInline
-        aria-hidden="true"
-        style={styles.backgroundVideo}
-      />
+    <main className={styles.container}>
+      {!videoFailed && (
+        <video
+          className={styles.backgroundVideo}
+          preload="metadata"
+          poster={poster}
+          muted
+          playsInline
+          aria-hidden="true"
+          onError={() => setVideoFailed(true)}
+        >
+          <source src={backgroundVideo} type="video/mp4" />
+        </video>
+      )}
+      {videoFailed && (
+        <img
+          className={styles.poster}
+          src={poster}
+          alt=""
+          aria-hidden="true"
+        />
+      )}
+      <SRTime time={time} />
     </main>
   );
 };
 
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    position: 'relative',
-    width: '100vw',
-    height: '100dvh',
-    overflow: 'hidden',
-    backgroundColor: '#02060d',
-  },
+Clock_26_09_10.displayName = 'Clock_26_09_10';
 
-  backgroundVideo: {
-    position: 'absolute',
-    inset: 0,
-
-    width: '100%',
-    height: '100%',
-
-    objectFit: 'fill',
-
-    filter: 'saturate(1.35) contrast(0.9) brightness(1.55)',
-  },
-};
-
-Clock_26_09_02.displayName = 'Clock_26_09_02';
-
-export default Clock_26_09_02;
+export default Clock_26_09_10;
