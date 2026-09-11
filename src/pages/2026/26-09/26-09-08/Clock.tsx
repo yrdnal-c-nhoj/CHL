@@ -5,14 +5,21 @@ export const assets = [backgroundVideo];
 
 const Clock_26_09_02: React.FC = () => {
   return (
-    
-      {/* Night video background */}
-      
-    
+    <main style={styles.container}>
+      <video
+        src={backgroundVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        aria-hidden="true"
+        style={styles.backgroundVideo}
+      />
+    </main>
   );
 };
 
-const styles: Record = {
+const styles: Record<string, React.CSSProperties> = {
   container: {
     position: 'relative',
     width: '100vw',
@@ -20,12 +27,16 @@ const styles: Record = {
     overflow: 'hidden',
     backgroundColor: '#02060d',
   },
+
   backgroundVideo: {
     position: 'absolute',
     inset: 0,
+
     width: '100%',
     height: '100%',
+
     objectFit: 'fill',
+
     filter: 'saturate(1.35) contrast(0.9) brightness(1.55)',
   },
 };
