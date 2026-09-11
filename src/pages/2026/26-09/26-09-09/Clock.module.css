@@ -1,0 +1,75 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #5c88c6;
+}
+
+.videoGrid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(3, auto);
+  justify-content: center;
+  align-content: center;
+}
+
+.backgroundVideo {
+  max-width: 100vw;
+  max-height: 100dvh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.backgroundFill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* filter: blur(10px); */
+  /* transform: scale(1.1); */
+}
+
+.mainVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
+}
+
+.digitalClock {
+  position: absolute;
+  top: 50%;
+  left: 4vw;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.08em;
+  color: #ae9cf4;
+  font-family: 'ClockFont_26_09_09', monospace;
+  font-size: 12vh;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+  text-shadow:
+    -1px -1px 0 rgb(16, 15, 15),
+    2px 2px 0 rgba(244, 245, 245, 0.75);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.digit {
+  display: block;
+  width: 1em;
+  text-align: center;
+}
+

@@ -35,7 +35,7 @@
   top: 10px;
   width: 2px;
   height: 10px;
-  background-color: rgba(180, 220, 255, 0.8);
+  background-color: rgb(160, 187, 210);
   margin-left: -1px;
   transform-origin: 1px 140px;
 }
@@ -46,7 +46,7 @@
   top: 10px;
   width: 1px;
   height: 5px;
-  background-color: rgba(180, 220, 255, 0.4);
+  background-color: rgb(247, 247, 248);
   margin-left: -0.5px;
   transform-origin: 0.5px 140px;
 }
