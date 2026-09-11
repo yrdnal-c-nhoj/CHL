@@ -13,79 +13,90 @@ const MARKERS = Array.from({ length: 12 }, (_, index) => ({
 }));
 
 /* -------------------------------------------------------------------------- */
-/* Smooth Bioluminescent Animations                                            */
+/* Animations                                                                 */
+/*                                                                            */
+/* No blur filters are used. Shadows are deliberately small and bright so    */
+/* the clock remains sharp against the dark background.                      */
 /* -------------------------------------------------------------------------- */
 
 const ANIMATION_STYLES = `
   @keyframes ambientPulse {
-    0%, 100% {
-      opacity: 0.12;
+    0%,
+    100% {
+      opacity: 0.08;
       transform: scale(0.92);
-      filter: blur(2vh);
     }
+
     50% {
-      opacity: 0.4;
+      opacity: 0.32;
       transform: scale(1.08);
-      filter: blur(4vh);
     }
   }
 
   @keyframes framePulse {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 0.25;
-      border-color: rgba(64, 224, 208, 0.2);
       box-shadow:
-        0 0 2vh rgba(0, 240, 255, 0.15),
-        inset 0 0 2vh rgba(0, 240, 255, 0.1);
+        0 0 3px rgba(210, 245, 255, 0.35),
+        inset 0 0 3px rgba(210, 245, 255, 0.2);
     }
-    50% {
-      opacity: 0.85;
-      border-color: rgba(127, 255, 212, 0.65);
+
+    45% {
+      opacity: 0.95;
       box-shadow:
-        0 0 5vh rgba(0, 255, 200, 0.45),
-        0 0 10vh rgba(0, 180, 255, 0.3),
-        inset 0 0 4vh rgba(127, 255, 212, 0.35);
+        0 0 6px rgba(230, 250, 255, 0.9),
+        0 0 12px rgba(80, 180, 255, 0.55),
+        inset 0 0 5px rgba(230, 250, 255, 0.7);
     }
   }
 
   @keyframes markerPulse {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 0.2;
-      box-shadow: 0 0 0.8vh rgba(0, 255, 212, 0.2);
+      box-shadow: 0 0 2px rgba(220, 248, 255, 0.3);
     }
-    50% {
-      opacity: 0.95;
+
+    60% {
+      opacity: 1;
       box-shadow:
-        0 0 1.5vh rgba(0, 255, 220, 0.85),
-        0 0 3vh rgba(0, 200, 255, 0.5);
+        0 0 4px rgba(235, 252, 255, 0.95),
+        0 0 8px rgba(100, 190, 255, 0.65);
     }
   }
 
   @keyframes handPulse {
-    0%, 100% {
-      opacity: 0.25;
-      box-shadow: 0 0 1vh rgba(0, 240, 255, 0.25);
-    }
-    50% {
-      opacity: 0.95;
+    0%,
+    100% {
+      opacity: 0.18;
       box-shadow:
-        0 0 2vh rgba(255, 255, 255, 0.85),
-        0 0 4vh rgba(64, 224, 208, 0.75),
-        0 0 6vh rgba(0, 150, 255, 0.45);
+        0 0 2px rgba(220, 248, 255, 0.35);
+    }
+
+    40% {
+      opacity: 1;
+      box-shadow:
+        0 0 4px rgba(255, 255, 255, 1),
+        0 0 8px rgba(225, 250, 255, 0.9),
+        0 0 14px rgba(90, 180, 255, 0.6);
     }
   }
 
   @keyframes capPulse {
-    0%, 100% {
-      opacity: 0.3;
-      box-shadow: 0 0 1vh rgba(0, 255, 200, 0.35);
+    0%,
+    100% {
+      opacity: 0.25;
+      box-shadow:
+        0 0 3px rgba(220, 250, 255, 0.4);
     }
+
     50% {
       opacity: 1;
       box-shadow:
-        0 0 2.5vh rgba(255, 255, 255, 0.95),
-        0 0 5vh rgba(64, 224, 208, 0.85),
-        0 0 8vh rgba(0, 180, 255, 0.6);
+        0 0 5px rgba(255, 255, 255, 1),
+        0 0 10px rgba(220, 250, 255, 0.95),
+        0 0 16px rgba(70, 175, 255, 0.7);
     }
   }
 `;
@@ -97,6 +108,7 @@ const ANIMATION_STYLES = `
 const Clock_26_09_02: React.FC = () => {
   const [time, setTime] = useState(() => new Date());
 
+  /* Update the clock once per second. */
   useEffect(() => {
     const timer = window.setInterval(() => {
       setTime(new Date());
@@ -105,23 +117,35 @@ const Clock_26_09_02: React.FC = () => {
     return () => window.clearInterval(timer);
   }, []);
 
+  /* Convert the current time into analog-clock angles. */
   const { hourDeg, minuteDeg, secondDeg } = useMemo(() => {
     const seconds = time.getSeconds();
     const minutes = time.getMinutes();
     const hours = time.getHours();
 
     const secondDeg = (seconds / 60) * 360;
-    const minuteDeg = ((minutes + seconds / 60) / 60) * 360;
-    const hourDeg = (((hours % 12) + minutes / 60) / 12) * 360;
 
-    return { hourDeg, minuteDeg, secondDeg };
+    const minuteDeg =
+      ((minutes + seconds / 60) / 60) * 360;
+
+    const hourDeg =
+      (((hours % 12) + minutes / 60) / 12) * 360;
+
+    return {
+      hourDeg,
+      minuteDeg,
+      secondDeg,
+    };
   }, [time]);
 
   return (
     <main style={styles.container}>
       <style>{ANIMATION_STYLES}</style>
 
-      {/* Background Video */}
+      {/* ------------------------------------------------------------------ */}
+      {/* Night video background                                             */}
+      {/* ------------------------------------------------------------------ */}
+
       <video
         src={backgroundVideo}
         autoPlay
@@ -132,25 +156,30 @@ const Clock_26_09_02: React.FC = () => {
         style={styles.backgroundVideo}
       />
 
-      {/* Atmospheric Ambient Aura */}
+      {/* ------------------------------------------------------------------ */}
+      {/* Subtle cyclical atmosphere                                         */}
+      {/* ------------------------------------------------------------------ */}
+
       <div style={styles.ambientGlow} />
 
-      {/* Oversized Round Clock Frame */}
+      {/* ------------------------------------------------------------------ */}
+      {/* Clock                                                               */}
+      {/* ------------------------------------------------------------------ */}
+
       <div style={styles.clockContainer}>
         <div style={styles.clockFace}>
 
-          {/* Hour Markers (Strictly Radial Positioned Inside Border) */}
+          {/* Hour markers */}
           {MARKERS.map(({ angle, isMajor }) => (
             <div
               key={angle}
               style={{
                 ...styles.marker,
-                height: isMajor ? '4vh' : '2.5vh',
-                width: isMajor ? '0.4vh' : '0.2vh',
+                height: isMajor ? '14px' : '8px',
+                width: isMajor ? '3px' : '1px',
                 transform: `
-                  translate(-50%, -50%)
                   rotate(${angle}deg)
-                  translateY(-52vh)
+                  translateY(-120px)
                 `,
               }}
             />
@@ -161,7 +190,7 @@ const Clock_26_09_02: React.FC = () => {
             style={{
               ...styles.hand,
               ...styles.hourHand,
-              transform: `translateX(-50%) rotate(${hourDeg}deg)`,
+              transform: `rotate(${hourDeg}deg)`,
             }}
           />
 
@@ -170,7 +199,7 @@ const Clock_26_09_02: React.FC = () => {
             style={{
               ...styles.hand,
               ...styles.minuteHand,
-              transform: `translateX(-50%) rotate(${minuteDeg}deg)`,
+              transform: `rotate(${minuteDeg}deg)`,
             }}
           />
 
@@ -179,7 +208,7 @@ const Clock_26_09_02: React.FC = () => {
             style={{
               ...styles.hand,
               ...styles.secondHand,
-              transform: `translateX(-50%) rotate(${secondDeg}deg)`,
+              transform: `rotate(${secondDeg}deg)`,
             }}
           />
 
@@ -196,19 +225,24 @@ const Clock_26_09_02: React.FC = () => {
 /* -------------------------------------------------------------------------- */
 
 const styles: Record<string, React.CSSProperties> = {
+
+  /* ------------------------------ Page ---------------------------------- */
+
   container: {
     position: 'relative',
     width: '100vw',
-    height: '100vh',
+    height: '100dvh',
     overflow: 'hidden',
 
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
 
-    backgroundColor: '#010914',
+    backgroundColor: '#02060d',
     fontFamily: 'system-ui, -apple-system, sans-serif',
   },
+
+  /* -------------------------- Video background -------------------------- */
 
   backgroundVideo: {
     position: 'absolute',
@@ -217,47 +251,53 @@ const styles: Record<string, React.CSSProperties> = {
     width: '100%',
     height: '100%',
 
-    objectFit: 'cover',
-    filter: 'saturate(1.4) contrast(0.95) brightness(1.2)',
+    objectFit: 'fill',
+
+    /*
+     * Brightened slightly so the night scene remains visible.
+     * No blur filter is used.
+     */
+    filter: 'saturate(1.35) contrast(0.9) brightness(1.55)',
 
     zIndex: 1,
   },
 
+  /* --------------------------- Atmosphere -------------------------------- */
+
   ambientGlow: {
     position: 'absolute',
 
-    width: '140vh',
-    height: '140vh',
-    aspectRatio: '1 / 1',
+    width: '360px',
+    height: '360px',
 
     borderRadius: '50%',
 
     background:
-      'radial-gradient(circle, rgba(0, 255, 200, 0.08) 0%, rgba(0, 150, 255, 0.12) 50%, transparent 75%)',
+      'radial-gradient(circle, transparent 0%, transparent 58%, rgba(31, 95, 160, 0.45) 100%)',
 
     zIndex: 2,
 
-    animation: 'ambientPulse 18s ease-in-out infinite',
+    animation: 'ambientPulse 8.3s ease-in-out infinite',
   },
+
+  /* ----------------------------- Frame ----------------------------------- */
 
   clockContainer: {
     position: 'relative',
 
-    /* Enforces absolute 1:1 circular aspect ratio */
-    width: '115vh',
-    height: '115vh',
-    aspectRatio: '1 / 1',
+    width: '50vmin',
+    height: '50vmin',
 
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
 
     borderRadius: '50%',
-    border: '0.25vh solid rgba(64, 224, 208, 0.3)',
+    border: '2px solid #6fb8e8',
 
     zIndex: 3,
 
-    animation: 'framePulse 16s ease-in-out infinite',
+    animation: 'framePulse 6.7s ease-in-out infinite',
   },
 
   clockFace: {
@@ -265,7 +305,6 @@ const styles: Record<string, React.CSSProperties> = {
 
     width: '100%',
     height: '100%',
-    aspectRatio: '1 / 1',
 
     display: 'flex',
     alignItems: 'center',
@@ -274,16 +313,18 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: '50%',
   },
 
+  /* ---------------------------- Markers --------------------------------- */
+
   marker: {
     position: 'absolute',
-    top: '50%',
-    left: '50%',
 
-    backgroundColor: '#a3ffe8',
-    borderRadius: '0.3vh',
+    backgroundColor: '#bfefff',
+    borderRadius: '2px',
 
-    animation: 'markerPulse 12s ease-in-out infinite',
+    animation: 'markerPulse 5.2s ease-in-out infinite',
   },
+
+  /* ------------------------------ Hands ---------------------------------- */
 
   hand: {
     position: 'absolute',
@@ -293,52 +334,59 @@ const styles: Record<string, React.CSSProperties> = {
 
     transformOrigin: 'bottom center',
 
-    borderRadius: '1vh',
+    borderRadius: '4px',
 
     willChange: 'transform, opacity',
   },
 
   hourHand: {
-    width: '0.6vh',
-    height: '25vh',
+    width: '4px',
+    height: '70px',
 
-    backgroundColor: 'rgba(215, 255, 248, 0.85)',
+    marginLeft: '-2px',
 
-    animation: 'handPulse 16s ease-in-out infinite',
+    backgroundColor: '#d9f7ff',
+
+    animation: 'handPulse 7.4s ease-in-out infinite',
   },
 
   minuteHand: {
-    width: '0.4vh',
-    height: '38vh',
+    width: '3px',
+    height: '100px',
 
-    backgroundColor: 'rgba(215, 255, 248, 0.85)',
+    marginLeft: '-1.5px',
 
-    animation: 'handPulse 14s ease-in-out infinite',
+    backgroundColor: '#d9f7ff',
+
+    animation: 'handPulse 4.8s ease-in-out infinite',
   },
 
   secondHand: {
-    width: '0.25vh',
-    height: '48vh',
+    width: '2px',
+    height: '115px',
+
+    marginLeft: '-1px',
 
     backgroundColor: '#ffffff',
 
-    animation: 'handPulse 10s ease-in-out infinite',
+    animation: 'handPulse 3.1s ease-in-out infinite',
   },
+
+  /* --------------------------- Center cap ------------------------------- */
 
   centerCap: {
     position: 'absolute',
 
-    width: '1.6vh',
-    height: '1.6vh',
-    aspectRatio: '1 / 1',
+    width: '12px',
+    height: '12px',
 
     borderRadius: '50%',
 
-    backgroundColor: '#e6ffff',
+    backgroundColor: '#ffffff',
 
     zIndex: 4,
 
-    animation: 'capPulse 8s ease-in-out infinite',
+    animation: 'capPulse 2.9s ease-in-out infinite',
   },
 };
 
