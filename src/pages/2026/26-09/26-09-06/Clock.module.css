@@ -5,7 +5,7 @@
   position: relative;
   width: 100vw;
   height: 100dvh;
-  overflow: visible;
+  overflow: hidden;
   background-color: #090908;
   display: flex;
   align-items: center;
