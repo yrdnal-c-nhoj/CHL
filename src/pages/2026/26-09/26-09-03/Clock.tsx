@@ -5,7 +5,7 @@ import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
 
 import font from '@/assets/fonts/26fonts/26-09-02.ttf?url';
-import beachniteVideo from '@/assets/images/26_images/26-09/26-09-08/beachnite.webm';
+import beachniteVideo from '@/assets/images/26_images/26-09/26-09-02/brain.webm';
 import eyesImage from '@/assets/images/26_images/26-09/26-09-02/brain2.webp';
 
 export const assets = [font, beachniteVideo, eyesImage];
