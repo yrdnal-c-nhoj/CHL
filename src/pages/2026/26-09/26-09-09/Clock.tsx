@@ -23,25 +23,37 @@ const Clock_26_09_09: React.FC = () => {
   const seconds = String(time.getSeconds()).padStart(2, '0');
   const digits = [...hours, ...minutes, ...seconds];
 
-  // 3×3 grid of identical videos so the center one stays exactly
-  // the same size/position as a single object-fit:contain video,
-  // while copies fill left/right (landscape) or top/bottom (portrait/phone).
-  const videos = Array.from({ length: 9 }, (_, i) => (
-    <video
-      key={i}
-      src={backgroundVideo}
-      autoPlay
-      loop
-      muted
-      playsInline
-      aria-hidden="true"
-      className={styles.backgroundVideo}
-    />
-  ));
-
   return (
     <main className={styles.container}>
-      <div className={styles.videoGrid}>{videos}</div>
+      <div className={styles.videoRow}>
+        <video
+          src={backgroundVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden="true"
+          className={styles.sideVideo}
+        />
+        <video
+          src={backgroundVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden="true"
+          className={styles.mainVideo}
+        />
+        <video
+          src={backgroundVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden="true"
+          className={styles.sideVideo}
+        />
+      </div>
       <div className={styles.digitalClock} aria-hidden="true">
         {digits.map((digit, index) => (
           <span className={styles.digit} key={index}>{digit}</span>
