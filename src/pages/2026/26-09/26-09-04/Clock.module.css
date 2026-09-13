@@ -1,91 +1,141 @@
 .container {
-  /* Centralized design tokens */
   --hand-color: #a3e635;
 
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: 100dvh;
-  overflow: visible;
+  min-height: 100dvh;
+
+  overflow: hidden;
+
   background-color: #8fed4c;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  isolation: isolate;
 }
 
-.filterSvg {
-  position: absolute;
-  width: 0;
-  height: 0;
-  overflow: hidden;
+/* -------------------------------------------------------------------------- */
+/* Loading state                                                              */
+/* -------------------------------------------------------------------------- */
+
+.loading {
+  visibility: hidden;
 }
 
-/* Background Layers */
-.backgroundImagePrimary {
+.ready {
+  visibility: visible;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Background image layers                                                    */
+/* -------------------------------------------------------------------------- */
+
+.backgroundImagePrimary,
+.backgroundImageSecondary {
   position: absolute;
+
   inset: 0;
+
   width: 100%;
   height: 100%;
-  opacity: 0.5;
+
   object-fit: cover;
+  object-position: center center;
+
+  pointer-events: none;
+  user-select: none;
+}
+
+.backgroundImagePrimary {
+  opacity: 0.5;
   z-index: 4;
 }
 
 .backgroundImageSecondary {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  background-image: var(--bg-img);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 2;
   opacity: 0.8;
-  pointer-events: none;
+  z-index: 2;
 }
+
+/* -------------------------------------------------------------------------- */
+/* Oversized rotating image                                                   */
+/* -------------------------------------------------------------------------- */
 
 .backgroundImageTertiary {
   position: absolute;
+
   top: 50%;
   left: 50%;
+
   width: 230%;
   height: 230%;
-  background-image: var(--bg-img);
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 0;
+
+  object-fit: contain;
+  object-position: center center;
+
+  transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  transform-origin: center center;
+
   filter: contrast(150%) saturate(2.2);
+
   pointer-events: none;
-  transform-origin: center;
+  user-select: none;
+
+  z-index: 0;
+
+  will-change: transform;
+
   animation: rotateCCW 60s linear infinite;
 }
 
-/* Clock Structure */
+/* -------------------------------------------------------------------------- */
+/* Clock structure                                                            */
+/* -------------------------------------------------------------------------- */
+
 .clockFace {
   position: relative;
-  width: min(95vw, 95vh);
-  height: min(95vw, 95vh);
+
+  width: min(95vw, 95dvh);
+  height: min(95vw, 95dvh);
+
   border-radius: 50%;
+
   z-index: 9;
+
+  flex: 0 0 auto;
 }
 
-/* Base Hand Styles */
+/* -------------------------------------------------------------------------- */
+/* Hands                                                                       */
+/* -------------------------------------------------------------------------- */
+
 .hand {
   position: absolute;
+
   bottom: 50%;
   left: 50%;
+
   width: var(--hand-width);
   height: var(--hand-height);
+
   background-color: var(--hand-color);
+
   transform-origin: 50% 100%;
   transform: translateX(-50%) rotate(var(--angle, 0deg));
+
   border-radius: 1vmin;
+
   z-index: 8;
+
   will-change: transform;
 }
 
-/* Specific Hand Dimension Variants */
+/* -------------------------------------------------------------------------- */
+/* Hand dimensions                                                             */
+/* -------------------------------------------------------------------------- */
+
 .hourHand {
   --hand-width: 0.2vmin;
   --hand-height: 22vmin;
@@ -101,50 +151,83 @@
   --hand-height: 43vmin;
 }
 
-/* Hand Accents & Center */
+/* -------------------------------------------------------------------------- */
+/* Hand image                                                                  */
+/* -------------------------------------------------------------------------- */
+
 .handDot {
   position: absolute;
+
   top: 0;
   left: 50%;
+
   width: 18vmin;
   height: 18vmin;
+
   object-fit: contain;
+
   transform: translate(-50%, -50%);
+
   z-index: 9;
+
   pointer-events: none;
+  user-select: none;
 }
+
+/* -------------------------------------------------------------------------- */
+/* Center                                                                      */
+/* -------------------------------------------------------------------------- */
 
 .centerDot {
   position: absolute;
+
   top: 50%;
   left: 50%;
+
   width: 1vmin;
   height: 1vmin;
+
   background-color: var(--hand-color);
+
   border-radius: 50%;
+
   transform: translate(-50%, -50%);
+
   z-index: 10;
 }
 
-/* Utilities */
-.srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
+/* -------------------------------------------------------------------------- */
+/* Animation                                                                   */
+/* -------------------------------------------------------------------------- */
 
 @keyframes rotateCCW {
   from {
-    transform: translate(-50%, -50%) rotate(0deg);
+    transform: translate3d(-50%, -50%, 0) rotate(0deg);
   }
 
   to {
-    transform: translate(-50%, -50%) rotate(-360deg);
+    transform: translate3d(-50%, -50%, 0) rotate(-360deg);
   }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Screen-reader only                                                         */
+/* -------------------------------------------------------------------------- */
+
+.srOnly {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+
+  white-space: nowrap;
+
+  border-width: 0;
 }
