@@ -1,0 +1,110 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #000000;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backgroundVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  filter: saturate(3) contrast(1.7);
+  z-index: 1;
+}
+
+.clock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+  color: #4b4c52;
+  font-size: 14vw;
+  font-family: 'ClockFont_26_09_07', monospace, system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  will-change: transform;
+
+  /* 7 s cycle: 1 s hold → 3 s exit → 3 s enter */
+  animation: clockCycle 7s linear infinite;
+}
+
+.digitBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.65em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* 
+  Timeline (7 s total):
+  0%–14.3%   (0–1 s)   : centered, holding
+  14.3%–57.1% (1–4 s)  : slides out to the right
+  57.1%                : jumps to the left (off-screen)
+  57.1%–100% (4–7 s)   : slides in from left + slight overshoot “click”
+*/
+@keyframes clockCycle {
+
+  0%,
+  14.2857% {
+    transform: translate(-50%, -50%);
+  }
+
+  57.142% {
+    transform: translate(-50%, -50%) translateX(110vw);
+  }
+
+  57.143% {
+    transform: translate(-50%, -50%) translateX(-110vw);
+  }
+
+  /* slight overshoot so it “clicks” into place */
+  92% {
+    transform: translate(-50%, -50%) translateX(3vw);
+  }
+
+  100% {
+    transform: translate(-50%, -50%);
+  }
+}
