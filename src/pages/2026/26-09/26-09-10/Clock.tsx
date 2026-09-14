@@ -1,15 +1,28 @@
+import SRTime from '@/components/SRTime';
 import { useClock } from '@/utils/hooks';
 import backgroundVideo from '@/assets/images/26_images/26-09/26-09-10/callisto.webm';
 import overlayImage from '@/assets/images/26_images/26-09/26-09-10/deer.webp';
 import overlayImage2 from '@/assets/images/26_images/26-09/26-09-10/bear.webp';
+import fontUrl from '@/assets/fonts/26fonts/26-09-10.ttf?url';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import styles from './Clock.module.css';
 
 export const assets = [
   backgroundVideo,
   overlayImage,
   overlayImage2,
+  fontUrl,
 ];
 
-const ROMAN = ['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'];
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'ClockFont_26_09_10',
+    fontUrl,
+  },
+];
+
+const ROMAN = ['xii', 'i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x', 'xi'];
 
 const AnalogClock = ({ time }: { time: Date }) => {
   const hours = time.getHours() % 12;
@@ -21,109 +34,100 @@ const AnalogClock = ({ time }: { time: Date }) => {
   const hourDeg = hours * 30 + minutes * 0.5;
 
   return (
-    <div
-      style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 'min(70vw, 70vh)',
-        height: 'min(70vw, 70vh)',
-        zIndex: 10,
-        pointerEvents: 'none',
-      }}
-    >
-      <svg
-        viewBox="0 0 200 200"
-        width="100%"
-        height="100%"
-        style={{ filter: 'drop-shadow(0 0 12px rgba(180, 220, 255, 0.35))' }}
+    <div className={styles.analogClock}>
+<svg
+  viewBox="0 0 200 200"
+  width="100%"
+  height="100%"
+  className={styles.svg}
+  style={{ overflow: 'visible' }}
       >
-        {/* Outer ring */}
-        <circle
-          cx="100"
-          cy="100"
-          r="96"
-          fill="none"
-          stroke="rgba(200, 230, 255, 0.25)"
-          strokeWidth="1.5"
-        />
-        <circle
-          cx="100"
-          cy="100"
-          r="88"
-          fill="rgba(2, 6, 13, 0.35)"
-          stroke="rgba(180, 220, 255, 0.45)"
-          strokeWidth="2"
-        />
+        <svg
+  viewBox="0 0 200 200"
+  width="100%"
+  height="100%"
+  className={styles.svg}
+  style={{ overflow: 'visible' }}
+>
+  <defs>
+    <filter id="handShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="1" dy="1" stdDeviation="0" floodColor="rgba(0,0,0,0.85)" />
+      <feDropShadow dx="-1" dy="-1" stdDeviation="0" floodColor="rgba(255,255,255,0.5)" />
+    </filter>
+          </defs>
+          
+        {/* Roman numerals */}
+      {ROMAN.map((num, i) => {
+  const angle = i * 30;
+  const rad = ((angle - 90) * Math.PI) / 180;
+  const r = 100; // sits exactly on the circle's edge
+  const x = 100 + Math.cos(rad) * r;
+  const y = 100 + Math.sin(rad) * r;
 
-        {/* Roman numerals – rotated to follow the perimeter */}
-        {ROMAN.map((num, i) => {
-          const angle = i * 30; // 0° = XII (top)
-          const rad = ((angle - 90) * Math.PI) / 180;
-          const r = 72; // distance from center
-          const x = 100 + Math.cos(rad) * r;
-          const y = 100 + Math.sin(rad) * r;
+        return (
+    
+          
+  <text
+  key={num}
+  x={x}
+  y={y}
+  textAnchor="middle"
+  dominantBaseline="middle"
+  fill="rgba(198, 117, 31, 0.92)"
+  fontSize={24}
+  fontFamily="ClockFont_26_09_10"
+  letterSpacing="0.5"
+  transform={`rotate(${angle} ${x} ${y})`}
+  style={{
+    userSelect: 'none',
+    textShadow: '1px 1px 0 rgba(0, 0, 0, 0.85), -1px -1px 0 rgba(255, 255, 255, 0.5)',
+  }}
+>
+  {num}
+</text>
 
-          return (
-            <text
-              key={num}
-              x={x}
-              y={y}
-              textAnchor="middle"
-              dominantBaseline="middle"
-              fill="rgba(200, 230, 255, 0.92)"
-              fontSize={i % 3 === 0 ? 11 : 9.5}
-              fontFamily="serif"
-              fontWeight="500"
-              letterSpacing="0.5"
-              transform={`rotate(${angle} ${x} ${y})`}
-              style={{ userSelect: 'none' }}
-            >
-              {num}
-            </text>
-          );
-        })}
+  );
+})}
 
-        {/* Hour hand */}
-        <line
-          x1="100"
-          y1="100"
-          x2="100"
-          y2="55"
-          stroke="rgba(220, 240, 255, 0.95)"
-          strokeWidth="4.5"
-          strokeLinecap="round"
-          transform={`rotate(${hourDeg} 100 100)`}
-        />
+          {/* Hands */}
+  <line
+    x1="100" y1="100" x2="100" y2="65"
+    stroke="rgba(198, 117, 31, 0.92)"
+    strokeWidth="3"
+    strokeLinecap="round"
+    transform={`rotate(${hourDeg} 100 100)`}
+    filter="url(#handShadow)"
+  />
+  <line
+    x1="100" y1="100" x2="100" y2="38"
+    stroke="rgba(198, 117, 31, 0.92)"
+    strokeWidth="2"
+    strokeLinecap="round"
+    transform={`rotate(${minuteDeg} 100 100)`}
+    filter="url(#handShadow)"
+  />
+  <line
+    x1="100" y1="110" x2="100" y2="28"
+    stroke="rgba(198, 117, 31, 0.92)"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    transform={`rotate(${secondDeg} 100 100)`}
+    filter="url(#handShadow)"
+  />
 
-        {/* Minute hand */}
-        <line
-          x1="100"
-          y1="100"
-          x2="100"
-          y2="38"
-          stroke="rgba(200, 230, 255, 0.9)"
-          strokeWidth="3"
-          strokeLinecap="round"
-          transform={`rotate(${minuteDeg} 100 100)`}
-        />
+  {/* Center cap */}
+  <circle cx="100" cy="100" r="1" fill="rgba(198, 117, 31, 0.92)" filter="url(#handShadow)" />
+  <circle cx="100" cy="100" r="2.5" fill="rgba(198, 117, 31, 0.92)" filter="url(#handShadow)" />
+</svg>
 
-        {/* Second hand */}
-        <line
-          x1="100"
-          y1="110"
-          x2="100"
-          y2="28"
-          stroke="rgba(140, 200, 255, 0.95)"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          transform={`rotate(${secondDeg} 100 100)`}
-        />
+        {/* Hands */}
+        <line x1="100" y1="100" x2="100" y2="65" stroke="rgba(198, 117, 31, 0.92)" strokeWidth="3" strokeLinecap="round" transform={`rotate(${hourDeg} 100 100)`} />
+        <line x1="100" y1="100" x2="100" y2="38" stroke="rgba(198, 117, 31, 0.92)" strokeWidth="2" strokeLinecap="round" transform={`rotate(${minuteDeg} 100 100)`} />
+        <line x1="100" y1="110" x2="100" y2="28" stroke="rgba(198, 117, 31, 0.92)" strokeWidth="1.5" strokeLinecap="round" transform={`rotate(${secondDeg} 100 100)`} />
 
         {/* Center cap */}
-        <circle cx="100" cy="100" r="5" fill="rgba(180, 220, 255, 0.95)" />
-        <circle cx="100" cy="100" r="2.5" fill="rgba(2, 6, 13, 0.9)" />
+        <circle cx="100" cy="100" r="1" fill="rgba(198, 117, 31, 0.92)" />
+        <circle cx="100" cy="100" r="2.5" fill="rgba(198, 117, 31, 0.92)" />
       </svg>
     </div>
   );
@@ -132,51 +136,13 @@ const AnalogClock = ({ time }: { time: Date }) => {
 const Clock_26_09_10 = () => {
   const time = useClock();
 
-  const styles = {
-    container: {
-      position: 'relative' as const,
-      width: '100vw',
-      height: '100dvh',
-      overflow: 'hidden' as const,
-      backgroundColor: '#02060d',
-    },
-    backgroundVideo: {
-      position: 'absolute' as const,
-      inset: 0,
-      width: '100%',
-      height: '100%',
-      objectFit: 'cover' as const,
-      display: 'block',
-      zIndex: 3,
-      filter: 'saturate(1.35) contrast(0.9) brightness(1.55)',
-      opacity: 0.5,
-    },
-    deer: {
-      position: 'absolute' as const,
-      inset: 0,
-      width: '100%',
-      height: '100%',
-      objectFit: 'cover' as const,
-      zIndex: 2,
-      opacity: 0.4,
-      pointerEvents: 'none' as const,
-    },
-    ursa: {
-      position: 'absolute' as const,
-      inset: 0,
-      width: '100%',
-      height: '100%',
-      objectFit: 'cover' as const,
-      zIndex: 1,
-      opacity: 0.5,
-      pointerEvents: 'none' as const,
-    },
-  };
+  useSuspenseFontLoader(fontConfigs);
 
   return (
-    <main style={styles.container}>
+    <main className={styles.container}>
+      <SRTime time={time} />
       <video
-        style={styles.backgroundVideo}
+        className={styles.backgroundVideo}
         src={backgroundVideo}
         autoPlay
         loop
@@ -184,11 +150,13 @@ const Clock_26_09_10 = () => {
         playsInline
         aria-hidden="true"
       />
-      <img style={styles.deer} src={overlayImage} alt="" aria-hidden="true" />
-      <img style={styles.ursa} src={overlayImage2} alt="" aria-hidden="true" />
+      <img className={styles.deer} src={overlayImage} alt="" aria-hidden="true" />
+      <img className={styles.ursa} src={overlayImage2} alt="" aria-hidden="true" />
       <AnalogClock time={time} />
     </main>
   );
 };
+
+Clock_26_09_10.displayName = 'Clock_26_09_10';
 
 export default Clock_26_09_10;
