@@ -86,6 +86,14 @@ const AnalyticsAndSEO = React.memo(() => {
     trackPageView();
   }, [trackPageView]);
 
+  React.useEffect(() => {
+    const isClockPage = processedPath.isDynamicClock || location.pathname === '/today';
+    if (!isClockPage) {
+      document.body.style.overflow = 'auto';
+      document.documentElement.style.overflow = 'auto';
+    }
+  }, [processedPath.isDynamicClock, location.pathname]);
+
 // React 19 natively hoists <title>, <meta>, and <link> to <head>.
   return (
     <>
