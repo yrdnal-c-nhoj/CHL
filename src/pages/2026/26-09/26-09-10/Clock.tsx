@@ -23,7 +23,6 @@ const AnalogClock = ({ time }: { time: Date }) => {
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
-
   const secondDeg = seconds * 6;
   const minuteDeg = minutes * 6 + seconds * 0.1;
   const hourDeg = hours * 30 + minutes * 0.5;
@@ -46,7 +45,6 @@ const AnalogClock = ({ time }: { time: Date }) => {
           const r = 100;
           const x = 100 + Math.cos(rad) * r;
           const y = 100 + Math.sin(rad) * r;
-
           return (
             <text
               key={num}
@@ -112,11 +110,14 @@ const Clock_26_09_10 = () => {
       />
       <img className={styles.ursa} src={overlayImage2} alt="" aria-hidden="true" />
       <AnalogClock time={time} />
-      <img className={styles.deer} src={overlayImage} alt="" aria-hidden="true" />
+      <div
+        className={styles.deer}
+        style={{ backgroundImage: `url(${overlayImage})` }}
+        aria-hidden="true"
+      />
     </main>
   );
 };
 
 Clock_26_09_10.displayName = 'Clock_26_09_10';
-
 export default Clock_26_09_10;
