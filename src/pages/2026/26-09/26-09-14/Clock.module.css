@@ -20,7 +20,7 @@
   inset: 0;
   z-index: 0;
   background-image: var(--background-image);
-  background-position: center;
+  background-position: top center;
   background-size: cover;
   content: '';
 }
