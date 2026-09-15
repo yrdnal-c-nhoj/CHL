@@ -31,81 +31,10 @@ css .container {
 }
 
 
-.numberLayer {
-  position: absolute;
-  inset: 0;
-  z-index: 11;
-}
-
-/*
- * Four numbers:
- *
- *        12
- *
- *   9         3
- *
- *        6
- */
-
- .clockNumber {
-   position: absolute;
-
-   /* Outline styling */
-   -webkit-text-stroke: 2px #27e60a;
-   /* Adjust stroke thickness as needed */
-   -webkit-text-fill-color: transparent;
-   color: transparent;
-   /* Fallback for older browsers */
-
-   font-family:
-     'ClockFont_26_09_12',
-     monospace,
-     system-ui,
-     sans-serif;
-
-   font-size: 17vmin;
-
-   text-shadow:
-     0 0 4px rgba(255, 255, 255, 0.7);
-
-   transform: translate(-50%, -50%);
-
-   z-index: 11;
-   opacity: 0.3;
-   white-space: nowrap;
- }
-
-
-/* .clockNumber {
-  position: absolute;
-
-  color: #27e60a;
-
-  font-family:
-    'ClockFont_26_09_12',
-    monospace,
-    system-ui,
-    sans-serif;
-
-  font-size: 17vmin;
-
-
-
-  text-shadow:
-    0 0 4px rgba(255, 255, 255, 0.7);
-
-  transform: translate(-50%, -50%);
-
-  z-index: 11;
-opacity: 0.3;
-  white-space: nowrap;
-} */
-
 /*
  * Dedicated hand layer.
  *
- * This sits above the number layer and above the
- * background video.
+ * This sits above the background video.
  */
 .handLayer {
   position: absolute;
