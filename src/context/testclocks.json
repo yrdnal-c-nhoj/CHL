@@ -7034,23 +7034,23 @@
   {
     "path": "26-09-13",
     "date": "26-09-13",
+    "title": "Armchair",
+    "tags": [
+      "analog",
+      "interior",
+      "paper"
+    ]
+  },
+  {
+    "path": "26-09-14",
+    "date": "26-09-14",
     "title": "xxxxxx",
     "tags": [
       "analog",
       "constellations",
       "crab",
       "myth",
-      "zodiac"]
-    },
-      {
-    "path": "26-09-13",
-    "date": "26-09-13",
-    "title": "xxxxxx",
-    "tags": [
-      "analog",
-      "constellations",
-      "crab",
-      "myth",
-      "zodiac"]
-    }   
+      "zodiac"
+    ]
+  }
 ]
