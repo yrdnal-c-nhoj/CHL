@@ -1,0 +1,118 @@
+.container {
+  --face-border: 8px;
+  --face-background: radial-gradient(circle at 30% 30%, #f8f8f8, #e0e0e0);
+  --ink: #1a1a1a;
+  --muted-ink: #333;
+  --seconds-color: #e63946;
+
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  pointer-events: none;
+  background: #d8d8d8;
+}
+
+.clock {
+  position: relative;
+  width: var(--clock-size);
+  height: var(--clock-size);
+  flex: 0 0 var(--clock-size);
+  border: var(--face-border) solid var(--ink);
+  border-radius: 50%;
+  background: var(--face-background);
+  box-shadow:
+    0 8px 24px rgb(0 0 0 / 25%),
+    inset 0 0 20px rgb(0 0 0 / 10%);
+  font-family: system-ui, -apple-system, sans-serif;
+  transform: rotate(var(--clock-rotation));
+  transform-origin: center;
+  pointer-events: auto;
+}
+
+.numbers {
+  position: absolute;
+  inset: 0;
+}
+
+.number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 1em;
+  height: 1em;
+  place-items: center;
+  color: var(--ink);
+  font-size: calc(var(--clock-size) * 0.085);
+  font-weight: 600;
+  line-height: 1;
+  user-select: none;
+  transform:
+    rotate(var(--number-angle))
+    translateY(calc(var(--clock-size) * -0.38))
+    rotate(calc(var(--number-angle) * -1));
+  transform-origin: center;
+}
+
+.number:nth-child(1) { --number-angle: -60deg; }
+.number:nth-child(2) { --number-angle: -30deg; }
+.number:nth-child(3) { --number-angle: 0deg; }
+.number:nth-child(4) { --number-angle: 30deg; }
+.number:nth-child(5) { --number-angle: 60deg; }
+.number:nth-child(6) { --number-angle: 90deg; }
+.number:nth-child(7) { --number-angle: 120deg; }
+.number:nth-child(8) { --number-angle: 150deg; }
+.number:nth-child(9) { --number-angle: 180deg; }
+.number:nth-child(10) { --number-angle: 210deg; }
+.number:nth-child(11) { --number-angle: 240deg; }
+.number:nth-child(12) { --number-angle: 270deg; }
+
+.hand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--hand-width);
+  height: var(--hand-height);
+  border-radius: 999px;
+  background: var(--hand-color);
+  transform: translate(-50%, -100%) rotate(var(--hand-angle));
+  transform-origin: 50% 100%;
+}
+
+.hourHand {
+  --hand-width: 4%;
+  --hand-height: 25%;
+  --hand-color: var(--ink);
+  --hand-angle: var(--hour-angle);
+  z-index: 3;
+}
+
+.minuteHand {
+  --hand-width: 3%;
+  --hand-height: 35%;
+  --hand-color: var(--muted-ink);
+  --hand-angle: var(--minute-angle);
+  z-index: 4;
+}
+
+.secondHand {
+  --hand-width: 1.2%;
+  --hand-height: 40%;
+  --hand-color: var(--seconds-color);
+  --hand-angle: var(--second-angle);
+  z-index: 5;
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+  width: 4%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--ink);
+  transform: translate(-50%, -50%);
+}
