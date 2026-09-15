@@ -47,7 +47,11 @@ const AnalogClock = ({
 
       if (phaseRef.current === 'spinning') {
         const progress = Math.min((now - spinStartRef.current) / spinDuration, 1);
-        const eased = 0.5 - 0.5 * Math.cos(progress * Math.PI);
+        // Quintic easing keeps the start and stop deliberately slow while
+        // preserving a fast, smooth middle section.
+        const eased =
+          progress * progress * progress *
+          (progress * (progress * 6 - 15) + 10);
         const newAngle =
           currentAngleRef.current + directionRef.current * totalDegrees * eased;
 
