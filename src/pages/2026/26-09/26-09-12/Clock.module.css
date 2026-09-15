@@ -1,135 +1,181 @@
-.container {
-  --clock-size: 300px;
-  --clock-radius: calc(var(--clock-size) / 2);
-  --marker-offset: 10px;
+```css .container {
+  --hand-color: #c31fa2;
 
-  width: 100vw;
-  height: 100dvh;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
+
+  background-color: #090908;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #030712;
-  position: relative;
+
+  /*
+   * Prevent browser text/image selection behavior from interfering
+   * with the clock interaction/rendering.
+   */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.filterSvg {
+  position: absolute;
+  width: 0;
+  height: 0;
   overflow: hidden;
 }
+
+/* Background video */
 
 .backgroundVideo {
   position: absolute;
   inset: 0;
+
   width: 100%;
   height: 100%;
-  object-fit: fill;
-  filter: saturate(1.35) contrast(0.9) brightness(1.55);
+
+  object-fit: cover;
+
   z-index: 1;
+  pointer-events: none;
+
+  /*
+   * Avoid a transient inline baseline/layout interaction.
+   */
+  display: block;
 }
+
+/* Clock */
 
 .clockFace {
   position: relative;
-  width: var(--clock-size);
-  height: var(--clock-size);
+
+  /*
+   * Width and height are supplied from the actual measured
+   * container in React.
+   */
+  flex: 0 0 auto;
+
   border-radius: 50%;
-  border: 2px solid rgba(100, 200, 255, 0.3);
-  z-index: 2;
+
+  z-index: 9;
 }
 
-/* Shared marker base */
-.markerMajor,
-.markerMinor {
+/* Hands */
+
+.hand {
   position: absolute;
-  left: 50%;
-  top: var(--marker-offset);
-  transform-origin: 50% calc(var(--clock-radius) - var(--marker-offset));
-}
 
-.markerMajor {
-  width: 2px;
-  height: 10px;
-  margin-left: -1px;
-  background-color: rgb(160, 187, 210);
-}
-
-.markerMinor {
-  width: 1px;
-  height: 5px;
-  margin-left: -0.5px;
-  background-color: rgb(247, 247, 248);
-}
-
-/* Numbers 12, 3, 6, 9 */
-.number {
-  position: absolute;
-  left: 50%;
   top: 50%;
-  width: 36px;
-  height: 36px;
-  margin-left: -18px;
-  margin-top: -18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: #d9f7ff;
-  letter-spacing: -0.02em;
-  user-select: none;
-  pointer-events: none;
-}
-
-/* Hands – all pivot from the center */
-.hourHand,
-.minuteHand,
-.secondHand {
-  position: absolute;
   left: 50%;
-  bottom: 50%;
+
+  width: var(--hand-width);
+  height: var(--hand-height);
+
+  background-color: var(--hand-color);
+
   transform-origin: 50% 100%;
+  transform:
+    translateX(-50%) translateY(-100%) rotate(var(--angle, 0deg));
+
+  border-radius: 1vmin;
+
+  z-index: 8;
+
+  opacity: 0.4;
+
+  will-change: transform;
 }
 
 .hourHand {
-  width: 4px;
-  height: 80px;
-  margin-left: -2px;
-  background-color: #d9f7ff;
-  border-radius: 2px;
+  --hand-width: 3.5vmin;
+  --hand-height: 12vmin;
 }
 
 .minuteHand {
-  width: 2px;
-  height: 110px;
-  margin-left: -1px;
-  background-color: #d9f7ff;
-  border-radius: 1px;
+  --hand-width: 2.2vmin;
+  --hand-height: 18vmin;
 }
 
 .secondHand {
-  width: 1px;
-  height: 120px;
-  margin-left: -0.5px;
-  background-color: #ffffff;
-  border-radius: 0.5px;
+  --hand-width: 1.7vmin;
+  --hand-height: 20vmin;
 }
 
-.centerCap {
+/* Center */
+
+.centerDot {
   position: absolute;
+
   top: 50%;
   left: 50%;
-  width: 12px;
-  height: 12px;
+
+  width: 1vmin;
+  height: 1vmin;
+
+  background-color: var(--hand-color);
+
   border-radius: 50%;
-  background-color: #ffffff;
+
   transform: translate(-50%, -50%);
-  z-index: 3;
+
+  z-index: 10;
 }
+
+/* Numbers */
+
+.clockNumber {
+  position: absolute;
+
+  color: #ba07a5;
+
+  font-family:
+    'ClockFont_26_09_12',
+    monospace,
+    system-ui,
+    sans-serif;
+
+  font-size: 7vmin;
+  letter-spacing: -0.3em;
+
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.7);
+
+  z-index: 7;
+
+  pointer-events: none;
+
+  /*
+   * Critical for predictable positioning.
+   */
+  transform: translate(-50%, -50%);
+
+  white-space: nowrap;
+}
+
+/* Screen-reader utility */
 
 .srOnly {
   position: absolute;
+
   width: 1px;
   height: 1px;
+
   padding: 0;
   margin: -1px;
+
   overflow: hidden;
+
   clip: rect(0, 0, 0, 0);
+
   white-space: nowrap;
+
   border-width: 0;
 }
+
+```
