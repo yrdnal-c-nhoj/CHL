@@ -7017,5 +7017,15 @@
       "transport",
       "windows"
     ]
+  },
+  {
+    "path": "26-09-14",
+    "date": "26-09-14",
+    "title": "Analog Clock",
+    "tags": [
+      "analog",
+      "clock",
+      "mechanical"
+    ]
   }
 ]

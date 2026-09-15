@@ -67,12 +67,6 @@ const Clock_26_09_12 = () => {
   const minuteAngle = minutes * 6;
   const secondAngle = seconds * 6;
 
-  /*
-   * Keep the number radius proportional to the actual clock diameter.
-   * The original implementation used 36%, which is retained here.
-   */
-  const numberRadius = clockSize * 0.36;
-
   return (
     <main ref={containerRef} className={styles.container}>
       {/* SVG filter definitions */}
@@ -121,8 +115,9 @@ const Clock_26_09_12 = () => {
            */
           const theta = ((number - 12) * 30 * Math.PI) / 180;
 
-          const x = 50 + (numberRadius / (clockSize || 1)) * 100 * Math.sin(theta);
-          const y = 50 - (numberRadius / (clockSize || 1)) * 100 * Math.cos(theta);
+          const numberRadius = 36;
+          const x = 50 + numberRadius * Math.sin(theta);
+          const y = 50 - numberRadius * Math.cos(theta);
 
           return (
             <span
@@ -179,4 +174,3 @@ const Clock_26_09_12 = () => {
 Clock_26_09_12.displayName = 'Clock_26_09_12';
 
 export default Clock_26_09_12;
-
