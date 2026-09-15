@@ -31,44 +31,6 @@
   pointer-events: auto;
 }
 
-.numbers {
-  position: absolute;
-  inset: 0;
-}
-
-.number {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  display: grid;
-  width: 1em;
-  height: 1em;
-  place-items: center;
-  color: var(--ink);
-  font-size: calc(var(--clock-size) * 0.085);
-  font-weight: 600;
-  line-height: 1;
-  user-select: none;
-  transform:
-    rotate(var(--number-angle))
-    translateY(calc(var(--clock-size) * -0.38))
-    rotate(calc(var(--number-angle) * -1));
-  transform-origin: center;
-}
-
-.number:nth-child(1) { --number-angle: -60deg; }
-.number:nth-child(2) { --number-angle: -30deg; }
-.number:nth-child(3) { --number-angle: 0deg; }
-.number:nth-child(4) { --number-angle: 30deg; }
-.number:nth-child(5) { --number-angle: 60deg; }
-.number:nth-child(6) { --number-angle: 90deg; }
-.number:nth-child(7) { --number-angle: 120deg; }
-.number:nth-child(8) { --number-angle: 150deg; }
-.number:nth-child(9) { --number-angle: 180deg; }
-.number:nth-child(10) { --number-angle: 210deg; }
-.number:nth-child(11) { --number-angle: 240deg; }
-.number:nth-child(12) { --number-angle: 270deg; }
-
 .hand {
   position: absolute;
   top: 50%;
