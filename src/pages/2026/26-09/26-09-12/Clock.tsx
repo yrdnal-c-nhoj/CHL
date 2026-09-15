@@ -1,4 +1,3 @@
-```tsx
 import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -180,4 +179,4 @@ const Clock_26_09_12 = () => {
 Clock_26_09_12.displayName = 'Clock_26_09_12';
 
 export default Clock_26_09_12;
-```
+
