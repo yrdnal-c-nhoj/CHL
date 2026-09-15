@@ -17,6 +17,7 @@ css .container {
   object-fit: cover;
   z-index: 1;
   pointer-events: none;
+  filter: brightness(1.2) contrast(0.8) saturate(1.1);
 }
 
 .clockFace {
@@ -95,15 +96,15 @@ css .container {
  */
 .minuteHand {
   --hand-width: 2.2vmin;
-  --hand-height: 18vmin;
+  --hand-height: 20vmin;
 }
 
 /*
  * Second hand
  */
 .secondHand {
-  --hand-width: 1.7vmin;
-  --hand-height: 20vmin;
+  --hand-width: 1.2vmin;
+  --hand-height: 29vmin;
 }
 
 /*
