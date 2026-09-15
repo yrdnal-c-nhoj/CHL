@@ -3,19 +3,20 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "setup": "mkdir -p screen-caps/screen-caps && npx playwright install chromium",
-    "dev": "vite",
-    "build": "vite build",
-    "build:with-types": "tsc && vite build",
-    "preview": "vite preview",
-    "test:ui": "vitest --ui",
-    "test:run": "vitest run",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "status": "node scripts/generate-status.js"
-  },
+ "scripts": {
+  "setup": "mkdir -p screen-caps/screen-caps && npx playwright install chromium",
+  "dev": "vite",
+  "build": "vite build",
+  "build:with-types": "tsc && vite build",
+  "preview": "vite preview",
+  "test:ui": "vitest --ui",
+  "test:run": "vitest run",
+  "lint": "eslint .",
+  "lint:fix": "eslint . --fix",
+  "format": "prettier --write .",
+  "status": "node scripts/generate-status.js",
+  "ai-agent": "python scripts/ai_agent.py"
+},
   "dependencies": {
     "@fontsource/roboto-mono": "^5.2.8",
     "@react-three/drei": "^10.7.8",
