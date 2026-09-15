@@ -75,7 +75,7 @@ css .container {
   opacity: 1;
 
   box-shadow:
-    0 0 3px rgba(255, 255, 255, 0.8),
+    0 0 3px rgba(102, 226, 122, 0.8),
     0 0 8px rgba(24, 83, 38, 0.8);
 
   will-change: transform;
@@ -128,7 +128,7 @@ css .container {
   z-index: 30;
 
   box-shadow:
-    0 0 4px rgba(255, 255, 255, 0.9),
+    0 0 4px rgba(184, 227, 161, 0.9),
     0 0 10px rgba(108, 195, 31, 0.9);
 
   pointer-events: none;
