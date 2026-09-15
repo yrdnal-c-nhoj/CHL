@@ -1,5 +1,5 @@
-```css .container {
-  --hand-color: #c31fa2;
+css .container {
+  --hand-color: #76d015;
 
   position: relative;
   width: 100%;
@@ -132,7 +132,7 @@
 .clockNumber {
   position: absolute;
 
-  color: #ba07a5;
+  color: #04ca04;
 
   font-family:
     'ClockFont_26_09_12',
@@ -177,5 +177,3 @@
 
   border-width: 0;
 }
-
-```
