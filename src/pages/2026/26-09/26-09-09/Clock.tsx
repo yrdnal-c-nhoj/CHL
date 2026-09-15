@@ -3,7 +3,7 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
-import backgroundVideo from '@/assets/images/26_images/26-09/26-09-09/robot.webm?url';
+import backgroundVideo from '@/assets/images/26_images/26-09/26-09-09/robot.mp4?url';
 import font from '@/assets/fonts/26fonts/26-09-09.otf?url';
 import styles from './Clock.module.css';
 
