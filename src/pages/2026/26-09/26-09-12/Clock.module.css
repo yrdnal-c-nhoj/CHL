@@ -1,138 +1,85 @@
 css .container {
-  --hand-color: #76d015;
-
+  --hand-color: #27e60a;
   position: relative;
-  width: 100%;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
-
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
-
-  background-color: #090908;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /*
-   * Prevent browser text/image selection behavior from interfering
-   * with the clock interaction/rendering.
-   */
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.filterSvg {
-  position: absolute;
-  width: 0;
-  height: 0;
-  overflow: hidden;
+  background: #090908;
 }
 
 /* Background video */
-
 .backgroundVideo {
   position: absolute;
   inset: 0;
-
   width: 100%;
   height: 100%;
-
   object-fit: cover;
-
   z-index: 1;
   pointer-events: none;
-
-  /*
-   * Avoid a transient inline baseline/layout interaction.
-   */
-  display: block;
 }
-
-/* Clock */
 
 .clockFace {
-  position: relative;
-
-  /*
-   * Width and height are supplied from the actual measured
-   * container in React.
-   */
-  flex: 0 0 auto;
-
-  border-radius: 50%;
-
-  z-index: 9;
-}
-
-/* Hands */
-
-.hand {
   position: absolute;
-
+  width: min(100vw, 100dvh);
+  height: min(100vw, 100dvh);
   top: 50%;
   left: 50%;
-
-  width: var(--hand-width);
-  height: var(--hand-height);
-
-  background-color: var(--hand-color);
-
-  transform-origin: 50% 100%;
-  transform:
-    translateX(-50%) translateY(-100%) rotate(var(--angle, 0deg));
-
-  border-radius: 1vmin;
-
-  z-index: 8;
-
-  opacity: 0.4;
-
-  will-change: transform;
-}
-
-.hourHand {
-  --hand-width: 3.5vmin;
-  --hand-height: 12vmin;
-}
-
-.minuteHand {
-  --hand-width: 2.2vmin;
-  --hand-height: 18vmin;
-}
-
-.secondHand {
-  --hand-width: 1.7vmin;
-  --hand-height: 20vmin;
-}
-
-/* Center */
-
-.centerDot {
-  position: absolute;
-
-  top: 50%;
-  left: 50%;
-
-  width: 1vmin;
-  height: 1vmin;
-
-  background-color: var(--hand-color);
-
-  border-radius: 50%;
-
   transform: translate(-50%, -50%);
-
   z-index: 10;
+  pointer-events: none;
 }
 
-/* Numbers */
 
-.clockNumber {
+.numberLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+}
+
+/*
+ * Four numbers:
+ *
+ *        12
+ *
+ *   9         3
+ *
+ *        6
+ */
+
+ .clockNumber {
+   position: absolute;
+
+   /* Outline styling */
+   -webkit-text-stroke: 2px #27e60a;
+   /* Adjust stroke thickness as needed */
+   -webkit-text-fill-color: transparent;
+   color: transparent;
+   /* Fallback for older browsers */
+
+   font-family:
+     'ClockFont_26_09_12',
+     monospace,
+     system-ui,
+     sans-serif;
+
+   font-size: 17vmin;
+
+   text-shadow:
+     0 0 4px rgba(255, 255, 255, 0.7);
+
+   transform: translate(-50%, -50%);
+
+   z-index: 11;
+   opacity: 0.3;
+   white-space: nowrap;
+ }
+
+
+/* .clockNumber {
   position: absolute;
 
-  color: #04ca04;
+  color: #27e60a;
 
   font-family:
     'ClockFont_26_09_12',
@@ -140,26 +87,126 @@ css .container {
     system-ui,
     sans-serif;
 
-  font-size: 7vmin;
-  letter-spacing: -0.3em;
+  font-size: 17vmin;
+
+
 
   text-shadow:
     0 0 4px rgba(255, 255, 255, 0.7);
 
-  z-index: 7;
-
-  pointer-events: none;
-
-  /*
-   * Critical for predictable positioning.
-   */
   transform: translate(-50%, -50%);
 
+  z-index: 11;
+opacity: 0.3;
   white-space: nowrap;
+} */
+
+/*
+ * Dedicated hand layer.
+ *
+ * This sits above the number layer and above the
+ * background video.
+ */
+.handLayer {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 20;
+
+  pointer-events: none;
 }
 
-/* Screen-reader utility */
+/*
+ * Base clock hand
+ */
+.hand {
+  position: absolute;
 
+  top: 50%;
+  left: 50%;
+
+  display: block;
+
+  width: var(--hand-width);
+  height: var(--hand-height);
+
+  background: var(--hand-color);
+
+  transform-origin: 50% 100%;
+
+  transform:
+    translate(-50%, -100%) rotate(var(--angle, 0deg));
+
+  border-radius: 999px;
+
+  z-index: 20;
+
+  opacity: 1;
+
+  box-shadow:
+    0 0 3px rgba(255, 255, 255, 0.8),
+    0 0 8px rgba(24, 83, 38, 0.8);
+
+  will-change: transform;
+
+  pointer-events: none;
+}
+
+/*
+ * Hour hand
+ */
+.hourHand {
+  --hand-width: 3.5vmin;
+  --hand-height: 12vmin;
+}
+
+/*
+ * Minute hand
+ */
+.minuteHand {
+  --hand-width: 2.2vmin;
+  --hand-height: 18vmin;
+}
+
+/*
+ * Second hand
+ */
+.secondHand {
+  --hand-width: 1.7vmin;
+  --hand-height: 20vmin;
+}
+
+/*
+ * Center pivot
+ */
+.centerDot {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 1.8vmin;
+  height: 1.8vmin;
+
+  background: var(--hand-color);
+
+  border-radius: 50%;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 30;
+
+  box-shadow:
+    0 0 4px rgba(255, 255, 255, 0.9),
+    0 0 10px rgba(108, 195, 31, 0.9);
+
+  pointer-events: none;
+}
+
+/*
+ * Screen-reader-only utility
+ */
 .srOnly {
   position: absolute;
 
@@ -175,5 +222,5 @@ css .container {
 
   white-space: nowrap;
 
-  border-width: 0;
+  border: 0;
 }
