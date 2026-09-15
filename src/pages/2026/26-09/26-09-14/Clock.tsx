@@ -4,7 +4,10 @@ import type { CSSProperties } from 'react';
 import SRTime from '@/components/SRTime';
 import { useClock } from '@/utils/hooks';
 
+import burchfield from '@/assets/images/26_images/26-09/26-09-14/burchfield.webp';
 import styles from './Clock.module.css';
+
+export const assets = [burchfield];
 
 interface AnalogClockProps {
   size?: number;
@@ -88,6 +91,7 @@ const AnalogClock = ({
     '--hour-angle': `${hours * 30 + minutes * 0.5}deg`,
     '--minute-angle': `${minutes * 6 + seconds * 0.1}deg`,
     '--second-angle': `${seconds * 6}deg`,
+    '--background-image': `url("${burchfield}")`,
   } as CSSProperties;
 
   return (
