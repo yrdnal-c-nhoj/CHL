@@ -95,6 +95,11 @@ const AnalogClock = ({
       <div className={styles.clock} aria-label="Analog clock">
         <div className={styles.centerDot} aria-hidden="true" />
 
+        <div className={`${styles.marker} ${styles.marker12}`} aria-hidden="true" />
+        <div className={`${styles.marker} ${styles.marker3}`} aria-hidden="true" />
+        <div className={`${styles.marker} ${styles.marker6}`} aria-hidden="true" />
+        <div className={`${styles.marker} ${styles.marker9}`} aria-hidden="true" />
+
         <div className={`${styles.hand} ${styles.hourHand}`} aria-hidden="true" />
         <div className={`${styles.hand} ${styles.minuteHand}`} aria-hidden="true" />
         {showSeconds && (
