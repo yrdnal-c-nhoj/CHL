@@ -12,8 +12,6 @@ interface AnalogClockProps {
   className?: string;
 }
 
-const NUMBERS = Array.from({ length: 12 }, (_, index) => index + 1);
-
 const AnalogClock = ({
   size = 280,
   showSeconds = true,
@@ -96,14 +94,6 @@ const AnalogClock = ({
     <main className={`${styles.container} ${className}`.trim()} style={style}>
       <div className={styles.clock} aria-label="Analog clock">
         <div className={styles.centerDot} aria-hidden="true" />
-
-        <div className={styles.numbers} aria-hidden="true">
-          {NUMBERS.map((number) => (
-            <span key={number} className={styles.number}>
-              {number}
-            </span>
-          ))}
-        </div>
 
         <div className={`${styles.hand} ${styles.hourHand}`} aria-hidden="true" />
         <div className={`${styles.hand} ${styles.minuteHand}`} aria-hidden="true" />
