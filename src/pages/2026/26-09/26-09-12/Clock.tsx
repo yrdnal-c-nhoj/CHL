@@ -36,8 +36,6 @@ const Clock_26_09_12 = () => {
     };
   }, [time]);
 
-  const clockNumbers = [12, 3, 6, 9];
-
   return (
     <main className={styles.container}>
       {/* Background video */}
@@ -53,27 +51,6 @@ const Clock_26_09_12 = () => {
 
       {/* Centered clock */}
       <div className={styles.clockFace}>
-        {/* Four clock numbers */}
-        <div className={styles.numberLayer}>
-          {clockNumbers.map((number) => {
-            const theta = ((number - 12) * 30 * Math.PI) / 180;
-            const radius = 36;
-
-            return (
-              <span
-                key={number}
-                className={styles.clockNumber}
-                style={{
-                  left: `${50 + radius * Math.sin(theta)}%`,
-                  top: `${50 - radius * Math.cos(theta)}%`,
-                }}
-              >
-                {number}
-              </span>
-            );
-          })}
-        </div>
-
         {/* Clock hands */}
         <div className={styles.handLayer}>
           {/* Hour hand */}
