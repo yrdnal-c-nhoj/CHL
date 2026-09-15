@@ -43,6 +43,40 @@
   transform-origin: 50% 100%;
 }
 
+.marker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #777;
+  transform:
+    rotate(var(--marker-angle))
+    translateY(calc(var(--clock-size) * -0.38))
+    translate(-50%, -50%);
+  transform-origin: center;
+  z-index: 2;
+}
+
+.marker12 {
+  width: 11%;
+  background: #e63946;
+  --marker-angle: 0deg;
+}
+
+.marker3 {
+  --marker-angle: 90deg;
+}
+
+.marker6 {
+  --marker-angle: 180deg;
+}
+
+.marker9 {
+  --marker-angle: 270deg;
+}
+
 .hourHand {
   --hand-width: 4%;
   --hand-height: 25%;
