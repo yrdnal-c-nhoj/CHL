@@ -12,10 +12,30 @@
   overflow: hidden;
   pointer-events: none;
   background: #d8d8d8;
+  isolation: isolate;
+}
+
+.container::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--background-image);
+  background-position: center;
+  background-size: cover;
+  content: '';
+}
+
+.container::after {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgb(255 255 255 / 32%);
+  content: '';
 }
 
 .clock {
   position: relative;
+  z-index: 1;
   width: var(--clock-size);
   height: var(--clock-size);
   flex: 0 0 var(--clock-size);
