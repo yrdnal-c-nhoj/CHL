@@ -1,0 +1,80 @@
+css .container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  display: block;
+
+  z-index: 1;
+}
+
+.clock {
+  position: absolute;
+  top: 0rem;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #eede85;
+
+  font-family: 'ClockFont_26_09_13', monospace;
+  font-size: 28vw;
+  line-height: 1;
+
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.8);
+
+  white-space: nowrap;
+}
+
+.digitBox {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  /*
+   * Every digit gets exactly the same box.
+   * No gaps, groups, colons, or special spacing.
+   */
+  width: 0.4em;
+  height: 1em;
+
+  flex: 0 0 0.4em;
+}
+
+.srOnly {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+
+  white-space: nowrap;
+  border: 0;
+}
