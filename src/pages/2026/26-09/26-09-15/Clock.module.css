@@ -1,6 +1,6 @@
 .container {
   --background: #090909;
-  --display-color: #f4f1e8;
+  --display-color: #d7cdf2;
   --accent-color: #ff4d00;
 
   position: relative;
@@ -34,11 +34,11 @@
   gap: 0.15em; /* Spacing between rows */
   color: var(--display-color);
   font-family: 'Hammerhead', 'Courier New', Courier, monospace;
-  font-size: clamp(8rem, 20vw, 16rem); /* DIGIT SIZE */
+  font-size: clamp(8rem, 16vw, 14rem); /* DIGIT SIZE */
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
   line-height: 0.85;
-  opacity: 0.4;
+  opacity: 0.6;
   text-shadow:
     0 0 0.08em rgba(244, 235, 232, 0.995),
     0 0 0.3em rgba(255, 77, 0, 0.523);
