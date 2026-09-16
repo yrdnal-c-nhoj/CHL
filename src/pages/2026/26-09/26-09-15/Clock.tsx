@@ -2,6 +2,8 @@ import { useClock } from '@/utils/hooks';
 
 import styles from './Clock.module.css';
 
+export const assets: string[] = [];
+
 const formatTime = (value: number) => value.toString().padStart(2, '0');
 
 const Clock_26_09_15 = () => {
