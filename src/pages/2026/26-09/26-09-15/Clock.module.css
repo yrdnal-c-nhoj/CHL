@@ -3,17 +3,29 @@
   --display-color: #f4f1e8;
   --accent-color: #ff4d00;
 
+  position: relative;
   display: grid;
   width: 100vw;
   min-height: 100dvh;
   place-items: center;
   overflow: hidden;
   background:
-    radial-gradient(circle at 50% 45%, rgb(255 77 0 / 8%), transparent 42%),
+    radial-gradient(circle at 50% 45%, rgba(51, 186, 170, 0.835), transparent 82%),
     var(--background);
 }
 
+.background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
 .display {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: baseline;
   color: var(--display-color);
