@@ -14,6 +14,7 @@
   "lint": "eslint .",
   "lint:fix": "eslint . --fix",
   "format": "prettier --write .",
+  "verify:clocks": "node scripts/verify-all-clocks.js",
   "status": "node scripts/generate-status.js",
   "ai-agent": "python scripts/ai_agent.py"
 },

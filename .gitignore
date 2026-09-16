@@ -60,6 +60,9 @@ compliance-baseline.json
 capture.js
 capture.mjs
 scripts/
+!scripts/
+scripts/*
+!scripts/verify-all-clocks.js
 
 # GitHub community health (keep workflows)
 .github/ISSUE_TEMPLATE/
