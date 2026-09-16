@@ -13,7 +13,7 @@ export default function Tagger() {
   const navigate = useNavigate();
 
   const ctx = useContext(DataContext) as DataContextType | undefined;
-  const items = ctx?.items ?? [];
+  const items = useMemo(() => ctx?.items ?? [], [ctx?.items]);
   const loading = ctx?.loading ?? true;
   const contextError = ctx?.error;
 
@@ -25,7 +25,7 @@ export default function Tagger() {
   const [tagInput, setTagInput] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
 
-  const { allExistingTags, tagCounts } = useMemo(() => {
+  const { allExistingTags } = useMemo(() => {
     const counts: Record<string, number> = {};
     items.forEach((item) => {
       (item.tags ?? []).forEach((tag) => {
@@ -35,7 +35,6 @@ export default function Tagger() {
     const sorted = sortTags(new Set(Object.keys(counts)));
     return {
       allExistingTags: sorted.map(name => ({ name, count: counts[name] })),
-      tagCounts: counts
     };
   }, [items]);
 
