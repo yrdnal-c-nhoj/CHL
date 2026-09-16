@@ -16,7 +16,7 @@ interface AnalogClockProps {
 }
 
 const AnalogClock = ({
-  size = 97,
+  size = 90,
   showSeconds = true,
   className = '',
 }: AnalogClockProps) => {
