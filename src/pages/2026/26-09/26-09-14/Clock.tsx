@@ -31,7 +31,7 @@ const AnalogClock = ({
 
   useEffect(() => {
     const initialDelay = 250;
-    const spinDuration = 3750;
+    const spinDuration = 7500;
     const holdDuration = 300;
     const totalDegrees = 2160;
 
@@ -50,8 +50,8 @@ const AnalogClock = ({
         // Seventh-order easing makes the start and stop especially gradual
         // while concentrating the rotation speed in the middle.
         const eased =
-          progress ** 5 *
-          (progress * (progress * (progress * 20 - 70) + 84) - 35);
+          progress ** 4 *
+          (35 - 84 * progress + 70 * progress ** 2 - 20 * progress ** 3);
         const newAngle =
           currentAngleRef.current + directionRef.current * totalDegrees * eased;
 
