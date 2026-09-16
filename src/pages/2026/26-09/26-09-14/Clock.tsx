@@ -31,9 +31,9 @@ const AnalogClock = ({
 
   useEffect(() => {
     const initialDelay = 250;
-    const spinDuration = 7500;
+    const spinDuration = 15000;
     const holdDuration = 300;
-    const totalDegrees = 2160;
+    const totalDegrees = 5400;
 
     startTimeRef.current = performance.now();
 
