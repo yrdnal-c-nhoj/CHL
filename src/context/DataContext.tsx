@@ -42,7 +42,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
         // Conditionally import the data based on the environment.
         // This prevents test data from being loaded or bundled in production.
         let data;
-        if (import.meta.env.DEV) {
+        if (import.meta.env.DEV || import.meta.env.MODE === 'test') {
           // In development, import the test data directly.
           data = (await import('./testclocks.json')).default;
         } else {
