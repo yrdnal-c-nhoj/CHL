@@ -29,7 +29,8 @@ const Clock_26_09_15 = () => {
         muted
         playsInline
       />
-      {/* Three rows: hours on top, minutes middle, seconds bottom */}
+      {/* Two columns: left column has tens digit, right column has ones digit */}
+      {/* Three rows: hours (top), minutes (middle), seconds (bottom) */}
       <time className={styles.display} dateTime={time.toISOString()} aria-label="Current time">
         <div className={styles.row}>
           <span className={styles.segment}>{hours[0]}</span>
