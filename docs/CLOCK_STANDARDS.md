@@ -96,7 +96,7 @@ export const assets = [bgImage, fontUrl];  // Export even if empty
 **Rules:**
 - Always export `assets` array (empty `[]` if unused).
 - Assets are preloaded by the `useClockPage` pipeline.
-- Font: **WOFF2 only**, max 2 families per clock, max 100KB total.
+- Font: **TTF/OTF/WOFF2**, max 2 families per clock, max 100KB total.
 - Images: **WEBP/PNG preferred**, max 200KB; GIF only for small animations.
 - Videos: MP4/WEBM only, max 2MB; avoid if static image works.
 
@@ -323,7 +323,7 @@ useEffect(() => {
 | `useGlobalStyles` / `useKeyframes` | ❌ Prohibited | Use CSS Modules |
 | Inline `<style>` tags for static CSS | ❌ Prohibited | Use CSS Modules |
 | `any` type | ❌ Prohibited | Type safety |
-| TTF/WOFF fonts in production | ❌ Prohibited | Use WOFF2 only |
+| TTF/OTF fonts | ❌ Discouraged | Use WOFF2 for production when possible; TTF/OTF allowed for special cases |
 | `import React` for JSX only | ⚠️ Avoid | Not needed in React 19 |
 
 ## Enforcement
@@ -345,7 +345,7 @@ useEffect(() => {
 | **JS chunk size** | < 50KB (gzipped) | Clock.tsx + dependencies |
 | **CSS** | < 10KB (gzipped) | Clock.module.css |
 | **Images** | < 200KB total | WEBP/PNG preferred |
-| **Fonts** | < 100KB total | WOFF2 only, max 2 families |
+| **Fonts** | < 100KB total | TTF/OTF/WOFF2 allowed, max 2 families |
 | **Video** | < 2MB total | MP4/WEBM; auto-play discouraged |
 
 ### Initial Page Load
