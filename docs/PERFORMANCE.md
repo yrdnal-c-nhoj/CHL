@@ -17,7 +17,7 @@ For project-level standards, roadmap, and enforcement plan, see
 ## Font Rules
 
 - **Count:** Max 2 custom font families per page. Fewer is better.
-- **Format:** WOFF2 only. No TTF/WOFF in production.
+- **Format:** WOFF2/TTF/OTF. All formats allowed; WOFF2 preferred for production.
 - **Location:** Local files only. No remote font providers.
 - **Subsetting:** Subset to required Unicode ranges. Remove unused glyphs.
 - **Size:** `< 100KB` per font file. Split weights/styles into separate files.

@@ -63,10 +63,10 @@ The authoritative lists live in `docs/CLOCK_STANDARDS.md` and `docs/PERFORMANCE.
 3. **Styling:** CSS Modules for static styles; inline only for dynamic values
 4. **Accessibility:** semantic `<time>` with `dateTime` + screen-reader-only copy
 5. **Height:** `100dvh` for full-height containers
-6. **Assets:** export used assets via `assets` array; fonts WOFF2 only, max 2 families
+6. **Assets:** export used assets via `assets` array; fonts TTF/OTF/WOFF2 allowed, max 2 families
 7. **Memoization:** `useMemo` only for genuinely expensive work; never read `ref.current` inside
 8. **Index access:** guard against `undefined` under `noUncheckedIndexedAccess`
-9. **No prohibited patterns:** no `setInterval`, `requestAnimationFrame`, `useGlobalStyles`, inline `<style>` tags, `any`, TTF/WOFF in production
+9. **No prohibited patterns:** no `setInterval`, `requestAnimationFrame`, `useGlobalStyles`, inline `<style>` tags, `any`
 
 ### Performance budgets (highlights)
 - Initial JS: `< 150KB` gzipped
