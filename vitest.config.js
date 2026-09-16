@@ -6,9 +6,11 @@ import path from 'node:path';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-  plugins: [react({
-    tsDecorators: true,
-  })],
+  plugins: [
+    react({
+      tsDecorators: true,
+    }),
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -17,11 +19,8 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
+    fileParallelism: false,
     setupFiles: ['./src/test/setup.js'],
-    exclude: [
-      '**/node_modules/**',
-      '**/dist/**',
-      '.kilo/**',
-    ],
+    exclude: ['**/node_modules/**', '**/dist/**', '.kilo/**'],
   },
 });

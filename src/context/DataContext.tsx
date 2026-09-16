@@ -2,15 +2,8 @@
  * This file manages the global state for all clock data in the application.
  */
 import type { ClockItem, DataContextType } from '@/types/data';
-import type {
-  ReactNode
-} from 'react';
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState
-} from 'react';
+import type { ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 // Create the context with an initial value of undefined
 export const DataContext = createContext<DataContextType | undefined>(
@@ -50,6 +43,10 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
           const clockPagesUrl = (await import('./clockpages.json?url')).default;
           const response = await fetch(clockPagesUrl);
           data = await response.json();
+        }
+
+        if (!Array.isArray(data)) {
+          throw new Error('Clock data must be an array');
         }
 
         // Sort the data by date string (ascending) to determine the chronological order

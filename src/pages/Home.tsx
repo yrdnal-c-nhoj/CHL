@@ -155,14 +155,17 @@ const Home: FC = () => {
     }));
   }, [sortedItems]);
 
-  if (!fontsReady || loading) {
+  if (loading || (!fontsReady && !error)) {
     return <div className={styles.loadingContainer} />;
   }
 
   if (error) {
     return (
       <div className={styles.error}>
-        Error: {typeof error === 'string' ? error : (error as any).message || String(error)}
+        Error:{' '}
+        {typeof error === 'string'
+          ? error
+          : (error as any).message || String(error)}
       </div>
     );
   }
