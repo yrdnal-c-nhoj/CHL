@@ -1,15 +1,10 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 import monofettFont from '@/assets/fonts/25fonts/25-04-10-Monofett.ttf?url';
 export const assets = [monofettFont];
 
-
-// Component Props interface
-interface BarGraphClockProps {
-  // No props required for this component
-}
 
 const BarGraphClock = () => {
   // Font loading configuration (memoized)
@@ -32,7 +27,6 @@ const BarGraphClock = () => {
 
   // Use the standardized hook for smooth clock updates
   const currentTime = useClock();
-  const componentId = useRef(`bargraph-clock-${Date.now()}`);
 
   const hours = currentTime.getHours() % 12 || 12;
   const minutes = currentTime.getMinutes();
