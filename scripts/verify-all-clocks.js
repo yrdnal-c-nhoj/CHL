@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Verify clock pages against docs/CLOCK_CONTRACT.md.
+ * Verify clock pages against docs/CLOCK_STANDARDS.md.
  *
  * Full-fleet verification reports legacy debt. Use --changed in CI to fail
  * only when a changed clock introduces contract violations.

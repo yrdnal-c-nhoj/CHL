@@ -27,7 +27,7 @@ type WallTransform = {
 /**
  * Encapsulates the Three.js infinite-maze renderer, including its render loop.
  * The rAF loop lives here (not in the clock component) so the component stays
- * declarative and compliant with CLOCK_CONTRACT.md §3.3 / §5.
+ * declarative and compliant with CLOCK_STANDARDS.md §3.3 / §5.
  */
 export const useMazeRenderer = (mountRef: RefObject<HTMLDivElement | null>) => {
   useEffect(() => {

@@ -84,13 +84,13 @@ These results were generated on 2026-09-02 by running the live checks manually.
 
 ## Known Gaps
 
-- `scripts/verify-all-clocks.js` referenced by `docs/CLOCK_CONTRACT.md` is
+- `scripts/verify-all-clocks.js` referenced by `docs/CLOCK_STANDARDS.md` is
   missing. Either restore it or remove the reference.
 - `scripts/generate-status.js` referenced by `package.json` and this file is
   missing. Without it, `npm run status` fails.
 - `.kilo/worktrees/juvenile-lip/` is being picked up by Vitest and is breaking
   the test run. Add it to the test ignore list or remove the worktree.
-- `docs/CLOCK_CONTRACT.md` and `src/utils/hooks/index.ts` now agree on the
+- `docs/CLOCK_STANDARDS.md` and `src/utils/hooks/index.ts` now agree on the
   canonical clock-hook API (`useClock` for 1-second updates,
   `useSmoothClock` for sub-second / smooth animation). The previous names
   (`useSecondClock`, `useMillisecondClock`) are still exported as
@@ -107,7 +107,7 @@ These results were generated on 2026-09-02 by running the live checks manually.
 
 ## Related Docs
 
-- Clock component contract: `docs/CLOCK_CONTRACT.md`
+- Clock component contract: `docs/CLOCK_STANDARDS.md`
 - Performance budgets: `docs/PERFORMANCE.md`
 - Architectural standards: `src/templates/BaseClock.tsx` + its module CSS
 - Historical reports: `docs/archive/`

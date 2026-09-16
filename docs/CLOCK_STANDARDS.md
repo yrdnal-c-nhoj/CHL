@@ -11,10 +11,12 @@
 2. [Required Architecture](#required-architecture)
 3. [Time Hook Inventory](#time-hook-inventory)
 4. [Technical Standards](#technical-standards)
-5. [Performance Budgets](#performance-budgets)
-6. [Common Patterns & Examples](#common-patterns--examples)
-7. [Optimization Checklist](#optimization-checklist)
-8. [AI Agent Workflow](#ai-agent-workflow)
+5. [Prohibited Patterns](#prohibited-patterns)
+6. [Performance Budgets](#performance-budgets)
+7. [Compliance & Enforcement](#compliance--enforcement)
+8. [Common Patterns & Examples](#common-patterns--examples)
+9. [Optimization Checklist](#optimization-checklist)
+10. [AI Agent Workflow](#ai-agent-workflow)
 
 ---
 
