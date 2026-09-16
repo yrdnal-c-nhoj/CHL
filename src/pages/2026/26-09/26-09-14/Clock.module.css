@@ -11,7 +11,7 @@
   place-items: center;
   overflow: hidden;
   pointer-events: none;
-  background: #d8d8d8;
+  background: #6f552a;
   isolation: isolate;
 }
 
@@ -21,7 +21,7 @@
   z-index: 0;
   background-image: var(--background-image);
   background-position: top center;
-  background-size: cover;
+  background-size: contain;
   content: '';
 }
 
@@ -29,7 +29,6 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  /* background: rgb(255 255 255 / 32%); */
   content: '';
 }
 
@@ -42,9 +41,6 @@
   border: var(--face-border) solid var(--ink);
   border-radius: 50%;
   background: var(--face-background);
-  box-shadow:
-    0 8px 24px rgb(0 0 0 / 25%),
-    inset 0 0 20px rgb(0 0 0 / 10%);
   font-family: system-ui, -apple-system, sans-serif;
   transform: rotate(var(--clock-rotation));
   transform-origin: center;
@@ -96,7 +92,7 @@
 }
 
 .hourHand {
-  --hand-width: 4%;
+  --hand-width: 3%;
   --hand-height: 25%;
   --hand-color: var(--ink);
   --hand-angle: var(--hour-angle);
@@ -104,8 +100,8 @@
 }
 
 .minuteHand {
-  --hand-width: 3%;
-  --hand-height: 35%;
+  --hand-width: 2%;
+  --hand-height: 49%;
   --hand-color: var(--muted-ink);
   --hand-angle: var(--minute-angle);
   z-index: 4;
@@ -113,20 +109,8 @@
 
 .secondHand {
   --hand-width: 1.2%;
-  --hand-height: 40%;
+  --hand-height: 49%;
   --hand-color: var(--seconds-color);
   --hand-angle: var(--second-angle);
   z-index: 5;
-}
-
-.centerDot {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 10;
-  width: 4%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--ink);
-  transform: translate(-50%, -50%);
 }

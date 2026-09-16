@@ -62,7 +62,6 @@ const AnalogClock = ({
   return (
     <main className={`${styles.container} ${className}`.trim()} style={style}>
       <div className={styles.clock} aria-label="Analog clock">
-        <div className={styles.centerDot} aria-hidden="true" />
 
         <div className={`${styles.marker} ${styles.marker12}`} aria-hidden="true" />
         <div className={`${styles.marker} ${styles.marker3}`} aria-hidden="true" />
