@@ -308,6 +308,32 @@ useEffect(() => {
 
 ---
 
+## Prohibited Patterns
+
+| Pattern | Status | Reason |
+|---|---|---|
+| `setInterval` / `setTimeout` in components | ❌ Prohibited | Drift, memory leaks |
+| `requestAnimationFrame` loops | ❌ Prohibited | Use canonical hooks |
+| `useClockTime` (from `@/utils/clockUtils`) | ❌ Prohibited | Deprecated; use `@/utils/hooks` |
+| `useSecondClock` / `useMillisecondClock` (deprecated aliases) | ❌ Prohibited | Use `useClock` / `useSmoothClock` |
+| Reading `ref.current` inside `useMemo`/`useState` initializer | ❌ Prohibited | Refs are not populated during render |
+| Unguarded index access (`arr[i]`) under `noUncheckedIndexedAccess` | ❌ Prohibited | Use optional chaining or guard explicitly |
+| `useGlobalStyles` / `useKeyframes` | ❌ Prohibited | Use CSS Modules |
+| Inline `<style>` tags for static CSS | ❌ Prohibited | Use CSS Modules |
+| `any` type | ❌ Prohibited | Type safety |
+| TTF/WOFF fonts in production | ❌ Prohibited | Use WOFF2 only |
+| `import React` for JSX only | ⚠️ Avoid | Not needed in React 19 |
+
+## Enforcement
+
+- **CI:** `npm run test:run`, `npm run lint`, `npx tsc --noEmit`.
+- **Verification:** `npm run verify:clocks` runs `scripts/verify-all-clocks.js`. Use
+  `npm run verify:clocks -- --path YY-MM-DD` for a focused check, or
+  `npm run verify:clocks -- --changed` to verify only changed clock pages.
+- **Status:** `npm run status` — **script `scripts/generate-status.js` is currently missing.** Manual updates to `docs/STATUS.md` are being made in the interim.
+
+---
+
 ## Performance Budgets
 
 ### Per-Clock Limits
@@ -540,7 +566,6 @@ Use this checklist to optimize an existing clock **without changing its visual a
 ### 2. Inspect Existing Code
 - Check if a similar clock already exists (e.g., analog or digital).
 - Copy the closest matching pattern from the **Common Patterns** section above.
-- Reference the example clock's commit in `docs/CLOCK_CONTRACT.md` or this guide.
 
 ### 3. Validate Against Required Architecture
 - [ ] File pair exists: `Clock.tsx` + `Clock.module.css`
@@ -575,7 +600,6 @@ If a clock deviates from these standards for justified reasons:
 
 ## References
 
-- **`docs/CLOCK_CONTRACT.md`** — Detailed contract rules and pattern enforcement.
 - **`docs/PERFORMANCE.md`** — Deep dive into budget calculations and optimization case studies.
 - **`docs/ARCHITECTURE.md`** — System-wide design principles (if present).
 - **`src/templates/BaseClock.tsx`** — Minimal compliant example.
