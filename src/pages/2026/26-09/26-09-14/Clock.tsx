@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import type { CSSProperties } from 'react';
 
 import SRTime from '@/components/SRTime';
-import { useClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 
 import burchfield from '@/assets/images/26_images/26-09/26-09-14/burchfield.webp';
 import styles from './Clock.module.css';
@@ -20,74 +20,31 @@ const AnalogClock = ({
   showSeconds = true,
   className = '',
 }: AnalogClockProps) => {
-  const time = useClock();
-  const [rotation, setRotation] = useState(0);
-  const animationRef = useRef<number | null>(null);
-  const phaseRef = useRef<'waiting' | 'spinning' | 'holding'>('waiting');
-  const directionRef = useRef<-1 | 1>(-1);
-  const spinStartRef = useRef(0);
-  const currentAngleRef = useRef(0);
-  const startTimeRef = useRef(0);
-
-  useEffect(() => {
-    const initialDelay = 250;
-    const spinDuration = 15000;
-    const holdDuration = 300;
-    const totalDegrees = 5400;
-
-    startTimeRef.current = performance.now();
-
-    const animate = (now: number) => {
-      const elapsed = now - startTimeRef.current;
-
-      if (phaseRef.current === 'waiting' && elapsed >= initialDelay) {
-        phaseRef.current = 'spinning';
-        spinStartRef.current = now;
-      }
-
-      if (phaseRef.current === 'spinning') {
-        const progress = Math.min((now - spinStartRef.current) / spinDuration, 1);
-        // Ninth-order easing keeps the start and stop very gradual while
-        // concentrating substantially more rotation speed in the middle.
-        const eased =
-          progress ** 5 *
-          (126 -
-            420 * progress +
-            540 * progress ** 2 -
-            315 * progress ** 3 +
-            70 * progress ** 4);
-        const newAngle =
-          currentAngleRef.current + directionRef.current * totalDegrees * eased;
-
-        setRotation(newAngle);
-
-        if (progress >= 1) {
-          currentAngleRef.current = newAngle;
-          phaseRef.current = 'holding';
-          spinStartRef.current = now;
-        }
-      }
-
-      if (
-        phaseRef.current === 'holding' &&
-        now - spinStartRef.current >= holdDuration
-      ) {
-        directionRef.current = directionRef.current === 1 ? -1 : 1;
-        phaseRef.current = 'spinning';
-        spinStartRef.current = now;
-      }
-
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    animationRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationRef.current !== null) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, []);
+  const time = useSmoothClock(50);
+  const [motionStart] = useState(() => Date.now());
+  const initialDelay = 250;
+  const spinDuration = 15000;
+  const holdDuration = 300;
+  const totalDegrees = 5400;
+  const cycleDuration = spinDuration + holdDuration;
+  const elapsed = Math.max(0, time.getTime() - motionStart - initialDelay);
+  const completedSpins = Math.floor(elapsed / cycleDuration);
+  const cycleElapsed = elapsed % cycleDuration;
+  const direction = completedSpins % 2 === 0 ? -1 : 1;
+  const completedRotation = completedSpins % 2 === 0 ? 0 : -totalDegrees;
+  const progress = Math.min(cycleElapsed / spinDuration, 1);
+  // Keep the start and stop gradual while concentrating rotation speed in the middle.
+  const eased =
+    progress ** 5 *
+    (126 -
+      420 * progress +
+      540 * progress ** 2 -
+      315 * progress ** 3 +
+      70 * progress ** 4);
+  const rotation =
+    elapsed === 0
+      ? 0
+      : completedRotation + direction * totalDegrees * eased;
 
   const seconds = time.getSeconds();
   const minutes = time.getMinutes();
