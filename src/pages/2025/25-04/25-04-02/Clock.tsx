@@ -16,14 +16,6 @@ const images = { stars, backgroundGif, overlay1, overlay2, pixelGif };
 
 type DigitMatrix = number[][];
 interface DigitPatterns { [key: string]: DigitMatrix; }
-interface DigitRefs {
-  hour1: React.RefObject<HTMLDivElement | null>;
-  hour2: React.RefObject<HTMLDivElement | null>;
-  minute1: React.RefObject<HTMLDivElement | null>;
-  minute2: React.RefObject<HTMLDivElement | null>;
-  second1: React.RefObject<HTMLDivElement | null>;
-  second2: React.RefObject<HTMLDivElement | null>;
-}
 interface DigitStyle extends React.CSSProperties {
   display: 'grid';
   gridTemplateColumns: string;
@@ -46,14 +38,12 @@ const digits: DigitPatterns = {
 };
 
 const DeepSpaceClock =  () => {
-  const digitRefs: DigitRefs = {
-    hour1: useRef<HTMLDivElement>(null),
-    hour2: useRef<HTMLDivElement>(null),
-    minute1: useRef<HTMLDivElement>(null),
-    minute2: useRef<HTMLDivElement>(null),
-    second1: useRef<HTMLDivElement>(null),
-    second2: useRef<HTMLDivElement>(null),
-  };
+  const hour1Ref = useRef<HTMLDivElement>(null);
+  const hour2Ref = useRef<HTMLDivElement>(null);
+  const minute1Ref = useRef<HTMLDivElement>(null);
+  const minute2Ref = useRef<HTMLDivElement>(null);
+  const second1Ref = useRef<HTMLDivElement>(null);
+  const second2Ref = useRef<HTMLDivElement>(null);
 
   const makeDigit = useCallback((target: React.RefObject<HTMLDivElement | null>, digitMatrix: DigitMatrix): void => {
     const container = target.current;
@@ -88,23 +78,32 @@ const DeepSpaceClock =  () => {
         currentTime.getSeconds().toString().padStart(2, '0'),
       ];
       if (h !== shownHours.toString()) {
-        makeDigit(digitRefs.hour1, digits[h[0] as keyof DigitPatterns]!);
-        makeDigit(digitRefs.hour2, digits[h[1] as keyof DigitPatterns]!);
-        shownHours = parseInt(h);
+        makeDigit(hour1Ref, digits[h[0] as keyof DigitPatterns]!);
+        makeDigit(hour2Ref, digits[h[1] as keyof DigitPatterns]!);
+        shownHours = parseInt(h, 10);
       }
       if (m !== shownMinutes.toString()) {
-        makeDigit(digitRefs.minute1, digits[m[0] as keyof DigitPatterns]!);
-        makeDigit(digitRefs.minute2, digits[m[1] as keyof DigitPatterns]!);
-        shownMinutes = parseInt(m);
+        makeDigit(minute1Ref, digits[m[0] as keyof DigitPatterns]!);
+        makeDigit(minute2Ref, digits[m[1] as keyof DigitPatterns]!);
+        shownMinutes = parseInt(m, 10);
       }
       if (s !== shownSeconds.toString()) {
-        makeDigit(digitRefs.second1, digits[s[0] as keyof DigitPatterns]!);
-        makeDigit(digitRefs.second2, digits[s[1] as keyof DigitPatterns]!);
-        shownSeconds = parseInt(s);
+        makeDigit(second1Ref, digits[s[0] as keyof DigitPatterns]!);
+        makeDigit(second2Ref, digits[s[1] as keyof DigitPatterns]!);
+        shownSeconds = parseInt(s, 10);
       }
     };
     updateClock();
-  }, [currentTime, makeDigit, digitRefs, digits]);
+  }, [
+    currentTime,
+    makeDigit,
+    hour1Ref,
+    hour2Ref,
+    minute1Ref,
+    minute2Ref,
+    second1Ref,
+    second2Ref,
+  ]);
 
   const digitStyle: DigitStyle = {
     display: 'grid',
@@ -153,12 +152,12 @@ const DeepSpaceClock =  () => {
         zIndex: 5,
       }} />
       <div className={styles.spinClock}>
-        <div className="digit" ref={digitRefs.hour1} style={digitStyle} />
-        <div className="digit" ref={digitRefs.hour2} style={digitStyle} />
-        <div className="digit" ref={digitRefs.minute1} style={digitStyle} />
-        <div className="digit" ref={digitRefs.minute2} style={digitStyle} />
-        <div className="digit" ref={digitRefs.second1} style={digitStyle} />
-        <div className="digit" ref={digitRefs.second2} style={digitStyle} />
+        <div className="digit" ref={hour1Ref} style={digitStyle} />
+        <div className="digit" ref={hour2Ref} style={digitStyle} />
+        <div className="digit" ref={minute1Ref} style={digitStyle} />
+        <div className="digit" ref={minute2Ref} style={digitStyle} />
+        <div className="digit" ref={second1Ref} style={digitStyle} />
+        <div className="digit" ref={second2Ref} style={digitStyle} />
       </div>
     </main>
   );

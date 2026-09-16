@@ -10,7 +10,7 @@ import Thumbnail from '../Thumbnail';
 export default function TagByImage() {
   const navigate = useNavigate();
   const ctx = useContext(DataContext) as DataContextType | undefined;
-  const items = ctx?.items ?? [];
+  const items = useMemo(() => ctx?.items ?? [], [ctx?.items]);
   const loading = ctx?.loading ?? true;
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -135,8 +135,12 @@ export default function TagByImage() {
               key={item.date}
               className={styles.imageCard}
               onClick={() => handleImageClick(item.date)}
-              onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
-              onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              onMouseDown={(e) => {
+                e.currentTarget.style.transform = 'scale(0.95)';
+              }}
+              onMouseUp={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
             >
               <Thumbnail date={item.date} title={item.title} className={styles.imageCardThumb} />
               <div className={styles.imageCardTitle}>{item.title}</div>
