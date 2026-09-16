@@ -69,7 +69,6 @@ const AngFontClock = () => {
 
   // Use the standardized hook for smooth clock updates
   const currentTime = useClock();
-  const componentId = useRef(`angfont-clock-${Date.now()}`);
   const animationTimeouts = useRef<NodeJS.Timeout[]>([]);
 
   const [timeStr, setTimeStr] = useState<string[]>(['', '', '']);
