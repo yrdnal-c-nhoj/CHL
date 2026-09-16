@@ -168,5 +168,7 @@ useSuspenseFontLoader(fontConfigs);
 ## 6. Enforcement
 
 - **CI:** `npm run test:run`, `npm run lint`, `npx tsc --noEmit`.
-- **Verification:** `node scripts/verify-all-clocks.js` — **script is currently missing** (see `docs/STATUS.md` Known Gaps). Either restore the script or remove the reference.
+- **Verification:** `npm run verify:clocks` runs `scripts/verify-all-clocks.js`. Use
+  `npm run verify:clocks -- --path YY-MM-DD` for a focused check, or
+  `npm run verify:clocks -- --changed` to verify only changed clock pages.
 - **Status:** `npm run status` — **script `scripts/generate-status.js` is currently missing.** Manual updates to `docs/STATUS.md` are being made in the interim.
