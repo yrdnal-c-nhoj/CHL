@@ -1,0 +1,59 @@
+.container {
+  --background: #090909;
+  --display-color: #f4f1e8;
+  --accent-color: #ff4d00;
+
+  display: grid;
+  width: 100vw;
+  min-height: 100dvh;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 45%, rgb(255 77 0 / 8%), transparent 42%),
+    var(--background);
+}
+
+.display {
+  display: flex;
+  align-items: baseline;
+  color: var(--display-color);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(4rem, 19vw, 16rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: -0.08em;
+  line-height: 0.85;
+  text-shadow:
+    0 0 0.08em rgb(244 241 232 / 65%),
+    0 0 0.3em rgb(255 77 0 / 35%);
+  user-select: none;
+}
+
+.segment {
+  min-width: 2ch;
+  text-align: center;
+}
+
+.separator {
+  margin-inline: 0.12em;
+  color: var(--accent-color);
+  animation: blink 1s steps(2, jump-none) infinite;
+}
+
+@keyframes blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  46%,
+  100% {
+    opacity: 0.2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .separator {
+    animation: none;
+  }
+}
