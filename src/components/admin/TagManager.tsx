@@ -10,7 +10,7 @@ import Thumbnail from '../Thumbnail';
 export default function TagManager() {
   const navigate = useNavigate();
   const ctx = useContext(DataContext) as DataContextType | undefined;
-  const items = ctx?.items ?? [];
+  const items = useMemo(() => ctx?.items ?? [], [ctx?.items]);
   const loading = ctx?.loading ?? true;
   const error = ctx?.error;
 
@@ -82,6 +82,8 @@ export default function TagManager() {
     }));
   };
 
+  // The grouped result is shared by expansion controls and the rendered list.
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const groupedByMonth = useMemo(() => {
     const filtered = items.filter(item => 
       item.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -122,16 +124,8 @@ export default function TagManager() {
     }
   }, [groupedByMonth, expandedMonths]);
 
-  if (errorMessage) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.card}>Error: {errorMessage}</div>
-      </div>
-    );
-  }
-
   // Extract all unique tags with counts for the selection elements
-  const { allExistingTags, tagCounts } = useMemo(() => {
+  const { allExistingTags } = useMemo(() => {
     const counts: Record<string, number> = {};
     items.forEach((item) => {
       (item.tags ?? []).forEach((tag) => {
@@ -141,7 +135,6 @@ export default function TagManager() {
     const sorted = sortTags(new Set(Object.keys(counts)));
     return {
       allExistingTags: sorted.map(name => ({ name, count: counts[name] })),
-      tagCounts: counts
     };
   }, [items]);
 
@@ -162,6 +155,14 @@ export default function TagManager() {
 
     return JSON.stringify(updated, null, 2);
   }, [items, localTags]);
+
+  if (errorMessage) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.card}>Error: {errorMessage}</div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (

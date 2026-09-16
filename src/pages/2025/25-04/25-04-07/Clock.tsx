@@ -15,31 +15,13 @@ interface SolarSystemClockProps {
 }
 
 // Clock refs interface
-interface ClockRefs {
-  hour: React.RefObject<HTMLDivElement | null>;
-  minute: React.RefObject<HTMLDivElement | null>;
-  second: React.RefObject<HTMLDivElement | null>;
-  clock: React.RefObject<HTMLDivElement | null>;
-}
-
-// Style interfaces - simplified to avoid CSSProperties conflicts
-type BodyStyle = React.CSSProperties;
-type ImageStyle = React.CSSProperties;
-type ClockStyle = React.CSSProperties;
-type BallStyle = React.CSSProperties;
-type HourStyle = React.CSSProperties;
-type MinuteStyle = React.CSSProperties;
-type SecondStyle = React.CSSProperties;
-
 const SolarSystemClock = ({
   backgroundColor = '#0C0D53FF',
 }: SolarSystemClockProps) => {
-  const clockRefs: ClockRefs = {
-    hour: useRef<HTMLDivElement>(null),
-    minute: useRef<HTMLDivElement>(null),
-    second: useRef<HTMLDivElement>(null),
-    clock: useRef<HTMLDivElement>(null),
-  };
+  const hourRef = useRef<HTMLDivElement>(null);
+  const minuteRef = useRef<HTMLDivElement>(null);
+  const secondRef = useRef<HTMLDivElement>(null);
+  const clockRef = useRef<HTMLDivElement>(null);
 
   // Font loading configuration (memoized) - no custom fonts needed
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
@@ -47,6 +29,21 @@ const SolarSystemClock = ({
 
   // Use the standardized hook for smooth clock updates
   const currentTime = useClock();
+
+  const setBallPosition = useCallback(
+    (ball: HTMLDivElement | null, angle: number, radiusVh: number): void => {
+      if (!ball || !clockRef.current) return;
+
+      const rad = (angle - 90) * (Math.PI / 180);
+      const clockRect = clockRef.current.getBoundingClientRect();
+      const centerX = clockRect.width / 2;
+      const centerY = clockRect.height / 2;
+      const radiusPx = (radiusVh / 100) * window.innerHeight;
+      ball.style.left = `${centerX + radiusPx * Math.cos(rad)}px`;
+      ball.style.top = `${centerY + radiusPx * Math.sin(rad)}px`;
+    },
+    [],
+  );
 
   const updateClock = useCallback((): void => {
     const seconds = currentTime.getSeconds();
@@ -58,41 +55,23 @@ const SolarSystemClock = ({
     const hourAngle = hours * 30 + minutes * 0.5;
 
     if (
-      clockRefs.clock.current &&
-      clockRefs.hour.current &&
-      clockRefs.minute.current &&
-      clockRefs.second.current
+      clockRef.current &&
+      hourRef.current &&
+      minuteRef.current &&
+      secondRef.current
     ) {
-      setBallPosition(clockRefs.second.current, secAngle, 20);
-      setBallPosition(clockRefs.minute.current, minAngle, 15);
-      setBallPosition(clockRefs.hour.current, hourAngle, 10);
+      setBallPosition(secondRef.current, secAngle, 20);
+      setBallPosition(minuteRef.current, minAngle, 15);
+      setBallPosition(hourRef.current, hourAngle, 10);
     } else {
       console.warn('Refs not ready:', {
-        clockRef: clockRefs.clock.current,
-        hourRef: clockRefs.hour.current,
-        minuteRef: clockRefs.minute.current,
-        secondRef: clockRefs.second.current,
+        clockRef: clockRef.current,
+        hourRef: hourRef.current,
+        minuteRef: minuteRef.current,
+        secondRef: secondRef.current,
       });
     }
-  }, [currentTime]);
-
-  const setBallPosition = useCallback(
-    (ball: HTMLDivElement | null, angle: number, radiusVh: number): void => {
-      if (!ball || !clockRefs.clock.current) return;
-
-      const rad = (angle - 90) * (Math.PI / 180);
-      const clockRect = clockRefs.clock.current.getBoundingClientRect();
-      const centerX = clockRect.width / 2;
-      const centerY = clockRect.height / 2;
-      const radiusPx = (radiusVh / 100) * window.innerHeight;
-      const x = centerX + radiusPx * Math.cos(rad);
-      const y = centerY + radiusPx * Math.sin(rad);
-
-      ball.style.left = `${x}px`;
-      ball.style.top = `${y}px`;
-    },
-    [clockRefs.clock],
-  );
+  }, [currentTime, setBallPosition]);
 
   useEffect(() => {
     updateClock();
@@ -137,22 +116,22 @@ const SolarSystemClock = ({
         <div
           className="clock unique-solar-clock"
           style={styles.clock}
-          ref={clockRefs.clock}
+          ref={clockRef}
         >
           <div
             className="ball hour unique-solar-clock"
             style={{ ...styles.ball, ...styles.hour }}
-            ref={clockRefs.hour}
+            ref={hourRef}
            />
           <div
             className="ball minute unique-solar-clock"
             style={{ ...styles.ball, ...styles.minute }}
-            ref={clockRefs.minute}
+            ref={minuteRef}
            />
           <div
             className="ball second unique-solar-clock"
             style={{ ...styles.ball, ...styles.second }}
-            ref={clockRefs.second}
+            ref={secondRef}
            />
         </div>
       </div>
