@@ -16,27 +16,10 @@ interface BoringClockProps {
 }
 
 // Clock refs interface
-interface ClockRefs {
-  second: React.RefObject<HTMLImageElement | null>;
-  minute: React.RefObject<HTMLImageElement | null>;
-  hour: React.RefObject<HTMLImageElement | null>;
-}
-
-// Style interfaces - simplified to avoid CSSProperties conflicts
-type BodyStyle = React.CSSProperties;
-type ImageStyle = React.CSSProperties;
-type ClockStyle = React.CSSProperties;
-type HandStyle = React.CSSProperties;
-type HourHandStyle = React.CSSProperties;
-type MinuteHandStyle = React.CSSProperties;
-type SecondHandStyle = React.CSSProperties;
-
 const BoringClock = () => {
-  const clockRefs: ClockRefs = {
-    second: useRef<HTMLImageElement>(null),
-    minute: useRef<HTMLImageElement>(null),
-    hour: useRef<HTMLImageElement>(null),
-  };
+  const secondRef = useRef<HTMLImageElement>(null);
+  const minuteRef = useRef<HTMLImageElement>(null);
+  const hourRef = useRef<HTMLImageElement>(null);
 
   // Font loading configuration (memoized) - no custom fonts needed
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
@@ -55,13 +38,13 @@ const BoringClock = () => {
     const minuteDegrees = (minutes / 60) * 360 + 90;
     const hourDegrees = (hours / 12) * 360 + 90;
 
-    if (clockRefs.second.current)
-      clockRefs.second.current.style.transform = `rotate(${secondDegrees}deg)`;
-    if (clockRefs.minute.current)
-      clockRefs.minute.current.style.transform = `rotate(${minuteDegrees}deg)`;
-    if (clockRefs.hour.current)
-      clockRefs.hour.current.style.transform = `rotate(${hourDegrees}deg)`;
-  }, [currentTime]);
+    if (secondRef.current)
+      secondRef.current.style.transform = `rotate(${secondDegrees}deg)`;
+    if (minuteRef.current)
+      minuteRef.current.style.transform = `rotate(${minuteDegrees}deg)`;
+    if (hourRef.current)
+      hourRef.current.style.transform = `rotate(${hourDegrees}deg)`;
+  }, [currentTime, secondRef, minuteRef, hourRef]);
 
   useEffect(() => {
     updateClock();
@@ -83,7 +66,7 @@ const BoringClock = () => {
           loading="lazy"
           src={hand2}
           alt="second hand"
-          ref={clockRefs.second}
+          ref={secondRef}
           style={{ ...styles.hand, ...styles.secondHand }}
         />
         <img
@@ -91,7 +74,7 @@ const BoringClock = () => {
           loading="lazy"
           src={hand1}
           alt="hour hand"
-          ref={clockRefs.hour}
+          ref={hourRef}
           style={{ ...styles.hand, ...styles.hourHand }}
         />
         <img
@@ -99,7 +82,7 @@ const BoringClock = () => {
           loading="lazy"
           src={hand3}
           alt="minute hand"
-          ref={clockRefs.minute}
+          ref={minuteRef}
           style={{ ...styles.hand, ...styles.minHand }}
         />
       </div>
