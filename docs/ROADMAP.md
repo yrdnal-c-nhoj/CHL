@@ -6,7 +6,7 @@ This is the single source of truth for BorrowedTime project health, standards,
 and the concrete plan to reach them. It supersedes scattered notes in
 `docs/STATUS.md`, GitHub issues, and commit messages.
 
-- **Contract:** `docs/CLOCK_CONTRACT.md`
+- **Contract:** `docs/CLOCK_STANDARDS.md`
 - **Performance budgets:** `docs/PERFORMANCE.md`
 - **Live status / test results:** `docs/STATUS.md`
 - **Architecture / templates:** `src/templates/BaseClock.tsx`
@@ -21,7 +21,7 @@ single-page application with heavy creative use of Canvas, Three.js
 (@react-three/fiber + drei), custom fonts, and date-based routing (`/YY-MM-DD`).
 
 The project values artistic freedom, performance, and accessibility. The
-`CLOCK_CONTRACT.md` exists to keep the fleet of daily clock pages consistent
+`CLOCK_STANDARDS.md` exists to keep the fleet of daily clock pages consistent
 and maintainable.
 
 ---
@@ -55,7 +55,7 @@ and maintainable.
 
 ## 3. Standards (Summary)
 
-The authoritative lists live in `docs/CLOCK_CONTRACT.md` and `docs/PERFORMANCE.md`.
+The authoritative lists live in `docs/CLOCK_STANDARDS.md` and `docs/PERFORMANCE.md`.
 
 ### Non-negotiable rules for every clock
 1. **File pair:** `Clock.tsx` + `Clock.module.css` in the date folder
@@ -85,7 +85,7 @@ The authoritative lists live in `docs/CLOCK_CONTRACT.md` and `docs/PERFORMANCE.m
 | 0.1 | Isolate tests: add `.kilo/` and worktrees to Vitest `test.exclude` or delete stale worktrees | — | S | `npm run test:run` is meaningful |
 | 0.2 | Re-run `npm run test:run` until green or isolate remaining failures | — | S | Tests pass or known failures are tracked |
 | 0.3 | Restore `scripts/generate-status.js` to regenerate `docs/STATUS.md` | — | S | `npm run status` works again |
-| 0.4 | Restore `scripts/verify-all-clocks.js` against `CLOCK_CONTRACT.md` rules | — | M | Automated contract enforcement exists |
+| 0.4 | Restore `scripts/verify-all-clocks.js` against `CLOCK_STANDARDS.md` rules | — | M | Automated contract enforcement exists |
 | 0.5 | Fix `react-hooks/refs` violation in `26-08-24/Clock.tsx:134` | — | S | Lint headline error removed |
 | 0.6 | Guard indexed access in `26-08-23/Clock.tsx` and `26-08-28/useMazeRenderer.ts` | — | S | TS errors drop; pattern documented |
 | 0.7 | Update CI to surface lint/type results as annotations; keep tests+build hard-gated | — | M | Faster feedback without blocking debt |
@@ -99,7 +99,7 @@ The authoritative lists live in `docs/CLOCK_CONTRACT.md` and `docs/PERFORMANCE.m
 | 1.2 | Enable stricter ESLint rules on new files; track legacy relaxations | — | M | Prevents new debt |
 | 1.3 | Adopt `tsconfig.ci.json` progressively; target zero new errors on new clocks | — | M | TS debt becomes bounded |
 | 1.4 | Wire `verify-all-clocks.js` into CI / pre-commit | — | S | Contract is enforced, not aspirational |
-| 1.5 | Update `CLOCK_CONTRACT.md` to match current hook names and React 19 patterns | — | S | Docs match reality |
+| 1.5 | Update `CLOCK_STANDARDS.md` to match current hook names and React 19 patterns | — | S | Docs match reality |
 | 1.6 | Fix test harness: wrap context-provider-dependent tests in real providers | — | M | Tests reliable |
 | 1.7 | Add 3–5 golden-path tests for recent clocks and routing/data layer | — | M | Regression safety |
 | 1.8 | Address Three.js bundle: lazy-load or split `@react-three/drei` | — | M | Back within budget |
@@ -143,7 +143,7 @@ The authoritative lists live in `docs/CLOCK_CONTRACT.md` and `docs/PERFORMANCE.m
 
 ## 6. Contribution & Workflow
 
-1. Read `docs/CLOCK_CONTRACT.md` before adding or modifying a clock.
+1. Read `docs/CLOCK_STANDARDS.md` before adding or modifying a clock.
 2. Run `npm run lint`, `npm run test:run`, and `npm run build` before opening a PR.
 3. Use `npm run new-clock YYYY-MM-DD` once available; otherwise follow the file structure in the contract.
 4. Do not bypass lint or test failures; fix or track them explicitly.
@@ -154,7 +154,7 @@ The authoritative lists live in `docs/CLOCK_CONTRACT.md` and `docs/PERFORMANCE.m
 
 | Document | Purpose |
 |---|---|
-| `docs/CLOCK_CONTRACT.md` | Clock component structure, hooks, styling, and prohibited patterns |
+| `docs/CLOCK_STANDARDS.md` | Clock component structure, hooks, styling, and prohibited patterns |
 | `docs/PERFORMANCE.md` | Asset budgets, cache headers, compression, chunk limits |
 | `docs/STATUS.md` | Live check results, test details, lint details, clock inventory, known gaps |
 | `src/templates/BaseClock.tsx` | Canonical clock template and shared structure |

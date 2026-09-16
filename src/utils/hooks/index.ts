@@ -12,7 +12,7 @@
  *                      smooth hand rotations and sub-second animations.
  *
  * Deprecated aliases (kept as thin re-exports for backward compatibility —
- * see CLOCK_CONTRACT.md §2.2 / §5):
+ * see CLOCK_STANDARDS.md §2.2 / §5):
  * - useSecondClock       -> useClock
  * - useMillisecondClock  -> useSmoothClock
  * - useClockTime         -> useClock
