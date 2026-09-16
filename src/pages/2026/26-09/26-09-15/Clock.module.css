@@ -1,5 +1,5 @@
 .container {
-  --background: #090909;
+  --background: #020202;
   --display-color: #d7cdf2;
   --accent-color: #ff4d00;
 
@@ -10,8 +10,7 @@
   place-items: center;
   overflow: hidden;
   background:
-    radial-gradient(circle at 50% 45%, rgba(51, 186, 170, 0.835), transparent 82%),
-    var(--background);
+       var(--background);
 }
 
 .background {
