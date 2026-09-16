@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useMemo, useCallback } from 'react';
+import { memo, useEffect, useRef, useMemo } from 'react';
 import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -9,32 +9,26 @@ import styles from './Clock.module.css';
 export const assets = [beat4, tumblrImg];
 
 const HeartbeatClock = () => {
-  const clockRefs = {
-    hour: useRef<HTMLDivElement>(null),
-    minute: useRef<HTMLDivElement>(null),
-    second: useRef<HTMLDivElement>(null),
-  };
+  const hourRef = useRef<HTMLDivElement>(null);
+  const minuteRef = useRef<HTMLDivElement>(null);
+  const secondRef = useRef<HTMLDivElement>(null);
 
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
   useSuspenseFontLoader(fontConfigs);
 
   const currentTime = useClock();
 
-  const updateClock = useCallback((): void => {
+  useEffect((): void => {
     const seconds = currentTime.getSeconds();
     const minutes = currentTime.getMinutes();
     const hours = currentTime.getHours();
     const secDeg = seconds * 6;
     const minDeg = minutes * 6 + seconds * 0.1;
     const hourDeg = (hours % 12) * 30 + minutes * 0.5;
-    if (clockRefs.second.current) clockRefs.second.current.style.transform = `rotate(${secDeg}deg)`;
-    if (clockRefs.minute.current) clockRefs.minute.current.style.transform = `rotate(${minDeg}deg)`;
-    if (clockRefs.hour.current) clockRefs.hour.current.style.transform = `rotate(${hourDeg}deg)`;
+    if (secondRef.current) secondRef.current.style.transform = `rotate(${secDeg}deg)`;
+    if (minuteRef.current) minuteRef.current.style.transform = `rotate(${minDeg}deg)`;
+    if (hourRef.current) hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
   }, [currentTime]);
-
-  useEffect(() => {
-    updateClock();
-  }, [updateClock]);
 
   const bodyStyle = {
     margin: 0,
@@ -95,9 +89,9 @@ const HeartbeatClock = () => {
 
       <div style={backgroundStyle} />
       <div style={clockStyle} className={styles.heartbeat}>
-        <div ref={clockRefs.hour} style={hourStyle} />
-        <div ref={clockRefs.minute} style={minuteStyle} />
-        <div ref={clockRefs.second} style={secondStyle} />
+        <div ref={hourRef} style={hourStyle} />
+        <div ref={minuteRef} style={minuteStyle} />
+        <div ref={secondRef} style={secondStyle} />
         <div style={centerDotStyle} />
       </div>
     </main>
