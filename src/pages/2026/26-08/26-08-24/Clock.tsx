@@ -1,6 +1,6 @@
 import soapVideo from '@/assets/images/26_images/26-08/26-08-24/soap.webm';
 import { useSmoothClock } from '@/utils/hooks';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
 export const assets = [soapVideo];
@@ -52,7 +52,7 @@ const Clock =  () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const clocksRef = useRef<Bubble[]>([]);
+  const [generatedClocks, setGeneratedClocks] = useState<Bubble[]>([]);
 
   const widthRef = useRef(0);
   const heightRef = useRef(0);
@@ -131,9 +131,9 @@ const Clock =  () => {
       handHour: (smoothHours / 12) * Math.PI * 2 - Math.PI / 2,
       handMinute: (smoothMinutes / 60) * Math.PI * 2 - Math.PI / 2,
       handSecond: (smoothSeconds / 60) * Math.PI * 2 - Math.PI / 2,
-      clocks: clocksRef.current,
+      clocks: generatedClocks,
     };
-  }, [time]);
+  }, [generatedClocks, time]);
 
   const generateClocks = (width: number, height: number): Bubble[] => {
     const clocks: Bubble[] = [];
@@ -208,7 +208,8 @@ const Clock =  () => {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       widthRef.current = rect.width;
       heightRef.current = rect.height;
-      clocksRef.current = generateClocks(rect.width, rect.height);
+      const nextClocks = generateClocks(rect.width, rect.height);
+      setGeneratedClocks(nextClocks);
     };
 
     readCssParams();
