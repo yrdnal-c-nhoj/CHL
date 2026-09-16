@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
-import { DataProvider } from '../context/DataContext';
+import { DataContext, DataProvider } from '../context/DataContext';
 import Home from '../pages/Home';
 import { useNavigationState } from '../hooks/useNavigationState';
 import { mockState } from './dataMocks';
@@ -25,8 +25,16 @@ describe('Home Integration', () => {
     ];
     mockState.shouldThrow = false;
     sessionStorage.clear();
-    Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: 0 });
-    Object.defineProperty(window, 'scrollX', { writable: true, configurable: true, value: 0 });
+    Object.defineProperty(window, 'scrollY', {
+      writable: true,
+      configurable: true,
+      value: 0,
+    });
+    Object.defineProperty(window, 'scrollX', {
+      writable: true,
+      configurable: true,
+      value: 0,
+    });
   });
 
   it('renders loading state while data is loading', () => {
@@ -38,23 +46,27 @@ describe('Home Integration', () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText('BorrowedTime')).toBeInTheDocument();
+    expect(
+      document.querySelector('[class*="loadingContainer"]'),
+    ).toBeInTheDocument();
   });
 
   it('renders error state when data fails to load', async () => {
-    mockState.data = undefined as any;
-
     render(
       <MemoryRouter>
-        <DataProvider>
+        <DataContext.Provider
+          value={{
+            items: [],
+            loading: false,
+            error: new Error('Network failure'),
+          }}
+        >
           <Home />
-        </DataProvider>
+        </DataContext.Provider>
       </MemoryRouter>,
     );
 
-    await waitFor(() => {
-      expect(screen.getByText(/Error:/)).toBeInTheDocument();
-    });
+    expect(screen.getByText(/Error: Network failure/)).toBeInTheDocument();
   });
 
   it('renders month groups after data loads', async () => {

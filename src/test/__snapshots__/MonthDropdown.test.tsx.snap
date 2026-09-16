@@ -19,6 +19,188 @@ exports[`MonthDropdown Snapshots > matches snapshot when collapsed 1`] = `
 </div>
 `;
 
+exports[`MonthDropdown Snapshots > matches snapshot when expanded 1`] = `
+<div
+  class="_monthDropdownContainer_470241"
+>
+  <div
+    class="_hoverBackground_470241"
+  />
+  <button
+    class="_dropdownButton_470241  _dropdownButtonExpanded_470241"
+  >
+    <span
+      class="_monthName_470241"
+    >
+      MAR'26
+    </span>
+  </button>
+  <div
+    class="_sortContainer_55a22b"
+  >
+    <button
+      class="_sortButton_55a22b _active_55a22b"
+      type="button"
+    >
+      date
+      ↑
+    </button>
+    <button
+      class="_sortButton_55a22b "
+      type="button"
+    >
+      title
+    </button>
+  </div>
+  <div>
+    <div
+      class="_monthGrid_621afd"
+    >
+      <div
+        class="_monthItem_621afd _monthItemClickable_470241"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="_monthItemImage_621afd"
+        >
+          <div
+            class="_thumbnailOpacity_470241"
+            style="display: block; width: 100%; aspect-ratio: 1 / 1; overflow: hidden;"
+          >
+            <img
+              alt="Test A"
+              loading="lazy"
+              src="/src/assets/thumbnails/26-03-05-thumb.webp"
+              style="width: 100%; height: 100%; object-fit: cover; display: block;"
+            />
+          </div>
+        </div>
+        <div
+          class="_monthItemInfo_621afd"
+        >
+          <span>
+            26-03-05
+          </span>
+          <span>
+            #
+            1
+          </span>
+        </div>
+        <div
+          class="_monthItemTitle_621afd"
+        >
+          Test A
+        </div>
+        <div
+          class="tags-wrapper"
+        />
+      </div>
+      <div
+        class="_monthItem_621afd _monthItemClickable_470241"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="_monthItemImage_621afd"
+        >
+          <div
+            class="_thumbnailOpacity_470241"
+            style="display: block; width: 100%; aspect-ratio: 1 / 1; overflow: hidden;"
+          >
+            <img
+              alt="Test B"
+              loading="lazy"
+              src="/src/assets/thumbnails/26-03-04-thumb.webp"
+              style="width: 100%; height: 100%; object-fit: cover; display: block;"
+            />
+          </div>
+        </div>
+        <div
+          class="_monthItemInfo_621afd"
+        >
+          <span>
+            26-03-04
+          </span>
+          <span>
+            #
+            2
+          </span>
+        </div>
+        <div
+          class="_monthItemTitle_621afd"
+        >
+          Test B
+        </div>
+        <div
+          class="tags-wrapper"
+        >
+          <a
+            class="tag-bubble"
+            href="/tag/tag1"
+          >
+            tag1
+          </a>
+        </div>
+      </div>
+      <div
+        class="_monthItem_621afd _monthItemClickable_470241"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="_monthItemImage_621afd"
+        >
+          <div
+            class="_thumbnailOpacity_470241"
+            style="display: block; width: 100%; aspect-ratio: 1 / 1; overflow: hidden;"
+          >
+            <img
+              alt="Test C"
+              loading="lazy"
+              src="/src/assets/thumbnails/26-03-03-thumb.webp"
+              style="width: 100%; height: 100%; object-fit: cover; display: block;"
+            />
+          </div>
+        </div>
+        <div
+          class="_monthItemInfo_621afd"
+        >
+          <span>
+            26-03-03
+          </span>
+          <span>
+            #
+            3
+          </span>
+        </div>
+        <div
+          class="_monthItemTitle_621afd"
+        >
+          Test C
+        </div>
+        <div
+          class="tags-wrapper"
+        >
+          <a
+            class="tag-bubble"
+            href="/tag/tag1"
+          >
+            tag1
+          </a>
+          <a
+            class="tag-bubble"
+            href="/tag/tag2"
+          >
+            tag2
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`MonthDropdown Snapshots > matches snapshot when onToggle is provided 1`] = `
 <div
   class="_monthDropdownContainer_470241"
@@ -35,5 +217,405 @@ exports[`MonthDropdown Snapshots > matches snapshot when onToggle is provided 1`
       MAR'26
     </span>
   </button>
+</div>
+`;
+
+exports[`MonthDropdown Snapshots > matches snapshot with default sort (date-desc) 1`] = `
+<div
+  class="_monthDropdownContainer_470241"
+>
+  <div
+    class="_hoverBackground_470241"
+  />
+  <button
+    class="_dropdownButton_470241  _dropdownButtonExpanded_470241"
+  >
+    <span
+      class="_monthName_470241"
+    >
+      MAR'26
+    </span>
+  </button>
+  <div
+    class="_sortContainer_55a22b"
+  >
+    <button
+      class="_sortButton_55a22b _active_55a22b"
+      type="button"
+    >
+      date
+      ↑
+    </button>
+    <button
+      class="_sortButton_55a22b "
+      type="button"
+    >
+      title
+    </button>
+  </div>
+  <div>
+    <div
+      class="_monthGrid_621afd"
+    >
+      <div
+        class="_monthItem_621afd _monthItemClickable_470241"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="_monthItemImage_621afd"
+        >
+          <div
+            class="_thumbnailOpacity_470241"
+            style="display: block; width: 100%; aspect-ratio: 1 / 1; overflow: hidden;"
+          >
+            <img
+              alt="Test A"
+              loading="lazy"
+              src="/src/assets/thumbnails/26-03-05-thumb.webp"
+              style="width: 100%; height: 100%; object-fit: cover; display: block;"
+            />
+          </div>
+        </div>
+        <div
+          class="_monthItemInfo_621afd"
+        >
+          <span>
+            26-03-05
+          </span>
+          <span>
+            #
+            1
+          </span>
+        </div>
+        <div
+          class="_monthItemTitle_621afd"
+        >
+          Test A
+        </div>
+        <div
+          class="tags-wrapper"
+        />
+      </div>
+      <div
+        class="_monthItem_621afd _monthItemClickable_470241"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="_monthItemImage_621afd"
+        >
+          <div
+            class="_thumbnailOpacity_470241"
+            style="display: block; width: 100%; aspect-ratio: 1 / 1; overflow: hidden;"
+          >
+            <img
+              alt="Test B"
+              loading="lazy"
+              src="/src/assets/thumbnails/26-03-04-thumb.webp"
+              style="width: 100%; height: 100%; object-fit: cover; display: block;"
+            />
+          </div>
+        </div>
+        <div
+          class="_monthItemInfo_621afd"
+        >
+          <span>
+            26-03-04
+          </span>
+          <span>
+            #
+            2
+          </span>
+        </div>
+        <div
+          class="_monthItemTitle_621afd"
+        >
+          Test B
+        </div>
+        <div
+          class="tags-wrapper"
+        >
+          <a
+            class="tag-bubble"
+            href="/tag/tag1"
+          >
+            tag1
+          </a>
+        </div>
+      </div>
+      <div
+        class="_monthItem_621afd _monthItemClickable_470241"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="_monthItemImage_621afd"
+        >
+          <div
+            class="_thumbnailOpacity_470241"
+            style="display: block; width: 100%; aspect-ratio: 1 / 1; overflow: hidden;"
+          >
+            <img
+              alt="Test C"
+              loading="lazy"
+              src="/src/assets/thumbnails/26-03-03-thumb.webp"
+              style="width: 100%; height: 100%; object-fit: cover; display: block;"
+            />
+          </div>
+        </div>
+        <div
+          class="_monthItemInfo_621afd"
+        >
+          <span>
+            26-03-03
+          </span>
+          <span>
+            #
+            3
+          </span>
+        </div>
+        <div
+          class="_monthItemTitle_621afd"
+        >
+          Test C
+        </div>
+        <div
+          class="tags-wrapper"
+        >
+          <a
+            class="tag-bubble"
+            href="/tag/tag1"
+          >
+            tag1
+          </a>
+          <a
+            class="tag-bubble"
+            href="/tag/tag2"
+          >
+            tag2
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MonthDropdown Snapshots > matches snapshot with empty items array 1`] = `
+<div
+  class="_monthDropdownContainer_470241"
+>
+  <div
+    class="_hoverBackground_470241"
+  />
+  <button
+    class="_dropdownButton_470241  _dropdownButtonExpanded_470241"
+  >
+    <span
+      class="_monthName_470241"
+    >
+      MAR'26
+    </span>
+  </button>
+  <div
+    class="_sortContainer_55a22b"
+  >
+    <button
+      class="_sortButton_55a22b _active_55a22b"
+      type="button"
+    >
+      date
+      ↑
+    </button>
+    <button
+      class="_sortButton_55a22b "
+      type="button"
+    >
+      title
+    </button>
+  </div>
+  <div>
+    <div
+      class="_monthGrid_621afd"
+    />
+  </div>
+</div>
+`;
+
+exports[`MonthDropdown Snapshots > matches snapshot with items having tags 1`] = `
+<div
+  class="_monthDropdownContainer_470241"
+>
+  <div
+    class="_hoverBackground_470241"
+  />
+  <button
+    class="_dropdownButton_470241  _dropdownButtonExpanded_470241"
+  >
+    <span
+      class="_monthName_470241"
+    >
+      MAR'26
+    </span>
+  </button>
+  <div
+    class="_sortContainer_55a22b"
+  >
+    <button
+      class="_sortButton_55a22b _active_55a22b"
+      type="button"
+    >
+      date
+      ↑
+    </button>
+    <button
+      class="_sortButton_55a22b "
+      type="button"
+    >
+      title
+    </button>
+  </div>
+  <div>
+    <div
+      class="_monthGrid_621afd"
+    >
+      <div
+        class="_monthItem_621afd _monthItemClickable_470241"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="_monthItemImage_621afd"
+        >
+          <div
+            class="_thumbnailOpacity_470241"
+            style="display: block; width: 100%; aspect-ratio: 1 / 1; overflow: hidden;"
+          >
+            <img
+              alt="Test C"
+              loading="lazy"
+              src="/src/assets/thumbnails/26-03-03-thumb.webp"
+              style="width: 100%; height: 100%; object-fit: cover; display: block;"
+            />
+          </div>
+        </div>
+        <div
+          class="_monthItemInfo_621afd"
+        >
+          <span>
+            26-03-03
+          </span>
+          <span>
+            #
+            3
+          </span>
+        </div>
+        <div
+          class="_monthItemTitle_621afd"
+        >
+          Test C
+        </div>
+        <div
+          class="tags-wrapper"
+        >
+          <a
+            class="tag-bubble"
+            href="/tag/tag1"
+          >
+            tag1
+          </a>
+          <a
+            class="tag-bubble"
+            href="/tag/tag2"
+          >
+            tag2
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MonthDropdown Snapshots > matches snapshot with single item 1`] = `
+<div
+  class="_monthDropdownContainer_470241"
+>
+  <div
+    class="_hoverBackground_470241"
+  />
+  <button
+    class="_dropdownButton_470241  _dropdownButtonExpanded_470241"
+  >
+    <span
+      class="_monthName_470241"
+    >
+      MAR'26
+    </span>
+  </button>
+  <div
+    class="_sortContainer_55a22b"
+  >
+    <button
+      class="_sortButton_55a22b _active_55a22b"
+      type="button"
+    >
+      date
+      ↑
+    </button>
+    <button
+      class="_sortButton_55a22b "
+      type="button"
+    >
+      title
+    </button>
+  </div>
+  <div>
+    <div
+      class="_monthGrid_621afd"
+    >
+      <div
+        class="_monthItem_621afd _monthItemClickable_470241"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="_monthItemImage_621afd"
+        >
+          <div
+            class="_thumbnailOpacity_470241"
+            style="display: block; width: 100%; aspect-ratio: 1 / 1; overflow: hidden;"
+          >
+            <img
+              alt="Test A"
+              loading="lazy"
+              src="/src/assets/thumbnails/26-03-05-thumb.webp"
+              style="width: 100%; height: 100%; object-fit: cover; display: block;"
+            />
+          </div>
+        </div>
+        <div
+          class="_monthItemInfo_621afd"
+        >
+          <span>
+            26-03-05
+          </span>
+          <span>
+            #
+            1
+          </span>
+        </div>
+        <div
+          class="_monthItemTitle_621afd"
+        >
+          Test A
+        </div>
+        <div
+          class="tags-wrapper"
+        />
+      </div>
+    </div>
+  </div>
 </div>
 `;

@@ -47,3 +47,5 @@ Object.defineProperty(document, 'fonts', {
   },
   writable: true,
 });
+
+Element.prototype.scrollIntoView = vi.fn();
