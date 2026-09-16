@@ -124,7 +124,9 @@ export const useMazeRenderer = (mountRef: RefObject<HTMLDivElement | null>) => {
       const startX = Math.floor(random() * GRID_SIZE);
       const startZ = Math.floor(random() * GRID_SIZE);
 
-      grid[startZ][startX].visited = true;
+      const startCell = grid[startZ]?.[startX];
+      if (!startCell) return grid;
+      startCell.visited = true;
       stack.push({ x: startX, z: startZ });
 
       const directions = [
@@ -136,10 +138,13 @@ export const useMazeRenderer = (mountRef: RefObject<HTMLDivElement | null>) => {
 
       while (stack.length > 0) {
         const current = stack[stack.length - 1];
+        if (!current) break;
         const neighbors = directions.filter((dir) => {
           const nx = current.x + dir.x;
           const nz = current.z + dir.z;
-          return nx >= 0 && nx < GRID_SIZE && nz >= 0 && nz < GRID_SIZE && !grid[nz][nx].visited;
+          const neighbor = grid[nz]?.[nx];
+          return nx >= 0 && nx < GRID_SIZE && nz >= 0 && nz < GRID_SIZE &&
+            neighbor !== undefined && !neighbor.visited;
         });
 
         if (neighbors.length === 0) {
@@ -148,19 +153,25 @@ export const useMazeRenderer = (mountRef: RefObject<HTMLDivElement | null>) => {
         }
 
         const dir = neighbors[Math.floor(random() * neighbors.length)];
+        if (!dir) continue;
         const nx = current.x + dir.x;
         const nz = current.z + dir.z;
+        const currentCell = grid[current.z]?.[current.x];
+        const nextCell = grid[nz]?.[nx];
+        if (!currentCell || !nextCell) continue;
 
-        grid[current.z][current.x][dir.wall] = false;
-        grid[nz][nx][dir.opposite] = false;
-        grid[nz][nx].visited = true;
+        currentCell[dir.wall] = false;
+        nextCell[dir.opposite] = false;
+        nextCell.visited = true;
 
         stack.push({ x: nx, z: nz });
       }
 
       const entrance = Math.floor(GRID_SIZE / 2);
-      grid[0][entrance].north = false;
-      grid[GRID_SIZE - 1][entrance].south = false;
+      const northEntrance = grid[0]?.[entrance];
+      const southEntrance = grid[GRID_SIZE - 1]?.[entrance];
+      if (northEntrance) northEntrance.north = false;
+      if (southEntrance) southEntrance.south = false;
 
       return grid;
     };
@@ -179,7 +190,8 @@ export const useMazeRenderer = (mountRef: RefObject<HTMLDivElement | null>) => {
 
       for (let z = 0; z < GRID_SIZE; z++) {
         for (let x = 0; x < GRID_SIZE; x++) {
-          const cell = maze[z][x];
+          const cell = maze[z]?.[x];
+          if (!cell) continue;
           const centerX = (x + 0.5) * CELL_SIZE - MAZE_SIZE / 2;
           const centerZ = (z + 0.5) * CELL_SIZE - MAZE_SIZE / 2;
 

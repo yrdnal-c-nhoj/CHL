@@ -1,11 +1,12 @@
 import { vi } from 'vitest';
+import type { ClockItem } from '../types/data';
 
 export const mockState = {
   data: [
     { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
     { path: '26-03-04', date: '26-03-04', title: 'Sun Clock' },
     { path: '26-03-03', date: '26-03-03', title: 'Moon Clock' },
-  ],
+  ] as ClockItem[] | undefined,
   shouldThrow: false,
 };
 
