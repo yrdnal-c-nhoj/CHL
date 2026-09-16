@@ -31,7 +31,7 @@ const AnalogClock = ({
 
   useEffect(() => {
     const initialDelay = 250;
-    const spinDuration = 2500;
+    const spinDuration = 3750;
     const holdDuration = 300;
     const totalDegrees = 2160;
 
@@ -47,11 +47,11 @@ const AnalogClock = ({
 
       if (phaseRef.current === 'spinning') {
         const progress = Math.min((now - spinStartRef.current) / spinDuration, 1);
-        // Quintic easing keeps the start and stop deliberately slow while
-        // preserving a fast, smooth middle section.
+        // Seventh-order easing makes the start and stop especially gradual
+        // while concentrating the rotation speed in the middle.
         const eased =
-          progress * progress * progress *
-          (progress * (progress * 6 - 15) + 10);
+          progress ** 5 *
+          (progress * (progress * (progress * 20 - 70) + 84) - 35);
         const newAngle =
           currentAngleRef.current + directionRef.current * totalDegrees * eased;
 
