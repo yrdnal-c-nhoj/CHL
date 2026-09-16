@@ -107,7 +107,18 @@ const ClockResults: FC<ClockResultsProps> = ({ items, loading, error }) => {
 
       <ul className={listStyles.simpleListContainer}>
         {sortedItems.map((item) => (
-          <li key={item.date} className={listStyles.simpleListItem} onClick={() => handleRowClick(item.date)}>
+          <li
+            key={item.date}
+            className={listStyles.simpleListItem}
+            onClick={() => handleRowClick(item.date)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                handleRowClick(item.date);
+              }
+            }}
+            role="button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
+            tabIndex={0}
+          >
             <div className={listStyles.simpleListRow}>
               <MemoizedFormattedDate date={item.date} />
               <div className={listStyles.centerColumn}>
