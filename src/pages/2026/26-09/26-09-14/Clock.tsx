@@ -47,11 +47,15 @@ const AnalogClock = ({
 
       if (phaseRef.current === 'spinning') {
         const progress = Math.min((now - spinStartRef.current) / spinDuration, 1);
-        // Seventh-order easing makes the start and stop especially gradual
-        // while concentrating the rotation speed in the middle.
+        // Ninth-order easing keeps the start and stop very gradual while
+        // concentrating substantially more rotation speed in the middle.
         const eased =
-          progress ** 4 *
-          (35 - 84 * progress + 70 * progress ** 2 - 20 * progress ** 3);
+          progress ** 5 *
+          (126 -
+            420 * progress +
+            540 * progress ** 2 -
+            315 * progress ** 3 +
+            70 * progress ** 4);
         const newAngle =
           currentAngleRef.current + directionRef.current * totalDegrees * eased;
 
