@@ -77,9 +77,12 @@ interface SimulationState {
 
 function hexToRgb(hex: string): [number, number, number] {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)]
-    : [0, 0, 0];
+  if (!result) return [0, 0, 0];
+  const [, red, green, blue] = result;
+  if (red === undefined || green === undefined || blue === undefined) {
+    return [0, 0, 0];
+  }
+  return [parseInt(red, 16), parseInt(green, 16), parseInt(blue, 16)];
 }
 
 function rgbToHex(r: number, g: number, b: number): string {
@@ -97,16 +100,20 @@ function getGradientColor(
 ): string {
   t = Math.max(0, Math.min(1, t));
   if (stops.length === 0) return '#000000';
-  if (stops.length === 1) return stops[0].color;
+  const first = stops[0];
+  if (!first) return '#000000';
+  if (stops.length === 1) return first.color;
 
   let i = 0;
-  while (i < stops.length - 1 && stops[i + 1].position <= t) {
+  while (i < stops.length - 1) {
+    const next = stops[i + 1];
+    if (!next || next.position > t) break;
     i++;
   }
-  if (i >= stops.length - 1) return stops[stops.length - 1].color;
-
   const s1 = stops[i];
   const s2 = stops[i + 1];
+  if (!s1 || !s2) return first.color;
+
   const range = s2.position - s1.position;
   const f = range > 0 ? (t - s1.position) / range : 0;
 
@@ -181,7 +188,10 @@ export const DissolvingDiffusionClock =  () => {
       // Background color: interpolated from GRADIENT_STOPS based on column position.
       ctx.fillStyle = getGradientColor(GRADIENT_STOPS, t);
     }
-    ctx.fillRect(xDisp[kx], yDisp[ky], side, side);
+    const x = xDisp[kx];
+    const y = yDisp[ky];
+    if (x === undefined || y === undefined) return;
+    ctx.fillRect(x, y, side, side);
   };
 
   const renderFullGrid = (ctx: CanvasRenderingContext2D) => {
@@ -208,9 +218,12 @@ export const DissolvingDiffusionClock =  () => {
     let x = 0;
     let y = 0;
     do {
-      const dir = Math.floor(Math.random() * 4);
-      x = kx + DX[dir];
-      y = ky + DY[dir];
+        const dir = Math.floor(Math.random() * 4);
+        const dx = DX[dir];
+        const dy = DY[dir];
+        if (dx === undefined || dy === undefined) continue;
+        x = kx + dx;
+        y = ky + dy;
     } while (x < 0 || x >= nbx || y < 0 || y >= nby);
 
     if (gridHue[ky]?.[kx] === undefined || gridHue[y]?.[x] === undefined) {
@@ -221,14 +234,24 @@ export const DissolvingDiffusionClock =  () => {
       swapHistory.push({ kx, ky, x, y });
     }
 
-    const tempHue = gridHue[ky][kx];
-    gridHue[ky][kx] = gridHue[y][x];
-    gridHue[y][x] = tempHue;
+    const firstRow = gridHue[ky];
+    const secondRow = gridHue[y];
+    const firstHue = firstRow?.[kx];
+    const secondHue = secondRow?.[x];
+    if (firstRow === undefined || secondRow === undefined ||
+        firstHue === undefined || secondHue === undefined) return;
+    firstRow[kx] = secondHue;
+    secondRow[x] = firstHue;
 
-    if (phase === "DISSOLVE" && clockMask[ky] && clockMask[y]) {
-      const tempMask = clockMask[ky][kx];
-      clockMask[ky][kx] = clockMask[y][x];
-      clockMask[y][x] = tempMask;
+    if (phase === "DISSOLVE") {
+      const firstMaskRow = clockMask[ky];
+      const secondMaskRow = clockMask[y];
+      if (firstMaskRow === undefined || secondMaskRow === undefined) return;
+      const firstMask = firstMaskRow[kx];
+      const secondMask = secondMaskRow[x];
+      if (firstMask === undefined || secondMask === undefined) return;
+      firstMaskRow[kx] = secondMask;
+      secondMaskRow[x] = firstMask;
     }
 
     const isClock1 = clockMask[ky]?.[kx] ?? false;
@@ -241,20 +264,31 @@ export const DissolvingDiffusionClock =  () => {
     const { gridHue, clockMask, swapHistory } = stateRef.current;
     if (swapHistory.length === 0) return;
 
-    const { kx, ky, x, y } = swapHistory.pop()!;
+    const swap = swapHistory.pop();
+    if (!swap) return;
+    const { kx, ky, x, y } = swap;
 
     if (gridHue[ky]?.[kx] === undefined || gridHue[y]?.[x] === undefined) {
       return;
     }
 
-    const tempHue = gridHue[ky][kx];
-    gridHue[ky][kx] = gridHue[y][x];
-    gridHue[y][x] = tempHue;
+    const firstRow = gridHue[ky];
+    const secondRow = gridHue[y];
+    const firstHue = firstRow?.[kx];
+    const secondHue = secondRow?.[x];
+    if (firstRow === undefined || secondRow === undefined ||
+        firstHue === undefined || secondHue === undefined) return;
+    firstRow[kx] = secondHue;
+    secondRow[x] = firstHue;
 
     if (clockMask[ky] && clockMask[y]) {
-      const tempMask = clockMask[ky][kx];
-      clockMask[ky][kx] = clockMask[y][x];
-      clockMask[y][x] = tempMask;
+      const firstMaskRow = clockMask[ky];
+      const secondMaskRow = clockMask[y];
+      const firstMask = firstMaskRow[kx];
+      const secondMask = secondMaskRow[x];
+      if (firstMask === undefined || secondMask === undefined) return;
+      firstMaskRow[kx] = secondMask;
+      secondMaskRow[x] = firstMask;
     }
 
     const isClock1 = clockMask[ky]?.[kx] ?? false;
@@ -300,7 +334,10 @@ export const DissolvingDiffusionClock =  () => {
     for (let ky = 0; ky < nby; ky++) {
       for (let kx = 0; kx < nbx; kx++) {
         const alpha = imgData[(ky * nbx + kx) * 4 + 3];
-        mask[ky][kx] = alpha > 128;
+        const maskRow = mask[ky];
+        if (alpha !== undefined && maskRow !== undefined) {
+          maskRow[kx] = alpha > 128;
+        }
       }
     }
 
@@ -393,6 +430,7 @@ export const DissolvingDiffusionClock =  () => {
   // -----------------------------------------------------------------------
 
   useEffect(() => {
+    const state = stateRef.current;
     initSimulation();
 
     const canvas = canvasRef.current;
@@ -471,11 +509,13 @@ export const DissolvingDiffusionClock =  () => {
     }
 
     return () => {
-      if (stateRef.current.animFrameId !== null) {
-        cancelAnimationFrame(stateRef.current.animFrameId);
+      if (state.animFrameId !== null) {
+        cancelAnimationFrame(state.animFrameId);
       }
       resizeObserver.disconnect();
     };
+    // The animation loop intentionally captures stable refs and callbacks for its lifetime.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // -----------------------------------------------------------------------
