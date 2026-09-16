@@ -16,7 +16,7 @@ interface AnalogClockProps {
 }
 
 const AnalogClock = ({
-  size = 280,
+  size = 97,
   showSeconds = true,
   className = '',
 }: AnalogClockProps) => {
@@ -51,7 +51,7 @@ const AnalogClock = ({
   const hours = time.getHours() % 12;
 
   const style = {
-    '--clock-size': `${size}px`,
+    '--clock-size': `${size}vmin`,
     '--clock-rotation': `${rotation}deg`,
     '--hour-angle': `${hours * 30 + minutes * 0.5}deg`,
     '--minute-angle': `${minutes * 6 + seconds * 0.1}deg`,
