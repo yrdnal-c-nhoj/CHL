@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useMemo, useCallback } from 'react';
+import { memo, useEffect, useRef, useCallback } from 'react';
 import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -16,12 +16,10 @@ const fontConfigs: FontConfig[] = [
 ];
 
 const TripleCactusClock = () => {
-  const clockRefs = {
-    hours: useRef<HTMLDivElement>(null),
-    minutes: useRef<HTMLDivElement>(null),
-    seconds: useRef<HTMLDivElement>(null),
-    milliseconds: useRef<HTMLDivElement>(null),
-  };
+  const hoursRef = useRef<HTMLDivElement>(null);
+  const minutesRef = useRef<HTMLDivElement>(null);
+  const secondsRef = useRef<HTMLDivElement>(null);
+  const millisecondsRef = useRef<HTMLDivElement>(null);
 
   useSuspenseFontLoader(fontConfigs);
   const currentTime = useSmoothClock();
@@ -46,11 +44,11 @@ const TripleCactusClock = () => {
   }, []);
 
   const updateClock = useCallback((): void => {
-    setDigits(clockRefs.hours.current, String(currentTime.getHours()).padStart(2, '0'));
-    setDigits(clockRefs.minutes.current, String(currentTime.getMinutes()).padStart(2, '0'));
-    setDigits(clockRefs.seconds.current, String(currentTime.getSeconds()).padStart(2, '0'));
-    setDigits(clockRefs.milliseconds.current, String(currentTime.getMilliseconds()).padStart(3, '0'));
-  }, [currentTime, setDigits]);
+    setDigits(hoursRef.current, String(currentTime.getHours()).padStart(2, '0'));
+    setDigits(minutesRef.current, String(currentTime.getMinutes()).padStart(2, '0'));
+    setDigits(secondsRef.current, String(currentTime.getSeconds()).padStart(2, '0'));
+    setDigits(millisecondsRef.current, String(currentTime.getMilliseconds()).padStart(3, '0'));
+  }, [currentTime, setDigits, hoursRef, minutesRef, secondsRef, millisecondsRef]);
 
   useEffect(() => {
     updateClock();
@@ -96,10 +94,10 @@ const TripleCactusClock = () => {
               fontFamily: 'CactusClockFont',
             }}
           >
-            <div style={{ display: 'flex', gap: '1.3dvh', margin: '1dvh 0' }} ref={clockRefs.hours} />
-            <div style={{ display: 'flex', gap: '1.3dvh', margin: '1dvh 0' }} ref={clockRefs.minutes} />
-            <div style={{ display: 'flex', gap: '1.3dvh', margin: '1dvh 0' }} ref={clockRefs.seconds} />
-            <div style={{ display: 'flex', gap: '1.3dvh', margin: '1dvh 0' }} ref={clockRefs.milliseconds} />
+            <div style={{ display: 'flex', gap: '1.3dvh', margin: '1dvh 0' }} ref={hoursRef} />
+            <div style={{ display: 'flex', gap: '1.3dvh', margin: '1dvh 0' }} ref={minutesRef} />
+            <div style={{ display: 'flex', gap: '1.3dvh', margin: '1dvh 0' }} ref={secondsRef} />
+            <div style={{ display: 'flex', gap: '1.3dvh', margin: '1dvh 0' }} ref={millisecondsRef} />
           </div>
         </div>
 
