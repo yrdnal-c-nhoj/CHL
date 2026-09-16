@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useSuspenseFontLoader } from '../../../utils/fontLoader';
+import React, { useEffect } from 'react';
+import { useSuspenseFontLoader } from './src/utils/fontLoader';
 
 const Clock: React.FC = () => {
   const fontConfigs = [
