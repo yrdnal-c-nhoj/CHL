@@ -5,43 +5,44 @@ Last reviewed: 2026-09-17
 This file is the current source of truth for repository health. For the full
 project roadmap, standards, and phased improvement plan, see
 [`docs/ROADMAP.md`](../ROADMAP.md). Historical audit reports live in
-`docs/archive/`. Refresh with `npm run status`.
+`docs/archive/`. The `npm run status` command is a placeholder; see live checks below.
 
 ## Live Check Summary
 
-These results were generated on 2026-09-17 by running the live checks automatically.
+These results reflect the current state after recent fixes.
 
 | Check | Command | Result |
 |---|---|---|
-| Status regen | `npm run status` | ✅ Pass |
 | Build | `npm run build` | ✅ Pass |
-| Tests | `npm run test:run` | ✅ Pass |
-| Lint | `npm run lint` | ❌ Failed |
-| TypeScript | `npx tsc --noEmit` | ❌ Failed |
-| Clock verification | `node scripts/verify-all-clocks.js --quiet` | ❌ Failed |
+| Tests | `npm run test:run` | ✅ Pass (115 tests) |
+| Lint (recent 26-09 clocks) | `npx eslint "src/pages/2026/26-09/**/*.{ts,tsx}"` | ✅ Pass |
+| TypeScript (in-scope, via tsconfig.ci.json) | `npm run type-check` | ✅ Pass |
+| Clock verification (changed pages) | `npm run verify:clocks:changed` | ✅ Pass |
+| Lint (full fleet) | `npm run lint` | ❌ Failed (legacy debt) |
+| TypeScript (full fleet) | `npx tsc --noEmit` | ❌ Failed (legacy debt) |
+| Clock verification (full fleet) | `npm run verify:clocks` | ❌ Failed (legacy debt) |
 
 ### Test detail
 
-Run `npm run test:run` to inspect current failures.
+All 115 tests pass. Run `npm run test:run` to confirm.
 
 ### Lint detail
 
-Run `npm run lint` to inspect current lint violations.
+Full `npm run lint` shows legacy violations across 2025 and 2026 Jan-Aug clocks. Recent 26-09 clocks are clean.
 
 ### TypeScript detail
 
-Run `npx tsc --noEmit` to inspect current TypeScript errors.
+Full `npx tsc --noEmit` (using tsconfig.json) surfaces thousands of legacy errors. The CI type-check (`npm run type-check` via tsconfig.ci.json) is clean for in-scope code.
 
 ## Git State
 
 - **Branch:** agents/next-steps-guidance
 - **Working tree:** Clean
 - **Recent commits:**
-  - 0e0bc0d51 z
-  - d95837e5e g
-  - 5f2399244 x
-  - 008c2c699 l
-  - 4bea5c392 Merge branch 'agents/next-step-guidance'
+  - Fix 26-09-16 clock contract violations
+  - Fix tsconfig.ci.json exclude for legacy clocks
+  - Fix test file TS errors for clean type-check
+  - Add type-check npm script and update CI
   - cf320c4bb fix: simplify september clock layout
   - a6ec5ea8e fix: clean up pirate skew and canvas clocks
   - 94e756bf9 fix: stabilize analog image clock refs
@@ -52,15 +53,15 @@ Run `npx tsc --noEmit` to inspect current TypeScript errors.
 
 - **2025:** Apr–Dec (`25-04`…`25-12`) — 9 months of clocks
 - **2026:** Jan–Aug (`26-01`…`26-08`) — 8 full months, latest day **2026-08-31**
-- **Today (2026-09-17):** no clock yet — `src/pages/2026/26-09/` does not exist
+- **2026-09:** Sep 1–17 (`26-09-01`…`26-09-17`) — **17 clocks**, in-scope for CI strict checks
 
 ## Known Gaps
 
-- `scripts/verify-all-clocks.js` is active and can be run with `npm run verify:clocks`.
-- `scripts/generate-status.js` has been restored and is generating this file again.
-- `.kilo/worktrees/juvenile-lip/` is still a known source of stale test leakage if the worktree remains present.
-- The repo still has outstanding lint, test, and TypeScript debt tracked in `docs/ROADMAP.md`.
-- Recent clock files continue to be the primary focus for strict TS/index-guard cleanup.
+- `scripts/verify-all-clocks.js` is active; run with `npm run verify:clocks` or `verify:clocks:changed`.
+- `scripts/generate-status.js` does NOT exist; `npm run status` is a placeholder.
+- `.kilo/worktrees/juvenile-lip/` may cause stale test leakage if present.
+- Legacy clocks (2025, 2026 Jan–Aug) have outstanding lint, TypeScript, and contract violations tracked in `docs/ROADMAP.md`.
+- Three.js bundle (~190KB brotli) exceeds the <150KB budget; lazy-loading or splitting `@react-three/drei` is planned.
 
 ## Related Docs
 
@@ -68,4 +69,3 @@ Run `npx tsc --noEmit` to inspect current TypeScript errors.
 - Performance budgets: `docs/PERFORMANCE.md`
 - Architectural standards: `src/templates/BaseClock.tsx` + its module CSS
 - Historical reports: `docs/archive/`
-

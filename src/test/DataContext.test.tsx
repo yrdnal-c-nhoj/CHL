@@ -5,7 +5,7 @@ import { mockState } from './dataMocks';
 
 describe('DataContext', () => {
   beforeEach(() => {
-    console.log('DC beforeEach start, data:', mockState.data.map(i => i.path).join(','));
+    console.log('DC beforeEach start, data:', mockState.data?.map(i => i.path).join(',') ?? '');
     vi.clearAllMocks();
     mockState.data = [
       { path: '26-03-05', date: '26-03-05', title: 'Retro Terminal' },
@@ -13,7 +13,7 @@ describe('DataContext', () => {
       { path: '26-03-03', date: '26-03-03', title: 'Moon Clock' },
     ];
     mockState.shouldThrow = false;
-    console.log('DC beforeEach end, data:', mockState.data.map(i => i.path).join(','));
+    console.log('DC beforeEach end, data:', mockState.data?.map(i => i.path).join(',') ?? '');
   });
 
   it('should provide items through context', async () => {

@@ -1,6 +1,7 @@
 import { useSmoothClock } from '@/utils/hooks';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import backgroundVideo from '@/assets/images/26_images/26-09/26-09-16/world.webm';
+import SRTime from '@/components/SRTime';
 import styles from './Clock.module.css';
 
 export const assets: string[] = [backgroundVideo];
@@ -56,9 +57,10 @@ const Clock_26_09_16 = () => {
           </div>
         ))}
       </div>
+      <SRTime time={time} />
     </main>
   );
 };
 
 Clock_26_09_16.displayName = 'Clock_26_09_16';
-export default React.memo(Clock_26_09_16);
+export default Clock_26_09_16;

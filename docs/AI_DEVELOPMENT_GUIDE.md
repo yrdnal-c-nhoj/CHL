@@ -383,11 +383,13 @@ Use the command that matches the change:
 
 ```bash
 npm run build                         # required before completion
-npm run build:with-types              # build plus TypeScript
+npm run build:with-types              # build plus TypeScript (full fleet)
+npm run type-check                    # TypeScript check for in-scope code (tsconfig.ci.json)
 npm run test:run                      # behavior or shared utility changes
 npm run lint                          # lint-sensitive changes
-node scripts/verify-all-clocks.js --path 26-09-16
-npm run status                        # refresh docs/STATUS.md
+npm run verify:clocks:changed         # verify only changed clock pages
+npm run verify:clocks -- --path 26-09-16  # verify specific clock
+# npm run status                      # placeholder; generate-status.js not implemented
 ```
 
 The repository may contain pre-existing lint, type, or legacy clock failures.

@@ -1,15 +1,7 @@
 name: "CI: Quality Gate"
 
-# Layered CI designed to be *always useful* rather than *always red*.
-#
-# Stage 1 (hard gate)  — tests + build. These MUST pass. They are the source
-#                        of truth for "does the app work".
-# Stage 2 (no-new-debt) — lint + clock-standards verification. These compare
-#                        against a committed baseline (.github/compliance-baseline.json)
-#                        and FAIL ONLY IF THEY REGRESS. This lets the team work
-#                        down the existing debt (491 legacy clocks) without a
-#                        permanently-red pipeline, while guaranteeing new code
-#                        does not add to it.
+# Stage 1 (hard gate) — tests + build + type-check + clock verification on changed pages.
+# These MUST pass. They are the source of truth for "does the app work".
 
 on:
   push:
@@ -18,9 +10,7 @@ on:
     branches: [main]
 
 jobs:
-  # ---------------------------------------------------------------
-  # STAGE 1 — HARD GATE: tests + build (must always be green)
-  # ---------------------------------------------------------------
+  # HARD GATE: tests + build + type-check + verify changed clocks
   test-and-build:
     name: Tests & Build
     runs-on: ubuntu-latest
@@ -40,21 +30,13 @@ jobs:
         run: npm ci
 
       - name: Verify changed clock pages
-        run: npm run verify:clocks -- --changed
+        run: npm run verify:clocks:changed
 
       - name: Run unit tests
         run: npm run test:run
 
-      - name: Type-check app code (non-blocking)
-        # Full `tsc` currently surfaces ~3,100 pre-existing type errors in the
-        # legacy clock pages (src/pages/**/Clock.tsx). Those are tracked as debt
-        # and migrated in phases. We run type-check here and surface results as
-        # a warning so the hard gate stays green while the fleet is being fixed.
-        # The Vite/esbuild build below is the real "does it compile" gate.
-        continue-on-error: true
-        run: |
-          npx tsc --noEmit -p tsconfig.ci.json --skipLibCheck \
-            || echo "::warning::Type-check reported errors (see log). This is non-blocking while legacy clock pages are being migrated."
+      - name: Type-check (in-scope code only, via tsconfig.ci.json)
+        run: npm run type-check
 
       - name: Production build
         run: npm run build
