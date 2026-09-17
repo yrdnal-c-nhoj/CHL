@@ -20,21 +20,6 @@ const SkewClock: React.FC<SkewClockProps> = () => {
     return `hsl(${hue}, 100%, 50%)`;
   }, []);
 
-  const updateClock = useCallback((): void => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let hours = currentTime.getHours() % 12;
-    if (hours === 0) hours = 12;
-    const minutes = String(currentTime.getMinutes()).padStart(2, '0');
-    const digits = `${hours}${minutes}`.split('');
-    if (digits.length < 4) digits.unshift(' '); // pad with space for single-digit hour
-    const colors = digits.map(() => getRandomVibrantColor());
-    drawText(ctx, canvas, digits, colors);
-  }, [currentTime, getRandomVibrantColor]);
-
   const drawText = useCallback(
     (
       ctx: CanvasRenderingContext2D,
@@ -86,6 +71,21 @@ const SkewClock: React.FC<SkewClockProps> = () => {
     },
     [getRandomVibrantColor],
   );
+
+  const updateClock = useCallback((): void => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let hours = currentTime.getHours() % 12;
+    if (hours === 0) hours = 12;
+    const minutes = String(currentTime.getMinutes()).padStart(2, '0');
+    const digits = `${hours}${minutes}`.split('');
+    if (digits.length < 4) digits.unshift(' '); // pad with space for single-digit hour
+    const colors = digits.map(() => getRandomVibrantColor());
+    drawText(ctx, canvas, digits, colors);
+  }, [currentTime, drawText, getRandomVibrantColor]);
 
   useEffect(() => {
     const canvas = canvasRef.current;

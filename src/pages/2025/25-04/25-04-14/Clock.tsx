@@ -31,12 +31,15 @@ const BlueBrickClock = () => {
     updateClock();
   }, [updateClock]);
 
-  const ballStyle = {
-    width: '2vw',
-    height: '3vw',
-    background: 'radial-gradient(circle at 30% 30%, #7d9ac9, #a5c1e6)',
-    boxShadow: '0 0 1vw 0.4vw rgba(117, 151, 215, 0.8)',
-  };
+  const ballStyle = useMemo(
+    () => ({
+      width: '2vw',
+      height: '3vw',
+      background: 'radial-gradient(circle at 30% 30%, #7d9ac9, #a5c1e6)',
+      boxShadow: '0 0 1vw 0.4vw rgba(117, 151, 215, 0.8)',
+    }),
+    [],
+  );
 
   const renderBalls = useCallback((count: number) =>
     Array.from({ length: count }, (_, i) => (
