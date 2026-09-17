@@ -35,7 +35,7 @@
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   border: 0.1rem solid rgba(199, 215, 243, 0.538);
-  box-shadow: 0 0 0.5rem rgba(0, 123, 255, 0.3);
+  /* box-shadow: 0 0 0.5rem rgba(0, 123, 255, 0.3); */
 }
 
 .tileHand {
