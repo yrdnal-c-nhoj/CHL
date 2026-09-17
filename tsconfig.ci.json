@@ -1,5 +1,18 @@
 {
   "extends": "./tsconfig.json",
   "include": ["src/**/*", "vite.config.ts", "vitest.config.js"],
-  "exclude": ["node_modules", "dist", "build", "src/pages/2025/**", "src/pages/2026/26-0[1-8]/**"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "src/pages/2025/**",
+    "src/pages/2026/26-01/**",
+    "src/pages/2026/26-02/**",
+    "src/pages/2026/26-03/**",
+    "src/pages/2026/26-04/**",
+    "src/pages/2026/26-05/**",
+    "src/pages/2026/26-06/**",
+    "src/pages/2026/26-07/**",
+    "src/pages/2026/26-08/**"
+  ]
 }

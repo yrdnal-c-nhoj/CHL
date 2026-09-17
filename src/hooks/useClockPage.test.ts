@@ -78,7 +78,7 @@ describe('useClockPage', () => {
   it('should handle rapid item changes without crashing', async () => {
     const { result, rerender } = renderHook(
       ({ item }: { item: { date: string } | null }) => useClockPage(item),
-      { initialProps: { item: { date: '26-03-05' } } },
+      { initialProps: { item: { date: '26-03-05' } } as { item: { date: string } | null } },
     );
 
     rerender({ item: { date: '26-03-04' } });

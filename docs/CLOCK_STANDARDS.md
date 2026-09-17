@@ -212,16 +212,19 @@ npm run lint -- "src/pages/**/Clock.tsx"
 - `react/no-unknown-property` — error (blocks `cssText` mutations)
 - `react-hooks/exhaustive-deps` — error (safe dependency tracking)
 - `react-hooks/rules-of-hooks` — error (enforce hook placement)
-- `@typescript-eslint/no-explicit-any` — warn (type safety)
-- `@typescript-eslint/no-non-null-assertion` — warn (avoid unsafe assertions)
+- `@typescript-eslint/no-explicit-any` — warn (type safety); **error for new clocks (26-09+)**
+- `@typescript-eslint/no-non-null-assertion` — warn (avoid unsafe assertions); **error for new clocks (26-09+)**
+- `@typescript-eslint/no-unused-vars` — warn; **error for new clocks (26-09+)**
 
 ### TypeScript Strict Mode
 
-**All clocks must pass `npm run type-check`:**
+**All in-scope clocks must pass `npm run type-check` (uses `tsconfig.ci.json`):**
 
 ```bash
 npm run type-check
 ```
+
+The `tsconfig.ci.json` excludes legacy clocks (2025, 2026 Jan–Aug) so the check only validates recent (2026-09+) and shared code.
 
 **Current strictness (effective `noUncheckedIndexedAccess: true`):**
 - Array/object index access must be guarded: `arr?.[i]` or `if (arr?.[i]) { ... }`
@@ -328,11 +331,11 @@ useEffect(() => {
 
 ## Enforcement
 
-- **CI:** `npm run test:run`, `npm run lint`, `npx tsc --noEmit`.
+- **CI:** `npm run test:run`, `npm run type-check`, `npm run verify:clocks:changed`, `npm run build`.
 - **Verification:** `npm run verify:clocks` runs `scripts/verify-all-clocks.js`. Use
   `npm run verify:clocks -- --path YY-MM-DD` for a focused check, or
-  `npm run verify:clocks -- --changed` to verify only changed clock pages.
-- **Status:** `npm run status` — **script `scripts/generate-status.js` is currently missing.** Manual updates to `docs/STATUS.md` are being made in the interim.
+  `npm run verify:clocks:changed` to verify only changed clock pages.
+- **Status:** `npm run status` — placeholder; `scripts/generate-status.js` is not implemented. `docs/STATUS.md` is manually maintained.
 
 ---
 
