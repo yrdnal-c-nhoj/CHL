@@ -6908,6 +6908,7 @@
       "digital",
       "eye",
       "myth",
+      "roman-numeral",
       "see"
     ]
   },
@@ -7003,6 +7004,7 @@
       "moon",
       "myth",
       "planet",
+      "roman-numeral",
       "space"
     ]
   },
@@ -7063,6 +7065,18 @@
       "ocean",
       "predator",
       "swim"
+    ]
+  },
+  {
+    "path": "26-09-16",
+    "date": "26-09-16",
+    "title": "Itinerary",
+    "tags": [
+      "analog",
+      "day",
+      "landscape",
+      "transport",
+      "world"
     ]
   }
 ]

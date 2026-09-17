@@ -43,6 +43,10 @@ Thumbs.db
 # Documentation (keep only README.md)
 *.md
 !README.md
+!AGENTS.md
+!docs/AI_DEVELOPMENT_GUIDE.md
+!.github/agents/
+!.github/agents/*.md
 
 # Roadmaps, plans, and technical standards
 .kilo/
