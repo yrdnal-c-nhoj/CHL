@@ -120,13 +120,17 @@ export default function SphereDropClock(): JSX.Element {
   }, []);
 
   const computedOffsets = useMemo(() => {
-    let currentSum = 0;
-    return ROOM_CONFIGS.map((room) => {
-      const actualHeight = isMobile ? room.baseHeight * 0.85 : room.baseHeight;
-      const offset = currentSum;
-      currentSum += actualHeight;
-      return { name: room.name, height: actualHeight, offset };
-    });
+    return ROOM_CONFIGS.reduce<Array<{ name: string; height: number; offset: number }>>(
+      (rooms, room) => {
+        const actualHeight = isMobile ? room.baseHeight * 0.85 : room.baseHeight;
+        const offset = rooms.length === 0
+          ? 0
+          : rooms[rooms.length - 1].offset + rooms[rooms.length - 1].height;
+        rooms.push({ name: room.name, height: actualHeight, offset });
+        return rooms;
+      },
+      [],
+    );
   }, [isMobile]);
 
   // Physics Simulation Loop

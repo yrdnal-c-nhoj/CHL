@@ -9,7 +9,6 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 export const assets = [horizonFontUrl, layer2, layer1, sdfwef];
@@ -41,7 +40,6 @@ const HorizonClock = () => {
 
   // Use the standardized hook for smooth clock updates
   const currentTime = useClock();
-  const componentId = useRef(`horizon-clock-${Date.now()}`);
 
   const [time, setTime] = useState<string>('');
 

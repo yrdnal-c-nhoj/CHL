@@ -37,7 +37,7 @@ const BirthdayCakeClock = () => {
       <div className={styles.clockWrapper}>
         <div className={styles.clock}>
           <div className={styles.circle}>
-            <img src={cakeGif} alt="Rotating Image" className={styles.circleImg} />
+            <img src={cakeGif} alt="Rotating cake" className={styles.circleImg} />
           </div>
 
           <div className={styles.handBase} style={{ '--minute-deg': `${minuteDeg}deg` } as React.CSSProperties}>
