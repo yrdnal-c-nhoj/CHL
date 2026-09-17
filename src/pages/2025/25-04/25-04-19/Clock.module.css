@@ -1,66 +1,65 @@
-.tower {
-  background: #5b032eff;
-  position: fixed;
-  top: 0;
-  left: 0;
+.stage {
   width: 100vw;
   height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  transform-style: preserve-3d;
-  perspective: 1400px;
-  transform: scale(0.85) rotateX(20deg) rotateY(10deg);
-}
-
-@media (max-width: 767px) {
-  .tower {
-    perspective: 1000px;
-    transform: scale(0.75) rotateX(14deg) rotateY(5deg);
-  }
-}
-
-.room {
-  position: absolute;
-  top: 0;
-  left: 12.5vw;
-  transform-style: preserve-3d;
-  width: 75vw;
-}
-
-.roomMinutes {
-  transform: rotateX(-15deg) rotateY(-5deg);
-}
-
-@media (max-width: 767px) {
-  .roomMinutes {
-    transform: rotateX(-12deg) rotateY(-3deg);
-  }
-}
-
-.ball {
-  font-family: 'SphFont', sans-serif;
-  border-radius: 50%;
-  position: absolute;
-  transform-style: preserve-3d;
+  background: #5b032eff;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgb(7, 21, 112);
-  user-select: none;
-  box-shadow: 0 0 1vh rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  margin: 0;
+  padding: 12px 16px;
+  box-sizing: border-box;
+}
+
+.tower {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  box-sizing: border-box;
+}
+
+.glassChamber {
+  position: relative;
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    inset 0 0 12px rgba(0, 0, 0, 0.2);
+  transform-style: preserve-3d;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.sphere {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow:
+    inset -2px -2px 5px rgba(0, 0, 0, 0.4),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.4),
+    0 3px 6px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   will-change: transform;
-  
-  /* Dynamic properties passed from JS */
-  width: var(--ball-size);
-  height: var(--ball-size);
-  font-size: calc(var(--ball-size) / 1.4);
-  background: var(--ball-gradient);
+  user-select: none;
+  pointer-events: none;
 }
 
-.ballCurrent {
-  z-index: 1000;
-}
-
-.ballStatic {
-  z-index: 1;
+.sphereLabel {
+  font-size: var(--fontSize);
+  font-weight: 800;
+  color: rgb(7, 21, 112);
+  font-family: system-ui, -apple-system, sans-serif;
+  user-select: none;
 }
