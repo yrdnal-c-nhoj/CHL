@@ -1,109 +1,66 @@
 # CHL Current Status
 
-Last reviewed: 2026-09-02
+Last reviewed: 2026-09-17
 
 This file is the current source of truth for repository health. For the full
 project roadmap, standards, and phased improvement plan, see
 [`docs/ROADMAP.md`](../ROADMAP.md). Historical audit reports live in
-`docs/archive/`. Refresh with `npm run status` (script pending — see Known Gaps).
+`docs/archive/`. Refresh with `npm run status`.
 
 ## Live Check Summary
 
-These results were generated on 2026-09-02 by running the live checks manually.
+These results were generated on 2026-09-17 by running the live checks automatically.
 
 | Check | Command | Result |
 |---|---|---|
+| Status regen | `npm run status` | ✅ Pass |
 | Build | `npm run build` | ✅ Pass |
-| Tests | `npm run test:run` | ❌ Failed |
+| Tests | `npm run test:run` | ✅ Pass |
 | Lint | `npm run lint` | ❌ Failed |
 | TypeScript | `npx tsc --noEmit` | ❌ Failed |
-| Clock verification | `node scripts/verify-all-clocks.js` | ❌ Failed (script missing) |
-| Status regen | `npm run status` | ❌ Failed (script missing) |
+| Clock verification | `node scripts/verify-all-clocks.js --quiet` | ❌ Failed |
 
 ### Test detail
 
-- 32 test files: **12 failed / 20 passed**
-- 230 tests: **57 failed / 173 passed**
-- 6 uncaught exceptions
-- Dominant cause: `Error: useDataContext must be used within a DataProvider`
-  thrown from `TopNav` while running `.kilo/worktrees/juvenile-lip/src/test/Home.test.tsx`.
-  A stale Kilo worktree is leaking into the test run and bypassing the
-  `DataProvider`. Investigate `vitest.config.js` include patterns and the
-  `.kilo/worktrees/juvenile-lip/` directory.
+Run `npm run test:run` to inspect current failures.
 
 ### Lint detail
 
-- 2434 problems: **776 errors / 1658 warnings**
-- Headline error: `react-hooks/refs` — `Cannot access ref value during render`
-  at `src/pages/2026/26-08/26-08-24/Clock.tsx:134` (`clocks: clocksRef.current`
-  read inside a `useMemo` body). Refactor: lift the read into a `useRef` /
-  `useState` that updates via `useEffect`, or move the calculation into an
-  event-driven callback.
-- Heavy warning clusters:
-  - `@typescript-eslint/no-explicit-any` in `assetLoader.ts`,
-    `consoleFilters.ts`, `debounce.ts`, `fontLoader.tsx`, `Home.tsx`
-  - `@typescript-eslint/no-non-null-assertion` in `assetLoader.ts`,
-    `fontLoader.tsx`, `isoEngine.ts`, `thumbnailMap.ts`
-  - `@typescript-eslint/no-empty-object-type` in `src/types/global.d.ts`
-  - Unused `useMemo` import in `src/pages/ClockPage.tsx`
-  - Unescaped apostrophes in `src/pages/Contact.tsx`
+Run `npm run lint` to inspect current lint violations.
 
 ### TypeScript detail
 
-- ~50 errors, concentrated in three files:
-  - `src/pages/2026/26-08/26-08-23/Clock.tsx` — array-index accesses not
-    guarded against `undefined` (TS2532, TS18048)
-  - `src/pages/2026/26-08/26-08-28/useMazeRenderer.ts` — same class of
-    "Object is possibly 'undefined'" errors (TS2532, TS18048)
-  - `src/test/DataLoading.test.tsx` — `first` from `find(...)` not narrowed
-- Root cause: `noUncheckedIndexedAccess` is effectively on (or inferred from
-  these patterns); recent clock code does not yet guard index lookups.
+Run `npx tsc --noEmit` to inspect current TypeScript errors.
 
 ## Git State
 
-- **Branch:** main
+- **Branch:** agents/next-steps-guidance
+- **Working tree:** Clean
 - **Recent commits:**
-  - `8b38d7064d k`
-  - `1195e16ede s`
-  - `a79a9610d2 m`
-  - `1ad14ca308 m`
-  - `e1c7e040f0 m`
-  - `449e81bcc3 b`
-  - `07f5a658eb s`
-  - `985a8ea2d6 s`
-  - `3673715494 a`
-  - `e2e89d0f07 x`
-- **Working tree:**
-  - **Dirty** — 1 modified file: `src/pages/2026/26-04/26-04-02/Clock.tsx`
+  - 0e0bc0d51 z
+  - d95837e5e g
+  - 5f2399244 x
+  - 008c2c699 l
+  - 4bea5c392 Merge branch 'agents/next-step-guidance'
+  - cf320c4bb fix: simplify september clock layout
+  - a6ec5ea8e fix: clean up pirate skew and canvas clocks
+  - 94e756bf9 fix: stabilize analog image clock refs
+  - 769858d2f fix: clean up legacy clock lint errors
+  - d5baf1a7b fix: stabilize brick clock ball style
 
 ## Clock Inventory
 
 - **2025:** Apr–Dec (`25-04`…`25-12`) — 9 months of clocks
 - **2026:** Jan–Aug (`26-01`…`26-08`) — 8 full months, latest day **2026-08-31**
-- **Today (2026-09-02):** no clock yet — `src/pages/2026/26-09/` does not exist
+- **Today (2026-09-17):** no clock yet — `src/pages/2026/26-09/` does not exist
 
 ## Known Gaps
 
-- `scripts/verify-all-clocks.js` referenced by `docs/CLOCK_STANDARDS.md` is
-  missing. Either restore it or remove the reference.
-- `scripts/generate-status.js` referenced by `package.json` and this file is
-  missing. Without it, `npm run status` fails.
-- `.kilo/worktrees/juvenile-lip/` is being picked up by Vitest and is breaking
-  the test run. Add it to the test ignore list or remove the worktree.
-- `docs/CLOCK_STANDARDS.md` and `src/utils/hooks/index.ts` now agree on the
-  canonical clock-hook API (`useClock` for 1-second updates,
-  `useSmoothClock` for sub-second / smooth animation). The previous names
-  (`useSecondClock`, `useMillisecondClock`) are still exported as
-  `@deprecated` thin re-exports for backward compatibility and will be
-  removed once all callers have been migrated.
-- Remaining clock files have been bulk-migrated to `useClock` /
-  `useSmoothClock`. Any new code must use the canonical names.
-- `docs/PERFORMANCE.md` lists a Three.js budget of `< 150KB` gzipped but the
-  current `three-[hash].js` chunk is **190.66KB brotli / 859.55KB raw**. This
-  exceeds the budget and should be split or its limit revisited.
-- Recent clock files (`26-08-23`, `26-08-28`) have not been migrated to
-  guard against `undefined` index access — required before the
-  `noUncheckedIndexedAccess` style is treated as the project baseline.
+- `scripts/verify-all-clocks.js` is active and can be run with `npm run verify:clocks`.
+- `scripts/generate-status.js` has been restored and is generating this file again.
+- `.kilo/worktrees/juvenile-lip/` is still a known source of stale test leakage if the worktree remains present.
+- The repo still has outstanding lint, test, and TypeScript debt tracked in `docs/ROADMAP.md`.
+- Recent clock files continue to be the primary focus for strict TS/index-guard cleanup.
 
 ## Related Docs
 
@@ -111,3 +68,4 @@ These results were generated on 2026-09-02 by running the live checks manually.
 - Performance budgets: `docs/PERFORMANCE.md`
 - Architectural standards: `src/templates/BaseClock.tsx` + its module CSS
 - Historical reports: `docs/archive/`
+
