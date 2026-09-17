@@ -367,6 +367,20 @@ export default tseslint.config(
     },
   },
 
+  // Stricter rules for new clock files (September 2026 onwards)
+  // Enforces higher code quality standards for recent work while legacy clocks are relaxed
+  {
+    files: ['src/pages/2026/26-09/**/*.{js,jsx,ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-non-null-assertion': 'error',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
+    },
+  },
+
   {
     files: ['*.test.{js,jsx,ts,tsx}', '**/__tests__/**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
