@@ -9,11 +9,9 @@ export const assets: string[] = [headVideo];
 
 const CLOCK_COUNT = 12;
 
-// Standard CSS Hex Color Palette
 const PALETTE = {
     bg: '#c9a26e',
     rim: '#7e94c2',
-    face: '#1114aa',
     hourHand: '#302715',
     minuteHand: '#2c1f0d',
     secondHand: '#e21111',
@@ -46,6 +44,9 @@ const Clock_26_09_01 = () => {
         const mount = mountRef.current;
         if (!mount) return;
 
+        let frameId: number;
+        let cleanup: (() => void) | undefined;
+
         const face = new FontFace('ClockFont_26_09_01', `url(${fontUrl})`, { display: 'block' });
 
         const init = async () => {
@@ -56,7 +57,6 @@ const Clock_26_09_01 = () => {
                 // font failed; fall back to default
             }
 
-            // --- Textures & Scene Setup ---
             const numberTextures: Record<string, THREE.Texture> = {
                 '12': createNumberTexture('12'),
                 '3': createNumberTexture('3'),
@@ -85,9 +85,7 @@ const Clock_26_09_01 = () => {
             const ringGroup = new THREE.Group();
             scene.add(ringGroup);
 
-            // Shared Geometries
             const rimGeo = new THREE.RingGeometry(0.92, 1, 64);
-            const faceGeo = new THREE.CircleGeometry(0.86, 64);
             const numGeo = new THREE.PlaneGeometry(0.35, 0.35);
 
             function buildClock() {
@@ -100,16 +98,6 @@ const Clock_26_09_01 = () => {
                 });
                 const rim = new THREE.Mesh(rimGeo, rimMaterial);
                 group.add(rim);
-
-                const faceMat = new THREE.MeshBasicMaterial({
-                    color: new THREE.Color(PALETTE.face),
-                    transparent: true,
-                    opacity: 0,
-                    side: THREE.DoubleSide,
-                });
-                const face = new THREE.Mesh(faceGeo, faceMat);
-                face.position.z = -0.005;
-                group.add(face);
 
                 const glow = new THREE.PointLight(new THREE.Color(PALETTE.glow), 0.6, 3);
                 glow.position.z = 0.3;
@@ -163,7 +151,6 @@ const Clock_26_09_01 = () => {
                     minuteHand: minuteHand.pivot,
                     secondHand: secondHand.pivot,
                     rimMaterial,
-                    faceMat,
                     numberMeshes,
                     hourHandMesh: hourHand.mesh,
                     minuteHandMesh: minuteHand.mesh,
@@ -174,6 +161,7 @@ const Clock_26_09_01 = () => {
 
             const radius = window.innerWidth < 767 ? 5.0 : 7.5;
             const clockScale = window.innerWidth < 767 ? 1.0 : 1.5;
+
             const clocks = Array.from({ length: CLOCK_COUNT }, (_, i) => {
                 const angle = (i / CLOCK_COUNT) * Math.PI * 2;
                 const initialZ = Math.cos(angle) * radius;
@@ -186,39 +174,8 @@ const Clock_26_09_01 = () => {
                 return clock;
             });
 
-            // --- Controls ---
-            let autoRotate = true;
-            let targetAzimuth = 0;
             let currentAzimuth = 0;
-            let currentElevation = 0.35;
-            let isDragging = false;
-            let lastX = 0;
-            let lastY = 0;
-
-            const onPointerDown = (e: PointerEvent) => {
-                isDragging = true;
-                autoRotate = false;
-                lastX = e.clientX;
-                lastY = e.clientY;
-            };
-
-            const onPointerMove = (e: PointerEvent) => {
-                if (!isDragging) return;
-                const dx = e.clientX - lastX;
-                const dy = e.clientY - lastY;
-                lastX = e.clientX;
-                lastY = e.clientY;
-                targetAzimuth -= dx * 0.005;
-                currentElevation = Math.max(0.05, Math.min(1.2, currentElevation - dy * 0.003));
-            };
-
-            const onPointerUp = () => {
-                isDragging = false;
-            };
-
-            mount.addEventListener('pointerdown', onPointerDown);
-            window.addEventListener('pointermove', onPointerMove);
-            window.addEventListener('pointerup', onPointerUp);
+            const elevation = 0.35;
 
             const resizeObserver = new ResizeObserver(() => {
                 const w = mount.clientWidth;
@@ -230,24 +187,18 @@ const Clock_26_09_01 = () => {
             });
             resizeObserver.observe(mount);
 
-            // --- Animation Loop ---
-            let frameId: number;
             const worldPos = new THREE.Vector3();
-
-            // Distance bounds for depth calculation
-            const minDist = 14.2 - radius; // ~7.4 (Closest/Largest)
-            const maxDist = 14.2 + radius; // ~21.0 (Furthest/Smallest)
+            const minDist = 14.2 - radius;
+            const maxDist = 14.2 + radius;
 
             const animate = () => {
                 frameId = requestAnimationFrame(animate);
 
-                if (autoRotate) targetAzimuth += 0.0018;
-                currentAzimuth += (targetAzimuth - currentAzimuth) * 0.08;
-
+                currentAzimuth += 0.0018;
                 const camDist = 14.2;
                 camera.position.x = Math.sin(currentAzimuth) * camDist;
                 camera.position.z = Math.cos(currentAzimuth) * camDist;
-                camera.position.y = 1.2 + currentElevation * 3;
+                camera.position.y = 1.2 + elevation * 3;
                 camera.lookAt(0, 0, 0);
 
                 const now = new Date();
@@ -267,23 +218,16 @@ const Clock_26_09_01 = () => {
                         minuteHandMesh,
                         secondHandMesh,
                     }) => {
-                        // Hand Rotations
                         hourHand.rotation.z = -((h + m / 60) / 12) * Math.PI * 2;
                         minuteHand.rotation.z = -((m + s / 60) / 60) * Math.PI * 2;
                         secondHand.rotation.z = -(s / 60) * Math.PI * 2;
 
-                        // Distance-based Transparency Logic
                         group.getWorldPosition(worldPos);
                         const distanceToCamera = camera.position.distanceTo(worldPos);
-
-                        // Normalized factor: 1.0 (Closest/Largest) down to 0.0 (Furthest/Smallest)
                         const normFactor = 1 - Math.max(0, Math.min(1, (distanceToCamera - minDist) / (maxDist - minDist)));
-
-                        // Clocks close to camera are 1.0 (Fully Solid), distant ones fade down to 0.15
                         const opacity = 0.15 + 0.85 * normFactor;
 
                         rimMaterial.opacity = opacity;
-
                         numberMeshes.forEach((num) => {
                             (num.material as THREE.MeshBasicMaterial).opacity = opacity;
                         });
@@ -297,17 +241,12 @@ const Clock_26_09_01 = () => {
 
                 renderer.render(scene, camera);
             };
+
             animate();
 
-            // --- Cleanup ---
-            return () => {
+            cleanup = () => {
                 cancelAnimationFrame(frameId);
                 resizeObserver.disconnect();
-
-                mount.removeEventListener('pointerdown', onPointerDown);
-                window.removeEventListener('pointermove', onPointerMove);
-                window.removeEventListener('pointerup', onPointerUp);
-
                 clocks.forEach((clock) => {
                     clock.geometriesToDispose.forEach((g) => g.dispose());
                     clock.group.traverse((child) => {
@@ -320,20 +259,21 @@ const Clock_26_09_01 = () => {
                         }
                     });
                 });
-
                 rimGeo.dispose();
-                faceGeo.dispose();
                 numGeo.dispose();
                 Object.values(numberTextures).forEach((t) => t.dispose());
-
                 renderer.dispose();
                 if (mount.contains(renderer.domElement)) {
                     mount.removeChild(renderer.domElement);
                 }
             };
-        }
+        };
 
         init();
+
+        return () => {
+            if (cleanup) cleanup();
+        };
     }, []);
 
     const hours = String(time.getHours()).padStart(2, '0');
@@ -352,7 +292,6 @@ const Clock_26_09_01 = () => {
                 className={styles.videoBackground}
             />
             <div ref={mountRef} className={styles.canvasMount} />
-
             <time dateTime={time.toISOString()} className={styles.srOnly}>
                 {accessibleTime}
             </time>
@@ -361,5 +300,4 @@ const Clock_26_09_01 = () => {
 };
 
 Clock_26_09_01.displayName = 'Clock_26_09_01';
-
 export default Clock_26_09_01;
