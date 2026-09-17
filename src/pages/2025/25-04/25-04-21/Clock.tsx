@@ -13,24 +13,15 @@ import overlayBottomRight from '@/assets/images/25_images/25-04/25-04-21/Pea2.gi
 export const assets = [hourHand, minuteHand, secondHand, bgImage, mainBackground, overlayTopLeft, overlayBottomRight];
  // bottom-right overlay (different file)
 
-// Clock refs interface
-interface ClockRefs {
-  hour: React.RefObject<HTMLImageElement | null>;
-  minute: React.RefObject<HTMLImageElement | null>;
-  second: React.RefObject<HTMLImageElement | null>;
-}
-
 // Component Props interface
 interface AnalogImageClockProps {
   // No props required for this component
 }
 
 export default function AnalogImageClock() {
-  const clockRefs: ClockRefs = {
-    hour: useRef<HTMLImageElement>(null),
-    minute: useRef<HTMLImageElement>(null),
-    second: useRef<HTMLImageElement>(null),
-  };
+  const hourRef = useRef<HTMLImageElement>(null);
+  const minuteRef = useRef<HTMLImageElement>(null);
+  const secondRef = useRef<HTMLImageElement>(null);
   const rafRef = useRef<number>(0);
 
   // Font loading configuration (memoized) - no custom fonts needed
@@ -46,16 +37,16 @@ export default function AnalogImageClock() {
     const m = currentTime.getMinutes() + s / 60;
     const h = (currentTime.getHours() % 12) + m / 60;
 
-    if (clockRefs.hour.current) {
-      clockRefs.hour.current.style.transform = `translate(-50%, -85%) rotate(${h * 30}deg)`;
+    if (hourRef.current) {
+      hourRef.current.style.transform = `translate(-50%, -85%) rotate(${h * 30}deg)`;
     }
-    if (clockRefs.minute.current) {
-      clockRefs.minute.current.style.transform = `translate(-50%, -85%) rotate(${m * 6}deg)`;
+    if (minuteRef.current) {
+      minuteRef.current.style.transform = `translate(-50%, -85%) rotate(${m * 6}deg)`;
     }
-    if (clockRefs.second.current) {
-      clockRefs.second.current.style.transform = `translate(-50%, -85%) rotate(${s * 6}deg)`;
+    if (secondRef.current) {
+      secondRef.current.style.transform = `translate(-50%, -85%) rotate(${s * 6}deg)`;
     }
-  }, [currentTime]);
+  }, [currentTime, hourRef, minuteRef, secondRef]);
 
   useEffect(() => {
     update();
@@ -142,7 +133,7 @@ export default function AnalogImageClock() {
         <img
           decoding="async"
           loading="lazy"
-          ref={clockRefs.hour}
+          ref={hourRef}
           src={hourHand}
           alt="hour hand"
           className="hand hour-hand"
@@ -150,7 +141,7 @@ export default function AnalogImageClock() {
         <img
           decoding="async"
           loading="lazy"
-          ref={clockRefs.minute}
+          ref={minuteRef}
           src={minuteHand}
           alt="minute hand"
           className="hand minute-hand"
@@ -158,7 +149,7 @@ export default function AnalogImageClock() {
         <img
           decoding="async"
           loading="lazy"
-          ref={clockRefs.second}
+          ref={secondRef}
           src={secondHand}
           alt="second hand"
           className="hand second-hand"
