@@ -1,5 +1,10 @@
 .container {
-  --background: #020202;
+  --background: linear-gradient(135deg,
+      #f8f1e5 0%,
+      #e2c99a 25%,
+      #fcf8f0 50%,
+      #d1b480 75%,
+      #ebdcc1 100%);
   --display-color: #e8d599;
   --accent-color: #ff4d00;
 
@@ -9,8 +14,7 @@
   min-height: 100dvh;
   place-items: center;
   overflow: hidden;
-  background:
-       var(--background);
+  background: var(--background);
 }
 
 .background {
@@ -51,14 +55,15 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 0.1em; /* Spacing between digits */
+  gap: 0.1em;
+  /* Spacing between digits */
   color: var(--display-color);
   font-family: 'Hammerhead', 'Courier New', Courier, monospace;
-  font-size: clamp(8rem, 8vmin, 10rem); /* DIGIT SIZE */
+  font-size: 7vmax;
+  /* DIGIT SIZE */
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
   line-height: 0.85;
-  /* opacity: 0.6; */
   text-shadow:
     0 0 0.08em rgba(244, 235, 232, 0.995),
     0 0 0.3em rgba(255, 77, 0, 0.523);
@@ -70,6 +75,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1ch; /* Width of one character */
+  width: 0.7ch;
+  /* Width of one character */
   text-align: center;
 }
