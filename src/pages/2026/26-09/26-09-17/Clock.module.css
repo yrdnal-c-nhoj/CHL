@@ -38,7 +38,7 @@
   inset: 0;
   z-index: 1;
   background-repeat: repeat;
-  background-size: 50rem;
+  background-size: 20rem;
   opacity: 0.8;
   pointer-events: none;
 }
