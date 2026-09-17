@@ -16,6 +16,7 @@
   z-index: 0;
 }
 
+/* Evenly distributed grid - all cells equal size, evenly spaced */
 .tiledClocks {
   position: absolute;
   inset: 0;
@@ -23,38 +24,51 @@
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(6, 1fr);
   gap: 0;
+  padding: min(3rem, 3vw);
   z-index: 1;
- 
   place-items: center;
+  box-sizing: border-box;
 }
 
 .tileClock {
   position: relative;
-  width: 9rem;
-  height: 9rem;
+  width: min(8vw, 8vh);
+  height: min(8vw, 8vh);
   border-radius: 50%;
-  border: 0.15rem solid rgba(225, 207, 238, 0.538);
+  border: 0.1rem solid rgba(225, 207, 238, 0.538);
+  box-shadow: 0 0 0.5rem rgba(255, 77, 0, 0.3);
 }
 
 .tileHand {
   position: absolute;
   bottom: 50%;
   left: 50%;
-  width: 0.15rem;
+  width: 0.1rem;
   height: 40%;
-  background: rgba(0, 179, 255, 0.6);
+  background: rgba(255, 77, 0, 0.6);
   border-radius: 0.05rem;
   transform-origin: 50% 100%;
+}
+
+.tileHandMinute {
+  height: 30%;
+  background: rgba(255, 77, 0, 0.8);
+}
+
+.tileHandSecond {
+  height: 45%;
+  background: rgba(255, 77, 0, 0.6);
 }
 
 @media (max-width: 767px) {
   .tiledClocks {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
+    padding: min(2rem, 2vw);
   }
 
   .tileClock {
-    width: 6rem;
-    height: 6rem;
+    width: min(12vw, 12vh);
+    height: min(12vw, 12vh);
   }
 }

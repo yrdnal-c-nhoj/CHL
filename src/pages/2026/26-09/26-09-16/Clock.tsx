@@ -24,22 +24,37 @@ const Clock_26_09_16 = () => {
     [time]
   );
 
-  const centerRow = Math.floor(ROWS / 2);
-  const centerCol = Math.floor(COLS / 2);
-
+  // Build every cell and sort so the center clock is first,
+  // then the rings expand outward (no overlap because of the grid)
   const tiles = useMemo(() => {
-    const positions: { id: number; row: number; col: number }[] = [];
-    let id = 0;
+    const centerCol = (COLS - 1) / 2;
+    const centerRow = (ROWS - 1) / 2;
+
+    const positions: {
+      id: number;
+      col: number;
+      row: number;
+      distance: number;
+      zIndex: number;
+    }[] = [];
 
     for (let r = 0; r < ROWS; r++) {
       for (let c = 0; c < COLS; c++) {
-        const rowDist = Math.abs(r - centerRow);
-        const colDist = Math.abs(c - centerCol);
-        const distance = rowDist + colDist;
-        positions.push({ id: id++, row: r, col: c, distance });
+        const colOffset = c - centerCol;
+        const rowOffset = r - centerRow;
+        const distance = Math.abs(colOffset) + Math.abs(rowOffset);
+
+        positions.push({
+          id: r * COLS + c,
+          col: c + 1,          // 1-based for CSS grid
+          row: r + 1,
+          distance,
+          zIndex: Math.max(0, 10 - Math.floor(distance)),
+        });
       }
     }
 
+    // Center first → then rings expand outward
     return positions.sort((a, b) => a.distance - b.distance);
   }, []);
 
@@ -59,8 +74,9 @@ const Clock_26_09_16 = () => {
             key={tile.id}
             className={styles.tileClock}
             style={{
-              gridRow: tile.row + 1,
-              gridColumn: tile.col + 1,
+              gridColumn: tile.col,
+              gridRow: tile.row,
+              zIndex: tile.zIndex,
             }}
           >
             <div
