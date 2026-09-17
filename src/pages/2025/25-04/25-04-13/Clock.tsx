@@ -16,18 +16,10 @@ interface PizzaClockProps {
 }
 
 // Clock refs interface
-interface ClockRefs {
-  hour: React.RefObject<HTMLDivElement | null>;
-  minute: React.RefObject<HTMLDivElement | null>;
-  second: React.RefObject<HTMLDivElement | null>;
-}
-
 const PizzaClock = () => {
-  const clockRefs: ClockRefs = {
-    hour: useRef<HTMLDivElement>(null),
-    minute: useRef<HTMLDivElement>(null),
-    second: useRef<HTMLDivElement>(null),
-  };
+  const hourRef = useRef<HTMLDivElement>(null);
+  const minuteRef = useRef<HTMLDivElement>(null);
+  const secondRef = useRef<HTMLDivElement>(null);
 
   // Font loading configuration (memoized) - no custom fonts needed
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
@@ -46,13 +38,13 @@ const PizzaClock = () => {
     const minuteDeg = m * 6;
     const secondDeg = s * 6;
 
-    if (clockRefs.hour.current)
-      clockRefs.hour.current.style.transform = `rotate(${hourDeg}deg)`;
-    if (clockRefs.minute.current)
-      clockRefs.minute.current.style.transform = `rotate(${minuteDeg}deg)`;
-    if (clockRefs.second.current)
-      clockRefs.second.current.style.transform = `rotate(${secondDeg}deg)`;
-  }, [currentTime]);
+    if (hourRef.current)
+      hourRef.current.style.transform = `rotate(${hourDeg}deg)`;
+    if (minuteRef.current)
+      minuteRef.current.style.transform = `rotate(${minuteDeg}deg)`;
+    if (secondRef.current)
+      secondRef.current.style.transform = `rotate(${secondDeg}deg)`;
+  }, [currentTime, hourRef, minuteRef, secondRef]);
 
   useEffect(() => {
     updateClockSmooth();
@@ -103,7 +95,7 @@ const PizzaClock = () => {
         }}
       >
         <div
-          ref={clockRefs.minute}
+          ref={minuteRef}
           style={{
             position: 'absolute',
             width: '100%',
@@ -133,7 +125,7 @@ const PizzaClock = () => {
         </div>
 
         <div
-          ref={clockRefs.hour}
+          ref={hourRef}
           style={{
             position: 'absolute',
             width: '100%',
@@ -163,7 +155,7 @@ const PizzaClock = () => {
         </div>
 
         <div
-          ref={clockRefs.second}
+          ref={secondRef}
           style={{
             position: 'absolute',
             width: '100%',
