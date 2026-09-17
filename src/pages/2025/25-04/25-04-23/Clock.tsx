@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import type { CSSProperties } from 'react';
 import pirateHook from '@/assets/images/25_images/25-04/25-04-23/hook.webp';
 import pirateCutlass from '@/assets/images/25_images/25-04/25-04-23/pirate_foam.gif';
 import pirateKnife from '@/assets/images/25_images/25-04/25-04-23/cut.gif';
@@ -25,20 +24,10 @@ const PirateClock: React.FC<PirateClockProps> = () => {
 
   // Use the standardized hook for smooth clock updates
   const currentTime = useClock();
-  const romanNumerals = [
-    'XII',
-    'I',
-    'II',
-    'III',
-    'IV',
-    'V',
-    'VI',
-    'VII',
-    'VIII',
-    'IX',
-    'X',
-    'XI',
-  ];
+  const romanNumerals = useMemo(
+    () => ['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'],
+    [],
+  );
 
   const placeNumbers = useCallback((): void => {
     const clock = clockRef.current;
@@ -80,7 +69,7 @@ const PirateClock: React.FC<PirateClockProps> = () => {
       number.className = 'number';
       clock.appendChild(number);
     });
-  }, []);
+  }, [romanNumerals]);
 
   const updateClock = useCallback((): void => {
     const hour = currentTime.getHours() % 12;
