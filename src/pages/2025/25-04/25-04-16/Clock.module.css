@@ -55,10 +55,6 @@
   z-index: 9;
 }
 
-.handBase:nth-child(1) { transform: rotate(var(--minute-deg)); }
-.handBase:nth-child(2) { transform: rotate(var(--hour-deg)); }
-.handBase:nth-child(3) { transform: rotate(var(--second-deg)); }
-
 .handImg {
   position: absolute;
   top: 50%;

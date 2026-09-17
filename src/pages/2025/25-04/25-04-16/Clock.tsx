@@ -40,15 +40,15 @@ const BirthdayCakeClock = () => {
             <img src={cakeGif} alt="Rotating cake" className={styles.circleImg} />
           </div>
 
-          <div className={styles.handBase} style={{ '--minute-deg': `${minuteDeg}deg` } as React.CSSProperties}>
+          <div className={styles.handBase} style={{ transform: `rotate(${minuteDeg}deg)` }}>
             <img src={minuteImg} alt="Minute hand" className={styles.minuteImg} />
           </div>
 
-          <div className={styles.handBase} style={{ '--hour-deg': `${hourDeg}deg` } as React.CSSProperties}>
+          <div className={styles.handBase} style={{ transform: `rotate(${hourDeg}deg)` }}>
             <img src={hourImg} alt="Hour hand" className={styles.hourImg} />
           </div>
 
-          <div className={styles.handBase} style={{ '--second-deg': `${secondDeg}deg` } as React.CSSProperties}>
+          <div className={styles.handBase} style={{ transform: `rotate(${secondDeg}deg)` }}>
             <img src={secondImg} alt="Second hand" className={styles.secondImg} />
           </div>
         </div>
