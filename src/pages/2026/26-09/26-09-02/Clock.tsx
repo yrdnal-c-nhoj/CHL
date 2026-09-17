@@ -16,6 +16,41 @@ const fontConfig: FontConfig = {
   fontUrl,
 };
 
+const GRID_COLS = 21;
+const GRID_ROWS = 21;
+
+const GridOverlay = memo(({ image }: { image: string }) => {
+  const tiles = useMemo(() => {
+    const result = [];
+    const halfCols = Math.floor(GRID_COLS / 2);
+    const halfRows = Math.floor(GRID_ROWS / 2);
+
+    for (let r = -halfRows; r <= halfRows; r++) {
+      for (let c = -halfCols; c <= halfCols; c++) {
+        const isFlipped = (r + c) % 2 !== 0;
+        result.push({
+          key: `${r}_${c}`,
+          isFlipped,
+        });
+      }
+    }
+    return result;
+  }, []);
+
+  return (
+    <div className={styles.gridOverlay}>
+      {tiles.map(({ key, isFlipped }) => (
+        <div
+          key={key}
+          className={`${styles.tile} ${isFlipped ? styles.flipped : ''}`}
+          style={{ backgroundImage: `url(${image})` }}
+        />
+      ))}
+    </div>
+  );
+});
+GridOverlay.displayName = 'GridOverlay';
+
 const Clock_26_09_03 = () => {
   useSuspenseFontLoader([fontConfig]);
 
@@ -54,13 +89,7 @@ const Clock_26_09_03 = () => {
         className={styles.backgroundLayer}
         style={{ backgroundImage: `url(${peacockImage})` }}
       />
-      <div
-        className={styles.gridOverlay}
-        style={{
-          backgroundImage: `url(${eyesImage})`,
-          backgroundSize: '190px 100px',
-        }}
-      />
+      <GridOverlay image={eyesImage} />
 
       <div className={styles.clockFace}>
         {numerals.map(({ numeral, x, y, rotation, key }) => (
