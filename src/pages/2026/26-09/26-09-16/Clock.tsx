@@ -5,8 +5,7 @@ import styles from './Clock.module.css';
 
 export const assets: string[] = [backgroundVideo];
 
-const COLS = 8;
-const ROWS = 6;
+const TOTAL_TILES = 48; // 8 x 6 grid
 
 const Clock_26_09_16 = () => {
   const time = useSmoothClock(50);
@@ -24,39 +23,10 @@ const Clock_26_09_16 = () => {
     [time]
   );
 
-  // Build every cell and sort so the center clock is first,
-  // then the rings expand outward (no overlap because of the grid)
-  const tiles = useMemo(() => {
-    const centerCol = (COLS - 1) / 2;
-    const centerRow = (ROWS - 1) / 2;
-
-    const positions: {
-      id: number;
-      col: number;
-      row: number;
-      distance: number;
-      zIndex: number;
-    }[] = [];
-
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < COLS; c++) {
-        const colOffset = c - centerCol;
-        const rowOffset = r - centerRow;
-        const distance = Math.abs(colOffset) + Math.abs(rowOffset);
-
-        positions.push({
-          id: r * COLS + c,
-          col: c + 1,          // 1-based for CSS grid
-          row: r + 1,
-          distance,
-          zIndex: Math.max(0, 10 - Math.floor(distance)),
-        });
-      }
-    }
-
-    // Center first → then rings expand outward
-    return positions.sort((a, b) => a.distance - b.distance);
-  }, []);
+  const tiles = useMemo(
+    () => Array.from({ length: TOTAL_TILES }, (_, i) => i),
+    []
+  );
 
   return (
     <main className={styles.container}>
@@ -69,16 +39,8 @@ const Clock_26_09_16 = () => {
         playsInline
       />
       <div className={styles.tiledClocks}>
-        {tiles.map((tile) => (
-          <div
-            key={tile.id}
-            className={styles.tileClock}
-            style={{
-              gridColumn: tile.col,
-              gridRow: tile.row,
-              zIndex: tile.zIndex,
-            }}
-          >
+        {tiles.map((id) => (
+          <div key={id} className={styles.tileClock}>
             <div
               className={styles.tileHand}
               style={{ transform: `rotate(${hourAngle}deg)` }}

@@ -8,6 +8,7 @@ A new clock every day.
 
 | Document | Purpose |
 |---|---|
+| `docs/AI_DEVELOPMENT_GUIDE.md` | Required playbook for AI-assisted implementation |
 | `docs/ROADMAP.md` | **Single source of truth** — standards, current state, and phased plan |
 | `docs/CLOCK_STANDARDS.md` | Clock component structure, hooks, styling, and prohibited patterns |
 | `docs/PERFORMANCE.md` | Asset budgets, cache headers, compression, chunk limits |
