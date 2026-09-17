@@ -6,7 +6,7 @@
       #d1b480 75%,
       #ebdcc1 100%);
   --display-color: #e1d5ac;
-  --accent-color: #ff4d00;
+
 
   position: relative;
   display: grid;
@@ -42,7 +42,7 @@
   inset: 0;
   z-index: 1;
   background-repeat: repeat;
-  background-size: 40rem;
+  background-size: 48rem;
   opacity: 0.8;
   pointer-events: none;
 }
@@ -59,7 +59,7 @@
   /* Spacing between digits */
   color: var(--display-color);
   font-family: 'Hammerhead', 'Courier New', Courier, monospace;
-  font-size: 7vmax;
+  font-size: 15vmax;
   /* DIGIT SIZE */
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
