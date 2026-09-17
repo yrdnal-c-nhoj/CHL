@@ -1,282 +1,381 @@
-import permanentMarkerFont from '@/assets/fonts/25fonts/25-04-19-sph.ttf?url';
-import type { FontConfig } from '@/types/clock';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClock } from '@/utils/hooks';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Clock.module.css';
-export const assets = [permanentMarkerFont];
 
+export type RoomType = 'hours' | 'minutes' | 'seconds';
 
-// --- Configuration & Types ---
-interface BallProperties {
+export interface RoomConfig {
+  id: RoomType;
+  max: number;
+  radiusPx: number;
+  gravity: number;
   bounce: number;
   friction: number;
+  bgGradient: string;
 }
 
-interface RoomConfig {
-  name: 'hours' | 'minutes' | 'seconds';
-  max: number;
-  baseSize: number; 
-  gravity: number;
-  properties: BallProperties;
-  baseWidth: number; 
-  baseHeight: number; 
-  gradient: string;
-}
-
-interface BallInstance {
+interface SpherePhysics {
   id: string;
-  label: number;
-  posX: number;
-  posY: number;
-  posZ: number;
-  velocityX: number;
-  velocityY: number;
-  velocityZ: number;
-  bouncing: boolean;
-  element?: HTMLDivElement;
+  num: number;
+  room: RoomType;
+  x: number;
+  y: number;
+  z: number;
+  vx: number;
+  vy: number;
+  vz: number;
+  radius: number;
+  isDraining?: boolean;
+}
+
+interface SphereMeta {
+  id: string;
+  num: number;
+  room: RoomType;
 }
 
 const ROOM_CONFIGS: RoomConfig[] = [
   {
-    name: 'hours',
+    id: 'hours',
     max: 12,
-    baseSize: 15,
-    gravity: 6,
-    properties: { bounce: 0.7, friction: 0.1 },
-    baseWidth: 75,
-    baseHeight: 20,
-    gradient: 'radial-gradient(circle at 30%, #0dcaec, #056d7b)',
+    radiusPx: 24,
+    gravity: 0.025,
+    bounce: 0.94,
+    friction: 0.996,
+    bgGradient: 'radial-gradient(circle at 30%, #0dcaec, #056d7b)',
   },
   {
-    name: 'minutes',
+    id: 'minutes',
     max: 60,
-    baseSize: 9,
-    gravity: 7,
-    properties: { bounce: 0.6, friction: 0.8 },
-    baseWidth: 75,
-    baseHeight: 35,
-    gradient: 'radial-gradient(circle at 30%, #dce30b, #c2b30c)',
+    radiusPx: 16,
+    gravity: 0.03,
+    bounce: 0.94,
+    friction: 0.996,
+    bgGradient: 'radial-gradient(circle at 30%, #dce30b, #c2b30c)',
   },
   {
-    name: 'seconds',
+    id: 'seconds',
     max: 60,
-    baseSize: 6.5,
-    gravity: 8,
-    properties: { bounce: 0.4, friction: 0.999 },
-    baseWidth: 75,
-    baseHeight: 35,
-    gradient: 'radial-gradient(circle at 30%, #f80, #c50)',
+    radiusPx: 12,
+    gravity: 0.035,
+    bounce: 0.92,
+    friction: 0.995,
+    bgGradient: 'radial-gradient(circle at 30%, #f80, #c50)',
   },
 ];
 
-// --- Dynamic Styles ---
 export default function SphereDropClock(): JSX.Element {
-  const fontConfigs = useMemo<FontConfig[]>(
-    () => [{ fontFamily: 'SphFont', fontUrl: permanentMarkerFont, options: { weight: 'normal', style: 'normal' } }],
-    []
-  );
-  useSuspenseFontLoader(fontConfigs);
+  const [time, setTime] = useState(() => new Date());
 
-  const currentTime = useClock();
-  const [isMobile, setIsMobile] = useState(false);
-  
-  const ballsMapRef = useRef<Record<string, BallInstance[]>>({ hours: [], minutes: [], seconds: [] });
-  const latestBallRef = useRef<Record<string, BallInstance | null>>({ hours: null, minutes: null, seconds: null });
-  const requestRef = useRef<number | null>(null);
+  const [activeSpheres, setActiveSpheres] = useState<Record<RoomType, SphereMeta[]>>({
+    hours: [],
+    minutes: [],
+    seconds: [],
+  });
 
+  const physicsMapRef = useRef<Map<string, SpherePhysics>>(new Map());
+  const elementsMapRef = useRef<Map<string, HTMLDivElement>>(new Map());
+
+  const [chamberDimensions, setChamberDimensions] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth - 32 : 800,
+    hourHeight: 180,
+    minuteHeight: 200,
+    secondHeight: 200,
+  });
+
+  const roomBoundsRef = useRef<Record<RoomType, { width: number; height: number; depth: number }>>({
+    hours: { width: 800, height: 180, depth: 60 },
+    minutes: { width: 800, height: 200, depth: 60 },
+    seconds: { width: 800, height: 200, depth: 60 },
+  });
+
+  const animFrameRef = useRef<number | null>(null);
+
+  // Recalculate chamber size to fit screen perfectly without edge clipping
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      const paddingX = 32;
+      const totalWidth = Math.max(280, window.innerWidth - paddingX);
+      const totalHeight = window.innerHeight;
+
+      const verticalPadding = 64;
+      const availableHeight = totalHeight - verticalPadding;
+      const hHeight = Math.max(130, Math.floor(availableHeight * 0.3));
+      const mHeight = Math.max(150, Math.floor(availableHeight * 0.35));
+      const sHeight = Math.max(150, Math.floor(availableHeight * 0.35));
+
+      setChamberDimensions({
+        width: totalWidth,
+        hourHeight: hHeight,
+        minuteHeight: mHeight,
+        secondHeight: sHeight,
+      });
+
+      // Z depth kept subtle so 3D scale expansion doesn't bleed out of chamber
+      roomBoundsRef.current = {
+        hours: { width: totalWidth, height: hHeight, depth: 60 },
+        minutes: { width: totalWidth, height: mHeight, depth: 60 },
+        seconds: { width: totalWidth, height: sHeight, depth: 60 },
+      };
     };
+
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const targetCounts = useMemo(() => {
-    const hours = currentTime.getHours();
-    return {
-      hours: hours % 12 === 0 ? 12 : hours % 12,
-      minutes: currentTime.getMinutes(),
-      seconds: currentTime.getSeconds(),
-    };
-  }, [currentTime]);
-
   useEffect(() => {
-    const originalOverflow = document.body.style.overflow;
-    const originalMargin = document.body.style.margin;
-    const originalBackground = document.body.style.background;
-    
-    document.body.style.overflow = 'hidden';
-    document.body.style.margin = '0';
-    document.body.style.background = '#5B032EFF';
-
-    return () => {
-      document.body.style.overflow = originalOverflow;
-      document.body.style.margin = originalMargin;
-      document.body.style.background = originalBackground;
-    };
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
-  const computedOffsets = useMemo(() => {
-    return ROOM_CONFIGS.reduce<Array<{ name: string; height: number; offset: number }>>(
-      (rooms, room) => {
-        const actualHeight = isMobile ? room.baseHeight * 0.85 : room.baseHeight;
-        const offset = rooms.length === 0
-          ? 0
-          : rooms[rooms.length - 1].offset + rooms[rooms.length - 1].height;
-        rooms.push({ name: room.name, height: actualHeight, offset });
-        return rooms;
-      },
-      [],
-    );
-  }, [isMobile]);
+  const targetCounts = useMemo(() => {
+    const rawHours = time.getHours();
+    const hours = rawHours % 12 === 0 ? 12 : rawHours % 12;
+    return {
+      hours,
+      minutes: time.getMinutes(),
+      seconds: time.getSeconds(),
+    };
+  }, [time]);
 
-  // Physics Simulation Loop
   useEffect(() => {
-    const animate = () => {
-      ROOM_CONFIGS.forEach((room) => {
-        const balls = ballsMapRef.current[room.name];
-        const latestBall = latestBallRef.current[room.name];
-        
-        const actualWidth = room.baseWidth; 
-        const actualSize = isMobile ? room.baseSize * 0.8 : room.baseSize;
-        const actualHeight = isMobile ? room.baseHeight * 0.85 : room.baseHeight;
+    const nextSpheresState: Record<RoomType, SphereMeta[]> = { hours: [], minutes: [], seconds: [] };
 
-        balls.forEach((ball) => {
-          const isLatest = latestBall === ball;
+    ROOM_CONFIGS.forEach((config) => {
+      const room = config.id;
+      const targetCount = targetCounts[room];
+      let currentList = activeSpheres[room];
 
-          if (ball.bouncing) {
-            ball.velocityY += room.gravity * 0.016;
-            ball.posX += ball.velocityX * 0.016;
-            ball.posY += ball.velocityY * 0.016;
-            ball.posZ += ball.velocityZ * 0.016;
+      if (targetCount < currentList.length) {
+        currentList.forEach((meta) => {
+          const phys = physicsMapRef.current.get(meta.id);
+          if (phys) phys.isDraining = true;
+        });
+        currentList = [];
+      }
 
-            // X Walls
-            if (ball.posX <= 0 || ball.posX >= actualWidth - actualSize) {
-              ball.posX = Math.max(0, Math.min(ball.posX, actualWidth - actualSize));
-              ball.velocityX = -ball.velocityX * room.properties.bounce;
-            }
-            // Z Depth
-            if (ball.posZ <= 0 || ball.posZ >= actualWidth - actualSize) {
-              ball.posZ = Math.max(0, Math.min(ball.posZ, actualWidth - actualSize));
-              ball.velocityZ = -ball.velocityZ * room.properties.bounce;
-            }
-            // Floor Collision
-            if (ball.posY >= actualHeight - actualSize) {
-              ball.posY = actualHeight - actualSize;
-              ball.velocityY = -ball.velocityY * room.properties.bounce;
-              ball.velocityX *= room.properties.friction;
-              ball.velocityZ *= room.properties.friction;
+      while (currentList.length < targetCount) {
+        const nextNum = currentList.length + 1;
+        const sphereId = `${room}-sphere-${Date.now()}-${nextNum}`;
+        const bounds = roomBoundsRef.current[room];
 
-              if (Math.abs(ball.velocityY) < 2 && Math.abs(ball.velocityX) < 2 && Math.abs(ball.velocityZ) < 2) {
-                ball.bouncing = false;
-                if (isLatest && (room.name === 'hours' || room.name === 'minutes')) {
-                  ball.velocityX = (Math.random() - 0.5) * 10;
-                  ball.velocityZ = (Math.random() - 0.5) * 10;
-                }
-              }
-            }
-          } else if (isLatest && (room.name === 'hours' || room.name === 'minutes')) {
-            ball.posX += ball.velocityX * 0.016;
-            ball.posZ += ball.velocityZ * 0.016;
+        const newPhysics: SpherePhysics = {
+          id: sphereId,
+          num: nextNum,
+          room,
+          x: bounds.width / 2 + (Math.random() - 0.5) * (bounds.width * 0.3),
+          y: -config.radiusPx * 2,
+          z: (Math.random() - 0.5) * (bounds.depth * 0.4),
+          vx: (Math.random() - 0.5) * 3,
+          vy: Math.random() * 2 + 1,
+          vz: (Math.random() - 0.5) * 3,
+          radius: config.radiusPx,
+        };
 
-            if (ball.posX <= 0 || ball.posX >= actualWidth - actualSize) {
-              ball.posX = Math.max(0, Math.min(ball.posX, actualWidth - actualSize));
-              ball.velocityX = -ball.velocityX;
+        physicsMapRef.current.set(sphereId, newPhysics);
+        currentList = [...currentList, { id: sphereId, num: nextNum, room }];
+      }
+
+      nextSpheresState[room] = currentList;
+    });
+
+    setActiveSpheres(nextSpheresState);
+  }, [targetCounts]);
+
+  // Physics loop with anti-clipping buffer & gentle float dynamics
+  useEffect(() => {
+    const updatePhysics = () => {
+      ROOM_CONFIGS.forEach((config) => {
+        const room = config.id;
+        const bounds = roomBoundsRef.current[room];
+        const allRoomSpheres = Array.from(physicsMapRef.current.values()).filter(
+          (s) => s.room === room
+        );
+
+        const maxNum = allRoomSpheres.reduce((max, s) => (s.isDraining ? max : Math.max(max, s.num)), 0);
+
+        allRoomSpheres.forEach((s) => {
+          if (s.isDraining) {
+            s.vy += config.gravity * 2;
+            s.y += s.vy;
+            if (s.y > bounds.height + 100) {
+              physicsMapRef.current.delete(s.id);
+              elementsMapRef.current.delete(s.id);
             }
-            if (ball.posZ <= 0 || ball.posZ >= actualWidth - actualSize) {
-              ball.posZ = Math.max(0, Math.min(ball.posZ, actualWidth - actualSize));
-              ball.velocityZ = -ball.velocityZ;
-            }
-            if (Math.random() < 0.01) {
-              ball.velocityX = (Math.random() - 0.5) * 10;
-              ball.velocityZ = (Math.random() - 0.5) * 10;
-            }
+            return;
           }
 
-          if (ball.element) {
-            const displayY = isLatest && !ball.bouncing && room.name === 'minutes'
-              ? ball.posY - Math.abs(Math.sin(Date.now() / 600) * 4)
-              : ball.posY;
-            
-            const zDepthShift = isLatest ? (ball.posZ - 38) : (ball.posZ - 50);
-            ball.element.className = `${styles.ball} ${isLatest ? styles.ballCurrent : styles.ballStatic}`;
-            ball.element.style.transform = `translateX(${ball.posX}vw) translateY(${displayY}vh) translateZ(${zDepthShift}vh)`;
+          const isCurrentActiveBall = s.num === maxNum;
+          const isHourOrMinuteWanderer = isCurrentActiveBall && (s.room === 'hours' || s.room === 'minutes');
+
+          if (isHourOrMinuteWanderer) {
+            // Ultra-gentle force for continuous, slow drift
+            s.vx += (Math.random() - 0.5) * 0.025;
+            s.vy += (Math.random() - 0.5) * 0.025;
+            s.vz += (Math.random() - 0.5) * 0.025;
+
+            // Cap velocity at low speed (0.35px/frame)
+            const speed = Math.sqrt(s.vx * s.vx + s.vy * s.vy + s.vz * s.vz);
+            const maxWanderSpeed = 0.35;
+            if (speed > maxWanderSpeed) {
+              s.vx = (s.vx / speed) * maxWanderSpeed;
+              s.vy = (s.vy / speed) * maxWanderSpeed;
+              s.vz = (s.vz / speed) * maxWanderSpeed;
+            }
+
+            s.vx *= 0.992;
+            s.vy *= 0.992;
+            s.vz *= 0.992;
+          } else {
+            // Low gravity and minimal friction loss for long bouncing
+            s.vy += config.gravity;
+            s.vx *= config.friction;
+            s.vz *= config.friction;
+          }
+
+          s.x += s.vx;
+          s.y += s.vy;
+          s.z += s.vz;
+
+          // Boundary offsets prevent box-shadow/border clipping
+          const PADDING = 2;
+          const floorY = bounds.height - s.radius - PADDING;
+          const ceilingY = s.radius + PADDING;
+          const minX = s.radius + PADDING;
+          const maxX = bounds.width - s.radius - PADDING;
+
+          if (s.y >= floorY) {
+            s.y = floorY;
+            s.vy = -s.vy * config.bounce;
+          } else if (s.y <= ceilingY) {
+            s.y = ceilingY;
+            s.vy = -s.vy * config.bounce;
+          }
+
+          if (s.x <= minX) {
+            s.x = minX;
+            s.vx = -s.vx * config.bounce;
+          } else if (s.x >= maxX) {
+            s.x = maxX;
+            s.vx = -s.vx * config.bounce;
+          }
+
+          const maxZ = bounds.depth / 2 - s.radius;
+          if (s.z <= -maxZ) {
+            s.z = -maxZ;
+            s.vz = -s.vz * config.bounce;
+          } else if (s.z >= maxZ) {
+            s.z = maxZ;
+            s.vz = -s.vz * config.bounce;
+          }
+        });
+
+        // Sphere-to-sphere collisions
+        for (let i = 0; i < allRoomSpheres.length; i++) {
+          for (let j = i + 1; j < allRoomSpheres.length; j++) {
+            const s1 = allRoomSpheres[i];
+            const s2 = allRoomSpheres[j];
+            if (s1.isDraining || s2.isDraining) continue;
+
+            const dx = s2.x - s1.x;
+            const dy = s2.y - s1.y;
+            const dz = s2.z - s1.z;
+            const distSq = dx * dx + dy * dy + dz * dz;
+            const minDist = s1.radius + s2.radius;
+
+            if (distSq < minDist * minDist && distSq > 0.0001) {
+              const dist = Math.sqrt(distSq);
+              const overlap = 0.5 * (minDist - dist);
+
+              const nx = dx / dist;
+              const ny = dy / dist;
+              const nz = dz / dist;
+
+              s1.x -= nx * overlap;
+              s1.y -= ny * overlap;
+              s1.z -= nz * overlap;
+              s2.x += nx * overlap;
+              s2.y += ny * overlap;
+              s2.z += nz * overlap;
+
+              const kx = s1.vx - s2.vx;
+              const ky = s1.vy - s2.vy;
+              const kz = s1.vz - s2.vz;
+              const impulse = (nx * kx + ny * ky + nz * kz) * (1 + config.bounce) * 0.5;
+
+              s1.vx -= impulse * nx;
+              s1.vy -= impulse * ny;
+              s1.vz -= impulse * nz;
+              s2.vx += impulse * nx;
+              s2.vy += impulse * ny;
+              s2.vz += impulse * nz;
+            }
+          }
+        }
+
+        allRoomSpheres.forEach((s) => {
+          const el = elementsMapRef.current.get(s.id);
+          if (el) {
+            el.style.transform = `translate3d(${s.x - s.radius}px, ${s.y - s.radius}px, ${s.z}px)`;
           }
         });
       });
 
-      requestRef.current = requestAnimationFrame(animate);
+      animFrameRef.current = requestAnimationFrame(updatePhysics);
     };
 
-    requestRef.current = requestAnimationFrame(animate);
+    animFrameRef.current = requestAnimationFrame(updatePhysics);
     return () => {
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [isMobile]);
-
-  // Sync state transitions 
-  useEffect(() => {
-    ROOM_CONFIGS.forEach((room) => {
-      const targetCount = targetCounts[room.name];
-      let currentBalls = [...ballsMapRef.current[room.name]];
-      
-      const actualWidth = room.baseWidth;
-      const actualSize = isMobile ? room.baseSize * 0.8 : room.baseSize;
-
-      if (targetCount < currentBalls.length || (targetCount > 0 && currentBalls.length === 0)) {
-        currentBalls.forEach(b => b.element?.remove());
-        currentBalls = [];
-        latestBallRef.current[room.name] = null;
-      }
-
-      while (currentBalls.length < targetCount) {
-        const nextNumber = currentBalls.length + 1;
-        const roomDom = document.getElementById(`${room.name}-room`);
-        if (!roomDom) break; // Ensure room exists before adding balls
-
-        const newBall: BallInstance = {
-          id: `${room.name}-ball-${Date.now()}-${nextNumber}`,
-          label: nextNumber,
-          posX: (actualWidth / 2) - (actualSize / 2) + (Math.random() - 0.5) * 10,
-          posY: -30,
-          posZ: Math.random() * (actualWidth - actualSize),
-          velocityY: 0,
-          velocityX: (Math.random() - 0.5) * 100,
-          velocityZ: (Math.random() - 0.5) * 100,
-          bouncing: true,
-        };
-
-        const ballEl = document.createElement('div');
-        ballEl.className = styles.ball;
-        ballEl.style.setProperty('--ball-size', `${actualSize}vh`);
-        ballEl.style.setProperty('--ball-gradient', room.gradient);
-        ballEl.innerText = String(nextNumber);
-
-        newBall.element = ballEl;
-        latestBallRef.current[room.name] = newBall;
-        roomDom.appendChild(ballEl);
-        currentBalls.push(newBall);
-      }
-
-      ballsMapRef.current[room.name] = currentBalls;
-    });
-  }, [targetCounts, isMobile]);
-
-  const initialTopOffset = isMobile ? 2 : 5;
+  }, []);
 
   return (
-    <div id="tower" className={styles.tower}>
-      {computedOffsets.map(({ name, height, offset }) => (
-        <div 
-          key={name} 
-          id={`${name}-room`} 
-          className={`${styles.room} ${name === 'minutes' ? styles.roomMinutes : ''}`}
-          style={{ height: `${height}vh`, top: `${offset + initialTopOffset}vh` }}
-        />
-      ))}
+    <div className={styles.stage}>
+      <div className={styles.tower}>
+        {ROOM_CONFIGS.map((config) => {
+          const roomName = config.id;
+          const currentSpheres = activeSpheres[roomName];
+
+          const currentHeight =
+            roomName === 'hours'
+              ? chamberDimensions.hourHeight
+              : roomName === 'minutes'
+              ? chamberDimensions.minuteHeight
+              : chamberDimensions.secondHeight;
+
+          return (
+            <div
+              key={roomName}
+              className={styles.glassChamber}
+              style={{
+                height: `${currentHeight}px`,
+                width: `${chamberDimensions.width}px`,
+              }}
+            >
+              {currentSpheres.map((s) => (
+                <div
+                  key={s.id}
+                  ref={(el) => {
+                    if (el) elementsMapRef.current.set(s.id, el);
+                    else elementsMapRef.current.delete(s.id);
+                  }}
+                  className={styles.sphere}
+                  style={
+                    {
+                      '--size': `${config.radiusPx * 2}px`,
+                      '--bg': config.bgGradient,
+                      '--fontSize': `${config.radiusPx * 1.1}px`,
+                    } as React.CSSProperties
+                  }
+                >
+                  <span className={styles.sphereLabel}>{s.num}</span>
+                </div>
+              ))}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
