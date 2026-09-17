@@ -56,11 +56,9 @@
   align-items: center;
   justify-content: center;
   gap: 0.1em;
-  /* Spacing between digits */
   color: var(--display-color);
   font-family: 'Hammerhead', 'Courier New', Courier, monospace;
   font-size: 15vmax;
-  /* DIGIT SIZE */
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
   line-height: 0.85;
