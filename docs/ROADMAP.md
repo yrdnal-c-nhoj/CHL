@@ -1,6 +1,6 @@
 # BorrowedTime Development Roadmap
 
-Last reviewed: 2026-09-02
+Last reviewed: 2026-09-17
 
 This is the single source of truth for BorrowedTime project health, standards,
 and the concrete plan to reach them. It supersedes scattered notes in
@@ -26,7 +26,7 @@ and maintainable.
 
 ---
 
-## 2. Current State (2026-09-02)
+## 2. Current State (2026-09-17)
 
 ### Strengths
 - Modern stack: React 19, Vite 7, TypeScript 5.9, strict TS options
@@ -38,18 +38,19 @@ and maintainable.
 ### Critical Gaps
 | Area | State | Impact |
 |---|---|---|
-| Tests | 12/32 files failing | Blocks CI confidence |
-| Lint | 776 errors | Signals real bugs (refs, any, etc.) |
-| TypeScript | ~50 focused errors | Blocks strict-mode adoption |
-| Automation scripts | Missing | `npm run status` and verification fail |
+| Tests | ✅ Pass | — |
+| Lint | ❌ Failed (776 errors) | Signals real bugs (refs, any, etc.) |
+| TypeScript | ❌ Failed (~50 focused errors in recent clocks) | Blocks strict-mode adoption |
+| Clock verification | ❌ Failed | `node scripts/verify-all-clocks.js --quiet` fails |
 | Three.js bundle | ~190KB br (target <150KB) | Misses performance budget |
 | Consistency | Fleet-wide drift | Hundreds of clocks, uneven enforcement |
 
 ### Quick Metrics
-- **Clocks:** 2025 full year + 2026 Jan–Aug (latest: 2026-08-31)
-- **Test files:** 32 (20 pass / 12 fail)
+- **Clocks:** 2025 full year + 2026 Jan–Aug (latest: 2026-08-31); 2026-09 in progress (26-09-16, 26-09-17)
+- **Test files:** 32 (20 pass / 12 fail historically; currently passing)
 - **Lint problems:** 2434 (776 errors / 1658 warnings)
 - **TypeScript errors:** ~50 in recent clocks; thousands historically across fleet
+- **Status doc:** Auto-generated from `npm run status` (scripts restored)
 
 ---
 

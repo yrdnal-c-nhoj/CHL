@@ -10,7 +10,7 @@ const MARKERS = Array.from({ length: 12 }, (_, i) => ({
   isMajor: i % 3 === 0,
 }));
 
-const RADIUS = 120;
+const _RADIUS = 120;
 
 const Clock_26_09_08 = () => {
   const time = useSmoothClock();
