@@ -1,0 +1,53 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #8d8a8d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backgroundLayer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 2;
+  filter: contrast(160%) brightness(90%) saturate(150%);
+}
+
+
+.digitalDisplay {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  font-family: 'ClockFont_26_09_02', monospace, sans-serif;
+  font-size: 15vmin;
+  z-index: 9;
+}
+
+.digitBox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12vmin;
+  color: #9e9994;
+  text-shadow: -1px -1px 0 #000, 1px 1px 0 #fff;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
