@@ -1,0 +1,75 @@
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSmoothClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
+import styles from './Clock.module.css';
+
+import font from '@/assets/fonts/26fonts/26-09-19.otf?url';
+import beachniteVideo from '@/assets/images/26_images/26-09/26-09-19/implode.webm';
+import bimplodeVideo from '@/assets/images/26_images/26-09/26-09-19/bimplode.webm';
+
+export const assets = [font, beachniteVideo, bimplodeVideo];
+
+const formatTime = (num: number): string => num.toString().padStart(2, '0');
+
+const fontConfig: FontConfig = {
+  fontFamily: 'ClockFont_26_09_02',
+  fontUrl: font,
+};
+
+const Clock_26_09_02 = () => {
+  useSuspenseFontLoader([fontConfig]);
+
+  const time = useSmoothClock(50);
+
+  const { hours, minutes, seconds, centiseconds } = useMemo(() => {
+    const h = formatTime(time.getHours());
+    const m = formatTime(time.getMinutes());
+    const s = formatTime(time.getSeconds());
+    const cs = time.getMilliseconds().toString().padStart(3, '0').slice(0, 2);
+    return { hours: h, minutes: m, seconds: s, centiseconds: cs };
+  }, [time]);
+
+  return (
+    <main className={styles.container}>
+      <video
+        src={beachniteVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className={styles.backgroundLayer}
+        style={{ opacity: 0.9 }}
+      />
+      <video
+        src={bimplodeVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className={styles.backgroundLayer}
+        style={{ opacity: 0.5 }}
+      />
+
+      <div className={styles.digitalDisplay}>
+        <span className={styles.digitBox}>{hours[0]}</span>
+        <span className={styles.digitBox}>{hours[1]}</span>
+        <span className={styles.digitBox}>{minutes[0]}</span>
+        <span className={styles.digitBox}>{minutes[1]}</span>
+        <span className={styles.digitBox}>{seconds[0]}</span>
+        <span className={styles.digitBox}>{seconds[1]}</span>
+        <span className={styles.digitBox}>{centiseconds[0]}</span>
+        <span className={styles.digitBox}>{centiseconds[1]}</span>
+      </div>
+
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {hours}:{minutes}:{seconds}.{centiseconds}
+      </time>
+    </main>
+  );
+};
+
+const MemoizedClock = React.memo(Clock_26_09_02);
+MemoizedClock.displayName = 'Clock_26_09_02';
+
+export default MemoizedClock;
