@@ -3,7 +3,7 @@
   width: 100vw;
   height: 100dvh;
   overflow: hidden;
-  background-color: #ed4b92;
+  background-color: #000000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,7 +42,7 @@
   justify-content: center;
   width: 20vmin;
   height: 30vmin;
-  background-color:#ed4b92;
+  background-color:#f78eb300;
   /* border: 2vmin solid #fff; */
   border-radius: 2vmin;
   box-sizing: border-box;
