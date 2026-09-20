@@ -16,9 +16,11 @@ const formatTime = (value: number) => value.toString().padStart(2, '0');
 const Clock_26_09_15 = () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useClock();
-  const hours = formatTime(time.getHours());
+
+  const rawHours = time.getHours();
+  const hours = (rawHours % 12 || 12).toString();
   const minutes = formatTime(time.getMinutes());
-  const seconds = formatTime(time.getSeconds());
+  const ampm = rawHours >= 12 ? 'pm' : 'am';
 
   return (
     <main className={styles.container}>
@@ -31,14 +33,17 @@ const Clock_26_09_15 = () => {
           playsInline
         />
       </div>
+      {/* First bubble layer */}
       <div className={styles.bubblesOverlay} style={{ backgroundImage: `url(${bubblesOverlay})` }} />
+     
       <time className={styles.display} dateTime={time.toISOString()} aria-label="Current time">
-        <span className={styles.segment}>{hours[0]}</span>
-        <span className={styles.segment}>{hours[1]}</span>
+        {hours.split('').map((digit, index) => (
+          <span key={index} className={styles.segment}>{digit}</span>
+        ))}
+        <span className={styles.colon}>:</span>
         <span className={styles.segment}>{minutes[0]}</span>
         <span className={styles.segment}>{minutes[1]}</span>
-        <span className={styles.segment}>{seconds[0]}</span>
-        <span className={styles.segment}>{seconds[1]}</span>
+        <span className={styles.ampm}>{ampm}</span>
       </time>
     </main>
   );
