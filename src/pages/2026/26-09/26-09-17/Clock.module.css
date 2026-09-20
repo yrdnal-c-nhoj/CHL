@@ -7,7 +7,6 @@
       #ebdcc1 100%);
   --display-color: #e1d5ac;
 
-
   position: relative;
   display: grid;
   width: 100vw;
@@ -68,12 +67,30 @@
   user-select: none;
 }
 
-/* Single digit box: fixed width prevents layout shift */
+/* Single digit box */
 .segment {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 0.7ch;
-  /* Width of one character */
   text-align: center;
+}
+
+/* Colon separator box */
+.colon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.3ch;
+  text-align: center;
+  transform: translateY(-0.08em);
+  margin-left: 0.12em;
+}
+
+/* AM/PM indicator sizing */
+.ampm {
+  font-size: 1.45em;
+  margin-left: 0.1em;
+  transform: translateY(-0.05em);
+  /* Moves indicator up */
 }
