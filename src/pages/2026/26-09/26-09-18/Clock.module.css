@@ -3,7 +3,7 @@
   width: 100vw;
   height: 100dvh;
   overflow: hidden;
-  background-color: #000000;
+  background-color: #f19ae6;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,7 +14,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2vmin;
   z-index: 9;
 }
 
@@ -22,13 +21,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1vmin;
 }
 
 @media (max-width: 768px) {
   .digitalDisplay {
     flex-direction: column;
-    gap: 4vmin;
   }
 
   .timeGroup {
@@ -40,11 +37,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20vmin;
-  height: 30vmin;
-  background-color:#f78eb300;
-  /* border: 2vmin solid #fff; */
-  border-radius: 2vmin;
+  /* width: 20vmin; */
+  height: 33vmin;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -55,7 +49,7 @@
   object-fit: contain;
   object-position: center;
   display: block;
-  filter: contrast(120%) brightness(150%);
+  filter: contrast(90%) brightness(110%);
 }
 
 .srOnly {
