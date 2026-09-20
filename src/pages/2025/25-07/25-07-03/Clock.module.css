@@ -41,7 +41,7 @@
 .clockText {
   font-family: 'ClockFont_25_07_03', monospace;
   color: rgb(255, 0, 47);
-  font-size: 1.8rem;
+  font-size: 3rem;
   text-align: center;
   min-width: 12ch;
 }
