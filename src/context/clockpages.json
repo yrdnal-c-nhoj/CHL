@@ -7096,11 +7096,30 @@
   {
     "path": "26-09-18",
     "date": "26-09-18",
-    "title": "Numeric",
+    "title": "Sculpture XX",
     "tags": [
-      "digital",
-      "numbers",
-      "24-hour"
+      "body",
+      "pictographic"
     ]
-  }
+  },
+  {
+    "path": "26-09-19",
+    "date": "26-09-19",
+    "title": "Building",
+    "tags": [
+      "digital"
+     
+
 ]
+},
+  {
+    "path": "26-09-20",
+    "date": "26-09-20",
+    "title": "Range",
+    "tags": [
+      "analog",
+      "landscape"
+]
+}
+  
+  ]
