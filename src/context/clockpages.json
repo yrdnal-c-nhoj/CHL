@@ -6274,7 +6274,7 @@
     "tags": [
       "1517",
       "Germany",
-      "bauhaus",
+      "Bauhaus",
       "digital",
       "metal",
       "shrine"
@@ -7099,7 +7099,8 @@
     "title": "Sculpture XX",
     "tags": [
       "body",
-      "pictographic"
+      "pictographic",
+      "pink"
     ]
   },
   {
@@ -7107,19 +7108,24 @@
     "date": "26-09-19",
     "title": "Building",
     "tags": [
-      "digital"
-     
-
-]
-},
+      "digital",
+      "sound",
+      "up-and-down",
+      "vertical",
+      "wall"
+    ]
+  },
   {
     "path": "26-09-20",
     "date": "26-09-20",
     "title": "Range",
     "tags": [
       "analog",
-      "landscape"
+      "landscape",
+      "move",
+      "radar",
+      "screen",
+      "waves"
+    ]
+  }
 ]
-}
-  
-  ]
