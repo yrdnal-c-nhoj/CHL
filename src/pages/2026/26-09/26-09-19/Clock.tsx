@@ -6,9 +6,8 @@ import styles from './Clock.module.css';
 
 import font from '@/assets/fonts/26fonts/26-09-19.otf?url';
 import beachniteVideo from '@/assets/images/26_images/26-09/26-09-19/implode.webm';
-import bimplodeVideo from '@/assets/images/26_images/26-09/26-09-19/bimplode.webm';
 
-export const assets = [font, beachniteVideo, bimplodeVideo];
+export const assets = [font, beachniteVideo];
 
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
@@ -40,15 +39,6 @@ const Clock_26_09_02 = () => {
         playsInline
         className={styles.backgroundLayer}
         style={{ opacity: 0.9 }}
-      />
-      <video
-        src={bimplodeVideo}
-        autoPlay
-        loop
-        muted
-        playsInline
-        className={styles.backgroundLayer}
-        style={{ opacity: 0.5 }}
       />
 
       <div className={styles.digitalDisplay}>
