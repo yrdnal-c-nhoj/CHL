@@ -1,0 +1,59 @@
+@font-face {
+  font-family: 'ClockFont_25_07_03';
+  src: url('../../../../assets/fonts/25fonts/25-07-03-rock.ttf')
+    format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.container {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  z-index: 1;
+}
+
+.clock {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.clockText {
+  font-family: 'ClockFont_25_07_03', monospace;
+  color: rgb(255, 0, 47);
+  font-size: 1.8rem;
+  text-align: center;
+  min-width: 12ch;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
