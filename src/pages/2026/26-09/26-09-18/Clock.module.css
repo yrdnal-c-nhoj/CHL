@@ -3,7 +3,7 @@
   width: 100vw;
   height: 100dvh;
   overflow: hidden;
-  background-color: #f19ae6;
+  background-color: #f78ae8;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,6 +23,16 @@
   justify-content: center;
 }
 
+.digitBox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* width: 20vmin; */
+  /* height: 34vmin; */
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
 @media (max-width: 768px) {
   .digitalDisplay {
     flex-direction: column;
@@ -31,17 +41,12 @@
   .timeGroup {
     flex-direction: row;
   }
-}
 
 .digitBox {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  /* width: 20vmin; */
-  height: 33vmin;
-  box-sizing: border-box;
-  overflow: hidden;
+  height: 34vh;
 }
+}
+
 
 .digitBox img {
   width: 100%;
