@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import rocketGif from '@/assets/images/25_images/25-07/25-07-03/rocket.gif';
+import rocketGif from '@/assets/images/25_images/25-07/25-07-03/rocket.webp';
 import rockFont from '@/assets/fonts/25fonts/25-07-03-rock.ttf';
 export const assets = [rocketGif, rockFont];
 
