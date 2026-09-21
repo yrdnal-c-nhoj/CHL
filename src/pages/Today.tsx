@@ -1,20 +1,20 @@
+import { getLatestClockDate } from '@/clock/clockRegistry';
 import { useDataContext } from '@/context/DataContext';
 import { useClockPage } from '@/hooks/useClockPage';
 import React, { useMemo } from 'react';
 import styles from './Today.module.css';
 
 /**
- * Displays the most recently published clock.
+ * Displays the most recently available clock component.
  *
- * The clock index is sorted chronologically by DataContext. Only clocks
- * dated today or earlier are eligible, so future-dated index entries cannot
- * become the /today clock before their date.
+ * The clock registry is authoritative: a clock is available only when its
+ * Clock.tsx file exists. Metadata is used only to decorate that clock.
  */
 const TodayPage = () => {
   const { items, loading: dataLoading, error: dataError } = useDataContext();
 
   const targetItem = useMemo(() => {
-    if (dataLoading || dataError || !items.length) {
+    if (dataLoading || dataError) {
       return null;
     }
 
@@ -25,13 +25,17 @@ const TodayPage = () => {
       String(now.getDate()).padStart(2, '0'),
     ].join('-');
 
-    // DataContext sorts items ascending by date. Select the newest clock
-    // that has been published for today or an earlier date.
-    return (
-      [...items]
-        .reverse()
-        .find((item) => item.date <= todayString) ?? null
-    );
+    const latestDate = getLatestClockDate(todayString);
+
+    if (!latestDate) {
+      return null;
+    }
+
+    return items.find((item) => item.date === latestDate) ?? {
+      path: `/${latestDate}`,
+      date: latestDate,
+      title: latestDate,
+    };
   }, [items, dataLoading, dataError]);
 
   const {

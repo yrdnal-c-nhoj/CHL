@@ -1,80 +1,115 @@
 /**
- * This file manages the global state for all clock data in the application.
+ * Global metadata for the clocks that actually exist in the clock registry.
+ *
+ * Clock component files are authoritative for publication/existence.
+ * clockpages.json supplies descriptive metadata only.
  */
 import type { ClockItem, DataContextType } from '@/types/data';
+import { CLOCK_DATES } from '@/clock/clockRegistry';
 import type { ReactNode } from 'react';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-// Create the context with an initial value of undefined
 export const DataContext = createContext<DataContextType | undefined>(
   undefined,
 );
 
-// Props interface for the DataProvider wrapper
 interface DataProviderProps {
   children: ReactNode;
 }
 
+interface RawClockMetadata {
+  path?: unknown;
+  date?: unknown;
+  title?: unknown;
+  tags?: unknown;
+}
+
+function normalizeMetadata(data: unknown): Map<string, RawClockMetadata> {
+  if (!Array.isArray(data)) {
+    throw new Error('Clock metadata must be an array');
+  }
+
+  const metadata = new Map<string, RawClockMetadata>();
+
+  for (const entry of data) {
+    if (!entry || typeof entry !== 'object') continue;
+
+    const item = entry as RawClockMetadata;
+    const date = typeof item.date === 'string' ? item.date.trim() : '';
+
+    if (date) {
+      metadata.set(date, item);
+    }
+  }
+
+  return metadata;
+}
+
 /**
- * Provider component that wraps the app to provide clock data to all components
+ * Build the public clock list from actual Clock.tsx files, enriching those
+ * clocks with optional metadata from clockpages.json.
  */
+function buildClockItems(data: unknown): ClockItem[] {
+  const metadata = normalizeMetadata(data);
+
+  return CLOCK_DATES.map((date, index) => {
+    const item = metadata.get(date);
+
+    return {
+      path:
+        typeof item?.path === 'string' && item.path
+          ? item.path
+          : `/${date}`,
+      date,
+      title:
+        typeof item?.title === 'string' && item.title
+          ? item.title
+          : date,
+      tags: Array.isArray(item?.tags)
+        ? item.tags.filter((tag): tag is string => typeof tag === 'string')
+        : undefined,
+      clockNumber: index + 1,
+    };
+  });
+}
+
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
-  // State for storing the list of clocks
   const [items, setItems] = useState<ClockItem[]>([]);
-  // State to track loading status (defaults to true)
   const [loading, setLoading] = useState(true);
-  // State for error handling
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    /**
-     * Asynchronous function to load and process JSON data
-     */
     const loadData = async () => {
       try {
-        // Conditionally import the data based on the environment.
-        // This prevents test data from being loaded or bundled in production.
-        let data;
+        let data: unknown;
+
         if (import.meta.env.DEV || import.meta.env.MODE === 'test') {
-          // In development, import the test data directly.
           data = (await import('./testclocks.json')).default;
         } else {
-          // In production, get the URL of the JSON file and fetch it.
           const clockPagesUrl = (await import('./clockpages.json?url')).default;
           const response = await fetch(clockPagesUrl);
+
+          if (!response.ok) {
+            throw new Error(
+              `Failed to load clock metadata: ${response.status} ${response.statusText}`,
+            );
+          }
+
           data = await response.json();
         }
 
-        if (!Array.isArray(data)) {
-          throw new Error('Clock data must be an array');
-        }
-
-        // Sort the data by date string (ascending) to determine the chronological order
-        // We process this once and use it as our primary source of truth
-        const processedItems: ClockItem[] = [...data]
-          .filter((d: any) => d?.date)
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .sort((a: any, b: any) =>
-            String(a.date).localeCompare(String(b.date)),
-          )
-          .map((item, idx) => ({ ...item, clockNumber: idx + 1 }));
-
-        // Update the state with the fully processed items
-        setItems(processedItems);
+        setItems(buildClockItems(data));
       } catch (err) {
-        // Catch and format any errors that occur during the import or processing
-        setError(
-          err instanceof Error
-            ? err
-            : new Error('An error occurred loading data'),
-        );
+        // Metadata is descriptive, not authoritative. If it is unavailable,
+        // keep the real clock registry usable with date-based fallback items.
+        console.warn('[DataContext] Clock metadata unavailable:', err);
+        setItems(buildClockItems([]));
+        setError(null);
       } finally {
-        // Set loading to false whether it succeeded or failed
         setLoading(false);
       }
     };
 
-    // Trigger the data loading function
     loadData();
   }, []);
 
@@ -85,13 +120,12 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   );
 };
 
-/**
- * Custom hook to easily access the clock data from any functional component
- */
 export const useDataContext = (): DataContextType => {
   const context = useContext(DataContext);
+
   if (context === undefined) {
     throw new Error('useDataContext must be used within a DataProvider');
   }
+
   return context;
 };

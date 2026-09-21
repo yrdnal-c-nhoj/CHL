@@ -4,39 +4,37 @@ import { useClock } from '@/utils/hooks';
 import styles from './BaseClock.module.css';
 
 /**
- * BaseClock - Standardized Clock Component Architecture
+ * BaseClock - Starting template for a new BorrowedTime clock.
  *
- * This component demonstrates the canonical structure for all BorrowedTime clocks:
- *
- * 1. Asset exports for preloading pipeline
- * 2. Font loading with Suspense
- * 3. CSS Module for scoped styles
- * 4. Standard hook for time management
- * 5. Semantic HTML with <time> element
+ * The template demonstrates the minimum structure expected by the current
+ * clock contract. Copy it into a date directory, then customize the artwork,
+ * assets, typography, and layout.
  *
  * New clock workflow:
  * 1. Read docs/ARCHITECTURE.md and docs/CLOCKS.md.
- * 2. Create the new date-based page under src/pages/YYYY/YY-MM/YY-MM-DD/.
- * 3. Copy this file and BaseClock.module.css as the starting structure.
- * 4. Add the page to src/context/clockpages.json.
- * 5. Customize the artwork, assets, typography, and layout.
- * 6. Run the current validation commands before committing.
+ * 2. Create the date directory under src/pages/YYYY/YY-MM/YY-MM-DD/.
+ * 3. Copy this file and BaseClock.module.css when CSS Modules are appropriate.
+ * 4. Add the clock-specific assets and font configuration.
+ * 5. Change the component name and displayName to match the new clock.
+ * 6. Add optional title/tags metadata to src/context/clockpages.json.
+ * 7. Run the current validation commands before committing.
  *
- * See CONTRIBUTING.md for the human contribution workflow and
- * AGENTS.md for AI coding-agent requirements.
+ * The presence of Clock.tsx is what makes a clock available. Metadata does not
+ * publish or register a clock.
  */
 
 // =========================
-// ASSET EXPORTS (Required)
+// ASSET EXPORTS
 // =========================
-// Export any images/fonts for the preloading pipeline in useClockPage.ts
+// Export every imported local asset used by the clock so the asset preloading
+// pipeline can discover it.
 export const assets: string[] = [];
 
 // =========================
 // FONT CONFIGURATION
 // =========================
 const fontConfigs: FontConfig[] = [
-  // { fontFamily: 'MyClockFont', fontUrl: fontUrl }
+  // { fontFamily: 'MyClockFont', fontUrl: fontUrl },
 ];
 
 // =========================
@@ -55,21 +53,24 @@ const BaseClock = () => {
   const hours = formatDigits(time.getHours());
   const minutes = formatDigits(time.getMinutes());
   const seconds = formatDigits(time.getSeconds());
-  const isoTime = time.toISOString();
 
   return (
     <main className={styles.container}>
-      <time className={styles.timeDisplay} dateTime={isoTime}>
+      <time className={styles.timeDisplay} dateTime={time.toISOString()}>
         <span className={styles.digitGroup}>
           <span className={styles.digit}>{hours[0]}</span>
           <span className={styles.digit}>{hours[1]}</span>
         </span>
-        <span className={styles.separator}>:</span>
+        <span className={styles.separator} aria-hidden="true">
+          :
+        </span>
         <span className={styles.digitGroup}>
           <span className={styles.digit}>{minutes[0]}</span>
           <span className={styles.digit}>{minutes[1]}</span>
         </span>
-        <span className={styles.separator}>:</span>
+        <span className={styles.separator} aria-hidden="true">
+          :
+        </span>
         <span className={styles.digitGroup}>
           <span className={styles.digit}>{seconds[0]}</span>
           <span className={styles.digit}>{seconds[1]}</span>
@@ -78,5 +79,9 @@ const BaseClock = () => {
     </main>
   );
 };
+
+// Required by the current clock contract. Replace the placeholder with the
+// actual date-specific identity when this template is copied.
+BaseClock.displayName = 'Clock_YY_MM_DD';
 
 export default BaseClock;
