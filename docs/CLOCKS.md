@@ -50,9 +50,15 @@ Every current clock must:
 
 Use `useClock` for normal once-per-second clock displays and `useSmoothClock` when sub-second movement is visibly required.
 
-Do not use `setInterval`, `setTimeout`, `Date.now()`, or a manual `requestAnimationFrame` loop as an independent source of displayed clock time.
+The displayed clock value must originate from the shared time infrastructure. Do not use `setInterval`, `setTimeout`, `Date.now()`, or `requestAnimationFrame` as an independent clock or timekeeping mechanism.
 
-A Three.js/WebGL render loop is permitted when it is used only to render frames and the clock value comes from the shared time infrastructure.
+A Three.js/WebGL render loop is permitted when it exists solely to render frames. It must not calculate or advance the displayed clock time independently; the rendered time value must still come from `useClock` or `useSmoothClock` (or shared infrastructure built directly on those hooks).
+
+In short:
+
+- **Manual timing loop:** prohibited when it is the source of displayed clock time.
+- **Three.js/WebGL render loop:** permitted for rendering only.
+- **Displayed time:** must come from shared clock/time infrastructure.
 
 ## Accessibility
 
