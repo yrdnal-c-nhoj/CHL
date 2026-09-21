@@ -3,28 +3,34 @@
   height: 100dvh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; /* This centers the row vertically */
   background-size: cover;
   background-position: center;
   filter: contrast(0.7) brightness(1.15);
   font-family: '1974', sans-serif;
   position: relative;
+  overflow: hidden; /* Prevents unwanted scrollbars from 100vw */
 }
 
 .digitsRow {
   display: flex;
+  flex-direction: row; /* Explicitly state it's a row (this is the default, but good for clarity) */
   justify-content: center;
   align-items: center;
   gap: clamp(1vw, 2vw, 4vw);
   padding: 0 2vw;
   width: 100%;
-  max-width: 99vw;
-  margin-top: -65vh;
+  max-width: 100%; /* Avoid using 99vw here, it can cause layout jitter */
+  
+  /* Removed: margin-top: -65vh; 
+     This was pushing the row completely out of the viewport. 
+     The container's align-items: center handles the vertical centering. */
 }
 
 .digitBox {
-  width: clamp(22vw, 22vw, 222px);
-  height: clamp(29vw, 29vw, 340px);
+  /* Using purely relative units is generally better for responsiveness than mixing vw and px in a clamp */
+  width: clamp(15vw, 20vw, 25vw); 
+  aspect-ratio: 2 / 3; /* A better way to maintain proportions instead of hardcoding height */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,7 +38,7 @@
 }
 
 .digit {
-  font-size: clamp(20vw, 26vw, 260px);
+  font-size: clamp(15vw, 20vw, 25vw); /* Match font size closely to box width for better scaling */
   line-height: 1;
   background-size: 180% 180%;
   background-position: center;
