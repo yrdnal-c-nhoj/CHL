@@ -1,6 +1,6 @@
 # CHL Current Status
 
-Last reviewed: 2026-09-17
+Last reviewed: 2026-09-20
 
 This file is the current source of truth for repository health. For the full
 project roadmap, standards, and phased improvement plan, see
@@ -13,14 +13,13 @@ These results reflect the current state after recent fixes.
 
 | Check | Command | Result |
 |---|---|---|
-| Build | `npm run build` | ✅ Pass |
+| Build | `npm run build` | ✅ Pass (dist/ = 353MB, 4,253 files) |
 | Tests | `npm run test:run` | ✅ Pass (115 tests) |
-| Lint (recent 26-09 clocks) | `npx eslint "src/pages/2026/26-09/**/*.{ts,tsx}"` | ✅ Pass |
 | TypeScript (in-scope, via tsconfig.ci.json) | `npm run type-check` | ✅ Pass |
 | Clock verification (changed pages) | `npm run verify:clocks:changed` | ✅ Pass |
-| Lint (full fleet) | `npm run lint` | ❌ Failed (legacy debt) |
-| TypeScript (full fleet) | `npx tsc --noEmit` | ❌ Failed (legacy debt) |
-| Clock verification (full fleet) | `npm run verify:clocks` | ❌ Failed (legacy debt) |
+| Lint (full fleet) | `npx eslint .` | ❌ 1,090 problems (297 errors, 793 warnings) |
+| TypeScript (full fleet) | `npx tsc --noEmit` | ❌ Failed (legacy debt, not re-counted this pass) |
+| Clock verification (full fleet) | `npm run verify:clocks` | ❌ **396 of 537** clocks violate the contract (73.7%) |
 
 ### Test detail
 
@@ -28,11 +27,50 @@ All 115 tests pass. Run `npm run test:run` to confirm.
 
 ### Lint detail
 
-Full `npm run lint` shows legacy violations across 2025 and 2026 Jan-Aug clocks. Recent 26-09 clocks are clean.
+Full-fleet lint is **1,090 problems** (297 errors / 793 warnings) as of 2026-09-20 —
+down from the ~2,400 figure previously recorded, but still substantial. Legacy
+violations remain concentrated in 2025 and 2026 Jan–Aug clocks.
 
 ### TypeScript detail
 
-Full `npx tsc --noEmit` (using tsconfig.json) surfaces thousands of legacy errors. The CI type-check (`npm run type-check` via tsconfig.ci.json) is clean for in-scope code.
+Full `npx tsc --noEmit` (using tsconfig.json) surfaces legacy errors outside the
+CI scope. The CI type-check (`npm run type-check` via tsconfig.ci.json) is clean
+for in-scope code.
+
+### Clock contract detail — correction
+
+The previous entry (2026-09-17) implied the September 2026 fleet was fully
+contract-compliant ("26-09 clocks: 0 errors"). Re-running
+`node scripts/verify-all-clocks.js` on 2026-09-20 shows that is true for
+**lint** but not for the **clock contract verifier**: `26-09-01`, `26-09-04`,
+and `26-09-13` currently fail (missing `useClock`/`useSmoothClock` imports,
+deprecated hook usage, or a direct timer/rAF loop). These are within the
+"in-scope, should be clean" window and should be fixed first, since they
+undermine confidence that new clocks are compliant by construction.
+
+### Delivery / repository footprint (new — not previously tracked)
+
+| Metric | Value | Trend |
+|---|---|---|
+| Production build (`dist/`) | 353MB / 4,253 files | Grows ~daily, unbounded |
+| `.git` directory | 312MB | Grows unbounded; not all binary types route through LFS |
+| CI checkout | `fetch-depth: 0` (full history) on every run | Cost grows with `.git` size |
+| Largest non-Three.js route chunk | `Thumbnail-*.js` ≈ 58.96KB br | Exceeds the framework chunk (50.89KB br); not in the `PERFORMANCE.md` budget table |
+
+This does not currently harm the experience of someone loading a single
+day's clock — `useClockPage.ts` correctly lazy-loads only that day's module
+and (non-video) assets. It is a **build-artifact and repository sustainability**
+issue: every day adds roughly a clock's worth of permanent weight to the
+deploy output and git history, with no retention, archival, or LFS strategy
+in place. See `ROADMAP.md` Phase 4.
+
+### Repository hygiene (new)
+
+Stray, non-`src/` files exist at the repository root and are not part of the
+built app: `Clock.tsx`, `useClockPage.ts`, `config.json`, `path/to/filename.js`.
+These appear to be scratch/debug artifacts that were accidentally committed.
+None are imported by anything in `src/`; recommend deleting them (see
+`ROADMAP.md` Phase 4.1).
 
 ## Git State
 
