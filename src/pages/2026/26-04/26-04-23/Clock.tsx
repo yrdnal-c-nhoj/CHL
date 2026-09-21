@@ -2,6 +2,7 @@ import React, { Suspense, useMemo } from 'react';
 import backgroundVideo from '@/assets/images/26_images/26-04/26-04-23/sunflower.mp4';
 import fontUrl from '@/assets/fonts/26fonts/26-04-23.otf';
 import { useSmoothClock } from '@/utils/hooks';
+import SRTime from '@/components/SRTime';
 import {
   useSuspenseFontLoader,
   ClockLoadingFallback,
@@ -51,6 +52,8 @@ const ClockInner =  () => {
           </span>
         ))}
       </main>
+
+      <SRTime time={time} />
     </div>
   );
 };
@@ -62,3 +65,4 @@ const Clock =  () => (
 );
 
 export default Clock;
+Clock.displayName = 'Clock_26_04_23';
