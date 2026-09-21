@@ -10,6 +10,13 @@
   border: 0;
 }
 
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+}
+
 .analogClockContainer {
   position: relative;
   width: 500px;
