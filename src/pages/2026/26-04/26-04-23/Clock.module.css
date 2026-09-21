@@ -8,7 +8,7 @@
   overflow: hidden;
   margin: 0;
   padding: 0;
-  background-color: #020202;
+  background-color: #1f1e21;
 }
 
 .video {
@@ -17,7 +17,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: auto;
-  height: 90dvh;
+  height: 100dvh;
   object-fit: contain;
   z-index: 0;
 }
