@@ -1,20 +1,34 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
+import { useClock } from '@/utils/hooks';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+import SRTime from '@/components/SRTime';
+import styles from './Clock.module.css';
 
 import backgroundImage from '@/assets/images/26_images/26-01/26-01-27/pan.jpg';
 import panFont from '@/assets/fonts/26fonts/26-01-27-pan.ttf';
-import { useClock } from '@/utils/hooks';
+
 export const assets = [backgroundImage, panFont];
 
+const FONT_FAMILY = 'PanoramaClock_26-01-27';
+const fontConfigs: FontConfig[] = [
+  { fontFamily: FONT_FAMILY, fontUrl: panFont },
+];
+
+const formatTimeString = (date: Date): string =>
+  date
+    .toLocaleTimeString('en-US', { hour12: true, hour: 'numeric', minute: '2-digit' })
+    .replace(/\s/, '');
+
 export default function PanoramaClock() {
-  const [timeString, setTimeString] = useState<any>('');
+  const time = useClock();
+  useSuspenseFontLoader(fontConfigs);
+
+  const timeString = formatTimeString(time);
   const [bgDuration, setBgDuration] = useState<number>(0);
-  const imgRef = useRef(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
 
-  const uniqueFontFamily = 'PanoramaClock_26-01-27';
-  const fontLoaded = useEnhancedFontLoader(uniqueFontFamily, panFont);
-
-  // 1. Calculate Background Speed based on Image Width
-  const handleImageLoad =  () => {
+  const handleImageLoad = () => {
     if (imgRef.current) {
       const width = imgRef.current.offsetWidth;
       const speed = 9; // Pixels per second (very slow scrolling)
@@ -22,17 +36,10 @@ export default function PanoramaClock() {
     }
   };
 
-  // 2. Inject Styles (animation only, no font-face)
-  useEffect(() => {
-      updateTime();
-    }, [time]);
-
-  if (!fontLoaded) return null;
-
   const clockGroup = (
-    <div style={{ display: 'flex' }}>
+    <div className={styles.clockGroup}>
       {Array.from({ length: 10 }, (_, i) => (
-        <div key={i} className="pz-clock-display">
+        <div key={i} className={styles.clockDisplay}>
           {timeString}
         </div>
       ))}
@@ -40,20 +47,13 @@ export default function PanoramaClock() {
   );
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        width: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        backgroundColor: '#000',
-      }}
-    >
+    <div className={styles.root}>
+      <SRTime time={time} />
+
       {/* BACKGROUND LAYER */}
-      <div style={{ position: 'absolute', inset: 0 }}>
+      <div className={styles.bgLayer}>
         <div
-          className="pz-bg-container"
+          className={styles.bgContainer}
           style={{ animationDuration: `${bgDuration}s` }}
         >
           <img
@@ -62,33 +62,25 @@ export default function PanoramaClock() {
             ref={imgRef}
             onLoad={handleImageLoad}
             src={backgroundImage}
-            alt="panorama-1"
-            style={{ height: '100%', display: 'block' }}
+            alt=""
+            className={styles.backgroundImage}
           />
           <img
             decoding="async"
             loading="lazy"
             src={backgroundImage}
-            alt="panorama-2"
-            style={{ height: '100%', display: 'block' }}
+            alt=""
+            className={styles.backgroundImage}
           />
         </div>
       </div>
 
       {/* CLOCK LAYER (Opposite Direction) */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '1dvh',
-          left: 0,
-          zIndex: 10,
-        }}
-      >
-        <div className="pz-clock-wrapper">
-          {clockGroup}
-          {clockGroup}
-        </div>
+      <div className={styles.clockLayer}>
+        <div className={styles.clockWrapper}>{clockGroup}{clockGroup}</div>
       </div>
     </div>
   );
 }
+
+PanoramaClock.displayName = 'Clock_26_01_27';
