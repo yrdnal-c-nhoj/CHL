@@ -6,57 +6,105 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
   transition: opacity 0.8s ease;
 }
 
-.layer {
+/* --- Clock face --- */
+.clockFace {
+  position: relative;
+  width: min(70vmin, 560px);
+  height: min(70vmin, 560px);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f4f0f6, #cfc6d6 70%);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.35),
+    inset 0 0 30px rgba(0, 0, 0, 0.15);
+}
+
+.bgLayer {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.15;
+  z-index: 1;
+}
+
+/* --- 12 eyes around the rim --- */
+.digitContainer {
   position: absolute;
   inset: 0;
-  background-repeat: repeat;
-  background-size: 60px 60px;
-  background-position: center;
-  transition: opacity 2s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1;
-  will-change: opacity;
-}
-
-.content {
-  position: relative;
-  z-index: 2;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+  justify-content: center;
+  z-index: 2;
+  /* rotate the whole radial arm to the hour position */
+  transform: rotate(var(--rotation));
 }
 
-.digit {
-  text-align: center;
-  text-shadow:
-    0 -1px 5px rgba(255, 255, 255, 0.9),
-    -1px -1px 0px #fff,
-    1px 1px 0px rgba(0, 0, 0, 0.67),
-    3px 3px 3px rgba(0, 0, 0, 0.3),
-    15px 15px 35px rgba(0, 0, 0, 0.2);
+.digitImage {
+  width: 11%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  margin-top: 4%;
+  border-radius: 50%;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+  /* counter-rotate so every eye stays upright, not tilted */
+  transform: rotate(var(--counter-rotation));
 }
 
-.digitLarge {
-  width: 12vw;
-  font-size: 12vw;
-}
-.digitMobile {
-  width: 20vh;
-  font-size: 20vh;
+/* --- Hands --- */
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  transform: translateX(-50%) rotate(var(--rotation));
+  border-radius: 6px;
+  z-index: 3;
+  transition: transform 0.05s linear;
 }
 
-@media (min-width: 769px) {
-  .content {
-    flex-direction: row;
-    gap: 2rem;
-  }
+.handHour {
+  width: 1.6%;
+  height: 26%;
+  background: #2a2a2a;
+}
+
+.handMinute {
+  width: 1.1%;
+  height: 36%;
+  background: #3a3a3a;
+}
+
+.handSecond {
+  width: 0.5%;
+  height: 40%;
+  background: #c0392b;
+}
+
+/* --- Large eye in the center --- */
+.centerEyeWrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 4;
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.4),
+    0 0 0 4px rgba(255, 255, 255, 0.6);
+}
+
+.centerEye {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .srOnly {

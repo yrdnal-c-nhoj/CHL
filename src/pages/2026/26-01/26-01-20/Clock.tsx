@@ -18,12 +18,12 @@ const fontConfigs: FontConfig[] = [
   { fontFamily: 'MyD25090120font', fontUrl: d25090120font },
 ];
 
-const Clock =  () => {
+const Clock = () => {
   const time = useSmoothClock();
   useSuspenseFontLoader(fontConfigs);
 
-  const [hours, minutes, seconds] = useMemo(
-    () => formatTime(time, '24h').split(':'),
+  const { hours, minutes, seconds } = useMemo(
+    () => formatTime(time, '24h'),
     [time],
   );
 
