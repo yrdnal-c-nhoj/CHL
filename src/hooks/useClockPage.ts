@@ -87,14 +87,27 @@ export function useClockPage(currentItem: { date: string } | null) {
       }, LOADING_TIMEOUT);
 
       try {
-        const targetDate = currentItem.date.trim();
-        const importFn = CLOCK_LOOKUP[targetDate];
+        const requestedDate = currentItem.date.trim();
 
-        if (!importFn) {
+        // The data index can contain entries that have not been uploaded as
+        // components yet. Resolve to the newest actual Clock.tsx at or before
+        // the requested date so /today never fails just because its index is
+        // ahead of the component files.
+        const targetDate =
+          CLOCK_LOOKUP[requestedDate]
+            ? requestedDate
+            : Object.keys(CLOCK_LOOKUP)
+                .filter((date) => date <= requestedDate)
+                .sort()
+                .at(-1) ?? null;
+
+        if (!targetDate) {
           throw new Error(
-            `Clock lookup failed for date: ${targetDate}. Ensure the folder src/pages/${targetDate}/ exists.`
+            `Clock lookup failed for date: ${requestedDate}. No available clock component exists on or before that date.`
           );
         }
+
+        const importFn = CLOCK_LOOKUP[targetDate];
 
         const module = await importFn().catch((err) => {
           const msg = err instanceof Error ? err.message : String(err);
