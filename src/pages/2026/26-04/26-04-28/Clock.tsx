@@ -1,6 +1,7 @@
 import { memo, useEffect, useRef } from 'react';
-import backgroundImg from '@/assets/images/26_images/26-04/26-04-28/2021-07-06-0012.jpg';
-import { calculateAngles, useSmoothClock } from '@/utils/hooks';
+import backgroundImg from '@/assets/images/26_images/26-04/26-04-28/focus.webp';
+import { useSmoothClock } from '@/utils/hooks';
+import { calculateAngles } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [backgroundImg];
