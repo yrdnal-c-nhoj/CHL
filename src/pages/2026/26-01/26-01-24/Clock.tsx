@@ -11,7 +11,7 @@ import styles from './Clock.module.css';
 
 export const assets = [];
 
-const Clock =  () => {
+const Clock = () => {
   // --- STATE MANAGEMENT ---
   const time = useSmoothClock(); // Centralized time source
   const [isLargeScreen, setIsLargeScreen] = useState(true);
@@ -176,7 +176,6 @@ const Clock =  () => {
     // Ensure it only triggers once per second when the condition is met
     if (currentSecond % 3 === 0 && currentSecond !== lastCycledSecond.current) {
       lastCycledSecond.current = currentSecond;
-
       setEmojiIndex((prevIndex) => {
         const nextIndex = (prevIndex + 1) % emojiCycle.length;
         const nextEmoji = emojiCycle[nextIndex];
@@ -198,7 +197,6 @@ const Clock =  () => {
     const handleResize = () => setIsLargeScreen(window.innerWidth > 768);
     window.addEventListener('resize', handleResize);
     handleResize(); // Initial check
-
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -215,31 +213,38 @@ const Clock =  () => {
     (emoji: string, isVisible: boolean) => {
       // Determine base size for SVG emoji based on screen size
       const baseSvgSize = isLargeScreen ? 60 : 40; // Example: 60px for large, 40px for small
-
       const svg = `
       <svg xmlns="http://www.w3.org/2000/svg" width="${baseSvgSize}" height="${baseSvgSize}">
         <text x="50%" y="55%" font-size="${baseSvgSize * 0.7}" text-anchor="middle" dominant-baseline="middle">
           ${emoji}
         </text>
       </svg>`.trim();
+
       return {
         className: styles.layer,
-        backgroundImage: `url("data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}")`, // Use baseSvgSize here
+        backgroundImage: `url("data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}")`,
         opacity: isVisible ? 1 : 0,
       };
     },
     [isLargeScreen],
-  ); // Re-create if isLargeScreen changes
+  );
 
+  // Fixed: ensure we always have a string before calling .split
   const { hours, minutes, seconds } = useMemo(() => {
-    const formatted = utilFormatTime(time, '24h');
-    const [h, m, s] = (formatted || '00:00:00').split(':');
+    const raw = utilFormatTime(time, '24h');
+    const formatted =
+      typeof raw === 'string' ? raw : String(raw ?? '00:00:00');
+
+    const parts = formatted.includes(':')
+      ? formatted.split(':')
+      : ['00', '00', '00'];
+
+    const [h = '00', m = '00', s = '00'] = parts;
     return { hours: h, minutes: m, seconds: s };
   }, [time]);
 
   const renderDigits = (str?: string) => {
     const safeStr = str ?? '';
-
     return (
       <div className={styles.digitGroup}>
         {safeStr.split('').map((d, i) => (
@@ -264,7 +269,6 @@ const Clock =  () => {
         className={styles.layer}
         style={getLayerStyle(buffer2Emoji, activeBuffer === 2)}
       />
-
       <time
         className={styles.content}
         dateTime={`${hours}:${minutes}:${seconds}`}
