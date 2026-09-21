@@ -1,30 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { AssetConfig } from '../utils/assetLoader';
 import { preloadAssets } from '../utils/assetLoader';
-
-interface ClockModule {
-  default: React.ComponentType;
-  // Many clocks export assets as `string[]`.
-  // Some legacy clocks (or future ones) may export `assets` as already-structured configs.
-  assets?: unknown;
-}
-
-const CLOCK_MODULES = import.meta.glob('../pages/**/Clock.tsx') as Record<string, () => Promise<ClockModule>>;
-
-const CLOCK_LOOKUP = Object.entries(CLOCK_MODULES).reduce((acc, [path, importFn]) => {
-  const dateMatch = path.match(/\/(\d{2}-\d{2}-\d{2})\//i);
-  if (dateMatch?.[1]) acc[dateMatch[1]] = importFn;
-  return acc;
-}, {} as Record<string, () => Promise<ClockModule>>);
-
-// Safety timeout to prevent infinite black screen
-const LOADING_TIMEOUT = 10000; // 10 seconds
+import { getClockImport } from '@/clock/clockRegistry';
 
 /**
- * Dynamically loads clock components and their assets based on the date.
+ * Dynamically loads an actual Clock.tsx component and its declared assets.
+ *
+ * Clock component existence is resolved by clockRegistry. Metadata is not
+ * consulted here, so stale or future metadata entries cannot create a clock
+ * that does not exist.
  */
 export function useClockPage(currentItem: { date: string } | null) {
-
   const [ClockComponent, setClockComponent] =
     useState<React.ComponentType | null>(null);
   const [isReady, setIsReady] = useState(false);
@@ -33,26 +19,31 @@ export function useClockPage(currentItem: { date: string } | null) {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isReadyRef = useRef(isReady);
 
-  // Keep ref in sync with state to avoid stale closure in timeout
   isReadyRef.current = isReady;
 
   const preloadClockAssets = useCallback(
     async (assetUrls: string[]): Promise<void> => {
-      if (!assetUrls?.length) return;
+      if (!assetUrls.length) return;
+
       const configurations: AssetConfig[] = assetUrls.map((src) => ({ src }));
-      
-      const assetTimeout = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Asset preloading timed out')), 5000)
+
+      const assetTimeout = new Promise((_, reject) =>
+        setTimeout(
+          () => reject(new Error('Asset preloading timed out')),
+          5000,
+        ),
       );
 
-      // Fail open: missing/broken assets should not prevent the clock from mounting.
       try {
         await Promise.race([
           preloadAssets(configurations),
-          assetTimeout
+          assetTimeout,
         ]);
-      } catch (e) {
-        console.warn(`[useClockPage] Preload interrupted for ${currentItem?.date}:`, e);
+      } catch (error) {
+        console.warn(
+          `[useClockPage] Preload interrupted for ${currentItem?.date}:`,
+          error,
+        );
       }
     },
     [currentItem?.date],
@@ -65,7 +56,6 @@ export function useClockPage(currentItem: { date: string } | null) {
       return;
     }
 
-    // Clear any existing timeout
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -75,69 +65,69 @@ export function useClockPage(currentItem: { date: string } | null) {
       setOverlayVisible(true);
       setError(null);
 
-      // Safety timeout: force overlay to hide if loading takes too long
       timeoutRef.current = setTimeout(() => {
         console.warn(
           '[useClockPage] Loading timeout reached, forcing overlay hide',
         );
         setOverlayVisible(false);
+
         if (!isReadyRef.current) {
           setError('Clock loading timed out');
         }
-      }, LOADING_TIMEOUT);
+      }, 10000);
 
       try {
-        const requestedDate = currentItem.date.trim();
+        const targetDate = currentItem.date.trim();
+        const importFn = getClockImport(targetDate);
 
-        // The data index can contain entries that have not been uploaded as
-        // components yet. Resolve to the newest actual Clock.tsx at or before
-        // the requested date so /today never fails just because its index is
-        // ahead of the component files.
-        const targetDate =
-          CLOCK_LOOKUP[requestedDate]
-            ? requestedDate
-            : Object.keys(CLOCK_LOOKUP)
-                .filter((date) => date <= requestedDate)
-                .sort()
-                .at(-1) ?? null;
-
-        if (!targetDate) {
+        if (!importFn) {
           throw new Error(
-            `Clock lookup failed for date: ${requestedDate}. No available clock component exists on or before that date.`
+            `No clock component exists for date: ${targetDate}.`,
           );
         }
 
-        const importFn = CLOCK_LOOKUP[targetDate];
-
         const module = await importFn().catch((err) => {
           const msg = err instanceof Error ? err.message : String(err);
-          console.error(`[useClockPage] Critical: Failed to load module for ${targetDate}.`, err);
-          if (msg.includes('Failed to fetch') || msg.includes('error loading dynamically imported module')) {
+
+          console.error(
+            `[useClockPage] Critical: Failed to load module for ${targetDate}.`,
+            err,
+          );
+
+          if (
+            msg.includes('Failed to fetch') ||
+            msg.includes('error loading dynamically imported module')
+          ) {
             throw new Error(
-              `Clock file for ${targetDate} could not be fetched. This often indicates a syntax error in the clock file or a broken import. Check the browser console for details.`
+              `Clock file for ${targetDate} could not be fetched. Check the browser console for details.`,
             );
           }
-          throw new Error(`Clock execution failed for ${targetDate}: ${msg}`);
+
+          throw new Error(
+            `Clock execution failed for ${targetDate}: ${msg}`,
+          );
         });
 
-        if (!module || !module.default) {
-          throw new Error(`Clock module for ${targetDate} is missing a default export.`);
+        if (!module?.default) {
+          throw new Error(
+            `Clock module for ${targetDate} is missing a default export.`,
+          );
         }
 
-        // 3. Preload defined assets (images + video + audio)
         try {
           if (Array.isArray(module.assets) && module.assets.length > 0) {
-            let assetUrls = module.assets.filter((v): v is string => typeof v === 'string');
+            let assetUrls = module.assets.filter(
+              (value): value is string => typeof value === 'string',
+            );
 
             if (assetUrls.length > 1) {
-              // Filter out large video files to prevent network-idle hangs during preloading.
               assetUrls = assetUrls.filter(
-                (v) => !/\.(mp4|webm|ogg)$/i.test(v)
+                (value) => !/\.(mp4|webm|ogg)$/i.test(value),
               );
             }
 
             if (assetUrls.length > 0) {
-              await preloadClockAssets(assetUrls as string[]);
+              await preloadClockAssets(assetUrls);
             }
           } else if (module.assets !== undefined) {
             console.warn(
@@ -145,30 +135,24 @@ export function useClockPage(currentItem: { date: string } | null) {
               module.assets,
             );
           }
-        } catch (assetErr) {
-          // Fail open: still mount the clock.
+        } catch (assetError) {
           console.warn(
             `[useClockPage] Asset preload failed for ${targetDate}. Clock will still mount.`,
-            assetErr,
+            assetError,
           );
         }
 
-        // 4. Update component state
-        if (!module.default) {
-          // This check is redundant but helps with HMR edge cases
-          throw new Error('Module loaded but default export is missing.');
-        }
-        
         setClockComponent(() => module.default);
 
         requestAnimationFrame(() => {
           setIsReady(true);
-          // Fade out overlay after a tiny buffer to ensure layout is stable
           setTimeout(() => setOverlayVisible(false), 50);
         });
-      } catch (err) {
-        console.error('Error loading clock page:', err);
-        setError(err instanceof Error ? err.message : 'Unknown loading error');
+      } catch (error) {
+        console.error('Error loading clock page:', error);
+        setError(
+          error instanceof Error ? error.message : 'Unknown loading error',
+        );
         setOverlayVisible(false);
       } finally {
         if (timeoutRef.current) {
@@ -176,7 +160,6 @@ export function useClockPage(currentItem: { date: string } | null) {
           timeoutRef.current = null;
         }
       }
-
     };
 
     loadClock();
