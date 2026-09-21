@@ -1,6 +1,6 @@
 # Performance Delivery Rules
 
-Last reviewed: 2026-09-02
+Last reviewed: 2026-09-21
 
 For project-level standards, roadmap, and enforcement plan, see
 [`docs/ROADMAP.md`](../ROADMAP.md).
@@ -88,6 +88,7 @@ This single glob covers:
 | Animation (GSAP/Framer) | `< 80KB` gzipped | (none observed in last build) | — |
 | Vendor | `< 120KB` gzipped | `vendor-[hash].js` ≈ 25.49KB br | ✅ |
 | Individual clock page | `< 50KB` gzipped | Dynamic import chunk; biggest observed `useClockPage-[hash].js` ≈ 15.99KB br | ✅ |
+| Thumbnails (`Thumbnail-*.js`) | `< 50KB` gzipped | ≈ 58.96KB br (measured 2026-09-20) | ❌ Over budget; split or lazy-load still open (ROADMAP 4.7) |
 | Total initial JS | `< 150KB` gzipped | framework + vendor + entry ≈ ~95KB br | ✅ |
 
 **Enforcement:**

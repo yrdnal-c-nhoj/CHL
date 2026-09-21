@@ -595,7 +595,8 @@ npm run build
 ### 6. Document Non-Standard Choices
 If a clock deviates from these standards for justified reasons:
 - Add a comment in `Clock.tsx` explaining why.
-- Update `docs/EXCEPTIONS.md` (if that file exists) or add a note to `docs/STATUS.md`.
+- Add a note to `docs/STATUS.md`. Do not create `docs/EXCEPTIONS.md` unless
+  the project later adopts a dedicated exceptions log.
 
 ### 7. Reference This Guide in Code Reviews
 - Point reviewers to this document for questions about patterns, hooks, or performance.
@@ -606,14 +607,18 @@ If a clock deviates from these standards for justified reasons:
 ## References
 
 - **`docs/PERFORMANCE.md`** — Deep dive into budget calculations and optimization case studies.
-- **`docs/ARCHITECTURE.md`** — System-wide design principles (if present).
-- **`src/templates/BaseClock.tsx`** — Minimal compliant example.
-- **`src/pages/2026/26-08/26-08-02/Clock.tsx`** — Best modern example (per STATUS.md).
+- **`docs/ROADMAP.md`** — Project priorities, phases, and known debt.
+- **`docs/STATUS.md`** — Live check results and fleet inventory.
+- **`docs/AI_DEVELOPMENT_GUIDE.md`** — Required agent workflow for code changes.
+- **`src/templates/BaseClock.tsx`** — Canonical minimal compliant example.
+- **`src/pages/2026/26-08/26-08-02/Clock.tsx`** — Analog clock with video background (reference, not a claim of zero violations).
 - **`src/pages/2026/26-07/26-07-29/Clock.tsx`** — High-quality analog clock reference.
 - **`src/utils/hooks/`** — Hook implementations and source.
 
+`docs/ARCHITECTURE.md` does not exist; do not cite it.
+
 ---
 
-**Last Updated:** 2026-09-10  
+**Last Updated:** 2026-09-21  
 **Maintainer:** yrdnal-c-nhoj  
 **Status:** Authoritative reference for all Clock.tsx implementations

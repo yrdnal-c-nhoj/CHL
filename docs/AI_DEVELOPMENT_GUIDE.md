@@ -1,5 +1,7 @@
 # AI Development Guide
 
+Last reviewed: 2026-09-21
+
 **Required starting point for every AI-assisted change in BorrowedTime.**
 
 Before editing code, an agent must read this document and the standards it
@@ -402,6 +404,7 @@ Record them accurately instead of weakening rules or hiding output.
 - [`PERFORMANCE.md`](./PERFORMANCE.md): asset budgets, fonts, caching, and
   bundle limits.
 - [`ROADMAP.md`](./ROADMAP.md): project priorities and known debt.
+- [`STATUS.md`](./STATUS.md): live check results and fleet inventory.
 - [`src/utils/assetLoader.ts`](../src/utils/assetLoader.ts): shared asset
   loading interfaces and preload behavior.
 - [`src/hooks/useClockPage.ts`](../src/hooks/useClockPage.ts): dynamic clock
