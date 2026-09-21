@@ -1,77 +1,233 @@
 .container {
+  --hand-color: #a3e635;
+
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: 100dvh;
+  min-height: 100dvh;
+
   overflow: hidden;
-  background-color: #000000;
+
+  background-color: #8fed4c;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  isolation: isolate;
 }
 
-.clock {
+/* -------------------------------------------------------------------------- */
+/* Loading state                                                              */
+/* -------------------------------------------------------------------------- */
+
+.loading {
+  visibility: hidden;
+}
+
+.ready {
+  visibility: visible;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Background image layers                                                    */
+/* -------------------------------------------------------------------------- */
+
+.backgroundImagePrimary,
+.backgroundImageSecondary {
   position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  color: #d2c9c9;
-  font-size: 4rem;
-  font-family: 'ClockFont_26_09_04', monospace;
-  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  gap: 0.1em;
-}
 
-.digitBox {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 0.4em;
-  height: 1em;
-  flex-shrink: 0;
-}
+  inset: 0;
 
-.colon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 0.2em;
-  height: 1em;
-  flex-shrink: 0;
-  position: relative;
-  top: -0.1em;
-}
-
-.timeGroup {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.05em;
-}
-.ampmGroup {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3em;
-  font-size: 3rem;
-  margin-left: 0.2em;
-}
-
-.image {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  display: block;
+
+  object-fit: cover;
+  object-position: center center;
+
+  pointer-events: none;
+  user-select: none;
 }
+
+.backgroundImagePrimary {
+  opacity: 0.5;
+  z-index: 4;
+}
+
+.backgroundImageSecondary {
+  opacity: 0.8;
+  z-index: 2;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Oversized rotating image                                                   */
+/* -------------------------------------------------------------------------- */
+
+.backgroundImageTertiary {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 230%;
+  height: 230%;
+
+  object-fit: contain;
+  object-position: center center;
+
+  transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  transform-origin: center center;
+
+  filter: contrast(150%) saturate(2.2);
+
+  pointer-events: none;
+  user-select: none;
+
+  z-index: 0;
+
+  will-change: transform;
+
+  animation: rotateCCW 60s linear infinite;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Clock structure                                                            */
+/* -------------------------------------------------------------------------- */
+
+.clockFace {
+  position: relative;
+
+  width: min(95vw, 95dvh);
+  height: min(95vw, 95dvh);
+
+  border-radius: 50%;
+
+  z-index: 9;
+
+  flex: 0 0 auto;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Hands                                                                       */
+/* -------------------------------------------------------------------------- */
+
+.hand {
+  position: absolute;
+
+  bottom: 50%;
+  left: 50%;
+
+  width: var(--hand-width);
+  height: var(--hand-height);
+
+  background-color: var(--hand-color);
+
+  transform-origin: 50% 100%;
+  transform: translateX(-50%) rotate(var(--angle, 0deg));
+
+  border-radius: 1vmin;
+
+  z-index: 8;
+
+  will-change: transform;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Hand dimensions                                                             */
+/* -------------------------------------------------------------------------- */
+
+.hourHand {
+  --hand-width: 0.2vmin;
+  --hand-height: 22vmin;
+}
+
+.minuteHand {
+  --hand-width: 0.2vmin;
+  --hand-height: 40vmin;
+}
+
+.secondHand {
+  --hand-width: 0.2vmin;
+  --hand-height: 43vmin;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Hand image                                                                  */
+/* -------------------------------------------------------------------------- */
+
+.handDot {
+  position: absolute;
+
+  top: 0;
+  left: 50%;
+
+  width: 18vmin;
+  height: 18vmin;
+
+  object-fit: contain;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 9;
+
+  pointer-events: none;
+  user-select: none;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Center                                                                      */
+/* -------------------------------------------------------------------------- */
+
+.centerDot {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 1vmin;
+  height: 1vmin;
+
+  background-color: var(--hand-color);
+
+  border-radius: 50%;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 10;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Animation                                                                   */
+/* -------------------------------------------------------------------------- */
+
+@keyframes rotateCCW {
+  from {
+    transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
+
+  to {
+    transform: translate3d(-50%, -50%, 0) rotate(-360deg);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Screen-reader only                                                         */
+/* -------------------------------------------------------------------------- */
 
 .srOnly {
   position: absolute;
+
   width: 1px;
   height: 1px;
+
   padding: 0;
   margin: -1px;
+
   overflow: hidden;
+
   clip: rect(0, 0, 0, 0);
+
   white-space: nowrap;
+
   border-width: 0;
 }
