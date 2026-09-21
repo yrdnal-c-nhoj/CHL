@@ -49,7 +49,7 @@
 /* Display container: horizontal row */
 .display {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -57,7 +57,7 @@
   gap: 0.1em;
   color: var(--display-color);
   font-family: 'Hammerhead', 'Courier New', Courier, monospace;
-  font-size: 15vmax;
+  font-size: 20vmax;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
   line-height: 0.85;
@@ -83,13 +83,13 @@
   justify-content: center;
   width: 0.3ch;
   text-align: center;
-  transform: translateY(-0.08em);
-  margin-left: 0.12em;
+  transform: translateY(-0.1em);
+  margin-left: 0.1em;
 }
 
 /* AM/PM indicator sizing */
 .ampm {
-  font-size: 1.45em;
+  font-size: 24vmax;
   margin-left: 0.1em;
   transform: translateY(-0.05em);
   /* Moves indicator up */
