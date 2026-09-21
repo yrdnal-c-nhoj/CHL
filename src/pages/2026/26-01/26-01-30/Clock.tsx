@@ -10,7 +10,7 @@ import bgLayer2 from '@/assets/images/26_images/26-01/26-01-30/nes.gif';
 export const assets = [clockFont, bgLayer1, bgLayer2];
 
 // Defined outside render loop to avoid object re-allocation every second
-const styles: Record = {
+const styles: Record<string, React.CSSProperties> = {
   container: {
     width: '100vw',
     height: '100dvh',
@@ -40,7 +40,7 @@ const styles: Record = {
     backgroundImage: `url(${bgLayer2})`,
     backgroundRepeat: 'repeat',
     backgroundSize: '220px 220px',
-    animation: 'tileMove 8s linear infinite', // Ensure @keyframes tileMove is defined in CSS
+    animation: 'tileMove 8s linear infinite',
     opacity: 0.4,
     filter: 'drop-shadow(5px -5px 0 white)',
   },
@@ -67,8 +67,16 @@ const styles: Record = {
 };
 
 const DigitalClock: React.FC = () => {
-  const time = useClock(); 
-  const fontLoaded = useSuspenseFontLoader('MyCustomFont', clockFont);
+  const time = useClock();
+
+  // ✅ Pass an array of font configs
+  useSuspenseFontLoader([
+    {
+      family: 'MyCustomFont',
+      src: clockFont,
+    },
+  ]);
+
   useMultiAssetLoader([bgLayer1, bgLayer2]);
 
   const rawHours = time.getHours();
@@ -77,3 +85,32 @@ const DigitalClock: React.FC = () => {
   const ampm = rawHours >= 12 ? 'PM' : 'AM';
 
   return (
+    <>
+      <style>{`
+        @keyframes tileMove {
+          0%   { background-position: 0 0; }
+          100% { background-position: 220px 220px; }
+        }
+      `}</style>
+
+      <div style={styles.container}>
+        <img
+          src={bgLayer1}
+          alt=""
+          style={styles.imageLayer1}
+          draggable={false}
+        />
+        <div style={styles.imageLayer2} />
+
+        <div style={styles.uiWrapper}>
+          <div style={styles.timeText}>
+            {hours}:{minutes}
+            <span style={styles.ampmText}>{ampm}</span>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default DigitalClock;
