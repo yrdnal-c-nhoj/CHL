@@ -15,47 +15,84 @@
   align-items: center;
   justify-content: center;
   z-index: 9;
+  gap: 0;
+  /* Ensures no gap between time groups */
 }
 
 .timeGroup {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0;
+  /* Ensures no gap between digits within a group */
 }
 
 .digitBox {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  /* width: 20vmin; */
-  /* height: 34vmin; */
+  width: 16.7vw;
   box-sizing: border-box;
   overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
-
-@media (max-width: 768px) {
-  .digitalDisplay {
-    flex-direction: column;
-  }
-
-  .timeGroup {
-    flex-direction: row;
-  }
-
-.digitBox {
-  height: 34vh;
-}
-}
-
 
 .digitBox img {
   width: 100%;
   height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   object-position: center;
   display: block;
   filter: contrast(90%) brightness(110%);
 }
+
+
+
+@media (max-width: 768px) {
+  .digitalDisplay {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100dvh;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .timeGroup {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    width: 100vw;
+    height: 33.333dvh;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+  }
+
+  .digitBox {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .digitBox img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    object-fit: contain;
+    object-position: center;
+  }
+}
+
 
 .srOnly {
   position: absolute;
