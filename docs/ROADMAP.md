@@ -3,10 +3,10 @@
 Last reviewed: 2026-09-21
 
 This is the single source of truth for BorrowedTime project health, standards,
-and the concrete plan to reach them. It supersedes scattered notes in
-`docs/STATUS.md`, GitHub issues, and commit messages.
+and the concrete plan to reach them. It records the current project direction; `docs/STATUS.md` records measured health data.
 
-- **Contract:** `docs/CLOCK_STANDARDS.md`
+- **Architecture:** `docs/ARCHITECTURE.md`
+- **Current clock contract:** `docs/CLOCKS.md`
 - **Performance budgets:** `docs/PERFORMANCE.md`
 - **Live status / test results:** `docs/STATUS.md`
 - **Architecture / templates:** `src/templates/BaseClock.tsx`
@@ -64,7 +64,7 @@ and maintainable.
 The authoritative lists live in `docs/CLOCK_STANDARDS.md` and `docs/PERFORMANCE.md`.
 
 ### Non-negotiable rules for every clock
-1. **File pair:** `Clock.tsx` + `Clock.module.css` in the date folder
+1. **Structure:** current clocks normally use `Clock.tsx` + `Clock.module.css` in the date folder
 2. **Time hooks:** `useClock` or `useSmoothClock` from `@/utils/hooks` only
 3. **Styling:** CSS Modules for static styles; inline only for dynamic values
 4. **Accessibility:** semantic `<time>` with `dateTime` + screen-reader-only copy
@@ -72,7 +72,7 @@ The authoritative lists live in `docs/CLOCK_STANDARDS.md` and `docs/PERFORMANCE.
 6. **Assets:** export used assets via `assets` array; fonts TTF/OTF/WOFF2 allowed, max 2 families
 7. **Memoization:** `useMemo` only for genuinely expensive work; never read `ref.current` inside
 8. **Index access:** guard against `undefined` under `noUncheckedIndexedAccess`
-9. **No prohibited patterns:** no `setInterval`, `requestAnimationFrame`, `useGlobalStyles`, inline `<style>` tags, `any`
+9. **No prohibited patterns:** no independent timing loops, `useGlobalStyles`, inline `<style>` tags, or `any` in current clocks
 
 ### Performance budgets (highlights)
 - Initial JS: `< 150KB` gzipped
@@ -196,7 +196,7 @@ passes ~1GB.
 
 ## 6. Contribution & Workflow
 
-1. Read `docs/CLOCK_STANDARDS.md` before adding or modifying a clock.
+1. Read `docs/ARCHITECTURE.md` and `docs/CLOCKS.md` before adding or modifying a current clock.
 2. Run `npm run lint`, `npm run test:run`, `npm run type-check`, and `npm run build` before opening a PR.
 3. Use `npm run new-clock YYYY-MM-DD` once available; otherwise follow the file structure in the contract.
 4. Do not bypass lint or test failures; fix or track them explicitly.
@@ -207,7 +207,8 @@ passes ~1GB.
 
 | Document | Purpose |
 |---|---|
-| `docs/CLOCK_STANDARDS.md` | Clock component structure, hooks, styling, and prohibited patterns |
+| `docs/ARCHITECTURE.md` | Application architecture and historical/current boundary |
+| `docs/CLOCKS.md` | Current clock component contract and engineering rules |
 | `docs/PERFORMANCE.md` | Asset budgets, cache headers, compression, chunk limits |
 | `docs/STATUS.md` | Live check results, test details, lint details, clock inventory, known gaps |
 | `src/templates/BaseClock.tsx` | Canonical clock template and shared structure |
