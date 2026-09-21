@@ -8,11 +8,24 @@ A new clock every day.
 
 | Document | Purpose |
 |---|---|
-| `docs/AI_DEVELOPMENT_GUIDE.md` | Required playbook for AI-assisted implementation |
-| `docs/ROADMAP.md` | **Single source of truth** — standards, current state, and phased plan |
-| `docs/CLOCK_STANDARDS.md` | Clock component structure, hooks, styling, and prohibited patterns |
-| `docs/PERFORMANCE.md` | Asset budgets, cache headers, compression, chunk limits |
-| `docs/STATUS.md` | Live check results, test details, lint details, clock inventory, known gaps |
+| `docs/ARCHITECTURE.md` | Authoritative application architecture and historical/current boundary |
+| `docs/CLOCKS.md` | Current clock contract for September 2026 onward |
+| `docs/PERFORMANCE.md` | Asset budgets, caching, compression, and bundle limits |
+| `docs/OPERATIONS.md` | Build, deployment, release, and archive operations |
+| `docs/ROADMAP.md` | Current priorities, technical debt, and sustainability plan |
+| `docs/STATUS.md` | Recorded health checks, inventory, and known gaps |
+| `CONTRIBUTING.md` | Human contribution workflow |
+| `AGENTS.md` | AI coding-agent instructions |
+
+## Architecture
+
+BorrowedTime is both a current React/TypeScript/Vite application and a historical archive of daily clock artworks. **September 2026 is the current architectural boundary.** New clocks follow the current contract; historical clocks are generally preserved rather than mass-refactored.
+
+The date-based structure remains:
+
+`src/pages/YYYY/YY-MM/YY-MM-DD/`
+
+See `docs/ARCHITECTURE.md` for the authoritative architecture and `docs/CLOCKS.md` for the current clock contract.
 
 ## Quick start
 
@@ -40,7 +53,7 @@ Open [http://localhost:5173](http://localhost:5173).
 
 ## Tech stack
 
-React + TypeScript + Vite + Tailwind CSS v4
+React + TypeScript + Vite
 
 ## License
 
