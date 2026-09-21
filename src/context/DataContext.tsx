@@ -100,11 +100,11 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
 
         setItems(buildClockItems(data));
       } catch (err) {
-        setError(
-          err instanceof Error
-            ? err
-            : new Error('An error occurred loading clock metadata'),
-        );
+        // Metadata is descriptive, not authoritative. If it is unavailable,
+        // keep the real clock registry usable with date-based fallback items.
+        console.warn('[DataContext] Clock metadata unavailable:', err);
+        setItems(buildClockItems([]));
+        setError(null);
       } finally {
         setLoading(false);
       }
