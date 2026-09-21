@@ -14,10 +14,16 @@ import styles from './BaseClock.module.css';
  * 4. Standard hook for time management
  * 5. Semantic HTML with <time> element
  *
- * New clock workflow: docs/DEVELOPMENT.md
- * 1. npm run clock:new (or copy this file + .module.css)
- * 2. You manually add entry to src/context/clockpages.json
- * 3. Customize assets and layout; npm run finalize
+ * New clock workflow:
+ * 1. Read docs/ARCHITECTURE.md and docs/CLOCKS.md.
+ * 2. Create the new date-based page under src/pages/YYYY/YY-MM/YY-MM-DD/.
+ * 3. Copy this file and BaseClock.module.css as the starting structure.
+ * 4. Add the page to src/context/clockpages.json.
+ * 5. Customize the artwork, assets, typography, and layout.
+ * 6. Run the current validation commands before committing.
+ *
+ * See CONTRIBUTING.md for the human contribution workflow and
+ * AGENTS.md for AI coding-agent requirements.
  */
 
 // =========================
@@ -30,7 +36,7 @@ export const assets: string[] = [];
 // FONT CONFIGURATION
 // =========================
 const fontConfigs: FontConfig[] = [
-  // { fontFamily: 'MyClockFont', fontUrl: new URL('@/assets/fonts/YYYY/YY-MM-DD-name.woff2', import.meta.url).href }
+  // { fontFamily: 'MyClockFont', fontUrl: fontUrl }
 ];
 
 // =========================
