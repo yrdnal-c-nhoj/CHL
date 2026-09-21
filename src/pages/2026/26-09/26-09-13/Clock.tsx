@@ -1,7 +1,7 @@
 
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useMillisecondClock } from '@/utils/hooks';
+ import { useSmoothClock } from '@/utils/hooks';
 
 import airpoVideo from '@/assets/images/26_images/26-09/26-09-13/chair.webm';
 import font from '@/assets/fonts/26fonts/26-09-13.ttf?url';
@@ -18,7 +18,7 @@ const fontConfig: FontConfig = {
 const Clock_26_09_13 = () => {
   useSuspenseFontLoader([fontConfig]);
 
-  const time = useMillisecondClock();
+const time = useSmoothClock(50);
 
   const hours = time.getHours().toString().padStart(2, '0');
   const minutes = time.getMinutes().toString().padStart(2, '0');
