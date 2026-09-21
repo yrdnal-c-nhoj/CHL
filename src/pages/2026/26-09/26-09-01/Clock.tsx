@@ -5,7 +5,7 @@ import headVideo from '@/assets/images/26_images/26-09/26-09-01/head.webm';
 import fontUrl from '@/assets/fonts/26fonts/26-09-01.ttf?url';
 import styles from './Clock.module.css';
 
-export const assets: string[] = [headVideo];
+export const assets: string[] = [headVideo, fontUrl];
 
 const CLOCK_COUNT = 12;
 
@@ -38,7 +38,12 @@ function createNumberTexture(number: string): THREE.Texture {
 
 const Clock_26_09_01 = () => {
     const time = useClock();
+    const timeRef = useRef(time);
     const mountRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        timeRef.current = time;
+    }, [time]);
 
     useEffect(() => {
         const mount = mountRef.current;
@@ -201,7 +206,7 @@ const Clock_26_09_01 = () => {
                 camera.position.y = 1.2 + elevation * 3;
                 camera.lookAt(0, 0, 0);
 
-                const now = new Date();
+                const now = timeRef.current;
                 const h = now.getHours() % 12;
                 const m = now.getMinutes();
                 const s = now.getSeconds() + now.getMilliseconds() / 1000;
