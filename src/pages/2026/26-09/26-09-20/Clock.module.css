@@ -1,7 +1,7 @@
 .container {
   --hour-hand-color: #dc0b20;
   --minute-hand-color: #0206f8;
-  --second-hand-color: #eae192;
+  --second-hand-color: #dfdbb6;
 
   position: relative;
   width: 100vw;
@@ -48,10 +48,10 @@
    * vmin guarantees that width and height are
    * exactly the same regardless of viewport shape.
    */
-  width: 120vmin;
-  height: 120vmin;
+  width: 110vmin;
+  height: 110vmin;
 
-  flex: 0 0 120vmin;
+  flex: 0 0 110vmin;
 
   border-radius: 50%;
 
@@ -107,7 +107,7 @@ opacity: 0.5;
 /* Second Hand */
 
 .secondHand {
-  --hand-width: 0.5vmin;
+  --hand-width: 1vmin;
   --hand-height: 50vmin;
   background-color: var(--second-hand-color);
 }
@@ -138,7 +138,7 @@ opacity: 0.5;
 .clockNumber {
   position: absolute;
 
-  color: #e4e1e4f9;
+  color: #fbfbdd;
 
   font-family:
     'ClockFont_26_09_06',
@@ -146,11 +146,11 @@ opacity: 0.5;
     system-ui,
     sans-serif;
 
-  font-size: 12vmin;
+  font-size: 16vmin;
   /* font-weight: 900; */
   line-height: 1;
 
-  letter-spacing: 0.1em;
+  letter-spacing: 0.01em;
   text-align: center;
 
   /* text-shadow: 0 0 4px rgba(255, 255, 255, 0.7); */
