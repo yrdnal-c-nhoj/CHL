@@ -2,125 +2,95 @@
 
 Last reviewed: 2026-09-21
 
-This file is the current source of truth for repository health. For the full
-project roadmap, standards, and phased improvement plan, see
-[`docs/ROADMAP.md`](../ROADMAP.md). Historical audit reports live in
-`docs/archive/`. The `npm run status` command is a placeholder; see live checks below.
+This document records the repository's known engineering status and current maintenance issues. It is a snapshot, not an automated source of truth.
 
-## Live Check Summary
+For authoritative requirements, see:
 
-Fleet-wide lint, TypeScript, and `dist/` size figures were last measured
-**2026-09-20**. Clock inventory, git state, stray-root hygiene, and the
-September contract-verifier set were rechecked **2026-09-21**.
+- [docs/ARCHITECTURE.md](ARCHITECTURE.md) — system architecture and the September 2026 historical/current boundary.
+- [docs/CLOCKS.md](CLOCKS.md) — authoritative contract for current clocks.
+- [docs/PERFORMANCE.md](PERFORMANCE.md) — performance budgets and guidance.
+- [docs/OPERATIONS.md](OPERATIONS.md) — build, deployment, and maintenance.
+- [docs/ROADMAP.md](ROADMAP.md) — planned work.
+- [docs/AI_DEVELOPMENT_GUIDE.md](AI_DEVELOPMENT_GUIDE.md) — AI development guidance.
+- [CONTRIBUTING.md](../CONTRIBUTING.md) — human contribution workflow.
 
-| Check | Command | Result |
+Historical reports are retained under [docs/archive/](archive/).
+
+> **Important:** The figures below are dated measurements. They should not be treated as live results unless the listed checks have been run again.
+
+## Current Health Snapshot
+
+The following measurements were recorded during the September 20–21, 2026 repository review.
+
+| Check | Command | Recorded result |
 |---|---|---|
-| Build | `npm run build` | ✅ Pass (dist/ = 353MB, 4,253 files; measured 2026-09-20) |
-| Tests | `npm run test:run` | ✅ Pass (115 tests; measured 2026-09-20) |
-| TypeScript (in-scope, via tsconfig.ci.json) | `npm run type-check` | ✅ Pass |
-| Clock verification (changed pages) | `npm run verify:clocks:changed` | ✅ Pass (when the compared pages are clean) |
-| Lint (full fleet) | `npx eslint .` | ❌ 1,090 problems (297 errors, 793 warnings; measured 2026-09-20) |
-| TypeScript (full fleet) | `npx tsc --noEmit` | ❌ Failed (legacy debt, not re-counted this pass) |
-| Clock verification (full fleet) | `npm run verify:clocks` | ❌ **395 of 537** clocks violate the contract (73.6%; rechecked 2026-09-21) |
+| Build | `npm run build` | Pass — 353 MB / 4,253 files in `dist/` |
+| Tests | `npm run test:run` | Pass — 115 tests |
+| TypeScript (CI scope) | `npm run type-check` | Pass |
+| Changed-clock verification | `npm run verify:clocks:changed` | Pass when compared pages are clean |
+| Full-fleet lint | `npx eslint .` | 1,090 problems: 297 errors / 793 warnings |
+| Full-fleet TypeScript | `npx tsc --noEmit` | Fails on legacy code outside CI scope |
+| Full-fleet clock verification | `npm run verify:clocks` | 395 of 537 clocks violate the current contract |
 
-### Test detail
+The full-fleet failures are primarily historical debt. The September 2026 architectural boundary means those clocks are not automatically candidates for wholesale refactoring.
 
-All 115 tests pass. Run `npm run test:run` to confirm.
+## Clock Contract
 
-### Lint detail
+The current clock contract begins with September 2026. See [docs/CLOCKS.md](CLOCKS.md) for the complete requirements.
 
-Full-fleet lint is **1,090 problems** (297 errors / 793 warnings) as of 2026-09-20 —
-down from the ~2,400 figure previously recorded, but still substantial. Legacy
-violations remain concentrated in 2025 and 2026 Jan–Aug clocks.
+At the time of this review, the September 2026 verifier work identified `26-09-01` as the remaining issue being addressed. Its Three.js `requestAnimationFrame` loop is a rendering loop; displayed time must come from the shared `useClock` / `useSmoothClock` infrastructure.
 
-### TypeScript detail
+New clocks must satisfy the current contract rather than inheriting legacy patterns from the historical archive.
 
-Full `npx tsc --noEmit` (using tsconfig.json) surfaces legacy errors outside the
-CI scope. The CI type-check (`npm run type-check` via tsconfig.ci.json) is clean
-for in-scope code.
+## Repository Footprint
 
-### Clock contract detail
+| Metric | Recorded value |
+|---|---|
+| Production build | 353 MB / 4,253 files (2026-09-20) |
+| `.git` directory | 312 MB (2026-09-20) |
+| CI history checkout | Full history was recorded at review time |
+| Largest non-Three.js route chunk | `Thumbnail-*.js`, approximately 58.96 KB brotli |
 
-September 2026 **lint** remains in-scope and is expected to stay clean. The
-**clock contract verifier** (rechecked 2026-09-21) now fails **one** September
-clock:
+The archive's size is a sustainability concern rather than a reason to remove historical artwork. Asset history, deployment output, and Git history should be considered separately.
 
-- **`26-09-01`** — Three.js render loop uses `requestAnimationFrame`. Canonical
-  time should still come from `useClock` / `useSmoothClock` for the accessible
-  `<time>` element; the verifier does not yet distinguish a WebGL render loop
-  from a prohibited animation timer. See `ROADMAP.md` Phase 4.8.
+## Repository Hygiene
 
-`26-09-04` and `26-09-13` now **pass** the verifier (they failed as of
-2026-09-20). New September clocks (`26-09-18`–`26-09-20`) pass the verifier
-pattern-match but still need the Optimization Checklist in
-`CLOCK_STANDARDS.md` (copy-paste `displayName`s, cheap `useMemo`, asset
-budgets).
+The following root-level scratch files were removed during the September 21 review:
 
-### Delivery / repository footprint
+- `Clock.tsx`
+- `useClockPage.ts`
+- `config.json`
+- `path/to/filename.js`
 
-| Metric | Value | Trend |
-|---|---|---|
-| Production build (`dist/`) | 353MB / 4,253 files (2026-09-20) | Grows ~daily, unbounded |
-| `.git` directory | 312MB (2026-09-20) | Grows unbounded; not all binary types route through LFS |
-| CI checkout | `fetch-depth: 0` (full history) on every run | Cost grows with `.git` size |
-| Largest non-Three.js route chunk | `Thumbnail-*.js` ≈ 58.96KB br | Exceeds the framework chunk (50.89KB br); now listed in `PERFORMANCE.md` |
-
-This does not currently harm the experience of someone loading a single
-day's clock — `useClockPage.ts` correctly lazy-loads only that day's module
-and (non-video) assets. It is a **build-artifact and repository sustainability**
-issue: every day adds roughly a clock's worth of permanent weight to the
-deploy output and git history, with no retention, archival, or LFS strategy
-in place. See `ROADMAP.md` Phase 4.
-
-### Repository hygiene
-
-Root-level scratch files (`Clock.tsx`, `useClockPage.ts`, `config.json`,
-`path/to/filename.js`) are **gone** as of 2026-09-21. `ROADMAP.md` Phase 4.1
-is complete.
-
-## Git State
-
-- **Branch:** `main` (tracks `origin/main`)
-- **Working tree:** Dirty — uncommitted asset edits under
-  `src/assets/images/26_images/26-09/` (26-09-18 digits, 26-09-19
-  `implode.webm`, deleted unused `.webm` files) plus this documentation pass
-- **Recent commits of record:**
-  - Fix 26-09-16 clock contract violations
-  - Fix tsconfig.ci.json exclude for legacy clocks
-  - Fix test file TS errors for clean type-check
-  - Add type-check npm script and update CI
-
-## Clock Inventory
-
-- **2025:** Apr–Dec (`25-04`…`25-12`) — 9 months of clocks
-- **2026:** Jan–Aug (`26-01`…`26-08`) — 8 full months, latest day **2026-08-31**
-- **2026-09:** Sep 1–20 (`26-09-01`…`26-09-20`) — **20 clocks**, in-scope for CI
-  strict checks
-- **Fleet total:** 537 `Clock.tsx` pages
-
-Canonical implementation template: `src/templates/BaseClock.tsx`. Analog /
-video references (not claimed as fully contract-perfect):
-`src/pages/2026/26-08/26-08-02/Clock.tsx`,
-`src/pages/2026/26-07/26-07-29/Clock.tsx`.
+Historical clock implementations remain in place unless a concrete production, security, accessibility, deployment, shared-infrastructure, or material browser/performance issue requires a change.
 
 ## Known Gaps
 
-- `scripts/verify-all-clocks.js` is active; run with `npm run verify:clocks` or
-  `verify:clocks:changed`.
-- `scripts/generate-status.js` does NOT exist; `npm run status` is a placeholder.
-- `.kilo/worktrees/juvenile-lip/` may cause stale test leakage if present.
-- Legacy clocks (2025, 2026 Jan–Aug) have outstanding lint, TypeScript, and
-  contract violations tracked in `docs/ROADMAP.md`.
-- Three.js bundle (~190KB brotli) exceeds the <150KB budget; lazy-loading or
-  splitting `@react-three/drei` is planned.
-- `26-09-01` is the remaining in-scope verifier failure (Three.js rAF loop).
-- `docs/ARCHITECTURE.md` and `docs/EXCEPTIONS.md` do not exist; note justified
-  exceptions in this file (and in the clock source) instead.
+- `npm run status` remains a placeholder; no `scripts/generate-status.js` currently exists.
+- Full-fleet lint and TypeScript checks still expose legacy debt.
+- Full-fleet clock verification still reports historical contract violations.
+- Repository and deployment footprint continues to grow with the daily archive.
+- Three.js bundle size remains above the current performance budget.
+- A visual regression strategy for representative current clocks remains future work.
+- Tailwind-related configuration/dependencies still require a separate determination of whether they are unused before removal.
+- Vercel configuration and cache policy still warrant a focused modernization pass.
 
-## Related Docs
+## Current Priorities
 
-- Clock component contract: `docs/CLOCK_STANDARDS.md`
-- Performance budgets: `docs/PERFORMANCE.md`
-- Agent playbook: `docs/AI_DEVELOPMENT_GUIDE.md`
-- Architectural standards: `src/templates/BaseClock.tsx` + its module CSS
-- Historical reports: `docs/archive/`
+1. Keep September 2026 onward clocks aligned with the current architecture.
+2. Finish repository documentation and contract cleanup.
+3. Establish a deterministic status-generation workflow rather than treating this manually maintained snapshot as live data.
+4. Address repository/archive growth without deleting historical artwork.
+5. Add targeted visual regression and performance enforcement where it provides meaningful protection.
+
+## Related Documentation
+
+Use the current hierarchy rather than treating this status snapshot as a standards document:
+
+- Architecture: [docs/ARCHITECTURE.md](ARCHITECTURE.md)
+- Current clock contract: [docs/CLOCKS.md](CLOCKS.md)
+- Performance: [docs/PERFORMANCE.md](PERFORMANCE.md)
+- Operations: [docs/OPERATIONS.md](OPERATIONS.md)
+- Roadmap: [docs/ROADMAP.md](ROADMAP.md)
+- AI development: [docs/AI_DEVELOPMENT_GUIDE.md](AI_DEVELOPMENT_GUIDE.md)
+- Human contribution: [CONTRIBUTING.md](../CONTRIBUTING.md)
