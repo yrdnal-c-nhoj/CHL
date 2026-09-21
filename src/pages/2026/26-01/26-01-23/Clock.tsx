@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from 'react';
-import { useClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import clockDigitImage from '@/assets/images/26_images/26-01/26-01-23/eye.gif';
 import clockBackground from '@/assets/images/26_images/26-01/26-01-23/eye.webp';
 import styles from './Clock.module.css';
@@ -12,7 +12,7 @@ interface CustomStyle extends React.CSSProperties {
 }
 
 const Clock = () => {
-  const time = useClock();
+  const time = useSmoothClock(16);
   const [bgReady, setBgReady] = useState(false);
 
   useEffect(() => {
@@ -29,12 +29,8 @@ const Clock = () => {
     Promise.all(loadPromises).then(() => {
       if (isMounted) setBgReady(true);
     });
-    const timeout = setTimeout(() => {
-      if (isMounted) setBgReady(true);
-    }, 1200);
     return () => {
       isMounted = false;
-      clearTimeout(timeout);
     };
   }, []);
 
@@ -78,7 +74,7 @@ const Clock = () => {
             >
               <img
                 src={clockDigitImage}
-                alt={`eye-${i + 1}`}
+                alt=""
                 className={styles.digitImage}
               />
             </div>
@@ -91,7 +87,7 @@ const Clock = () => {
 
         {/* Large eye in the center */}
         <div className={styles.centerEyeWrap}>
-          <img src={clockDigitImage} alt="center-eye" className={styles.centerEye} />
+          <img src={clockDigitImage} alt="" className={styles.centerEye} />
         </div>
       </div>
     </main>
