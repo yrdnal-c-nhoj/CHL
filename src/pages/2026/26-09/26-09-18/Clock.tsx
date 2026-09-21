@@ -1,5 +1,4 @@
 import { useClock } from '@/utils/hooks';
-import { useMemo } from 'react';
 import SRTime from '@/components/SRTime';
 import digit0 from '@/assets/images/26_images/26-09/26-09-18/0.webp';
 import digit1 from '@/assets/images/26_images/26-09/26-09-18/1.webp';
@@ -42,19 +41,15 @@ const digitImages: Record<string, string> = {
 const Clock_26_09_18 = () => {
   const time = useClock();
 
-  const { h1, h2, m1, m2, s1, s2 } = useMemo(() => {
-    const h = time.getHours().toString().padStart(2, '0');
-    const m = time.getMinutes().toString().padStart(2, '0');
-    const s = time.getSeconds().toString().padStart(2, '0');
-    return {
-      h1: h.charAt(0),
-      h2: h.charAt(1),
-      m1: m.charAt(0),
-      m2: m.charAt(1),
-      s1: s.charAt(0),
-      s2: s.charAt(1),
-    };
-  }, [time]);
+  const h = time.getHours().toString().padStart(2, '0');
+  const m = time.getMinutes().toString().padStart(2, '0');
+  const s = time.getSeconds().toString().padStart(2, '0');
+  const h1 = h.charAt(0);
+  const h2 = h.charAt(1);
+  const m1 = m.charAt(0);
+  const m2 = m.charAt(1);
+  const s1 = s.charAt(0);
+  const s2 = s.charAt(1);
 
   return (
     <main className={styles.container}>
