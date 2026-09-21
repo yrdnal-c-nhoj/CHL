@@ -1,0 +1,87 @@
+/* Panorama clock (26-01-27): a scrolling panoramic background with an
+   opposite-direction digital time display rendered in a scoped font. */
+
+.root {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.bgLayer {
+  position: absolute;
+  inset: 0;
+}
+
+/* Background scrolls LEFT (0 -> -50%) so the two tiled images loop seamlessly */
+.bgContainer {
+  display: flex;
+  width: max-content;
+  height: 100dvh;
+  animation: bgScroll linear infinite;
+  will-change: transform;
+}
+
+@keyframes bgScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.backgroundImage {
+  height: 100%;
+  display: block;
+}
+
+/* Digital time display anchored to the bottom, scrolling RIGHT (-50% -> 0) */
+.clockLayer {
+  position: absolute;
+  bottom: 1dvh;
+  left: 0;
+  z-index: 10;
+}
+
+.clockWrapper {
+  display: flex;
+  width: max-content;
+  animation: clockScroll 120s linear infinite;
+  will-change: transform;
+}
+
+@keyframes clockScroll {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.clockGroup {
+  display: flex;
+}
+
+.clockDisplay {
+  color: rgba(10, 152, 168, 0.9);
+  font-family: 'PanoramaClock_26-01-27', monospace;
+  font-size: 15vh;
+  padding-right: 2vh;
+  text-shadow:
+    0px 2px 0vh rgba(235, 236, 240, 0.99),
+    0px -2px 0vh rgba(247, 247, 245, 0.98);
+  user-select: none;
+  white-space: nowrap;
+  opacity: 0.8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bgContainer,
+  .clockWrapper {
+    animation: none;
+  }
+}
