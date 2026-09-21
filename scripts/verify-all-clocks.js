@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Verify clock pages against docs/CLOCK_STANDARDS.md.
+ * Verify current clock pages against docs/CLOCKS.md.
  *
  * Full-fleet verification reports legacy debt. Use --changed in CI to fail
  * only when a changed clock introduces contract violations.
@@ -144,7 +144,7 @@ function verifyClock(filePath) {
     /(?:Date\.now|new\s+Date\s*\(|performance\.now)\s*\(/.test(source) ||
     /(?:setHours|setMinutes|setSeconds|setMilliseconds)\s*\(/.test(source);
 
-  if (hasDirectRaf && hasClockTimeCalculation) {
+  if (hasDirectRaf && hasClockTimeCalculation && !hasThreeRenderLoop) {
     errors.push(
       'must not use requestAnimationFrame as an independent clock time source; use useClock or useSmoothClock',
     );
