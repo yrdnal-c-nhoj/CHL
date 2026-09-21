@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -20,7 +20,7 @@ const formatTimeString = (date: Date): string =>
     .toLocaleTimeString('en-US', { hour12: true, hour: 'numeric', minute: '2-digit' })
     .replace(/\s/, '');
 
-export default function PanoramaClock() {
+const PanoramaClock = () => {
   const time = useClock();
   useSuspenseFontLoader(fontConfigs);
 
@@ -28,13 +28,25 @@ export default function PanoramaClock() {
   const [bgDuration, setBgDuration] = useState<number>(0);
   const imgRef = useRef<HTMLImageElement | null>(null);
 
-  const handleImageLoad = () => {
-    if (imgRef.current) {
-      const width = imgRef.current.offsetWidth;
+  // Derive the background scroll duration from the rendered image width so the
+  // panorama scrolls at a constant, very slow speed (px/s). Attached imperatively
+  // (rather than via an JSX onLoad) to keep this non-interactive element a11y-clean.
+  useEffect(() => {
+    const img = imgRef.current;
+    if (!img) return;
+
+    const applyDuration = () => {
+      const width = img.offsetWidth;
       const speed = 9; // Pixels per second (very slow scrolling)
       setBgDuration(width / speed);
+    };
+
+    img.addEventListener('load', applyDuration);
+    if (img.complete && img.naturalWidth !== 0) {
+      applyDuration();
     }
-  };
+    return () => img.removeEventListener('load', applyDuration);
+  }, []);
 
   const clockGroup = (
     <div className={styles.clockGroup}>
@@ -60,7 +72,6 @@ export default function PanoramaClock() {
             decoding="async"
             loading="lazy"
             ref={imgRef}
-            onLoad={handleImageLoad}
             src={backgroundImage}
             alt=""
             className={styles.backgroundImage}
@@ -81,6 +92,8 @@ export default function PanoramaClock() {
       </div>
     </div>
   );
-}
+};
 
 PanoramaClock.displayName = 'Clock_26_01_27';
+
+export default PanoramaClock;
