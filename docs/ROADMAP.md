@@ -2,8 +2,7 @@
 
 Last reviewed: 2026-09-21
 
-This is the single source of truth for BorrowedTime project health, standards,
-and the concrete plan to reach them. It records the current project direction; `docs/STATUS.md` records measured health data.
+This is the source of truth for the BorrowedTime project roadmap and planned work. It records project direction and sequencing; `docs/STATUS.md` records dated repository health measurements.
 
 - **Architecture:** `docs/ARCHITECTURE.md`
 - **Current clock contract:** `docs/CLOCKS.md`
@@ -61,7 +60,7 @@ and maintainable.
 
 ## 3. Standards (Summary)
 
-The authoritative lists live in `docs/CLOCK_STANDARDS.md` and `docs/PERFORMANCE.md`.
+The authoritative current-clock contract lives in `docs/CLOCKS.md`; performance budgets live in `docs/PERFORMANCE.md`.
 
 ### Non-negotiable rules for every clock
 1. **Structure:** current clocks normally use `Clock.tsx` + `Clock.module.css` in the date folder
@@ -91,7 +90,7 @@ The authoritative lists live in `docs/CLOCK_STANDARDS.md` and `docs/PERFORMANCE.
 | 0.1 | Isolate tests: add `.kilo/` and worktrees to Vitest `test.exclude` or delete stale worktrees | ✅ Done (tests pass) |
 | 0.2 | Re-run `npm run test:run` until green or isolate remaining failures | ✅ Done (115 tests pass) |
 | 0.3 | Restore `scripts/generate-status.js` to regenerate `docs/STATUS.md` | ⏸️ Deferred; status now manual |
-| 0.4 | Restore `scripts/verify-all-clocks.js` against `CLOCK_STANDARDS.md` rules | ✅ Done (active, used in CI) |
+| 0.4 | Restore `scripts/verify-all-clocks.js` against the current clock contract | ✅ Done (active, used in CI) |
 | 0.5 | Fix `react-hooks/refs` violation in `26-08-24/Clock.tsx:134` | ⏳ Legacy; tracked in Phase 1 |
 | 0.6 | Guard indexed access in `26-08-23/Clock.tsx` and `26-08-28/useMazeRenderer.ts` | ⏳ Legacy; tracked in Phase 1 |
 | 0.7 | Update CI to surface lint/type results; keep tests+build hard-gated | ✅ Done (CI uses type-check, verify:clocks:changed) |
@@ -105,7 +104,7 @@ The authoritative lists live in `docs/CLOCK_STANDARDS.md` and `docs/PERFORMANCE.
 | 1.2 | Enable stricter ESLint rules on new files; track legacy relaxations | — | M | **DONE** — eslint config enforces `@typescript-eslint/no-explicit-any: error`, `no-non-null-assertion: error`, `no-unused-vars: error` for `src/pages/2026/26-09/**` |
 | 1.3 | Adopt `tsconfig.ci.json` progressively; target zero new errors on new clocks | — | M | **DONE** — tsconfig.ci.json excludes legacy months explicitly; `npm run type-check` passes |
 | 1.4 | Wire `verify-all-clocks.js` into CI / pre-commit | — | S | **DONE** — CI runs `verify:clocks:changed` |
-| 1.5 | Update `CLOCK_STANDARDS.md` to match current hook names and React 19 patterns | — | S | ⏳ Pending (hook names correct; React 19 patterns in use) |
+| 1.5 | Align the legacy `CLOCK_STANDARDS.md` reference document with the current clock contract | — | S | **DONE** — `docs/CLOCKS.md` is authoritative; `CLOCK_STANDARDS.md` is compatibility/reference only |
 | 1.6 | Fix test harness: wrap context-provider-dependent tests in real providers | — | M | Tests currently pass |
 | 1.7 | Add 3–5 golden-path tests for recent clocks and routing/data layer | — | M | ⏳ Future |
 | 1.8 | Address Three.js bundle: lazy-load or split `@react-three/drei` | — | M | ⏳ Planned |
@@ -117,7 +116,7 @@ The authoritative lists live in `docs/CLOCK_STANDARDS.md` and `docs/PERFORMANCE.
 | 2.1 | Build `npm run new-clock YYYY-MM-DD` generator from `BaseClock.tsx` | — | M | New clocks are contract-compliant by construction |
 | 2.2 | Add GitHub Action / pre-commit hook that runs `verify-all-clocks.js` | — | M | Bad clocks blocked before merge |
 | 2.3 | Expand `README.md` with architecture overview, adding-a-clock guide, and links to docs | — | S | Onboarding is fast |
-| 2.4 | Make `docs/STATUS.md` auto-generated and treat as single source of truth | — | M | Requires `generate-status.js` implementation |
+| 2.4 | Make `docs/STATUS.md` reproducible from a deterministic status generator | — | M | Requires `generate-status.js` implementation; STATUS remains a measured snapshot, not the standards source of truth |
 | 2.5 | Add bundle-size checks to CI (fail if budgets exceeded) | — | M | Budgets enforced |
 | 2.6 | Add Dependabot / Renovate for dependency updates | — | S | Security and freshness |
 | 2.7 | Run Lighthouse / axe spot-checks on a sample of clocks | — | M | A11y gaps quantified |
@@ -154,7 +153,7 @@ about the *build artifact and repository*, not the page-load experience.
 | 4.5 | Decide an explicit **archival policy** for old clocks: keep assets in the repo forever, move older years to external object storage (S3/R2) referenced by URL, or generate/host only a rolling window (e.g. current year) from the SPA build while archiving prior years as static exports | M | Turns "grows forever" into a bounded, intentional decision instead of an emergent one |
 | 4.6 | Add a build-size regression check to CI (fail or warn if `dist/` grows more than N% versus the previous release) | M | Makes the growth trend visible before it becomes a hosting-cost surprise |
 | 4.7 | Add `Thumbnail-*.js` (currently ≈59KB br, larger than the framework chunk) to the `PERFORMANCE.md` budget table and investigate whether it can be split further or asset-loaded lazily | S | Budget **row added** 2026-09-21; split/lazy-load still open |
-| 4.8 | Fix the September 2026 clocks currently failing `verify-all-clocks.js` before adding more clocks to the "compliant by construction" window — see diagnosis below | S–M | **Partial** — `26-09-04` and `26-09-13` now pass; `26-09-01` still fails |
+| 4.8 | Fix the September 2026 clocks currently failing the current clock contract verifier before adding more clocks to the "compliant by construction" window — see diagnosis below | S–M | **Partial** — `26-09-04` and `26-09-13` now pass; `26-09-01` still fails |
 
 **Diagnosis for 4.8** (rechecked 2026-09-21):
 
@@ -170,7 +169,7 @@ about the *build artifact and repository*, not the page-load experience.
   from the `useClock`/`useSmoothClock` time source used for the accessible
   `<time>` element; the current "no direct rAF loops" rule does not
   distinguish a WebGL canvas render loop from a setInterval-style animation
-  hack. Next: add a narrow exception to `CLOCK_STANDARDS.md` **and** to
+  hack. Next: add a narrow exception to `docs/CLOCKS.md` **and** to
   `scripts/verify-all-clocks.js` for Three.js/canvas render loops, rather
   than rewriting a working 3D scene to fit a rule written for 2D CSS clocks.
 
@@ -189,7 +188,7 @@ passes ~1GB.
 - `npm run lint` on recent (26-09+) clocks is green; full fleet debt is tracked
 - Three.js and initial bundles meet documented budgets, or budgets are consciously revised
 - New clocks are contract-compliant by construction
-- `docs/STATUS.md` accurately reflects reality after every significant change
+- `docs/STATUS.md` accurately records the latest measured repository state
 - Live site remains performant and accessible
 
 ---
@@ -210,7 +209,7 @@ passes ~1GB.
 | `docs/ARCHITECTURE.md` | Application architecture and historical/current boundary |
 | `docs/CLOCKS.md` | Current clock component contract and engineering rules |
 | `docs/PERFORMANCE.md` | Asset budgets, cache headers, compression, chunk limits |
-| `docs/STATUS.md` | Live check results, test details, lint details, clock inventory, known gaps |
+| `docs/STATUS.md` | Dated repository health measurements, inventory, and known gaps |
 | `src/templates/BaseClock.tsx` | Canonical clock template and shared structure |
 | `src/utils/hooks/` | Time hooks (`useClock`, `useSmoothClock`) |
 | `src/components/SRTime.tsx` | Shared screen-reader-only time component |
