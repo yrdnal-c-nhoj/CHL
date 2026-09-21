@@ -18,7 +18,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          # scripts/verify-all-clocks.js --changed only ever diffs against
+          # `origin/<base>...HEAD` (PRs) or `HEAD^` (push), and already
+          # tolerates a shallow checkout that doesn't have the ref (see its
+          # getChangedFiles() fallback). Full history (`fetch-depth: 0`) is
+          # not required and re-downloads the entire (LFS-heavy) commit
+          # history on every run. 50 is generous headroom for typical PR
+          # sizes; raise it only if verification starts silently skipping
+          # legitimate diffs. See docs/ROADMAP.md Phase 4.4.
+          fetch-depth: 50
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
