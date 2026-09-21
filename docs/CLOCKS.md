@@ -12,6 +12,12 @@ This document defines the engineering contract for new and actively maintained c
 
 Do not weaken the current contract to accommodate legacy artwork.
 
+## Clock Availability
+
+A clock is considered available only when its date directory contains the required `Clock.tsx` component and that component is discoverable by the clock registry.
+
+The JSON files under `src/context/` are metadata sources only. Adding a date to JSON does not publish a clock and must not be used as a substitute for creating the component.
+
 ## Required Structure
 
 A current clock normally contains:
