@@ -46,8 +46,6 @@ export default defineConfig({
         // Optimize chunk splitting
         manualChunks: (id) => {
 
-          if (id.includes('three')) return 'three';
-
           // More specific matching for core framework to avoid catching
           // every library that has "react" in the name
           if (
@@ -93,9 +91,6 @@ export default defineConfig({
       'react',
       'react-dom',
       'react-router-dom',
-      'three',
-      '@react-three/fiber',
-      '@react-three/drei',
     ],
     exclude: ['@types/three'], // Exclude type definitions
   },
