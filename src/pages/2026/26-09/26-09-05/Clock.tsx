@@ -1,75 +1,228 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useClock } from '@/utils/hooks';
-import airpoImage from '@/assets/images/26_images/26-09/26-09-04/dickson.webm';
-import font from '@/assets/fonts/26fonts/26-09-04.ttf?url';
+import { useSmoothClock } from '@/utils/hooks';
+import { useEffect, useMemo, useState } from 'react';
+
+import limesImage from '@/assets/images/26_images/26-09/26-09-05/limm.webp';
+import limeImage from '@/assets/images/26_images/26-09/26-09-05/lime2.webp';
+import limeslImage from '@/assets/images/26_images/26-09/26-09-05/lime3.webp';
+
+import minuteDot from '@/assets/images/26_images/26-09/26-09-05/hour.webp';
+import hourDot from '@/assets/images/26_images/26-09/26-09-05/minute.webp';
+import secondDot from '@/assets/images/26_images/26-09/26-09-05/second.webp';
+
+import font from '@/assets/fonts/26fonts/26-09-05.ttf?url';
+
 import styles from './Clock.module.css';
 
-export const assets = [airpoImage, font];
+export const assets = [
+  limesImage,
+  limeImage,
+  limeslImage,
+  hourDot,
+  minuteDot,
+  secondDot,
+  font,
+];
 
 const fontConfig: FontConfig = {
-  fontFamily: 'ClockFont_26_09_04',
+  fontFamily: 'ClockFont_26_09_05',
   fontUrl: font,
 };
 
-const Clock_26_09_04 = () => {
+/* -------------------------------------------------------------------------- */
+/* Image preload                                                              */
+/* -------------------------------------------------------------------------- */
+
+const backgroundImages = [
+  limesImage,
+  limeImage,
+  limeslImage,
+];
+
+const preloadImages = async (sources: string[]) => {
+  await Promise.all(
+    sources.map(
+      (src) =>
+        new Promise<void>((resolve) => {
+          const image = new Image();
+
+          image.onload = async () => {
+            try {
+              if (image.decode) {
+                await image.decode();
+              }
+            } catch {
+              // Image is still usable if decode() is unavailable/fails.
+            }
+
+            resolve();
+          };
+
+          image.onerror = () => resolve();
+          image.src = src;
+        }),
+    ),
+  );
+};
+
+const Clock_26_09_05 = () => {
   useSuspenseFontLoader([fontConfig]);
-  const time = useClock();
 
-  const rawHours = time.getHours();
-  const hours12 = rawHours % 12 || 12;
-  const hours = hours12.toString();
-  const minutes = time.getMinutes().toString().padStart(2, '0');
-  const ampm = rawHours >= 12 ? 'PM' : 'AM';
+  const time = useSmoothClock(16);
 
-  const fullTimeString = `${hours}:${minutes} ${ampm}`;
+  const [imagesReady, setImagesReady] = useState(false);
+
+  /* ------------------------------------------------------------------------ */
+  /* Make sure Chrome has decoded the background images before showing them.  */
+  /* ------------------------------------------------------------------------ */
+
+  useEffect(() => {
+    let mounted = true;
+
+    preloadImages(backgroundImages).then(() => {
+      if (mounted) {
+        // Give Chrome one paint cycle after image decoding/layout.
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            if (mounted) {
+              setImagesReady(true);
+            }
+          });
+        });
+      }
+    });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  /* ------------------------------------------------------------------------ */
+  /* Smooth analog clock angles                                               */
+  /* ------------------------------------------------------------------------ */
+
+  const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
+    const ms = time.getMilliseconds();
+
+    const s = time.getSeconds() + ms / 1000;
+    const m = time.getMinutes() + s / 60;
+    const h = (time.getHours() % 12) + m / 60;
+
+    return {
+      hourAngle: h * 30,
+      minuteAngle: m * 6,
+      secondAngle: s * 6,
+    };
+  }, [time]);
 
   return (
-    <main className={styles.container}>
-      {/* Digital Clock Overlay */}
-      <div className={styles.clock}>
-        <div className={styles.timeGroup}>
-          {hours.split('').map((d, i) => (
-            <span key={`h${i}`} className={styles.digitBox}>
-              {d}
-            </span>
-          ))}
-        </div>
-        <span className={styles.colon}>:</span>
-        <div className={styles.timeGroup}>
-          {minutes.split('').map((d, i) => (
-            <span key={`m${i}`} className={styles.digitBox}>
-              {d}
-            </span>
-          ))}
-        </div>
-        <div className={styles.ampmGroup}>
-          {ampm.split('').map((char, i) => (
-            <span key={`ampm${i}`} className={styles.digitBox}>
-              {char}
-            </span>
-          ))}
-        </div>
-      </div>
+    <main
+      className={`${styles.container} ${
+        imagesReady ? styles.ready : styles.loading
+      }`}
+    >
+      {/* ------------------------------------------------------------------ */}
+      {/* Background image layers                                            */}
+      {/* ------------------------------------------------------------------ */}
 
-      {/* Video Element */}
-      <video
-        src={airpoImage}
-        className={styles.image}
-        autoPlay
-        loop
-        muted
-        playsInline
+      <img
+        src={limesImage}
+        alt=""
+        aria-hidden="true"
+        className={styles.backgroundImagePrimary}
+        draggable={false}
       />
 
-      {/* Screen-reader-only time */}
-      <time dateTime={time.toISOString()} className={styles.srOnly}>
-        {fullTimeString}
+      <img
+        src={limeImage}
+        alt=""
+        aria-hidden="true"
+        className={styles.backgroundImageSecondary}
+        draggable={false}
+      />
+
+      <img
+        src={limeslImage}
+        alt=""
+        aria-hidden="true"
+        className={styles.backgroundImageTertiary}
+        draggable={false}
+      />
+
+      {/* ------------------------------------------------------------------ */}
+      {/* Analog clock                                                        */}
+      {/* ------------------------------------------------------------------ */}
+
+      <div className={styles.clockFace}>
+        <div
+          className={`${styles.hand} ${styles.hourHand}`}
+          style={
+            {
+              '--angle': `${hourAngle}deg`,
+            } as React.CSSProperties
+          }
+        >
+          <img
+            src={hourDot}
+            alt=""
+            aria-hidden="true"
+            className={styles.handDot}
+            draggable={false}
+          />
+        </div>
+
+        <div
+          className={`${styles.hand} ${styles.minuteHand}`}
+          style={
+            {
+              '--angle': `${minuteAngle}deg`,
+            } as React.CSSProperties
+          }
+        >
+          <img
+            src={minuteDot}
+            alt=""
+            aria-hidden="true"
+            className={styles.handDot}
+            draggable={false}
+          />
+        </div>
+
+        <div
+          className={`${styles.hand} ${styles.secondHand}`}
+          style={
+            {
+              '--angle': `${secondAngle}deg`,
+            } as React.CSSProperties
+          }
+        >
+          <img
+            src={secondDot}
+            alt=""
+            aria-hidden="true"
+            className={styles.handDot}
+            draggable={false}
+          />
+        </div>
+
+        <div className={styles.centerDot} />
+      </div>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* Screen-reader time                                                  */}
+      {/* ------------------------------------------------------------------ */}
+
+      <time
+        dateTime={time.toISOString()}
+        className={styles.srOnly}
+      >
+        {time.toLocaleTimeString()}
       </time>
     </main>
   );
 };
 
-Clock_26_09_04.displayName = 'Clock_26_09_04';
+Clock_26_09_05.displayName = 'Clock_26_09_05';
 
-export default Clock_26_09_04;
+export default Clock_26_09_05;
