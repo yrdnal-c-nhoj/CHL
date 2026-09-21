@@ -1,55 +1,64 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
-import React, { useMemo } from 'react';
+import fontUrl from '@/assets/fonts/26fonts/26-09-19.woff2?url';
+import backgroundVideo from '@/assets/images/26_images/26-09/26-09-19/implode.webm';
 import styles from './Clock.module.css';
 
-import font from '@/assets/fonts/26fonts/26-09-19.otf?url';
-import beachniteVideo from '@/assets/images/26_images/26-09/26-09-19/implode.webm';
+export const assets = [fontUrl, backgroundVideo];
 
-export const assets = [font, beachniteVideo];
-
-const formatTime = (num: number): string => num.toString().padStart(2, '0');
+const FONT_FAMILY = 'ClockFont_26_09_19';
 
 const fontConfig: FontConfig = {
-  fontFamily: 'ClockFont_26_09_02',
-  fontUrl: font,
+  fontFamily: FONT_FAMILY,
+  fontUrl,
 };
 
-const Clock_26_09_02 = () => {
+const formatDigits = (value: number, length = 2): string =>
+  value.toString().padStart(length, '0');
+
+const digitPair = (value: string): [string, string] => [
+  value.charAt(0),
+  value.charAt(1),
+];
+
+const Clock = () => {
   useSuspenseFontLoader([fontConfig]);
 
   const time = useSmoothClock(50);
 
-  const { hours, minutes, seconds, centiseconds } = useMemo(() => {
-    const h = formatTime(time.getHours());
-    const m = formatTime(time.getMinutes());
-    const s = formatTime(time.getSeconds());
-    const cs = time.getMilliseconds().toString().padStart(3, '0').slice(0, 2);
-    return { hours: h, minutes: m, seconds: s, centiseconds: cs };
-  }, [time]);
+  const hours = formatDigits(time.getHours());
+  const minutes = formatDigits(time.getMinutes());
+  const seconds = formatDigits(time.getSeconds());
+  const centiseconds = formatDigits(time.getMilliseconds(), 3).slice(0, 2);
+
+  const digits = [
+    ...digitPair(hours),
+    ...digitPair(minutes),
+    ...digitPair(seconds),
+    ...digitPair(centiseconds),
+  ];
 
   return (
     <main className={styles.container}>
       <video
-        src={beachniteVideo}
+        className={styles.backgroundLayer}
         autoPlay
         loop
         muted
         playsInline
-        className={styles.backgroundLayer}
-        style={{ opacity: 0.9 }}
-      />
+        preload="none"
+        aria-hidden="true"
+      >
+        <source src={backgroundVideo} type="video/webm" />
+      </video>
 
-      <div className={styles.digitalDisplay}>
-        <span className={styles.digitBox}>{hours[0]}</span>
-        <span className={styles.digitBox}>{hours[1]}</span>
-        <span className={styles.digitBox}>{minutes[0]}</span>
-        <span className={styles.digitBox}>{minutes[1]}</span>
-        <span className={styles.digitBox}>{seconds[0]}</span>
-        <span className={styles.digitBox}>{seconds[1]}</span>
-        <span className={styles.digitBox}>{centiseconds[0]}</span>
-        <span className={styles.digitBox}>{centiseconds[1]}</span>
+      <div className={styles.digitalDisplay} aria-hidden="true">
+        {digits.map((digit, index) => (
+          <span key={index} className={styles.digitBox}>
+            {digit}
+          </span>
+        ))}
       </div>
 
       <time dateTime={time.toISOString()} className={styles.srOnly}>
@@ -59,7 +68,5 @@ const Clock_26_09_02 = () => {
   );
 };
 
-const MemoizedClock = React.memo(Clock_26_09_02);
-MemoizedClock.displayName = 'Clock_26_09_02';
-
-export default MemoizedClock;
+export default Clock;
+Clock.displayName = 'Clock_26_09_19';
