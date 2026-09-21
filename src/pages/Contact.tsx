@@ -49,15 +49,13 @@ const Contact: FC = () => {
           </a>
         </div>
 
-      
+        <hr className={styles.divider} />
 
-          <hr className={styles.divider} style={{ margin: '32px 0', border: 'none', borderTop: '2px solid #ccc' }} />
-     
-        <section className="w-full">
+        <section className={styles.section}>
           <span className={styles.hat}>Get the Lab's Monthly Newsletter</span>
-          <p className="mt-2 font-manrope text-[clamp(0.9rem,1.2vw,1.1rem)] text-left leading-relaxed">
-            <span className="font-manrope font-bold text-[0.75rem] uppercase tracking-wider">
-              Subscribe to receive </span>{' '}the lab's monthly newsletter.
+          <p className={styles.content}>
+            <span className={styles.label}>Subscribe to receive </span> the
+            lab's monthly newsletter.
             <br />
             We will never sell or release your email address.
           </p>
@@ -65,7 +63,7 @@ const Contact: FC = () => {
             action="https://buttondown.email/api/emails/embed-subscribe/borrowed"
             method="post"
             target="popupwindow"
-            className="flex flex-col w-full gap-2 mt-2"
+            className={styles.form}
           >
             <input
               type="email"
@@ -75,27 +73,22 @@ const Contact: FC = () => {
               className={styles.input}
               required
             />
-            <input
-              type="submit"
-              value="Subscribe"
-              className={`${styles.button} rounded py-3 px-6 cursor-pointer border-none w-40 h-12 self-start`}
-            />
+            <input type="submit" value="Subscribe" className={styles.button} />
           </form>
-          <hr className={styles.divider} style={{ margin: '32px 0', border: 'none', borderTop: '2px solid #ccc' }} />
+          <hr className={styles.divider} />
         </section>
 
-        <section className="w-full mt-0">
+        <section className={styles.section}>
           <span className={styles.hat}>Send a Message to the Lab</span>
-          <p className="mt-2 font-manrope text-[clamp(0.9rem,1.2vw,1.1rem)] text-left leading-relaxed">
-            <span className="font-manrope font-bold text-[0.75rem] uppercase tracking-wider">
-              Questions?
-            
-            Comments? Suggestions?</span>{' '}
+          <p className={styles.content}>
+            <span className={styles.label}>
+              Questions? Comments? Suggestions?
+            </span>{' '}
           </p>
           <form
             action="https://formspree.io/f/xnjobvva"
             method="POST"
-            className="flex flex-col w-full gap-3 mt-4"
+            className={styles.formMessage}
           >
             <input
               type="text"
@@ -115,19 +108,19 @@ const Contact: FC = () => {
               name="message"
               placeholder="Your message..."
               rows={5}
-              className={`${styles.input} resize-y min-h-[120px]`}
+              className={`${styles.input} ${styles.textarea}`}
               required
             />
             <input
               type="submit"
               value="Send Message"
-              className={`${styles.button} rounded py-3 px-6 cursor-pointer border-none w-40 h-12 self-start`}
+              className={styles.button}
             />
           </form>
-          <p className="mt-4 font-manrope text-[#666] text-[0.85rem] text-left">
+          <p className={styles.contentSmall}>
             Or email directly:{' '}
             <a
-              className="font-bold no-underline text-lab-blue-deep hover:underline"
+              className={styles.emailLink}
               href="mailto:cubistheart@gmail.com?subject=🧊🫀🔭"
             >
               cubistheart@gmail.com

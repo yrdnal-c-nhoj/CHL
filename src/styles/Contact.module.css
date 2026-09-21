@@ -20,8 +20,8 @@
 
 .divider {
   border: none;
-  border-top: 2px solid var(--color-lab-grey-medium);
-  /* margin: 1rem 0; */
+  border-top: 2px solid var(--color-lab-grey-medium, #ccc);
+  margin: 32px 0;
   width: 100%;
   max-width: 400px;
 }
@@ -32,7 +32,7 @@
   font-weight: bold;
   color: #5e5151;
   margin-top: 0;
-  margin-bottom: 0.0rem;
+  margin-bottom: 0rem;
   display: block;
   text-align: left;
 }
@@ -73,5 +73,70 @@
   font-weight: bold;
   font-family: var(--font-arimo);
   padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.25rem;
+  width: 10rem;
+  height: 3rem;
+  cursor: pointer;
+  align-self: flex-start;
   transition: background-color 0.2s;
+}
+
+/* Body copy under section hats (formerly Tailwind utilities) */
+.content {
+  font-family: var(--font-arimo);
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  text-align: left;
+  line-height: 1.625;
+  margin-top: 0.5rem;
+}
+
+.label {
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.contentSmall {
+  font-family: var(--font-arimo);
+  color: #666;
+  font-size: 0.85rem;
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.emailLink {
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--color-lab-blue-deep);
+}
+
+.emailLink:hover {
+  text-decoration: underline;
+}
+
+.section {
+  width: 100%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.formMessage {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
 }
