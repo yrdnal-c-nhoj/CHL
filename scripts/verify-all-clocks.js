@@ -11,6 +11,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { hasIndependentClockTiming } from './clock-verifier-rules.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PAGES_DIR = path.join(ROOT, 'src', 'pages');
@@ -137,14 +138,7 @@ function verifyClock(filePath) {
     errors.push('must not use direct timer loops for clock timekeeping or animation scheduling');
   }
 
-  // Flag direct rAF only when the source appears to use it as a clock/timing
-  // mechanism. A normal render loop (for example, a Three.js renderer) is valid.
-  const hasDirectRaf = /requestAnimationFrame\s*\(/.test(source);
-  const hasClockTimeCalculation =
-    /(?:Date\.now|new\s+Date\s*\(|performance\.now)\s*\(/.test(source) ||
-    /(?:setHours|setMinutes|setSeconds|setMilliseconds)\s*\(/.test(source);
-
-  if (hasDirectRaf && hasClockTimeCalculation && !hasThreeRenderLoop) {
+  if (hasIndependentClockTiming(source)) {
     errors.push(
       'must not use requestAnimationFrame as an independent clock time source; use useClock or useSmoothClock',
     );
