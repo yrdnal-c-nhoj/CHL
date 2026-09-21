@@ -5,7 +5,7 @@ import { useSmoothClock } from '@/utils/hooks';
 import { useMemo } from 'react';
 
 import limeVideo from '@/assets/images/26_images/26-09/26-09-20/radar.webm';
-import font from '@/assets/fonts/26fonts/26-09-20.ttf?url';
+import font from '@/assets/fonts/26fonts/26-09-20.otf?url';
 
 import styles from './Clock.module.css';
 
