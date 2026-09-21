@@ -1,26 +1,13 @@
-import type { FontConfig } from '@/types/clock';
 import { useClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-
+import SRTime from '@/components/SRTime';
 import backgroundVideo from '@/assets/images/26_images/26-09/26-09-17/dance.webm';
 import bubblesOverlay from '@/assets/images/26_images/26-09/26-09-17/bubbles.webp';
-import fontUrl from '@/assets/fonts/26fonts/26-09-17.otf?url';
 import styles from './Clock.module.css';
 
-export const assets: string[] = [backgroundVideo, bubblesOverlay, fontUrl];
+export const assets: string[] = [backgroundVideo, bubblesOverlay];
 
-const fontConfigs: FontConfig[] = [{ fontFamily: 'Hammerhead', fontUrl }];
-
-const formatTime = (value: number) => value.toString().padStart(2, '0');
-
-const Clock_26_09_15 = () => {
-  useSuspenseFontLoader(fontConfigs);
+const Clock_26_09_17 = () => {
   const time = useClock();
-
-  const rawHours = time.getHours();
-  const hours = (rawHours % 12 || 12).toString();
-  const minutes = formatTime(time.getMinutes());
-  const ampm = rawHours >= 12 ? 'pm' : 'am';
 
   return (
     <main className={styles.container}>
@@ -33,22 +20,15 @@ const Clock_26_09_15 = () => {
           playsInline
         />
       </div>
-      {/* First bubble layer */}
-      <div className={styles.bubblesOverlay} style={{ backgroundImage: `url(${bubblesOverlay})` }} />
-     
-      <time className={styles.display} dateTime={time.toISOString()} aria-label="Current time">
-        {hours.split('').map((digit, index) => (
-          <span key={index} className={styles.segment}>{digit}</span>
-        ))}
-        <span className={styles.colon}>:</span>
-        <span className={styles.segment}>{minutes[0]}</span>
-        <span className={styles.segment}>{minutes[1]}</span>
-        <span className={styles.ampm}>{ampm}</span>
-      </time>
+      <div
+        className={styles.bubblesOverlay}
+        style={{ backgroundImage: `url(${bubblesOverlay})` }}
+      />
+
+      <SRTime time={time} />
     </main>
   );
 };
 
-Clock_26_09_15.displayName = 'Clock_26_09_15';
-
-export default Clock_26_09_15;
+Clock_26_09_17.displayName = 'Clock_26_09_17';
+export default Clock_26_09_17;
