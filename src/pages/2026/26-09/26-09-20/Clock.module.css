@@ -131,7 +131,7 @@ opacity: 0.5;
 
   z-index: 10;
 
-  box-shadow: 0 0 4px rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.709);
 }
 
 /* Clock Face Numbers */
