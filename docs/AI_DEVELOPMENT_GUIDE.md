@@ -290,9 +290,7 @@ const time = useSmoothClock(50);
 const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
 ```
 
-Never create a `setInterval`, `setTimeout` animation loop, or manual
-`requestAnimationFrame` loop inside a clock. Never use deprecated clock hooks
-in new code.
+Never create a `setInterval`, `setTimeout`, or manual timing loop to maintain displayed clock time. A Three.js/WebGL `requestAnimationFrame` render loop is permitted when it is only rendering and the clock value comes from shared time infrastructure. Never use deprecated clock hooks in new code.
 
 Every clock must:
 
@@ -399,13 +397,13 @@ Record them accurately instead of weakening rules or hiding output.
 
 ## 10. Source-of-Truth Documents
 
-- [`CLOCK_STANDARDS.md`](./CLOCK_STANDARDS.md): clock contract and prohibited
-  patterns.
-- [`PERFORMANCE.md`](./PERFORMANCE.md): asset budgets, fonts, caching, and
-  bundle limits.
-- [`ROADMAP.md`](./ROADMAP.md): project priorities and known debt.
-- [`STATUS.md`](./STATUS.md): live check results and fleet inventory.
-- [`src/utils/assetLoader.ts`](../src/utils/assetLoader.ts): shared asset
-  loading interfaces and preload behavior.
-- [`src/hooks/useClockPage.ts`](../src/hooks/useClockPage.ts): dynamic clock
-  loading and asset registration behavior.
+- [`ARCHITECTURE.md`](./ARCHITECTURE.md): authoritative application architecture and historical/current boundary.
+- [`CLOCKS.md`](./CLOCKS.md): current clock contract.
+- [`PERFORMANCE.md`](./PERFORMANCE.md): asset budgets, fonts, caching, and bundle limits.
+- [`ROADMAP.md`](./ROADMAP.md): project priorities and technical debt.
+- [`STATUS.md`](./STATUS.md): recorded health checks and fleet inventory.
+- [`CONTRIBUTING.md`](../CONTRIBUTING.md): human contribution workflow.
+- [`src/utils/assetLoader.ts`](../src/utils/assetLoader.ts): shared asset loading interfaces.
+- [`src/hooks/useClockPage.ts`](../src/hooks/useClockPage.ts): dynamic clock loading and asset registration.
+
+AI instructions in this file and `AGENTS.md` must follow the architecture and current clock contract; they do not override them.
