@@ -76,6 +76,26 @@ A new clock normally follows this sequence:
 
 Shared infrastructure includes time hooks, font and asset loading, routing, clock discovery, metadata, types, accessibility components, tests, and build/deployment tooling.
 
+### Clock Registry and Metadata
+
+The actual date-based `Clock.tsx` files are the authoritative registry of available clocks. The application discovers those modules through `src/clock/clockRegistry.ts`.
+
+`src/context/clockpages.json` and its development counterpart `testclocks.json` provide descriptive metadata such as titles, paths, and tags. They do not publish or create clocks. A metadata entry without a corresponding `Clock.tsx` is ignored.
+
+This separation is intentional:
+
+```text
+Clock.tsx exists
+      ↓
+clock is available
+
+clockpages.json
+      ↓
+optional metadata about that clock
+```
+
+The `/today` route resolves the newest actual clock component on or before the current date from the registry. It does not select a clock merely because a metadata entry exists.
+
 Shared code must remain compatible with the historical archive where reasonably possible. Do not weaken current standards merely to make old artwork conform.
 
 ## Timekeeping and Rendering
