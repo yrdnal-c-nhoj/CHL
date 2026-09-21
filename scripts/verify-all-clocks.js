@@ -129,8 +129,25 @@ function verifyClock(filePath) {
   if (!/<time\b[^>]*\bdateTime\s*=/.test(source) && !/\bSRTime\b/.test(source)) {
     errors.push('must render a semantic <time> with dateTime');
   }
-  if (/setInterval\s*\(|setTimeout\s*\(|requestAnimationFrame\s*\(/.test(source)) {
-    errors.push('must not use direct timer or requestAnimationFrame loops');
+  // Current clocks must use the shared clock hooks as their source of displayed
+  // time. Rendering loops are allowed: Three.js/WebGL and other visual animation
+  // systems may use requestAnimationFrame when they do not calculate clock time
+  // independently.
+  if (/setInterval\s*\(|setTimeout\s*\(/.test(source)) {
+    errors.push('must not use direct timer loops for clock timekeeping or animation scheduling');
+  }
+
+  // Flag direct rAF only when the source appears to use it as a clock/timing
+  // mechanism. A normal render loop (for example, a Three.js renderer) is valid.
+  const hasDirectRaf = /requestAnimationFrame\s*\(/.test(source);
+  const hasClockTimeCalculation =
+    /(?:Date\.now|new\s+Date\s*\(|performance\.now)\s*\(/.test(source) ||
+    /(?:setHours|setMinutes|setSeconds|setMilliseconds)\s*\(/.test(source);
+
+  if (hasDirectRaf && hasClockTimeCalculation) {
+    errors.push(
+      'must not use requestAnimationFrame as an independent clock time source; use useClock or useSmoothClock',
+    );
   }
   if (/<style(?:\s|>)/.test(source)) errors.push('must not use inline style tags');
   if (/\bany\b/.test(source)) errors.push('must not use the any type');
