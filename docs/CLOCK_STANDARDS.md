@@ -1,6 +1,6 @@
-# Clock Standards & Development Guide
+# Current Clock Standards
 
-**Authoritative reference for all `Clock.tsx` implementations in CHL.**  
+**Authoritative contract for current `Clock.tsx` implementations. Historical clocks are preserved unless a concrete production reason requires change.**  
 *Consult this document first when creating, reviewing, or optimizing any clock.*
 
 ---
@@ -65,7 +65,7 @@ src/pages/YYYY/YY-MM/YY-MM-DD/
   └── [Optional helpers]     (e.g., useMazeRenderer.ts for complex logic)
 ```
 
-- **Every clock directory must contain** `Clock.tsx` + `Clock.module.css`.
+- Current clocks normally contain `Clock.tsx` and `Clock.module.css`; a module stylesheet may be omitted when the implementation genuinely does not need static CSS.
 - Optional helper modules are allowed **only** for genuinely non-trivial logic (canvas renderers, maze generators, etc.).
 
 ### 2. Component Definition
@@ -191,7 +191,7 @@ const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
 |---------|-----|-------------|
 | `setInterval(...)` | Defeats rAF battery optimization; stale closures | Use `useClock` or `useSmoothClock` |
 | `setInterval(callback, 1000)` | Multiple independent timers bloat the event loop | Use `useClock` (1s updates) |
-| Manual `requestAnimationFrame` loops | Uncoordinated with other clocks; battery drain | Use `useSmoothClock` |
+| Independent manual timing loops | Can drift from shared time and duplicate timing infrastructure | Use `useClock` or `useSmoothClock` |
 | `useClockTime` (from `@/utils/clockUtils`) | Deprecated utility | Use `useClock` or `useSmoothClock` |
 | Deprecated `useSecondClock` / `useMultiSecondClock` | Removed in favor of canonical hooks | Use `useClock` |
 
@@ -615,7 +615,7 @@ If a clock deviates from these standards for justified reasons:
 - **`src/pages/2026/26-07/26-07-29/Clock.tsx`** — High-quality analog clock reference.
 - **`src/utils/hooks/`** — Hook implementations and source.
 
-`docs/ARCHITECTURE.md` does not exist; do not cite it.
+See [`ARCHITECTURE.md`](./ARCHITECTURE.md) for the historical/current architectural boundary.
 
 ---
 
