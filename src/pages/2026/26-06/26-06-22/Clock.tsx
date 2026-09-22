@@ -117,29 +117,22 @@ interface NodeRefs {
 }
 
 interface ClockCellProps {
-  val:    number | string;
-  elRef:  NodeRefs;
+  val:     number | string;
+  setSpan: (el: HTMLSpanElement | null) => void;
+  setLens: (el: HTMLDivElement | null) => void;
 }
 
-const ClockCell = React.memo(({ val, elRef }: ClockCellProps) => {
-  const spanRef = useRef<HTMLSpanElement>(null);
-  const lensRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    elRef.span = spanRef.current;
-    elRef.lens = lensRef.current;
-  }, [elRef]);
-
+const ClockCell = React.memo(({ val, setSpan, setLens }: ClockCellProps) => {
   return (
     <div style={styles.cell}>
       <span
-        ref={spanRef}
+        ref={setSpan}
         style={styles.span}
       >
         {val}
       </span>
       <div
-        ref={lensRef}
+        ref={setLens}
         style={styles.lens}
       />
     </div>
@@ -151,15 +144,11 @@ ClockCell.displayName = 'ClockCell';
 // ── main component ───────────────────────────────────────────────────────────
 
 export default function DigitalClock() {
-  const refsArr = useRef<NodeRefs[]>([]);
+  const refsArr = useRef<NodeRefs[]>(
+    Array.from({ length: TOTAL_ELEMENTS }, () => ({ span: null, lens: null, prevW: -1 })),
+  );
   const bucketRef = useRef(-1);
   const rafRef    = useRef<number>(0);
-
-  useEffect(() => {
-    if (refsArr.current.length === 0) {
-      refsArr.current = Array.from({ length: TOTAL_ELEMENTS }, () => ({ span: null, lens: null, prevW: -1 }));
-    }
-  }, []);
 
   useEffect(() => {
     const linkId = 'google-font-bitcount';
@@ -213,7 +202,8 @@ export default function DigitalClock() {
             <ClockCell
               key={`${el.type}-${el.idx}`}
               val={el.val}
-              elRef={refsArr.current[i]}
+              setSpan={(node) => { refsArr.current[i].span = node; }}
+              setLens={(node) => { refsArr.current[i].lens = node; }}
             />
           ))}
         </div>
