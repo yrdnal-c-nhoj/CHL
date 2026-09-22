@@ -138,9 +138,7 @@ const Clock =  () => {
           <div style={digitBoxStyle}>
             <span className={styles.blink} style={{ animationDelay: '0.5s' }}>{displaySeconds[1]}</span>
           </div>
-          <div style={ampmBoxStyle}>
-            <span className={styles.blink} style={{ animationDelay: '0.6s' }}>{ampm}</span>
-          </div>
+        
         </time>
       </div>
     </main>
