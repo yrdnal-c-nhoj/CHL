@@ -1,0 +1,5566 @@
+diff --git a/src/pages/2025/25-04/25-04-02/Clock.tsx b/src/pages/2025/25-04/25-04-02/Clock.tsx
+index 582ee4c..acf191a 100644
+--- a/src/pages/2025/25-04/25-04-02/Clock.tsx
++++ b/src/pages/2025/25-04/25-04-02/Clock.tsx
+@@ -126,7 +126,7 @@ const DeepSpaceClock =  () => {
+       position: 'relative',
+       backgroundColor: '#333',
+     }}>
+-      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
++      <time dateTime={currentTime.toISOString()} className="srOnly">{currentTime.toLocaleTimeString()}</time>
+ 
+       <div style={{
+         backgroundImage: `url(${images.backgroundGif})`,
+diff --git a/src/pages/2025/25-04/25-04-03/Clock.tsx b/src/pages/2025/25-04/25-04-03/Clock.tsx
+index 3dad05d..107b15c 100644
+--- a/src/pages/2025/25-04/25-04-03/Clock.tsx
++++ b/src/pages/2025/25-04/25-04-03/Clock.tsx
+@@ -98,7 +98,7 @@ const MobyDickClock: FC<MobyDickClockProps> = () => {
+       className={styles.container}
+       style={{ backgroundImage: `url(${waves})` }}
+     >
+-      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
++      <time dateTime={currentTime.toISOString()} className="srOnly">{currentTime.toLocaleTimeString()}</time>
+ 
+       {/* Accessible, screen-reader only time */}
+       <SRTime time={currentTime} />
+diff --git a/src/pages/2025/25-04/25-04-04/Clock.tsx b/src/pages/2025/25-04/25-04-04/Clock.tsx
+index 4eadb1f..27516e4 100644
+--- a/src/pages/2025/25-04/25-04-04/Clock.tsx
++++ b/src/pages/2025/25-04/25-04-04/Clock.tsx
+@@ -85,7 +85,7 @@ const HeartbeatClock = () => {
+ 
+   return (
+     <main className={styles.container} style={bodyStyle}>
+-      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
++      <time dateTime={currentTime.toISOString()} className="srOnly">{currentTime.toLocaleTimeString()}</time>
+ 
+       <div style={backgroundStyle} />
+       <div style={clockStyle} className={styles.heartbeat}>
+diff --git a/src/pages/2025/25-04/25-04-08/Clock.tsx b/src/pages/2025/25-04/25-04-08/Clock.tsx
+index 64f28a5..8b5e229 100644
+--- a/src/pages/2025/25-04/25-04-08/Clock.tsx
++++ b/src/pages/2025/25-04/25-04-08/Clock.tsx
+@@ -63,7 +63,7 @@ const TripleCactusClock = () => {
+       overflow: 'hidden',
+       background: '#01151d',
+     }}>
+-      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
++      <time dateTime={currentTime.toISOString()} className="srOnly">{currentTime.toLocaleTimeString()}</time>
+ 
+       <div
+         className={styles.skyCycle}
+diff --git a/src/pages/2025/25-04/25-04-14/Clock.tsx b/src/pages/2025/25-04/25-04-14/Clock.tsx
+index ed12d04..fb32ba3 100644
+--- a/src/pages/2025/25-04/25-04-14/Clock.tsx
++++ b/src/pages/2025/25-04/25-04-14/Clock.tsx
+@@ -58,7 +58,7 @@ const BlueBrickClock = () => {
+       position: 'relative',
+       boxSizing: 'border-box',
+     }}>
+-      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
++      <time dateTime={currentTime.toISOString()} className="srOnly">{currentTime.toLocaleTimeString()}</time>
+ 
+       <div
+         style={{
+diff --git a/src/pages/2025/25-04/25-04-16/Clock.module.css b/src/pages/2025/25-04/25-04-16/Clock.module.css
+index 4bcf446..1529b40 100644
+--- a/src/pages/2025/25-04/25-04-16/Clock.module.css
++++ b/src/pages/2025/25-04/25-04-16/Clock.module.css
+@@ -105,13 +105,3 @@
+   from { transform: rotate(0deg); }
+   to { transform: rotate(-360deg); }
+ }
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2025/25-04/25-04-16/Clock.tsx b/src/pages/2025/25-04/25-04-16/Clock.tsx
+index b69af3b..08d4eff 100644
+--- a/src/pages/2025/25-04/25-04-16/Clock.tsx
++++ b/src/pages/2025/25-04/25-04-16/Clock.tsx
+@@ -32,7 +32,7 @@ const BirthdayCakeClock = () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
++      <time dateTime={currentTime.toISOString()} className="srOnly">{currentTime.toLocaleTimeString()}</time>
+ 
+       <div className={styles.clockWrapper}>
+         <div className={styles.clock}>
+diff --git a/src/pages/2025/25-04/25-04-25/Clock.tsx b/src/pages/2025/25-04/25-04-25/Clock.tsx
+index 253c4ee..9cd71e1 100644
+--- a/src/pages/2025/25-04/25-04-25/Clock.tsx
++++ b/src/pages/2025/25-04/25-04-25/Clock.tsx
+@@ -38,7 +38,7 @@ const MyClock =  () => {
+ 
+   return (
+     <main className={styles.container} style={{ backgroundImage: `url(${backgroundImage})` }}>
+-      <time dateTime={isoTime} aria-hidden="true" className={styles.srOnly}>
++      <time dateTime={isoTime} aria-hidden="true" className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <div className={styles.clockFace}>
+diff --git a/src/pages/2025/25-04/25-04-27/Clock.module.css b/src/pages/2025/25-04/25-04-27/Clock.module.css
+index da3bc4c..842aaed 100644
+--- a/src/pages/2025/25-04/25-04-27/Clock.module.css
++++ b/src/pages/2025/25-04/25-04-27/Clock.module.css
+@@ -19,17 +19,6 @@
+   position: relative;
+ }
+ 
+-.srOnly {
+-  border: 0;
+-  clip: rect(0 0 0 0);
+-  height: 1px;
+-  margin: -1px;
+-  overflow: hidden;
+-  padding: 0;
+-  position: absolute;
+-  width: 1px;
+-}
+-
+ .backgroundImage {
+   position: absolute;
+   top: 0;
+@@ -84,4 +73,4 @@
+   left: 50%;
+   transform: translate(-50%, -50%);
+   z-index: 10;
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2025/25-04/25-04-27/Clock.tsx b/src/pages/2025/25-04/25-04-27/Clock.tsx
+index f247c5c..507b117 100644
+--- a/src/pages/2025/25-04/25-04-27/Clock.tsx
++++ b/src/pages/2025/25-04/25-04-27/Clock.tsx
+@@ -36,7 +36,7 @@ const SpinningCoinClock: React.FC<SpinningCoinClockProps> = () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
++      <time dateTime={currentTime.toISOString()} className="srOnly">{currentTime.toLocaleTimeString()}</time>
+ 
+       <img
+         decoding="async"
+diff --git a/src/pages/2025/25-04/25-04-30/Clock.module.css b/src/pages/2025/25-04/25-04-30/Clock.module.css
+index 6e4d1a0..63bff4e 100644
+--- a/src/pages/2025/25-04/25-04-30/Clock.module.css
++++ b/src/pages/2025/25-04/25-04-30/Clock.module.css
+@@ -29,13 +29,3 @@
+   padding: 1rem;
+   line-height: 1.5;
+ }
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2025/25-04/25-04-30/Clock.tsx b/src/pages/2025/25-04/25-04-30/Clock.tsx
+index 0d00d8c..fca588f 100644
+--- a/src/pages/2025/25-04/25-04-30/Clock.tsx
++++ b/src/pages/2025/25-04/25-04-30/Clock.tsx
+@@ -141,7 +141,7 @@ const GravityClock: React.FC<GravityClockProps> = () => {
+ 
+   return (
+     <main ref={containerRef} className={styles.container}>
+-      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
++      <time dateTime={currentTime.toISOString()} className="srOnly">{currentTime.toLocaleTimeString()}</time>
+       {clocks.map((clock) => (
+         <ClockItem key={clock.id} clock={clock} currentTime={currentTime} />
+       ))}
+diff --git a/src/pages/2025/25-05/25-05-02/Clock.module.css b/src/pages/2025/25-05/25-05-02/Clock.module.css
+index 85525ae..d9520b2 100644
+--- a/src/pages/2025/25-05/25-05-02/Clock.module.css
++++ b/src/pages/2025/25-05/25-05-02/Clock.module.css
+@@ -75,14 +75,3 @@
+   height: 100%;
+   object-fit: contain;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2025/25-05/25-05-02/Clock.tsx b/src/pages/2025/25-05/25-05-02/Clock.tsx
+index 16ee62d..b20a26c 100644
+--- a/src/pages/2025/25-05/25-05-02/Clock.tsx
++++ b/src/pages/2025/25-05/25-05-02/Clock.tsx
+@@ -132,7 +132,7 @@ const Clock: React.FC<ClockProps> = () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
++      <time dateTime={currentTime.toISOString()} className="srOnly">{currentTime.toLocaleTimeString()}</time>
+ 
+       <img src={scorpImage} alt="Background" className={styles.background} />
+ 
+diff --git a/src/pages/2025/25-05/25-05-04/Clock.tsx b/src/pages/2025/25-05/25-05-04/Clock.tsx
+index 378bc11..b16aaac 100644
+--- a/src/pages/2025/25-05/25-05-04/Clock.tsx
++++ b/src/pages/2025/25-05/25-05-04/Clock.tsx
+@@ -70,7 +70,7 @@ const Clock =  () => {
+ 
+   return (
+     <main className={styles.container} style={containerStyle}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div style={slideshowStyle}>
+         {[tumbGif, spinnGif, edGif].map((src, i) => (
+diff --git a/src/pages/2025/25-05/25-05-09/Clock.tsx b/src/pages/2025/25-05/25-05-09/Clock.tsx
+index ac4f290..6447f91 100644
+--- a/src/pages/2025/25-05/25-05-09/Clock.tsx
++++ b/src/pages/2025/25-05/25-05-09/Clock.tsx
+@@ -44,7 +44,7 @@ const Clock =  () => {
+       position: 'relative',
+       fontFamily: "'KinaFont', sans-serif",
+     }}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <img
+         decoding="async"
+diff --git a/src/pages/2025/25-05/25-05-11/Clock.module.css b/src/pages/2025/25-05/25-05-11/Clock.module.css
+index 92af2c8..7532c27 100644
+--- a/src/pages/2025/25-05/25-05-11/Clock.module.css
++++ b/src/pages/2025/25-05/25-05-11/Clock.module.css
+@@ -38,13 +38,3 @@
+   opacity: 0.3;
+   font-size: 0.9rem;
+ }
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2025/25-05/25-05-11/Clock.tsx b/src/pages/2025/25-05/25-05-11/Clock.tsx
+index 697aaee..2937bc3 100644
+--- a/src/pages/2025/25-05/25-05-11/Clock.tsx
++++ b/src/pages/2025/25-05/25-05-11/Clock.tsx
+@@ -21,7 +21,7 @@ const Clock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={isoTime} className={styles.srOnly}>{hours}:{minutes}:{seconds}</time>
++      <time dateTime={isoTime} className="srOnly">{hours}:{minutes}:{seconds}</time>
+ 
+       <div className={styles.displayBox}>
+         <header className={styles.title}>{clockTax.title}</header>
+diff --git a/src/pages/2025/25-05/25-05-16/Clock.module.css b/src/pages/2025/25-05/25-05-16/Clock.module.css
+index b317349..cf825c0 100644
+--- a/src/pages/2025/25-05/25-05-16/Clock.module.css
++++ b/src/pages/2025/25-05/25-05-16/Clock.module.css
+@@ -27,18 +27,6 @@
+   align-items: center;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ @keyframes textFade {
+   0% { color: #FCFEDCFF; }
+   50% { color: #100649FF; }
+@@ -55,4 +43,4 @@
+   .clock { flex-direction: column; gap: 2vh; }
+   .timePart { font-size: 12vh; }
+   .label { font-size: 4vh; }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2025/25-05/25-05-16/Clock.tsx b/src/pages/2025/25-05/25-05-16/Clock.tsx
+index 9316a06..81225cc 100644
+--- a/src/pages/2025/25-05/25-05-16/Clock.tsx
++++ b/src/pages/2025/25-05/25-05-16/Clock.tsx
+@@ -37,7 +37,7 @@ const ClockComponent = () => {
+         aria-live="polite"
+         aria-label={`Current time is ${hours} hours, ${minutes} minutes, and ${seconds} seconds`}
+       >
+-        <time dateTime={time.toISOString()} className={styles.srOnly}>
++        <time dateTime={time.toISOString()} className="srOnly">
+           {time.toLocaleTimeString()}
+         </time>
+         <div className={styles.segment}>
+diff --git a/src/pages/2025/25-05/25-05-18/Clock.module.css b/src/pages/2025/25-05/25-05-18/Clock.module.css
+index 61b68f4..d2a7eb8 100644
+--- a/src/pages/2025/25-05/25-05-18/Clock.module.css
++++ b/src/pages/2025/25-05/25-05-18/Clock.module.css
+@@ -64,15 +64,3 @@
+   opacity: 0.3;
+   transform: scaleX(-1);
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2025/25-05/25-05-18/Clock.tsx b/src/pages/2025/25-05/25-05-18/Clock.tsx
+index 3380a3b..21d0f92 100644
+--- a/src/pages/2025/25-05/25-05-18/Clock.tsx
++++ b/src/pages/2025/25-05/25-05-18/Clock.tsx
+@@ -35,7 +35,7 @@ const ClockComponent = () => {
+       <img decoding="async" loading="lazy" src={image1} alt="" className={styles.image1} />
+       <img decoding="async" loading="lazy" src={image2} alt="" className={styles.image2} />
+       <img decoding="async" loading="lazy" src={image3} alt="" className={styles.image3} />
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <div className={styles.clock} role="timer" aria-live="off">
+diff --git a/src/pages/2025/25-05/25-05-19/Clock.module.css b/src/pages/2025/25-05/25-05-19/Clock.module.css
+index b91b6a2..d4f0dac 100644
+--- a/src/pages/2025/25-05/25-05-19/Clock.module.css
++++ b/src/pages/2025/25-05/25-05-19/Clock.module.css
+@@ -101,15 +101,3 @@
+   transform: translate(-50%, -50%);
+   z-index: 10;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2025/25-05/25-05-19/Clock.tsx b/src/pages/2025/25-05/25-05-19/Clock.tsx
+index 294aa59..c23200e 100644
+--- a/src/pages/2025/25-05/25-05-19/Clock.tsx
++++ b/src/pages/2025/25-05/25-05-19/Clock.tsx
+@@ -33,7 +33,7 @@ const ClockComponent = () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <div className={styles.bg2} />
+diff --git a/src/pages/2025/25-05/25-05-21/Clock.module.css b/src/pages/2025/25-05/25-05-21/Clock.module.css
+index 9515d3d..404a070 100644
+--- a/src/pages/2025/25-05/25-05-21/Clock.module.css
++++ b/src/pages/2025/25-05/25-05-21/Clock.module.css
+@@ -48,18 +48,6 @@
+   text-align: center;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ @media (max-width: 768px) {
+   .clockFace {
+     font-size: 20vh;
+@@ -68,4 +56,4 @@
+   .timeGroup {
+     gap: 0.5ch;
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2025/25-05/25-05-21/Clock.tsx b/src/pages/2025/25-05/25-05-21/Clock.tsx
+index ad0170d..83d69d4 100644
+--- a/src/pages/2025/25-05/25-05-21/Clock.tsx
++++ b/src/pages/2025/25-05/25-05-21/Clock.tsx
+@@ -30,7 +30,7 @@ const ClockComponent = () => {
+   return (
+     <main className={styles.container}>
+       <div className={styles.bg} style={{ backgroundImage: `url(${background})` }} />
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <div className={styles.clockFace} role="timer" aria-live="off">
+diff --git a/src/pages/2025/25-05/25-05-22/Clock.module.css b/src/pages/2025/25-05/25-05-22/Clock.module.css
+index 2abeee2..12ea528 100644
+--- a/src/pages/2025/25-05/25-05-22/Clock.module.css
++++ b/src/pages/2025/25-05/25-05-22/Clock.module.css
+@@ -72,15 +72,3 @@
+   width: 0.4%;
+   height: 45%;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2025/25-05/25-05-22/Clock.tsx b/src/pages/2025/25-05/25-05-22/Clock.tsx
+index f65208a..ce06af0 100644
+--- a/src/pages/2025/25-05/25-05-22/Clock.tsx
++++ b/src/pages/2025/25-05/25-05-22/Clock.tsx
+@@ -36,7 +36,7 @@ const ClockComponent = () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <img decoding="async" loading="lazy" src={sunGif} alt="" className={styles.sun} />
+diff --git a/src/pages/2025/25-05/25-05-23/Clock.module.css b/src/pages/2025/25-05/25-05-23/Clock.module.css
+index 2646e1c..1190ed6 100644
+--- a/src/pages/2025/25-05/25-05-23/Clock.module.css
++++ b/src/pages/2025/25-05/25-05-23/Clock.module.css
+@@ -56,18 +56,6 @@
+   color: transparent;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ @keyframes colorCycle {
+   0%   { color: hsl(0, 85%, 60%); }
+   25%  { color: hsl(90, 85%, 60%); }
+@@ -83,4 +71,4 @@
+     gap: 1rem;
+     align-items: center;
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2025/25-05/25-05-23/Clock.tsx b/src/pages/2025/25-05/25-05-23/Clock.tsx
+index e1a0a2e..e6b1a04 100644
+--- a/src/pages/2025/25-05/25-05-23/Clock.tsx
++++ b/src/pages/2025/25-05/25-05-23/Clock.tsx
+@@ -48,7 +48,7 @@ const ClockComponent = () => {
+   return (
+     <main className={styles.container}>
+       <img decoding="async" loading="lazy" src={backgroundImage} alt="" className={styles.bg} />
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <div className={styles.clockFace} role="timer" aria-live="off">
+diff --git a/src/pages/2025/25-05/25-05-25/Clock.module.css b/src/pages/2025/25-05/25-05-25/Clock.module.css
+index 8c2eb8d..37eb997 100644
+--- a/src/pages/2025/25-05/25-05-25/Clock.module.css
++++ b/src/pages/2025/25-05/25-05-25/Clock.module.css
+@@ -57,15 +57,3 @@
+   transform: scaleX(-1);
+   filter: saturate(70%) hue-rotate(73deg) contrast(180%);
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2025/25-05/25-05-25/Clock.tsx b/src/pages/2025/25-05/25-05-25/Clock.tsx
+index 1c69f75..76c7553 100644
+--- a/src/pages/2025/25-05/25-05-25/Clock.tsx
++++ b/src/pages/2025/25-05/25-05-25/Clock.tsx
+@@ -34,7 +34,7 @@ const ClockComponent = () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <div className={styles.clockContainer}>
+diff --git a/src/pages/2025/25-05/25-05-26/Clock.module.css b/src/pages/2025/25-05/25-05-26/Clock.module.css
+index 21024db..fe9a220 100644
+--- a/src/pages/2025/25-05/25-05-26/Clock.module.css
++++ b/src/pages/2025/25-05/25-05-26/Clock.module.css
+@@ -80,15 +80,3 @@
+   background-size: contain;
+   z-index: 12;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2025/25-05/25-05-26/Clock.tsx b/src/pages/2025/25-05/25-05-26/Clock.tsx
+index 6c487d9..f34da66 100644
+--- a/src/pages/2025/25-05/25-05-26/Clock.tsx
++++ b/src/pages/2025/25-05/25-05-26/Clock.tsx
+@@ -48,7 +48,7 @@ const ClockComponent = () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <div className={styles.bgTiled} />
+diff --git a/src/pages/2025/25-05/25-05-28/Clock.module.css b/src/pages/2025/25-05/25-05-28/Clock.module.css
+index f692d92..a942c26 100644
+--- a/src/pages/2025/25-05/25-05-28/Clock.module.css
++++ b/src/pages/2025/25-05/25-05-28/Clock.module.css
+@@ -68,15 +68,3 @@
+ .centerPin {
+   fill: #333;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2025/25-05/25-05-28/Clock.tsx b/src/pages/2025/25-05/25-05-28/Clock.tsx
+index 26366f1..ac1907f 100644
+--- a/src/pages/2025/25-05/25-05-28/Clock.tsx
++++ b/src/pages/2025/25-05/25-05-28/Clock.tsx
+@@ -83,7 +83,7 @@ const ClockComponent = () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       {clockPositions.map((pos, i) => (
+diff --git a/src/pages/2025/25-05/25-05-29/Clock.module.css b/src/pages/2025/25-05/25-05-29/Clock.module.css
+index e38e70e..7565e0c 100644
+--- a/src/pages/2025/25-05/25-05-29/Clock.module.css
++++ b/src/pages/2025/25-05/25-05-29/Clock.module.css
+@@ -35,10 +35,6 @@
+   user-select: none;
+ }
+ 
+-.srOnly {
+-  /* Visually hide content, but keep it accessible to screen readers */
+-}
+-
+ .divider {
+   height: 1px;
+   width: 50vw;
+diff --git a/src/pages/2025/25-05/25-05-29/Clock.tsx b/src/pages/2025/25-05/25-05-29/Clock.tsx
+index fb8674e..f6363f1 100644
+--- a/src/pages/2025/25-05/25-05-29/Clock.tsx
++++ b/src/pages/2025/25-05/25-05-29/Clock.tsx
+@@ -81,7 +81,7 @@ const Clock =  () => {
+       />
+ 
+       {/* Accessible time for screen readers */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2025/25-05/25-05-30/Clock.module.css b/src/pages/2025/25-05/25-05-30/Clock.module.css
+index 535670e..0b19c15 100644
+--- a/src/pages/2025/25-05/25-05-30/Clock.module.css
++++ b/src/pages/2025/25-05/25-05-30/Clock.module.css
+@@ -46,15 +46,3 @@
+   width: 0.8em;
+   text-align: center;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2025/25-05/25-05-30/Clock.tsx b/src/pages/2025/25-05/25-05-30/Clock.tsx
+index d5aaf6b..e6af647 100644
+--- a/src/pages/2025/25-05/25-05-30/Clock.tsx
++++ b/src/pages/2025/25-05/25-05-30/Clock.tsx
+@@ -29,7 +29,7 @@ const ClockComponent = () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <iframe
+diff --git a/src/pages/2025/25-05/25-05-31/Clock.module.css b/src/pages/2025/25-05/25-05-31/Clock.module.css
+index 28e6792..6aa545d 100644
+--- a/src/pages/2025/25-05/25-05-31/Clock.module.css
++++ b/src/pages/2025/25-05/25-05-31/Clock.module.css
+@@ -87,15 +87,3 @@
+   z-index: 1;
+   filter: saturate(20%);
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2025/25-05/25-05-31/Clock.tsx b/src/pages/2025/25-05/25-05-31/Clock.tsx
+index 9c5167e..dcdb7a1 100644
+--- a/src/pages/2025/25-05/25-05-31/Clock.tsx
++++ b/src/pages/2025/25-05/25-05-31/Clock.tsx
+@@ -50,7 +50,7 @@ const ClockComponent = () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <img decoding="async" loading="lazy" src={elWebp} alt="" className={styles.bg} />
+diff --git a/src/pages/2025/25-06/25-06-03/Clock.tsx b/src/pages/2025/25-06/25-06-03/Clock.tsx
+index 5c6687b..05f8472 100644
+--- a/src/pages/2025/25-06/25-06-03/Clock.tsx
++++ b/src/pages/2025/25-06/25-06-03/Clock.tsx
+@@ -34,7 +34,7 @@ const FiligreeClock =  () => {
+       justifyContent: 'center',
+       alignItems: 'center',
+     }}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div style={{
+         display: 'flex',
+diff --git a/src/pages/2025/25-06/25-06-08/Clock.tsx b/src/pages/2025/25-06/25-06-08/Clock.tsx
+index af56a1a..ef5c182 100644
+--- a/src/pages/2025/25-06/25-06-08/Clock.tsx
++++ b/src/pages/2025/25-06/25-06-08/Clock.tsx
+@@ -112,7 +112,7 @@ const FaceCardClock =  () => {
+       alignItems: 'center',
+       position: 'relative',
+     }}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <img
+         decoding="async"
+diff --git a/src/pages/2025/25-06/25-06-13/Clock.tsx b/src/pages/2025/25-06/25-06-13/Clock.tsx
+index f497e97..41d12f1 100644
+--- a/src/pages/2025/25-06/25-06-13/Clock.tsx
++++ b/src/pages/2025/25-06/25-06-13/Clock.tsx
+@@ -156,7 +156,7 @@ const CloudyNightClock =  () => {
+ 
+   return (
+     <main className={styles.container} style={containerStyle}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <img
+         decoding="async"
+diff --git a/src/pages/2025/25-06/25-06-19/Clock.tsx b/src/pages/2025/25-06/25-06-19/Clock.tsx
+index c3e5c9e..c91d4ad 100644
+--- a/src/pages/2025/25-06/25-06-19/Clock.tsx
++++ b/src/pages/2025/25-06/25-06-19/Clock.tsx
+@@ -82,7 +82,7 @@ const ClockComponent = () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <canvas ref={canvasRef} className={styles.canvas} />
+diff --git a/src/pages/2025/25-06/25-06-30/Clock.tsx b/src/pages/2025/25-06/25-06-30/Clock.tsx
+index a1e545a..85a34eb 100644
+--- a/src/pages/2025/25-06/25-06-30/Clock.tsx
++++ b/src/pages/2025/25-06/25-06-30/Clock.tsx
+@@ -97,7 +97,7 @@ const Clock =  () => {
+       position: 'relative',
+       touchAction: 'none',
+     }}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {!loaded && (
+         <div
+diff --git a/src/pages/2025/25-07/25-07-03/Clock.module.css b/src/pages/2025/25-07/25-07-03/Clock.module.css
+index f64de66..e5a8cd3 100644
+--- a/src/pages/2025/25-07/25-07-03/Clock.module.css
++++ b/src/pages/2025/25-07/25-07-03/Clock.module.css
+@@ -45,15 +45,3 @@
+   text-align: center;
+   min-width: 12ch;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+diff --git a/src/pages/2025/25-07/25-07-03/Clock.tsx b/src/pages/2025/25-07/25-07-03/Clock.tsx
+index cb6fd76..a48848e 100644
+--- a/src/pages/2025/25-07/25-07-03/Clock.tsx
++++ b/src/pages/2025/25-07/25-07-03/Clock.tsx
+@@ -33,7 +33,7 @@ const Clock = () => {
+         <span className={styles.clockText}>{formattedTime}</span>
+       </div>
+ 
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+     </main>
+diff --git a/src/pages/2025/25-07/25-07-06/Clock.tsx b/src/pages/2025/25-07/25-07-06/Clock.tsx
+index 807a6b1..0a825bb 100644
+--- a/src/pages/2025/25-07/25-07-06/Clock.tsx
++++ b/src/pages/2025/25-07/25-07-06/Clock.tsx
+@@ -43,7 +43,7 @@ const Clock =  () => {
+         position: 'relative',
+       }}
+     >
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <img
+         src={polarisGif}
+diff --git a/src/pages/2025/25-07/25-07-21/Clock.tsx b/src/pages/2025/25-07/25-07-21/Clock.tsx
+index add6a97..2dc7695 100644
+--- a/src/pages/2025/25-07/25-07-21/Clock.tsx
++++ b/src/pages/2025/25-07/25-07-21/Clock.tsx
+@@ -23,7 +23,7 @@ const AnglerfishClock =  () => {
+       alignItems: 'center',
+       background: 'linear-gradient(to bottom, #1C6179 0%, #3F1395 100%)',
+     }}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div style={{
+         position: 'fixed',
+diff --git a/src/pages/2025/25-07/25-07-27/Clock.module.css b/src/pages/2025/25-07/25-07-27/Clock.module.css
+index 161595b..642a1db 100644
+--- a/src/pages/2025/25-07/25-07-27/Clock.module.css
++++ b/src/pages/2025/25-07/25-07-27/Clock.module.css
+@@ -94,15 +94,3 @@
+     background-position: -200% center;
+   }
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2025/25-07/25-07-27/Clock.tsx b/src/pages/2025/25-07/25-07-27/Clock.tsx
+index db93dd7..02da33c 100644
+--- a/src/pages/2025/25-07/25-07-27/Clock.tsx
++++ b/src/pages/2025/25-07/25-07-27/Clock.tsx
+@@ -95,7 +95,7 @@ const Clock =  () => {
+       className={styles.container}
+       style={{ backgroundImage: `url(${backgroundImage})` }}
+     >
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       {digits.map(({ id, char, top, typeClass }) => (
+diff --git a/src/pages/2025/25-07/25-07-28/Clock.module.css b/src/pages/2025/25-07/25-07-28/Clock.module.css
+index 423ae8c..60d09b9 100644
+--- a/src/pages/2025/25-07/25-07-28/Clock.module.css
++++ b/src/pages/2025/25-07/25-07-28/Clock.module.css
+@@ -14,14 +14,3 @@
+   color: #f0ecd8ff;
+   text-shadow: 0 0 1rem black;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2025/25-07/25-07-28/Clock.tsx b/src/pages/2025/25-07/25-07-28/Clock.tsx
+index e9ba991..f5bd306 100644
+--- a/src/pages/2025/25-07/25-07-28/Clock.tsx
++++ b/src/pages/2025/25-07/25-07-28/Clock.tsx
+@@ -36,7 +36,7 @@ const Clock =  () => {
+ 
+   return (
+     <main className={styles.container} style={{ backgroundImage: `url(${backgroundImage})` }}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <time dateTime={time.toISOString()} className={styles.time}>
+         {getFormattedTime()}
+diff --git a/src/pages/2025/25-08/25-08-02/Clock.tsx b/src/pages/2025/25-08/25-08-02/Clock.tsx
+index 36593ad..524a74d 100644
+--- a/src/pages/2025/25-08/25-08-02/Clock.tsx
++++ b/src/pages/2025/25-08/25-08-02/Clock.tsx
+@@ -35,7 +35,7 @@ const ClockComponent =  () => {
+   return (
+     <main className={styles.container}>
+       {/* Accessible time for screen readers (Required by ARCHITECTURE.md) */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2025/25-08/25-08-08/Clock.module.css b/src/pages/2025/25-08/25-08-08/Clock.module.css
+index bbc7127..bcd10fa 100644
+--- a/src/pages/2025/25-08/25-08-08/Clock.module.css
++++ b/src/pages/2025/25-08/25-08-08/Clock.module.css
+@@ -34,15 +34,3 @@
+   font-family: 'MyCustomFont', monospace, sans-serif;
+   background: black;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2025/25-08/25-08-08/Clock.tsx b/src/pages/2025/25-08/25-08-08/Clock.tsx
+index 3646858..0a4a68b 100644
+--- a/src/pages/2025/25-08/25-08-08/Clock.tsx
++++ b/src/pages/2025/25-08/25-08-08/Clock.tsx
+@@ -45,7 +45,7 @@ const DigitalClock =  () => {
+       }}
+     >
+       {/* Semantic <time> element for accessibility (Required) */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2025/25-08/25-08-09/Clock.module.css b/src/pages/2025/25-08/25-08-09/Clock.module.css
+index df332af..6c663c8 100644
+--- a/src/pages/2025/25-08/25-08-09/Clock.module.css
++++ b/src/pages/2025/25-08/25-08-09/Clock.module.css
+@@ -12,16 +12,3 @@
+   height: 90vmin;
+   background-color: #000;
+ }
+-
+-.srOnly {
+-  /* Visually hidden but accessible to screen readers */
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2025/25-08/25-08-09/Clock.tsx b/src/pages/2025/25-08/25-08-09/Clock.tsx
+index aed8440..7f29727 100644
+--- a/src/pages/2025/25-08/25-08-09/Clock.tsx
++++ b/src/pages/2025/25-08/25-08-09/Clock.tsx
+@@ -162,7 +162,7 @@ const ClockComponent =  () => {
+   return (
+     <main className={styles.container}>
+       {/* Accessible time element */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <svg
+diff --git a/src/pages/2025/25-08/25-08-20/Clock.tsx b/src/pages/2025/25-08/25-08-20/Clock.tsx
+index f9ebb14..1937b7e 100644
+--- a/src/pages/2025/25-08/25-08-20/Clock.tsx
++++ b/src/pages/2025/25-08/25-08-20/Clock.tsx
+@@ -63,7 +63,7 @@ const AnalogClock: React.FC<{ time: Date; zone: string; clockSize: number }> = (
+ 
+   return (
+     <div className={styles.clockContainer}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div
+         className={styles.clockFace}
+diff --git a/src/pages/2025/25-08/25-08-26/Clock.module.css b/src/pages/2025/25-08/25-08-26/Clock.module.css
+index 643e916..d112fd2 100644
+--- a/src/pages/2025/25-08/25-08-26/Clock.module.css
++++ b/src/pages/2025/25-08/25-08-26/Clock.module.css
+@@ -31,15 +31,3 @@
+   background-repeat: no-repeat;
+   pointer-events: none;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+diff --git a/src/pages/2025/25-08/25-08-26/Clock.tsx b/src/pages/2025/25-08/25-08-26/Clock.tsx
+index dd696f9..7908f9f 100644
+--- a/src/pages/2025/25-08/25-08-26/Clock.tsx
++++ b/src/pages/2025/25-08/25-08-26/Clock.tsx
+@@ -94,7 +94,7 @@ const Clock = () => {
+         {time.period}
+       </div>
+ 
+-      <time dateTime={now.toISOString()} className={styles.srOnly}>
++      <time dateTime={now.toISOString()} className="srOnly">
+         {time.hh}:{time.mm} {time.period}
+       </time>
+     </main>
+diff --git a/src/pages/2025/25-08/25-08-27/Clock.module.css b/src/pages/2025/25-08/25-08-27/Clock.module.css
+index 5acfc20..8cb3c7a 100644
+--- a/src/pages/2025/25-08/25-08-27/Clock.module.css
++++ b/src/pages/2025/25-08/25-08-27/Clock.module.css
+@@ -42,14 +42,3 @@
+   pointer-events: none;
+   z-index: 3;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2025/25-08/25-08-27/Clock.tsx b/src/pages/2025/25-08/25-08-27/Clock.tsx
+index e382b66..2eb7c4c 100644
+--- a/src/pages/2025/25-08/25-08-27/Clock.tsx
++++ b/src/pages/2025/25-08/25-08-27/Clock.tsx
+@@ -180,7 +180,7 @@ const TwelfthRootsOfUnityWithClock = memo(() => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+       <div className={styles.canvasWrapper}>
+         <img src={backgroundImage} alt="Background" className={styles.backgroundImage} />
+         <canvas ref={canvasRef} className={styles.canvas} />
+diff --git a/src/pages/2025/25-09/25-09-02/Clock.module.css b/src/pages/2025/25-09/25-09-02/Clock.module.css
+index 94f5c53..bfef89e 100644
+--- a/src/pages/2025/25-09/25-09-02/Clock.module.css
++++ b/src/pages/2025/25-09/25-09-02/Clock.module.css
+@@ -52,4 +52,4 @@
+   overflow: hidden;
+   clip: rect(0, 0, 0, 0);
+   border: 0;
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2025/25-09/25-09-02/Clock.tsx b/src/pages/2025/25-09/25-09-02/Clock.tsx
+index 4160404..d049fd6 100644
+--- a/src/pages/2025/25-09/25-09-02/Clock.tsx
++++ b/src/pages/2025/25-09/25-09-02/Clock.tsx
+@@ -34,7 +34,7 @@ const ClockComponent =  () => {
+       style={{ '--bg-image': `url(${bgImage})` } as React.CSSProperties}
+     >
+       {/* Accessible time element */}
+-      <time dateTime={time.toISOString()} className={styles.semanticTime} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className={styles.semanticTime} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2025/25-09/25-09-11/Clock.tsx b/src/pages/2025/25-09/25-09-11/Clock.tsx
+index f5ed845..aba44de 100644
+--- a/src/pages/2025/25-09/25-09-11/Clock.tsx
++++ b/src/pages/2025/25-09/25-09-11/Clock.tsx
+@@ -38,7 +38,7 @@ const MedievalBanner =  () => {
+       position: 'relative',
+       backgroundColor: 'black',
+     }}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div
+         style={{
+diff --git a/src/pages/2025/25-09/25-09-15/Clock.module.css b/src/pages/2025/25-09/25-09-15/Clock.module.css
+index 3f8f9fb..cb2ffcf 100644
+--- a/src/pages/2025/25-09/25-09-15/Clock.module.css
++++ b/src/pages/2025/25-09/25-09-15/Clock.module.css
+@@ -50,14 +50,3 @@
+ }
+ 
+ /* --- Accessibility --- */
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2025/25-09/25-09-15/Clock.tsx b/src/pages/2025/25-09/25-09-15/Clock.tsx
+index 482f348..44588c0 100644
+--- a/src/pages/2025/25-09/25-09-15/Clock.tsx
++++ b/src/pages/2025/25-09/25-09-15/Clock.tsx
+@@ -83,7 +83,7 @@ const ClockComponent: React.FC<SkewFlatClockProps> = ({
+ 
+   return (
+     <main className={styles.container} style={{ filter: `hue-rotate(${hue}deg)` }}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <div className={styles.backgroundGrid}>
+diff --git a/src/pages/2025/25-09/25-09-16/Clock.module.css b/src/pages/2025/25-09/25-09-16/Clock.module.css
+index 698bd96..1ca56dc 100644
+--- a/src/pages/2025/25-09/25-09-16/Clock.module.css
++++ b/src/pages/2025/25-09/25-09-16/Clock.module.css
+@@ -45,15 +45,3 @@
+     0 0 90px #ffffff,
+     0 0 99px #ffffff;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2025/25-09/25-09-16/Clock.tsx b/src/pages/2025/25-09/25-09-16/Clock.tsx
+index d47eeef..93a9815 100644
+--- a/src/pages/2025/25-09/25-09-16/Clock.tsx
++++ b/src/pages/2025/25-09/25-09-16/Clock.tsx
+@@ -40,7 +40,7 @@ const ClockComponent =  () => {
+   return (
+     <main className={styles.container}>
+       <time dateTime={time.toISOString()} className={styles.face}>
+-        <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
++        <span className="srOnly">{time.toLocaleTimeString()}</span>
+         {renderDigits(hours)}
+         <div className={styles.digitBox}>:</div>
+         {renderDigits(minutes)}
+diff --git a/src/pages/2025/25-09/25-09-23/Clock.tsx b/src/pages/2025/25-09/25-09-23/Clock.tsx
+index 3054f86..df14d1e 100644
+--- a/src/pages/2025/25-09/25-09-23/Clock.tsx
++++ b/src/pages/2025/25-09/25-09-23/Clock.tsx
+@@ -125,7 +125,7 @@ function AnalogClock() {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div className={styles.clockFace}>
+         {digitElements}
+diff --git a/src/pages/2025/25-10/25-10-01/Clock.module.css b/src/pages/2025/25-10/25-10-01/Clock.module.css
+index e6f042e..3e1a609 100644
+--- a/src/pages/2025/25-10/25-10-01/Clock.module.css
++++ b/src/pages/2025/25-10/25-10-01/Clock.module.css
+@@ -9,14 +9,3 @@
+   isolation: isolate;
+   background-color: #111;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2025/25-10/25-10-01/Clock.tsx b/src/pages/2025/25-10/25-10-01/Clock.tsx
+index 4a1cbd7..4d7b57f 100644
+--- a/src/pages/2025/25-10/25-10-01/Clock.tsx
++++ b/src/pages/2025/25-10/25-10-01/Clock.tsx
+@@ -118,7 +118,7 @@ const ImageAnalogClock = () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {/* Video background */}
+       <video
+diff --git a/src/pages/2025/25-10/25-10-13/Clock.module.css b/src/pages/2025/25-10/25-10-13/Clock.module.css
+new file mode 100644
+index 0000000..8b13789
+--- /dev/null
++++ b/src/pages/2025/25-10/25-10-13/Clock.module.css
+@@ -0,0 +1 @@
++
+diff --git a/src/pages/2025/25-10/25-10-13/Clock.tsx b/src/pages/2025/25-10/25-10-13/Clock.tsx
+index ace6c25..0e54d70 100644
+--- a/src/pages/2025/25-10/25-10-13/Clock.tsx
++++ b/src/pages/2025/25-10/25-10-13/Clock.tsx
+@@ -5,6 +5,7 @@ import bgImage2 from '@/assets/images/25_images/25-10/25-10-13/ro.jpeg';
+ import bgImage from '@/assets/images/25_images/25-10/25-10-13/roundhay.webp'; // second background
+ import roundhayFont from '@/assets/fonts/25fonts/25-10-13-rou.ttf';
+ import ifont25100013 from '@/assets/fonts/25fonts/25-10-13-line.otf';
++import styles from './Clock.module.css';
+ 
+ export const assets = [];
+ 
+@@ -154,7 +155,7 @@ export default function Clock() {
+ 
+   const renderDigits = (value) => (
+     <div style={digitsRowStyle}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {String(value)
+         .split('')
+diff --git a/src/pages/2025/25-10/25-10-14/Clock.module.css b/src/pages/2025/25-10/25-10-14/Clock.module.css
+index 2ef8d8a..e759c06 100644
+--- a/src/pages/2025/25-10/25-10-14/Clock.module.css
++++ b/src/pages/2025/25-10/25-10-14/Clock.module.css
+@@ -7,14 +7,3 @@
+   left: 0;
+   background-color: #000;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2025/25-10/25-10-14/Clock.tsx b/src/pages/2025/25-10/25-10-14/Clock.tsx
+index dfc9208..7532ab9 100644
+--- a/src/pages/2025/25-10/25-10-14/Clock.tsx
++++ b/src/pages/2025/25-10/25-10-14/Clock.tsx
+@@ -224,7 +224,7 @@ const SpinningDodecahedronClock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {!ready && (
+         <div
+diff --git a/src/pages/2025/25-10/25-10-16/Clock.module.css b/src/pages/2025/25-10/25-10-16/Clock.module.css
+index ab941cf..55bcae5 100644
+--- a/src/pages/2025/25-10/25-10-16/Clock.module.css
++++ b/src/pages/2025/25-10/25-10-16/Clock.module.css
+@@ -7,14 +7,3 @@
+   overflow: hidden;
+   position: relative;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2025/25-10/25-10-16/Clock.tsx b/src/pages/2025/25-10/25-10-16/Clock.tsx
+index e4ca6a2..541330b 100644
+--- a/src/pages/2025/25-10/25-10-16/Clock.tsx
++++ b/src/pages/2025/25-10/25-10-16/Clock.tsx
+@@ -193,7 +193,7 @@ const VenusClock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <img
+         decoding="async"
+diff --git a/src/pages/2025/25-10/25-10-18/Clock.module.css b/src/pages/2025/25-10/25-10-18/Clock.module.css
+new file mode 100644
+index 0000000..8b13789
+--- /dev/null
++++ b/src/pages/2025/25-10/25-10-18/Clock.module.css
+@@ -0,0 +1 @@
++
+diff --git a/src/pages/2025/25-10/25-10-18/Clock.tsx b/src/pages/2025/25-10/25-10-18/Clock.tsx
+index 5e241ab..4e7784f 100644
+--- a/src/pages/2025/25-10/25-10-18/Clock.tsx
++++ b/src/pages/2025/25-10/25-10-18/Clock.tsx
+@@ -4,6 +4,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
+ import bgVideo from '@/assets/images/25_images/25-10/25-10-18/total.mp4';
+ import fallbackImg from '@/assets/images/25_images/25-10/25-10-18/tot.webp';
+ import font_20251018 from '@/assets/fonts/25fonts/25-10-18-tot.ttf?url';
++import styles from './Clock.module.css';
+ 
+ export const assets = [];
+ 
+@@ -53,7 +54,7 @@ export default function MediaClock() {
+         backgroundColor: '#F9F985FF',
+       }}
+     >
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {/* BACKGROUND MEDIA */}
+       {!videoFailed ? (
+diff --git a/src/pages/2025/25-10/25-10-19/Clock.module.css b/src/pages/2025/25-10/25-10-19/Clock.module.css
+new file mode 100644
+index 0000000..8b13789
+--- /dev/null
++++ b/src/pages/2025/25-10/25-10-19/Clock.module.css
+@@ -0,0 +1 @@
++
+diff --git a/src/pages/2025/25-10/25-10-19/Clock.tsx b/src/pages/2025/25-10/25-10-19/Clock.tsx
+index cfb961c..09e7838 100644
+--- a/src/pages/2025/25-10/25-10-19/Clock.tsx
++++ b/src/pages/2025/25-10/25-10-19/Clock.tsx
+@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
+ import { useMultiAssetLoader } from '@/utils/fontLoader';
+ import blackImg from '@/assets/images/25_images/25-10/25-10-19/tile1.jpg'; // "1" squares
+ import pinkImg from '@/assets/images/25_images/25-10/25-10-19/tile2.jpg'; // "0" squares
++import styles from './Clock.module.css';
+ 
+ export const assets = [];
+ 
+@@ -201,7 +202,7 @@ export default function QuadrantClock() {
+           height: '100%',
+         }}
+       >
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+         {grid.flat().map((val, idx) => (
+           <img
+diff --git a/src/pages/2025/25-10/25-10-23/Clock.module.css b/src/pages/2025/25-10/25-10-23/Clock.module.css
+index ad91e14..c048ec0 100644
+--- a/src/pages/2025/25-10/25-10-23/Clock.module.css
++++ b/src/pages/2025/25-10/25-10-23/Clock.module.css
+@@ -39,14 +39,3 @@
+   text-transform: uppercase;
+   line-height: 1;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2025/25-10/25-10-23/Clock.tsx b/src/pages/2025/25-10/25-10-23/Clock.tsx
+index 4beca47..8022a0c 100644
+--- a/src/pages/2025/25-10/25-10-23/Clock.tsx
++++ b/src/pages/2025/25-10/25-10-23/Clock.tsx
+@@ -69,7 +69,7 @@ const Clockgrid =  () => {
+       const char = timeCharacters[i % patternLength];
+       return (
+         <div key={i} className={styles.characterCell}>
+-          <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++          <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+           {char}
+         </div>
+       );
+diff --git a/src/pages/2025/25-10/25-10-26/Clock.module.css b/src/pages/2025/25-10/25-10-26/Clock.module.css
+new file mode 100644
+index 0000000..8b13789
+--- /dev/null
++++ b/src/pages/2025/25-10/25-10-26/Clock.module.css
+@@ -0,0 +1 @@
++
+diff --git a/src/pages/2025/25-10/25-10-26/Clock.tsx b/src/pages/2025/25-10/25-10-26/Clock.tsx
+index 7de616a..f653f69 100644
+--- a/src/pages/2025/25-10/25-10-26/Clock.tsx
++++ b/src/pages/2025/25-10/25-10-26/Clock.tsx
+@@ -4,6 +4,7 @@ import bgVideo from '@/assets/images/25_images/25-10/25-10-26/monarch.mp4';
+ import fallbackImg from '@/assets/images/25_images/25-10/25-10-26/monarch.webp';
+ import romanFont2025_10_27 from '@/assets/fonts/25fonts/25-10-26-roman.otf'; // Optimized OTF
+ import type { FontConfig } from '@/types/clock';
++import styles from './Clock.module.css';
+ 
+ export const assets = [];
+ 
+@@ -184,7 +185,7 @@ export default function MonarchClock() {
+         backgroundColor: '#000',
+       }}
+     >
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {!videoFailed ? (
+         <video
+diff --git a/src/pages/2025/25-10/25-10-27/Clock.module.css b/src/pages/2025/25-10/25-10-27/Clock.module.css
+new file mode 100644
+index 0000000..8b13789
+--- /dev/null
++++ b/src/pages/2025/25-10/25-10-27/Clock.module.css
+@@ -0,0 +1 @@
++
+diff --git a/src/pages/2025/25-10/25-10-27/Clock.tsx b/src/pages/2025/25-10/25-10-27/Clock.tsx
+index 32b2cf0..026b024 100644
+--- a/src/pages/2025/25-10/25-10-27/Clock.tsx
++++ b/src/pages/2025/25-10/25-10-27/Clock.tsx
+@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
+ import { useSuspenseFontLoader } from '@/utils/fontLoader';
+ import rai251027font from '@/assets/fonts/25fonts/25-10-27-wish.otf';
+ import sfont251027 from '@/assets/fonts/25fonts/25-10-27-wish.ttf';
++import styles from './Clock.module.css';
+ 
+ export const assets = [];
+ 
+@@ -379,7 +380,7 @@ export default function SkyClock() {
+     return (
+       <>
+         <div style={{ width: '100vw', height: '100dvh', background: '#000' }} />
+-        <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++        <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+       </>
+     );
+   }
+diff --git a/src/pages/2025/25-11/25-11-01/Clock.tsx b/src/pages/2025/25-11/25-11-01/Clock.tsx
+index 14c88cc..6540e0b 100644
+--- a/src/pages/2025/25-11/25-11-01/Clock.tsx
++++ b/src/pages/2025/25-11/25-11-01/Clock.tsx
+@@ -107,7 +107,7 @@ function EdgeClockWithHands() {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {/* Numbers at Rectangular Edges */}
+       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((n) => (
+diff --git a/src/pages/2025/25-11/25-11-03/Clock.tsx b/src/pages/2025/25-11/25-11-03/Clock.tsx
+index d32286e..89bb034 100644
+--- a/src/pages/2025/25-11/25-11-03/Clock.tsx
++++ b/src/pages/2025/25-11/25-11-03/Clock.tsx
+@@ -45,7 +45,7 @@ function BinaryClockWithColumns() {
+     const bits = formatBinary(val);
+     return (
+       <div className={styles.column}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+         <div className={styles.binaryContainer}>
+           {bits.map((bit, idx) => (
+diff --git a/src/pages/2025/25-11/25-11-04/Clock.module.css b/src/pages/2025/25-11/25-11-04/Clock.module.css
+new file mode 100644
+index 0000000..8b13789
+--- /dev/null
++++ b/src/pages/2025/25-11/25-11-04/Clock.module.css
+@@ -0,0 +1 @@
++
+diff --git a/src/pages/2025/25-11/25-11-04/Clock.tsx b/src/pages/2025/25-11/25-11-04/Clock.tsx
+index 9bb9387..b7acb2b 100644
+--- a/src/pages/2025/25-11/25-11-04/Clock.tsx
++++ b/src/pages/2025/25-11/25-11-04/Clock.tsx
+@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef, useMemo } from 'react';
+ import fallbackImg from '@/assets/images/25_images/25-11/25-11-04/sea.webp';
+ import cu251104font from '@/assets/fonts/25fonts/25-11-04-naut.ttf?url';
+ import { useSuspenseFontLoader } from '@/utils/fontLoader'; // Nautical font
++import styles from './Clock.module.css';
+ 
+ export const assets = [];
+ 
+@@ -55,7 +56,7 @@ function OceanStorm() {
+         // backgroundColor: "#001f33",
+       }}
+     >
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {/* Background image instead of video */}
+       <div
+diff --git a/src/pages/2025/25-11/25-11-07/Clock.module.css b/src/pages/2025/25-11/25-11-07/Clock.module.css
+index bb0b2f8..76a861b 100644
+--- a/src/pages/2025/25-11/25-11-07/Clock.module.css
++++ b/src/pages/2025/25-11/25-11-07/Clock.module.css
+@@ -15,14 +15,3 @@
+     -webkit-text-fill-color: transparent;
+   }
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2025/25-11/25-11-07/Clock.tsx b/src/pages/2025/25-11/25-11-07/Clock.tsx
+index c00e5a6..c8a959f 100644
+--- a/src/pages/2025/25-11/25-11-07/Clock.tsx
++++ b/src/pages/2025/25-11/25-11-07/Clock.tsx
+@@ -171,7 +171,7 @@ const PanicAnalogClock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={isoTime} className={styles.srOnly}>{timeStr}</time>
++      <time dateTime={isoTime} className="srOnly">{timeStr}</time>
+ 
+       {/* Left background */}
+       <img
+diff --git a/src/pages/2025/25-11/25-11-10/Clock.module.css b/src/pages/2025/25-11/25-11-10/Clock.module.css
+index 9d36e5e..77c7f2a 100644
+--- a/src/pages/2025/25-11/25-11-10/Clock.module.css
++++ b/src/pages/2025/25-11/25-11-10/Clock.module.css
+@@ -7,15 +7,3 @@
+   width: 100vw;
+   overflow: hidden;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border: 0;
+-}
+diff --git a/src/pages/2025/25-11/25-11-10/Clock.tsx b/src/pages/2025/25-11/25-11-10/Clock.tsx
+index 8ef8940..44d9e48 100644
+--- a/src/pages/2025/25-11/25-11-10/Clock.tsx
++++ b/src/pages/2025/25-11/25-11-10/Clock.tsx
+@@ -145,7 +145,7 @@ const Clock = () => {
+           fontSize: '1.2rem',
+         }}
+       >
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+         Loading… {loadingProgress}%
+       </main>
+diff --git a/src/pages/2025/25-11/25-11-12/Clock.tsx b/src/pages/2025/25-11/25-11-12/Clock.tsx
+index 846363a..210ccc4 100644
+--- a/src/pages/2025/25-11/25-11-12/Clock.tsx
++++ b/src/pages/2025/25-11/25-11-12/Clock.tsx
+@@ -164,7 +164,7 @@ function TwoBackgroundOctahedron() {
+         backgroundColor: '#000',
+       }}
+     >
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {/* FULL IMAGE BACKGROUND */}
+       <div
+diff --git a/src/pages/2025/25-11/25-11-13/Clock.tsx b/src/pages/2025/25-11/25-11-13/Clock.tsx
+index c442d10..c261dca 100644
+--- a/src/pages/2025/25-11/25-11-13/Clock.tsx
++++ b/src/pages/2025/25-11/25-11-13/Clock.tsx
+@@ -71,7 +71,7 @@ const RollingAnalogClock =  () => {
+   return (
+     <main className={styles.container} style={{ backgroundImage: `url(${bgImage})` }}>
+       {/* Accessible time element (Required) */}
+-        <time className={styles.srOnly} dateTime={new Date().toISOString()}>
++        <time className="srOnly" dateTime={new Date().toISOString()}>
+         {new Date().toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2025/25-11/25-11-15/Clock.module.css b/src/pages/2025/25-11/25-11-15/Clock.module.css
+index 8ee2610..0453229 100644
+--- a/src/pages/2025/25-11/25-11-15/Clock.module.css
++++ b/src/pages/2025/25-11/25-11-15/Clock.module.css
+@@ -10,14 +10,3 @@
+   width: 100%;
+   height: 100%;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2025/25-11/25-11-15/Clock.tsx b/src/pages/2025/25-11/25-11-15/Clock.tsx
+index 8bfbae1..7b22142 100644
+--- a/src/pages/2025/25-11/25-11-15/Clock.tsx
++++ b/src/pages/2025/25-11/25-11-15/Clock.tsx
+@@ -195,7 +195,7 @@ function FallClock() {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+       <canvas
+         ref={canvasRef}
+         className={styles.canvas}
+diff --git a/src/pages/2025/25-11/25-11-18/Clock.module.css b/src/pages/2025/25-11/25-11-18/Clock.module.css
+index e52f8ad..4d624d0 100644
+--- a/src/pages/2025/25-11/25-11-18/Clock.module.css
++++ b/src/pages/2025/25-11/25-11-18/Clock.module.css
+@@ -32,18 +32,6 @@
+   z-index: 1;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ .digit {
+   display: flex;
+   justify-content: center;
+@@ -53,4 +41,4 @@
+   font-family: var(--digit-font-family);
+   height: var(--digit-size);
+   width: var(--digit-size);
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2025/25-11/25-11-18/Clock.tsx b/src/pages/2025/25-11/25-11-18/Clock.tsx
+index 60db9a4..72d83bc 100644
+--- a/src/pages/2025/25-11/25-11-18/Clock.tsx
++++ b/src/pages/2025/25-11/25-11-18/Clock.tsx
+@@ -107,7 +107,7 @@ const RotatedClockGrid = () => {
+           '--grid-gap': `${gap}dvh`,
+         }}
+       >
+-        <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
++        <span className="srOnly">{time.toLocaleTimeString()}</span>
+         {Array.from({ length: rowsNeeded }).map((_, rowIndex) => {
+           const startOffset = (rowIndex * 3) % 6;
+           return Array.from({ length: clocksPerRow }).map((_, clockIndex) =>
+diff --git a/src/pages/2025/25-11/25-11-22/Clock.module.css b/src/pages/2025/25-11/25-11-22/Clock.module.css
+new file mode 100644
+index 0000000..8b13789
+--- /dev/null
++++ b/src/pages/2025/25-11/25-11-22/Clock.module.css
+@@ -0,0 +1 @@
++
+diff --git a/src/pages/2025/25-11/25-11-22/Clock.tsx b/src/pages/2025/25-11/25-11-22/Clock.tsx
+index ad1b1ca..c42bcd7 100644
+--- a/src/pages/2025/25-11/25-11-22/Clock.tsx
++++ b/src/pages/2025/25-11/25-11-22/Clock.tsx
+@@ -5,6 +5,7 @@ import videoFile from '@/assets/images/25_images/25-11/25-11-22/sput.mp4';
+ import fallbackImg from '@/assets/images/25_images/25-11/25-11-22/sput.webp';
+ import secondHandImg from '@/assets/images/25_images/25-11/25-11-22/spu.webp';
+ import font112425sput from '@/assets/fonts/25fonts/25-11-22-spu.ttf?url';
++import styles from './Clock.module.css';
+ 
+ export const assets = [];
+ 
+@@ -68,7 +69,7 @@ export default function Clock() {
+         overflow: 'hidden',
+       }}
+     >
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {/* BACKGROUND VIDEO layer */}
+       {!videoFailed && (
+diff --git a/src/pages/2025/25-11/25-11-25/Clock.module.css b/src/pages/2025/25-11/25-11-25/Clock.module.css
+index f4d13f6..a7e99ea 100644
+--- a/src/pages/2025/25-11/25-11-25/Clock.module.css
++++ b/src/pages/2025/25-11/25-11-25/Clock.module.css
+@@ -24,17 +24,6 @@
+   position: relative;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+-
+ .clock {
+   font-family: 'ClockFont', monospace;
+   line-height: 0.75;
+diff --git a/src/pages/2025/25-11/25-11-25/Clock.tsx b/src/pages/2025/25-11/25-11-25/Clock.tsx
+index dd4eca3..e132558 100644
+--- a/src/pages/2025/25-11/25-11-25/Clock.tsx
++++ b/src/pages/2025/25-11/25-11-25/Clock.tsx
+@@ -122,7 +122,7 @@ function NtpClock() {
+ 
+   return (
+     <main className={styles.container} style={{ '--bg-img': `url(${backgroundImg})` } as React.CSSProperties}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div
+         className={`${styles.clock} ${isPortrait ? styles.portrait : styles.landscape}`}
+diff --git a/src/pages/2025/25-11/25-11-26/Clock.module.css b/src/pages/2025/25-11/25-11-26/Clock.module.css
+index 910efd7..6fcaa80 100644
+--- a/src/pages/2025/25-11/25-11-26/Clock.module.css
++++ b/src/pages/2025/25-11/25-11-26/Clock.module.css
+@@ -48,14 +48,3 @@
+   transform: translate(-120vw, -25vh);
+   transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2025/25-11/25-11-26/Clock.tsx b/src/pages/2025/25-11/25-11-26/Clock.tsx
+index 0ec471b..53706a5 100644
+--- a/src/pages/2025/25-11/25-11-26/Clock.tsx
++++ b/src/pages/2025/25-11/25-11-26/Clock.tsx
+@@ -80,7 +80,7 @@ function DigitalTime({ time, timeText, setLetters }: { time: Date; timeText: str
+ 
+   return (
+     <div className={styles.timeContainer} aria-live="polite">
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {timeText.split('').map((l, idx) => (
+         <span key={idx} className={styles.timeLetter}>
+diff --git a/src/pages/2025/25-11/25-11-28/Clock.module.css b/src/pages/2025/25-11/25-11-28/Clock.module.css
+index 6565cd8..f50e47c 100644
+--- a/src/pages/2025/25-11/25-11-28/Clock.module.css
++++ b/src/pages/2025/25-11/25-11-28/Clock.module.css
+@@ -64,4 +64,4 @@
+   transform: translate(-50%, -50%);
+   transition: opacity 0.1s;
+   pointer-events: none;
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2025/25-11/25-11-28/Clock.tsx b/src/pages/2025/25-11/25-11-28/Clock.tsx
+index 695d0bd..1ec4f9a 100644
+--- a/src/pages/2025/25-11/25-11-28/Clock.tsx
++++ b/src/pages/2025/25-11/25-11-28/Clock.tsx
+@@ -95,7 +95,7 @@ const TimelineClock = () => {
+           </div>
+         ))}
+ 
+-        <time className={styles.srOnly} dateTime={now.toISOString()}>
++        <time className="srOnly" dateTime={now.toISOString()}>
+           {now.toLocaleTimeString()}
+         </time>
+         <div className={styles.comet} style={dynamicStyles.comet} />
+diff --git a/src/pages/2025/25-11/25-11-29/Clock.module.css b/src/pages/2025/25-11/25-11-29/Clock.module.css
+index e96dab9..8b13789 100644
+--- a/src/pages/2025/25-11/25-11-29/Clock.module.css
++++ b/src/pages/2025/25-11/25-11-29/Clock.module.css
+@@ -1,10 +1 @@
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
++
+diff --git a/src/pages/2025/25-11/25-11-29/Clock.tsx b/src/pages/2025/25-11/25-11-29/Clock.tsx
+index fa4460b..0bad278 100644
+--- a/src/pages/2025/25-11/25-11-29/Clock.tsx
++++ b/src/pages/2025/25-11/25-11-29/Clock.tsx
+@@ -92,7 +92,7 @@ function RococoDigitalClock() {
+         gap: '2dvh',
+         opacity: 1,
+       }}>
+-        <time dateTime={now.toISOString()} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
++        <time dateTime={now.toISOString()} className="srOnly">{now.toLocaleTimeString()}</time>
+ 
+         {/* Font face is now loaded in the main effect */}
+         <div style={{ display: 'flex', position: 'relative' }}>
+@@ -209,7 +209,7 @@ function RococoDigitalClock() {
+       fontFamily: "'RococoBlob', serif",
+       overflow: 'hidden',
+     }}>
+-      <time dateTime={now.toISOString()} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
++      <time dateTime={now.toISOString()} className="srOnly">{now.toLocaleTimeString()}</time>
+       <div
+         style={{
+           display: 'flex',
+diff --git a/src/pages/2025/25-12/25-12-03/Clock.module.css b/src/pages/2025/25-12/25-12-03/Clock.module.css
+index e49a09d..fb0d45b 100644
+--- a/src/pages/2025/25-12/25-12-03/Clock.module.css
++++ b/src/pages/2025/25-12/25-12-03/Clock.module.css
+@@ -19,16 +19,3 @@
+   background-position: center;
+   transition: opacity 0.6s ease-in-out;
+ }
+-
+-.srOnly {
+-  border: 0;
+-  clip: rect(0 0 0 0);
+-  height: 1px;
+-  margin: -1px;
+-  overflow: hidden;
+-  padding: 0;
+-  position: absolute;
+-  width: 1px;
+-  white-space: nowrap;
+-  word-wrap: normal;
+-}
+diff --git a/src/pages/2025/25-12/25-12-03/Clock.tsx b/src/pages/2025/25-12/25-12-03/Clock.tsx
+index b26e854..9b202be 100644
+--- a/src/pages/2025/25-12/25-12-03/Clock.tsx
++++ b/src/pages/2025/25-12/25-12-03/Clock.tsx
+@@ -130,7 +130,7 @@ const ClockComponent =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <div
+diff --git a/src/pages/2025/25-12/25-12-13/Clock.tsx b/src/pages/2025/25-12/25-12-13/Clock.tsx
+index 47f0f31..7694e24 100644
+--- a/src/pages/2025/25-12/25-12-13/Clock.tsx
++++ b/src/pages/2025/25-12/25-12-13/Clock.tsx
+@@ -44,7 +44,7 @@ const RococoClock = () => {
+       opacity: 1,
+       transition: 'opacity 0.4s ease',
+     }}>
+-      <time dateTime={now.toISOString()} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
++      <time dateTime={now.toISOString()} className="srOnly">{now.toLocaleTimeString()}</time>
+ 
+       <div style={rowStyle}>
+         {allChars.map((char, i) => {
+diff --git a/src/pages/2025/25-12/25-12-19/Clock.tsx b/src/pages/2025/25-12/25-12-19/Clock.tsx
+index 31181a0..ff2aee0 100644
+--- a/src/pages/2025/25-12/25-12-19/Clock.tsx
++++ b/src/pages/2025/25-12/25-12-19/Clock.tsx
+@@ -134,7 +134,7 @@ const HourglassTimer =  () => {
+ 
+   return (
+     <main className={styles.container} style={containerStyle}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div
+         style={{
+diff --git a/src/pages/2025/25-12/25-12-28/Clock.tsx b/src/pages/2025/25-12/25-12-28/Clock.tsx
+index 2a24eac..4b72c6e 100644
+--- a/src/pages/2025/25-12/25-12-28/Clock.tsx
++++ b/src/pages/2025/25-12/25-12-28/Clock.tsx
+@@ -128,7 +128,7 @@ const Clock =  () => {
+ 
+   return (
+     <main className={styles.container} style={containerStyle} role="region" aria-label="Background video and time">
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div style={timeContainerStyle} aria-live="polite">
+         {timeText.split('').map((char, index) => (
+diff --git a/src/pages/2026/26-01/26-01-03/Clock.tsx b/src/pages/2026/26-01/26-01-03/Clock.tsx
+index d6aa2f1..432c428 100644
+--- a/src/pages/2026/26-01/26-01-03/Clock.tsx
++++ b/src/pages/2026/26-01/26-01-03/Clock.tsx
+@@ -60,7 +60,7 @@ const Clock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div
+         className={isShaking ? styles.cameraShake : ''}
+diff --git a/src/pages/2026/26-01/26-01-07/Clock.module.css b/src/pages/2026/26-01/26-01-07/Clock.module.css
+index 42deb59..8b13789 100644
+--- a/src/pages/2026/26-01/26-01-07/Clock.module.css
++++ b/src/pages/2026/26-01/26-01-07/Clock.module.css
+@@ -1,11 +1 @@
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border: 0;
+-}
++
+diff --git a/src/pages/2026/26-01/26-01-07/Clock.tsx b/src/pages/2026/26-01/26-01-07/Clock.tsx
+index b13322d..ab08f27 100644
+--- a/src/pages/2026/26-01/26-01-07/Clock.tsx
++++ b/src/pages/2026/26-01/26-01-07/Clock.tsx
+@@ -26,7 +26,7 @@ const AquariumClock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <img src={aquarium} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.5, zIndex: 0 }} />
+       <img src={aquarium} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9, transform: 'scaleX(-1)', zIndex: 1 }} />
+diff --git a/src/pages/2026/26-01/26-01-09/Clock.module.css b/src/pages/2026/26-01/26-01-09/Clock.module.css
+index e96dab9..8b13789 100644
+--- a/src/pages/2026/26-01/26-01-09/Clock.module.css
++++ b/src/pages/2026/26-01/26-01-09/Clock.module.css
+@@ -1,10 +1 @@
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
++
+diff --git a/src/pages/2026/26-01/26-01-09/Clock.tsx b/src/pages/2026/26-01/26-01-09/Clock.tsx
+index 7b6ea32..b1f3634 100644
+--- a/src/pages/2026/26-01/26-01-09/Clock.tsx
++++ b/src/pages/2026/26-01/26-01-09/Clock.tsx
+@@ -42,7 +42,7 @@ const TicTacToeClock = () => {
+   return (
+     <BackgroundGrid>
+       <main className={styles.container}>
+-        <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++        <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+         <div className={styles.grid}>
+           {timeValues.map((value, index) => {
+             const isEven = index % 2 === 0;
+diff --git a/src/pages/2026/26-01/26-01-14/Clock.module.css b/src/pages/2026/26-01/26-01-14/Clock.module.css
+index 42deb59..8b13789 100644
+--- a/src/pages/2026/26-01/26-01-14/Clock.module.css
++++ b/src/pages/2026/26-01/26-01-14/Clock.module.css
+@@ -1,11 +1 @@
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border: 0;
+-}
++
+diff --git a/src/pages/2026/26-01/26-01-14/Clock.tsx b/src/pages/2026/26-01/26-01-14/Clock.tsx
+index be0bd9e..c44d4de 100644
+--- a/src/pages/2026/26-01/26-01-14/Clock.tsx
++++ b/src/pages/2026/26-01/26-01-14/Clock.tsx
+@@ -112,7 +112,7 @@ const KurosawaClock = () => {
+ 
+   return (
+     <main className={styles.container} style={{ ...wrapperStyle, opacity: ready ? 1 : 0, visibility: ready ? 'visible' : 'hidden', transition: 'opacity 0.35s ease' }}>
+-      <time dateTime={clockTime.toISOString()} className={styles.srOnly}>{clockTime.toLocaleTimeString()}</time>
++      <time dateTime={clockTime.toISOString()} className="srOnly">{clockTime.toLocaleTimeString()}</time>
+ 
+       {!videoError ? (
+         <video src={bgVideo} muted autoPlay loop playsInline onError={() => setVideoError(true)} style={mediaStyle} />
+diff --git a/src/pages/2026/26-01/26-01-15/Clock.module.css b/src/pages/2026/26-01/26-01-15/Clock.module.css
+index 42deb59..8b13789 100644
+--- a/src/pages/2026/26-01/26-01-15/Clock.module.css
++++ b/src/pages/2026/26-01/26-01-15/Clock.module.css
+@@ -1,11 +1 @@
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border: 0;
+-}
++
+diff --git a/src/pages/2026/26-01/26-01-15/Clock.tsx b/src/pages/2026/26-01/26-01-15/Clock.tsx
+index afe04ab..a3477f7 100644
+--- a/src/pages/2026/26-01/26-01-15/Clock.tsx
++++ b/src/pages/2026/26-01/26-01-15/Clock.tsx
+@@ -64,7 +64,7 @@ const Clock =  () => {
+ 
+   return (
+     <main className={styles.container} style={{ ...styles.wrapper, opacity: bgReady ? 1 : 0, visibility: bgReady ? 'visible' : 'hidden', transition: 'opacity 0.3s ease' }}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div style={styles.baseBackground} />
+       {overlayLayers.map((layer, index) => (
+diff --git a/src/pages/2026/26-01/26-01-19/Clock.module.css b/src/pages/2026/26-01/26-01-19/Clock.module.css
+index e96dab9..8b13789 100644
+--- a/src/pages/2026/26-01/26-01-19/Clock.module.css
++++ b/src/pages/2026/26-01/26-01-19/Clock.module.css
+@@ -1,10 +1 @@
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
++
+diff --git a/src/pages/2026/26-01/26-01-19/Clock.tsx b/src/pages/2026/26-01/26-01-19/Clock.tsx
+index e2f2c3c..e9bd1dc 100644
+--- a/src/pages/2026/26-01/26-01-19/Clock.tsx
++++ b/src/pages/2026/26-01/26-01-19/Clock.tsx
+@@ -171,7 +171,7 @@ const ManyHandClock =  () => {
+ 
+   return (
+     <main className={styles.container} style={{ backgroundImage: `radial-gradient(circle at center, rgba(135, 168, 126, 0.73) 0%, rgba(123, 135, 87, 0.4) 100%), url(${bgImage})` }}>
+-      <time dateTime={now.toISOString()} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
++      <time dateTime={now.toISOString()} className="srOnly">{now.toLocaleTimeString()}</time>
+ 
+       <div style={{ position: 'relative', width: `${clockSize}vh`, height: `${clockSize}vh` }}>
+         <div className={styles.hand} style={{ height: `${clockSize * 0.25}vh`, width: `${clockSize * 0.015}vh`, background: COLORS.mainHands, transform: `translateX(-50%) rotate(${hourRot}deg)` }} />
+diff --git a/src/pages/2026/26-01/26-01-20/Clock.tsx b/src/pages/2026/26-01/26-01-20/Clock.tsx
+index 335d407..33723c3 100644
+--- a/src/pages/2026/26-01/26-01-20/Clock.tsx
++++ b/src/pages/2026/26-01/26-01-20/Clock.tsx
+@@ -39,7 +39,7 @@ const Clock = () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div className={styles.background} aria-hidden="true" />
+       <time className={styles.content} dateTime={`${hours}:${minutes}:${seconds}`}>
+diff --git a/src/pages/2026/26-01/26-01-21/Clock.module.css b/src/pages/2026/26-01/26-01-21/Clock.module.css
+index 2ce42d6..df76038 100644
+--- a/src/pages/2026/26-01/26-01-21/Clock.module.css
++++ b/src/pages/2026/26-01/26-01-21/Clock.module.css
+@@ -71,17 +71,6 @@
+   z-index: 15;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+-
+ .pin {
+   position: absolute;
+   top: 50%;
+diff --git a/src/pages/2026/26-01/26-01-21/Clock.tsx b/src/pages/2026/26-01/26-01-21/Clock.tsx
+index ddf21a0..8359bee 100644
+--- a/src/pages/2026/26-01/26-01-21/Clock.tsx
++++ b/src/pages/2026/26-01/26-01-21/Clock.tsx
+@@ -34,7 +34,7 @@ const AnalogBirdMigrateClock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={clockTime.toISOString()} className={styles.srOnly}>{clockTime.toLocaleTimeString()}</time>
++      <time dateTime={clockTime.toISOString()} className="srOnly">{clockTime.toLocaleTimeString()}</time>
+ 
+       <div className={styles.gpuLayer}>
+         <div className={styles.backgroundLayer} style={{ backgroundImage: `url(${backgroundImage})` }} />
+diff --git a/src/pages/2026/26-01/26-01-22/Clock.module.css b/src/pages/2026/26-01/26-01-22/Clock.module.css
+index f691c6f..5290d5e 100644
+--- a/src/pages/2026/26-01/26-01-22/Clock.module.css
++++ b/src/pages/2026/26-01/26-01-22/Clock.module.css
+@@ -50,14 +50,3 @@
+   user-select: none;
+   text-align: center;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-01/26-01-22/Clock.tsx b/src/pages/2026/26-01/26-01-22/Clock.tsx
+index af9edbe..9636119 100644
+--- a/src/pages/2026/26-01/26-01-22/Clock.tsx
++++ b/src/pages/2026/26-01/26-01-22/Clock.tsx
+@@ -23,7 +23,7 @@ const DynamicClock =  () => {
+ 
+   return (
+     <main className={styles.container} style={{ backgroundImage: `url(${backgroundUrl})` }}>
+-      <time dateTime={dateTime} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={dateTime} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div className={styles.digitsRow}>
+         <time dateTime={dateTime}>
+diff --git a/src/pages/2026/26-01/26-01-23/Clock.module.css b/src/pages/2026/26-01/26-01-23/Clock.module.css
+index 90dba56..339922b 100644
+--- a/src/pages/2026/26-01/26-01-23/Clock.module.css
++++ b/src/pages/2026/26-01/26-01-23/Clock.module.css
+@@ -1,15 +1,3 @@
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border: 0;
+-}
+-
+ .container {
+   position: relative;
+   width: 100vw;
+diff --git a/src/pages/2026/26-01/26-01-23/Clock.tsx b/src/pages/2026/26-01/26-01-23/Clock.tsx
+index a3aa7b8..07f8264 100644
+--- a/src/pages/2026/26-01/26-01-23/Clock.tsx
++++ b/src/pages/2026/26-01/26-01-23/Clock.tsx
+@@ -48,7 +48,7 @@ const Clock = () => {
+       className={styles.container}
+       style={{ opacity: bgReady ? 1 : 0, visibility: bgReady ? 'visible' : 'hidden' }}
+     >
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-01/26-01-24/Clock.module.css b/src/pages/2026/26-01/26-01-24/Clock.module.css
+index 2936cc5..2d625dc 100644
+--- a/src/pages/2026/26-01/26-01-24/Clock.module.css
++++ b/src/pages/2026/26-01/26-01-24/Clock.module.css
+@@ -115,26 +115,6 @@
+   font-variant-numeric: tabular-nums;
+ }
+ 
+-
+ /* -------------------------------------------------------------------------- */
+ /* Accessibility                                                               */
+ /* -------------------------------------------------------------------------- */
+-
+-.srOnly {
+-  position: absolute;
+-
+-  width: 1px;
+-  height: 1px;
+-
+-  padding: 0;
+-  margin: -1px;
+-
+-  overflow: hidden;
+-
+-  clip: rect(0, 0, 0, 0);
+-  clip-path: inset(50%);
+-
+-  white-space: nowrap;
+-
+-  border: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-01/26-01-24/Clock.tsx b/src/pages/2026/26-01/26-01-24/Clock.tsx
+index fc352f7..aa319d1 100644
+--- a/src/pages/2026/26-01/26-01-24/Clock.tsx
++++ b/src/pages/2026/26-01/26-01-24/Clock.tsx
+@@ -101,7 +101,7 @@ const Clock = () => {
+         className={styles.clock}
+         dateTime={`${hours}:${minutes}:${seconds}`}
+       >
+-        <span className={styles.srOnly}>
++        <span className="srOnly">
+           {hours}:{minutes}:{seconds}
+         </span>
+         {renderDigits(hours)}
+diff --git a/src/pages/2026/26-01/26-01-25/Clock.module.css b/src/pages/2026/26-01/26-01-25/Clock.module.css
+index e1f05f3..b291afc 100644
+--- a/src/pages/2026/26-01/26-01-25/Clock.module.css
++++ b/src/pages/2026/26-01/26-01-25/Clock.module.css
+@@ -27,14 +27,3 @@
+   transform-origin: 50% 100%;
+   border-radius: 999px;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-01/26-01-25/Clock.tsx b/src/pages/2026/26-01/26-01-25/Clock.tsx
+index 653218d..3f9bcf9 100644
+--- a/src/pages/2026/26-01/26-01-25/Clock.tsx
++++ b/src/pages/2026/26-01/26-01-25/Clock.tsx
+@@ -44,7 +44,7 @@ const AnalogClockTemplate =  () => {
+ 
+   return (
+     <main className={styles.container} style={{ backgroundImage: `url(${analogBgImage})` }}>
+-      <time dateTime={clockTime.toISOString()} className={styles.srOnly}>{clockTime.toLocaleTimeString()}</time>
++      <time dateTime={clockTime.toISOString()} className="srOnly">{clockTime.toLocaleTimeString()}</time>
+ 
+       <div className={styles.faceContainer} style={{ opacity, willChange: 'opacity' }}>
+         <div className={styles.hand} style={{ width: '1.4vmin', height: '20vmin', background: 'linear-gradient(to top, #D4CECE, #F2D38F7E, #F5D67F)', transform: `translate(-50%, 0) rotate(${hourDeg}deg)`, zIndex: 2 }} />
+diff --git a/src/pages/2026/26-01/26-01-26/Clock.module.css b/src/pages/2026/26-01/26-01-26/Clock.module.css
+index 312befe..092ec5d 100644
+--- a/src/pages/2026/26-01/26-01-26/Clock.module.css
++++ b/src/pages/2026/26-01/26-01-26/Clock.module.css
+@@ -41,14 +41,3 @@
+   transform-origin: center;
+   will-change: transform;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-01/26-01-26/Clock.tsx b/src/pages/2026/26-01/26-01-26/Clock.tsx
+index 407a11d..bd1b2c0 100644
+--- a/src/pages/2026/26-01/26-01-26/Clock.tsx
++++ b/src/pages/2026/26-01/26-01-26/Clock.tsx
+@@ -31,7 +31,7 @@ const DynamicComponent = () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={clockTime.toISOString()} className={styles.srOnly}>
++      <time dateTime={clockTime.toISOString()} className="srOnly">
+         {clockTime.toLocaleTimeString()}
+       </time>
+       <div className={styles.clockWrapper}>
+diff --git a/src/pages/2026/26-01/26-01-28/Clock.module.css b/src/pages/2026/26-01/26-01-28/Clock.module.css
+index 9b1849b..da38b4b 100644
+--- a/src/pages/2026/26-01/26-01-28/Clock.module.css
++++ b/src/pages/2026/26-01/26-01-28/Clock.module.css
+@@ -33,17 +33,6 @@
+   box-sizing: border-box;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+-
+ .backgroundWrapper {
+   position: absolute;
+   top: 0;
+diff --git a/src/pages/2026/26-01/26-01-28/Clock.tsx b/src/pages/2026/26-01/26-01-28/Clock.tsx
+index 3909096..4fa27fb 100644
+--- a/src/pages/2026/26-01/26-01-28/Clock.tsx
++++ b/src/pages/2026/26-01/26-01-28/Clock.tsx
+@@ -107,7 +107,7 @@ const ThreeSingleHandClocks = () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={new Date().toISOString()} className={styles.srOnly}>{new Date().toLocaleTimeString()}</time>
++      <time dateTime={new Date().toISOString()} className="srOnly">{new Date().toLocaleTimeString()}</time>
+       <CheckerboardBackground />
+       <div className={styles.clockGrid} style={{ flexDirection: layout, gap: layout === 'column' ? '0dvh' : '0vw', zIndex: 10 }}>
+         <Clock label="SECONDS" angle={secAngle} color="#FAD903" thickness="14%" maxUnits={60} step={1} smooth={false} clockSize={clockSize} font260128Name={font260128Name} />
+diff --git a/src/pages/2026/26-01/26-01-29/Clock.module.css b/src/pages/2026/26-01/26-01-29/Clock.module.css
+index bc96889..b924d83 100644
+--- a/src/pages/2026/26-01/26-01-29/Clock.module.css
++++ b/src/pages/2026/26-01/26-01-29/Clock.module.css
+@@ -57,14 +57,3 @@
+   transform-origin: bottom center;
+   border-radius: 10px;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-01/26-01-29/Clock.tsx b/src/pages/2026/26-01/26-01-29/Clock.tsx
+index 36d39a0..fa0c5d4 100644
+--- a/src/pages/2026/26-01/26-01-29/Clock.tsx
++++ b/src/pages/2026/26-01/26-01-29/Clock.tsx
+@@ -48,7 +48,7 @@ const AnalogUranusClock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={now.toISOString()} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
++      <time dateTime={now.toISOString()} className="srOnly">{now.toLocaleTimeString()}</time>
+ 
+       <div className={styles.bgLayer}>
+         <div className={styles.tileOverlay} style={{ backgroundImage: `url(${tileOverlay})` }} />
+diff --git a/src/pages/2026/26-01/26-01-31/Clock.module.css b/src/pages/2026/26-01/26-01-31/Clock.module.css
+index 9b93665..59781d4 100644
+--- a/src/pages/2026/26-01/26-01-31/Clock.module.css
++++ b/src/pages/2026/26-01/26-01-31/Clock.module.css
+@@ -97,17 +97,6 @@
+   z-index: 1;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+-
+ @keyframes rotateCounterClockwise {
+   from {
+     transform: rotate(0deg);
+diff --git a/src/pages/2026/26-01/26-01-31/Clock.tsx b/src/pages/2026/26-01/26-01-31/Clock.tsx
+index 975df5b..66dd255 100644
+--- a/src/pages/2026/26-01/26-01-31/Clock.tsx
++++ b/src/pages/2026/26-01/26-01-31/Clock.tsx
+@@ -41,7 +41,7 @@ const SimpleBackground =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div className={styles.layerColor} />
+       <div className={styles.layerTiling} />
+diff --git a/src/pages/2026/26-02/26-02-16/Clock.module.css b/src/pages/2026/26-02/26-02-16/Clock.module.css
+index f9a431d..4e96733 100644
+--- a/src/pages/2026/26-02/26-02-16/Clock.module.css
++++ b/src/pages/2026/26-02/26-02-16/Clock.module.css
+@@ -88,14 +88,3 @@
+     transform: translate(-50%, -50%) rotate(360deg);
+   }
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-02/26-02-16/Clock.tsx b/src/pages/2026/26-02/26-02-16/Clock.tsx
+index 4b1c422..84625ea 100644
+--- a/src/pages/2026/26-02/26-02-16/Clock.tsx
++++ b/src/pages/2026/26-02/26-02-16/Clock.tsx
+@@ -76,7 +76,7 @@ const DigitalClock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+       <BackgroundLayers />
+       <div className={styles.digitalContainer}>
+         <div className={styles.timeWrapper}>
+diff --git a/src/pages/2026/26-02/26-02-17/Clock.tsx b/src/pages/2026/26-02/26-02-17/Clock.tsx
+index a785525..8a97960 100644
+--- a/src/pages/2026/26-02/26-02-17/Clock.tsx
++++ b/src/pages/2026/26-02/26-02-17/Clock.tsx
+@@ -143,7 +143,7 @@ const AsteriskClock =  () => {
+       alignItems: 'center',
+       justifyContent: 'center',
+     }}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <BackgroundGrid windowSize={windowSize} cellSize={cellSize} />
+ 
+diff --git a/src/pages/2026/26-02/26-02-26/Clock.tsx b/src/pages/2026/26-02/26-02-26/Clock.tsx
+index daba269..9c3e6f7 100644
+--- a/src/pages/2026/26-02/26-02-26/Clock.tsx
++++ b/src/pages/2026/26-02/26-02-26/Clock.tsx
+@@ -195,7 +195,7 @@ const ImageGridClock =  () => {
+ 
+   return (
+     <main style={containerStyle} className={styles.container}>
+-      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
++      <time dateTime={currentTime.toISOString()} className="srOnly">{currentTime.toLocaleTimeString()}</time>
+ 
+       <div style={gridStyle}>
+         {imageAssignments.map((src, i) => {
+diff --git a/src/pages/2026/26-03/26-03-08/Clock.module.css b/src/pages/2026/26-03/26-03-08/Clock.module.css
+index 4ca2019..cd5b6ba 100644
+--- a/src/pages/2026/26-03/26-03-08/Clock.module.css
++++ b/src/pages/2026/26-03/26-03-08/Clock.module.css
+@@ -57,15 +57,3 @@
+   white-space: nowrap;
+   border: 0;
+ }
+-
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-03/26-03-08/Clock.tsx b/src/pages/2026/26-03/26-03-08/Clock.tsx
+index 096d8fa..ffbb2a8 100644
+--- a/src/pages/2026/26-03/26-03-08/Clock.tsx
++++ b/src/pages/2026/26-03/26-03-08/Clock.tsx
+@@ -70,7 +70,7 @@ const Clock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString().split('.')[0] + 'Z'} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString().split('.')[0] + 'Z'} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <video autoPlay loop muted playsInline className={styles.videoBackground}>
+         <source src={dragonVideo} type="video/mp4" />
+diff --git a/src/pages/2026/26-04/26-04-02/Clock.tsx b/src/pages/2026/26-04/26-04-02/Clock.tsx
+index c9d0170..2c0ea05 100644
+--- a/src/pages/2026/26-04/26-04-02/Clock.tsx
++++ b/src/pages/2026/26-04/26-04-02/Clock.tsx
+@@ -264,7 +264,7 @@ const ClockComponent =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <div className={styles.gradientOverlay} />
+diff --git a/src/pages/2026/26-04/26-04-03/Clock.tsx b/src/pages/2026/26-04/26-04-03/Clock.tsx
+index 0c306a7..8aa9c1f 100644
+--- a/src/pages/2026/26-04/26-04-03/Clock.tsx
++++ b/src/pages/2026/26-04/26-04-03/Clock.tsx
+@@ -111,7 +111,7 @@ const Clock =  () => {
+ 
+   return (
+     <main style={containerStyle} className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <video
+         style={videoStyle}
+diff --git a/src/pages/2026/26-04/26-04-14/Clock.module.css b/src/pages/2026/26-04/26-04-14/Clock.module.css
+index a21a0cb..90d3c63 100644
+--- a/src/pages/2026/26-04/26-04-14/Clock.module.css
++++ b/src/pages/2026/26-04/26-04-14/Clock.module.css
+@@ -113,14 +113,3 @@
+   z-index: 10;
+   box-shadow: 0 0 12px #e2725b;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-04/26-04-14/Clock.tsx b/src/pages/2026/26-04/26-04-14/Clock.tsx
+index 714ffd1..eb75315 100644
+--- a/src/pages/2026/26-04/26-04-14/Clock.tsx
++++ b/src/pages/2026/26-04/26-04-14/Clock.tsx
+@@ -27,7 +27,7 @@ const Clock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <video
+         src={bgVideo}
+diff --git a/src/pages/2026/26-04/26-04-18/Clock.module.css b/src/pages/2026/26-04/26-04-18/Clock.module.css
+index 7fc3753..a33fb8e 100644
+--- a/src/pages/2026/26-04/26-04-18/Clock.module.css
++++ b/src/pages/2026/26-04/26-04-18/Clock.module.css
+@@ -100,14 +100,3 @@
+   pointer-events: none;
+   z-index: 1;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-04/26-04-18/Clock.tsx b/src/pages/2026/26-04/26-04-18/Clock.tsx
+index 65820e9..69d0cd0 100644
+--- a/src/pages/2026/26-04/26-04-18/Clock.tsx
++++ b/src/pages/2026/26-04/26-04-18/Clock.tsx
+@@ -26,7 +26,7 @@ const Clock =  () => {
+ 
+   return (
+     <main className={styles.container} style={{ '--cell': cell } as React.CSSProperties}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div
+         className={styles.bgImage}
+diff --git a/src/pages/2026/26-04/26-04-20/Clock.module.css b/src/pages/2026/26-04/26-04-20/Clock.module.css
+index de5daa7..d7360db 100644
+--- a/src/pages/2026/26-04/26-04-20/Clock.module.css
++++ b/src/pages/2026/26-04/26-04-20/Clock.module.css
+@@ -68,14 +68,3 @@
+   z-index: 10;
+   box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-04/26-04-20/Clock.tsx b/src/pages/2026/26-04/26-04-20/Clock.tsx
+index 07b4ebf..9379fcd 100644
+--- a/src/pages/2026/26-04/26-04-20/Clock.tsx
++++ b/src/pages/2026/26-04/26-04-20/Clock.tsx
+@@ -21,7 +21,7 @@ const Clock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div className={styles.bg} style={{ backgroundImage: `url(${bgImg})` }} />
+       <div className={styles.clockFace}>
+diff --git a/src/pages/2026/26-04/26-04-22/Clock.module.css b/src/pages/2026/26-04/26-04-22/Clock.module.css
+index f161aa3..8e9dcf2 100644
+--- a/src/pages/2026/26-04/26-04-22/Clock.module.css
++++ b/src/pages/2026/26-04/26-04-22/Clock.module.css
+@@ -112,18 +112,6 @@
+   }
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border: 0;
+-}
+-
+ @media (prefers-reduced-motion: reduce) {
+   .video {
+     display: none;
+diff --git a/src/pages/2026/26-04/26-04-22/Clock.tsx b/src/pages/2026/26-04/26-04-22/Clock.tsx
+index a8b5550..f755c2b 100644
+--- a/src/pages/2026/26-04/26-04-22/Clock.tsx
++++ b/src/pages/2026/26-04/26-04-22/Clock.tsx
+@@ -21,7 +21,7 @@ const Clock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div className={styles.contentBox}>
+         <video
+diff --git a/src/pages/2026/26-04/26-04-26/Clock.module.css b/src/pages/2026/26-04/26-04-26/Clock.module.css
+index 91d96ad..c9efa75 100644
+--- a/src/pages/2026/26-04/26-04-26/Clock.module.css
++++ b/src/pages/2026/26-04/26-04-26/Clock.module.css
+@@ -11,18 +11,6 @@
+   padding: 0;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border: 0;
+-}
+-
+ .video {
+   position: absolute;
+   top: 0;
+diff --git a/src/pages/2026/26-04/26-04-26/Clock.tsx b/src/pages/2026/26-04/26-04-26/Clock.tsx
+index dd7f566..bc661e1 100644
+--- a/src/pages/2026/26-04/26-04-26/Clock.tsx
++++ b/src/pages/2026/26-04/26-04-26/Clock.tsx
+@@ -40,7 +40,7 @@ const Clock = () => {
+     <main className={styles.container}>
+       <time
+         dateTime={time.toISOString()}
+-        className={styles.srOnly}
++        className="srOnly"
+       >
+         {time.toLocaleTimeString()}
+       </time>
+diff --git a/src/pages/2026/26-04/26-04-27/Clock.module.css b/src/pages/2026/26-04/26-04-27/Clock.module.css
+index 90c309e..2214652 100644
+--- a/src/pages/2026/26-04/26-04-27/Clock.module.css
++++ b/src/pages/2026/26-04/26-04-27/Clock.module.css
+@@ -39,14 +39,3 @@
+   display: inline-block;
+   line-height: 1;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-04/26-04-27/Clock.tsx b/src/pages/2026/26-04/26-04-27/Clock.tsx
+index 3819d33..f062413 100644
+--- a/src/pages/2026/26-04/26-04-27/Clock.tsx
++++ b/src/pages/2026/26-04/26-04-27/Clock.tsx
+@@ -104,7 +104,7 @@ const Clock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={iso} className={styles.srOnly}>{hours}:{minutes}:00</time>
++      <time dateTime={iso} className="srOnly">{hours}:{minutes}:00</time>
+ 
+       {/* Background Images Layer */}
+       {displayedImages.map((img) => (
+diff --git a/src/pages/2026/26-04/26-04-28/Clock.module.css b/src/pages/2026/26-04/26-04-28/Clock.module.css
+index 04e90af..23d62f1 100644
+--- a/src/pages/2026/26-04/26-04-28/Clock.module.css
++++ b/src/pages/2026/26-04/26-04-28/Clock.module.css
+@@ -1,15 +1,3 @@
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border: 0;
+-}
+-
+ .container {
+   position: relative;
+   width: 100vw;
+diff --git a/src/pages/2026/26-04/26-04-28/Clock.tsx b/src/pages/2026/26-04/26-04-28/Clock.tsx
+index 795bbe0..58d9002 100644
+--- a/src/pages/2026/26-04/26-04-28/Clock.tsx
++++ b/src/pages/2026/26-04/26-04-28/Clock.tsx
+@@ -42,7 +42,7 @@ const Clock =  () => {
+ 
+   return (
+     <main style={containerStyle} className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div className={styles.analogClockContainer}>
+         <div ref={hourHandRef} className={`${styles.hand} ${styles.hourHand}`} />
+diff --git a/src/pages/2026/26-05/26-05-07/Clock.module.css b/src/pages/2026/26-05/26-05-07/Clock.module.css
+index 1b9b5d3..bf1285a 100644
+--- a/src/pages/2026/26-05/26-05-07/Clock.module.css
++++ b/src/pages/2026/26-05/26-05-07/Clock.module.css
+@@ -87,18 +87,6 @@
+     0 3px 6px rgba(0, 0, 0, 0.49);
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ .centerCap {
+   position: absolute;
+   top: 50%;
+diff --git a/src/pages/2026/26-05/26-05-07/Clock.tsx b/src/pages/2026/26-05/26-05-07/Clock.tsx
+index 8d8d7ea..7cee017 100644
+--- a/src/pages/2026/26-05/26-05-07/Clock.tsx
++++ b/src/pages/2026/26-05/26-05-07/Clock.tsx
+@@ -138,7 +138,7 @@ const AnalogClock =  () => {
+       <time
+         dateTime={isoTime}
+         aria-label={`Current time: ${hours}:${minutes}`}
+-        className={styles.srOnly}
++        className="srOnly"
+       >
+         {`${hours}:${minutes}`}
+       </time>
+diff --git a/src/pages/2026/26-05/26-05-12/Clock.module.css b/src/pages/2026/26-05/26-05-12/Clock.module.css
+index 4374ba1..a5bffe4 100644
+--- a/src/pages/2026/26-05/26-05-12/Clock.module.css
++++ b/src/pages/2026/26-05/26-05-12/Clock.module.css
+@@ -115,14 +115,3 @@
+   background: #b00b0b;
+   margin-left: -1px;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-05/26-05-12/Clock.tsx b/src/pages/2026/26-05/26-05-12/Clock.tsx
+index 81469cf..5b593af 100644
+--- a/src/pages/2026/26-05/26-05-12/Clock.tsx
++++ b/src/pages/2026/26-05/26-05-12/Clock.tsx
+@@ -87,7 +87,7 @@ const AnalogClock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
++      <time dateTime={currentTime.toISOString()} className="srOnly">{currentTime.toLocaleTimeString()}</time>
+ 
+       <BackgroundLayers />
+ 
+diff --git a/src/pages/2026/26-05/26-05-13/Clock.module.css b/src/pages/2026/26-05/26-05-13/Clock.module.css
+index 68fb988..43ef0ef 100644
+--- a/src/pages/2026/26-05/26-05-13/Clock.module.css
++++ b/src/pages/2026/26-05/26-05-13/Clock.module.css
+@@ -58,14 +58,3 @@
+   /* prevent glyph-level kerning causing tiny shifts */
+   letter-spacing: 0;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-05/26-05-13/Clock.tsx b/src/pages/2026/26-05/26-05-13/Clock.tsx
+index 12dbc3e..8b2d059 100644
+--- a/src/pages/2026/26-05/26-05-13/Clock.tsx
++++ b/src/pages/2026/26-05/26-05-13/Clock.tsx
+@@ -44,7 +44,7 @@ const AnalogClock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={now.toISOString()} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
++      <time dateTime={now.toISOString()} className="srOnly">{now.toLocaleTimeString()}</time>
+ 
+       {/* Video Layer (behind background image) */}
+       <video
+diff --git a/src/pages/2026/26-05/26-05-14/Clock.module.css b/src/pages/2026/26-05/26-05-14/Clock.module.css
+index 00edbbd..fea6854 100644
+--- a/src/pages/2026/26-05/26-05-14/Clock.module.css
++++ b/src/pages/2026/26-05/26-05-14/Clock.module.css
+@@ -90,14 +90,3 @@
+   border-radius: 50%;
+   z-index: 5;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-05/26-05-14/Clock.tsx b/src/pages/2026/26-05/26-05-14/Clock.tsx
+index 07f3035..e8873ff 100644
+--- a/src/pages/2026/26-05/26-05-14/Clock.tsx
++++ b/src/pages/2026/26-05/26-05-14/Clock.tsx
+@@ -57,7 +57,7 @@ const AnalogClock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={isoTime} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={isoTime} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {/* Render layered background images with custom filters and z-index order */}
+       {assetConfigs.map((config, idx) => (
+diff --git a/src/pages/2026/26-05/26-05-18/Clock.module.css b/src/pages/2026/26-05/26-05-18/Clock.module.css
+index 1f5de36..612f844 100644
+--- a/src/pages/2026/26-05/26-05-18/Clock.module.css
++++ b/src/pages/2026/26-05/26-05-18/Clock.module.css
+@@ -66,18 +66,6 @@
+   backface-visibility: hidden;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ .hand {
+   position: absolute;
+   bottom: 50%;
+diff --git a/src/pages/2026/26-05/26-05-18/Clock.tsx b/src/pages/2026/26-05/26-05-18/Clock.tsx
+index d303a3f..0f833a3 100644
+--- a/src/pages/2026/26-05/26-05-18/Clock.tsx
++++ b/src/pages/2026/26-05/26-05-18/Clock.tsx
+@@ -153,7 +153,7 @@ const AnalogClock =  () => {
+           } as React.CSSProperties
+         }
+       >
+-        <time dateTime={currentTime.toISOString()} className={styles.srOnly}>
++        <time dateTime={currentTime.toISOString()} className="srOnly">
+           {currentTime.toTimeString()}
+         </time>
+ 
+diff --git a/src/pages/2026/26-05/26-05-21/Clock.module.css b/src/pages/2026/26-05/26-05-21/Clock.module.css
+index b379a50..a1ee461 100644
+--- a/src/pages/2026/26-05/26-05-21/Clock.module.css
++++ b/src/pages/2026/26-05/26-05-21/Clock.module.css
+@@ -250,14 +250,3 @@
+       0 0 25px rgba(173, 216, 230, 0.4);
+   }
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-05/26-05-21/Clock.tsx b/src/pages/2026/26-05/26-05-21/Clock.tsx
+index 4e0e53f..0bb4b33 100644
+--- a/src/pages/2026/26-05/26-05-21/Clock.tsx
++++ b/src/pages/2026/26-05/26-05-21/Clock.tsx
+@@ -95,7 +95,7 @@ const AnalogClock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={new Date().toISOString()} className={styles.srOnly}>{new Date().toLocaleTimeString()}</time>
++      <time dateTime={new Date().toISOString()} className="srOnly">{new Date().toLocaleTimeString()}</time>
+       <BackgroundLayers />
+       <ComponentLayers />
+       <ClockFace fontFamily="26-05-21" />
+diff --git a/src/pages/2026/26-05/26-05-23/Clock.module.css b/src/pages/2026/26-05/26-05-23/Clock.module.css
+index 7cc4257..d0e348a 100644
+--- a/src/pages/2026/26-05/26-05-23/Clock.module.css
++++ b/src/pages/2026/26-05/26-05-23/Clock.module.css
+@@ -68,14 +68,3 @@
+   color: white;
+   font-size: 1.2rem;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-05/26-05-23/Clock.tsx b/src/pages/2026/26-05/26-05-23/Clock.tsx
+index 03b6442..34503c7 100644
+--- a/src/pages/2026/26-05/26-05-23/Clock.tsx
++++ b/src/pages/2026/26-05/26-05-23/Clock.tsx
+@@ -54,7 +54,7 @@ const ClockInner =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={isoTime} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={isoTime} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {/* Tiled Maximized Videos */}
+       <div className={styles.videoStack}>
+diff --git a/src/pages/2026/26-05/26-05-28/Clock.tsx b/src/pages/2026/26-05/26-05-28/Clock.tsx
+index 53881a7..7e43ced 100644
+--- a/src/pages/2026/26-05/26-05-28/Clock.tsx
++++ b/src/pages/2026/26-05/26-05-28/Clock.tsx
+@@ -250,7 +250,7 @@ const Clock =  () => {
+ 
+   return (
+     <main className={styles.container} role="timer" aria-label="Clock for May 28">
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+       <div
+         className={styles.backgroundLayer}
+         style={{
+diff --git a/src/pages/2026/26-05/26-05-31/Clock.module.css b/src/pages/2026/26-05/26-05-31/Clock.module.css
+index 8c5d9e1..530ac9d 100644
+--- a/src/pages/2026/26-05/26-05-31/Clock.module.css
++++ b/src/pages/2026/26-05/26-05-31/Clock.module.css
+@@ -51,4 +51,4 @@
+   margin: 0 0.02vmin;
+   /* opacity: 0.6; */
+   padding-bottom: 1vmin;
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-05/26-05-31/Clock.tsx b/src/pages/2026/26-05/26-05-31/Clock.tsx
+index cd5f6a3..a2c87e1 100644
+--- a/src/pages/2026/26-05/26-05-31/Clock.tsx
++++ b/src/pages/2026/26-05/26-05-31/Clock.tsx
+@@ -66,7 +66,7 @@ const DigitalClock = () => {
+       <div className={styles.face}>
+         <time
+           dateTime={currentTime.toISOString()}
+-          className={styles.srOnly}
++          className="srOnly"
+         >
+           <span className={styles.digitGroup}>
+             <span className={styles.digitBox}>{hours[0]}</span>
+diff --git a/src/pages/2026/26-06/26-06-02/Clock.module.css b/src/pages/2026/26-06/26-06-02/Clock.module.css
+index 410a917..d5d6748 100644
+--- a/src/pages/2026/26-06/26-06-02/Clock.module.css
++++ b/src/pages/2026/26-06/26-06-02/Clock.module.css
+@@ -60,13 +60,3 @@
+   from { opacity: 0; scale: 0.5; }
+   to { opacity: 1; scale: 1; }
+ }
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-06/26-06-02/Clock.tsx b/src/pages/2026/26-06/26-06-02/Clock.tsx
+index fc22d9c..c0ccf72 100644
+--- a/src/pages/2026/26-06/26-06-02/Clock.tsx
++++ b/src/pages/2026/26-06/26-06-02/Clock.tsx
+@@ -94,7 +94,7 @@ const VTEC =  () => {
+         backgroundSize: '15dvh',
+       }}
+     >
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <time
+         className={styles.digitalClock}
+diff --git a/src/pages/2026/26-06/26-06-03/Clock.module.css b/src/pages/2026/26-06/26-06-03/Clock.module.css
+index e7ec7b8..b5ed5e9 100644
+--- a/src/pages/2026/26-06/26-06-03/Clock.module.css
++++ b/src/pages/2026/26-06/26-06-03/Clock.module.css
+@@ -58,18 +58,6 @@
+   display: block;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border: 0;
+-}
+-
+ .number {
+   position: absolute;
+   font-size: 16vmin;
+diff --git a/src/pages/2026/26-06/26-06-03/Clock.tsx b/src/pages/2026/26-06/26-06-03/Clock.tsx
+index 261b655..501c46a 100644
+--- a/src/pages/2026/26-06/26-06-03/Clock.tsx
++++ b/src/pages/2026/26-06/26-06-03/Clock.tsx
+@@ -58,7 +58,7 @@ const AnalogClock =  () => {
+ 
+   return (
+     <time dateTime={time.toISOString()} className={styles.time} aria-label={time.toLocaleTimeString()}>
+-      <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
++      <span className="srOnly">{time.toLocaleTimeString()}</span>
+       
+       {clockNumbers.map(({ num, left, top, rotate }) => (
+         <div 
+diff --git a/src/pages/2026/26-06/26-06-04/Clock.module.css b/src/pages/2026/26-06/26-06-04/Clock.module.css
+index ab2e60e..c927748 100644
+--- a/src/pages/2026/26-06/26-06-04/Clock.module.css
++++ b/src/pages/2026/26-06/26-06-04/Clock.module.css
+@@ -48,18 +48,6 @@
+   /* padding: 0 0.5rem; */
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border: 0;
+-}
+-
+ .digit {
+   font-size: 16vw;
+   font-family: 'ClockFont_26_06_04', 'Courier New', monospace;
+@@ -79,4 +67,4 @@
+ .ampm {
+   font-size: 15vw;
+   transform: translateY(1vw);
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-06/26-06-04/Clock.tsx b/src/pages/2026/26-06/26-06-04/Clock.tsx
+index 7752d63..5b30145 100644
+--- a/src/pages/2026/26-06/26-06-04/Clock.tsx
++++ b/src/pages/2026/26-06/26-06-04/Clock.tsx
+@@ -59,7 +59,7 @@ const Clock =  () => {
+         className={styles.clock} 
+         aria-label={time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+       >
+-        <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
++        <span className="srOnly">{time.toLocaleTimeString()}</span>
+         <span className={styles.digit}>{hours[0]}</span>
+         <span className={styles.digit}>{hours[1]}</span>
+         <span className={styles.digit}>{minutes[0]}</span>
+diff --git a/src/pages/2026/26-06/26-06-05/Clock.module.css b/src/pages/2026/26-06/26-06-05/Clock.module.css
+index 6abed5a..bd7beea 100644
+--- a/src/pages/2026/26-06/26-06-05/Clock.module.css
++++ b/src/pages/2026/26-06/26-06-05/Clock.module.css
+@@ -48,7 +48,6 @@
+   z-index: 20;
+ }
+ 
+-
+ .face {
+   width: 100%;
+   height: 100%;
+@@ -56,8 +55,6 @@
+   position: relative;
+ }
+ 
+-
+-
+ .hand {
+   position: absolute;
+   bottom: 50%;
+@@ -112,14 +109,3 @@
+     top: -1vh;
+   }
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-06/26-06-05/Clock.tsx b/src/pages/2026/26-06/26-06-05/Clock.tsx
+index f57f96b..f5c2ed4 100644
+--- a/src/pages/2026/26-06/26-06-05/Clock.tsx
++++ b/src/pages/2026/26-06/26-06-05/Clock.tsx
+@@ -35,7 +35,7 @@ const Clock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={isoTime} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={isoTime} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div className={styles.background} />
+       <div className={styles.overlay} />
+diff --git a/src/pages/2026/26-06/26-06-07/Clock.module.css b/src/pages/2026/26-06/26-06-07/Clock.module.css
+index e61e3be..219c6d7 100644
+--- a/src/pages/2026/26-06/26-06-07/Clock.module.css
++++ b/src/pages/2026/26-06/26-06-07/Clock.module.css
+@@ -40,14 +40,3 @@
+   font-size: 9vw;
+   color: #ffffff;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-06/26-06-07/Clock.tsx b/src/pages/2026/26-06/26-06-07/Clock.tsx
+index 6ea377e..3effec9 100644
+--- a/src/pages/2026/26-06/26-06-07/Clock.tsx
++++ b/src/pages/2026/26-06/26-06-07/Clock.tsx
+@@ -33,7 +33,7 @@ const ClockInner =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <video
+         className={styles.video}
+diff --git a/src/pages/2026/26-06/26-06-09/Clock.module.css b/src/pages/2026/26-06/26-06-09/Clock.module.css
+index c0dce32..51c02a9 100644
+--- a/src/pages/2026/26-06/26-06-09/Clock.module.css
++++ b/src/pages/2026/26-06/26-06-09/Clock.module.css
+@@ -34,7 +34,6 @@
+   -webkit-user-select: none;
+   user-select: none;
+ 
+-
+   font-family: 'ClockFont', sans-serif;
+   line-height: 0.8;
+   color: #7eb4eae5;
+@@ -83,14 +82,3 @@
+   background-position: center;
+   background-repeat: no-repeat;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-06/26-06-09/Clock.tsx b/src/pages/2026/26-06/26-06-09/Clock.tsx
+index 2118557..84cc5a4 100644
+--- a/src/pages/2026/26-06/26-06-09/Clock.tsx
++++ b/src/pages/2026/26-06/26-06-09/Clock.tsx
+@@ -136,7 +136,7 @@ const NightSky =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div className={styles.backgroundGrid}>
+         {gridImages.map((src, i) => (
+diff --git a/src/pages/2026/26-06/26-06-15/Clock.module.css b/src/pages/2026/26-06/26-06-15/Clock.module.css
+index 3b32717..c428fca 100644
+--- a/src/pages/2026/26-06/26-06-15/Clock.module.css
++++ b/src/pages/2026/26-06/26-06-15/Clock.module.css
+@@ -11,14 +11,3 @@
+   overflow: hidden;
+   text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-06/26-06-15/Clock.tsx b/src/pages/2026/26-06/26-06-15/Clock.tsx
+index 88291f4..8e1553d 100644
+--- a/src/pages/2026/26-06/26-06-15/Clock.tsx
++++ b/src/pages/2026/26-06/26-06-15/Clock.tsx
+@@ -93,7 +93,7 @@ const Clock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <time dateTime={time.toISOString()} style={inlineStyles.clockWrapper}>
+         <div style={inlineStyles.unitContainer}>
+diff --git a/src/pages/2026/26-06/26-06-21/Clock.module.css b/src/pages/2026/26-06/26-06-21/Clock.module.css
+index ff11f1c..ca13a57 100644
+--- a/src/pages/2026/26-06/26-06-21/Clock.module.css
++++ b/src/pages/2026/26-06/26-06-21/Clock.module.css
+@@ -9,17 +9,6 @@
+   place-content: center;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+-
+ .backgroundGrid {
+   position: absolute;
+   inset: 0;
+diff --git a/src/pages/2026/26-06/26-06-21/Clock.tsx b/src/pages/2026/26-06/26-06-21/Clock.tsx
+index 3faaee4..c858b25 100644
+--- a/src/pages/2026/26-06/26-06-21/Clock.tsx
++++ b/src/pages/2026/26-06/26-06-21/Clock.tsx
+@@ -67,7 +67,7 @@ const Clock =  () => {
+         '--grid-rows': String(dimensions.rows),
+       } as CSSProperties}
+     >
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div className={styles.backgroundGrid}>{backgroundTiles}</div>
+ 
+diff --git a/src/pages/2026/26-06/26-06-26/Clock.module.css b/src/pages/2026/26-06/26-06-26/Clock.module.css
+index 8ea9295..69ebceb 100644
+--- a/src/pages/2026/26-06/26-06-26/Clock.module.css
++++ b/src/pages/2026/26-06/26-06-26/Clock.module.css
+@@ -5,4 +5,4 @@
+   to {
+     transform: rotate(360deg);
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-06/26-06-26/Clock.tsx b/src/pages/2026/26-06/26-06-26/Clock.tsx
+index e70b602..cae38eb 100644
+--- a/src/pages/2026/26-06/26-06-26/Clock.tsx
++++ b/src/pages/2026/26-06/26-06-26/Clock.tsx
+@@ -144,7 +144,7 @@ const Clock = () => {
+         '--grid-rows': String(dimensions.rows),
+       } as CSSProperties}
+     >
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-06/26-06-27/Clock.module.css b/src/pages/2026/26-06/26-06-27/Clock.module.css
+index 3752c27..d4270a9 100644
+--- a/src/pages/2026/26-06/26-06-27/Clock.module.css
++++ b/src/pages/2026/26-06/26-06-27/Clock.module.css
+@@ -64,13 +64,3 @@
+   stroke-width: 16;
+   stroke: #359c45;
+ }
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-06/26-06-27/Clock.tsx b/src/pages/2026/26-06/26-06-27/Clock.tsx
+index 9fa5d7e..b994b4c 100644
+--- a/src/pages/2026/26-06/26-06-27/Clock.tsx
++++ b/src/pages/2026/26-06/26-06-27/Clock.tsx
+@@ -49,7 +49,7 @@ const AnalogClockComponent = () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {/* Accessible time element (Required) */}
+       <SRTime time={time} />
+diff --git a/src/pages/2026/26-07/26-07-01/Clock.module.css b/src/pages/2026/26-07/26-07-01/Clock.module.css
+index 57891f0..a3cf21f 100644
+--- a/src/pages/2026/26-07/26-07-01/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-01/Clock.module.css
+@@ -160,13 +160,3 @@
+   0% { transform: rotate(0deg); }
+   100% { transform: rotate(360deg); }
+ }
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-07/26-07-01/Clock.tsx b/src/pages/2026/26-07/26-07-01/Clock.tsx
+index 9b7a724..9266c89 100644
+--- a/src/pages/2026/26-07/26-07-01/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-01/Clock.tsx
+@@ -44,7 +44,7 @@ const AlphaCentauriClock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {/* Accessible time element (Required) */}
+       <time dateTime={time.toISOString()} className={styles.semanticTime}>
+diff --git a/src/pages/2026/26-07/26-07-02/Clock.module.css b/src/pages/2026/26-07/26-07-02/Clock.module.css
+index 4dc2312..8f60e28 100644
+--- a/src/pages/2026/26-07/26-07-02/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-02/Clock.module.css
+@@ -37,14 +37,3 @@
+   display: inline-block;
+   font-size: 1.5rem;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-07/26-07-02/Clock.tsx b/src/pages/2026/26-07/26-07-02/Clock.tsx
+index 9200491..487bb5a 100644
+--- a/src/pages/2026/26-07/26-07-02/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-02/Clock.tsx
+@@ -129,7 +129,7 @@ const FloatingDigitalClocks =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <video
+         ref={videoRef}
+diff --git a/src/pages/2026/26-07/26-07-04/Clock.module.css b/src/pages/2026/26-07/26-07-04/Clock.module.css
+index 8373920..e8b37fa 100644
+--- a/src/pages/2026/26-07/26-07-04/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-04/Clock.module.css
+@@ -20,14 +20,3 @@
+   position: absolute;
+   z-index: 2;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-07/26-07-04/Clock.tsx b/src/pages/2026/26-07/26-07-04/Clock.tsx
+index a1a68a6..23b6f72 100644
+--- a/src/pages/2026/26-07/26-07-04/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-04/Clock.tsx
+@@ -55,7 +55,7 @@ const DigitalClock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {/* Current Time Display */}
+       <time
+diff --git a/src/pages/2026/26-07/26-07-06/Clock.module.css b/src/pages/2026/26-07/26-07-06/Clock.module.css
+index b8921bd..6ffe67f 100644
+--- a/src/pages/2026/26-07/26-07-06/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-06/Clock.module.css
+@@ -14,15 +14,3 @@
+ .vtecImage {
+   animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border: 0;
+-}
+diff --git a/src/pages/2026/26-07/26-07-08/Clock.module.css b/src/pages/2026/26-07/26-07-08/Clock.module.css
+index a81e35b..eafff3a 100644
+--- a/src/pages/2026/26-07/26-07-08/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-08/Clock.module.css
+@@ -130,15 +130,3 @@
+     inset 0 1px 1px rgba(255, 255, 255, 0.4);
+   z-index: 20;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-07/26-07-08/Clock.tsx b/src/pages/2026/26-07/26-07-08/Clock.tsx
+index fb0a25d..cd8370e 100644
+--- a/src/pages/2026/26-07/26-07-08/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-08/Clock.tsx
+@@ -160,7 +160,7 @@ const TangerineClock =  () => {
+       role="img"
+       aria-label={`An analog clock showing the time is ${time.toLocaleTimeString()}`}
+     >
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <div className={styles.clockContainer} style={{ width: clockSize, height: clockSize }}>
+diff --git a/src/pages/2026/26-07/26-07-09/Clock.module.css b/src/pages/2026/26-07/26-07-09/Clock.module.css
+index 9404d08..3a21ecd 100644
+--- a/src/pages/2026/26-07/26-07-09/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-09/Clock.module.css
+@@ -47,14 +47,3 @@
+   color: #C5A56C;
+   text-shadow: -2px -2px 0 #000, 2px 2px 0 #fff;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-07/26-07-09/Clock.tsx b/src/pages/2026/26-07/26-07-09/Clock.tsx
+index 060c064..1e70b1c 100644
+--- a/src/pages/2026/26-07/26-07-09/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-09/Clock.tsx
+@@ -49,7 +49,7 @@ const AnalogClock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={isoTime} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={isoTime} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <video
+         className={styles.videoBackground}
+diff --git a/src/pages/2026/26-07/26-07-10/Clock.module.css b/src/pages/2026/26-07/26-07-10/Clock.module.css
+index 511c714..2d54324 100644
+--- a/src/pages/2026/26-07/26-07-10/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-10/Clock.module.css
+@@ -106,15 +106,3 @@
+     1px 1px 0px #000, 2px 4px 5px rgba(0, 0, 0, 0.95),
+     0px 0px 15px rgba(0, 0, 0, 0.6);
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-07/26-07-10/Clock.tsx b/src/pages/2026/26-07/26-07-10/Clock.tsx
+index 8290e2a..9dd76a4 100644
+--- a/src/pages/2026/26-07/26-07-10/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-10/Clock.tsx
+@@ -208,7 +208,7 @@ const AnalogClock: FC = () => {
+       role="img"
+       aria-label="An analog clock with a stormy, rainy background."
+     >
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-07/26-07-13/Clock.tsx b/src/pages/2026/26-07/26-07-13/Clock.tsx
+index 6e21ccf..f0c4c1e 100644
+--- a/src/pages/2026/26-07/26-07-13/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-13/Clock.tsx
+@@ -95,7 +95,7 @@ const Clock =  () => {
+ 
+   return (
+     <main style={clockStyles.clockWrapper} className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       <div style={clockStyles.background}>
+         <video
+diff --git a/src/pages/2026/26-07/26-07-14/Clock.module.css b/src/pages/2026/26-07/26-07-14/Clock.module.css
+index e64bc6e..4f0fecd 100644
+--- a/src/pages/2026/26-07/26-07-14/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-14/Clock.module.css
+@@ -46,4 +46,4 @@
+   position: relative;
+   z-index: 1;
+   letter-spacing: 3vmin;
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-07/26-07-14/Clock.tsx b/src/pages/2026/26-07/26-07-14/Clock.tsx
+index 5c125eb..4b4cd08 100644
+--- a/src/pages/2026/26-07/26-07-14/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-14/Clock.tsx
+@@ -47,7 +47,7 @@ const DigitalClock = () => {
+         className={styles.tileOverlay}
+         style={{ '--tile-image': `url(${tileImage})` } as React.CSSProperties}
+       />
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {timeString}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-07/26-07-15/Clock.module.css b/src/pages/2026/26-07/26-07-15/Clock.module.css
+index 0442c09..ef0a47d 100644
+--- a/src/pages/2026/26-07/26-07-15/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-15/Clock.module.css
+@@ -64,15 +64,3 @@
+   stroke: #f3e8da;
+   stroke-width: 1;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-07/26-07-15/Clock.tsx b/src/pages/2026/26-07/26-07-15/Clock.tsx
+index 44c6e3e..aa0cc3e 100644
+--- a/src/pages/2026/26-07/26-07-15/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-15/Clock.tsx
+@@ -107,7 +107,7 @@ const AnalogClock =  () => {
+         {/* Center Pin */}
+         <circle cx="100" cy="100" r="4" className={styles.centerPin} />
+       </svg>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-07/26-07-16/Clock.module.css b/src/pages/2026/26-07/26-07-16/Clock.module.css
+index f09f54c..921eba5 100644
+--- a/src/pages/2026/26-07/26-07-16/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-16/Clock.module.css
+@@ -34,15 +34,3 @@
+   margin: 0 -2.5vmin;
+   display: inline-block;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-07/26-07-16/Clock.tsx b/src/pages/2026/26-07/26-07-16/Clock.tsx
+index 08d8269..a00e134 100644
+--- a/src/pages/2026/26-07/26-07-16/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-16/Clock.tsx
+@@ -86,7 +86,7 @@ const Clock =  () => {
+     >
+       <div ref={containerRef} className={styles.clockWrapper}>
+         <time dateTime={time.toISOString()} className={styles.timeDisplay} aria-label={time.toLocaleTimeString()}>
+-          <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
++          <span className="srOnly">{time.toLocaleTimeString()}</span>
+           {/* Visually rendered time */}
+           <span>{timeUnits.hours}</span>
+           <span className={styles.colon}>:</span>
+diff --git a/src/pages/2026/26-07/26-07-20/Clock.module.css b/src/pages/2026/26-07/26-07-20/Clock.module.css
+index 886773b..8dd0db1 100644
+--- a/src/pages/2026/26-07/26-07-20/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-20/Clock.module.css
+@@ -73,14 +73,3 @@
+   color: #11e9c8; /* Fallback color */
+   text-shadow: 1px 1px 1px #dcdbf3;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-07/26-07-20/Clock.tsx b/src/pages/2026/26-07/26-07-20/Clock.tsx
+index bbb4aef..9a84c48 100644
+--- a/src/pages/2026/26-07/26-07-20/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-20/Clock.tsx
+@@ -32,7 +32,7 @@ const DigitalClock =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={isoTime} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
++      <time dateTime={isoTime} className="srOnly">{now.toLocaleTimeString()}</time>
+       <div className={styles.blurStrip} />
+       <img src={decoImage} alt="" className={styles.backgroundImage} />
+       <time dateTime={isoTime} className={styles.timeWrapper}>
+diff --git a/src/pages/2026/26-07/26-07-22/Clock.module.css b/src/pages/2026/26-07/26-07-22/Clock.module.css
+index 4af9292..c422041 100644
+--- a/src/pages/2026/26-07/26-07-22/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-22/Clock.module.css
+@@ -61,18 +61,6 @@
+   margin: 0 -0.15em;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ @keyframes pulse {
+   0%, 100% { opacity: 0.8; }
+   50% { opacity: 0.3; }
+@@ -81,4 +69,4 @@
+ @keyframes zoomCycle {
+   0%, 100% { transform: scale(1); opacity: 1; }
+   50% { transform: scale(0); opacity: 0; }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-07/26-07-22/Clock.tsx b/src/pages/2026/26-07/26-07-22/Clock.tsx
+index 43fdb1b..e4f386f 100644
+--- a/src/pages/2026/26-07/26-07-22/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-22/Clock.tsx
+@@ -159,7 +159,7 @@ const ZoomClock =  () => {
+         <DigitGroup value={minutes} />
+         <span className={styles.separator}>:</span>
+         <DigitGroup value={seconds} />
+-        <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
++        <span className="srOnly">{time.toLocaleTimeString()}</span>
+       </time>
+     </main>
+   );
+diff --git a/src/pages/2026/26-07/26-07-23/Clock.module.css b/src/pages/2026/26-07/26-07-23/Clock.module.css
+index c93f388..e76eadc 100644
+--- a/src/pages/2026/26-07/26-07-23/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-23/Clock.module.css
+@@ -64,15 +64,3 @@
+   transform: translate(-50%, -50%);
+   z-index: 10;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-07/26-07-23/Clock.tsx b/src/pages/2026/26-07/26-07-23/Clock.tsx
+index 3506c01..e600aa9 100644
+--- a/src/pages/2026/26-07/26-07-23/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-23/Clock.tsx
+@@ -51,7 +51,7 @@ const AnalogClock =  () => {
+         <div className={`${styles.hand} ${styles.secondHand}`} style={{ transform: `translateX(-50%) rotate(${secondAngle}deg)` }} />
+         <div className={styles.centerDot} />
+       </div>
+-      <time dateTime={time.toISOString()} aria-label={time.toLocaleTimeString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} aria-label={time.toLocaleTimeString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-07/26-07-24/Clock.module.css b/src/pages/2026/26-07/26-07-24/Clock.module.css
+index ad34e29..8be11cf 100644
+--- a/src/pages/2026/26-07/26-07-24/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-24/Clock.module.css
+@@ -128,22 +128,6 @@
+ }
+ 
+ /* Standard from ARCHITECTURE.md for accessible, visually-hidden elements */
+-.srOnly {
+-  border: 0;
+-  clip: rect(0 0 0 0);
+-  height: 1px;
+-  margin: -1px;
+-  overflow: hidden;
+-  padding: 0;
+-  position: absolute;
+-  width: 1px;
+-  /*
+-    The following properties are to prevent any modern browser from accidentally
+-    displaying the element when using 'white-space: nowrap' on a parent.
+-  */
+-  white-space: nowrap;
+-  word-wrap: normal;
+-}
+ 
+ @media (prefers-reduced-motion: reduce) {
+   .analogClock {
+@@ -151,4 +135,4 @@
+     --offset-y: 0;
+     --offset-rot: 0deg;
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-07/26-07-24/Clock.tsx b/src/pages/2026/26-07/26-07-24/Clock.tsx
+index 04d075f..290f7a7 100644
+--- a/src/pages/2026/26-07/26-07-24/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-24/Clock.tsx
+@@ -84,7 +84,7 @@ const Clock =  () => {
+         </div>
+       </div>
+       {/* Accessible time element, hidden from view but available to screen readers */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-07/26-07-25/Clock.tsx b/src/pages/2026/26-07/26-07-25/Clock.tsx
+index 1bbe9e8..0711932 100644
+--- a/src/pages/2026/26-07/26-07-25/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-25/Clock.tsx
+@@ -92,7 +92,7 @@ function HexClock() {
+       }}
+       className={styles.container}
+     >
+-      <time dateTime={now.toISOString()} className={styles.srOnly}>{now.toLocaleTimeString()}</time>
++      <time dateTime={now.toISOString()} className="srOnly">{now.toLocaleTimeString()}</time>
+ 
+       {/* Top Banner */}
+       <div className={styles.topExplanationBar}>
+diff --git a/src/pages/2026/26-07/26-07-26/Clock.module.css b/src/pages/2026/26-07/26-07-26/Clock.module.css
+index 611bef0..0af9c8b 100644
+--- a/src/pages/2026/26-07/26-07-26/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-26/Clock.module.css
+@@ -126,13 +126,3 @@
+ }
+ 
+ /* Visually hidden class for accessible time element */
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  margin: -1px;
+-  padding: 0;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  border: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-07/26-07-26/Clock.tsx b/src/pages/2026/26-07/26-07-26/Clock.tsx
+index 4e3f9e9..1413336 100644
+--- a/src/pages/2026/26-07/26-07-26/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-26/Clock.tsx
+@@ -75,7 +75,7 @@ const ClockComponent =  () => {
+       />
+ 
+       {/* Accessible time element (Required) */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-07/26-07-27/Clock.module.css b/src/pages/2026/26-07/26-07-27/Clock.module.css
+index cf2eac0..239a23a 100644
+--- a/src/pages/2026/26-07/26-07-27/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-27/Clock.module.css
+@@ -20,19 +20,6 @@
+   z-index: 0;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  opacity: 0;
+-  pointer-events: none;
+-  width: 1px;
+-  height: 1px;
+-  margin: -1px;
+-  padding: 0;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  border: 0;
+-}
+-
+ .colorOverlay {
+   position: absolute;
+   inset: 0;
+diff --git a/src/pages/2026/26-07/26-07-27/Clock.tsx b/src/pages/2026/26-07/26-07-27/Clock.tsx
+index 4df819a..dcbca2a 100644
+--- a/src/pages/2026/26-07/26-07-27/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-27/Clock.tsx
+@@ -128,7 +128,7 @@ const ClockComponent =  () => {
+       />
+ 
+       {/* Accessible time representation */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-07/26-07-28/Clock.module.css b/src/pages/2026/26-07/26-07-28/Clock.module.css
+index be25eb1..2358737 100644
+--- a/src/pages/2026/26-07/26-07-28/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-28/Clock.module.css
+@@ -51,15 +51,3 @@
+ }
+ 
+ /* Standard from ARCHITECTURE.md for accessible, visually-hidden elements */
+-.srOnly {
+-  border: 0;
+-  clip: rect(0 0 0 0);
+-  height: 1px;
+-  margin: -1px;
+-  overflow: hidden;
+-  padding: 0;
+-  position: absolute;
+-  width: 1px;
+-  white-space: nowrap;
+-  word-wrap: normal;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-07/26-07-28/Clock.tsx b/src/pages/2026/26-07/26-07-28/Clock.tsx
+index 77edf8a..e50538c 100644
+--- a/src/pages/2026/26-07/26-07-28/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-28/Clock.tsx
+@@ -72,7 +72,7 @@ const ClockComponent =  () => {
+       </div>
+ 
+       {/* Accessible time element as per ARCHITECTURE.md */}
+-      <time dateTime={isoTime} className={styles.srOnly}>
++      <time dateTime={isoTime} className="srOnly">
+         {currentTime.toLocaleTimeString()}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-07/26-07-30/Clock.module.css b/src/pages/2026/26-07/26-07-30/Clock.module.css
+index c9eeed8..2414f8b 100644
+--- a/src/pages/2026/26-07/26-07-30/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-30/Clock.module.css
+@@ -81,15 +81,3 @@
+ }
+ 
+ /* Standard from ARCHITECTURE.md for accessible, visually-hidden elements */
+-.srOnly {
+-  border: 0;
+-  clip: rect(0 0 0 0);
+-  height: 1px;
+-  margin: -1px;
+-  overflow: hidden;
+-  padding: 0;
+-  position: absolute;
+-  width: 1px;
+-  white-space: nowrap;
+-  word-wrap: normal;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-07/26-07-30/Clock.tsx b/src/pages/2026/26-07/26-07-30/Clock.tsx
+index d4540c2..2f3a41a 100644
+--- a/src/pages/2026/26-07/26-07-30/Clock.tsx
++++ b/src/pages/2026/26-07/26-07-30/Clock.tsx
+@@ -89,7 +89,7 @@ const ClockComponent: FC = () => {
+ 
+       <div className={styles.timeContainer}>
+         {/* Accessible time for screen readers, using srOnly class */}
+-        <time dateTime={time.toISOString()} className={styles.srOnly}>
++        <time dateTime={time.toISOString()} className="srOnly">
+           {timeString}
+         </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-01/Clock.module.css b/src/pages/2026/26-08/26-08-01/Clock.module.css
+index 2e8b67e..91798f9 100644
+--- a/src/pages/2026/26-08/26-08-01/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-01/Clock.module.css
+@@ -100,15 +100,3 @@
+ }
+ 
+ /* Standard from ARCHITECTURE.md for accessible, visually-hidden elements */
+-.srOnly {
+-  border: 0;
+-  clip: rect(0 0 0 0);
+-  height: 1px;
+-  margin: -1px;
+-  overflow: hidden;
+-  padding: 0;
+-  position: absolute;
+-  width: 1px;
+-  white-space: nowrap;
+-  word-wrap: normal;
+-}
+diff --git a/src/pages/2026/26-08/26-08-01/Clock.tsx b/src/pages/2026/26-08/26-08-01/Clock.tsx
+index 33dc80c..27301e1 100644
+--- a/src/pages/2026/26-08/26-08-01/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-01/Clock.tsx
+@@ -43,7 +43,7 @@ const ClockComponent =  () => {
+       style={{ '--bg-image': `url(${bgImage})` } as React.CSSProperties}
+     >
+       <div aria-hidden="true" className={styles.background} />
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {`${hours}:${minutes}:${seconds}`}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-02/Clock.module.css b/src/pages/2026/26-08/26-08-02/Clock.module.css
+index 14fc3b0..b6f3869 100644
+--- a/src/pages/2026/26-08/26-08-02/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-02/Clock.module.css
+@@ -136,17 +136,6 @@
+ }
+ 
+ /* Standard from ARCHITECTURE.md for accessible, visually-hidden elements */
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+ 
+ @keyframes auroraShift {
+   0% {
+diff --git a/src/pages/2026/26-08/26-08-02/Clock.tsx b/src/pages/2026/26-08/26-08-02/Clock.tsx
+index aafb995..8fde856 100644
+--- a/src/pages/2026/26-08/26-08-02/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-02/Clock.tsx
+@@ -41,7 +41,7 @@ const ClockComponent =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
++      <time dateTime={time.toISOString()} className="srOnly">{time.toLocaleTimeString()}</time>
+ 
+       {/* StaticGlobalStyles component removed as per ARCHITECTURE.md */}
+ 
+diff --git a/src/pages/2026/26-08/26-08-03/Clock.module.css b/src/pages/2026/26-08/26-08-03/Clock.module.css
+index 8e34b77..bbd3904 100644
+--- a/src/pages/2026/26-08/26-08-03/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-03/Clock.module.css
+@@ -40,14 +40,3 @@
+   Required for accessibility.
+   Hides an element visually but keeps it available for screen readers.
+ */
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-08/26-08-03/Clock.tsx b/src/pages/2026/26-08/26-08-03/Clock.tsx
+index e3df138..6787bad 100644
+--- a/src/pages/2026/26-08/26-08-03/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-03/Clock.tsx
+@@ -37,7 +37,7 @@ const ClockComponent =  () => {
+       style={{ '--bg-image': `url(${backgroundImage})` } as React.CSSProperties}
+     >
+       {/* Semantic <time> element for accessibility (Required) */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-04/Clock.module.css b/src/pages/2026/26-08/26-08-04/Clock.module.css
+index 5d56e07..db33af8 100644
+--- a/src/pages/2026/26-08/26-08-04/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-04/Clock.module.css
+@@ -121,15 +121,3 @@
+   text-shadow: -1px -1px 1px rgba(255, 255, 255, 0.8), 1px 1px 3px rgba(0, 0, 0, 1);
+   z-index: 2;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-08/26-08-04/Clock.tsx b/src/pages/2026/26-08/26-08-04/Clock.tsx
+index 1466c66..bae3ebf 100644
+--- a/src/pages/2026/26-08/26-08-04/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-04/Clock.tsx
+@@ -53,7 +53,7 @@ const ClockComponent =  () => {
+       </div>
+ 
+       {/* Semantic <time> element for accessibility (Required) */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {timeString}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-05/Clock.module.css b/src/pages/2026/26-08/26-08-05/Clock.module.css
+index b319950..1b359f3 100644
+--- a/src/pages/2026/26-08/26-08-05/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-05/Clock.module.css
+@@ -74,15 +74,3 @@
+   transform: scale(1.2);
+   margin: 0 -0.02em;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+diff --git a/src/pages/2026/26-08/26-08-05/Clock.tsx b/src/pages/2026/26-08/26-08-05/Clock.tsx
+index 9ee7b1f..a1f9e9c 100644
+--- a/src/pages/2026/26-08/26-08-05/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-05/Clock.tsx
+@@ -77,7 +77,7 @@ const ClockComponent = () => {
+         />
+       </div>
+ 
+-      <time dateTime={isoTime} className={styles.srOnly}>
++      <time dateTime={isoTime} className="srOnly">
+         {isoTime}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-06/Clock.module.css b/src/pages/2026/26-08/26-08-06/Clock.module.css
+index 4b8d66e..002167f 100644
+--- a/src/pages/2026/26-08/26-08-06/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-06/Clock.module.css
+@@ -47,15 +47,3 @@
+ .digitalClock span {
+   line-height: 1;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-08/26-08-06/Clock.tsx b/src/pages/2026/26-08/26-08-06/Clock.tsx
+index 67f77cf..985d998 100644
+--- a/src/pages/2026/26-08/26-08-06/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-06/Clock.tsx
+@@ -54,7 +54,7 @@ const ClockComponent =  () => {
+       />
+ 
+       {/* Semantic <time> element for accessibility (Required) */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {timeString}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-07/Clock.module.css b/src/pages/2026/26-08/26-08-07/Clock.module.css
+index 87ce083..98ec064 100644
+--- a/src/pages/2026/26-08/26-08-07/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-07/Clock.module.css
+@@ -76,18 +76,6 @@
+   margin-left: 2.5vmin;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border: 0;
+-}
+-
+ .char {
+   display: inline-block;
+   transform-style: preserve-3d;
+@@ -179,4 +167,4 @@
+       rotateZ(-20deg) scale(1, 1);
+     text-shadow: 10px 10px 8px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.3);
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-08/26-08-07/Clock.tsx b/src/pages/2026/26-08/26-08-07/Clock.tsx
+index 0429d0d..4a2471b 100644
+--- a/src/pages/2026/26-08/26-08-07/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-07/Clock.tsx
+@@ -135,7 +135,7 @@ const Clock_26_08_07 = () => {
+     >
+       <div className={styles.floor} style={{ backgroundImage: `url(${floorImage})` }} />
+ 
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {accessibleTime}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-08/Clock.module.css b/src/pages/2026/26-08/26-08-08/Clock.module.css
+index c0454b6..e343813 100644
+--- a/src/pages/2026/26-08/26-08-08/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-08/Clock.module.css
+@@ -87,7 +87,6 @@
+   z-index: 4;
+ }
+ 
+-
+ .number {
+   position: absolute;
+   top: 50%;
+@@ -102,18 +101,6 @@
+   z-index: 2;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ @keyframes pulseOpacity {
+   0%,
+   100% {
+@@ -122,4 +109,4 @@
+   80% {
+     opacity: 0.3;
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-08/26-08-08/Clock.tsx b/src/pages/2026/26-08/26-08-08/Clock.tsx
+index deb7072..ec308e8 100644
+--- a/src/pages/2026/26-08/26-08-08/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-08/Clock.tsx
+@@ -53,7 +53,7 @@ const ClockComponent =  () => {
+       </div>
+ 
+       {/* Semantic <time> element for accessibility (Required) */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {timeString}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-09/Clock.module.css b/src/pages/2026/26-08/26-08-09/Clock.module.css
+index 4fa7c84..9f89c8a 100644
+--- a/src/pages/2026/26-08/26-08-09/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-09/Clock.module.css
+@@ -57,21 +57,9 @@
+   -webkit-text-fill-color: transparent;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ /* On larger screens (tablets/desktops), switch to side-by-side layout */
+ @media (min-width: 768px) {
+   .videoWrapper {
+     flex-direction: row;
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-08/26-08-09/Clock.tsx b/src/pages/2026/26-08/26-08-09/Clock.tsx
+index 49beb25..cf00fe8 100644
+--- a/src/pages/2026/26-08/26-08-09/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-09/Clock.tsx
+@@ -34,7 +34,7 @@ const ClockComponent =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-10/Clock.module.css b/src/pages/2026/26-08/26-08-10/Clock.module.css
+index 7229609..5bdb16b 100644
+--- a/src/pages/2026/26-08/26-08-10/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-10/Clock.module.css
+@@ -83,19 +83,6 @@
+   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  /* Visually hide content but keep it accessible to screen readers */
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ @keyframes spin-counter-clockwise {
+   from {
+     transform: rotate(0deg);
+diff --git a/src/pages/2026/26-08/26-08-10/Clock.tsx b/src/pages/2026/26-08/26-08-10/Clock.tsx
+index 78c89eb..7e2c257 100644
+--- a/src/pages/2026/26-08/26-08-10/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-10/Clock.tsx
+@@ -67,7 +67,7 @@ const ClockComponent =  () => {
+       </div>
+ 
+       {/* Screen-reader only accessible time */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {timeString}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-08/26-08-11/Clock.module.css b/src/pages/2026/26-08/26-08-11/Clock.module.css
+index 4daa634..1dd0da7 100644
+--- a/src/pages/2026/26-08/26-08-11/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-11/Clock.module.css
+@@ -65,18 +65,6 @@
+   text-align: center;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ /*
+  * On smaller screens (phones), stack the video on top of the clock.
+  */
+@@ -99,4 +87,4 @@
+     /* Add some vertical breathing room on mobile */
+     margin: 4vh 0;
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-08/26-08-11/Clock.tsx b/src/pages/2026/26-08/26-08-11/Clock.tsx
+index 78d08e7..614c82f 100644
+--- a/src/pages/2026/26-08/26-08-11/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-11/Clock.tsx
+@@ -65,7 +65,7 @@ const Clock_26_08_10 =  () => {
+       </time>
+ 
+       {/* Screen-reader only accessible time */}
+-      <span className={styles.srOnly} aria-live="polite">
++      <span className="srOnly" aria-live="polite">
+         {accessibleTime}
+       </span>
+     </main>
+diff --git a/src/pages/2026/26-08/26-08-12/Clock.module.css b/src/pages/2026/26-08/26-08-12/Clock.module.css
+index e24b411..e8288a2 100644
+--- a/src/pages/2026/26-08/26-08-12/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-12/Clock.module.css
+@@ -50,18 +50,6 @@
+   margin: 0 0.05em;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ /* On smaller screens (phones), switch to a 2-column, 3-row grid */
+ @media (max-width: 767px) {
+   .digitalClock {
+@@ -70,4 +58,4 @@
+     grid-template-rows: repeat(3, 1fr);
+     gap: 1vmin; /* Add some space between the boxes */
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-08/26-08-12/Clock.tsx b/src/pages/2026/26-08/26-08-12/Clock.tsx
+index 1d27ee4..29c9ba1 100644
+--- a/src/pages/2026/26-08/26-08-12/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-12/Clock.tsx
+@@ -41,7 +41,7 @@ const ClockComponent =  () => {
+         muted
+         playsInline
+       />
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-13/Clock.module.css b/src/pages/2026/26-08/26-08-13/Clock.module.css
+index 6088b62..e4c7f81 100644
+--- a/src/pages/2026/26-08/26-08-13/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-13/Clock.module.css
+@@ -73,18 +73,6 @@
+   z-index: 10;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border: 0;
+-}
+-
+ @media (prefers-reduced-motion: reduce) {
+   .backgroundVideo {
+     display: none;
+diff --git a/src/pages/2026/26-08/26-08-13/Clock.tsx b/src/pages/2026/26-08/26-08-13/Clock.tsx
+index 2e9a0eb..afb4df6 100644
+--- a/src/pages/2026/26-08/26-08-13/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-13/Clock.tsx
+@@ -29,7 +29,7 @@ const ClockComponent = () => {
+         src={backgroundVideo}
+       />
+       {/* Semantic <time> element for accessibility (Required) */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-14/Clock.module.css b/src/pages/2026/26-08/26-08-14/Clock.module.css
+index 99f449d..9df7a6b 100644
+--- a/src/pages/2026/26-08/26-08-14/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-14/Clock.module.css
+@@ -57,15 +57,3 @@
+ 
+ .separator {
+ }
+-
+-.srOnly {
+-  border: 0;
+-  clip: rect(0 0 0 0);
+-  height: 1px;
+-  margin: -1px;
+-  overflow: hidden;
+-  padding: 0;
+-  position: absolute;
+-  width: 1px;
+-  white-space: nowrap;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-08/26-08-14/Clock.tsx b/src/pages/2026/26-08/26-08-14/Clock.tsx
+index f0ea25d..a6c942d 100644
+--- a/src/pages/2026/26-08/26-08-14/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-14/Clock.tsx
+@@ -60,7 +60,7 @@ const ClockComponent =  () => {
+       </div>
+ 
+       {/* Semantic <time> element for accessibility */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-15/Clock.module.css b/src/pages/2026/26-08/26-08-15/Clock.module.css
+index a68821e..5e56fb2 100644
+--- a/src/pages/2026/26-08/26-08-15/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-15/Clock.module.css
+@@ -13,18 +13,6 @@
+   overflow: hidden;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ .clockContainer {
+   position: relative;
+   width: 100vmin;
+diff --git a/src/pages/2026/26-08/26-08-15/Clock.tsx b/src/pages/2026/26-08/26-08-15/Clock.tsx
+index 3979f41..9222046 100644
+--- a/src/pages/2026/26-08/26-08-15/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-15/Clock.tsx
+@@ -50,7 +50,7 @@ const ClockComponent =  () => {
+   return (
+     <main className={styles.container}>
+       {/* Semantic <time> element for accessibility */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-16/Clock.module.css b/src/pages/2026/26-08/26-08-16/Clock.module.css
+index 683de22..609a195 100644
+--- a/src/pages/2026/26-08/26-08-16/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-16/Clock.module.css
+@@ -54,17 +54,6 @@
+ }
+ 
+ /* --- Accessibility --- */
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+ 
+ /* --- Mobile Styles --- */
+ @media (max-width: 768px) {
+@@ -83,4 +72,4 @@
+   font-family: 'ClockFont_26_08_16', var(--font-oxanium, monospace);
+   font-size: 8vh;  display: flex;
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-08/26-08-16/Clock.tsx b/src/pages/2026/26-08/26-08-16/Clock.tsx
+index 945c3cf..6f38d7e 100644
+--- a/src/pages/2026/26-08/26-08-16/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-16/Clock.tsx
+@@ -36,7 +36,7 @@ const ClockComponent =  () => {
+   return (
+     <main className={styles.container}>
+       {/* Accessible time for screen readers */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-17/Clock.module.css b/src/pages/2026/26-08/26-08-17/Clock.module.css
+index d207a8c..94b4493 100644
+--- a/src/pages/2026/26-08/26-08-17/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-17/Clock.module.css
+@@ -60,18 +60,6 @@
+ }
+ 
+ /* Standard from ARCHITECTURE.md for accessible, visually-hidden elements */
+-.srOnly {
+-  border: 0;
+-  clip: rect(0 0 0 0);
+-  height: 1px;
+-  margin: -1px;
+-  overflow: hidden;
+-  padding: 0;
+-  position: absolute;
+-  width: 1px;
+-  white-space: nowrap;
+-  word-wrap: normal;
+-}
+ 
+ .digitalClock {
+   position: absolute;
+@@ -80,4 +68,4 @@
+   font-family: 'Cardo', serif;
+   font-size: 3vh;
+   z-index: 10;
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-08/26-08-17/Clock.tsx b/src/pages/2026/26-08/26-08-17/Clock.tsx
+index c953376..972953d 100644
+--- a/src/pages/2026/26-08/26-08-17/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-17/Clock.tsx
+@@ -174,7 +174,7 @@ const ClockComponent =  () => {
+ 
+   return (
+     <main className={styles.container}>
+-      <time dateTime={isoTime} className={styles.srOnly}>
++      <time dateTime={isoTime} className="srOnly">
+         {displayTime}
+       </time>
+       <canvas ref={canvasRef} className={styles.canvas} />
+diff --git a/src/pages/2026/26-08/26-08-18/Clock.module.css b/src/pages/2026/26-08/26-08-18/Clock.module.css
+index 3894a6c..d4b2668 100644
+--- a/src/pages/2026/26-08/26-08-18/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-18/Clock.module.css
+@@ -43,18 +43,6 @@
+   animation: pulseOpacity 20s ease-in-out infinite;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ .digitalClock {
+   position: absolute;
+   left: 0;
+@@ -97,4 +85,4 @@
+   50% {
+     opacity: 0;
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-08/26-08-18/Clock.tsx b/src/pages/2026/26-08/26-08-18/Clock.tsx
+index 3740765..e361205 100644
+--- a/src/pages/2026/26-08/26-08-18/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-18/Clock.tsx
+@@ -44,7 +44,7 @@ const ClockComponent =  () => {
+   return (
+     <main className={styles.container}>
+       {/* Semantic <time> element for accessibility (Required) */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-19/Clock.module.css b/src/pages/2026/26-08/26-08-19/Clock.module.css
+index f007cf7..0407a8c 100644
+--- a/src/pages/2026/26-08/26-08-19/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-19/Clock.module.css
+@@ -159,14 +159,3 @@
+ /* --------------------------------------------------------------------------
+    Screen-reader content
+    -------------------------------------------------------------------------- */
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-08/26-08-19/Clock.tsx b/src/pages/2026/26-08/26-08-19/Clock.tsx
+index 7bdfa3b..6247c75 100644
+--- a/src/pages/2026/26-08/26-08-19/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-19/Clock.tsx
+@@ -51,7 +51,7 @@ const AnalogClockComponent = () => {
+       <div className={styles.wall} style={{ backgroundImage: `url(${wallImage})` }} aria-hidden="true" />
+       <div className={styles.map} style={{ backgroundImage: `url(${backgroundImage})` }} aria-hidden="true" />
+       <SRTime time={time} />
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+       <div className={styles.clockFace}>
+diff --git a/src/pages/2026/26-08/26-08-20/Clock.module.css b/src/pages/2026/26-08/26-08-20/Clock.module.css
+index bc852cc..9232051 100644
+--- a/src/pages/2026/26-08/26-08-20/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-20/Clock.module.css
+@@ -42,15 +42,3 @@
+   width: 1.7ch;
+   text-align: center;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-  padding: 0;
+-  margin: -1px;
+-}
+diff --git a/src/pages/2026/26-08/26-08-20/Clock.tsx b/src/pages/2026/26-08/26-08-20/Clock.tsx
+index bbcb84b..f905856 100644
+--- a/src/pages/2026/26-08/26-08-20/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-20/Clock.tsx
+@@ -42,7 +42,7 @@ const ClockComponent = () => {
+         </video>
+       </div>
+ 
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-21/Clock.module.css b/src/pages/2026/26-08/26-08-21/Clock.module.css
+index 772039d..0427acc 100644
+--- a/src/pages/2026/26-08/26-08-21/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-21/Clock.module.css
+@@ -55,14 +55,3 @@
+ .centerDot {
+   fill: #000;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-}
+diff --git a/src/pages/2026/26-08/26-08-21/Clock.tsx b/src/pages/2026/26-08/26-08-21/Clock.tsx
+index 014274d..48e94be 100644
+--- a/src/pages/2026/26-08/26-08-21/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-21/Clock.tsx
+@@ -97,7 +97,7 @@ const Clock =  () => {
+       role="img"
+       aria-label={`Analog clock showing ${timeLabel}`}
+     >
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-22/Clock.module.css b/src/pages/2026/26-08/26-08-22/Clock.module.css
+index a660ea1..3da4202 100644
+--- a/src/pages/2026/26-08/26-08-22/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-22/Clock.module.css
+@@ -51,15 +51,3 @@
+ .digitWrapper {
+   text-align: center;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+diff --git a/src/pages/2026/26-08/26-08-22/Clock.tsx b/src/pages/2026/26-08/26-08-22/Clock.tsx
+index 22fc8b8..8ec9e68 100644
+--- a/src/pages/2026/26-08/26-08-22/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-22/Clock.tsx
+@@ -114,7 +114,7 @@ const Clock = () => {
+         <div className={styles.digitWrapper}>{formattedTime.seconds[1]}</div>
+       </div>
+ 
+-      <time dateTime={formattedTime.isoString} className={styles.srOnly}>
++      <time dateTime={formattedTime.isoString} className="srOnly">
+         {formattedTime.displayString}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-08/26-08-23/Clock.module.css b/src/pages/2026/26-08/26-08-23/Clock.module.css
+index 4aa45f9..a4b778d 100644
+--- a/src/pages/2026/26-08/26-08-23/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-23/Clock.module.css
+@@ -16,15 +16,3 @@
+   height: 100%;
+   cursor: pointer;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+diff --git a/src/pages/2026/26-08/26-08-23/Clock.tsx b/src/pages/2026/26-08/26-08-23/Clock.tsx
+index f8c19bb..dfea429 100644
+--- a/src/pages/2026/26-08/26-08-23/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-23/Clock.tsx
+@@ -529,7 +529,7 @@ export const DissolvingDiffusionClock =  () => {
+         onClick={initSimulation}
+         className={styles.clockCanvas}
+       />
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-08/26-08-24/Clock.module.css b/src/pages/2026/26-08/26-08-24/Clock.module.css
+index 291049b..6ea441a 100644
+--- a/src/pages/2026/26-08/26-08-24/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-24/Clock.module.css
+@@ -53,15 +53,3 @@
+   width: 100%;
+   height: 100%;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+diff --git a/src/pages/2026/26-08/26-08-24/Clock.tsx b/src/pages/2026/26-08/26-08-24/Clock.tsx
+index 52589d7..2332d75 100644
+--- a/src/pages/2026/26-08/26-08-24/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-24/Clock.tsx
+@@ -330,7 +330,7 @@ const Clock =  () => {
+         <source src={soapVideo} type="video/webm" />
+       </video>
+       <canvas ref={canvasRef} className={styles.clockCanvas} />
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-08/26-08-25/Clock.module.css b/src/pages/2026/26-08/26-08-25/Clock.module.css
+index a3454d8..1815610 100644
+--- a/src/pages/2026/26-08/26-08-25/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-25/Clock.module.css
+@@ -73,15 +73,3 @@
+     bottom: 5vh;
+   }
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border: 0;
+-}
+diff --git a/src/pages/2026/26-08/26-08-25/Clock.tsx b/src/pages/2026/26-08/26-08-25/Clock.tsx
+index 195791b..55e8333 100644
+--- a/src/pages/2026/26-08/26-08-25/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-25/Clock.tsx
+@@ -43,7 +43,7 @@ const Clock = () => {
+         aria-hidden="true"
+       />
+ 
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-26/Clock.module.css b/src/pages/2026/26-08/26-08-26/Clock.module.css
+index 76950a0..e21dc81 100644
+--- a/src/pages/2026/26-08/26-08-26/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-26/Clock.module.css
+@@ -79,15 +79,3 @@
+   width: 0.3vh;
+   height: 90%;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-  padding: 0;
+-  margin: -1px;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-08/26-08-26/Clock.tsx b/src/pages/2026/26-08/26-08-26/Clock.tsx
+index aa9fc99..d0c729b 100644
+--- a/src/pages/2026/26-08/26-08-26/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-26/Clock.tsx
+@@ -39,7 +39,7 @@ const ClockComponent = () => {
+         ))}
+       </div>
+ 
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+ 
+diff --git a/src/pages/2026/26-08/26-08-27/Clock.module.css b/src/pages/2026/26-08/26-08-27/Clock.module.css
+index fc83867..27ace26 100644
+--- a/src/pages/2026/26-08/26-08-27/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-27/Clock.module.css
+@@ -61,15 +61,3 @@
+   text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+   filter: contrast(1.3) brightness(1.2);
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+diff --git a/src/pages/2026/26-08/26-08-28/Clock.module.css b/src/pages/2026/26-08/26-08-28/Clock.module.css
+index d3220ff..042bdbd 100644
+--- a/src/pages/2026/26-08/26-08-28/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-28/Clock.module.css
+@@ -39,15 +39,3 @@
+   height: 100%;
+   display: block;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-08/26-08-28/Clock.tsx b/src/pages/2026/26-08/26-08-28/Clock.tsx
+index 8f9792d..aac77f2 100644
+--- a/src/pages/2026/26-08/26-08-28/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-28/Clock.tsx
+@@ -41,7 +41,7 @@ const InfiniteMaze = () => {
+         </svg>
+       </div>
+       
+-      <time dateTime={dateTime} className={styles.srOnly}>
++      <time dateTime={dateTime} className="srOnly">
+         {timeString}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-08/26-08-29/Clock.module.css b/src/pages/2026/26-08/26-08-29/Clock.module.css
+index 8d4b68f..be7dea7 100644
+--- a/src/pages/2026/26-08/26-08-29/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-29/Clock.module.css
+@@ -79,18 +79,6 @@
+   text-align: center;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border: 0;
+-}
+-
+ .spin {
+   animation: spin 120s linear infinite;
+   transform-origin: 50px 50px;
+diff --git a/src/pages/2026/26-08/26-08-29/Clock.tsx b/src/pages/2026/26-08/26-08-29/Clock.tsx
+index b603b6a..1f7b684 100644
+--- a/src/pages/2026/26-08/26-08-29/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-29/Clock.tsx
+@@ -88,7 +88,7 @@ const Clock = () => {
+         <div className={styles.timeUnit}>{toPhoenician(parseInt(seconds, 10))}</div>
+       </div>
+ 
+-      <time dateTime={isoTime} className={styles.srOnly}>
++      <time dateTime={isoTime} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-08/26-08-31/Clock.module.css b/src/pages/2026/26-08/26-08-31/Clock.module.css
+index 3a73aa7..d9b4960 100644
+--- a/src/pages/2026/26-08/26-08-31/Clock.module.css
++++ b/src/pages/2026/26-08/26-08-31/Clock.module.css
+@@ -52,18 +52,6 @@
+   vertical-align: middle;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ @media (max-width: 767px) and (orientation: portrait) {
+   .container {
+     flex-direction: column;
+@@ -79,4 +67,4 @@
+   .digitalClock {
+     margin: 0;
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-08/26-08-31/Clock.tsx b/src/pages/2026/26-08/26-08-31/Clock.tsx
+index 52822b7..fc99a8a 100644
+--- a/src/pages/2026/26-08/26-08-31/Clock.tsx
++++ b/src/pages/2026/26-08/26-08-31/Clock.tsx
+@@ -85,7 +85,7 @@ const Clock_26_08_10 = () => {
+       </time>
+ 
+       {/* Screen-reader accessible time */}
+-      <span className={styles.srOnly} aria-live="polite">
++      <span className="srOnly" aria-live="polite">
+         {accessibleTime}
+       </span>
+     </main>
+diff --git a/src/pages/2026/26-09/26-09-01/Clock.module.css b/src/pages/2026/26-09/26-09-01/Clock.module.css
+index f3f1569..db6a7ea 100644
+--- a/src/pages/2026/26-09/26-09-01/Clock.module.css
++++ b/src/pages/2026/26-09/26-09-01/Clock.module.css
+@@ -30,20 +30,8 @@
+   height: 100%;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ @media (max-width: 767px) {
+   .videoBackground {
+     transform: scaleX(-1) scale(1.4);
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-09/26-09-01/Clock.tsx b/src/pages/2026/26-09/26-09-01/Clock.tsx
+index 292b578..eb2a988 100644
+--- a/src/pages/2026/26-09/26-09-01/Clock.tsx
++++ b/src/pages/2026/26-09/26-09-01/Clock.tsx
+@@ -297,7 +297,7 @@ const Clock_26_09_01 = () => {
+                 className={styles.videoBackground}
+             />
+             <div ref={mountRef} className={styles.canvasMount} />
+-            <time dateTime={time.toISOString()} className={styles.srOnly}>
++            <time dateTime={time.toISOString()} className="srOnly">
+                 {accessibleTime}
+             </time>
+         </main>
+diff --git a/src/pages/2026/26-09/26-09-02/Clock.module.css b/src/pages/2026/26-09/26-09-02/Clock.module.css
+index 692e1ae..963cc19 100644
+--- a/src/pages/2026/26-09/26-09-02/Clock.module.css
++++ b/src/pages/2026/26-09/26-09-02/Clock.module.css
+@@ -86,15 +86,3 @@
+   pointer-events: none;
+   z-index: 8;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-09/26-09-02/Clock.tsx b/src/pages/2026/26-09/26-09-02/Clock.tsx
+index 76a9287..c92bb2a 100644
+--- a/src/pages/2026/26-09/26-09-02/Clock.tsx
++++ b/src/pages/2026/26-09/26-09-02/Clock.tsx
+@@ -136,7 +136,7 @@ const Clock_26_09_03 = () => {
+         <div className={styles.centerDot} />
+       </div>
+ 
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {time.toLocaleTimeString()}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-09/26-09-03/Clock.module.css b/src/pages/2026/26-09/26-09-03/Clock.module.css
+index 2b6c1b3..7307cca 100644
+--- a/src/pages/2026/26-09/26-09-03/Clock.module.css
++++ b/src/pages/2026/26-09/26-09-03/Clock.module.css
+@@ -48,15 +48,3 @@
+   color: #d4a27b;
+   text-shadow: -1px -1px 0 #000, 1px 1px 0 #fff;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-09/26-09-03/Clock.tsx b/src/pages/2026/26-09/26-09-03/Clock.tsx
+index 3241e09..a615ee4 100644
+--- a/src/pages/2026/26-09/26-09-03/Clock.tsx
++++ b/src/pages/2026/26-09/26-09-03/Clock.tsx
+@@ -59,7 +59,7 @@ const Clock_26_09_02 = () => {
+         <span className={styles.digitBox}>{centiseconds[1]}</span>
+       </div>
+ 
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {hours}:{minutes}:{seconds}.{centiseconds}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-09/26-09-04/Clock.module.css b/src/pages/2026/26-09/26-09-04/Clock.module.css
+index 9d85297..77f20b0 100644
+--- a/src/pages/2026/26-09/26-09-04/Clock.module.css
++++ b/src/pages/2026/26-09/26-09-04/Clock.module.css
+@@ -63,15 +63,3 @@
+   object-fit: contain;
+   display: block;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-09/26-09-04/Clock.tsx b/src/pages/2026/26-09/26-09-04/Clock.tsx
+index b65affd..2859e79 100644
+--- a/src/pages/2026/26-09/26-09-04/Clock.tsx
++++ b/src/pages/2026/26-09/26-09-04/Clock.tsx
+@@ -63,7 +63,7 @@ const Clock_26_09_04 = () => {
+       />
+ 
+       {/* Screen-reader-only time */}
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {fullTimeString}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-09/26-09-05/Clock.module.css b/src/pages/2026/26-09/26-09-05/Clock.module.css
+index ed462d6..38f33d3 100644
+--- a/src/pages/2026/26-09/26-09-05/Clock.module.css
++++ b/src/pages/2026/26-09/26-09-05/Clock.module.css
+@@ -213,21 +213,3 @@
+ /* -------------------------------------------------------------------------- */
+ /* Screen-reader only                                                         */
+ /* -------------------------------------------------------------------------- */
+-
+-.srOnly {
+-  position: absolute;
+-
+-  width: 1px;
+-  height: 1px;
+-
+-  padding: 0;
+-  margin: -1px;
+-
+-  overflow: hidden;
+-
+-  clip: rect(0, 0, 0, 0);
+-
+-  white-space: nowrap;
+-
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-09/26-09-05/Clock.tsx b/src/pages/2026/26-09/26-09-05/Clock.tsx
+index 40f0dc3..a7ad8bb 100644
+--- a/src/pages/2026/26-09/26-09-05/Clock.tsx
++++ b/src/pages/2026/26-09/26-09-05/Clock.tsx
+@@ -215,7 +215,7 @@ const Clock_26_09_05 = () => {
+ 
+       <time
+         dateTime={time.toISOString()}
+-        className={styles.srOnly}
++        className="srOnly"
+       >
+         {time.toLocaleTimeString()}
+       </time>
+diff --git a/src/pages/2026/26-09/26-09-06/Clock.module.css b/src/pages/2026/26-09/26-09-06/Clock.module.css
+index 6920017..8bd7980 100644
+--- a/src/pages/2026/26-09/26-09-06/Clock.module.css
++++ b/src/pages/2026/26-09/26-09-06/Clock.module.css
+@@ -159,21 +159,3 @@
+ }
+ 
+ /* Screen Reader Only */
+-
+-.srOnly {
+-  position: absolute;
+-
+-  width: 1px;
+-  height: 1px;
+-
+-  padding: 0;
+-  margin: -1px;
+-
+-  overflow: hidden;
+-
+-  clip: rect(0, 0, 0, 0);
+-
+-  white-space: nowrap;
+-
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-09/26-09-07/Clock.module.css b/src/pages/2026/26-09/26-09-07/Clock.module.css
+index 51552c4..5f1766e 100644
+--- a/src/pages/2026/26-09/26-09-07/Clock.module.css
++++ b/src/pages/2026/26-09/26-09-07/Clock.module.css
+@@ -45,18 +45,6 @@
+   flex-shrink: 0;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ .falling {
+   animation: fallOut 12s linear forwards;
+   animation-delay: 5s;
+@@ -72,4 +60,4 @@
+     transform: translateY(100dvh);
+     opacity: 0.1;
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-09/26-09-07/Clock.tsx b/src/pages/2026/26-09/26-09-07/Clock.tsx
+index 73333e2..9f9220a 100644
+--- a/src/pages/2026/26-09/26-09-07/Clock.tsx
++++ b/src/pages/2026/26-09/26-09-07/Clock.tsx
+@@ -93,7 +93,7 @@ const Clock_26_09_07 = () => {
+         ))}
+       </div>
+ 
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {fullTimeString}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-09/26-09-08/Clock.module.css b/src/pages/2026/26-09/26-09-08/Clock.module.css
+index 77056d9..9920f3f 100644
+--- a/src/pages/2026/26-09/26-09-08/Clock.module.css
++++ b/src/pages/2026/26-09/26-09-08/Clock.module.css
+@@ -95,15 +95,3 @@
+   transform: translate(-50%, -50%);
+   z-index: 3;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-09/26-09-11/Clock.module.css b/src/pages/2026/26-09/26-09-11/Clock.module.css
+index 3c2fae9..0e8d6bb 100644
+--- a/src/pages/2026/26-09/26-09-11/Clock.module.css
++++ b/src/pages/2026/26-09/26-09-11/Clock.module.css
+@@ -65,18 +65,6 @@ body {
+   flex-shrink: 0;
+ }
+ 
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+-
+ /* 
+   Timeline (7 s total):
+   0%–14.3%   (0–1 s)   : centered, holding
+@@ -107,4 +95,4 @@ body {
+   100% {
+     transform: translate(-50%, -50%);
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/src/pages/2026/26-09/26-09-11/Clock.tsx b/src/pages/2026/26-09/26-09-11/Clock.tsx
+index be00125..407d238 100644
+--- a/src/pages/2026/26-09/26-09-11/Clock.tsx
++++ b/src/pages/2026/26-09/26-09-11/Clock.tsx
+@@ -50,7 +50,7 @@ const Clock_26_09_07 = () => {
+         ))}
+       </div>
+ 
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {fullTimeString}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-09/26-09-12/Clock.module.css b/src/pages/2026/26-09/26-09-12/Clock.module.css
+index da52550..b8edd7d 100644
+--- a/src/pages/2026/26-09/26-09-12/Clock.module.css
++++ b/src/pages/2026/26-09/26-09-12/Clock.module.css
+@@ -31,7 +31,6 @@ css .container {
+   pointer-events: none;
+ }
+ 
+-
+ /*
+  * Dedicated hand layer.
+  *
+@@ -137,20 +136,3 @@ css .container {
+ /*
+  * Screen-reader-only utility
+  */
+-.srOnly {
+-  position: absolute;
+-
+-  width: 1px;
+-  height: 1px;
+-
+-  padding: 0;
+-  margin: -1px;
+-
+-  overflow: hidden;
+-
+-  clip: rect(0, 0, 0, 0);
+-
+-  white-space: nowrap;
+-
+-  border: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-09/26-09-13/Clock.module.css b/src/pages/2026/26-09/26-09-13/Clock.module.css
+index 04f9c5d..b776f30 100644
+--- a/src/pages/2026/26-09/26-09-13/Clock.module.css
++++ b/src/pages/2026/26-09/26-09-13/Clock.module.css
+@@ -62,19 +62,3 @@ css .container {
+ 
+   flex: 0 0 0.4em;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-
+-  width: 1px;
+-  height: 1px;
+-
+-  padding: 0;
+-  margin: -1px;
+-
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-
+-  white-space: nowrap;
+-  border: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-09/26-09-13/Clock.tsx b/src/pages/2026/26-09/26-09-13/Clock.tsx
+index 38084ec..5a3cc3f 100644
+--- a/src/pages/2026/26-09/26-09-13/Clock.tsx
++++ b/src/pages/2026/26-09/26-09-13/Clock.tsx
+@@ -57,7 +57,7 @@ const time = useSmoothClock(50);
+ 
+       <time
+         dateTime={time.toISOString()}
+-        className={styles.srOnly}
++        className="srOnly"
+       >
+         {`${hours}:${minutes}:${seconds}.${milliseconds}`}
+       </time>
+diff --git a/src/pages/2026/26-09/26-09-18/Clock.module.css b/src/pages/2026/26-09/26-09-18/Clock.module.css
+index 152906e..43e1415 100644
+--- a/src/pages/2026/26-09/26-09-18/Clock.module.css
++++ b/src/pages/2026/26-09/26-09-18/Clock.module.css
+@@ -49,8 +49,6 @@
+   filter: contrast(90%) brightness(110%);
+ }
+ 
+-
+-
+ @media (max-width: 768px) {
+   .digitalDisplay {
+     display: flex;
+@@ -92,16 +90,3 @@
+     object-position: center;
+   }
+ }
+-
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/pages/2026/26-09/26-09-19/Clock.module.css b/src/pages/2026/26-09/26-09-19/Clock.module.css
+index 0565c89..03f5a29 100644
+--- a/src/pages/2026/26-09/26-09-19/Clock.module.css
++++ b/src/pages/2026/26-09/26-09-19/Clock.module.css
+@@ -46,15 +46,3 @@
+   color: #9e9994;
+   text-shadow: -1px -1px 0 #000, 1px 1px 0 #fff;
+ }
+-
+-.srOnly {
+-  position: absolute;
+-  width: 1px;
+-  height: 1px;
+-  padding: 0;
+-  margin: -1px;
+-  overflow: hidden;
+-  clip: rect(0, 0, 0, 0);
+-  white-space: nowrap;
+-  border-width: 0;
+-}
+diff --git a/src/pages/2026/26-09/26-09-19/Clock.tsx b/src/pages/2026/26-09/26-09-19/Clock.tsx
+index 1df41ef..6562227 100644
+--- a/src/pages/2026/26-09/26-09-19/Clock.tsx
++++ b/src/pages/2026/26-09/26-09-19/Clock.tsx
+@@ -61,7 +61,7 @@ const Clock = () => {
+         ))}
+       </div>
+ 
+-      <time dateTime={time.toISOString()} className={styles.srOnly}>
++      <time dateTime={time.toISOString()} className="srOnly">
+         {hours}:{minutes}:{seconds}.{centiseconds}
+       </time>
+     </main>
+diff --git a/src/pages/2026/26-09/26-09-20/Clock.module.css b/src/pages/2026/26-09/26-09-20/Clock.module.css
+index 51989ec..8152b31 100644
+--- a/src/pages/2026/26-09/26-09-20/Clock.module.css
++++ b/src/pages/2026/26-09/26-09-20/Clock.module.css
+@@ -163,21 +163,3 @@ opacity: 0.5;
+ }
+ 
+ /* Screen Reader Only */
+-
+-.srOnly {
+-  position: absolute;
+-
+-  width: 1px;
+-  height: 1px;
+-
+-  padding: 0;
+-  margin: -1px;
+-
+-  overflow: hidden;
+-
+-  clip: rect(0, 0, 0, 0);
+-
+-  white-space: nowrap;
+-
+-  border-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/styles/globals.css b/src/styles/globals.css
+index 3694f77..9fe2659 100644
+--- a/src/styles/globals.css
++++ b/src/styles/globals.css
+@@ -35,4 +35,21 @@ html,
+ body {
+   width: 100%;
+   overflow-x: hidden;
++}
++
++/*
++ * Shared "screen-reader only" utility.
++ * Used by every clock's hidden accessibility <time> element.
++ * Defined once here so it can never silently go missing per-clock again.
++ */
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
+ }
+\ No newline at end of file
