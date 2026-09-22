@@ -1,120 +1,55 @@
-import React, { useEffect, useState } from 'react';
-import bgImage from '@/assets/images/26_images/26-01/26-01-12/lala.jpg';
-import customFont_2025_1210 from '@/assets/fonts/26fonts/26-01-12-26-01-19-lala.ttf?url';
+import SRTime from '@/components/SRTime';
+import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
+
+import bgImage from '@/assets/images/26_images/26-01/26-01-12/lala.jpg';
+import customFont_2025_1210 from '@/assets/fonts/26fonts/26-01-12-26-01-19-lala.ttf?url';
+
+import styles from './Clock.module.css';
+
 export const assets = [bgImage, customFont_2025_1210];
 
-const elementColor = '#885B5D';
+const fontConfig: FontConfig = {
+  fontFamily: 'MuybridgeFont',
+  fontUrl: customFont_2025_1210,
+};
 
-const digitBoxStyle = {
-  position: 'relative',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontFamily: 'MuybridgeFont, serif',
-  fontSize: '8dvh',
-  color: elementColor,
-  textShadow: '0.5px 0.5px 0px white, -0.5px -0.5px 0px white',
-  flexShrink: 1,
-  minWidth: 0,
-  overflow: 'hidden',
-} as const;
+const Clock_26_01_12 = () => {
+  useSuspenseFontLoader([fontConfig]);
 
-export default function DigitalClock() {
-  const [time, setTime] = useState(new Date());
-  const [fontLoaded, setFontLoaded] = useState<boolean>(false);
-  const [bgReady, setBgReady] = useState<boolean>(false);
-
-  useEffect(() => {
-      setTime(time);
-    }, [time]);
-
-  // Preload background to avoid flash
-  useEffect(() => {
-    const img = new Image();
-    const done = () => setBgReady(true);
-    img.onload = done;
-    img.onerror = done;
-    img.src = bgImage;
-    const timeout = setTimeout(done, 1200);
-    return () => clearTimeout(timeout);
-  }, []);
-
-  const containerStyle = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    width: '100%',
-    height: '100%',
-    minHeight: '-webkit-fill-available',
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-    backgroundColor: '#090909FF',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-    touchAction: 'manipulation',
-    WebkitOverflowScrolling: 'touch',
-    overscrollBehavior: 'none',
-    opacity: fontLoaded && bgReady ? 1 : 0,
-    visibility: fontLoaded && bgReady ? 'visible' : 'hidden',
-    transition: 'opacity 0.3s ease-in',
-  };
-
-  const clockContainerStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: 'MuybridgeFont, serif',
-    width: '100%',
-    maxWidth: '100vw',
-    boxSizing: 'border-box',
-    transform: 'scale(0.9)',
-    position: 'absolute',
-    bottom: '33dvh',
-    left: -7,
-    right: 0,
-  };
+  const time = useSmoothClock(1000);
 
   const hours = String(time.getHours()).padStart(2, '0');
   const minutes = String(time.getMinutes()).padStart(2, '0');
-  const seconds = String(time.getSeconds()).padStart(2, '0');
+
+  const containerStyle: React.CSSProperties = {
+    '--bg-image': `url(${bgImage})`,
+  };
 
   return (
-    <div style={containerStyle}>
-      <style>{`
-        @font-face {
-          font-family: 'MuybridgeFont';
-          src: url(${customFont_2025_1210}) format('opentype');
-          font-display: block;
-        }
-        @media screen and (-webkit-min-device-pixel-ratio: 0) {
-          * {
-            -webkit-text-size-adjust: 100%;
-            text-size-adjust: 100%;
-            -moz-text-size-adjust: 100%;
-          }
-        }
-      `}</style>
-      <div style={clockContainerStyle}>
-        <div style={digitBoxStyle} aria-hidden="true">
+    <main className={styles.container} style={containerStyle}>
+      <div className={styles.clockContainer}>
+        <div className={styles.digitBox} aria-hidden="true">
           {hours[0]}
         </div>
-        <div style={digitBoxStyle} aria-hidden="true">
+        <div className={styles.digitBox} aria-hidden="true">
           {hours[1]}
         </div>
-        <div style={digitBoxStyle} aria-hidden="true">
+        <div className={styles.digitBox} aria-hidden="true">
           {minutes[0]}
         </div>
-        <div style={digitBoxStyle} aria-hidden="true">
+        <div className={styles.digitBox} aria-hidden="true">
           {minutes[1]}
         </div>
       </div>
-    </div>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
+    </main>
   );
-}
+};
+
+Clock_26_01_12.displayName = 'Clock_26_01_12';
+
+export default Clock_26_01_12;
