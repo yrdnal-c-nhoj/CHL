@@ -1,0 +1,175 @@
+.mainContainer {
+  width: 100vw;
+  height: 100dvh;
+  background-color: #112D1E;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.digitalGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+.digitsContainer {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  gap: 1vw;
+}
+
+.digitBox {
+  font-family: 'PlatFont', sans-serif;
+  font-size: 24vw;
+  color: #ACA99F;
+  text-shadow: 0.9vw 0px 0px #B67423, -0.9vw 0px 0px #B67423,
+               0px 0.9vw 0px #B67423, 0px -0.9vw 0px #B67423;
+  line-height: 1.9;
+  text-align: center;
+  flex: 1;
+}
+
+.ampmBox {
+  font-family: 'PlatFont', sans-serif;
+  font-size: 18vw;
+  color: #ACA99F;
+  text-shadow: 0.9vw 0px 0px #B67423, -0.9vw 0px 0px #B67423,
+               0px 0.9vw 0px #B67423, 0px -0.9vw 0px #B67423;
+  align-self: flex-start;
+  margin-left: 5vw;
+  margin-top: -1dvh;
+}
+
+.analogSection {
+  margin-top: 6dvh;
+  perspective: 1200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clockFace {
+  width: 35dvh;
+  height: 35dvh;
+  border-radius: 50%;
+  background-color: #F1E9C2;
+  border: 1.5dvh solid #EAD534;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotateX(-25deg) rotateY(40deg);
+  transform-style: preserve-3d;
+}
+
+.tickMark {
+  position: absolute;
+  border-radius: 1dvh;
+  top: 0.5dvh;
+  left: calc(50% - 0.4dvh);
+  transform-origin: 50% 17.25dvh;
+}
+
+.tickMain {
+  width: 1.2dvh;
+  height: 4dvh;
+  background-color: #B67423;
+  left: calc(50% - 0.6dvh);
+}
+
+.tickMinor {
+  width: 0.8dvh;
+  height: 2dvh;
+  background-color: #FFFFFF;
+}
+
+.handBase {
+  position: absolute;
+  bottom: 50%;
+  transform-origin: bottom center;
+  border-radius: 1dvh;
+  z-index: 10;
+}
+
+.hourHand {
+  height: 22%;
+  width: 1.4dvh;
+  background-color: #2D312D;
+}
+
+.minuteHand {
+  height: 35%;
+  width: 0.8dvh;
+  background-color: #202220;
+}
+
+.secondHand {
+  height: 42%;
+  width: 0.4dvh;
+  background-color: #B67423;
+  transition: transform 0.1s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.centerDot {
+  width: 2dvh;
+  height: 2dvh;
+  background-color: #4F594F;
+  border-radius: 50%;
+  z-index: 15;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (min-width: 600px) {
+  .mainContainer {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5vw;
+  }
+  .digitalGroup { width: auto; align-items: flex-start; }
+  .digitsContainer { width: auto; gap: 2vw; }
+  .digitBox { font-size: 20dvh; flex: none; }
+  .ampmBox { font-size: 12dvh; margin-left: 0; }
+  .analogSection { position: absolute; bottom: 10dvh; right: 10dvh; margin-top: 0; }
+  .clockFace { width: 55dvh; height: 55dvh; }
+
+  .tickMainDesktop {
+    width: 1.8dvh !important;
+    height: 5dvh !important;
+    left: calc(50% - 0.9dvh) !important;
+    background-color: #FF8C00 !important;
+    transform-origin: 50% 27.25dvh !important;
+  }
+
+  .handBaseDesktop {
+    transform-origin: bottom center !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .secondHand {
+    transition: none;
+  }
+  .clockFace {
+    transform: none;
+  }
+}

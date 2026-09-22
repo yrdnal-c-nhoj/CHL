@@ -1,33 +1,23 @@
-import React, { useState, useEffect, useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClock } from '@/utils/hooks';
-import platFont from '@/assets/fonts/26fonts/26-02-19-plat.ttf';
+import { useMemo } from 'react';
+import type { FontConfig } from '@/types/clock';
+
+import styles from './Clock.module.css';
+
+import platFont from '@/assets/fonts/26fonts/26-02-19-plat.ttf?url';
+
 export const assets = [platFont];
 
+const fontConfig: FontConfig = {
+  fontFamily: 'PlatFont',
+  fontUrl: platFont,
+};
 
-const ImageDisplay =  () => {
+const Clock_26_02_19 = () => {
+  useSuspenseFontLoader([fontConfig]);
+
   const time = useClock();
-  const [showContent, setShowContent] = useState(false);
-
-  const fontConfigs = useMemo(
-    () => [
-      {
-        fontFamily: 'PlatFont',
-        fontUrl: platFont,
-        options: {
-          weight: 'normal',
-          style: 'normal',
-        },
-      },
-    ],
-    [],
-  );
-
-  useSuspenseFontLoader(fontConfigs);
-
-  useEffect(() => {
-    setShowContent(true);
-  }, []);
 
   const mins = time.getMinutes();
   const hrs = time.getHours();
@@ -36,230 +26,64 @@ const ImageDisplay =  () => {
   const hrDegrees = (hrs % 12) * 30 + mins * 0.5;
   const secDegrees = secs * 6;
 
-  const timeString = time.toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  });
+  const timeString = useMemo(
+    () => time.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    }),
+    [time],
+  );
 
   const [rawTime, amPm] = timeString.split(' ');
   const digits = rawTime.replace(/:/g, '').split('');
   const spacedAmPm = amPm.split('').join(' ');
 
   return (
-    <>
-      <style>{`
-        /* BASE LAYOUT */
-        .main-container {
-          width: 100vw;
-          height: 100dvh;
-          background-color: #112D1E;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          padding: 0;
-          margin: 0;
-          overflow: hidden;
-          box-sizing: border-box;
-        }
-
-        /* DIGITAL SECTION */
-        .digital-group {
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          align-items: center; /* Centers the digits-container */
-          z-index: 10;
-        }
-
-        .digits-container {
-          display: flex;
-          justify-content: center;
-          width: 100vw; /* Almost full width to maximize digit size */
-          gap: 1vw;
-        }
-
-        .digit-box {
-          font-family: 'PlatFont', sans-serif;
-          /* 24vw ensures 4 digits + gaps stay within 100vw */
-          font-size: 24vw; 
-          color: #ACA99F;
-          text-shadow: 0.9vw 0px 0px #B67423, -0.9vw 0px 0px #B67423, 
-                       0px 0.9vw 0px #B67423, 0px -0.9vw 0px #B67423;
-          line-height: 1.9;
-          text-align: center;
-          flex: 1; /* Allows digits to grow into available space */
-        }
-
-        .ampm-box {
-          font-family: 'PlatFont', sans-serif;
-          font-size: 18vw; /* Smaller than digits */
-          color: #ACA99F;
-          text-shadow: 0.9vw 0px 0px #B67423, -0.9vw 0px 0px #B67423, 
-                       0px 0.9vw 0px #B67423, 0px -0.9vw 0px #B67423;
-          align-self: flex-start;
-          margin-left: 5vw; /* Flush left relative to the digits */
-          margin-top: -1dvh;
-        }
-
-        /* ANALOG SECTION */
-        .analog-section {
-          margin-top: 6dvh;
-          perspective: 1200px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        .clock-face {
-          width: 35dvh;
-          height: 35dvh;
-          border-radius: 50%;
-          backgroundColor: #FFFEFA;
-          border: 1.5dvh solid #EAD534;
-          position: relative;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          transform: rotateX(-25deg) rotateY(40deg);
-          transform-style: preserve-3d;
-          // box-shadow: 20px 20px 50px rgba(0,0,0,0.3);
-        }
-
-        /* DESKTOP OVERRIDES */
-        @media (min-width: 600px) {
-          .main-container {
-            flex-direction: row;
-            justify-content: space-between;
-            padding: 5vw;
-          }
-          .digital-group { width: auto; align-items: flex-start; }
-          .digits-container { width: auto; gap: 2vw; }
-          .digit-box { font-size: 20dvh; flex: none; }
-          .ampm-box { font-size: 12dvh; margin-left: 0; }
-          .analog-section { position: absolute; bottom: 10dvh; right: 10dvh; margin-top: 0; }
-          .clock-face { width: 55dvh; height: 55dvh; }
-          
-          /* Fix tick marks for larger desktop clock */
-          .analog-section .clock-face div[style*="transform: rotate"] {
-            transform-origin: 50% 27.25dvh !important;
-          }
-          
-          /* Fix hand origins for larger desktop clock */
-          .analog-section .clock-face div:nth-child(13) {
-            transform-origin: bottom center !important;
-          }
-          .analog-section .clock-face div:nth-child(14) {
-            transform-origin: bottom center !important;
-          }
-          .analog-section .clock-face div:nth-child(15) {
-            transform-origin: bottom center !important;
-          }
-          
-          /* Larger main hour ticks for desktop */
-          .analog-section .clock-face div[style*="width: '1.2dvh'"] {
-            width: 1.8dvh !important;
-            height: 5dvh !important;
-            left: calc(50% - 0.9dvh) !important;
-            background-color: #FF8C00 !important;    
-          }
-        }
-      `}</style>
-
-      <div className="main-container">
-        <div className="digital-group">
-          <div className="digits-container">
-            {digits.map((char, index) => (
-              <div key={index} className="digit-box">
-                {char}
-              </div>
-            ))}
-          </div>
-          <div className="ampm-box">{spacedAmPm}</div>
+    <main className={styles.mainContainer}>
+      <div className={styles.digitalGroup}>
+        <div className={styles.digitsContainer}>
+          {digits.map((char, index) => (
+            <div key={index} className={styles.digitBox}>
+              {char}
+            </div>
+          ))}
         </div>
-        /* Analog Clock */
-        <div className="analog-section">
-          <div className="clock-face" style={{ backgroundColor: '#F1E9C2' }}>
-            {/* Ticks */}
-            {[...Array(12)].map((_, i) => {
-              const isMainHour = [0, 3, 6, 9].includes(i);
-              return (
-                <div
-                  key={i}
-                  style={{
-                    position: 'absolute',
-                    width: isMainHour ? '1.2dvh' : '0.8dvh',
-                    height: isMainHour ? '4dvh' : '2dvh',
-                    backgroundColor: isMainHour ? '#B67423' : '#FFFFFF',
-                    top: '0.5dvh',
-                    left:
-                      'calc(50% - ' + (isMainHour ? '0.6dvh' : '0.4dvh') + ')',
-                    transformOrigin: '50% 17.25dvh',
-                    transform: `rotate(${i * 30}deg)`,
-                    borderRadius: '1dvh',
-                  }}
-                />
-              );
-            })}
-
-            {/* Hour Hand */}
-            <div
-              style={{
-                ...handBase,
-                height: '22%',
-                width: '1.4dvh',
-                backgroundColor: '#2D312D',
-                transform: `rotate(${hrDegrees}deg)`,
-              }}
-            />
-
-            {/* Minute Hand */}
-            <div
-              style={{
-                ...handBase,
-                height: '35%',
-                width: '0.8dvh',
-                backgroundColor: '#202220',
-                transform: `rotate(${minDegrees}deg)`,
-              }}
-            />
-
-            {/* Second Hand */}
-            <div
-              style={{
-                ...handBase,
-                height: '42%',
-                width: '0.4dvh',
-                backgroundColor: '#B67423',
-                transform: `rotate(${secDegrees}deg)`,
-                transition: 'transform 0.1s cubic-bezier(0.4, 0.0, 0.2, 1)',
-              }}
-            />
-
-            {/* Center Pin */}
-            <div style={centerDot} />
-          </div>
+        <div className={styles.ampmBox}>{spacedAmPm}</div>
+      </div>
+      <div className={styles.analogSection}>
+        <div className={styles.clockFace}>
+          {[...Array(12)].map((_, i) => {
+            const isMainHour = [0, 3, 6, 9].includes(i);
+            return (
+              <div
+                key={i}
+                className={`${styles.tickMark} ${isMainHour ? styles.tickMain : styles.tickMinor}`}
+              />
+            );
+          })}
+          <div
+            className={`${styles.handBase} ${styles.hourHand}`}
+            style={{ transform: `rotate(${hrDegrees}deg)` }}
+          />
+          <div
+            className={`${styles.handBase} ${styles.minuteHand}`}
+            style={{ transform: `rotate(${minDegrees}deg)` }}
+          />
+          <div
+            className={`${styles.handBase} ${styles.secondHand}`}
+            style={{ transform: `rotate(${secDegrees}deg)` }}
+          />
+          <div className={styles.centerDot} />
         </div>
       </div>
-    </>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
+    </main>
   );
 };
 
-const handBase = {
-  position: 'absolute',
-  bottom: '50%',
-  transformOrigin: 'bottom center',
-  borderRadius: '1dvh',
-  zIndex: 10,
-} as const;
+Clock_26_02_19.displayName = 'Clock_26_02_19';
 
-const centerDot = {
-  width: '2dvh',
-  height: '2dvh',
-  backgroundColor: '#4F594F',
-  borderRadius: '50%',
-  zIndex: 15,
-} as const;
-
-export default ImageDisplay;
+export default Clock_26_02_19;
