@@ -32,6 +32,7 @@
   display: inline-block;
   width: 1ch;
   text-align: center;
+  font-family: 'Clock26-06-07', monospace;
   font-variant-numeric: tabular-nums;
 }
 
