@@ -1,280 +1,109 @@
-import { formatTime as utilFormatTime } from '@/utils/hooks'; // Alias to avoid conflict with local formatTime
-import { useSmoothClock } from '@/utils/hooks'; // Use the standardized hook
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [];
 
+type DigitChar = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+
+const DIGIT_TO_EMOJI: Record<DigitChar, string> = {
+  '0': '🕳️',
+  '1': '📍',
+  '2': '🥈',
+  '3': '🔱',
+  '4': '🍀',
+  '5': '⭐',
+  '6': '🐝',
+  '7': '🎰',
+  '8': '🎱',
+  '9': '☁️',
+};
+
+const BACKGROUND_EMOJIS = [
+  '🏓', '🏸', '🏒', '🏑', '🏏', '🥅', '🎣', '🥊',
+  '🎽', '🛹', '🛷', '🥌', '🎿', '🎭', '🎨', '🎬',
+  '🎹', '🥁', '🎸', '🎯', '🐶', '🐱', '🐹', '🦊',
+  '🐯', '🦁', '🐸', '🦄', '🐄', '🐎', '🐩', '🐈',
+  '🐅', '🦓', '🦒', '🦘', '🐛', '🦋', '🐌', '🐢',
+  '🐍', '🦎', '🐙', '🦑', '🦐', '🦀', '🐡', '🐠',
+  '🐬', '🐳', '🐋', '🦈', '🦃', '🦚', '🦜', '🦩',
+  '🐾', '🐉', '🐲', '🌵', '🌴', '🌱', '🌿', '🎋',
+  '🍁', '🍄', '🌾', '💐', '🌹', '🌸', '🌼', '🚗',
+  '🚌', '🚎', '🏎', '🚒', '🚚', '🚜', '🚲', '🛵',
+  '🚍', '🚘', '🚋', '🚞', '🚂', '🚇', '🚊', '🚀',
+  '🚁', '🛶', '🚤', '🚢', '🗿', '🗽', '🗼', '🏰',
+  '🏟', '🎡', '🎢', '🎠', '🏖', '🏜', '🌋', '🏔',
+  '🏕', '🏘', '🏗', '🗺', '💺', '🎳',
+];
+
+const shuffle = <T,>(array: readonly T[]): T[] => {
+  const result = [...array];
+
+  for (let i = result.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+
+  return result;
+};
+
 const Clock = () => {
-  // --- STATE MANAGEMENT ---
-  const time = useSmoothClock(); // Centralized time source
-  const [isLargeScreen, setIsLargeScreen] = useState(true);
-  const [bgReady, setBgReady] = useState<boolean>(false);
+  const time = useSmoothClock();
 
-  // --- EMOJI POOL ---
-  const allEmojis = useMemo(() => {
-    const rawList = [
-      '🏓',
-      '🏸',
-      '🏒',
-      '🏑',
-      '🏏',
-      '🥅',
-      '🎣',
-      '🥊',
-      '🎽',
-      '🛹',
-      '🛷',
-      '🥌',
-      '🎿',
-      '🎭',
-      '🎨',
-      '🎬',
-      '🎹',
-      '🥁',
-      '🎸',
-      '🎯',
-      '🐶',
-      '🐱',
-      '🐹',
-      '🦊',
-      '🐯',
-      '🦁',
-      '🐸',
-      '🦄',
-      '🐄',
-      '🐎',
-      '🐩',
-      '🐈',
-      '🐅',
-      '🦓',
-      '🦒',
-      '🦘',
-      '🐛',
-      '🦋',
-      '🐌',
-      '🐢',
-      '🐍',
-      '🦎',
-      '🐙',
-      '🦑',
-      '🦐',
-      '🦀',
-      '🐡',
-      '🐠',
-      '🐬',
-      '🐳',
-      '🐋',
-      '🦈',
-      '🦃',
-      '🦚',
-      '🦜',
-      '🦩',
-      '🐾',
-      '🐉',
-      '🐲',
-      '🌵',
-      '🌴',
-      '🌱',
-      '🌿',
-      '🎋',
-      '🍁',
-      '🍄',
-      '🌾',
-      '💐',
-      '🌹',
-      '🌸',
-      '🌼',
-      '🚗',
-      '🚌',
-      '🚎',
-      '🏎',
-      '🚒',
-      '🚚',
-      '🚜',
-      '🚲',
-      '🛵',
-      '🚍',
-      '🚘',
-      '🚋',
-      '🚞',
-      '🚂',
-      '🚇',
-      '🚊',
-      '🚀',
-      '🚁',
-      '🛶',
-      '🚤',
-      '🚢',
-      '🗿',
-      '🗽',
-      '🗼',
-      '🏰',
-      '🏟',
-      '🎡',
-      '🎢',
-      '🎠',
-      '🏖',
-      '🏜',
-      '🌋',
-      '🏔',
-      '🏕',
-      '🏘',
-      '🏗',
-      '🗺',
-      '💺',
-      '🎳',
-    ];
-    return [...new Set(rawList)].filter(Boolean);
-  }, []);
-
-  // --- NON-REPEATING CYCLE SYSTEM ---
-  const [emojiCycle] = useState(() =>
-    [...allEmojis].sort(() => Math.random() - 0.5),
-  );
-  const [emojiIndex, setEmojiIndex] = useState<number>(0);
-
-  // --- DOUBLE BUFFER SYSTEM ---
-  const [activeBuffer, setActiveBuffer] = useState<number>(1);
-  const [buffer1Emoji, setBuffer1Emoji] = useState<string>(emojiCycle[0]);
-  const [buffer2Emoji, setBuffer2Emoji] = useState<string>('');
-
-  // --- DIGIT MAPPING ---
-  type DigitChar = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
-  const digitToEmoji: Record<DigitChar, string> = useMemo(
-    () => ({
-      '0': '🕳️',
-      '1': '📍',
-      '2': '🥈',
-      '3': '🔱',
-      '4': '🍀',
-      '5': '⭐',
-      '6': '🐝',
-      '7': '🎰',
-      '8': '🎱',
-      '9': '☁️',
-    }),
+  const emojiCycle = useMemo(
+    () => shuffle(BACKGROUND_EMOJIS),
     [],
   );
 
-  // --- EMOJI CYCLING LOGIC ---
-  const lastCycledSecond = useRef<number>(-1);
+  const [backgroundIndex, setBackgroundIndex] = useState(0);
 
-  // This useEffect replaces the time update and emoji cycling from the old rAF loop
   useEffect(() => {
-    // Accessing the state once to avoid unnecessary re-runs
-    const date = new Date(time);
-    const currentSecond = date.getSeconds();
+    const timer = window.setInterval(() => {
+      setBackgroundIndex((index) =>
+        (index + 1) % emojiCycle.length,
+      );
+    }, 3000);
 
-    // Only update emoji every 3 seconds
-    // Ensure it only triggers once per second when the condition is met
-    if (currentSecond % 3 === 0 && currentSecond !== lastCycledSecond.current) {
-      lastCycledSecond.current = currentSecond;
-      setEmojiIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % emojiCycle.length;
-        const nextEmoji = emojiCycle[nextIndex];
+    return () => window.clearInterval(timer);
+  }, [emojiCycle.length]);
 
-        if (activeBuffer === 1) {
-          setBuffer2Emoji(nextEmoji);
-          setActiveBuffer(2);
-        } else {
-          setBuffer1Emoji(nextEmoji);
-          setActiveBuffer(1);
-        }
-        return nextIndex;
-      });
-    }
-  }, [time, emojiCycle, activeBuffer]);
+  /*
+   * Read the time directly from the Date supplied by useSmoothClock.
+   */
+  const hours = String(time.getHours()).padStart(2, '0');
+  const minutes = String(time.getMinutes()).padStart(2, '0');
+  const seconds = String(time.getSeconds()).padStart(2, '0');
 
-  // --- SCREEN RESIZE LISTENER ---
-  useEffect(() => {
-    const handleResize = () => setIsLargeScreen(window.innerWidth > 768);
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Initial check
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // --- BACKGROUND READY EFFECT ---
-  // This is for the initial fade-in of the component
-  // The ClockPage.tsx already handles a loading overlay, so this might be redundant
-  // but keeping it for now as it's part of the component's internal logic.
-  useEffect(() => {
-    const t = setTimeout(() => setBgReady(true), 100);
-    return () => clearTimeout(t);
-  }, []);
-
-  const getLayerStyle = useCallback(
-    (emoji: string, isVisible: boolean) => {
-      // Determine base size for SVG emoji based on screen size
-      const baseSvgSize = isLargeScreen ? 60 : 40; // Example: 60px for large, 40px for small
-      const svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="${baseSvgSize}" height="${baseSvgSize}">
-        <text x="50%" y="55%" font-size="${baseSvgSize * 0.7}" text-anchor="middle" dominant-baseline="middle">
-          ${emoji}
-        </text>
-      </svg>`.trim();
-
-      return {
-        className: styles.layer,
-        backgroundImage: `url("data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}")`,
-        opacity: isVisible ? 1 : 0,
-      };
-    },
-    [isLargeScreen],
+  const renderDigits = (value: string) => (
+    <div className={styles.digitGroup}>
+      {value.split('').map((digit, index) => (
+        <span
+          key={`${value}-${index}`}
+          className={styles.digit}
+          aria-hidden="true"
+        >
+          {DIGIT_TO_EMOJI[digit as DigitChar]}
+        </span>
+      ))}
+    </div>
   );
 
-  // Fixed: ensure we always have a string before calling .split
-  const { hours, minutes, seconds } = useMemo(() => {
-    const raw = utilFormatTime(time, '24h');
-    const formatted =
-      typeof raw === 'string' ? raw : String(raw ?? '00:00:00');
-
-    const parts = formatted.includes(':')
-      ? formatted.split(':')
-      : ['00', '00', '00'];
-
-    const [h = '00', m = '00', s = '00'] = parts;
-    return { hours: h, minutes: m, seconds: s };
-  }, [time]);
-
-  const renderDigits = (str?: string) => {
-    const safeStr = str ?? '';
-    return (
-      <div className={styles.digitGroup}>
-        {safeStr.split('').map((d, i) => (
-          <div
-            key={i}
-            className={`${styles.digit} ${isLargeScreen ? styles.digitLarge : styles.digitMobile}`}
-          >
-            {digitToEmoji[d as DigitChar]}
-          </div>
-        ))}
-      </div>
-    );
-  };
-
   return (
-    <main className={styles.container} style={{ opacity: bgReady ? 1 : 0 }}>
+    <main className={styles.container}>
       <div
-        className={styles.layer}
-        style={getLayerStyle(buffer1Emoji, activeBuffer === 1)}
-      />
-      <div
-        className={styles.layer}
-        style={getLayerStyle(buffer2Emoji, activeBuffer === 2)}
-      />
-      <time
-        className={styles.content}
-        dateTime={`${hours}:${minutes}:${seconds}`}
-        aria-label={time.toLocaleTimeString()}
+        className={styles.background}
+        aria-hidden="true"
       >
-        <span className={styles.srOnly}>{time.toLocaleTimeString()}</span>
+        {emojiCycle[backgroundIndex]}
+      </div>
+
+      <time
+        className={styles.clock}
+        dateTime={`${hours}:${minutes}:${seconds}`}
+      >
+        <span className={styles.srOnly}>
+          {hours}:{minutes}:{seconds}
+        </span>
         {renderDigits(hours)}
         {renderDigits(minutes)}
         {renderDigits(seconds)}
@@ -284,5 +113,7 @@ const Clock = () => {
 };
 
 const MemoizedClock = React.memo(Clock);
+
 MemoizedClock.displayName = 'Clock_26_01_24';
+
 export default MemoizedClock;

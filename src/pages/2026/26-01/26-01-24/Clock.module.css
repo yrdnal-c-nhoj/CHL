@@ -1,120 +1,165 @@
 .container {
-  height: 100dvh;
-  width: 100vw;
-  background-color: #dad3de;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: system-ui, -apple-system, sans-serif;
-  transition: opacity 0.8s ease;
-}
-
-/* --- Clock face --- */
-.clockFace {
   position: relative;
-  width: min(70vmin, 560px);
-  height: min(70vmin, 560px);
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #f4f0f6, #cfc6d6 70%);
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.35),
-    inset 0 0 30px rgba(0, 0, 0, 0.15);
-}
 
-.bgLayer {
-  position: absolute;
-  inset: 8%;
-  border-radius: 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  opacity: 0.15;
-  z-index: 1;
-}
+  width: 100%;
+  height: 100dvh;
 
-/* --- 12 eyes around the rim --- */
-.digitContainer {
-  position: absolute;
-  inset: 0;
+  overflow: hidden;
+
   display: flex;
+  align-items: center;
   justify-content: center;
-  z-index: 2;
-  /* rotate the whole radial arm to the hour position */
-  transform: rotate(var(--rotation));
+
+  background: #dad3de;
+
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
-.digitImage {
-  width: 11%;
-  aspect-ratio: 1 / 1;
-  object-fit: contain;
-  margin-top: 4%;
-  border-radius: 50%;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
-  /* counter-rotate so every eye stays upright, not tilted */
-  transform: rotate(var(--counter-rotation));
-}
+/* -------------------------------------------------------------------------- */
+/* Background emoji                                                           */
+/* -------------------------------------------------------------------------- */
 
-/* --- Hands --- */
-.hand {
+.background {
   position: absolute;
-  bottom: 50%;
-  left: 50%;
-  transform-origin: bottom center;
-  transform: translateX(-50%) rotate(var(--rotation));
-  border-radius: 6px;
-  z-index: 3;
-  transition: transform 0.05s linear;
-}
 
-.handHour {
-  width: 1.6%;
-  height: 26%;
-  background: #2a2a2a;
-}
-
-.handMinute {
-  width: 1.1%;
-  height: 36%;
-  background: #3a3a3a;
-}
-
-.handSecond {
-  width: 0.5%;
-  height: 40%;
-  background: #c0392b;
-}
-
-/* --- Large eye in the center --- */
-.centerEyeWrap {
-  position: absolute;
   top: 50%;
   left: 50%;
+
   transform: translate(-50%, -50%);
-  width: 30%;
-  aspect-ratio: 1 / 1;
-  border-radius: 50%;
-  overflow: hidden;
-  z-index: 4;
-  box-shadow:
-    0 4px 14px rgba(0, 0, 0, 0.4),
-    0 0 0 4px rgba(255, 255, 255, 0.6);
+
+  z-index: 0;
+
+  font-family:
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Noto Color Emoji",
+    sans-serif;
+
+  font-size: min(45vw, 45dvh);
+
+  line-height: 1;
+
+  opacity: 0.12;
+
+  pointer-events: none;
+
+  user-select: none;
 }
 
-.centerEye {
+/* -------------------------------------------------------------------------- */
+/* Clock                                                                      */
+/* -------------------------------------------------------------------------- */
+
+.clock {
+  position: relative;
+
+  z-index: 1;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.1em;
+
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+
+  font-family:
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Noto Color Emoji",
+    sans-serif;
+
+  font-size: min(13vw, 12rem);
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  text-align: center;
 }
+
+/* -------------------------------------------------------------------------- */
+/* Digit groups                                                               */
+/* -------------------------------------------------------------------------- */
+
+.digitGroup {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.02em;
+
+  flex: 0 0 auto;
+}
+
+.digit {
+  display: block;
+
+  width: 0.85em;
+
+  flex: 0 0 0.85em;
+
+  line-height: 1;
+
+  text-align: center;
+
+  font-family:
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Noto Color Emoji",
+    sans-serif;
+
+  font-variant-numeric: tabular-nums;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Separators                                                                  */
+/* -------------------------------------------------------------------------- */
+
+.separator {
+  display: block;
+
+  width: 0.25em;
+
+  flex: 0 0 0.25em;
+
+  text-align: center;
+
+  font-family: system-ui, sans-serif;
+
+  font-size: 0.8em;
+
+  font-weight: 700;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Accessibility                                                               */
+/* -------------------------------------------------------------------------- */
 
 .srOnly {
   position: absolute;
+
   width: 1px;
   height: 1px;
+
   padding: 0;
   margin: -1px;
+
   overflow: hidden;
+
   clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+
   white-space: nowrap;
-  border-width: 0;
+
+  border: 0;
 }
