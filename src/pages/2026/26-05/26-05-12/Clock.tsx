@@ -1,7 +1,7 @@
 import customFont from '@/assets/fonts/26fonts/26-05-12.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
-import React, { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import styles from './Clock.module.css';
 
 // Properly import assets so Vite can resolve and hash them
