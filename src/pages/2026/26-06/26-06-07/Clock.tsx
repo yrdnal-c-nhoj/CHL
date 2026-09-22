@@ -21,7 +21,7 @@ const formatMs = (num: number): string => num.toString().padStart(3, '0');
 const ClockInner =  () => {
   useSuspenseFontLoader(fontConfigs);
 
-  const time = useSmoothClock();
+  const time = useSmoothClock(16);
 
   const h = formatTime(time.getHours());
   const m = formatTime(time.getMinutes());
