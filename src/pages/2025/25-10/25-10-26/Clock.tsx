@@ -4,6 +4,7 @@ import bgVideo from '@/assets/images/25_images/25-10/25-10-26/monarch.mp4';
 import fallbackImg from '@/assets/images/25_images/25-10/25-10-26/monarch.webp';
 import romanFont2025_10_27 from '@/assets/fonts/25fonts/25-10-26-roman.otf'; // Optimized OTF
 import type { FontConfig } from '@/types/clock';
+import styles from './Clock.module.css';
 
 export const assets = [];
 

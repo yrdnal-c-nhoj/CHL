@@ -4,6 +4,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgVideo from '@/assets/images/25_images/25-10/25-10-18/total.mp4';
 import fallbackImg from '@/assets/images/25_images/25-10/25-10-18/tot.webp';
 import font_20251018 from '@/assets/fonts/25fonts/25-10-18-tot.ttf?url';
+import styles from './Clock.module.css';
 
 export const assets = [];
 

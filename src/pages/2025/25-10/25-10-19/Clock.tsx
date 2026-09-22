@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useMultiAssetLoader } from '@/utils/fontLoader';
 import blackImg from '@/assets/images/25_images/25-10/25-10-19/tile1.jpg'; // "1" squares
 import pinkImg from '@/assets/images/25_images/25-10/25-10-19/tile2.jpg'; // "0" squares
+import styles from './Clock.module.css';
 
 export const assets = [];
 
