@@ -168,7 +168,6 @@ const ImageDisplay =  () => {
       `}</style>
 
       <div className="main-container">
-        /* Digital Clock */
         <div className="digital-group">
           <div className="digits-container">
             {digits.map((char, index) => (
