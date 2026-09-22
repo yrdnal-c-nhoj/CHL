@@ -1,6 +1,7 @@
 .container {
-  width: 100vw;
+  width: 100%;
   height: 100dvh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,3 +23,74 @@
   border: 0;
 }
 
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.clockWrapper {
+  position: relative;
+  z-index: 1;
+  width: 90vw;
+  max-width: min(50rem, 90vw);
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.timeDisplay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Jet', monospace;
+}
+
+.digitBox {
+  width: clamp(1.5rem, 7vw, 5rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.digit {
+  font-size: clamp(2rem, 8vw, 6rem);
+  color: #fff;
+  min-width: 0.8em;
+  line-height: 1;
+  text-shadow:
+    0 0 10px rgba(255, 100, 50, 0.8),
+    0 0 20px rgba(255, 100, 50, 0.6),
+    0 0 40px rgba(255, 50, 100, 0.4),
+    2px 2px 0 rgba(0, 0, 0, 0.8),
+    -1px -1px 0 #fff;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.3);
+}
+
+.separator {
+  font-size: clamp(2rem, 8vw, 6rem);
+  color: #fff;
+  min-width: 0.8em;
+  line-height: 1;
+  text-shadow:
+    0 0 10px rgba(255, 100, 50, 0.8),
+    0 0 20px rgba(255, 100, 50, 0.6),
+    0 0 40px rgba(255, 50, 100, 0.4),
+    2px 2px 0 rgba(0, 0, 0, 0.8),
+    -1px -1px 0 #fff;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.3);
+  margin: 0 0.25rem;
+  transform: translateY(-0.05em);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video {
+    display: none;
+  }
+}
