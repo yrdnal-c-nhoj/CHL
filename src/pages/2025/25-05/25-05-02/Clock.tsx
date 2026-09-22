@@ -4,6 +4,7 @@ import React, {
   useRef,
   useMemo,
   useCallback,
+  memo,
 } from 'react';
 import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
