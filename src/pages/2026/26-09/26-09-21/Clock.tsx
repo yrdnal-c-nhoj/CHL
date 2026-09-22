@@ -1,3 +1,4 @@
+
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
@@ -12,24 +13,13 @@ import font26_09_21 from '@/assets/fonts/26fonts/26-09-21.ttf?url';
 
 export const assets = [font26_09_21];
 
+const FONT_FAMILY = 'ClockFont_26_09_21';
+const FONT_WEIGHT = 'bold';
+
 const fontConfig: FontConfig = {
-  fontFamily: 'ClockFont_26_09_21',
+  fontFamily: FONT_FAMILY,
   fontUrl: font26_09_21,
 };
-
-const FONT_FAMILY = 'ClockFont_26_09_21';
-
-const DIGIT_W = 1.35;
-const DIGIT_H = 1.8;
-const DIGIT_D = 0.5;
-
-const SPACING = 1.55;
-
-const TEXTURE_SIZE = 512;
-
-const DIGIT_COLOR = '#abd913';
-const FACE_COLOR = '#282885';
-const SIDE_COLOR = '#17174d';
 
 interface DigitTextures {
   front: THREE.CanvasTexture;
@@ -51,70 +41,348 @@ interface ClockSceneProps {
   reducedMotion: boolean;
 }
 
+interface CSSVars {
+  digitColor: string;
+  faceColor: string;
+  sideColor: string;
+  digitW: number;
+  digitH: number;
+  digitD: number;
+  spacing: number;
+  textureSize: number;
+  fontSize: number;
+  spinSpeed: number;
+  wobbleSpeed: number;
+  wobbleAmplitude: number;
+  spinOffsetStep: number;
+  ambientIntensity: number;
+  cameraZ: number;
+  cameraFov: number;
+  cameraNear: number;
+  cameraFar: number;
+  fontFamily: string;
+  fontWeight: string;
+}
+
+function getCSSVars(): CSSVars {
+  const container = document.querySelector(`.${styles.container}`);
+
+  const cs = container ? getComputedStyle(container) : null;
+
+  const getVar = (
+    name: string,
+    fallback: string,
+  ): string =>
+    cs?.getPropertyValue(`--${name}`).trim() || fallback;
+
+  const getNum = (
+    name: string,
+    fallback: number,
+  ): number => {
+    const value = parseFloat(
+      getVar(name, String(fallback)),
+    );
+
+    return Number.isFinite(value) ? value : fallback;
+  };
+
+  return {
+    digitColor: getVar(
+      'digit-color',
+      '#abd913',
+    ),
+
+    faceColor: getVar(
+      'face-color',
+      '#282885',
+    ),
+
+    sideColor: getVar(
+      'side-color',
+      '#17174d',
+    ),
+
+    digitW: getNum(
+      'digit-width',
+      1.35,
+    ),
+
+    digitH: getNum(
+      'digit-height',
+      1.8,
+    ),
+
+    digitD: getNum(
+      'digit-depth',
+      0.5,
+    ),
+
+    spacing: getNum(
+      'spacing',
+      1.55,
+    ),
+
+    textureSize: getNum(
+      'texture-size',
+      512,
+    ),
+
+    fontSize: getNum(
+      'font-size',
+      340,
+    ),
+
+    spinSpeed: getNum(
+      'spin-speed',
+      0.45,
+    ),
+
+    wobbleSpeed: getNum(
+      'wobble-speed',
+      0.0004,
+    ),
+
+    wobbleAmplitude: getNum(
+      'wobble-amplitude',
+      0.08,
+    ),
+
+    spinOffsetStep: getNum(
+      'spin-offset-step',
+      1.1,
+    ),
+
+    ambientIntensity: getNum(
+      'ambient-intensity',
+      1.5,
+    ),
+
+    cameraZ: getNum(
+      'camera-z',
+      8,
+    ),
+
+    cameraFov: getNum(
+      'camera-fov',
+      40,
+    ),
+
+    cameraNear: getNum(
+      'camera-near',
+      0.1,
+    ),
+
+    cameraFar: getNum(
+      'camera-far',
+      100,
+    ),
+
+    fontFamily: getVar(
+      'font-family',
+      FONT_FAMILY,
+    ),
+
+    fontWeight: getVar(
+      'font-weight',
+      FONT_WEIGHT,
+    ),
+  };
+}
+
+/*
+ * One shared font-loading promise.
+ *
+ * This is important because the digit textures are rendered
+ * into <canvas>. Canvas does not wait for CSS font loading.
+ */
+let clockFontPromise: Promise<FontFace> | null = null;
+
+function loadClockFont(): Promise<FontFace> {
+  if (clockFontPromise) {
+    return clockFontPromise;
+  }
+
+  clockFontPromise = (async () => {
+    const descriptor =
+      `${FONT_WEIGHT} 340px "${FONT_FAMILY}"`;
+
+    console.log('[ClockFont] Searching for font:', FONT_FAMILY);
+    console.log('[ClockFont] Available fonts:', Array.from(document.fonts).map((f: FontFace<unknown>) => ({family: f.family, weight: f.weight, status: f.status})));
+
+    /*
+     * First look for a FontFace already registered by
+     * useSuspenseFontLoader().
+     */
+    const existingFont = Array.from(
+      document.fonts,
+    ).find(
+      (font) =>
+        font.family.replace(/['"]/g, '') ===
+          FONT_FAMILY &&
+        font.weight === FONT_WEIGHT,
+    );
+
+    if (existingFont) {
+      console.log('[ClockFont] Found existing font:', existingFont);
+      await existingFont.load();
+      await document.fonts.ready;
+
+      /*
+       * Ask the browser to resolve the exact face.
+       */
+      await document.fonts.load(descriptor);
+
+      return existingFont;
+    }
+
+    console.log('[ClockFont] No existing font found, creating new FontFace');
+    /*
+     * Otherwise register the font ourselves.
+     */
+    const font = new FontFace(
+      FONT_FAMILY,
+      `url(${font26_09_21})`,
+      {
+        weight: FONT_WEIGHT,
+        style: 'normal',
+        display: 'block',
+      },
+    );
+
+    document.fonts.add(font);
+
+    await font.load();
+    await document.fonts.ready;
+    await document.fonts.load(descriptor);
+
+    console.log('[ClockFont] New font loaded:', font);
+    return font;
+  })();
+
+  return clockFontPromise;
+}
+
+/*
+ * Canvas font verification.
+ *
+ * This deliberately checks the same family and weight that
+ * will actually be assigned to ctx.font.
+ */
+async function ensureClockFont(): Promise<void> {
+  await loadClockFont();
+
+  const descriptor =
+    `${FONT_WEIGHT} 340px "${FONT_FAMILY}"`;
+
+  const verified =
+    document.fonts.check(descriptor);
+
+  console.log('[ClockFont] Font verification:', descriptor, verified);
+
+  if (!verified) {
+    throw new Error(
+      `Canvas font verification failed: ${descriptor}`,
+    );
+  }
+}
+
 async function createDigitTexture(
   char: string,
   mirrored = false,
 ): Promise<THREE.CanvasTexture> {
-  await document.fonts.load(
-    `bold 340px "${FONT_FAMILY}"`,
-  );
+  const vars = getCSSVars();
 
-  await document.fonts.ready;
+  const fontFamily = FONT_FAMILY;
+  const fontWeight = FONT_WEIGHT;
+  const fontSize = vars.fontSize;
+  const textureSize = vars.textureSize;
 
-  const canvas = document.createElement('canvas');
+  /*
+   * Do not create the canvas until the actual FontFace
+   * has finished loading.
+   */
+  await ensureClockFont();
 
-  canvas.width = TEXTURE_SIZE;
-  canvas.height = TEXTURE_SIZE;
+  const canvas =
+    document.createElement('canvas');
+
+  canvas.width = textureSize;
+  canvas.height = textureSize;
 
   const ctx = canvas.getContext('2d');
 
   if (!ctx) {
-    throw new Error('Unable to create digit canvas');
+    throw new Error(
+      'Unable to create digit canvas.',
+    );
   }
 
-  ctx.clearRect(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
-
   /*
-   * Face background.
+   * Background.
    */
-  ctx.fillStyle = FACE_COLOR;
+  ctx.fillStyle = vars.faceColor;
+
   ctx.fillRect(
     0,
     0,
-    TEXTURE_SIZE,
-    TEXTURE_SIZE,
+    textureSize,
+    textureSize,
   );
+
+  /*
+   * Explicitly use the loaded custom font.
+   */
+  const fontString = `${fontWeight} ${fontSize}px "${fontFamily}"`;
+  ctx.font = fontString;
+  console.log('[ClockFont] Canvas font string:', fontString);
+  console.log('[ClockFont] document.fonts.check:', document.fonts.check(fontString));
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
 
   /*
    * Digit.
    */
-  ctx.font = `bold 340px "${FONT_FAMILY}", sans-serif`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillStyle = DIGIT_COLOR;
+  ctx.fillStyle = vars.digitColor;
 
   if (mirrored) {
     ctx.save();
-    ctx.translate(TEXTURE_SIZE, 0);
-    ctx.scale(-1, 1);
+
+    ctx.translate(
+      textureSize,
+      0,
+    );
+
+    ctx.scale(
+      -1,
+      1,
+    );
   }
 
   ctx.fillText(
     char,
-    TEXTURE_SIZE / 2,
-    TEXTURE_SIZE / 2,
+    textureSize / 2,
+    textureSize / 2,
   );
 
   if (mirrored) {
     ctx.restore();
   }
 
-  const texture = new THREE.CanvasTexture(canvas);
+  const texture =
+    new THREE.CanvasTexture(canvas);
 
-  texture.colorSpace = THREE.SRGBColorSpace;
-  texture.minFilter = THREE.LinearFilter;
-  texture.magFilter = THREE.LinearFilter;
+  texture.colorSpace =
+    THREE.SRGBColorSpace;
+
+  texture.minFilter =
+    THREE.LinearFilter;
+
+  texture.magFilter =
+    THREE.LinearFilter;
+
   texture.anisotropy = 4;
+
   texture.needsUpdate = true;
 
   return texture;
@@ -126,16 +394,19 @@ function DigitMesh({
   spinOffset,
   textures,
 }: DigitMeshProps) {
-  const group = useRef<THREE.Group>(null);
+  const vars = getCSSVars();
+
+  const group =
+    useRef<THREE.Group>(null);
 
   const sideMaterial = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
-        color: SIDE_COLOR,
+        color: vars.sideColor,
         metalness: 0.2,
         roughness: 0.45,
       }),
-    [],
+    [vars.sideColor],
   );
 
   const frontMaterial = useMemo(
@@ -171,16 +442,23 @@ function DigitMesh({
   ]);
 
   useFrame((_, delta) => {
-    if (!group.current || reducedMotion) {
+    if (
+      !group.current ||
+      reducedMotion
+    ) {
       return;
     }
 
-    group.current.rotation.y += delta * 0.45;
+    group.current.rotation.y +=
+      delta * vars.spinSpeed;
 
     group.current.rotation.x =
       Math.sin(
-        performance.now() * 0.0004 + spinOffset,
-      ) * 0.08;
+        performance.now() *
+          vars.wobbleSpeed +
+          spinOffset,
+      ) *
+      vars.wobbleAmplitude;
   });
 
   return (
@@ -191,9 +469,9 @@ function DigitMesh({
       <mesh>
         <boxGeometry
           args={[
-            DIGIT_W,
-            DIGIT_H,
-            DIGIT_D,
+            vars.digitW,
+            vars.digitH,
+            vars.digitD,
           ]}
         />
 
@@ -244,55 +522,97 @@ function ClockScene({
   m1,
   reducedMotion,
 }: ClockSceneProps) {
+  const vars = getCSSVars();
+
   const chars = useMemo(
-    () => [h0, h1, m0, m1],
-    [h0, h1, m0, m1],
+    () => [
+      h0,
+      h1,
+      m0,
+      m1,
+    ],
+    [
+      h0,
+      h1,
+      m0,
+      m1,
+    ],
   );
 
-  const [textures, setTextures] = useState<
-    DigitTextures[]
-  >([]);
+  const [
+    textures,
+    setTextures,
+  ] = useState<DigitTextures[]>([]);
 
   useEffect(() => {
     let cancelled = false;
 
-    const loadTextures = async () => {
-      const loaded: DigitTextures[] = [];
+    const loadTextures =
+      async () => {
+        const loaded: DigitTextures[] =
+          [];
 
-      for (const char of chars) {
-        const front =
-          await createDigitTexture(char);
+        try {
+          /*
+           * Load the font once before generating
+           * any of the canvas textures.
+           */
+          await ensureClockFont();
 
-        const back =
-          await createDigitTexture(
-            char,
-            true,
+          for (const char of chars) {
+            const front =
+              await createDigitTexture(
+                char,
+              );
+
+            const back =
+              await createDigitTexture(
+                char,
+                true,
+              );
+
+            loaded.push({
+              front,
+              back,
+            });
+          }
+
+          if (cancelled) {
+            loaded.forEach(
+              ({
+                front,
+                back,
+              }) => {
+                front.dispose();
+                back.dispose();
+              },
+            );
+
+            return;
+          }
+
+          setTextures(
+            (previous) => {
+              previous.forEach(
+                ({
+                  front,
+                  back,
+                }) => {
+                  front.dispose();
+                  back.dispose();
+                },
+              );
+
+              return loaded;
+            },
           );
-
-        loaded.push({
-          front,
-          back,
-        });
-      }
-
-      if (cancelled) {
-        loaded.forEach(({ front, back }) => {
-          front.dispose();
-          back.dispose();
-        });
-
-        return;
-      }
-
-      setTextures((previous) => {
-        previous.forEach(({ front, back }) => {
-          front.dispose();
-          back.dispose();
-        });
-
-        return loaded;
-      });
-    };
+        } catch (error) {
+          console.error(
+            'Unable to create clock digit textures.',
+            error,
+          );
+        }
+      };
 
     void loadTextures();
 
@@ -303,32 +623,46 @@ function ClockScene({
 
   const xs = useMemo(
     () => [
-      -1.5 * SPACING,
-      -0.5 * SPACING,
-      0.5 * SPACING,
-      1.5 * SPACING,
+      -1.5 * vars.spacing,
+      -0.5 * vars.spacing,
+      0.5 * vars.spacing,
+      1.5 * vars.spacing,
     ],
-    [],
+    [vars.spacing],
   );
 
   return (
     <>
       <color
         attach="background"
-        args={[FACE_COLOR]}
+        args={[vars.faceColor]}
       />
 
-      <ambientLight intensity={1.5} />
+      <ambientLight
+        intensity={
+          vars.ambientIntensity
+        }
+      />
 
-      {chars.map((char, index) => (
-        <DigitMesh
-          key={`${index}-${char}`}
-          x={xs[index]!}
-          reducedMotion={reducedMotion}
-          spinOffset={index * 1.1}
-          textures={textures[index] ?? undefined}
-        />
-      ))}
+      {chars.map(
+        (char, index) => (
+          <DigitMesh
+            key={`${index}-${char}`}
+            x={xs[index]!}
+            reducedMotion={
+              reducedMotion
+            }
+            spinOffset={
+              index *
+              vars.spinOffsetStep
+            }
+            textures={
+              textures[index] ??
+              undefined
+            }
+          />
+        ),
+      )}
     </>
   );
 }
@@ -336,22 +670,50 @@ function ClockScene({
 const Clock = () => {
   const time = useClock();
 
-  const [reducedMotion, setReducedMotion] =
-    useState(false);
+  const [
+    reducedMotion,
+    setReducedMotion,
+  ] = useState(false);
 
-  const [fontReady, setFontReady] =
-    useState(false);
+  const [
+    fontReady,
+    setFontReady,
+  ] = useState(false);
 
-  useSuspenseFontLoader([fontConfig]);
+  /*
+   * Keep the existing application font-loader.
+   *
+   * The explicit loadClockFont() below is still necessary
+   * because the font is ultimately rasterized into Canvas.
+   */
+  useSuspenseFontLoader([
+    fontConfig,
+  ]);
 
   useEffect(() => {
     let mounted = true;
 
-    document.fonts.ready.then(() => {
-      if (mounted) {
-        setFontReady(true);
-      }
-    });
+    const initializeFont =
+      async () => {
+        try {
+          await loadClockFont();
+
+          if (mounted) {
+            setFontReady(true);
+          }
+        } catch (error) {
+          console.error(
+            'Clock font initialization failed.',
+            error,
+          );
+
+          if (mounted) {
+            setFontReady(false);
+          }
+        }
+      };
+
+    void initializeFont();
 
     return () => {
       mounted = false;
@@ -364,12 +726,16 @@ const Clock = () => {
         '(prefers-reduced-motion: reduce)',
       );
 
-    setReducedMotion(mediaQuery.matches);
+    setReducedMotion(
+      mediaQuery.matches,
+    );
 
     const handleChange = (
       event: MediaQueryListEvent,
     ) => {
-      setReducedMotion(event.matches);
+      setReducedMotion(
+        event.matches,
+      );
     };
 
     mediaQuery.addEventListener(
@@ -395,23 +761,43 @@ const Clock = () => {
 
   if (!fontReady) {
     return (
-      <main className={styles.container}>
-        <div className={styles.loading}>
+      <main
+        className={
+          styles.container
+        }
+      >
+        <div
+          className={
+            styles.loading
+          }
+        >
           Loading font…
         </div>
       </main>
     );
   }
 
+  const vars = getCSSVars();
+
   return (
-    <main className={styles.container}>
+    <main
+      className={
+        styles.container
+      }
+    >
       <Canvas
-        className={styles.canvas}
+        className={
+          styles.canvas
+        }
         camera={{
-          position: [0, 0, 8],
-          fov: 40,
-          near: 0.1,
-          far: 100,
+          position: [
+            0,
+            0,
+            vars.cameraZ,
+          ],
+          fov: vars.cameraFov,
+          near: vars.cameraNear,
+          far: vars.cameraFar,
         }}
         dpr={[1, 2]}
         gl={{
@@ -420,17 +806,31 @@ const Clock = () => {
         }}
       >
         <ClockScene
-          h0={hours[0] ?? '0'}
-          h1={hours[1] ?? '0'}
-          m0={minutes[0] ?? '0'}
-          m1={minutes[1] ?? '0'}
-          reducedMotion={reducedMotion}
+          h0={
+            hours[0] ?? '0'
+          }
+          h1={
+            hours[1] ?? '0'
+          }
+          m0={
+            minutes[0] ?? '0'
+          }
+          m1={
+            minutes[1] ?? '0'
+          }
+          reducedMotion={
+            reducedMotion
+          }
         />
       </Canvas>
 
       <time
-        dateTime={time.toISOString()}
-        className={styles.srOnly}
+        dateTime={
+          time.toISOString()
+        }
+        className={
+          styles.srOnly
+        }
       >
         {hours}
         {minutes}
@@ -439,6 +839,7 @@ const Clock = () => {
   );
 };
 
-Clock.displayName = 'Clock_26_09_21';
+Clock.displayName =
+  'Clock_26_09_21';
 
 export default Clock;
