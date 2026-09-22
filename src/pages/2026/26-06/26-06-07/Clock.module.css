@@ -9,6 +9,7 @@
   justify-content: center;
   overflow: hidden;
   background-color: #ff0000;
+  isolation: isolate;
 }
 
 .video {
@@ -19,6 +20,8 @@
   object-fit: cover;
   z-index: 0;
   pointer-events: none;
+  filter: grayscale(100%);
+  mix-blend-mode: screen;
 }
 
 .digitsContainer {
@@ -34,6 +37,8 @@
   text-align: center;
   font-family: 'Clock26-06-07', monospace;
   font-variant-numeric: tabular-nums;
+  font-size: 9vw;
+  color: #ffffff;
 }
 
 .srOnly {
