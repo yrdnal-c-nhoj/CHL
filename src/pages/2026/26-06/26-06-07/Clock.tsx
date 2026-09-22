@@ -6,7 +6,7 @@ import {
   useSuspenseFontLoader,
 } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
-import React, { Suspense, useEffect, useMemo, useState, memo } from 'react';
+import React, { Suspense, memo } from 'react';
 import styles from './Clock.module.css';
 
 export const assets = [backgroundVideo, fontUrl];
