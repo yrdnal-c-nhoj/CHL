@@ -6177,18 +6177,18 @@
       "walk"
     ]
   },
-  // {
-  //   "path": "26-07-06",
-  //   "date": "26-07-06",
-  //   "title": "Wedge",
-  //   "tags": [
-  //     "analog",
-  //     "generative",
-  //     "mechanical",
-  //     "random",
-  //     "six-simple-machines"
-  //   ]
-  // },
+  {
+    "path": "26-07-06",
+    "date": "26-07-06",
+    "title": "Wedge",
+    "tags": [
+      "analog",
+      "generative",
+      "mechanical",
+      "random",
+      "six-simple-machines"
+    ]
+  },
   {
     "path": "26-07-07",
     "date": "26-07-07",
