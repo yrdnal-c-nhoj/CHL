@@ -22,14 +22,14 @@ function makeDigitTexture(char: string): THREE.CanvasTexture {
   ctx.fillStyle = '#f4f4f6';
   ctx.fillRect(0, 0, s, s);
 
-  ctx.strokeStyle = '#c8c8d0';
+  ctx.strokeStyle = '#6d6d8d';
   ctx.lineWidth = 8;
   ctx.strokeRect(6, 6, s - 12, s - 12);
 
   ctx.font = 'bold 170px system-ui, -apple-system, "Segoe UI", sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillStyle = '#1a1a22';
+  ctx.fillStyle = '#abd913';
   ctx.fillText(char, s / 2, s / 2 + 6);
 
   const tex = new THREE.CanvasTexture(canvas);
