@@ -43,8 +43,7 @@
   z-index: 1;
   margin: auto;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(6, 1fr);
+  grid-template-columns: repeat(6, auto);
   gap: 2dvh;
   color: #111111;
   text-shadow: 0 0 20px rgba(205, 245, 135, 0.99);
@@ -55,7 +54,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 14dvh;
+  width: 1.2em;
+  aspect-ratio: 1;
+  font-size: 18dvh;
   line-height: 1;
   user-select: none;
+}
+
+@media (max-width: 768px) {
+  .digitalGrid {
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(3, auto);
+    gap: 1dvh;
+  }
+
+  .cell {
+    font-size: 18dvh;
+  }
 }
