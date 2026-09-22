@@ -92,6 +92,9 @@ const AnalyticsAndSEO = React.memo(() => {
       document.body.style.overflow = 'auto';
       document.documentElement.style.overflow = 'auto';
     } else {
+      // Clock pages must never allow scrolling: a scrollbar makes 100vw
+      // wider than the visible viewport, which pushes anything centered
+      // with `left: 50%` off the shared .container a few px to the right.
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
     }
