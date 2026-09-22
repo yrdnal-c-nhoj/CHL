@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import rai251027font from '@/assets/fonts/25fonts/25-10-27-wish.otf';
 import sfont251027 from '@/assets/fonts/25fonts/25-10-27-wish.ttf';
+import styles from './Clock.module.css';
 
 export const assets = [];
 

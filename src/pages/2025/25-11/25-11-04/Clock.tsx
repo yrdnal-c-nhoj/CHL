@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef, useMemo } from 'react';
 import fallbackImg from '@/assets/images/25_images/25-11/25-11-04/sea.webp';
 import cu251104font from '@/assets/fonts/25fonts/25-11-04-naut.ttf?url';
 import { useSuspenseFontLoader } from '@/utils/fontLoader'; // Nautical font
+import styles from './Clock.module.css';
 
 export const assets = [];
 

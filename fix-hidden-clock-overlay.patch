@@ -1,0 +1,1013 @@
+diff --git a/src/pages/2025/25-04/25-04-02/Clock.module.css b/src/pages/2025/25-04/25-04-02/Clock.module.css
+index 24a095c..72b63d7 100644
+--- a/src/pages/2025/25-04/25-04-02/Clock.module.css
++++ b/src/pages/2025/25-04/25-04-02/Clock.module.css
+@@ -16,3 +16,15 @@
+   transform-style: preserve-3d;
+   perspective: 1000px;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-04/25-04-03/Clock.module.css b/src/pages/2025/25-04/25-04-03/Clock.module.css
+index be60f42..de1f7df 100644
+--- a/src/pages/2025/25-04/25-04-03/Clock.module.css
++++ b/src/pages/2025/25-04/25-04-03/Clock.module.css
+@@ -30,3 +30,15 @@
+     transform: translateY(-0.5rem);
+   }
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-04/25-04-04/Clock.module.css b/src/pages/2025/25-04/25-04-04/Clock.module.css
+index 4222f74..873394d 100644
+--- a/src/pages/2025/25-04/25-04-04/Clock.module.css
++++ b/src/pages/2025/25-04/25-04-04/Clock.module.css
+@@ -9,3 +9,15 @@
+ .heartbeat {
+   animation: heartbeat 1s infinite;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-04/25-04-08/Clock.module.css b/src/pages/2025/25-04/25-04-08/Clock.module.css
+index d72a62f..68bcb51 100644
+--- a/src/pages/2025/25-04/25-04-08/Clock.module.css
++++ b/src/pages/2025/25-04/25-04-08/Clock.module.css
+@@ -22,3 +22,15 @@
+ .sunVertical {
+   animation: sunVertical 20s linear infinite alternate;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-04/25-04-14/Clock.module.css b/src/pages/2025/25-04/25-04-14/Clock.module.css
+index b35f061..e8336e4 100644
+--- a/src/pages/2025/25-04/25-04-14/Clock.module.css
++++ b/src/pages/2025/25-04/25-04-14/Clock.module.css
+@@ -7,3 +7,15 @@
+ .pop {
+   animation: pop 0.6s cubic-bezier(0.28, 0.84, 0.42, 1);
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-04/25-04-25/Clock.module.css b/src/pages/2025/25-04/25-04-25/Clock.module.css
+index b7c392a..5e879b5 100644
+--- a/src/pages/2025/25-04/25-04-25/Clock.module.css
++++ b/src/pages/2025/25-04/25-04-25/Clock.module.css
+@@ -23,3 +23,15 @@
+   clip: rect(0, 0, 0, 0);
+   border: 0;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-05/25-05-04/Clock.module.css b/src/pages/2025/25-05/25-05-04/Clock.module.css
+index e3d1d40..bf7f02c 100644
+--- a/src/pages/2025/25-05/25-05-04/Clock.module.css
++++ b/src/pages/2025/25-05/25-05-04/Clock.module.css
+@@ -9,3 +9,15 @@
+ .fade {
+   animation: fade 9s infinite;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-05/25-05-09/Clock.module.css b/src/pages/2025/25-05/25-05-09/Clock.module.css
+index ee778e5..32346e2 100644
+--- a/src/pages/2025/25-05/25-05-09/Clock.module.css
++++ b/src/pages/2025/25-05/25-05-09/Clock.module.css
+@@ -22,3 +22,15 @@
+   transform-origin: bottom;
+   will-change: transform;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-06/25-06-03/Clock.module.css b/src/pages/2025/25-06/25-06-03/Clock.module.css
+index 7d313c7..99e1fa5 100644
+--- a/src/pages/2025/25-06/25-06-03/Clock.module.css
++++ b/src/pages/2025/25-06/25-06-03/Clock.module.css
+@@ -6,3 +6,15 @@
+ .rotate {
+   animation: rotate 123s linear infinite;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-06/25-06-08/Clock.module.css b/src/pages/2025/25-06/25-06-08/Clock.module.css
+index 903f516..2107875 100644
+--- a/src/pages/2025/25-06/25-06-08/Clock.module.css
++++ b/src/pages/2025/25-06/25-06-08/Clock.module.css
+@@ -6,3 +6,15 @@
+ .slowRotate {
+   animation: slowRotate 720s linear infinite;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-06/25-06-13/Clock.module.css b/src/pages/2025/25-06/25-06-13/Clock.module.css
+index 78abbe0..43b184d 100644
+--- a/src/pages/2025/25-06/25-06-13/Clock.module.css
++++ b/src/pages/2025/25-06/25-06-13/Clock.module.css
+@@ -22,3 +22,15 @@
+ .cloudSweep {
+   animation: cloudSweep 15s infinite ease-in-out;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-06/25-06-19/Clock.module.css b/src/pages/2025/25-06/25-06-19/Clock.module.css
+index c59b382..6f11179 100644
+--- a/src/pages/2025/25-06/25-06-19/Clock.module.css
++++ b/src/pages/2025/25-06/25-06-19/Clock.module.css
+@@ -61,3 +61,15 @@
+   font-size: 1.2rem;
+   z-index: 6;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-06/25-06-30/Clock.module.css b/src/pages/2025/25-06/25-06-30/Clock.module.css
+index 5416c18..17399bf 100644
+--- a/src/pages/2025/25-06/25-06-30/Clock.module.css
++++ b/src/pages/2025/25-06/25-06-30/Clock.module.css
+@@ -6,3 +6,15 @@
+ .slowRotate {
+   animation: slowRotate 60s linear infinite;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-07/25-07-06/Clock.module.css b/src/pages/2025/25-07/25-07-06/Clock.module.css
+index 4ff1218..40f90da 100644
+--- a/src/pages/2025/25-07/25-07-06/Clock.module.css
++++ b/src/pages/2025/25-07/25-07-06/Clock.module.css
+@@ -6,3 +6,15 @@
+ .slowRotate {
+   animation: slow-rotate 60s linear infinite;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-07/25-07-21/Clock.module.css b/src/pages/2025/25-07/25-07-21/Clock.module.css
+index a50c1d5..673824e 100644
+--- a/src/pages/2025/25-07/25-07-21/Clock.module.css
++++ b/src/pages/2025/25-07/25-07-21/Clock.module.css
+@@ -7,3 +7,15 @@
+ .animate {
+   animation: animate 3s linear infinite;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-08/25-08-02/Clock.module.css b/src/pages/2025/25-08/25-08-02/Clock.module.css
+index 3a19002..20dc97e 100644
+--- a/src/pages/2025/25-08/25-08-02/Clock.module.css
++++ b/src/pages/2025/25-08/25-08-02/Clock.module.css
+@@ -23,3 +23,15 @@
+   align-items: center;
+   height: 100vh;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-08/25-08-20/Clock.module.css b/src/pages/2025/25-08/25-08-20/Clock.module.css
+index 23167d3..6848d70 100644
+--- a/src/pages/2025/25-08/25-08-20/Clock.module.css
++++ b/src/pages/2025/25-08/25-08-20/Clock.module.css
+@@ -50,3 +50,15 @@
+     -2px 0 12px #f07c62ff,
+     2px 0 1px white;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-09/25-09-02/Clock.module.css b/src/pages/2025/25-09/25-09-02/Clock.module.css
+index 94f5c53..189e05e 100644
+--- a/src/pages/2025/25-09/25-09-02/Clock.module.css
++++ b/src/pages/2025/25-09/25-09-02/Clock.module.css
+@@ -52,4 +52,15 @@
+   overflow: hidden;
+   clip: rect(0, 0, 0, 0);
+   border: 0;
+-}
+\ No newline at end of file
++}
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-09/25-09-11/Clock.module.css b/src/pages/2025/25-09/25-09-11/Clock.module.css
+index 74ecd71..66fe10d 100644
+--- a/src/pages/2025/25-09/25-09-11/Clock.module.css
++++ b/src/pages/2025/25-09/25-09-11/Clock.module.css
+@@ -7,3 +7,15 @@
+ .sparkle {
+   animation: sparkle 1.5s infinite alternate;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-09/25-09-23/Clock.module.css b/src/pages/2025/25-09/25-09-23/Clock.module.css
+index b901e61..612ecc9 100644
+--- a/src/pages/2025/25-09/25-09-23/Clock.module.css
++++ b/src/pages/2025/25-09/25-09-23/Clock.module.css
+@@ -73,3 +73,15 @@
+     height: 38vh;
+   }
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-10/25-10-13/Clock.module.css b/src/pages/2025/25-10/25-10-13/Clock.module.css
+new file mode 100644
+index 0000000..42deb59
+--- /dev/null
++++ b/src/pages/2025/25-10/25-10-13/Clock.module.css
+@@ -0,0 +1,11 @@
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-10/25-10-13/Clock.tsx b/src/pages/2025/25-10/25-10-13/Clock.tsx
+index ace6c25..0d5c071 100644
+--- a/src/pages/2025/25-10/25-10-13/Clock.tsx
++++ b/src/pages/2025/25-10/25-10-13/Clock.tsx
+@@ -5,6 +5,7 @@ import bgImage2 from '@/assets/images/25_images/25-10/25-10-13/ro.jpeg';
+ import bgImage from '@/assets/images/25_images/25-10/25-10-13/roundhay.webp'; // second background
+ import roundhayFont from '@/assets/fonts/25fonts/25-10-13-rou.ttf';
+ import ifont25100013 from '@/assets/fonts/25fonts/25-10-13-line.otf';
++import styles from './Clock.module.css';
+ 
+ export const assets = [];
+ 
+diff --git a/src/pages/2025/25-10/25-10-18/Clock.module.css b/src/pages/2025/25-10/25-10-18/Clock.module.css
+new file mode 100644
+index 0000000..42deb59
+--- /dev/null
++++ b/src/pages/2025/25-10/25-10-18/Clock.module.css
+@@ -0,0 +1,11 @@
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-10/25-10-18/Clock.tsx b/src/pages/2025/25-10/25-10-18/Clock.tsx
+index 5e241ab..c8ec3cd 100644
+--- a/src/pages/2025/25-10/25-10-18/Clock.tsx
++++ b/src/pages/2025/25-10/25-10-18/Clock.tsx
+@@ -4,6 +4,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
+ import bgVideo from '@/assets/images/25_images/25-10/25-10-18/total.mp4';
+ import fallbackImg from '@/assets/images/25_images/25-10/25-10-18/tot.webp';
+ import font_20251018 from '@/assets/fonts/25fonts/25-10-18-tot.ttf?url';
++import styles from './Clock.module.css';
+ 
+ export const assets = [];
+ 
+diff --git a/src/pages/2025/25-10/25-10-19/Clock.module.css b/src/pages/2025/25-10/25-10-19/Clock.module.css
+new file mode 100644
+index 0000000..42deb59
+--- /dev/null
++++ b/src/pages/2025/25-10/25-10-19/Clock.module.css
+@@ -0,0 +1,11 @@
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-10/25-10-19/Clock.tsx b/src/pages/2025/25-10/25-10-19/Clock.tsx
+index cfb961c..2c6052b 100644
+--- a/src/pages/2025/25-10/25-10-19/Clock.tsx
++++ b/src/pages/2025/25-10/25-10-19/Clock.tsx
+@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
+ import { useMultiAssetLoader } from '@/utils/fontLoader';
+ import blackImg from '@/assets/images/25_images/25-10/25-10-19/tile1.jpg'; // "1" squares
+ import pinkImg from '@/assets/images/25_images/25-10/25-10-19/tile2.jpg'; // "0" squares
++import styles from './Clock.module.css';
+ 
+ export const assets = [];
+ 
+diff --git a/src/pages/2025/25-10/25-10-26/Clock.module.css b/src/pages/2025/25-10/25-10-26/Clock.module.css
+new file mode 100644
+index 0000000..42deb59
+--- /dev/null
++++ b/src/pages/2025/25-10/25-10-26/Clock.module.css
+@@ -0,0 +1,11 @@
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-10/25-10-26/Clock.tsx b/src/pages/2025/25-10/25-10-26/Clock.tsx
+index 7de616a..9cecc47 100644
+--- a/src/pages/2025/25-10/25-10-26/Clock.tsx
++++ b/src/pages/2025/25-10/25-10-26/Clock.tsx
+@@ -4,6 +4,7 @@ import bgVideo from '@/assets/images/25_images/25-10/25-10-26/monarch.mp4';
+ import fallbackImg from '@/assets/images/25_images/25-10/25-10-26/monarch.webp';
+ import romanFont2025_10_27 from '@/assets/fonts/25fonts/25-10-26-roman.otf'; // Optimized OTF
+ import type { FontConfig } from '@/types/clock';
++import styles from './Clock.module.css';
+ 
+ export const assets = [];
+ 
+diff --git a/src/pages/2025/25-10/25-10-27/Clock.module.css b/src/pages/2025/25-10/25-10-27/Clock.module.css
+new file mode 100644
+index 0000000..42deb59
+--- /dev/null
++++ b/src/pages/2025/25-10/25-10-27/Clock.module.css
+@@ -0,0 +1,11 @@
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-10/25-10-27/Clock.tsx b/src/pages/2025/25-10/25-10-27/Clock.tsx
+index 32b2cf0..d9ec32b 100644
+--- a/src/pages/2025/25-10/25-10-27/Clock.tsx
++++ b/src/pages/2025/25-10/25-10-27/Clock.tsx
+@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
+ import { useSuspenseFontLoader } from '@/utils/fontLoader';
+ import rai251027font from '@/assets/fonts/25fonts/25-10-27-wish.otf';
+ import sfont251027 from '@/assets/fonts/25fonts/25-10-27-wish.ttf';
++import styles from './Clock.module.css';
+ 
+ export const assets = [];
+ 
+diff --git a/src/pages/2025/25-11/25-11-01/Clock.module.css b/src/pages/2025/25-11/25-11-01/Clock.module.css
+index 31176c0..c2fe2f2 100644
+--- a/src/pages/2025/25-11/25-11-01/Clock.module.css
++++ b/src/pages/2025/25-11/25-11-01/Clock.module.css
+@@ -37,3 +37,15 @@
+   background-color: #f7f3f3ff;
+   border-radius: 50%;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-11/25-11-03/Clock.module.css b/src/pages/2025/25-11/25-11-03/Clock.module.css
+index bd4f434..f7cc1bd 100644
+--- a/src/pages/2025/25-11/25-11-03/Clock.module.css
++++ b/src/pages/2025/25-11/25-11-03/Clock.module.css
+@@ -71,3 +71,15 @@
+   color: #020202;
+   background-color: #effa26;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-11/25-11-04/Clock.module.css b/src/pages/2025/25-11/25-11-04/Clock.module.css
+new file mode 100644
+index 0000000..42deb59
+--- /dev/null
++++ b/src/pages/2025/25-11/25-11-04/Clock.module.css
+@@ -0,0 +1,11 @@
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-11/25-11-04/Clock.tsx b/src/pages/2025/25-11/25-11-04/Clock.tsx
+index 9bb9387..1cb29d3 100644
+--- a/src/pages/2025/25-11/25-11-04/Clock.tsx
++++ b/src/pages/2025/25-11/25-11-04/Clock.tsx
+@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef, useMemo } from 'react';
+ import fallbackImg from '@/assets/images/25_images/25-11/25-11-04/sea.webp';
+ import cu251104font from '@/assets/fonts/25fonts/25-11-04-naut.ttf?url';
+ import { useSuspenseFontLoader } from '@/utils/fontLoader'; // Nautical font
++import styles from './Clock.module.css';
+ 
+ export const assets = [];
+ 
+diff --git a/src/pages/2025/25-11/25-11-12/Clock.module.css b/src/pages/2025/25-11/25-11-12/Clock.module.css
+index 9f35924..2621db2 100644
+--- a/src/pages/2025/25-11/25-11-12/Clock.module.css
++++ b/src/pages/2025/25-11/25-11-12/Clock.module.css
+@@ -6,3 +6,15 @@
+ .floatUp {
+   animation: floatUp 45s linear infinite;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-11/25-11-13/Clock.module.css b/src/pages/2025/25-11/25-11-13/Clock.module.css
+index 95b789d..9b59c0c 100644
+--- a/src/pages/2025/25-11/25-11-13/Clock.module.css
++++ b/src/pages/2025/25-11/25-11-13/Clock.module.css
+@@ -80,3 +80,15 @@
+   border-radius: 50%;
+   z-index: 10;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-11/25-11-22/Clock.module.css b/src/pages/2025/25-11/25-11-22/Clock.module.css
+new file mode 100644
+index 0000000..42deb59
+--- /dev/null
++++ b/src/pages/2025/25-11/25-11-22/Clock.module.css
+@@ -0,0 +1,11 @@
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-11/25-11-22/Clock.tsx b/src/pages/2025/25-11/25-11-22/Clock.tsx
+index ad1b1ca..04f1112 100644
+--- a/src/pages/2025/25-11/25-11-22/Clock.tsx
++++ b/src/pages/2025/25-11/25-11-22/Clock.tsx
+@@ -5,6 +5,7 @@ import videoFile from '@/assets/images/25_images/25-11/25-11-22/sput.mp4';
+ import fallbackImg from '@/assets/images/25_images/25-11/25-11-22/sput.webp';
+ import secondHandImg from '@/assets/images/25_images/25-11/25-11-22/spu.webp';
+ import font112425sput from '@/assets/fonts/25fonts/25-11-22-spu.ttf?url';
++import styles from './Clock.module.css';
+ 
+ export const assets = [];
+ 
+diff --git a/src/pages/2025/25-11/25-11-28/Clock.module.css b/src/pages/2025/25-11/25-11-28/Clock.module.css
+index 6565cd8..95504d3 100644
+--- a/src/pages/2025/25-11/25-11-28/Clock.module.css
++++ b/src/pages/2025/25-11/25-11-28/Clock.module.css
+@@ -64,4 +64,15 @@
+   transform: translate(-50%, -50%);
+   transition: opacity 0.1s;
+   pointer-events: none;
+-}
+\ No newline at end of file
++}
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-12/25-12-13/Clock.module.css b/src/pages/2025/25-12/25-12-13/Clock.module.css
+index b24cd36..a716553 100644
+--- a/src/pages/2025/25-12/25-12-13/Clock.module.css
++++ b/src/pages/2025/25-12/25-12-13/Clock.module.css
+@@ -7,3 +7,15 @@
+ .rococoFloat {
+   animation: rococoFloat 8s infinite cubic-bezier(0.45, 0, 0.55, 1);
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-12/25-12-19/Clock.module.css b/src/pages/2025/25-12/25-12-19/Clock.module.css
+index 4d442c4..d4b7532 100644
+--- a/src/pages/2025/25-12/25-12-19/Clock.module.css
++++ b/src/pages/2025/25-12/25-12-19/Clock.module.css
+@@ -6,3 +6,15 @@
+ .flow {
+   animation: flow 0.5s linear infinite;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2025/25-12/25-12-28/Clock.module.css b/src/pages/2025/25-12/25-12-28/Clock.module.css
+index 0b32251..bfbeea8 100644
+--- a/src/pages/2025/25-12/25-12-28/Clock.module.css
++++ b/src/pages/2025/25-12/25-12-28/Clock.module.css
+@@ -42,3 +42,15 @@
+       0 0 25px rgba(255,255,255,0.5);
+   }
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2026/26-01/26-01-03/Clock.module.css b/src/pages/2026/26-01/26-01-03/Clock.module.css
+index 4c2bf21..0f638cc 100644
+--- a/src/pages/2026/26-01/26-01-03/Clock.module.css
++++ b/src/pages/2026/26-01/26-01-03/Clock.module.css
+@@ -8,3 +8,15 @@
+ .cameraShake {
+   animation: cameraShake 0.12s ease-in-out;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2026/26-01/26-01-20/Clock.module.css b/src/pages/2026/26-01/26-01-20/Clock.module.css
+index 75bb627..fb6cb8c 100644
+--- a/src/pages/2026/26-01/26-01-20/Clock.module.css
++++ b/src/pages/2026/26-01/26-01-20/Clock.module.css
+@@ -56,3 +56,15 @@
+     line-height: 1.1;
+   }
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2026/26-02/26-02-17/Clock.module.css b/src/pages/2026/26-02/26-02-17/Clock.module.css
+index 0e2b83d..a74d6a2 100644
+--- a/src/pages/2026/26-02/26-02-17/Clock.module.css
++++ b/src/pages/2026/26-02/26-02-17/Clock.module.css
+@@ -10,3 +10,15 @@
+ .rainRise {
+   animation: rainRise 20s ease-in-out infinite;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2026/26-02/26-02-26/Clock.module.css b/src/pages/2026/26-02/26-02-26/Clock.module.css
+index 2cfe470..fcddfaf 100644
+--- a/src/pages/2026/26-02/26-02-26/Clock.module.css
++++ b/src/pages/2026/26-02/26-02-26/Clock.module.css
+@@ -4,3 +4,15 @@
+   width: 100%;
+   height: 100%;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2026/26-04/26-04-02/Clock.module.css b/src/pages/2026/26-04/26-04-02/Clock.module.css
+index 66dc6b8..d74a8ad 100644
+--- a/src/pages/2026/26-04/26-04-02/Clock.module.css
++++ b/src/pages/2026/26-04/26-04-02/Clock.module.css
+@@ -35,3 +35,15 @@
+   height: 100%;
+   z-index: 2;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2026/26-04/26-04-03/Clock.module.css b/src/pages/2026/26-04/26-04-03/Clock.module.css
+index fd20dec..dfaebef 100644
+--- a/src/pages/2026/26-04/26-04-03/Clock.module.css
++++ b/src/pages/2026/26-04/26-04-03/Clock.module.css
+@@ -99,3 +99,15 @@
+   margin: 0 -0.05em;
+   transform: translateY(-0.15em);
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2026/26-05/26-05-28/Clock.module.css b/src/pages/2026/26-05/26-05-28/Clock.module.css
+index 9895b0b..2d42eb5 100644
+--- a/src/pages/2026/26-05/26-05-28/Clock.module.css
++++ b/src/pages/2026/26-05/26-05-28/Clock.module.css
+@@ -111,3 +111,15 @@
+   width: 22%;
+   background: rgba(255, 255, 255, 1);
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2026/26-05/26-05-31/Clock.module.css b/src/pages/2026/26-05/26-05-31/Clock.module.css
+index 8c5d9e1..6fc8ade 100644
+--- a/src/pages/2026/26-05/26-05-31/Clock.module.css
++++ b/src/pages/2026/26-05/26-05-31/Clock.module.css
+@@ -51,4 +51,15 @@
+   margin: 0 0.02vmin;
+   /* opacity: 0.6; */
+   padding-bottom: 1vmin;
+-}
+\ No newline at end of file
++}
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2026/26-06/26-06-26/Clock.module.css b/src/pages/2026/26-06/26-06-26/Clock.module.css
+index 8ea9295..c45379c 100644
+--- a/src/pages/2026/26-06/26-06-26/Clock.module.css
++++ b/src/pages/2026/26-06/26-06-26/Clock.module.css
+@@ -5,4 +5,15 @@
+   to {
+     transform: rotate(360deg);
+   }
+-}
+\ No newline at end of file
++}
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2026/26-07/26-07-13/Clock.module.css b/src/pages/2026/26-07/26-07-13/Clock.module.css
+index db94ffd..ad983da 100644
+--- a/src/pages/2026/26-07/26-07-13/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-13/Clock.module.css
+@@ -59,3 +59,15 @@
+     font-size: clamp(4rem, 33vh, 8rem);
+   }
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2026/26-07/26-07-14/Clock.module.css b/src/pages/2026/26-07/26-07-14/Clock.module.css
+index e64bc6e..b54bd24 100644
+--- a/src/pages/2026/26-07/26-07-14/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-14/Clock.module.css
+@@ -46,4 +46,15 @@
+   position: relative;
+   z-index: 1;
+   letter-spacing: 3vmin;
+-}
+\ No newline at end of file
++}
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
+diff --git a/src/pages/2026/26-07/26-07-25/Clock.module.css b/src/pages/2026/26-07/26-07-25/Clock.module.css
+index e33041b..f211d7c 100644
+--- a/src/pages/2026/26-07/26-07-25/Clock.module.css
++++ b/src/pages/2026/26-07/26-07-25/Clock.module.css
+@@ -117,3 +117,15 @@
+   border: 2px solid currentColor;
+   border-radius: 6px;
+ }
++
++.srOnly {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  padding: 0;
++  margin: -1px;
++  overflow: hidden;
++  clip: rect(0, 0, 0, 0);
++  white-space: nowrap;
++  border: 0;
++}
