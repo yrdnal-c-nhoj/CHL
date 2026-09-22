@@ -1,1 +1,80 @@
-import React, { memo, useEffect } from 'react'; import SRTime from '@/components/SRTime'; import { useClockAngles } from '@/hooks/useClockAngles'; import type { FontConfig } from '@/types/clock'; import { useSuspenseFontLoader } from '@/utils/fontLoader'; import { useSmoothClock } from '@/utils/hooks'; import fontUrl from '@/assets/fonts/26fonts/26-07-10.ttf?url'; import backgroundImage from '@/assets/images/26_images/26-08/26-08-19/map3.webp'; import wallImage from '@/assets/images/26_images/26-08/26-08-19/wall.webp'; import styles from './Clock.module.css'; export const assets = [backgroundImage, wallImage, fontUrl]; const fontConfigs: FontConfig[] = [ { fontFamily: 'MyAnalogClockFont', fontUrl, }, ]; const numerals = [ '𒌋𒁹𒁹', // 12 '𒁹', // 1 '𒈫', // 2 '𒐈', // 3 '𒃻', // 4 '𒐊', // 5 '𒐋', // 6 '𒐌', // 7 '𒐍', // 8 '𒑆', // 9 '𒌋', // 10 '𒌋𒁹', // 11 ]; const AnalogClockComponent = () => { const time = useSmoothClock(); useSuspenseFontLoader(fontConfigs); const { hourAngle, minAngle, secAngle } = useClockAngles(time); useEffect(() => { const previousOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden'; return () => { document.body.style.overflow = previousOverflow; }; }, []); return ( <main className={styles.container}> {/* Actual DOM background layers. These are more reliable than negative z-index pseudo-elements. */} <div className={styles.wall} style={{ backgroundImage: `url(${wallImage})` }} aria-hidden="true" /> <div className={styles.map} style={{ backgroundImage: `url(${backgroundImage})` }} aria-hidden="true" /> <SRTime time={time} /> <time dateTime={time.toISOString()} className={styles.srOnly} > {time.toLocaleTimeString()} </time> <div className={styles.clockFace}> <div className={styles.numeralContainer}> {numerals.map((numeral, index) => { const rotation = index * 30; return ( <div key={index} className={styles.numeral} style={{ transform: `rotate(${rotation}deg)` }} > <span style={{ transform: `rotate(${-rotation}deg)` }}> {numeral} </span> </div> ); })} </div> <div className={styles.hourHand} style={{ transform: `rotate(${hourAngle}deg)` }} /> <div className={styles.minuteHand} style={{ transform: `rotate(${minAngle}deg)` }} /> <div className={styles.secondHand} style={{ transform: `rotate(${secAngle}deg)` }} /> <div className={styles.centerDot} /> </div> </main> ); }; const MemoizedAnalogClock = memo(AnalogClockComponent); MemoizedAnalogClock.displayName = 'Clock_26_08_19'; export default MemoizedAnalogClock;
+import React, { memo, useEffect } from 'react';
+import SRTime from '@/components/SRTime';
+import { useClockAngles } from '@/hooks/useClockAngles';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useSmoothClock } from '@/utils/hooks';
+import fontUrl from '@/assets/fonts/26fonts/26-07-10.ttf?url';
+import backgroundImage from '@/assets/images/26_images/26-08/26-08-19/map3.webp';
+import wallImage from '@/assets/images/26_images/26-08/26-08-19/wall.webp';
+import styles from './Clock.module.css';
+
+export const assets = [backgroundImage, wallImage, fontUrl];
+
+const fontConfigs: FontConfig[] = [
+  {
+    fontFamily: 'MyAnalogClockFont',
+    fontUrl,
+  },
+];
+
+const numerals = [
+  '𒌋𒁹𒁹', // 12
+  '𒁹', // 1
+  '𒈫', // 2
+  '𒐈', // 3
+  '𒃻', // 4
+  '𒐊', // 5
+  '𒐋', // 6
+  '𒐌', // 7
+  '𒐍', // 8
+  '𒑆', // 9
+  '𒌋', // 10
+  '𒌋𒁹', // 11
+];
+
+const AnalogClockComponent = () => {
+  const time = useSmoothClock();
+  useSuspenseFontLoader(fontConfigs);
+  const { hourAngle, minAngle, secAngle } = useClockAngles(time);
+
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
+  return (
+    <main className={styles.container}>
+      <div className={styles.wall} style={{ backgroundImage: `url(${wallImage})` }} aria-hidden="true" />
+      <div className={styles.map} style={{ backgroundImage: `url(${backgroundImage})` }} aria-hidden="true" />
+      <SRTime time={time} />
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
+      <div className={styles.clockFace}>
+        <div className={styles.numeralContainer}>
+          {numerals.map((numeral, index) => {
+            const rotation = index * 30;
+            return (
+              <div key={index} className={styles.numeral} style={{ transform: `rotate(${rotation}deg)` }}>
+                <span style={{ transform: `rotate(${-rotation}deg)` }}>{numeral}</span>
+              </div>
+            );
+          })}
+        </div>
+        <div className={styles.hourHand} style={{ transform: `rotate(${hourAngle}deg)` }} />
+        <div className={styles.minuteHand} style={{ transform: `rotate(${minAngle}deg)` }} />
+        <div className={styles.secondHand} style={{ transform: `rotate(${secAngle}deg)` }} />
+        <div className={styles.centerDot} />
+      </div>
+    </main>
+  );
+};
+
+const MemoizedAnalogClock = memo(AnalogClockComponent);
+MemoizedAnalogClock.displayName = 'Clock_26_08_19';
+
+export default MemoizedAnalogClock;
