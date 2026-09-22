@@ -1,3 +1,4 @@
+import SRTime from '@/components/SRTime';
 import { useSmoothClock } from '@/utils/hooks';
 import React, { useMemo } from 'react';
 import styles from './Clock.module.css';
@@ -43,7 +44,7 @@ const AnalogClock =  () => {
 
   return (
     <main className={styles.container}>
-      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
+      <SRTime time={currentTime} />
       <div className={styles.videoBackground}>
         <video autoPlay loop muted playsInline className={styles.videoLayer}>
           <source src={fireworksVideo1} type="video/mp4" />
