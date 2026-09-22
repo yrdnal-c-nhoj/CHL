@@ -4,13 +4,13 @@
     height: 100dvh;
     margin: 0;
     overflow: hidden;
-    background: #282885;
+    background: #7f7fbb;
 }
 
 .canvas {
+    display: block;
     width: 100% !important;
     height: 100% !important;
-    display: block;
     touch-action: none;
 }
 
@@ -24,4 +24,15 @@
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: #abd913;
+    font-family: 'ClockFont_26_09_21', system-ui, sans-serif;
+    font-size: 2rem;
 }
