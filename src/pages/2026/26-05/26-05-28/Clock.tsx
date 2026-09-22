@@ -1,6 +1,6 @@
 import bgImage from '@/assets/images/26_images/26-05/26-05-28/boom.webp';
 import { useSmoothClock } from '@/utils/hooks';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState, memo } from 'react';
 import styles from './Clock.module.css';
 
 import m1 from '@/assets/images/26_images/26-05/26-05-28/1.webp';
@@ -280,4 +280,7 @@ const Clock =  () => {
   );
 };
 
-export default Clock;
+const MemoizedClock = memo(Clock);
+MemoizedClock.displayName = 'Clock_26_05_28';
+
+export default MemoizedClock;
