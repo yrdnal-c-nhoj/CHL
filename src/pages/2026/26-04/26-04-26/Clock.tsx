@@ -88,11 +88,7 @@ const Clock =  () => {
     margin: '0 0.25rem',
   };
 
-  const ampmStyle = {
-    ...digitStyle,
-    fontSize: 'clamp(1.5rem, 6vw, 4rem)',
-    marginLeft: '0.5rem',
-  };
+
 
   const baseDigitBoxStyle = {
     width: 'clamp(1.5rem, 7vw, 5rem)',
