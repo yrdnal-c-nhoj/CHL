@@ -8,8 +8,8 @@ export const assets: string[] = [];
 
 const DIGIT_W = 1.1;
 const DIGIT_H = 1.5;
-const DIGIT_D = 0.55; // thicker so depth is obvious while spinning
-const SPIN = 0.55; // rad/s — clearly visible continuous rotation
+const DIGIT_D = 0.55;
+const SPIN = 0.55;
 const SPACING = 1.45;
 
 function makeDigitTexture(char: string): THREE.CanvasTexture {
@@ -19,11 +19,9 @@ function makeDigitTexture(char: string): THREE.CanvasTexture {
   canvas.height = s;
   const ctx = canvas.getContext('2d')!;
 
-  // light face so it reads on gray bg
   ctx.fillStyle = '#f4f4f6';
   ctx.fillRect(0, 0, s, s);
 
-  // subtle border
   ctx.strokeStyle = '#c8c8d0';
   ctx.lineWidth = 8;
   ctx.strokeRect(6, 6, s - 12, s - 12);
@@ -50,10 +48,8 @@ interface DigitMeshProps {
 
 function DigitMesh({ char, x, reducedMotion, spinOffset }: DigitMeshProps) {
   const group = useRef<THREE.Group>(null);
-  const matRef = useRef<THREE.MeshStandardMaterial>(null);
   const texRef = useRef<THREE.CanvasTexture | null>(null);
 
-  // Build materials once; only swap the front texture when the digit changes
   const materials = useMemo(() => {
     const side = new THREE.MeshStandardMaterial({
       color: '#3a3a48',
@@ -65,7 +61,6 @@ function DigitMesh({ char, x, reducedMotion, spinOffset }: DigitMeshProps) {
       metalness: 0.1,
       roughness: 0.45,
     });
-    // box face order: +x, -x, +y, -y, +z, -z
     return [side, side, side, side, front, side];
   }, []);
 
@@ -79,7 +74,6 @@ function DigitMesh({ char, x, reducedMotion, spinOffset }: DigitMeshProps) {
     front.needsUpdate = true;
 
     return () => {
-      // dispose only the texture we replaced, not the live one
       if (prev && prev !== next) prev.dispose();
     };
   }, [char, materials]);
@@ -94,7 +88,6 @@ function DigitMesh({ char, x, reducedMotion, spinOffset }: DigitMeshProps) {
   useFrame((_, delta) => {
     if (reducedMotion || !group.current) return;
     group.current.rotation.y += delta * SPIN;
-    // slight secondary tilt so you always see the depth
     group.current.rotation.x = Math.sin(performance.now() * 0.0004 + spinOffset) * 0.12;
   });
 
@@ -145,7 +138,7 @@ function ClockScene({
 
       {chars.map((c, i) => (
         <DigitMesh
-          key={i} // stable key — do NOT include the digit char
+          key={i}
           char={c}
           x={xs[i]}
           reducedMotion={reducedMotion}
@@ -191,12 +184,12 @@ const Clock = () => {
       </Canvas>
 
       <time dateTime={time.toISOString()} className={styles.srOnly}>
-        {hh}:{mm}
+        {hh}{mm}
       </time>
     </main>
   );
 };
 
-Clock.displayName = 'Clock_26_09_22';
+Clock.displayName = 'Clock_26_09_21';
 
 export default Clock;
