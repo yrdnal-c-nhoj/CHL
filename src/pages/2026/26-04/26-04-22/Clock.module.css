@@ -1,5 +1,5 @@
 .container {
-  width: 100vw;
+  width: 100%;
   height: 100dvh;
   position: relative;
   overflow: hidden;
@@ -121,4 +121,11 @@
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video {
+    display: none;
+  }
 }
