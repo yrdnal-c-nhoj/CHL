@@ -45,6 +45,7 @@ const tileStyle: CSSProperties = {
 const digitalGridStyle: CSSProperties = {
   position: 'relative',
   zIndex: 1,
+  margin: 'auto',
   display: 'grid',
   gridTemplateColumns: 'repeat(6, 1fr)',
   gridTemplateRows: 'repeat(6, 1fr)',
