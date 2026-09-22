@@ -23,8 +23,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: var(--space-lg, 1.5rem);
-  border-radius: 1rem;
+  z-index: 1;
 }
 
 /* --- Analog Clock Styles --- */
@@ -33,15 +32,16 @@
   width: 20vw;
   height: 20vw;
   border-radius: 50%;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .hand {
   position: absolute;
   bottom: 50%;
   left: 50%;
-  transform-origin: bottom;
-  transform: translateX(-50%); /* Center the hand horizontally */
+  transform-origin: bottom center;
   background-color: white;
   border-radius: 2px;
 }
@@ -64,6 +64,15 @@
   background-color: var(--color-lab-red, #ff4136);
 }
 
+.centerDot {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: var(--color-lab-red, #ff4136);
+  border-radius: 50%;
+  z-index: 10;
+}
+
 .srOnly {
   position: absolute;
   width: 1px;
@@ -74,4 +83,10 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backgroundVideo {
+    display: none;
+  }
 }
