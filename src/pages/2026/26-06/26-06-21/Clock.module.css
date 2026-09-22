@@ -19,3 +19,43 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
 }
+
+.backgroundGrid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), var(--tile-size));
+  grid-template-rows: repeat(var(--grid-rows), var(--tile-size));
+  justify-content: center;
+  align-content: center;
+  z-index: 0;
+}
+
+.tile {
+  background-image: var(--tile-img);
+  background-size: cover;
+  background-position: center;
+  transform: scale(var(--sx), var(--sy));
+}
+
+.digitalGrid {
+  position: relative;
+  z-index: 1;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 2dvh;
+  color: #111111;
+  text-shadow: 0 0 20px rgba(205, 245, 135, 0.99);
+  font-family: 'ClockFont_26_06_21', sans-serif;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14dvh;
+  line-height: 1;
+  user-select: none;
+}

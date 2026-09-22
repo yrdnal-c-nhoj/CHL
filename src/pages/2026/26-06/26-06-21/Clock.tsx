@@ -14,55 +14,6 @@ const NUMBERS = ['N', 'm', '1', 'R', 't', 'F', '8', 'Q', 'E', 'v'] as const;
 
 const FONT_CONFIGS = [{ fontFamily: 'ClockFont_26_06_21', fontUrl: clockFont }];
 
-const containerStyle: CSSProperties = {
-  position: 'relative',
-  width: '100vw',
-  height: '100dvh',
-  overflow: 'hidden',
-  backgroundColor: '#111',
-  display: 'grid',
-  placeItems: 'center',
-};
-
-const backgroundGridStyle: CSSProperties = {
-  position: 'absolute',
-  inset: 0,
-  display: 'grid',
-  gridTemplateColumns: 'repeat(var(--grid-cols), var(--tile-size))',
-  gridTemplateRows: 'repeat(var(--grid-rows), var(--tile-size))',
-  justifyContent: 'center',
-  alignContent: 'center',
-  zIndex: 0,
-};
-
-const tileStyle: CSSProperties = {
-  backgroundImage: 'var(--tile-img)',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  transform: 'scale(var(--sx), var(--sy))',
-};
-
-const digitalGridStyle: CSSProperties = {
-  position: 'relative',
-  zIndex: 1,
-  margin: 'auto',
-  display: 'grid',
-  gridTemplateColumns: 'repeat(6, 1fr)',
-  gridTemplateRows: 'repeat(6, 1fr)',
-  gap: '2dvh',
-  color: '#111111',
-  textShadow: '0 0 20px rgba(205, 245, 135, 0.99)',
-};
-
-const cellStyle: CSSProperties = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  fontSize: '14dvh',
-  lineHeight: 1,
-  userSelect: 'none',
-};
-
 const Clock =  () => {
   const time = useClock();
   const [dimensions, setDimensions] = useState({ cols: 1, rows: 1 });
@@ -96,8 +47,8 @@ const Clock =  () => {
       return (
         <div
           key={i}
+          className={styles.tile}
           style={{
-            ...tileStyle,
             '--tile-img': `url("${backgroundImage}")`,
             '--sx': col % 2 === 1 ? '-1' : '1',
             '--sy': row % 2 === 1 ? '-1' : '1',
@@ -108,22 +59,24 @@ const Clock =  () => {
   }, [dimensions]);
 
   return (
-    <main className={styles.container} style={{
-      ...containerStyle,
-      '--tile-size': `${TILE_SIZE}px`,
-      '--grid-cols': String(dimensions.cols),
-      '--grid-rows': String(dimensions.rows),
-    } as CSSProperties}>
+    <main
+      className={styles.container}
+      style={{
+        '--tile-size': `${TILE_SIZE}px`,
+        '--grid-cols': String(dimensions.cols),
+        '--grid-rows': String(dimensions.rows),
+      } as CSSProperties}
+    >
       <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
 
-      <div style={backgroundGridStyle}>{backgroundTiles}</div>
+      <div className={styles.backgroundGrid}>{backgroundTiles}</div>
 
       <time
         dateTime={time.toISOString()}
-        style={{ ...digitalGridStyle, fontFamily: 'ClockFont_26_06_21' }}
+        className={styles.digitalGrid}
       >
         {digits.map((digit, i) => (
-          <div key={i} style={cellStyle} aria-hidden="true">
+          <div key={i} className={styles.cell} aria-hidden="true">
             {digit}
           </div>
         ))}
