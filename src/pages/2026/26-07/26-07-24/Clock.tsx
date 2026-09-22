@@ -1,19 +1,29 @@
 import React, { useMemo } from 'react';
 
 import portholeVideo from '@/assets/images/26_images/26-07/26-07-25/porthole.mp4';
-import { calculateAngles , useSmoothClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [portholeVideo];
 
 const Clock =  () => {
-  const time = useSmoothClock();
+  const time = useSmoothClock(16);
 
   const {
     hour: hourAngle,
     minute: minuteAngle,
     second: secondAngle,
-  } = calculateAngles(time, true); // Pass true for millisecond precision
+  } = useMemo(() => {
+    const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+    const minutes = time.getMinutes() + seconds / 60;
+    const hours = (time.getHours() % 12) + minutes / 60;
+
+    return {
+      hour: hours * 30,
+      minute: minutes * 6,
+      second: seconds * 6,
+    };
+  }, [time]);
 
   const offsets = useMemo(() => {
     const elapsed = time.getTime() / 1000; // Time in seconds
@@ -51,6 +61,9 @@ const Clock =  () => {
       >
         <div className={styles.face}>
           <div className={styles.twelveMarker} />
+          <div className={styles.threeMarker} />
+          <div className={styles.sixMarker} />
+          <div className={styles.nineMarker} />
           <div
             className={`${styles.hand} ${styles.hourHand}`}
             style={{ '--hand-angle': `${hourAngle}deg` } as React.CSSProperties}
