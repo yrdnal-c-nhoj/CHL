@@ -25,7 +25,7 @@
   filter: brightness(1) contrast(1.2) saturate(6);
 }
 
-.clockContainer {
+.responsiveClockGrid {
   font-family: 'ShapesFont', monospace;
   position: relative;
   z-index: 2;
@@ -33,15 +33,12 @@
   color: #fba433;
   justify-items: center;
   align-items: center;
-  /* Standard Web CSS Text Shadow syntax: "h-offset v-offset blur-radius color" */
   text-shadow: 2px 2px 0px #c5b0f0, -2px 2px 0px #22045f;
-
-  /* Laptop / Desktop (Default): All 6 digits in 1 row */
   grid-template-columns: repeat(6, 1fr);
   gap: 4vw;
 }
 
-.digit {
+.responsiveDigit {
   line-height: 1;
   display: flex;
   justify-content: center;
@@ -51,19 +48,6 @@
   font-size: clamp(3rem, 15vw, 12rem);
 }
 
-/* Phone: 2 columns, 3 rows */
-@media (max-width: 768px) {
-/* Laptop / Desktop (Default): All 6 digits in 1 row */
-.responsiveClockGrid {
-  grid-template-columns: repeat(6, 1fr);
-  gap: 4vw;
-}
-
-.responsiveDigit {
-  font-size: clamp(3rem, 15vw, 12rem);
-}
-
-/* Phone: 2 columns, 3 rows */
 @media (max-width: 768px) {
   .responsiveClockGrid {
     grid-template-columns: repeat(2, 1fr);
@@ -72,17 +56,6 @@
   }
 
   .responsiveDigit {
-    font-size: clamp(4rem, 33vh, 8rem);
-  }
-}
-
-.clockContainer {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 3vh 15vw;
-  }
-
-  .digit {
     font-size: clamp(4rem, 33vh, 8rem);
   }
 }
