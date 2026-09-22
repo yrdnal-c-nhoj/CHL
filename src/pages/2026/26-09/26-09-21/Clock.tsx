@@ -206,9 +206,6 @@ function loadClockFont(): Promise<FontFace> {
     const descriptor =
       `${FONT_WEIGHT} 340px "${FONT_FAMILY}"`;
 
-    console.log('[ClockFont] Searching for font:', FONT_FAMILY);
-    console.log('[ClockFont] Available fonts:', Array.from(document.fonts).map((f: FontFace<unknown>) => ({family: f.family, weight: f.weight, status: f.status})));
-
     /*
      * First look for a FontFace already registered by
      * useSuspenseFontLoader().
@@ -223,7 +220,6 @@ function loadClockFont(): Promise<FontFace> {
     );
 
     if (existingFont) {
-      console.log('[ClockFont] Found existing font:', existingFont);
       await existingFont.load();
       await document.fonts.ready;
 
@@ -235,7 +231,6 @@ function loadClockFont(): Promise<FontFace> {
       return existingFont;
     }
 
-    console.log('[ClockFont] No existing font found, creating new FontFace');
     /*
      * Otherwise register the font ourselves.
      */
@@ -255,7 +250,6 @@ function loadClockFont(): Promise<FontFace> {
     await document.fonts.ready;
     await document.fonts.load(descriptor);
 
-    console.log('[ClockFont] New font loaded:', font);
     return font;
   })();
 
@@ -276,8 +270,6 @@ async function ensureClockFont(): Promise<void> {
 
   const verified =
     document.fonts.check(descriptor);
-
-  console.log('[ClockFont] Font verification:', descriptor, verified);
 
   if (!verified) {
     throw new Error(
@@ -334,8 +326,6 @@ async function createDigitTexture(
    */
   const fontString = `${fontWeight} ${fontSize}px "${fontFamily}"`;
   ctx.font = fontString;
-  console.log('[ClockFont] Canvas font string:', fontString);
-  console.log('[ClockFont] document.fonts.check:', document.fonts.check(fontString));
 
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -555,7 +545,7 @@ function ClockScene({
         try {
           /*
            * Load the font once before generating
-           * any of the canvas textures.
+           * all of the canvas textures.
            */
           await ensureClockFont();
 
