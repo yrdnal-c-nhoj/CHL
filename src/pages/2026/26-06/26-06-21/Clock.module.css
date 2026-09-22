@@ -6,6 +6,7 @@
   background-color: #111;
   display: grid;
   place-items: center;
+  place-content: center;
 }
 
 .srOnly {
