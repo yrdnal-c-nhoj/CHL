@@ -197,18 +197,20 @@ function getCSSVars(): CSSVars {
  */
 let clockFontPromise: Promise<FontFace> | null = null;
 
-function loadClockFont(): Promise<FontFace> {
+async function loadClockFont(): Promise<FontFace> {
   if (clockFontPromise) {
     return clockFontPromise;
   }
 
   clockFontPromise = (async () => {
-    const descriptor =
-      `${FONT_WEIGHT} 340px "${FONT_FAMILY}"`;
+    /*
+     * The font is already loaded by useSuspenseFontLoader.
+     * Wait for it to be ready in document.fonts.
+     */
+    await document.fonts.ready;
 
     /*
-     * First look for a FontFace already registered by
-     * useSuspenseFontLoader().
+     * Find the loaded font.
      */
     const existingFont = Array.from(
       document.fonts,
@@ -221,18 +223,18 @@ function loadClockFont(): Promise<FontFace> {
 
     if (existingFont) {
       await existingFont.load();
-      await document.fonts.ready;
 
       /*
        * Ask the browser to resolve the exact face.
        */
+      const descriptor = `${FONT_WEIGHT} 340px "${FONT_FAMILY}"`;
       await document.fonts.load(descriptor);
 
       return existingFont;
     }
 
     /*
-     * Otherwise register the font ourselves.
+     * Fallback: register the font ourselves if not found.
      */
     const font = new FontFace(
       FONT_FAMILY,
@@ -248,6 +250,8 @@ function loadClockFont(): Promise<FontFace> {
 
     await font.load();
     await document.fonts.ready;
+
+    const descriptor = `${FONT_WEIGHT} 340px "${FONT_FAMILY}"`;
     await document.fonts.load(descriptor);
 
     return font;
@@ -686,7 +690,9 @@ const Clock = () => {
     const initializeFont =
       async () => {
         try {
+          console.log('[ClockFont] Starting font load...');
           await loadClockFont();
+          console.log('[ClockFont] Font loaded successfully');
 
           if (mounted) {
             setFontReady(true);
