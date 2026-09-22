@@ -1,15 +1,3 @@
-@keyframes blink {
-
-  0%,
-  100% {
-    opacity: 0.6;
-  }
-
-  50% {
-    opacity: 0.2;
-  }
-}
-
 .container {
   width: 100vw;
   height: 100dvh;
@@ -22,61 +10,15 @@
   padding: 0;
 }
 
-.video {
+.srOnly {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-.clockWrapper {
-  position: relative;
-  z-index: 1;
-  width: 90vw;
-  max-width: 800px;
-  height: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.time {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: 'Jet', sans-serif;
-}
-
-.digitBox {
-  width: clamp(2.5rem, 10vw, 7.5rem);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.digit {
-  font-size: clamp(3.5rem, 12vw, 10rem);
-  color: #ffffff;
-  min-width: 0.8em;
-  line-height: 1;
-  text-shadow:
-    0 0 12px rgba(255, 255, 255, 0.9),
-    0 0 24px rgba(255, 255, 255, 0.6),
-    0 0 48px rgba(255, 255, 255, 0.3),
-    2px 2px 4px rgba(0, 0, 0, 0.9);
-  WebkitTextStroke: 1px rgba(0, 0, 0, 0.4);
-}
-
-.separator {
-  composes: digit;
-  margin: 0 0.25rem;
-}
-
-.blink {
-  composes: digit;
-  animation: blink 1.2s infinite cubic-bezier(0.4, 0, 0.2, 1);
-}
