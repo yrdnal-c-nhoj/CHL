@@ -4,14 +4,12 @@
     height: 100dvh;
     margin: 0;
     overflow: hidden;
-    background: var(--bg-color, #7f7fbb);
-    
+    background: var(--bg-color);
     /* Color palette */
     --digit-color: #abd913;
     --face-color: #282885;
     --side-color: #17174d;
     --bg-color: #7f7fbb;
-    
     /* Layout */
     --digit-width: 1.35;
     --digit-height: 1.8;
@@ -19,22 +17,18 @@
     --spacing: 1.55;
     --texture-size: 512;
     --font-size: 340px;
-    
     /* Animation */
     --spin-speed: 0.45;
     --wobble-speed: 0.0004;
     --wobble-amplitude: 0.08;
     --spin-offset-step: 1.1;
-    
     /* Lighting */
     --ambient-intensity: 1.5;
-    
     /* Camera */
     --camera-z: 8;
     --camera-fov: 40;
     --camera-near: 0.1;
     --camera-far: 100;
-    
     /* Font */
     --font-family: 'ClockFont_26_09_21', sans-serif;
     --font-weight: bold;
