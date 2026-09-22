@@ -5,32 +5,38 @@
     margin: 0;
     overflow: hidden;
     background: var(--bg-color);
+
     /* Color palette */
     --digit-color: #abd913;
     --face-color: #282885;
     --side-color: #17174d;
-    --bg-color: #7f7fbb;
-    /* Layout */
+    --bg-color: #0f0f1a;
+
+    /* Layout - responsive */
     --digit-width: 1.35;
     --digit-height: 1.8;
     --digit-depth: 0.5;
     --spacing: 1.55;
     --texture-size: 512;
     --font-size: 340px;
+
     /* Animation */
     --spin-speed: 0.45;
     --wobble-speed: 0.0004;
     --wobble-amplitude: 0.08;
     --spin-offset-step: 1.1;
+
     /* Lighting */
     --ambient-intensity: 1.5;
+
     /* Camera */
     --camera-z: 8;
     --camera-fov: 40;
     --camera-near: 0.1;
     --camera-far: 100;
+
     /* Font */
-    --font-family: 'ClockFont_26_09_21', sans-serif;
+    --font-family: 'Arial, Helvetica, sans-serif';
     --font-weight: bold;
 }
 
@@ -53,14 +59,49 @@
     border: 0;
 }
 
-.loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    color: var(--digit-color);
-    font-family: var(--font-family);
-    font-size: 2rem;
-    font-weight: var(--font-weight);
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        --digit-width: 1.0;
+        --digit-height: 1.3;
+        --digit-depth: 0.4;
+        --spacing: 1.2;
+        --font-size: 240px;
+        --camera-z: 9;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        --digit-width: 0.85;
+        --digit-height: 1.1;
+        --digit-depth: 0.35;
+        --spacing: 1.0;
+        --font-size: 200px;
+        --camera-z: 10;
+        --camera-fov: 35;
+    }
+}
+
+@media (max-width: 360px) {
+    .container {
+        --digit-width: 0.7;
+        --digit-height: 0.95;
+        --digit-depth: 0.3;
+        --spacing: 0.9;
+        --font-size: 180px;
+        --camera-z: 11;
+        --camera-fov: 32;
+    }
+}
+
+@media (min-width: 1400px) {
+    .container {
+        --digit-width: 1.6;
+        --digit-height: 2.1;
+        --digit-depth: 0.6;
+        --spacing: 1.8;
+        --font-size: 400px;
+        --camera-z: 7;
+    }
 }
