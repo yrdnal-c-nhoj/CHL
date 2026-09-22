@@ -24,6 +24,7 @@ const ClockComponent = () => {
         loop
         muted
         playsInline
+        preload="auto"
         className={styles.backgroundVideo}
         src={backgroundVideo}
       />
@@ -38,18 +39,18 @@ const ClockComponent = () => {
         <div className={styles.analogClock}>
           <div
             className={`${styles.hand} ${styles.hourHand}`}
-            style={{ transform: `rotate(${hourAngle}deg)` }}
+            style={{ transform: `translateX(-50%) rotate(${hourAngle}deg)` }}
           />
           <div
             className={`${styles.hand} ${styles.minuteHand}`}
-            style={{ transform: `rotate(${minAngle}deg)` }}
+            style={{ transform: `translateX(-50%) rotate(${minAngle}deg)` }}
           />
           <div
             className={`${styles.hand} ${styles.secondHand}`}
-            style={{ transform: `rotate(${secAngle}deg)` }}
+            style={{ transform: `translateX(-50%) rotate(${secAngle}deg)` }}
           />
+          <div className={styles.centerDot} />
         </div>
-
       </div>
     </main>
   );
