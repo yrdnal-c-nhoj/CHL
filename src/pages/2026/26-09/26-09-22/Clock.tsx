@@ -4,8 +4,8 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
 import { useMemo } from 'react';
 
-import limeVideo from '@/assets/images/26_images/26-09/26-09-20/radar.webm';
-import font from '@/assets/fonts/26fonts/26-09-20.otf?url';
+import limeVideo from '@/assets/images/26_images/26-09/26-09-22/sunspot.webm';
+import font from '@/assets/fonts/26fonts/26-09-22.ttf?url';
 
 import styles from './Clock.module.css';
 
@@ -57,16 +57,36 @@ const Clock_26_09_06 = () => {
         </defs>
       </svg>
 
-      {/* Background video */}
-      <video
-        src={limeVideo}
-        autoPlay
-        loop
-        muted
-        playsInline
-        aria-hidden="true"
-        className={styles.backgroundVideo}
-      />
+      {/* Video triptych: center = contain (full), sides = cover (clipped) */}
+      <div className={styles.videoLayout}>
+        <video
+          src={limeVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden="true"
+          className={`${styles.backgroundVideo} ${styles.sideVideo}`}
+        />
+        <video
+          src={limeVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden="true"
+          className={`${styles.backgroundVideo} ${styles.centerVideo}`}
+        />
+        <video
+          src={limeVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden="true"
+          className={`${styles.backgroundVideo} ${styles.sideVideo}`}
+        />
+      </div>
 
       {/* Analog clock */}
       <div className={styles.clockFace}>
@@ -130,7 +150,7 @@ const Clock_26_09_06 = () => {
           }
         />
 
-        {/* Center */}
+        {/* Center dot */}
         <div className={styles.centerDot} />
       </div>
 
