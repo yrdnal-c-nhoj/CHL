@@ -3,20 +3,17 @@
   width: 100vw;
   height: 100dvh;
   overflow: hidden;
-  background-color: #f78ae8;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #f78ae8;
 }
 
 .digitalDisplay {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9;
   gap: 0;
-  /* Ensures no gap between time groups */
 }
 
 .timeGroup {
@@ -24,75 +21,100 @@
   align-items: center;
   justify-content: center;
   gap: 0;
-  /* Ensures no gap between digits within a group */
 }
 
 .digitBox {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 16.7vw;
-  box-sizing: border-box;
-  overflow: hidden;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 .digitBox img {
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  object-position: center;
   display: block;
+  width: 16.7vw;
+  height: auto;
+  margin: 0;
+  padding: 0;
   filter: contrast(90%) brightness(110%);
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-
+/* PHONE */
 
 @media (max-width: 768px) {
+  .container {
+    align-items: center;
+    justify-content: center;
+  }
+
   .digitalDisplay {
-    display: flex;
-    flex-direction: column;
     width: 100vw;
     height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 0;
-    margin: 0;
-    padding: 0;
   }
 
   .timeGroup {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    width: 100vw;
-    height: 33.333dvh;
-    margin: 0;
-    padding: 0;
+    width: 100%;
+    height: 33.333333dvh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     gap: 0;
+    flex-shrink: 0;
   }
 
   .digitBox {
-    width: 100%;
-    height: 100%;
-    min-width: 0;
+    width: 50vw;
+    height: 33.333333dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 50vw;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    overflow: hidden;
+
+    /*
+     * Do NOT clip the image.
+     */
+    overflow: visible;
   }
 
   .digitBox img {
+    /*
+     * Preserve the image's original aspect ratio.
+     * The browser scales it down only when necessary.
+     */
+    width: auto;
+    height: auto;
+
+    /*
+     * These two constraints guarantee that the
+     * entire source image remains visible.
+     */
+    max-width: 100%;
+    max-height: 100%;
+
+    /*
+     * Never crop or distort.
+     */
+    object-fit: unset;
+    object-position: center;
+
     display: block;
-    width: 100%;
-    height: 100%;
+    flex: 0 1 auto;
     margin: 0;
     padding: 0;
-    object-fit: cover;
-    object-position: center;
   }
 }
-
 
 .srOnly {
   position: absolute;
@@ -103,5 +125,5 @@
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
-  border-width: 0;
+  border: 0;
 }

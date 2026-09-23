@@ -130,6 +130,20 @@ function verifyClock(filePath) {
   if (!/<time\b[^>]*\bdateTime\s*=/.test(source) && !/\bSRTime\b/.test(source)) {
     errors.push('must render a semantic <time> with dateTime');
   }
+
+  // Check for deprecated raw srOnly pattern - clocks should use SRTime component
+  const usesStylesSrOnly = /styles\.srOnly/.test(source);
+  const importsSRTime = /import\s+\w+\s+from\s*['"]@\/components\/SRTime['"]/.test(source);
+  if (usesStylesSrOnly && !importsSRTime) {
+    errors.push('must not use styles.srOnly directly; import and use SRTime from @/components/SRTime instead');
+  }
+  // If clock imports styles and uses srOnly, verify the CSS module defines it (fallback for legacy)
+  if (usesStylesSrOnly && importsSRTime) {
+    const cssContent = fs.readFileSync(cssPath, 'utf8');
+    if (!/\.srOnly\s*\{/.test(cssContent)) {
+      errors.push('Clock.module.css must define .srOnly when using styles.srOnly (use SRTime instead)');
+    }
+  }
   // Current clocks must use the shared clock hooks as their source of displayed
   // time. Rendering loops are allowed: Three.js/WebGL and other visual animation
   // systems may use requestAnimationFrame when they do not calculate clock time

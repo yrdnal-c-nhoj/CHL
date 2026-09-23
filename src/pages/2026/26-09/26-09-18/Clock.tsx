@@ -1,5 +1,6 @@
 import { useClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
+
 import digit0 from '@/assets/images/26_images/26-09/26-09-18/0.webp';
 import digit1 from '@/assets/images/26_images/26-09/26-09-18/1.webp';
 import digit2 from '@/assets/images/26_images/26-09/26-09-18/2.webp';
@@ -10,6 +11,7 @@ import digit6 from '@/assets/images/26_images/26-09/26-09-18/6.webp';
 import digit7 from '@/assets/images/26_images/26-09/26-09-18/7.webp';
 import digit8 from '@/assets/images/26_images/26-09/26-09-18/8.webp';
 import digit9 from '@/assets/images/26_images/26-09/26-09-18/9.webp';
+
 import styles from './Clock.module.css';
 
 export const assets = [
@@ -41,43 +43,29 @@ const digitImages: Record<string, string> = {
 const Clock_26_09_18 = () => {
   const time = useClock();
 
-  const h = time.getHours().toString().padStart(2, '0');
-  const m = time.getMinutes().toString().padStart(2, '0');
-  const s = time.getSeconds().toString().padStart(2, '0');
-  const h1 = h.charAt(0);
-  const h2 = h.charAt(1);
-  const m1 = m.charAt(0);
-  const m2 = m.charAt(1);
-  const s1 = s.charAt(0);
-  const s2 = s.charAt(1);
+  const hours = time.getHours().toString().padStart(2, '0');
+  const minutes = time.getMinutes().toString().padStart(2, '0');
+  const seconds = time.getSeconds().toString().padStart(2, '0');
+
+  const rows = [hours, minutes, seconds];
 
   return (
     <main className={styles.container}>
       <div className={styles.digitalDisplay}>
-        <div className={styles.timeGroup}>
-          <span className={styles.digitBox}>
-            <img src={digitImages[h1]} alt={h1} loading="eager" />
-          </span>
-          <span className={styles.digitBox}>
-            <img src={digitImages[h2]} alt={h2} loading="eager" />
-          </span>
-        </div>
-        <div className={styles.timeGroup}>
-          <span className={styles.digitBox}>
-            <img src={digitImages[m1]} alt={m1} loading="eager" />
-          </span>
-          <span className={styles.digitBox}>
-            <img src={digitImages[m2]} alt={m2} loading="eager" />
-          </span>
-        </div>
-        <div className={styles.timeGroup}>
-          <span className={styles.digitBox}>
-            <img src={digitImages[s1]} alt={s1} loading="eager" />
-          </span>
-          <span className={styles.digitBox}>
-            <img src={digitImages[s2]} alt={s2} loading="eager" />
-          </span>
-        </div>
+        {rows.map((row, rowIndex) => (
+          <div className={styles.timeGroup} key={rowIndex}>
+            {row.split('').map((digit, digitIndex) => (
+              <div className={styles.digitBox} key={digitIndex}>
+                <img
+                  src={digitImages[digit]}
+                  alt=""
+                  loading="eager"
+                  draggable={false}
+                />
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
 
       <SRTime time={time} />
@@ -86,4 +74,5 @@ const Clock_26_09_18 = () => {
 };
 
 Clock_26_09_18.displayName = 'Clock_26_09_18';
+
 export default Clock_26_09_18;

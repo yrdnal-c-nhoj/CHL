@@ -43,18 +43,24 @@ function buildClockItems(data: unknown): ClockItem[] {
         entry.path.trim() !== ''
       );
     })
-    .map((item, index) => ({
-      path: item.path,
-      date: item.date,
-      title:
-        typeof item.title === 'string' && item.title
-          ? item.title
-          : item.date,
-      tags: Array.isArray(item.tags)
+    .map((item, index) => {
+      const tags = Array.isArray(item.tags)
         ? item.tags.filter((tag): tag is string => typeof tag === 'string')
-        : undefined,
-      clockNumber: index + 1,
-    }));
+        : undefined;
+      const result: ClockItem = {
+        path: item.path,
+        date: item.date,
+        title:
+          typeof item.title === 'string' && item.title
+            ? item.title
+            : item.date,
+        clockNumber: index + 1,
+      };
+      if (tags !== undefined) {
+        result.tags = tags;
+      }
+      return result;
+    });
 }
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
