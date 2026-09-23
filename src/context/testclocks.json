@@ -6273,8 +6273,8 @@
     "title": "Wittenberg",
     "tags": [
       "1517",
-      "Germany",
       "Bauhaus",
+      "Germany",
       "digital",
       "metal",
       "shrine"
@@ -6991,7 +6991,8 @@
       "digital",
       "exoskeletal",
       "mechanical",
-      "ride"
+      "ride",
+      "robot"
     ]
   },
   {
@@ -7133,11 +7134,12 @@
     "date": "26-09-21",
     "title": "Narrator",
     "tags": [
+      "body",
       "digital",
-      "interior",
-      "sound",
       "dog",
-      "body"
+      "interior",
+      "robot",
+      "sound"
     ]
   },
   {
@@ -7170,6 +7172,15 @@
       "analog",
       "day-and-night",
       "light"
+    ]
+  },
+  {
+    "path": "26-09-27",
+    "date": "26-09-27",
+    "title": "Test Clock",
+    "tags": [
+      "digital",
+      "sound"
     ]
   }
 ]

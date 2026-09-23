@@ -19,6 +19,7 @@
     "type-check": "npx tsc --noEmit -p tsconfig.ci.json",
     "status": "echo 'Status check: run verify:clocks and type-check'",
     "ai-agent": "python scripts/ai_agent.py",
+    "new-clock": "node scripts/new-clock.js",
     "prepare": "husky"
   },
   "dependencies": {
