@@ -1,12 +1,19 @@
+:root {
+  /* Common typography and shadow styles */
+  --clock-font: 'ClockFont_26_09_19', monospace, sans-serif;
+  --text-inset-shadow: -2px -2px 0 #000, 1px 4px 0 #fff;
+
+  /* Colors */
+  --color-digit: #cd84da;
+  --color-muted: #9e9994;
+}
+
 .container {
   position: relative;
   width: 100%;
   height: 100dvh;
   overflow: hidden;
   background-color: #8d8a8d;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .backgroundLayer {
@@ -15,68 +22,55 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.9;
-  z-index: 2;
+  object-position: top center;
+  z-index: 1;
   pointer-events: none;
-  filter: contrast(90%) brightness(140%) saturate(60%);
+  filter: contrast(80%) brightness(140%) saturate(60%);
 }
 
 @media (max-width: 768px) {
   .backgroundLayer {
-    object-fit: fill;
+    object-fit: cover;
+    object-position: top center;
   }
 }
 
 .digitalDisplay {
-  position: relative;
+  position: absolute;
+  top: 2vmin;
+  right: 2vmin;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: auto;
-  font-family: 'ClockFont_26_09_19', monospace, sans-serif;
+  font-family: var(--clock-font);
   font-size: 18vmin;
   z-index: 9;
 }
 
-.digitBox {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 12vmin;
-  font-size: 8vmin;
-  color: #9e9994;
-  text-shadow: -1px -1px 0 #000, 1px 1px 0 #fff;
-}
-
-.separator {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 6vmin;
-  font-size: 8vmin;
-  color: #9e9994;
-  text-shadow: -1px -1px 0 #000, 1px 1px 0 #fff;
-}
-
+/* Base style for display elements */
+.digitBox,
+.separator,
 .ampm {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-left: 2vmin;
-  padding: 0 1vmin;
-  font-size: 8vmin;
-  color: #9e9994;
-  text-shadow: -1px -1px 0 #000, 1px 1px 0 #fff;
+  text-shadow: var(--text-inset-shadow);
+  color: var(--color-muted);
 }
 
-.srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+.digitBox {
+  /* width: 9vmin; */
+  font-size: 10vmin;
+  color: var(--color-digit);
+}
+
+.separator {
+  width: 7vmin;
+  font-size: 10vmin;
+  color: var(--color-digit);
+}
+
+.ampm {
+  margin-left: 2vmin;
+  font-size: 8vmin;
+  color: var(--color-digit);
 }

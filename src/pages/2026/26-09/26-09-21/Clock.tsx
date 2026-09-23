@@ -2,7 +2,7 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
-import fontUrl from '@/assets/fonts/26fonts/26-09-19.otf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-09-21.ttf?url';
 import backgroundVideo from '@/assets/images/26_images/26-09/26-09-21/narrator.webm';
 import styles from './Clock.module.css';
 
