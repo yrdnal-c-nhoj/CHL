@@ -75,8 +75,8 @@ css .container {
   opacity: 1;
 
   box-shadow:
-    0 0 3px rgba(102, 226, 122, 0.8),
-    0 0 8px rgba(24, 83, 38, 0.8);
+    0 0 3px rgb(243, 101, 40),
+    0 0 8px rgba(243, 184, 170, 0.8);
 
   will-change: transform;
 
@@ -144,7 +144,7 @@ css .container {
   color: var(--hand-color);
   text-shadow:
     1px 1px 0px rgba(247, 13, 13, 0.8),
-    1px 0 0px rgba(24, 83, 38, 0.8);
+    1px 0 0px rgba(3, 9, 4, 0.8);
   transform-origin: center;
   z-index: 15;
   pointer-events: none;
