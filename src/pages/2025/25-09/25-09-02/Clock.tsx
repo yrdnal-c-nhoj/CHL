@@ -34,7 +34,7 @@ const ClockComponent =  () => {
       style={{ '--bg-image': `url(${bgImage})` } as React.CSSProperties}
     >
       {/* Accessible time element */}
-      <time dateTime={time.toISOString()} className={styles.semanticTime} className={styles.srOnly}>
+      <time dateTime={time.toISOString()} className={styles.semanticTime}>
         {time.toLocaleTimeString()}
       </time>
 

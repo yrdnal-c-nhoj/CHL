@@ -1,7 +1,8 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
-import fontUrl from '@/assets/fonts/26fonts/26-09-19.woff2?url';
+import SRTime from '@/components/SRTime';
+import fontUrl from '@/assets/fonts/26fonts/26-09-19.otf?url';
 import backgroundVideo from '@/assets/images/26_images/26-09/26-09-19/implode.webm';
 import styles from './Clock.module.css';
 
@@ -61,9 +62,7 @@ const Clock = () => {
         ))}
       </div>
 
-      <time dateTime={time.toISOString()} className={styles.srOnly}>
-        {hours}:{minutes}:{seconds}.{centiseconds}
-      </time>
+      <SRTime time={time} />
     </main>
   );
 };
