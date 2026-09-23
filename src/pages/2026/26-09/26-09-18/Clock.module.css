@@ -9,13 +9,11 @@
   background: #f78ae8;
 }
 
-/* Desktop: three columns (HH | MM | SS), two stacked digits each */
 .display {
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 100%;
-  max-height: 100%;
+  gap: 0;
 }
 
 .group {
@@ -39,7 +37,24 @@
   -webkit-user-drag: none;
 }
 
-/* Phone: two touching columns of three (HH / MM / SS) */
+/* Desktop: six images in a single horizontal row */
+@media (min-width: 769px) {
+  .display {
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+  
+  .group {
+    flex-direction: row;
+  }
+  
+  .digit {
+    max-width: 16.66vw;
+    max-height: 100dvh;
+  }
+}
+
+/* Phone: keep existing 2-column, 3-row grid */
 @media (max-width: 768px) {
   .display {
     display: grid;
@@ -50,7 +65,6 @@
     max-height: none;
   }
 
-  /* flatten the groups so all six digits become direct grid items */
   .group {
     display: contents;
   }
@@ -62,7 +76,6 @@
     max-height: none;
   }
 
-  /* pin each column toward the center seam so the columns touch */
   .digit:nth-child(odd) {
     object-position: right center;
   }
