@@ -9,121 +9,64 @@
   background: #f78ae8;
 }
 
-.digitalDisplay {
+/* Desktop: three columns (HH | MM | SS), two stacked digits each */
+.display {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
+  max-width: 100%;
+  max-height: 100%;
 }
 
-.timeGroup {
+.group {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0;
+  flex-shrink: 0;
 }
 
-.digitBox {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-.digitBox img {
+.digit {
   display: block;
-  width: 16.7vw;
+  flex-shrink: 0;
+  width: auto;
   height: auto;
-  margin: 0;
-  padding: 0;
+  max-width: 50vw;
+  max-height: 100dvh;
+  object-fit: contain;
   filter: contrast(90%) brightness(110%);
   user-select: none;
   -webkit-user-drag: none;
 }
 
-/* PHONE */
-
+/* Phone: two touching columns of three (HH / MM / SS) */
 @media (max-width: 768px) {
-  .container {
-    align-items: center;
-    justify-content: center;
-  }
-
-  .digitalDisplay {
-    width: 100vw;
-    height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-  }
-
-  .timeGroup {
+  .display {
+    display: grid;
+    grid-template: repeat(3, minmax(0, 1fr)) / repeat(2, minmax(0, 1fr));
     width: 100%;
-    height: 33.333333dvh;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    flex-shrink: 0;
+    height: 100%;
+    max-width: none;
+    max-height: none;
   }
 
-  .digitBox {
-    width: 50vw;
-    height: 33.333333dvh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 50vw;
-    margin: 0;
-    padding: 0;
-
-    /*
-     * Do NOT clip the image.
-     */
-    overflow: visible;
+  /* flatten the groups so all six digits become direct grid items */
+  .group {
+    display: contents;
   }
 
-  .digitBox img {
-    /*
-     * Preserve the image's original aspect ratio.
-     * The browser scales it down only when necessary.
-     */
-    width: auto;
-    height: auto;
-
-    /*
-     * These two constraints guarantee that the
-     * entire source image remains visible.
-     */
-    max-width: 100%;
-    max-height: 100%;
-
-    /*
-     * Never crop or distort.
-     */
-    object-fit: unset;
-    object-position: center;
-
-    display: block;
-    flex: 0 1 auto;
-    margin: 0;
-    padding: 0;
+  .digit {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
   }
-}
 
-.srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  /* pin each column toward the center seam so the columns touch */
+  .digit:nth-child(odd) {
+    object-position: right center;
+  }
+  .digit:nth-child(even) {
+    object-position: left center;
+  }
 }
