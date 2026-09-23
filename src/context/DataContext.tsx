@@ -5,7 +5,6 @@
  * clockpages.json supplies descriptive metadata only.
  */
 import type { ClockItem, DataContextType } from '@/types/data';
-import { CLOCK_DATES } from '@/clock/clockRegistry';
 import type { ReactNode } from 'react';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
@@ -24,53 +23,38 @@ interface RawClockMetadata {
   tags?: unknown;
 }
 
-function normalizeMetadata(data: unknown): Map<string, RawClockMetadata> {
-  if (!Array.isArray(data)) {
-    throw new Error('Clock metadata must be an array');
-  }
-
-  const metadata = new Map<string, RawClockMetadata>();
-
-  for (const entry of data) {
-    if (!entry || typeof entry !== 'object') continue;
-
-    const item = entry as RawClockMetadata;
-    const date = typeof item.date === 'string' ? item.date.trim() : '';
-
-    if (date) {
-      metadata.set(date, item);
-    }
-  }
-
-  return metadata;
-}
-
 /**
- * Build the public clock list from actual Clock.tsx files, enriching those
- * clocks with optional metadata from clockpages.json.
+ * Build the public clock list from clockpages.json entries.
+ * Only clocks listed in the JSON are displayed.
  */
 function buildClockItems(data: unknown): ClockItem[] {
-  const metadata = normalizeMetadata(data);
+  if (!Array.isArray(data)) {
+    return [];
+  }
 
-  return CLOCK_DATES.map((date, index) => {
-    const item = metadata.get(date);
-
-    return {
-      path:
-        typeof item?.path === 'string' && item.path
-          ? item.path
-          : `/${date}`,
-      date,
+  return data
+    .filter((entry): entry is RawClockMetadata & { date: string; path: string } => {
+      return (
+        entry &&
+        typeof entry === 'object' &&
+        typeof entry.date === 'string' &&
+        entry.date.trim() !== '' &&
+        typeof entry.path === 'string' &&
+        entry.path.trim() !== ''
+      );
+    })
+    .map((item, index) => ({
+      path: item.path,
+      date: item.date,
       title:
-        typeof item?.title === 'string' && item.title
+        typeof item.title === 'string' && item.title
           ? item.title
-          : date,
-      tags: Array.isArray(item?.tags)
+          : item.date,
+      tags: Array.isArray(item.tags)
         ? item.tags.filter((tag): tag is string => typeof tag === 'string')
         : undefined,
       clockNumber: index + 1,
-    };
-  });
+    }));
 }
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
@@ -100,10 +84,8 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
 
         setItems(buildClockItems(data));
       } catch (err) {
-        // Metadata is descriptive, not authoritative. If it is unavailable,
-        // keep the real clock registry usable with date-based fallback items.
         console.warn('[DataContext] Clock metadata unavailable:', err);
-        setItems(buildClockItems([]));
+        setItems([]);
         setError(null);
       } finally {
         setLoading(false);
