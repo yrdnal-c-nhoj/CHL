@@ -259,6 +259,7 @@ Start from the smallest compliant structure:
 
 ```tsx
 import { useClock } from '@/utils/hooks';
+import SRTime from '@/components/SRTime';
 import styles from './Clock.module.css';
 
 export const assets: string[] = [];
@@ -268,9 +269,7 @@ const Clock = () => {
 
   return (
     <main className={styles.container}>
-      <time dateTime={time.toISOString()} className={styles.srOnly}>
-        {time.toLocaleTimeString()}
-      </time>
+      <SRTime time={time} />
       <div aria-hidden="true">{time.toLocaleTimeString()}</div>
     </main>
   );
