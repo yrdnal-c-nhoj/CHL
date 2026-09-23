@@ -39,7 +39,6 @@ export function getClockImport(
 ): (() => Promise<ClockModule>) | undefined {
   return CLOCK_LOOKUP[date];
 }
-
 export function getLatestClockDate(
   throughDate?: string,
 ): string | null {
@@ -47,5 +46,5 @@ export function getLatestClockDate(
     ? CLOCK_DATES.filter((date) => date <= throughDate)
     : CLOCK_DATES;
 
-  return eligibleDates.at(-1) ?? null;
+  return eligibleDates[eligibleDates.length - 1] ?? null;
 }
