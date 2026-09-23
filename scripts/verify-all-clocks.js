@@ -21,6 +21,14 @@ const METADATA_FILES = [
 ];
 const DATE_PATTERN = /^\d{2}-\d{2}-\d{2}$/;
 
+// September 2026 is the current architectural boundary.
+// Clocks from 26-09-XX onwards must use SRTime.
+const CURRENT_BOUNDARY = '26-09';
+
+function isCurrentClock(date) {
+  return date >= CURRENT_BOUNDARY;
+}
+
 const fail = (message) => {
   console.error(`Clock verification failed: ${message}`);
   process.exitCode = 1;
@@ -131,17 +139,24 @@ function verifyClock(filePath) {
     errors.push('must render a semantic <time> with dateTime');
   }
 
-  // Check for deprecated raw srOnly pattern - clocks should use SRTime component
-  const usesStylesSrOnly = /styles\.srOnly/.test(source);
-  const importsSRTime = /import\s+\w+\s+from\s*['"]@\/components\/SRTime['"]/.test(source);
-  if (usesStylesSrOnly && !importsSRTime) {
-    errors.push('must not use styles.srOnly directly; import and use SRTime from @/components/SRTime instead');
-  }
-  // If clock imports styles and uses srOnly, verify the CSS module defines it (fallback for legacy)
-  if (usesStylesSrOnly && importsSRTime) {
-    const cssContent = fs.readFileSync(cssPath, 'utf8');
-    if (!/\.srOnly\s*\{/.test(cssContent)) {
-      errors.push('Clock.module.css must define .srOnly when using styles.srOnly (use SRTime instead)');
+  // SRTime enforcement: only for current clocks (Sept 2026+)
+  // Historical clocks may use either <time className={styles.srOnly}> or SRTime
+  const current = isCurrentClock(date);
+  if (current) {
+    if (!/\bSRTime\b/.test(source)) {
+      errors.push('current clocks must use SRTime component for semantic time');
+    }
+    if (/styles\.srOnly/.test(source)) {
+      errors.push('current clocks must not use styles.srOnly directly; use SRTime instead');
+    }
+  } else {
+    // Historical clocks: if using styles.srOnly, verify CSS defines it
+    const usesStylesSrOnly = /styles\.srOnly/.test(source);
+    if (usesStylesSrOnly) {
+      const cssContent = fs.readFileSync(cssPath, 'utf8');
+      if (!/\.srOnly\s*\{/.test(cssContent)) {
+        errors.push('Clock.module.css must define .srOnly when using styles.srOnly');
+      }
     }
   }
   // Current clocks must use the shared clock hooks as their source of displayed
