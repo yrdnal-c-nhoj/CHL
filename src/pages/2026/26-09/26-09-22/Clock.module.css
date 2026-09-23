@@ -1,56 +1,172 @@
-/* Video triptych: three equal columns, all contain, all centered */
-.videoLayout {
+css .container {
+  --hand-color: #e6a627;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #090908;
+}
+
+/* Background video */
+.backgroundVideo {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
-  height: 100%;
   width: 100%;
-  align-items: center;
-  justify-items: center;
+  height: 100%;
+  object-fit: cover;
   z-index: 1;
-}
-
-.backgroundVideo {
-  grid-column: 1 / -1;
-  grid-row: 1;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center center;
   pointer-events: none;
-  z-index: 0;
+  filter: brightness(1.2) contrast(0.8) saturate(1.1);
 }
 
-.centerVideo {
-  grid-column: 2;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center center;
-  z-index: 2;
+.clockFace {
+  position: absolute;
+  width: min(100vw, 100dvh);
+  height: min(100vw, 100dvh);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  pointer-events: none;
 }
 
-.sideVideo {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center center;
-  z-index: 1;
+
+/*
+ * Dedicated hand layer.
+ *
+ * This sits above the background video.
+ */
+.handLayer {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 20;
+
+  pointer-events: none;
 }
 
-@media (max-width: 768px) {
-  .centerVideo {
-    grid-column: 1 / -1;
-    justify-self: center;
-  }
-  
-  .sideVideo {
-    display: none;
-  }
-  
-  .backgroundVideo {
-    display: none;
-  }
+/*
+ * Base clock hand
+ */
+.hand {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  display: block;
+
+  width: var(--hand-width);
+  height: var(--hand-height);
+
+  background: var(--hand-color);
+
+  transform-origin: 50% 100%;
+
+  transform:
+    translate(-50%, -100%) rotate(var(--angle, 0deg));
+
+  border-radius: 999px;
+
+  z-index: 20;
+
+  opacity: 1;
+
+  box-shadow:
+    0 0 3px rgba(102, 226, 122, 0.8),
+    0 0 8px rgba(24, 83, 38, 0.8);
+
+  will-change: transform;
+
+  pointer-events: none;
+}
+
+/*
+ * Hour hand
+ */
+.hourHand {
+  --hand-width: 3.5vmin;
+  --hand-height: 12vmin;
+}
+
+/*
+ * Minute hand
+ */
+.minuteHand {
+  --hand-width: 2.2vmin;
+  --hand-height: 20vmin;
+}
+
+/*
+ * Second hand
+ */
+.secondHand {
+  --hand-width: 1.2vmin;
+  --hand-height: 29vmin;
+}
+
+/*
+ * Center pivot
+ */
+.centerDot {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 1.8vmin;
+  height: 1.8vmin;
+
+  background: var(--hand-color);
+
+  border-radius: 50%;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 30;
+
+  box-shadow:
+    0 0 4px rgba(184, 227, 161, 0.9),
+    0 0 10px rgba(108, 195, 31, 0.9);
+
+  pointer-events: none;
+}
+
+/*
+ * Clock numbers - positioned at perimeter, rotated outward
+ */
+.clockNumber {
+  position: absolute;
+  font-family: 'ClockFont_26_09_12', monospace, sans-serif;
+  font-size: 22vmin;
+  color: var(--hand-color);
+  text-shadow:
+    1px 1px 0px rgba(247, 13, 13, 0.8),
+    1px 0 0px rgba(24, 83, 38, 0.8);
+  transform-origin: center;
+  z-index: 15;
+  pointer-events: none;
+}
+
+/*
+ * Screen-reader-only utility
+ */
+.srOnly {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+
+  white-space: nowrap;
+
+  border: 0;
 }

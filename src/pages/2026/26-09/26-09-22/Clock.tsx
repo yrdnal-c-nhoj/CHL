@@ -1,3 +1,4 @@
+
 import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -12,19 +13,19 @@ import styles from './Clock.module.css';
 export const assets = [limeVideo, font];
 
 const fontConfig: FontConfig = {
-  fontFamily: 'ClockFont_26_09_06',
+  fontFamily: 'ClockFont_26_09_12',
   fontUrl: font,
 };
 
-const Clock_26_09_06 = () => {
+const Clock_26_09_12 = () => {
   useSuspenseFontLoader([fontConfig]);
 
   const time = useSmoothClock(16);
 
   const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
-    const ms = time.getMilliseconds();
+    const milliseconds = time.getMilliseconds();
 
-    const seconds = time.getSeconds() + ms / 1000;
+    const seconds = time.getSeconds() + milliseconds / 1000;
     const minutes = time.getMinutes() + seconds / 60;
     const hours = (time.getHours() % 12) + minutes / 60;
 
@@ -37,121 +38,76 @@ const Clock_26_09_06 = () => {
 
   return (
     <main className={styles.container}>
-      {/* SVG filter definitions */}
-      <svg
-        className={styles.filterSvg}
+      {/* Background video */}
+      <video
+        src={limeVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
         aria-hidden="true"
-      >
-        <defs>
-          <filter id="removeRed">
-            <feColorMatrix
-              type="matrix"
-              values="
-                0 0 0 0 0
-                0 1 0 0 0
-                0 0 1 0 0
-                0 0 0 1 0
-              "
-            />
-          </filter>
-        </defs>
-      </svg>
+        className={styles.backgroundVideo}
+      />
 
-      {/* Video triptych: center = contain (full), sides = cover (clipped) */}
-      <div className={styles.videoLayout}>
-        <video
-          src={limeVideo}
-          autoPlay
-          loop
-          muted
-          playsInline
-          aria-hidden="true"
-          className={`${styles.backgroundVideo} ${styles.sideVideo}`}
-        />
-        <video
-          src={limeVideo}
-          autoPlay
-          loop
-          muted
-          playsInline
-          aria-hidden="true"
-          className={`${styles.backgroundVideo} ${styles.centerVideo}`}
-        />
-        <video
-          src={limeVideo}
-          autoPlay
-          loop
-          muted
-          playsInline
-          aria-hidden="true"
-          className={`${styles.backgroundVideo} ${styles.sideVideo}`}
-        />
-      </div>
-
-      {/* Analog clock */}
+      {/* Centered clock */}
       <div className={styles.clockFace}>
-        {/* Clock numbers */}
+        {/* Clock numbers - positioned at perimeter, rotated outward */}
         {Array.from({ length: 12 }, (_, i) => {
-          const number = i + 1;
-
-          // 12 is at the top, then clockwise around the face.
-          const angle = (number * 30 * Math.PI) / 180;
-
-          // Percentage of the clock-face radius.
-          const radius = 36;
-
-          const left = 50 + radius * Math.sin(angle);
-          const top = 50 - radius * Math.cos(angle);
-
+          const num = i + 1;
+          const angle = num * 30; // 30 degrees per number
+          const radius = 42; // percentage from center
+          const left = 50 + radius * Math.sin((angle * Math.PI) / 180);
+          const top = 50 - radius * Math.cos((angle * Math.PI) / 180);
           return (
             <span
-              key={number}
+              key={num}
               className={styles.clockNumber}
               style={{
                 left: `${left}%`,
                 top: `${top}%`,
-                transform:
-                  `translate(-50%, -50%) ` +
-                  `rotate(${number * 30}deg)`,
-              }}
+                transform: `translate(-50%, -50%) rotate(${angle}deg)`,
+              } as React.CSSProperties}
             >
-              {number}
+              {num}
             </span>
           );
         })}
 
-        {/* Hour hand */}
-        <div
-          className={`${styles.hand} ${styles.hourHand}`}
-          style={
-            {
-              '--angle': `${hourAngle}deg`,
-            } as React.CSSProperties
-          }
-        />
+        {/* Clock hands */}
+        <div className={styles.handLayer}>
+          {/* Hour hand */}
+          <div
+            className={`${styles.hand} ${styles.hourHand}`}
+            style={
+              {
+                '--angle': `${hourAngle}deg`,
+              } as React.CSSProperties
+            }
+          />
 
-        {/* Minute hand */}
-        <div
-          className={`${styles.hand} ${styles.minuteHand}`}
-          style={
-            {
-              '--angle': `${minuteAngle}deg`,
-            } as React.CSSProperties
-          }
-        />
+          {/* Minute hand */}
+          <div
+            className={`${styles.hand} ${styles.minuteHand}`}
+            style={
+              {
+                '--angle': `${minuteAngle}deg`,
+              } as React.CSSProperties
+            }
+          />
 
-        {/* Second hand */}
-        <div
-          className={`${styles.hand} ${styles.secondHand}`}
-          style={
-            {
-              '--angle': `${secondAngle}deg`,
-            } as React.CSSProperties
-          }
-        />
+          {/* Second hand */}
+          <div
+            className={`${styles.hand} ${styles.secondHand}`}
+            style={
+              {
+                '--angle': `${secondAngle}deg`,
+              } as React.CSSProperties
+            }
+          />
 
-        {/* Center dot */}
-        <div className={styles.centerDot} />
+          {/* Center pivot */}
+          <div className={styles.centerDot} />
+        </div>
       </div>
 
       <SRTime time={time} />
@@ -159,6 +115,6 @@ const Clock_26_09_06 = () => {
   );
 };
 
-Clock_26_09_06.displayName = 'Clock_26_09_06';
+Clock_26_09_12.displayName = 'Clock_26_09_12';
 
-export default Clock_26_09_06;
+export default Clock_26_09_12;
