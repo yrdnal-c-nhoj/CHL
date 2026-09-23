@@ -1,0 +1,82 @@
+.container {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #8d8a8d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backgroundLayer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.9;
+  z-index: 2;
+  pointer-events: none;
+  filter: contrast(90%) brightness(140%) saturate(60%);
+}
+
+@media (max-width: 768px) {
+  .backgroundLayer {
+    object-fit: fill;
+  }
+}
+
+.digitalDisplay {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  font-family: 'ClockFont_26_09_19', monospace, sans-serif;
+  font-size: 18vmin;
+  z-index: 9;
+}
+
+.digitBox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12vmin;
+  font-size: 8vmin;
+  color: #9e9994;
+  text-shadow: -1px -1px 0 #000, 1px 1px 0 #fff;
+}
+
+.separator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 6vmin;
+  font-size: 8vmin;
+  color: #9e9994;
+  text-shadow: -1px -1px 0 #000, 1px 1px 0 #fff;
+}
+
+.ampm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2vmin;
+  padding: 0 1vmin;
+  font-size: 8vmin;
+  color: #9e9994;
+  text-shadow: -1px -1px 0 #000, 1px 1px 0 #fff;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
