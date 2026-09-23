@@ -1,60 +1,183 @@
 .container {
-    position: relative;
-    width: 100%;
-    height: 100dvh;
-    margin: 0;
-    overflow: hidden;
-    background: var(--bg-color);
+  --hour-hand-color: #dc0b20;
+  --minute-hand-color: #0206f8;
+  --second-hand-color: #dfdbb6;
 
-    /* Color palette */
-    --digit-color: #abd913;
-    --face-color: #282885;
-    --side-color: #17174d;
-    --bg-color: #0f0f1a;
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
 
-    /* Layout - all viewport-relative */
-    --digit-width: 2.5vw;
-    --digit-height: 3.5vw;
-    --digit-depth: 1vw;
-    --spacing: 3vw;
-    --texture-size: 512;
-    --font-size: 4.5vw;
+  overflow: hidden;
 
-    /* Animation */
-    --spin-speed: 0.45;
-    --wobble-speed: 0.0004;
-    --wobble-amplitude: 0.08;
-    --spin-offset-step: 1.1;
+  background-color: #090908;
 
-    /* Lighting */
-    --ambient-intensity: 1.5;
-
-    /* Camera - also viewport-relative for consistent framing */
-    --camera-z: 10vw;
-    --camera-fov: 40;
-    --camera-near: 0.1;
-    --camera-far: 100;
-
-    /* Font */
-    --font-family: 'Arial, Helvetica, sans-serif';
-    --font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.canvas {
-    display: block;
-    width: 100% !important;
-    height: 100% !important;
-    touch-action: none;
+.filterSvg {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
 }
 
-/* Minimum size constraints */
-@media (max-width: 400px) {
-    .container {
-        --digit-width: 10px;
-        --digit-height: 14px;
-        --digit-depth: 4px;
-        --spacing: 12px;
-        --font-size: 18px;
-        --camera-z: 400px;
-    }
+/* Background Video */
+
+.backgroundVideo {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  z-index: 1;
+
+  pointer-events: none;
+}
+
+/* Clock Structure */
+
+.clockFace {
+  position: relative;
+
+  /*
+   * vmin guarantees that width and height are
+   * exactly the same regardless of viewport shape.
+   */
+  width: 110vmin;
+  height: 110vmin;
+
+  flex: 0 0 110vmin;
+
+  border-radius: 50%;
+
+  z-index: 9;
+}
+
+/* Base Hand Styles */
+
+.hand {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: var(--hand-width);
+  height: var(--hand-height);
+
+  transform-origin: 50% 100%;
+
+  transform:
+    translateX(-50%) translateY(-100%) rotate(var(--angle, 0deg));
+
+  border-radius: 1vmin;
+
+  z-index: 8;
+opacity: 0.5;
+ 
+
+  /*
+   * Same glow as the digits.
+   */
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.7);
+
+  will-change: transform;
+}
+
+/* Hour Hand */
+
+.hourHand {
+  --hand-width: 1vmin;
+  --hand-height: 22vmin;
+  background-color: var(--hour-hand-color);
+}
+
+/* Minute Hand */
+
+.minuteHand {
+  --hand-width: 1vmin;
+  --hand-height: 45vmin;
+  background-color: var(--minute-hand-color);
+}
+
+/* Second Hand */
+
+.secondHand {
+  --hand-width: 1vmin;
+  --hand-height: 50vmin;
+  background-color: var(--second-hand-color);
+}
+
+/* Center Dot */
+
+.centerDot {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 1%;
+  height: 1vmin;
+
+  background-color: #c5c1c1;
+
+  border-radius: 50%;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 10;
+
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.709);
+}
+
+/* Clock Face Numbers */
+.clockNumber {
+  position: absolute;
+
+  color: #fbfbdd;
+
+  font-family:
+    'ClockFont_26_09_06',
+    monospace,
+    system-ui,
+    sans-serif;
+
+  font-size: 16vmin;
+  /* font-weight: 900; */
+  line-height: 1;
+
+  letter-spacing: 0.01em;
+  text-align: center;
+
+  /* text-shadow: 0 0 4px rgba(255, 255, 255, 0.7); */
+
+  z-index: 7;
+  pointer-events: none;
+
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+}
+
+/* Screen Reader Only */
+
+.srOnly {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+
+  white-space: nowrap;
+
+  border-width: 0;
 }
