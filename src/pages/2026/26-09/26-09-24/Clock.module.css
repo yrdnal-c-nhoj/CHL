@@ -43,7 +43,7 @@
   justify-content: center;
   align-items: center;
   font-size: clamp(4rem, 15vw, 12rem);
-  text-shadow: 0 0 1rem rgba(0, 0, 0, 0.8);
+  text-shadow: 0 0 1rem rgba(11, 11, 11, 0.8);
   min-width: 0.8em;
   line-height: 1;
 }
