@@ -64,7 +64,7 @@
 
   .timeGroup {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 1fr 1fr;
     width: 100vw;
     height: 33.333dvh;
     margin: 0;
@@ -88,7 +88,7 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
   }
 }
