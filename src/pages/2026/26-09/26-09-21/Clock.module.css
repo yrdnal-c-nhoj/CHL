@@ -9,20 +9,24 @@
 }
 
 .container {
-  position: relative;
-  width: 100%;
-  height: 100dvh;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
   background-color: #8d8a8d;
+  /* Ensure no white gaps on mobile when address bar hides/shows */
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
 .backgroundLayer {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   object-fit: cover;
-  object-position: top center;
+  object-position: center center;
   z-index: 1;
   pointer-events: none;
   filter: contrast(80%) brightness(140%) saturate(60%);
@@ -31,7 +35,7 @@
 @media (max-width: 768px) {
   .backgroundLayer {
     object-fit: cover;
-    object-position: top center;
+    object-position: center center;
   }
 }
 
@@ -58,7 +62,6 @@
 }
 
 .digitBox {
-  /* width: 9vmin; */
   font-size: 10vmin;
   color: var(--color-digit);
 }
