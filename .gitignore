@@ -63,10 +63,13 @@ compliance-baseline.json
 # Dev utilities
 capture.js
 capture.mjs
-scripts/
-!scripts/
-scripts/*
-!scripts/verify-all-clocks.js
+   scripts/
+   !scripts/
+   scripts/*
+   !scripts/verify-all-clocks.js
+   !scripts/clock-verifier-rules.js
+   !scripts/clock-verifier-rules.test.js
+   !scripts/new-clock.js
 
 # GitHub community health (keep workflows)
 .github/ISSUE_TEMPLATE/
