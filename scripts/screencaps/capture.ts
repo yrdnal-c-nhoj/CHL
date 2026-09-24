@@ -1,7 +1,7 @@
 import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import { chromium, type PageScreenshotOptions } from 'playwright';
+import { chromium, type PageScreenshotOptions, type ConsoleMessage } from 'playwright';
 
 const SCREENSHOT_DIR = path.join(process.cwd(), 'screen-caps', 'screenshots');
 const DEFAULT_VITE_PORT = 5173;
@@ -43,8 +43,8 @@ async function checkUrlReady(url: string, maxWaitMs = 10000): Promise<boolean> {
 }
 
 async function startDevServer(port: number): Promise<DevServerHandle> {
-  console.log('[screencaps] Starting Vite preview server...');
-  const proc = spawn('npx', ['vite', 'preview', '--port', String(port), '--strictPort'], {
+  console.log('[screencaps] Starting Vite dev server...');
+  const proc = spawn('npx', ['vite', 'dev', '--port', String(port), '--strictPort'], {
     stdio: ['ignore', 'pipe', 'pipe'],
   });
 
@@ -142,6 +142,17 @@ async function main(): Promise<void> {
     });
 
     const page = await context.newPage();
+
+    const consoleMessages: string[] = [];
+    page.on('console', (msg: ConsoleMessage) => {
+      const text = `[browser:${msg.type()}] ${msg.text()}`;
+      consoleMessages.push(text);
+      console.log(text);
+    });
+    page.on('pageerror', (err: Error) => {
+      console.error('[browser: ERROR]', err.message);
+    });
+
     const clockDates = dates.length > 0 ? dates : getClockDates();
 
     for (const date of clockDates) {
@@ -149,12 +160,12 @@ async function main(): Promise<void> {
       console.log(`[screencaps] Capturing ${date} from ${url}`);
 
       await page.goto(url, { waitUntil: 'networkidle' });
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(3000);
 
       const screenshotPath = path.join(SCREENSHOT_DIR, `${date}.png`);
       const options: PageScreenshotOptions = {
         path: screenshotPath,
-        fullPage: false,
+        fullPage: true,
         type: 'png',
       };
 
