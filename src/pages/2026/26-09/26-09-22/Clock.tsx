@@ -38,16 +38,36 @@ const Clock_26_09_12 = () => {
 
   return (
     <main className={styles.container}>
-      {/* Background video */}
-      <video
-        src={limeVideo}
-        autoPlay
-        loop
-        muted
-        playsInline
-        aria-hidden="true"
-        className={styles.backgroundVideo}
-      />
+      {/* Background video - three stacked on all viewports */}
+      <div className={styles.videoLayout}>
+        <video
+          src={limeVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden="true"
+          className={`${styles.backgroundVideo} ${styles.backgroundVideoTop}`}
+        />
+        <video
+          src={limeVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden="true"
+          className={styles.backgroundVideo}
+        />
+        <video
+          src={limeVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden="true"
+          className={`${styles.backgroundVideo} ${styles.backgroundVideoBottom}`}
+        />
+      </div>
 
       {/* Centered clock */}
       <div className={styles.clockFace}>
