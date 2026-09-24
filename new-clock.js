@@ -1,0 +1,262 @@
+#!/usr/bin/env node
+
+/**
+ * Scaffold a new, contract-compliant clock.
+ *
+ * Usage:
+ *   node scripts/new-clock.js 2026-09-25
+ *   node scripts/new-clock.js 2026-09-25 --title "Deep Space" --tags black,digital,space
+ *
+ * Creates src/pages/YYYY/YY-MM/YY-MM-DD/Clock.tsx + Clock.module.css from a
+ * template that already satisfies every rule in scripts/verify-all-clocks.js
+ * (SRTime, useClock, assets export, displayName, semantic <time>), and
+ * registers the date in src/context/clockpages.json and testclocks.json so
+ * the clock actually shows up in listings.
+ *
+ * Registration here is metadata only (title/tags for listings). Per
+ * docs/CLOCKS.md, the presence of Clock.tsx is what makes a clock available
+ * at its route — this script handles both so nothing has to be remembered
+ * separately.
+ */
+
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const PAGES_DIR = path.join(ROOT, 'src', 'pages');
+const METADATA_FILES = [
+  path.join(ROOT, 'src', 'context', 'clockpages.json'),
+  path.join(ROOT, 'src', 'context', 'testclocks.json'),
+];
+
+function fail(message) {
+  console.error(`new-clock: ${message}`);
+  process.exit(1);
+}
+
+function parseArgs(argv) {
+  const options = { date: null, title: null, tags: [] };
+  const positional = [];
+
+  for (let i = 0; i < argv.length; i += 1) {
+    const arg = argv[i];
+    if (arg === '--title') {
+      options.title = argv[i + 1] ?? null;
+      i += 1;
+    } else if (arg === '--tags') {
+      options.tags = (argv[i + 1] ?? '')
+        .split(',')
+        .map((tag) => tag.trim())
+        .filter(Boolean);
+      i += 1;
+    } else if (arg === '--help') {
+      console.log(
+        'Usage: node scripts/new-clock.js <YYYY-MM-DD|YY-MM-DD> [--title "Name"] [--tags a,b,c]',
+      );
+      process.exit(0);
+    } else {
+      positional.push(arg);
+    }
+  }
+
+  options.date = positional[0] ?? null;
+  return options;
+}
+
+/** Normalize either YYYY-MM-DD or YY-MM-DD into { yy, mm, dd, shortDate, year } */
+function normalizeDate(input) {
+  if (!input) fail('a date is required, e.g. node scripts/new-clock.js 2026-09-25');
+
+  const longMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(input);
+  const shortMatch = /^(\d{2})-(\d{2})-(\d{2})$/.exec(input);
+
+  let year;
+  let mm;
+  let dd;
+
+  if (longMatch) {
+    [, year, mm, dd] = longMatch;
+  } else if (shortMatch) {
+    const [, yy, m, d] = shortMatch;
+    year = `20${yy}`;
+    mm = m;
+    dd = d;
+  } else {
+    fail(`"${input}" is not a valid date. Use YYYY-MM-DD or YY-MM-DD.`);
+  }
+
+  const parsed = new Date(`${year}-${mm}-${dd}T00:00:00Z`);
+  const isRealDate =
+    !Number.isNaN(parsed.getTime()) &&
+    parsed.getUTCFullYear() === Number(year) &&
+    parsed.getUTCMonth() + 1 === Number(mm) &&
+    parsed.getUTCDate() === Number(dd);
+
+  if (!isRealDate) fail(`"${input}" is not a real calendar date.`);
+
+  const yy = year.slice(2);
+  return { yy, mm, dd, year, shortDate: `${yy}-${mm}-${dd}` };
+}
+
+function clockDirFor({ year, yy, mm, shortDate }) {
+  return path.join(PAGES_DIR, year, `${yy}-${mm}`, shortDate);
+}
+
+function componentNameFor({ yy, mm, dd }) {
+  return `Clock_${yy}_${mm}_${dd}`;
+}
+
+function clockTsxTemplate({ displayName }) {
+  return `import { useClock } from '@/utils/hooks';
+import SRTime from '@/components/SRTime';
+import styles from './Clock.module.css';
+
+// Export every imported local asset (fonts, images, video) so the asset
+// preloading pipeline can discover it. Add imports above and list them here.
+export const assets: string[] = [];
+
+const formatDigits = (value: number): string => value.toString().padStart(2, '0');
+
+const Clock = () => {
+  const time = useClock();
+
+  const hours = formatDigits(time.getHours());
+  const minutes = formatDigits(time.getMinutes());
+  const seconds = formatDigits(time.getSeconds());
+
+  return (
+    <main className={styles.container}>
+      <div className={styles.digitalDisplay} aria-hidden="true">
+        <span className={styles.digitGroup}>{hours}</span>
+        <span className={styles.separator}>:</span>
+        <span className={styles.digitGroup}>{minutes}</span>
+        <span className={styles.separator}>:</span>
+        <span className={styles.digitGroup}>{seconds}</span>
+      </div>
+
+      <SRTime time={time} />
+    </main>
+  );
+};
+
+export default Clock;
+Clock.displayName = '${displayName}';
+`;
+}
+
+function clockCssTemplate() {
+  return `.container {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+.digitalDisplay {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-family: monospace;
+  color: #fff;
+  font-size: clamp(3rem, 12vw, 10rem);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.digitGroup {
+  min-width: 1.6em;
+  text-align: center;
+}
+
+.separator {
+  opacity: 0.8;
+}
+`;
+}
+
+function writeClockFiles(dir, { displayName }) {
+  fs.mkdirSync(dir, { recursive: true });
+
+  const tsxPath = path.join(dir, 'Clock.tsx');
+  const cssPath = path.join(dir, 'Clock.module.css');
+
+  fs.writeFileSync(tsxPath, clockTsxTemplate({ displayName }));
+  fs.writeFileSync(cssPath, clockCssTemplate());
+
+  return { tsxPath, cssPath };
+}
+
+function registerInMetadataFile(filePath, { shortDate, title, tags }) {
+  if (!fs.existsSync(filePath)) {
+    fail(`metadata file not found: ${path.relative(ROOT, filePath)}`);
+  }
+
+  const entries = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  const existingIndex = entries.findIndex((entry) => entry.date === shortDate);
+
+  if (existingIndex >= 0) {
+    // Already registered (e.g. a placeholder entry added ahead of time).
+    // Only overwrite fields the caller actually provided.
+    if (title) entries[existingIndex].title = title;
+    if (tags.length > 0) entries[existingIndex].tags = tags;
+  } else {
+    const entry = {
+      path: shortDate,
+      date: shortDate,
+      title: title || 'Untitled',
+      tags,
+    };
+    const insertAt = entries.findIndex((existing) => existing.date > shortDate);
+    if (insertAt === -1) entries.push(entry);
+    else entries.splice(insertAt, 0, entry);
+  }
+
+  fs.writeFileSync(filePath, `${JSON.stringify(entries, null, 2)}\n`);
+}
+
+function main() {
+  const options = parseArgs(process.argv.slice(2));
+  const dateParts = normalizeDate(options.date);
+  const dir = clockDirFor(dateParts);
+  const displayName = componentNameFor(dateParts);
+
+  if (fs.existsSync(path.join(dir, 'Clock.tsx'))) {
+    fail(
+      `${dateParts.shortDate} already has a clock at ${path.relative(ROOT, dir)}/Clock.tsx — refusing to overwrite.`,
+    );
+  }
+
+  const { tsxPath, cssPath } = writeClockFiles(dir, {
+    displayName,
+    shortDate: dateParts.shortDate,
+  });
+
+  for (const metadataFile of METADATA_FILES) {
+    registerInMetadataFile(metadataFile, {
+      shortDate: dateParts.shortDate,
+      title: options.title,
+      tags: options.tags,
+    });
+  }
+
+  console.log(`Created ${path.relative(ROOT, tsxPath)}`);
+  console.log(`Created ${path.relative(ROOT, cssPath)}`);
+  console.log(
+    `Registered ${dateParts.shortDate} in ${METADATA_FILES.map((f) => path.relative(ROOT, f)).join(' and ')}`,
+  );
+  console.log('');
+  console.log('Next steps:');
+  console.log(`  1. Customize the artwork, assets, and layout in ${path.relative(ROOT, dir)}/`);
+  console.log(`  2. node scripts/verify-all-clocks.js --path ${dateParts.shortDate}`);
+  console.log('  3. npm run type-check && npm run build');
+}
+
+main();
