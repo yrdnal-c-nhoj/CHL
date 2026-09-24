@@ -1,23 +1,36 @@
-css .container {
-  --hand-color: #e6a627;
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  overflow: hidden;
-  background: #090908;
-}
-
-/* Background video */
-.backgroundVideo {
+/* Background video - three stacked on all viewports */
+.videoLayout {
   position: absolute;
   inset: 0;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
-  object-fit: cover;
   z-index: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.backgroundVideo {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   pointer-events: none;
   filter: brightness(1.2) contrast(0.8) saturate(1.1);
+}
+
+.backgroundVideoTop {
+  object-fit: cover;
+}
+
+.backgroundVideoBottom {
+  object-fit: cover;
+}
+
+.backgroundVideo {
+  /* middle one */
+  object-fit: contain;
 }
 
 .clockFace {
