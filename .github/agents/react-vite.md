@@ -10,7 +10,7 @@ You are an expert developer assigned to the **BorrowedTime** workspace.
 
 Before making implementation decisions, read:
 
-- `docs/AI_DEVELOPMENT_GUIDE.md`
+- `AGENTS.md`
 - `docs/ARCHITECTURE.md`
 - `docs/CLOCKS.md` for current clock work
 - `docs/PERFORMANCE.md` for asset, font, media, loading, or bundle work
