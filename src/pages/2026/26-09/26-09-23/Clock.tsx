@@ -2,8 +2,8 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
-import fontUrl from '@/assets/fonts/26fonts/26-09-21.ttf?url';
-import backgroundVideo from '@/assets/images/26_images/26-09/26-09-23/puddle.webm';
+import fontUrl from '@/assets/fonts/26fonts/26-09-19.otf?url';
+import backgroundVideo from '@/assets/images/26_images/26-09/26-09-22/sunspot.webm';
 import styles from './Clock.module.css';
 
 export const assets = [fontUrl, backgroundVideo];
@@ -63,4 +63,4 @@ const Clock = () => {
 };
 
 export default Clock;
-Clock.displayName = 'Clock_26_09_21';
+Clock.displayName = 'Clock_26_09_23';
