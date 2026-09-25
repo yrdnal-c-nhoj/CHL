@@ -1,0 +1,67 @@
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  min-height: 100dvh;
+  margin: 0;
+  overflow: hidden;
+  background-color: #0a0a12;
+  color: #f0f0f0;
+  box-sizing: border-box;
+}
+
+.quoteWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 60ch;
+  text-align: center;
+  gap: 1rem;
+}
+
+.quoteMark {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 4rem;
+  font-weight: bold;
+  color: #b890e0;
+  line-height: 1;
+  opacity: 0.6;
+}
+
+.quote {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-style: italic;
+  line-height: 1.6;
+  color: #d0cfe0;
+  margin: 0;
+}
+
+.digitalDisplay {
+  position: absolute;
+  bottom: clamp(1rem, 3vh, 2rem);
+  right: clamp(1rem, 3vw, 2rem);
+  font-family:
+    'SFMono-Regular',
+    Consolas,
+    'Liberation Mono',
+    Menlo,
+    monospace;
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-variant-numeric: tabular-nums;
+  color: #b890e0;
+  text-shadow: 0 0 0.5rem rgba(184, 144, 224, 0.5);
+  letter-spacing: 0.05em;
+  z-index: 9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quoteMark,
+  .quote,
+  .digitalDisplay {
+    animation: none;
+  }
+}
