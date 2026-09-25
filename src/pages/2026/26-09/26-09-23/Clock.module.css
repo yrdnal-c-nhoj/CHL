@@ -58,6 +58,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 1ch;
+  text-align: center;
   text-shadow: var(--text-inset-shadow);
   color: var(--color-digit);
   font-size: 10vmin;
