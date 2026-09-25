@@ -3,7 +3,7 @@
 Last reviewed: 2026-09-21
 
 For project-level standards, roadmap, and enforcement plan, see
-[`docs/ROADMAP.md`](../ROADMAP.md).
+[`docs/ROADMAP.md`](./ROADMAP.md).
 
 ## Image & Video Budgets
 
