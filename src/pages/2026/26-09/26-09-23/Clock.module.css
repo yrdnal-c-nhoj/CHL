@@ -4,8 +4,8 @@
   --text-inset-shadow: -2px -2px 0 #000, 1px 4px 0 #fff;
 
   /* Colors */
-  --color-digit: #bc93c4;
-  --color-muted: #9e9994;
+  --color-digit: #8eb38b;
+  --color-muted: #181008;
 }
 
 .container {
@@ -41,12 +41,14 @@
 
 .digitalDisplay {
   position: absolute;
-  top: 2vmin;
-  right: 2vmin;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   font-family: var(--clock-font);
   font-size: 18vmin;
+  font-variant-numeric: tabular-nums;
   z-index: 9;
   letter-spacing: 0.05em;
 }
