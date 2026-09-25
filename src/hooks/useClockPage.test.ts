@@ -103,7 +103,7 @@ describe('useClockPage', () => {
     const { result } = renderHook(() => useClockPage(item));
 
     await waitFor(() => {
-      expect(result.current.error).toContain('Clock lookup failed');
+      expect(result.current.error).toContain('No clock component exists for date');
     });
   });
 

@@ -111,7 +111,7 @@ describe('useClockPage', () => {
 
     await waitFor(() => {
       expect(result.current.error).not.toBeNull();
-      expect(result.current.error).toContain('Clock lookup failed');
+      expect(result.current.error).toContain('No clock component exists for date');
     });
   });
 
