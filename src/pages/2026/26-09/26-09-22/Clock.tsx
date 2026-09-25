@@ -124,7 +124,7 @@ const Clock_26_09_12 = () => {
             }
           />
 
-          <div className={styles.centerDot} />
+        
         </div>
       </div>
 

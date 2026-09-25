@@ -7166,5 +7166,49 @@
       "fountain",
       "water"
     ]
+  },
+  {
+    "path": "26-09-24",
+    "date": "26-09-24",
+    "title": "Cantaloupe",
+    "tags": [
+      "analog",
+      "color",
+      "food",
+      "fruit",
+      "smell" 
+]},
+  {
+    "path": "26-09-25",
+    "date": "26-09-25",
+    "title": "House of Cancer",
+    "tags": [
+      "analog",
+      "constellations",
+      "crab",
+      "myth",
+      "zodiac"
+    ]
+  },
+  {
+    "path": "26-09-26",
+    "date": "26-09-26",
+    "title": "Footnote #3",
+    "tags": [
+      "digital",
+      "image-free",
+      "words"
+    ]
+  },
+  {
+    "path": "26-09-27",
+    "date": "26-09-27",
+    "title": "Crescent Moon",
+    "tags": [
+      "analog",
+      "day-and-night",
+      "moon",
+      "sky"
+    ]
   }
 ]

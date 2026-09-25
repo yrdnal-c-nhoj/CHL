@@ -56,8 +56,8 @@
 .clockFace {
   position: absolute;
 
-  width: min(100vw, 100dvh);
-  height: min(100vw, 100dvh);
+  width: min(90vw, 90dvh);
+  height: min(90vw, 90dvh);
 
   top: 50%;
   left: 50%;
@@ -141,34 +141,6 @@
 .secondHand {
   --hand-width: 1.2vmin;
   --hand-height: 29vmin;
-}
-
-
-/*
- * Center pivot
- */
-.centerDot {
-  position: absolute;
-
-  top: 50%;
-  left: 50%;
-
-  width: 1.8vmin;
-  height: 1.8vmin;
-
-  background: var(--hand-color);
-
-  border-radius: 50%;
-
-  transform: translate(-50%, -50%);
-
-  z-index: 30;
-
-  box-shadow:
-    0 0 4px rgba(184, 227, 161, 0.9),
-    0 0 10px rgba(108, 195, 31, 0.9);
-
-  pointer-events: none;
 }
 
 
