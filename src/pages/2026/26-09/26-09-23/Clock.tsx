@@ -3,7 +3,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
 import fontUrl from '@/assets/fonts/26fonts/26-09-19.otf?url';
-import backgroundVideo from '@/assets/images/26_images/26-09/26-09-22/sunspot.webm';
+import backgroundVideo from '@/assets/images/26_images/26-09/26-09-23/puddle.webm';
 import styles from './Clock.module.css';
 
 export const assets = [fontUrl, backgroundVideo];
@@ -15,18 +15,19 @@ const fontConfig: FontConfig = {
   fontUrl,
 };
 
+const formatDigits = (value: number, length = 2): string =>
+  value.toString().padStart(length, '0');
+
 const Clock = () => {
   useSuspenseFontLoader([fontConfig]);
 
   const time = useSmoothClock(50);
 
-  const hours24 = time.getHours();
-  const minutes = time.getMinutes().toString().padStart(2, '0');
-  const hours12 = hours24 % 12 || 12;
-  const ampm = hours24 >= 12 ? 'PM' : 'AM';
+  const hours = formatDigits(time.getHours());
+  const minutes = formatDigits(time.getMinutes());
+  const seconds = formatDigits(time.getSeconds());
 
-  const hourDigits = hours12.toString().split('');
-  const minuteDigits = minutes.split('');
+  const digits = [...hours, ...minutes, ...seconds];
 
   return (
     <main className={styles.container}>
@@ -45,18 +46,11 @@ const Clock = () => {
       <SRTime time={time} />
 
       <div className={styles.digitalDisplay} aria-hidden="true">
-        {hourDigits.map((digit, index) => (
-          <span key={`h${index}`} className={styles.digitBox}>
+        {digits.map((digit, index) => (
+          <span key={`d${index}`} className={styles.digitBox}>
             {digit}
           </span>
         ))}
-        <span className={styles.separator} aria-hidden="true">:</span>
-        {minuteDigits.map((digit, index) => (
-          <span key={`m${index}`} className={styles.digitBox}>
-            {digit}
-          </span>
-        ))}
-        <span className={styles.ampm}>{ampm}</span>
       </div>
     </main>
   );

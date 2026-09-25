@@ -46,3 +46,15 @@ index a9464c8..3ad9b30 100644
  4. Do not bypass lint or test failures; fix or track them explicitly.
  
  ---
+diff --git a/package.json b/package.json
+index 0a540fd..9dc487c 100644
+--- a/package.json
++++ b/package.json
+@@ -18,7 +18,6 @@
+     "verify:clocks:changed": "node scripts/verify-all-clocks.js --changed",
+     "type-check": "npx tsc --noEmit -p tsconfig.ci.json",
+     "status": "echo 'Status check: run verify:clocks and type-check'",
+-    "ai-agent": "python scripts/ai_agent.py",
+     "new-clock": "node scripts/new-clock.js",
+     "screencaps": "tsx scripts/screencaps/capture.ts",
+     "prepare": "husky"
