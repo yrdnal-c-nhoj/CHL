@@ -11,7 +11,7 @@ For authoritative requirements, see:
 - [docs/PERFORMANCE.md](PERFORMANCE.md) — performance budgets and guidance.
 - [docs/OPERATIONS.md](OPERATIONS.md) — build, deployment, and maintenance.
 - [docs/ROADMAP.md](ROADMAP.md) — planned work.
-- [docs/AI_DEVELOPMENT_GUIDE.md](AI_DEVELOPMENT_GUIDE.md) — AI development guidance.
+- [AGENTS.md](../AGENTS.md) — AI development guidance.
 - [CONTRIBUTING.md](../CONTRIBUTING.md) — human contribution workflow.
 
 Historical reports are retained under [docs/archive/](archive/).
@@ -92,5 +92,5 @@ Use the current hierarchy rather than treating this status snapshot as a standar
 - Performance: [docs/PERFORMANCE.md](PERFORMANCE.md)
 - Operations: [docs/OPERATIONS.md](OPERATIONS.md)
 - Roadmap: [docs/ROADMAP.md](ROADMAP.md)
-- AI development: [docs/AI_DEVELOPMENT_GUIDE.md](AI_DEVELOPMENT_GUIDE.md)
+- AI development: [AGENTS.md](../AGENTS.md)
 - Human contribution: [CONTRIBUTING.md](../CONTRIBUTING.md)

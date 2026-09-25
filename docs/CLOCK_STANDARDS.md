@@ -11,7 +11,7 @@ Use the project documentation hierarchy as follows:
 1. [docs/ARCHITECTURE.md](./ARCHITECTURE.md) — overall architecture and historical/current boundary.
 2. [docs/CLOCKS.md](./CLOCKS.md) — authoritative contract for current clock implementations.
 3. [docs/PERFORMANCE.md](./PERFORMANCE.md) — performance requirements and budgets.
-4. [docs/AI_DEVELOPMENT_GUIDE.md](./AI_DEVELOPMENT_GUIDE.md) — AI development workflow.
+4. [AGENTS.md](../AGENTS.md) — AI development workflow.
 5. This document — compatibility/reference material only.
 
 If this document conflicts with CLOCKS.md, **CLOCKS.md wins**.
