@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+# Pre-push hook: upload all LFS objects before allowing push.
+# Prevents GH008 errors when pushing commits with new LFS-tracked files.
+
+echo "[husky] Uploading Git LFS objects..."
+git lfs push --all origin "$1"
+
+if [ $? -ne 0 ]; then
+  echo "[husky] LFS upload failed. Push aborted."
+  exit 1
+fi
+
+echo "[husky] LFS objects uploaded successfully."
