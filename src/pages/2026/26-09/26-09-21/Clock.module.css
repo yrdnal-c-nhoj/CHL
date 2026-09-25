@@ -26,7 +26,7 @@
   width: 100vw;
   height: 100vh;
   object-fit: cover;
-  object-position: center center;
+  object-position: top center;
   z-index: 1;
   pointer-events: none;
   filter: contrast(80%) brightness(140%) saturate(60%);
