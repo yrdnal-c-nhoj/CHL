@@ -1,3 +1,4 @@
+import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClock } from '@/utils/hooks';
@@ -14,7 +15,7 @@ const fontConfig: FontConfig = {
   fontUrl,
 };
 
-const Clock_26_09_07 = () => {
+const Clock_26_09_11 = () => {
   useSuspenseFontLoader([fontConfig]);
   const time = useClock();
 
@@ -27,8 +28,6 @@ const Clock_26_09_07 = () => {
     ...minutes.split(''),
     ...seconds.split(''),
   ];
-
-  const fullTimeString = `${hours}:${minutes}:${seconds}`;
 
   return (
     <main className={styles.container}>
@@ -50,13 +49,11 @@ const Clock_26_09_07 = () => {
         ))}
       </div>
 
-      <time dateTime={time.toISOString()} className={styles.srOnly}>
-        {fullTimeString}
-      </time>
+      <SRTime time={time} />
     </main>
   );
 };
 
-Clock_26_09_07.displayName = 'Clock_26_09_07';
+Clock_26_09_11.displayName = 'Clock_26_09_11';
 
-export default Clock_26_09_07;
+export default Clock_26_09_11;

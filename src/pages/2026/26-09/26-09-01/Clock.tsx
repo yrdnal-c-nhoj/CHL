@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import SRTime from '@/components/SRTime';
 import * as THREE from 'three';
 import { useClock } from '@/utils/hooks';
 import headVideo from '@/assets/images/26_images/26-09/26-09-01/head.webm';
@@ -281,11 +282,6 @@ const Clock_26_09_01 = () => {
         };
     }, []);
 
-    const hours = String(time.getHours()).padStart(2, '0');
-    const minutes = String(time.getMinutes()).padStart(2, '0');
-    const seconds = String(time.getSeconds()).padStart(2, '0');
-    const accessibleTime = `${hours}:${minutes}:${seconds}`;
-
     return (
         <main className={styles.container}>
             <video
@@ -297,9 +293,7 @@ const Clock_26_09_01 = () => {
                 className={styles.videoBackground}
             />
             <div ref={mountRef} className={styles.canvasMount} />
-            <time dateTime={time.toISOString()} className={styles.srOnly}>
-                {accessibleTime}
-            </time>
+            <SRTime time={time} />
         </main>
     );
 };

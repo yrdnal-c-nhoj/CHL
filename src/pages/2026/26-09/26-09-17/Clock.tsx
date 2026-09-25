@@ -1,3 +1,4 @@
+import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -37,7 +38,7 @@ const Clock_26_09_17 = () => {
         className={styles.bubblesOverlay}
         style={{ backgroundImage: `url(${bubblesOverlay})` }}
       />
-      <time className={styles.display} dateTime={time.toISOString()} aria-label="Current time">
+      <div className={styles.display} aria-hidden="true">
         {hours.split('').map((digit, index) => (
           <span key={`h${index}`} className={styles.segment}>{digit}</span>
         ))}
@@ -46,7 +47,8 @@ const Clock_26_09_17 = () => {
           <span key={`m${index}`} className={styles.segment}>{digit}</span>
         ))}
         <span className={styles.ampm}>{ampm}</span>
-      </time>
+      </div>
+      <SRTime time={time} />
     </main>
   );
 };

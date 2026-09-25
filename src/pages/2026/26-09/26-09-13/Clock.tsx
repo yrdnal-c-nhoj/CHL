@@ -1,3 +1,4 @@
+import SRTime from '@/components/SRTime';
 
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -55,12 +56,7 @@ const time = useSmoothClock(50);
         ))}
       </div>
 
-      <time
-        dateTime={time.toISOString()}
-        className={styles.srOnly}
-      >
-        {`${hours}:${minutes}:${seconds}.${milliseconds}`}
-      </time>
+      <SRTime time={time} />
     </main>
   );
 };

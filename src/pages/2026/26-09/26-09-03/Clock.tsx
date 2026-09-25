@@ -1,3 +1,4 @@
+import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
@@ -17,7 +18,7 @@ const fontConfig: FontConfig = {
   fontUrl: font,
 };
 
-const Clock_26_09_02 = () => {
+const Clock_26_09_03 = () => {
   useSuspenseFontLoader([fontConfig]);
 
   const time = useSmoothClock(50);
@@ -59,14 +60,12 @@ const Clock_26_09_02 = () => {
         <span className={styles.digitBox}>{centiseconds[1]}</span>
       </div>
 
-      <time dateTime={time.toISOString()} className={styles.srOnly}>
-        {hours}:{minutes}:{seconds}.{centiseconds}
-      </time>
+      <SRTime time={time} />
     </main>
   );
 };
 
-const MemoizedClock = React.memo(Clock_26_09_02);
-MemoizedClock.displayName = 'Clock_26_09_02';
+const MemoizedClock = React.memo(Clock_26_09_03);
+MemoizedClock.displayName = 'Clock_26_09_03';
 
 export default MemoizedClock;

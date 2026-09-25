@@ -1,3 +1,4 @@
+import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClock } from '@/utils/hooks';
@@ -21,8 +22,6 @@ const Clock_26_09_04 = () => {
   const hours = hours12.toString();
   const minutes = time.getMinutes().toString().padStart(2, '0');
   const ampm = rawHours >= 12 ? 'PM' : 'AM';
-
-  const fullTimeString = `${hours}:${minutes} ${ampm}`;
 
   return (
     <main className={styles.container}>
@@ -62,10 +61,7 @@ const Clock_26_09_04 = () => {
         playsInline
       />
 
-      {/* Screen-reader-only time */}
-      <time dateTime={time.toISOString()} className={styles.srOnly}>
-        {fullTimeString}
-      </time>
+      <SRTime time={time} />
     </main>
   );
 };
