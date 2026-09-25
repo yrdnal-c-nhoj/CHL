@@ -1,10 +1,10 @@
 :root {
   /* Common typography and shadow styles */
   --clock-font: 'ClockFont_26_09_19', monospace, sans-serif;
-  --text-inset-shadow: -2px -2px 0 #000, 1px 4px 0 #fff;
+  --text-inset-shadow: 0px 3px 0 #000, 0px -1px 0 #fff;
 
   /* Colors */
-  --color-digit: #8eb38b;
+  --color-digit: #9ca473;
   --color-muted: #181008;
 }
 
@@ -47,7 +47,7 @@
   display: flex;
   align-items: center;
   font-family: var(--clock-font);
-  font-size: 18vmin;
+  font-size: 28vmin;
   font-variant-numeric: tabular-nums;
   z-index: 9;
   letter-spacing: 0.05em;
@@ -62,5 +62,5 @@
   text-align: center;
   text-shadow: var(--text-inset-shadow);
   color: var(--color-digit);
-  font-size: 10vmin;
+  /* font-size: 20vmin; */
 }
