@@ -49,7 +49,7 @@ Open [http://localhost:5173](http://localhost:5173).
 | `npm run lint` | ESLint check |
 | `npm run lint:fix` | ESLint auto-fix |
 | `npm run format` | Prettier format |
-| `npm run status` | Refresh `docs/STATUS.md` |
+| `npm run status` | Print a reminder to run `verify:clocks` and `type-check`; `docs/STATUS.md` is currently updated manually |
 
 ## Tech stack
 
