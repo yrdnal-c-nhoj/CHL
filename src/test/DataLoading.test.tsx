@@ -86,6 +86,7 @@ describe('DataContext Error State', () => {
   });
 
   it('should handle API failures without crashing', async () => {
+    mockState.shouldThrow = true;
     mockState.data = undefined as any;
 
     const TestComponent = () => {

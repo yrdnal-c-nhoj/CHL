@@ -43,6 +43,7 @@ function buildClockItems(data: unknown): ClockItem[] {
         entry.path.trim() !== ''
       );
     })
+    .sort((a, b) => a.date.localeCompare(b.date))
     .map((item, index) => {
       const tags = Array.isArray(item.tags)
         ? item.tags.filter((tag): tag is string => typeof tag === 'string')
@@ -92,7 +93,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       } catch (err) {
         console.warn('[DataContext] Clock metadata unavailable:', err);
         setItems([]);
-        setError(null);
+        setError(err instanceof Error ? err : new Error(String(err)));
       } finally {
         setLoading(false);
       }
