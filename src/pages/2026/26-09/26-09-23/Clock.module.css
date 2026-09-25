@@ -1,60 +1,79 @@
+:root {
+  /* Common typography and shadow styles */
+  --clock-font: 'ClockFont_26_09_19', monospace, sans-serif;
+  --text-inset-shadow: -2px -2px 0 #000, 1px 4px 0 #fff;
+
+  /* Colors */
+  --color-digit: #bc93c4;
+  --color-muted: #9e9994;
+}
+
 .container {
-    position: relative;
-    width: 100%;
-    height: 100dvh;
-    margin: 0;
-    overflow: hidden;
-    background: var(--bg-color);
-
-    /* Color palette */
-    --digit-color: #abd913;
-    --face-color: #282885;
-    --side-color: #17174d;
-    --bg-color: #0f0f1a;
-
-    /* Layout - all viewport-relative */
-    --digit-width: 2.5vw;
-    --digit-height: 3.5vw;
-    --digit-depth: 1vw;
-    --spacing: 3vw;
-    --texture-size: 512;
-    --font-size: 4.5vw;
-
-    /* Animation */
-    --spin-speed: 0.45;
-    --wobble-speed: 0.0004;
-    --wobble-amplitude: 0.08;
-    --spin-offset-step: 1.1;
-
-    /* Lighting */
-    --ambient-intensity: 1.5;
-
-    /* Camera - also viewport-relative for consistent framing */
-    --camera-z: 10vw;
-    --camera-fov: 40;
-    --camera-near: 0.1;
-    --camera-far: 100;
-
-    /* Font */
-    --font-family: 'Arial, Helvetica, sans-serif';
-    --font-weight: bold;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #8d8a8d;
+  /* Ensure no white gaps on mobile when address bar hides/shows */
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
-.canvas {
-    display: block;
-    width: 100% !important;
-    height: 100% !important;
-    touch-action: none;
+.backgroundLayer {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: center center;
+  z-index: 1;
+  pointer-events: none;
+  filter: contrast(80%) brightness(140%) saturate(60%);
 }
 
-/* Minimum size constraints */
-@media (max-width: 400px) {
-    .container {
-        --digit-width: 10px;
-        --digit-height: 14px;
-        --digit-depth: 4px;
-        --spacing: 12px;
-        --font-size: 18px;
-        --camera-z: 400px;
-    }
+@media (max-width: 768px) {
+  .backgroundLayer {
+    object-fit: cover;
+    object-position: center center;
+  }
+}
+
+.digitalDisplay {
+  position: absolute;
+  top: 2vmin;
+  right: 2vmin;
+  display: flex;
+  align-items: center;
+  font-family: var(--clock-font);
+  font-size: 18vmin;
+  z-index: 9;
+}
+
+/* Base style for display elements */
+.digitBox,
+.separator,
+.ampm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: var(--text-inset-shadow);
+  color: var(--color-muted);
+}
+
+.digitBox {
+  font-size: 10vmin;
+  color: var(--color-digit);
+}
+
+.separator {
+  width: 7vmin;
+  font-size: 10vmin;
+  color: var(--color-digit);
+}
+
+.ampm {
+  margin-left: 2vmin;
+  font-size: 8vmin;
+  color: var(--color-digit);
 }
