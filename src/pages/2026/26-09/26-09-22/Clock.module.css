@@ -5,7 +5,7 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background: #000;
+  background: #f6de06;
 }
 
 .videoLayout {
@@ -145,34 +145,6 @@
 
 
 /*
- * Center pivot
- */
-.centerDot {
-  position: absolute;
-
-  top: 50%;
-  left: 50%;
-
-  width: 1.8vmin;
-  height: 1.8vmin;
-
-  background: var(--hand-color);
-
-  border-radius: 50%;
-
-  transform: translate(-50%, -50%);
-
-  z-index: 30;
-
-  box-shadow:
-    0 0 4px rgba(184, 227, 161, 0.9),
-    0 0 10px rgba(108, 195, 31, 0.9);
-
-  pointer-events: none;
-}
-
-
-/*
  * Clock numbers
  */
 .clockNumber {
@@ -183,7 +155,7 @@
     monospace,
     sans-serif;
 
-  font-size: 22vmin;
+  font-size: 18vmin;
 
   color: var(--hand-color);
 
