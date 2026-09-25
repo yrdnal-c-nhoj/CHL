@@ -1,3 +1,4 @@
+import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -31,7 +32,7 @@ const Clock_26_09_15 = () => {
       />
       {/* Two columns: left column has tens digit, right column has ones digit */}
       {/* Three rows: hours (top), minutes (middle), seconds (bottom) */}
-      <time className={styles.display} dateTime={time.toISOString()} aria-label="Current time">
+      <div className={styles.display} aria-hidden="true">
         <div className={styles.row}>
           <span className={styles.segment}>{hours[0]}</span>
           <span className={styles.segment}>{hours[1]}</span>
@@ -44,7 +45,8 @@ const Clock_26_09_15 = () => {
           <span className={styles.segment}>{seconds[0]}</span>
           <span className={styles.segment}>{seconds[1]}</span>
         </div>
-      </time>
+      </div>
+      <SRTime time={time} />
     </main>
   );
 };

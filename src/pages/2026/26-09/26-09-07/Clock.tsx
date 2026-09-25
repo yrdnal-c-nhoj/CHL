@@ -1,3 +1,4 @@
+import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClock } from '@/utils/hooks';
@@ -67,8 +68,6 @@ const Clock_26_09_07 = () => {
     return durs;
   }, [cycle, DIGIT_COUNT]);
 
-  const fullTimeString = `${hours}:${minutes}:${seconds}`;
-
   return (
     <main className={styles.container}>
       <video
@@ -93,9 +92,7 @@ const Clock_26_09_07 = () => {
         ))}
       </div>
 
-      <time dateTime={time.toISOString()} className={styles.srOnly}>
-        {fullTimeString}
-      </time>
+      <SRTime time={time} />
     </main>
   );
 };

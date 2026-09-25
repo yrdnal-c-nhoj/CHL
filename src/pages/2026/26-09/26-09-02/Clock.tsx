@@ -1,3 +1,4 @@
+import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
@@ -51,7 +52,7 @@ const GridOverlay = memo(({ image }: { image: string }) => {
 });
 GridOverlay.displayName = 'GridOverlay';
 
-const Clock_26_09_03 = () => {
+const Clock_26_09_02 = () => {
   useSuspenseFontLoader([fontConfig]);
 
   const time = useSmoothClock(50);
@@ -136,14 +137,12 @@ const Clock_26_09_03 = () => {
         <div className={styles.centerDot} />
       </div>
 
-      <time dateTime={time.toISOString()} className={styles.srOnly}>
-        {time.toLocaleTimeString()}
-      </time>
+      <SRTime time={time} />
     </main>
   );
 };
 
-const MemoizedClock = memo(Clock_26_09_03);
-MemoizedClock.displayName = 'Clock_26_09_03';
+const MemoizedClock = memo(Clock_26_09_02);
+MemoizedClock.displayName = 'Clock_26_09_02';
 
 export default MemoizedClock;
