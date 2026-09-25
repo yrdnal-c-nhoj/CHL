@@ -113,7 +113,7 @@ The authoritative current-clock contract lives in `docs/CLOCKS.md`; performance 
 
 | # | Action | Owner | Effort | Outcome |
 |---|---|---|---|---|
-| 2.1 | Build `npm run new-clock YYYY-MM-DD` generator from `BaseClock.tsx` | — | M | New clocks are contract-compliant by construction |
+| 2.1 | Build `npm run new-clock YYYY-MM-DD` generator from `BaseClock.tsx` | — | M | **DONE** — `scripts/new-clock.js` exists and is wired up via `npm run new-clock` |
 | 2.2 | Add GitHub Action / pre-commit hook that runs `verify-all-clocks.js` | — | M | Bad clocks blocked before merge |
 | 2.3 | Expand `README.md` with architecture overview, adding-a-clock guide, and links to docs | — | S | Onboarding is fast |
 | 2.4 | Make `docs/STATUS.md` reproducible from a deterministic status generator | — | M | Requires `generate-status.js` implementation; STATUS remains a measured snapshot, not the standards source of truth |
@@ -197,7 +197,7 @@ passes ~1GB.
 
 1. Read `docs/ARCHITECTURE.md` and `docs/CLOCKS.md` before adding or modifying a current clock.
 2. Run `npm run lint`, `npm run test:run`, `npm run type-check`, and `npm run build` before opening a PR.
-3. Use `npm run new-clock YYYY-MM-DD` once available; otherwise follow the file structure in the contract.
+3. Use `npm run new-clock YYYY-MM-DD` to scaffold a new clock; otherwise follow the file structure in the contract.
 4. Do not bypass lint or test failures; fix or track them explicitly.
 
 ---
