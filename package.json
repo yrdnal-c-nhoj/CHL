@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "setup": "mkdir -p screen-caps/screenshots && npx playwright install chromium",
+    "setup": "mkdir -p src/assets/thumbnails && npx playwright install chromium",
     "dev": "vite",
     "build": "vite build",
     "build:with-types": "tsc && vite build",

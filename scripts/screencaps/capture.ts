@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { chromium, type PageScreenshotOptions, type ConsoleMessage } from 'playwright';
 
-const SCREENSHOT_DIR = path.join(process.cwd(), 'screen-caps', 'screenshots');
+const SCREENSHOT_DIR = path.join(process.cwd(), 'src', 'assets', 'thumbnails');
 const DEFAULT_VITE_PORT = 5173;
 
 interface DevServerHandle {
@@ -162,11 +162,12 @@ async function main(): Promise<void> {
       await page.goto(url, { waitUntil: 'networkidle' });
       await page.waitForTimeout(3000);
 
-      const screenshotPath = path.join(SCREENSHOT_DIR, `${date}.png`);
+      const screenshotPath = path.join(SCREENSHOT_DIR, `${date}-thumb.webp`);
       const options: PageScreenshotOptions = {
         path: screenshotPath,
         fullPage: true,
-        type: 'png',
+        type: 'webp',
+        quality: 85,
       };
 
       await page.screenshot(options);
