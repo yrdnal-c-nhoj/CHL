@@ -29,7 +29,7 @@
   object-position: center center;
   z-index: 1;
   pointer-events: none;
-  filter: contrast(80%) brightness(140%) saturate(60%);
+  filter: contrast(110%) brightness(110%) saturate(160%);
 }
 
 @media (max-width: 768px) {
@@ -48,32 +48,15 @@
   font-family: var(--clock-font);
   font-size: 18vmin;
   z-index: 9;
+  letter-spacing: 0.05em;
 }
 
 /* Base style for display elements */
-.digitBox,
-.separator,
-.ampm {
+.digitBox {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-shadow: var(--text-inset-shadow);
-  color: var(--color-muted);
-}
-
-.digitBox {
+  color: var(--color-digit);
   font-size: 10vmin;
-  color: var(--color-digit);
-}
-
-.separator {
-  width: 7vmin;
-  font-size: 10vmin;
-  color: var(--color-digit);
-}
-
-.ampm {
-  margin-left: 2vmin;
-  font-size: 8vmin;
-  color: var(--color-digit);
 }
