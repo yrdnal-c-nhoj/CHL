@@ -18,6 +18,8 @@ A clock is considered available only when its date directory contains the requir
 
 The JSON files under `src/context/` are metadata sources only. Adding a date to JSON does not publish a clock and must not be used as a substitute for creating the component.
 
+New clock directories should be created with the project generator rather than by manually copying an existing clock. The generator establishes the expected date-directory structure and current-clock scaffolding; the implementation remains responsible for satisfying the contract above.
+
 ## Required Structure
 
 A current clock normally contains:
@@ -36,7 +38,7 @@ CSS Modules are the default for static styling. A clock may omit a module styles
 Every current clock must:
 
 - export a default React component;
-- set a date-specific `Clock.displayName`;
+- set a date-specific `Clock.displayName` that matches the clock's date directory;
 - export an `assets` array containing imported assets used by the clock;
 - use the shared clock/time infrastructure;
 - provide a semantic `<time>` representation or the shared `SRTime` component;

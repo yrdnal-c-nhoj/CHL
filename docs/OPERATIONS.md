@@ -1,10 +1,12 @@
 # BorrowedTime Operations
 
-Last reviewed: 2026-09-21
+Last reviewed: 2026-09-25
 
 ## Canonical Delivery
 
 The production site is served from the Vercel deployment for the repository. Keep one canonical production deployment path; legacy deployment configurations should be removed or explicitly documented if they remain necessary.
+
+Vercel is the production source of truth for deployment behavior. A deployment that succeeds locally but fails on Vercel is not considered production-ready until the Vercel build succeeds.
 
 ## Local Verification
 
@@ -18,7 +20,7 @@ npm run test:run
 npm run build
 ```
 
-For clock changes, also run the relevant clock verifier and visually smoke-test the affected route.
+For clock changes, also run `npm run verify:clocks:changed` and visually smoke-test the affected route.
 
 ## Deployment Checks
 
@@ -50,6 +52,21 @@ Do not delete artwork simply to reduce size. When growth becomes materially limi
 4. separation of active application code from historical delivery.
 
 Make this an explicit architectural decision before storage or deployment limits become the emergency driver.
+
+## Git LFS
+
+Binary assets tracked by Git LFS must have both the repository pointer and the corresponding LFS object available before pushing.
+
+When Git reports `GH008` or an unknown LFS object:
+
+1. Do not rewrite repository history immediately.
+2. Identify the missing object.
+3. Check whether it exists locally.
+4. Fetch the required LFS object from the remote when available.
+5. Verify the working-tree asset before retrying the push.
+6. Treat unrelated LFS discrepancies as separate from application or documentation changes.
+
+Do not use history-rewriting or bulk LFS migration commands as routine fixes.
 
 ## Incident Triage
 
