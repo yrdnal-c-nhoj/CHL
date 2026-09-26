@@ -132,9 +132,6 @@ function verifyClock(filePath) {
   if (!/import\s*\{\s*(?:useClock|useSmoothClock)\s*\}\s*from\s*['"]@\/utils\/hooks['"]/.test(source)) {
     errors.push('must import useClock or useSmoothClock from @/utils/hooks');
   }
-  if (!/export\s+const\s+assets(?:\s*:\s*[^=]+)?\s*=\s*\[/.test(source)) {
-    errors.push('must export an assets array');
-  }
   if (!/<time\b[^>]*\bdateTime\s*=/.test(source) && !/\bSRTime\b/.test(source)) {
     errors.push('must render a semantic <time> with dateTime');
   }

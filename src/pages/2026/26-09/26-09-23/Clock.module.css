@@ -8,7 +8,7 @@
   min-height: 100dvh;
   margin: 0;
   overflow: hidden;
-  background-color: #0a0a12;
+  background-color: #5c5cc2;
   color: #f0f0f0;
   box-sizing: border-box;
 }
@@ -17,41 +17,55 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   max-width: 60ch;
   text-align: center;
   gap: 1.5rem;
-}
-
-.quoteMark {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 4rem;
-  font-weight: bold;
-  color: #b890e0;
-  line-height: 1;
-  opacity: 0.6;
+  padding-inline: 1.5rem;
 }
 
 .quote {
-  font-family: Didot, Georgia, 'Times New Roman', serif;
+  position: relative;
+  margin: 0;
+  font-family: "GFS Didot", Didot, Georgia, "Times New Roman", serif;
   font-size: clamp(1.25rem, 3vw, 2rem);
-  font-style: italic;
+  font-weight: normal;
   line-height: 1.6;
   color: #d0cfe0;
-  margin: 0;
+}
+
+.quote::before,
+.quote::after {
+  position: absolute;
+  font-family: inherit;
+  color: #b890e0;
+  line-height: 1;
+}
+
+.quote::before {
+  content: "“";
+  top: -0.15em;
+  left: -0.6em;
+  font-size: 2.75em;
+}
+
+.quote::after {
+  content: "”";
+  bottom: -0.35em;
+  right: -0.35em;
+  font-size: 1.5em;
 }
 
 .quoteAttribution {
-  margin-top: 1rem;
+  margin: 0;
 }
 
 .quoteAttribution cite {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: Montserrat, Georgia, "Times New Roman", serif;
   font-size: clamp(0.875rem, 2vw, 1.125rem);
   font-style: normal;
   font-weight: 400;
-  color: #9a88b8;
   font-variant: small-caps;
+  color: #9a88b8;
 }
 
 .digitalDisplay {
@@ -59,21 +73,21 @@
   bottom: clamp(1rem, 3vh, 2rem);
   right: clamp(1rem, 3vw, 2rem);
   font-family:
-    'SFMono-Regular',
+    "SFMono-Regular",
     Consolas,
-    'Liberation Mono',
+    "Liberation Mono",
     Menlo,
     monospace;
-  font-size: clamp(3rem, 10vw, 6rem);
+  font-size: 8vh;
   font-variant-numeric: tabular-nums;
   color: #b890e0;
   text-shadow: 0 0 0.5rem rgba(184, 144, 224, 0.5);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.8em;
   z-index: 9;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .quoteMark,
+
   .quote,
   .quoteAttribution,
   .digitalDisplay {
