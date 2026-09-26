@@ -1,0 +1,101 @@
+@font-face {
+  font-family: 'ClockFont_26_09_26';
+  src: url('../../../../assets/fonts/26fonts/26-09-26.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100dvh;
+  margin: 0;
+  overflow: hidden;
+  background-color: #000;
+  color: #fff;
+  perspective: 80rem;
+}
+
+.digitalDisplay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.02em;
+  font-family: 'ClockFont_26_09_26', monospace, sans-serif;
+  font-size: 15vw;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.digit {
+  width: 1ch;
+  height: 1.15em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 800px;
+  overflow: visible;
+}
+
+.digitInner {
+  display: block;
+  transform-style: preserve-3d;
+  backface-visibility: visible;
+  animation: var(--animation-name, spinX) 10s linear infinite;
+  will-change: transform;
+}
+
+@keyframes spinX {
+  from {
+    transform: rotateX(0deg);
+  }
+
+  to {
+    transform: rotateX(360deg);
+  }
+}
+
+@keyframes spinY {
+  from {
+    transform: rotateY(0deg);
+  }
+
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+@keyframes spinZ {
+  from {
+    transform: rotateZ(0deg);
+  }
+
+  to {
+    transform: rotateZ(360deg);
+  }
+}
+
+@keyframes spinXYZ {
+  from {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+
+  to {
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+  }
+}
+
+.separator {
+  width: 0.35ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .digitInner {
+    animation-play-state: paused;
+  }
+}

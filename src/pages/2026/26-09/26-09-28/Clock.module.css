@@ -1,0 +1,66 @@
+:root {
+  /* Common typography and shadow styles */
+  --clock-font: 'ClockFont_26_09_19', monospace, sans-serif;
+  --text-inset-shadow: 0px 3px 0 #000, 0px -1px 0 #fff;
+
+  /* Colors */
+  --color-digit: #9ca473;
+  --color-muted: #181008;
+}
+
+.container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #8d8a8d;
+  /* Ensure no white gaps on mobile when address bar hides/shows */
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+
+.backgroundLayer {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: center center;
+  z-index: 1;
+  pointer-events: none;
+  filter: contrast(110%) brightness(110%) saturate(160%);
+}
+
+@media (max-width: 768px) {
+  .backgroundLayer {
+    object-fit: cover;
+    object-position: center center;
+  }
+}
+
+.digitalDisplay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  font-family: var(--clock-font);
+  font-size: 28vmin;
+  font-variant-numeric: tabular-nums;
+  z-index: 9;
+  letter-spacing: 0.05em;
+}
+
+/* Base style for display elements */
+.digitBox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1ch;
+  text-align: center;
+  text-shadow: var(--text-inset-shadow);
+  color: var(--color-digit);
+  /* font-size: 20vmin; */
+}
