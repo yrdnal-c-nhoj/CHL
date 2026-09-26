@@ -1,60 +1,49 @@
-import type { FontConfig } from '@/types/clock';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSmoothClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
-import fontUrl from '@/assets/fonts/26fonts/26-09-23.otf?url';
-import backgroundVideo from '@/assets/images/26_images/26-09/26-09-23/puddle.webm';
 import styles from './Clock.module.css';
 
-export const assets = [fontUrl, backgroundVideo];
+export const assets: string[] = [];
 
-const FONT_FAMILY = 'ClockFont_26_09_19';
-
-const fontConfig: FontConfig = {
-  fontFamily: FONT_FAMILY,
-  fontUrl,
-};
-
-const formatDigits = (value: number, length = 2): string =>
-  value.toString().padStart(length, '0');
+const QUOTE_TEXT = (
+  <>
+    Time spent laughing
+    <br />
+    is time spent
+    <br />
+    with the gods.
+  </>
+);
 
 const Clock = () => {
-  useSuspenseFontLoader([fontConfig]);
+  const time = useClock();
 
-  const time = useSmoothClock(50);
-
-  const hours = formatDigits(time.getHours());
-  const minutes = formatDigits(time.getMinutes());
-  const seconds = formatDigits(time.getSeconds());
-
-  const digits = [...hours, ...minutes, ...seconds];
+  const hours = time.getHours().toString().padStart(2, '0');
+  const minutes = time.getMinutes().toString().padStart(2, '0');
+  const seconds = time.getSeconds().toString().padStart(2, '0');
 
   return (
     <main className={styles.container}>
-      <video
-        className={styles.backgroundLayer}
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="none"
-        aria-hidden="true"
-      >
-        <source src={backgroundVideo} type="video/webm" />
-      </video>
+      <div className={styles.quoteWrapper}>
+        <span className={styles.quoteMark} aria-hidden="true">
+          “
+        </span>
 
-      <SRTime time={time} />
+        <blockquote className={styles.quote}>{QUOTE_TEXT}</blockquote>
+
+        <footer className={styles.quoteAttribution}>
+          <cite>— Japanese proverb</cite>
+        </footer>
+      </div>
 
       <div className={styles.digitalDisplay} aria-hidden="true">
-        {digits.map((digit, index) => (
-          <span key={`d${index}`} className={styles.digitBox}>
-            {digit}
-          </span>
-        ))}
+        {hours}:{minutes}:{seconds}
       </div>
+
+      <SRTime time={time} />
     </main>
   );
 };
 
-export default Clock;
 Clock.displayName = 'Clock_26_09_23';
+
+export default Clock;

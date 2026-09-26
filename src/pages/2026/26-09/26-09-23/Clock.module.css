@@ -1,66 +1,82 @@
-:root {
-  /* Common typography and shadow styles */
-  --clock-font: 'ClockFont_26_09_19', monospace, sans-serif;
-  --text-inset-shadow: 0px 3px 0 #000, 0px -1px 0 #fff;
-
-  /* Colors */
-  --color-digit: #9ca473;
-  --color-muted: #181008;
-}
-
 .container {
-  position: fixed;
-  inset: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100vw;
-  height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
   overflow: hidden;
-  background-color: #8d8a8d;
-  /* Ensure no white gaps on mobile when address bar hides/shows */
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
+  background-color: #0a0a12;
+  color: #f0f0f0;
+  box-sizing: border-box;
 }
 
-.backgroundLayer {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  object-position: center center;
-  z-index: 1;
-  pointer-events: none;
-  filter: contrast(110%) brightness(110%) saturate(160%);
+.quoteWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 60ch;
+  text-align: center;
+  gap: 1.5rem;
 }
 
-@media (max-width: 768px) {
-  .backgroundLayer {
-    object-fit: cover;
-    object-position: center center;
-  }
+.quoteMark {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 4rem;
+  font-weight: bold;
+  color: #b890e0;
+  line-height: 1;
+  opacity: 0.6;
+}
+
+.quote {
+  font-family: Didot, Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-style: italic;
+  line-height: 1.6;
+  color: #d0cfe0;
+  margin: 0;
+}
+
+.quoteAttribution {
+  margin-top: 1rem;
+}
+
+.quoteAttribution cite {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(0.875rem, 2vw, 1.125rem);
+  font-style: normal;
+  font-weight: 400;
+  color: #9a88b8;
+  font-variant: small-caps;
 }
 
 .digitalDisplay {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  font-family: var(--clock-font);
-  font-size: 28vmin;
+  bottom: clamp(1rem, 3vh, 2rem);
+  right: clamp(1rem, 3vw, 2rem);
+  font-family:
+    'SFMono-Regular',
+    Consolas,
+    'Liberation Mono',
+    Menlo,
+    monospace;
+  font-size: clamp(3rem, 10vw, 6rem);
   font-variant-numeric: tabular-nums;
-  z-index: 9;
+  color: #b890e0;
+  text-shadow: 0 0 0.5rem rgba(184, 144, 224, 0.5);
   letter-spacing: 0.05em;
+  z-index: 9;
 }
 
-/* Base style for display elements */
-.digitBox {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1ch;
-  text-align: center;
-  text-shadow: var(--text-inset-shadow);
-  color: var(--color-digit);
-  /* font-size: 20vmin; */
+@media (prefers-reduced-motion: reduce) {
+  .quoteMark,
+  .quote,
+  .quoteAttribution,
+  .digitalDisplay {
+    animation: none;
+  }
 }
