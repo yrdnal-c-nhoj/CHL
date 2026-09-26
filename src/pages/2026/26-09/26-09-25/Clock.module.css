@@ -1,0 +1,54 @@
+.container {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+  perspective: 80rem;
+}
+
+.digitRow {
+  display: flex;
+  gap: 0.04em;
+  font-family: monospace;
+  font-size: 12vw;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.digitWrapper {
+  width: 0.65em;
+  height: 1em;
+  perspective: 20em;
+}
+
+.digit {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  animation: slowRevolve 20s linear infinite;
+  will-change: transform;
+}
+
+@keyframes slowRevolve {
+  from {
+    transform: rotateY(0deg);
+  }
+
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .digit {
+    animation-play-state: paused;
+  }
+}
