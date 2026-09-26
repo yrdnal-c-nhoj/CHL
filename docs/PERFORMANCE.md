@@ -18,7 +18,7 @@ For project-level standards, roadmap, and enforcement plan, see
 
 - **Count:** Max 2 custom font families per page. Fewer is better.
 - **Format:** WOFF2/TTF/OTF. All formats allowed; WOFF2 preferred for production.
-- **Location:** Local files only. No remote font providers.
+- **Location:** Local files are preferred for reliability and to avoid a cross-origin request blocking first paint. Google Fonts (or another reputable remote provider) is allowed when local self-hosting isn't practical — use a `<link rel="preconnect">` to the font host and keep the `@font-face`/`<link>` load out of a blocking synchronous inline `<style>` tag.
 - **Subsetting:** Subset to required Unicode ranges. Remove unused glyphs.
 - **Size:** `< 100KB` per font file. Split weights/styles into separate files.
 
