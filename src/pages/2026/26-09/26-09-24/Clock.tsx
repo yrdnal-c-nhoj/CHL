@@ -29,6 +29,10 @@ const Clock = () => {
         </span>
 
         <blockquote className={styles.quote}>{QUOTE_TEXT}</blockquote>
+
+        <footer className={styles.quoteAttribution}>
+          <cite>— Japanese proverb</cite>
+        </footer>
       </div>
 
       <div className={styles.digitalDisplay} aria-hidden="true">
