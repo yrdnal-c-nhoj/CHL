@@ -40,6 +40,19 @@
   margin: 0;
 }
 
+.quoteAttribution {
+  margin-top: 1rem;
+}
+
+.quoteAttribution cite {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(0.875rem, 2vw, 1.125rem);
+  font-style: normal;
+  font-weight: 400;
+  color: #9a88b8;
+  font-variant: small-caps;
+}
+
 .digitalDisplay {
   position: absolute;
   bottom: clamp(1rem, 3vh, 2rem);
@@ -61,6 +74,7 @@
 @media (prefers-reduced-motion: reduce) {
   .quoteMark,
   .quote,
+  .quoteAttribution,
   .digitalDisplay {
     animation: none;
   }
