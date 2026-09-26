@@ -1,0 +1,76 @@
+diff --git a/docs/ROADMAP.md b/docs/ROADMAP.md
+index 3ad9b30..2005799 100644
+--- a/docs/ROADMAP.md
++++ b/docs/ROADMAP.md
+@@ -48,11 +48,11 @@ and maintainable.
+ | Consistency | Fleet-wide drift | Hundreds of clocks, uneven enforcement |
+ 
+ ### Quick Metrics (refreshed 2026-09-21)
+-- **Clocks:** 537 total — 2025 full year + 2026 Jan–Aug + **2026-09 (20 clocks, through 26-09-20)**
++- **Clocks:** 540 total — 2025 full year + 2026 Jan–Aug + **2026-09 (24 clocks, through 26-09-25)**
+ - **Test files:** 16 files, 115 tests passing (last test run recorded 2026-09-20)
+-- **Lint problems (full):** 1,090 (297 errors, 793 warnings; measured 2026-09-20); **1 of 20** September 2026 clocks fails the *contract verifier* (`26-09-01`, see 4.8)
++- **Lint problems (full):** 1,090 (297 errors, 793 warnings; measured 2026-09-20); **0 of 24** September 2026 clocks fail the *contract verifier* (see 4.8, fixed 2026-09-26)
+ - **TypeScript errors (full fleet):** legacy debt remains outside CI scope; **in-scope (tsconfig.ci.json): 0**
+-- **Clock contract verification (full fleet):** 395 of 537 fail (73.6%) — 09-17 was 397 of 534; 09-20 was 396 of 537
++- **Clock contract verification (full fleet):** 373 of 540 fail (69.1%; measured 2026-09-26) — 09-17 was 397 of 534; 09-20 was 396 of 537; 09-21 was 395 of 537
+ - **Production build:** `dist/` = 353MB / 4,253 files; `.git` = 312MB (measured 2026-09-20) — both unbounded, see Phase 4
+ - **Status doc:** Manually maintained; `scripts/generate-status.js` does not exist
+ 
+@@ -153,25 +153,23 @@ about the *build artifact and repository*, not the page-load experience.
+ | 4.5 | Decide an explicit **archival policy** for old clocks: keep assets in the repo forever, move older years to external object storage (S3/R2) referenced by URL, or generate/host only a rolling window (e.g. current year) from the SPA build while archiving prior years as static exports | M | Turns "grows forever" into a bounded, intentional decision instead of an emergent one |
+ | 4.6 | Add a build-size regression check to CI (fail or warn if `dist/` grows more than N% versus the previous release) | M | Makes the growth trend visible before it becomes a hosting-cost surprise |
+ | 4.7 | Add `Thumbnail-*.js` (currently ≈59KB br, larger than the framework chunk) to the `PERFORMANCE.md` budget table and investigate whether it can be split further or asset-loaded lazily | S | Budget **row added** 2026-09-21; split/lazy-load still open |
+-| 4.8 | Fix the September 2026 clocks currently failing the current clock contract verifier before adding more clocks to the "compliant by construction" window — see diagnosis below | S–M | **Partial** — `26-09-04` and `26-09-13` now pass; `26-09-01` still fails |
++| 4.8 | Fix the September 2026 clocks currently failing the current clock contract verifier before adding more clocks to the "compliant by construction" window — see diagnosis below | S–M | **DONE** — all 24 clocks in `src/pages/2026/26-09/` pass `scripts/verify-all-clocks.js`, including `26-09-01` |
+ 
+-**Diagnosis for 4.8** (rechecked 2026-09-21):
++**Diagnosis for 4.8** (rechecked 2026-09-26):
+ 
+ - **`26-09-13`** — **fixed.** Uses `useSmoothClock` from `@/utils/hooks`.
+ - **`26-09-04`** — **fixed** as a contract/identity issue. Component,
+   `fontFamily`, and asset paths now use `26-09-04`; canonical `useClock()`;
+   no rAF in source. (The 2026-09-20 note that it was a duplicate of
+   `26-09-05` no longer applies to the current file.)
+-- **`26-09-01`** — **still failing.** A genuine exception the verifier does
+-  not currently account for. It renders a Three.js scene (12 clock faces on
++- **`26-09-01`** — **fixed.** It renders a Three.js scene (12 clock faces on
+   a rotating ring) with its own `renderer.render()` call inside a
+-  `requestAnimationFrame` loop. Three.js requires a render loop distinct
+-  from the `useClock`/`useSmoothClock` time source used for the accessible
+-  `<time>` element; the current "no direct rAF loops" rule does not
+-  distinguish a WebGL canvas render loop from a setInterval-style animation
+-  hack. Next: add a narrow exception to `docs/CLOCKS.md` **and** to
+-  `scripts/verify-all-clocks.js` for Three.js/canvas render loops, rather
+-  than rewriting a working 3D scene to fit a rule written for 2D CSS clocks.
++  `requestAnimationFrame` loop, while the accessible `<time>` element still
++  gets its value from `useClock()`. `scripts/clock-verifier-rules.js` now
++  carries a narrow exception (`hasThreeRenderLoop`) that recognizes a
++  `renderer.render()` call from a `'three'` import as a rendering loop
++  rather than an independent clock-time source, and `docs/CLOCKS.md`
++  documents the same exception. No further action needed here.
+ 
+ **Why this belongs above some of Phase 2/3:** bundle-size and lint debt are
+ recoverable at any time; unbounded git/deploy-artifact growth compounds daily
+diff --git a/docs/STATUS.md b/docs/STATUS.md
+index f09b759..feee423 100644
+--- a/docs/STATUS.md
++++ b/docs/STATUS.md
+@@ -30,7 +30,7 @@ The following measurements were recorded during the September 20–21, 2026 repo
+ | Changed-clock verification | `npm run verify:clocks:changed` | Pass when compared pages are clean |
+ | Full-fleet lint | `npx eslint .` | 1,090 problems: 297 errors / 793 warnings |
+ | Full-fleet TypeScript | `npx tsc --noEmit` | Fails on legacy code outside CI scope |
+-| Full-fleet clock verification | `npm run verify:clocks` | 395 of 537 clocks violate the current contract |
++| Full-fleet clock verification | `npm run verify:clocks` | 373 of 540 clocks violate the current contract (measured 2026-09-26) |
+ 
+ The full-fleet failures are primarily historical debt. The September 2026 architectural boundary means those clocks are not automatically candidates for wholesale refactoring.
+ 
+@@ -38,7 +38,7 @@ The full-fleet failures are primarily historical debt. The September 2026 archit
+ 
+ The current clock contract begins with September 2026. See [docs/CLOCKS.md](CLOCKS.md) for the complete requirements.
+ 
+-At the time of this review, the September 2026 verifier work identified `26-09-01` as the remaining issue being addressed. Its Three.js `requestAnimationFrame` loop is a rendering loop; displayed time must come from the shared `useClock` / `useSmoothClock` infrastructure.
++As of 2026-09-26, all 24 clocks in the September 2026 window pass `npm run verify:clocks`. The last remaining case, `26-09-01`, used a Three.js `requestAnimationFrame` render loop while sourcing its displayed time from `useClock()`; `scripts/clock-verifier-rules.js` now distinguishes that rendering loop from an independent clock-time source (see `docs/ROADMAP.md` 4.8), and `docs/CLOCKS.md` documents the exception.
+ 
+ New clocks must satisfy the current contract rather than inheriting legacy patterns from the historical archive.
+ 

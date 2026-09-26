@@ -30,7 +30,7 @@ The following measurements were recorded during the September 20–21, 2026 repo
 | Changed-clock verification | `npm run verify:clocks:changed` | Pass when compared pages are clean |
 | Full-fleet lint | `npx eslint .` | 1,090 problems: 297 errors / 793 warnings |
 | Full-fleet TypeScript | `npx tsc --noEmit` | Fails on legacy code outside CI scope |
-| Full-fleet clock verification | `npm run verify:clocks` | 395 of 537 clocks violate the current contract |
+| Full-fleet clock verification | `npm run verify:clocks` | 373 of 540 clocks violate the current contract (measured 2026-09-26) |
 
 The full-fleet failures are primarily historical debt. The September 2026 architectural boundary means those clocks are not automatically candidates for wholesale refactoring.
 
@@ -38,7 +38,7 @@ The full-fleet failures are primarily historical debt. The September 2026 archit
 
 The current clock contract begins with September 2026. See [docs/CLOCKS.md](CLOCKS.md) for the complete requirements.
 
-At the time of this review, the September 2026 verifier work identified `26-09-01` as the remaining issue being addressed. Its Three.js `requestAnimationFrame` loop is a rendering loop; displayed time must come from the shared `useClock` / `useSmoothClock` infrastructure.
+As of 2026-09-26, all 24 clocks in the September 2026 window pass `npm run verify:clocks`. The last remaining case, `26-09-01`, used a Three.js `requestAnimationFrame` render loop while sourcing its displayed time from `useClock()`; `scripts/clock-verifier-rules.js` now distinguishes that rendering loop from an independent clock-time source (see `docs/ROADMAP.md` 4.8), and `docs/CLOCKS.md` documents the exception.
 
 New clocks must satisfy the current contract rather than inheriting legacy patterns from the historical archive.
 
