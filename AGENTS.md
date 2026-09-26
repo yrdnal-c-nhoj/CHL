@@ -232,12 +232,44 @@ If a shared font-loading utility is needed, use [`src/utils/fontLoader.tsx`](./s
 
 Font rules:
 
-- Use local files only; do not add Google Fonts or another remote provider.
+- Local files are preferred; Google Fonts (or another reputable remote provider) is permitted when self-hosting isn't practical for a given typeface.
 - Prefer WOFF2; TTF/OTF are accepted when that is the supplied source.
 - Use no more than two custom families per clock.
 - Keep each font file under 100 KB when possible.
 - Use `swap` or `fallback` by default; use `block` only for intentionally art-directed display text.
 - Use a unique family name per clock to prevent cross-clock collisions.
+
+### Using a Google Font instead of a local file
+
+Load it via a `<link>` (not a blocking `@import` inside inline `<style>`) and add a `preconnect` hint:
+
+```tsx
+useEffect(() => {
+  const preconnect = document.createElement('link');
+  preconnect.rel = 'preconnect';
+  preconnect.href = 'https://fonts.gstatic.com';
+  preconnect.crossOrigin = 'anonymous';
+
+  const stylesheet = document.createElement('link');
+  stylesheet.rel = 'stylesheet';
+  stylesheet.href =
+    'https://fonts.googleapis.com/css2?family=Finger+Paint&display=swap';
+
+  document.head.append(preconnect, stylesheet);
+  return () => {
+    preconnect.remove();
+    stylesheet.remove();
+  };
+}, []);
+```
+
+```css
+.digits {
+  font-family: 'Finger Paint', cursive;
+}
+```
+
+A Google Font counts toward the two-family limit and still needs a `font-display` value (Google's `&display=swap` query param covers this). It does not go in the clock's `assets` array — that array is for locally bundled files Vite resolves at build time.
 
 ## Building a Clock
 

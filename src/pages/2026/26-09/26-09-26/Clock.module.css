@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'ClockFont_26_09_26';
-  src: url('../../../../assets/fonts/26fonts/26-09-26.ttf') format('truetype');
+  src: url('../../../../assets/fonts/26fonts/26-09-26x.ttf') format('truetype');
   font-display: swap;
   font-style: normal;
-  font-weight: 400;
+  font-weight: normal;
 }
 
 .container {
@@ -14,8 +14,8 @@
   height: 100dvh;
   margin: 0;
   overflow: hidden;
-  background-color: #000;
-  color: #fff;
+  background-color: #d9dfc0;
+  color: #0c4a42;
   perspective: 80rem;
 }
 
@@ -23,13 +23,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.02em;
+  gap: 0.5em;
   font-family: 'ClockFont_26_09_26', monospace, sans-serif;
-  font-size: 15vw;
-  font-weight: 700;
+  font-size: 5vw;
+  font-weight: normal;
   line-height: 1;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+}
+
+.hoursGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.minutesGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
 }
 
 .digit {
@@ -44,9 +58,10 @@
 
 .digitInner {
   display: block;
-  transform-style: preserve-3d;
   backface-visibility: visible;
-  animation: var(--animation-name, spinX) 10s linear infinite;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
   will-change: transform;
 }
 
@@ -90,12 +105,20 @@
   }
 }
 
-.separator {
-  width: 0.35ch;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .digitInner {
     animation-play-state: paused;
+  }
+}
+
+@media (max-width: 767px) {
+  .digitalDisplay {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .hoursGroup,
+  .minutesGroup {
+    justify-content: center;
   }
 }

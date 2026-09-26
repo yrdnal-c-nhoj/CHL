@@ -2,7 +2,7 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
-import fontUrl from '@/assets/fonts/26fonts/26-09-26.ttf?url';
+import fontUrl from '@/assets/fonts/26fonts/26-09-26x.ttf?url';
 import styles from './Clock.module.css';
 
 export const assets = [fontUrl];
@@ -16,14 +16,17 @@ const fontConfig: FontConfig = {
 
 type Axis = 'x' | 'y' | 'z' | 'xyz';
 
-const ANIMATION_MAP: Record<Axis, string> = {
-  x: 'spinX',
-  y: 'spinY',
-  z: 'spinZ',
-  xyz: 'spinXYZ',
+const getAnimationName = (axis: Axis): string => {
+  if (axis === 'x') return styles.spinX ?? '';
+  if (axis === 'y') return styles.spinY ?? '';
+  if (axis === 'z') return styles.spinZ ?? '';
+  return styles.spinXYZ ?? '';
 };
 
-const formatDigit = (value: string | undefined): string => value ?? '0';
+const formatDigit = (value: string | undefined): string => {
+  const digit = value ?? '0';
+  return digit === '0' ? 'O' : digit;
+};
 
 interface DigitProps {
   value: string;
@@ -31,13 +34,11 @@ interface DigitProps {
 }
 
 const Digit = ({ value, axis }: DigitProps) => {
-  const animationName = ANIMATION_MAP[axis];
-
   return (
     <div className={styles.digit}>
       <span
         className={styles.digitInner}
-        style={{ '--animation-name': animationName } as React.CSSProperties}
+        style={{ animationName: getAnimationName(axis) }}
       >
         {value}
       </span>
@@ -56,13 +57,15 @@ const Clock = () => {
   return (
     <main className={styles.container}>
       <div className={styles.digitalDisplay}>
-        <Digit value={formatDigit(hours[0])} axis="x" />
-        <Digit value={formatDigit(hours[1])} axis="y" />
+        <div className={styles.hoursGroup}>
+          <Digit value={formatDigit(hours[0])} axis="x" />
+          <Digit value={formatDigit(hours[1])} axis="y" />
+        </div>
 
-        <div className={styles.separator} aria-hidden="true" />
-
-        <Digit value={formatDigit(minutes[0])} axis="z" />
-        <Digit value={formatDigit(minutes[1])} axis="xyz" />
+        <div className={styles.minutesGroup}>
+          <Digit value={formatDigit(minutes[0])} axis="z" />
+          <Digit value={formatDigit(minutes[1])} axis="xyz" />
+        </div>
       </div>
 
       <SRTime time={time} />
