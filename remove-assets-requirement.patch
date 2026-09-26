@@ -1,0 +1,58 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index fe97beb..df3b476 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -280,8 +280,6 @@ import { useClock } from '@/utils/hooks';
+ import SRTime from '@/components/SRTime';
+ import styles from './Clock.module.css';
+ 
+-export const assets: string[] = [];
+-
+ const Clock = () => {
+   const time = useClock();
+ 
+@@ -312,7 +310,7 @@ Every clock must:
+ 
+ - export a default component;
+ - set `Clock.displayName` to its folder date;
+-- export an `assets` array, including fonts, images, and media;
++- if it imports any local asset (font, image, or media), export an `assets` array registering it — a clock with no local assets can omit this export;
+ - render a semantic `<time dateTime="...">` or the shared `SRTime`;
+ - use `Clock.module.css` for static styles;
+ - use `100dvh` for a full-height root layout;
+diff --git a/docs/CLOCKS.md b/docs/CLOCKS.md
+index d22d95f..5579158 100644
+--- a/docs/CLOCKS.md
++++ b/docs/CLOCKS.md
+@@ -37,7 +37,7 @@ Every current clock must:
+ 
+ - export a default React component;
+ - set a date-specific `Clock.displayName`;
+-- export an `assets` array containing imported assets used by the clock;
++- if the clock imports any local asset (image, font, or video), export an `assets` array registering it; a clock with no local assets may omit the export entirely;
+ - use the shared clock/time infrastructure;
+ - provide a semantic `<time>` representation or the shared `SRTime` component;
+ - use strict TypeScript for in-scope code;
+@@ -46,7 +46,7 @@ Every current clock must:
+ ## Assets
+ 
+ - Import local assets from the established asset directories.
+-- Register every image, font, video, and other loaded local asset in `assets`.
++- If a clock imports a local asset, register it in an exported `assets` array so the loader can preload it; a clock with no local assets does not need to export `assets` at all.
+ - Do not introduce unexplained root-level media files.
+ - Prefer WebP/AVIF for raster images and WOFF2 for fonts when suitable.
+ - Follow the limits in `docs/PERFORMANCE.md`.
+diff --git a/scripts/verify-all-clocks.js b/scripts/verify-all-clocks.js
+index 3e0e51b..bffb3dc 100644
+--- a/scripts/verify-all-clocks.js
++++ b/scripts/verify-all-clocks.js
+@@ -132,9 +132,6 @@ function verifyClock(filePath) {
+   if (!/import\s*\{\s*(?:useClock|useSmoothClock)\s*\}\s*from\s*['"]@\/utils\/hooks['"]/.test(source)) {
+     errors.push('must import useClock or useSmoothClock from @/utils/hooks');
+   }
+-  if (!/export\s+const\s+assets(?:\s*:\s*[^=]+)?\s*=\s*\[/.test(source)) {
+-    errors.push('must export an assets array');
+-  }
+   if (!/<time\b[^>]*\bdateTime\s*=/.test(source) && !/\bSRTime\b/.test(source)) {
+     errors.push('must render a semantic <time> with dateTime');
+   }

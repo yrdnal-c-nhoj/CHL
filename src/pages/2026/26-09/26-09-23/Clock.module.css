@@ -1,3 +1,20 @@
+@font-face {
+  font-family: 'ClockDisplay_26_09_23';
+  src: url('../../../../assets/fonts/26fonts/26-09-23.ttf')
+    format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: normal;
+}
+
+:root {
+  --bg: #5c5cc2;
+  --text: #d0cfe0;
+  --accent: #b890e0;
+  --star: #ed250b39;
+  --digits: #45647e6b;
+}
+
 .container {
   position: relative;
   display: flex;
@@ -8,82 +25,132 @@
   min-height: 100dvh;
   margin: 0;
   overflow: hidden;
-  background-color: #5c5cc2;
-  color: #f0f0f0;
+  background-color: var(--bg);
+  color: var(--text);
   box-sizing: border-box;
 }
 
 .quoteWrapper {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 60ch;
+  max-width: 90ch;
   text-align: center;
   gap: 1.5rem;
   padding-inline: 1.5rem;
+  transform: none;
+  z-index: 1;
 }
 
 .quote {
   position: relative;
   margin: 0;
   font-family: "GFS Didot", Didot, Georgia, "Times New Roman", serif;
-  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-size: 6vw;
   font-weight: normal;
-  line-height: 1.6;
-  color: #d0cfe0;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  z-index: 2;
 }
 
-.quote::before,
-.quote::after {
+.quoteMark {
   position: absolute;
   font-family: inherit;
-  color: #b890e0;
+  color: var(--accent);
+  font-size: 3em;
+font-family: "GFS Didot", Didot, Georgia, "Times New Roman", serif;
   line-height: 1;
+  z-index: 3;
+  pointer-events: none;
 }
 
-.quote::before {
-  content: "“";
-  top: -0.15em;
-  left: -0.6em;
-  font-size: 2.75em;
+.quoteMark:first-of-type {
+  top: -0.25em;
+  left: -0.3em;
 }
 
-.quote::after {
-  content: "”";
-  bottom: -0.35em;
-  right: -0.35em;
-  font-size: 1.5em;
+.quoteMark:last-of-type {
+  top: -0.25em;
+  right: -0.7em;
+  left: auto;
+}
+
+.quoteStar {
+  position: absolute;
+  color: var(--star);
+  font-family: inherit;
+  font-size: 2.25em;
+  z-index: 4;
+  top: 1.2em;
+  right: -0.3em;
+  margin: 0;
+  pointer-events: none;
 }
 
 .quoteAttribution {
   margin: 0;
+  z-index: 2;
 }
 
 .quoteAttribution cite {
-  font-family: Montserrat, Georgia, "Times New Roman", serif;
-  font-size: clamp(0.875rem, 2vw, 1.125rem);
+  font-family: Montserrat, Verdana, "Arial", serif;
+  font-size: 4vw;
   font-style: normal;
   font-weight: 400;
   font-variant: small-caps;
-  color: #9a88b8;
+  color: var(--accent);
 }
-
 .digitalDisplay {
   position: absolute;
-  bottom: clamp(1rem, 3vh, 2rem);
-  right: clamp(1rem, 3vw, 2rem);
-  font-family:
-    "SFMono-Regular",
+  bottom: clamp(1rem, 2vh, 2rem);
+  right: clamp(1rem, 2vw, 2rem);
+  font-family: "ClockDisplay_26_09_23", "SFMono-Regular",
     Consolas,
     "Liberation Mono",
     Menlo,
     monospace;
-  font-size: 8vh;
+  font-size: 15vw;
   font-variant-numeric: tabular-nums;
-  color: #b890e0;
-  text-shadow: 0 0 0.5rem rgba(184, 144, 224, 0.5);
-  letter-spacing: 0.8em;
+  letter-spacing: 0.08em;
   z-index: 9;
+
+  /* Radial gradient across four colors */
+  background-image: radial-gradient(circle at center,
+      #ffffff59 0%,
+      #b890e051 35%,
+      #e0c08059 70%,
+      #45647e57 100%);
+
+  /* Clip the gradient to the bounds of the text */
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  /* Make text fill transparent so the gradient shows through */
+  color: transparent;
+
+  /* Subtle drop shadow replacing text-shadow (text-shadow won't show behind transparent text) */
+  filter: drop-shadow(0 0 0.5rem color-mix(in srgb, var(--digits) 50%, transparent));
+}
+
+.colon {
+  position: relative;
+  top: -0.2em;
+  background-image: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-variant-numeric: inherit;
+  letter-spacing: inherit;
+}
+
+.clockStar {
+  font-family: "GFS Didot", Didot, Georgia, "Times New Roman", serif;
+  color: var(--star);
 }
 
 @media (prefers-reduced-motion: reduce) {
