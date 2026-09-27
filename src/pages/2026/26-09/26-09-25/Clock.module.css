@@ -1,60 +1,156 @@
+:root {
+  --bg: #e8f3be;
+  --text: #a70208;
+}
+
+@font-face {
+  font-family: 'ClockFont_26_09_26';
+  src: url('../../../../assets/fonts/26fonts/26-09-26.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: normal;
+}
+
+@keyframes colorFade {
+  0% {
+    background-color: var(--bg);
+    color: var(--text);
+  }
+  50% {
+    background-color: var(--text);
+    color: var(--bg);
+  }
+  100% {
+    background-color: var(--bg);
+    color: var(--text);
+  }
+}
+
 .container {
-    position: relative;
-    width: 100%;
-    height: 100dvh;
-    margin: 0;
-    overflow: hidden;
-    background: var(--bg-color);
-
-    /* Color palette */
-    --digit-color: #abd913;
-    --face-color: #282885;
-    --side-color: #17174d;
-    --bg-color: #0f0f1a;
-
-    /* Layout - all viewport-relative */
-    --digit-width: 2.5vw;
-    --digit-height: 3.5vw;
-    --digit-depth: 1vw;
-    --spacing: 3vw;
-    --texture-size: 512;
-    --font-size: 4.5vw;
-
-    /* Animation */
-    --spin-speed: 0.45;
-    --wobble-speed: 0.0004;
-    --wobble-amplitude: 0.08;
-    --spin-offset-step: 1.1;
-
-    /* Lighting */
-    --ambient-intensity: 1.5;
-
-    /* Camera - also viewport-relative for consistent framing */
-    --camera-z: 10vw;
-    --camera-fov: 40;
-    --camera-near: 0.1;
-    --camera-far: 100;
-
-    /* Font */
-    --font-family: 'Arial, Helvetica, sans-serif';
-    --font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100dvh;
+  margin: 0;
+  overflow: hidden;
+  background-color: var(--bg);
+  color: var(--text);
+  perspective: 80rem;
+  animation: colorFade 20s infinite;
 }
 
-.canvas {
-    display: block;
-    width: 100% !important;
-    height: 100% !important;
-    touch-action: none;
+.digitalDisplay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  font-family: 'ClockFont_26_09_26', monospace, sans-serif;
+  font-size: 15vw;
+  font-weight: normal;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
-/* Minimum size constraints */
-@media (max-width: 400px) {
-    .container {
-        --digit-width: 10px;
-        --digit-height: 14px;
-        --digit-depth: 4px;
-        --spacing: 12px;
-        --font-size: 18px;
-        --camera-z: 400px;
-    }
+.hoursGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.minutesGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.digit {
+  width: 1ch;
+  height: 1.15em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 800px;
+  overflow: visible;
+}
+
+.digitInner {
+  display: block;
+  backface-visibility: visible;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+@keyframes spinX {
+  from {
+    transform: rotateX(0deg);
+  }
+
+  to {
+    transform: rotateX(360deg);
+  }
+}
+
+@keyframes spinY {
+  from {
+    transform: rotateY(0deg);
+  }
+
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+@keyframes spinZ {
+  from {
+    transform: rotateZ(0deg);
+  }
+
+  to {
+    transform: rotateZ(360deg);
+  }
+}
+
+@keyframes spinXYZ {
+  from {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+
+  to {
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .digitInner {
+    animation-play-state: paused;
+  }
+  .container {
+    animation-play-state: paused;
+  }
+}
+
+@media (max-width: 767px) {
+  .digitalDisplay {
+    flex-direction: column;
+    gap: 1.5rem;
+    font-size: 20vw;
+  }
+
+  .hoursGroup,
+  .minutesGroup {
+    justify-content: center;
+    gap: 1.5em;
+  }
+}
+
+@media (min-width: 1024px) {
+  .digitalDisplay {
+    font-size: 13vw;
+  }
 }
