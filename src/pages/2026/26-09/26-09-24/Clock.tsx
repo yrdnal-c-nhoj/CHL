@@ -18,6 +18,20 @@ const AnalogClock = ({ time }: { time: Date }) => {
   return (
     <div className={styles.analogClock}>
       <svg viewBox="0 0 200 200" className={styles.svg}>
+        {Array.from({ length: 12 }).map((_, i) => {
+          const angle = i * 30;
+          return (
+            <line
+              key={`tick-${i}`}
+              x1={95}
+              y1={14}
+              x2={100}
+              y2={10}
+              className={styles.tick}
+              transform={`rotate(${angle} ${CENTER} ${CENTER})`}
+            />
+          );
+        })}
         <line
           x1={CENTER} y1={CENTER} x2={CENTER} y2="62"
           className={`${styles.hand} ${styles.hourHand}`}
