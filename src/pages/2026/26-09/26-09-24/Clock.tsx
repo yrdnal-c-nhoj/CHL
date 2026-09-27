@@ -25,9 +25,9 @@ const AnalogClock = ({ time }: { time: Date }) => {
             <line
               key={`tick-${i}`}
               x1={100}
-              y1={10}
+              y1={1}
               x2={100}
-              y2={20}
+              y2={30}
               className={styles.tick}
               transform={`rotate(${angle} ${CENTER} ${CENTER})`}
             />
@@ -44,7 +44,7 @@ const AnalogClock = ({ time }: { time: Date }) => {
           transform={`rotate(${minuteDeg} ${CENTER} ${CENTER})`}
         />
         <line
-          x1={CENTER} y1={CENTER} x2={CENTER} y2="26"
+          x1={CENTER} y1={CENTER} x2={CENTER} y2="2"
           className={`${styles.hand} ${styles.secondHand}`}
           transform={`rotate(${secondDeg} ${CENTER} ${CENTER})`}
         />
