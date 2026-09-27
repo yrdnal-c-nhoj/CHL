@@ -1,63 +1,156 @@
 :root {
-  /* Common typography and shadow styles */
-  --clock-font: 'ClockFont_26_09_23', monospace, sans-serif;
-  --text-inset-shadow: 0px 4px 0 #000, 0px -1px 0 #cac5c5;
+  --bg: #e8f3be;
+  --text: #a70208;
+}
 
-  /* Colors */
-  --color-digit: #9b9c88;
+@font-face {
+  font-family: 'ClockFont_26_09_26';
+  src: url('../../../../assets/fonts/26fonts/26-09-26.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: normal;
+}
+
+@keyframes colorFade {
+  0% {
+    background-color: var(--bg);
+    color: var(--text);
+  }
+  50% {
+    background-color: var(--text);
+    color: var(--bg);
+  }
+  100% {
+    background-color: var(--bg);
+    color: var(--text);
+  }
 }
 
 .container {
-  position: fixed;
-  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
+  margin: 0;
   overflow: hidden;
-  background-color: #8d8a8d;
-}
-
-.backgroundLayer {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  object-position: center center;
-  z-index: 1;
-  pointer-events: none;
-  filter: contrast(120%) brightness(110%) saturate(130%);
+  background-color: var(--bg);
+  color: var(--text);
+  perspective: 80rem;
+  animation: colorFade 20s infinite;
 }
 
 .digitalDisplay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
-  font-family: var(--clock-font);
-  font-size: 22vmin;
+  justify-content: center;
+  gap: 1em;
+  font-family: 'ClockFont_26_09_26', monospace, sans-serif;
+  font-size: 15vw;
+  font-weight: normal;
+  line-height: 1;
   font-variant-numeric: tabular-nums;
-  z-index: 9;
-  letter-spacing: 0.08em;
+  white-space: nowrap;
 }
 
-
-.digitBox {
-  display: inline-flex;
+.hoursGroup {
+  display: flex;
   align-items: center;
   justify-content: center;
+  gap: 1em;
+}
+
+.minutesGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.digit {
   width: 1ch;
-  opacity: 0.9;
-  text-align: center;
-  font-size: 30vmin;
+  height: 1.15em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 800px;
+  overflow: visible;
+}
 
-  /* Three-color gradient text implementation */
-  background: linear-gradient(180deg, #bad57b 0%, #e1dcd9 50%, #070d19 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+.digitInner {
+  display: block;
+  backface-visibility: visible;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
 
-  /* Replaced text-shadow with drop-shadow filter */
-  filter: drop-shadow(0px 4px 0 #000) drop-shadow(0px -1px 0 #cac5c5);
+@keyframes spinX {
+  from {
+    transform: rotateX(0deg);
+  }
+
+  to {
+    transform: rotateX(360deg);
+  }
+}
+
+@keyframes spinY {
+  from {
+    transform: rotateY(0deg);
+  }
+
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+@keyframes spinZ {
+  from {
+    transform: rotateZ(0deg);
+  }
+
+  to {
+    transform: rotateZ(360deg);
+  }
+}
+
+@keyframes spinXYZ {
+  from {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+
+  to {
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .digitInner {
+    animation-play-state: paused;
+  }
+  .container {
+    animation-play-state: paused;
+  }
+}
+
+@media (max-width: 767px) {
+  .digitalDisplay {
+    flex-direction: column;
+    gap: 1.5rem;
+    font-size: 20vw;
+  }
+
+  .hoursGroup,
+  .minutesGroup {
+    justify-content: center;
+    gap: 1.5em;
+  }
+}
+
+@media (min-width: 1024px) {
+  .digitalDisplay {
+    font-size: 13vw;
+  }
 }

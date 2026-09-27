@@ -1,11 +1,10 @@
 :root {
   /* Common typography and shadow styles */
-  --clock-font: 'ClockFont_26_09_19', monospace, sans-serif;
-  --text-inset-shadow: 0px 3px 0 #000, 0px -1px 0 #fff;
+  --clock-font: 'ClockFont_26_09_23', monospace, sans-serif;
+  --text-inset-shadow: 0px 4px 0 #000, 0px -1px 0 #cac5c5;
 
   /* Colors */
-  --color-digit: #9ca473;
-  --color-muted: #181008;
+  --color-digit: #9b9c88;
 }
 
 .container {
@@ -15,9 +14,6 @@
   height: 100vh;
   overflow: hidden;
   background-color: #8d8a8d;
-  /* Ensure no white gaps on mobile when address bar hides/shows */
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
 }
 
 .backgroundLayer {
@@ -29,14 +25,7 @@
   object-position: center center;
   z-index: 1;
   pointer-events: none;
-  filter: contrast(110%) brightness(110%) saturate(160%);
-}
-
-@media (max-width: 768px) {
-  .backgroundLayer {
-    object-fit: cover;
-    object-position: center center;
-  }
+  filter: contrast(120%) brightness(110%) saturate(130%);
 }
 
 .digitalDisplay {
@@ -47,20 +36,28 @@
   display: flex;
   align-items: center;
   font-family: var(--clock-font);
-  font-size: 28vmin;
+  font-size: 22vmin;
   font-variant-numeric: tabular-nums;
   z-index: 9;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
 }
 
-/* Base style for display elements */
+
 .digitBox {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 1ch;
+  opacity: 0.9;
   text-align: center;
-  text-shadow: var(--text-inset-shadow);
-  color: var(--color-digit);
-  /* font-size: 20vmin; */
+  font-size: 30vmin;
+
+  /* Three-color gradient text implementation */
+  background: linear-gradient(180deg, #bad57b 0%, #e1dcd9 50%, #070d19 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* Replaced text-shadow with drop-shadow filter */
+  filter: drop-shadow(0px 4px 0 #000) drop-shadow(0px -1px 0 #cac5c5);
 }

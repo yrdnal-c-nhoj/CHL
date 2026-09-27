@@ -2,13 +2,13 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
-import fontUrl from '@/assets/fonts/26fonts/26-09-23.otf?url';
-import backgroundVideo from '@/assets/images/26_images/26-09/26-09-23/puddle.webm';
+import fontUrl from '@/assets/fonts/26fonts/26-09-27.otf?url';
+import backgroundVideo from '@/assets/images/26_images/26-09/26-09-27/puddle.webm';
 import styles from './Clock.module.css';
 
 export const assets = [fontUrl, backgroundVideo];
 
-const FONT_FAMILY = 'ClockFont_26_09_19';
+const FONT_FAMILY = 'ClockFont_26_09_23';
 
 const fontConfig: FontConfig = {
   fontFamily: FONT_FAMILY,
