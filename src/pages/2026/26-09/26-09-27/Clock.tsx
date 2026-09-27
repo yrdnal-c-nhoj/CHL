@@ -1,60 +1,78 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import { useSmoothClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
-import fontUrl from '@/assets/fonts/26fonts/26-09-27.otf?url';
-import backgroundVideo from '@/assets/images/26_images/26-09/26-09-27/puddle.webm';
+import fontUrl from '@/assets/fonts/26fonts/26-09-26x.ttf?url';
 import styles from './Clock.module.css';
 
-export const assets = [fontUrl, backgroundVideo];
+export const assets = [fontUrl];
 
-const FONT_FAMILY = 'ClockFont_26_09_23';
+const FONT_FAMILY = 'ClockFont_26_09_26';
 
 const fontConfig: FontConfig = {
   fontFamily: FONT_FAMILY,
   fontUrl,
 };
 
-const formatDigits = (value: number, length = 2): string =>
-  value.toString().padStart(length, '0');
+type Axis = 'x' | 'y' | 'z' | 'xyz';
+
+const getAnimationName = (axis: Axis): string => {
+  if (axis === 'x') return styles.spinX ?? '';
+  if (axis === 'y') return styles.spinY ?? '';
+  if (axis === 'z') return styles.spinZ ?? '';
+  return styles.spinXYZ ?? '';
+};
+
+const formatDigit = (value: string | undefined): string => {
+  const digit = value ?? '0';
+  return digit === '0' ? 'O' : digit;
+};
+
+interface DigitProps {
+  value: string;
+  axis: Axis;
+}
+
+const Digit = ({ value, axis }: DigitProps) => {
+  return (
+    <div className={styles.digit}>
+      <span
+        className={styles.digitInner}
+        style={{ animationName: getAnimationName(axis) }}
+      >
+        {value}
+      </span>
+    </div>
+  );
+};
 
 const Clock = () => {
   useSuspenseFontLoader([fontConfig]);
 
-  const time = useSmoothClock(50);
+  const time = useClock();
 
-  const hours = formatDigits(time.getHours());
-  const minutes = formatDigits(time.getMinutes());
-  const seconds = formatDigits(time.getSeconds());
-
-  const digits = [...hours, ...minutes, ...seconds];
+  const hours = time.getHours().toString().padStart(2, '0');
+  const minutes = time.getMinutes().toString().padStart(2, '0');
 
   return (
     <main className={styles.container}>
-      <video
-        className={styles.backgroundLayer}
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="none"
-        aria-hidden="true"
-      >
-        <source src={backgroundVideo} type="video/webm" />
-      </video>
+      <div className={styles.digitalDisplay}>
+        <div className={styles.hoursGroup}>
+          <Digit value={formatDigit(hours[0])} axis="z" />
+          <Digit value={formatDigit(hours[1])} axis="y" />
+        </div>
+
+        <div className={styles.minutesGroup}>
+          <Digit value={formatDigit(minutes[0])} axis="x" />
+          <Digit value={formatDigit(minutes[1])} axis="xyz" />
+        </div>
+      </div>
 
       <SRTime time={time} />
-
-      <div className={styles.digitalDisplay} aria-hidden="true">
-        {digits.map((digit, index) => (
-          <span key={`d${index}`} className={styles.digitBox}>
-            {digit}
-          </span>
-        ))}
-      </div>
     </main>
   );
 };
 
+Clock.displayName = 'Clock_26_09_26';
+
 export default Clock;
-Clock.displayName = 'Clock_26_09_23';
