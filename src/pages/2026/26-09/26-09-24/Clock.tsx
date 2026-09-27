@@ -1,4 +1,4 @@
-import { useClock } from '@/utils/hooks';
+import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
 import backgroundVideo from '@/assets/images/26_images/26-09/26-09-24/dux.webm';
 import styles from './Clock.module.css';
@@ -11,9 +11,10 @@ const AnalogClock = ({ time }: { time: Date }) => {
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
   const seconds = time.getSeconds();
+  const milliseconds = time.getMilliseconds();
   const hourDeg = hours * 30 + minutes * 0.5;
   const minuteDeg = minutes * 6 + seconds * 0.1;
-  const secondDeg = seconds * 6;
+  const secondDeg = (seconds + milliseconds / 1000) * 6;
 
   return (
     <div className={styles.analogClock}>
@@ -23,10 +24,10 @@ const AnalogClock = ({ time }: { time: Date }) => {
           return (
             <line
               key={`tick-${i}`}
-              x1={95}
-              y1={14}
+              x1={100}
+              y1={10}
               x2={100}
-              y2={10}
+              y2={20}
               className={styles.tick}
               transform={`rotate(${angle} ${CENTER} ${CENTER})`}
             />
@@ -53,7 +54,7 @@ const AnalogClock = ({ time }: { time: Date }) => {
 };
 
 const Clock_26_09_24 = () => {
-  const time = useClock();
+  const time = useSmoothClock(50);
 
   return (
     <main className={styles.container}>
