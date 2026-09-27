@@ -1,0 +1,45 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index 31fef96..49f6b9d 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -122,7 +122,7 @@ Do not use `loading="lazy"` for the primary above-the-fold image if it delays th
+ ### Image rules
+ 
+ - Prefer WebP or AVIF; use PNG for transparency and SVG for simple scalable artwork.
+-- Keep each image under 200 KB when possible.
++- Follow the size budget in [`docs/PERFORMANCE.md`](./docs/PERFORMANCE.md).
+ - Do not embed base64 data or fetch images from remote providers.
+ - Do not add an asset to `assets` if it is never rendered.
+ - Avoid `object-fit: cover` when cropping would remove important artwork; choose `contain` or an explicit aspect-ratio treatment instead.
+@@ -173,7 +173,7 @@ A `<source>` child with an explicit `type` is only needed when serving more than
+ Video rules:
+ 
+ - Prefer WebM, with MP4 when browser compatibility requires it.
+-- Keep each video under 2 MB.
++- Follow the size budget in [`docs/PERFORMANCE.md`](./docs/PERFORMANCE.md).
+ - `autoPlay` requires `muted` and `playsInline`.
+ - Do not use video when a static image communicates the same design.
+ - Provide a poster or a visually acceptable fallback when a blank frame would be harmful.
+@@ -230,11 +230,8 @@ const Clock_26_09_20 = () => {
+ 
+ Font rules:
+ 
+-- Local files are preferred; Google Fonts (or another reputable remote provider) is permitted when self-hosting isn't practical for a given typeface.
+-- Prefer WOFF2; TTF/OTF are accepted when that is the supplied source (many current clocks use `.otf`).
+-- Use no more than two custom families per clock.
+-- Keep each font file under 100 KB when possible.
+-- Use a unique family name per clock to prevent cross-clock collisions.
++- Format, count, size, and location budgets are defined once in [`docs/PERFORMANCE.md`](./docs/PERFORMANCE.md) — follow that, don't restate numbers here that could drift out of sync.
++- Use a unique family name per clock (matching the clock's own date, as in the example above) to prevent cross-clock collisions in the shared `document.fonts` registry.
+ 
+ ### Using a Google Font instead of a local file
+ 
+@@ -266,7 +263,7 @@ useEffect(() => {
+ }
+ ```
+ 
+-A Google Font counts toward the two-family limit and still needs a `font-display` value (Google's `&display=swap` query param covers this). It does not go in the clock's `assets` array — that array is for locally bundled files Vite resolves at build time.
++A Google Font counts toward the family-count limit in `docs/PERFORMANCE.md` and still needs a `font-display` value (Google's `&display=swap` query param covers this). It does not go in the clock's `assets` array — that array is for locally bundled files Vite resolves at build time.
+ 
+ ## Concrete Precedent — Where to Look Instead of Guessing
+ 
