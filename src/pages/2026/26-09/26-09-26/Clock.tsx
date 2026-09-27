@@ -1,65 +1,43 @@
-import type { FontConfig } from '@/types/clock';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClockAngles } from '@/hooks/useClockAngles';
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
-import fontUrl from '@/assets/fonts/26fonts/26-09-19.otf?url';
 import backgroundVideo from '@/assets/images/26_images/26-09/26-09-25/intersection.webm';
 import styles from './Clock.module.css';
 
-export const assets = [fontUrl, backgroundVideo];
-
-const FONT_FAMILY = 'ClockFont_26_09_19';
-
-const fontConfig: FontConfig = {
-  fontFamily: FONT_FAMILY,
-  fontUrl,
-};
-
-const formatDigits = (value: number, length = 2): string =>
-  value.toString().padStart(length, '0');
-
-const digitPair = (value: string): [string, string] => [
-  value.charAt(0),
-  value.charAt(1),
-];
+export const assets = [backgroundVideo];
 
 const Clock = () => {
-  useSuspenseFontLoader([fontConfig]);
-
   const time = useSmoothClock(50);
-
-  const hours = formatDigits(time.getHours());
-  const minutes = formatDigits(time.getMinutes());
-  const seconds = formatDigits(time.getSeconds());
-  const centiseconds = formatDigits(time.getMilliseconds(), 3).slice(0, 2);
-
-  const digits = [
-    ...digitPair(hours),
-    ...digitPair(minutes),
-    ...digitPair(seconds),
-    ...digitPair(centiseconds),
-  ];
+  const { hourAngle, minAngle, secAngle } = useClockAngles(time);
 
   return (
     <main className={styles.container}>
       <video
         className={styles.backgroundLayer}
+        src={backgroundVideo}
         autoPlay
         loop
         muted
         playsInline
         preload="none"
         aria-hidden="true"
-      >
-        <source src={backgroundVideo} type="video/webm" />
-      </video>
+      />
 
-      <div className={styles.digitalDisplay} aria-hidden="true">
-        {digits.map((digit, index) => (
-          <span key={index} className={styles.digitBox}>
-            {digit}
-          </span>
-        ))}
+      <div className={styles.analogClock} aria-hidden="true">
+        <div className={styles.clockFace} />
+        <div
+          className={`${styles.hand} ${styles.hourHand}`}
+          style={{ transform: `translateX(-50%) rotate(${hourAngle}deg)` }}
+        />
+        <div
+          className={`${styles.hand} ${styles.minuteHand}`}
+          style={{ transform: `translateX(-50%) rotate(${minAngle}deg)` }}
+        />
+        <div
+          className={`${styles.hand} ${styles.secondHand}`}
+          style={{ transform: `translateX(-50%) rotate(${secAngle}deg)` }}
+        />
+        <div className={styles.centerDot} />
       </div>
 
       <SRTime time={time} />
@@ -68,4 +46,4 @@ const Clock = () => {
 };
 
 export default Clock;
-Clock.displayName = 'Clock_26_09_19';
+Clock.displayName = 'Clock_26_09_26';
