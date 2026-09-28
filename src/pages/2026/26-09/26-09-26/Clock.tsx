@@ -1,7 +1,7 @@
 import { useClockAngles } from '@/hooks/useClockAngles';
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
-import backgroundVideo from '@/assets/images/26_images/26-09/26-09-25/intersection.webm';
+import backgroundVideo from '@/assets/images/26_images/26-09/26-09-26/intersection.webm';
 import styles from './Clock.module.css';
 
 export const assets = [backgroundVideo];
@@ -37,7 +37,7 @@ const Clock = () => {
           className={`${styles.hand} ${styles.secondHand}`}
           style={{ transform: `translateX(-50%) rotate(${secAngle}deg)` }}
         />
-        <div className={styles.centerDot} />
+        {/* <div className={styles.centerDot} /> */}
       </div>
 
       <SRTime time={time} />

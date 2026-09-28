@@ -81,12 +81,12 @@ This single glob covers:
 
 ## Route-Level Bundle Limits
 
-| Chunk | Limit | Current (2026-09-02, brotli) | Status |
+| Chunk | Limit | Current (2026-09-27, brotli) | Status |
 |---|---|---|---|
-| Framework (React/DOM) | `< 100KB` gzipped | `framework-[hash].js` ≈ 50.89KB br | ✅ |
-| Three.js | `< 150KB` gzipped | `three-[hash].js` ≈ 190.66KB br (859.55KB raw) | ❌ Over budget |
+| Framework (React/DOM) | `< 100KB` gzipped | `framework-[hash].js` ≈ 58.71KB br | ✅ |
+| Three.js | `< 150KB` gzipped | `three-[hash].js` ≈ 194.07KB br (872.83KB raw) | ⚠️ Over budget, but loaded only by the 10 clocks that use 3D (no longer site-wide) |
 | Animation (GSAP/Framer) | `< 80KB` gzipped | (none observed in last build) | — |
-| Vendor | `< 120KB` gzipped | `vendor-[hash].js` ≈ 25.49KB br | ✅ |
+| Vendor | `< 120KB` gzipped | `vendor-[hash].js` ≈ 30.93KB br | ✅ |
 | Individual clock page | `< 50KB` gzipped | Dynamic import chunk; biggest observed `useClockPage-[hash].js` ≈ 15.99KB br | ✅ |
 | Thumbnails (`Thumbnail-*.js`) | `< 50KB` gzipped | ≈ 58.96KB br (measured 2026-09-20) | ❌ Over budget; split or lazy-load still open (ROADMAP 4.7) |
 | Total initial JS | `< 150KB` gzipped | framework + vendor + entry ≈ ~95KB br | ✅ |
@@ -95,11 +95,21 @@ This single glob covers:
 - `chunkSizeWarningLimit: 1000` in `vite.config.ts` warns during build.
 - Fail CI if any single chunk exceeds its limit.
 
-**Action item:** the Three.js chunk is now materially over budget
-(190.66KB br vs 150KB target). Options: (a) defer Three.js to a dynamic
-import that only loads on routes that use it, (b) split `@react-three/drei`
-submodules, (c) raise the budget and document the rationale. Recommend (a) or
-(b) before the next release.
+**Three.js loading (fixed 2026-09-27):** previously `three.js` shared a chunk with
+general vendor code and Vite's `__vitePreload` helper, so `index.html` preloaded it
+and every page (home, tags, contact, any clock) downloaded it. `vite.config.ts`
+now puts `three` plus every package that depends on it (`@react-three/*`,
+`three-stdlib`, `troika-*`, `maath`, `camera-controls`, `meshline`,
+`three-mesh-bvh`, `stats-gl`, `@monogrid/gainmap-js`) in one `three` chunk, and
+pins Vite's runtime helpers to `framework`. If a new dependency of `three` is
+added, add it to that list or `vendor` will start importing `three` again.
+Check with: `index.html` must not modulepreload `three-*.js`, and only `Clock-*.js`
+chunks should import it.
+
+**Remaining action item:** the `three` chunk itself is still over its 150KB
+budget (194KB br). Converting `import * as THREE` to named imports was tested and
+saved nothing. Options: (a) raise the budget for this chunk and document why,
+(b) reduce which `@react-three/drei` helpers are used.
 
 ## Other Rules
 
