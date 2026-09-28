@@ -7161,8 +7161,8 @@
     "date": "26-09-23",
     "title": "Footnote #3",
     "tags": [
-      "digital",
       "Japan",
+      "digital",
       "image-free"
     ]
   },
@@ -7173,47 +7173,52 @@
     "tags": [
       "analog",
       "animal",
+      "bird",
       "fly",
       "sound",
-      "bird"
+      "swim"
     ]
-    },
-   
+  },
   {
     "path": "26-09-25",
     "date": "26-09-25",
     "title": "157.5° South-Southeast",
     "tags": [
-      "wind",
-      "digital",
       "cardinal-directions",
+      "digital",
+      "hot",
       "myth",
-      "hot"
+      "wind"
     ]
-    },
+  },
   {
     "path": "26-09-26",
     "date": "26-09-26",
     "title": "Stoplight",
     "tags": [
       "analog",
-      "transport",
       "light",
-      "ride"
+      "mechanical",
+      "ride",
+      "smell",
+      "sound",
+      "transport",
+      "wheel"
     ]
-    },
+  },
   {
     "path": "26-09-27",
     "date": "26-09-27",
     "title": "Pivots",
     "tags": [
       "analog",
-      "monochrome",
       "image-free",
-      "spin"
+      "monochrome",
+      "spin",
+      "typeface"
     ]
-    },
-    {
+  },
+  {
     "path": "26-09-28",
     "date": "26-09-28",
     "title": "Cantaloupe",
@@ -7224,9 +7229,9 @@
       "fruit",
       "smell"
     ]
-    },
+  },
   {
-    "path": "26-09-29", 
+    "path": "26-09-29",
     "date": "26-09-29",
     "title": "Cantaloupe",
     "tags": [
@@ -7237,4 +7242,4 @@
       "smell"
     ]
   }
- ]
+]
