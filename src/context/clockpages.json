@@ -7177,5 +7177,29 @@
       "sound",
       "bird"
     ]
+    },
+   
+  {
+    "path": "26-09-25",
+    "date": "26-09-25",
+    "title": "157.5° South-Southeast",
+    "tags": [
+      "wind",
+      "digital",
+      "cardinal-directions",
+      "myth",
+      "hot"
+    ]
+    },
+  {
+    "path": "26-09-26",
+    "date": "26-09-26",
+    "title": "Stoplight",
+    "tags": [
+      "analog",
+      "transport",
+      "light",
+      "ride"
+    ]
     }
-  ]
+ ]

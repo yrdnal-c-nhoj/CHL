@@ -1,6 +1,6 @@
 .container {
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: 100dvh;
   overflow: hidden;
   background-color: #000000;
@@ -10,106 +10,78 @@
 }
 
 .clock {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  color: #d2c9c9;
-  font-size: 4rem;
+  position: relative;
+  z-index: 8;
+  color: #a8947a;
+  font-size: clamp(6rem, 24vw, 11rem);
   font-family: 'ClockFont_26_09_04', monospace;
-  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.8);
   display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: 0.1em;
+  justify-content: center;
+  gap: 0.2em;
 }
 
 .digitBox {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 0.4em;
+  width: 0.55em;
   height: 1em;
   flex-shrink: 0;
+  text-shadow:
+    3px 3px 0px rgb(238, 200, 85),
+    -1px -1px 0px rgba(52, 39, 14, 0.95),
+    0px 0px 1px rgba(255, 250, 243, 0.992);
 }
 
-.colon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 0.2em;
-  height: 1em;
-  flex-shrink: 0;
-  position: relative;
-  top: -0.1em;
-}
-
-.timeGroup {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.05em;
-}
-
-.ampmGroup {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3em;
-  font-size: 3rem;
-  margin-left: 0.2em;
-}
-
-.image {
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-  display: block;
-  transform: scaleX(-1);
-}
-
-.rainOverlay {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-  opacity: 0.3;
-  z-index: 5;
-  pointer-events: none;
-  transform: scaleX(-1);
-}
-
+/* Base style for full-screen absolute layers */
+.image,
+.rainOverlay,
 .rainEffect {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: fill;
-  opacity: 0.4;
-  z-index: 6;
-  pointer-events: none;
+  object-fit: cover;
   transform: scaleX(-1);
+  pointer-events: none;
+  will-change: transform, filter;
 }
 
-@media (max-width: 768px) {
+.image {
+  z-index: 1;
+  height: 110%;
+  filter: hue-rotate(15deg) contrast(150%);
+}
 
-  .rainOverlay,
-  .rainEffect {
-    object-fit: cover;
+.rainOverlay {
+  z-index: 5;
+  opacity: 0.2;
+  filter: hue-rotate(10deg) contrast(200%) saturate(1.6);
+}
+
+.rainEffect {
+  z-index: 9;
+  opacity: 0.4;
+  filter: hue-rotate(199deg) contrast(300%) saturate(1.2);
+}
+
+/* Responsive Overrides */
+@media (max-width: 768px) {
+  .container {
+    height: 100dvh;
+    /* Changed from 100vh to avoid mobile browser address bar jump */
   }
 
   .image {
     object-fit: fill;
+    /* Note: distorted aspect ratio on mobile screens */
   }
-}
 
-.srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+  .image,
+  .rainOverlay,
+  .rainEffect {
+    height: 110dvh;
+  }
 }
