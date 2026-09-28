@@ -16,11 +16,12 @@
     "format": "prettier --write .",
     "verify:clocks": "node scripts/verify-all-clocks.js",
     "verify:clocks:changed": "node scripts/verify-all-clocks.js --changed",
-    "type-check": "npx tsc --noEmit -p tsconfig.ci.json",
-    "status": "echo 'Status check: run verify:clocks and type-check'",
     "new-clock": "node scripts/new-clock.js",
     "screencaps": "tsx scripts/screencaps/capture.ts",
-    "prepare": "husky"
+    "prepare": "husky",
+    "type-check": "npx tsc --noEmit -p tsconfig.ci.json",
+    "check": "npm run type-check && npm run lint && npm run test:run && npm run verify:clocks:changed && npm run build",
+    "status": "echo 'Status check: run verify:clocks and type-check'"
   },
   "dependencies": {
     "@fontsource/roboto-mono": "^5.2.8",
