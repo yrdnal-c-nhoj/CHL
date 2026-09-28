@@ -7182,21 +7182,25 @@
   {
     "path": "26-09-25",
     "date": "26-09-25",
-    "title": "17?  East-Southeast",
+    "title": "157.5° South-Southeast",
     "tags": [
-      
-      "smell"]
+      "wind",
+      "digital",
+      "cardinal-directions",
+      "myth",
+      "hot"
+    ]
     },
   {
     "path": "26-09-26",
     "date": "26-09-26",
-    "title": "Cantaloupe",
+    "title": "Stoplight",
     "tags": [
       "analog",
-      "color",
-      "food",
-      "fruit",
-      "smell"]
+      "transport",
+      "light",
+      "ride"
+    ]
     },
   {
     "path": "26-09-27",
