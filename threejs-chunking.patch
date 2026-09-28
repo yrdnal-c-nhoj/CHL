@@ -1,0 +1,119 @@
+diff --git a/docs/PERFORMANCE.md b/docs/PERFORMANCE.md
+index ddad16e..7a69f2d 100644
+--- a/docs/PERFORMANCE.md
++++ b/docs/PERFORMANCE.md
+@@ -81,12 +81,12 @@ This single glob covers:
+ 
+ ## Route-Level Bundle Limits
+ 
+-| Chunk | Limit | Current (2026-09-02, brotli) | Status |
++| Chunk | Limit | Current (2026-09-27, brotli) | Status |
+ |---|---|---|---|
+-| Framework (React/DOM) | `< 100KB` gzipped | `framework-[hash].js` ≈ 50.89KB br | ✅ |
+-| Three.js | `< 150KB` gzipped | `three-[hash].js` ≈ 190.66KB br (859.55KB raw) | ❌ Over budget |
++| Framework (React/DOM) | `< 100KB` gzipped | `framework-[hash].js` ≈ 58.71KB br | ✅ |
++| Three.js | `< 150KB` gzipped | `three-[hash].js` ≈ 194.07KB br (872.83KB raw) | ⚠️ Over budget, but loaded only by the 10 clocks that use 3D (no longer site-wide) |
+ | Animation (GSAP/Framer) | `< 80KB` gzipped | (none observed in last build) | — |
+-| Vendor | `< 120KB` gzipped | `vendor-[hash].js` ≈ 25.49KB br | ✅ |
++| Vendor | `< 120KB` gzipped | `vendor-[hash].js` ≈ 30.93KB br | ✅ |
+ | Individual clock page | `< 50KB` gzipped | Dynamic import chunk; biggest observed `useClockPage-[hash].js` ≈ 15.99KB br | ✅ |
+ | Thumbnails (`Thumbnail-*.js`) | `< 50KB` gzipped | ≈ 58.96KB br (measured 2026-09-20) | ❌ Over budget; split or lazy-load still open (ROADMAP 4.7) |
+ | Total initial JS | `< 150KB` gzipped | framework + vendor + entry ≈ ~95KB br | ✅ |
+@@ -95,11 +95,21 @@ This single glob covers:
+ - `chunkSizeWarningLimit: 1000` in `vite.config.ts` warns during build.
+ - Fail CI if any single chunk exceeds its limit.
+ 
+-**Action item:** the Three.js chunk is now materially over budget
+-(190.66KB br vs 150KB target). Options: (a) defer Three.js to a dynamic
+-import that only loads on routes that use it, (b) split `@react-three/drei`
+-submodules, (c) raise the budget and document the rationale. Recommend (a) or
+-(b) before the next release.
++**Three.js loading (fixed 2026-09-27):** previously `three.js` shared a chunk with
++general vendor code and Vite's `__vitePreload` helper, so `index.html` preloaded it
++and every page (home, tags, contact, any clock) downloaded it. `vite.config.ts`
++now puts `three` plus every package that depends on it (`@react-three/*`,
++`three-stdlib`, `troika-*`, `maath`, `camera-controls`, `meshline`,
++`three-mesh-bvh`, `stats-gl`, `@monogrid/gainmap-js`) in one `three` chunk, and
++pins Vite's runtime helpers to `framework`. If a new dependency of `three` is
++added, add it to that list or `vendor` will start importing `three` again.
++Check with: `index.html` must not modulepreload `three-*.js`, and only `Clock-*.js`
++chunks should import it.
++
++**Remaining action item:** the `three` chunk itself is still over its 150KB
++budget (194KB br). Converting `import * as THREE` to named imports was tested and
++saved nothing. Options: (a) raise the budget for this chunk and document why,
++(b) reduce which `@react-three/drei` helpers are used.
+ 
+ ## Other Rules
+ 
+diff --git a/docs/ROADMAP.md b/docs/ROADMAP.md
+index 86b4359..37e22a3 100644
+--- a/docs/ROADMAP.md
++++ b/docs/ROADMAP.md
+@@ -44,7 +44,7 @@ and maintainable.
+ | TypeScript (in-scope, tsconfig.ci.json) | ✅ Pass | `npm run type-check` clean |
+ | Clock verification (full fleet) | ❌ Failed (legacy debt) | 395/537 clocks violate contract |
+ | Clock verification (changed) | ✅ Pass | Recent changes verified |
+-| Three.js bundle | ~190KB br (target <150KB) | Misses performance budget |
++| Three.js bundle | ~194KB br (target <150KB) | Over budget, but now loaded only by the 10 3D clocks, not site-wide |
+ | Consistency | Fleet-wide drift | Hundreds of clocks, uneven enforcement |
+ 
+ ### Quick Metrics (refreshed 2026-09-21)
+@@ -104,7 +104,7 @@ See `docs/PERFORMANCE.md` for the current budget table and measured figures —
+ | 1.5 | Align the legacy `CLOCK_STANDARDS.md` reference document with the current clock contract | — | S | **DONE** — `docs/CLOCKS.md` is authoritative; `CLOCK_STANDARDS.md` is compatibility/reference only |
+ | 1.6 | Fix test harness: wrap context-provider-dependent tests in real providers | — | M | Tests currently pass |
+ | 1.7 | Add 3–5 golden-path tests for recent clocks and routing/data layer | — | M | ⏳ Future |
+-| 1.8 | Address Three.js bundle: lazy-load or split `@react-three/drei` | — | M | ⏳ Planned |
++| 1.8 | Address Three.js bundle: lazy-load or split `@react-three/drei` | — | M | **Partial** — 2026-09-27: `three` isolated in its own chunk and no longer preloaded on every page; chunk size itself still ~194KB br |
+ 
+ ### Phase 2: Process & Automation (2–4 weeks)
+ 
+diff --git a/vite.config.ts b/vite.config.ts
+index bd99a3d..5f19d4d 100644
+--- a/vite.config.ts
++++ b/vite.config.ts
+@@ -45,6 +45,17 @@ export default defineConfig({
+       output: {
+         // Optimize chunk splitting
+         manualChunks: (id) => {
++          // Vite's runtime helpers are imported by every chunk that uses a
++          // dynamic import. If they land in a heavy chunk (e.g. three), the
++          // whole app shell is forced to load that chunk. Keep them in the
++          // always-loaded framework chunk.
++          if (
++            id.includes('vite/preload-helper') ||
++            id.includes('vite/modulepreload-polyfill') ||
++            id.includes('commonjsHelpers')
++          ) {
++            return 'framework';
++          }
+ 
+           // More specific matching for core framework to avoid catching
+           // every library that has "react" in the name
+@@ -58,6 +69,26 @@ export default defineConfig({
+ 
+           if (id.includes('gsap')) return 'animation';
+           if (id.includes('framer-motion')) return 'animation';
++          // three.js and every package that depends on it must share one
++          // chunk; otherwise vendor imports from three (and vice versa) and
++          // every page that loads vendor is forced to load three.js too.
++          if (
++            [
++              'node_modules/three/',
++              'node_modules/@react-three/',
++              'node_modules/@monogrid/gainmap-js/',
++              'node_modules/camera-controls/',
++              'node_modules/maath/',
++              'node_modules/meshline/',
++              'node_modules/stats-gl/',
++              'node_modules/three-mesh-bvh/',
++              'node_modules/three-stdlib/',
++              'node_modules/troika-three-text/',
++              'node_modules/troika-three-utils/',
++            ].some((p) => id.includes(p))
++          ) {
++            return 'three';
++          }
+           // Let Vite handle chunking for other node_modules to avoid a monolithic vendor chunk.
+           // This is more efficient for dynamic imports.
+           if (id.includes('node_modules')) return 'vendor';
