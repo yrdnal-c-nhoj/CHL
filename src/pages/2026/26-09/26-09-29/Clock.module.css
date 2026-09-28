@@ -1,0 +1,90 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background-color: #000;
+  font-family: system-ui, sans-serif;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* HUD panel */
+.hud {
+  position: fixed;
+  left: 12px;
+  top: 12px;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.45);
+  color: #bbb;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+  z-index: 10;
+  user-select: none;
+  max-width: calc(100vw - 24px);
+}
+
+.hud label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 12px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.hud input[type="range"] {
+  vertical-align: middle;
+}
+
+.hud input[type="color"] {
+  width: 32px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background: #111;
+  cursor: pointer;
+}
+
+.hud select {
+  background: #111;
+  color: #eee;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+.hud button {
+  background: #111;
+  color: #eee;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.hud button:hover {
+  background: #161616;
+}
+
+.fpsCounter {
+  color: #fff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono',
+    monospace;
+  margin-top: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hud {
+    backdrop-filter: none;
+  }
+}
