@@ -44,7 +44,7 @@ and maintainable.
 | TypeScript (in-scope, tsconfig.ci.json) | ✅ Pass | `npm run type-check` clean |
 | Clock verification (full fleet) | ❌ Failed (legacy debt) | 395/537 clocks violate contract |
 | Clock verification (changed) | ✅ Pass | Recent changes verified |
-| Three.js bundle | ~190KB br (target <150KB) | Misses performance budget |
+| Three.js bundle | ~194KB br (target <150KB) | Over budget, but now loaded only by the 10 3D clocks, not site-wide |
 | Consistency | Fleet-wide drift | Hundreds of clocks, uneven enforcement |
 
 ### Quick Metrics (refreshed 2026-09-21)
@@ -104,7 +104,7 @@ See `docs/PERFORMANCE.md` for the current budget table and measured figures — 
 | 1.5 | Align the legacy `CLOCK_STANDARDS.md` reference document with the current clock contract | — | S | **DONE** — `docs/CLOCKS.md` is authoritative; `CLOCK_STANDARDS.md` is compatibility/reference only |
 | 1.6 | Fix test harness: wrap context-provider-dependent tests in real providers | — | M | Tests currently pass |
 | 1.7 | Add 3–5 golden-path tests for recent clocks and routing/data layer | — | M | ⏳ Future |
-| 1.8 | Address Three.js bundle: lazy-load or split `@react-three/drei` | — | M | ⏳ Planned |
+| 1.8 | Address Three.js bundle: lazy-load or split `@react-three/drei` | — | M | **Partial** — 2026-09-27: `three` isolated in its own chunk and no longer preloaded on every page; chunk size itself still ~194KB br |
 
 ### Phase 2: Process & Automation (2–4 weeks)
 

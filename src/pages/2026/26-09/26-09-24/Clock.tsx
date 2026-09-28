@@ -34,17 +34,17 @@ const AnalogClock = ({ time }: { time: Date }) => {
           );
         })}
         <line
-          x1={CENTER} y1={CENTER} x2={CENTER} y2="62"
+          x1={CENTER} y1={CENTER} x2={CENTER} y2="68"
           className={`${styles.hand} ${styles.hourHand}`}
           transform={`rotate(${hourDeg} ${CENTER} ${CENTER})`}
         />
         <line
-          x1={CENTER} y1={CENTER} x2={CENTER} y2="36"
+          x1={CENTER} y1={CENTER} x2={CENTER} y2="49"
           className={`${styles.hand} ${styles.minuteHand}`}
           transform={`rotate(${minuteDeg} ${CENTER} ${CENTER})`}
         />
         <line
-          x1={CENTER} y1={CENTER} x2={CENTER} y2="2"
+          x1={CENTER} y1={CENTER} x2={CENTER} y2="40"
           className={`${styles.hand} ${styles.secondHand}`}
           transform={`rotate(${secondDeg} ${CENTER} ${CENTER})`}
         />

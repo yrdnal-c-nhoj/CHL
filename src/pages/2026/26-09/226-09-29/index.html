@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Rain With Text Effect</title>
+    <head>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400;700&display=swap" rel="stylesheet">
+</head><link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <div class="hud">
+  <label>Text: <input id="textInput" type="text" value="RAIN"/></label>
+
+  <label>Font Size:
+    <input id="fontSize" type="range" min="60" max="400" value="300"/>
+  </label>
+
+  <label>Pixel Size:
+    <input id="pxSize" type="range" min="1" max="5" value="2"/>
+  </label>
+
+  <label>
+    <input id="dither" type="checkbox" checked/> 1-bit Dither
+  </label>
+
+  <label>BG <input id="bgColor" type="color" value="#000000"></label>
+  <label>Rain <input id="rainColor" type="color" value="#ffffff"></label>
+
+  <label>Font:
+    <select id="fontFamily">
+      <option value="system" selected>Default (Montserrat/Poppins/Inter)</option>
+      <option value="Inter" data-font-href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">Inter</option>
+      <option value="Poppins" data-font-href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">Poppins</option>
+      <option value="Montserrat" data-font-href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">Montserrat</option>
+      <option value="Bebas Neue" data-font-href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap">Bebas Neue</option>
+      <option value="Oswald" data-font-href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap">Oswald</option>
+      <option value="Roboto" data-font-href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">Roboto</option>
+      <option value="Orbitron" data-font-href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap">Orbitron</option>
+      <option value="Press Start 2P" data-font-href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">Press Start 2P</option>
+      <option value="Courier Prime" data-font-href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap">Courier Prime</option>
+      <option value="Sixtyfour" data-font-href="https://fonts.googleapis.com/css2?family=Sixtyfour&display=swap">Sixtyfour</option>
+    </select>
+  </label>
+
+  <label>Font Weight:
+    <input id="fontWeight" type="number" min="100" max="900" step="100" value="700">
+  </label>
+
+  <button id="rebuild">Apply</button>
+  <div id="fpsCounter"></div>
+</div>
+
+<canvas id="scene"></canvas>
+    <script  src="./script.js"></script>
+
+  </body>
+  
+</html>
