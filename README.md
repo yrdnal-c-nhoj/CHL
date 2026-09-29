@@ -10,6 +10,7 @@ A new clock every day.
 |---|---|
 | `docs/ARCHITECTURE.md` | Authoritative application architecture and historical/current boundary |
 | `docs/CLOCKS.md` | Current clock contract for September 2026 onward |
+| `docs/CLOCK_RECIPES.md` | Code patterns for building current clocks |
 | `docs/PERFORMANCE.md` | Asset budgets, caching, compression, and bundle limits |
 | `docs/OPERATIONS.md` | Build, deployment, release, and archive operations |
 | `docs/ROADMAP.md` | Current priorities, technical debt, and sustainability plan |
