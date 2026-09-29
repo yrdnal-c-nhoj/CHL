@@ -7,6 +7,13 @@ import pluginReactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
+// Current-architecture clocks: September 2026 onward. Extend when adding a new year.
+const CURRENT_CLOCKS = [
+  'src/pages/2026/26-09/**/*.{ts,tsx}',
+  'src/pages/2026/26-1[0-2]/**/*.{ts,tsx}',
+  'src/pages/2027/**/*.{ts,tsx}',
+];
+
 export default tseslint.config(
   // Ignore build artifacts and generated files
   {
@@ -103,24 +110,7 @@ export default tseslint.config(
       'react-hooks/exhaustive-deps': 'error', // Enforce exhaustive-deps for correctness and performance
 
       // Import/Export rules
-      'import/order': [
-        'warn',
-        {
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            'parent',
-            'sibling',
-            'index',
-          ],
-          'newlines-between': 'always',
-          alphabetize: {
-            order: 'asc',
-            caseInsensitive: true,
-          },
-        },
-      ],
+      // (import/order is intentionally not enabled; re-add here if you want it)
       'import/no-duplicates': 'warn',
       'import/no-unresolved': 'error',
       'import/named': 'error',
@@ -206,38 +196,7 @@ export default tseslint.config(
   {
     files: ['**/*.{js,mjs,cjs,jsx,ts,tsx}'],
     languageOptions: {
-      globals: {
-        console: 'readonly',
-        process: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        module: 'readonly',
-        require: 'readonly',
-        exports: 'readonly',
-        global: 'readonly',
-        window: 'readonly',
-        document: 'readonly',
-        navigator: 'readonly',
-        localStorage: 'readonly',
-        sessionStorage: 'readonly',
-        fetch: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly',
-        requestAnimationFrame: 'readonly',
-        cancelAnimationFrame: 'readonly',
-        URL: 'readonly',
-        URLSearchParams: 'readonly',
-        Blob: 'readonly',
-        File: 'readonly',
-        FileReader: 'readonly',
-        FormData: 'readonly',
-        Headers: 'readonly',
-        Response: 'readonly',
-        Request: 'readonly',
-      },
+      globals: { ...globals.browser, ...globals.node },
     },
     rules: {
       'no-console': 'off',
@@ -301,18 +260,9 @@ export default tseslint.config(
 
   // File-specific overrides
   {
-    files: ['*.js', '*.jsx'],
+    files: ['**/*.{js,jsx}'],
     rules: {
       '@typescript-eslint/no-var-requires': 'off',
-    },
-  },
-
-  // Disable import organization warnings
-  {
-    files: ['**/*.{js,mjs,cjs,jsx,ts,tsx}'],
-    rules: {
-      'import/order': 'off',
-      'import/newlines-between': 'off',
     },
   },
 
@@ -321,8 +271,6 @@ export default tseslint.config(
   {
     files: ['src/pages/2025/**/*.{js,jsx,ts,tsx}', 'src/pages/2026/**/*.{js,jsx,ts,tsx}'],
     rules: {
-      'react/jsx-no-styles': 'off',
-      'react/no-inline-styles': 'off',
       'react/jsx-no-bind': 'off',
       'react/no-unknown-property': 'off',
       'react/jsx-no-literals': 'off',
@@ -336,7 +284,6 @@ export default tseslint.config(
       'react/jsx-max-props-per-line': 'off',
       'react/jsx-newline': 'off',
       'react/jsx-wrap-multilines': 'off',
-      'no-inline-styles': 'off',
       'react/forbid-component-props': ['off', { forbid: ['style'] }],
       'react/jsx-props-no-multi-spaces': 'off',
       'react/jsx-equals-spacing': 'off',
@@ -344,33 +291,12 @@ export default tseslint.config(
       'react/jsx-curly-spacing': 'off',
       'react/jsx-space-before-closing': 'off',
       'react/jsx-closing-tag-location': 'off',
-      'css/no-empty-blocks': 'off',
-      'css/no-duplicate-selectors': 'off',
-      'css/no-invalid-properties': 'off',
-      'stylelint-no-unused-vars': 'off',
-      'stylelint-use-logical-properties': 'off',
-      'stylelint-value-no-vendor-prefix': 'off',
-      'stylelint-property-no-vendor-prefix': 'off',
-      'stylelint-selector-no-vendor-prefix': 'off',
-      'stylelint-no-browser-hacks': 'off',
-      'stylelint-no-irregular-whitespace': 'off',
-      'stylelint-no-descending-specificity': 'off',
-      'stylelint-no-duplicate-selectors': 'off',
-      'stylelint-no-empty-source': 'off',
-      'stylelint-no-invalid-double-slash-comments': 'off',
-      'stylelint-no-unknown-animations': 'off',
-      'stylelint-property-no-unknown': 'off',
-      'stylelint-selector-no-unknown': 'off',
-      'stylelint-unit-no-unknown': 'off',
-      'stylelint-value-no-unknown': 'off',
-      'stylelint-at-rule-no-unknown': 'off',
     },
   },
 
-  // Stricter rules for new clock files (September 2026 onwards)
-  // Enforces higher code quality standards for recent work while legacy clocks are relaxed
+  // Stricter rules for current-architecture clocks (must come after the legacy block)
   {
-    files: ['src/pages/2026/26-09/**/*.{js,jsx,ts,tsx}'],
+    files: CURRENT_CLOCKS,
     rules: {
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',
@@ -381,8 +307,37 @@ export default tseslint.config(
     },
   },
 
+  // Clock contract: displayed time comes from useClock/useSmoothClock
   {
-    files: ['*.test.{js,jsx,ts,tsx}', '**/__tests__/**/*.{js,jsx,ts,tsx}'],
+    files: CURRENT_CLOCKS,
+    ignores: ['**/*.test.*'],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'CallExpression[callee.name=/^(setInterval|setTimeout)$/]',
+          message: 'Displayed time must come from useClock/useSmoothClock, not timers.',
+        },
+        {
+          selector:
+            "CallExpression[callee.object.name='window'][callee.property.name=/^(setInterval|setTimeout)$/]",
+          message: 'Displayed time must come from useClock/useSmoothClock, not timers.',
+        },
+        {
+          selector: "CallExpression[callee.object.name='Date'][callee.property.name='now']",
+          message: 'Do not use Date.now() as a time source. Use useClock/useSmoothClock.',
+        },
+        {
+          selector: "NewExpression[callee.name='Date'][arguments.length=0]",
+          message: 'Do not call new Date() for the current time. Use useClock/useSmoothClock.',
+        },
+      ],
+    },
+  },
+
+  // Test files
+  {
+    files: ['**/*.test.{js,jsx,ts,tsx}', '**/__tests__/**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       globals: {
         describe: 'readonly',
@@ -397,20 +352,7 @@ export default tseslint.config(
       },
     },
     rules: {
-      'no-console': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
-    },
-  },
-
-  {
-    files: [
-      '*.config.{js,ts}',
-      'vite.config.ts',
-      'postcss.config.js',
-      'tailwind.config.js',
-    ],
-    rules: {
-      'no-console': 'off',
     },
   },
 
