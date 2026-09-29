@@ -8,6 +8,7 @@ For authoritative requirements, see:
 
 - [docs/ARCHITECTURE.md](ARCHITECTURE.md) — system architecture and the September 2026 historical/current boundary.
 - [docs/CLOCKS.md](CLOCKS.md) — authoritative contract for current clocks.
+- [docs/CLOCK_RECIPES.md](CLOCK_RECIPES.md) — code patterns for building current clocks.
 - [docs/PERFORMANCE.md](PERFORMANCE.md) — performance budgets and guidance.
 - [docs/OPERATIONS.md](OPERATIONS.md) — build, deployment, and maintenance.
 - [docs/ROADMAP.md](ROADMAP.md) — planned work.
@@ -89,6 +90,7 @@ Use the current hierarchy rather than treating this status snapshot as a standar
 
 - Architecture: [docs/ARCHITECTURE.md](ARCHITECTURE.md)
 - Current clock contract: [docs/CLOCKS.md](CLOCKS.md)
+- Current clock recipes: [docs/CLOCK_RECIPES.md](CLOCK_RECIPES.md)
 - Performance: [docs/PERFORMANCE.md](PERFORMANCE.md)
 - Operations: [docs/OPERATIONS.md](OPERATIONS.md)
 - Roadmap: [docs/ROADMAP.md](ROADMAP.md)
