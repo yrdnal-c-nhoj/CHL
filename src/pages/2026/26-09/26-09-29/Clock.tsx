@@ -8,7 +8,7 @@ import styles from './Clock.module.css';
 
 export const assets = [fontUrl, backgroundVideo];
 
-const FONT_FAMILY = 'ClockFont_26_09_23';
+const FONT_FAMILY = 'ClockFont_26_09_29';
 
 const fontConfig: FontConfig = {
   fontFamily: FONT_FAMILY,
@@ -33,21 +33,20 @@ const Clock = () => {
     <main className={styles.container}>
       <video
         className={styles.backgroundLayer}
+        src={backgroundVideo}
         autoPlay
         loop
         muted
         playsInline
         preload="none"
         aria-hidden="true"
-      >
-        <source src={backgroundVideo} type="video/webm" />
-      </video>
+      />
 
       <SRTime time={time} />
 
       <div className={styles.digitalDisplay} aria-hidden="true">
         {digits.map((digit, index) => (
-          <span key={`d${index}`} className={styles.digitBox}>
+          <span key={`d${index}`}>
             {digit}
           </span>
         ))}
@@ -57,4 +56,4 @@ const Clock = () => {
 };
 
 export default Clock;
-Clock.displayName = 'Clock_26_09_23';
+Clock.displayName = 'Clock_26_09_29';
