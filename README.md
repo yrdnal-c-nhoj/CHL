@@ -47,7 +47,11 @@ Open [http://localhost:5173](http://localhost:5173).
 | `npm run build` | Production build |
 | `npm run preview` | Preview production build |
 | `npm run test:run` | Run tests |
-| `npm run lint` | ESLint check |
+| `npm run type-check` | TypeScript check for in-scope code (`tsconfig.ci.json`) |
+| `npm run new-clock YY-MM-DD "Title" tag…` | Scaffold a new clock and register its metadata |
+| `npm run verify:clocks` | Check every clock against the contract (historical clocks fail by design) |
+| `npm run verify:clocks:changed` | Check only clocks changed since the base commit (what CI runs) |
+| `npm run lint` | ESLint check (whole repo; legacy files have known failures — lint just the files you changed) |
 | `npm run lint:fix` | ESLint auto-fix |
 | `npm run format` | Prettier format |
 | `npm run status` | Print a reminder to run `verify:clocks` and `type-check`; `docs/STATUS.md` is currently updated manually |

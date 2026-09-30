@@ -19,12 +19,4 @@ Do not make implementation decisions about asset imports, fonts, clock hooks, re
 
 ## Validation
 
-Run the checks from `AGENTS.md` in the "Validation Commands" section. For a clock change, the required minimum is:
-
-```bash
-npm run verify:clocks:changed
-npm run type-check
-npm run build
-```
-
-Never claim a check passed unless it was actually run.
+Use the command sequence in the "Validation" section of `AGENTS.md`. It is deliberately not repeated here. Never claim a check passed unless it was actually run.

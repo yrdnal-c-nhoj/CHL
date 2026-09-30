@@ -1,6 +1,6 @@
 # Performance Delivery Rules
 
-Last reviewed: 2026-09-21
+Last reviewed: 2026-09-29
 
 For project-level standards, roadmap, and enforcement plan, see
 [`docs/ROADMAP.md`](./ROADMAP.md).
@@ -40,20 +40,14 @@ Choose intentionally based on font role:
 ### Immutable assets
 
 All files under `/assets/` receive immutable caching because Vite hashes
-filenames by content (`index-[hash].js`, `style-[hash].css`, etc.).
-
-This single glob covers:
-- JavaScript chunks (`/assets/*.js`)
-- CSS bundles (`/assets/*.css`)
-- Fonts (`/assets/fonts/*.woff2`)
-- Images (`/assets/images/*.{webp,png,jpg}`)
-- Media (`/assets/images/*.{mp4,webm}`)
+filenames by content. Vite's default output is flat: `/assets/<name>-<hash>.<ext>`
+(there is no `/assets/images/` or `/assets/fonts/` subdirectory in `dist/`, whatever
+the source directory was). One rule therefore covers every JS chunk, CSS bundle,
+font, image, and video.
 
 | Path | Policy | Rationale |
 |---|---|---|
 | `/assets/*` | `public, max-age=31536000, immutable` | Hashed filenames are content-addressable. |
-| `/assets/images/*.mp4` | `Cache-Control: public, max-age=31536000, immutable` + `Content-Type: video/mp4` | Media files. |
-| `/assets/images/*.webm` | `Cache-Control: public, max-age=31536000, immutable` + `Content-Type: video/webm` | Media files. |
 
 ### HTML / shell
 
@@ -62,8 +56,11 @@ This single glob covers:
 | `/` | `no-cache` | Must revalidate on every visit. |
 | `/index.html` | `no-cache` | Must revalidate on every visit. |
 
-**Current implementation:** `public/_headers` (Netlify). Vercel equivalent:
-`vercel.json` routes with `headers` config.
+**Current implementation:** `vercel.json` (production is Vercel; see
+`docs/OPERATIONS.md`). Note that its catch-all `/(.*)` no-cache rule also matches
+`/assets/*`; confirm with the `curl` check in `docs/OPERATIONS.md` that assets are
+actually served as immutable. `public/_headers` and `netlify.toml` are not used by
+production.
 
 ## Preload Policy
 
@@ -74,10 +71,11 @@ This single glob covers:
 
 ## Compression
 
-- **Brotli:** enabled for `.js`, `.css`, `.html`, `.json`, `.svg`, `.woff2`.
-- **Gzip:** fallback for browsers without Brotli.
-- **Threshold:** compress files `> 1KB`.
-- **Implementation:** `vite-plugin-compression` (already configured in `vite.config.ts`).
+- **Build output:** `vite-plugin-compression` (configured in `vite.config.ts`) writes a
+  Brotli `.br` file next to each `.js`, `.mjs`, `.json`, `.css`, and `.html` file larger
+  than about 1KB. It does not compress SVG or fonts and does not generate gzip files.
+- **Serving:** whether the host serves those `.br` files or compresses on the fly at its
+  edge is host behavior and has not been verified for this project.
 
 ## Route-Level Bundle Limits
 

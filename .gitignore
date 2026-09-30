@@ -44,7 +44,8 @@ Thumbs.db
 *.md
 !README.md
 !AGENTS.md
-!docs/AI_DEVELOPMENT_GUIDE.md
+!CONTRIBUTING.md
+!SECURITY.md
 !.github/agents/
 !.github/agents/*.md
 

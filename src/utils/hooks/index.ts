@@ -3,7 +3,8 @@
  *
  * This module exports the canonical clock hooks for the BorrowedTime project.
  * All time hooks are rAF-based (no `setInterval`) and only re-render when the
- * relevant time unit changes, per ARCHITECTURE.md §4.3.
+ * relevant time unit changes. See docs/CLOCKS.md (Time) and
+ * docs/decisions/0002-shared-time-rendering.md.
  *
  * Canonical names:
  * - useClock:          updates once per second (default for most clocks)
@@ -12,7 +13,7 @@
  *                      smooth hand rotations and sub-second animations.
  *
  * Deprecated aliases (kept as thin re-exports for backward compatibility —
- * see CLOCK_STANDARDS.md §2.2 / §5):
+ * new code must not use them; scripts/verify-all-clocks.js rejects them):
  * - useSecondClock       -> useClock
  * - useMillisecondClock  -> useSmoothClock
  * - useClockTime         -> useClock

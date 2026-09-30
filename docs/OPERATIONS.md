@@ -1,24 +1,36 @@
 # BorrowedTime Operations
 
-Last reviewed: 2026-09-21
+Last reviewed: 2026-09-29
 
 ## Canonical Delivery
 
 The production site is served from the Vercel deployment for the repository. Keep one canonical production deployment path; legacy deployment configurations should be removed or explicitly documented if they remain necessary.
 
+### Deployment configuration files
+
+| File | Status |
+|---|---|
+| `vercel.json` | **Production.** Build, SPA fallback, and cache headers. |
+| `netlify.toml`, `public/_headers` | Not used by production. Legacy Netlify configuration; remove or document a reason to keep. |
+| `Dockerfile`, `nginx.conf` | Not used by production. Self-hosting option only; `nginx.conf` sets no cache headers, so it does not implement the policy in `docs/PERFORMANCE.md`. |
+
+When you change caching or routing, change `vercel.json` and update `docs/PERFORMANCE.md` in the same commit.
+
 ## Local Verification
 
-Before a production release:
+Before a production release, run what CI runs, in this order:
 
 ```bash
 npm ci
-npm run type-check
-npm run lint
+npm run verify:clocks:changed
 npm run test:run
+npm run type-check
 npm run build
 ```
 
-For clock changes, also run the relevant clock verifier and visually smoke-test the affected route.
+Do not gate a release on `npm run lint` or `npm run check`: they lint the whole legacy fleet, which has known failures (`docs/STATUS.md`). Lint only what you changed (`AGENTS.md`, Validation).
+
+For clock changes, also visually smoke-test the affected route.
 
 ## Deployment Checks
 
@@ -37,6 +49,15 @@ After deployment, verify:
 Hashed Vite assets should be cacheable for a long period with immutable caching. HTML/app-shell responses should remain revalidatable so a new daily route becomes visible without stale shell content.
 
 Cache rules must not accidentally apply immutable caching to unhashed HTML.
+
+Verify the deployed headers directly (replace `<hash-file>` with any file name from the page's network tab):
+
+```bash
+curl -sI https://<production-host>/            | grep -i cache-control   # expect: no-cache
+curl -sI https://<production-host>/assets/<hash-file> | grep -i cache-control   # expect: immutable
+```
+
+If the second command shows `no-cache`, the catch-all rule in `vercel.json` is overriding the assets rule. Narrowing it to exclude assets (for example `"source": "/((?!assets/).*)"`) is the usual fix, but test it on a preview deployment first.
 
 ## Repository and Build Growth
 

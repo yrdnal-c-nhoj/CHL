@@ -1,6 +1,6 @@
 # BorrowedTime Development Roadmap
 
-Last reviewed: 2026-09-21
+Last reviewed: 2026-09-29
 
 This is the source of truth for the BorrowedTime project roadmap and planned work. It records project direction and sequencing; `docs/STATUS.md` records dated repository health measurements.
 
@@ -20,61 +20,39 @@ with heavy creative use of Canvas, Three.js
 (@react-three/fiber + drei), custom fonts, and date-based routing (`/YY-MM-DD`).
 
 The project values artistic freedom, performance, and accessibility. The
-`CLOCK_STANDARDS.md` exists to keep the fleet of daily clock pages consistent
-and maintainable.
+current-clock contract in `docs/CLOCKS.md` exists to keep new daily clock pages
+consistent and maintainable.
 
 ---
 
-## 2. Current State (2026-09-21)
+## 2. Current State
 
-### Strengths
-- Modern stack: React 19, Vite 7, TypeScript 5.9, strict TS options
-- Clear clock contract and template architecture
-- Good performance budgets and CI intent
-- Security-conscious dependency management
-- Strong accessibility requirements in contract
+All measured figures (test, lint, type-check, and verifier results; clock counts;
+repository and build size) live **only** in `docs/STATUS.md`. They are not repeated
+here, because two copies drift apart.
 
-### Critical Gaps
-| Area | State | Impact |
-|---|---|---|
-| Tests | ✅ Pass (115 tests) | — |
-| Lint (full fleet) | ❌ Failed (legacy debt) | Hundreds of legacy clock violations |
-| Lint (26-09 clocks) | ✅ Pass | Recent clocks clean |
-| TypeScript (full fleet) | ❌ Failed (legacy debt) | Thousands of legacy errors |
-| TypeScript (in-scope, tsconfig.ci.json) | ✅ Pass | `npm run type-check` clean |
-| Clock verification (full fleet) | ❌ Failed (legacy debt) | 395/537 clocks violate contract |
-| Clock verification (changed) | ✅ Pass | Recent changes verified |
-| Three.js bundle | ~194KB br (target <150KB) | Over budget, but now loaded only by the 10 3D clocks, not site-wide |
-| Consistency | Fleet-wide drift | Hundreds of clocks, uneven enforcement |
+Strengths:
+- Modern stack (see `package.json`) with strict TypeScript on in-scope code.
+- A written clock contract, executable in `scripts/verify-all-clocks.js`.
+- Performance budgets and CI gates for changed clocks.
+- Accessibility requirements built into the contract (`SRTime`).
 
-### Quick Metrics (refreshed 2026-09-21)
-- **Clocks:** 540 total — 2025 full year + 2026 Jan–Aug + **2026-09 (24 clocks, through 26-09-25)**
-- **Test files:** 16 files, 115 tests passing (last test run recorded 2026-09-20)
-- **Lint problems (full):** 1,090 (297 errors, 793 warnings; measured 2026-09-20); **0 of 24** September 2026 clocks fail the *contract verifier* (see 4.8, fixed 2026-09-26)
-- **TypeScript errors (full fleet):** legacy debt remains outside CI scope; **in-scope (tsconfig.ci.json): 0**
-- **Clock contract verification (full fleet):** 373 of 540 fail (69.1%; measured 2026-09-26) — 09-17 was 397 of 534; 09-20 was 396 of 537; 09-21 was 395 of 537
-- **Production build:** `dist/` = 353MB / 4,253 files; `.git` = 312MB (measured 2026-09-20) — both unbounded, see Phase 4
-- **Status doc:** Manually maintained; `scripts/generate-status.js` does not exist
+Standing gaps:
+- Legacy debt: full-fleet lint, TypeScript, and contract verification fail on historical clocks by design (ADR 0001).
+- Unbounded growth of the repository and build output (Phase 4).
+- The Three.js chunk is over its budget; the Thumbnail chunk is over its budget.
+- Documentation and code drift: the verifier, `docs/CLOCKS.md`, and `docs/PERFORMANCE.md` must be kept in step.
 
 ---
 
-## 3. Standards (Summary)
+## 3. Standards
 
-The authoritative current-clock contract lives in `docs/CLOCKS.md`; performance budgets live in `docs/PERFORMANCE.md`.
+Not summarized here. The authoritative sources are:
 
-### Non-negotiable rules for every clock
-1. **Structure:** current clocks normally use `Clock.tsx` + `Clock.module.css` in the date folder
-2. **Time hooks:** `useClock` or `useSmoothClock` from `@/utils/hooks` only
-3. **Styling:** CSS Modules for static styles; inline only for dynamic values
-4. **Accessibility:** semantic `<time>` with `dateTime` + screen-reader-only copy
-5. **Height:** `100dvh` for full-height containers
-6. **Assets:** if the clock imports a local asset, register it via the `assets` array (not required when there are none) — see `docs/CLOCKS.md` and `AGENTS.md` for format/count/size budgets
-7. **Memoization:** `useMemo` only for genuinely expensive work; never read `ref.current` inside
-8. **Index access:** guard against `undefined` under `noUncheckedIndexedAccess`
-9. **No prohibited patterns:** no independent timing loops, `useGlobalStyles`, inline `<style>` tags, or `any` in current clocks
-
-### Performance budgets
-See `docs/PERFORMANCE.md` for the current budget table and measured figures — not restated here to avoid this summary drifting out of sync with it. Known current exception: Three.js is over its gzipped budget (tracked in Phase 1/2 below).
+- Clock contract: `docs/CLOCKS.md`, enforced by `scripts/verify-all-clocks.js`.
+- Code patterns: `docs/CLOCK_RECIPES.md`.
+- Budgets: `docs/PERFORMANCE.md`.
+- AI-agent workflow and validation commands: `AGENTS.md`.
 
 ---
 
@@ -92,6 +70,7 @@ See `docs/PERFORMANCE.md` for the current budget table and measured figures — 
 | 0.6 | Guard indexed access in `26-08-23/Clock.tsx` and `26-08-28/useMazeRenderer.ts` | ⏳ Legacy; tracked in Phase 1 |
 | 0.7 | Update CI to surface lint/type results; keep tests+build hard-gated | ✅ Done (CI uses type-check, verify:clocks:changed) |
 | 0.8 | Commit clean baseline and update `docs/STATUS.md` | ✅ Done |
+| 0.9 | Make `npm run test:run` pass on a clean checkout: root `e2e-check.spec.ts` imports `@playwright/test` (not a dependency) and Vitest collects it. Move it under a Playwright config, delete it, or exclude it in `vitest.config.js` | ⏳ Open (see STATUS) |
 
 ### Phase 1: Quality Foundation (1–2 weeks)
 
@@ -101,7 +80,7 @@ See `docs/PERFORMANCE.md` for the current budget table and measured figures — 
 | 1.2 | Enable stricter ESLint rules on new files; track legacy relaxations | — | M | **DONE** — eslint config enforces `@typescript-eslint/no-explicit-any: error`, `no-non-null-assertion: error`, `no-unused-vars: error` for `src/pages/2026/26-09/**` |
 | 1.3 | Adopt `tsconfig.ci.json` progressively; target zero new errors on new clocks | — | M | **DONE** — tsconfig.ci.json excludes legacy months explicitly; `npm run type-check` passes |
 | 1.4 | Wire `verify-all-clocks.js` into CI / pre-commit | — | S | **DONE** — CI runs `verify:clocks:changed` |
-| 1.5 | Align the legacy `CLOCK_STANDARDS.md` reference document with the current clock contract | — | S | **DONE** — `docs/CLOCKS.md` is authoritative; `CLOCK_STANDARDS.md` is compatibility/reference only |
+| 1.5 | Align the legacy `CLOCK_STANDARDS.md` reference document with the current clock contract | — | S | **DONE** — `docs/CLOCKS.md` is authoritative; `CLOCK_STANDARDS.md` and `AI_DEVELOPMENT_GUIDE.md` were removed 2026-09-29 |
 | 1.6 | Fix test harness: wrap context-provider-dependent tests in real providers | — | M | Tests currently pass |
 | 1.7 | Add 3–5 golden-path tests for recent clocks and routing/data layer | — | M | ⏳ Future |
 | 1.8 | Address Three.js bundle: lazy-load or split `@react-three/drei` | — | M | **Partial** — 2026-09-27: `three` isolated in its own chunk and no longer preloaded on every page; chunk size itself still ~194KB br |
@@ -144,13 +123,14 @@ about the *build artifact and repository*, not the page-load experience.
 | # | Action | Effort | Outcome |
 |---|---|---|---|
 | 4.1 | Remove stray root-level files (`Clock.tsx`, `useClockPage.ts`, `config.json`, `path/to/filename.js`) — unused scratch files outside `src/` | S | **DONE** (2026-09-21) — those paths are no longer in the repo root |
-| 4.2 | Extend `.gitattributes` LFS rules to cover `.webp`, `.gif`, `.mp4`, `.webm`, `.ttf`, `.otf`, `.woff2` — the formats that actually make up `src/assets/` | S | New commits stop growing `.git` at full blob size |
+| 4.2 | Extend `.gitattributes` LFS rules to cover `.webp`, `.gif`, `.mp4`, `.webm`, `.ttf`, `.otf`, `.woff2` — the formats that actually make up `src/assets/` | S | **DONE** (2026-09-20) — rules present in `.gitattributes`; existing history not migrated (4.3) |
 | 4.3 | Migrate existing asset history into LFS (`git lfs migrate import`) or, if history rewrite is unacceptable, start a fresh shallow-friendly branch strategy | L | Bounds `.git` growth; requires coordinating a force-push / re-clone for anyone with a local copy |
-| 4.4 | Switch CI checkout from `fetch-depth: 0` to a shallow fetch (e.g. `fetch-depth: 1`, or `2` if `verify:clocks:changed` needs a diff base) | S | Faster, cheaper CI runs; `fetch-depth: 0` is rarely necessary for a build+test+verify pipeline |
+| 4.4 | Switch CI checkout from `fetch-depth: 0` to a shallow fetch (e.g. `fetch-depth: 1`, or `2` if `verify:clocks:changed` needs a diff base) | S | **DONE** — `ci.yml` uses `fetch-depth: 50` |
 | 4.5 | Decide an explicit **archival policy** for old clocks: keep assets in the repo forever, move older years to external object storage (S3/R2) referenced by URL, or generate/host only a rolling window (e.g. current year) from the SPA build while archiving prior years as static exports | M | Turns "grows forever" into a bounded, intentional decision instead of an emergent one |
 | 4.6 | Add a build-size regression check to CI (fail or warn if `dist/` grows more than N% versus the previous release) | M | Makes the growth trend visible before it becomes a hosting-cost surprise |
 | 4.7 | Add `Thumbnail-*.js` (currently ≈59KB br, larger than the framework chunk) to the `PERFORMANCE.md` budget table and investigate whether it can be split further or asset-loaded lazily | S | Budget **row added** 2026-09-21; split/lazy-load still open |
-| 4.8 | Fix the September 2026 clocks currently failing the current clock contract verifier before adding more clocks to the "compliant by construction" window — see diagnosis below | S–M | **DONE** — all 24 clocks in `src/pages/2026/26-09/` pass `scripts/verify-all-clocks.js`, including `26-09-01` |
+| 4.8 | Fix the September 2026 clocks currently failing the current clock contract verifier before adding more clocks to the "compliant by construction" window — see diagnosis below | S–M | **DONE** — all September 2026 clocks pass `scripts/verify-all-clocks.js`, including `26-09-01` |
+| 4.9 | Confirm production cache headers: `/assets/*` must be `immutable`, `/` and `/index.html` `no-cache`. `vercel.json` has an overlapping catch-all `no-cache` rule; check with the `curl` commands in `docs/OPERATIONS.md`. Remove unused deploy configs (`netlify.toml`, `public/_headers`, and optionally `Dockerfile`/`nginx.conf`) | S | Caching policy is verified, not assumed |
 
 **Diagnosis for 4.8** (rechecked 2026-09-26):
 
@@ -191,7 +171,7 @@ passes ~1GB.
 ## 6. Contribution & Workflow
 
 1. Read `docs/ARCHITECTURE.md` and `docs/CLOCKS.md` before adding or modifying a current clock.
-2. Run `npm run lint`, `npm run test:run`, `npm run type-check`, and `npm run build` before opening a PR.
+2. Run the checks listed under Validation in `AGENTS.md` before opening a PR. Lint only what you changed; the full-fleet lint has known legacy failures.
 3. Use `npm run new-clock YYYY-MM-DD` to scaffold a new clock; otherwise follow the file structure in the contract.
 4. Do not bypass lint or test failures; fix or track them explicitly.
 
@@ -203,6 +183,8 @@ passes ~1GB.
 |---|---|
 | `docs/ARCHITECTURE.md` | Application architecture and historical/current boundary |
 | `docs/CLOCKS.md` | Current clock component contract and engineering rules |
+| `docs/CLOCK_RECIPES.md` | Code patterns for images, video, fonts, tiling |
+| `AGENTS.md` | AI-agent workflow and validation commands |
 | `docs/PERFORMANCE.md` | Asset budgets, cache headers, compression, chunk limits |
 | `docs/STATUS.md` | Dated repository health measurements, inventory, and known gaps |
 | `src/templates/BaseClock.tsx` | Canonical clock template and shared structure |

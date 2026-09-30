@@ -58,7 +58,7 @@ export default function ClockPage() {
 
   // Keyboard accessibility: allow Enter/Space to trigger the same
   // navigation as a click (WCAG 2.1 — clickable elements must be
-  // operable by keyboard). See ARCHITECTURE.md §11.
+  // operable by keyboard). See the Accessibility section of docs/CLOCKS.md.
   const handleContainerKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (e.key === 'Enter' || e.key === ' ') {

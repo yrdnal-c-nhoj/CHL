@@ -1,6 +1,6 @@
 # Current Clock Contract
 
-Last reviewed: 2026-09-21
+Last reviewed: 2026-09-29
 
 This document defines the engineering contract for new and actively maintained clocks. It applies from the September 2026 architectural boundary forward.
 
@@ -20,7 +20,7 @@ The JSON files under `src/context/` are metadata sources only. Adding a date to 
 
 ## Required Structure
 
-A current clock normally contains:
+A current clock contains:
 
 ```text
 src/pages/YYYY/YY-MM/YY-MM-DD/
@@ -29,7 +29,7 @@ src/pages/YYYY/YY-MM/YY-MM-DD/
 └── optional local helpers
 ```
 
-CSS Modules are the default for static styling. A clock may omit a module stylesheet only when its implementation genuinely does not need static CSS.
+`Clock.module.css` is required (the verifier fails a current clock without it). Put static styling there, even if the file is short.
 
 ## Component Contract
 
@@ -39,7 +39,7 @@ Every current clock must:
 - set a date-specific `Clock.displayName`;
 - if the clock imports any local asset (image, font, or video), export an `assets` array registering it; a clock with no local assets may omit the export entirely;
 - use the shared clock/time infrastructure;
-- provide a semantic `<time>` representation or the shared `SRTime` component;
+- render its time for assistive technology through the shared `SRTime` component (the verifier requires `SRTime` for September 2026 onward and rejects direct use of `styles.srOnly`);
 - use strict TypeScript for in-scope code;
 - avoid unnecessary dependencies.
 
@@ -68,7 +68,7 @@ In short:
 
 ## Accessibility
 
-Provide a semantic time value that assistive technology can interpret. Use a valid ISO `dateTime` value.
+Render the time with `SRTime`, which outputs a visually hidden `<time>` element with a valid ISO `dateTime` value. Historical clocks may use a hand-written `<time>` element instead.
 
 Artwork that is purely decorative should not create redundant accessible content. Meaningful images require useful alternative text.
 
@@ -100,17 +100,15 @@ Prefer `dvh`, `vw`, `vmin`, `rem`, `%`, and `fr` for responsive layout. Fixed pi
 
 ## Verification
 
-For current clocks, use the relevant project checks:
+`scripts/verify-all-clocks.js` (with `scripts/clock-verifier-rules.js`) is the executable form of this contract. For September 2026 onward it checks: `Clock.module.css` exists; default export; `displayName` ending in `_YY_MM_DD`; `useClock` or `useSmoothClock` imported from `@/utils/hooks`; `SRTime` used; no `setInterval`/`setTimeout`; no independent `requestAnimationFrame` time source; no inline `<style>`; no `any`; no deprecated hooks.
 
-```bash
-npm run type-check
-npm run lint
-npm run test:run
-npm run verify:clocks:changed
-npm run build
-```
+ESLint (`eslint.config.js`, `CURRENT_CLOCKS`) additionally forbids `setInterval`/`setTimeout`, `Date.now()`, argument-less `new Date()`, `any`, and non-null assertions in current clock folders, including helper files.
 
-Not every change requires every command, but a completed implementation must report which checks were actually run. Never claim an unrun check passed.
+Neither tool checks the `assets` export, reduced-motion handling, responsive units, or asset budgets. Those remain the author's responsibility.
+
+If this document and the verifier disagree, fix one of them in the same change.
+
+The command sequence to run for a change lives in `AGENTS.md` (Validation). Report only checks that were actually run.
 
 ## Principle
 
