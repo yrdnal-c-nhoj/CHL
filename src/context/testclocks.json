@@ -7231,14 +7231,14 @@
     ]
   },
   {
-    "path": "26-09-29",
+     "path": "26-09-29",
     "date": "26-09-29",
-    "title": "Cantaloupe",
+    "title": "Rocket",
     "tags": [
-      "analog",
-      "color",
-      "food",
-      "fruit",
+     "digital",
+     "space",
+     "transport",
+     "sound",
       "smell"
     ]
   },
@@ -7269,13 +7269,12 @@
   {
     "path": "26-10-02",
     "date": "26-10-02",
-    "title": "Cantaloupe",
+    "title": "Rocket",
     "tags": [
-      "analog",
-      "color",
-      "food",
-      "fruit",
-      "smell"
+     "digital",
+     "space",
+     "transport",
+     "sound"
     ]
   },
   {
