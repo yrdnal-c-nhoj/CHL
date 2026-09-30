@@ -93,6 +93,24 @@ const Clock = () => {
   }, [clockText]);
 
   useEffect(() => {
+    const preconnect = document.createElement('link');
+    preconnect.rel = 'preconnect';
+    preconnect.href = 'https://fonts.gstatic.com';
+    preconnect.crossOrigin = 'anonymous';
+
+    const stylesheet = document.createElement('link');
+    stylesheet.rel = 'stylesheet';
+    stylesheet.href =
+      'https://fonts.googleapis.com/css2?family=Cormorant:wght@700&display=swap';
+
+    document.head.append(preconnect, stylesheet);
+    return () => {
+      preconnect.remove();
+      stylesheet.remove();
+    };
+  }, []);
+
+  useEffect(() => {
     const canvas = canvasRef.current;
 
     if (!canvas) {
@@ -146,7 +164,7 @@ const Clock = () => {
     let renderedClockText = '';
 
     const fontFamily =
-      '"Montserrat", "Poppins", "Inter", system-ui, sans-serif';
+      '"Cormorant", "Montserrat", "Poppins", "Inter", system-ui, sans-serif';
 
     const hexToRgb = (hex: string) => {
       let value = hex.replace('#', '');
@@ -1819,64 +1837,77 @@ const Clock = () => {
     renderedClockText =
       clockTextRef.current;
 
-    resize();
+    let initResizeObserver: ResizeObserver | null = null;
+    let initPrefersReducedMotion: MediaQueryList | null = null;
+    let initUpdateReducedMotion:
+      | ((event: MediaQueryListEvent) => void)
+      | null = null;
 
-    const resizeObserver =
-      new ResizeObserver(
+    document.fonts.ready.then(() => {
+      resize();
+
+      initResizeObserver =
+        new ResizeObserver(
+          resize,
+        );
+
+      initResizeObserver.observe(
+        canvas,
+      );
+
+      window.addEventListener(
+        'orientationchange',
         resize,
       );
 
-    resizeObserver.observe(
-      canvas,
-    );
+      window.addEventListener(
+        'resize',
+        resize,
+      );
 
-    window.addEventListener(
-      'orientationchange',
-      resize,
-    );
+      initPrefersReducedMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      );
 
-    window.addEventListener(
-      'resize',
-      resize,
-    );
+      initUpdateReducedMotion = (
+        event: MediaQueryListEvent,
+      ) => {
+        effectiveTargetFps = event.matches
+          ? REDUCED_MOTION_FPS
+          : TARGET_FPS;
+      };
 
-    const prefersReducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)',
-    );
-
-    const updateReducedMotion = (
-      event: MediaQueryListEvent,
-    ) => {
-      effectiveTargetFps = event.matches
+      effectiveTargetFps = initPrefersReducedMotion.matches
         ? REDUCED_MOTION_FPS
         : TARGET_FPS;
-    };
 
-    effectiveTargetFps = prefersReducedMotion.matches
-      ? REDUCED_MOTION_FPS
-      : TARGET_FPS;
-
-    prefersReducedMotion.addEventListener(
-      'change',
-      updateReducedMotion,
-    );
-
-    animationFrame =
-      requestAnimationFrame(
-        frame,
+      initPrefersReducedMotion.addEventListener(
+        'change',
+        initUpdateReducedMotion,
       );
+
+      animationFrame =
+        requestAnimationFrame(
+          frame,
+        );
+    });
 
     return () => {
       cancelAnimationFrame(
         animationFrame,
       );
 
-      resizeObserver.disconnect();
+      initResizeObserver?.disconnect();
 
-      prefersReducedMotion.removeEventListener(
-        'change',
-        updateReducedMotion,
-      );
+      if (
+        initPrefersReducedMotion &&
+        initUpdateReducedMotion
+      ) {
+        initPrefersReducedMotion.removeEventListener(
+          'change',
+          initUpdateReducedMotion,
+        );
+      }
 
       window.removeEventListener(
         'orientationchange',
