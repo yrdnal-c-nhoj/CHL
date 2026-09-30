@@ -64,13 +64,13 @@
 
 .hourHand {
   width: 0.8vmin;
-  height: 22%;
+  height: 28%;
   background-color: #4c4b4b;
 }
 
 .minuteHand {
   width: 0.5vmin;
-  height: 32%;
+  height: 50%;
   background-color: #9e9e9e;
 }
 
