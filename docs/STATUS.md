@@ -1,6 +1,6 @@
 # CHL Current Status
 
-Last reviewed: 2026-09-21
+Last reviewed: 2026-09-29
 
 This document records the repository's known engineering status and current maintenance issues. It is a snapshot, not an automated source of truth.
 
@@ -21,17 +21,20 @@ Historical reports are retained under [docs/archive/](archive/).
 
 ## Current Health Snapshot
 
-The following measurements were recorded during the September 20–21, 2026 repository review.
+Measurements dated 2026-09-29 were taken on a fresh clone with `npm ci` (Node 22). The build and repository-size rows are older because the clone used for the 09-29 run did not include Git LFS media, so a full production build could not be reproduced.
 
 | Check | Command | Recorded result |
 |---|---|---|
-| Build | `npm run build` | Pass — 353 MB / 4,253 files in `dist/` |
-| Tests | `npm run test:run` | Pass — 115 tests |
-| TypeScript (CI scope) | `npm run type-check` | Pass |
+| Build | `npm run build` | Pass — 353 MB / 4,253 files in `dist/` (2026-09-20; not re-run 09-29) |
+| Tests | `npm run test:run` | **Exits non-zero.** 128 tests pass in 18 files; 1 file fails to load: root `e2e-check.spec.ts` imports `@playwright/test`, which is not a dependency (2026-09-29) |
+| TypeScript (CI scope) | `npm run type-check` | Pass (2026-09-29) |
 | Changed-clock verification | `npm run verify:clocks:changed` | Pass when compared pages are clean |
-| Full-fleet lint | `npx eslint .` | 1,090 problems: 297 errors / 793 warnings |
-| Full-fleet TypeScript | `npx tsc --noEmit` | Fails on legacy code outside CI scope |
-| Full-fleet clock verification | `npm run verify:clocks` | 373 of 540 clocks violate the current contract (measured 2026-09-26) |
+| Full-fleet lint | `npx eslint .` | 1,062 problems: 286 errors / 776 warnings (2026-09-29) |
+| September 2026 lint | `npx eslint src/pages/2026/26-09` | 1 error: `26-09-14/Clock.tsx` uses `Date.now()`, which the lint rule forbids (2026-09-29) |
+| Full-fleet TypeScript | `npx tsc --noEmit` | Fails: about 2,350 errors, all outside the CI scope (2026-09-29) |
+| Full-fleet clock verification | `npm run verify:clocks` | 373 of 545 clocks violate the current contract (2026-09-29); all 29 September 2026 clocks pass |
+
+CI (`.github/workflows/ci.yml`) runs `verify:clocks:changed`, `test:run`, `type-check`, and `build`; it does not run lint. Because `test:run` fails on a clean checkout (row above), the CI test step is expected to fail as well; the Actions history was not accessible for this review, so that is unconfirmed.
 
 The full-fleet failures are primarily historical debt. The September 2026 architectural boundary means those clocks are not automatically candidates for wholesale refactoring.
 
@@ -39,7 +42,7 @@ The full-fleet failures are primarily historical debt. The September 2026 archit
 
 The current clock contract begins with September 2026. See [docs/CLOCKS.md](CLOCKS.md) for the complete requirements.
 
-As of 2026-09-26, all 24 clocks in the September 2026 window pass `npm run verify:clocks`. The last remaining case, `26-09-01`, used a Three.js `requestAnimationFrame` render loop while sourcing its displayed time from `useClock()`; `scripts/clock-verifier-rules.js` now distinguishes that rendering loop from an independent clock-time source (see `docs/ROADMAP.md` 4.8), and `docs/CLOCKS.md` documents the exception.
+As of 2026-09-29, all 29 clocks in the September 2026 window pass `npm run verify:clocks`. The last remaining case, `26-09-01`, used a Three.js `requestAnimationFrame` render loop while sourcing its displayed time from `useClock()`; `scripts/clock-verifier-rules.js` now distinguishes that rendering loop from an independent clock-time source (see `docs/ROADMAP.md` 4.8), and `docs/CLOCKS.md` documents the exception.
 
 New clocks must satisfy the current contract rather than inheriting legacy patterns from the historical archive.
 
@@ -56,7 +59,7 @@ The archive's size is a sustainability concern rather than a reason to remove hi
 
 ## Repository Hygiene
 
-The following root-level scratch files were removed during the September 21 review:
+The following root-level scratch files were removed during the September 21 review (they have since been joined by others; see Known Gaps):
 
 - `Clock.tsx`
 - `useClockPage.ts`
@@ -67,6 +70,12 @@ Historical clock implementations remain in place unless a concrete production, s
 
 ## Known Gaps
 
+- `npm run test:run` fails on a clean checkout because of the root `e2e-check.spec.ts` (see Health Snapshot).
+- Root-level files with no references from `package.json` or the docs: an empty file named `git`, two `.webm` files (one named `xdfsdfsdfsfswefswefwefwsef.webm`, one a screen recording), `threejs-chunking.patch`, `check-images.cjs`, `e2e-check.spec.ts`, a `new-clock.js` (a second, different implementation of `scripts/new-clock.js`; its path logic assumes it lives in `scripts/`), and `test-results/.last-run.json`.
+- `26-09-14/Clock.tsx` uses `Date.now()` as an animation start anchor. The lint rule and `docs/CLOCKS.md` treat `Date.now()` as forbidden; either change the clock or narrow the rule. The clock verifier does not detect it.
+- Production cache headers are unverified: `vercel.json` has a catch-all `no-cache` rule that also matches `/assets/*`. See `docs/OPERATIONS.md` for the check.
+- Unused deployment configs remain: `netlify.toml`, `public/_headers`, `Dockerfile`, `nginx.conf`.
+- `PERFORMANCE.md` requires `preload="none"` on background video, but most current video clocks omit it (open decision noted in `docs/CLOCK_RECIPES.md`).
 - `npm run status` remains a placeholder; no `scripts/generate-status.js` currently exists.
 - Full-fleet lint and TypeScript checks still expose legacy debt.
 - Full-fleet clock verification still reports historical contract violations.
