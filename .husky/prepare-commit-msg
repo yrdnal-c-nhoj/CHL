@@ -1,0 +1,43 @@
+#!/usr/bin/env sh
+# Auto-generates a commit message from staged changes when the user hasn't
+# provided one explicitly (e.g. `git commit -m "..."`).
+# For fully automated commits without an editor, use: git ac
+
+COMMIT_MSG_FILE="$1"
+COMMIT_SOURCE="$2"
+COMMIT_MSG_SRC="$3"
+
+# Skip for merges, rebases, cherry-picks, or when a message was provided via -m/-F/-T
+if [ -n "$COMMIT_SOURCE" ] || [ "$COMMIT_MSG_SRC" = "message" ]; then
+  exit 0
+fi
+
+# Only overwrite if the file is still a skeleton/template (no real content)
+if [ -s "$COMMIT_MSG_FILE" ] && ! grep -qv '^#' "$COMMIT_MSG_FILE" 2>/dev/null; then
+  # File has only comments → safe to replace
+  :
+else
+  exit 0
+fi
+
+# Count change types
+NEW=$(git diff --cached --diff-filter=A --name-only 2>/dev/null | wc -l | tr -d ' ')
+MOD=$(git diff --cached --diff-filter=M --name-only 2>/dev/null | wc -l | tr -d ' ')
+DEL=$(git diff --cached --diff-filter=D --name-only 2>/dev/null | wc -l | tr -d ' ')
+
+# Build a concise first line
+FIRST_LINE=""
+[ "$NEW" -gt 0 ] && FIRST_LINE="added ${NEW} file(s)"
+[ "$MOD" -gt 0 ] && FIRST_LINE="${FIRST_LINE:+${FIRST_LINE}, }modified ${MOD} file(s)"
+[ "$DEL" -gt 0 ] && FIRST_LINE="${FIRST_LINE:+${FIRST_LINE}, }deleted ${DEL} file(s)"
+[ -z "$FIRST_LINE" ] && FIRST_LINE="Update"
+
+# Write the generated message
+{
+  echo "$FIRST_LINE"
+  echo ""
+  git diff --cached --stat 2>/dev/null
+  echo ""
+  echo "# Auto-generated commit message from staged changes."
+  echo "# Edit the first line to customize, or save & close to accept."
+} > "$COMMIT_MSG_FILE"

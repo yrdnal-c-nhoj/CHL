@@ -2,7 +2,7 @@ import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
 import limeVideo from '@/assets/images/26_images/26-09/26-09-20/radar.webm';
 import font from '@/assets/fonts/26fonts/26-09-20.otf?url';
@@ -19,7 +19,19 @@ const fontConfig: FontConfig = {
 const Clock_26_09_20 = () => {
   useSuspenseFontLoader([fontConfig]);
 
-  const time = useSmoothClock(16);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
+    typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  const time = useSmoothClock(prefersReducedMotion ? 1000 : 16);
 
   const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
     const ms = time.getMilliseconds();
