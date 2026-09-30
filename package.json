@@ -16,6 +16,7 @@
     "format": "prettier --write .",
     "verify:clocks": "node scripts/verify-all-clocks.js",
     "verify:clocks:changed": "node scripts/verify-all-clocks.js --changed",
+    "conform": "node scripts/conform.js",
     "new-clock": "node scripts/new-clock.js",
     "screencaps": "tsx scripts/screencaps/capture.ts",
     "prepare": "husky",
