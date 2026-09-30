@@ -2,8 +2,8 @@ import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
-import fontUrl from '@/assets/fonts/26fonts/26-09-27.otf?url';
-import backgroundVideo from '@/assets/images/26_images/26-09/26-09-27/puddle.webm';
+import fontUrl from '@/assets/fonts/26fonts/26-09-29.ttf?url';
+import backgroundVideo from '@/assets/images/26_images/26-09/26-09-29/rocket.webm';
 import styles from './Clock.module.css';
 
 export const assets = [fontUrl, backgroundVideo];
