@@ -12,11 +12,8 @@ if [ -n "$COMMIT_SOURCE" ] || [ "$COMMIT_MSG_SRC" = "message" ]; then
   exit 0
 fi
 
-# Only overwrite if the file is still a skeleton/template (no real content)
-if [ -s "$COMMIT_MSG_FILE" ] && ! grep -qv '^#' "$COMMIT_MSG_FILE" 2>/dev/null; then
-  # File has only comments → safe to replace
-  :
-else
+# Only overwrite if the file is empty or contains only comments
+if [ -s "$COMMIT_MSG_FILE" ] && grep -qv '^#' "$COMMIT_MSG_FILE" 2>/dev/null; then
   exit 0
 fi
 
