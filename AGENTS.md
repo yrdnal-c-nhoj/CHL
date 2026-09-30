@@ -421,6 +421,34 @@ Do not broad-refactor historical clocks. Modify them only for a concrete reason 
 
 Keep assets in established directories. Do not rename historical assets or introduce unexplained root-level media. Check asset size and format against `docs/PERFORMANCE.md`.
 
+## Conformance Check ("does this conform to our standards?")
+
+When the owner asks whether code, a clock, or a change conforms to the technical standards (or asks any close variant: "check standards", "bring it up to standard", "does this meet our rules?"), do not answer from memory and do not just report. **Check, fix, re-check, report.** Work quickly and in this order:
+
+1. **Run the checker.** `npm run conform -- --fix`
+   - With no arguments it checks clocks with uncommitted changes (or the last commit if the tree is clean).
+   - Use `--path YY-MM-DD` for a named clock, or `--all-current` for every clock from 26-09 onward.
+   - Historical clocks (before September 2026) are skipped unless named with `--path`. Do not fix them to make the archive uniform.
+2. **Read the result by level:**
+   - `FIXED` - already corrected by `--fix`. Just report it.
+   - `FAIL` - breaks the clock contract. Fix it by hand (smallest change), then re-run.
+   - `REVIEW` - a budget or heuristic finding. Decide case by case (see below); do not silently ignore it.
+3. **Fix every `FAIL` yourself.** Typical cases: `<img>` missing `alt`, a missing asset file, `document.body` mutation, Tailwind in a clock, anything reported by `[verifier]`.
+4. **Handle `REVIEW` items:**
+   - `prefers-reduced-motion` missing: add a `@media (prefers-reduced-motion: reduce)` block that pauses, slows, or simplifies non-essential motion while keeping the time readable.
+   - Unused imported asset: remove the import and its `assets` entry.
+   - Fixed `px` layout values: convert to `dvh`/`vw`/`vmin`/`rem`/`%`/`fr` when it does not change the artwork; otherwise leave and say why.
+   - Asset over budget (image 200KB, video 2MB, font 100KB) or more than 2 fonts: **do not** delete, replace, or re-encode artwork on your own. Report the file, its size, and the budget, and ask.
+   - String `className`, `document.head`, `Date.now()`, remote URL: confirm each is legitimate per this file, otherwise fix it.
+5. **Re-run** `npm run conform -- --path <date>` until there are no `FAIL` lines.
+6. **Run the gates:** `npm run type-check`, `npm run test:run` if shared code changed, and `npm run build`. Do a browser smoke check for clock changes when a browser is available.
+7. **Report** in this shape: what was auto-fixed, what you fixed by hand, what remains under REVIEW (with file and size where relevant), and exactly which commands you ran. Never claim a check passed that you did not run.
+
+Rules for this procedure:
+- Fix only what the standards require. No unrelated refactors, no renaming or moving existing assets.
+- `npm run conform` covers the mechanical standards. Anything it cannot see (visual result, layout on mobile portrait/landscape/tablet) still needs the smoke check or an explicit "not verified" in the report.
+- If a standard in this file and the checker ever disagree, this file and `docs/CLOCKS.md` win; fix the checker.
+
 ## Validation Commands
 
 Use the command that matches the change:
@@ -432,6 +460,7 @@ npm run type-check                    # TypeScript check for in-scope code (tsco
 npm run test:run                      # behavior or shared utility changes
 npm run lint                          # lint-sensitive changes
 npm run verify:clocks:changed         # verify only changed clock pages
+npm run conform                       # full conformance check (add -- --fix to auto-fix)
 npm run verify:clocks -- --path 26-09-16  # verify specific clock
 # npm run status                      # reminder only; docs/STATUS.md is updated manually
 ```
