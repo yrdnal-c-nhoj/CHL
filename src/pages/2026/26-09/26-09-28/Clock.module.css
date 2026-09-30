@@ -90,3 +90,9 @@
 .secondHand {
   stroke-width: 1.75px;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .backgroundVideo {
+    filter: none;
+  }
+}
