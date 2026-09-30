@@ -164,7 +164,7 @@ opacity: 0.5;
 
 /* Screen Reader Only */
 
-.srOnly {
+  .srOnly {
   position: absolute;
 
   width: 1px;
@@ -180,4 +180,14 @@ opacity: 0.5;
   white-space: nowrap;
 
   border-width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hand {
+    will-change: auto;
+  }
+
+  .backgroundVideo {
+    /* Background video is decorative; motion reduced via JS interval */
+  }
 }
