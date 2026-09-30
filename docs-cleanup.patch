@@ -1,0 +1,1234 @@
+From 99d331b9d1dfb232d0c5f04c86942781958c94d2 Mon Sep 17 00:00:00 2001
+From: docs <docs@example.com>
+Date: Wed, 30 Sep 2026 02:39:54 +0000
+Subject: [PATCH] docs: single source of truth cleanup
+
+- Slim AGENTS.md to workflow + ownership map; recipes live in docs/CLOCK_RECIPES.md
+- Align CLOCKS.md with verifier (SRTime, Clock.module.css required)
+- Correct PERFORMANCE.md (flat /assets paths, Brotli-only build output, vercel.json)
+- Document deployment configs and header verification in OPERATIONS.md
+- Deduplicate ROADMAP.md; refresh STATUS.md with 2026-09-29 measurements
+- Remove CLOCK_STANDARDS.md and AI_DEVELOPMENT_GUIDE.md; fix dangling section refs
+- Un-ignore CONTRIBUTING.md and SECURITY.md
+---
+ .github/agents/react-vite.md |  10 +-
+ .gitignore                   |   3 +-
+ AGENTS.md                    | 510 ++++++-----------------------------
+ README.md                    |   6 +-
+ docs/AI_DEVELOPMENT_GUIDE.md |  11 -
+ docs/CLOCKS.md               |  26 +-
+ docs/CLOCK_STANDARDS.md      | 121 ---------
+ docs/OPERATIONS.md           |  31 ++-
+ docs/PERFORMANCE.md          |  32 ++-
+ docs/ROADMAP.md              |  84 +++---
+ docs/STATUS.md               |  29 +-
+ src/pages/ClockPage.tsx      |   2 +-
+ src/utils/hooks/index.ts     |   5 +-
+ 13 files changed, 203 insertions(+), 667 deletions(-)
+ delete mode 100644 docs/AI_DEVELOPMENT_GUIDE.md
+ delete mode 100644 docs/CLOCK_STANDARDS.md
+
+diff --git a/.github/agents/react-vite.md b/.github/agents/react-vite.md
+index c06c113..29f0955 100644
+--- a/.github/agents/react-vite.md
++++ b/.github/agents/react-vite.md
+@@ -19,12 +19,4 @@ Do not make implementation decisions about asset imports, fonts, clock hooks, re
+ 
+ ## Validation
+ 
+-Run the checks from `AGENTS.md` in the "Validation Commands" section. For a clock change, the required minimum is:
+-
+-```bash
+-npm run verify:clocks:changed
+-npm run type-check
+-npm run build
+-```
+-
+-Never claim a check passed unless it was actually run.
++Use the command sequence in the "Validation" section of `AGENTS.md`. It is deliberately not repeated here. Never claim a check passed unless it was actually run.
+diff --git a/.gitignore b/.gitignore
+index 8153789..48301ae 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -44,7 +44,8 @@ Thumbs.db
+ *.md
+ !README.md
+ !AGENTS.md
+-!docs/AI_DEVELOPMENT_GUIDE.md
++!CONTRIBUTING.md
++!SECURITY.md
+ !.github/agents/
+ !.github/agents/*.md
+ 
+diff --git a/AGENTS.md b/AGENTS.md
+index 49f6b9d..2ded45c 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -1,458 +1,120 @@
+-# Project AI Instructions
++# AGENTS.md — BorrowedTime
+ 
+-**Required starting point for every AI-assisted change in BorrowedTime.**
++Entry point for AI-assisted changes. This file holds the **workflow** and a **map of where each rule lives**. It does not restate rules that other documents own. If something here disagrees with the owner document, the owner wins — and please report the mismatch.
+ 
+-## Project Principle
++## Project principle
+ 
+-BorrowedTime is both software and a historical digital-art archive. **September 2026 is the current architectural boundary.** New work follows the current architecture; historical clocks are not rewritten merely to make the archive uniform.
++BorrowedTime is software **and** a historical art archive. **September 2026 is the architectural boundary.**
+ 
+-## Required Reading
++- `26-09-01` onward, and all shared infrastructure: follow the current contract.
++- Earlier clocks: leave alone unless there is a concrete reason (production breakage, build failure, security, serious accessibility problem, shared-infrastructure incompatibility, material performance failure).
++- Never refactor unrelated clocks. Never rename or move existing assets.
+ 
+-Before editing, read this file and:
+-- `docs/ARCHITECTURE.md` — architecture and the historical/current boundary
+-- `docs/CLOCKS.md` — for clock work
+-- `docs/PERFORMANCE.md` — for assets, fonts, media, loading, or bundle work
++## Where each rule lives
+ 
+-Use `CONTRIBUTING.md` for the human contribution workflow.
++| Topic | Owner (read this, don't guess) |
++|---|---|
++| Architecture, historical/current boundary, clock registry | `docs/ARCHITECTURE.md` |
++| Clock contract (structure, `assets`, time, accessibility, motion, layout, styling) | `docs/CLOCKS.md` |
++| Size/format/count budgets, `font-display`, caching, bundle limits | `docs/PERFORMANCE.md` |
++| Code patterns for images, video, fonts, tiling | `docs/CLOCK_RECIPES.md` |
++| Build, deploy, incident triage | `docs/OPERATIONS.md` |
++| Priorities and technical debt | `docs/ROADMAP.md` |
++| Measured health, counts, dates (a snapshot, never a rule) | `docs/STATUS.md` |
++| Human contribution workflow, PR format | `CONTRIBUTING.md` |
++| Decisions and their reasons | `docs/decisions/` |
++| What is actually enforced | `scripts/verify-all-clocks.js`, `scripts/clock-verifier-rules.js` |
+ 
+-This guide describes the repository's preferred patterns. Existing legacy clocks may not follow every rule; do not rewrite unrelated clocks while working on a focused task.
++**Read before editing:** this file, then `docs/CLOCKS.md` for clock work, `docs/PERFORMANCE.md` for anything touching assets/fonts/media/loading/bundles, and `docs/ARCHITECTURE.md` when touching shared code. Read `docs/CLOCK_RECIPES.md` only when you need a pattern from it.
+ 
+-## Required Agent Workflow
++## Workflow
+ 
+-1. Read this file and the standards it links to.
+-2. Identify the target clock or shared module before editing; determine whether it is historical or current.
+-3. Read the target `Clock.tsx`, `Clock.module.css`, and any helper it uses.
+-4. Search for an existing project pattern before introducing a new one.
+-5. Make the smallest complete change that preserves the visual behavior.
+-6. Keep assets local and register every asset used by a clock in `assets`.
+-7. Run the narrowest relevant check, then run `npm run build`.
+-8. For clock changes, run the clock verifier for the target date when practical:
+-   `node scripts/verify-all-clocks.js --path YY-MM-DD`.
+-9. Report changed files, checks run, and any remaining failures.
++1. Identify the target (a clock or a shared module) and whether it is historical or current.
++2. Read the target's `Clock.tsx`, `Clock.module.css`, and any helper it imports.
++3. Look for an existing pattern before inventing one (see "Finding precedent").
++4. For a new clock, scaffold it: `npm run new-clock YY-MM-DD "Title" tag1 tag2`.
++5. Make the smallest complete change that preserves visual behavior.
++6. Run the checks below, in order.
++7. Report: files changed, checks run and their results, and anything still failing.
+ 
+-Do not silently replace a broken asset, swallow an import error, or claim a check passed when it was not run.
++Do not silently replace a broken asset, swallow an import error, or claim a check passed that you did not run.
+ 
+-## Project Layout
++## Non-negotiables enforced by `verify:clocks`
+ 
+-### Clock files
++These fail the verifier for current clocks. Full explanations are in `docs/CLOCKS.md`.
+ 
+-Each daily clock lives in:
++- `Clock.module.css` exists in the clock's directory.
++- Default-exports the component; `Clock.displayName` ends in `_YY_MM_DD`.
++- Imports `useClock` or `useSmoothClock` from `@/utils/hooks` (use `useSmoothClock` only when sub-second motion is visible).
++- Renders time through the shared `SRTime` component (`26-09` and later). Do not use `styles.srOnly` directly.
++- No `setInterval` / `setTimeout`. No `requestAnimationFrame` used to calculate clock time. A Three.js `renderer.render()` loop is allowed (ADR 0002).
++- No inline `<style>` tags.
++- The word `any` must not appear in the source, including comments (the check is a plain word match).
++- Never use the deprecated hooks `useClockTime`, `useSecondClock`, `useMillisecondClock`.
+ 
+-```text
+-src/pages/YYYY/YY-MM/YY-MM-DD/
+-  Clock.tsx
+-  Clock.module.css
+-  optional helper files
+-```
+-
+-Examples:
+-
+-- `src/pages/2026/26-09/26-09-16/Clock.tsx`
+-- `src/pages/2026/26-09/26-09-16/Clock.module.css`
+-
+-Use the `@/` alias for source imports. Keep a clock's implementation and styles in its date directory unless a utility is genuinely shared.
+-
+-### Asset locations
+-
+-Use the existing asset directories:
+-
+-```text
+-src/assets/images/
+-src/assets/fonts/
+-src/assets/icons/
+-```
+-
+-Keep a new asset near the other assets for its year/month or project category. Do not rename or move existing assets to make a task easier.
+-
+-## Importing Images
+-
+-Import local images at the top of `Clock.tsx`:
+-
+-```tsx
+-import backgroundImage from '@/assets/images/26_images/26-09/26-09-16/background.webp';
+-```
+-
+-Register every imported image that the clock loads:
+-
+-```tsx
+-export const assets = [backgroundImage];
+-```
+-
+-Use an imported URL in JSX or CSS variables:
+-
+-```tsx
+-<img
+-  className={styles.logo}
+-  src={logoImage}
+-  alt="BorrowedTime logo"
+-/>
+-```
+-
+-```tsx
+-<main
+-  className={styles.container}
+-  style={{ '--background-image': `url(${backgroundImage})` }}
+->
+-```
+-
+-```css
+-.container {
+-  background-image: var(--background-image);
+-}
+-```
+-
+-Prefer CSS `background-image` for decorative art and `<img>` for meaningful content. Meaningful images need useful `alt` text; decorative images use `alt=""` or are backgrounds.
+-
+-### Responsive images
+-
+-For an image that is content rather than a background, use `srcSet` and `sizes` when multiple local resolutions exist:
+-
+-```tsx
+-<img
+-  src={image}
+-  srcSet={`${smallImage} 640w, ${largeImage} 1280w`}
+-  sizes="100vw"
+-  alt="..."
+-  loading="lazy"
+-/>
+-```
+-
+-Do not use `loading="lazy"` for the primary above-the-fold image if it delays the clock's first paint.
+-
+-### Image rules
+-
+-- Prefer WebP or AVIF; use PNG for transparency and SVG for simple scalable artwork.
+-- Follow the size budget in [`docs/PERFORMANCE.md`](./docs/PERFORMANCE.md).
+-- Do not embed base64 data or fetch images from remote providers.
+-- Do not add an asset to `assets` if it is never rendered.
+-- Avoid `object-fit: cover` when cropping would remove important artwork; choose `contain` or an explicit aspect-ratio treatment instead.
+-
+-## Importing Video and Other Media
+-
+-Import local video the same way as an image:
+-
+-```tsx
+-import backgroundVideo from '@/assets/images/26_images/26-09/26-09-10/background.webm';
+-```
+-
+-Register it in `assets`:
+-
+-```tsx
+-export const assets = [backgroundVideo, overlayImage];
+-```
+-
+-**Established pattern since September 2026** (used in 20 of the ~26 September clocks — see e.g. `src/pages/2026/26-09/26-09-20/Clock.tsx`): render it as a plain `<video>` with a direct `src`, not a `<source>` child or a CSS custom property:
+-
+-```tsx
+-<video
+-  src={backgroundVideo}
+-  autoPlay
+-  loop
+-  muted
+-  playsInline
+-  aria-hidden="true"
+-  className={styles.backgroundVideo}
+-/>
+-```
+-
+-Use `poster` when the first frame matters:
+-
+-```tsx
+-<video
+-  src={video}
+-  poster={posterImage}
+-  autoPlay
+-  loop
+-  muted
+-  playsInline
+-/>
+-```
+-
+-A `<source>` child with an explicit `type` is only needed when serving more than one video format as a fallback chain; most clocks ship a single WebM and don't need it.
+-
+-Video rules:
+-
+-- Prefer WebM, with MP4 when browser compatibility requires it.
+-- Follow the size budget in [`docs/PERFORMANCE.md`](./docs/PERFORMANCE.md).
+-- `autoPlay` requires `muted` and `playsInline`.
+-- Do not use video when a static image communicates the same design.
+-- Provide a poster or a visually acceptable fallback when a blank frame would be harmful.
+-
+-Audio must be user-initiated unless the product requirement explicitly says otherwise. Do not add autoplay audio to a clock.
+-
+-## Importing and Using Fonts
+-
+-Import a local font file and register it. **Established pattern since September 2026** (used in 20 of the ~26 September clocks — see e.g. `src/pages/2026/26-09/26-09-20/Clock.tsx`): append `?url` so Vite resolves it to a URL string, and load it through the shared `useSuspenseFontLoader` hook rather than a manual `@font-face` block:
+-
+-```tsx
+-import type { FontConfig } from '@/types/clock';
+-import { useSuspenseFontLoader } from '@/utils/fontLoader';
+-
+-import font from '@/assets/fonts/26fonts/26-09-20.otf?url';
+-
+-export const assets = [font];
+-
+-const fontConfig: FontConfig = {
+-  fontFamily: 'ClockFont_26_09_20',
+-  fontUrl: font,
+-};
+-
+-const Clock_26_09_20 = () => {
+-  useSuspenseFontLoader([fontConfig]);
+-  // ...
+-};
+-```
+-
+-```css
+-.digits {
+-  font-family: 'ClockFont_26_09_20', monospace;
+-}
+-```
+-
+-`useSuspenseFontLoader` (defined in [`src/utils/fontLoader.tsx`](./src/utils/fontLoader.tsx)) suspends the component until the font is ready — preventing FOUC without a manual `font-display` decision — caches by `fontFamily`+`fontUrl` so re-renders don't reload, and reference-counts so `document.fonts` is cleaned up correctly when a clock unmounts. Give each clock a unique `fontFamily` (matching its own date, as above) to avoid cross-clock collisions in the shared `document.fonts` registry. Use this hook for any clock loading a local font; don't hand-roll a competing loader.
+-
+-**Manual `@font-face` remains valid** for the rare case where Suspense-based loading is inappropriate (e.g. a font that must be available before first paint with no fallback period):
+-
+-```css
+-@font-face {
+-  font-family: 'ClockDisplay_26_09_16';
+-  src: url('../../../../assets/fonts/26fonts/26-09-16-display.woff2')
+-    format('woff2');
+-  font-display: swap;
+-  font-style: normal;
+-  font-weight: 400;
+-}
+-
+-.digits {
+-  font-family: 'ClockDisplay_26_09_16', monospace;
+-}
+-```
+-
+-Font rules:
+-
+-- Format, count, size, and location budgets are defined once in [`docs/PERFORMANCE.md`](./docs/PERFORMANCE.md) — follow that, don't restate numbers here that could drift out of sync.
+-- Use a unique family name per clock (matching the clock's own date, as in the example above) to prevent cross-clock collisions in the shared `document.fonts` registry.
++## Also enforced by ESLint on current clocks
+ 
+-### Using a Google Font instead of a local file
+-
+-Load it via a `<link>` (not a blocking `@import` inside inline `<style>`) and add a `preconnect` hint:
+-
+-```tsx
+-useEffect(() => {
+-  const preconnect = document.createElement('link');
+-  preconnect.rel = 'preconnect';
+-  preconnect.href = 'https://fonts.gstatic.com';
+-  preconnect.crossOrigin = 'anonymous';
+-
+-  const stylesheet = document.createElement('link');
+-  stylesheet.rel = 'stylesheet';
+-  stylesheet.href =
+-    'https://fonts.googleapis.com/css2?family=Finger+Paint&display=swap';
+-
+-  document.head.append(preconnect, stylesheet);
+-  return () => {
+-    preconnect.remove();
+-    stylesheet.remove();
+-  };
+-}, []);
+-```
+-
+-```css
+-.digits {
+-  font-family: 'Finger Paint', cursive;
+-}
+-```
++`eslint.config.js` applies these to every `.ts`/`.tsx` file under September 2026 and later clock folders (helpers included). They are errors, and the verifier does not catch them, so lint your clock:
+ 
+-A Google Font counts toward the family-count limit in `docs/PERFORMANCE.md` and still needs a `font-display` value (Google's `&display=swap` query param covers this). It does not go in the clock's `assets` array — that array is for locally bundled files Vite resolves at build time.
++- `setInterval` / `setTimeout` (including `window.` forms).
++- `Date.now()` and `new Date()` with no arguments.
++- `any`, non-null assertions (`!`), and unused variables (prefix intentionally unused ones with `_`).
+ 
+-## Concrete Precedent — Where to Look Instead of Guessing
+-
+-Rather than scanning the whole fleet for how something has been done, check one of these known-good September 2026 examples first:
+-
+-| Need | Look at | Why |
+-|---|---|---|
+-| Font loading (the default pattern) | `26-09-20` | `useSuspenseFontLoader` + `?url` import, as documented above |
+-| Manual `@font-face` (the exception) | `26-09-16` | The one clock still using a hand-written `@font-face` block |
+-| Single background video | `26-09-20`, `26-09-19`, `26-09-21` | Plain `<video src={...}>`, no `<source>` child |
+-| Multiple images with preload-before-show | `26-09-05` | Local `preloadImages` helper gates rendering until all images decode |
+-| Many images (10+) in one clock | `26-09-18` | Largest current image count; check its directory structure and loading strategy before adding a similarly image-heavy clock |
+-| Three.js / WebGL render loop | `26-09-01` | The only clock using a `requestAnimationFrame` render loop; see `docs/CLOCKS.md` for why the verifier permits this |
+-| Smooth (sub-second) motion | any clock using `useSmoothClock` (`26-09-13`, `26-09-20`, others) | Correct hook for continuous hand/needle motion instead of `useClock`'s once-per-second updates |
+-
+-This table reflects the fleet as of 2026-09-28. If you add a clock that establishes a new pattern worth reusing, add a row here rather than leaving the next person (or agent) to rediscover it by reading every clock.
+-
+-## Building a Clock
+-
+-Start from the smallest compliant structure:
+-
+-```tsx
+-import { useClock } from '@/utils/hooks';
+-import SRTime from '@/components/SRTime';
+-import styles from './Clock.module.css';
+-
+-const Clock = () => {
+-  const time = useClock();
+-
+-  return (
+-    <main className={styles.container}>
+-      <SRTime time={time} />
+-      <div aria-hidden="true">{time.toLocaleTimeString()}</div>
+-    </main>
+-  );
+-};
+-
+-export default Clock;
+-Clock.displayName = 'Clock_YY_MM_DD';
+-```
+-
+-Use `useClock()` for once-per-second displays and `useSmoothClock()` only when sub-second movement is visibly required:
+-
+-```tsx
+-import { useSmoothClock } from '@/utils/hooks';
+-
+-const time = useSmoothClock(50);
+-const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+-```
++## Required but enforced by neither
+ 
+-Never create a `setInterval`, `setTimeout`, or manual timing loop to maintain displayed clock time. A Three.js/WebGL `requestAnimationFrame` render loop is permitted when it is only rendering and the clock value comes from shared time infrastructure. Never use deprecated clock hooks in new code.
++You are responsible for these; nothing will catch them automatically.
+ 
+-Every clock must:
++- If the clock imports any local image, font, or video, export an `assets` array listing it. Do not list assets that are never rendered.
++- `prefers-reduced-motion` handling for animated clocks.
++- `100dvh` for full-height roots; no page scroll unless the artwork needs it.
++- Local assets only. No base64 blobs, no remote images or video.
++- Autoplaying audio is not allowed.
++- No Tailwind in new work. No new dependencies if existing utilities suffice.
++- Strict TypeScript: guard indexed access, no non-null assertions.
++- Asset size/format/count limits: see `docs/PERFORMANCE.md`.
+ 
+-- export a default component;
+-- set `Clock.displayName` to its folder date;
+-- if it imports any local asset (font, image, or media), export an `assets` array registering it — a clock with no local assets can omit this export;
+-- render a semantic `<time dateTime="...">` or the shared `SRTime`;
+-- use `Clock.module.css` for static styles;
+-- use `100dvh` for a full-height root layout;
+-- guard array and object index access under strict TypeScript;
+-- avoid `any`, inline `<style>`, and global `document.body` mutations.
++## Validation
+ 
+-## Tiling Images and Layering Backgrounds
++Run, in this order, and stop to fix problems as they appear:
+ 
+-For a repeating texture or tile, use CSS `background-repeat` rather than rendering dozens of `<img>` elements:
+-
+-```tsx
+-import tileImage from '@/assets/images/26_images/26-09/26-09-16/tile.webp';
+-
+-export const assets = [tileImage];
+-```
+-
+-```tsx
+-<main
+-  className={styles.container}
+-  style={{ '--tile-image': `url(${tileImage})` }}
+->
+-  ...
+-</main>
+-```
+-
+-```css
+-.container {
+-  background-image: var(--tile-image);
+-  background-repeat: repeat;
+-  background-size: 8rem 8rem;
+-  background-position: center;
+-}
+-```
+-
+-Choose the repeat mode deliberately:
+-
+-```css
+-/* Tile in both directions. */
+-background-repeat: repeat;
+-
+-/* A horizontal strip. */
+-background-repeat: repeat-x;
+-
+-/* A vertical strip. */
+-background-repeat: repeat-y;
+-
+-/* Do not tile; show one image. */
+-background-repeat: no-repeat;
+-```
+-
+-For multiple layers, list the most foreground layer first and keep the repeat/size/position lists in the same order:
+-
+-```css
+-.container {
+-  background-image: var(--overlay), var(--tile);
+-  background-repeat: no-repeat, repeat;
+-  background-size: cover, 6rem 6rem;
+-  background-position: center, top left;
+-}
++```bash
++npm run verify:clocks -- --path YY-MM-DD     # the clock's contract check
++npx eslint src/pages/YYYY/YY-MM/YY-MM-DD     # lint scoped to the clock you changed
++npm run type-check                            # in-scope TypeScript (tsconfig.ci.json)
++npm run test:run                              # required if shared code changed
++npm run build                                 # always, before you finish
+ ```
+ 
+-Use `background-size: cover` for a full-bleed image that may crop, `contain` when the entire artwork must remain visible, and explicit dimensions when a tile's scale is part of the design. Do not use `background-size: cover` for a texture that must retain its natural tile scale.
+-
+-## Current Clock Rules
+-
+-- Use React + TypeScript + Vite patterns already established by the project.
+-- Keep artwork-specific implementation local to its date directory.
+-- Use shared time hooks and infrastructure.
+-- Export every imported image, font, and media asset through the clock's `assets` array.
+-- Use CSS Modules for static styles; inline styles only for genuinely dynamic values.
+-- Do not use Tailwind for new work.
+-- Avoid fixed-pixel layout dimensions; prefer `dvh`, `vw`, `vmin`, `rem`, `%`, and `fr`.
+-- Provide semantic time/accessibility output.
+-- Provide an appropriate `prefers-reduced-motion` treatment for animated clocks.
+-- Do not introduce scrolling unless the artwork requires it.
+-- Do not add dependencies when existing infrastructure is sufficient.
+-- Do not mutate global styles or unrelated clock components.
+-
+-## Timekeeping
+-
+-Use `useClock` or `useSmoothClock`.
+-
+-Do not use `setInterval`, `setTimeout`, `Date.now()`, or a manual `requestAnimationFrame` loop as an independent source of displayed clock time.
++Then do a browser smoke check of the clock's route.
+ 
+-A Three.js/WebGL render loop is allowed when it only renders frames and the displayed time comes from the shared clock infrastructure.
++Notes:
+ 
+-## Historical Code
++- CI runs `verify:clocks:changed`, `test:run`, `type-check`, and `build`. It does not run lint.
++- Do **not** use `npm run lint` or `npm run check` as a pass/fail signal: they lint the whole legacy fleet, which has known failures (`docs/STATUS.md`). Lint only what you changed.
++- If a check fails for a pre-existing reason, say so and name the failing files. Do not weaken rules or hide output to make it pass.
++- `npm run status` is only a reminder. `docs/STATUS.md` is edited by hand.
+ 
+-Do not broad-refactor historical clocks. Modify them only for a concrete reason such as:
+-- production breakage;
+-- build/deployment failure;
+-- security;
+-- serious accessibility issues;
+-- shared-infrastructure incompatibility;
+-- material browser/performance failure.
++## Finding precedent
+ 
+-## Assets
+-
+-Keep assets in established directories. Do not rename historical assets or introduce unexplained root-level media. Check asset size and format against `docs/PERFORMANCE.md`.
+-
+-## Validation Commands
+-
+-Use the command that matches the change:
++Search the current clocks instead of relying on a remembered example:
+ 
+ ```bash
+-npm run build                         # required before completion
+-npm run build:with-types              # build plus TypeScript (full fleet)
+-npm run type-check                    # TypeScript check for in-scope code (tsconfig.ci.json)
+-npm run test:run                      # behavior or shared utility changes
+-npm run lint                          # lint-sensitive changes
+-npm run verify:clocks:changed         # verify only changed clock pages
+-npm run verify:clocks -- --path 26-09-16  # verify specific clock
+-# npm run status                      # reminder only; docs/STATUS.md is updated manually
++# Font loaded through the shared hook (the default)
++grep -l useSuspenseFontLoader src/pages/2026/26-09/*/Clock.tsx
++# Hand-written @font-face (the exception)
++grep -l "@font-face" src/pages/2026/26-09/*/Clock.module.css
++# Clocks using sub-second motion
++grep -l useSmoothClock src/pages/2026/26-09/*/Clock.tsx
++# Clocks with a video
++grep -l "<video" src/pages/2026/26-09/*/Clock.tsx
+ ```
+ 
+-Run a browser/visual smoke check for clock changes.
+-
+-The repository may contain pre-existing lint, type, or legacy clock failures. Record them accurately instead of weakening rules or hiding output. Never claim a check passed unless it was actually run.
+-
+-## Change Discipline
+-
+-Prefer small, focused changes. Do not modify unrelated clock implementations. Shared infrastructure should remain compatible with the archive where reasonably possible.
+-
+-## Source-of-Truth Documents
++`docs/CLOCK_RECIPES.md` lists verified examples with the date they were checked.
+ 
+-- [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md): authoritative application architecture and historical/current boundary.
+-- [`docs/CLOCKS.md`](./docs/CLOCKS.md): current clock contract.
+-- [`docs/PERFORMANCE.md`](./docs/PERFORMANCE.md): asset budgets, fonts, caching, and bundle limits.
+-- [`docs/ROADMAP.md`](./docs/ROADMAP.md): project priorities and technical debt.
+-- [`docs/STATUS.md`](./docs/STATUS.md): recorded health checks and fleet inventory.
+-- [`CONTRIBUTING.md`](./CONTRIBUTING.md): human contribution workflow.
+-- [`src/utils/assetLoader.ts`](./src/utils/assetLoader.ts): shared asset loading interfaces.
+-- [`src/hooks/useClockPage.ts`](./src/hooks/useClockPage.ts): dynamic clock loading and asset registration.
++## Keeping the documentation honest
+ 
+-This file is the single canonical entry point for AI-assisted changes; `docs/AI_DEVELOPMENT_GUIDE.md` is retained only as a compatibility pointer to this file.
++- Update the owner document, not a copy of it. Do not restate a rule or a number in a second place; link to it.
++- Put counts, dates, and measurements only in `docs/STATUS.md`.
++- Do not cite section numbers (`§4.3`) in code comments; the documents are not numbered. Cite the file name.
++- New markdown belongs in `docs/` (or `docs/decisions/` for ADRs). Root-level `.md` files are git-ignored except `README.md`, `AGENTS.md`, `CONTRIBUTING.md`, and `SECURITY.md`; check with `git check-ignore -v <file>` before assuming a new file will be committed.
++- If the verifier and `docs/CLOCKS.md` disagree, fix one of them in the same change and mention it in your report.
+diff --git a/README.md b/README.md
+index 78dd0d1..7d6b38c 100644
+--- a/README.md
++++ b/README.md
+@@ -47,7 +47,11 @@ Open [http://localhost:5173](http://localhost:5173).
+ | `npm run build` | Production build |
+ | `npm run preview` | Preview production build |
+ | `npm run test:run` | Run tests |
+-| `npm run lint` | ESLint check |
++| `npm run type-check` | TypeScript check for in-scope code (`tsconfig.ci.json`) |
++| `npm run new-clock YY-MM-DD "Title" tag…` | Scaffold a new clock and register its metadata |
++| `npm run verify:clocks` | Check every clock against the contract (historical clocks fail by design) |
++| `npm run verify:clocks:changed` | Check only clocks changed since the base commit (what CI runs) |
++| `npm run lint` | ESLint check (whole repo; legacy files have known failures — lint just the files you changed) |
+ | `npm run lint:fix` | ESLint auto-fix |
+ | `npm run format` | Prettier format |
+ | `npm run status` | Print a reminder to run `verify:clocks` and `type-check`; `docs/STATUS.md` is currently updated manually |
+diff --git a/docs/AI_DEVELOPMENT_GUIDE.md b/docs/AI_DEVELOPMENT_GUIDE.md
+deleted file mode 100644
+index 6c9cf31..0000000
+--- a/docs/AI_DEVELOPMENT_GUIDE.md
++++ /dev/null
+@@ -1,11 +0,0 @@
+-# AI Development Guide
+-
+-> **Compatibility note:** The canonical AI-agent entry point is [`AGENTS.md`](../AGENTS.md) at the repository root.
+->
+-> This document is retained only so existing links keep working. Its content has been merged into `AGENTS.md`; edit that file, not this one.
+-
+-Last reviewed: 2026-09-21
+-
+-Before editing code, read [`AGENTS.md`](../AGENTS.md) and the standards it links to: `docs/ARCHITECTURE.md`, `docs/CLOCKS.md`, and `docs/PERFORMANCE.md`.
+-
+-**Status:** Compatibility/reference document only; `AGENTS.md` is authoritative.
+diff --git a/docs/CLOCKS.md b/docs/CLOCKS.md
+index 5579158..4801808 100644
+--- a/docs/CLOCKS.md
++++ b/docs/CLOCKS.md
+@@ -1,6 +1,6 @@
+ # Current Clock Contract
+ 
+-Last reviewed: 2026-09-21
++Last reviewed: 2026-09-29
+ 
+ This document defines the engineering contract for new and actively maintained clocks. It applies from the September 2026 architectural boundary forward.
+ 
+@@ -20,7 +20,7 @@ The JSON files under `src/context/` are metadata sources only. Adding a date to
+ 
+ ## Required Structure
+ 
+-A current clock normally contains:
++A current clock contains:
+ 
+ ```text
+ src/pages/YYYY/YY-MM/YY-MM-DD/
+@@ -29,7 +29,7 @@ src/pages/YYYY/YY-MM/YY-MM-DD/
+ └── optional local helpers
+ ```
+ 
+-CSS Modules are the default for static styling. A clock may omit a module stylesheet only when its implementation genuinely does not need static CSS.
++`Clock.module.css` is required (the verifier fails a current clock without it). Put static styling there, even if the file is short.
+ 
+ ## Component Contract
+ 
+@@ -39,7 +39,7 @@ Every current clock must:
+ - set a date-specific `Clock.displayName`;
+ - if the clock imports any local asset (image, font, or video), export an `assets` array registering it; a clock with no local assets may omit the export entirely;
+ - use the shared clock/time infrastructure;
+-- provide a semantic `<time>` representation or the shared `SRTime` component;
++- render its time for assistive technology through the shared `SRTime` component (the verifier requires `SRTime` for September 2026 onward and rejects direct use of `styles.srOnly`);
+ - use strict TypeScript for in-scope code;
+ - avoid unnecessary dependencies.
+ 
+@@ -68,7 +68,7 @@ In short:
+ 
+ ## Accessibility
+ 
+-Provide a semantic time value that assistive technology can interpret. Use a valid ISO `dateTime` value.
++Render the time with `SRTime`, which outputs a visually hidden `<time>` element with a valid ISO `dateTime` value. Historical clocks may use a hand-written `<time>` element instead.
+ 
+ Artwork that is purely decorative should not create redundant accessible content. Meaningful images require useful alternative text.
+ 
+@@ -100,17 +100,15 @@ Prefer `dvh`, `vw`, `vmin`, `rem`, `%`, and `fr` for responsive layout. Fixed pi
+ 
+ ## Verification
+ 
+-For current clocks, use the relevant project checks:
++`scripts/verify-all-clocks.js` (with `scripts/clock-verifier-rules.js`) is the executable form of this contract. For September 2026 onward it checks: `Clock.module.css` exists; default export; `displayName` ending in `_YY_MM_DD`; `useClock` or `useSmoothClock` imported from `@/utils/hooks`; `SRTime` used; no `setInterval`/`setTimeout`; no independent `requestAnimationFrame` time source; no inline `<style>`; no `any`; no deprecated hooks.
+ 
+-```bash
+-npm run type-check
+-npm run lint
+-npm run test:run
+-npm run verify:clocks:changed
+-npm run build
+-```
++ESLint (`eslint.config.js`, `CURRENT_CLOCKS`) additionally forbids `setInterval`/`setTimeout`, `Date.now()`, argument-less `new Date()`, `any`, and non-null assertions in current clock folders, including helper files.
++
++Neither tool checks the `assets` export, reduced-motion handling, responsive units, or asset budgets. Those remain the author's responsibility.
++
++If this document and the verifier disagree, fix one of them in the same change.
+ 
+-Not every change requires every command, but a completed implementation must report which checks were actually run. Never claim an unrun check passed.
++The command sequence to run for a change lives in `AGENTS.md` (Validation). Report only checks that were actually run.
+ 
+ ## Principle
+ 
+diff --git a/docs/CLOCK_STANDARDS.md b/docs/CLOCK_STANDARDS.md
+deleted file mode 100644
+index 3cc5ffc..0000000
+--- a/docs/CLOCK_STANDARDS.md
++++ /dev/null
+@@ -1,121 +0,0 @@
+-# Clock Standards
+-
+-> **Compatibility note:** The authoritative contract for current clocks is [docs/CLOCKS.md](./CLOCKS.md).
+->
+-> This document is retained as a compatibility/reference page for older documentation and existing workflows. It must not define rules that differ from CLOCKS.md.
+-
+-## Authority
+-
+-Use the project documentation hierarchy as follows:
+-
+-1. [docs/ARCHITECTURE.md](./ARCHITECTURE.md) — overall architecture and historical/current boundary.
+-2. [docs/CLOCKS.md](./CLOCKS.md) — authoritative contract for current clock implementations.
+-3. [docs/PERFORMANCE.md](./PERFORMANCE.md) — performance requirements and budgets.
+-4. [AGENTS.md](../AGENTS.md) — AI development workflow.
+-5. This document — compatibility/reference material only.
+-
+-If this document conflicts with CLOCKS.md, **CLOCKS.md wins**.
+-
+-## Current Clock Contract
+-
+-The current contract applies from the September 2026 architectural boundary forward.
+-
+-- Current clocks are under `src/pages/YYYY/YY-MM/YY-MM-DD/`.
+-- Current clocks normally contain `Clock.tsx` and `Clock.module.css`; the stylesheet may be omitted when genuinely unnecessary.
+-- Current clocks use the shared clock/time infrastructure.
+-- Current clocks export an `assets` array containing imported local assets used at runtime.
+-- Current clocks provide semantic time information.
+-- Current clocks use strict TypeScript.
+-- CSS Modules are the default for static styling.
+-- Tailwind is not used for new clocks.
+-- Avoid unnecessary dependencies and global style mutations.
+-
+-See [docs/CLOCKS.md](./CLOCKS.md) for the complete contract.
+-
+-## Timekeeping vs. Rendering
+-
+-This distinction is important for both implementation and automated verification.
+-
+-### Clock timekeeping
+-
+-The displayed clock time must come from the shared time infrastructure:
+-
+-- `useClock` for normal once-per-second displays.
+-- `useSmoothClock` when visibly smooth/sub-second movement is required.
+-
+-Do not create an independent displayed-time source with:
+-
+-- `setInterval`;
+-- `setTimeout`;
+-- `Date.now()`;
+-- `new Date()` used to calculate displayed clock time independently;
+-- `performance.now()` used as an independent clock source.
+-
+-### Rendering
+-
+-A rendering loop is not itself a prohibited timing mechanism.
+-
+-`requestAnimationFrame` is permitted for visual rendering and animation, including Three.js/WebGL render loops, **provided the displayed clock value comes from the shared clock infrastructure**.
+-
+-For implementation details, follow docs/CLOCKS.md and the current shared hook implementations.
+-
+-## Accessibility
+-
+-Current clocks should provide a semantic time value with a valid ISO `dateTime` value.
+-
+-Use the shared `SRTime` component where appropriate. Check its current export API before importing it.
+-
+-Meaningful images need useful alternative text. Decorative artwork should not create redundant accessible content.
+-
+-## Styling
+-
+-Current clocks should:
+-
+-- use CSS Modules for static styles;
+-- use inline styles only for genuinely dynamic values;
+-- avoid inline `<style>` injection;
+-- avoid global body/head mutations;
+-- keep artwork-specific styles local.
+-
+-Responsive layouts should follow the guidance in docs/CLOCKS.md.
+-
+-## Assets and Performance
+-
+-Register imported local runtime assets in the clock's `assets` export.
+-
+-Do not impose asset format or size rules here. The authoritative requirements live in docs/PERFORMANCE.md, and current clock requirements live in docs/CLOCKS.md.
+-
+-Historical assets and implementations should not be changed merely to conform to current conventions.
+-
+-## Historical Clocks
+-
+-The project contains a large historical archive.
+-
+-Earlier clocks are preserved unless a concrete production, security, accessibility, deployment, or shared-infrastructure issue requires a change.
+-
+-Do not use this document as justification for broad historical refactoring.
+-
+-## Verification
+-
+-Use the current project verification commands documented in docs/CLOCKS.md:
+-
+-```bash
+-npm run type-check
+-npm run lint
+-npm run test:run
+-npm run verify:clocks:changed
+-npm run build
+-```
+-
+-Run the smallest relevant checks for the change and report only checks that were actually run.
+-
+-## Legacy Material
+-
+-Older examples, implementation details, and optimization advice previously contained in this file are intentionally removed from this compatibility page because they duplicated or contradicted the current contract.
+-
+-For implementation examples, inspect current clocks in the repository and follow docs/CLOCKS.md rather than treating an old example here as canonical.
+-
+----
+-
+-**Last reviewed:** 2026-09-21  
+-**Status:** Compatibility/reference document; docs/CLOCKS.md is authoritative.
+diff --git a/docs/OPERATIONS.md b/docs/OPERATIONS.md
+index e1c7780..def98c3 100644
+--- a/docs/OPERATIONS.md
++++ b/docs/OPERATIONS.md
+@@ -1,24 +1,36 @@
+ # BorrowedTime Operations
+ 
+-Last reviewed: 2026-09-21
++Last reviewed: 2026-09-29
+ 
+ ## Canonical Delivery
+ 
+ The production site is served from the Vercel deployment for the repository. Keep one canonical production deployment path; legacy deployment configurations should be removed or explicitly documented if they remain necessary.
+ 
++### Deployment configuration files
++
++| File | Status |
++|---|---|
++| `vercel.json` | **Production.** Build, SPA fallback, and cache headers. |
++| `netlify.toml`, `public/_headers` | Not used by production. Legacy Netlify configuration; remove or document a reason to keep. |
++| `Dockerfile`, `nginx.conf` | Not used by production. Self-hosting option only; `nginx.conf` sets no cache headers, so it does not implement the policy in `docs/PERFORMANCE.md`. |
++
++When you change caching or routing, change `vercel.json` and update `docs/PERFORMANCE.md` in the same commit.
++
+ ## Local Verification
+ 
+-Before a production release:
++Before a production release, run what CI runs, in this order:
+ 
+ ```bash
+ npm ci
+-npm run type-check
+-npm run lint
++npm run verify:clocks:changed
+ npm run test:run
++npm run type-check
+ npm run build
+ ```
+ 
+-For clock changes, also run the relevant clock verifier and visually smoke-test the affected route.
++Do not gate a release on `npm run lint` or `npm run check`: they lint the whole legacy fleet, which has known failures (`docs/STATUS.md`). Lint only what you changed (`AGENTS.md`, Validation).
++
++For clock changes, also visually smoke-test the affected route.
+ 
+ ## Deployment Checks
+ 
+@@ -38,6 +50,15 @@ Hashed Vite assets should be cacheable for a long period with immutable caching.
+ 
+ Cache rules must not accidentally apply immutable caching to unhashed HTML.
+ 
++Verify the deployed headers directly (replace `<hash-file>` with any file name from the page's network tab):
++
++```bash
++curl -sI https://<production-host>/            | grep -i cache-control   # expect: no-cache
++curl -sI https://<production-host>/assets/<hash-file> | grep -i cache-control   # expect: immutable
++```
++
++If the second command shows `no-cache`, the catch-all rule in `vercel.json` is overriding the assets rule. Narrowing it to exclude assets (for example `"source": "/((?!assets/).*)"`) is the usual fix, but test it on a preview deployment first.
++
+ ## Repository and Build Growth
+ 
+ Track both Git repository size and production build size. The daily archive is expected to grow.
+diff --git a/docs/PERFORMANCE.md b/docs/PERFORMANCE.md
+index 7a69f2d..7747366 100644
+--- a/docs/PERFORMANCE.md
++++ b/docs/PERFORMANCE.md
+@@ -1,6 +1,6 @@
+ # Performance Delivery Rules
+ 
+-Last reviewed: 2026-09-21
++Last reviewed: 2026-09-29
+ 
+ For project-level standards, roadmap, and enforcement plan, see
+ [`docs/ROADMAP.md`](./ROADMAP.md).
+@@ -40,20 +40,14 @@ Choose intentionally based on font role:
+ ### Immutable assets
+ 
+ All files under `/assets/` receive immutable caching because Vite hashes
+-filenames by content (`index-[hash].js`, `style-[hash].css`, etc.).
+-
+-This single glob covers:
+-- JavaScript chunks (`/assets/*.js`)
+-- CSS bundles (`/assets/*.css`)
+-- Fonts (`/assets/fonts/*.woff2`)
+-- Images (`/assets/images/*.{webp,png,jpg}`)
+-- Media (`/assets/images/*.{mp4,webm}`)
++filenames by content. Vite's default output is flat: `/assets/<name>-<hash>.<ext>`
++(there is no `/assets/images/` or `/assets/fonts/` subdirectory in `dist/`, whatever
++the source directory was). One rule therefore covers every JS chunk, CSS bundle,
++font, image, and video.
+ 
+ | Path | Policy | Rationale |
+ |---|---|---|
+ | `/assets/*` | `public, max-age=31536000, immutable` | Hashed filenames are content-addressable. |
+-| `/assets/images/*.mp4` | `Cache-Control: public, max-age=31536000, immutable` + `Content-Type: video/mp4` | Media files. |
+-| `/assets/images/*.webm` | `Cache-Control: public, max-age=31536000, immutable` + `Content-Type: video/webm` | Media files. |
+ 
+ ### HTML / shell
+ 
+@@ -62,8 +56,11 @@ This single glob covers:
+ | `/` | `no-cache` | Must revalidate on every visit. |
+ | `/index.html` | `no-cache` | Must revalidate on every visit. |
+ 
+-**Current implementation:** `public/_headers` (Netlify). Vercel equivalent:
+-`vercel.json` routes with `headers` config.
++**Current implementation:** `vercel.json` (production is Vercel; see
++`docs/OPERATIONS.md`). Note that its catch-all `/(.*)` no-cache rule also matches
++`/assets/*`; confirm with the `curl` check in `docs/OPERATIONS.md` that assets are
++actually served as immutable. `public/_headers` and `netlify.toml` are not used by
++production.
+ 
+ ## Preload Policy
+ 
+@@ -74,10 +71,11 @@ This single glob covers:
+ 
+ ## Compression
+ 
+-- **Brotli:** enabled for `.js`, `.css`, `.html`, `.json`, `.svg`, `.woff2`.
+-- **Gzip:** fallback for browsers without Brotli.
+-- **Threshold:** compress files `> 1KB`.
+-- **Implementation:** `vite-plugin-compression` (already configured in `vite.config.ts`).
++- **Build output:** `vite-plugin-compression` (configured in `vite.config.ts`) writes a
++  Brotli `.br` file next to each `.js`, `.mjs`, `.json`, `.css`, and `.html` file larger
++  than about 1KB. It does not compress SVG or fonts and does not generate gzip files.
++- **Serving:** whether the host serves those `.br` files or compresses on the fly at its
++  edge is host behavior and has not been verified for this project.
+ 
+ ## Route-Level Bundle Limits
+ 
+diff --git a/docs/ROADMAP.md b/docs/ROADMAP.md
+index 37e22a3..6fa948c 100644
+--- a/docs/ROADMAP.md
++++ b/docs/ROADMAP.md
+@@ -1,6 +1,6 @@
+ # BorrowedTime Development Roadmap
+ 
+-Last reviewed: 2026-09-21
++Last reviewed: 2026-09-29
+ 
+ This is the source of truth for the BorrowedTime project roadmap and planned work. It records project direction and sequencing; `docs/STATUS.md` records dated repository health measurements.
+ 
+@@ -20,61 +20,39 @@ with heavy creative use of Canvas, Three.js
+ (@react-three/fiber + drei), custom fonts, and date-based routing (`/YY-MM-DD`).
+ 
+ The project values artistic freedom, performance, and accessibility. The
+-`CLOCK_STANDARDS.md` exists to keep the fleet of daily clock pages consistent
+-and maintainable.
++current-clock contract in `docs/CLOCKS.md` exists to keep new daily clock pages
++consistent and maintainable.
+ 
+ ---
+ 
+-## 2. Current State (2026-09-21)
++## 2. Current State
+ 
+-### Strengths
+-- Modern stack: React 19, Vite 7, TypeScript 5.9, strict TS options
+-- Clear clock contract and template architecture
+-- Good performance budgets and CI intent
+-- Security-conscious dependency management
+-- Strong accessibility requirements in contract
++All measured figures (test, lint, type-check, and verifier results; clock counts;
++repository and build size) live **only** in `docs/STATUS.md`. They are not repeated
++here, because two copies drift apart.
+ 
+-### Critical Gaps
+-| Area | State | Impact |
+-|---|---|---|
+-| Tests | ✅ Pass (115 tests) | — |
+-| Lint (full fleet) | ❌ Failed (legacy debt) | Hundreds of legacy clock violations |
+-| Lint (26-09 clocks) | ✅ Pass | Recent clocks clean |
+-| TypeScript (full fleet) | ❌ Failed (legacy debt) | Thousands of legacy errors |
+-| TypeScript (in-scope, tsconfig.ci.json) | ✅ Pass | `npm run type-check` clean |
+-| Clock verification (full fleet) | ❌ Failed (legacy debt) | 395/537 clocks violate contract |
+-| Clock verification (changed) | ✅ Pass | Recent changes verified |
+-| Three.js bundle | ~194KB br (target <150KB) | Over budget, but now loaded only by the 10 3D clocks, not site-wide |
+-| Consistency | Fleet-wide drift | Hundreds of clocks, uneven enforcement |
+-
+-### Quick Metrics (refreshed 2026-09-21)
+-- **Clocks:** 540 total — 2025 full year + 2026 Jan–Aug + **2026-09 (24 clocks, through 26-09-25)**
+-- **Test files:** 16 files, 115 tests passing (last test run recorded 2026-09-20)
+-- **Lint problems (full):** 1,090 (297 errors, 793 warnings; measured 2026-09-20); **0 of 24** September 2026 clocks fail the *contract verifier* (see 4.8, fixed 2026-09-26)
+-- **TypeScript errors (full fleet):** legacy debt remains outside CI scope; **in-scope (tsconfig.ci.json): 0**
+-- **Clock contract verification (full fleet):** 373 of 540 fail (69.1%; measured 2026-09-26) — 09-17 was 397 of 534; 09-20 was 396 of 537; 09-21 was 395 of 537
+-- **Production build:** `dist/` = 353MB / 4,253 files; `.git` = 312MB (measured 2026-09-20) — both unbounded, see Phase 4
+-- **Status doc:** Manually maintained; `scripts/generate-status.js` does not exist
++Strengths:
++- Modern stack (see `package.json`) with strict TypeScript on in-scope code.
++- A written clock contract, executable in `scripts/verify-all-clocks.js`.
++- Performance budgets and CI gates for changed clocks.
++- Accessibility requirements built into the contract (`SRTime`).
+ 
+----
++Standing gaps:
++- Legacy debt: full-fleet lint, TypeScript, and contract verification fail on historical clocks by design (ADR 0001).
++- Unbounded growth of the repository and build output (Phase 4).
++- The Three.js chunk is over its budget; the Thumbnail chunk is over its budget.
++- Documentation and code drift: the verifier, `docs/CLOCKS.md`, and `docs/PERFORMANCE.md` must be kept in step.
+ 
+-## 3. Standards (Summary)
++---
+ 
+-The authoritative current-clock contract lives in `docs/CLOCKS.md`; performance budgets live in `docs/PERFORMANCE.md`.
++## 3. Standards
+ 
+-### Non-negotiable rules for every clock
+-1. **Structure:** current clocks normally use `Clock.tsx` + `Clock.module.css` in the date folder
+-2. **Time hooks:** `useClock` or `useSmoothClock` from `@/utils/hooks` only
+-3. **Styling:** CSS Modules for static styles; inline only for dynamic values
+-4. **Accessibility:** semantic `<time>` with `dateTime` + screen-reader-only copy
+-5. **Height:** `100dvh` for full-height containers
+-6. **Assets:** if the clock imports a local asset, register it via the `assets` array (not required when there are none) — see `docs/CLOCKS.md` and `AGENTS.md` for format/count/size budgets
+-7. **Memoization:** `useMemo` only for genuinely expensive work; never read `ref.current` inside
+-8. **Index access:** guard against `undefined` under `noUncheckedIndexedAccess`
+-9. **No prohibited patterns:** no independent timing loops, `useGlobalStyles`, inline `<style>` tags, or `any` in current clocks
++Not summarized here. The authoritative sources are:
+ 
+-### Performance budgets
+-See `docs/PERFORMANCE.md` for the current budget table and measured figures — not restated here to avoid this summary drifting out of sync with it. Known current exception: Three.js is over its gzipped budget (tracked in Phase 1/2 below).
++- Clock contract: `docs/CLOCKS.md`, enforced by `scripts/verify-all-clocks.js`.
++- Code patterns: `docs/CLOCK_RECIPES.md`.
++- Budgets: `docs/PERFORMANCE.md`.
++- AI-agent workflow and validation commands: `AGENTS.md`.
+ 
+ ---
+ 
+@@ -92,6 +70,7 @@ See `docs/PERFORMANCE.md` for the current budget table and measured figures —
+ | 0.6 | Guard indexed access in `26-08-23/Clock.tsx` and `26-08-28/useMazeRenderer.ts` | ⏳ Legacy; tracked in Phase 1 |
+ | 0.7 | Update CI to surface lint/type results; keep tests+build hard-gated | ✅ Done (CI uses type-check, verify:clocks:changed) |
+ | 0.8 | Commit clean baseline and update `docs/STATUS.md` | ✅ Done |
++| 0.9 | Make `npm run test:run` pass on a clean checkout: root `e2e-check.spec.ts` imports `@playwright/test` (not a dependency) and Vitest collects it. Move it under a Playwright config, delete it, or exclude it in `vitest.config.js` | ⏳ Open (see STATUS) |
+ 
+ ### Phase 1: Quality Foundation (1–2 weeks)
+ 
+@@ -101,7 +80,7 @@ See `docs/PERFORMANCE.md` for the current budget table and measured figures —
+ | 1.2 | Enable stricter ESLint rules on new files; track legacy relaxations | — | M | **DONE** — eslint config enforces `@typescript-eslint/no-explicit-any: error`, `no-non-null-assertion: error`, `no-unused-vars: error` for `src/pages/2026/26-09/**` |
+ | 1.3 | Adopt `tsconfig.ci.json` progressively; target zero new errors on new clocks | — | M | **DONE** — tsconfig.ci.json excludes legacy months explicitly; `npm run type-check` passes |
+ | 1.4 | Wire `verify-all-clocks.js` into CI / pre-commit | — | S | **DONE** — CI runs `verify:clocks:changed` |
+-| 1.5 | Align the legacy `CLOCK_STANDARDS.md` reference document with the current clock contract | — | S | **DONE** — `docs/CLOCKS.md` is authoritative; `CLOCK_STANDARDS.md` is compatibility/reference only |
++| 1.5 | Align the legacy `CLOCK_STANDARDS.md` reference document with the current clock contract | — | S | **DONE** — `docs/CLOCKS.md` is authoritative; `CLOCK_STANDARDS.md` and `AI_DEVELOPMENT_GUIDE.md` were removed 2026-09-29 |
+ | 1.6 | Fix test harness: wrap context-provider-dependent tests in real providers | — | M | Tests currently pass |
+ | 1.7 | Add 3–5 golden-path tests for recent clocks and routing/data layer | — | M | ⏳ Future |
+ | 1.8 | Address Three.js bundle: lazy-load or split `@react-three/drei` | — | M | **Partial** — 2026-09-27: `three` isolated in its own chunk and no longer preloaded on every page; chunk size itself still ~194KB br |
+@@ -144,13 +123,14 @@ about the *build artifact and repository*, not the page-load experience.
+ | # | Action | Effort | Outcome |
+ |---|---|---|---|
+ | 4.1 | Remove stray root-level files (`Clock.tsx`, `useClockPage.ts`, `config.json`, `path/to/filename.js`) — unused scratch files outside `src/` | S | **DONE** (2026-09-21) — those paths are no longer in the repo root |
+-| 4.2 | Extend `.gitattributes` LFS rules to cover `.webp`, `.gif`, `.mp4`, `.webm`, `.ttf`, `.otf`, `.woff2` — the formats that actually make up `src/assets/` | S | New commits stop growing `.git` at full blob size |
++| 4.2 | Extend `.gitattributes` LFS rules to cover `.webp`, `.gif`, `.mp4`, `.webm`, `.ttf`, `.otf`, `.woff2` — the formats that actually make up `src/assets/` | S | **DONE** (2026-09-20) — rules present in `.gitattributes`; existing history not migrated (4.3) |
+ | 4.3 | Migrate existing asset history into LFS (`git lfs migrate import`) or, if history rewrite is unacceptable, start a fresh shallow-friendly branch strategy | L | Bounds `.git` growth; requires coordinating a force-push / re-clone for anyone with a local copy |
+-| 4.4 | Switch CI checkout from `fetch-depth: 0` to a shallow fetch (e.g. `fetch-depth: 1`, or `2` if `verify:clocks:changed` needs a diff base) | S | Faster, cheaper CI runs; `fetch-depth: 0` is rarely necessary for a build+test+verify pipeline |
++| 4.4 | Switch CI checkout from `fetch-depth: 0` to a shallow fetch (e.g. `fetch-depth: 1`, or `2` if `verify:clocks:changed` needs a diff base) | S | **DONE** — `ci.yml` uses `fetch-depth: 50` |
+ | 4.5 | Decide an explicit **archival policy** for old clocks: keep assets in the repo forever, move older years to external object storage (S3/R2) referenced by URL, or generate/host only a rolling window (e.g. current year) from the SPA build while archiving prior years as static exports | M | Turns "grows forever" into a bounded, intentional decision instead of an emergent one |
+ | 4.6 | Add a build-size regression check to CI (fail or warn if `dist/` grows more than N% versus the previous release) | M | Makes the growth trend visible before it becomes a hosting-cost surprise |
+ | 4.7 | Add `Thumbnail-*.js` (currently ≈59KB br, larger than the framework chunk) to the `PERFORMANCE.md` budget table and investigate whether it can be split further or asset-loaded lazily | S | Budget **row added** 2026-09-21; split/lazy-load still open |
+-| 4.8 | Fix the September 2026 clocks currently failing the current clock contract verifier before adding more clocks to the "compliant by construction" window — see diagnosis below | S–M | **DONE** — all 24 clocks in `src/pages/2026/26-09/` pass `scripts/verify-all-clocks.js`, including `26-09-01` |
++| 4.8 | Fix the September 2026 clocks currently failing the current clock contract verifier before adding more clocks to the "compliant by construction" window — see diagnosis below | S–M | **DONE** — all September 2026 clocks pass `scripts/verify-all-clocks.js`, including `26-09-01` |
++| 4.9 | Confirm production cache headers: `/assets/*` must be `immutable`, `/` and `/index.html` `no-cache`. `vercel.json` has an overlapping catch-all `no-cache` rule; check with the `curl` commands in `docs/OPERATIONS.md`. Remove unused deploy configs (`netlify.toml`, `public/_headers`, and optionally `Dockerfile`/`nginx.conf`) | S | Caching policy is verified, not assumed |
+ 
+ **Diagnosis for 4.8** (rechecked 2026-09-26):
+ 
+@@ -191,7 +171,7 @@ passes ~1GB.
+ ## 6. Contribution & Workflow
+ 
+ 1. Read `docs/ARCHITECTURE.md` and `docs/CLOCKS.md` before adding or modifying a current clock.
+-2. Run `npm run lint`, `npm run test:run`, `npm run type-check`, and `npm run build` before opening a PR.
++2. Run the checks listed under Validation in `AGENTS.md` before opening a PR. Lint only what you changed; the full-fleet lint has known legacy failures.
+ 3. Use `npm run new-clock YYYY-MM-DD` to scaffold a new clock; otherwise follow the file structure in the contract.
+ 4. Do not bypass lint or test failures; fix or track them explicitly.
+ 
+@@ -203,6 +183,8 @@ passes ~1GB.
+ |---|---|
+ | `docs/ARCHITECTURE.md` | Application architecture and historical/current boundary |
+ | `docs/CLOCKS.md` | Current clock component contract and engineering rules |
++| `docs/CLOCK_RECIPES.md` | Code patterns for images, video, fonts, tiling |
++| `AGENTS.md` | AI-agent workflow and validation commands |
+ | `docs/PERFORMANCE.md` | Asset budgets, cache headers, compression, chunk limits |
+ | `docs/STATUS.md` | Dated repository health measurements, inventory, and known gaps |
+ | `src/templates/BaseClock.tsx` | Canonical clock template and shared structure |
+diff --git a/docs/STATUS.md b/docs/STATUS.md
+index b83ff51..aea7ade 100644
+--- a/docs/STATUS.md
++++ b/docs/STATUS.md
+@@ -1,6 +1,6 @@
+ # CHL Current Status
+ 
+-Last reviewed: 2026-09-21
++Last reviewed: 2026-09-29
+ 
+ This document records the repository's known engineering status and current maintenance issues. It is a snapshot, not an automated source of truth.
+ 
+@@ -21,17 +21,20 @@ Historical reports are retained under [docs/archive/](archive/).
+ 
+ ## Current Health Snapshot
+ 
+-The following measurements were recorded during the September 20–21, 2026 repository review.
++Measurements dated 2026-09-29 were taken on a fresh clone with `npm ci` (Node 22). The build and repository-size rows are older because the clone used for the 09-29 run did not include Git LFS media, so a full production build could not be reproduced.
+ 
+ | Check | Command | Recorded result |
+ |---|---|---|
+-| Build | `npm run build` | Pass — 353 MB / 4,253 files in `dist/` |
+-| Tests | `npm run test:run` | Pass — 115 tests |
+-| TypeScript (CI scope) | `npm run type-check` | Pass |
++| Build | `npm run build` | Pass — 353 MB / 4,253 files in `dist/` (2026-09-20; not re-run 09-29) |
++| Tests | `npm run test:run` | **Exits non-zero.** 128 tests pass in 18 files; 1 file fails to load: root `e2e-check.spec.ts` imports `@playwright/test`, which is not a dependency (2026-09-29) |
++| TypeScript (CI scope) | `npm run type-check` | Pass (2026-09-29) |
+ | Changed-clock verification | `npm run verify:clocks:changed` | Pass when compared pages are clean |
+-| Full-fleet lint | `npx eslint .` | 1,090 problems: 297 errors / 793 warnings |
+-| Full-fleet TypeScript | `npx tsc --noEmit` | Fails on legacy code outside CI scope |
+-| Full-fleet clock verification | `npm run verify:clocks` | 373 of 540 clocks violate the current contract (measured 2026-09-26) |
++| Full-fleet lint | `npx eslint .` | 1,062 problems: 286 errors / 776 warnings (2026-09-29) |
++| September 2026 lint | `npx eslint src/pages/2026/26-09` | 1 error: `26-09-14/Clock.tsx` uses `Date.now()`, which the lint rule forbids (2026-09-29) |
++| Full-fleet TypeScript | `npx tsc --noEmit` | Fails: about 2,350 errors, all outside the CI scope (2026-09-29) |
++| Full-fleet clock verification | `npm run verify:clocks` | 373 of 545 clocks violate the current contract (2026-09-29); all 29 September 2026 clocks pass |
++
++CI (`.github/workflows/ci.yml`) runs `verify:clocks:changed`, `test:run`, `type-check`, and `build`; it does not run lint. Because `test:run` fails on a clean checkout (row above), the CI test step is expected to fail as well; the Actions history was not accessible for this review, so that is unconfirmed.
+ 
+ The full-fleet failures are primarily historical debt. The September 2026 architectural boundary means those clocks are not automatically candidates for wholesale refactoring.
+ 
+@@ -39,7 +42,7 @@ The full-fleet failures are primarily historical debt. The September 2026 archit
+ 
+ The current clock contract begins with September 2026. See [docs/CLOCKS.md](CLOCKS.md) for the complete requirements.
+ 
+-As of 2026-09-26, all 24 clocks in the September 2026 window pass `npm run verify:clocks`. The last remaining case, `26-09-01`, used a Three.js `requestAnimationFrame` render loop while sourcing its displayed time from `useClock()`; `scripts/clock-verifier-rules.js` now distinguishes that rendering loop from an independent clock-time source (see `docs/ROADMAP.md` 4.8), and `docs/CLOCKS.md` documents the exception.
++As of 2026-09-29, all 29 clocks in the September 2026 window pass `npm run verify:clocks`. The last remaining case, `26-09-01`, used a Three.js `requestAnimationFrame` render loop while sourcing its displayed time from `useClock()`; `scripts/clock-verifier-rules.js` now distinguishes that rendering loop from an independent clock-time source (see `docs/ROADMAP.md` 4.8), and `docs/CLOCKS.md` documents the exception.
+ 
+ New clocks must satisfy the current contract rather than inheriting legacy patterns from the historical archive.
+ 
+@@ -56,7 +59,7 @@ The archive's size is a sustainability concern rather than a reason to remove hi
+ 
+ ## Repository Hygiene
+ 
+-The following root-level scratch files were removed during the September 21 review:
++The following root-level scratch files were removed during the September 21 review (they have since been joined by others; see Known Gaps):
+ 
+ - `Clock.tsx`
+ - `useClockPage.ts`
+@@ -67,6 +70,12 @@ Historical clock implementations remain in place unless a concrete production, s
+ 
+ ## Known Gaps
+ 
++- `npm run test:run` fails on a clean checkout because of the root `e2e-check.spec.ts` (see Health Snapshot).
++- Root-level files with no references from `package.json` or the docs: an empty file named `git`, two `.webm` files (one named `xdfsdfsdfsfswefswefwefwsef.webm`, one a screen recording), `threejs-chunking.patch`, `check-images.cjs`, `e2e-check.spec.ts`, a `new-clock.js` (a second, different implementation of `scripts/new-clock.js`; its path logic assumes it lives in `scripts/`), and `test-results/.last-run.json`.
++- `26-09-14/Clock.tsx` uses `Date.now()` as an animation start anchor. The lint rule and `docs/CLOCKS.md` treat `Date.now()` as forbidden; either change the clock or narrow the rule. The clock verifier does not detect it.
++- Production cache headers are unverified: `vercel.json` has a catch-all `no-cache` rule that also matches `/assets/*`. See `docs/OPERATIONS.md` for the check.
++- Unused deployment configs remain: `netlify.toml`, `public/_headers`, `Dockerfile`, `nginx.conf`.
++- `PERFORMANCE.md` requires `preload="none"` on background video, but most current video clocks omit it (open decision noted in `docs/CLOCK_RECIPES.md`).
+ - `npm run status` remains a placeholder; no `scripts/generate-status.js` currently exists.
+ - Full-fleet lint and TypeScript checks still expose legacy debt.
+ - Full-fleet clock verification still reports historical contract violations.
+diff --git a/src/pages/ClockPage.tsx b/src/pages/ClockPage.tsx
+index e34526d..53309f8 100644
+--- a/src/pages/ClockPage.tsx
++++ b/src/pages/ClockPage.tsx
+@@ -58,7 +58,7 @@ export default function ClockPage() {
+ 
+   // Keyboard accessibility: allow Enter/Space to trigger the same
+   // navigation as a click (WCAG 2.1 — clickable elements must be
+-  // operable by keyboard). See ARCHITECTURE.md §11.
++  // operable by keyboard). See the Accessibility section of docs/CLOCKS.md.
+   const handleContainerKeyDown = React.useCallback(
+     (e: React.KeyboardEvent<HTMLDivElement>) => {
+       if (e.key === 'Enter' || e.key === ' ') {
+diff --git a/src/utils/hooks/index.ts b/src/utils/hooks/index.ts
+index 12381bc..cedca29 100644
+--- a/src/utils/hooks/index.ts
++++ b/src/utils/hooks/index.ts
+@@ -3,7 +3,8 @@
+  *
+  * This module exports the canonical clock hooks for the BorrowedTime project.
+  * All time hooks are rAF-based (no `setInterval`) and only re-render when the
+- * relevant time unit changes, per ARCHITECTURE.md §4.3.
++ * relevant time unit changes. See docs/CLOCKS.md (Time) and
++ * docs/decisions/0002-shared-time-rendering.md.
+  *
+  * Canonical names:
+  * - useClock:          updates once per second (default for most clocks)
+@@ -12,7 +13,7 @@
+  *                      smooth hand rotations and sub-second animations.
+  *
+  * Deprecated aliases (kept as thin re-exports for backward compatibility —
+- * see CLOCK_STANDARDS.md §2.2 / §5):
++ * new code must not use them; scripts/verify-all-clocks.js rejects them):
+  * - useSecondClock       -> useClock
+  * - useMillisecondClock  -> useSmoothClock
+  * - useClockTime         -> useClock
+-- 
+2.43.0
+
