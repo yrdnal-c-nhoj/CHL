@@ -21,7 +21,7 @@ const formatDigits = (value: number, length = 2): string =>
 const DIGIT_SUBSTITUTIONS: Record<string, string> = {
   '0': 'G',
   '5': 'S',
-  '1': 'a',
+  '1': 'A',
 };
 
 const substituteDigit = (digit: string): string =>
