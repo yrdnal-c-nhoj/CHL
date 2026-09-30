@@ -47,3 +47,8 @@
     filter: contrast(100%) brightness(100%) saturate(100%);
   }
 }
+@media (max-width: 600px) {
+  .backgroundLayer {
+    object-fit: fill;
+  }
+}
