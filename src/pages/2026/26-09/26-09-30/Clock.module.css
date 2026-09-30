@@ -79,3 +79,9 @@
   height: 50%;
   background-color: #dadada;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .hand {
+    will-change: auto;
+  }
+}
