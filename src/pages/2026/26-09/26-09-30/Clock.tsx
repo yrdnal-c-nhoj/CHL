@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import SRTime from '@/components/SRTime';
 import { useSmoothClock } from '@/utils/hooks';
 import reindeerVideo from '@/assets/images/26_images/26-09/26-09-30/reindeer.webm';
@@ -7,7 +7,19 @@ import styles from './Clock.module.css';
 export const assets = [reindeerVideo];
 
 const Clock_26_09_30 = () => {
-  const time = useSmoothClock(16);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
+    typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  const time = useSmoothClock(prefersReducedMotion ? 1000 : 16);
 
   const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
     const ms = time.getMilliseconds();
