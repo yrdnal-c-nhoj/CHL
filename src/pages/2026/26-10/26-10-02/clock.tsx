@@ -398,7 +398,7 @@ function Clock_26_10_02() {
     ctx.strokeStyle = rgbaStr(RAIN_RGB, 0.55);
     ctx.beginPath();
     for (let i=0;i<rain.length;i++){
-      const p=rain[i];
+      const p=rain[i] as { x: number; y: number; vx: number; vy: number };
       const nx=p.x + p.vx*dt, ny=p.y + p.vy*dt;
       if (isSolidAt(nx,ny)){
         const hx=p.x + p.vx*dt*0.4, hy=p.y + p.vy*dt*0.4;
@@ -420,7 +420,7 @@ function Clock_26_10_02() {
     ctx.strokeStyle = rgbaStr(RAIN_RGB, 0.7);
     ctx.beginPath();
     for (let i=splashes.length-1;i>=0;i--){
-      const s=splashes[i];
+      const s=splashes[i] as { x: number; y: number; vx: number; vy: number; life: number };
       s.vy += SPLASH_GRAVITY*dt;
       s.vx *= Math.pow(SPLASH_FRICTION, dt);
       s.vy *= Math.pow(SPLASH_FRICTION, dt);
@@ -468,7 +468,7 @@ function Clock_26_10_02() {
     ctx.strokeStyle = rgbaStr(RAIN_RGB, 1);
     ctx.beginPath();
     for (let i=0;i<ledgeIndices.length;i++){
-      const idx=ledgeIndices[i] as number, v=(pool as Float32Array)[idx]!;
+      const idx=ledgeIndices[i] as number, v=(pool as Float32Array)[idx] as number;
       if (v > POOL_VIS_MIN){
         const y=(idx/W)|0, x=idx - y*W;
         const a = Math.min(1, (v - POOL_VIS_MIN) * POOL_VIS_SCALE);
@@ -492,7 +492,7 @@ function Clock_26_10_02() {
       const by=d.y+0.75;
       if (by>=0 && by<H && isSolidAt(d.x, by)){
         const sIdx=nearestTopSurfaceIndex(d.x, by);
-        if (sIdx!==-1) (pool as Float32Array)[sIdx]! += 1.5;
+        if (sIdx!==-1) (pool as Float32Array)[sIdx] += 1.5;
         drips.splice(i,1); continue;
       }
       if (d.y > H+10) drips.splice(i,1);
