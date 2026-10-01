@@ -12,11 +12,11 @@ import styles from './Clock.module.css';
 export const assets = [limeVideo, font];
 
 const fontConfig: FontConfig = {
-  fontFamily: 'ClockFont_26_09_12',
+  fontFamily: 'ClockFont_26_09_22',
   fontUrl: font,
 };
 
-const Clock_26_09_12 = () => {
+const Clock_26_09_22 = () => {
   useSuspenseFontLoader([fontConfig]);
 
   const time = useSmoothClock(16);
@@ -133,6 +133,6 @@ const Clock_26_09_12 = () => {
   );
 };
 
-Clock_26_09_12.displayName = 'Clock_26_09_12';
+Clock_26_09_22.displayName = 'Clock_26_09_22';
 
-export default Clock_26_09_12;
+export default Clock_26_09_22;
