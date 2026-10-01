@@ -7258,42 +7258,5 @@
       "snow",
       "cold"
     ]
-  },
-  {
-    "path": "26-10-01",
-    "date": "26-10-01",
-    "title": "House of Leo",
-    "tags": [
-      "analog",
-      "constellations",
-      "lion",
-      "zodiac",
-      "fire",
-      "myth"
-    ]
-  },
-  {
-    "path": "26-10-02",
-    "date": "26-10-02",
-    "title": "Rocket",
-    "tags": [
-      "digital",
-      "space",
-      "transport",
-      "sound"
-    ]
-  },
-  {
-    "path": "26-10-03",
-    "date": "26-10-03",
-    "title": "Three Trees",
-    "tags": [
-      "day-and-night",
-      "digital",
-      "landscape",
-      "tree",
-      "trunk",
-      "wood"
-    ]
   }
 ]
