@@ -4,6 +4,7 @@ import SRTime from '@/components/SRTime';
 import styles from './Clock.module.css';
 
 const TARGET_FPS = 120;
+const REDUCED_MOTION_FPS = 30;
 const DPR_LIMIT = 2;
 const RAIN_DENSITY = 0.0003;
 const RAIN_DIR = Math.PI * 0.4;
@@ -380,14 +381,14 @@ function Clock_26_10_02() {
   const endFloorClip = (did: boolean)=>{ if (did) ctx.restore(); };
 
   // === Main loop / FPS ======================================================
-  let lastFrameTime=0, lastT=0;
-  const FRAME_INTERVAL = TARGET_FPS ? (1000/TARGET_FPS) : 0;
+   let lastFrameTime=0, lastT=0;
+   let effectiveTargetFps = TARGET_FPS;
 
-  let rafId = 0;
+   let rafId = 0;
 
    function frame(t: number){
      if (lastT===0) { lastT = t; lastFrameTime = t; rafId = requestAnimationFrame(frame); return; }
-     if (TARGET_FPS && t - lastFrameTime < FRAME_INTERVAL){ rafId = requestAnimationFrame(frame); return; }
+      if (TARGET_FPS && t - lastFrameTime < (1000 / effectiveTargetFps)){ rafId = requestAnimationFrame(frame); return; }
      lastFrameTime = t;
      const dt = Math.min(33, t - lastT) / 16.67; lastT = t;
 
@@ -514,6 +515,14 @@ function Clock_26_10_02() {
 
 
     rebuildTextMaskRef.current = rebuildTextMask;
+
+    const prefersReducedMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updateReducedMotion = (event: MediaQueryListEvent) => {
+      effectiveTargetFps = event.matches ? REDUCED_MOTION_FPS : TARGET_FPS;
+    };
+    effectiveTargetFps = prefersReducedMotionMQ.matches ? REDUCED_MOTION_FPS : TARGET_FPS;
+    prefersReducedMotionMQ.addEventListener('change', updateReducedMotion);
+
     document.fonts.ready.then(() => {
       resize();
       rafId = requestAnimationFrame(frame);
@@ -524,6 +533,7 @@ function Clock_26_10_02() {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(rafId);
       rebuildTextMaskRef.current = null;
+      prefersReducedMotionMQ.removeEventListener('change', updateReducedMotion);
     };
   }, []);
 
