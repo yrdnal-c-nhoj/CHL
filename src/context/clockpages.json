@@ -454,7 +454,7 @@
   {
     "path": "25-05-04",
     "date": "25-05-04",
-    "title": "Ph\u00e9nakisticope",
+    "title": "Phénakisticope",
     "tags": [
       "analog",
       "animal",
@@ -1420,7 +1420,7 @@
   {
     "path": "25-07-16",
     "date": "25-07-16",
-    "title": "M\u00f6bius Strip",
+    "title": "Möbius Strip",
     "tags": [
       "Fibonacci",
       "digital",
@@ -3183,7 +3183,7 @@
   {
     "path": "25-11-27",
     "date": "25-11-27",
-    "title": "L'Heure D\u00e9cimale",
+    "title": "L'Heure Décimale",
     "tags": [
       "France",
       "Paris",
@@ -3585,7 +3585,7 @@
   {
     "path": "25-12-29",
     "date": "25-12-29",
-    "title": "Jing\u016b",
+    "title": "Jingū",
     "tags": [
       "Ise",
       "Japan",
@@ -3825,7 +3825,7 @@
   {
     "path": "26-01-17",
     "date": "26-01-17",
-    "title": "225\u00b0 Southwest",
+    "title": "225° Southwest",
     "tags": [
       "air",
       "analog",
@@ -3976,7 +3976,7 @@
   {
     "path": "26-01-30",
     "date": "26-01-30",
-    "title": "45\u00b0 Northeast",
+    "title": "45° Northeast",
     "tags": [
       "air",
       "ampm",
@@ -4093,7 +4093,7 @@
   {
     "path": "26-02-08",
     "date": "26-02-08",
-    "title": "Le Trocad\u00e9ro",
+    "title": "Le Trocadéro",
     "tags": [
       "France",
       "Paris",
@@ -4402,7 +4402,7 @@
   {
     "path": "26-03-01",
     "date": "26-03-01",
-    "title": "270\u00b0 West",
+    "title": "270° West",
     "tags": [
       "air",
       "analog",
@@ -4800,7 +4800,7 @@
   {
     "path": "26-03-29",
     "date": "26-03-29",
-    "title": "90\u00b0 East",
+    "title": "90° East",
     "tags": [
       "air",
       "analog",
@@ -5049,7 +5049,7 @@
   {
     "path": "26-04-16",
     "date": "26-04-16",
-    "title": "135\u00b0 Southeast",
+    "title": "135° Southeast",
     "tags": [
       "air",
       "analog",
@@ -5435,7 +5435,7 @@
   {
     "path": "26-05-12",
     "date": "26-05-12",
-    "title": "180\u00b0 South",
+    "title": "180° South",
     "tags": [
       "air",
       "analog",
@@ -5658,7 +5658,7 @@
       "1899",
       "Cinderella",
       "France",
-      "Georges-M\u00e9li\u00e8s",
+      "Georges-Méliès",
       "ampm",
       "b+w",
       "digital",
@@ -5793,7 +5793,7 @@
   {
     "path": "26-06-04",
     "date": "26-06-04",
-    "title": "0\u00b0 North",
+    "title": "0° North",
     "tags": [
       "ampm",
       "cardinal-directions",
@@ -6061,7 +6061,7 @@
   {
     "path": "26-06-26",
     "date": "26-06-26",
-    "title": "315\u00b0 Northwest",
+    "title": "315° Northwest",
     "tags": [
       "cardinal-directions",
       "digital"
@@ -6229,7 +6229,7 @@
   {
     "path": "26-07-10",
     "date": "26-07-10",
-    "title": "112.5\u00b0 East-Southeast",
+    "title": "112.5° East-Southeast",
     "tags": [
       "analog",
       "cardinal-directions",
@@ -6578,7 +6578,7 @@
   {
     "path": "26-08-08",
     "date": "26-08-08",
-    "title": "337.5\u00b0 North-Northwest",
+    "title": "337.5° North-Northwest",
     "tags": [
       "analog",
       "cardinal-directions",
@@ -7182,7 +7182,7 @@
   {
     "path": "26-09-25",
     "date": "26-09-25",
-    "title": "157.5\u00b0 South-Southeast",
+    "title": "157.5° South-Southeast",
     "tags": [
       "cardinal-directions",
       "digital",
@@ -7228,21 +7228,21 @@
       "lion",
       "zodiac",
       "predator",
-      "fire",
+      "fire", 
       "myth"
     ]
   },
   {
-    "path": "26-09-29",
+     "path": "26-09-29",
     "date": "26-09-29",
     "title": "Rocket",
     "tags": [
-      "digital",
-      "space",
-      "transport",
-      "sound",
-      "gravity",
-      "up-and-down"
+     "digital",
+     "space",
+     "transport",
+     "sound",
+     "gravity",
+     "up-and-down"
     ]
   },
   {
@@ -7250,13 +7250,25 @@
     "date": "26-09-30",
     "title": "Milling",
     "tags": [
-      "analog",
-      "animal",
-      "landscape",
-      "move",
-      "circle",
-      "snow",
-      "cold"
+    "analog",
+    "animal",
+    "landscape",
+    "move",
+    "circle",
+    "snow",
+    "cold"
+  ]
+    },
+    {
+    "path": "26-10-01",
+    "date": "26-10-01",
+    "title": "Roadside",
+    "tags": [
+     "digital",
+     "mechanical",
+     "transport",
+     "ride",
+     "sound"
     ]
   }
 ]

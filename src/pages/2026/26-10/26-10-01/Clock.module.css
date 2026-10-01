@@ -23,28 +23,29 @@
   position: relative;
   display: flex;
   align-items: center;
+  gap: 1.5vmin;
   font-family: 'ClockFont_26_10_01', 'Courier New', Courier, monospace;
-  font-size: 18vmin;
+  font-size: 16vw;
   font-variant-numeric: tabular-nums;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
   color: #ffffff;
   z-index: 9;
-  text-shadow:
-    0 0 3vmin rgba(0, 0, 0, 0.8),
-    0 0 1vmin rgba(255, 255, 255, 0.5);
+
+  /* mix-blend-mode: difference with white text produces the exact
+     inverted color of every video pixel underneath each text pixel:
+     |255 - video_pixel| = complementary color. */
+  mix-blend-mode: difference;
+  isolation: isolate;
 }
 
-.digits {
+.digitGroup {
+  display: inline-flex;
+}
+
+.digitBox {
   display: inline-block;
-  min-width: 4ch;
+  width: 1ch;
   text-align: center;
-}
-
-.separator {
-  display: inline-block;
-  margin: 0 0.5vmin;
-  color: #ffffff;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -54,5 +55,20 @@
 
   .container {
     background-color: #000000;
+  }
+}
+
+@media (max-width: 600px) {
+  .digitalDisplay {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5vmin;
+    font-size: 20vh;
+  }
+
+  .digitGroup {
+    display: flex;
+    width: 100%;
+    justify-content: center;
   }
 }
