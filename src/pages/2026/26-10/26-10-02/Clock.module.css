@@ -1,14 +1,14 @@
-.rainClock {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #b39898;
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  margin: 0;
+  overflow: hidxden;
+  background-color: #652323;
 }
 
-.rainClock canvas {
-  position: absolute;
+.canvas {
+  position: fixed;
   inset: 0;
   display: block;
   width: 100%;
@@ -16,8 +16,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rainClock canvas {
-    /* Decoration-only animation (rain, splashes, drips) is slowed to 30 FPS
-       in JS via effectiveTargetFps. The time digits remain visible at all times. */
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
