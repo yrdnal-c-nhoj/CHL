@@ -79,16 +79,16 @@ function Clock_26_10_02() {
     const DPR = Math.max(1, Math.min(DPR_LIMIT, window.devicePixelRatio || 1));
   // === Colors / Dither =======================================================
   const BG_COLOR = '#000000';
-  const RAIN_COLOR = '#ffffff';
+  const _RAIN_COLOR = '#ffffff';
   const BG_RGB = { r: 0, g: 0, b: 0 };
   const RAIN_RGB = { r: 255, g: 255, b: 255 };
 
   const lum8 = (r: number, g: number, b: number) => (r*77 + g*150 + b*29) >>> 8;
   const rgbaStr = (rgb: { r: number; g: number; b: number }, a: number = 1) => `rgba(${rgb.r|0},${rgb.g|0},${rgb.b|0},${a})`;
 
-  let DR=255, DG=255, DB=255, DEN=195075, USE_PROJ=true;
-  let PACKED_FG=0xffffffff, PACKED_BG=0xff000000;
-  let BG_LUM=0, FG_LUM=255, MID_LUM=127;
+  const DR=255, DG=255, DB=255, DEN=195075, USE_PROJ=true;
+  const PACKED_FG=0xffffffff, PACKED_BG=0xff000000;
+  const _BG_LUM=0, _FG_LUM=255, _MID_LUM=127;
   const thrProjLUT = new Uint32Array(64);
   const thrLumLUT  = new Uint16Array(64);
 
@@ -98,7 +98,7 @@ function Clock_26_10_02() {
     2,50,14,62, 1,49,13,61, 34,18,46,30,33,17,45,29,
     10,58, 6,54, 9,57, 5,53, 42,26,38,22,41,25,37,21
   ];
-  for (let i=0;i<64;i++) thrProjLUT[i] = DEN * (BAYER8[i]! * 2 + 1);
+  for (let i=0;i<64;i++) thrProjLUT[i] = DEN * (BAYER8[i] as number * 2 + 1);
 
   // === Fixed typography ======================================================
   const FONT_FAMILY = "'Cormorant', serif";
@@ -116,8 +116,8 @@ function Clock_26_10_02() {
    let pool: Float32Array | null=null;
    let slideNeighbor: Int32Array | null=null;
    let slopeDown: Uint8Array | null=null;
-   let ledgeIndices: number[]=[];
-   let edgeTopText: number[]=[], edgeTopGround: number[]=[], edgeBottom: number[]=[], edgeLeft: number[]=[], edgeRight: number[]=[];
+   const ledgeIndices: number[]=[];
+   const edgeTopText: number[]=[], edgeTopGround: number[]=[], edgeBottom: number[]=[], edgeLeft: number[]=[], edgeRight: number[]=[];
    let edgeEmitAcc=0;
 
    // Particles
@@ -129,7 +129,7 @@ function Clock_26_10_02() {
   function resize(){
     const w=window.innerWidth, h=window.innerHeight;
     W = Math.floor(w * DPR); H = Math.floor(h * DPR);
-    canvas!.width=W; canvas!.height=H; canvas!.style.width=w+'px'; canvas!.style.height=h+'px';
+    canvas.width=W; canvas.height=H; canvas.style.width=w+'px'; canvas.style.height=h+'px';
     textCanvas.width=W; textCanvas.height=H;
     ctx.setTransform(1,0,0,1,0,0);
 
@@ -182,7 +182,7 @@ function Clock_26_10_02() {
 
     const isSolid = (x: number,y: number) => {
       if (x<0||y<0||x>=W||y>=H) return false;
-      return maskData![((y*W + x) << 2) + 3]! > 127;
+      return (maskData as Uint8ClampedArray)[((y*W + x) << 2) + 3]! > 127;
     };
 
     for (let y=0;y<H;y++){
@@ -190,7 +190,7 @@ function Clock_26_10_02() {
         if (!isSolid(x,y)) continue;
         const idx=y*W + x;
         if (!isSolid(x,y-1)) {
-          ledgeFlags![idx]=1; ledgeIndices.push(idx);
+          (ledgeFlags as Uint8Array)[idx]=1; ledgeIndices.push(idx);
           if (gTopY >= 0 && y===gTopY && x>=gLeftX && x<=gRightX) edgeTopGround.push(idx);
           else edgeTopText.push(idx);
         }
@@ -203,21 +203,21 @@ function Clock_26_10_02() {
     // downhill/contour neighbor (prefer (1,1) > (1,0) > (0,1) > (2,1) > (2,0) > (-1,1))
     const OFF = [[1,1],[1,0],[0,1],[2,1],[2,0],[-1,1]];
     for (let i=0;i<ledgeIndices.length;i++){
-      const idx=ledgeIndices[i]!;
+      const idx=ledgeIndices[i] as number;
       const y=(idx/W)|0, x=idx - y*W;
       let best=-1, bestScore=-1e9, drop=0;
       for (let k=0;k<OFF.length;k++){
-        const dx=OFF[k]![0]!, dy=OFF[k]![1]!;
+        const dx=(OFF[k] as number[])[0]!, dy=(OFF[k] as number[])[1]!;
         const nx=x+dx, ny=y+dy;
         if (nx<0||ny<0||nx>=W||ny>=H) continue;
         const nidx=ny*W + nx;
-        if (!ledgeFlags![nidx]!) continue;
+        if (!(ledgeFlags as Uint8Array)[nidx]!) continue;
         const d=ny-y;
         const score = d*10 + (dx>0?1:0) - Math.abs(dx)*0.2;
         if (score>bestScore){ bestScore=score; best=nidx; drop=d; }
       }
-      slideNeighbor![idx]=best;
-      slopeDown![idx]=drop&3;
+      (slideNeighbor as Int32Array)[idx]=best;
+      (slopeDown as Uint8Array)[idx]=drop&3;
     }
   }
 
@@ -225,11 +225,11 @@ function Clock_26_10_02() {
   const isSolidAt = (x: number,y: number) => {
     const xi=x|0, yi=y|0;
     if (xi<0||yi<0||xi>=W||yi>=H) return false;
-    return maskData![((yi*W + xi) << 2) + 3]! > 127;
+    return (maskData as Uint8ClampedArray)[((yi*W + xi) << 2) + 3]! > 127;
   };
-  const isLedgeIdx = (idx: number) => (ledgeFlags![idx]!)===1;
+  const isLedgeIdx = (idx: number) => ((ledgeFlags as Uint8Array)[idx]!)===1;
   function nearestTopSurfaceIndex(x: number,y: number){
-    let xi = Math.max(0, Math.min(W-1, x|0));
+    const xi = Math.max(0, Math.min(W-1, x|0));
     let yi = Math.max(0, Math.min(H-1, y|0));
     if (!isSolidAt(xi,yi)) { while (yi<H && !isSolidAt(xi,yi)) yi++; yi=Math.min(H-1, yi); }
     while (yi>=0 && isSolidAt(xi,yi)) yi--;
@@ -245,7 +245,7 @@ function Clock_26_10_02() {
     const edges: ('top' | 'bottom' | 'left' | 'right')[] = []; if (dx>0) edges.push('left'); else edges.push('right');
                      if (dy>0) edges.push('top');  else edges.push('bottom');
     const L = { top:W+2*mx, bottom:W+2*mx, left:H+2*my, right:H+2*my };
-    const e = Math.random() < (L[edges[0]!] / (L[edges[0]!] + L[edges[1]!])) ? edges[0]! : edges[1]!;
+    const e = Math.random() < (L[edges[0] as string] / (L[edges[0] as string] + L[edges[1] as string])) ? edges[0] as string : edges[1] as string;
     switch(e){
       case 'top':    p.x=Math.random()*(W+2*mx)-mx; p.y=-my - Math.random()*my; break;
       case 'bottom': p.x=Math.random()*(W+2*mx)-mx; p.y= H+my + Math.random()*my; break;
@@ -303,7 +303,7 @@ function Clock_26_10_02() {
     } else {                 arr=edgeRight;  angle= 0; }
 
     if (!arr || arr.length===0) return;
-    const idx=arr![(Math.random()*arr.length)|0]!;
+    const idx=(arr as number[])[(Math.random()*arr.length)|0]!;
     const y=(idx/W)|0, x=idx - y*W;
 
     // Don’t emit from hidden area under the floor
@@ -312,7 +312,7 @@ function Clock_26_10_02() {
     const off=0.9, sx=x+Math.cos(angle)*off, sy=y+Math.sin(angle)*off;
     const cnt=EDGE_SPLASH_COUNT_MIN + (Math.random()*(EDGE_SPLASH_COUNT_MAX-EDGE_SPLASH_COUNT_MIN+1) | 0);
     spawnSplashesDirected(sx,sy,angle,cnt,EDGE_SPLASH_SPEED,EDGE_SPLASH_SPREAD);
-    if ((ledgeFlags![idx]! )===1) pool![idx]!+=EDGE_POOL_ADD_TOP;
+    if (((ledgeFlags as Uint8Array)[idx]! )===1) (pool as Float32Array)[idx]!+=EDGE_POOL_ADD_TOP;
   }
 
   // === Post-process (pixelate + ordered dither) =============================
@@ -327,7 +327,7 @@ function Clock_26_10_02() {
     if (postW!==_lastPostW || postH!==_lastPostH){ fx.width=postW; fx.height=postH; _lastPostW=postW; _lastPostH=postH; }
 
     fxc.imageSmoothingEnabled = true;
-    fxc.drawImage(canvas!, 0,0, postW,postH);
+    fxc.drawImage(canvas as HTMLCanvasElement, 0,0, postW,postH);
 
     if (useDither){
       const img = fxc.getImageData(0,0,postW,postH);
@@ -336,17 +336,17 @@ function Clock_26_10_02() {
       if (USE_PROJ){
         for (let y=0;y<postH;y++){ const y8=(y&7)<<3;
           for (let x=0;x<postW;x++, p+=4){
-            const r=data[p]!, g=data[p+1]!, b=data[p+2]!;
+            const r=data[p] as number, g=data[p+1] as number, b=data[p+2] as number;
             const num = ((r-BG_RGB.r)*DR + (g-BG_RGB.g)*DG + (b-BG_RGB.b)*DB)|0;
-            const thr = thrProjLUT[y8 | (x&7)]!;
+            const thr = thrProjLUT[y8 | (x&7)] as number;
             u32[p>>2] = ((num<<7) > thr) ? PACKED_FG : PACKED_BG;
           }
         }
       } else {
         for (let y=0;y<postH;y++){ const y8=(y&7)<<3;
           for (let x=0;x<postW;x++, p+=4){
-            const lum = lum8(data[p]!, data[p+1]!, data[p+2]!);
-            const thr = thrLumLUT[y8 | (x&7)]!;
+            const lum = lum8(data[p] as number, data[p+1] as number, data[p+2] as number);
+            const thr = thrLumLUT[y8 | (x&7)] as number;
             u32[p>>2] = (lum > thr) ? PACKED_FG : PACKED_BG;
           }
         }
@@ -398,12 +398,12 @@ function Clock_26_10_02() {
     ctx.strokeStyle = rgbaStr(RAIN_RGB, 0.55);
     ctx.beginPath();
     for (let i=0;i<rain.length;i++){
-      const p=rain[i]!;
+      const p=rain[i];
       const nx=p.x + p.vx*dt, ny=p.y + p.vy*dt;
       if (isSolidAt(nx,ny)){
         const hx=p.x + p.vx*dt*0.4, hy=p.y + p.vy*dt*0.4;
         const sIdx = nearestTopSurfaceIndex(hx,hy);
-        if (sIdx !== -1) pool![sIdx]! += 8.0;
+        if (sIdx !== -1) (pool as Float32Array)[sIdx]! += 8.0;
         const cnt = SPLASH_PER_HIT_MIN + (Math.random()*(SPLASH_PER_HIT_MAX - SPLASH_PER_HIT_MIN + 1)|0);
         spawnSplashes(hx,hy,cnt);
         respawnDrop(p);
@@ -420,7 +420,7 @@ function Clock_26_10_02() {
     ctx.strokeStyle = rgbaStr(RAIN_RGB, 0.7);
     ctx.beginPath();
     for (let i=splashes.length-1;i>=0;i--){
-      const s=splashes[i]!;
+      const s=splashes[i];
       s.vy += SPLASH_GRAVITY*dt;
       s.vx *= Math.pow(SPLASH_FRICTION, dt);
       s.vy *= Math.pow(SPLASH_FRICTION, dt);
@@ -430,7 +430,7 @@ function Clock_26_10_02() {
       if (s.life<=0 || isSolidAt(s.x,s.y)){
         if (!isSolidAt(px,py)){
           const idx=nearestTopSurfaceIndex(s.x,s.y);
-          if (idx!==-1) pool![idx]! += 0.2;
+          if (idx!==-1) (pool as Float32Array)[idx]! += 0.2;
         }
         splashes.splice(i,1);
       }
@@ -443,16 +443,16 @@ function Clock_26_10_02() {
 
     // pools (evaporate, slide, drip)
     for (let i=0;i<ledgeIndices.length;i++){
-      const idx=ledgeIndices[i]!;
-      let v=pool![idx]!;
-      if (v<=0.0001){ pool![idx]=0; continue; }
+      const idx=ledgeIndices[i] as number;
+      let v=(pool as Float32Array)[idx]!;
+      if (v<=0.0001){ (pool as Float32Array)[idx]=0; continue; }
       v *= Math.pow(POOL_DECAY, dt);
 
-      const sn=slideNeighbor![idx]!;
+      const sn=(slideNeighbor as Int32Array)[idx]!;
       if (sn!==-1){
-        const drop=slopeDown![idx]!;
+        const drop=(slopeDown as Uint8Array)[idx]!;
         const flow = Math.min(v*0.9, v * (1 - Math.pow(1-POOL_FLOW, dt)) * (1 + SLOPE_FLOW_BOOST*drop));
-        v -= flow; pool![sn]! += flow;
+        v -= flow; (pool as Float32Array)[sn]! += flow;
 
         if (v>DRIP_SPAWN_THRESHOLD && Math.random() < (DRIP_SPAWN_CHANCE + drop*SLOPE_DRIP_BONUS) * dt){
           spawnDripFromIndex(idx);
@@ -462,13 +462,13 @@ function Clock_26_10_02() {
         spawnDripFromIndex(idx);
         v = Math.max(0, v - 0.8);
       }
-      pool![idx]=v;    }
+      (pool as Float32Array)[idx]=v;    }
 
     // pool highlights
     ctx.strokeStyle = rgbaStr(RAIN_RGB, 1);
     ctx.beginPath();
     for (let i=0;i<ledgeIndices.length;i++){
-      const idx=ledgeIndices[i]!, v=pool![idx]!;
+      const idx=ledgeIndices[i] as number, v=(pool as Float32Array)[idx]!;
       if (v > POOL_VIS_MIN){
         const y=(idx/W)|0, x=idx - y*W;
         const a = Math.min(1, (v - POOL_VIS_MIN) * POOL_VIS_SCALE);
@@ -485,14 +485,14 @@ function Clock_26_10_02() {
     ctx.strokeStyle = rgbaStr(RAIN_RGB, 0.85);
     ctx.beginPath();
     for (let i=drips.length-1;i>=0;i--){
-      const d=drips[i]!;
+      const d=drips[i] as {
       const px=d.x, py=d.y;
       d.vy += DRIP_GRAVITY*dt; d.y += d.vy*dt;
       ctx.moveTo(px,py); ctx.lineTo(d.x,d.y);
       const by=d.y+0.75;
       if (by>=0 && by<H && isSolidAt(d.x, by)){
         const sIdx=nearestTopSurfaceIndex(d.x, by);
-        if (sIdx!==-1) pool![sIdx]! += 1.5;
+        if (sIdx!==-1) (pool as Float32Array)[sIdx]! += 1.5;
         drips.splice(i,1); continue;
       }
       if (d.y > H+10) drips.splice(i,1);
