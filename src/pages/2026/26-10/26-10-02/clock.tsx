@@ -127,6 +127,7 @@ function Clock_26_10_02() {
 
   // === Resize / Mask build ==================================================
   function resize(){
+    if (!canvas) return;
     const w=window.innerWidth, h=window.innerHeight;
     W = Math.floor(w * DPR); H = Math.floor(h * DPR);
     canvas.width=W; canvas.height=H; canvas.style.width=w+'px'; canvas.style.height=h+'px';
@@ -182,7 +183,7 @@ function Clock_26_10_02() {
 
     const isSolid = (x: number,y: number) => {
       if (x<0||y<0||x>=W||y>=H) return false;
-      return (maskData as Uint8ClampedArray)[((y*W + x) << 2) + 3]! > 127;
+      return (maskData as Uint8ClampedArray)[((y*W + x) << 2) + 3] as number > 127;
     };
 
     for (let y=0;y<H;y++){
@@ -207,11 +208,13 @@ function Clock_26_10_02() {
       const y=(idx/W)|0, x=idx - y*W;
       let best=-1, bestScore=-1e9, drop=0;
       for (let k=0;k<OFF.length;k++){
-        const dx=(OFF[k] as number[])[0]!, dy=(OFF[k] as number[])[1]!;
+        const offEntry = OFF[k];
+        if (!offEntry) continue;
+        const dx=offEntry[0] as number, dy=offEntry[1] as number;
         const nx=x+dx, ny=y+dy;
         if (nx<0||ny<0||nx>=W||ny>=H) continue;
         const nidx=ny*W + nx;
-        if (!(ledgeFlags as Uint8Array)[nidx]!) continue;
+        if (((ledgeFlags as Uint8Array)[nidx]===0)) continue;
         const d=ny-y;
         const score = d*10 + (dx>0?1:0) - Math.abs(dx)*0.2;
         if (score>bestScore){ bestScore=score; best=nidx; drop=d; }
@@ -225,9 +228,9 @@ function Clock_26_10_02() {
   const isSolidAt = (x: number,y: number) => {
     const xi=x|0, yi=y|0;
     if (xi<0||yi<0||xi>=W||yi>=H) return false;
-    return (maskData as Uint8ClampedArray)[((yi*W + xi) << 2) + 3]! > 127;
+    return (maskData as Uint8ClampedArray)[((yi*W + xi) << 2) + 3] as number > 127;
   };
-  const isLedgeIdx = (idx: number) => ((ledgeFlags as Uint8Array)[idx]!)===1;
+  const isLedgeIdx = (idx: number) => ((ledgeFlags as Uint8Array)[idx] as number)===1;
   function nearestTopSurfaceIndex(x: number,y: number){
     const xi = Math.max(0, Math.min(W-1, x|0));
     let yi = Math.max(0, Math.min(H-1, y|0));
@@ -244,8 +247,10 @@ function Clock_26_10_02() {
     const mx=Math.max(40, W*0.25), my=Math.max(40, H*0.25);
     const edges: ('top' | 'bottom' | 'left' | 'right')[] = []; if (dx>0) edges.push('left'); else edges.push('right');
                      if (dy>0) edges.push('top');  else edges.push('bottom');
-    const L = { top:W+2*mx, bottom:W+2*mx, left:H+2*my, right:H+2*my };
-    const e = Math.random() < (L[edges[0] as string] / (L[edges[0] as string] + L[edges[1] as string])) ? edges[0] as string : edges[1] as string;
+    const L: Record<string, number> = { top:W+2*mx, bottom:W+2*mx, left:H+2*my, right:H+2*my };
+    const e0 = edges[0], e1 = edges[1];
+    if (e0 === undefined || e1 === undefined) return;
+    const e = Math.random() < (L[e0] / (L[e0] + L[e1])) ? e0 : e1;
     switch(e){
       case 'top':    p.x=Math.random()*(W+2*mx)-mx; p.y=-my - Math.random()*my; break;
       case 'bottom': p.x=Math.random()*(W+2*mx)-mx; p.y= H+my + Math.random()*my; break;
@@ -303,7 +308,7 @@ function Clock_26_10_02() {
     } else {                 arr=edgeRight;  angle= 0; }
 
     if (!arr || arr.length===0) return;
-    const idx=(arr as number[])[(Math.random()*arr.length)|0]!;
+    const idx=(arr as number[])[(Math.random()*arr.length)|0] as number;
     const y=(idx/W)|0, x=idx - y*W;
 
     // Don’t emit from hidden area under the floor
@@ -312,7 +317,7 @@ function Clock_26_10_02() {
     const off=0.9, sx=x+Math.cos(angle)*off, sy=y+Math.sin(angle)*off;
     const cnt=EDGE_SPLASH_COUNT_MIN + (Math.random()*(EDGE_SPLASH_COUNT_MAX-EDGE_SPLASH_COUNT_MIN+1) | 0);
     spawnSplashesDirected(sx,sy,angle,cnt,EDGE_SPLASH_SPEED,EDGE_SPLASH_SPREAD);
-    if (((ledgeFlags as Uint8Array)[idx]! )===1) (pool as Float32Array)[idx]!+=EDGE_POOL_ADD_TOP;
+    if ((ledgeFlags as Uint8Array)[idx]===1) if (pool) pool[idx] += EDGE_POOL_ADD_TOP;
   }
 
   // === Post-process (pixelate + ordered dither) =============================
@@ -403,7 +408,7 @@ function Clock_26_10_02() {
       if (isSolidAt(nx,ny)){
         const hx=p.x + p.vx*dt*0.4, hy=p.y + p.vy*dt*0.4;
         const sIdx = nearestTopSurfaceIndex(hx,hy);
-        if (sIdx !== -1) (pool as Float32Array)[sIdx]! += 8.0;
+        if (sIdx !== -1 && pool) pool[sIdx] += 8.0;
         const cnt = SPLASH_PER_HIT_MIN + (Math.random()*(SPLASH_PER_HIT_MAX - SPLASH_PER_HIT_MIN + 1)|0);
         spawnSplashes(hx,hy,cnt);
         respawnDrop(p);
@@ -430,7 +435,7 @@ function Clock_26_10_02() {
       if (s.life<=0 || isSolidAt(s.x,s.y)){
         if (!isSolidAt(px,py)){
           const idx=nearestTopSurfaceIndex(s.x,s.y);
-          if (idx!==-1) (pool as Float32Array)[idx]! += 0.2;
+          if (idx!==-1 && pool) pool[idx] += 0.2;
         }
         splashes.splice(i,1);
       }
@@ -444,15 +449,15 @@ function Clock_26_10_02() {
     // pools (evaporate, slide, drip)
     for (let i=0;i<ledgeIndices.length;i++){
       const idx=ledgeIndices[i] as number;
-      let v=(pool as Float32Array)[idx]!;
+      let v=(pool as Float32Array)[idx] as number;
       if (v<=0.0001){ (pool as Float32Array)[idx]=0; continue; }
       v *= Math.pow(POOL_DECAY, dt);
 
-      const sn=(slideNeighbor as Int32Array)[idx]!;
+      const sn=(slideNeighbor as Int32Array)[idx] as number;
       if (sn!==-1){
-        const drop=(slopeDown as Uint8Array)[idx]!;
+        const drop=(slopeDown as Uint8Array)[idx] as number;
         const flow = Math.min(v*0.9, v * (1 - Math.pow(1-POOL_FLOW, dt)) * (1 + SLOPE_FLOW_BOOST*drop));
-        v -= flow; (pool as Float32Array)[sn]! += flow;
+        v -= flow; if (sn!=-1 && pool) pool[sn] += flow;
 
         if (v>DRIP_SPAWN_THRESHOLD && Math.random() < (DRIP_SPAWN_CHANCE + drop*SLOPE_DRIP_BONUS) * dt){
           spawnDripFromIndex(idx);
@@ -492,7 +497,7 @@ function Clock_26_10_02() {
       const by=d.y+0.75;
       if (by>=0 && by<H && isSolidAt(d.x, by)){
         const sIdx=nearestTopSurfaceIndex(d.x, by);
-        if (sIdx!==-1) (pool as Float32Array)[sIdx] += 1.5;
+        if (sIdx!==-1 && pool) pool[sIdx] += 1.5;
         drips.splice(i,1); continue;
       }
       if (d.y > H+10) drips.splice(i,1);
