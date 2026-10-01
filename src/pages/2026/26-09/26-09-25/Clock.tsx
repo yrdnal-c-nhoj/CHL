@@ -11,11 +11,11 @@ import styles from './Clock.module.css';
 export const assets = [airpoImage, font, rainImage, rainOverlayImage];
 
 const fontConfig: FontConfig = {
-  fontFamily: 'ClockFont_26_09_04',
+  fontFamily: 'ClockFont_26_09_25',
   fontUrl: font,
 };
 
-const Clock_26_09_04 = () => {
+const Clock_26_09_25 = () => {
   useSuspenseFontLoader([fontConfig]);
   const time = useClock();
 
@@ -65,6 +65,6 @@ const Clock_26_09_04 = () => {
   );
 };
 
-Clock_26_09_04.displayName = 'Clock_26_09_04';
+Clock_26_09_25.displayName = 'Clock_26_09_25';
 
-export default Clock_26_09_04;
+export default Clock_26_09_25;
