@@ -6,8 +6,38 @@ import { chromium, type PageScreenshotOptions, type ConsoleMessage } from 'playw
 
 const SCREENSHOT_DIR = path.join(process.cwd(), 'src', 'assets', 'thumbnails');
 const DEFAULT_VITE_PORT = 5173;
-const THUMBNAIL_MAX_WIDTH = 400;
-const WEBP_QUALITY = 80;
+const THUMBNAIL_MAX_WIDTH = 200;
+const WEBP_QUALITY = 65;
+
+async function optimizeThumbnail(filePath: string): Promise<number> {
+  const originalSize = fs.statSync(filePath).size;
+  await sharp(filePath)
+    .resize({ width: THUMBNAIL_MAX_WIDTH, withoutEnlargement: true })
+    .webp({ quality: WEBP_QUALITY, force: true })
+    .toFile(filePath + '.optimized');
+  fs.renameSync(filePath + '.optimized', filePath);
+  return fs.statSync(filePath).size;
+}
+
+async function optimizeExistingThumbnails(): Promise<void> {
+  if (!fs.existsSync(SCREENSHOT_DIR)) {
+    console.log('[screencaps] No thumbnails directory found.');
+    return;
+  }
+
+  const files = fs.readdirSync(SCREENSHOT_DIR).filter((f) => f.endsWith('.webp'));
+  console.log(`[screencaps] Found ${files.length} thumbnail files to optimize.`);
+
+  for (const file of files) {
+    const filePath = path.join(SCREENSHOT_DIR, file);
+    try {
+      const optimizedSize = await optimizeThumbnail(filePath);
+      console.log(`[screencaps] Optimized: ${file} → ${optimizedSize} bytes`);
+    } catch (err) {
+      console.warn(`[screencaps] Failed to optimize ${file}:`, err);
+    }
+  }
+}
 
 interface DevServerHandle {
   url: string;
@@ -135,6 +165,12 @@ async function main(): Promise<void> {
     fs.mkdirSync(SCREENSHOT_DIR, { recursive: true });
   }
 
+  if (args.includes('--optimize')) {
+    console.log('[screencaps] Optimizing existing thumbnails...');
+    await optimizeExistingThumbnails();
+    return;
+  }
+
   const server = await resolveDevServer(port);
 
   try {
@@ -176,13 +212,7 @@ async function main(): Promise<void> {
       await page.screenshot(options);
 
       const originalSize = fs.statSync(screenshotPath).size;
-      await sharp(screenshotPath)
-        .resize({ width: THUMBNAIL_MAX_WIDTH, withoutEnlargement: true })
-        .webp({ quality: WEBP_QUALITY, force: true })
-        .toFile(screenshotPath + '.optimized');
-      fs.renameSync(screenshotPath + '.optimized', screenshotPath);
-
-      const optimizedSize = fs.statSync(screenshotPath).size;
+      const optimizedSize = await optimizeThumbnail(screenshotPath);
       console.log(`[screencaps] Saved: ${screenshotPath} (${originalSize} → ${optimizedSize} bytes)`);
     }
 
