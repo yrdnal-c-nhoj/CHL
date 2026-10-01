@@ -1,107 +1,69 @@
-import React, { useMemo } from 'react';
+import { Suspense, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import ClockErrorBoundary from '@/components/ClockErrorBoundary';
 import ClockPageNav from '@/components/ClockPageNav';
 import { useDataContext } from '@/context/DataContext';
 import { useClockPage } from '@/hooks/useClockPage';
 import styles from './ClockPage.module.css';
 
-/**
- * Dynamic clock route page.
- *
- * Expects the route param:
- *   /:date  where date is typically YY-MM-DD
- *
- * Finds the matching ClockItem from DataContext and uses useClockPage
- * to dynamically import the corresponding clock module from:
- *   src/pages/<date>/Clock.tsx
- */
+const asString = (v?: string | null) => v ?? '';
+
 export default function ClockPage() {
   const { date } = useParams<{ date: string }>();
   const navigate = useNavigate();
+  const { items } = useDataContext();
 
-  const { items = [] } = useDataContext();
+  const { ClockComponent, error, overlayVisible } = useClockPage(date);
 
-  const currentItem = React.useMemo(() => {
-    if (!date) return null;
-    return items.find((it) => it.date === date) ?? null;
+  const { currentItem, prevItem, nextItem } = useMemo(() => {
+    const idx = items.findIndex((it) => it.date === date);
+    return {
+      currentItem: idx >= 0 ? (items[idx] ?? null) : null,
+      prevItem: idx > 0 ? (items[idx - 1] ?? null) : null,
+      nextItem: idx >= 0 ? (items[idx + 1] ?? null) : null,
+    };
   }, [date, items]);
 
-  const { ClockComponent, isReady, error, overlayVisible } =
-    useClockPage(currentItem);
-
-  const prevItem = React.useMemo(() => {
-    if (!currentItem) return null;
-    const idx = items.findIndex((it) => it.date === currentItem.date);
-    if (idx <= 0) return null;
-    return items[idx - 1] ?? null;
-  }, [currentItem, items]);
-
-  const nextItem = React.useMemo(() => {
-    if (!currentItem) return null;
-    const idx = items.findIndex((it) => it.date === currentItem.date);
-    if (idx < 0) return null;
-    return items[idx + 1] ?? null;
-  }, [currentItem, items]);
-
-  const formatTitle = React.useCallback((title?: string | null) => {
-    return (title ?? '').toString();
-  }, []);
-
-  const formatDate = React.useCallback((d?: string | null) => {
-    return (d ?? '').toString();
-  }, []);
-
-  const handleContainerClick = React.useCallback(() => {
+  // Click-anywhere-to-go-home stays as a mouse convenience; keyboard and
+  // screen-reader users get the real link below.
+  const handleBackgroundClick = (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest('a,button,input,select,textarea')) {
+      return;
+    }
     navigate('/');
-  }, [navigate]);
-
-  // Keyboard accessibility: allow Enter/Space to trigger the same
-  // navigation as a click (WCAG 2.1 — clickable elements must be
-  // operable by keyboard). See ARCHITECTURE.md §11.
-  const handleContainerKeyDown = React.useCallback(
-    (e: React.KeyboardEvent<HTMLDivElement>) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        navigate('/');
-      }
-    },
-    [navigate],
-  );
+  };
 
   return (
-    <div
-      onClick={handleContainerClick}
-      onKeyDown={handleContainerKeyDown}
-      role="button"
-      tabIndex={0}
-      aria-label="Return to home"
-      className={styles.container}
-    >
-      {/* Loading overlay */}
-      {overlayVisible && !isReady && (
-        <div className={styles.loadingOverlay}>
-          Loading...
-        </div>
-      )}
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+    <div className={styles.container} onClick={handleBackgroundClick}>
+      <a href="/" className={styles.srOnly}>
+        Return to home
+      </a>
+
+      {overlayVisible && <div className={styles.loadingOverlay}>Loading...</div>}
 
       {error ? (
-        <div className={styles.errorBox}>
-          Error: {error}
+        <div className={styles.errorBox} role="alert">
+          {error}
         </div>
       ) : ClockComponent ? (
-        <ClockComponent />
+        <ClockErrorBoundary key={date}>
+          <Suspense fallback={<div className={styles.loadingOverlay}>Loading...</div>}>
+            <ClockComponent />
+          </Suspense>
+        </ClockErrorBoundary>
       ) : null}
 
-      {currentItem ? (
+      {currentItem && (
         <ClockPageNav
           prevItem={prevItem}
           nextItem={nextItem}
           currentItem={currentItem}
-          formatTitle={formatTitle}
-          formatDate={formatDate}
+          formatTitle={asString}
+          formatDate={asString}
         />
-      ) : null}
+      )}
     </div>
   );
 }
