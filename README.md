@@ -33,6 +33,7 @@ See `docs/ARCHITECTURE.md` for the authoritative architecture and `docs/CLOCKS.m
 Requires Node.js 22.x.
 
 ```bash
+nvm use
 npm ci
 npm run dev
 ```
