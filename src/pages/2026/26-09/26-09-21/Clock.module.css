@@ -1,6 +1,6 @@
 :root {
   /* Common typography and shadow styles */
-  --clock-font: 'ClockFont_26_09_19', monospace, sans-serif;
+  --clock-font: 'ClockFont_26_09_21', monospace, sans-serif;
   --text-inset-shadow: -2px -2px 0 #000, 1px 4px 0 #fff;
 
   /* Colors */
@@ -12,11 +12,11 @@
   position: fixed;
   inset: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background-color: #8d8a8d;
   /* Ensure no white gaps on mobile when address bar hides/shows */
-  min-height: 100vh;
+  min-height: 100dvh;
   min-height: -webkit-fill-available;
 }
 
@@ -24,7 +24,7 @@
   position: fixed;
   inset: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   object-fit: cover;
   object-position: top center;
   z-index: 1;
@@ -76,4 +76,10 @@
   margin-left: 2vmin;
   font-size: 8vmin;
   color: var(--color-digit);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backgroundLayer {
+    filter: none;
+  }
 }

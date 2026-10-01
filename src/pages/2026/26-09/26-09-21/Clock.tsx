@@ -8,7 +8,7 @@ import styles from './Clock.module.css';
 
 export const assets = [fontUrl, backgroundVideo];
 
-const FONT_FAMILY = 'ClockFont_26_09_19';
+const FONT_FAMILY = 'ClockFont_26_09_21';
 
 const fontConfig: FontConfig = {
   fontFamily: FONT_FAMILY,
