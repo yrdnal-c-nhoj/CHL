@@ -79,8 +79,8 @@ function Clock_26_10_02() {
     const tctx = textCanvas.getContext('2d') as CanvasRenderingContext2D;
     const DPR = Math.max(1, Math.min(DPR_LIMIT, window.devicePixelRatio || 1));
   // === Colors / Dither =======================================================
-  const BG_COLOR = '#000000';
-  const _RAIN_COLOR = '#ffffff';
+  const BG_COLOR = '#f6f1c0';
+  const _RAIN_COLOR = '#092703';
   const BG_RGB = { r: 0, g: 0, b: 0 };
   const RAIN_RGB = { r: 255, g: 255, b: 255 };
 
