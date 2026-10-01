@@ -1,14 +1,26 @@
 import { useState, useEffect, useRef } from 'react';
 import SRTime from '@/components/SRTime';
 import { useClock } from '@/utils/hooks';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 import backgroundVideo from '@/assets/images/26_images/26-10/26-10-01/cars.webm';
+import font from '@/assets/fonts/26fonts/26-10-01.otf?url';
 import styles from './Clock.module.css';
 
-export const assets = [backgroundVideo];
+export const assets = [backgroundVideo, font];
+
+const FONT_FAMILY = 'ClockFont_26_10_01';
+
+const fontConfig: FontConfig = {
+  fontFamily: FONT_FAMILY,
+  fontUrl: font,
+};
 
 const pad = (value: number): string => value.toString().padStart(2, '0');
 
 const Clock_26_10_01 = () => {
+  useSuspenseFontLoader([fontConfig]);
+
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(
     typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches,
