@@ -17,6 +17,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .rainClock canvas {
-    /* The canvas animation is paused via reduced frame rate in JS */
+    /* Decoration-only animation (rain, splashes, drips) is slowed to 30 FPS
+       in JS via effectiveTargetFps. The time digits remain visible at all times. */
   }
 }
