@@ -9,6 +9,7 @@ BorrowedTime is both software and a historical digital-art archive. **September 
 ## Required Reading
 
 Before editing, read this file and:
+
 - `docs/ARCHITECTURE.md` — architecture and the historical/current boundary
 - `docs/CLOCKS.md` — for clock work
 - `docs/PERFORMANCE.md` — for assets, fonts, media, loading, or bundle work
@@ -81,11 +82,7 @@ export const assets = [backgroundImage];
 Use an imported URL in JSX or CSS variables:
 
 ```tsx
-<img
-  className={styles.logo}
-  src={logoImage}
-  alt="BorrowedTime logo"
-/>
+<img className={styles.logo} src={logoImage} alt="BorrowedTime logo" />
 ```
 
 ```tsx
@@ -158,14 +155,7 @@ export const assets = [backgroundVideo, overlayImage];
 Use `poster` when the first frame matters:
 
 ```tsx
-<video
-  src={video}
-  poster={posterImage}
-  autoPlay
-  loop
-  muted
-  playsInline
-/>
+<video src={video} poster={posterImage} autoPlay loop muted playsInline />
 ```
 
 A `<source>` child with an explicit `type` is only needed when serving more than one video format as a fallback chain; most clocks ship a single WebM and don't need it.
@@ -269,15 +259,15 @@ A Google Font counts toward the family-count limit in `docs/PERFORMANCE.md` and 
 
 Rather than scanning the whole fleet for how something has been done, check one of these known-good September 2026 examples first:
 
-| Need | Look at | Why |
-|---|---|---|
-| Font loading (the default pattern) | `26-09-20` | `useSuspenseFontLoader` + `?url` import, as documented above |
-| Manual `@font-face` (the exception) | `26-09-16` | The one clock still using a hand-written `@font-face` block |
-| Single background video | `26-09-20`, `26-09-19`, `26-09-21` | Plain `<video src={...}>`, no `<source>` child |
-| Multiple images with preload-before-show | `26-09-05` | Local `preloadImages` helper gates rendering until all images decode |
-| Many images (10+) in one clock | `26-09-18` | Largest current image count; check its directory structure and loading strategy before adding a similarly image-heavy clock |
-| Three.js / WebGL render loop | `26-09-01` | The only clock using a `requestAnimationFrame` render loop; see `docs/CLOCKS.md` for why the verifier permits this |
-| Smooth (sub-second) motion | any clock using `useSmoothClock` (`26-09-13`, `26-09-20`, others) | Correct hook for continuous hand/needle motion instead of `useClock`'s once-per-second updates |
+| Need                                     | Look at                                                           | Why                                                                                                                         |
+| ---------------------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Font loading (the default pattern)       | `26-09-20`                                                        | `useSuspenseFontLoader` + `?url` import, as documented above                                                                |
+| Manual `@font-face` (the exception)      | `26-09-16`                                                        | The one clock still using a hand-written `@font-face` block                                                                 |
+| Single background video                  | `26-09-20`, `26-09-19`, `26-09-21`                                | Plain `<video src={...}>`, no `<source>` child                                                                              |
+| Multiple images with preload-before-show | `26-09-05`                                                        | Local `preloadImages` helper gates rendering until all images decode                                                        |
+| Many images (10+) in one clock           | `26-09-18`                                                        | Largest current image count; check its directory structure and loading strategy before adding a similarly image-heavy clock |
+| Three.js / WebGL render loop             | `26-09-01`                                                        | The only clock using a `requestAnimationFrame` render loop; see `docs/CLOCKS.md` for why the verifier permits this          |
+| Smooth (sub-second) motion               | any clock using `useSmoothClock` (`26-09-13`, `26-09-20`, others) | Correct hook for continuous hand/needle motion instead of `useClock`'s once-per-second updates                              |
 
 This table reflects the fleet as of 2026-09-28. If you add a clock that establishes a new pattern worth reusing, add a row here rather than leaving the next person (or agent) to rediscover it by reading every clock.
 
@@ -377,8 +367,12 @@ For multiple layers, list the most foreground layer first and keep the repeat/si
 .container {
   background-image: var(--overlay), var(--tile);
   background-repeat: no-repeat, repeat;
-  background-size: cover, 6rem 6rem;
-  background-position: center, top left;
+  background-size:
+    cover,
+    6rem 6rem;
+  background-position:
+    center,
+    top left;
 }
 ```
 
@@ -410,6 +404,7 @@ A Three.js/WebGL render loop is allowed when it only renders frames and the disp
 ## Historical Code
 
 Do not broad-refactor historical clocks. Modify them only for a concrete reason such as:
+
 - production breakage;
 - build/deployment failure;
 - security;
@@ -423,31 +418,33 @@ Keep assets in established directories. Do not rename historical assets or intro
 
 ## Conformance Check ("does this conform to our standards?")
 
-When the owner asks whether code, a clock, or a change conforms to the technical standards (or asks any close variant: "check standards", "bring it up to standard", "does this meet our rules?"), do not answer from memory and do not just report. **Check, fix, re-check, report.** Work quickly and in this order:
+The authority for "our technical standards" is `docs/STANDARDS.md`. When the owner asks whether code, a clock, or a change conforms (or any close variant: "check standards", "bring it up to standard", "does this meet our rules?"), do not answer from memory and do not just report. **Check, fix, re-check, report.** In this order:
 
-1. **Run the checker.** `npm run conform -- --fix`
+1. **Read** `docs/STANDARDS.md`.
+2. **Run the checker:** `npm run conform -- --fix`
    - With no arguments it checks clocks with uncommitted changes (or the last commit if the tree is clean).
    - Use `--path YY-MM-DD` for a named clock, or `--all-current` for every clock from 26-09 onward.
    - Historical clocks (before September 2026) are skipped unless named with `--path`. Do not fix them to make the archive uniform.
-2. **Read the result by level:**
+3. **Read the result by level:**
    - `FIXED` - already corrected by `--fix`. Just report it.
-   - `FAIL` - breaks the clock contract. Fix it by hand (smallest change), then re-run.
-   - `REVIEW` - a budget or heuristic finding. Decide case by case (see below); do not silently ignore it.
-3. **Fix every `FAIL` yourself.** Typical cases: `<img>` missing `alt`, a missing asset file, `document.body` mutation, Tailwind in a clock, anything reported by `[verifier]`.
-4. **Handle `REVIEW` items:**
-   - `prefers-reduced-motion` missing: add a `@media (prefers-reduced-motion: reduce)` block that pauses, slows, or simplifies non-essential motion while keeping the time readable.
+   - `FAIL` - breaks the contract. Fix it by hand (smallest change).
+   - `REVIEW` - a budget or heuristic finding. Decide case by case; never silently ignore it.
+4. **Fix every `FAIL`.** Typical cases: `<img>` missing `alt`, missing asset file, `document.body` mutation, Tailwind in a clock, anything tagged `[verifier]`.
+5. **Handle `REVIEW` items:**
+   - Missing `prefers-reduced-motion`: add a `@media (prefers-reduced-motion: reduce)` block that pauses, slows, or simplifies non-essential motion while keeping the time readable.
    - Unused imported asset: remove the import and its `assets` entry.
-   - Fixed `px` layout values: convert to `dvh`/`vw`/`vmin`/`rem`/`%`/`fr` when it does not change the artwork; otherwise leave and say why.
-   - Asset over budget (image 200KB, video 2MB, font 100KB) or more than 2 fonts: **do not** delete, replace, or re-encode artwork on your own. Report the file, its size, and the budget, and ask.
-   - String `className`, `document.head`, `Date.now()`, remote URL: confirm each is legitimate per this file, otherwise fix it.
-5. **Re-run** `npm run conform -- --path <date>` until there are no `FAIL` lines.
-6. **Run the gates:** `npm run type-check`, `npm run test:run` if shared code changed, and `npm run build`. Do a browser smoke check for clock changes when a browser is available.
-7. **Report** in this shape: what was auto-fixed, what you fixed by hand, what remains under REVIEW (with file and size where relevant), and exactly which commands you ran. Never claim a check passed that you did not run.
+   - Fixed `px` layout values: convert to `dvh`/`vw`/`vmin`/`rem`/`%`/`fr` when the artwork is unchanged; otherwise leave and say why.
+   - Asset over budget (image 200KB, video 2MB, font 100KB) or more than 2 fonts: **do not** delete, replace, or re-encode artwork. Report file, size, and budget, and ask.
+   - String `className`, `document.head`, `Date.now()`, remote URL: confirm it is legitimate, otherwise fix it.
+6. **Check the MANUAL rules** in `STANDARDS.md` that apply to the change (mobile portrait/landscape/tablet layout, page scrolling, time-source design). Verify in a browser when one is available; otherwise report "not verified".
+7. **Re-run** `npm run conform -- --path <date>` until there are no `FAIL` lines.
+8. **Run the gates:** `npm run type-check`, `npm run test:run` if shared code changed, and `npm run build`.
+9. **Report by rule ID** (for example "R4 fixed, A3 needs a decision, L1 not verified"): what was auto-fixed, what was fixed by hand, what remains under REVIEW (with file and size), and exactly which commands were run. Never claim a check passed that was not run.
 
 Rules for this procedure:
+
 - Fix only what the standards require. No unrelated refactors, no renaming or moving existing assets.
-- `npm run conform` covers the mechanical standards. Anything it cannot see (visual result, layout on mobile portrait/landscape/tablet) still needs the smoke check or an explicit "not verified" in the report.
-- If a standard in this file and the checker ever disagree, this file and `docs/CLOCKS.md` win; fix the checker.
+- If `STANDARDS.md`, this file, or the checker disagree, `STANDARDS.md` wins, then `docs/CLOCKS.md`. Fix the checker.
 
 ## Validation Commands
 
