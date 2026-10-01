@@ -43,7 +43,7 @@ const TodayPage = () => {
     isReady,
     error: clockError,
     overlayVisible,
-  } = useClockPage(targetItem);
+  } = useClockPage(targetItem?.date);
 
   const errorMessage = dataError?.message || clockError;
 
