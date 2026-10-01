@@ -2,7 +2,7 @@ css .container {
   --hand-color: #27e60a;
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   height: 100dvh;
   overflow: hidden;
   background: #090908;
@@ -153,4 +153,11 @@ css .container {
   white-space: nowrap;
 
   border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

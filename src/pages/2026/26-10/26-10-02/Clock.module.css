@@ -1,0 +1,22 @@
+.rainClock {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+}
+
+.rainClock canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rainClock canvas {
+    /* The canvas animation is paused via reduced frame rate in JS */
+  }
+}

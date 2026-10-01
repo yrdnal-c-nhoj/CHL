@@ -14,7 +14,7 @@ export const assets = [font, beachniteVideo, eyesImage];
 const formatTime = (num: number): string => num.toString().padStart(2, '0');
 
 const fontConfig: FontConfig = {
-  fontFamily: 'ClockFont_26_09_02',
+  fontFamily: 'ClockFont_26_09_03',
   fontUrl: font,
 };
 

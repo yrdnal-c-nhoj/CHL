@@ -32,7 +32,7 @@
   justify-content: center;
   gap: 0.15em; /* Spacing between rows */
   color: var(--display-color);
-  font-family: 'Hammerhead', 'Courier New', Courier, monospace;
+  font-family: 'ClockFont_26_09_15', 'Courier New', Courier, monospace;
   font-size: clamp(8rem, 16vw, 14rem); /* DIGIT SIZE */
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
@@ -57,4 +57,12 @@
   justify-content: center;
   width: 1ch; /* Width of one character */
   text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

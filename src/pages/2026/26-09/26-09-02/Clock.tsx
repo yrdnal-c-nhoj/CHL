@@ -10,7 +10,7 @@ import styles from './Clock.module.css';
 
 export const assets = [peacockImage, eyesImage, fontUrl];
 
-const FONT_FAMILY = 'ClockFont_26_09_03';
+const FONT_FAMILY = 'ClockFont_26_09_02';
 
 const fontConfig: FontConfig = {
   fontFamily: FONT_FAMILY,
@@ -50,7 +50,7 @@ const GridOverlay = memo(({ image }: { image: string }) => {
     </div>
   );
 });
-GridOverlay.displayName = 'GridOverlay';
+GridOverlay.displayName = 'Clock_26_09_02';
 
 const Clock_26_09_02 = () => {
   useSuspenseFontLoader([fontConfig]);

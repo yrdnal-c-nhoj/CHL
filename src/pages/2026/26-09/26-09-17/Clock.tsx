@@ -10,7 +10,7 @@ import styles from './Clock.module.css';
 
 export const assets: string[] = [backgroundVideo, bubblesOverlay, fontUrl];
 
-const fontConfigs: FontConfig[] = [{ fontFamily: 'Hammerhead', fontUrl }];
+const fontConfigs: FontConfig[] = [{ fontFamily: 'ClockFont_26_09_17', fontUrl }];
 
 const pad2 = (value: number) => value.toString().padStart(2, '0');
 

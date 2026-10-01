@@ -9,7 +9,7 @@ import styles from './Clock.module.css';
 
 export const assets: string[] = [backgroundVideo, fontUrl];
 
-const fontConfigs: FontConfig[] = [{ fontFamily: 'Hammerhead', fontUrl }];
+const fontConfigs: FontConfig[] = [{ fontFamily: 'ClockFont_26_09_15', fontUrl }];
 
 const formatTime = (value: number) => value.toString().padStart(2, '0');
 

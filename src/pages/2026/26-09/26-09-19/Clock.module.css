@@ -46,3 +46,11 @@
   color: #9e9994;
   text-shadow: -1px -1px 0 #000, 1px 1px 0 #fff;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
