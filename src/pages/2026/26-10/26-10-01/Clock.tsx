@@ -64,11 +64,27 @@ const Clock_26_10_01 = () => {
       />
 
       <div className={styles.digitalDisplay} aria-hidden="true">
-        <span className={styles.digits}>{hours}</span>
-        <span className={styles.separator}>:</span>
-        <span className={styles.digits}>{minutes}</span>
-        <span className={styles.separator}>:</span>
-        <span className={styles.digits}>{seconds}</span>
+        <span className={styles.digitGroup}>
+          {hours.split('').map((digit, i) => (
+            <span key={`h${i}`} className={styles.digitBox}>
+              {digit}
+            </span>
+          ))}
+        </span>
+        <span className={styles.digitGroup}>
+          {minutes.split('').map((digit, i) => (
+            <span key={`m${i}`} className={styles.digitBox}>
+              {digit}
+            </span>
+          ))}
+        </span>
+        <span className={styles.digitGroup}>
+          {seconds.split('').map((digit, i) => (
+            <span key={`s${i}`} className={styles.digitBox}>
+              {digit}
+            </span>
+          ))}
+        </span>
       </div>
 
       <SRTime time={time} />
