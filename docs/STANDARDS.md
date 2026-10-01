@@ -39,6 +39,7 @@ Consolidated from `AGENTS.md`, `docs/CLOCKS.md`, `docs/PERFORMANCE.md`,
 | R9 | Strict TypeScript. No `any`. | CI |
 | R10 | No deprecated hooks: `useClockTime`, `useSecondClock`, `useMillisecondClock`. | CI |
 | R11 | No unnecessary new dependencies. | MANUAL |
+| R12 | Guard array and object index access under strict TypeScript. Never assume `arr[i]` exists. | MANUAL |
 
 ## 3. Time
 
@@ -70,6 +71,8 @@ Consolidated from `AGENTS.md`, `docs/CLOCKS.md`, `docs/PERFORMANCE.md`,
 | L2 | No page scrolling unless the artwork requires it. | MANUAL (browser) |
 | L3 | Use `100dvh`, never `100vh`. | CONFORM (auto-fix) |
 | L4 | Prefer `dvh`, `vw`, `vmin`, `rem`, `%`, `fr`. Fixed px only for deliberate visual details. | CONFORM (REVIEW at 100px or more on width, height, or font-size) |
+| L5 | Repeating textures use CSS `background-repeat`, not dozens of `<img>` elements. List layers foreground-first and keep repeat/size/position lists in the same order. | MANUAL |
+| L6 | Choose `background-size` deliberately: `cover` only when cropping is acceptable, `contain` when the whole artwork must show, explicit sizes for tiles. Avoid `object-fit: cover` where cropping would remove important artwork. | MANUAL |
 
 ## 6. Accessibility
 
@@ -78,7 +81,8 @@ Consolidated from `AGENTS.md`, `docs/CLOCKS.md`, `docs/PERFORMANCE.md`,
 | A1 | A semantic `<time>` or `SRTime` with a valid ISO `dateTime`. | CI |
 | A2 | Every `<img>` has `alt` (`alt=""` if decorative). | CONFORM (FAIL) |
 | A3 | Animated clocks have a `prefers-reduced-motion: reduce` treatment that keeps the time readable. | CONFORM (REVIEW) |
-| A4 | No autoplay audio. | CONFORM (FAIL) |
+| A4 | No autoplay audio. Audio is user-initiated unless the product requirement explicitly says otherwise. | CONFORM (FAIL) |
+| A5 | A decorative background `<video>` has `aria-hidden="true"`. | MANUAL |
 
 ## 7. Assets and performance
 
@@ -86,7 +90,7 @@ Consolidated from `AGENTS.md`, `docs/CLOCKS.md`, `docs/PERFORMANCE.md`,
 |---|---|---|
 | P1 | Assets are local, imported from the established asset directories. No remote media URLs, no base64 images. | CONFORM |
 | P2 | Images under **200KB**. Prefer WebP or AVIF. | CONFORM (REVIEW) |
-| P3 | Video backgrounds under **2MB**, with `autoPlay muted loop playsInline`. | CONFORM (REVIEW size, FAIL and auto-fix attributes) |
+| P3 | Video backgrounds under **2MB**, rendered as a plain `<video src={...}>` with `autoPlay muted loop playsInline` (no `<source>` child unless serving a format fallback chain). Prefer WebM. Do not use video where a static image communicates the same design. | CONFORM (REVIEW size, FAIL and auto-fix attributes) |
 | P4 | Fonts under **100KB** each, WOFF2 preferred, subset to needed glyphs. | CONFORM (REVIEW size) |
 | P5 | At most **2** custom font families per page. | CONFORM (REVIEW) |
 | P6 | Each clock's `fontFamily` name is unique to it (contains `YY_MM_DD`). | CONFORM (REVIEW) |
@@ -94,6 +98,9 @@ Consolidated from `AGENTS.md`, `docs/CLOCKS.md`, `docs/PERFORMANCE.md`,
 | P8 | No unexplained media files in the repo root. | CONFORM (REVIEW) |
 | P9 | Never rename or move existing historical assets just to match current conventions. | MANUAL |
 | P10 | Preload only above-the-fold fonts and critical CSS. | MANUAL |
+| P11 | Local fonts use the default pattern: import with `?url`, register in `assets`, load through `useSuspenseFontLoader` with a unique `fontFamily`. Manual `@font-face` only when Suspense loading is inappropriate. Do not hand-roll a competing loader. | MANUAL |
+| P12 | Google Fonts load via `<link>` (never a blocking `@import` in inline `<style>`) with a `preconnect`, include `display=swap`, count toward the family limit (P5), and are **not** listed in `assets`. | MANUAL |
+| P13 | Meaningful images use `<img>` with useful `alt`; decorative art uses CSS `background-image`. Content images with several local resolutions use `srcSet` and `sizes`. Do not `loading="lazy"` the primary above-the-fold image if it delays first paint. | MANUAL |
 
 ## 8. Verification and process
 
@@ -108,7 +115,7 @@ Consolidated from `AGENTS.md`, `docs/CLOCKS.md`, `docs/PERFORMANCE.md`,
 
 ## Open decisions (rules that currently conflict or are unmet)
 
-1. **Video `preload`.** `PERFORMANCE.md` says background video uses `preload="none"`, which conflicts with `autoPlay`. P3 above leaves `preload` out until you decide.
+1. **Video `preload`.** `PERFORMANCE.md` says background video uses `preload="none"`, which conflicts with `autoPlay`. The established September 2026 pattern in `AGENTS.md` (20 of ~26 clocks) omits `preload`, and P3 follows it. Recommended: update `PERFORMANCE.md` to exempt autoplay backgrounds.
 2. **Three.js chunk** is about 194KB against a 150KB budget. Either raise the budget and document why, or reduce what is imported.
 3. **Thumbnail chunk** is about 59KB against a 50KB budget, and the fix is still open.
 4. **LFS in CI.** `ci.yml` does not check out LFS files, so the CI build may not contain your real media. Set `lfs: true` on the checkout step if you want P2 to P4 verified in CI.

@@ -13,6 +13,7 @@ Before editing, read this file and:
 - `docs/ARCHITECTURE.md` — architecture and the historical/current boundary
 - `docs/CLOCKS.md` — for clock work
 - `docs/PERFORMANCE.md` — for assets, fonts, media, loading, or bundle work
+- `docs/STANDARDS.md` — numbered rulebook; the authority for conformance checks
 
 Use `CONTRIBUTING.md` for the human contribution workflow.
 
@@ -474,6 +475,7 @@ Prefer small, focused changes. Do not modify unrelated clock implementations. Sh
 
 - [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md): authoritative application architecture and historical/current boundary.
 - [`docs/CLOCKS.md`](./docs/CLOCKS.md): current clock contract.
+- [`docs/STANDARDS.md`](./docs/STANDARDS.md): numbered rulebook; the authority for conformance checks.
 - [`docs/PERFORMANCE.md`](./docs/PERFORMANCE.md): asset budgets, fonts, caching, and bundle limits.
 - [`docs/ROADMAP.md`](./docs/ROADMAP.md): project priorities and technical debt.
 - [`docs/STATUS.md`](./docs/STATUS.md): recorded health checks and fleet inventory.
