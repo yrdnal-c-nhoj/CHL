@@ -151,7 +151,7 @@
   position: absolute;
 
   font-family:
-    'ClockFont_26_09_12',
+    'ClockFont_26_09_22',
     monospace,
     sans-serif;
 
@@ -190,4 +190,14 @@
   white-space: nowrap;
 
   border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backgroundVideo {
+    will-change: auto;
+  }
+
+  .hand {
+    will-change: auto;
+  }
 }
