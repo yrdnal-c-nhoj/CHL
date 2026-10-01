@@ -1,10 +1,13 @@
 import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
+import sharp from 'sharp';
 import { chromium, type PageScreenshotOptions, type ConsoleMessage } from 'playwright';
 
 const SCREENSHOT_DIR = path.join(process.cwd(), 'src', 'assets', 'thumbnails');
 const DEFAULT_VITE_PORT = 5173;
+const THUMBNAIL_MAX_WIDTH = 400;
+const WEBP_QUALITY = 80;
 
 interface DevServerHandle {
   url: string;
@@ -171,7 +174,16 @@ async function main(): Promise<void> {
       };
 
       await page.screenshot(options);
-      console.log(`[screencaps] Saved: ${screenshotPath}`);
+
+      const originalSize = fs.statSync(screenshotPath).size;
+      await sharp(screenshotPath)
+        .resize({ width: THUMBNAIL_MAX_WIDTH, withoutEnlargement: true })
+        .webp({ quality: WEBP_QUALITY, force: true })
+        .toFile(screenshotPath + '.optimized');
+      fs.renameSync(screenshotPath + '.optimized', screenshotPath);
+
+      const optimizedSize = fs.statSync(screenshotPath).size;
+      console.log(`[screencaps] Saved: ${screenshotPath} (${originalSize} → ${optimizedSize} bytes)`);
     }
 
     await browser.close();
