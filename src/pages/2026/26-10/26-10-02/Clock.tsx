@@ -251,7 +251,8 @@ function Clock_26_10_02() {
     const L: Record<string, number> = { top:W+2*mx, bottom:W+2*mx, left:H+2*my, right:H+2*my };
     const e0 = edges[0], e1 = edges[1];
     if (e0 === undefined || e1 === undefined) return;
-    const e = Math.random() < (L[e0] / (L[e0] + L[e1])) ? e0 : e1;
+    const le0 = L[e0] ?? 0, le1 = L[e1] ?? 0;
+    const e = Math.random() < (le0 / (le0 + le1)) ? e0 : e1;
     switch(e){
       case 'top':    p.x=Math.random()*(W+2*mx)-mx; p.y=-my - Math.random()*my; break;
       case 'bottom': p.x=Math.random()*(W+2*mx)-mx; p.y= H+my + Math.random()*my; break;
@@ -318,7 +319,7 @@ function Clock_26_10_02() {
     const off=0.9, sx=x+Math.cos(angle)*off, sy=y+Math.sin(angle)*off;
     const cnt=EDGE_SPLASH_COUNT_MIN + (Math.random()*(EDGE_SPLASH_COUNT_MAX-EDGE_SPLASH_COUNT_MIN+1) | 0);
     spawnSplashesDirected(sx,sy,angle,cnt,EDGE_SPLASH_SPEED,EDGE_SPLASH_SPREAD);
-    if ((ledgeFlags as Uint8Array)[idx]===1) if (pool) pool[idx] += EDGE_POOL_ADD_TOP;
+    if ((ledgeFlags as Uint8Array)[idx]===1) if (pool) pool[idx] = (pool[idx] ?? 0) + EDGE_POOL_ADD_TOP;
   }
 
   // === Post-process (pixelate + ordered dither) =============================
@@ -409,7 +410,7 @@ function Clock_26_10_02() {
       if (isSolidAt(nx,ny)){
         const hx=p.x + p.vx*dt*0.4, hy=p.y + p.vy*dt*0.4;
         const sIdx = nearestTopSurfaceIndex(hx,hy);
-        if (sIdx !== -1 && pool) pool[sIdx] += 8.0;
+        if (sIdx !== -1 && pool) pool[sIdx] = (pool[sIdx] ?? 0) + 8.0;
         const cnt = SPLASH_PER_HIT_MIN + (Math.random()*(SPLASH_PER_HIT_MAX - SPLASH_PER_HIT_MIN + 1)|0);
         spawnSplashes(hx,hy,cnt);
         respawnDrop(p);
@@ -436,7 +437,7 @@ function Clock_26_10_02() {
       if (s.life<=0 || isSolidAt(s.x,s.y)){
         if (!isSolidAt(px,py)){
           const idx=nearestTopSurfaceIndex(s.x,s.y);
-          if (idx!==-1 && pool) pool[idx] += 0.2;
+          if (idx!==-1 && pool) pool[idx] = (pool[idx] ?? 0) + 0.2;
         }
         splashes.splice(i,1);
       }
@@ -458,7 +459,7 @@ function Clock_26_10_02() {
       if (sn!==-1){
         const drop=(slopeDown as Uint8Array)[idx] as number;
         const flow = Math.min(v*0.9, v * (1 - Math.pow(1-POOL_FLOW, dt)) * (1 + SLOPE_FLOW_BOOST*drop));
-        v -= flow; if (sn!=-1 && pool) pool[sn] += flow;
+        v -= flow;         if (sn!=-1 && pool) pool[sn] = (pool[sn] ?? 0) + flow;
 
         if (v>DRIP_SPAWN_THRESHOLD && Math.random() < (DRIP_SPAWN_CHANCE + drop*SLOPE_DRIP_BONUS) * dt){
           spawnDripFromIndex(idx);
@@ -498,7 +499,7 @@ function Clock_26_10_02() {
       const by=d.y+0.75;
       if (by>=0 && by<H && isSolidAt(d.x, by)){
         const sIdx=nearestTopSurfaceIndex(d.x, by);
-        if (sIdx!==-1 && pool) pool[sIdx] += 1.5;
+        if (sIdx!==-1 && pool) pool[sIdx] = (pool[sIdx] ?? 0) + 1.5;
         drips.splice(i,1); continue;
       }
       if (d.y > H+10) drips.splice(i,1);
