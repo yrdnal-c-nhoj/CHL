@@ -50,6 +50,24 @@ function Clock_26_10_02() {
   }, [timeText]);
 
   useEffect(() => {
+    const preconnect = document.createElement('link');
+    preconnect.rel = 'preconnect';
+    preconnect.href = 'https://fonts.gstatic.com';
+    preconnect.crossOrigin = 'anonymous';
+
+    const stylesheet = document.createElement('link');
+    stylesheet.rel = 'stylesheet';
+    stylesheet.href =
+      'https://fonts.googleapis.com/css2?family=Cormorant:wght@700&display=swap';
+
+    document.head.append(preconnect, stylesheet);
+    return () => {
+      preconnect.remove();
+      stylesheet.remove();
+    };
+  }, []);
+
+  useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: false }) as CanvasRenderingContext2D;
@@ -80,10 +98,10 @@ function Clock_26_10_02() {
     2,50,14,62, 1,49,13,61, 34,18,46,30,33,17,45,29,
     10,58, 6,54, 9,57, 5,53, 42,26,38,22,41,25,37,21
   ];
-  for (let i=0;i<64;i++) thrProjLUT[i] = DEN * (BAYER8[i]!!*2 + 1);
+  for (let i=0;i<64;i++) thrProjLUT[i] = DEN * (BAYER8[i]! * 2 + 1);
 
   // === Fixed typography ======================================================
-  const FONT_FAMILY = 'system-ui, sans-serif';
+  const FONT_FAMILY = "'Cormorant', serif";
   const FONT_WEIGHT = 700;
   const FONT_SIZE = 300;
   const fontSpec = (px: number) => `${FONT_WEIGHT} ${px}px ${FONT_FAMILY}`;
@@ -491,9 +509,11 @@ function Clock_26_10_02() {
 
 
     rebuildTextMaskRef.current = rebuildTextMask;
-    resize();
-    rafId = requestAnimationFrame(frame);
-    window.addEventListener('resize', resize, { passive: true });
+    document.fonts.ready.then(() => {
+      resize();
+      rafId = requestAnimationFrame(frame);
+      window.addEventListener('resize', resize, { passive: true });
+    });
 
     return () => {
       window.removeEventListener('resize', resize);
