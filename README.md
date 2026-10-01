@@ -57,6 +57,16 @@ Open [http://localhost:5173](http://localhost:5173).
 
 React + TypeScript + Vite
 
+## Deployment
+
+| Target | Config | Status |
+|---|---|---|
+| **Vercel** | `vercel.json` | **Canonical** — production site at [cubistheart.com](https://www.cubistheart.com) |
+| Docker/nginx | `Dockerfile` + `nginx.conf` | Alternative for self-hosting |
+| Netlify | `netlify.toml` | Alternative — not actively used |
+
+See `docs/OPERATIONS.md` for build verification and deployment procedures.
+
 ## License
 
 MIT — see [LICENSE](LICENSE)
