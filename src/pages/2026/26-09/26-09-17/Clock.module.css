@@ -56,7 +56,7 @@
   justify-content: center;
   gap: 0.1em;
   color: var(--display-color);
-  font-family: 'Hammerhead', 'Courier New', Courier, monospace;
+  font-family: 'ClockFont_26_09_17', 'Courier New', Courier, monospace;
   font-size: 16vmax;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
@@ -93,4 +93,11 @@
   margin-left: 0.05em;
   transform: translateY(-0.05em);
   /* Moves indicator up */
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

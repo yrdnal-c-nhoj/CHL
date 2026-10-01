@@ -18,7 +18,7 @@ interface AnalogClockProps {
 const AnalogClock = ({
   size = 90,
   showSeconds = true,
-  className = '',
+  className,
 }: AnalogClockProps) => {
   const time = useSmoothClock(50);
   const [motionStart] = useState(() => Date.now());
@@ -60,7 +60,7 @@ const AnalogClock = ({
   } as CSSProperties;
 
   return (
-    <main className={`${styles.container} ${className}`.trim()} style={style}>
+    <main className={`${styles.container}${className ? ` ${className}` : ''}`} style={style}>
       <div className={styles.clock} aria-label="Analog clock">
 
         <div className={`${styles.marker} ${styles.marker12}`} aria-hidden="true" />
@@ -80,6 +80,6 @@ const AnalogClock = ({
   );
 };
 
-AnalogClock.displayName = 'AnalogClock_26_09_14';
+AnalogClock.displayName = 'Clock_26_09_14';
 
 export default AnalogClock;

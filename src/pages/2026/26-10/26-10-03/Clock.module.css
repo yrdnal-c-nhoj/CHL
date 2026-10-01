@@ -11,7 +11,7 @@
   position: fixed;
   inset: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background-color: #8d8a8d;
 }
@@ -20,7 +20,7 @@
   position: fixed;
   inset: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   object-fit: cover;
   object-position: center center;
   z-index: 1;
@@ -60,4 +60,11 @@
 
   /* Replaced text-shadow with drop-shadow filter */
   filter: drop-shadow(0px 4px 0 #000) drop-shadow(0px -1px 0 #cac5c5);
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
