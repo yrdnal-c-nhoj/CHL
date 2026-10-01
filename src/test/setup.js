@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest';
-import { vi } from 'vitest';
+import { beforeEach, vi } from 'vitest';
 
 // matchMedia (jsdom doesn't implement it)
 Object.defineProperty(window, 'matchMedia', {
@@ -17,7 +17,7 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-// Observers. These are called with `new`, so they must be classes
+// Observers are called with `new`, so they must be classes
 // (Vitest 4 throws "is not a constructor" for arrow-function implementations).
 class MockResizeObserver {
   observe = vi.fn();
@@ -35,9 +35,6 @@ class MockIntersectionObserver {
   takeRecords = vi.fn(() => []);
 }
 
-vi.stubGlobal('ResizeObserver', MockResizeObserver);
-vi.stubGlobal('IntersectionObserver', MockIntersectionObserver);
-
 // FontFace API
 class MockFontFace {
   constructor(family, source, descriptors) {
@@ -52,7 +49,13 @@ class MockFontFace {
   }
 }
 
-vi.stubGlobal('FontFace', MockFontFace);
+// `unstubGlobals: true` in vitest.config.js removes every vi.stubGlobal()
+// after each test, so these must be re-applied before each test.
+beforeEach(() => {
+  vi.stubGlobal('ResizeObserver', MockResizeObserver);
+  vi.stubGlobal('IntersectionObserver', MockIntersectionObserver);
+  vi.stubGlobal('FontFace', MockFontFace);
+});
 
 Object.defineProperty(document, 'fonts', {
   value: {
@@ -70,4 +73,6 @@ Object.defineProperty(document, 'fonts', {
 // don't log "Not implemented" errors or crash on a null context.
 HTMLCanvasElement.prototype.getContext = vi.fn(() => null);
 
+// jsdom prints "Not implemented: Window's scrollTo()" without this.
+window.scrollTo = vi.fn();
 Element.prototype.scrollIntoView = vi.fn();
