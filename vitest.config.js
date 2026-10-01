@@ -1,26 +1,23 @@
-/// <reference types="vitest" />
-/// <reference types="@testing-library/jest-dom" />
-
 import react from '@vitejs/plugin-react-swc';
-import path from 'node:path';
-import { defineConfig } from 'vitest/config';
+import { fileURLToPath } from 'node:url';
+import { configDefaults, defineConfig } from 'vitest/config';
 
 export default defineConfig({
-  plugins: [
-    react({
-      tsDecorators: true,
-    }),
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   test: {
     environment: 'jsdom',
     globals: true,
-    fileParallelism: false,
     setupFiles: ['./src/test/setup.js'],
-    exclude: ['**/node_modules/**', '**/dist/**', '.kilo/**'],
+    include: ['src/**/*.{test,spec}.{js,jsx,ts,tsx}', 'scripts/**/*.{test,spec}.{js,ts}'],
+    exclude: [...configDefaults.exclude, '.kilo/**'],
+    restoreMocks: true,
+    unstubGlobals: true,
+    // Re-enable once tests are isolated from shared state (timers, globals, DOM).
+    // fileParallelism: false,
   },
 });
