@@ -485,7 +485,7 @@ function Clock_26_10_02() {
     ctx.strokeStyle = rgbaStr(RAIN_RGB, 0.85);
     ctx.beginPath();
     for (let i=drips.length-1;i>=0;i--){
-      const d=drips[i] as {
+      const d=drips[i] as { x: number; y: number; vy: number; life: number };
       const px=d.x, py=d.y;
       d.vy += DRIP_GRAVITY*dt; d.y += d.vy*dt;
       ctx.moveTo(px,py); ctx.lineTo(d.x,d.y);
