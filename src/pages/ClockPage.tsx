@@ -44,9 +44,9 @@ export default function ClockPage() {
       {overlayVisible && <div className={styles.loadingOverlay}>Loading...</div>}
 
       {error ? (
-        <div className={styles.errorBox} role="alert">
-          {error}
-        </div>
+     <div className={styles.errorBox} role="alert">
+         Error: {error}
+     </div>
       ) : ClockComponent ? (
         <ClockErrorBoundary key={date}>
           <Suspense fallback={<div className={styles.loadingOverlay}>Loading...</div>}>
