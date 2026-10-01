@@ -2,9 +2,6 @@ import { useEffect } from "react";
 import { useClock } from "@/utils/hooks";
 import SRTime from "@/components/SRTime";
 import styles from "./Clock.module.css";
-import clockFont from "@/assets/fonts/26fonts/26-09-23.ttf?url";
-
-export const assets = [clockFont];
 
 const QUOTE = (
   <>
