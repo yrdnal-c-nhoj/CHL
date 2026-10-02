@@ -23,9 +23,8 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 1.5vmin;
   font-family: 'ClockFont_26_10_01', 'Courier New', Courier, monospace;
-  font-size: 16vw;
+  font-size: 18vw;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
   color: #ffffff;
@@ -44,7 +43,7 @@
 
 .digitBox {
   display: inline-block;
-  width: 1ch;
+  width: 0.9ch;
   text-align: center;
 }
 
@@ -62,8 +61,8 @@
   .digitalDisplay {
     flex-direction: column;
     align-items: center;
-    gap: 0.5vmin;
-    font-size: 20vh;
+    gap: 11vmin;
+    font-size: 22vh;
   }
 
   .digitGroup {
