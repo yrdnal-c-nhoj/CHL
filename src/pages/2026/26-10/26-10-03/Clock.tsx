@@ -13,16 +13,18 @@ import styles from './Clock.module.css';
 
 // --- Fixed former HUD values -----------------------------------------------
 const FONT_SIZE = 300;
-const FONT_WEIGHT = 700;
+const FONT_WEIGHT = 300;
 const FONT_FAMILY_NAME = 'Cormorant';
 const FONT_HREF =
   'https://fonts.googleapis.com/css2?family=Cormorant:wght@400;700&display=swap';
 const PIXEL_SIZE = 2;
 const DITHER = true;
 const BG_COLOR = '#082244';
+const BG_COLOR_BOTTOM = '#0d5c9e';
 const RAIN_COLOR = '#cbede6';
 
 const SHOW_SECONDS = false;
+const CLOCK_VCENTER = 0.4;
 
 const TARGET_FPS = 120;
 
@@ -187,6 +189,7 @@ function RainClock() {
 
     // --- Colors / dither constants -----------------------------------------
     const BG_RGB = hexToRgb(BG_COLOR);
+    const BG_BOTTOM_RGB = hexToRgb(BG_COLOR_BOTTOM);
     const RAIN_RGB = hexToRgb(RAIN_COLOR);
     const DR = RAIN_RGB.r - BG_RGB.r;
     const DG = RAIN_RGB.g - BG_RGB.g;
@@ -194,24 +197,11 @@ function RainClock() {
     const DEN = DR * DR + DG * DG + DB * DB;
     const PACKED_FG =
       (255 << 24) | (RAIN_RGB.b << 16) | (RAIN_RGB.g << 8) | RAIN_RGB.r;
-    const PACKED_BG =
-      (255 << 24) | (BG_RGB.b << 16) | (BG_RGB.g << 8) | BG_RGB.r;
-    const MID_LUM =
-      (lum8(BG_RGB.r, BG_RGB.g, BG_RGB.b) +
-        lum8(RAIN_RGB.r, RAIN_RGB.g, RAIN_RGB.b)) >>
-      1;
+    const RAIN_LUM = lum8(RAIN_RGB.r, RAIN_RGB.g, RAIN_RGB.b);
     const USE_PROJ = DEN >= 32;
-    const thrProjLUT = new Uint32Array(64);
-    const thrLumLUT = new Uint16Array(64);
-    for (let i = 0; i < 64; i++) {
-      const b = BAYER8[i] ?? 0;
-      if (USE_PROJ) thrProjLUT[i] = DEN * (b * 2 + 1);
-      else
-        thrLumLUT[i] = Math.max(
-          0,
-          Math.min(255, (MID_LUM + (b + 0.5) * (255 / 64)) | 0),
-        );
-    }
+
+    // Background gradient (rebuilt when H changes)
+    let bgGrad: CanvasGradient | null = null;
 
     // Pre-built stroke styles
     const rainStroke = rgbaStr(RAIN_RGB, 0.55);
@@ -307,13 +297,13 @@ function RainClock() {
       let x = W / 2 - cellsWidth(text) / 2;
       for (const ch of text) {
         const cw = ch === ':' ? cells.colonW : cells.digitW;
-        maskGfx.fillText(ch, x + cw / 2, H / 2);
+        maskGfx.fillText(ch, x + cw / 2, H * CLOCK_VCENTER);
         x += cw;
       }
 
       const descent =
         maskGfx.measureText('0').actualBoundingBoxDescent || fontCss * 0.2;
-      const textBottom = H / 2 + descent;
+      const textBottom = H * CLOCK_VCENTER + descent;
       const gapPx = Math.round(fontCss * GROUND_GAP_EM * DPR);
       const thickPx = Math.max(
         Math.round(GROUND_MIN_THICK * DPR),
@@ -568,7 +558,7 @@ function RainClock() {
       fxGfx.imageSmoothingEnabled = true;
       fxGfx.drawImage(cv, 0, 0, postW, postH);
 
-      if (DITHER) {
+        if (DITHER) {
         const img = fxGfx.getImageData(0, 0, postW, postH);
         const data = img.data;
         const u32 = new Uint32Array(data.buffer);
@@ -576,27 +566,62 @@ function RainClock() {
         if (USE_PROJ) {
           for (let y = 0; y < postH; y++) {
             const y8 = (y & 7) << 3;
+            const t = postH > 1 ? y / (postH - 1) : 0;
+            const bgR = Math.round(
+              BG_RGB.r + (BG_BOTTOM_RGB.r - BG_RGB.r) * t,
+            );
+            const bgG = Math.round(
+              BG_RGB.g + (BG_BOTTOM_RGB.g - BG_RGB.g) * t,
+            );
+            const bgB = Math.round(
+              BG_RGB.b + (BG_BOTTOM_RGB.b - BG_RGB.b) * t,
+            );
+            const pdr = RAIN_RGB.r - bgR;
+            const pdg = RAIN_RGB.g - bgG;
+            const pdb = RAIN_RGB.b - bgB;
+            const pden = pdr * pdr + pdg * pdg + pdb * pdb;
+            const bgPacked =
+              (255 << 24) | (bgB << 16) | (bgG << 8) | bgR;
             for (let x = 0; x < postW; x++, p += 4) {
               const num =
-                (((data[p] ?? 0) - BG_RGB.r) * DR +
-                  ((data[p + 1] ?? 0) - BG_RGB.g) * DG +
-                  ((data[p + 2] ?? 0) - BG_RGB.b) * DB) |
+                (((data[p] ?? 0) - bgR) * pdr +
+                  ((data[p + 1] ?? 0) - bgG) * pdg +
+                  ((data[p + 2] ?? 0) - bgB) * pdb) |
                 0;
-              const thr = thrProjLUT[y8 | (x & 7)] ?? 0;
-              u32[p >> 2] = num << 7 > thr ? PACKED_FG : PACKED_BG;
+              const bayer = BAYER8[y8 | (x & 7)] ?? 0;
+              const thr = pden * (bayer * 2 + 1);
+              u32[p >> 2] = num << 7 > thr ? PACKED_FG : bgPacked;
             }
           }
         } else {
           for (let y = 0; y < postH; y++) {
             const y8 = (y & 7) << 3;
+            const t = postH > 1 ? y / (postH - 1) : 0;
+            const bgR = Math.round(
+              BG_RGB.r + (BG_BOTTOM_RGB.r - BG_RGB.r) * t,
+            );
+            const bgG = Math.round(
+              BG_RGB.g + (BG_BOTTOM_RGB.g - BG_RGB.g) * t,
+            );
+            const bgB = Math.round(
+              BG_RGB.b + (BG_BOTTOM_RGB.b - BG_RGB.b) * t,
+            );
+            const bgLum = lum8(bgR, bgG, bgB);
+            const midLum = (bgLum + RAIN_LUM) >> 1;
+            const bgPacked =
+              (255 << 24) | (bgB << 16) | (bgG << 8) | bgR;
             for (let x = 0; x < postW; x++, p += 4) {
               const lum = lum8(
                 data[p] ?? 0,
                 data[p + 1] ?? 0,
                 data[p + 2] ?? 0,
               );
-              const thr = thrLumLUT[y8 | (x & 7)] ?? 0;
-              u32[p >> 2] = lum > thr ? PACKED_FG : PACKED_BG;
+              const bayer = BAYER8[y8 | (x & 7)] ?? 0;
+              const thr = Math.max(
+                0,
+                Math.min(255, (midLum + (bayer + 0.5) * (255 / 64)) | 0),
+              );
+              u32[p >> 2] = lum > thr ? PACKED_FG : bgPacked;
             }
           }
         }
@@ -619,7 +644,7 @@ function RainClock() {
       staticGfx.fillRect(0, 0, W, H);
       staticGfx.globalCompositeOperation = 'source-over';
 
-      gfx.fillStyle = BG_COLOR;
+      gfx.fillStyle = bgGrad ?? BG_COLOR;
       gfx.fillRect(0, 0, W, H);
       gfx.drawImage(staticCanvas, 0, 0);
       applyPostProcess();
@@ -639,6 +664,11 @@ function RainClock() {
       staticCanvas.width = W;
       staticCanvas.height = H;
       gfx.setTransform(1, 0, 0, 1, 0, 0);
+
+      // Build top-to-bottom background gradient for this resolution
+      bgGrad = gfx.createLinearGradient(0, 0, 0, H);
+      bgGrad.addColorStop(0, BG_COLOR);
+      bgGrad.addColorStop(1, BG_COLOR_BOTTOM);
 
       RAIN_COUNT = Math.max(500, Math.floor(W * H * RAIN_DENSITY));
       rebuildTextMask();
@@ -684,7 +714,7 @@ function RainClock() {
       }
       dirty = false;
 
-      gfx.fillStyle = BG_COLOR;
+      gfx.fillStyle = bgGrad ?? BG_COLOR;
       gfx.fillRect(0, 0, W, H);
 
       const clipped = gTopY >= 0;
@@ -897,7 +927,9 @@ function RainClock() {
   return (
     <main
       className={styles.container}
-      style={{ '--clock-bg': BG_COLOR } as CSSProperties}
+      style={{
+        '--clock-bg': `linear-gradient(to bottom, ${BG_COLOR}, ${BG_COLOR_BOTTOM})`,
+      } as CSSProperties}
     >
       <SRTime time={time} />
       <canvas ref={canvasRef} className={styles.canvas} aria-hidden="true" />
