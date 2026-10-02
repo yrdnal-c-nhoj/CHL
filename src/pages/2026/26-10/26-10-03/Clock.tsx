@@ -215,6 +215,10 @@ function RainClock() {
     let gTopY = -1;
     let currentText = formatTime(timeRef.current);
 
+    // Font gating: only rebuild the text mask once Cormorant is loaded
+    let fontReady = false;
+    let maskNeedsRebuild = false;
+
     // Spawn margins (extended left so rain reaches the lower-left ground)
     let leftExtra = 200;
     let rightExtra = 100;
@@ -671,7 +675,11 @@ function RainClock() {
       bgGrad.addColorStop(1, BG_COLOR_BOTTOM);
 
       RAIN_COUNT = Math.max(500, Math.floor(W * H * RAIN_DENSITY));
-      rebuildTextMask();
+      if (fontReady) {
+        rebuildTextMask();
+      } else {
+        maskNeedsRebuild = true;
+      }
       spawnInitialRain();
     }
 
@@ -695,7 +703,11 @@ function RainClock() {
       const nowText = formatTime(timeRef.current);
       if (nowText !== currentText) {
         currentText = nowText;
-        rebuildTextMask();
+        if (fontReady) {
+          rebuildTextMask();
+        } else {
+          maskNeedsRebuild = true;
+        }
       }
 
       if (W === 0 || H === 0) {
@@ -904,13 +916,21 @@ function RainClock() {
     if (!resizeObserver) window.addEventListener('resize', resize);
     rafId = requestAnimationFrame(frame);
 
+    const onFontLoaded = () => {
+      fontReady = true;
+      if (maskNeedsRebuild) {
+        maskNeedsRebuild = false;
+        rebuildTextMask();
+      }
+    };
+
     if (document.fonts?.load) {
       document.fonts
         .load(fontSpec(Math.floor(FONT_SIZE * DPR)))
-        .then(() => {
-          if (!cancelled) rebuildTextMask();
-        })
-        .catch(() => undefined);
+        .then(onFontLoaded)
+        .catch(() => onFontLoaded());
+    } else {
+      onFontLoaded();
     }
 
     return () => {
