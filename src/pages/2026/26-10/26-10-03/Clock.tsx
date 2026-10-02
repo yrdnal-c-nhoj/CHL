@@ -19,8 +19,8 @@ const FONT_HREF =
   'https://fonts.googleapis.com/css2?family=Cormorant:wght@400;700&display=swap';
 const PIXEL_SIZE = 2;
 const DITHER = true;
-const BG_COLOR = '#082244';
-const BG_COLOR_BOTTOM = '#0d5c9e';
+const BG_COLOR = '#27607f';
+const BG_COLOR_BOTTOM = '#333639';
 const RAIN_COLOR = '#cbede6';
 
 const SHOW_SECONDS = false;
