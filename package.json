@@ -23,7 +23,7 @@
     "prepare": "husky || true",
     "type-check": "tsc --noEmit -p tsconfig.ci.json",
     "check": "npm run type-check && npm run lint && npm run format:check && npm run test:run && npm run verify:clocks:changed && npm run build",
-    "check:ci": "npm run type-check && npm run lint && npm run format:check && npm run test:run && npm run verify:clocks && npm run build",
+    "check:ci": "npm run type-check && npm run lint && npm run format:check && npm run test:run && npm run verify:clocks:changed && npm run build",
     "status": "npm run verify:clocks && npm run type-check"
   },
   "dependencies": {

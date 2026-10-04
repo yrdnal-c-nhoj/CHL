@@ -3,8 +3,11 @@
 /**
  * Verify current clock pages against docs/CLOCKS.md.
  *
- * Full-fleet verification reports legacy debt. Use --changed in CI to fail
- * only when a changed clock introduces contract violations.
+ * Exit-code policy:
+ *   - Full-fleet audit (no --changed, no --path) reports legacy debt but
+ *     always exits 0, so historical violations do not block CI.
+ *   - --changed (or --path) is strict: exits non-zero when a checked clock
+ *     violates the current clock contract. CI uses this on changed pages.
  */
 
 import fs from 'node:fs';
@@ -59,15 +62,20 @@ function parseArgs(argv) {
 
 function getChangedFiles() {
   const baseRef = process.env.GITHUB_BASE_REF;
-  const revisions = baseRef
-    ? [`origin/${baseRef}...HEAD`]
-    : ['HEAD^'];
+  const revisions = baseRef ? [`origin/${baseRef}...HEAD`] : ['HEAD^'];
 
   for (const revision of revisions) {
     try {
       return execFileSync(
         'git',
-        ['diff', '--name-only', '--diff-filter=ACMRTUXB', revision, '--', 'src/pages'],
+        [
+          'diff',
+          '--name-only',
+          '--diff-filter=ACMRTUXB',
+          revision,
+          '--',
+          'src/pages',
+        ],
         { cwd: ROOT, encoding: 'utf8' },
       )
         .split('\n')
@@ -91,7 +99,9 @@ function findClockFiles(directory, files = []) {
 
 function dateFromPath(filePath) {
   const relativePath = path.relative(PAGES_DIR, filePath);
-  return relativePath.split(path.sep).find((part) => DATE_PATTERN.test(part)) ?? null;
+  return (
+    relativePath.split(path.sep).find((part) => DATE_PATTERN.test(part)) ?? null
+  );
 }
 
 function clockPathForDate(date) {
@@ -129,10 +139,17 @@ function verifyClock(filePath) {
   if (!/displayName\s*=\s*['"][^'"]*_\d{2}_\d{2}_\d{2}['"]/.test(source)) {
     errors.push('displayName must end with _YY_MM_DD');
   }
-  if (!/import\s*\{\s*(?:useClock|useSmoothClock)\s*\}\s*from\s*['"]@\/utils\/hooks['"]/.test(source)) {
+  if (
+    !/import\s*\{\s*(?:useClock|useSmoothClock)\s*\}\s*from\s*['"]@\/utils\/hooks['"]/.test(
+      source,
+    )
+  ) {
     errors.push('must import useClock or useSmoothClock from @/utils/hooks');
   }
-  if (!/<time\b[^>]*\bdateTime\s*=/.test(source) && !/\bSRTime\b/.test(source)) {
+  if (
+    !/<time\b[^>]*\bdateTime\s*=/.test(source) &&
+    !/\bSRTime\b/.test(source)
+  ) {
     errors.push('must render a semantic <time> with dateTime');
   }
 
@@ -144,7 +161,9 @@ function verifyClock(filePath) {
       errors.push('current clocks must use SRTime component for semantic time');
     }
     if (/styles\.srOnly/.test(source)) {
-      errors.push('current clocks must not use styles.srOnly directly; use SRTime instead');
+      errors.push(
+        'current clocks must not use styles.srOnly directly; use SRTime instead',
+      );
     }
   } else {
     // Historical clocks: if using styles.srOnly, verify CSS defines it
@@ -152,7 +171,9 @@ function verifyClock(filePath) {
     if (usesStylesSrOnly) {
       const cssContent = fs.readFileSync(cssPath, 'utf8');
       if (!/\.srOnly\s*\{/.test(cssContent)) {
-        errors.push('Clock.module.css must define .srOnly when using styles.srOnly');
+        errors.push(
+          'Clock.module.css must define .srOnly when using styles.srOnly',
+        );
       }
     }
   }
@@ -161,7 +182,9 @@ function verifyClock(filePath) {
   // systems may use requestAnimationFrame when they do not calculate clock time
   // independently.
   if (/setInterval\s*\(|setTimeout\s*\(/.test(source)) {
-    errors.push('must not use direct timer loops for clock timekeeping or animation scheduling');
+    errors.push(
+      'must not use direct timer loops for clock timekeeping or animation scheduling',
+    );
   }
 
   if (hasIndependentClockTiming(source)) {
@@ -169,7 +192,8 @@ function verifyClock(filePath) {
       'must not use requestAnimationFrame as an independent clock time source; use useClock or useSmoothClock',
     );
   }
-  if (/<style(?:\s|>)/.test(source)) errors.push('must not use inline style tags');
+  if (/<style(?:\s|>)/.test(source))
+    errors.push('must not use inline style tags');
   if (/\bany\b/.test(source)) errors.push('must not use the any type');
   if (/useClockTime|useSecondClock|useMillisecondClock/.test(source)) {
     errors.push('must not use deprecated clock hooks');
@@ -196,9 +220,7 @@ function selectFiles(options) {
       .map((filePath) => path.resolve(ROOT, filePath))
       .map((filePath) => dateFromPath(filePath))
       .filter(Boolean);
-    return [...new Set(changedDates)].map((date) =>
-      clockPathForDate(date),
-    );
+    return [...new Set(changedDates)].map((date) => clockPathForDate(date));
   }
 
   return findClockFiles(PAGES_DIR);
@@ -213,7 +235,9 @@ function main() {
     return;
   }
 
-  const files = selectFiles(options).filter((filePath) => fs.existsSync(filePath));
+  const files = selectFiles(options).filter((filePath) =>
+    fs.existsSync(filePath),
+  );
   if (files.length === 0) {
     if (options.changed) {
       if (!options.quiet) console.log('No changed clock pages to verify.');
@@ -235,7 +259,21 @@ function main() {
   }
 
   if (failures.length > 0) {
-    fail(`${failures.length} of ${results.length} clock page(s) violate the contract`);
+    if (options.changed || options.paths.length > 0) {
+      fail(
+        `${failures.length} of ${results.length} clock page(s) violate the contract`,
+      );
+    } else if (!options.quiet) {
+      console.log(
+        `\nFull audit: ${failures.length} of ${results.length} clock page(s) violate the current contract.`,
+      );
+      console.log(
+        'These are legacy debt from historical clocks; full audit does not fail CI.',
+      );
+      console.log(
+        'To enforce the contract on new or changed clocks, use `npm run verify:clocks:changed`.',
+      );
+    }
   } else if (!options.quiet) {
     console.log(`Verified ${results.length} clock page(s).`);
   }
