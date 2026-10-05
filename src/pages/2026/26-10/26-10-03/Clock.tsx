@@ -54,6 +54,30 @@ const POOL_LINE_WIDTH = 2;
 const SLOPE_FLOW_BOOST = 4;
 const SLOPE_DRIP_BONUS = 40;
 
+// --- Lightning (render-driven; not a time source) -------------------------
+// A thunderclap: the whole screen flashes brilliant white for a split second,
+// then the clock digits glow red. Driven by the rAF render loop.
+const LIGHTNING_MIN_GAP = 1200;
+const LIGHTNING_MAX_GAP = 2800; // never more than ~3s without a flash
+const LIGHTNING_WHITE_PEAK = 1.0; // full-screen brilliant white
+const LIGHTNING_WHITE_DECAY_PER_MS = 0.032; // fast: a split-second white pop
+const LIGHTNING_RED_PEAK = 0.55; // digit-only red afterglow
+const LIGHTNING_RED_DECAY_PER_MS = 0.008; // slower: clock glows red briefly
+const LIGHTNING_RED_AFTERWHITE_MS = 40; // red lags the white pop
+const LIGHTNING_FLASH_MIN_MS = 20;
+const LIGHTNING_FLASH_VAR_MS = 40;
+const LIGHTNING_DISTANT_MIN_MS = 170;
+const LIGHTNING_DISTANT_VAR_MS = 180;
+const LIGHTNING_DISTANT_INTENSITY = 0.28; // fraction of peak for distant rumble
+const LIGHTNING_BURSTS_MIN = 1;
+const LIGHTNING_BURSTS_MAX = 2;
+const LIGHTNING_DISTANT_CHANCE = 0.3;
+const LIGHTNING_STARTUP_FIRST_MIN = 300;
+const LIGHTNING_STARTUP_FIRST_MAX = 950;
+const LIGHTNING_STARTUP_SECOND_MIN = 1000;
+const LIGHTNING_STARTUP_SECOND_MAX = 1950;
+const LIGHTNING_DIGIT_RED = '#ff3333';
+
 const GROUND_GAP_EM = 1;
 const GROUND_THICK_EM = 0.25;
 const GROUND_MIN_THICK = 12;
@@ -99,6 +123,12 @@ interface Drip {
   y: number;
   vy: number;
   life: number;
+}
+
+interface FlashEvent {
+  when: number;
+  intensity: number;
+  color: 'white' | 'red';
 }
 
 // --- Helpers ----------------------------------------------------------------
@@ -170,12 +200,24 @@ function RainClock() {
     const sctx = staticCanvas.getContext('2d');
     if (!sctx) return;
 
+    // Offscreen digit-only shape (lightning makes only the digits glow)
+    const digitMaskCanvas = document.createElement('canvas');
+    const dctx = digitMaskCanvas.getContext('2d');
+    if (!dctx) return;
+
+    // Offscreen buffer for red digits composited onto the main canvas
+    const redBuf = document.createElement('canvas');
+    const rbufCtx = redBuf.getContext('2d');
+    if (!rbufCtx) return;
+
     // Non-null aliases (narrowing is lost inside hoisted function declarations)
     const cv: HTMLCanvasElement = canvas;
     const gfx: CanvasRenderingContext2D = ctx;
     const fxGfx: CanvasRenderingContext2D = fxc;
     const maskGfx: CanvasRenderingContext2D = tctx;
     const staticGfx: CanvasRenderingContext2D = sctx;
+    const digitMaskGfx: CanvasRenderingContext2D = dctx;
+    const redBufGfx: CanvasRenderingContext2D = rbufCtx;
 
     // --- Reduced motion -----------------------------------------------------
     const motionQuery = window.matchMedia?.('(prefers-reduced-motion: reduce)');
@@ -249,6 +291,21 @@ function RainClock() {
     const splashes: Splash[] = [];
     const drips: Drip[] = [];
 
+    // --- Lightning state (render-driven; not a time source) -----------------
+    let lightningMs = 0;
+    const lightningStartup: number[] = [
+      LIGHTNING_STARTUP_FIRST_MIN +
+        Math.random() *
+          (LIGHTNING_STARTUP_FIRST_MAX - LIGHTNING_STARTUP_FIRST_MIN),
+      LIGHTNING_STARTUP_SECOND_MIN +
+        Math.random() *
+          (LIGHTNING_STARTUP_SECOND_MAX - LIGHTNING_STARTUP_SECOND_MIN),
+    ];
+    let lightningNextAt: number = lightningStartup[0] ?? randomThunderGap();
+    let flashWhite = 0;
+    let flashRed = 0;
+    const flashEvents: FlashEvent[] = [];
+
     const addPool = (idx: number, amount: number) => {
       pool[idx] = (pool[idx] ?? 0) + amount;
     };
@@ -313,6 +370,11 @@ function RainClock() {
         maskGfx.fillText(ch, x + cw / 2, H * CLOCK_VCENTER);
         x += cw;
       }
+
+      // Snapshot the digit-only shape (before the ground bar is added) so the
+      // lightning red glow can be masked to just the clock numerals.
+      digitMaskGfx.clearRect(0, 0, W, H);
+      digitMaskGfx.drawImage(textCanvas, 0, 0);
 
       const descent =
         maskGfx.measureText('0').actualBoundingBoxDescent || fontCss * 0.2;
@@ -552,6 +614,111 @@ function RainClock() {
       if (ledgeFlags[idx] === 1) addPool(idx, EDGE_POOL_ADD_TOP);
     }
 
+    // --- Lightning ---------------------------------------------------------
+    function randomThunderGap() {
+      return (
+        LIGHTNING_MIN_GAP +
+        Math.random() * (LIGHTNING_MAX_GAP - LIGHTNING_MIN_GAP)
+      );
+    }
+
+    function triggerLightningCluster(nowMs: number) {
+      const bursts =
+        LIGHTNING_BURSTS_MIN +
+        ((Math.random() * (LIGHTNING_BURSTS_MAX - LIGHTNING_BURSTS_MIN + 1)) |
+          0);
+      let t = nowMs;
+      for (let i = 0; i < bursts; i++) {
+        t += LIGHTNING_FLASH_MIN_MS + Math.random() * LIGHTNING_FLASH_VAR_MS;
+        // A flash = brilliant white pop, then the digits glow red.
+        flashEvents.push({
+          when: t,
+          intensity: LIGHTNING_WHITE_PEAK * (0.7 + Math.random() * 0.3),
+          color: 'white',
+        });
+        flashEvents.push({
+          when: t + LIGHTNING_RED_AFTERWHITE_MS,
+          intensity: LIGHTNING_RED_PEAK * (0.6 + Math.random() * 0.4),
+          color: 'red',
+        });
+      }
+      if (Math.random() < LIGHTNING_DISTANT_CHANCE) {
+        const dw =
+          t +
+          LIGHTNING_DISTANT_MIN_MS +
+          Math.random() * LIGHTNING_DISTANT_VAR_MS;
+        flashEvents.push({
+          when: dw,
+          intensity:
+            LIGHTNING_WHITE_PEAK *
+            LIGHTNING_DISTANT_INTENSITY *
+            (0.5 + Math.random()),
+          color: 'white',
+        });
+        flashEvents.push({
+          when: dw + LIGHTNING_RED_AFTERWHITE_MS,
+          intensity:
+            LIGHTNING_RED_PEAK *
+            LIGHTNING_DISTANT_INTENSITY *
+            (0.5 + Math.random()),
+          color: 'red',
+        });
+      }
+    }
+
+    function updateLightning(msElapsed: number) {
+      lightningMs += msElapsed;
+
+      if (lightningMs >= lightningNextAt) {
+        triggerLightningCluster(lightningMs);
+        lightningStartup.shift();
+        const nextStartup = lightningStartup[0];
+        lightningNextAt =
+          nextStartup !== undefined
+            ? nextStartup
+            : lightningMs + randomThunderGap();
+      }
+
+      for (let i = flashEvents.length - 1; i >= 0; i--) {
+        const e = flashEvents[i];
+        if (!e) continue;
+        if (e.when <= lightningMs) {
+          if (e.color === 'white') {
+            if (e.intensity > flashWhite) flashWhite = e.intensity;
+          } else if (e.intensity > flashRed) flashRed = e.intensity;
+          removeAt(flashEvents, i);
+        }
+      }
+
+      flashWhite *= Math.pow(1 - LIGHTNING_WHITE_DECAY_PER_MS, msElapsed);
+      flashRed *= Math.pow(1 - LIGHTNING_RED_DECAY_PER_MS, msElapsed);
+      if (flashWhite < 0.005) flashWhite = 0;
+      if (flashRed < 0.005) flashRed = 0;
+    }
+
+    function drawLightningFlash() {
+      // The whole screen flashes brilliant white for a split second...
+      if (flashWhite > 0.01) {
+        gfx.globalAlpha = flashWhite;
+        gfx.fillStyle = '#fff';
+        gfx.fillRect(0, 0, W, H);
+        gfx.globalAlpha = 1;
+      }
+
+      // ...then only the clock digits glow red, composited via the digit mask.
+      if (flashRed > 0.01) {
+        redBufGfx.clearRect(0, 0, W, H);
+        redBufGfx.globalAlpha = flashRed;
+        redBufGfx.fillStyle = LIGHTNING_DIGIT_RED;
+        redBufGfx.fillRect(0, 0, W, H);
+        redBufGfx.globalCompositeOperation = 'destination-atop';
+        redBufGfx.drawImage(digitMaskCanvas, 0, 0);
+        redBufGfx.globalCompositeOperation = 'source-over';
+        redBufGfx.globalAlpha = 1;
+        gfx.drawImage(redBuf, 0, 0);
+      }
+    }
+
     // --- Post-process (pixelate + ordered dither) ---------------------------
     let lastPostW = 0;
     let lastPostH = 0;
@@ -571,7 +738,7 @@ function RainClock() {
       fxGfx.imageSmoothingEnabled = true;
       fxGfx.drawImage(cv, 0, 0, postW, postH);
 
-        if (DITHER) {
+      if (DITHER) {
         const img = fxGfx.getImageData(0, 0, postW, postH);
         const data = img.data;
         const u32 = new Uint32Array(data.buffer);
@@ -580,21 +747,14 @@ function RainClock() {
           for (let y = 0; y < postH; y++) {
             const y8 = (y & 7) << 3;
             const t = postH > 1 ? y / (postH - 1) : 0;
-            const bgR = Math.round(
-              BG_RGB.r + (BG_BOTTOM_RGB.r - BG_RGB.r) * t,
-            );
-            const bgG = Math.round(
-              BG_RGB.g + (BG_BOTTOM_RGB.g - BG_RGB.g) * t,
-            );
-            const bgB = Math.round(
-              BG_RGB.b + (BG_BOTTOM_RGB.b - BG_RGB.b) * t,
-            );
+            const bgR = Math.round(BG_RGB.r + (BG_BOTTOM_RGB.r - BG_RGB.r) * t);
+            const bgG = Math.round(BG_RGB.g + (BG_BOTTOM_RGB.g - BG_RGB.g) * t);
+            const bgB = Math.round(BG_RGB.b + (BG_BOTTOM_RGB.b - BG_RGB.b) * t);
             const pdr = RAIN_RGB.r - bgR;
             const pdg = RAIN_RGB.g - bgG;
             const pdb = RAIN_RGB.b - bgB;
             const pden = pdr * pdr + pdg * pdg + pdb * pdb;
-            const bgPacked =
-              (255 << 24) | (bgB << 16) | (bgG << 8) | bgR;
+            const bgPacked = (255 << 24) | (bgB << 16) | (bgG << 8) | bgR;
             for (let x = 0; x < postW; x++, p += 4) {
               const num =
                 (((data[p] ?? 0) - bgR) * pdr +
@@ -610,19 +770,12 @@ function RainClock() {
           for (let y = 0; y < postH; y++) {
             const y8 = (y & 7) << 3;
             const t = postH > 1 ? y / (postH - 1) : 0;
-            const bgR = Math.round(
-              BG_RGB.r + (BG_BOTTOM_RGB.r - BG_RGB.r) * t,
-            );
-            const bgG = Math.round(
-              BG_RGB.g + (BG_BOTTOM_RGB.g - BG_RGB.g) * t,
-            );
-            const bgB = Math.round(
-              BG_RGB.b + (BG_BOTTOM_RGB.b - BG_RGB.b) * t,
-            );
+            const bgR = Math.round(BG_RGB.r + (BG_BOTTOM_RGB.r - BG_RGB.r) * t);
+            const bgG = Math.round(BG_RGB.g + (BG_BOTTOM_RGB.g - BG_RGB.g) * t);
+            const bgB = Math.round(BG_RGB.b + (BG_BOTTOM_RGB.b - BG_RGB.b) * t);
             const bgLum = lum8(bgR, bgG, bgB);
             const midLum = (bgLum + RAIN_LUM) >> 1;
-            const bgPacked =
-              (255 << 24) | (bgB << 16) | (bgG << 8) | bgR;
+            const bgPacked = (255 << 24) | (bgB << 16) | (bgG << 8) | bgR;
             for (let x = 0; x < postW; x++, p += 4) {
               const lum = lum8(
                 data[p] ?? 0,
@@ -676,6 +829,10 @@ function RainClock() {
       textCanvas.height = H;
       staticCanvas.width = W;
       staticCanvas.height = H;
+      digitMaskCanvas.width = W;
+      digitMaskCanvas.height = H;
+      redBuf.width = W;
+      redBuf.height = H;
       gfx.setTransform(1, 0, 0, 1, 0, 0);
 
       // Build top-to-bottom background gradient for this resolution
@@ -707,6 +864,10 @@ function RainClock() {
       if (lastT === 0) lastT = t;
       const dt = Math.min(33, t - lastT) / 16.67;
       lastT = t;
+      const msElapsed = dt * 16.67;
+
+      // Lightning schedule advances with the render clock (render-only loop)
+      updateLightning(msElapsed);
 
       // Rebuild the collision mask only when the displayed text changes
       const nowText = formatTime(timeRef.current);
@@ -901,6 +1062,14 @@ function RainClock() {
       if (clipped) gfx.restore();
 
       applyPostProcess();
+
+      // Random lightning: the whole screen flashes brilliant white for a split
+      // second, then only the clock digits glow red. Render-driven; suppressed
+      // under prefers-reduced-motion so the time stays readable.
+      if (!reduced && (flashWhite > 0.01 || flashRed > 0.01)) {
+        drawLightningFlash();
+      }
+
       rafId = requestAnimationFrame(frame);
     }
 
@@ -969,9 +1138,11 @@ function RainClock() {
   return (
     <main
       className={styles.container}
-      style={{
-        '--clock-bg': `linear-gradient(to bottom, ${BG_COLOR}, ${BG_COLOR_BOTTOM})`,
-      } as CSSProperties}
+      style={
+        {
+          '--clock-bg': `linear-gradient(to bottom, ${BG_COLOR}, ${BG_COLOR_BOTTOM})`,
+        } as CSSProperties
+      }
     >
       <SRTime time={time} />
       <canvas ref={canvasRef} className={styles.canvas} aria-hidden="true" />

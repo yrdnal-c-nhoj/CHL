@@ -1,60 +1,148 @@
+import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
-import SRTime from '@/components/SRTime';
-import fontUrl from '@/assets/fonts/26fonts/26-09-27.otf?url';
-import backgroundVideo from '@/assets/images/26_images/26-09/26-09-27/puddle.webm';
+import { memo, useMemo } from 'react';
+import peacockImage from '@/assets/images/26_images/26-10/26-10-04/cinnabar.webp';
+import eyesImage from '@/assets/images/26_images/26-09/26-09-02/eyes.webp';
+import fontUrl from '@/assets/fonts/26fonts/26-09-02.ttf?url';
 import styles from './Clock.module.css';
 
-export const assets = [fontUrl, backgroundVideo];
+export const assets = [peacockImage, eyesImage, fontUrl];
 
-const FONT_FAMILY = 'ClockFont_26_09_23';
+const FONT_FAMILY = 'ClockFont_26_09_02';
 
 const fontConfig: FontConfig = {
   fontFamily: FONT_FAMILY,
   fontUrl,
 };
 
-const formatDigits = (value: number, length = 2): string =>
-  value.toString().padStart(length, '0');
+const GRID_COLS = 21;
+const GRID_ROWS = 21;
 
-const Clock = () => {
+const GridOverlay = memo(({ image }: { image: string }) => {
+  const tiles = useMemo(() => {
+    const result = [];
+    const halfCols = Math.floor(GRID_COLS / 2);
+    const halfRows = Math.floor(GRID_ROWS / 2);
+
+    for (let r = -halfRows; r <= halfRows; r++) {
+      for (let c = -halfCols; c <= halfCols; c++) {
+        const isFlipped = (r + c) % 2 !== 0;
+        result.push({
+          key: `${r}_${c}`,
+          isFlipped,
+        });
+      }
+    }
+    return result;
+  }, []);
+
+  return (
+    <div className={styles.gridOverlay}>
+      {tiles.map(({ key, isFlipped }) => (
+        <div
+          key={key}
+          className={`${styles.tile} ${isFlipped ? styles.flipped : ''}`}
+          style={{ backgroundImage: `url(${image})` }}
+        />
+      ))}
+    </div>
+  );
+});
+GridOverlay.displayName = 'Clock_26_09_02';
+
+const Clock_26_09_02 = () => {
   useSuspenseFontLoader([fontConfig]);
 
   const time = useSmoothClock(50);
 
-  const hours = formatDigits(time.getHours());
-  const minutes = formatDigits(time.getMinutes());
-  const seconds = formatDigits(time.getSeconds());
+  const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
+    const ms = time.getMilliseconds();
+    const s = time.getSeconds() + ms / 1000;
+    const m = time.getMinutes() + s / 60;
+    const h = (time.getHours() % 12) + m / 60;
+    return {
+      hourAngle: h * 30,
+      minuteAngle: m * 6,
+      secondAngle: s * 6,
+    };
+  }, [time]);
 
-  const digits = [...hours, ...minutes, ...seconds];
+  const numerals = useMemo(() => {
+    const ROMAN_NUMERALS = [
+      'XII', 'I', 'II', 'III', 'IV', 'V',
+      'VI', 'VII', 'VIII', 'IX', 'X', 'XI',
+    ] as const;
+    const RADIUS_PERCENT = 42;
+    return ROMAN_NUMERALS.map((numeral, i) => {
+      const angle = (i / 12) * 2 * Math.PI;
+      const x = 50 + RADIUS_PERCENT * Math.sin(angle);
+      const y = 50 - RADIUS_PERCENT * Math.cos(angle);
+      const rotation = (i / 12) * 360;
+      return { numeral, x, y, rotation, key: numeral };
+    });
+  }, []);
 
   return (
     <main className={styles.container}>
-      <video
+      <div
         className={styles.backgroundLayer}
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="none"
-        aria-hidden="true"
-      >
-        <source src={backgroundVideo} type="video/webm" />
-      </video>
+        style={{ backgroundImage: `url(${peacockImage})` }}
+      />
+      <GridOverlay image={eyesImage} />
+
+      <div className={styles.clockFace}>
+        {numerals.map(({ numeral, x, y, rotation, key }) => (
+          <div
+            key={key}
+            className={styles.numeral}
+            style={{
+              left: `${x}%`,
+              top: `${y}%`,
+              transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
+            }}
+          >
+            {numeral}
+          </div>
+        ))}
+
+        <div
+          className={styles.hand}
+          style={{
+            '--hand-width': '1.4vmin',
+            '--hand-height': '22vmin',
+            '--hand-rotate': `${hourAngle}deg`,
+            '--hand-color': '#ffffff',
+          } as React.CSSProperties}
+        />
+        <div
+          className={styles.hand}
+          style={{
+            '--hand-width': '1vmin',
+            '--hand-height': '32vmin',
+            '--hand-rotate': `${minuteAngle}deg`,
+            '--hand-color': '#ffffff',
+          } as React.CSSProperties}
+        />
+        <div
+          className={styles.hand}
+          style={{
+            '--hand-width': '0.4vmin',
+            '--hand-height': '36vmin',
+            '--hand-rotate': `${secondAngle}deg`,
+            '--hand-color': '#a12235',
+          } as React.CSSProperties}
+        />
+        <div className={styles.centerDot} />
+      </div>
 
       <SRTime time={time} />
-
-      <div className={styles.digitalDisplay} aria-hidden="true">
-        {digits.map((digit, index) => (
-          <span key={`d${index}`} className={styles.digitBox}>
-            {digit}
-          </span>
-        ))}
-      </div>
     </main>
   );
 };
 
-export default Clock;
-Clock.displayName = 'Clock_26_10_04';
+const MemoizedClock = memo(Clock_26_09_02);
+MemoizedClock.displayName = 'Clock_26_09_02';
+
+export default MemoizedClock;
