@@ -7293,5 +7293,28 @@
       "water",
       "wet"
     ]
+  },
+   {
+    "path": "26-10-04",
+    "date": "26-10-04",
+    "title": "Cinnabar",
+    "tags": [
+      "analog",
+      "roman-numeral",
+      "earth",
+      "red"
+    ]
+  },
+  {
+    "path": "26-10-05",
+    "date": "26-10-05",
+    "title": "Puddle",
+    "tags": [
+      "digital",
+      "gravity",
+      "image-free",
+      "water",
+      "wet"
+    ]
   }
 ]
