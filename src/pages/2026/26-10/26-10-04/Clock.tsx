@@ -1,32 +1,31 @@
 import SRTime from '@/components/SRTime';
-import type { FontConfig } from '@/types/clock';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useState, useEffect } from 'react';
 
 import cinnabarImage from '@/assets/images/26_images/26-10/26-10-04/cinnabar.webp';
 import mercImage from '@/assets/images/26_images/26-10/26-10-04/merc.webp';
-import fontUrl from '@/assets/fonts/26fonts/26-10-04.otf';
 
 import styles from './Clock.module.css';
 
 export const assets = [
   cinnabarImage,
   mercImage,
-  fontUrl,
 ];
 
-const FONT_FAMILY = 'ClockFont_26_09_02';
-
-const fontConfig: FontConfig = {
-  fontFamily: FONT_FAMILY,
-  fontUrl,
-};
-
 const Clock_26_10_04 = () => {
-  useSuspenseFontLoader([fontConfig]);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
+    typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  );
 
-  const time = useSmoothClock(50);
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  const time = useSmoothClock(prefersReducedMotion ? 1000 : 50);
 
   const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
     const milliseconds = time.getMilliseconds();
@@ -41,36 +40,6 @@ const Clock_26_10_04 = () => {
       secondAngle: seconds * 6,
     };
   }, [time]);
-
-  const numerals = useMemo(() => {
-    const ROMAN_NUMERALS = [
-      'XII',
-      'I',
-      'II',
-      'III',
-      'IV',
-      'V',
-      'VI',
-      'VII',
-      'VIII',
-      'IX',
-      'X',
-      'XI',
-    ] as const;
-
-    const RADIUS_PERCENT = 42;
-
-    return ROMAN_NUMERALS.map((numeral, index) => {
-      const angle = (index / 12) * 2 * Math.PI;
-
-      return {
-        numeral,
-        x: 50 + RADIUS_PERCENT * Math.sin(angle),
-        y: 50 - RADIUS_PERCENT * Math.cos(angle),
-        rotation: (index / 12) * 360,
-      };
-    });
-  }, []);
 
   return (
     <main
@@ -94,23 +63,6 @@ const Clock_26_10_04 = () => {
       <div className={styles.mercuryRight} />
 
       <div className={styles.clockFace}>
-        {numerals.map(({ numeral, x, y, rotation }) => (
-          <div
-            key={numeral}
-            className={styles.numeral}
-            style={{
-              left: `${x}%`,
-              top: `${y}%`,
-              transform: `
-                translate(-50%, -50%)
-                rotate(${rotation}deg)
-              `,
-            }}
-          >
-            {numeral}
-          </div>
-        ))}
-
         <div
           className={styles.hand}
           style={

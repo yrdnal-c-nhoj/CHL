@@ -161,25 +161,6 @@
 
 
 /* =========================================
-   ROMAN NUMERALS
-   ========================================= */
-
-.numeral {
-  position: absolute;
-
-  font-family: 'ClockFont_26_09_02', serif;
-  font-size: 9vmin;
-  font-weight: 900;
-  line-height: 1;
-
-  color: #E34234;
-
-  -webkit-text-stroke: 1px #000;
-  paint-order: stroke fill;
-}
-
-
-/* =========================================
    CLOCK HANDS
    ========================================= */
 
@@ -201,10 +182,10 @@
     translateX(-50%) rotate(var(--hand-rotate));
 
   box-shadow:
-    1px 0 0 #000,
-    -1px 0 0 #000,
-    0 1px 0 #000,
-    0 -1px 0 #000;
+    1px 0 0 #FFF,
+    -1px 0 0 #FFF,
+    0 1px 0 #FFF,
+    0 -1px 0 #FFF;
 }
 
 
@@ -228,4 +209,10 @@
   transform: translate(-50%, -50%);
 
   z-index: 11;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hand {
+    will-change: auto;
+  }
 }
