@@ -1,107 +1,231 @@
 .container {
   position: relative;
+
   width: 100vw;
   height: 100dvh;
+
   overflow: hidden;
-  background-color: #f5f5f8;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  background: #E34234;
 }
+
+
+/* =========================================
+   CINNABAR BACKGROUND
+   Full viewport. Nothing is inset for
+   the Mercury border.
+   ========================================= */
 
 .backgroundLayer {
   position: absolute;
   inset: 0;
-  background-size: cover;
+
+  background-repeat: no-repeat;
   background-position: center;
-  z-index: 2;
-  filter: contrast(100%) saturate(150%) brightness(90%);
+  background-size: cover;
+
+  z-index: 1;
 }
 
-.gridOverlay {
+
+/* =========================================
+   MERCURY BORDER
+   ========================================= */
+
+.mercuryTop,
+.mercuryBottom,
+.mercuryLeft,
+.mercuryRight {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: grid;
-  grid-template-columns: repeat(21, 190px);
-  grid-template-rows: repeat(21, 100px);
-  z-index: 4;
-  opacity: 0.7;
+
+  z-index: 20;
+
   pointer-events: none;
 }
 
-.tile {
-  width: 190px;
-  height: 100px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+
+/* TOP — upside down */
+
+.mercuryTop {
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 75px;
+
+  background-image: var(--merc-border);
+  background-repeat: repeat-x;
+  background-size: 75px 75px;
+
+  transform: scaleY(-1);
 }
 
-.flipped {
-  transform: scaleX(-1);
+
+/* BOTTOM — normal */
+
+.mercuryBottom {
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+  height: 75px;
+
+  background-image: var(--merc-border);
+  background-repeat: repeat-x;
+  background-size: 75px 75px;
 }
+
+
+/* LEFT — rotated clockwise */
+
+.mercuryLeft {
+  top: 0;
+  left: 0;
+
+  width: 75px;
+  height: 100%;
+
+  overflow: hidden;
+}
+
+.mercuryLeft::before {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100dvh;
+  height: 75px;
+
+  background-image: var(--merc-border);
+  background-repeat: repeat-x;
+  background-size: 75px 75px;
+
+  transform-origin: 0 0;
+  transform: rotate(90deg) translateY(-75px);
+}
+
+
+/* RIGHT — rotated counterclockwise */
+
+.mercuryRight {
+  top: 0;
+  right: 0;
+
+  width: 75px;
+  height: 100%;
+
+  overflow: hidden;
+}
+
+.mercuryRight::before {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  right: 0;
+
+  width: 100dvh;
+  height: 75px;
+
+  background-image: var(--merc-border);
+  background-repeat: repeat-x;
+  background-size: 75px 75px;
+
+  transform-origin: 100% 0;
+  transform: rotate(-90deg) translateY(-75px);
+}
+
+
+/* =========================================
+   CLOCK FACE
+   ========================================= */
 
 .clockFace {
   position: relative;
+
   width: min(80vw, 80vh);
   height: min(80vw, 80vh);
-  border-radius: 50%;
-  z-index: 9;
-}
 
-.hand {
-  position: absolute;
-  bottom: 50%;
-  left: 50%;
-  width: var(--hand-width);
-  height: var(--hand-height);
-  background-color: var(--hand-color);
-  transform-origin: 50% 100%;
-  transform: translateX(-50%) rotate(var(--hand-rotate));
-  border-radius: 1vmin;
-  z-index: 5;
-  will-change: transform;
-}
-
-.centerDot {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 2vmin;
-  height: 2vmin;
-  background-color: #971d2fcb;
   border-radius: 50%;
-  transform: translate(-50%, -50%);
+
   z-index: 10;
 }
 
+
+/* =========================================
+   ROMAN NUMERALS
+   ========================================= */
+
 .numeral {
   position: absolute;
+
   font-family: 'ClockFont_26_09_02', serif;
-  font-size: 19vmin;
-  color: #ffffffd9;
-  text-shadow: 0 0 1vmin rgba(0, 0, 0, 0.5);
-  pointer-events: none;
-  z-index: 8;
+  font-size: 9vmin;
+  font-weight: 900;
+  line-height: 1;
+
+  color: #E34234;
+
+  -webkit-text-stroke: 1px #000;
+  paint-order: stroke fill;
 }
 
-.srOnly {
+
+/* =========================================
+   CLOCK HANDS
+   ========================================= */
+
+.hand {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+
+  bottom: 50%;
+  left: 50%;
+
+  width: var(--hand-width);
+  height: var(--hand-height);
+
+  background: var(--hand-color);
+
+  border-radius: 1vmin;
+
+  transform-origin: 50% 100%;
+  transform:
+    translateX(-50%) rotate(var(--hand-rotate));
+
+  box-shadow:
+    1px 0 0 #000,
+    -1px 0 0 #000,
+    0 1px 0 #000,
+    0 -1px 0 #000;
 }
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+
+
+/* =========================================
+   CENTER
+   ========================================= */
+
+.centerDot {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 2vmin;
+  height: 2vmin;
+
+  border-radius: 50%;
+
+  background: #971d2fcb;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 11;
 }

@@ -55,27 +55,21 @@ const SLOPE_FLOW_BOOST = 4;
 const SLOPE_DRIP_BONUS = 40;
 
 // --- Lightning (render-driven; not a time source) -------------------------
-// A thunderclap: the whole screen flashes brilliant white for a split second,
-// then the clock digits glow red. Driven by the rAF render loop.
-const LIGHTNING_MIN_GAP = 1200;
-const LIGHTNING_MAX_GAP = 2800; // never more than ~3s without a flash
+// A strike: the whole screen flashes brilliant white for a split second,
+// then ONLY the clock digits glow red. The first strike lands 1.5s after load,
+// then strikes recur at random intervals averaging ~8 per 10s (mean ~1.25s),
+// hard-capped at 4s so the screen is never dark for more than 4 seconds.
+const LIGHTNING_FIRST_STRIKE_MS = 1500;
+const LIGHTNING_GAP_MEAN_MS = 1250; // ~8 strikes / 10s on average
+const LIGHTNING_GAP_FLOOR_MS = 250; // minimum gap, seconds-scale jitter
+const LIGHTNING_GAP_CAP_MS = 3900; // never more than ~4s without a strike
+const LIGHTNING_FLASH_MIN_MS = 20;
+const LIGHTNING_FLASH_VAR_MS = 50;
 const LIGHTNING_WHITE_PEAK = 1.0; // full-screen brilliant white
 const LIGHTNING_WHITE_DECAY_PER_MS = 0.032; // fast: a split-second white pop
 const LIGHTNING_RED_PEAK = 0.55; // digit-only red afterglow
 const LIGHTNING_RED_DECAY_PER_MS = 0.008; // slower: clock glows red briefly
 const LIGHTNING_RED_AFTERWHITE_MS = 40; // red lags the white pop
-const LIGHTNING_FLASH_MIN_MS = 20;
-const LIGHTNING_FLASH_VAR_MS = 40;
-const LIGHTNING_DISTANT_MIN_MS = 170;
-const LIGHTNING_DISTANT_VAR_MS = 180;
-const LIGHTNING_DISTANT_INTENSITY = 0.28; // fraction of peak for distant rumble
-const LIGHTNING_BURSTS_MIN = 1;
-const LIGHTNING_BURSTS_MAX = 2;
-const LIGHTNING_DISTANT_CHANCE = 0.3;
-const LIGHTNING_STARTUP_FIRST_MIN = 300;
-const LIGHTNING_STARTUP_FIRST_MAX = 950;
-const LIGHTNING_STARTUP_SECOND_MIN = 1000;
-const LIGHTNING_STARTUP_SECOND_MAX = 1950;
 const LIGHTNING_DIGIT_RED = '#ff3333';
 
 const GROUND_GAP_EM = 1;
@@ -293,15 +287,7 @@ function RainClock() {
 
     // --- Lightning state (render-driven; not a time source) -----------------
     let lightningMs = 0;
-    const lightningStartup: number[] = [
-      LIGHTNING_STARTUP_FIRST_MIN +
-        Math.random() *
-          (LIGHTNING_STARTUP_FIRST_MAX - LIGHTNING_STARTUP_FIRST_MIN),
-      LIGHTNING_STARTUP_SECOND_MIN +
-        Math.random() *
-          (LIGHTNING_STARTUP_SECOND_MAX - LIGHTNING_STARTUP_SECOND_MIN),
-    ];
-    let lightningNextAt: number = lightningStartup[0] ?? randomThunderGap();
+    let lightningNextAt = LIGHTNING_FIRST_STRIKE_MS; // first strike at 1.5s
     let flashWhite = 0;
     let flashRed = 0;
     const flashEvents: FlashEvent[] = [];
@@ -615,68 +601,40 @@ function RainClock() {
     }
 
     // --- Lightning ---------------------------------------------------------
-    function randomThunderGap() {
-      return (
-        LIGHTNING_MIN_GAP +
-        Math.random() * (LIGHTNING_MAX_GAP - LIGHTNING_MIN_GAP)
+    function nextStrikeGap() {
+      // Exponential inter-strike delay (mean ~8 strikes/10s), floored and
+      // hard-capped at 4s so the screen is never dark for more than 4 seconds.
+      const g = -Math.log(1 - Math.random()) * LIGHTNING_GAP_MEAN_MS;
+      return Math.max(
+        LIGHTNING_GAP_FLOOR_MS,
+        Math.min(LIGHTNING_GAP_CAP_MS, g),
       );
     }
 
-    function triggerLightningCluster(nowMs: number) {
-      const bursts =
-        LIGHTNING_BURSTS_MIN +
-        ((Math.random() * (LIGHTNING_BURSTS_MAX - LIGHTNING_BURSTS_MIN + 1)) |
-          0);
-      let t = nowMs;
-      for (let i = 0; i < bursts; i++) {
-        t += LIGHTNING_FLASH_MIN_MS + Math.random() * LIGHTNING_FLASH_VAR_MS;
-        // A flash = brilliant white pop, then the digits glow red.
-        flashEvents.push({
-          when: t,
-          intensity: LIGHTNING_WHITE_PEAK * (0.7 + Math.random() * 0.3),
-          color: 'white',
-        });
-        flashEvents.push({
-          when: t + LIGHTNING_RED_AFTERWHITE_MS,
-          intensity: LIGHTNING_RED_PEAK * (0.6 + Math.random() * 0.4),
-          color: 'red',
-        });
-      }
-      if (Math.random() < LIGHTNING_DISTANT_CHANCE) {
-        const dw =
-          t +
-          LIGHTNING_DISTANT_MIN_MS +
-          Math.random() * LIGHTNING_DISTANT_VAR_MS;
-        flashEvents.push({
-          when: dw,
-          intensity:
-            LIGHTNING_WHITE_PEAK *
-            LIGHTNING_DISTANT_INTENSITY *
-            (0.5 + Math.random()),
-          color: 'white',
-        });
-        flashEvents.push({
-          when: dw + LIGHTNING_RED_AFTERWHITE_MS,
-          intensity:
-            LIGHTNING_RED_PEAK *
-            LIGHTNING_DISTANT_INTENSITY *
-            (0.5 + Math.random()),
-          color: 'red',
-        });
-      }
+    function triggerStrike(whenMs: number) {
+      // One strike = a brilliant white screen pop, then the digits glow red.
+      flashEvents.push({
+        when: whenMs,
+        intensity: LIGHTNING_WHITE_PEAK * (0.75 + Math.random() * 0.25),
+        color: 'white',
+      });
+      flashEvents.push({
+        when: whenMs + LIGHTNING_RED_AFTERWHITE_MS,
+        intensity: LIGHTNING_RED_PEAK * (0.7 + Math.random() * 0.3),
+        color: 'red',
+      });
     }
 
-    function updateLightning(msElapsed: number) {
+    function updateLightningFrame(msElapsed: number) {
       lightningMs += msElapsed;
 
       if (lightningMs >= lightningNextAt) {
-        triggerLightningCluster(lightningMs);
-        lightningStartup.shift();
-        const nextStartup = lightningStartup[0];
-        lightningNextAt =
-          nextStartup !== undefined
-            ? nextStartup
-            : lightningMs + randomThunderGap();
+        const whiteAt =
+          lightningMs +
+          LIGHTNING_FLASH_MIN_MS +
+          Math.random() * LIGHTNING_FLASH_VAR_MS;
+        triggerStrike(whiteAt);
+        lightningNextAt = lightningMs + nextStrikeGap();
       }
 
       for (let i = flashEvents.length - 1; i >= 0; i--) {
@@ -867,7 +825,7 @@ function RainClock() {
       const msElapsed = dt * 16.67;
 
       // Lightning schedule advances with the render clock (render-only loop)
-      updateLightning(msElapsed);
+      updateLightningFrame(msElapsed);
 
       // Rebuild the collision mask only when the displayed text changes
       const nowText = formatTime(timeRef.current);
