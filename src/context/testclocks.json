@@ -7225,24 +7225,24 @@
     "tags": [
       "analog",
       "constellations",
+      "fire",
       "lion",
-      "zodiac",
+      "myth",
       "predator",
-      "fire", 
-      "myth"
+      "zodiac"
     ]
   },
   {
-     "path": "26-09-29",
+    "path": "26-09-29",
     "date": "26-09-29",
     "title": "Rocket",
     "tags": [
-     "digital",
-     "space",
-     "transport",
-     "sound",
-     "gravity",
-     "up-and-down"
+      "digital",
+      "gravity",
+      "sound",
+      "space",
+      "transport",
+      "up-and-down"
     ]
   },
   {
@@ -7250,25 +7250,25 @@
     "date": "26-09-30",
     "title": "Milling",
     "tags": [
-    "analog",
-    "animal",
-    "landscape",
-    "move",
-    "circle",
-    "snow",
-    "cold"
-  ]
-    },
-    {
+      "analog",
+      "animal",
+      "circle",
+      "cold",
+      "landscape",
+      "move",
+      "snow"
+    ]
+  },
+  {
     "path": "26-10-01",
     "date": "26-10-01",
     "title": "Roadside",
     "tags": [
-     "digital",
-     "mechanical",
-     "transport",
-     "ride",
-     "sound"
+      "digital",
+      "mechanical",
+      "ride",
+      "sound",
+      "transport"
     ]
   },
   {
@@ -7276,9 +7276,10 @@
     "date": "26-10-02",
     "title": "Tricloptic",
     "tags": [
-     "analog",
-     "face",
-     "eye"
+      "analog",
+      "body",
+      "eye",
+      "face"
     ]
   },
   {
@@ -7286,13 +7287,14 @@
     "date": "26-10-03",
     "title": "Torrential",
     "tags": [
-     "digital",
-      "water",
+      "digital",
+      "gravity",
       "image-free",
-      "gravity"
+      "water",
+      "wet"
     ]
-    },
-    {
+  },
+  {
     "path": "26-10-04",
     "date": "26-10-04",
     "title": "Strawberry",
@@ -7302,6 +7304,5 @@
       "fruit",
       "grow"
     ]
-    }
-
+  }
 ]
