@@ -101,7 +101,7 @@ const Clock_26_10_02 = () => {
           />
         </div>
 
-        <div className={styles.centerDot} />
+        {/* <div className={styles.centerDot} /> */}
       </div>
 
       <img
