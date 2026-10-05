@@ -144,16 +144,19 @@
 .hourHand {
   --hand-width: 0.2vmin;
   --hand-height: 22vmin;
+  --dot-size: 28vmin;
 }
 
 .minuteHand {
   --hand-width: 0.2vmin;
-  --hand-height: 36vmin;
+  --hand-height: 32vmin;
+  --dot-size: 44vmin;
 }
 
 .secondHand {
   --hand-width: 0.2vmin;
-  --hand-height: 38vmin;
+  --hand-height: 34vmin;
+  --dot-size: 43vmin;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -164,11 +167,11 @@
   position: absolute;
   top: 0;
   left: 50%;
-  width: 28vmin;
-  height: 28vmin;
+  width: var(--dot-size, 39vmin);
+  height: var(--dot-size, 39vmin);
   object-fit: contain;
   transform: translate(-50%, -50%);
-  filter: drop-shadow(0 1px 1px #fff);
+  filter: drop-shadow(2px -2px #fff);
   z-index: 9;
   pointer-events: none;
   user-select: none;
@@ -182,41 +185,21 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: min(14vmin, 14dvh);
+  width: min(18vmin, 18dvh);
   height: auto;
   object-fit: contain;
   transform: translate(-50%, -50%);
-  filter: drop-shadow(0 -1px -1px #fff);
+  animation: rotateNose 30s linear infinite;
+  filter: drop-shadow(1px -2px #fff);
   pointer-events: none;
   user-select: none;
   z-index: 20;
 }
 
-/* -------------------------------------------------------------------------- */
-/* Center                                                                     */
-/* -------------------------------------------------------------------------- */
-
-.centerDot {
-  position: absolute;
-
-  top: 50%;
-  left: 50%;
-
-  width: 1vmin;
-  height: 1vmin;
-
-  background-color: var(--hand-color);
-
-  border-radius: 50%;
-
-  transform: translate(-50%, -50%);
-
-  z-index: 10;
+@keyframes rotateNose {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(-360deg); }
 }
-
-/* -------------------------------------------------------------------------- */
-/* Reduced motion                                                             */
-/* -------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
   * {
