@@ -35,17 +35,16 @@
   align-items: center;
   z-index: 9;
   font-family: var(--clock-font);
-  font-size: 19vh;
+  font-size: 18vh;
   line-height: 0.8;
   font-variant-numeric: tabular-nums;
   color: var(--color-digit);
-  white-space: nowrap;
+  filter: contrast(110%) brightness(200%) saturate(190%);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .backgroundLayer {
-    filter: contrast(100%) brightness(100%) saturate(100%);
-  }
+  filter: contrast(110%) brightness(200%) saturate(190%);  }
 }
 @media (max-width: 600px) {
   .backgroundLayer {
