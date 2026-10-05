@@ -1,15 +1,227 @@
-.container {
+ .container {
+  --hand-color: #a3e635;
+
   position: relative;
   width: 100%;
   height: 100dvh;
+  min-height: 100dvh;
+
   overflow: hidden;
-  background: var(--clock-bg);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  isolation: isolate;
+
+  background: #040202;
 }
 
-.canvas {
+/* -------------------------------------------------------------------------- */
+/* 60-stop radial gradient                                                    */
+/* -------------------------------------------------------------------------- */
+
+.radialBackground {
   position: absolute;
   inset: 0;
-  display: block;
+
   width: 100%;
   height: 100%;
+
+  background: radial-gradient(circle at center,
+
+      #FFF4E8 0%,
+      #FDEFE2 1.694%,
+      #FBE8D5 3.388%,
+      #F8E1CC 5.082%,
+      #F5D9C1 6.776%,
+      #F2D2B8 8.470%,
+      #EFC9AE 10.164%,
+      #ECC3A5 11.858%,
+      #E9B99A 13.552%,
+      #E6B393 15.246%,
+
+      #E3AA8A 16.940%,
+      #DFA381 18.634%,
+      #DC9B78 20.328%,
+      #D89470 22.022%,
+      #D48C68 23.716%,
+      #D08461 25.410%,
+      #CC7C5B 27.104%,
+      #C77455 28.798%,
+      #C16D50 30.492%,
+      #BC654A 32.186%,
+
+      #B85E45 33.880%,
+      #B45A43 35.574%,
+      #AF563F 37.268%,
+      #AA523D 38.962%,
+      #A54E3A 40.656%,
+      #A04A38 42.350%,
+      #9B4636 44.044%,
+      #964332 45.738%,
+      #91402F 47.432%,
+      #8C3D2D 49.126%,
+
+      #873A2B 50.820%,
+      #82372A 52.514%,
+      #7D3428 54.208%,
+      #783126 55.902%,
+      #733025 57.596%,
+      #6E2D23 59.290%,
+      #692B21 60.984%,
+      #64291F 62.678%,
+      #5F271E 64.372%,
+      #5A251C 66.066%,
+
+      #55231B 67.760%,
+      #50211A 69.454%,
+      #4B1F18 71.148%,
+      #461D17 72.842%,
+      #411B16 74.536%,
+      #3C1915 76.230%,
+      #371714 77.924%,
+      #321513 79.618%,
+      #2D1312 81.312%,
+      #281111 83.006%,
+
+      #231010 84.700%,
+      #1F0E0E 86.394%,
+      #1B0C0C 88.088%,
+      #170A0A 89.782%,
+      #130808 91.476%,
+      #100707 93.170%,
+      #0D0606 94.864%,
+      #0A0505 96.558%,
+      #070303 98.252%,
+      #040202 100%);
+
+  z-index: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Clock structure                                                            */
+/* -------------------------------------------------------------------------- */
+
+.clockFace {
+  position: relative;
+
+  width: min(88vw, 88dvh);
+  height: min(88vw, 88dvh);
+
+  border-radius: 50%;
+
+  z-index: 9;
+
+  flex: 0 0 auto;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Hands                                                                      */
+/* -------------------------------------------------------------------------- */
+
+.hand {
+  position: absolute;
+
+  bottom: 50%;
+  left: 50%;
+
+  width: var(--hand-width);
+  height: var(--hand-height);
+
+  background-color: #333668;
+
+  transform-origin: 50% 100%;
+  transform: translateX(-50%) rotate(var(--angle, 0deg));
+
+  border-radius: 1vmin;
+
+  z-index: 8;
+
+  will-change: transform;
+}
+
+.hourHand {
+  --hand-width: 0.2vmin;
+  --hand-height: 22vmin;
+}
+
+.minuteHand {
+  --hand-width: 0.2vmin;
+  --hand-height: 36vmin;
+}
+
+.secondHand {
+  --hand-width: 0.2vmin;
+  --hand-height: 38vmin;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Eye images                                                                 */
+/* -------------------------------------------------------------------------- */
+
+.handDot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 28vmin;
+  height: 28vmin;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 1px 1px #fff);
+  z-index: 9;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Nose                                                                       */
+/* -------------------------------------------------------------------------- */
+
+.noseImage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(14vmin, 14dvh);
+  height: auto;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 -1px -1px #fff);
+  pointer-events: none;
+  user-select: none;
+  z-index: 20;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Center                                                                     */
+/* -------------------------------------------------------------------------- */
+
+.centerDot {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 1vmin;
+  height: 1vmin;
+
+  background-color: var(--hand-color);
+
+  border-radius: 50%;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 10;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Reduced motion                                                             */
+/* -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
