@@ -7274,6 +7274,16 @@
   {
     "path": "26-10-02",
     "date": "26-10-02",
+    "title": "Tricloptic",
+    "tags": [
+     "analog",
+     "face",
+     "eye"
+    ]
+  },
+  {
+    "path": "26-10-03",
+    "date": "26-10-03",
     "title": "Torrential",
     "tags": [
      "digital",
@@ -7281,5 +7291,6 @@
       "image-free",
       "gravity"
     ]
-  }
+    }
+
 ]
