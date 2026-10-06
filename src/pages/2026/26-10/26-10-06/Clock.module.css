@@ -6,7 +6,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #0a1a2f;
+  background-color: #042a5b;
+  --ink-color: #0d173a;
 }
 .backgroundVideo {
   position: absolute;
@@ -17,13 +18,23 @@
   z-index: 1;
   pointer-events: none;
 }
+
+@media (max-width: 768px) {
+  .backgroundVideo {
+    width: 190%;
+    object-fit: contain;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
 .clockFace {
   position: relative;
   width: 110vmin;
   height: 110vmin;
   flex: 0 0 110vmin;
   border-radius: 50%;
-
+  /* opacity: 0.7; */
   z-index: 9;
 }
 .hand {
@@ -35,55 +46,45 @@
   transform-origin: 50% 100%;
   transform:
     translateX(-50%) translateY(-100%) rotate(var(--angle, 0deg));
-  border-radius: 1vmin;
+  background-image: var(--hand-image);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
   z-index: 8;
-  box-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
   will-change: transform;
 }
 .hourHand {
-  --hand-width: 2vmin;
-  --hand-height: 22vmin;
-  background-color: #ffffff;
+  --hand-width: 5vmin;
+  --hand-height: 27vmin;
+  z-index: 10;
+  filter: contrast(2.2) brightness(1.2);
 }
 .minuteHand {
-  --hand-width: 1vmin;
+  --hand-width: 6vmin;
   --hand-height: 45vmin;
-  background-color: #4a90d9;
 }
 .secondHand {
-  --hand-width: 0.5vmin;
+  --hand-width: 7vmin;
   --hand-height: 50vmin;
-  background-color: #e0e0e0;
-}
-.centerDot {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 2vmin;
-  height: 2vmin;
-  background-color: #4a90d9;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  box-shadow: 0 0 4px rgba(255, 255, 255, 0.7);
 }
 .clockNumber {
   position: absolute;
-  color: #e8f0fe;
+  color: var(--ink-color);
   font-family:
     'ClockFont_26_10_06',
     monospace,
     system-ui,
     sans-serif;
-  font-size: 14vmin;
+  font-size: 19vh;
   line-height: 1;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.02em;
   text-align: center;
-  text-shadow: 0 0 2px rgba(255, 255, 255, 0.6);
+  text-shadow: 0 0 2px rgba(30, 64, 175, 0.6);
   z-index: 7;
   pointer-events: none;
   transform: translate(-50%, -50%);
   transform-origin: center;
+  opacity: 0.5;
 }
 @media (prefers-reduced-motion: reduce) {
   .hand {

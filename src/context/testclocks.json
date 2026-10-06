@@ -7340,13 +7340,42 @@
   {
     "path": "26-10-06",
     "date": "26-10-06",
-    "title": "Pool",
+    "title": "Ball Point Pen",
+    "tags": [
+      "analog",
+      "hand",
+      "roll"
+    ]
+  },
+  {
+    "path": "26-10-07",
+    "date": "26-10-07",
+    "title": "House of Virgo",
+    "tags": [
+      "analog",
+      "constellations",
+      "earth",
+      "myth",
+      "zodiac"
+    ]
+  },
+  {
+    "path": "26-10-08",
+    "date": "26-10-08",
+    "title": "Footnote #4",
     "tags": [
       "digital",
-      "gravity",
-      "image-free",
-      "water",
-      "wet"
+      "image-free"
+    ]
+  },
+  {
+    "path": "26-10-09",
+    "date": "26-10-09",
+    "title": "Sculpture XXI",
+    "tags": [
+      "analog",
+      "body",
+      "pictographic"
     ]
   }
 ]
