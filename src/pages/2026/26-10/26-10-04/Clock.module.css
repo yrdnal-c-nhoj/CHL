@@ -36,111 +36,22 @@
    MERCURY BORDER
    ========================================= */
 
-.mercuryTop,
-.mercuryBottom,
-.mercuryLeft,
-.mercuryRight {
+.mercuryBottom {
   position: absolute;
 
-  z-index: 20;
-
-  pointer-events: none;
-}
-
-
-/* TOP — upside down */
-
-.mercuryTop {
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 75px;
-
-  background-image: var(--merc-border);
-  background-repeat: repeat-x;
-  background-size: 75px 75px;
-
-  transform: scaleY(-1);
-}
-
-
-/* BOTTOM — normal */
-
-.mercuryBottom {
   bottom: 0;
   left: 0;
 
   width: 100%;
-  height: 75px;
+  height: 33.33dvh;
 
-  background-image: var(--merc-border);
-  background-repeat: repeat-x;
-  background-size: 75px 75px;
-}
+   background-image: var(--merc-border);
+   background-repeat: repeat;
+   background-size: contain;
 
+  z-index: 20;
 
-/* LEFT — rotated clockwise */
-
-.mercuryLeft {
-  top: 0;
-  left: 0;
-
-  width: 75px;
-  height: 100%;
-
-  overflow: hidden;
-}
-
-.mercuryLeft::before {
-  content: '';
-
-  position: absolute;
-
-  top: 0;
-  left: 0;
-
-  width: 100dvh;
-  height: 75px;
-
-  background-image: var(--merc-border);
-  background-repeat: repeat-x;
-  background-size: 75px 75px;
-
-  transform-origin: 0 0;
-  transform: rotate(90deg) translateY(-75px);
-}
-
-
-/* RIGHT — rotated counterclockwise */
-
-.mercuryRight {
-  top: 0;
-  right: 0;
-
-  width: 75px;
-  height: 100%;
-
-  overflow: hidden;
-}
-
-.mercuryRight::before {
-  content: '';
-
-  position: absolute;
-
-  top: 0;
-  right: 0;
-
-  width: 100dvh;
-  height: 75px;
-
-  background-image: var(--merc-border);
-  background-repeat: repeat-x;
-  background-size: 75px 75px;
-
-  transform-origin: 100% 0;
-  transform: rotate(-90deg) translateY(-75px);
+  pointer-events: none;
 }
 
 
@@ -149,12 +60,15 @@
    ========================================= */
 
 .clockFace {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 50%;
 
   width: min(70vw, 70vh);
   height: min(70vw, 70vh);
 
   border-radius: 50%;
+  transform: translateX(-50%);
 
   z-index: 10;
 }
