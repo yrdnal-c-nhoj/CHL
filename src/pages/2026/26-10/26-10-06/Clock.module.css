@@ -51,6 +51,7 @@
   background-size: 100% 100%;
   background-position: center;
   z-index: 8;
+    opacity: 0.8;
   will-change: transform;
 }
 .hourHand {
@@ -84,7 +85,7 @@
   pointer-events: none;
   transform: translate(-50%, -50%);
   transform-origin: center;
-  opacity: 0.5;
+  opacity: 0.8;
 }
 @media (prefers-reduced-motion: reduce) {
   .hand {
