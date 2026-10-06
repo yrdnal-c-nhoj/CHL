@@ -64,7 +64,7 @@ const Clock_26_10_04 = () => {
           className={styles.hand}
           style={
             {
-              '--hand-width': '1.4vmin',
+              '--hand-width': '1.6vmin',
               '--hand-height': '22vmin',
               '--hand-rotate': `${hourAngle}deg`,
               '--hand-color': '#ffffff',
@@ -77,7 +77,7 @@ const Clock_26_10_04 = () => {
           style={
             {
               '--hand-width': '1vmin',
-              '--hand-height': '32vmin',
+              '--hand-height': '47vmin',
               '--hand-rotate': `${minuteAngle}deg`,
               '--hand-color': '#ffffff',
             } as React.CSSProperties
@@ -88,15 +88,15 @@ const Clock_26_10_04 = () => {
           className={styles.hand}
           style={
             {
-              '--hand-width': '0.4vmin',
-              '--hand-height': '36vmin',
+              '--hand-width': '0.5vmin',
+              '--hand-height': '49vmin',
               '--hand-rotate': `${secondAngle}deg`,
               '--hand-color': '#a12235',
             } as React.CSSProperties
           }
         />
 
-        <div className={styles.centerDot} />
+
       </div>
 
       <SRTime time={time} />

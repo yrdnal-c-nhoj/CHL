@@ -49,7 +49,7 @@
    background-repeat: repeat;
    background-size: contain;
 
-  z-index: 20;
+  z-index: 9;
 
   pointer-events: none;
 }
@@ -61,14 +61,14 @@
 
 .clockFace {
   position: absolute;
-  top: 0;
+  top: 50%;
   left: 50%;
 
-  width: min(70vw, 70vh);
-  height: min(70vw, 70vh);
+  width: min(100vw, 100dvh);
+  height: min(100vw, 100dvh);
 
   border-radius: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
 
   z-index: 10;
 }
@@ -100,29 +100,6 @@
     -1px 0 0 #FFF,
     0 1px 0 #FFF,
     0 -1px 0 #FFF;
-}
-
-
-/* =========================================
-   CENTER
-   ========================================= */
-
-.centerDot {
-  position: absolute;
-
-  top: 50%;
-  left: 50%;
-
-  width: 2vmin;
-  height: 2vmin;
-
-  border-radius: 50%;
-
-  background: #971d2fcb;
-
-  transform: translate(-50%, -50%);
-
-  z-index: 11;
 }
 
 @media (prefers-reduced-motion: reduce) {
