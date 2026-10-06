@@ -10,8 +10,6 @@ A new clock every day.
 
 The GitHub repository is `CHL` (Cubist Heart Laboratories). The app itself is called BorrowedTime, which is the package name.
 
-<!-- VERIFY: confirm this explanation matches your intent. -->
-
 ## Quick start
 
 Requires Node.js 22.x (see `.nvmrc`).
@@ -65,7 +63,7 @@ Open <http://localhost:5173>.
 
 `check` runs: type-check, lint, format check, tests, `verify:clocks:changed`, build.
 
-`check:ci` runs the same steps but uses `verify:clocks` (all clocks) instead of only the changed ones.
+`check:ci` currently runs the same steps as `check`; both use `verify:clocks:changed`. To verify every clock, run `npm run verify:clocks` (this still reports violations in historical clocks).
 
 ### Clock tooling
 
@@ -74,11 +72,9 @@ Open <http://localhost:5173>.
 | `npm run new-clock`             | Scaffold a new clock and register it (see [Adding a clock](#adding-a-clock)) |
 | `npm run verify:clocks`         | Verify every clock against the clock contract                            |
 | `npm run verify:clocks:changed` | Verify only clocks changed in the diff (see [Verifying clocks](#verifying-clocks)) |
-| `npm run conform`               | Bring clocks in line with project conventions                            |
-| `npm run screencaps`            | Capture screenshots/thumbnails of clocks (Playwright)                    |
-| `npm run screencaps:optimize`   | Capture and optimize thumbnails                                          |
-
-<!-- VERIFY: descriptions of conform and screencaps are inferred from script names. Confirm against scripts/conform.js and scripts/screencaps/capture.ts. -->
+| `npm run conform`               | Check current clocks (September 2026 onward) against the standards; add `-- --fix` to apply safe fixes |
+| `npm run screencaps`            | Capture 200px WebP thumbnails of clocks into `src/assets/thumbnails/` (Playwright) |
+| `npm run screencaps:optimize`   | Re-compress existing thumbnails only; does not capture new ones          |
 
 ## Adding a clock
 

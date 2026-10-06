@@ -1,0 +1,57 @@
+--- a/README.md
++++ b/README.md
+@@ -10,8 +10,6 @@
+ 
+ The GitHub repository is `CHL` (Cubist Heart Laboratories). The app itself is called BorrowedTime, which is the package name.
+ 
+-<!-- VERIFY: confirm this explanation matches your intent. -->
+-
+ ## Quick start
+ 
+ Requires Node.js 22.x (see `.nvmrc`).
+@@ -65,7 +63,7 @@
+ 
+ `check` runs: type-check, lint, format check, tests, `verify:clocks:changed`, build.
+ 
+-`check:ci` runs the same steps but uses `verify:clocks` (all clocks) instead of only the changed ones.
++`check:ci` currently runs the same steps as `check`; both use `verify:clocks:changed`. To verify every clock, run `npm run verify:clocks` (this still reports violations in historical clocks).
+ 
+ ### Clock tooling
+ 
+@@ -74,11 +72,9 @@
+ | `npm run new-clock`             | Scaffold a new clock and register it (see [Adding a clock](#adding-a-clock)) |
+ | `npm run verify:clocks`         | Verify every clock against the clock contract                            |
+ | `npm run verify:clocks:changed` | Verify only clocks changed in the diff (see [Verifying clocks](#verifying-clocks)) |
+-| `npm run conform`               | Bring clocks in line with project conventions                            |
+-| `npm run screencaps`            | Capture screenshots/thumbnails of clocks (Playwright)                    |
+-| `npm run screencaps:optimize`   | Capture and optimize thumbnails                                          |
+-
+-<!-- VERIFY: descriptions of conform and screencaps are inferred from script names. Confirm against scripts/conform.js and scripts/screencaps/capture.ts. -->
++| `npm run conform`               | Check current clocks (September 2026 onward) against the standards; add `-- --fix` to apply safe fixes |
++| `npm run screencaps`            | Capture 200px WebP thumbnails of clocks into `src/assets/thumbnails/` (Playwright) |
++| `npm run screencaps:optimize`   | Re-compress existing thumbnails only; does not capture new ones          |
+ 
+ ## Adding a clock
+ 
+--- a/docs/STATUS.md
++++ b/docs/STATUS.md
+@@ -67,7 +67,7 @@
+ 
+ ## Known Gaps
+ 
+-- `npm run status` remains a placeholder; no `scripts/generate-status.js` currently exists.
++- `npm run status` runs `verify:clocks` and `type-check` but does not write this file; no `scripts/generate-status.js` exists, so `docs/STATUS.md` is updated manually.
+ - Full-fleet lint and TypeScript checks still expose legacy debt.
+ - Full-fleet clock verification still reports historical contract violations.
+ - Repository and deployment footprint continues to grow with the daily archive.
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -460,7 +460,7 @@
+ npm run verify:clocks:changed         # verify only changed clock pages
+ npm run conform                       # full conformance check (add -- --fix to auto-fix)
+ npm run verify:clocks -- --path 26-09-16  # verify specific clock
+-# npm run status                      # reminder only; docs/STATUS.md is updated manually
++# npm run status                      # verify:clocks + type-check (full fleet); does not update docs/STATUS.md, which is edited manually
+ ```
+ 
+ Run a browser/visual smoke check for clock changes.
