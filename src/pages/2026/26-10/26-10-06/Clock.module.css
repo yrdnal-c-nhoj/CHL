@@ -1,0 +1,92 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0a1a2f;
+}
+.backgroundVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  pointer-events: none;
+}
+.clockFace {
+  position: relative;
+  width: 110vmin;
+  height: 110vmin;
+  flex: 0 0 110vmin;
+  border-radius: 50%;
+
+  z-index: 9;
+}
+.hand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--hand-width);
+  height: var(--hand-height);
+  transform-origin: 50% 100%;
+  transform:
+    translateX(-50%) translateY(-100%) rotate(var(--angle, 0deg));
+  border-radius: 1vmin;
+  z-index: 8;
+  box-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
+  will-change: transform;
+}
+.hourHand {
+  --hand-width: 2vmin;
+  --hand-height: 22vmin;
+  background-color: #ffffff;
+}
+.minuteHand {
+  --hand-width: 1vmin;
+  --hand-height: 45vmin;
+  background-color: #4a90d9;
+}
+.secondHand {
+  --hand-width: 0.5vmin;
+  --hand-height: 50vmin;
+  background-color: #e0e0e0;
+}
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2vmin;
+  height: 2vmin;
+  background-color: #4a90d9;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.7);
+}
+.clockNumber {
+  position: absolute;
+  color: #e8f0fe;
+  font-family:
+    'ClockFont_26_10_06',
+    monospace,
+    system-ui,
+    sans-serif;
+  font-size: 14vmin;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.6);
+  z-index: 7;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hand {
+    will-change: auto;
+  }
+}
