@@ -57,10 +57,7 @@ const Clock_26_10_04 = () => {
         }}
       />
 
-      <div className={styles.mercuryTop} />
       <div className={styles.mercuryBottom} />
-      <div className={styles.mercuryLeft} />
-      <div className={styles.mercuryRight} />
 
       <div className={styles.clockFace}>
         <div
