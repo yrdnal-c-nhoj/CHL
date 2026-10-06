@@ -60,7 +60,7 @@ const SLOPE_DRIP_BONUS = 40;
 // then strikes recur at random intervals averaging ~8 per 10s (mean ~1.25s),
 // hard-capped at 4s so the screen is never dark for more than 4 seconds.
 const LIGHTNING_FIRST_STRIKE_MS = 1500;
-const LIGHTNING_GAP_MEAN_MS = 1250; // ~8 strikes / 10s on average
+const LIGHTNING_GAP_MEAN_MS = 1850; // ~8 strikes / 10s on average
 const LIGHTNING_GAP_FLOOR_MS = 250; // minimum gap, seconds-scale jitter
 const LIGHTNING_GAP_CAP_MS = 3900; // never more than ~4s without a strike
 const LIGHTNING_FLASH_MIN_MS = 20;
