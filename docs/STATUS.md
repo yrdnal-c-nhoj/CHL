@@ -67,7 +67,7 @@ Historical clock implementations remain in place unless a concrete production, s
 
 ## Known Gaps
 
-- `npm run status` remains a placeholder; no `scripts/generate-status.js` currently exists.
+- `npm run status` runs `verify:clocks` and `type-check` but does not write this file; no `scripts/generate-status.js` exists, so `docs/STATUS.md` is updated manually.
 - Full-fleet lint and TypeScript checks still expose legacy debt.
 - Full-fleet clock verification still reports historical contract violations.
 - Repository and deployment footprint continues to grow with the daily archive.

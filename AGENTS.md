@@ -460,7 +460,7 @@ npm run lint                          # lint-sensitive changes
 npm run verify:clocks:changed         # verify only changed clock pages
 npm run conform                       # full conformance check (add -- --fix to auto-fix)
 npm run verify:clocks -- --path 26-09-16  # verify specific clock
-# npm run status                      # reminder only; docs/STATUS.md is updated manually
+# npm run status                      # verify:clocks + type-check (full fleet); does not update docs/STATUS.md, which is edited manually
 ```
 
 Run a browser/visual smoke check for clock changes.
