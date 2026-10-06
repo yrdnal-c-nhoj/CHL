@@ -546,27 +546,6 @@
       "up-and-down"
     ]
   },
-
-{
-    "path": "25-05-11",
-    "date": "25-05-11",
-    "title": "Number Toss",
-    "tags": [
-      "color",
-      "digital",
-      "gravity",
-      "pink",
-      "up-and-down"
-    ]
-  },
-
-
-
-
-
-
-
-
   {
     "path": "25-05-12",
     "date": "25-05-12",
@@ -3540,7 +3519,12 @@
   {
     "path": "25-12-24",
     "date": "25-12-24",
-    "title": "Lapse"
+    "title": "Lapse",
+    "tags": [
+      "analog",
+      "brown",
+      "image-free"
+    ]
   },
   {
     "path": "25-12-25",
@@ -3773,7 +3757,14 @@
   {
     "path": "26-01-10",
     "date": "26-01-10",
-    "title": "Double Moon"
+    "title": "Double Moon",
+    "tags": [
+      "digital",
+      "moon",
+      "night",
+      "sky",
+      "twins"
+    ]
   },
   {
     "path": "26-01-11",
@@ -3945,15 +3936,6 @@
     ]
   },
   {
-    "path": "26-01-26",
-    "date": "26-01-26",
-    "title": "Split",
-    "tags": [
-      "analog",
-  "image-free"
-    ]
-  },
-  {
     "path": "26-01-25",
     "date": "26-01-25",
     "title": "Mirage",
@@ -3965,6 +3947,15 @@
       "landscape",
       "mirror",
       "slow"
+    ]
+  },
+  {
+    "path": "26-01-26",
+    "date": "26-01-26",
+    "title": "Split",
+    "tags": [
+      "analog",
+      "image-free"
     ]
   },
   {
@@ -7324,15 +7315,15 @@
       "wet"
     ]
   },
-   {
+  {
     "path": "26-10-04",
     "date": "26-10-04",
     "title": "Cinnabar",
     "tags": [
       "analog",
-      "roman-numeral",
       "earth",
-      "red"
+      "red",
+      "roman-numeral"
     ]
   },
   {
@@ -7343,9 +7334,9 @@
       "digital",
       "gravity",
       "image-free",
+      "landscape",
       "water",
-      "wet", 
-      "landscape"
+      "wet"
     ]
   },
   {
@@ -7360,5 +7351,4 @@
       "wet"
     ]
   }
-  
 ]
