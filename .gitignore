@@ -77,3 +77,7 @@ capture.mjs
 .github/CODEOWNERS
 .github/modernize/
 .aider*
+
+# Playwright output
+test-results/
+playwright-report/
