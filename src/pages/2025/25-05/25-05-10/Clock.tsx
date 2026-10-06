@@ -7,6 +7,25 @@ import React, {
 } from 'react';
 export const assets: string[] = [];
 
+const injectedStyles = new Set<string>();
+
+function useGlobalStyles(css: string, id: string): void {
+  useEffect(() => {
+    if (injectedStyles.has(id)) return;
+    injectedStyles.add(id);
+
+    const style = document.createElement('style');
+    style.textContent = css;
+    style.setAttribute('data-global', id);
+    document.head.appendChild(style);
+
+    return () => {
+      injectedStyles.delete(id);
+      style.remove();
+    };
+  }, [css, id]);
+}
+
 // Google Fonts URLs for Michroma, Economica, and Questrial
 const michromaFontUrl =
   'https://fonts.gstatic.com/s/michroma/v18/PN_zRfy9qWD8fE-oB4_J_Q.woff2';
