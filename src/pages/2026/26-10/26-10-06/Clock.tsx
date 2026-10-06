@@ -6,10 +6,13 @@ import { useMemo, useState, useEffect } from 'react';
 
 import backgroundVideo from '@/assets/images/26_images/26-10/26-10-06/pen.webm';
 import font from '@/assets/fonts/26fonts/26-10-06.ttf?url';
+import hourHandImage from '@/assets/images/26_images/26-10/26-10-06/pen3.webp';
+import minuteHandImage from '@/assets/images/26_images/26-10/26-10-06/pen2.webp';
+import secondHandImage from '@/assets/images/26_images/26-10/26-10-06/pen.webp';
 
 import styles from './Clock.module.css';
 
-export const assets = [backgroundVideo, font];
+export const assets = [backgroundVideo, font, hourHandImage, minuteHandImage, secondHandImage];
 
 const fontConfig: FontConfig = {
   fontFamily: 'ClockFont_26_10_06',
@@ -89,6 +92,7 @@ const Clock_26_10_06 = () => {
           style={
             {
               '--angle': `${hourAngle}deg`,
+              '--hand-image': `url(${hourHandImage})`,
             } as React.CSSProperties
           }
         />
@@ -98,6 +102,7 @@ const Clock_26_10_06 = () => {
           style={
             {
               '--angle': `${minuteAngle}deg`,
+              '--hand-image': `url(${minuteHandImage})`,
             } as React.CSSProperties
           }
         />
@@ -107,11 +112,11 @@ const Clock_26_10_06 = () => {
           style={
             {
               '--angle': `${secondAngle}deg`,
+              '--hand-image': `url(${secondHandImage})`,
             } as React.CSSProperties
           }
         />
 
-        <div className={styles.centerDot} />
       </div>
 
       <SRTime time={time} />
