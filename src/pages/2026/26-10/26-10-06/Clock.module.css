@@ -30,11 +30,11 @@
 }
 .clockFace {
   position: relative;
-  width: 110vmin;
-  height: 110vmin;
+  width: 120vmin;
+  height: 120vmin;
   flex: 0 0 110vmin;
   border-radius: 50%;
-  /* opacity: 0.7; */
+  opacity: 0.9;
   z-index: 9;
 }
 .hand {
@@ -76,11 +76,11 @@
     monospace,
     system-ui,
     sans-serif;
-  font-size: 19vh;
+  font-size: 29vh;
   line-height: 1;
   letter-spacing: -0.02em;
   text-align: center;
-  text-shadow: 0 0 2px rgba(30, 64, 175, 0.6);
+  text-shadow: 0 0 1px rgb(30, 64, 175);
   z-index: 7;
   pointer-events: none;
   transform: translate(-50%, -50%);
