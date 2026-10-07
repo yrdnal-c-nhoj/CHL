@@ -8,7 +8,7 @@ import styles from './Clock.module.css';
 
 export const assets = [fontUrl, backgroundVideo];
 
-const FONT_FAMILY = 'ClockFont_26_09_23';
+const FONT_FAMILY = 'ClockFont_26_10_05';
 
 const fontConfig: FontConfig = {
   fontFamily: FONT_FAMILY,
@@ -33,15 +33,13 @@ const Clock = () => {
     <main className={styles.container}>
       <video
         className={styles.backgroundLayer}
+        src={backgroundVideo}
         autoPlay
         loop
         muted
         playsInline
-        preload="none"
         aria-hidden="true"
-      >
-        <source src={backgroundVideo} type="video/webm" />
-      </video>
+      />
 
       <SRTime time={time} />
 
@@ -57,4 +55,4 @@ const Clock = () => {
 };
 
 export default Clock;
-Clock.displayName = 'Clock_26_10_04';
+Clock.displayName = 'Clock_26_10_05';
