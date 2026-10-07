@@ -66,9 +66,10 @@
 
 .simpleListRow {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 110px 1fr auto;
+  grid-template-rows: auto auto;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem 1rem;
   width: 100%;
   padding: 0.5rem 0.3rem;
   color: inherit;
@@ -83,18 +84,18 @@
 
 .simpleListDate {
   grid-column: 1;
+  grid-row: 1 / 3;
   align-self: flex-start;
 }
 
 .centerColumn {
-  grid-column: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  min-width: 0;
+  display: contents;
 }
 
 .simpleListTitle {
+  grid-column: 2 / 4;
+  grid-row: 1;
+  min-width: 0;
   font-size: 1.5rem;
   letter-spacing: 0.05rem;
   font-weight: 400;
@@ -104,14 +105,9 @@
   text-align: left;
 }
 
-.bottomRow {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-}
-
 .thumbnailWrapper {
+  grid-column: 2;
+  grid-row: 2;
   width: 110px;
   height: 110px;
   border-radius: 1px;
@@ -129,6 +125,8 @@
 }
 
 .tagWrapper {
+  grid-column: 3;
+  grid-row: 2;
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
@@ -138,7 +136,8 @@
 }
 
 .simpleListNumber {
-  grid-column: 3;
+  grid-column: 4;
+  grid-row: 1;
   align-self: start;
   white-space: nowrap;
   text-align: right;
@@ -155,48 +154,46 @@
   }
 
   .simpleListRow {
-    display: grid;
-    grid-template-columns: auto auto 1fr auto;
-    grid-template-rows: auto auto;
+    grid-template-columns: auto 100px 1fr auto;
+    grid-template-rows: auto;
     align-items: start;
     gap: 1rem;
   }
 
   .simpleListDate {
     grid-column: 1;
-    grid-row: 1 / 3;
+    grid-row: auto;
     align-self: start;
   }
 
   .centerColumn {
-    display: contents;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+    grid-column: 3;
   }
 
   .simpleListTitle {
-    grid-column: 3;
-    grid-row: 1;
-    min-width: 0;
-  }
-
-  .bottomRow {
-    display: contents;
+    grid-column: auto;
+    grid-row: auto;
   }
 
   .thumbnailWrapper {
     grid-column: 2;
-    grid-row: 1;
+    grid-row: auto;
     width: 100px;
     height: 100px;
   }
 
   .tagWrapper {
-    grid-column: 3;
-    grid-row: 2;
+    grid-column: auto;
+    grid-row: auto;
   }
 
   .simpleListNumber {
     grid-column: 4;
-    grid-row: 1;
+    grid-row: auto;
     align-self: start;
   }
 }
