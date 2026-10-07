@@ -1,6 +1,6 @@
 :root {
   /* Common typography and shadow styles */
-  --clock-font: 'ClockFont_26_09_23', monospace, sans-serif;
+  --clock-font: 'ClockFont_26_10_05', monospace, sans-serif;
   --text-inset-shadow: 0px 4px 0 #000, 0px -1px 0 #cac5c5;
 
   /* Colors */
