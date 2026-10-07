@@ -61,8 +61,8 @@
   .digitalDisplay {
     flex-direction: column;
     align-items: center;
-    gap: 11vmin;
-    font-size: 22vh;
+    gap: 5vmin;
+    font-size: 27vh;
   }
 
   .digitGroup {
