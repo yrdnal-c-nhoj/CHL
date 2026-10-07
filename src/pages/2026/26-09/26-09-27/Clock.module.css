@@ -37,7 +37,7 @@
   background-color: var(--bg);
   color: var(--text);
   perspective: 80rem;
-  animation: colorFade 25s infinite;
+  animation: colorFade 40s infinite;
 }
 
 .digitalDisplay {
