@@ -5,7 +5,7 @@ node_modules/
 src/assets/social_media/
 
 # Test clocks data
-testclocks.json
+context/testclocks.json
 
 
 # Build & output directories
