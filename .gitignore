@@ -4,6 +4,10 @@ node_modules/
 # Social media assets
 src/assets/social_media/
 
+# Test clocks data
+testclocks.json
+
+
 # Build & output directories
 dist/
 out/
