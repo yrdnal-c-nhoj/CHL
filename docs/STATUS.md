@@ -73,7 +73,6 @@ Historical clock implementations remain in place unless a concrete production, s
 - Repository and deployment footprint continues to grow with the daily archive.
 - Three.js bundle size remains above the current performance budget.
 - A visual regression strategy for representative current clocks remains future work.
-- Tailwind-related configuration/dependencies still require a separate determination of whether they are unused before removal.
 - Vercel configuration and cache policy still warrant a focused modernization pass.
 
 ## Current Priorities

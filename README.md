@@ -27,7 +27,6 @@ Open <http://localhost:5173>.
 ## Tech stack
 
 - React 19, TypeScript, Vite 7
-- Tailwind CSS v4
 - three.js with `@react-three/fiber` and `@react-three/drei` for 3D clocks
 - d3 for data-driven and SVG clocks
 - React Router for page routing

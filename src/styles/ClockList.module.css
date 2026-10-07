@@ -155,11 +155,48 @@
   }
 
   .simpleListRow {
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: start;
     gap: 1rem;
   }
 
+  .simpleListDate {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    align-self: start;
+  }
+
+  .centerColumn {
+    display: contents;
+  }
+
+  .simpleListTitle {
+    grid-column: 3;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .bottomRow {
+    display: contents;
+  }
+
   .thumbnailWrapper {
+    grid-column: 2;
+    grid-row: 1;
     width: 100px;
     height: 100px;
+  }
+
+  .tagWrapper {
+    grid-column: 3;
+    grid-row: 2;
+  }
+
+  .simpleListNumber {
+    grid-column: 4;
+    grid-row: 1;
+    align-self: start;
   }
 }
