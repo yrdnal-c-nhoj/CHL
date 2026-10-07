@@ -121,24 +121,22 @@ const ClockResults: FC<ClockResultsProps> = ({ items, loading, error }) => {
           >
             <div className={listStyles.simpleListRow}>
               <MemoizedFormattedDate date={item.date} />
+              <div className={listStyles.thumbnailWrapper}>
+                <Thumbnail date={item.date} title={item.title || ''} />
+              </div>
               <div className={listStyles.centerColumn}>
                 <span className={listStyles.simpleListTitle}>{item.title || 'No Title'}</span>
-                <div className={listStyles.bottomRow}>
-                  <div className={listStyles.thumbnailWrapper}>
-                    <Thumbnail date={item.date} title={item.title || ''} />
-                  </div>
-                  <div className={listStyles.tagWrapper}>
-                    {sortTags(item.tags || []).map((tag) => (
-                      <Link
-                        key={tag}
-                        to={`/tag/${tag}`}
-                        className="tag-bubble"
-                        onClick={(e: MouseEvent) => e.stopPropagation()}
-                      >
-                        {tag}
-                      </Link>
-                    ))}
-                  </div>
+                <div className={listStyles.tagWrapper}>
+                  {sortTags(item.tags || []).map((tag) => (
+                    <Link
+                      key={tag}
+                      to={`/tag/${tag}`}
+                      className="tag-bubble"
+                      onClick={(e: MouseEvent) => e.stopPropagation()}
+                    >
+                      {tag}
+                    </Link>
+                  ))}
                 </div>
               </div>
               <span className={listStyles.simpleListNumber}>#{item.clockNumber}</span>
