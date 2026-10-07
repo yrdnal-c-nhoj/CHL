@@ -145,12 +145,14 @@
   --hand-width: 0.2vmin;
   --hand-height: 22vmin;
   --dot-size: 28vmin;
+    filter: drop-shadow(4px -4px #fff);
 }
 
 .minuteHand {
   --hand-width: 0.2vmin;
   --hand-height: 32vmin;
   --dot-size: 44vmin;
+    filter: drop-shadow(4px -4px #fff);
 }
 
 .secondHand {
@@ -172,7 +174,7 @@
   height: var(--dot-size, 39vmin);
   object-fit: contain;
   transform: translate(-50%, -50%);
-  filter: drop-shadow(2px -2px #fff);
+  /* filter: drop-shadow(2px -2px #fff); */
   z-index: 9;
   pointer-events: none;
   user-select: none;
@@ -191,7 +193,7 @@
   object-fit: contain;
   transform: translate(-50%, -50%);
   animation: rotateNose 30s linear infinite;
-  filter: drop-shadow(1px -2px #fff);
+  filter: drop-shadow(7px -5px #fff);
   pointer-events: none;
   user-select: none;
   z-index: 20;
