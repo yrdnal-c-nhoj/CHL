@@ -140,7 +140,7 @@ function verifyClock(filePath) {
     errors.push('displayName must end with _YY_MM_DD');
   }
   if (
-    !/import\s*\{\s*(?:useClock|useSmoothClock)\s*\}\s*from\s*['"]@\/utils\/hooks['"]/.test(
+    !/import\s*\{\s*[^}]*\b(?:useClock|useSmoothClock)\b[^}]*\}\s*from\s*['"]@\/utils\/hooks['"]/.test(
       source,
     )
   ) {

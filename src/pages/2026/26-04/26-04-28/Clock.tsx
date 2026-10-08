@@ -1,12 +1,11 @@
 import { memo, useEffect, useRef } from 'react';
 import backgroundImg from '@/assets/images/26_images/26-04/26-04-28/focus.webp';
-import { useSmoothClock } from '@/utils/hooks';
-import { calculateAngles } from '@/utils/hooks';
+import { calculateAngles, useSmoothClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [backgroundImg];
 
-const Clock =  () => {
+const Clock = () => {
   const time = useSmoothClock();
 
   const hourHandRef = useRef<HTMLDivElement>(null);
@@ -42,12 +41,23 @@ const Clock =  () => {
 
   return (
     <main style={containerStyle} className={styles.container}>
-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
 
       <div className={styles.analogClockContainer}>
-        <div ref={hourHandRef} className={`${styles.hand} ${styles.hourHand}`} />
-        <div ref={minuteHandRef} className={`${styles.hand} ${styles.minuteHand}`} />
-        <div ref={secondHandRef} className={`${styles.hand} ${styles.secondHand}`} />
+        <div
+          ref={hourHandRef}
+          className={`${styles.hand} ${styles.hourHand}`}
+        />
+        <div
+          ref={minuteHandRef}
+          className={`${styles.hand} ${styles.minuteHand}`}
+        />
+        <div
+          ref={secondHandRef}
+          className={`${styles.hand} ${styles.secondHand}`}
+        />
         <div className={styles.centerDot} />
       </div>
     </main>

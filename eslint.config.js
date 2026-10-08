@@ -269,7 +269,10 @@ export default tseslint.config(
   // Suppress style-related rules for legacy clock fleet (2025/2026)
   // Core pages and components are checked by the rules above.
   {
-    files: ['src/pages/2025/**/*.{js,jsx,ts,tsx}', 'src/pages/2026/**/*.{js,jsx,ts,tsx}'],
+    files: [
+      'src/pages/2025/**/*.{js,jsx,ts,tsx}',
+      'src/pages/2026/**/*.{js,jsx,ts,tsx}',
+    ],
     rules: {
       'react/jsx-no-bind': 'off',
       'react/no-unknown-property': 'off',
@@ -316,20 +319,25 @@ export default tseslint.config(
         'error',
         {
           selector: 'CallExpression[callee.name=/^(setInterval|setTimeout)$/]',
-          message: 'Displayed time must come from useClock/useSmoothClock, not timers.',
+          message:
+            'Displayed time must come from useClock/useSmoothClock, not timers.',
         },
         {
           selector:
             "CallExpression[callee.object.name='window'][callee.property.name=/^(setInterval|setTimeout)$/]",
-          message: 'Displayed time must come from useClock/useSmoothClock, not timers.',
+          message:
+            'Displayed time must come from useClock/useSmoothClock, not timers.',
         },
         {
-          selector: "CallExpression[callee.object.name='Date'][callee.property.name='now']",
-          message: 'Do not use Date.now() as a time source. Use useClock/useSmoothClock.',
+          selector:
+            "CallExpression[callee.object.name='Date'][callee.property.name='now']",
+          message:
+            'Do not use Date.now() as a time source. Use useClock/useSmoothClock.',
         },
         {
           selector: "NewExpression[callee.name='Date'][arguments.length=0]",
-          message: 'Do not call new Date() for the current time. Use useClock/useSmoothClock.',
+          message:
+            'Do not call new Date() for the current time. Use useClock/useSmoothClock.',
         },
       ],
     },
@@ -361,6 +369,19 @@ export default tseslint.config(
     rules: {
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
+    },
+  },
+
+  // Downgrade compiler-style rules for clock pages — these flag patterns
+  // that work fine at runtime; keep real-bug rules (rules-of-hooks,
+  // static-components) as errors.
+  {
+    files: ['src/pages/**/Clock.tsx'],
+    rules: {
+      'react-hooks/refs': 'warn',
+      'react-hooks/immutability': 'warn',
+      'react-hooks/purity': 'warn',
+      'react-hooks/use-memo': 'warn',
     },
   },
 

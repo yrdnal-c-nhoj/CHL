@@ -5,7 +5,7 @@ import ClockErrorBoundary from '@/components/ClockErrorBoundary';
 import ClockPageNav from '@/components/ClockPageNav';
 import { useDataContext } from '@/context/DataContext';
 import { useClockPage } from '@/hooks/useClockPage';
-import styles from './ClockPage.module.css';
+import styles from '@/styles/ClockPage.module.css';
 
 const asString = (v?: string | null) => v ?? '';
 
@@ -41,15 +41,19 @@ export default function ClockPage() {
         Return to home
       </a>
 
-      {overlayVisible && <div className={styles.loadingOverlay}>Loading...</div>}
+      {overlayVisible && (
+        <div className={styles.loadingOverlay}>Loading...</div>
+      )}
 
       {error ? (
-     <div className={styles.errorBox} role="alert">
-         Error: {error}
-     </div>
+        <div className={styles.errorBox} role="alert">
+          Error: {error}
+        </div>
       ) : ClockComponent ? (
         <ClockErrorBoundary key={date}>
-          <Suspense fallback={<div className={styles.loadingOverlay}>Loading...</div>}>
+          <Suspense
+            fallback={<div className={styles.loadingOverlay}>Loading...</div>}
+          >
             <ClockComponent />
           </Suspense>
         </ClockErrorBoundary>
