@@ -2,7 +2,7 @@ import { getLatestClockDate } from '@/clock/clockRegistry';
 import { useDataContext } from '@/context/DataContext';
 import { useClockPage } from '@/hooks/useClockPage';
 import React, { useMemo } from 'react';
-import styles from './Today.module.css';
+import styles from '@/styles/ClockPage.module.css';
 
 /**
  * Displays the most recently available clock component.
@@ -31,11 +31,13 @@ const TodayPage = () => {
       return null;
     }
 
-    return items.find((item) => item.date === latestDate) ?? {
-      path: `/${latestDate}`,
-      date: latestDate,
-      title: latestDate,
-    };
+    return (
+      items.find((item) => item.date === latestDate) ?? {
+        path: `/${latestDate}`,
+        date: latestDate,
+        title: latestDate,
+      }
+    );
   }, [items, dataLoading, dataError]);
 
   const {
@@ -49,13 +51,9 @@ const TodayPage = () => {
 
   return (
     <div className={styles.container}>
-      {overlayVisible && !isReady && (
-        <div className={styles.loadingOverlay} />
-      )}
+      {overlayVisible && !isReady && <div className={styles.loadingOverlay} />}
       {errorMessage ? (
-        <div className={styles.errorBox}>
-          Error: {errorMessage}
-        </div>
+        <div className={styles.errorBox}>Error: {errorMessage}</div>
       ) : ClockComponent ? (
         <ClockComponent />
       ) : null}
