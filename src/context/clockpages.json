@@ -41,15 +41,7 @@
     "path": "25-04-04",
     "date": "25-04-04",
     "title": "Heartbeat",
-    "tags": [
-      "BPM",
-      "analog",
-      "blood",
-      "body",
-      "flow",
-      "heart",
-      "red"
-    ]
+    "tags": ["BPM", "analog", "blood", "body", "flow", "heart", "red"]
   },
   {
     "path": "25-04-05",
@@ -69,14 +61,7 @@
     "path": "25-04-06",
     "date": "25-04-06",
     "title": "Confetti",
-    "tags": [
-      "cake",
-      "color",
-      "digital",
-      "gravity",
-      "image-free",
-      "play"
-    ]
+    "tags": ["cake", "color", "digital", "gravity", "image-free", "play"]
   },
   {
     "path": "25-04-07",
@@ -129,13 +114,7 @@
     "path": "25-04-10",
     "date": "25-04-10",
     "title": "Bar Graph",
-    "tags": [
-      "color",
-      "digital",
-      "histogram",
-      "image-free",
-      "up-and-down"
-    ]
+    "tags": ["color", "digital", "histogram", "image-free", "up-and-down"]
   },
   {
     "path": "25-04-11",
@@ -169,65 +148,31 @@
     "path": "25-04-13",
     "date": "25-04-13",
     "title": "Pepperoni Pizza",
-    "tags": [
-      "Italy",
-      "analog",
-      "circle",
-      "food",
-      "hot",
-      "round",
-      "smell"
-    ]
+    "tags": ["Italy", "analog", "circle", "food", "hot", "round", "smell"]
   },
   {
     "path": "25-04-14",
     "date": "25-04-14",
     "title": "Blue Bricks",
-    "tags": [
-      "blue",
-      "histogram",
-      "monochrome",
-      "parallel"
-    ]
+    "tags": ["blue", "histogram", "monochrome", "parallel"]
   },
   {
     "path": "25-04-15",
     "date": "25-04-15",
     "title": "Horizon",
-    "tags": [
-      "day",
-      "digital",
-      "earth",
-      "horizon",
-      "landscape",
-      "nature",
-      "sky"
-    ]
+    "tags": ["day", "digital", "earth", "horizon", "landscape", "nature", "sky"]
   },
   {
     "path": "25-04-16",
     "date": "25-04-16",
     "title": "Birthday Cake",
-    "tags": [
-      "analog",
-      "cake",
-      "color",
-      "food",
-      "play",
-      "round",
-      "smell"
-    ]
+    "tags": ["analog", "cake", "color", "food", "play", "round", "smell"]
   },
   {
     "path": "25-04-17",
     "date": "25-04-17",
     "title": "Stripe",
-    "tags": [
-      "color",
-      "digital",
-      "image-free",
-      "parallel"
-    ]
+    "tags": ["color", "digital", "image-free", "parallel"]
   },
   {
     "path": "25-04-18",
@@ -251,14 +196,7 @@
     "path": "25-04-19",
     "date": "25-04-19",
     "title": "Sphere Drop",
-    "tags": [
-      "color",
-      "digital",
-      "gravity",
-      "histogram",
-      "image-free",
-      "sphere"
-    ]
+    "tags": ["color", "digital", "gravity", "histogram", "image-free", "sphere"]
   },
   {
     "path": "25-04-20",
@@ -280,25 +218,13 @@
     "path": "25-04-21",
     "date": "25-04-21",
     "title": "Peacock",
-    "tags": [
-      "analog",
-      "animal",
-      "bird",
-      "feather",
-      "fly",
-      "sound",
-      "walk"
-    ]
+    "tags": ["analog", "animal", "bird", "feather", "fly", "sound", "walk"]
   },
   {
     "path": "25-04-22",
     "date": "25-04-22",
     "title": "Bouncing Cube",
-    "tags": [
-      "digital",
-      "fly",
-      "gravity"
-    ]
+    "tags": ["digital", "fly", "gravity"]
   },
   {
     "path": "25-04-23",
@@ -350,60 +276,31 @@
     "path": "25-04-26",
     "date": "25-04-26",
     "title": "Skew",
-    "tags": [
-      "black",
-      "color",
-      "digital"
-    ]
+    "tags": ["black", "color", "digital"]
   },
   {
     "path": "25-04-27",
     "date": "25-04-27",
     "title": "Spinning Coin",
-    "tags": [
-      "analog",
-      "metal",
-      "shiny",
-      "spin"
-    ]
+    "tags": ["analog", "metal", "shiny", "spin"]
   },
   {
     "path": "25-04-28",
     "date": "25-04-28",
     "title": "Jackson Pollock",
-    "tags": [
-      "b+w",
-      "digital",
-      "gravity",
-      "paint"
-    ]
+    "tags": ["b+w", "digital", "gravity", "paint"]
   },
   {
     "path": "25-04-29",
     "date": "25-04-29",
     "title": "Fireworks",
-    "tags": [
-      "aim",
-      "color",
-      "digital",
-      "fast",
-      "fire",
-      "light",
-      "night",
-      "sky"
-    ]
+    "tags": ["aim", "color", "digital", "fast", "fire", "light", "night", "sky"]
   },
   {
     "path": "25-04-30",
     "date": "25-04-30",
     "title": "Bounce",
-    "tags": [
-      "analog",
-      "gravity",
-      "physics",
-      "round",
-      "up-and-down"
-    ]
+    "tags": ["analog", "gravity", "physics", "round", "up-and-down"]
   },
   {
     "path": "25-05-01",
@@ -455,14 +352,7 @@
     "path": "25-05-04",
     "date": "25-05-04",
     "title": "Phénakisticope",
-    "tags": [
-      "analog",
-      "animal",
-      "paper",
-      "planet",
-      "sky",
-      "spin"
-    ]
+    "tags": ["analog", "animal", "paper", "planet", "sky", "spin"]
   },
   {
     "path": "25-05-05",
@@ -483,12 +373,7 @@
     "path": "25-05-06",
     "date": "25-05-06",
     "title": "Unruly",
-    "tags": [
-      "color",
-      "digital",
-      "image-free",
-      "typeface"
-    ]
+    "tags": ["color", "digital", "image-free", "typeface"]
   },
   {
     "path": "25-05-07",
@@ -525,26 +410,13 @@
     "path": "25-05-09",
     "date": "25-05-09",
     "title": "Whirlpool",
-    "tags": [
-      "analog",
-      "float",
-      "gravity",
-      "spin",
-      "swim",
-      "water"
-    ]
+    "tags": ["analog", "float", "gravity", "spin", "swim", "water"]
   },
   {
     "path": "25-05-10",
     "date": "25-05-10",
     "title": "Number Toss",
-    "tags": [
-      "color",
-      "digital",
-      "gravity",
-      "pink",
-      "up-and-down"
-    ]
+    "tags": ["color", "digital", "gravity", "pink", "up-and-down"]
   },
   {
     "path": "25-05-12",
@@ -567,113 +439,55 @@
     "path": "25-05-13",
     "date": "25-05-13",
     "title": "Flat",
-    "tags": [
-      "aerial",
-      "analog",
-      "neutrals",
-      "tick-tock"
-    ]
+    "tags": ["aerial", "analog", "neutrals", "tick-tock"]
   },
   {
     "path": "25-05-14",
     "date": "25-05-14",
     "title": "Rough Idea",
-    "tags": [
-      "RGB",
-      "color",
-      "digital",
-      "generative",
-      "grey"
-    ]
+    "tags": ["RGB", "color", "digital", "generative", "grey"]
   },
   {
     "path": "25-05-15",
     "date": "25-05-15",
     "title": "Roulette",
-    "tags": [
-      "analog",
-      "gold",
-      "mechanical",
-      "play",
-      "round",
-      "spin",
-      "wheel"
-    ]
+    "tags": ["analog", "gold", "mechanical", "play", "round", "spin", "wheel"]
   },
   {
     "path": "25-05-16",
     "date": "25-05-16",
     "title": "Braille",
-    "tags": [
-      "digital",
-      "hand",
-      "monochrome",
-      "paper",
-      "pictographic"
-    ]
+    "tags": ["digital", "hand", "monochrome", "paper", "pictographic"]
   },
   {
     "path": "25-05-17",
     "date": "25-05-17",
     "title": "Primary Colors",
-    "tags": [
-      "RYB",
-      "analog",
-      "blue",
-      "color",
-      "red",
-      "yellow"
-    ]
+    "tags": ["RYB", "analog", "blue", "color", "red", "yellow"]
   },
   {
     "path": "25-05-18",
     "date": "25-05-18",
     "title": "Blueprint",
-    "tags": [
-      "blue",
-      "digital",
-      "map",
-      "monochrome",
-      "paper"
-    ]
+    "tags": ["blue", "digital", "map", "monochrome", "paper"]
   },
   {
     "path": "25-05-19",
     "date": "25-05-19",
     "title": "Ants",
-    "tags": [
-      "analog",
-      "animal",
-      "b+w",
-      "exoskeletal",
-      "food",
-      "walk"
-    ]
+    "tags": ["analog", "animal", "b+w", "exoskeletal", "food", "walk"]
   },
   {
     "path": "25-05-20",
     "date": "25-05-20",
     "title": "Tetrahedron",
-    "tags": [
-      "Platonic-Solids",
-      "digital",
-      "fire",
-      "pyramid",
-      "red"
-    ]
+    "tags": ["Platonic-Solids", "digital", "fire", "pyramid", "red"]
   },
   {
     "path": "25-05-21",
     "date": "25-05-21",
     "title": "Semaphore",
-    "tags": [
-      "body",
-      "cloth",
-      "flags",
-      "hand",
-      "pictographic",
-      "thread"
-    ]
+    "tags": ["body", "cloth", "flags", "hand", "pictographic", "thread"]
   },
   {
     "path": "25-05-22",
@@ -693,28 +507,13 @@
     "path": "25-05-23",
     "date": "25-05-23",
     "title": "Cross Stitch",
-    "tags": [
-      "cloth",
-      "color",
-      "digital",
-      "hand",
-      "slow",
-      "thread"
-    ]
+    "tags": ["cloth", "color", "digital", "hand", "slow", "thread"]
   },
   {
     "path": "25-05-24",
     "date": "25-05-24",
     "title": "Tornado",
-    "tags": [
-      "aim",
-      "air",
-      "digital",
-      "fast",
-      "spin",
-      "weather",
-      "wind"
-    ]
+    "tags": ["aim", "air", "digital", "fast", "spin", "weather", "wind"]
   },
   {
     "path": "25-05-25",
@@ -735,50 +534,25 @@
     "path": "25-05-26",
     "date": "25-05-26",
     "title": "Sprout",
-    "tags": [
-      "digital",
-      "earth",
-      "green",
-      "grow",
-      "nature",
-      "plant",
-      "smell"
-    ]
+    "tags": ["digital", "earth", "green", "grow", "nature", "plant", "smell"]
   },
   {
     "path": "25-05-27",
     "date": "25-05-27",
     "title": "Dots",
-    "tags": [
-      "digital",
-      "histogram",
-      "image-free",
-      "neutrals"
-    ]
+    "tags": ["digital", "histogram", "image-free", "neutrals"]
   },
   {
     "path": "25-05-28",
     "date": "25-05-28",
     "title": "Corner",
-    "tags": [
-      "RYB",
-      "analog",
-      "brown",
-      "image-free",
-      "round"
-    ]
+    "tags": ["RYB", "analog", "brown", "image-free", "round"]
   },
   {
     "path": "25-05-29",
     "date": "25-05-29",
     "title": "Gear",
-    "tags": [
-      "grid",
-      "mechanical",
-      "spin",
-      "wheel",
-      "words"
-    ]
+    "tags": ["grid", "mechanical", "spin", "wheel", "words"]
   },
   {
     "path": "25-05-30",
@@ -924,15 +698,7 @@
     "path": "25-06-08",
     "date": "25-06-08",
     "title": "Face Card",
-    "tags": [
-      "analog",
-      "face",
-      "hand",
-      "interior",
-      "paper",
-      "play",
-      "see"
-    ]
+    "tags": ["analog", "face", "hand", "interior", "paper", "play", "see"]
   },
   {
     "path": "25-06-09",
@@ -954,14 +720,7 @@
     "path": "25-06-10",
     "date": "25-06-10",
     "title": "Shapes",
-    "tags": [
-      "b+w",
-      "circle",
-      "pentagon",
-      "pictographic",
-      "square",
-      "triangle"
-    ]
+    "tags": ["b+w", "circle", "pentagon", "pictographic", "square", "triangle"]
   },
   {
     "path": "25-06-11",
@@ -1034,13 +793,7 @@
     "path": "25-06-15",
     "date": "25-06-15",
     "title": "Stitches",
-    "tags": [
-      "body",
-      "bone",
-      "digital",
-      "pink",
-      "thread"
-    ]
+    "tags": ["body", "bone", "digital", "pink", "thread"]
   },
   {
     "path": "25-06-16",
@@ -1061,26 +814,13 @@
     "path": "25-06-17",
     "date": "25-06-17",
     "title": "Backslant",
-    "tags": [
-      "digital",
-      "image-free",
-      "orange",
-      "parallel",
-      "slant"
-    ]
+    "tags": ["digital", "image-free", "orange", "parallel", "slant"]
   },
   {
     "path": "25-06-18",
     "date": "25-06-18",
     "title": "Cistercian",
-    "tags": [
-      "cloth",
-      "digital",
-      "gods",
-      "interior",
-      "slow",
-      "typeface"
-    ]
+    "tags": ["cloth", "digital", "gods", "interior", "slow", "typeface"]
   },
   {
     "path": "25-06-19",
@@ -1102,10 +842,7 @@
     "path": "25-06-20",
     "date": "25-06-20",
     "title": "Indecisive",
-    "tags": [
-      "digital",
-      "typeface"
-    ]
+    "tags": ["digital", "typeface"]
   },
   {
     "path": "25-06-21",
@@ -1126,62 +863,31 @@
     "path": "25-06-22",
     "date": "25-06-22",
     "title": "Parallel Lines",
-    "tags": [
-      "histogram",
-      "image-free",
-      "parallel",
-      "pattern",
-      "red"
-    ]
+    "tags": ["histogram", "image-free", "parallel", "pattern", "red"]
   },
   {
     "path": "25-06-23",
     "date": "25-06-23",
     "title": "Squiggle",
-    "tags": [
-      "analog",
-      "green",
-      "grey",
-      "image-free"
-    ]
+    "tags": ["analog", "green", "grey", "image-free"]
   },
   {
     "path": "25-06-24",
     "date": "25-06-24",
     "title": "Thought Balloon",
-    "tags": [
-      "air",
-      "ampm",
-      "digital",
-      "monochrome",
-      "sound"
-    ]
+    "tags": ["air", "ampm", "digital", "monochrome", "sound"]
   },
   {
     "path": "25-06-25",
     "date": "25-06-25",
     "title": "Bone",
-    "tags": [
-      "analog",
-      "blood",
-      "body",
-      "bone",
-      "cloth",
-      "shell"
-    ]
+    "tags": ["analog", "blood", "body", "bone", "cloth", "shell"]
   },
   {
     "path": "25-06-26",
     "date": "25-06-26",
     "title": "Cosmic Wheels",
-    "tags": [
-      "b+w",
-      "digital",
-      "revolve",
-      "sky",
-      "slow",
-      "stars"
-    ]
+    "tags": ["b+w", "digital", "revolve", "sky", "slow", "stars"]
   },
   {
     "path": "25-06-27",
@@ -1202,37 +908,19 @@
     "path": "25-06-28",
     "date": "25-06-28",
     "title": "Twenty-Four",
-    "tags": [
-      "analog",
-      "b+w",
-      "image-free"
-    ]
+    "tags": ["analog", "b+w", "image-free"]
   },
   {
     "path": "25-06-29",
     "date": "25-06-29",
     "title": "Stretch",
-    "tags": [
-      "digital",
-      "green",
-      "slant",
-      "typeface",
-      "yellow"
-    ]
+    "tags": ["digital", "green", "slant", "typeface", "yellow"]
   },
   {
     "path": "25-06-30",
     "date": "25-06-30",
     "title": "Egg",
-    "tags": [
-      "analog",
-      "food",
-      "gold",
-      "shell",
-      "smell",
-      "white",
-      "yellow"
-    ]
+    "tags": ["analog", "food", "gold", "shell", "smell", "white", "yellow"]
   },
   {
     "path": "25-07-01",
@@ -1252,11 +940,7 @@
     "path": "25-07-02",
     "date": "25-07-02",
     "title": "Backwards",
-    "tags": [
-      "analog",
-      "mirror",
-      "tick-tock"
-    ]
+    "tags": ["analog", "mirror", "tick-tock"]
   },
   {
     "path": "25-07-03",
@@ -1277,26 +961,13 @@
     "path": "25-07-04",
     "date": "25-07-04",
     "title": "Kaleidoscope",
-    "tags": [
-      "ampm",
-      "circle",
-      "digital",
-      "image-free",
-      "round",
-      "spin"
-    ]
+    "tags": ["ampm", "circle", "digital", "image-free", "round", "spin"]
   },
   {
     "path": "25-07-05",
     "date": "25-07-05",
     "title": "Vegas",
-    "tags": [
-      "Las-Vegas",
-      "day-and-night",
-      "digital",
-      "live-cam",
-      "play"
-    ]
+    "tags": ["Las-Vegas", "day-and-night", "digital", "live-cam", "play"]
   },
   {
     "path": "25-07-06",
@@ -1315,60 +986,31 @@
     "path": "25-07-07",
     "date": "25-07-07",
     "title": "SUV",
-    "tags": [
-      "ampm",
-      "digital",
-      "fast",
-      "mechanical",
-      "metal",
-      "transport"
-    ]
+    "tags": ["ampm", "digital", "fast", "mechanical", "metal", "transport"]
   },
   {
     "path": "25-07-08",
     "date": "25-07-08",
     "title": "Mint",
-    "tags": [
-      "analog",
-      "food",
-      "green",
-      "grow",
-      "plant",
-      "smell"
-    ]
+    "tags": ["analog", "food", "green", "grow", "plant", "smell"]
   },
   {
     "path": "25-07-09",
     "date": "25-07-09",
     "title": "Blob",
-    "tags": [
-      "digital",
-      "image-free"
-    ]
+    "tags": ["digital", "image-free"]
   },
   {
     "path": "25-07-10",
     "date": "25-07-10",
     "title": "Sliding",
-    "tags": [
-      "ampm",
-      "digital",
-      "image-free",
-      "side-to-side",
-      "typeface"
-    ]
+    "tags": ["ampm", "digital", "image-free", "side-to-side", "typeface"]
   },
   {
     "path": "25-07-11",
     "date": "25-07-11",
     "title": "Penmanship",
-    "tags": [
-      "ampm",
-      "digital",
-      "hand",
-      "paper",
-      "yellow"
-    ]
+    "tags": ["ampm", "digital", "hand", "paper", "yellow"]
   },
   {
     "path": "25-07-12",
@@ -1388,58 +1030,31 @@
     "path": "25-07-13",
     "date": "25-07-13",
     "title": "Rorschach",
-    "tags": [
-      "b+w",
-      "digital",
-      "eye",
-      "see"
-    ]
+    "tags": ["b+w", "digital", "eye", "see"]
   },
   {
     "path": "25-07-14",
     "date": "25-07-14",
     "title": "Cartoon",
-    "tags": [
-      "broken-clock",
-      "hand",
-      "unfinished"
-    ]
+    "tags": ["broken-clock", "hand", "unfinished"]
   },
   {
     "path": "25-07-15",
     "date": "25-07-15",
     "title": "ASCII",
-    "tags": [
-      "ampm",
-      "black",
-      "digital",
-      "image-free",
-      "words"
-    ]
+    "tags": ["ampm", "black", "digital", "image-free", "words"]
   },
   {
     "path": "25-07-16",
     "date": "25-07-16",
     "title": "Möbius Strip",
-    "tags": [
-      "Fibonacci",
-      "digital",
-      "geometry",
-      "spin"
-    ]
+    "tags": ["Fibonacci", "digital", "geometry", "spin"]
   },
   {
     "path": "25-07-17",
     "date": "25-07-17",
     "title": "Animals",
-    "tags": [
-      "analog",
-      "animal",
-      "molecules",
-      "nature",
-      "run",
-      "smell"
-    ]
+    "tags": ["analog", "animal", "molecules", "nature", "run", "smell"]
   },
   {
     "path": "25-07-18",
@@ -1463,96 +1078,49 @@
     "path": "25-07-19",
     "date": "25-07-19",
     "title": "Cuneiform",
-    "tags": [
-      "blue",
-      "desert",
-      "digital",
-      "slow",
-      "stone"
-    ]
+    "tags": ["blue", "desert", "digital", "slow", "stone"]
   },
   {
     "path": "25-07-20",
     "date": "25-07-20",
     "title": "F-Stop",
-    "tags": [
-      "analog",
-      "film",
-      "glass",
-      "hand",
-      "mechanical",
-      "metal",
-      "see"
-    ]
+    "tags": ["analog", "film", "glass", "hand", "mechanical", "metal", "see"]
   },
   {
     "path": "25-07-21",
     "date": "25-07-21",
     "title": "Anglerfish",
-    "tags": [
-      "animal",
-      "deepwater",
-      "digital",
-      "light",
-      "nature",
-      "swim"
-    ]
+    "tags": ["animal", "deepwater", "digital", "light", "nature", "swim"]
   },
   {
     "path": "25-07-22",
     "date": "25-07-22",
     "title": "Barrelroll",
-    "tags": [
-      "analog",
-      "fly",
-      "horizon",
-      "spin"
-    ]
+    "tags": ["analog", "fly", "horizon", "spin"]
   },
   {
     "path": "25-07-23",
     "date": "25-07-23",
     "title": "Baybayin",
-    "tags": [
-      "Tagalog",
-      "digital"
-    ]
+    "tags": ["Tagalog", "digital"]
   },
   {
     "path": "25-07-24",
     "date": "25-07-24",
     "title": "Emoji Analog",
-    "tags": [
-      "analog",
-      "emoji",
-      "info",
-      "tech"
-    ]
+    "tags": ["analog", "emoji", "info", "tech"]
   },
   {
     "path": "25-07-25",
     "date": "25-07-25",
     "title": "Bamboo",
-    "tags": [
-      "digital",
-      "earth",
-      "green",
-      "grow",
-      "parallax",
-      "plant"
-    ]
+    "tags": ["digital", "earth", "green", "grow", "parallax", "plant"]
   },
   {
     "path": "25-07-26",
     "date": "25-07-26",
     "title": "Secondary Colors",
-    "tags": [
-      "analog",
-      "color",
-      "green",
-      "orange",
-      "purple"
-    ]
+    "tags": ["analog", "color", "green", "orange", "purple"]
   },
   {
     "path": "25-07-27",
@@ -1571,28 +1139,13 @@
     "path": "25-07-28",
     "date": "25-07-28",
     "title": "Water Hazard",
-    "tags": [
-      "digital",
-      "earth",
-      "grow",
-      "plant",
-      "play",
-      "sphere",
-      "water"
-    ]
+    "tags": ["digital", "earth", "grow", "plant", "play", "sphere", "water"]
   },
   {
     "path": "25-07-29",
     "date": "25-07-29",
     "title": "Slot Machine",
-    "tags": [
-      "Las-Vegas",
-      "gold",
-      "hand",
-      "mechanical",
-      "play",
-      "spin"
-    ]
+    "tags": ["Las-Vegas", "gold", "hand", "mechanical", "play", "spin"]
   },
   {
     "path": "25-07-30",
@@ -1648,25 +1201,13 @@
     "path": "25-08-02",
     "date": "25-08-02",
     "title": "Decorum",
-    "tags": [
-      "b+w",
-      "glass",
-      "heart",
-      "mirror"
-    ]
+    "tags": ["b+w", "glass", "heart", "mirror"]
   },
   {
     "path": "25-08-03",
     "date": "25-08-03",
     "title": "Curtain Call",
-    "tags": [
-      "analog",
-      "gold",
-      "red",
-      "roman-numeral",
-      "screen",
-      "sound"
-    ]
+    "tags": ["analog", "gold", "red", "roman-numeral", "screen", "sound"]
   },
   {
     "path": "25-08-04",
@@ -1688,13 +1229,7 @@
     "path": "25-08-05",
     "date": "25-08-05",
     "title": "One Hundred",
-    "tags": [
-      "analog",
-      "color",
-      "grid",
-      "pattern",
-      "square"
-    ]
+    "tags": ["analog", "color", "grid", "pattern", "square"]
   },
   {
     "path": "25-08-06",
@@ -1734,38 +1269,19 @@
     "path": "25-08-08",
     "date": "25-08-08",
     "title": "Quartz",
-    "tags": [
-      "digital",
-      "fast",
-      "monochrome",
-      "stone",
-      "tick-tock",
-      "white"
-    ]
+    "tags": ["digital", "fast", "monochrome", "stone", "tick-tock", "white"]
   },
   {
     "path": "25-08-09",
     "date": "25-08-09",
     "title": "Perpendicular",
-    "tags": [
-      "analog",
-      "grid",
-      "purple",
-      "square"
-    ]
+    "tags": ["analog", "grid", "purple", "square"]
   },
   {
     "path": "25-08-10",
     "date": "25-08-10",
     "title": "Bonfire",
-    "tags": [
-      "digital",
-      "fire",
-      "landscape",
-      "night",
-      "paper",
-      "smell"
-    ]
+    "tags": ["digital", "fire", "landscape", "night", "paper", "smell"]
   },
   {
     "path": "25-08-11",
@@ -1789,47 +1305,25 @@
     "path": "25-08-12",
     "date": "25-08-12",
     "title": "Hexahedron",
-    "tags": [
-      "Platonic-Solids",
-      "brown",
-      "earth",
-      "square"
-    ]
+    "tags": ["Platonic-Solids", "brown", "earth", "square"]
   },
   {
     "path": "25-08-13",
     "date": "25-08-13",
     "title": "Tiny",
-    "tags": [
-      "analog",
-      "color",
-      "earth",
-      "fast",
-      "horizon",
-      "space",
-      "universe"
-    ]
+    "tags": ["analog", "color", "earth", "fast", "horizon", "space", "universe"]
   },
   {
     "path": "25-08-14",
     "date": "25-08-14",
     "title": "Birthstone",
-    "tags": [
-      "analog",
-      "cake",
-      "stone"
-    ]
+    "tags": ["analog", "cake", "stone"]
   },
   {
     "path": "25-08-15",
     "date": "25-08-15",
     "title": "Dominoes",
-    "tags": [
-      "b+w",
-      "digital",
-      "play",
-      "wood"
-    ]
+    "tags": ["b+w", "digital", "play", "wood"]
   },
   {
     "path": "25-08-16",
@@ -1850,70 +1344,37 @@
     "path": "25-08-17",
     "date": "25-08-17",
     "title": "Sticky Note",
-    "tags": [
-      "ampm",
-      "book",
-      "digital",
-      "paper"
-    ]
+    "tags": ["ampm", "book", "digital", "paper"]
   },
   {
     "path": "25-08-18",
     "date": "25-08-18",
     "title": "Bull's-Eye",
-    "tags": [
-      "aim",
-      "analog",
-      "play"
-    ]
+    "tags": ["aim", "analog", "play"]
   },
   {
     "path": "25-08-19",
     "date": "25-08-19",
     "title": "Newton's Cradle",
-    "tags": [
-      "apple",
-      "digital",
-      "gravity",
-      "physics",
-      "side-to-side"
-    ]
+    "tags": ["apple", "digital", "gravity", "physics", "side-to-side"]
   },
   {
     "path": "25-08-20",
     "date": "25-08-20",
     "title": "Time Zone",
-    "tags": [
-      "analog",
-      "earth",
-      "fast",
-      "grid",
-      "horizon",
-      "twilight"
-    ]
+    "tags": ["analog", "earth", "fast", "grid", "horizon", "twilight"]
   },
   {
     "path": "25-08-21",
     "date": "25-08-21",
     "title": "Lateral",
-    "tags": [
-      "digital",
-      "monochrome",
-      "parallel",
-      "side-to-side"
-    ]
+    "tags": ["digital", "monochrome", "parallel", "side-to-side"]
   },
   {
     "path": "25-08-22",
     "date": "25-08-22",
     "title": "Random Color",
-    "tags": [
-      "0123456789abcdef",
-      "analog",
-      "color",
-      "random",
-      "square"
-    ]
+    "tags": ["0123456789abcdef", "analog", "color", "random", "square"]
   },
   {
     "path": "25-08-23",
@@ -1948,13 +1409,7 @@
     "path": "25-08-25",
     "date": "25-08-25",
     "title": "Barcode",
-    "tags": [
-      "UPC",
-      "digital",
-      "interior",
-      "paper",
-      "parallel"
-    ]
+    "tags": ["UPC", "digital", "interior", "paper", "parallel"]
   },
   {
     "path": "25-08-26",
@@ -1978,109 +1433,55 @@
     "path": "25-08-27",
     "date": "25-08-27",
     "title": "X to the Enth",
-    "tags": [
-      "analog",
-      "geometry",
-      "image-free"
-    ]
+    "tags": ["analog", "geometry", "image-free"]
   },
   {
     "path": "25-08-28",
     "date": "25-08-28",
     "title": "Goblin",
-    "tags": [
-      "England",
-      "Tolkien",
-      "book",
-      "digital",
-      "earth",
-      "gold",
-      "paper"
-    ]
+    "tags": ["England", "Tolkien", "book", "digital", "earth", "gold", "paper"]
   },
   {
     "path": "25-08-29",
     "date": "25-08-29",
     "title": "Sunflower",
-    "tags": [
-      "analog",
-      "flower",
-      "grow",
-      "yellow"
-    ]
+    "tags": ["analog", "flower", "grow", "yellow"]
   },
   {
     "path": "25-08-30",
     "date": "25-08-30",
     "title": "Afterthought",
-    "tags": [
-      "digital",
-      "fast",
-      "monochrome",
-      "sky",
-      "slow",
-      "twilight"
-    ]
+    "tags": ["digital", "fast", "monochrome", "sky", "slow", "twilight"]
   },
   {
     "path": "25-08-31",
     "date": "25-08-31",
     "title": "Comprehensive",
-    "tags": [
-      "analog",
-      "image-free",
-      "info"
-    ]
+    "tags": ["analog", "image-free", "info"]
   },
   {
     "path": "25-09-01",
     "date": "25-09-01",
     "title": "Mandarin",
-    "tags": [
-      "China",
-      "digital",
-      "gold",
-      "sky",
-      "typeface"
-    ]
+    "tags": ["China", "digital", "gold", "sky", "typeface"]
   },
   {
     "path": "25-09-02",
     "date": "25-09-02",
     "title": "33 1/3 RPM",
-    "tags": [
-      "analog",
-      "dance",
-      "electricity",
-      "mechanical",
-      "sound",
-      "spin"
-    ]
+    "tags": ["analog", "dance", "electricity", "mechanical", "sound", "spin"]
   },
   {
     "path": "25-09-03",
     "date": "25-09-03",
     "title": "Mauve",
-    "tags": [
-      "ampm",
-      "cloth",
-      "color",
-      "digital",
-      "purple"
-    ]
+    "tags": ["ampm", "cloth", "color", "digital", "purple"]
   },
   {
     "path": "25-09-04",
     "date": "25-09-04",
     "title": "Inside Out",
-    "tags": [
-      "analog",
-      "circle",
-      "glass",
-      "interior",
-      "sky",
-      "wood"
-    ]
+    "tags": ["analog", "circle", "glass", "interior", "sky", "wood"]
   },
   {
     "path": "25-09-05",
@@ -2101,35 +1502,19 @@
     "path": "25-09-06",
     "date": "25-09-06",
     "title": "Boomerang",
-    "tags": [
-      "analog",
-      "fly",
-      "sky",
-      "wood"
-    ]
+    "tags": ["analog", "fly", "sky", "wood"]
   },
   {
     "path": "25-09-07",
     "date": "25-09-07",
     "title": "Semi-Gloss",
-    "tags": [
-      "digital",
-      "interior",
-      "paint",
-      "smell",
-      "wall"
-    ]
+    "tags": ["digital", "interior", "paint", "smell", "wall"]
   },
   {
     "path": "25-09-08",
     "date": "25-09-08",
     "title": "Rhymes With",
-    "tags": [
-      "analog",
-      "orange",
-      "sound",
-      "words"
-    ]
+    "tags": ["analog", "orange", "sound", "words"]
   },
   {
     "path": "25-09-09",
@@ -2167,29 +1552,13 @@
     "path": "25-09-11",
     "date": "25-09-11",
     "title": "Renaissance Faire",
-    "tags": [
-      "cloth",
-      "digital",
-      "food",
-      "play",
-      "purple",
-      "smell",
-      "tree"
-    ]
+    "tags": ["cloth", "digital", "food", "play", "purple", "smell", "tree"]
   },
   {
     "path": "25-09-12",
     "date": "25-09-12",
     "title": "Moon Emoji",
-    "tags": [
-      "analog",
-      "b+w",
-      "emoji",
-      "moon",
-      "night",
-      "silver",
-      "sky"
-    ]
+    "tags": ["analog", "b+w", "emoji", "moon", "night", "silver", "sky"]
   },
   {
     "path": "25-09-13",
@@ -2224,12 +1593,7 @@
     "path": "25-09-15",
     "date": "25-09-15",
     "title": "Plaid",
-    "tags": [
-      "cloth",
-      "digital",
-      "pattern",
-      "thread"
-    ]
+    "tags": ["cloth", "digital", "pattern", "thread"]
   },
   {
     "path": "25-09-16",
@@ -2251,28 +1615,13 @@
     "path": "25-09-17",
     "date": "25-09-17",
     "title": "Crush",
-    "tags": [
-      "Disney",
-      "Venus",
-      "ampm",
-      "digital",
-      "hand",
-      "heart",
-      "paper"
-    ]
+    "tags": ["Disney", "Venus", "ampm", "digital", "hand", "heart", "paper"]
   },
   {
     "path": "25-09-18",
     "date": "25-09-18",
     "title": "Neo",
-    "tags": [
-      "ampm",
-      "digital",
-      "film",
-      "gravity",
-      "green",
-      "screen"
-    ]
+    "tags": ["ampm", "digital", "film", "gravity", "green", "screen"]
   },
   {
     "path": "25-09-19",
@@ -2292,12 +1641,7 @@
     "path": "25-09-20",
     "date": "25-09-20",
     "title": "Neon",
-    "tags": [
-      "analog",
-      "color",
-      "image-free",
-      "light"
-    ]
+    "tags": ["analog", "color", "image-free", "light"]
   },
   {
     "path": "25-09-21",
@@ -2318,40 +1662,19 @@
     "path": "25-09-22",
     "date": "25-09-22",
     "title": "De-Extinction",
-    "tags": [
-      "Disney",
-      "animal",
-      "digital",
-      "extinct",
-      "milliseconds",
-      "slow"
-    ]
+    "tags": ["Disney", "animal", "digital", "extinct", "milliseconds", "slow"]
   },
   {
     "path": "25-09-23",
     "date": "25-09-23",
     "title": "Cardio",
-    "tags": [
-      "BPM",
-      "analog",
-      "blood",
-      "body",
-      "fast",
-      "heart",
-      "slow"
-    ]
+    "tags": ["BPM", "analog", "blood", "body", "fast", "heart", "slow"]
   },
   {
     "path": "25-09-24",
     "date": "25-09-24",
     "title": "Proportion",
-    "tags": [
-      "b+w",
-      "digital",
-      "image-free",
-      "parallel",
-      "typeface"
-    ]
+    "tags": ["b+w", "digital", "image-free", "parallel", "typeface"]
   },
   {
     "path": "25-09-25",
@@ -2376,25 +1699,13 @@
     "path": "25-09-26",
     "date": "25-09-26",
     "title": "Context Clues",
-    "tags": [
-      "ampm",
-      "digital",
-      "image-free",
-      "slow",
-      "typeface"
-    ]
+    "tags": ["ampm", "digital", "image-free", "slow", "typeface"]
   },
   {
     "path": "25-09-27",
     "date": "25-09-27",
     "title": "Tempest",
-    "tags": [
-      "analog",
-      "spin",
-      "water",
-      "weather",
-      "wind"
-    ]
+    "tags": ["analog", "spin", "water", "weather", "wind"]
   },
   {
     "path": "25-09-28",
@@ -2416,98 +1727,49 @@
     "path": "25-09-29",
     "date": "25-09-29",
     "title": "Comics",
-    "tags": [
-      "Esperanto",
-      "ampm",
-      "color",
-      "digital",
-      "paper"
-    ]
+    "tags": ["Esperanto", "ampm", "color", "digital", "paper"]
   },
   {
     "path": "25-09-30",
     "date": "25-09-30",
     "title": "Lines",
-    "tags": [
-      "digital",
-      "green",
-      "image-free",
-      "parallel",
-      "slow",
-      "typeface"
-    ]
+    "tags": ["digital", "green", "image-free", "parallel", "slow", "typeface"]
   },
   {
     "path": "25-10-01",
     "date": "25-10-01",
     "title": "Small World",
-    "tags": [
-      "Disney",
-      "flags",
-      "mechanical",
-      "slow",
-      "transport",
-      "water"
-    ]
+    "tags": ["Disney", "flags", "mechanical", "slow", "transport", "water"]
   },
   {
     "path": "25-10-02",
     "date": "25-10-02",
     "title": "Counting Rods",
-    "tags": [
-      "China",
-      "digital",
-      "float",
-      "gold",
-      "red"
-    ]
+    "tags": ["China", "digital", "float", "gold", "red"]
   },
   {
     "path": "25-10-03",
     "date": "25-10-03",
     "title": "Loading",
-    "tags": [
-      "analog",
-      "color",
-      "design",
-      "emoji",
-      "slow",
-      "spin"
-    ]
+    "tags": ["analog", "color", "design", "emoji", "slow", "spin"]
   },
   {
     "path": "25-10-04",
     "date": "25-10-04",
     "title": "Waterfall",
-    "tags": [
-      "blue",
-      "digital",
-      "float",
-      "gravity",
-      "sound",
-      "water"
-    ]
+    "tags": ["blue", "digital", "float", "gravity", "sound", "water"]
   },
   {
     "path": "25-10-05",
     "date": "25-10-05",
     "title": "Hexadecimal",
-    "tags": [
-      "0123456789abcdef",
-      "analog",
-      "color"
-    ]
+    "tags": ["0123456789abcdef", "analog", "color"]
   },
   {
     "path": "25-10-06",
     "date": "25-10-06",
     "title": "Dots",
-    "tags": [
-      "circle",
-      "digital",
-      "green",
-      "revolve"
-    ]
+    "tags": ["circle", "digital", "green", "revolve"]
   },
   {
     "path": "25-10-07",
@@ -2532,24 +1794,13 @@
     "path": "25-10-08",
     "date": "25-10-08",
     "title": "Periodic Table",
-    "tags": [
-      "digital",
-      "elements",
-      "grid",
-      "molecules",
-      "science"
-    ]
+    "tags": ["digital", "elements", "grid", "molecules", "science"]
   },
   {
     "path": "25-10-09",
     "date": "25-10-09",
     "title": "Spin",
-    "tags": [
-      "digital",
-      "purple",
-      "round",
-      "typeface"
-    ]
+    "tags": ["digital", "purple", "round", "typeface"]
   },
   {
     "path": "25-10-10",
@@ -2593,15 +1844,7 @@
     "path": "25-10-12",
     "date": "25-10-12",
     "title": "Roses",
-    "tags": [
-      "Venus",
-      "analog",
-      "fast",
-      "flower",
-      "grow",
-      "pink",
-      "smell"
-    ]
+    "tags": ["Venus", "analog", "fast", "flower", "grow", "pink", "smell"]
   },
   {
     "path": "25-10-13",
@@ -2623,21 +1866,13 @@
     "path": "25-10-14",
     "date": "25-10-14",
     "title": "Dodecahedron",
-    "tags": [
-      "Platonic-Solids",
-      "aether",
-      "digital",
-      "pentagon",
-      "universe"
-    ]
+    "tags": ["Platonic-Solids", "aether", "digital", "pentagon", "universe"]
   },
   {
     "path": "25-10-15",
     "date": "25-10-15",
     "title": "Brahmi",
-    "tags": [
-      "gold"
-    ]
+    "tags": ["gold"]
   },
   {
     "path": "25-10-16",
@@ -2660,11 +1895,7 @@
     "path": "25-10-17",
     "date": "25-10-17",
     "title": "Polyglot",
-    "tags": [
-      "book",
-      "paper",
-      "words"
-    ]
+    "tags": ["book", "paper", "words"]
   },
   {
     "path": "25-10-18",
@@ -2685,12 +1916,7 @@
     "path": "25-10-19",
     "date": "25-10-19",
     "title": "Delft",
-    "tags": [
-      "Nederland",
-      "digital",
-      "grid",
-      "square"
-    ]
+    "tags": ["Nederland", "digital", "grid", "square"]
   },
   {
     "path": "25-10-20",
@@ -2711,12 +1937,7 @@
     "path": "25-10-21",
     "date": "25-10-21",
     "title": "Big Ben",
-    "tags": [
-      "England",
-      "analog",
-      "b+w",
-      "tick-tock"
-    ]
+    "tags": ["England", "analog", "b+w", "tick-tock"]
   },
   {
     "path": "25-10-22",
@@ -2739,31 +1960,19 @@
     "path": "25-10-23",
     "date": "25-10-23",
     "title": "Gridlines",
-    "tags": [
-      "ampm",
-      "digital",
-      "grid",
-      "square"
-    ]
+    "tags": ["ampm", "digital", "grid", "square"]
   },
   {
     "path": "25-10-24",
     "date": "25-10-24",
     "title": "Esperanto",
-    "tags": [
-      "Esperanto",
-      "landscape",
-      "word-clock"
-    ]
+    "tags": ["Esperanto", "landscape", "word-clock"]
   },
   {
     "path": "25-10-25",
     "date": "25-10-25",
     "title": "Entropy Ananlog",
-    "tags": [
-      "analog",
-      "gravity"
-    ]
+    "tags": ["analog", "gravity"]
   },
   {
     "path": "25-10-26",
@@ -2782,37 +1991,19 @@
     "path": "25-10-27",
     "date": "25-10-27",
     "title": "Wishing",
-    "tags": [
-      "color",
-      "day-and-night",
-      "digital",
-      "words"
-    ]
+    "tags": ["color", "day-and-night", "digital", "words"]
   },
   {
     "path": "25-10-29",
     "date": "25-10-29",
     "title": "Tilt Down",
-    "tags": [
-      "aim",
-      "b+w",
-      "digital",
-      "film",
-      "horizon",
-      "mechanical",
-      "screen"
-    ]
+    "tags": ["aim", "b+w", "digital", "film", "horizon", "mechanical", "screen"]
   },
   {
     "path": "25-10-30",
     "date": "25-10-30",
     "title": "Turquoise",
-    "tags": [
-      "analog",
-      "shiny",
-      "silver",
-      "stone"
-    ]
+    "tags": ["analog", "shiny", "silver", "stone"]
   },
   {
     "path": "25-10-31",
@@ -2833,12 +2024,7 @@
     "path": "25-11-01",
     "date": "25-11-01",
     "title": "Edge Case",
-    "tags": [
-      "analog",
-      "green",
-      "image-free",
-      "square"
-    ]
+    "tags": ["analog", "green", "image-free", "square"]
   },
   {
     "path": "25-11-02",
@@ -2863,28 +2049,13 @@
     "path": "25-11-03",
     "date": "25-11-03",
     "title": "Binary",
-    "tags": [
-      "blue",
-      "color",
-      "grid",
-      "histogram",
-      "image-free",
-      "yellow"
-    ]
+    "tags": ["blue", "color", "grid", "histogram", "image-free", "yellow"]
   },
   {
     "path": "25-11-04",
     "date": "25-11-04",
     "title": "Churn",
-    "tags": [
-      "analog",
-      "float",
-      "night",
-      "ocean",
-      "smell",
-      "swim",
-      "waves"
-    ]
+    "tags": ["analog", "float", "night", "ocean", "smell", "swim", "waves"]
   },
   {
     "path": "25-11-05",
@@ -2903,12 +2074,7 @@
     "path": "25-11-06",
     "date": "25-11-06",
     "title": "Punctuation",
-    "tags": [
-      "Esperanto",
-      "analog",
-      "blue",
-      "image-free"
-    ]
+    "tags": ["Esperanto", "analog", "blue", "image-free"]
   },
   {
     "path": "25-11-07",
@@ -2930,87 +2096,43 @@
     "path": "25-11-08",
     "date": "25-11-08",
     "title": "Oversight",
-    "tags": [
-      "digital",
-      "eye",
-      "face",
-      "grid",
-      "screen",
-      "see"
-    ]
+    "tags": ["digital", "eye", "face", "grid", "screen", "see"]
   },
   {
     "path": "25-11-09",
     "date": "25-11-09",
     "title": "Girandola",
-    "tags": [
-      "digital",
-      "flower",
-      "image-free",
-      "spin",
-      "wheel"
-    ]
+    "tags": ["digital", "flower", "image-free", "spin", "wheel"]
   },
   {
     "path": "25-11-10",
     "date": "25-11-10",
     "title": "Arcade",
-    "tags": [
-      "analog",
-      "electricity",
-      "glass",
-      "mechanical",
-      "metal",
-      "play"
-    ]
+    "tags": ["analog", "electricity", "glass", "mechanical", "metal", "play"]
   },
   {
     "path": "25-11-11",
     "date": "25-11-11",
     "title": "Reflect",
-    "tags": [
-      "Rococo",
-      "digital",
-      "glass",
-      "interior",
-      "mirror"
-    ]
+    "tags": ["Rococo", "digital", "glass", "interior", "mirror"]
   },
   {
     "path": "25-11-12",
     "date": "25-11-12",
     "title": "Octahedron",
-    "tags": [
-      "Platonic-Solids",
-      "air",
-      "digital",
-      "float",
-      "pyramid"
-    ]
+    "tags": ["Platonic-Solids", "air", "digital", "float", "pyramid"]
   },
   {
     "path": "25-11-13",
     "date": "25-11-13",
     "title": "Commute",
-    "tags": [
-      "analog",
-      "landscape",
-      "slow",
-      "tick-tock",
-      "transport",
-      "walk"
-    ]
+    "tags": ["analog", "landscape", "slow", "tick-tock", "transport", "walk"]
   },
   {
     "path": "25-11-14",
     "date": "25-11-14",
     "title": "Ice Cube",
-    "tags": [
-      "analog",
-      "ice",
-      "slow",
-      "water"
-    ]
+    "tags": ["analog", "ice", "slow", "water"]
   },
   {
     "path": "25-11-15",
@@ -3064,13 +2186,7 @@
     "path": "25-11-18",
     "date": "25-11-18",
     "title": "Eye Color",
-    "tags": [
-      "color",
-      "digital",
-      "eye",
-      "face",
-      "see"
-    ]
+    "tags": ["color", "digital", "eye", "face", "see"]
   },
   {
     "path": "25-11-19",
@@ -3106,11 +2222,7 @@
     "path": "25-11-21",
     "date": "25-11-21",
     "title": "Liminal",
-    "tags": [
-      "digital",
-      "grid",
-      "interior"
-    ]
+    "tags": ["digital", "grid", "interior"]
   },
   {
     "path": "25-11-22",
@@ -3132,25 +2244,13 @@
     "path": "25-11-23",
     "date": "25-11-23",
     "title": "Hands",
-    "tags": [
-      "body",
-      "count",
-      "gold",
-      "hand",
-      "silver"
-    ]
+    "tags": ["body", "count", "gold", "hand", "silver"]
   },
   {
     "path": "25-11-24",
     "date": "25-11-24",
     "title": "Coil",
-    "tags": [
-      "analog",
-      "animal",
-      "apple",
-      "earth",
-      "serpent"
-    ]
+    "tags": ["analog", "animal", "apple", "earth", "serpent"]
   },
   {
     "path": "25-11-25",
@@ -3184,47 +2284,25 @@
     "path": "25-11-27",
     "date": "25-11-27",
     "title": "L'Heure Décimale",
-    "tags": [
-      "France",
-      "Paris",
-      "aim",
-      "analog",
-      "blood",
-      "flags",
-      "paper"
-    ]
+    "tags": ["France", "Paris", "aim", "analog", "blood", "flags", "paper"]
   },
   {
     "path": "25-11-28",
     "date": "25-11-28",
     "title": "Timeline",
-    "tags": [
-      "color",
-      "digital"
-    ]
+    "tags": ["color", "digital"]
   },
   {
     "path": "25-11-29",
     "date": "25-11-29",
     "title": "Splotches",
-    "tags": [
-      "Rococo",
-      "color",
-      "digital",
-      "paint"
-    ]
+    "tags": ["Rococo", "color", "digital", "paint"]
   },
   {
     "path": "25-11-30",
     "date": "25-11-30",
     "title": "Caution",
-    "tags": [
-      "b+w",
-      "blood",
-      "bone",
-      "pictographic",
-      "underworld"
-    ]
+    "tags": ["b+w", "blood", "bone", "pictographic", "underworld"]
   },
   {
     "path": "25-12-01",
@@ -3246,88 +2324,43 @@
     "path": "25-12-02",
     "date": "25-12-02",
     "title": "Spiral M77",
-    "tags": [
-      "analog",
-      "constellations",
-      "sky"
-    ]
+    "tags": ["analog", "constellations", "sky"]
   },
   {
     "path": "25-12-03",
     "date": "25-12-03",
     "title": "Dogpile",
-    "tags": [
-      "ampm",
-      "animal",
-      "digital",
-      "dog",
-      "run",
-      "smell"
-    ]
+    "tags": ["ampm", "animal", "digital", "dog", "run", "smell"]
   },
   {
     "path": "25-12-04",
     "date": "25-12-04",
     "title": "Optotype",
-    "tags": [
-      "b+w",
-      "digital",
-      "eye",
-      "paper",
-      "see",
-      "words"
-    ]
+    "tags": ["b+w", "digital", "eye", "paper", "see", "words"]
   },
   {
     "path": "25-12-05",
     "date": "25-12-05",
     "title": "Abracadabra",
-    "tags": [
-      "body",
-      "digital",
-      "hand",
-      "silver",
-      "transport",
-      "up-and-down"
-    ]
+    "tags": ["body", "digital", "hand", "silver", "transport", "up-and-down"]
   },
   {
     "path": "25-12-06",
     "date": "25-12-06",
     "title": "Giraffe",
-    "tags": [
-      "Africa",
-      "analog",
-      "animal",
-      "brown",
-      "horn",
-      "monochrome",
-      "run"
-    ]
+    "tags": ["Africa", "analog", "animal", "brown", "horn", "monochrome", "run"]
   },
   {
     "path": "25-12-07",
     "date": "25-12-07",
     "title": "Icosahedron",
-    "tags": [
-      "Platonic-Solids",
-      "digital",
-      "float",
-      "triangle",
-      "water"
-    ]
+    "tags": ["Platonic-Solids", "digital", "float", "triangle", "water"]
   },
   {
     "path": "25-12-08",
     "date": "25-12-08",
     "title": "Paper Plate",
-    "tags": [
-      "analog",
-      "food",
-      "interior",
-      "mechanical",
-      "paper"
-    ]
+    "tags": ["analog", "food", "interior", "mechanical", "paper"]
   },
   {
     "path": "25-12-09",
@@ -3364,23 +2397,13 @@
     "path": "25-12-11",
     "date": "25-12-11",
     "title": "Geological",
-    "tags": [
-      "digital",
-      "fast",
-      "milliseconds",
-      "words"
-    ]
+    "tags": ["digital", "fast", "milliseconds", "words"]
   },
   {
     "path": "25-12-12",
     "date": "25-12-12",
     "title": "RGB",
-    "tags": [
-      "0123456789abcdef",
-      "RGB",
-      "analog",
-      "color"
-    ]
+    "tags": ["0123456789abcdef", "RGB", "analog", "color"]
   },
   {
     "path": "25-12-13",
@@ -3408,78 +2431,43 @@
     "path": "25-12-14",
     "date": "25-12-14",
     "title": "Stainless",
-    "tags": [
-      "digital",
-      "metal",
-      "monochrome"
-    ]
+    "tags": ["digital", "metal", "monochrome"]
   },
   {
     "path": "25-12-15",
     "date": "25-12-15",
     "title": "Froze",
-    "tags": [
-      "tree",
-      "vertical"
-    ]
+    "tags": ["tree", "vertical"]
   },
   {
     "path": "25-12-16",
     "date": "25-12-16",
     "title": "Quartile",
-    "tags": [
-      "analog",
-      "green",
-      "image-free"
-    ]
+    "tags": ["analog", "green", "image-free"]
   },
   {
     "path": "25-12-17",
     "date": "25-12-17",
     "title": "Swagger",
-    "tags": [
-      "Mars",
-      "aim",
-      "animal",
-      "body",
-      "mechanical",
-      "pictographic"
-    ]
+    "tags": ["Mars", "aim", "animal", "body", "mechanical", "pictographic"]
   },
   {
     "path": "25-12-18",
     "date": "25-12-18",
     "title": "Special Effects",
-    "tags": [
-      "body",
-      "digital",
-      "film",
-      "light",
-      "screen"
-    ]
+    "tags": ["body", "digital", "film", "light", "screen"]
   },
   {
     "path": "25-12-19",
     "date": "25-12-19",
     "title": "Hourglass",
-    "tags": [
-      "fast",
-      "glass",
-      "slow"
-    ]
+    "tags": ["fast", "glass", "slow"]
   },
   {
     "path": "25-12-20",
     "date": "25-12-20",
     "title": "Feather",
-    "tags": [
-      "Venus",
-      "analog",
-      "animal",
-      "b+w",
-      "bird",
-      "feather"
-    ]
+    "tags": ["Venus", "analog", "animal", "b+w", "bird", "feather"]
   },
   {
     "path": "25-12-21",
@@ -3499,32 +2487,19 @@
     "path": "25-12-22",
     "date": "25-12-22",
     "title": "Flicker",
-    "tags": [
-      "analog",
-      "fire",
-      "light",
-      "smell"
-    ]
+    "tags": ["analog", "fire", "light", "smell"]
   },
   {
     "path": "25-12-23",
     "date": "25-12-23",
     "title": "Bilateral Symmetry",
-    "tags": [
-      "digital",
-      "grid",
-      "mirror"
-    ]
+    "tags": ["digital", "grid", "mirror"]
   },
   {
     "path": "25-12-24",
     "date": "25-12-24",
     "title": "Lapse",
-    "tags": [
-      "analog",
-      "brown",
-      "image-free"
-    ]
+    "tags": ["analog", "brown", "image-free"]
   },
   {
     "path": "25-12-25",
@@ -3547,26 +2522,13 @@
     "path": "25-12-26",
     "date": "25-12-26",
     "title": "Saturn",
-    "tags": [
-      "aether",
-      "digital",
-      "gods",
-      "myth",
-      "planet",
-      "scythe"
-    ]
+    "tags": ["aether", "digital", "gods", "myth", "planet", "scythe"]
   },
   {
     "path": "25-12-27",
     "date": "25-12-27",
     "title": "Essential",
-    "tags": [
-      "RYB",
-      "analog",
-      "grey",
-      "image-free",
-      "monochrome"
-    ]
+    "tags": ["RYB", "analog", "grey", "image-free", "monochrome"]
   },
   {
     "path": "25-12-28",
@@ -3638,46 +2600,25 @@
     "path": "26-01-01",
     "date": "26-01-01",
     "title": "Whir",
-    "tags": [
-      "air",
-      "analog",
-      "electricity",
-      "mechanical",
-      "metal",
-      "spin"
-    ]
+    "tags": ["air", "analog", "electricity", "mechanical", "metal", "spin"]
   },
   {
     "path": "26-01-02",
     "date": "26-01-02",
     "title": "Cramped",
-    "tags": [
-      "digital",
-      "gold",
-      "image-free",
-      "typeface"
-    ]
+    "tags": ["digital", "gold", "image-free", "typeface"]
   },
   {
     "path": "26-01-03",
     "date": "26-01-03",
     "title": "Switchplate",
-    "tags": [
-      "analog",
-      "electricity",
-      "interior",
-      "up-and-down"
-    ]
+    "tags": ["analog", "electricity", "interior", "up-and-down"]
   },
   {
     "path": "26-01-04",
     "date": "26-01-04",
     "title": "Imaged-Based",
-    "tags": [
-      "digital",
-      "generative",
-      "random"
-    ]
+    "tags": ["digital", "generative", "random"]
   },
   {
     "path": "26-01-05",
@@ -3718,168 +2659,85 @@
     "path": "26-01-07",
     "date": "26-01-07",
     "title": "Aquarium",
-    "tags": [
-      "analog",
-      "animal",
-      "float",
-      "glass",
-      "smell",
-      "swim",
-      "water"
-    ]
+    "tags": ["analog", "animal", "float", "glass", "smell", "swim", "water"]
   },
   {
     "path": "26-01-08",
     "date": "26-01-08",
     "title": "Tangerine",
-    "tags": [
-      "analog",
-      "color",
-      "food",
-      "fruit",
-      "grow",
-      "smell",
-      "tree"
-    ]
+    "tags": ["analog", "color", "food", "fruit", "grow", "smell", "tree"]
   },
   {
     "path": "26-01-09",
     "date": "26-01-09",
     "title": "Tic-Tac-Toe",
-    "tags": [
-      "ampm",
-      "b+w",
-      "digital",
-      "grid",
-      "play"
-    ]
+    "tags": ["ampm", "b+w", "digital", "grid", "play"]
   },
   {
     "path": "26-01-10",
     "date": "26-01-10",
     "title": "Double Moon",
-    "tags": [
-      "digital",
-      "moon",
-      "night",
-      "sky",
-      "twins"
-    ]
+    "tags": ["digital", "moon", "night", "sky", "twins"]
   },
   {
     "path": "26-01-11",
     "date": "26-01-11",
     "title": "Flamingo",
-    "tags": [
-      "Las-Vegas",
-      "analog",
-      "animal",
-      "bird",
-      "pink"
-    ]
+    "tags": ["Las-Vegas", "analog", "animal", "bird", "pink"]
   },
   {
     "path": "26-01-12",
     "date": "26-01-12",
     "title": "Lalarium",
-    "tags": [
-      "Italy",
-      "digital",
-      "gods",
-      "shrine",
-      "underworld",
-      "wall"
-    ]
+    "tags": ["Italy", "digital", "gods", "shrine", "underworld", "wall"]
   },
   {
     "path": "26-01-13",
     "date": "26-01-13",
     "title": "Greyscale",
-    "tags": [
-      "analog",
-      "monochrome"
-    ]
+    "tags": ["analog", "monochrome"]
   },
   {
     "path": "26-01-14",
     "date": "26-01-14",
     "title": "Tenno",
-    "tags": [
-      "Japan",
-      "Kurosawa",
-      "aim",
-      "digital",
-      "film",
-      "screen"
-    ]
+    "tags": ["Japan", "Kurosawa", "aim", "digital", "film", "screen"]
   },
   {
     "path": "26-01-15",
     "date": "26-01-15",
     "title": "Reddish Circle",
-    "tags": [
-      "analog",
-      "red",
-      "sphere"
-    ]
+    "tags": ["analog", "red", "sphere"]
   },
   {
     "path": "26-01-16",
     "date": "26-01-16",
     "title": "Leap Second",
-    "tags": [
-      "digital",
-      "fast",
-      "milliseconds",
-      "slow"
-    ]
+    "tags": ["digital", "fast", "milliseconds", "slow"]
   },
   {
     "path": "26-01-17",
     "date": "26-01-17",
     "title": "225° Southwest",
-    "tags": [
-      "air",
-      "analog",
-      "cardinal-directions",
-      "myth",
-      "water",
-      "wind"
-    ]
+    "tags": ["air", "analog", "cardinal-directions", "myth", "water", "wind"]
   },
   {
     "path": "26-01-18",
     "date": "26-01-18",
     "title": "Orthogonal",
-    "tags": [
-      "ampm",
-      "digital",
-      "orange",
-      "purple",
-      "spin"
-    ]
+    "tags": ["ampm", "digital", "orange", "purple", "spin"]
   },
   {
     "path": "26-01-19",
     "date": "26-01-19",
     "title": "Handsy",
-    "tags": [
-      "analog",
-      "hand"
-    ]
+    "tags": ["analog", "hand"]
   },
   {
     "path": "26-01-20",
     "date": "26-01-20",
     "title": "Acconciatura",
-    "tags": [
-      "Italy",
-      "Venus",
-      "body",
-      "day",
-      "landscape",
-      "pictographic"
-    ]
+    "tags": ["Italy", "Venus", "body", "day", "landscape", "pictographic"]
   },
   {
     "path": "26-01-21",
@@ -3916,83 +2774,43 @@
     "path": "26-01-23",
     "date": "26-01-23",
     "title": "Lacrimal",
-    "tags": [
-      "analog",
-      "body",
-      "eye",
-      "face",
-      "see"
-    ]
+    "tags": ["analog", "body", "eye", "face", "see"]
   },
   {
     "path": "26-01-24",
     "date": "26-01-24",
     "title": "Emoji Digital",
-    "tags": [
-      "digital",
-      "emoji",
-      "info",
-      "tech"
-    ]
+    "tags": ["digital", "emoji", "info", "tech"]
   },
   {
     "path": "26-01-25",
     "date": "26-01-25",
     "title": "Mirage",
-    "tags": [
-      "analog",
-      "day",
-      "desert",
-      "dry",
-      "landscape",
-      "mirror",
-      "slow"
-    ]
+    "tags": ["analog", "day", "desert", "dry", "landscape", "mirror", "slow"]
   },
   {
     "path": "26-01-26",
     "date": "26-01-26",
     "title": "Split",
-    "tags": [
-      "analog",
-      "image-free"
-    ]
+    "tags": ["analog", "image-free"]
   },
   {
     "path": "26-01-27",
     "date": "26-01-27",
     "title": "Panorama",
-    "tags": [
-      "ampm",
-      "day",
-      "digital",
-      "landscape",
-      "panorama",
-      "spin"
-    ]
+    "tags": ["ampm", "day", "digital", "landscape", "panorama", "spin"]
   },
   {
     "path": "26-01-28",
     "date": "26-01-28",
     "title": "Trifurcate",
-    "tags": [
-      "RYB",
-      "analog"
-    ]
+    "tags": ["RYB", "analog"]
   },
   {
     "path": "26-01-29",
     "date": "26-01-29",
     "title": "Uranus",
-    "tags": [
-      "aether",
-      "analog",
-      "blue",
-      "gods",
-      "planet",
-      "sky",
-      "sphere"
-    ]
+    "tags": ["aether", "analog", "blue", "gods", "planet", "sky", "sphere"]
   },
   {
     "path": "26-01-30",
@@ -4030,86 +2848,43 @@
     "path": "26-02-01",
     "date": "26-02-01",
     "title": "Drip",
-    "tags": [
-      "analog",
-      "bubble",
-      "gravity",
-      "water"
-    ]
+    "tags": ["analog", "bubble", "gravity", "water"]
   },
   {
     "path": "26-02-02",
     "date": "26-02-02",
     "title": "Mach 1",
-    "tags": [
-      "digital",
-      "fast",
-      "fly",
-      "metal",
-      "sky",
-      "sound",
-      "transport"
-    ]
+    "tags": ["digital", "fast", "fly", "metal", "sky", "sound", "transport"]
   },
   {
     "path": "26-02-03",
     "date": "26-02-03",
     "title": "SMH",
-    "tags": [
-      "RGB",
-      "analog",
-      "typeface",
-      "yellow"
-    ]
+    "tags": ["RGB", "analog", "typeface", "yellow"]
   },
   {
     "path": "26-02-04",
     "date": "26-02-04",
     "title": "Flux",
-    "tags": [
-      "copper",
-      "digital",
-      "electricity",
-      "fast",
-      "landscape"
-    ]
+    "tags": ["copper", "digital", "electricity", "fast", "landscape"]
   },
   {
     "path": "26-02-05",
     "date": "26-02-05",
     "title": "Enigma",
-    "tags": [
-      "ampm",
-      "digital",
-      "float",
-      "revolve"
-    ]
+    "tags": ["ampm", "digital", "float", "revolve"]
   },
   {
     "path": "26-02-06",
     "date": "26-02-06",
     "title": "Buster",
-    "tags": [
-      "1930",
-      "Buster-Keaton",
-      "aim",
-      "analog",
-      "b+w",
-      "film",
-      "screen"
-    ]
+    "tags": ["1930", "Buster-Keaton", "aim", "analog", "b+w", "film", "screen"]
   },
   {
     "path": "26-02-07",
     "date": "26-02-07",
     "title": "Planetary Gear",
-    "tags": [
-      "ampm",
-      "digital",
-      "mechanical",
-      "rotation",
-      "wheel"
-    ]
+    "tags": ["ampm", "digital", "mechanical", "rotation", "wheel"]
   },
   {
     "path": "26-02-08",
@@ -4130,13 +2905,7 @@
     "path": "26-02-09",
     "date": "26-02-09",
     "title": "White Shadow",
-    "tags": [
-      "b+w",
-      "digital",
-      "monochrome",
-      "shadow",
-      "spin"
-    ]
+    "tags": ["b+w", "digital", "monochrome", "shadow", "spin"]
   },
   {
     "path": "26-02-10",
@@ -4158,12 +2927,7 @@
     "path": "26-02-11",
     "date": "26-02-11",
     "title": "Bell",
-    "tags": [
-      "analog",
-      "metal",
-      "side-to-side",
-      "sound"
-    ]
+    "tags": ["analog", "metal", "side-to-side", "sound"]
   },
   {
     "path": "26-02-12",
@@ -4217,64 +2981,31 @@
     "path": "26-02-15",
     "date": "26-02-15",
     "title": "Caldera",
-    "tags": [
-      "analog",
-      "day-and-night",
-      "earth",
-      "fast",
-      "hot",
-      "lava",
-      "smell"
-    ]
+    "tags": ["analog", "day-and-night", "earth", "fast", "hot", "lava", "smell"]
   },
   {
     "path": "26-02-16",
     "date": "26-02-16",
     "title": "Maze",
-    "tags": [
-      "digital",
-      "paper",
-      "play",
-      "walk"
-    ]
+    "tags": ["digital", "paper", "play", "walk"]
   },
   {
     "path": "26-02-17",
     "date": "26-02-17",
     "title": "Asterisk",
-    "tags": [
-      "analog",
-      "typeface",
-      "up-and-down",
-      "words"
-    ]
+    "tags": ["analog", "typeface", "up-and-down", "words"]
   },
   {
     "path": "26-02-18",
     "date": "26-02-18",
     "title": "Jellyfish",
-    "tags": [
-      "animal",
-      "digital",
-      "float",
-      "ocean",
-      "smell",
-      "swim",
-      "water"
-    ]
+    "tags": ["animal", "digital", "float", "ocean", "smell", "swim", "water"]
   },
   {
     "path": "26-02-19",
     "date": "26-02-19",
     "title": "Sachplakat",
-    "tags": [
-      "Germany",
-      "ampm",
-      "design",
-      "digital",
-      "paper",
-      "typeface"
-    ]
+    "tags": ["Germany", "ampm", "design", "digital", "paper", "typeface"]
   },
   {
     "path": "26-02-20",
@@ -4298,26 +3029,13 @@
     "path": "26-02-21",
     "date": "26-02-21",
     "title": "3-2-1",
-    "tags": [
-      "count",
-      "digital",
-      "generative",
-      "hand",
-      "random"
-    ]
+    "tags": ["count", "digital", "generative", "hand", "random"]
   },
   {
     "path": "26-02-22",
     "date": "26-02-22",
     "title": "Ouroboroi",
-    "tags": [
-      "analog",
-      "animal",
-      "circle",
-      "myth",
-      "serpent",
-      "underworld"
-    ]
+    "tags": ["analog", "animal", "circle", "myth", "serpent", "underworld"]
   },
   {
     "path": "26-02-23",
@@ -4483,13 +3201,7 @@
     "path": "26-03-05",
     "date": "26-03-05",
     "title": "CRT",
-    "tags": [
-      "digital",
-      "electricity",
-      "green",
-      "screen",
-      "tech"
-    ]
+    "tags": ["digital", "electricity", "green", "screen", "tech"]
   },
   {
     "path": "26-03-06",
@@ -4512,12 +3224,7 @@
     "path": "26-03-07",
     "date": "26-03-07",
     "title": "Rectangles",
-    "tags": [
-      "b+w",
-      "digital",
-      "image-free",
-      "parallel"
-    ]
+    "tags": ["b+w", "digital", "image-free", "parallel"]
   },
   {
     "path": "26-03-08",
@@ -4540,35 +3247,19 @@
     "path": "26-03-09",
     "date": "26-03-09",
     "title": "Catface",
-    "tags": [
-      "animal",
-      "cat",
-      "digital",
-      "predator",
-      "random",
-      "typeface"
-    ]
+    "tags": ["animal", "cat", "digital", "predator", "random", "typeface"]
   },
   {
     "path": "26-03-10",
     "date": "26-03-10",
     "title": "Concentric",
-    "tags": [
-      "circle",
-      "color",
-      "histogram",
-      "image-free",
-      "round"
-    ]
+    "tags": ["circle", "color", "histogram", "image-free", "round"]
   },
   {
     "path": "26-03-11",
     "date": "26-03-11",
     "title": "Random Image",
-    "tags": [
-      "digital",
-      "random"
-    ]
+    "tags": ["digital", "random"]
   },
   {
     "path": "26-03-12",
@@ -4590,38 +3281,19 @@
     "path": "26-03-13",
     "date": "26-03-13",
     "title": "Boardwalk",
-    "tags": [
-      "LA",
-      "ampm",
-      "body",
-      "digital",
-      "live-cam",
-      "ocean",
-      "walk"
-    ]
+    "tags": ["LA", "ampm", "body", "digital", "live-cam", "ocean", "walk"]
   },
   {
     "path": "26-03-14",
     "date": "26-03-14",
     "title": "Motherboard",
-    "tags": [
-      "ampm",
-      "digital",
-      "electricity",
-      "green",
-      "tech"
-    ]
+    "tags": ["ampm", "digital", "electricity", "green", "tech"]
   },
   {
     "path": "26-03-15",
     "date": "26-03-15",
     "title": "Obliquity",
-    "tags": [
-      "digital",
-      "image-free",
-      "parallel",
-      "spin"
-    ]
+    "tags": ["digital", "image-free", "parallel", "spin"]
   },
   {
     "path": "26-03-16",
@@ -4709,12 +3381,7 @@
     "path": "26-03-21",
     "date": "26-03-21",
     "title": "Negative Space",
-    "tags": [
-      "green",
-      "pattern",
-      "pictographic",
-      "typeface"
-    ]
+    "tags": ["green", "pattern", "pictographic", "typeface"]
   },
   {
     "path": "26-03-22",
@@ -4737,26 +3404,13 @@
     "path": "26-03-23",
     "date": "26-03-23",
     "title": "Exoplanet",
-    "tags": [
-      "aerial",
-      "analog",
-      "b+w",
-      "space"
-    ]
+    "tags": ["aerial", "analog", "b+w", "space"]
   },
   {
     "path": "26-03-24",
     "date": "26-03-24",
     "title": "Quiver",
-    "tags": [
-      "aim",
-      "air",
-      "ampm",
-      "digital",
-      "feather",
-      "hand",
-      "slow"
-    ]
+    "tags": ["aim", "air", "ampm", "digital", "feather", "hand", "slow"]
   },
   {
     "path": "26-03-25",
@@ -4795,12 +3449,7 @@
     "path": "26-03-27",
     "date": "26-03-27",
     "title": "Triangle Face",
-    "tags": [
-      "analog",
-      "face",
-      "image-free",
-      "triangle"
-    ]
+    "tags": ["analog", "face", "image-free", "triangle"]
   },
   {
     "path": "26-03-28",
@@ -4841,26 +3490,13 @@
     "path": "26-03-30",
     "date": "26-03-30",
     "title": "Origami",
-    "tags": [
-      "animal",
-      "paper",
-      "pictographic",
-      "red"
-    ]
+    "tags": ["animal", "paper", "pictographic", "red"]
   },
   {
     "path": "26-03-31",
     "date": "26-03-31",
     "title": "Lanternfish",
-    "tags": [
-      "analog",
-      "animal",
-      "deepwater",
-      "float",
-      "light",
-      "ocean",
-      "swim"
-    ]
+    "tags": ["analog", "animal", "deepwater", "float", "light", "ocean", "swim"]
   },
   {
     "path": "26-04-01",
@@ -4881,14 +3517,7 @@
     "path": "26-04-02",
     "date": "26-04-02",
     "title": "Satellite",
-    "tags": [
-      "color",
-      "digital",
-      "image-free",
-      "revolve",
-      "shiny",
-      "sphere"
-    ]
+    "tags": ["color", "digital", "image-free", "revolve", "shiny", "sphere"]
   },
   {
     "path": "26-04-03",
@@ -4908,13 +3537,7 @@
     "path": "26-04-04",
     "date": "26-04-04",
     "title": "Ishihara",
-    "tags": [
-      "analog",
-      "color",
-      "eye",
-      "light",
-      "see"
-    ]
+    "tags": ["analog", "color", "eye", "light", "see"]
   },
   {
     "path": "26-04-05",
@@ -4947,28 +3570,13 @@
     "path": "26-04-07",
     "date": "26-04-07",
     "title": "Wall",
-    "tags": [
-      "China",
-      "digital",
-      "horizon",
-      "panorama",
-      "stone",
-      "walk",
-      "wall"
-    ]
+    "tags": ["China", "digital", "horizon", "panorama", "stone", "walk", "wall"]
   },
   {
     "path": "26-04-08",
     "date": "26-04-08",
     "title": "Analog Spinning",
-    "tags": [
-      "analog",
-      "image-free",
-      "physics",
-      "purple",
-      "rotation",
-      "spin"
-    ]
+    "tags": ["analog", "image-free", "physics", "purple", "rotation", "spin"]
   },
   {
     "path": "26-04-09",
@@ -5004,26 +3612,13 @@
     "path": "26-04-11",
     "date": "26-04-11",
     "title": "Staring",
-    "tags": [
-      "eye",
-      "face",
-      "pictographic",
-      "see"
-    ]
+    "tags": ["eye", "face", "pictographic", "see"]
   },
   {
     "path": "26-04-12",
     "date": "26-04-12",
     "title": "Matches",
-    "tags": [
-      "analog",
-      "fire",
-      "hand",
-      "hot",
-      "light",
-      "paper",
-      "smell"
-    ]
+    "tags": ["analog", "fire", "hand", "hot", "light", "paper", "smell"]
   },
   {
     "path": "26-04-13",
@@ -5044,28 +3639,13 @@
     "path": "26-04-14",
     "date": "26-04-14",
     "title": "Haumea",
-    "tags": [
-      "Hawaii",
-      "analog",
-      "dwarf-planet",
-      "fast",
-      "gods",
-      "myth",
-      "spin"
-    ]
+    "tags": ["Hawaii", "analog", "dwarf-planet", "fast", "gods", "myth", "spin"]
   },
   {
     "path": "26-04-15",
     "date": "26-04-15",
     "title": "Meow",
-    "tags": [
-      "animal",
-      "cat",
-      "digital",
-      "predator",
-      "random",
-      "smell"
-    ]
+    "tags": ["animal", "cat", "digital", "predator", "random", "smell"]
   },
   {
     "path": "26-04-16",
@@ -5104,11 +3684,7 @@
     "path": "26-04-18",
     "date": "26-04-18",
     "title": "Frequency",
-    "tags": [
-      "digital",
-      "tech",
-      "waves"
-    ]
+    "tags": ["digital", "tech", "waves"]
   },
   {
     "path": "26-04-19",
@@ -5148,13 +3724,7 @@
     "path": "26-04-21",
     "date": "26-04-21",
     "title": "Particles",
-    "tags": [
-      "circle",
-      "color",
-      "digital",
-      "image-free",
-      "move"
-    ]
+    "tags": ["circle", "color", "digital", "image-free", "move"]
   },
   {
     "path": "26-04-22",
@@ -5189,26 +3759,13 @@
     "path": "26-04-24",
     "date": "26-04-24",
     "title": "Lissajous",
-    "tags": [
-      "digital",
-      "geometry",
-      "image-free",
-      "slow"
-    ]
+    "tags": ["digital", "geometry", "image-free", "slow"]
   },
   {
     "path": "26-04-25",
     "date": "26-04-25",
     "title": "Magnify",
-    "tags": [
-      "analog",
-      "glass",
-      "hand",
-      "interior",
-      "science",
-      "see",
-      "white"
-    ]
+    "tags": ["analog", "glass", "hand", "interior", "science", "see", "white"]
   },
   {
     "path": "26-04-26",
@@ -5259,27 +3816,13 @@
     "path": "26-04-29",
     "date": "26-04-29",
     "title": "Cavalcade",
-    "tags": [
-      "animal",
-      "digital",
-      "horn",
-      "mechanical",
-      "run",
-      "spin"
-    ]
+    "tags": ["animal", "digital", "horn", "mechanical", "run", "spin"]
   },
   {
     "path": "26-04-30",
     "date": "26-04-30",
     "title": "Pleides",
-    "tags": [
-      "ampm",
-      "constellations",
-      "digital",
-      "myth",
-      "night",
-      "stars"
-    ]
+    "tags": ["ampm", "constellations", "digital", "myth", "night", "stars"]
   },
   {
     "path": "26-05-01",
@@ -5319,14 +3862,7 @@
     "path": "26-05-03",
     "date": "26-05-03",
     "title": "Boxes",
-    "tags": [
-      "UPC",
-      "brown",
-      "color",
-      "digital",
-      "paper",
-      "spin"
-    ]
+    "tags": ["UPC", "brown", "color", "digital", "paper", "spin"]
   },
   {
     "path": "26-05-04",
@@ -5364,12 +3900,7 @@
     "path": "26-05-06",
     "date": "26-05-06",
     "title": "Droplets",
-    "tags": [
-      "digital",
-      "glass",
-      "move",
-      "water"
-    ]
+    "tags": ["digital", "glass", "move", "water"]
   },
   {
     "path": "26-05-07",
@@ -5444,14 +3975,7 @@
     "path": "26-05-11",
     "date": "26-05-11",
     "title": "Night Rise",
-    "tags": [
-      "air",
-      "digital",
-      "night",
-      "parallax",
-      "sky",
-      "stars"
-    ]
+    "tags": ["air", "digital", "night", "parallax", "sky", "stars"]
   },
   {
     "path": "26-05-12",
@@ -5722,39 +4246,19 @@
     "path": "26-05-28",
     "date": "26-05-28",
     "title": "Popcorn",
-    "tags": [
-      "analog",
-      "fast",
-      "fire",
-      "food",
-      "smell",
-      "sound"
-    ]
+    "tags": ["analog", "fast", "fire", "food", "smell", "sound"]
   },
   {
     "path": "26-05-29",
     "date": "26-05-29",
     "title": "Monument",
-    "tags": [
-      "ampm",
-      "b+w",
-      "digital",
-      "hand",
-      "stone"
-    ]
+    "tags": ["ampm", "b+w", "digital", "hand", "stone"]
   },
   {
     "path": "26-05-30",
     "date": "26-05-30",
     "title": "Peach",
-    "tags": [
-      "analog",
-      "color",
-      "food",
-      "fruit",
-      "smell",
-      "tree"
-    ]
+    "tags": ["analog", "color", "food", "fruit", "smell", "tree"]
   },
   {
     "path": "26-05-31",
@@ -5801,15 +4305,7 @@
     "path": "26-06-03",
     "date": "26-06-03",
     "title": "Timber",
-    "tags": [
-      "analog",
-      "gravity",
-      "landscape",
-      "sound",
-      "tree",
-      "trunk",
-      "wood"
-    ]
+    "tags": ["analog", "gravity", "landscape", "sound", "tree", "trunk", "wood"]
   },
   {
     "path": "26-06-04",
@@ -5829,27 +4325,13 @@
     "path": "26-06-05",
     "date": "26-06-05",
     "title": "Slice",
-    "tags": [
-      "analog",
-      "b+w",
-      "body",
-      "eye",
-      "face",
-      "spin",
-      "waves"
-    ]
+    "tags": ["analog", "b+w", "body", "eye", "face", "spin", "waves"]
   },
   {
     "path": "26-06-06",
     "date": "26-06-06",
     "title": "Petunia",
-    "tags": [
-      "analog",
-      "flower",
-      "grow",
-      "plant",
-      "purple"
-    ]
+    "tags": ["analog", "flower", "grow", "plant", "purple"]
   },
   {
     "path": "26-06-07",
@@ -5871,332 +4353,169 @@
     "path": "26-06-08",
     "date": "26-06-08",
     "title": "Tiki Bar",
-    "tags": [
-      "analog",
-      "glass",
-      "interior",
-      "play",
-      "water"
-    ]
+    "tags": ["analog", "glass", "interior", "play", "water"]
   },
   {
     "path": "26-06-09",
     "date": "26-06-09",
     "title": "Quilt",
-    "tags": [
-      "ampm",
-      "cloth",
-      "digital",
-      "hand",
-      "thread"
-    ]
+    "tags": ["ampm", "cloth", "digital", "hand", "thread"]
   },
   {
     "path": "26-06-10",
     "date": "26-06-10",
     "title": "Rotary Dial",
-    "tags": [
-      "ampm",
-      "digital",
-      "hand",
-      "mechanical",
-      "sound"
-    ]
+    "tags": ["ampm", "digital", "hand", "mechanical", "sound"]
   },
   {
     "path": "26-06-11",
     "date": "26-06-11",
     "title": "Ukulele",
-    "tags": [
-      "Hawaii",
-      "hand",
-      "pictographic",
-      "sound",
-      "string"
-    ]
+    "tags": ["Hawaii", "hand", "pictographic", "sound", "string"]
   },
   {
     "path": "26-06-12",
     "date": "26-06-12",
     "title": "Geolocate",
-    "tags": [
-      "analog",
-      "earth",
-      "fast",
-      "space",
-      "spin"
-    ]
+    "tags": ["analog", "earth", "fast", "space", "spin"]
   },
   {
     "path": "26-06-13",
     "date": "26-06-13",
     "title": "Forge",
-    "tags": [
-      "1893",
-      "digital",
-      "fire",
-      "hot",
-      "metal"
-    ]
+    "tags": ["1893", "digital", "fire", "hot", "metal"]
   },
   {
     "path": "26-06-14",
     "date": "26-06-14",
     "title": "Waterlogged",
-    "tags": [
-      "analog",
-      "drive",
-      "mechanical",
-      "transport",
-      "water",
-      "wheel"
-    ]
+    "tags": ["analog", "drive", "mechanical", "transport", "water", "wheel"]
   },
   {
     "path": "26-06-15",
     "date": "26-06-15",
     "title": "Digital Hexadecimal",
-    "tags": [
-      "0123456789abcdef",
-      "digital",
-      "image-free"
-    ]
+    "tags": ["0123456789abcdef", "digital", "image-free"]
   },
   {
     "path": "26-06-16",
     "date": "26-06-16",
     "title": "House of Aries",
-    "tags": [
-      "analog",
-      "animal",
-      "constellations",
-      "fire",
-      "zodiac"
-    ]
+    "tags": ["analog", "animal", "constellations", "fire", "zodiac"]
   },
   {
     "path": "26-06-17",
     "date": "26-06-17",
     "title": "Avalanche",
-    "tags": [
-      "cold",
-      "digital",
-      "fast",
-      "gravity",
-      "snow",
-      "up-and-down"
-    ]
+    "tags": ["cold", "digital", "fast", "gravity", "snow", "up-and-down"]
   },
   {
     "path": "26-06-18",
     "date": "26-06-18",
     "title": "Pyramid",
-    "tags": [
-      "analog",
-      "brown",
-      "pyramid",
-      "spin"
-    ]
+    "tags": ["analog", "brown", "pyramid", "spin"]
   },
   {
     "path": "26-06-19",
     "date": "26-06-19",
     "title": "Shatter",
-    "tags": [
-      "ampm",
-      "b+w",
-      "digital",
-      "glass",
-      "gravity"
-    ]
+    "tags": ["ampm", "b+w", "digital", "glass", "gravity"]
   },
   {
     "path": "26-06-20",
     "date": "26-06-20",
     "title": "Chandelier",
-    "tags": [
-      "analog",
-      "interior",
-      "light",
-      "round"
-    ]
+    "tags": ["analog", "interior", "light", "round"]
   },
   {
     "path": "26-06-21",
     "date": "26-06-21",
     "title": "Nestbox",
-    "tags": [
-      "animal",
-      "bird",
-      "fly",
-      "pictographic"
-    ]
+    "tags": ["animal", "bird", "fly", "pictographic"]
   },
   {
     "path": "26-06-22",
     "date": "26-06-22",
     "title": "Bitcount Grid",
-    "tags": [
-      "digital",
-      "grid",
-      "image-free"
-    ]
+    "tags": ["digital", "grid", "image-free"]
   },
   {
     "path": "26-06-23",
     "date": "26-06-23",
     "title": "Rowboat",
-    "tags": [
-      "analog",
-      "float",
-      "predator",
-      "transport",
-      "water"
-    ]
+    "tags": ["analog", "float", "predator", "transport", "water"]
   },
   {
     "path": "26-06-24",
     "date": "26-06-24",
     "title": "Mulligan",
-    "tags": [
-      "ampm",
-      "digital",
-      "food",
-      "play",
-      "red",
-      "sound",
-      "tomato"
-    ]
+    "tags": ["ampm", "digital", "food", "play", "red", "sound", "tomato"]
   },
   {
     "path": "26-06-25",
     "date": "26-06-25",
     "title": "Slurp",
-    "tags": [
-      "analog",
-      "animal",
-      "predator",
-      "water"
-    ]
+    "tags": ["analog", "animal", "predator", "water"]
   },
   {
     "path": "26-06-26",
     "date": "26-06-26",
     "title": "315° Northwest",
-    "tags": [
-      "cardinal-directions",
-      "digital"
-    ]
+    "tags": ["cardinal-directions", "digital"]
   },
   {
     "path": "26-06-27",
     "date": "26-06-27",
     "title": "Four-Leaf Clover",
-    "tags": [
-      "analog",
-      "green",
-      "hand",
-      "paper",
-      "plant"
-    ]
+    "tags": ["analog", "green", "hand", "paper", "plant"]
   },
   {
     "path": "26-06-28",
     "date": "26-06-28",
     "title": "Spiral",
-    "tags": [
-      "ampm",
-      "digital",
-      "image-free",
-      "pink",
-      "spin"
-    ]
+    "tags": ["ampm", "digital", "image-free", "pink", "spin"]
   },
   {
     "path": "26-06-29",
     "date": "26-06-29",
     "title": "Manufacturing",
-    "tags": [
-      "digital",
-      "mechanical",
-      "metal",
-      "milliseconds"
-    ]
+    "tags": ["digital", "mechanical", "metal", "milliseconds"]
   },
   {
     "path": "26-06-30",
     "date": "26-06-30",
     "title": "Cyan",
-    "tags": [
-      "analog",
-      "color",
-      "cyan",
-      "subtractive primary"
-    ]
+    "tags": ["analog", "color", "cyan", "subtractive primary"]
   },
   {
     "path": "26-07-01",
     "date": "26-07-01",
     "title": "Alpha Centauri",
-    "tags": [
-      "constellations",
-      "digital",
-      "orbit",
-      "space",
-      "stars",
-      "universe"
-    ]
+    "tags": ["constellations", "digital", "orbit", "space", "stars", "universe"]
   },
   {
     "path": "26-07-02",
     "date": "26-07-02",
     "title": "Trampoline",
-    "tags": [
-      "ampm",
-      "body",
-      "digital",
-      "gravity",
-      "up-and-down"
-    ]
+    "tags": ["ampm", "body", "digital", "gravity", "up-and-down"]
   },
   {
     "path": "26-07-03",
     "date": "26-07-03",
     "title": "Orange",
-    "tags": [
-      "analog",
-      "color",
-      "food",
-      "orange",
-      "spin"
-    ]
+    "tags": ["analog", "color", "food", "orange", "spin"]
   },
   {
     "path": "26-07-04",
     "date": "26-07-04",
     "title": "Caterwaul",
-    "tags": [
-      "1933",
-      "Footlight Parade",
-      "b+w",
-      "cat",
-      "digital",
-      "screen"
-    ]
+    "tags": ["1933", "Footlight Parade", "b+w", "cat", "digital", "screen"]
   },
   {
     "path": "26-07-05",
     "date": "26-07-05",
     "title": "Penguins",
-    "tags": [
-      "Antarctica",
-      "animal",
-      "cold",
-      "digital",
-      "ice",
-      "snow",
-      "walk"
-    ]
+    "tags": ["Antarctica", "animal", "cold", "digital", "ice", "snow", "walk"]
   },
   {
     "path": "26-07-06",
@@ -6214,126 +4533,67 @@
     "path": "26-07-07",
     "date": "26-07-07",
     "title": "House of Taurus",
-    "tags": [
-      "animal",
-      "constellations",
-      "digital",
-      "earth",
-      "zodiac"
-    ]
+    "tags": ["animal", "constellations", "digital", "earth", "zodiac"]
   },
   {
     "path": "26-07-08",
     "date": "26-07-08",
     "title": "Red Right",
-    "tags": [
-      "analog",
-      "color",
-      "green",
-      "ocean",
-      "red",
-      "transport"
-    ]
+    "tags": ["analog", "color", "green", "ocean", "red", "transport"]
   },
   {
     "path": "26-07-09",
     "date": "26-07-09",
     "title": "Intersections",
-    "tags": [
-      "Chicago",
-      "digital",
-      "grid",
-      "milliseconds",
-      "night"
-    ]
+    "tags": ["Chicago", "digital", "grid", "milliseconds", "night"]
   },
   {
     "path": "26-07-10",
     "date": "26-07-10",
     "title": "112.5° East-Southeast",
-    "tags": [
-      "analog",
-      "cardinal-directions",
-      "roman-numeral",
-      "wind"
-    ]
+    "tags": ["analog", "cardinal-directions", "roman-numeral", "wind"]
   },
   {
     "path": "26-07-11",
     "date": "26-07-11",
     "title": "Footnote #1",
-    "tags": [
-      "digital",
-      "image-free",
-      "words"
-    ]
+    "tags": ["digital", "image-free", "words"]
   },
   {
     "path": "26-07-12",
     "date": "26-07-12",
     "title": "Lavender",
-    "tags": [
-      "analog",
-      "grow",
-      "smell"
-    ]
+    "tags": ["analog", "grow", "smell"]
   },
   {
     "path": "26-07-13",
     "date": "26-07-13",
     "title": "Shutter",
-    "tags": [
-      "camera",
-      "mechanical",
-      "pictographic"
-    ]
+    "tags": ["camera", "mechanical", "pictographic"]
   },
   {
     "path": "26-07-14",
     "date": "26-07-14",
     "title": "Wittenberg",
-    "tags": [
-      "1517",
-      "Bauhaus",
-      "Germany",
-      "digital",
-      "metal",
-      "shrine"
-    ]
+    "tags": ["1517", "Bauhaus", "Germany", "digital", "metal", "shrine"]
   },
   {
     "path": "26-07-15",
     "date": "26-07-15",
     "title": "Emergence",
-    "tags": [
-      "analog",
-      "earth",
-      "grow",
-      "plant"
-    ]
+    "tags": ["analog", "earth", "grow", "plant"]
   },
   {
     "path": "26-07-16",
     "date": "26-07-16",
     "title": "Digital Spinning",
-    "tags": [
-      "digital",
-      "image-free",
-      "physics",
-      "rotation",
-      "spin"
-    ]
+    "tags": ["digital", "image-free", "physics", "rotation", "spin"]
   },
   {
     "path": "26-07-17",
     "date": "26-07-17",
     "title": "Pomodoro",
-    "tags": [
-      "Esperanto",
-      "analog",
-      "emoji",
-      "tomato"
-    ]
+    "tags": ["Esperanto", "analog", "emoji", "tomato"]
   },
   {
     "path": "26-07-18",
@@ -6354,10 +4614,7 @@
     "path": "26-07-19",
     "date": "26-07-19",
     "title": "Track",
-    "tags": [
-      "analog",
-      "image-free"
-    ]
+    "tags": ["analog", "image-free"]
   },
   {
     "path": "26-07-20",
@@ -6376,83 +4633,43 @@
     "path": "26-07-21",
     "date": "26-07-21",
     "title": "Multi-Axis Trainer",
-    "tags": [
-      "analog",
-      "body",
-      "gravity",
-      "mechanical",
-      "spin"
-    ]
+    "tags": ["analog", "body", "gravity", "mechanical", "spin"]
   },
   {
     "path": "26-07-22",
     "date": "26-07-22",
     "title": "Zoom",
-    "tags": [
-      "camera",
-      "digital",
-      "eye",
-      "mechanical"
-    ]
+    "tags": ["camera", "digital", "eye", "mechanical"]
   },
   {
     "path": "26-07-23",
     "date": "26-07-23",
     "title": "Nefertiti",
-    "tags": [
-      "Egypt",
-      "analog",
-      "mummy",
-      "pyramid",
-      "scarab",
-      "underworld"
-    ]
+    "tags": ["Egypt", "analog", "mummy", "pyramid", "scarab", "underworld"]
   },
   {
     "path": "26-07-24",
     "date": "26-07-24",
     "title": "Porthole",
-    "tags": [
-      "analog",
-      "float",
-      "ocean",
-      "transport",
-      "waves"
-    ]
+    "tags": ["analog", "float", "ocean", "transport", "waves"]
   },
   {
     "path": "26-07-25",
     "date": "26-07-25",
     "title": "Hexadecimal Color",
-    "tags": [
-      "0123456789abcdef",
-      "color",
-      "digital"
-    ]
+    "tags": ["0123456789abcdef", "color", "digital"]
   },
   {
     "path": "26-07-26",
     "date": "26-07-26",
     "title": "House of Gemini",
-    "tags": [
-      "analog",
-      "constellations",
-      "myth",
-      "twins",
-      "zodiac"
-    ]
+    "tags": ["analog", "constellations", "myth", "twins", "zodiac"]
   },
   {
     "path": "26-07-27",
     "date": "26-07-27",
     "title": "Fenestration",
-    "tags": [
-      "analog",
-      "glass",
-      "paint",
-      "windows",
-      "wood"
-    ]
+    "tags": ["analog", "glass", "paint", "windows", "wood"]
   },
   {
     "path": "26-07-28",
@@ -6472,67 +4689,31 @@
     "path": "26-07-29",
     "date": "26-07-29",
     "title": "Photogram",
-    "tags": [
-      "Anna-Atkins",
-      "analog",
-      "cyan",
-      "light",
-      "paper",
-      "shadow"
-    ]
+    "tags": ["Anna-Atkins", "analog", "cyan", "light", "paper", "shadow"]
   },
   {
     "path": "26-07-30",
     "date": "26-07-30",
     "title": "Concealment",
-    "tags": [
-      "bird",
-      "camouflage",
-      "fly",
-      "pictographic",
-      "sound",
-      "tree"
-    ]
+    "tags": ["bird", "camouflage", "fly", "pictographic", "sound", "tree"]
   },
   {
     "path": "26-07-31",
     "date": "26-07-31",
     "title": "Phobos and Deimos",
-    "tags": [
-      "Mars",
-      "analog",
-      "myth",
-      "planet",
-      "satellite",
-      "space",
-      "twins"
-    ]
+    "tags": ["Mars", "analog", "myth", "planet", "satellite", "space", "twins"]
   },
   {
     "path": "26-08-01",
     "date": "26-08-01",
     "title": "Formfunktion",
-    "tags": [
-      "Bauhaus",
-      "Germany",
-      "color",
-      "digital",
-      "glass",
-      "sky"
-    ]
+    "tags": ["Bauhaus", "Germany", "color", "digital", "glass", "sky"]
   },
   {
     "path": "26-08-02",
     "date": "26-08-02",
     "title": "Aurora",
-    "tags": [
-      "analog",
-      "light",
-      "nature",
-      "night",
-      "sky",
-      "weather"
-    ]
+    "tags": ["analog", "light", "nature", "night", "sky", "weather"]
   },
   {
     "path": "26-08-03",
@@ -6566,73 +4747,37 @@
     "path": "26-08-05",
     "date": "26-08-05",
     "title": "Levitation",
-    "tags": [
-      "analog",
-      "day-and-night",
-      "earth",
-      "gravity",
-      "up-and-down"
-    ]
+    "tags": ["analog", "day-and-night", "earth", "gravity", "up-and-down"]
   },
   {
     "path": "26-08-06",
     "date": "26-08-06",
     "title": "Buzz",
-    "tags": [
-      "animal",
-      "digital",
-      "flower",
-      "fly",
-      "sound"
-    ]
+    "tags": ["animal", "digital", "flower", "fly", "sound"]
   },
   {
     "path": "26-08-07",
     "date": "26-08-07",
     "title": "Entropy Digital",
-    "tags": [
-      "digital",
-      "image-free",
-      "words"
-    ]
+    "tags": ["digital", "image-free", "words"]
   },
   {
     "path": "26-08-08",
     "date": "26-08-08",
     "title": "337.5° North-Northwest",
-    "tags": [
-      "analog",
-      "cardinal-directions",
-      "lion",
-      "roman-numeral",
-      "wind"
-    ]
+    "tags": ["analog", "cardinal-directions", "lion", "roman-numeral", "wind"]
   },
   {
     "path": "26-08-09",
     "date": "26-08-09",
     "title": "Three Trees",
-    "tags": [
-      "day-and-night",
-      "digital",
-      "landscape",
-      "tree",
-      "trunk",
-      "wood"
-    ]
+    "tags": ["day-and-night", "digital", "landscape", "tree", "trunk", "wood"]
   },
   {
     "path": "26-08-10",
     "date": "26-08-10",
     "title": "Strawberry",
-    "tags": [
-      "analog",
-      "color",
-      "fruit",
-      "grow",
-      "red",
-      "smell"
-    ]
+    "tags": ["analog", "color", "fruit", "grow", "red", "smell"]
   },
   {
     "path": "26-08-11",
@@ -6653,51 +4798,25 @@
     "path": "26-08-12",
     "date": "26-08-12",
     "title": "Solve",
-    "tags": [
-      "color",
-      "digital",
-      "hand",
-      "play",
-      "spin",
-      "square"
-    ]
+    "tags": ["color", "digital", "hand", "play", "spin", "square"]
   },
   {
     "path": "26-08-13",
     "date": "26-08-13",
     "title": "Lure",
-    "tags": [
-      "analog",
-      "animal",
-      "fly",
-      "food",
-      "sound"
-    ]
+    "tags": ["analog", "animal", "fly", "food", "sound"]
   },
   {
     "path": "26-08-14",
     "date": "26-08-14",
     "title": "Angel",
-    "tags": [
-      "body",
-      "digital",
-      "float",
-      "fly",
-      "sky",
-      "string",
-      "up-and-down"
-    ]
+    "tags": ["body", "digital", "float", "fly", "sky", "string", "up-and-down"]
   },
   {
     "path": "26-08-15",
     "date": "26-08-15",
     "title": "Yellow Numbers",
-    "tags": [
-      "analog",
-      "color",
-      "image-free",
-      "yellow"
-    ]
+    "tags": ["analog", "color", "image-free", "yellow"]
   },
   {
     "path": "26-08-16",
@@ -6716,53 +4835,25 @@
     "path": "26-08-17",
     "date": "26-08-17",
     "title": "Footnote #2",
-    "tags": [
-      "color",
-      "digital",
-      "image-free",
-      "water",
-      "words"
-    ]
+    "tags": ["color", "digital", "image-free", "water", "words"]
   },
   {
     "path": "26-08-18",
     "date": "26-08-18",
     "title": "Eclipse",
-    "tags": [
-      "digital",
-      "moon",
-      "shadow",
-      "sky",
-      "sun",
-      "twilight",
-      "universe"
-    ]
+    "tags": ["digital", "moon", "shadow", "sky", "sun", "twilight", "universe"]
   },
   {
     "path": "26-08-19",
     "date": "26-08-19",
     "title": "Imago Mundi",
-    "tags": [
-      "Babylon",
-      "analog",
-      "map",
-      "round",
-      "stone",
-      "world"
-    ]
+    "tags": ["Babylon", "analog", "map", "round", "stone", "world"]
   },
   {
     "path": "26-08-20",
     "date": "26-08-20",
     "title": "Twister",
-    "tags": [
-      "air",
-      "digital",
-      "fast",
-      "spin",
-      "weather",
-      "wind"
-    ]
+    "tags": ["air", "digital", "fast", "spin", "weather", "wind"]
   },
   {
     "path": "26-08-21",
@@ -6782,63 +4873,31 @@
     "path": "26-08-22",
     "date": "26-08-22",
     "title": "Red Planet",
-    "tags": [
-      "Mars",
-      "digital",
-      "planet",
-      "red",
-      "space"
-    ]
+    "tags": ["Mars", "digital", "planet", "red", "space"]
   },
   {
     "path": "26-08-23",
     "date": "26-08-23",
     "title": "Dissolve",
-    "tags": [
-      "digital",
-      "grid",
-      "image-free",
-      "square"
-    ]
+    "tags": ["digital", "grid", "image-free", "square"]
   },
   {
     "path": "26-08-24",
     "date": "26-08-24",
     "title": "Bubbles",
-    "tags": [
-      "air",
-      "analog",
-      "color",
-      "round",
-      "water"
-    ]
+    "tags": ["air", "analog", "color", "round", "water"]
   },
   {
     "path": "26-08-25",
     "date": "26-08-25",
     "title": "Tracking",
-    "tags": [
-      "aerial",
-      "air",
-      "digital",
-      "landscape",
-      "map",
-      "radar",
-      "waves"
-    ]
+    "tags": ["aerial", "air", "digital", "landscape", "map", "radar", "waves"]
   },
   {
     "path": "26-08-26",
     "date": "26-08-26",
     "title": "Island",
-    "tags": [
-      "analog",
-      "brown",
-      "earth",
-      "up-and-down",
-      "water",
-      "wet"
-    ]
+    "tags": ["analog", "brown", "earth", "up-and-down", "water", "wet"]
   },
   {
     "path": "26-08-27",
@@ -6858,14 +4917,7 @@
     "path": "26-08-28",
     "date": "26-08-28",
     "title": "Maze",
-    "tags": [
-      "digital",
-      "fly",
-      "grid",
-      "horizon",
-      "walk",
-      "wall"
-    ]
+    "tags": ["digital", "fly", "grid", "horizon", "walk", "wall"]
   },
   {
     "path": "26-08-29",
@@ -6886,135 +4938,67 @@
     "path": "26-08-30",
     "date": "26-08-30",
     "title": "Undulate",
-    "tags": [
-      "bubble",
-      "digital",
-      "ocean",
-      "water",
-      "waves",
-      "wind"
-    ]
+    "tags": ["bubble", "digital", "ocean", "water", "waves", "wind"]
   },
   {
     "path": "26-08-31",
     "date": "26-08-31",
     "title": "Pyrotechnics",
-    "tags": [
-      "color",
-      "digital",
-      "fire",
-      "night",
-      "sky"
-    ]
+    "tags": ["color", "digital", "fire", "night", "sky"]
   },
   {
     "path": "26-09-01",
     "date": "26-09-01",
     "title": "Continuum",
-    "tags": [
-      "analog",
-      "body",
-      "head",
-      "orbit",
-      "rotation"
-    ]
+    "tags": ["analog", "body", "head", "orbit", "rotation"]
   },
   {
     "path": "26-09-02",
     "date": "26-09-02",
     "title": "Argos Panoptes",
-    "tags": [
-      "Greece",
-      "bird",
-      "digital",
-      "eye",
-      "myth",
-      "roman-numeral",
-      "see"
-    ]
+    "tags": ["Greece", "bird", "digital", "eye", "myth", "roman-numeral", "see"]
   },
   {
     "path": "26-09-03",
     "date": "26-09-03",
     "title": "Neurons",
-    "tags": [
-      "color",
-      "digital",
-      "fire",
-      "night",
-      "sky"
-    ]
+    "tags": ["color", "digital", "fire", "night", "sky"]
   },
   {
     "path": "26-09-04",
     "date": "26-09-04",
     "title": "Lime",
-    "tags": [
-      "analog",
-      "color",
-      "food",
-      "green",
-      "smell"
-    ]
+    "tags": ["analog", "color", "food", "green", "smell"]
   },
   {
     "path": "26-09-05",
     "date": "26-09-05",
     "title": "Playback",
-    "tags": [
-      "1894",
-      "dance",
-      "digital",
-      "sound"
-    ]
+    "tags": ["1894", "dance", "digital", "sound"]
   },
   {
     "path": "26-09-06",
     "date": "26-09-06",
     "title": "Phone Micro",
-    "tags": [
-      "analog",
-      "hand",
-      "sound"
-    ]
+    "tags": ["analog", "hand", "sound"]
   },
   {
     "path": "26-09-07",
     "date": "26-09-07",
     "title": "Propulsion",
-    "tags": [
-      "England",
-      "air",
-      "digital",
-      "gravity",
-      "sky",
-      "up-and-down"
-    ]
+    "tags": ["England", "air", "digital", "gravity", "sky", "up-and-down"]
   },
   {
     "path": "26-09-08",
     "date": "26-09-08",
     "title": "Bioluminescence",
-    "tags": [
-      "analog",
-      "animal",
-      "night",
-      "ocean",
-      "waves"
-    ]
+    "tags": ["analog", "animal", "night", "ocean", "waves"]
   },
   {
     "path": "26-09-09",
     "date": "26-09-09",
     "title": "Big Robot",
-    "tags": [
-      "body",
-      "digital",
-      "exoskeletal",
-      "mechanical",
-      "ride",
-      "robot"
-    ]
+    "tags": ["body", "digital", "exoskeletal", "mechanical", "ride", "robot"]
   },
   {
     "path": "26-09-10",
@@ -7034,183 +5018,91 @@
     "path": "26-09-11",
     "date": "26-09-11",
     "title": "Express",
-    "tags": [
-      "digital",
-      "landscape",
-      "ride",
-      "transport",
-      "windows"
-    ]
+    "tags": ["digital", "landscape", "ride", "transport", "windows"]
   },
   {
     "path": "26-09-12",
     "date": "26-09-12",
     "title": "Wizard",
-    "tags": [
-      "1939",
-      "analog",
-      "green",
-      "lion",
-      "myth",
-      "screen"
-    ]
+    "tags": ["1939", "analog", "green", "lion", "myth", "screen"]
   },
   {
     "path": "26-09-13",
     "date": "26-09-13",
     "title": "Armchair",
-    "tags": [
-      "analog",
-      "interior",
-      "paper"
-    ]
+    "tags": ["analog", "interior", "paper"]
   },
   {
     "path": "26-09-14",
     "date": "26-09-14",
     "title": "Rotating Analog",
-    "tags": [
-      "Charles-Burchfield",
-      "analog",
-      "tick-tock",
-      "wall"
-    ]
+    "tags": ["Charles-Burchfield", "analog", "tick-tock", "wall"]
   },
   {
     "path": "26-09-15",
     "date": "26-09-15",
     "title": "Hammerhead",
-    "tags": [
-      "animal",
-      "blue",
-      "digital",
-      "ocean",
-      "predator",
-      "swim"
-    ]
+    "tags": ["animal", "blue", "digital", "ocean", "predator", "swim"]
   },
   {
     "path": "26-09-16",
     "date": "26-09-16",
     "title": "Itinerary",
-    "tags": [
-      "China",
-      "Disney",
-      "Italy",
-      "Japan",
-      "Paris",
-      "analog",
-      "day"
-    ]
+    "tags": ["China", "Disney", "Italy", "Japan", "Paris", "analog", "day"]
   },
   {
     "path": "26-09-17",
     "date": "26-09-17",
     "title": "Sparkling",
-    "tags": [
-      "body",
-      "dance",
-      "digital",
-      "play",
-      "sound"
-    ]
+    "tags": ["body", "dance", "digital", "play", "sound"]
   },
   {
     "path": "26-09-18",
     "date": "26-09-18",
     "title": "Sculpture XX",
-    "tags": [
-      "body",
-      "pictographic",
-      "pink"
-    ]
+    "tags": ["body", "pictographic", "pink"]
   },
   {
     "path": "26-09-19",
     "date": "26-09-19",
     "title": "Building",
-    "tags": [
-      "digital",
-      "sound",
-      "up-and-down",
-      "vertical",
-      "wall"
-    ]
+    "tags": ["digital", "sound", "up-and-down", "vertical", "wall"]
   },
   {
     "path": "26-09-20",
     "date": "26-09-20",
     "title": "Range",
-    "tags": [
-      "analog",
-      "landscape",
-      "move",
-      "radar",
-      "screen",
-      "waves"
-    ]
+    "tags": ["analog", "landscape", "move", "radar", "screen", "waves"]
   },
   {
     "path": "26-09-21",
     "date": "26-09-21",
     "title": "Narrator",
-    "tags": [
-      "body",
-      "digital",
-      "dog",
-      "interior",
-      "robot",
-      "sound"
-    ]
+    "tags": ["body", "digital", "dog", "interior", "robot", "sound"]
   },
   {
     "path": "26-09-22",
     "date": "26-09-22",
     "title": "Sunspot",
-    "tags": [
-      "analog",
-      "light",
-      "sky",
-      "space",
-      "stars",
-      "sun",
-      "yellow"
-    ]
+    "tags": ["analog", "light", "sky", "space", "stars", "sun", "yellow"]
   },
   {
     "path": "26-09-23",
     "date": "26-09-23",
     "title": "Footnote #3",
-    "tags": [
-      "Japan",
-      "digital",
-      "image-free"
-    ]
+    "tags": ["Japan", "digital", "image-free"]
   },
   {
     "path": "26-09-24",
     "date": "26-09-24",
     "title": "Ducks",
-    "tags": [
-      "analog",
-      "animal",
-      "bird",
-      "fly",
-      "sound",
-      "swim"
-    ]
+    "tags": ["analog", "animal", "bird", "fly", "sound", "swim"]
   },
   {
     "path": "26-09-25",
     "date": "26-09-25",
     "title": "157.5° South-Southeast",
-    "tags": [
-      "cardinal-directions",
-      "digital",
-      "hot",
-      "myth",
-      "wind"
-    ]
+    "tags": ["cardinal-directions", "digital", "hot", "myth", "wind"]
   },
   {
     "path": "26-09-26",
@@ -7231,13 +5123,7 @@
     "path": "26-09-27",
     "date": "26-09-27",
     "title": "Pivots",
-    "tags": [
-      "analog",
-      "image-free",
-      "monochrome",
-      "spin",
-      "typeface"
-    ]
+    "tags": ["analog", "image-free", "monochrome", "spin", "typeface"]
   },
   {
     "path": "26-09-28",
@@ -7257,106 +5143,68 @@
     "path": "26-09-29",
     "date": "26-09-29",
     "title": "Rocket",
-    "tags": [
-      "digital",
-      "gravity",
-      "sound",
-      "space",
-      "transport",
-      "up-and-down"
-    ]
+    "tags": ["digital", "gravity", "sound", "space", "transport", "up-and-down"]
   },
   {
     "path": "26-09-30",
     "date": "26-09-30",
     "title": "Milling",
-    "tags": [
-      "analog",
-      "animal",
-      "circle",
-      "cold",
-      "landscape",
-      "move",
-      "snow"
-    ]
+    "tags": ["analog", "animal", "circle", "cold", "landscape", "move", "snow"]
   },
   {
     "path": "26-10-01",
     "date": "26-10-01",
     "title": "Roadside",
-    "tags": [
-      "digital",
-      "mechanical",
-      "ride",
-      "sound",
-      "transport"
-    ]
+    "tags": ["digital", "mechanical", "ride", "sound", "transport"]
   },
   {
     "path": "26-10-02",
     "date": "26-10-02",
     "title": "Tricloptic",
-    "tags": [
-      "analog",
-      "body",
-      "eye",
-      "face"
-    ]
+    "tags": ["analog", "body", "eye", "face"]
   },
   {
     "path": "26-10-03",
     "date": "26-10-03",
     "title": "Torrential",
-    "tags": [
-      "digital",
-      "gravity",
-      "image-free",
-      "water",
-      "wet"
-    ]
+    "tags": ["digital", "gravity", "image-free", "water", "wet"]
   },
   {
     "path": "26-10-04",
     "date": "26-10-04",
     "title": "Cinnabar",
-    "tags": [
-      "analog",
-      "earth",
-      "red"
-    ]
+    "tags": ["analog", "earth", "red"]
   },
   {
     "path": "26-10-05",
     "date": "26-10-05",
     "title": "Pool",
-    "tags": [
-      "digital",
-      "gravity",
-      "landscape",
-      "water",
-      "wet"
-    ]
+    "tags": ["digital", "gravity", "landscape", "water", "wet"]
   },
   {
     "path": "26-10-06",
     "date": "26-10-06",
     "title": "Ball Point Pen",
-    "tags": [
-      "analog",
-      "hand",
-      "roll"
-    ]
+    "tags": ["analog", "hand", "roll"]
   },
   {
     "path": "26-10-07",
     "date": "26-10-07",
     "title": "Chess",
+    "tags": ["1957", "Ingmar-Bergman", "b+w", "chess", "myth"]
+  },
+  {
+    "path": "26-10-08",
+    "date": "26-10-08",
+    "title": "Carousel",
     "tags": [
-      "1957",
-      "Ingmar-Bergman",
-      "b+w",
-      "chess",
-      "myth"
+      "analog",
+      "animal",
+      "mechanical",
+      "ride",
+      "spin",
+      "play",
+      "odd-toed-ungulate"
     ]
   }
 ]
