@@ -2461,7 +2461,7 @@
     "path": "25-12-19",
     "date": "25-12-19",
     "title": "Hourglass",
-    "tags": ["fast", "glass", "slow"]
+    "tags": ["fast", "glass", "gravity", "slow"]
   },
   {
     "path": "25-12-20",
@@ -4663,7 +4663,7 @@
     "path": "26-07-26",
     "date": "26-07-26",
     "title": "House of Gemini",
-    "tags": ["analog", "constellations", "myth", "twins", "zodiac"]
+    "tags": ["air", "analog", "constellations", "myth", "twins", "zodiac"]
   },
   {
     "path": "26-07-27",
@@ -4824,10 +4824,12 @@
     "title": "House of Moon Children",
     "tags": [
       "analog",
+      "constellations",
       "day-and-night",
       "exoskeletal",
       "moon",
       "ocean",
+      "water",
       "zodiac"
     ]
   },
@@ -5201,10 +5203,10 @@
       "analog",
       "animal",
       "mechanical",
-      "ride",
-      "spin",
+      "odd-toed-ungulate",
       "play",
-      "odd-toed-ungulate"
+      "ride",
+      "spin"
     ]
   },
   {
