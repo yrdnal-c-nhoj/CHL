@@ -1,6 +1,6 @@
 // VenusClock.jsx
-import React, { useEffect, useRef, memo } from 'react';
-import { useMultiAssetLoader, useSuspenseFontLoader } from '@/utils/fontLoader';
+import React, { useEffect, useRef, memo, useState } from 'react';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClock } from '@/utils/hooks';
 import bgLayer1 from '@/assets/images/25_images/25-10/25-10-16/venus2.webp';
 import bgLayer2 from '@/assets/images/25_images/25-10/25-10-16/venus.webp';
@@ -18,7 +18,7 @@ const fontConfigs = [
   },
 ];
 
-const VenusClock =  () => {
+const VenusClock = () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useClock();
   const [ready, setReady] = useState<boolean>(false);
@@ -45,7 +45,7 @@ const VenusClock =  () => {
     let posX = 0;
     const speed = -0.1;
     let frameId: number;
-    const scroll =  () => {
+    const scroll = () => {
       posX -= speed;
       const bgEl = document.getElementById('venus-scroll-bg');
       if (bgEl) bgEl.style.backgroundPosition = `${posX}vh 50%`;
@@ -193,7 +193,9 @@ const VenusClock =  () => {
 
   return (
     <main className={styles.container}>
-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
 
       <img
         decoding="async"
@@ -228,7 +230,8 @@ const VenusClock =  () => {
           opacity: 0.9,
           zIndex: 1,
           pointerEvents: 'none',
-          filter: 'brightness(1.1) contrast(1.4) saturate(1.2) hue-rotate(80deg)',
+          filter:
+            'brightness(1.1) contrast(1.4) saturate(1.2) hue-rotate(80deg)',
         }}
       />
       <div style={containerStyle}>
@@ -260,7 +263,7 @@ const VenusClock =  () => {
       </div>
     </main>
   );
-}
+};
 
 const MemoizedVenusClock = memo(VenusClock);
 MemoizedVenusClock.displayName = 'Clock_25_10_16';
