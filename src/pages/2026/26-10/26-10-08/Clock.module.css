@@ -38,11 +38,11 @@
 
 @keyframes slideAcross {
   0% {
-    transform: translate(-50%, -50%) translateX(100vw);
+    transform: translate(-50%, -50%) translateX(calc(100vw + 100dvh));
   }
 
   100% {
-    transform: translate(-50%, -50%) translateX(-100vw);
+    transform: translate(-50%, -50%) translateX(-calc(100vw + 100dvh));
   }
 }
 
