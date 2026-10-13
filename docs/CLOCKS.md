@@ -6,7 +6,8 @@ This document defines the engineering contract for new and actively maintained c
 
 ## Scope
 
-- **September 2026 onward:** current contract applies.
+- **September 2026 through today:** current contract applies.
+- **Future-dated clocks:** exempt from the current contract unless you explicitly ask for them to comply.
 - **Before September 2026:** historical implementations are generally preserved.
 - A historical clock may be changed when a concrete production, security, accessibility, deployment, or shared-infrastructure issue requires it.
 

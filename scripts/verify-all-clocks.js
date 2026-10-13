@@ -25,11 +25,23 @@ const METADATA_FILES = [
 const DATE_PATTERN = /^\d{2}-\d{2}-\d{2}$/;
 
 // September 2026 is the current architectural boundary.
-// Clocks from 26-09-XX onwards must use SRTime.
+// Clocks from 26-09-XX through today follow the current contract.
+// Future-dated clocks are exempt unless explicitly checked with --path.
 const CURRENT_BOUNDARY = '26-09';
 
+function todayClockDate() {
+  const today = new Date();
+  return `${String(today.getFullYear()).slice(-2)}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+}
+
+function isFutureClockDate(date) {
+  return (
+    Number(date.replace(/-/g, '')) > Number(todayClockDate().replace(/-/g, ''))
+  );
+}
+
 function isCurrentClock(date) {
-  return date >= CURRENT_BOUNDARY;
+  return date >= CURRENT_BOUNDARY && !isFutureClockDate(date);
 }
 
 const fail = (message) => {
@@ -219,11 +231,15 @@ function selectFiles(options) {
     const changedDates = getChangedFiles()
       .map((filePath) => path.resolve(ROOT, filePath))
       .map((filePath) => dateFromPath(filePath))
-      .filter(Boolean);
+      .filter(Boolean)
+      .filter((date) => !isFutureClockDate(date));
     return [...new Set(changedDates)].map((date) => clockPathForDate(date));
   }
 
-  return findClockFiles(PAGES_DIR);
+  return findClockFiles(PAGES_DIR).filter((filePath) => {
+    const date = dateFromPath(filePath);
+    return date ? !isFutureClockDate(date) : true;
+  });
 }
 
 function main() {

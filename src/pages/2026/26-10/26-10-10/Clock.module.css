@@ -5,7 +5,7 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: #111018;
+  background: #cac5ec;
 }
 
 .clockSvg {
@@ -16,7 +16,7 @@
 }
 
 .face {
-  fill: #f5f1e8;
+  fill: #820429;
 }
 
 .innerSweep,
@@ -26,11 +26,11 @@
 }
 
 .innerSweep {
-  stroke: #000000;
+  stroke: #eeeded;
 }
 
 .outerSweep {
-  stroke: #ffffff;
+  stroke: #820429;
 }
 
 @media (prefers-reduced-motion: reduce) {
