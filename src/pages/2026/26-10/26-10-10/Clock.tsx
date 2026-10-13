@@ -1,188 +1,109 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-const clockStyles = `
-  .clock-field {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    height: 100dvh;
-    overflow: hidden;
-    background: #000;
-    color: #fff;
-  }
-  .clock-desktop {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 100%;
-    height: 100%;
-  }
-  .clock-mobile {
-    display: none;
-  }
-  .clock-lane {
-    flex: 1;
-    min-width: 0;
-    min-height: 0;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-  }
-  .clock-track {
-    display: flex;
-    flex-shrink: 0;
-    width: max-content;
-    animation: clock-left 40s linear infinite;
-    will-change: transform;
-  }
-  .clock-group {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    gap: 0.5rem;
-    padding-right: 0.5rem;
-  }
-  .clock-digits {
-    display: flex;
-    flex-shrink: 0;
-    gap: 0.15rem;
-  }
-  .clock-digit {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 0.72em;
-    aspect-ratio: 3 / 4;
-    overflow: hidden;
-    background: #171717;
-    color: #fff;
-    font-family: monospace;
-    font-size: clamp(1.5rem, 5vw, 4rem);
-    font-variant-numeric: tabular-nums;
-    font-weight: 700;
-    line-height: 1;
-  }
-  @keyframes clock-left {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-  @media (max-width: 640px) {
-    .clock-desktop { display: none; }
-    .clock-mobile {
-      display: flex;
-      width: 100%;
-      height: 100%;
-    }
-    .clock-mobile .clock-lane {
-      align-items: stretch;
-    }
-    .clock-mobile .clock-track {
-      flex-direction: column;
-      width: 100%;
-      height: max-content;
-      animation: clock-up 35s linear infinite;
-    }
-    .clock-mobile .clock-group {
-      flex-direction: column;
-      width: 100%;
-      padding-right: 0;
-      padding-bottom: 0.5rem;
-    }
-    .clock-mobile .clock-digits {
-      gap: 0.1rem;
-    }
-    .clock-mobile .clock-digit {
-      font-size: clamp(1.2rem, 7vw, 2.5rem);
-    }
-  }
-  @keyframes clock-up {
-    from { transform: translateY(0); }
-    to { transform: translateY(-50%); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .clock-track { animation-duration: 120s; }
-  }
-`;
+import SRTime from '@/components/SRTime';
+import { useSmoothClock } from '@/utils/hooks';
 
-function getTime() {
-  const now = new Date();
+import styles from './Clock.module.css';
+
+const CENTER = 100;
+const RADIUS = 96;
+
+function hand(angle: number, length: number, width: number, color: string) {
+  const radians = ((angle - 90) * Math.PI) / 180;
+
   return (
-    String(now.getHours()).padStart(2, "0") +
-    String(now.getMinutes()).padStart(2, "0")
+    <line
+      x1={CENTER}
+      y1={CENTER}
+      x2={CENTER + Math.cos(radians) * length}
+      y2={CENTER + Math.sin(radians) * length}
+      stroke={color}
+      strokeWidth={width}
+      strokeLinecap="round"
+    />
   );
 }
 
-function useMinuteClock() {
-  const [time, setTime] = useState(getTime);
+const Clock_26_10_10 = () => {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
+    typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  );
+
   useEffect(() => {
-    let timeout: number;
-    let interval: number;
-    const delay = 60_000 - (Date.now() % 60_000);
-    timeout = window.setTimeout(() => {
-      setTime(getTime());
-      interval = window.setInterval(() => {
-        setTime(getTime());
-      }, 60_000);
-    }, delay);
-    return () => {
-      window.clearTimeout(timeout);
-      window.clearInterval(interval);
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handleChange = (event: MediaQueryListEvent) => {
+      setPrefersReducedMotion(event.matches);
     };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
-  return time;
-}
 
-function Digits({ time }: { time: string }) {
+  const now = useSmoothClock(prefersReducedMotion ? 1000 : 16);
+
+  const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+  const minutes = now.getMinutes() + seconds / 60;
+  const hours = (now.getHours() % 12) + minutes / 60;
+
+  const secondProgress = now.getMilliseconds() / 1000;
+  const currentSecondAngle = Math.floor(seconds) * 6;
+  const radians = ((currentSecondAngle - 90) * Math.PI) / 180;
+
+  const cos = Math.cos(radians);
+  const sin = Math.sin(radians);
+
+  const edge1X = CENTER - cos * RADIUS;
+  const edge1Y = CENTER - sin * RADIUS;
+  const edge2X = CENTER + cos * RADIUS;
+  const edge2Y = CENTER + sin * RADIUS;
+
+  const travelProgress = Math.sin(secondProgress * Math.PI);
+  const currentX2 = edge1X + (edge2X - edge1X) * travelProgress;
+  const currentY2 = edge1Y + (edge2Y - edge1Y) * travelProgress;
+
+  const OUTSIDE_EXTENT = 150;
+  const outsideX = edge1X - cos * OUTSIDE_EXTENT;
+  const outsideY = edge1Y - sin * OUTSIDE_EXTENT;
+
+  const currentOutsideX = edge1X + (outsideX - edge1X) * travelProgress;
+  const currentOutsideY = edge1Y + (outsideY - edge1Y) * travelProgress;
+
   return (
-    <div className="clock-digits">
-      {time.split("").map((digit, index) => (
-        <span className="clock-digit" key={index}>
-          {digit}
-        </span>
-      ))}
-    </div>
-  );
-}
+    <main className={styles.container}>
+      <svg
+        viewBox="0 0 200 200"
+        role="img"
+        aria-label={`Analog clock showing ${now.toLocaleTimeString()}`}
+        className={styles.clockSvg}
+      >
+        <circle cx={CENTER} cy={CENTER} r={RADIUS} className={styles.face} />
 
-function Track({ time }: { time: string }) {
-  // 24 copies → one group is almost always wider/taller than the viewport
-  // (covers ultrawide monitors and tall phones). Two groups + -50% = seamless forever.
-  const COPIES = 24;
+        <line
+          x1={edge1X}
+          y1={edge1Y}
+          x2={currentX2}
+          y2={currentY2}
+          className={styles.innerSweep}
+        />
 
-  return (
-    <div className="clock-track">
-      {[0, 1].map((copy) => (
-        <div className="clock-group" key={copy}>
-          {Array.from({ length: COPIES }, (_, index) => (
-            <Digits time={time} key={index} />
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-}
+        <line
+          x1={edge1X}
+          y1={edge1Y}
+          x2={currentOutsideX}
+          y2={currentOutsideY}
+          className={styles.outerSweep}
+        />
 
-export default function DigitalClock() {
-  const time = useMinuteClock();
-  return (
-    <>
-      <style>{clockStyles}</style>
-      <main className="clock-field">
-        <div className="clock-desktop">
-          {Array.from({ length: 5 }, (_, index) => (
-            <div className="clock-lane" key={index}>
-              <Track time={time} />
-            </div>
-          ))}
-        </div>
-        <div className="clock-mobile">
-          {Array.from({ length: 3 }, (_, index) => (
-            <div className="clock-lane" key={index}>
-              <Track time={time} />
-            </div>
-          ))}
-        </div>
-      </main>
-    </>
+        {hand(hours * 30, 25, 4, '#171717')}
+        {hand(minutes * 6, 38, 2.5, '#171717')}
+      </svg>
+
+      <SRTime time={now} />
+    </main>
   );
-}
+};
+
+Clock_26_10_10.displayName = 'Clock_26_10_10';
+
+export default Clock_26_10_10;

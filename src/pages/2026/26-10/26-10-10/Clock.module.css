@@ -1,0 +1,40 @@
+.container {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #111018;
+}
+
+.clockSvg {
+  display: block;
+  width: min(100vw, 100dvh);
+  height: min(100vw, 100dvh);
+  overflow: visible;
+}
+
+.face {
+  fill: #f5f1e8;
+}
+
+.innerSweep,
+.outerSweep {
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+
+.innerSweep {
+  stroke: #000000;
+}
+
+.outerSweep {
+  stroke: #ffffff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clockSvg {
+    animation: none;
+  }
+}
