@@ -5220,5 +5220,23 @@
     "date": "26-10-10",
     "title": "House of Virgo",
     "tags": ["analog", "constellations", "earth", "myth", "plant"]
+  },
+  {
+    "path": "26-10-11",
+    "date": "26-10-11",
+    "title": "Footnote #4",
+    "tags": ["digital", "image-free", "words"]
+  },
+  {
+    "path": "26-10-12",
+    "date": "26-10-12",
+    "title": "Sculpture XXII",
+    "tags": ["analog", "body", "pictographic"]
+  },
+  {
+    "path": "26-10-13",
+    "date": "26-10-13",
+    "title": "Sculpture XXIII",
+    "tags": ["analog", "body", "pictographic"]
   }
 ]
