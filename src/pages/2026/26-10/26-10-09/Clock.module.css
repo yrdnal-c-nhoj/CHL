@@ -1,0 +1,55 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background: #000;
+  color: #00ffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.digitalDisplay {
+  display: flex;
+  align-items: center;
+  font-family: monospace;
+  font-size: clamp(5rem, 20vw, 15rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.digit {
+  display: inline-block;
+  color: #00ffff;
+  text-shadow:
+    0 0 0.5rem #00ffff,
+    0 0 1rem #00ffff,
+    0 0 2rem #00ffff,
+    0 0 4rem #00ffff;
+}
+
+.colon {
+  display: inline-block;
+  color: #00ffff;
+  text-shadow:
+    0 0 0.5rem #00ffff,
+    0 0 1rem #00ffff,
+    0 0 2rem #00ffff,
+    0 0 4rem #00ffff;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .colon {
+    animation: none;
+    opacity: 1;
+  }
+}
