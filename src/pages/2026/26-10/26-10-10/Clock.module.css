@@ -1,11 +1,15 @@
 .container {
+  --color-bg: #cac5ec;
+  --color-accent: #820429;
+  --color-highlight: #ffffff;
+
   position: relative;
   width: 100%;
   height: 100dvh;
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: #cac5ec;
+  background-color: var(--color-bg);
 }
 
 .clockSvg {
@@ -13,10 +17,11 @@
   width: min(100vw, 100dvh);
   height: min(100vw, 100dvh);
   overflow: visible;
+  color: var(--color-highlight);
 }
 
 .face {
-  fill: #820429;
+  fill: var(--color-accent);
 }
 
 .innerSweep,
@@ -26,11 +31,11 @@
 }
 
 .innerSweep {
-  stroke: #eeeded;
+  stroke: var(--color-highlight);
 }
 
 .outerSweep {
-  stroke: #820429;
+  stroke: var(--color-accent);
 }
 
 @media (prefers-reduced-motion: reduce) {

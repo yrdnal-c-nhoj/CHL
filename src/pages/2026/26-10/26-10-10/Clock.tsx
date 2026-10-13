@@ -99,10 +99,10 @@ const Clock_26_10_10 = () => {
         />
 
         {/* Hour hand – sits on the outer edge, points inward */}
-        {outerHand(hours * 30, 89, 35, 14, '#ffffff')}
+        {outerHand(hours * 30, 89, 35, 14, 'currentColor')}
 
         {/* Minute hand – sits on the outer edge, points inward */}
-        {outerHand(minutes * 6, 91, 10, 10, '#ffffff')}
+        {outerHand(minutes * 6, 91, 10, 10, 'currentColor')}
       </svg>
       <SRTime time={now} />
     </main>
