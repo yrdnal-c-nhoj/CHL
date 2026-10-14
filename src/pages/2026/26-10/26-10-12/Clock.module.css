@@ -1,0 +1,185 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #5f5f5d;
+  --hand-color: rgb(188, 187, 187);
+}
+
+.videoLayout {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  z-index: 1;
+}
+
+.backgroundVideo {
+  flex: 1 1 auto;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  pointer-events: none;
+
+  filter: brightness(0.8) contrast(1.9) saturate(1.1);
+}
+
+@media (min-width: 601px) {
+  .videoLayout {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .videoLayout {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.clockFace {
+  position: absolute;
+
+  width: min(100vw, 100dvh);
+  height: min(100vw, 100dvh);
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 10;
+
+  pointer-events: none;
+}
+
+.handLayer {
+  position: absolute;
+  inset: 0;
+
+  z-index: 20;
+
+  pointer-events: none;
+}
+
+/*
+ * Clock hand
+ */
+.hand {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  display: block;
+
+  width: var(--hand-width);
+  height: var(--hand-height);
+
+  color: var(--hand-color);
+
+  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='50' height='12'><path d='M0 2 Q12 0 25 2 T50 2 V3 H0 Z' fill='currentColor'/><path d='M0 8 Q12 6 25 8 T50 8 V9 H0 Z' fill='currentColor'/></svg>");
+  background-size: 50px 12px;
+  background-repeat: repeat;
+
+  transform-origin: 50% 100%;
+
+  transform: translate(-50%, -100%) rotate(var(--angle, 0deg));
+
+  border-radius: 999px;
+
+  z-index: 20;
+
+  opacity: 1;
+
+  box-shadow:
+    0 0 3px rgb(10, 10, 10),
+    0 0 8px rgba(188, 187, 187, 0.8);
+
+  will-change: transform;
+
+  pointer-events: none;
+}
+
+/*
+ * Hour hand
+ */
+.hourHand {
+  --hand-width: 3.5vmin;
+  --hand-height: 12vmin;
+}
+
+/*
+ * Minute hand
+ */
+.minuteHand {
+  --hand-width: 2.2vmin;
+  --hand-height: 20vmin;
+}
+
+/*
+ * Second hand
+ */
+.secondHand {
+  --hand-width: 1.2vmin;
+  --hand-height: 29vmin;
+}
+
+/*
+ * Clock numbers
+ */
+.clockNumber {
+  position: absolute;
+  font-family: 'ClockFont_26_10_12', monospace, sans-serif;
+  font-size: 9vmin;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255);
+  transform-origin: center;
+  z-index: 15;
+  pointer-events: none;
+}
+
+/*
+ * Screen-reader-only utility
+ */
+.srOnly {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+
+  white-space: nowrap;
+
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backgroundVideo {
+    will-change: auto;
+  }
+
+  .hand {
+    will-change: auto;
+  }
+}
