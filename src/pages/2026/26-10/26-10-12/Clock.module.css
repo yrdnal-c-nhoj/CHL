@@ -93,8 +93,8 @@
 
   color: var(--hand-color);
 
-  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='50' height='12'><path d='M0 2 Q12 0 25 2 T50 2 V3 H0 Z' fill='currentColor'/><path d='M0 8 Q12 6 25 8 T50 8 V9 H0 Z' fill='currentColor'/></svg>");
-  background-size: 50px 12px;
+  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='50' height='8'><path d='M0 2 Q12 0 25 2 T50 2 V3 H0 Z' fill='currentColor'/><path d='M0 6 Q12 4 25 6 T50 6 V7 H0 Z' fill='currentColor'/></svg>");
+  background-size: 50px 8px;
   background-repeat: repeat;
 
   transform-origin: 50% 100%;
