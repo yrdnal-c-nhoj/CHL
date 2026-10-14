@@ -12,11 +12,9 @@ import styles from './Clock.module.css';
 export const assets = [limeVideo, font];
 
 const fontConfig: FontConfig = {
-  fontFamily: 'ClockFont_26_09_22',
+  fontFamily: 'ClockFont_26_10_08',
   fontUrl: font,
 };
-
-const SLIDE_DURATION = 10;
 
 type Angles = {
   hourAngle: number;
@@ -260,7 +258,7 @@ const ClockFace = ({ hourAngle, minuteAngle, secondAngle }: Angles) => (
   </div>
 );
 
-const Clock_26_09_22 = () => {
+const Clock_26_10_08 = () => {
   useSuspenseFontLoader([fontConfig]);
 
   const time = useSmoothClock(16);
@@ -291,17 +289,11 @@ const Clock_26_09_22 = () => {
       />
 
       <div className={styles.stage}>
-        <div
-          className={styles.slidingClock}
-          style={{ animationDelay: `-${SLIDE_DURATION / 2}s` } as CSSProperties}
-        >
+        <div className={styles.slidingClock}>
           <ClockFace {...angles} />
         </div>
 
-        <div
-          className={styles.slidingClock}
-          style={{ animationDelay: '0s' } as CSSProperties}
-        >
+        <div className={styles.slidingClock}>
           <ClockFace {...angles} />
         </div>
       </div>
@@ -311,6 +303,6 @@ const Clock_26_09_22 = () => {
   );
 };
 
-Clock_26_09_22.displayName = 'Clock_26_09_22';
+Clock_26_10_08.displayName = 'Clock_26_10_08';
 
-export default Clock_26_09_22;
+export default Clock_26_10_08;
