@@ -37,9 +37,3 @@
 .outerSweep {
   stroke: var(--color-accent);
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .clockSvg {
-    animation: none;
-  }
-}
