@@ -73,12 +73,16 @@ const Clock_26_10_09 = () => {
     const sizeSeq: number[] = [];
     let prev = Math.floor(Math.random() * images.length);
     imgSeq.push(prev);
-    // Tile size range: 12–24 vmin
-    sizeSeq.push(12 + Math.random() * 12);
+    // Bimodal tile-size distribution: sometimes 3-4 large tiles, sometimes 15-16 small tiles.
+    const smallSize = 4 + Math.random() * 3; // 4-7 vmin  → ~15-25 tiles
+    const largeSize = 20 + Math.random() * 10; // 20-30 vmin → ~3-5 tiles
+    sizeSeq.push(Math.random() < 0.5 ? smallSize : largeSize);
     for (let i = 0; i < 999; i++) {
       prev = pickRandomExcluding(prev);
       imgSeq.push(prev);
-      sizeSeq.push(12 + Math.random() * 12);
+      const s = 4 + Math.random() * 3;
+      const l = 20 + Math.random() * 10;
+      sizeSeq.push(Math.random() < 0.5 ? s : l);
     }
     return { images: imgSeq, sizes: sizeSeq };
   });
