@@ -58,6 +58,33 @@
   }
 }
 
+/* Phone: vertical movement with enough spacing */
+@media (max-width: 600px) {
+  .slidingClock {
+    width: var(--phone-clock-size);
+    height: var(--phone-clock-size);
+    animation-name: slideVertically;
+    animation-duration: var(--slide-duration);
+    animation-delay: var(--slide-delay);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  .clockNumber {
+    font-size: var(--phone-number-size);
+  }
+
+  @keyframes slideVertically {
+    0% {
+      transform: translate(-50%, -50%) translateX(160dvh);
+    }
+
+    100% {
+      transform: translate(-50%, -50%) translateX(-160dvh);
+    }
+  }
+}
+
 .clockFace {
   position: absolute;
   inset: 0;
