@@ -4,9 +4,9 @@
   height: 100dvh;
   overflow: hidden;
   background: #40403e;
-  --hand-color: #8513cc;
+  --hand-color: #6e03b0;
   /* deep wrought iron */
-  --hand-highlight: #c32cec;
+  --hand-highlight: #e1dee2;
   --glow: rgba(243, 101, 40, 0.55);
 }
 
@@ -76,7 +76,7 @@
   position: absolute;
   left: 50%;
   bottom: 0;
-  opacity: 0.7;
+  opacity: 0.5;
   transform: translateX(-50%);
   overflow: visible;
   filter: drop-shadow(0 0 2px var(--glow)) drop-shadow(0 0 6px var(--glow));
@@ -117,9 +117,9 @@
   z-index: 15;
   font-family: 'ClockFont_26_09_22', monospace, sans-serif;
   font-size: 13vmin;
-  color: #9f18ed;
+  color: #6c03a9;
   text-shadow:
-    1px 1px 0 rgba(247, 13, 13, 0.8),
+    1px 1px 0 rgba(239, 234, 234, 0.8),
     1px 0 0 rgba(3, 9, 4, 0.8);
   transform-origin: center;
   pointer-events: none;
