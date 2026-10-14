@@ -4,13 +4,26 @@
   height: 100dvh;
   overflow: hidden;
   background: #40403e;
+
+  /* Main color controls */
   --hand-color: #6e03b0;
-  /* deep wrought iron */
   --hand-highlight: #e1dee2;
+  --number-color: #6c03a9;
+  --pivot-color: #cfbebe;
   --glow: rgba(243, 101, 40, 0.55);
+
+  /* Animation controls */
+  --slide-duration: 10s;
+  --slide-delay: -5s;
+
+  /* Phone controls */
+  --phone-clock-size: 120dvh;
+  --phone-number-size: 19vmin;
 }
 
 .backgroundVideo {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -32,7 +45,7 @@
   left: 50%;
   width: min(100vw, 100dvh);
   height: min(100vw, 100dvh);
-  animation: slideAcross 10s linear infinite;
+  animation: slideAcross var(--slide-duration) linear infinite;
   will-change: transform;
 }
 
@@ -59,7 +72,7 @@
   pointer-events: none;
 }
 
-/* Wrapper that handles the rotation */
+/* Rotation pivot */
 .handWrapper {
   position: absolute;
   top: 50%;
@@ -71,7 +84,7 @@
   will-change: transform;
 }
 
-/* The SVG hands themselves */
+/* SVG hands */
 .hand {
   position: absolute;
   left: 50%;
@@ -82,7 +95,6 @@
   filter: drop-shadow(0 0 2px var(--glow)) drop-shadow(0 0 6px var(--glow));
 }
 
-/* Size the three hands */
 .hourHand {
   width: 14vmin;
   height: 28vmin;
@@ -98,7 +110,7 @@
   height: 52vmin;
 }
 
-/* Filigree styling */
+/* Filigree */
 .filigree {
   fill: var(--hand-color);
   stroke: var(--hand-highlight);
@@ -107,20 +119,32 @@
 }
 
 .pivotHole {
-  fill: #cfbebe;
+  fill: var(--pivot-color);
   stroke: none;
 }
 
-/* Numbers stay the same */
+/* Clock numerals */
 .clockNumber {
   position: absolute;
   z-index: 15;
   font-family: 'ClockFont_26_09_22', monospace, sans-serif;
   font-size: 13vmin;
-  color: #6c03a9;
+  color: var(--number-color);
   text-shadow:
     1px 1px 0 rgba(239, 234, 234, 0.8),
     1px 0 0 rgba(3, 9, 4, 0.8);
   transform-origin: center;
   pointer-events: none;
+}
+
+/* Phone: oversized clock, deliberately clipped */
+@media (max-width: 600px) {
+  .slidingClock {
+    width: var(--phone-clock-size);
+    height: var(--phone-clock-size);
+  }
+
+  .clockNumber {
+    font-size: var(--phone-number-size);
+  }
 }
