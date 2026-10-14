@@ -1,7 +1,8 @@
 .container {
-  --color-bg: #cac5ec;
-  --color-accent: #820429;
+  --color-bg: #d8d5e7;
+  --color-accent: #360716;
   --color-highlight: #ffffff;
+  --color-overlap: #ff6a00;
 
   position: relative;
   width: 100%;
@@ -14,8 +15,8 @@
 
 .clockSvg {
   display: block;
-  width: min(100vw, 100dvh);
-  height: min(100vw, 100dvh);
+  width: min(90vw, 90dvh);
+  height: min(90vw, 90dvh);
   overflow: visible;
   color: var(--color-highlight);
 }
@@ -24,16 +25,26 @@
   fill: var(--color-accent);
 }
 
-.innerSweep,
-.outerSweep {
-  stroke-width: 1.2;
-  stroke-linecap: round;
-}
-
 .innerSweep {
   stroke: var(--color-highlight);
+  stroke-width: 1.2;
+  /* stroke-linecap: round; */
 }
 
 .outerSweep {
   stroke: var(--color-accent);
+  /* stroke-linecap: round; */
+}
+
+.overlap {
+  stroke: var(--color-overlap);
+}
+
+/* Reduced motion: complement JS handling (useSmoothClock runs at 1s interval,
+   second hand hidden). This ensures the sweep lines are also suppressed in CSS. */
+@media (prefers-reduced-motion: reduce) {
+  .innerSweep,
+  .outerSweep {
+    display: none;
+  }
 }
