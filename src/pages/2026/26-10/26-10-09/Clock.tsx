@@ -65,17 +65,22 @@ const Clock_26_10_09 = () => {
   // Capture the mount time so cycles always start in the "hold" phase.
   const [startTime] = useState(() => smoothTime.getTime() / 1000);
 
-  // Precompute a long sequence of random image indices (different from previous).
+  // Precompute a long sequence of random image indices (different from previous)
+  // and paired random tile sizes, so each cycle gets a different look.
   // Lazy state initializer is the idiomatic place for impure random generation.
-  const [imageSequence] = useState(() => {
-    const seq: number[] = [];
+  const [sequences] = useState(() => {
+    const imgSeq: number[] = [];
+    const sizeSeq: number[] = [];
     let prev = Math.floor(Math.random() * images.length);
-    seq.push(prev);
+    imgSeq.push(prev);
+    // Tile size range: 12–24 vmin
+    sizeSeq.push(12 + Math.random() * 12);
     for (let i = 0; i < 999; i++) {
       prev = pickRandomExcluding(prev);
-      seq.push(prev);
+      imgSeq.push(prev);
+      sizeSeq.push(12 + Math.random() * 12);
     }
-    return seq;
+    return { images: imgSeq, sizes: sizeSeq };
   });
 
   const elapsedSeconds = smoothTime.getTime() / 1000 - startTime;
@@ -84,9 +89,14 @@ const Clock_26_10_09 = () => {
   const isFading = cyclePosition >= 1;
   const progress = isFading ? cyclePosition - 1 : 0;
 
-  const seqLength = imageSequence.length;
-  const currentImgIdx = imageSequence[cycleNumber % seqLength] ?? 0;
-  const nextImgIdx = imageSequence[(cycleNumber + 1) % seqLength] ?? 0;
+  const seqLength = sequences.images.length;
+  const currentCycleIdx = cycleNumber % seqLength;
+  const nextCycleIdx = (cycleNumber + 1) % seqLength;
+
+  const currentImgIdx = sequences.images[currentCycleIdx] ?? 0;
+  const nextImgIdx = sequences.images[nextCycleIdx] ?? 0;
+  const currentSize = sequences.sizes[currentCycleIdx] ?? 18;
+  const nextSize = sequences.sizes[nextCycleIdx] ?? 18;
 
   const currentBgImage = images[currentImgIdx] ?? backgroundImage;
   const nextBgImage = images[nextImgIdx] ?? backgroundImage;
@@ -112,11 +122,13 @@ const Clock_26_10_09 = () => {
 
   const currentLayerStyle = {
     '--bg-image': `url(${currentBgImage})`,
+    '--bg-size': `${currentSize}vmin`,
     opacity: currentOpacity,
   } as CSSProperties;
 
   const nextLayerStyle = {
     '--bg-image': `url(${nextBgImage})`,
+    '--bg-size': `${nextSize}vmin`,
     opacity: nextOpacity,
   } as CSSProperties;
 
