@@ -75,7 +75,7 @@ const Clock_26_10_09 = () => {
     imgSeq.push(prev);
     // Bimodal tile-size distribution: sometimes 3-4 large tiles, sometimes 15-16 small tiles.
     const smallSize = 4 + Math.random() * 3; // 4-7 vmin  → ~15-25 tiles
-    const largeSize = 20 + Math.random() * 10; // 20-30 vmin → ~3-5 tiles
+    const largeSize = 200 + Math.random() * 100; // 20-30 vmin → ~3-5 tiles
     sizeSeq.push(Math.random() < 0.5 ? smallSize : largeSize);
     for (let i = 0; i < 999; i++) {
       prev = pickRandomExcluding(prev);
