@@ -65,7 +65,7 @@ function Hand({ angle, outer, inner, width, ...rest }: HandProps) {
       x2={end.x}
       y2={end.y}
       strokeWidth={width}
-      strokeLinecap="round"
+      strokeLinecap="butt"
       {...rest}
     />
   );
@@ -168,14 +168,10 @@ const Clock_26_10_10 = () => {
               y2={lerp(edgeStart.y, outsideEnd.y, travel)}
               className={styles.outerSweep}
               strokeWidth={SECOND_HAND_WIDTH}
-              strokeLinecap="round"
+              strokeLinecap="butt"
             />
           </>
         )}
-
-        {/* Hour and minute hands inside the clock. */}
-        <use href={`#${ids.hour}`} stroke="currentColor" />
-        <use href={`#${ids.minute}`} stroke="currentColor" />
 
         {/* Hour shadow: exactly the same stroke width as the hour hand. */}
         <line
@@ -185,7 +181,7 @@ const Clock_26_10_10 = () => {
           y2={hourShadowEnd.y}
           className={styles.outerSweep}
           strokeWidth={HOUR_HAND.width}
-          strokeLinecap="round"
+          strokeLinecap="butt"
         />
 
         {/* Minute shadow: exactly the same stroke width as the minute hand. */}
@@ -196,8 +192,12 @@ const Clock_26_10_10 = () => {
           y2={minuteShadowEnd.y}
           className={styles.outerSweep}
           strokeWidth={MINUTE_HAND.width}
-          strokeLinecap="round"
+          strokeLinecap="butt"
         />
+
+        {/* Hour and minute hands inside the clock. */}
+        <use href={`#${ids.hour}`} stroke="currentColor" />
+        <use href={`#${ids.minute}`} stroke="currentColor" />
 
         {/* Preserve the original hand-overlap treatment. */}
         <g mask={`url(#${ids.hourMask})`}>
