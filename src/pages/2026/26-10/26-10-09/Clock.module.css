@@ -13,34 +13,36 @@
   justify-content: center;
 }
 
+.bgLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--bg-image);
+  background-repeat: repeat;
+  background-position: center;
+  background-size: auto;
+}
+
 .digitalDisplay {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
-  font-family: monospace;
-  font-size: clamp(5rem, 20vw, 15rem);
+  font-family: 'ClockFont_26_10_09', monospace;
+  font-size: 20vw;
   font-variant-numeric: tabular-nums;
-  font-weight: 700;
   letter-spacing: 0.08em;
 }
 
 .digit {
   display: inline-block;
-  color: #00ffff;
-  text-shadow:
-    0 0 0.5rem #00ffff,
-    0 0 1rem #00ffff,
-    0 0 2rem #00ffff,
-    0 0 4rem #00ffff;
+  color: #f78708;
 }
 
 .colon {
   display: inline-block;
-  color: #00ffff;
-  text-shadow:
-    0 0 0.5rem #00ffff,
-    0 0 1rem #00ffff,
-    0 0 2rem #00ffff,
-    0 0 4rem #00ffff;
+  color: #f78708;
+
   animation: blink 1s step-end infinite;
 }
 
@@ -54,5 +56,9 @@
   .colon {
     animation: none;
     opacity: 1;
+  }
+
+  .bgLayer {
+    transition: none;
   }
 }
