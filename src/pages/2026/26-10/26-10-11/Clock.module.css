@@ -18,17 +18,10 @@
   font-family: 'ClockFont_26_10_11', 'Courier New', Courier, monospace;
   font-size: 16vw;
   font-variant-numeric: tabular-nums;
-  color: #00ff00;
-
-  /* Classic digital-clock glow */
-  text-shadow:
-    0 0 4px rgba(0, 255, 0, 0.8),
-    0 0 8px rgba(0, 255, 0, 0.6),
-    0 0 12px rgba(0, 255, 0, 0.4);
 }
 
 /* Each digit lives in a fixed-width box so the display never jumps
-   when values change (e.g. 1→2, 9→10). */
+   when values change (e.g. 1->2, 9->10). */
 .digitBox {
   display: inline-flex;
   align-items: center;
@@ -38,17 +31,32 @@
   width: 1ch;
   aspect-ratio: 1 / 1.3;
 
-  border: 0.1em solid rgba(0, 255, 0, 0.3);
+  /* Color / shadow come from random per-digit CSS variables */
+  color: var(--digit-color, #00ff00);
+
+  border: 0.1em solid
+    color-mix(in srgb, var(--digit-color, #00ff00) 30%, transparent);
   border-radius: 0.15em;
+
   box-shadow:
-    inset 0 0 4px rgba(0, 255, 0, 0.4),
-    0 0 4px rgba(0, 255, 0, 0.8);
+    inset 0 0 4px
+      color-mix(in srgb, var(--digit-shadow-1, #00ff00) 40%, transparent),
+    0 0 4px var(--digit-shadow-1, #00ff00),
+    0 0 8px var(--digit-shadow-2, #00ffff);
+
+  text-shadow:
+    0 0 4px var(--digit-shadow-1, #00ff00),
+    0 0 8px var(--digit-shadow-2, #00ffff);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .digitBox {
-    border-color: rgba(0, 255, 0, 0.5);
-    box-shadow: inset 0 0 2px rgba(0, 255, 0, 0.5);
+    border: 0.1em solid
+      color-mix(in srgb, var(--digit-color, #00ff00) 50%, transparent);
+    box-shadow:
+      inset 0 0 2px
+        color-mix(in srgb, var(--digit-color, #00ff00) 50%, transparent),
+      0 0 2px var(--digit-color, #00ff00);
   }
 }
 
