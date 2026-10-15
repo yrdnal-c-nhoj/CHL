@@ -28,26 +28,20 @@ const randomHex = (): string =>
  *  Edit this table to remap letters to digits. */
 const DIGIT_LETTER_MAP: Record<string, string> = {
   '0': 'A',
-  '1': 'B',
-  '2': 'C',
-  '3': 'D',
-  '4': 'E',
-  '5': 'F',
-  '6': 'G',
-  '7': 'H',
-  '8': 'I',
-  '9': 'J',
+  '1': 'Q',
+  '2': 'Z',
+  '3': 'X',
+  '4': '3',
+  '5': 'B',
+  '6': 'E',
+  '7': '7',
+  '8': 'V',
+  '9': 'R',
 };
 
 /** Substitute a letter for a digit character using DIGIT_LETTER_MAP. */
 const digitToLetter = (digit: string): string =>
   DIGIT_LETTER_MAP[digit] ?? digit;
-
-interface DigitColors {
-  color: string;
-  shadow1: string;
-  shadow2: string;
-}
 
 const Clock_26_10_11 = () => {
   useSuspenseFontLoader([fontConfig]);
@@ -61,23 +55,34 @@ const Clock_26_10_11 = () => {
   // Flat array of individual digit characters: [h,h,m,m,s,s]
   const digits: string[] = [...hours, ...minutes, ...seconds];
 
-  // One random color + two random shadow colors per digit, stable across re-renders.
-  const digitColors = useMemo<DigitColors[]>(() => {
-    return digits.map(() => ({
-      color: randomHex(),
-      shadow1: randomHex(),
-      shadow2: randomHex(),
-    }));
-    // Colors are generated once and never change; they don't depend on `digits` values.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // New random digit color every second (all digits change color simultaneously).
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const digitColors = useMemo(
+    () => Array.from({ length: 6 }, () => randomHex()),
+    [time],
+  );
+
+  // Stable shadow-color pair per digit; these alternate each second.
+  const shadowPairs = useMemo(
+    () =>
+      Array.from({ length: 6 }, () => ({
+        shadowA: randomHex(),
+        shadowB: randomHex(),
+      })),
+    [],
+  );
+
+  // Even seconds: shadow1=A, shadow2=B.  Odd seconds: swap them so the
+  // shadows alternate every second.
+  const isEvenSecond = time.getSeconds() % 2 === 0;
 
   return (
     <main className={styles.container}>
       <div className={styles.digitalGrid} aria-hidden="true">
         {digits.map((digit, i) => {
-          const cfg = digitColors[i];
-          if (!cfg) return null;
+          const color = digitColors[i];
+          const pair = shadowPairs[i];
+          if (!color || !pair) return null;
 
           return (
             <span
@@ -85,9 +90,13 @@ const Clock_26_10_11 = () => {
               className={styles.digitBox}
               style={
                 {
-                  '--digit-color': cfg.color,
-                  '--digit-shadow-1': cfg.shadow1,
-                  '--digit-shadow-2': cfg.shadow2,
+                  '--digit-color': color,
+                  '--digit-shadow-1': isEvenSecond
+                    ? pair.shadowA
+                    : pair.shadowB,
+                  '--digit-shadow-2': isEvenSecond
+                    ? pair.shadowB
+                    : pair.shadowA,
                 } as CSSProperties
               }
             >
