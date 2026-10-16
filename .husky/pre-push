@@ -1,13 +1,21 @@
 #!/usr/bin/env sh
-# Pre-push hook: upload all LFS objects before allowing push.
+# Pre-push hook: upload Git LFS objects before allowing push.
 # Prevents GH008 errors when pushing commits with new LFS-tracked files.
 
 echo "[husky] Uploading Git LFS objects..."
-git lfs push --all origin "$1"
 
-if [ $? -ne 0 ]; then
-  echo "[husky] LFS upload failed. Push aborted."
-  exit 1
-fi
+remote="$1"
+
+# Git passes push info on stdin: <local ref> <local sha> <remote ref> <remote sha>
+# Push only the LFS objects reachable from the refs being pushed.
+# git-lfs checks the server and uploads only the missing objects.
+while read -r local_ref local_sha remote_ref remote_sha; do
+  # Skip deletions
+  [ "$local_sha" = "0000000000000000000000000000000000000000" ] && continue
+  git lfs push "$remote" "$local_sha" || {
+    echo "[husky] LFS upload failed for $local_ref. Push aborted."
+    exit 1
+  }
+done
 
 echo "[husky] LFS objects uploaded successfully."
