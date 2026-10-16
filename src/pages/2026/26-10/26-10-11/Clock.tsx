@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import SRTime from '@/components/SRTime';
 import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -6,10 +5,11 @@ import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
 
 import font from '@/assets/fonts/26fonts/26-10-11.ttf?url';
+import panelsImage from '@/assets/images/26_images/26-10/26-10-11/panels.webp';
 
 import styles from './Clock.module.css';
 
-export const assets = [font];
+export const assets = [font, panelsImage];
 
 const fontConfig: FontConfig = {
   fontFamily: 'ClockFont_26_10_11',
@@ -18,11 +18,14 @@ const fontConfig: FontConfig = {
 
 const pad = (value: number): string => value.toString().padStart(2, '0');
 
-/** Generate a random hex color string. */
-const randomHex = (): string =>
-  `#${Math.floor(Math.random() * 0x1000000)
-    .toString(16)
-    .padStart(6, '0')}`;
+/** Generate a completely bright random hex color. */
+const randomBrightHex = (): string => {
+  const min = 80; // ensure every channel is bright
+  const r = Math.floor(Math.random() * (256 - min)) + min;
+  const g = Math.floor(Math.random() * (256 - min)) + min;
+  const b = Math.floor(Math.random() * (256 - min)) + min;
+  return '#' + [r, g, b].map((c) => c.toString(16).padStart(2, '0')).join('');
+};
 
 /** Map each digit to its substituted letter.
  *  Edit this table to remap letters to digits. */
@@ -43,6 +46,12 @@ const DIGIT_LETTER_MAP: Record<string, string> = {
 const digitToLetter = (digit: string): string =>
   DIGIT_LETTER_MAP[digit] ?? digit;
 
+interface DigitConfig {
+  color: string;
+  shadow1: string; // left-side shadow color
+  shadow2: string; // right-side shadow color
+}
+
 const Clock_26_10_11 = () => {
   useSuspenseFontLoader([fontConfig]);
 
@@ -55,34 +64,24 @@ const Clock_26_10_11 = () => {
   // Flat array of individual digit characters: [h,h,m,m,s,s]
   const digits: string[] = [...hours, ...minutes, ...seconds];
 
-  // New random digit color every second (all digits change color simultaneously).
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const digitColors = useMemo(
-    () => Array.from({ length: 6 }, () => randomHex()),
-    [time],
-  );
-
-  // Stable shadow-color pair per digit; these alternate each second.
-  const shadowPairs = useMemo(
-    () =>
-      Array.from({ length: 6 }, () => ({
-        shadowA: randomHex(),
-        shadowB: randomHex(),
-      })),
-    [],
-  );
-
-  // Even seconds: shadow1=A, shadow2=B.  Odd seconds: swap them so the
-  // shadows alternate every second.
-  const isEvenSecond = time.getSeconds() % 2 === 0;
+  // Every second: pick a bright random color for each digit plus two bright
+  // random shadow colors (one for each side). This component only re-renders
+  // on each second tick, so colors regenerate once per second.
+  const digitConfigs: DigitConfig[] = Array.from({ length: 6 }, () => ({
+    color: randomBrightHex(),
+    shadow1: randomBrightHex(),
+    shadow2: randomBrightHex(),
+  }));
 
   return (
-    <main className={styles.container}>
+    <main
+      className={styles.container}
+      style={{ '--background-image': `url(${panelsImage})` } as CSSProperties}
+    >
       <div className={styles.digitalGrid} aria-hidden="true">
         {digits.map((digit, i) => {
-          const color = digitColors[i];
-          const pair = shadowPairs[i];
-          if (!color || !pair) return null;
+          const cfg = digitConfigs[i];
+          if (!cfg) return null;
 
           return (
             <span
@@ -90,13 +89,9 @@ const Clock_26_10_11 = () => {
               className={styles.digitBox}
               style={
                 {
-                  '--digit-color': color,
-                  '--digit-shadow-1': isEvenSecond
-                    ? pair.shadowA
-                    : pair.shadowB,
-                  '--digit-shadow-2': isEvenSecond
-                    ? pair.shadowB
-                    : pair.shadowA,
+                  '--digit-color': cfg.color,
+                  '--digit-shadow-1': cfg.shadow1,
+                  '--digit-shadow-2': cfg.shadow2,
                 } as CSSProperties
               }
             >
