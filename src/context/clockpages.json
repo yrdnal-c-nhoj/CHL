@@ -5220,5 +5220,17 @@
     "date": "26-10-10",
     "title": "Periphery",
     "tags": ["analog", "image-free"]
+  },
+  {
+    "path": "26-10-11",
+    "date": "26-10-11",
+    "title": "Ka-Boom",
+    "tags": ["pictographic", "image-free", "words"]
+  },
+  {
+    "path": "26-10-12",
+    "date": "26-10-12",
+    "title": "Hurricane",
+    "tags": ["analog", "earth", "weather", "b+w"]
   }
 ]
