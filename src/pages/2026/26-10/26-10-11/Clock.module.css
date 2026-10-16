@@ -41,17 +41,6 @@
   /* Bright random color per digit */
   color: var(--digit-color, #ffffff);
 
-  border: 0.1em solid
-    color-mix(in srgb, var(--digit-color, #ffffff) 40%, transparent);
-  border-radius: 0.15em;
-
-  /* Bright glow using both shadow colors */
-  box-shadow:
-    inset 0 0 4px
-      color-mix(in srgb, var(--digit-shadow-1, #ffffff) 40%, transparent),
-    0 0 4px var(--digit-shadow-1, #ffffff),
-    0 0 8px var(--digit-shadow-2, #ffffff);
-
   /* Bright random text shadows on each side:
      shadow-1 on the left, shadow-2 on the right */
   text-shadow:
@@ -61,13 +50,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .digitBox {
-    border: 0.1em solid
-      color-mix(in srgb, var(--digit-color, #ffffff) 50%, transparent);
-    box-shadow:
-      inset 0 0 2px
-        color-mix(in srgb, var(--digit-color, #ffffff) 50%, transparent),
-      0 0 2px var(--digit-color, #ffffff);
-
     /* No offset shadows in reduced-motion mode */
     text-shadow: 0 0 2px var(--digit-color, #ffffff);
   }
