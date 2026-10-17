@@ -3,8 +3,24 @@
   width: 100%;
   height: 100dvh;
   overflow: hidden;
-  background: #000;
-  color: #fff;
+  background-color: #000000;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Background image with brightness filter — darkens the image so the
+   bright digits stay readable without dimming the digit layer itself. */
+.clockField::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--background-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.3);
+  z-index: 0;
 }
 
 .clockDesktop {
@@ -13,6 +29,7 @@
   justify-content: space-around;
   width: 100%;
   height: 100%;
+  z-index: 1;
 }
 
 .clockMobile {
@@ -26,6 +43,7 @@
   overflow: hidden;
   display: flex;
   align-items: center;
+  z-index: 1;
 }
 
 .clockTrack {
@@ -57,13 +75,16 @@
   flex: 0 0 0.72em;
   aspect-ratio: 3 / 4;
   overflow: hidden;
-  background: #171717;
+  background: rgba(0, 0, 0, 0.6);
   color: #fff;
-  font-family: monospace;
+  font-family: 'Metal Mania', cursive;
   font-size: clamp(1.5rem, 5vw, 4rem);
   font-variant-numeric: tabular-nums;
   font-weight: 700;
   line-height: 1;
+  text-shadow:
+    0 0 4px #fff,
+    0 0 8px #fff;
 }
 
 @keyframes clockLeft {
