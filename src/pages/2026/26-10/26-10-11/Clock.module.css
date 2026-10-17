@@ -4,17 +4,29 @@
   height: 100dvh;
   overflow: hidden;
   background-color: #000000;
-  background-image: var(--background-image);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/* Background image layer with brightness filter — applies only to the
+   image, not to the digit overlay (avoids dimming the clock display). */
+.container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--background-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.3);
+  z-index: 0;
+}
+
 .digitalGrid {
+  position: relative;
+  z-index: 1;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(3, 1fr);
@@ -36,7 +48,7 @@
 
   /* Fixed width based on a wide digit ("1" or "0") to prevent layout shift */
   width: 1.3ch;
-  aspect-ratio: 1 / 1.2;
+  /* aspect-ratio: 19 / 1.2; */
   padding: 0 0.1ch;
 
   /* Bright random color per digit */
