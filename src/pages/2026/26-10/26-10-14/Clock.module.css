@@ -1,0 +1,94 @@
+.container {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+.backgroundVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  filter: brightness(0.6) contrast(1.1);
+}
+
+.clockFace {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vmin;
+  height: 80vmin;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.handWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+  transform: rotate(0deg);
+  transform: rotate(var(--angle, 0deg));
+}
+
+.hourHand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2.5vmin;
+  height: 25vmin;
+  transform-origin: bottom center;
+  transform: translate(-50%, 0);
+  background-color: #fff;
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.8));
+}
+
+.minuteHand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.8vmin;
+  height: 35vmin;
+  transform-origin: bottom center;
+  transform: translate(-50%, 0);
+  background-color: #fff;
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.8));
+}
+
+.secondHand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1vmin;
+  height: 42vmin;
+  transform-origin: bottom center;
+  transform: translate(-50%, 0);
+  background-color: #ff4444;
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.8));
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6vmin;
+  height: 6vmin;
+  background: #fff;
+  border-radius: 50%;
+  z-index: 2;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backgroundVideo {
+    filter: brightness(0.7);
+  }
+}
