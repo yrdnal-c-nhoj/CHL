@@ -1,51 +1,22 @@
 import { useEffect } from 'react';
+import type { CSSProperties } from 'react';
 import SRTime from '@/components/SRTime';
 import { useClock } from '@/utils/hooks';
-import type { CSSProperties } from 'react';
 
 import mummyImage from '@/assets/images/26_images/26-10/26-10-13/mummy.webp';
-import caputImage from '@/assets/images/26_images/26-10/26-10-13/caput.webp';
 
 import styles from './Clock.module.css';
 
-export const assets = [mummyImage, caputImage];
+export const assets = [mummyImage];
 
-const formatTime = (time: Date): string =>
-  `${String(time.getHours()).padStart(2, '0')}${String(
-    time.getMinutes(),
-  ).padStart(2, '0')}`;
-
-function Digits({ time }: { time: string }) {
-  return (
-    <div className={styles.clockDigits}>
-      {time.split('').map((digit, index) => (
-        <span className={styles.clockDigit} key={index}>
-          {digit}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function Track({ time }: { time: string }) {
-  const COPIES = 12;
-
-  return (
-    <div className={styles.clockTrack}>
-      {[0].map((copy) => (
-        <div className={styles.clockGroup} key={copy}>
-          {Array.from({ length: COPIES }, (_, index) => (
-            <Digits time={time} key={index} />
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-}
+const formatDigits = (num: number): string => num.toString().padStart(2, '0');
 
 function Clock_26_10_13() {
   const time = useClock();
-  const display = formatTime(time);
+
+  const hours = formatDigits(time.getHours());
+  const minutes = formatDigits(time.getMinutes());
+  const seconds = formatDigits(time.getSeconds());
 
   // Load Metal Mania Google Font with preconnect (not in assets array —
   // Google Fonts are loaded via <link>, see AGENTS.md "Using a Google Font").
@@ -74,31 +45,19 @@ function Clock_26_10_13() {
       style={
         {
           '--background-image': `url(${mummyImage})`,
-          '--tile-image': `url(${caputImage})`,
         } as CSSProperties
       }
     >
       <SRTime time={time} />
 
-      <time dateTime={time.toISOString()} hidden>
-        {display}
+      <time dateTime={time.toISOString()} className={styles.digitalClock}>
+        <span className={styles.digitBox}>{hours[0] ?? '0'}</span>
+        <span className={styles.digitBox}>{hours[1] ?? '0'}</span>
+        <span className={styles.digitBox}>{minutes[0] ?? '0'}</span>
+        <span className={styles.digitBox}>{minutes[1] ?? '0'}</span>
+        <span className={styles.digitBox}>{seconds[0] ?? '0'}</span>
+        <span className={styles.digitBox}>{seconds[1] ?? '0'}</span>
       </time>
-
-      <div className={styles.clockDesktop}>
-        {Array.from({ length: 5 }, (_, index) => (
-          <div className={styles.clockLane} key={index}>
-            <Track time={display} />
-          </div>
-        ))}
-      </div>
-
-      <div className={styles.clockMobile}>
-        {Array.from({ length: 3 }, (_, index) => (
-          <div className={styles.clockLane} key={index}>
-            <Track time={display} />
-          </div>
-        ))}
-      </div>
     </main>
   );
 }
