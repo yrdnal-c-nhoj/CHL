@@ -34,7 +34,6 @@
   top: 50%;
   left: 50%;
   transform-origin: center;
-  transform: rotate(0deg);
   transform: rotate(var(--angle, 0deg));
 }
 
@@ -42,49 +41,22 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 2.5vmin;
-  height: 25vmin;
-  transform-origin: bottom center;
-  transform: translate(-50%, 0);
-  background-color: #fff;
-  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.8));
+  width: 12vmin;
+  height: 20vmin;
+  transform-origin: center;
+  transform: translate(-50%, -50%) rotate(180deg);
+  object-fit: contain;
 }
 
 .minuteHand {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 1.8vmin;
-  height: 35vmin;
-  transform-origin: bottom center;
-  transform: translate(-50%, 0);
-  background-color: #fff;
-  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.8));
-}
-
-.secondHand {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 1vmin;
-  height: 42vmin;
-  transform-origin: bottom center;
-  transform: translate(-50%, 0);
-  background-color: #ff4444;
-  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.8));
-}
-
-.center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 6vmin;
-  height: 6vmin;
-  background: #fff;
-  border-radius: 50%;
-  z-index: 2;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  width: 9vmin;
+  height: 30vmin;
+  transform-origin: center;
+  transform: translate(-50%, -50%) rotate(180deg);
+  object-fit: contain;
 }
 
 @media (prefers-reduced-motion: reduce) {

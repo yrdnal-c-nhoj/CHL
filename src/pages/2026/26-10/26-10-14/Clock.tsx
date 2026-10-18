@@ -3,15 +3,17 @@ import { useSmoothClock } from '@/utils/hooks';
 import { useMemo, type CSSProperties } from 'react';
 
 import witchVideo from '@/assets/images/26_images/26-10/26-10-14/witch.webm';
+import hourImage from '@/assets/images/26_images/26-10/26-10-14/hour.webp';
+import minuteImage from '@/assets/images/26_images/26-10/26-10-14/minute.webp';
 
 import styles from './Clock.module.css';
 
-export const assets = [witchVideo];
+export const assets = [witchVideo, hourImage, minuteImage];
 
 const Clock_26_10_14 = () => {
   const time = useSmoothClock(16);
 
-  const { hourAngle, minuteAngle, secondAngle } = useMemo(() => {
+  const { hourAngle, minuteAngle } = useMemo(() => {
     const milliseconds = time.getMilliseconds();
 
     const seconds = time.getSeconds() + milliseconds / 1000;
@@ -21,7 +23,6 @@ const Clock_26_10_14 = () => {
     return {
       hourAngle: hours * 30,
       minuteAngle: minutes * 6,
-      secondAngle: seconds * 6,
     };
   }, [time]);
 
@@ -42,21 +43,24 @@ const Clock_26_10_14 = () => {
           className={styles.handWrapper}
           style={{ '--angle': `${hourAngle}deg` } as CSSProperties}
         >
-          <div className={styles.hourHand} />
+          <img
+            src={hourImage}
+            alt=""
+            className={styles.hourHand}
+            aria-hidden="true"
+          />
         </div>
         <div
           className={styles.handWrapper}
           style={{ '--angle': `${minuteAngle}deg` } as CSSProperties}
         >
-          <div className={styles.minuteHand} />
+          <img
+            src={minuteImage}
+            alt=""
+            className={styles.minuteHand}
+            aria-hidden="true"
+          />
         </div>
-        <div
-          className={styles.handWrapper}
-          style={{ '--angle': `${secondAngle}deg` } as CSSProperties}
-        >
-          <div className={styles.secondHand} />
-        </div>
-        <div className={styles.center} />
       </div>
 
       <SRTime time={time} />
