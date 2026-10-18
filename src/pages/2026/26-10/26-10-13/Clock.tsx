@@ -4,10 +4,11 @@ import { useClock } from '@/utils/hooks';
 import type { CSSProperties } from 'react';
 
 import mummyImage from '@/assets/images/26_images/26-10/26-10-13/mummy.webp';
+import caputImage from '@/assets/images/26_images/26-10/26-10-13/caput.webp';
 
 import styles from './Clock.module.css';
 
-export const assets = [mummyImage];
+export const assets = [mummyImage, caputImage];
 
 const formatTime = (time: Date): string =>
   `${String(time.getHours()).padStart(2, '0')}${String(
@@ -73,6 +74,7 @@ function Clock_26_10_13() {
       style={
         {
           '--background-image': `url(${mummyImage})`,
+          '--tile-image': `url(${caputImage})`,
         } as CSSProperties
       }
     >

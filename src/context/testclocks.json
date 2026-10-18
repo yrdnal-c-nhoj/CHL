@@ -5236,7 +5236,31 @@
   {
     "path": "26-10-13",
     "date": "26-10-13",
-    "title": "Sculpture XXIII",
+    "title": "Caput Mortuum",
+    "tags": ["digital", "body", "mummy", "color"]
+  },
+  {
+    "path": "26-10-14",
+    "date": "26-10-14",
+    "title": "House of Virgo",
+    "tags": ["analog", "constellations", "earth", "myth", "zodiac"]
+  },
+  {
+    "path": "26-10-15",
+    "date": "26-10-15",
+    "title": "Footnote #4",
+    "tags": ["digital", "image-free", "words"]
+  },
+  {
+    "path": "26-10-16",
+    "date": "26-10-16",
+    "title": "Sculpture XXIV",
+    "tags": ["analog", "body", "pictographic"]
+  },
+  {
+    "path": "26-10-17",
+    "date": "26-10-17",
+    "title": "Sculpture XXV",
     "tags": ["analog", "body", "pictographic"]
   }
 ]
