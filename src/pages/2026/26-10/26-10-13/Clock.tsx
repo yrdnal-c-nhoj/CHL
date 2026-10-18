@@ -28,11 +28,11 @@ function Digits({ time }: { time: string }) {
 }
 
 function Track({ time }: { time: string }) {
-  const COPIES = 24;
+  const COPIES = 12;
 
   return (
     <div className={styles.clockTrack}>
-      {[0, 1].map((copy) => (
+      {[0].map((copy) => (
         <div className={styles.clockGroup} key={copy}>
           {Array.from({ length: COPIES }, (_, index) => (
             <Digits time={time} key={index} />
