@@ -55,6 +55,7 @@ const Clock = () => {
           playsInline
           aria-hidden="true"
         />
+
         <div
           className={styles.borders}
           style={
@@ -66,6 +67,7 @@ const Clock = () => {
           <div className={`${styles.borderStrip} ${styles.borderBottom}`} />
           <div className={`${styles.borderStrip} ${styles.borderLeft}`} />
         </div>
+
         <img
           className={`${styles.layer} ${styles.flyLayer}`}
           src={flyImage}
@@ -76,9 +78,10 @@ const Clock = () => {
       <div className={styles.analogClock}>
         {romanNumerals.map((numeral, i) => {
           const angle = i * 30;
+
           return (
             <span
-              key={i}
+              key={numeral}
               className={styles.numeral}
               style={{
                 left: `${50 + 40 * Math.sin((angle * Math.PI) / 180)}%`,
@@ -94,10 +97,12 @@ const Clock = () => {
           className={styles.hand}
           style={{ transform: `rotate(${h * 30}deg)` }}
         />
+
         <div
           className={`${styles.hand} ${styles.minuteHand}`}
           style={{ transform: `rotate(${m * 6}deg)` }}
         />
+
         <div
           className={`${styles.hand} ${styles.secondHand}`}
           style={{ transform: `rotate(${s * 6}deg)` }}
