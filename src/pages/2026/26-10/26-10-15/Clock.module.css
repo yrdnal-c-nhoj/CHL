@@ -21,19 +21,21 @@
   height: 100%;
   object-position: center;
   opacity: 0.5;
+}
+
+.cowLayer {
+  object-fit: fill;
   filter: saturate(2);
 }
 
-.contain {
-  object-fit: contain;
-}
-
-.cover {
+.callistoLayer {
   object-fit: cover;
+  filter: saturate(1.5);
 }
 
-.fill {
-  object-fit: fill;
+.flyLayer {
+  object-fit: contain;
+  filter: saturate(0.5);
 }
 
 .analogClock {
@@ -49,10 +51,8 @@
 
 .numeral {
   position: absolute;
-  transform: translate(-50%, -50%) rotate(calc(var(--angle, 0deg)));
-  font-family: serif;
-  font-size: 1.5dvh;
-  font-weight: bold;
+  font-family: 'ClockFont_26_10_15', serif;
+  font-size: 5dvh;
   color: white;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
   pointer-events: none;
@@ -67,7 +67,6 @@
   height: 2px;
   background-color: white;
   transform-origin: 0% 50%;
-  transform: rotate(var(--rotation, 0deg));
 }
 
 .minuteHand {
@@ -82,6 +81,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .hand {
-    transition: none;
+    will-change: auto;
   }
 }
