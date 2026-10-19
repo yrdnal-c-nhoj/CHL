@@ -1,6 +1,6 @@
 .container {
   position: relative;
-  width: 100dvh;
+  width: 100dvw;
   height: 100dvh;
   margin: 0 auto;
   overflow: hidden;
@@ -25,16 +25,16 @@
 
 .cowLayer {
   object-fit: fill;
-  filter: saturate(2);
+  filter: saturate(9) contrast(3.5);
 }
 
 .callistoLayer {
   object-fit: cover;
-  filter: saturate(1.5);
+  filter: saturate(1.5) contrast(9);
 }
 
 .flyLayer {
-  object-fit: contain;
+  object-fit: cover;
   filter: saturate(0.5);
 }
 
