@@ -4,6 +4,7 @@ import SRTime from '@/components/SRTime';
 import styles from './Clock.module.css';
 
 import type { FontConfig } from '@/types/clock';
+import type { CSSProperties } from 'react';
 import flyImage from '@/assets/images/26_images/26-10/26-10-15/fly.webp';
 import callistoImage from '@/assets/images/26_images/26-10/26-10-15/callisto.webp';
 import cowVideo from '@/assets/images/26_images/26-10/26-10-15/cow.webm';
@@ -54,11 +55,17 @@ const Clock = () => {
           playsInline
           aria-hidden="true"
         />
-        <img
-          className={`${styles.layer} ${styles.callistoLayer}`}
-          src={callistoImage}
-          alt=""
-        />
+        <div
+          className={styles.borders}
+          style={
+            { '--callisto-image': `url(${callistoImage})` } as CSSProperties
+          }
+        >
+          <div className={`${styles.borderStrip} ${styles.borderTop}`} />
+          <div className={`${styles.borderStrip} ${styles.borderRight}`} />
+          <div className={`${styles.borderStrip} ${styles.borderBottom}`} />
+          <div className={`${styles.borderStrip} ${styles.borderLeft}`} />
+        </div>
         <img
           className={`${styles.layer} ${styles.flyLayer}`}
           src={flyImage}
