@@ -7,9 +7,9 @@ const CENTER = 100;
 const RADIUS = 96;
 const OUTSIDE_EXTENT = 150;
 
-const HOUR_HAND = { outer: 89, inner: 35, width: 14 };
-const MINUTE_HAND = { outer: 91, inner: 10, width: 10 };
-const SECOND_HAND_WIDTH = 1.2;
+const HOUR_HAND = { outer: 96, inner: 7, width: 40 };
+const MINUTE_HAND = { outer: 96, inner: -31, width: 18 };
+const SECOND_HAND_WIDTH = 5;
 
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
@@ -83,6 +83,9 @@ const Clock_26_10_10 = () => {
     second: `${uid}-second`,
     hourMask: `${uid}-hour-mask`,
     secondMask: `${uid}-second-mask`,
+    hourShadow: `${uid}-hour-shadow`,
+    minuteShadow: `${uid}-minute-shadow`,
+    hourShadowMask: `${uid}-hour-shadow-mask`,
   };
 
   const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
@@ -98,12 +101,6 @@ const Clock_26_10_10 = () => {
   const edgeStart = polar(secondAngle + 180, RADIUS);
   const edgeEnd = polar(secondAngle, RADIUS);
   const outsideEnd = polar(secondAngle + 180, RADIUS + OUTSIDE_EXTENT);
-
-  const hourShadowStart = polar(hourAngle, RADIUS);
-  const hourShadowEnd = polar(hourAngle, RADIUS + OUTSIDE_EXTENT);
-
-  const minuteShadowStart = polar(minuteAngle, RADIUS);
-  const minuteShadowEnd = polar(minuteAngle, RADIUS + OUTSIDE_EXTENT);
 
   const showSecondHand = !prefersReducedMotion;
 
@@ -151,6 +148,32 @@ const Clock_26_10_10 = () => {
               <use href={`#${ids.second}`} stroke="#fff" />
             </mask>
           )}
+
+          <Hand
+            id={ids.hourShadow}
+            angle={hourAngle}
+            outer={RADIUS}
+            inner={RADIUS + OUTSIDE_EXTENT}
+            width={HOUR_HAND.width}
+          />
+          <Hand
+            id={ids.minuteShadow}
+            angle={minuteAngle}
+            outer={RADIUS}
+            inner={RADIUS + OUTSIDE_EXTENT}
+            width={MINUTE_HAND.width}
+          />
+
+          <mask
+            id={ids.hourShadowMask}
+            maskUnits="userSpaceOnUse"
+            x={0}
+            y={0}
+            width={200}
+            height={200}
+          >
+            <use href={`#${ids.hourShadow}`} stroke="#fff" />
+          </mask>
         </defs>
 
         <circle cx={CENTER} cy={CENTER} r={RADIUS} className={styles.face} />
@@ -174,26 +197,18 @@ const Clock_26_10_10 = () => {
         )}
 
         {/* Hour shadow: exactly the same stroke width as the hour hand. */}
-        <line
-          x1={hourShadowStart.x}
-          y1={hourShadowStart.y}
-          x2={hourShadowEnd.x}
-          y2={hourShadowEnd.y}
-          className={styles.outerSweep}
-          strokeWidth={HOUR_HAND.width}
-          strokeLinecap="butt"
-        />
+        <use href={`#${ids.hourShadow}`} className={styles.outerSweep} />
 
         {/* Minute shadow: exactly the same stroke width as the minute hand. */}
-        <line
-          x1={minuteShadowStart.x}
-          y1={minuteShadowStart.y}
-          x2={minuteShadowEnd.x}
-          y2={minuteShadowEnd.y}
-          className={styles.outerSweep}
-          strokeWidth={MINUTE_HAND.width}
-          strokeLinecap="butt"
-        />
+        <use href={`#${ids.minuteShadow}`} className={styles.outerSweep} />
+
+        {/* Where the minute shadow overlaps the hour shadow outside the clock, blue. */}
+        <g mask={`url(#${ids.hourShadowMask})`}>
+          <use
+            href={`#${ids.minuteShadow}`}
+            className={styles.overlapOutside}
+          />
+        </g>
 
         {/* Hour and minute hands inside the clock. */}
         <use href={`#${ids.hour}`} stroke="currentColor" />

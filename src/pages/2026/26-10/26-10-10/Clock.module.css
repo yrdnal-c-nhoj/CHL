@@ -3,6 +3,7 @@
   --color-accent: #360716;
   --color-highlight: #ffffff;
   --color-overlap: #ff6a00;
+  --color-overlap-outside: #0077ff;
 
   position: relative;
   width: 100%;
@@ -38,6 +39,10 @@
 
 .overlap {
   stroke: var(--color-overlap);
+}
+
+.overlapOutside {
+  stroke: var(--color-overlap-outside);
 }
 
 /* Reduced motion: complement JS handling (useSmoothClock runs at 1s interval,
