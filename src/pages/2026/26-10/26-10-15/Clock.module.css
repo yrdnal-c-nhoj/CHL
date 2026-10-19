@@ -19,23 +19,75 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-position: center;
-  opacity: 0.5;
 }
 
 .cowLayer {
   object-fit: fill;
-  filter: saturate(9) contrast(3.5);
+  filter: saturate(2);
+  opacity: 0.7;
 }
 
 .callistoLayer {
-  object-fit: cover;
-  filter: saturate(1.5) contrast(9);
+  background-image: var(--callisto-image);
+  background-repeat: repeat;
+  filter: saturate(1.5);
+  opacity: 0.3;
+}
+
+.borders {
+  position: absolute;
+  top: 0;
+  left: -5dvw;
+  width: calc(100% + 10dvw);
+  height: 100%;
+  pointer-events: none;
+}
+
+.borderStrip {
+  position: absolute;
+  background-image: var(--callisto-image);
+  background-repeat: repeat;
+  background-size: 50px 50px;
+  filter: saturate(1.5);
+  /* opacity: 0.5; */
+}
+
+.borderTop {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-repeat: repeat-x;
+}
+
+.borderRight {
+  top: 0;
+  right: 0;
+  width: 50px;
+  height: 100%;
+  background-repeat: repeat-y;
+}
+
+.borderBottom {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-repeat: repeat-x;
+}
+
+.borderLeft {
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 100%;
+  background-repeat: repeat-y;
 }
 
 .flyLayer {
   object-fit: cover;
-  filter: saturate(0.5);
+  filter: contrast(1.2);
+  opacity: 0.4;
 }
 
 .analogClock {
@@ -43,8 +95,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100dvh;
-  height: 100dvh;
+  width: min(100dvh, 100dvw);
+  height: min(100dvh, 100dvw);
   border-radius: 50%;
   z-index: 2;
 }
@@ -52,7 +104,7 @@
 .numeral {
   position: absolute;
   font-family: 'ClockFont_26_10_15', serif;
-  font-size: 5dvh;
+  font-size: 5vw;
   color: white;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
   pointer-events: none;
