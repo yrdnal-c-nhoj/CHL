@@ -5005,7 +5005,7 @@
   {
     "path": "26-09-10",
     "date": "26-09-10",
-    "title": "Io",
+    "title": "Callisto",
     "tags": [
       "Jupiter",
       "analog",
@@ -5232,5 +5232,17 @@
     "date": "26-10-12",
     "title": "Hurricane",
     "tags": ["analog", "earth", "weather", "b+w"]
+  },
+  {
+    "path": "26-10-13",
+    "date": "26-10-13",
+    "title": "Caput Mortuum",
+    "tags": ["digital", "body", "mummy", "color"]
+  },
+  {
+    "path": "26-10-14",
+    "date": "26-10-14",
+    "title": "Broom",
+    "tags": ["analog", "fly"]
   }
 ]
