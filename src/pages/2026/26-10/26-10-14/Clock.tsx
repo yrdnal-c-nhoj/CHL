@@ -40,7 +40,7 @@ const Clock_26_10_14 = () => {
 
       <div className={styles.clockFace}>
         <div
-          className={styles.handWrapper}
+          className={styles.hand}
           style={{ '--angle': `${hourAngle}deg` } as CSSProperties}
         >
           <img
@@ -51,7 +51,7 @@ const Clock_26_10_14 = () => {
           />
         </div>
         <div
-          className={styles.handWrapper}
+          className={styles.hand}
           style={{ '--angle': `${minuteAngle}deg` } as CSSProperties}
         >
           <img
@@ -61,6 +61,7 @@ const Clock_26_10_14 = () => {
             aria-hidden="true"
           />
         </div>
+        <div className={styles.center} />
       </div>
 
       <SRTime time={time} />
