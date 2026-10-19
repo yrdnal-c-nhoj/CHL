@@ -48,7 +48,7 @@
   background-image: var(--callisto-image);
   background-repeat: repeat;
   background-size: 50px 50px;
-  filter: saturate(1.5);
+  filter: saturate(1.5) contrast(5);
   /* opacity: 0.5; */
 }
 
