@@ -22,6 +22,8 @@
   transform: translate(-50%, -50%);
   width: 80vmin;
   height: 80vmin;
+  width: 100vmin;
+  height: 100vmin;
   z-index: 1;
   pointer-events: none;
 }
@@ -30,34 +32,36 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform-origin: center;
+  width: 0;
+  height: 0;
+  transform-origin: 0 0;
   transform: rotate(var(--angle, 0deg));
 }
 
 .hourHand {
+  position: absolute;
+  left: 0;
+  bottom: 0;
   width: 12vmin;
   height: 25vmin;
-  transform: translate(-50%, -50%) rotate(180deg);
+  width: 15vmin;
+  height: 31vmin;
+  transform: translate(-50%, 0) rotate(180deg);
+  transform: translate(-50%, 2.5vmin);
   object-fit: contain;
 }
 
 .minuteHand {
+  position: absolute;
+  left: 0;
+  bottom: 0;
   width: 9vmin;
   height: 35vmin;
-  transform: translate(-50%, -50%) rotate(180deg);
+  width: 11vmin;
+  height: 44vmin;
+  transform: translate(-50%, 0) rotate(180deg);
+  transform: translate(-50%, 2.5vmin);
   object-fit: contain;
-}
-
-.center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 6vmin;
-  height: 6vmin;
-  background: #fff;
-  border-radius: 50%;
-  z-index: 2;
 }
 
 @media (prefers-reduced-motion: reduce) {
