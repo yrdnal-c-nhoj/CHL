@@ -6,14 +6,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #000;
+  background: #898888;
   color: #fff;
 }
 
-.content {
-  font-family: 'Share Tech Mono', 'Courier New', monospace;
+.gallery {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.galleryImage {
+  position: absolute;
+  object-fit: contain;
+  will-change: transform, opacity;
+}
+
+.digitalClock {
+  position: relative;
+  z-index: 2;
+  font-family: 'ClockFont_26_10_15', 'Courier New', monospace;
   font-size: clamp(2rem, 15vw, 12rem);
   line-height: 1;
   text-align: center;
   letter-spacing: 0.05em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .galleryImage {
+    will-change: auto;
+  }
 }
