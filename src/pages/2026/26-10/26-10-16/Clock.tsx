@@ -83,7 +83,6 @@ const Clock = () => {
               style={{
                 left: `${50 + 40 * Math.sin((angle * Math.PI) / 180)}%`,
                 top: `${50 - 40 * Math.cos((angle * Math.PI) / 180)}%`,
-                transform: `translate(-50%, -50%) rotate(${angle}deg)`,
               }}
             >
               {numeral}
