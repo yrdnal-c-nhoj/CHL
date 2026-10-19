@@ -24,14 +24,14 @@
 .cowLayer {
   object-fit: fill;
   filter: saturate(2);
-  opacity: 0.7;
+  /* opacity: 0.7; */
 }
 
 .callistoLayer {
   background-image: var(--callisto-image);
   background-repeat: repeat;
   filter: saturate(1.5);
-  opacity: 0.3;
+  /* opacity: 0.4; */
 }
 
 .borders {
@@ -48,7 +48,7 @@
   background-image: var(--callisto-image);
   background-repeat: repeat;
   background-size: 50px 50px;
-  filter: saturate(1.5) contrast(5);
+  filter: saturate(0.7) contrast(5);
 }
 
 .borderTop {
@@ -91,8 +91,8 @@
 
 .analogClock {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 40%;
+  left: 40%;
   transform: translate(-50%, -50%);
   width: min(100dvh, 100dvw);
   height: min(100dvh, 100dvw);
@@ -100,10 +100,17 @@
   z-index: 2;
 }
 
+@media (min-width: 768px) {
+  .analogClock {
+    top: 50%;
+    left: 50%;
+  }
+}
+
 .numeral {
   position: absolute;
   font-family: 'ClockFont_26_10_16', serif;
-  font-size: 7vw;
+  font-size: 5vh;
   color: rgb(73, 13, 13);
   text-shadow: 1px 0 0 rgba(245, 241, 241);
   pointer-events: none;
