@@ -5,15 +5,15 @@ import styles from './Clock.module.css';
 
 import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
-import flyImage from '@/assets/images/26_images/26-10/26-10-15/fly.webp';
-import callistoImage from '@/assets/images/26_images/26-10/26-10-15/callisto.webp';
-import cowVideo from '@/assets/images/26_images/26-10/26-10-15/cow.webm';
-import clockFont from '@/assets/fonts/26fonts/26-10-15.ttf?url';
+import flyImage from '@/assets/images/26_images/26-10/26-10-16/fly.webp';
+import callistoImage from '@/assets/images/26_images/26-10/26-10-16/callisto.webp';
+import cowVideo from '@/assets/images/26_images/26-10/26-10-16/cow.webm';
+import clockFont from '@/assets/fonts/26fonts/26-10-16.ttf?url';
 
 export const assets = [flyImage, callistoImage, cowVideo, clockFont];
 
 const fontConfig: FontConfig = {
-  fontFamily: 'ClockFont_26_10_15',
+  fontFamily: 'ClockFont_26_10_16',
   fontUrl: clockFont,
 };
 
@@ -109,4 +109,4 @@ const Clock = () => {
 };
 
 export default Clock;
-Clock.displayName = 'Clock_26_10_15';
+Clock.displayName = 'Clock_26_10_16';
