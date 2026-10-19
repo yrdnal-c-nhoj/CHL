@@ -49,7 +49,6 @@
   background-repeat: repeat;
   background-size: 50px 50px;
   filter: saturate(1.5) contrast(5);
-  /* opacity: 0.5; */
 }
 
 .borderTop {
@@ -103,10 +102,10 @@
 
 .numeral {
   position: absolute;
-  font-family: 'ClockFont_26_10_15', serif;
-  font-size: 5vw;
-  color: white;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+  font-family: 'ClockFont_26_10_16', serif;
+  font-size: 7vw;
+  color: rgb(73, 13, 13);
+  text-shadow: 1px 0 0 rgba(245, 241, 241);
   pointer-events: none;
   white-space: nowrap;
 }
@@ -115,20 +114,22 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 50%;
-  height: 2px;
-  background-color: white;
+  width: 20%;
+  height: 3px;
+  background-color: rgb(105, 51, 51);
   transform-origin: 0% 50%;
+  opacity: 0.8;
+  box-shadow: 1px 1px 0 rgba(245, 241, 241);
 }
 
 .minuteHand {
-  height: 4px;
-  background-color: #ccc;
+  width: 35%;
+  height: 2px;
 }
 
 .secondHand {
+  width: 45%;
   height: 1px;
-  background-color: #ff6b6b;
 }
 
 @media (prefers-reduced-motion: reduce) {
