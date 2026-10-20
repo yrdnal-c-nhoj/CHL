@@ -1,0 +1,129 @@
+.clockField {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+}
+
+.clockDesktop {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+}
+
+.clockMobile {
+  display: none;
+}
+
+.clockLane {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.clockTrack {
+  display: flex;
+  flex-shrink: 0;
+  width: max-content;
+  animation: clockLeft 40s linear infinite;
+  will-change: transform;
+}
+
+.clockGroup {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.clockDigits {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.15rem;
+}
+
+.clockDigit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 0.72em;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #171717;
+  color: #fff;
+  font-family: monospace;
+  font-size: clamp(1.5rem, 5vw, 4rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: 1;
+}
+
+@keyframes clockLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 640px) {
+  .clockDesktop {
+    display: none;
+  }
+
+  .clockMobile {
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+
+  .clockMobile .clockLane {
+    align-items: stretch;
+  }
+
+  .clockMobile .clockTrack {
+    flex-direction: column;
+    width: 100%;
+    height: max-content;
+    animation: clockUp 35s linear infinite;
+  }
+
+  .clockMobile .clockGroup {
+    flex-direction: column;
+    width: 100%;
+    padding-right: 0;
+    padding-bottom: 0.5rem;
+  }
+
+  .clockMobile .clockDigits {
+    gap: 0.1rem;
+  }
+
+  .clockMobile .clockDigit {
+    font-size: clamp(1.2rem, 7vw, 2.5rem);
+  }
+}
+
+@keyframes clockUp {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clockTrack {
+    animation-duration: 120s;
+  }
+}
