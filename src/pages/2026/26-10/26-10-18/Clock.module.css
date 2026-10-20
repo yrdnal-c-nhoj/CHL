@@ -3,9 +3,10 @@
   width: 100%;
   height: 100dvh;
   overflow: hidden;
-  background-color: #000;
+  background-color: #faf5f5;
   display: grid;
   place-items: center;
+  color-scheme: dark;
 }
 
 .backgroundVideo {
@@ -16,13 +17,14 @@
   object-fit: cover;
   z-index: 0;
   pointer-events: none;
+  transform: rotate(180deg);
+  filter: contrast(0.8) brightness(1.1) hue-rotate(-35deg) saturate(3);
 }
 
 .clockFace {
   position: relative;
   width: min(90vw, 90dvh);
   height: min(90vw, 90dvh);
-  z-index: 1;
   pointer-events: none;
 }
 
@@ -34,28 +36,19 @@
   width: var(--hand-width);
   height: var(--hand-height);
 
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+  border: 0.2vmin solid rgba(0, 0, 0, 0.5);
   border-radius: 999px;
 
   transform-origin: 50% 100%;
   transform: translateX(-50%) rotate(var(--hand-rotate));
 
-  /* Subtle shadow for visibility against snow */
-  box-shadow: 0 0 1vmin rgba(0, 0, 0, 0.6);
-}
+  backdrop-filter: blur(1.5vmin);
+  -webkit-backdrop-filter: blur(1.5vmin);
 
-.center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 4vmin;
-  height: 4vmin;
-  background: #ffffff;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
   box-shadow:
-    0 0 0 2vmin rgba(255, 255, 255, 0.1),
-    0 0 1vmin rgba(0, 0, 0, 0.4);
+    0 0 0.5vmin rgba(255, 255, 255, 0.2),
+    inset 0 0 0.5vmin rgba(255, 255, 255, 0.15);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -64,6 +57,6 @@
   }
 
   .container {
-    background-color: #000;
+    background-color: #353434;
   }
 }

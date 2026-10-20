@@ -56,7 +56,7 @@ const Clock_26_10_18 = () => {
           style={
             {
               '--hand-width': '2.2vmin',
-              '--hand-height': '16vmin',
+              '--hand-height': '26vmin',
               '--hand-rotate': `${hourAngle}deg`,
             } as CSSProperties
           }
@@ -66,7 +66,7 @@ const Clock_26_10_18 = () => {
           style={
             {
               '--hand-width': '1.2vmin',
-              '--hand-height': '28vmin',
+              '--hand-height': '46vmin',
               '--hand-rotate': `${minuteAngle}deg`,
             } as CSSProperties
           }
@@ -76,13 +76,11 @@ const Clock_26_10_18 = () => {
           style={
             {
               '--hand-width': '0.6vmin',
-              '--hand-height': '38vmin',
+              '--hand-height': '49vmin',
               '--hand-rotate': `${secondAngle}deg`,
             } as CSSProperties
           }
         />
-
-        <div className={styles.center} />
       </div>
 
       <SRTime time={time} />
