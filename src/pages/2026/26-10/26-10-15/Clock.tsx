@@ -2,6 +2,8 @@ import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
 import styles from './Clock.module.css';
 
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useState, useMemo, useEffect, useReducer } from 'react';
 import image1 from '@/assets/images/26_images/26-10/26-10-15/1.webp';
 import image2 from '@/assets/images/26_images/26-10/26-10-15/2.webp';
@@ -13,6 +15,7 @@ import image8 from '@/assets/images/26_images/26-10/26-10-15/8.webp';
 import image9 from '@/assets/images/26_images/26-10/26-10-15/9.webp';
 import image10 from '@/assets/images/26_images/26-10/26-10-15/10.webp';
 import image11 from '@/assets/images/26_images/26-10/26-10-15/11.webp';
+import font from '@/assets/fonts/26fonts/26-10-15.ttf?url';
 
 export const assets = [
   image1,
@@ -25,7 +28,13 @@ export const assets = [
   image9,
   image10,
   image11,
+  font,
 ];
+
+const fontConfig: FontConfig = {
+  fontFamily: 'ClockFont_26_10_15',
+  fontUrl: font,
+};
 
 const allImages = [
   image1,
@@ -105,6 +114,8 @@ const galleryReducer = (
 };
 
 const Clock_26_10_15 = () => {
+  useSuspenseFontLoader([fontConfig]);
+
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(
     typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches,
@@ -116,24 +127,6 @@ const Clock_26_10_15 = () => {
       setPrefersReducedMotion(e.matches);
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
-  }, []);
-
-  useEffect(() => {
-    const preconnect = document.createElement('link');
-    preconnect.rel = 'preconnect';
-    preconnect.href = 'https://fonts.gstatic.com';
-    preconnect.crossOrigin = 'anonymous';
-
-    const stylesheet = document.createElement('link');
-    stylesheet.rel = 'stylesheet';
-    stylesheet.href =
-      'https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap';
-
-    document.head.append(preconnect, stylesheet);
-    return () => {
-      preconnect.remove();
-      stylesheet.remove();
-    };
   }, []);
 
   const time = useSmoothClock(prefersReducedMotion ? 1000 : 16);
@@ -179,12 +172,22 @@ const Clock_26_10_15 = () => {
       </div>
 
       <div className={styles.digitalClock}>
-        {time.toLocaleTimeString(undefined, {
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-          hour12: false,
-        })}
+        {time
+          .toLocaleTimeString(undefined, {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false,
+          })
+          .split('')
+          .map((char, index) => (
+            <span
+              key={index}
+              className={char === ':' ? styles.colon : styles.digit}
+            >
+              {char}
+            </span>
+          ))}
       </div>
     </main>
   );
