@@ -32,6 +32,7 @@
   position: absolute;
   bottom: 50%;
   left: 50%;
+  opacity: 0.8;
 
   width: var(--hand-width);
   height: var(--hand-height);
@@ -43,12 +44,12 @@
   transform-origin: 50% 100%;
   transform: translateX(-50%) rotate(var(--hand-rotate));
 
-  backdrop-filter: blur(1.5vmin);
-  -webkit-backdrop-filter: blur(1.5vmin);
+  backdrop-filter: blur(1.1vmin);
+  -webkit-backdrop-filter: blur(1.1vmin);
 
   box-shadow:
-    0 0 0.5vmin rgba(255, 255, 255, 0.2),
-    inset 0 0 0.5vmin rgba(255, 255, 255, 0.15);
+    0 0 1vmin rgba(255, 255, 255, 0.2),
+    inset 0 0 1vmin rgba(255, 255, 255, 0.15);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -75,14 +75,21 @@ const Clock_26_10_09 = () => {
     imgSeq.push(prev);
     // Bimodal tile-size distribution: sometimes 3-4 large tiles, sometimes 15-16 small tiles.
     const smallSize = 4 + Math.random() * 3; // 4-7 vmin  → ~15-25 tiles
-    const largeSize = 200 + Math.random() * 100; // 20-30 vmin → ~3-5 tiles
+    const largeSize = 20 + Math.random() * 10; // 20-30 vmin → ~3-5 tiles
     sizeSeq.push(Math.random() < 0.5 ? smallSize : largeSize);
     for (let i = 0; i < 999; i++) {
       prev = pickRandomExcluding(prev);
       imgSeq.push(prev);
-      const s = 4 + Math.random() * 3;
-      const l = 20 + Math.random() * 10;
-      sizeSeq.push(Math.random() < 0.5 ? s : l);
+      const idx = i + 1; // actual index in the sequence (0 is handled above)
+      if (idx % 3 === 2) {
+        // Every 3rd iteration: larger tiles yielding as few as 6-8 tiles
+        // 35-42 vmin → ~6-8 tiles in a ~100x100 vmin viewport
+        sizeSeq.push(35 + Math.random() * 7);
+      } else {
+        const s = 4 + Math.random() * 3;
+        const l = 20 + Math.random() * 10;
+        sizeSeq.push(Math.random() < 0.5 ? s : l);
+      }
     }
     return { images: imgSeq, sizes: sizeSeq };
   });
