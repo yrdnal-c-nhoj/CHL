@@ -2,7 +2,9 @@
   /* Existing styles for the clock element */
   font-family: 'WatchFont', 'Orbitron', sans-serif;
   color: rgb(29, 2, 84);
-  text-shadow: rgb(238, 87, 5) 1px 1px 0px, white -1px 0px 0px;
+  text-shadow:
+    rgb(238, 87, 5) 1px 1px 0px,
+    white -1px 0px 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,6 +39,15 @@
 
 .srOnly {
   /* Visually hide content, but keep it accessible to screen readers */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .divider {
@@ -53,7 +64,7 @@
 
   .digitBox {
     /* No height override needed */
- }
+  }
 
   .divider {
     width: 80vw;
