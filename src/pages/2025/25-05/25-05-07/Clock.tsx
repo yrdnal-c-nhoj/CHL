@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useSmoothClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
+import SRTime from '@/components/SRTime';
 import bgImage from '@/assets/images/25_images/25-05/25-05-07/water.webp';
 import styles from './Clock.module.css';
 export const assets = [bgImage];
-
 
 // Component Props interface
 interface ClockProps {
@@ -20,8 +20,12 @@ const Clock: React.FC<ClockProps> = () => {
   // Use the standardized hook for smooth millisecond clock updates
   const currentTime = useSmoothClock();
   const requestRef = useRef<number | null>(null);
+  const sHandRef = useRef<HTMLDivElement>(null);
+  const mHandRef = useRef<HTMLDivElement>(null);
+  const hHandRef = useRef<HTMLDivElement>(null);
+  const sweepRef = useRef<HTMLDivElement>(null);
 
-  const updateClock =  () => {
+  const animate = useCallback(() => {
     const now = new Date();
     const ms = now.getMilliseconds();
     const seconds = now.getSeconds();
@@ -32,41 +36,47 @@ const Clock: React.FC<ClockProps> = () => {
     const minutesDeg = ((minutes + seconds / 60) / 60) * 360;
     const hoursDeg = (((hours % 12) + minutes / 60) / 12) * 360;
 
-    const sHand = document.querySelector('.second-hand');
-    const mHand = document.querySelector('.minute-hand');
-    const hHand = document.querySelector('.hour-hand');
-    const sweep = document.querySelector('.radar-sweep');
+    if (sHandRef.current)
+      sHandRef.current.style.transform = `translateX(-50%) rotate(${secondsDeg}deg)`;
+    if (sweepRef.current)
+      sweepRef.current.style.transform = `translate(-50%, -50%) rotate(${secondsDeg}deg)`;
+    if (mHandRef.current)
+      mHandRef.current.style.transform = `translateX(-50%) rotate(${minutesDeg}deg)`;
+    if (hHandRef.current)
+      hHandRef.current.style.transform = `translateX(-50%) rotate(${hoursDeg}deg)`;
 
-    if (sHand)
-      sHand.style.transform = `translateX(-50%) rotate(${secondsDeg}deg)`;
-    if (sweep)
-      sweep.style.transform = `translate(-50%, -50%) rotate(${secondsDeg}deg)`;
-    if (mHand)
-      mHand.style.transform = `translateX(-50%) rotate(${minutesDeg}deg)`;
-    if (hHand)
-      hHand.style.transform = `translateX(-50%) rotate(${hoursDeg}deg)`;
-
-    requestRef.current = requestAnimationFrame(updateClock);
-  };
+    requestRef.current = requestAnimationFrame(animate);
+  }, []);
 
   useEffect(() => {
-    requestRef.current = requestAnimationFrame(updateClock);
-    return () => cancelAnimationFrame(requestRef.current);
-  }, []);
+    requestRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (requestRef.current !== null) {
+        cancelAnimationFrame(requestRef.current);
+      }
+    };
+  }, [animate]);
 
   return (
     <div className={styles.container}>
-      <img src={bgImage} alt="background" className={styles.fullPageImage} />
+      <SRTime time={currentTime} />
+      <img src={bgImage} alt="" className={styles.fullPageImage} />
 
       <div className={styles.clock}>
         <div id="radar" className={styles.radar}>
           {/* The trailing glow effect */}
-          <div className={styles.radarSweep} />
+          <div ref={sweepRef} className={styles.radarSweep} />
 
           <div className={styles.clockFace}>
-            <div className={`${styles.hand} ${styles.hourHand}`} />
-            <div className={`${styles.hand} ${styles.minuteHand}`} />
-            {/* <div className="hand second-hand"></div> */}
+            <div
+              ref={hHandRef}
+              className={`${styles.hand} ${styles.hourHand}`}
+            />
+            <div
+              ref={mHandRef}
+              className={`${styles.hand} ${styles.minuteHand}`}
+            />
+            {/* <div ref={sHandRef} className={`${styles.hand} ${styles.secondHand`}"></div> */}
             {/* <div className="center"></div> */}
           </div>
         </div>
@@ -74,5 +84,7 @@ const Clock: React.FC<ClockProps> = () => {
     </div>
   );
 };
+
+Clock.displayName = 'Clock_25_05_07';
 
 export default Clock;
