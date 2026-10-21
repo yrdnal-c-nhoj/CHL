@@ -24,12 +24,12 @@
   z-index: 2;
   display: flex;
   align-items: center;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'ClockFont_26_10_19', 'Courier New', Courier, monospace;
   font-size: clamp(8vw, 20vmin, 24vmin);
   font-variant-numeric: tabular-nums;
   line-height: 1;
   letter-spacing: 0.05em;
-  color: #fff;
+  color: #8b919f;
   text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
 }
 
@@ -38,4 +38,14 @@
   display: inline-block;
   width: 1ch;
   text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backgroundVideo {
+    display: none;
+  }
+
+  .container {
+    background-color: #000;
+  }
 }
