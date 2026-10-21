@@ -1,141 +1,59 @@
-import React, { useEffect } from 'react';
-import { useMultiAssetLoader } from '@/utils/assetLoader';
+import React from 'react';
+import { useClock } from '@/utils/hooks';
+import { useClockAngles } from '@/hooks/useClockAngles';
+import SRTime from '@/components/SRTime';
 import bgGif from '@/assets/images/25_images/25-05/25-05-17/2501912_2ddac-564534539.gif';
 import layer5Gif from '@/assets/images/25_images/25-05/25-05-17/e0435fd452bbed155b5b3c5128b4f7c5.gif';
 import layer3Gif from '@/assets/images/25_images/25-05/25-05-17/giphy-3181726992.webp';
 import rectangleGif from '@/assets/images/25_images/25-05/25-05-17/tumblr_53c27c64cc9f17a0880aff18b8f6d934_d138a0cd_500.gif';
-import { useClock } from '@/utils/hooks';
+import styles from './Clock.module.css';
+
 export const assets = [bgGif, layer5Gif, layer3Gif, rectangleGif];
 
-const PrimaryClock =  () => {
-  useEffect(() => {
-      setDate();
-    }, [time]);
+const Clock = () => {
+  const time = useClock();
+  const { hourAngle, minAngle, secAngle } = useClockAngles(time);
 
   return (
-    <div style={styles.body}>
-      <div style={{ ...styles.bgimage, backgroundImage: `url(${bgGif})` }} />
-      <div style={{ ...styles.layer5, backgroundImage: `url(${layer5Gif})` }} />
-      <div style={{ ...styles.layer3, backgroundImage: `url(${layer3Gif})` }} />
+    <main className={styles.container}>
+      <SRTime time={time} />
       <div
-        style={{ ...styles.rectangle, backgroundImage: `url(${rectangleGif})` }}
+        className={styles.bgimage}
+        style={{ backgroundImage: `url(${bgGif})` }}
+      />
+      <div
+        className={styles.layer5}
+        style={{ backgroundImage: `url(${layer5Gif})` }}
+      />
+      <div
+        className={styles.layer3}
+        style={{ backgroundImage: `url(${layer3Gif})` }}
+      />
+      <div
+        className={styles.rectangle}
+        style={{ backgroundImage: `url(${rectangleGif})` }}
       />
 
-      <div style={styles.centerContainer}>
-        <div style={styles.clock}>
-          <div className="hand min-hand" style={styles.minHand} />
-          <div className="hand hour-hand" style={styles.hourHand} />
-          <div className="hand second-hand" style={styles.secondHand} />
+      <div className={styles.centerContainer}>
+        <div className={styles.clock}>
+          <div
+            className={`${styles.hand} ${styles.minHand}`}
+            style={{ transform: `rotate(${minAngle}deg)` }}
+          />
+          <div
+            className={`${styles.hand} ${styles.hourHand}`}
+            style={{ transform: `rotate(${hourAngle}deg)` }}
+          />
+          <div
+            className={`${styles.hand} ${styles.secondHand}`}
+            style={{ transform: `rotate(${secAngle}deg)` }}
+          />
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
-const styles = {
-  body: {
-    height: '100dvh',
-    margin: 0,
-    overflow: 'hidden',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'black',
-    position: 'relative',
-  },
-  bgimage: {
-    position: 'fixed',
-    width: '100vw',
-    height: '100dvh',
-    backgroundRepeat: 'repeat',
-    backgroundSize: '9dvh 22vw',
-    top: 0,
-    left: 0,
-    zIndex: 0,
-  },
-  layer5: {
-    position: 'fixed',
-    width: '100%',
-    height: '100%',
-    backgroundRepeat: 'repeat',
-    backgroundSize: '5dvh 15vw',
-    opacity: 0.6,
-    zIndex: 2,
-    top: 0,
-    left: 0,
-  },
-  layer3: {
-    position: 'fixed',
-    width: '100%',
-    height: '100%',
-    backgroundRepeat: 'repeat',
-    backgroundSize: '12dvh 42vw',
-    opacity: 0.9,
-    zIndex: 12,
-    top: 0,
-    left: 0,
-  },
-  rectangle: {
-    position: 'fixed',
-    width: '100vw',
-    height: '100dvh',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: '200% 200%',
-    filter: 'contrast(600%) brightness(300%)',
-    pointerEvents: 'none',
-    zIndex: 1,
-    opacity: 0.7,
-    top: 0,
-    left: 0,
-  },
-  centerContainer: {
-    position: 'fixed',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    zIndex: 5,
-  },
-  clock: {
-    width: '200px',
-    height: '200px',
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-    opacity: 0.8,
-  },
-  minHand: {
-    height: '9dvh',
-    width: '100%',
-    background: '#0a2ef8',
-    position: 'absolute',
-    top: '50%',
-    transformOrigin: '100%',
-    right: '50%',
-    zIndex: 11,
-  },
-  hourHand: {
-    height: '11dvh',
-    width: '72%',
-    background: '#fbf703',
-    position: 'absolute',
-    top: '50%',
-    transformOrigin: '100%',
-    right: '50%',
-    zIndex: 18,
-  },
-  secondHand: {
-    height: '4dvh',
-    width: '400%',
-    background: '#f40606',
-    position: 'absolute',
-    top: '50%',
-    transformOrigin: '100%',
-    right: '50%',
-    zIndex: 10,
-  },
-} as const;
+Clock.displayName = 'Clock_25_05_17';
 
-export default PrimaryClock;
+export default Clock;

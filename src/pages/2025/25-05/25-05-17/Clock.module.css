@@ -1,0 +1,107 @@
+.container {
+  height: 100dvh;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  position: relative;
+}
+
+.bgimage {
+  position: fixed;
+  width: 100vw;
+  height: 100dvh;
+  background-repeat: repeat;
+  background-size: 9dvh 22vw;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.layer5 {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-repeat: repeat;
+  background-size: 5dvh 15vw;
+  opacity: 0.6;
+  z-index: 2;
+  top: 0;
+  left: 0;
+}
+
+.layer3 {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-repeat: repeat;
+  background-size: 12dvh 42vw;
+  opacity: 0.9;
+  z-index: 12;
+  top: 0;
+  left: 0;
+}
+
+.rectangle {
+  position: fixed;
+  width: 100vw;
+  height: 100dvh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 200% 200%;
+  filter: contrast(600%) brightness(300%);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.7;
+  top: 0;
+  left: 0;
+}
+
+.centerContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+
+.clock {
+  width: 20dvh;
+  height: 20dvh;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  opacity: 0.8;
+}
+
+.hand {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform-origin: 100%;
+}
+
+.minHand {
+  height: 9dvh;
+  width: 100%;
+  background: #0a2ef8;
+  z-index: 11;
+}
+
+.hourHand {
+  height: 11dvh;
+  width: 72%;
+  background: #fbf703;
+  z-index: 18;
+}
+
+.secondHand {
+  height: 4dvh;
+  width: 400%;
+  background: #f40606;
+  z-index: 10;
+}
