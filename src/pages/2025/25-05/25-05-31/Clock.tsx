@@ -15,12 +15,12 @@ import styles from './Clock.module.css';
 export const assets = [elWebp, el1, el2, el3, eleGif, fatFont];
 
 const fontConfigs: FontConfig[] = [
-    {
-      fontFamily: 'fat',
-      fontUrl: fatFont,
-      options: { weight: 'normal', style: 'normal' },
-    },
-  ];
+  {
+    fontFamily: 'fat',
+    fontUrl: fatFont,
+    options: { weight: 'normal', style: 'normal' },
+  },
+];
 
 const ClockComponent = () => {
   useSuspenseFontLoader(fontConfigs);
@@ -35,7 +35,7 @@ const ClockComponent = () => {
   const secondDeg = seconds * 6 + 5 * Math.sin(t / 150);
   const hourDeg = hours * 30 + 3 * Math.sin(t * 0.001);
   const minuteDeg = minutes * 6 + 4 * Math.sin(t * 0.002);
-  const orbitAngle = (t * -0.12) % 360;
+  const orbitAngle = (t * -0.01) % 360;
 
   const orbitRadius = 40;
   const orbitRad = (orbitAngle * Math.PI) / 180;
@@ -53,7 +53,13 @@ const ClockComponent = () => {
       <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
-      <img decoding="async" loading="lazy" src={elWebp} alt="" className={styles.bg} />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={elWebp}
+        alt=""
+        className={styles.bg}
+      />
       <div className={styles.clockFace}>
         <div className={styles.clockCenter}>
           {Array.from({ length: 12 }, (_, i) => {
@@ -62,21 +68,52 @@ const ClockComponent = () => {
             const x = 50 + 40 * Math.sin(angle) * (80 / 60);
             const y = 50 - 40 * Math.cos(angle);
             return (
-              <div key={num} style={{ left: `${x}%`, top: `${y}%` }} className={styles.number}>
+              <div
+                key={num}
+                style={{ left: `${x}%`, top: `${y}%` }}
+                className={styles.number}
+              >
                 {num}
               </div>
             );
           })}
           <div className={styles.handContainer}>
-            <img src={el2} alt="" className={styles.hourHand} style={{ transform: `translate(-50%, -50%) rotate(${hourDeg}deg)` }} />
+            <img
+              src={el2}
+              alt=""
+              className={styles.hourHand}
+              style={{
+                transform: `translate(-50%, -50%) rotate(${hourDeg}deg)`,
+              }}
+            />
           </div>
           <div className={styles.handContainer}>
-            <img src={el1} alt="" className={styles.minuteHand} style={{ transform: `translate(-50%, -50%) rotate(${minuteDeg}deg)` }} />
+            <img
+              src={el1}
+              alt=""
+              className={styles.minuteHand}
+              style={{
+                transform: `translate(-50%, -50%) rotate(${minuteDeg}deg)`,
+              }}
+            />
           </div>
           <div className={styles.handContainer}>
-            <img src={el3} alt="" className={styles.secondHand} style={{ transform: `translate(-50%, -50%) rotate(${secondDeg}deg)` }} />
+            <img
+              src={el3}
+              alt=""
+              className={styles.secondHand}
+              style={{
+                transform: `translate(-50%, -50%) rotate(${secondDeg}deg)`,
+              }}
+            />
           </div>
-          <img src={eleGif} alt="" aria-hidden="true" className={styles.orbitingImage} style={orbitStyle} />
+          <img
+            src={eleGif}
+            alt=""
+            aria-hidden="true"
+            className={styles.orbitingImage}
+            style={orbitStyle}
+          />
         </div>
       </div>
     </main>
