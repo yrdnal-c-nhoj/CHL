@@ -1,13 +1,7 @@
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClock } from '@/utils/hooks';
-import React, {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  memo
-} from 'react';
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Clock.module.css';
 
 import secondImg from '@/assets/images/25_images/25-04/25-04-16/20.webp';
@@ -17,7 +11,14 @@ import cakeGif from '@/assets/images/25_images/25-04/25-04-16/cake.gif';
 import confGif from '@/assets/images/25_images/25-04/25-04-16/conf.gif';
 import confJpg from '@/assets/images/25_images/25-04/25-04-16/conf.jpg';
 
-export const assets = [cakeGif, minuteImg, hourImg, secondImg, confGif, confJpg];
+export const assets = [
+  cakeGif,
+  minuteImg,
+  hourImg,
+  secondImg,
+  confGif,
+  confJpg,
+];
 
 interface ClockData {
   id: string;
@@ -32,116 +33,173 @@ interface ClockData {
   born: number;
 }
 
-// Component Props interface
-interface GravityClockProps {
-  // No props required for this component
+interface ClockItemProps {
+  clock: ClockData;
+  currentTime: Date;
 }
 
-const GravityClock: React.FC<GravityClockProps> = () => {
-  // Font loading configuration (memoized) - no custom fonts needed
+const GravityClock: React.FC = () => {
   const fontConfigs = useMemo<FontConfig[]>(() => [], []);
   useSuspenseFontLoader(fontConfigs);
 
-  // Use the standardized hook for smooth clock updates
   const currentTime = useClock();
-  const [clocks, setClocks] = useState<ClockData[]>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const requestRef = useRef<number | null>(null);
-  const lastSpawnTimeRef = useRef<number>(0);
-
-  // Spawning logic
+  const currentTimeRef = useRef(currentTime);
   useEffect(() => {
-    const spawnClock = () => {
-      const id = Math.random().toString(36).substr(2, 9);
-      const sizes = [30, 60, 100, 180, 260];
-      const size = sizes[Math.floor(Math.random() * sizes.length)];
+    currentTimeRef.current = currentTime;
+  }, [currentTime]);
+  const [clocks, setClocks] = useState<ClockData[]>([]);
 
-      // Inverse Gravity: Large is slow, Small is fast
-      const gravity = (2.2 / size + 0.005) * 10;
+  const containerRef = useRef<HTMLElement>(null);
+  const requestRef = useRef<number | null>(null);
+  const lastSpawnTimeRef = useRef(0);
+  const lastFrameRef = useRef<number | null>(null);
 
-      // Higher bounce for larger "lighter" clocks
-      const bounce = Math.min(0.92, 0.2 + size / 320);
+  // The first three clocks contain one smallest, one largest,
+  // and one randomly chosen intermediate clock, in random order.
+  const initialSizesRef = useRef<number[] | null>(null);
 
-      const newClock: ClockData = {
-        id,
-        size,
-        gravity,
-        bounce,
-        x: Math.random() * 90,
-        y: -size, // Start off-screen in pixels
-        vy: 0,
-        squash: 1, // 1 = normal, < 1 = squashed
-        color: `hsl(${Math.floor(Math.random() * 360)}, 30%, 50%)`,
-        born: Date.now(),
-      };
-      setClocks((prev) => [...prev, newClock]);
-    };
-
+  useEffect(() => {
     const now = currentTime.getTime();
 
-    // Initialize with a spawn
     if (lastSpawnTimeRef.current === 0) {
-      spawnClock();
       lastSpawnTimeRef.current = now;
-    } else if (now - lastSpawnTimeRef.current > 1800) {
-      spawnClock();
-      lastSpawnTimeRef.current = now;
+      return;
     }
+
+    if (now - lastSpawnTimeRef.current < 1800) return;
+
+    lastSpawnTimeRef.current = now;
+
+    const sizes = [30, 60, 100, 180, 260];
+
+    if (initialSizesRef.current === null) {
+      const middleSizes = [60, 100, 180];
+      const middleSize =
+        middleSizes[Math.floor(Math.random() * middleSizes.length)];
+
+      const firstThree = [30, 260, middleSize];
+
+      // Fisher-Yates shuffle.
+      for (let i = firstThree.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [firstThree[i], firstThree[j]] = [firstThree[j], firstThree[i]];
+      }
+
+      initialSizesRef.current = firstThree;
+    }
+
+    const size =
+      initialSizesRef.current.length > 0
+        ? initialSizesRef.current.shift()!
+        : sizes[Math.floor(Math.random() * sizes.length)];
+
+    const sizeRatio = (size - 30) / 230;
+
+    // Small clocks fall fast; large clocks fall slowly.
+    const gravity = 1400 - sizeRatio * 1250;
+
+    // Large clocks still bounce much higher, but lose
+    // slightly more energy per impact than before.
+    const bounce = 0.2 + sizeRatio * 0.68;
+
+    const width = containerRef.current?.clientWidth ?? window.innerWidth;
+
+    const maxX = Math.max(0, width - size);
+
+    const clock: ClockData = {
+      id: `${now}-${Math.random().toString(36).slice(2, 9)}`,
+      size,
+      gravity,
+      bounce,
+      x: Math.random() * maxX,
+      y: -size,
+      vy: 0,
+      squash: 1,
+      color: `hsl(${Math.floor(Math.random() * 360)}, 35%, 55%)`,
+      born: now,
+    };
+
+    setClocks((previous) => [...previous, clock]);
   }, [currentTime]);
 
-  // Animation loop
-  const animate = () => {
-    setClocks((prevClocks) => {
-      // Use the actual pixel height of the viewport/container
-      const containerHeight =
-        containerRef.current?.getBoundingClientRect().height ||
-        window.innerHeight;
-      const floor = containerHeight; // Floor is the container height in pixels
+  // Time-based physics and ground collisions.
+  useEffect(() => {
+    const animate = (timestamp: number) => {
+      const previousTimestamp = lastFrameRef.current;
+      lastFrameRef.current = timestamp;
 
-      return prevClocks
-        .filter((c) => Date.now() - c.born < 45000)
-        .map((c) => {
-          let nextVy = c.vy + c.gravity;
-          let nextY = c.y + nextVy;
-          let nextSquash;
+      const dt =
+        previousTimestamp === null
+          ? 0
+          : Math.min((timestamp - previousTimestamp) / 1000, 0.032);
 
-          // 1. Calculate Stretch based on velocity (velocity-based elongation)
-          // As it falls faster, it stretches slightly: scaleY > 1
-          nextSquash = 1 + Math.abs(nextVy) * 0.05;
+      const container = containerRef.current;
+      const floor = container?.clientHeight ?? window.innerHeight;
+      const width = container?.clientWidth ?? window.innerWidth;
+      const now = currentTimeRef.current.getTime();
 
-          // 2. Floor Collision & Squash
-          if (nextY > floor - c.size) {
-            nextY = floor - c.size;
+      setClocks((previous) =>
+        previous
+          .filter((clock) => now - clock.born < 60000)
+          .map((clock) => {
+            const x = Math.min(clock.x, Math.max(0, width - clock.size));
 
-            // If impact velocity is significant, trigger squash
-            if (Math.abs(nextVy) > 1) {
-              nextSquash = 0.6; // Flatten to 60% height
+            let y = clock.y;
+            let vy = clock.vy;
+            let squash = clock.squash;
+
+            vy += clock.gravity * dt;
+            y += vy * dt;
+
+            const ground = Math.max(0, floor - clock.size);
+
+            if (y >= ground) {
+              y = ground;
+
+              if (vy > 45) {
+                vy = -vy * clock.bounce;
+
+                // Subtle 6% compression; rebound velocity is
+                // controlled separately by the bounce coefficient.
+                squash = 0.94;
+              } else {
+                vy = 0;
+              }
             }
 
-            nextVy *= -c.bounce;
-            if (Math.abs(nextVy) < 0.1) nextVy = 0;
-          }
+            // Smoothly restore the clock's shape after impact.
+            squash += (1 - squash) * Math.min(1, dt * 12);
 
-          // Smoothly return squash back to 1 if it was squashed
-          const finalSquash = c.squash + (nextSquash - c.squash) * 0.2;
+            return {
+              ...clock,
+              x,
+              y,
+              vy,
+              squash,
+            };
+          }),
+      );
 
-          return { ...c, y: nextY, vy: nextVy, squash: finalSquash };
-        });
-    });
+      requestRef.current = requestAnimationFrame(animate);
+    };
+
     requestRef.current = requestAnimationFrame(animate);
-  };
 
-  // Start animation loop
-  useEffect(() => {
-    requestRef.current = requestAnimationFrame(animate);
     return () => {
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+      if (requestRef.current !== null) {
+        cancelAnimationFrame(requestRef.current);
+      }
+
+      lastFrameRef.current = null;
     };
   }, []);
 
   return (
     <main ref={containerRef} className={styles.container}>
-      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>{currentTime.toLocaleTimeString()}</time>
+      <time dateTime={currentTime.toISOString()} className={styles.srOnly}>
+        {currentTime.toLocaleTimeString()}
+      </time>
+
       {clocks.map((clock) => (
         <ClockItem key={clock.id} clock={clock} currentTime={currentTime} />
       ))}
@@ -149,38 +207,56 @@ const GravityClock: React.FC<GravityClockProps> = () => {
   );
 };
 
-interface ClockItemProps {
-  clock: ClockData;
-  currentTime: Date;
-}
+const ClockItem = memo(({ clock, currentTime }: ClockItemProps) => {
+  const hours =
+    (currentTime.getHours() % 12) * 30 + currentTime.getMinutes() * 0.5;
 
-const ClockItem: React.FC<ClockItemProps> = React.memo(({ clock, currentTime }) => {
-  const h = (currentTime.getHours() % 12) * 30 + currentTime.getMinutes() * 0.5;
-  const m = currentTime.getMinutes() * 6;
+  const minutes = currentTime.getMinutes() * 6;
 
-  const scaleX = 1 / clock.squash;
-  const scaleY = clock.squash;
+  const clockStyle = {
+    width: clock.size,
+    height: clock.size,
+    left: clock.x,
+    backgroundColor: clock.color,
+    transform: `translateY(${clock.y}px) scale(${1 / clock.squash}, ${clock.squash})`,
+    '--clock-size': `${clock.size}px`,
+  } as React.CSSProperties;
 
   return (
-    <div
-      className={styles.clockItem}
-      style={{
-        width: `${clock.size}px`,
-        height: `${clock.size}px`,
-        left: `${clock.x}vw`,
-        backgroundColor: clock.color,
-        transform: `translateY(${clock.y}px) scale(${scaleX}, ${scaleY})`,
-      }}
-    >
+    <div className={styles.clockItem} style={clockStyle}>
       <div className={styles.clockFace}>
-        <div className={`${styles.hand} ${styles.hourHand}`} style={{ transform: `translateX(-50%) rotate(${h}deg)` }} />
-        <div className={`${styles.hand} ${styles.minuteHand}`} style={{ transform: `translateX(-50%) rotate(${m}deg)` }} />
+        {[12, 3, 6, 9].map((number) => (
+          <span
+            key={number}
+            className={`${styles.marker} ${styles[`marker${number}` as keyof typeof styles]}`}
+          >
+            {number}
+          </span>
+        ))}
+
+        <div
+          className={`${styles.hand} ${styles.hourHand}`}
+          style={{
+            transform: `translateX(-50%) rotate(${hours}deg)`,
+          }}
+        />
+
+        <div
+          className={`${styles.hand} ${styles.minuteHand}`}
+          style={{
+            transform: `translateX(-50%) rotate(${minutes}deg)`,
+          }}
+        />
+
+        <div className={styles.pivot} />
       </div>
     </div>
   );
 });
+
 ClockItem.displayName = 'ClockItem';
 
 const MemoizedGravityClock = memo(GravityClock);
 MemoizedGravityClock.displayName = 'Clock_25_04_30';
+
 export default MemoizedGravityClock;
