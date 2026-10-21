@@ -2,7 +2,11 @@ import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import sharp from 'sharp';
-import { chromium, type PageScreenshotOptions, type ConsoleMessage } from 'playwright';
+import {
+  chromium,
+  type PageScreenshotOptions,
+  type ConsoleMessage,
+} from 'playwright';
 
 const SCREENSHOT_DIR = path.join(process.cwd(), 'src', 'assets', 'thumbnails');
 const DEFAULT_VITE_PORT = 5173;
@@ -25,8 +29,12 @@ async function optimizeExistingThumbnails(): Promise<void> {
     return;
   }
 
-  const files = fs.readdirSync(SCREENSHOT_DIR).filter((f) => f.endsWith('.webp'));
-  console.log(`[screencaps] Found ${files.length} thumbnail files to optimize.`);
+  const files = fs
+    .readdirSync(SCREENSHOT_DIR)
+    .filter((f) => f.endsWith('.webp'));
+  console.log(
+    `[screencaps] Found ${files.length} thumbnail files to optimize.`,
+  );
 
   for (const file of files) {
     const filePath = path.join(SCREENSHOT_DIR, file);
@@ -77,9 +85,13 @@ async function checkUrlReady(url: string, maxWaitMs = 10000): Promise<boolean> {
 
 async function startDevServer(port: number): Promise<DevServerHandle> {
   console.log('[screencaps] Starting Vite dev server...');
-  const proc = spawn('npx', ['vite', 'dev', '--port', String(port), '--strictPort'], {
-    stdio: ['ignore', 'pipe', 'pipe'],
-  });
+  const proc = spawn(
+    'npx',
+    ['vite', 'dev', '--port', String(port), '--strictPort'],
+    {
+      stdio: ['ignore', 'pipe', 'pipe'],
+    },
+  );
 
   let resolvedUrl: string | null = null;
 
@@ -125,7 +137,9 @@ async function startDevServer(port: number): Promise<DevServerHandle> {
   });
 }
 
-async function resolveDevServer(preferredPort: number): Promise<DevServerHandle> {
+async function resolveDevServer(
+  preferredPort: number,
+): Promise<DevServerHandle> {
   const preferredUrl = `http://localhost:${preferredPort}`;
   if (await checkUrlReady(preferredUrl, 2000)) {
     console.log(`[screencaps] Reusing existing dev server at ${preferredUrl}`);
@@ -136,7 +150,12 @@ async function resolveDevServer(preferredPort: number): Promise<DevServerHandle>
 }
 
 function getClockDates(): string[] {
-  const clockPagesPath = path.join(process.cwd(), 'src', 'context', 'clockpages.json');
+  const clockPagesPath = path.join(
+    process.cwd(),
+    'src',
+    'context',
+    'clockpages.json',
+  );
   if (fs.existsSync(clockPagesPath)) {
     const data = JSON.parse(fs.readFileSync(clockPagesPath, 'utf-8'));
     return data.map((item: { path: string }) => item.path);
@@ -201,19 +220,34 @@ async function main(): Promise<void> {
       await page.goto(url, { waitUntil: 'networkidle' });
       await page.waitForTimeout(3000);
 
-      const screenshotPath = path.join(SCREENSHOT_DIR, `${date}-thumb.webp`);
-      const options: PageScreenshotOptions = {
-        path: screenshotPath,
+      const fullScreenshotPath = path.join(SCREENSHOT_DIR, `${date}.webp`);
+      const fullOptions: PageScreenshotOptions = {
+        path: fullScreenshotPath,
+        fullPage: true,
+        type: 'webp',
+        quality: 90,
+      };
+
+      const thumbScreenshotPath = path.join(
+        SCREENSHOT_DIR,
+        `${date}-thumb.webp`,
+      );
+      const thumbOptions: PageScreenshotOptions = {
+        path: thumbScreenshotPath,
         fullPage: true,
         type: 'webp',
         quality: 85,
       };
 
-      await page.screenshot(options);
+      await page.screenshot(fullOptions);
+      const fullSize = fs.statSync(fullScreenshotPath).size;
 
-      const originalSize = fs.statSync(screenshotPath).size;
-      const optimizedSize = await optimizeThumbnail(screenshotPath);
-      console.log(`[screencaps] Saved: ${screenshotPath} (${originalSize} → ${optimizedSize} bytes)`);
+      await page.screenshot(thumbOptions);
+      const originalSize = fs.statSync(thumbScreenshotPath).size;
+      const optimizedSize = await optimizeThumbnail(thumbScreenshotPath);
+      console.log(
+        `[screencaps] Saved: ${fullScreenshotPath} (${fullSize} bytes), ${thumbScreenshotPath} (${originalSize} → ${optimizedSize} bytes)`,
+      );
     }
 
     await browser.close();
