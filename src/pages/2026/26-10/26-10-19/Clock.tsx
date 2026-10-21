@@ -24,9 +24,8 @@ const Clock_26_10_19 = () => {
 
   const hours = formatDigits(time.getHours());
   const minutes = formatDigits(time.getMinutes());
-  const seconds = formatDigits(time.getSeconds());
 
-  const display = `${hours}:${minutes}:${seconds}`;
+  const display = `${hours}:${minutes}`;
 
   return (
     <main className={styles.container}>

@@ -20,6 +20,7 @@
     "new-clock": "node scripts/new-clock.js",
     "screencaps": "tsx scripts/screencaps/capture.ts",
     "screencaps:optimize": "tsx scripts/screencaps/capture.ts --optimize",
+    "social": "node scripts/social_media/capture-social-images.mjs",
     "prepare": "husky || true",
     "type-check": "tsc --noEmit -p tsconfig.ci.json",
     "check": "npm run type-check && npm run lint && npm run format:check && npm run test:run && npm run verify:clocks:changed && npm run build",
