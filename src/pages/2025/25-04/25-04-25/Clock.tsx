@@ -7,19 +7,30 @@ import minuteHandImage from '@/assets/images/25_images/25-04/25-04-25/ba.gif';
 import backgroundImage from '@/assets/images/25_images/25-04/25-04-25/bad.webp';
 import hourHandImage from '@/assets/images/25_images/25-04/25-04-25/ban.webp';
 import secondHandImage from '@/assets/images/25_images/25-04/25-04-25/band.gif';
+import fontFile from '@/assets/fonts/25fonts/26-01-16-25-04-25-Oswald-Bold.ttf?url';
 
+import SRTime from '@/components/SRTime';
 import styles from './Clock.module.css';
 
-export const assets = [backgroundImage, hourHandImage, minuteHandImage, secondHandImage];
+export const assets = [
+  backgroundImage,
+  hourHandImage,
+  minuteHandImage,
+  secondHandImage,
+  fontFile,
+];
 
-const oswaldFontUrl = 'https://fonts.gstatic.com/s/oswald/v49/TK3_WkUHHAIjg75cFRf3bXL8LICs1_FvsUtiZTaR.woff2';
 const fontConfigs: FontConfig[] = [
-  { fontFamily: 'Oswald', fontUrl: oswaldFontUrl, options: { weight: '700' } },
+  {
+    fontFamily: 'ClockFont_25_04_25',
+    fontUrl: fontFile,
+    options: { weight: '700' },
+  },
 ];
 
 const numerals = Array.from({ length: 12 }, (_, i) => i + 1);
 
-const MyClock =  () => {
+const MyClock = () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useClock();
 
@@ -37,34 +48,45 @@ const MyClock =  () => {
   }, [time]);
 
   return (
-    <main className={styles.container} style={{ backgroundImage: `url(${backgroundImage})` }}>
-      <time dateTime={isoTime} aria-hidden="true" className={styles.srOnly}>
-        {time.toLocaleTimeString()}
-      </time>
+    <main
+      className={styles.container}
+      style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
+      <SRTime time={time} />
       <div className={styles.clockFace}>
-        {numerals.map((num) => (
-          <div key={num} className={styles.numeralContainer} style={{ transform: `rotate(${num * 30}deg)` }}>
-            <span className={styles.numeral} style={{ transform: `rotate(-${num * 30}deg)` }}>
-              {num}
-            </span>
-          </div>
-        ))}
+        {numerals.map((num) => {
+          const angle = num * 30; // 30 degrees per numeral (360/12)
+          return (
+            <div
+              key={num}
+              className={styles.numeralContainer}
+              style={{ transform: `rotate(${angle}deg)` }}
+            >
+              <span
+                className={styles.numeral}
+                style={{ transform: `rotate(-${angle}deg)` }}
+              >
+                {num}
+              </span>
+            </div>
+          );
+        })}
         <img
           src={hourHandImage}
           className={`${styles.hand} ${styles.hourHand}`}
-          alt="Hour hand"
+          alt=""
           style={{ transform: `rotate(${hourDeg}deg)` }}
         />
         <img
           src={minuteHandImage}
           className={`${styles.hand} ${styles.minuteHand}`}
-          alt="Minute hand"
+          alt=""
           style={{ transform: `rotate(${minuteDeg}deg)` }}
         />
         <img
           src={secondHandImage}
           className={`${styles.hand} ${styles.secondHand}`}
-          alt="Second hand"
+          alt=""
           style={{ transform: `rotate(${secondDeg}deg)` }}
         />
       </div>
@@ -73,6 +95,6 @@ const MyClock =  () => {
 };
 
 const MemoizedClock = React.memo(MyClock);
-MemoizedClock.displayName = 'MyClock_25_04_25';
+MemoizedClock.displayName = 'Clock_25_04_25';
 
 export default MemoizedClock;

@@ -5,33 +5,60 @@
   background-position: center;
   background-repeat: no-repeat;
   overflow: hidden;
-  display: flex; /* Use flex to center canvas if needed, or just for layout */
+  display: flex;
   justify-content: center;
   align-items: center;
+  font-family: 'ClockFont_25_04_25', sans-serif;
 }
 
 .clockCanvas {
   display: block;
 }
-.semanticTime {
-  position: absolute; /* Position absolutely to hide it visually */
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
+
+.clockFace {
+  position: relative;
+  width: 60vmin;
+  height: 60vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.srOnly {
+.numeralContainer {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+  width: fit-content;
+}
+
+.numeral {
+  position: absolute;
+  top: -40vmin;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12.5vmin;
+  color: red;
+}
+
+.hand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center top;
+  width: 15vmin;
+  height: 45vmin;
+  margin-left: -0.5vmin;
+}
+
+.hourHand {
+  transform-origin: center top;
+}
+
+.minuteHand {
+  transform-origin: center top;
+}
+
+.secondHand {
+  transform-origin: center top;
 }
