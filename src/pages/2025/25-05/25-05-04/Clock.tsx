@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useMemo } from 'react';
+import { memo } from 'react';
 import { useClock } from '@/utils/hooks';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
@@ -12,105 +12,63 @@ export const assets = [tumbGif, spinnGif, edGif, wallpaperGif];
 
 const fontConfigs: FontConfig[] = [];
 
-const Clock =  () => {
+const Clock = () => {
   useSuspenseFontLoader(fontConfigs);
   const time = useClock();
-  const clockRef = useRef<HTMLDivElement>(null);
 
   const secDeg = time.getSeconds() * 6;
   const minDeg = time.getMinutes() * 6 + time.getSeconds() * 0.1;
   const hrDeg = (time.getHours() % 12) * 30 + time.getMinutes() * 0.5;
 
-  const containerStyle = {
-    margin: 0,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100dvh',
-    fontFamily: "'Oxanium', 'Nanum Gothic Coding', 'Roboto Slab', monospace",
-  };
-
-  const slideshowStyle = {
-    position: 'relative',
-    width: '90dvh',
-    height: '90dvh',
-    overflow: 'hidden',
-    zIndex: 5,
-  };
-
-  const clockStyle = {
-    width: '87dvh',
-    height: '87dvh',
-    borderRadius: '50%',
-    position: 'fixed',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    zIndex: 9,
-  };
-
-  const handStyle = {
-    width: '50%',
-    height: '4px',
-    position: 'absolute',
-    top: '50%',
-    transformOrigin: '100%',
-    transform: 'rotate(90deg)',
-    transition: 'transform 0.05s ease-in-out',
-  };
-
-  const wallpaperStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '110%',
-    zIndex: 1,
-  };
-
   return (
-    <main className={styles.container} style={containerStyle}>
-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+    <main className={styles.container}>
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
 
-      <div style={slideshowStyle}>
+      <div className={styles.slideshow}>
         {[tumbGif, spinnGif, edGif].map((src, i) => (
           <img
-            decoding="async"
-            loading="lazy"
             key={i}
             src={src}
-            alt={`frame-${i}`}
-            className={styles.fade}
+            alt=""
+            className={styles.slide}
             style={{ animationDelay: `${i * 3}s` }}
           />
         ))}
       </div>
 
-      <div style={clockStyle}>
+      <div className={styles.analogClock}>
         <div
-          id="hour"
-          style={{ ...handStyle, height: '6px', background: 'rgb(113, 107, 113)', transform: `translateX(-50%) rotate(${hrDeg}deg)` }}
+          className={styles.hand}
+          style={{
+            height: '6px',
+            background: 'rgb(113, 107, 113)',
+            transform: `translateX(-50%) rotate(${hrDeg}deg)`,
+          }}
         />
         <div
-          id="minute"
-          style={{ ...handStyle, background: 'rgb(65, 69, 69)', transform: `translateX(-50%) rotate(${minDeg}deg)` }}
+          className={styles.hand}
+          style={{
+            height: '6px',
+            background: 'rgb(65, 69, 69)',
+            transform: `translateX(-50%) rotate(${minDeg}deg)`,
+          }}
         />
         <div
-          id="second"
-          style={{ ...handStyle, height: '1px', background: 'rgb(65, 69, 69)', transform: `translateX(-50%) rotate(${secDeg}deg)` }}
+          className={styles.hand}
+          style={{
+            height: '2px',
+            background: 'rgb(200, 0, 0)',
+            transform: `translateX(-50%) rotate(${secDeg}deg)`,
+          }}
         />
       </div>
 
-      <img
-        decoding="async"
-        loading="lazy"
-        src={wallpaperGif}
-        alt="background"
-        style={wallpaperStyle}
-      />
+      <img src={wallpaperGif} alt="" className={styles.wallpaper} />
     </main>
   );
-}
+};
 
 const MemoizedClock = memo(Clock);
 MemoizedClock.displayName = 'Clock_25_05_04';

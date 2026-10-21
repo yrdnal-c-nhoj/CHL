@@ -10,18 +10,22 @@ import styles from './Clock.module.css';
 export const assets = [];
 
 const fontConfigs: FontConfig[] = [
-    {
-      fontFamily: 'iss',
-      fontUrl: issFont,
-      options: { weight: 'normal', style: 'normal' },
-    },
-  ];
+  {
+    fontFamily: 'iss',
+    fontUrl: issFont,
+    options: { weight: 'normal', style: 'normal' },
+  },
+];
+
+const ISS_LIVE_VIDEO_ID = 'jKHvbJe9c_Y';
 
 const ClockComponent = () => {
   useSuspenseFontLoader(fontConfigs);
+
   const time = useSmoothClock();
 
-  const formatDigit = (value: number) => String(value).padStart(2, '0').split('');
+  const formatDigit = (value: number): string[] =>
+    String(value).padStart(2, '0').split('');
 
   const [h1, h2] = formatDigit(time.getHours());
   const [m1, m2] = formatDigit(time.getMinutes());
@@ -32,17 +36,18 @@ const ClockComponent = () => {
       <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
+
       <iframe
-        src="https://www.youtube.com/embed/iYmvCUonukw?autoplay=1&mute=1&controls=0&loop=1&playlist=iYmvCUonukw&rel=0&modestbranding=1"
-        title="Background ambience"
-        allow="autoplay; fullscreen"
+        src={`https://www.youtube.com/embed/${ISS_LIVE_VIDEO_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${ISS_LIVE_VIDEO_ID}&rel=0&modestbranding=1`}
+        title="International Space Station video feed"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        referrerPolicy="strict-origin-when-cross-origin"
         className={styles.backgroundIframe}
+        tabIndex={-1}
       />
 
-      <div
-        className={styles.clockWrapper}
-      >
-        <div className={styles.clockContainer}>
+      <div className={styles.clockWrapper}>
+        <div className={styles.clockContainer} aria-hidden="true">
           <div className={styles.digitBox}>{h1}</div>
           <div className={styles.digitBox}>{h2}</div>
           <div className={styles.digitBox}>{m1}</div>
