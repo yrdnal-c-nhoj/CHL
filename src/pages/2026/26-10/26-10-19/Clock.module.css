@@ -1,0 +1,62 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backgroundVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.digitalDisplay {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(8vw, 20vmin, 24vmin);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  color: #fff;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+}
+
+.digit,
+.colon {
+  display: inline-block;
+  width: 1ch;
+  text-align: center;
+}
+
+.colon {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backgroundVideo {
+    /* Video is muted/autoplay; user prefers reduced motion */
+  }
+
+  .colon {
+    animation: none;
+    opacity: 1;
+  }
+}
