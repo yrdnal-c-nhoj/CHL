@@ -1,34 +1,96 @@
 .container {
-  width: 100vw;
-  height: 100dvh;
   position: relative;
+  width: 100%;
+  height: 100dvh;
   overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  isolation: isolate;
+  background: #101018;
 }
 
-.background {
+.clockItem {
+  position: absolute;
+  top: 0;
+  box-sizing: border-box;
+  border: calc(var(--clock-size) * 0.012) solid rgba(255, 255, 255, 0.75);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 calc(var(--clock-size) * 0.012) rgba(0, 0, 0, 0.15),
+    0 calc(var(--clock-size) * 0.03) calc(var(--clock-size) * 0.07)
+      rgba(0, 0, 0, 0.28);
+  will-change: transform;
+}
+
+.clockFace {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  z-index: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: calc(var(--clock-size) * 0.008) solid rgba(255, 255, 255, 0.65);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.13);
 }
 
-.textContainer {
-  position: relative;
-  z-index: 1;
-  font-family: 'LatinFont', sans-serif;
-  font-size: 2rem;
-  color: #fff;
-  text-align: center;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-  padding: 1rem;
-  line-height: 1.5;
+.hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: 50% 100%;
+  border-radius: 999px;
+  background: #fff;
 }
+
+.hourHand {
+  width: calc(var(--clock-size) * 0.04);
+  height: calc(var(--clock-size) * 0.27);
+}
+
+.minuteHand {
+  width: calc(var(--clock-size) * 0.025);
+  height: calc(var(--clock-size) * 0.39);
+}
+
+.pivot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--clock-size) * 0.08);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #fff;
+  transform: translate(-50%, -50%);
+}
+
+.marker {
+  position: absolute;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: calc(var(--clock-size) * 0.15);
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+}
+
+.marker12 {
+  top: 12%;
+  left: 50%;
+}
+
+.marker3 {
+  top: 50%;
+  left: 85%;
+}
+
+.marker6 {
+  top: 86%;
+  left: 50%;
+}
+
+.marker9 {
+  top: 50%;
+  left: 15%;
+}
+
 .srOnly {
   position: absolute;
   width: 1px;
@@ -38,4 +100,5 @@
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
+  border: 0;
 }
