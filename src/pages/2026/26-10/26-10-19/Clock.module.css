@@ -39,24 +39,3 @@
   width: 1ch;
   text-align: center;
 }
-
-.colon {
-  animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .backgroundVideo {
-    /* Video is muted/autoplay; user prefers reduced motion */
-  }
-
-  .colon {
-    animation: none;
-    opacity: 1;
-  }
-}

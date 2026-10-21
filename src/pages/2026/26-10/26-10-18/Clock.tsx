@@ -81,6 +81,8 @@ const Clock_26_10_18 = () => {
             } as CSSProperties
           }
         />
+
+        <div className={styles.center} />
       </div>
 
       <SRTime time={time} />
