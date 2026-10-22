@@ -1,13 +1,24 @@
 #!/usr/bin/env node
 
 /**
- * Verify current clock pages against docs/CLOCKS.md.
+ * Verify clock pages against docs/CLOCKS.md.
+ *
+ * What is checked:
+ *   - Every clock (current and historical) must "work": it has a default
+ *     export, imports useClock/useSmoothClock, and does not use private timer
+ *     loops (setInterval/setTimeout, requestAnimationFrame-as-clock) or
+ *     deprecated hooks. These apply to current AND historical clocks alike.
+ *   - Current clocks (September 2026 onward) must additionally meet the full
+ *     technical standards: Clock.module.css present, displayName, semantic
+ *     <time>/SRTime, no `any`, no inline <style> tags, etc.
+ *   - Historical clocks (before September 2026) are preserved as they are;
+ *     they need only satisfy the functional requirements above.
  *
  * Exit-code policy:
  *   - Full-fleet audit (no --changed, no --path) reports legacy debt but
  *     always exits 0, so historical violations do not block CI.
  *   - --changed (or --path) is strict: exits non-zero when a checked clock
- *     violates the current clock contract. CI uses this on changed pages.
+ *     violates the applicable contract. CI uses this on changed pages.
  */
 
 import fs from 'node:fs';
@@ -144,12 +155,14 @@ function verifyClock(filePath) {
   const source = fs.readFileSync(filePath, 'utf8');
   const cssPath = path.join(path.dirname(filePath), 'Clock.module.css');
 
-  if (!fs.existsSync(cssPath)) errors.push('missing Clock.module.css');
+  const current = isCurrentClock(date);
+
+  // --- Requirements shared by every clock: the clock must "work" ---
+  // A clock is functional only if it can be loaded and draws its displayed time
+  // from the shared clock infrastructure (useClock/useSmoothClock) rather than a
+  // private timer. These apply to current AND historical clocks alike.
   if (!/export\s+default\s+\w+\s*;/.test(source)) {
     errors.push('missing default component export');
-  }
-  if (!/displayName\s*=\s*['"][^'"]*_\d{2}_\d{2}_\d{2}['"]/.test(source)) {
-    errors.push('displayName must end with _YY_MM_DD');
   }
   if (
     !/import\s*\{\s*[^}]*\b(?:useClock|useSmoothClock)\b[^}]*\}\s*from\s*['"]@\/utils\/hooks['"]/.test(
@@ -158,17 +171,36 @@ function verifyClock(filePath) {
   ) {
     errors.push('must import useClock or useSmoothClock from @/utils/hooks');
   }
-  if (
-    !/<time\b[^>]*\bdateTime\s*=/.test(source) &&
-    !/\bSRTime\b/.test(source)
-  ) {
-    errors.push('must render a semantic <time> with dateTime');
+  // Rendering loops are allowed for frames only: animation systems may use
+  // requestAnimationFrame, but never to compute displayed clock time.
+  if (/setInterval\s*\(|setTimeout\s*\(/.test(source)) {
+    errors.push(
+      'must not use direct timer loops for clock timekeeping or animation scheduling',
+    );
+  }
+  if (hasIndependentClockTiming(source)) {
+    errors.push(
+      'must not use requestAnimationFrame as an independent clock time source; use useClock or useSmoothClock',
+    );
+  }
+  if (/useClockTime|useSecondClock|useMillisecondClock/.test(source)) {
+    errors.push('must not use deprecated clock hooks');
   }
 
-  // SRTime enforcement: only for current clocks (Sept 2026+)
-  // Historical clocks may use either <time className={styles.srOnly}> or SRTime
-  const current = isCurrentClock(date);
+  // --- Technical standards apply only to current clocks (Sept 2026+) ---
+  // Historical clocks are preserved as they are; they need only satisfy the
+  // functional requirements above. See docs/STANDARDS.md (S2).
   if (current) {
+    if (!fs.existsSync(cssPath)) errors.push('missing Clock.module.css');
+    if (!/displayName\s*=\s*['"][^'"]*_\d{2}_\d{2}_\d{2}['"]/.test(source)) {
+      errors.push('displayName must end with _YY_MM_DD');
+    }
+    if (
+      !/<time\b[^>]*\bdateTime\s*=/.test(source) &&
+      !/\bSRTime\b/.test(source)
+    ) {
+      errors.push('must render a semantic <time> with dateTime');
+    }
     if (!/\bSRTime\b/.test(source)) {
       errors.push('current clocks must use SRTime component for semantic time');
     }
@@ -177,10 +209,12 @@ function verifyClock(filePath) {
         'current clocks must not use styles.srOnly directly; use SRTime instead',
       );
     }
+    if (/<style(?:\s|>)/.test(source))
+      errors.push('must not use inline style tags');
+    if (/\bany\b/.test(source)) errors.push('must not use the any type');
   } else {
-    // Historical clocks: if using styles.srOnly, verify CSS defines it
-    const usesStylesSrOnly = /styles\.srOnly/.test(source);
-    if (usesStylesSrOnly) {
+    // Historical clocks: if using styles.srOnly, the CSS module must define it.
+    if (/styles\.srOnly/.test(source) && fs.existsSync(cssPath)) {
       const cssContent = fs.readFileSync(cssPath, 'utf8');
       if (!/\.srOnly\s*\{/.test(cssContent)) {
         errors.push(
@@ -188,27 +222,6 @@ function verifyClock(filePath) {
         );
       }
     }
-  }
-  // Current clocks must use the shared clock hooks as their source of displayed
-  // time. Rendering loops are allowed: Three.js/WebGL and other visual animation
-  // systems may use requestAnimationFrame when they do not calculate clock time
-  // independently.
-  if (/setInterval\s*\(|setTimeout\s*\(/.test(source)) {
-    errors.push(
-      'must not use direct timer loops for clock timekeeping or animation scheduling',
-    );
-  }
-
-  if (hasIndependentClockTiming(source)) {
-    errors.push(
-      'must not use requestAnimationFrame as an independent clock time source; use useClock or useSmoothClock',
-    );
-  }
-  if (/<style(?:\s|>)/.test(source))
-    errors.push('must not use inline style tags');
-  if (/\bany\b/.test(source)) errors.push('must not use the any type');
-  if (/useClockTime|useSecondClock|useMillisecondClock/.test(source)) {
-    errors.push('must not use deprecated clock hooks');
   }
   // Clock metadata registration is handled separately.
   // Clocks need not be in clockpages.json/testclocks.json to pass verification.
