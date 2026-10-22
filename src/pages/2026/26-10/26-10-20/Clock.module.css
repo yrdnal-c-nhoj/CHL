@@ -162,8 +162,8 @@
 }
 
 .hourNeedle {
-  --needle-width: 2.8%;
-  --needle-height: 33%;
+  --needle-width: 2.4%;
+  --needle-height: 28%;
   z-index: 3;
   background: linear-gradient(
     to right,
@@ -177,7 +177,7 @@
 
 .minuteNeedle {
   --needle-width: 2%;
-  --needle-height: 44%;
+  --needle-height: 48%;
   z-index: 4;
   background: linear-gradient(to right, #34495e, #ecf0f1 49% 51%, #34495e);
 }
