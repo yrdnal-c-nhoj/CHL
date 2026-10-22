@@ -10,7 +10,7 @@
 }
 
 .digitalClock {
-  --cycle-start: -60dvh;
+  --cycle-start: -50dvh;
 
   position: absolute;
   top: 0;
