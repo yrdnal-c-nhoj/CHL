@@ -59,7 +59,7 @@ const pickRandomExcluding = (exclude: number): number => {
 };
 
 const randomTileSize = (): number =>
-  Math.random() < 0.2 ? 42 + Math.random() * 18 : 16 + Math.random() * 26;
+  Math.random() < 0.2 ? 56 + Math.random() * 20 : 26 + Math.random() * 30;
 
 const Clock_26_10_09 = () => {
   useSuspenseFontLoader([fontConfig]);
@@ -134,12 +134,14 @@ const Clock_26_10_09 = () => {
   const currentLayerStyle = {
     '--bg-image': `url(${currentBgImage})`,
     '--bg-size': `${currentSize}vmin`,
+    '--bg-size-mobile': `${Math.min(currentSize * 1.5, 90)}vmin`,
     opacity: currentOpacity,
   } as CSSProperties;
 
   const nextLayerStyle = {
     '--bg-image': `url(${nextBgImage})`,
     '--bg-size': `${nextSize}vmin`,
+    '--bg-size-mobile': `${Math.min(nextSize * 1.5, 90)}vmin`,
     opacity: nextOpacity,
   } as CSSProperties;
 

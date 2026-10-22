@@ -14,9 +14,15 @@
   inset: 0;
   z-index: 0;
   background-image: var(--bg-image);
-  background-size: var(--bg-size, 26vmin);
+  background-size: var(--bg-size, 40vmin);
   background-repeat: repeat;
   background-position: center;
+}
+
+@media (max-width: 600px) {
+  .bgLayer {
+    background-size: var(--bg-size-mobile, var(--bg-size, 40vmin));
+  }
 }
 
 .digitalDisplay {
@@ -33,13 +39,13 @@
 .digit {
   display: inline-block;
   color: #f78708;
-  -webkit-text-stroke: 1px #000;
+  text-shadow: 2px 2px 0 #000;
 }
 
 .colon {
   display: inline-block;
   color: #f78708;
-  -webkit-text-stroke: 1px #000;
+  text-shadow: 2px 2px 0 #000;
   transform: translateY(-0.06em);
 
   animation: blink 1s step-end infinite;
