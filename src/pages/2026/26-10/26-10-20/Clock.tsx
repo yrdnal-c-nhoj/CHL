@@ -1,25 +1,25 @@
 import carflyVideo from '@/assets/images/26_images/26-10/26-10-20/carfly.webm';
 import { useClockAngles } from '@/hooks/useClockAngles';
-import { useSmoothClock } from '@/utils/hooks';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import { useClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
-import React, { memo } from 'react';
+import { memo, type CSSProperties } from 'react';
 import styles from './Clock.module.css';
 
-/**
- * Speedometer-Style Analog Clock
- *
- * A speedometer-inspired analog clock overlaid on a background video.
- * Two needles (hour and minute) sweep across a semi-circular speedometer
- * face, with the "speed" corresponding to the current time.
- *
- * Smooth sub-second updates are provided by useSmoothClock(16) (~60fps),
- * and clock angles come from the shared useClockAngles hook.
- */
+import type { FontConfig } from '@/types/clock';
+import clockFont from '@/assets/fonts/26fonts/26-10-20.ttf?url';
 
-export const assets = [carflyVideo];
+export const assets = [carflyVideo, clockFont];
+
+const fontConfig: FontConfig = {
+  fontFamily: 'ClockFont_26_10_20',
+  fontUrl: clockFont,
+};
 
 const Clock_26_10_20 = () => {
-  const time = useSmoothClock(16);
+  useSuspenseFontLoader([fontConfig]);
+
+  const time = useClock();
   const {
     hourAngle,
     minAngle: minuteAngle,
@@ -37,69 +37,54 @@ const Clock_26_10_20 = () => {
         playsInline
         aria-hidden="true"
       />
-
       <SRTime time={time} />
 
-      <div className={styles.speedometerWrapper}>
-        {/* Speedometer housing / rim */}
+      <div className={styles.speedometer} aria-hidden="true">
         <div className={styles.speedometerRim} />
-
-        {/* Colored speedometer arc (green / yellow / red zones) */}
         <div className={styles.speedoArc} />
 
-        {/* Tick marks for each hour 1–12 */}
-        {Array.from({ length: 12 }, (_, i) => {
-          const hour = i + 1;
-          const angle = hour * 30; // 360 / 12 = 30 deg per hour
-          return (
+        <div className={styles.ticks}>
+          {Array.from({ length: 60 }, (_, index) => (
             <div
-              key={hour}
-              className={styles.tickMark}
-              style={{ transform: `rotate(${angle}deg)` }}
-            />
-          );
-        })}
-
-        {/* Hour numbers */}
-        {Array.from({ length: 12 }, (_, i) => {
-          const hour = i + 1;
-          const angle = hour * 30;
-          // Position numbers along the arc
-          const radius = 38;
-          const rad = (angle - 90) * (Math.PI / 180);
-          const x = 50 + radius * Math.cos(rad);
-          const y = 50 + radius * Math.sin(rad);
-          return (
-            <div
-              key={`h${hour}`}
-              className={styles.hourNumber}
-              style={{ left: `${x}%`, top: `${y}%` }}
+              key={index}
+              className={styles.tickPosition}
+              style={{ transform: `rotate(${index * 6}deg)` }}
             >
-              {hour}
+              <div
+                className={
+                  index % 5 === 0
+                    ? `${styles.tickMark} ${styles.majorTick}`
+                    : styles.tickMark
+                }
+              />
             </div>
-          );
-        })}
+          ))}
+        </div>
 
-        {/* Center pivot */}
-        <div className={styles.centerPivot} />
+        <div className={styles.numbers}>
+          {Array.from({ length: 12 }, (_, index) => {
+            const hour = index + 1;
+            return (
+              <div key={hour} className={styles.hourNumber}>
+                {hour}
+              </div>
+            );
+          })}
+        </div>
 
-        {/* Minute needle — the primary "speed" needle */}
-        <div
-          className={`${styles.needle} ${styles.minuteNeedle}`}
-          style={{ transform: `rotate(${minuteAngle}deg)` }}
-        />
-
-        {/* Hour needle — secondary needle */}
         <div
           className={`${styles.needle} ${styles.hourNeedle}`}
-          style={{ transform: `rotate(${hourAngle}deg)` }}
+          style={{ '--rotation': `${hourAngle}deg` } as CSSProperties}
         />
-
-        {/* Second needle — thin red sweep hand */}
+        <div
+          className={`${styles.needle} ${styles.minuteNeedle}`}
+          style={{ '--rotation': `${minuteAngle}deg` } as CSSProperties}
+        />
         <div
           className={`${styles.needle} ${styles.secondNeedle}`}
-          style={{ transform: `rotate(${secondAngle}deg)` }}
+          style={{ '--rotation': `${secondAngle}deg` } as CSSProperties}
         />
+        <div className={styles.centerPivot} />
       </div>
     </main>
   );

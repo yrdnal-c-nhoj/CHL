@@ -1,225 +1,213 @@
-/* Speedometer-Style Analog Clock on video background */
-
 .container {
   position: relative;
-  width: 100vw;
+  width: 100dvw;
   height: 100dvh;
   overflow: hidden;
   background-color: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.videoWrapper {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
 }
 
 .backgroundVideo {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Dim the video slightly so the speedometer overlay stands out */
   filter: brightness(0.75) contrast(1.1);
 }
 
-/* Centered speedometer */
-.speedometerWrapper {
-  position: relative;
-  z-index: 1;
-  width: 80vmin;
-  height: 80vmin;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Speedometer housing — metallic rim with chrome finish */
-.speedometerRim {
+.speedometer {
   position: absolute;
   top: 50%;
   left: 50%;
+  width: min(94vmin, 96vw, 96dvh);
+  aspect-ratio: 1;
   transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
-  border: 4vmin solid transparent;
   border-radius: 50%;
-  box-shadow:
-    inset 0 0 0 6vmin rgba(20, 20, 30, 0.8),
-    inset 0 0 0 10vmin rgba(40, 40, 55, 0.7),
-    0 0 3vmin 3vmin rgba(255, 255, 255, 0.4),
-    0 0 6vmin 6vmin rgba(200, 200, 210, 0.2);
-  pointer-events: none;
+  z-index: 1;
 }
 
-/* Colored speedometer arc — green / yellow / red zones */
+.speedometerRim,
 .speedoArc {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 70vmin;
-  height: 70vmin;
+  inset: 0;
   border-radius: 50%;
-  background: conic-gradient(
-    from 120deg,
-    #27ae60,
-    #27ae60 30deg,
-    #f39c12 30deg,
-    #f39c12 60deg,
-    #e74c3c 60deg,
-    #e74c3c 180deg
-  );
-  /* Mask out the center so only a ring is visible */
-  box-shadow: inset 0 0 0 12vmin rgba(15, 15, 20, 0.9);
   pointer-events: none;
 }
 
-/* Tick marks — positioned at each hour around the clock */
+.speedometerRim {
+  border: 2.5vmin solid rgba(200, 205, 215, 0.8);
+  box-shadow:
+    inset 0 0 0 2vmin rgba(20, 20, 30, 0.85),
+    0 0 3vmin rgba(255, 255, 255, 0.45);
+}
+
+.ticks {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.tickPosition {
+  position: absolute;
+  inset: 0;
+  transform-origin: center;
+}
+
 .tickMark {
   position: absolute;
-  top: 50%;
+  top: 3.5%;
   left: 50%;
-  width: 2vmin;
-  height: 6vmin;
-  background: rgba(255, 255, 255, 0.7);
-  transform-origin: bottom center;
+  width: 0.35%;
+  height: 2.5%;
+  transform: translateX(-50%);
   border-radius: 1vmin;
-  box-shadow: 0 0 2vmin rgba(255, 255, 255, 0.5);
-  pointer-events: none;
+  background: rgba(255, 255, 255, 0.68);
+  box-shadow: 0 0 0.6vmin rgba(255, 255, 255, 0.35);
 }
 
-/* Hour numbers arranged along the arc */
+.majorTick {
+  top: 3%;
+  width: 0.7%;
+  height: 4%;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 1vmin rgba(255, 255, 255, 0.55);
+}
+
 .hourNumber {
   position: absolute;
-  transform: translate(-50%, -50%);
-  font-family: 'Courier New', monospace;
-  font-size: 3vmin;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'ClockFont_26_10_20', monospace;
+  font-size: clamp(0.8rem, 3vmin, 2rem);
   font-weight: bold;
-  color: rgba(255, 255, 255, 0.8);
-  text-shadow: 0 0 3vmin rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 1vmin rgba(255, 255, 255, 0.55);
   pointer-events: none;
   user-select: none;
+  transform: translate(-50%, -50%) rotate(calc(var(--i, 0) * 30deg));
 }
 
-/* Needles — speedometer-style tapered needles */
+.hourNumber:nth-child(1) {
+  --i: 1;
+  left: 67%;
+  top: 20.56%;
+}
+.hourNumber:nth-child(2) {
+  --i: 2;
+  left: 79.44%;
+  top: 33%;
+}
+.hourNumber:nth-child(3) {
+  --i: 3;
+  left: 84%;
+  top: 50%;
+}
+.hourNumber:nth-child(4) {
+  --i: 4;
+  left: 79.44%;
+  top: 67%;
+}
+.hourNumber:nth-child(5) {
+  --i: 5;
+  left: 67%;
+  top: 79.44%;
+}
+.hourNumber:nth-child(6) {
+  --i: 6;
+  left: 50%;
+  top: 84%;
+}
+.hourNumber:nth-child(7) {
+  --i: 7;
+  left: 33%;
+  top: 79.44%;
+}
+.hourNumber:nth-child(8) {
+  --i: 8;
+  left: 20.56%;
+  top: 67%;
+}
+.hourNumber:nth-child(9) {
+  --i: 9;
+  left: 16%;
+  top: 50%;
+}
+.hourNumber:nth-child(10) {
+  --i: 10;
+  left: 20.56%;
+  top: 33%;
+}
+.hourNumber:nth-child(11) {
+  --i: 11;
+  left: 33%;
+  top: 20.56%;
+}
+.hourNumber:nth-child(12) {
+  --i: 12;
+  left: 50%;
+  top: 16%;
+}
+
 .needle {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform-origin: bottom center;
+  margin-left: calc(var(--needle-width) / -2);
+  margin-top: calc(var(--needle-height) * -1);
+  width: var(--needle-width);
+  height: var(--needle-height);
+  transform-origin: center bottom;
+  transform: rotate(var(--rotation, 0deg));
   border-radius: 50% 50% 0 0;
-  filter: drop-shadow(0 0 2vmin rgba(0, 0, 0, 0.8));
+  filter: drop-shadow(0 0 1vmin rgba(0, 0, 0, 0.8));
   pointer-events: none;
 }
 
-/* Hour needle — thick, short, chrome */
 .hourNeedle {
-  width: 3vmin;
-  height: 28vmin;
+  --needle-width: 2.2%;
+  --needle-height: 25%;
+  z-index: 3;
   background: linear-gradient(
     to right,
-    #2c3e50 0%,
-    #34495e 30%,
+    #2c3e50,
     #bdc3c7 48%,
     #ecf0f1 50%,
     #bdc3c7 52%,
-    #34495e 70%,
-    #2c3e50 100%
+    #2c3e50
   );
-  transform-origin: bottom center;
-  z-index: 3;
 }
 
-/* Minute needle — medium, longer, metallic */
 .minuteNeedle {
-  width: 2vmin;
-  height: 38vmin;
-  background: linear-gradient(
-    to right,
-    #34495e 0%,
-    #7f8c8d 35%,
-    #ecf0f1 49%,
-    #ecf0f1 51%,
-    #7f8c8d 65%,
-    #34495e 100%
-  );
-  transform-origin: bottom center;
+  --needle-width: 1.4%;
+  --needle-height: 34%;
   z-index: 4;
+  background: linear-gradient(to right, #34495e, #ecf0f1 49% 51%, #34495e);
 }
 
-/* Second needle — thin red sweep hand */
 .secondNeedle {
-  width: 0.8vmin;
-  height: 42vmin;
-  background: linear-gradient(
-    to right,
-    #e74c3c 0%,
-    #e74c3c 45%,
-    #fff 50%,
-    #e74c3c 55%,
-    #e74c3c 100%
-  );
-  transform-origin: bottom center;
+  --needle-width: 0.6%;
+  --needle-height: 38%;
   z-index: 5;
+  background: #e74c3c;
 }
 
-/* Center pivot — ball-bearing look */
 .centerPivot {
   position: absolute;
   top: 50%;
   left: 50%;
+  width: 5%;
+  aspect-ratio: 1;
   transform: translate(-50%, -50%);
-  width: 8vmin;
-  height: 8vmin;
-  background: radial-gradient(
-    circle at 30% 30%,
-    #fff 0%,
-    #f0f0f0 20%,
-    #777 90%,
-    #333 100%
-  );
+  border: 0.7vmin solid #2c3e50;
   border-radius: 50%;
-  border: 2vmin solid #2c3e50;
-  box-shadow:
-    0 0 2vmin rgba(0, 0, 0, 0.5),
-    inset 0 0 2vmin rgba(0, 0, 0, 0.5);
+  background: radial-gradient(circle at 30% 30%, #fff, #777 75%, #333);
+  box-shadow: 0 0 1vmin rgba(0, 0, 0, 0.6);
   z-index: 6;
   pointer-events: none;
 }
 
-/* Visually hidden text for screen readers */
-.srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-/* Reduced motion: pause all needle animations */
 @media (prefers-reduced-motion: reduce) {
-  .speedometerWrapper {
-    animation: none;
-  }
-
-  .needle,
-  .speedometerRim,
-  .speedoArc,
-  .tickMark,
-  .hourNumber,
-  .centerPivot {
-    animation: none;
-    transition: none;
-  }
-
-  .backgroundVideo {
-    animation: none;
+  .backgroundVideo,
+  .secondNeedle {
+    display: none;
   }
 }
