@@ -10,6 +10,8 @@
 }
 
 .digitalClock {
+  --cycle-start: -60dvh;
+
   position: absolute;
   top: 0;
   left: 50%;
@@ -26,13 +28,13 @@
     0 0 4px #ffe8e8,
     0 0 8px #ffeaea,
     0 0 16px #fbe6e6;
-  transform: translate(-50%, -60dvh) scale(2.5);
+  transform: translate(-50%, var(--cycle-start)) scale(2.5);
   animation: driftDown 30s linear infinite;
 }
 
 @keyframes driftDown {
   0% {
-    transform: translate(-50%, -60dvh) scale(2.5);
+    transform: translate(-50%, var(--cycle-start)) scale(2.5);
   }
   100% {
     transform: translate(-50%, 120dvh) scale(0.1);
@@ -49,10 +51,11 @@
 
 @media (max-width: 640px) {
   .clockField {
-    background-size: 80% auto;
+    background-size: 100% auto;
   }
 
   .digitalClock {
+    --cycle-start: -15dvh;
     font-size: clamp(4rem, 18vw, 7rem);
   }
 }
