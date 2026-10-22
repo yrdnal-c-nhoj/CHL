@@ -66,7 +66,7 @@ const Clock_26_10_20 = () => {
             const hour = index + 1;
             return (
               <div key={hour} className={styles.hourNumber}>
-                {hour}
+                {hour.toString().padStart(2, '0')}
               </div>
             );
           })}
