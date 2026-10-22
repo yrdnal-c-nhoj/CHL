@@ -11,6 +11,11 @@ import windows3 from '@/assets/images/26_images/26-10/26-10-09/windows3.webp';
 import windows4 from '@/assets/images/26_images/26-10/26-10-09/windows4.webp';
 import windows5 from '@/assets/images/26_images/26-10/26-10-09/windows5.webp';
 import windows6 from '@/assets/images/26_images/26-10/26-10-09/windows6.webp';
+import windows7 from '@/assets/images/26_images/26-10/26-10-09/windows7.webp';
+import windows8 from '@/assets/images/26_images/26-10/26-10-09/windows8.webp';
+import windows9 from '@/assets/images/26_images/26-10/26-10-09/windows9.webp';
+import windows10 from '@/assets/images/26_images/26-10/26-10-09/windows10.webp';
+import windows11 from '@/assets/images/26_images/26-10/26-10-09/windows11.webp';
 import font from '@/assets/fonts/26fonts/26-10-09.ttf?url';
 
 export const assets = [
@@ -20,6 +25,11 @@ export const assets = [
   windows4,
   windows5,
   windows6,
+  windows7,
+  windows8,
+  windows9,
+  windows10,
+  windows11,
   font,
 ];
 
@@ -35,6 +45,11 @@ const images = [
   windows4,
   windows5,
   windows6,
+  windows7,
+  windows8,
+  windows9,
+  windows10,
+  windows11,
 ];
 
 const pickRandomExcluding = (exclude: number): number => {
@@ -42,6 +57,9 @@ const pickRandomExcluding = (exclude: number): number => {
   const index = Math.floor(Math.random() * available.length);
   return available[index] ?? exclude;
 };
+
+const randomTileSize = (): number =>
+  Math.random() < 0.2 ? 42 + Math.random() * 18 : 16 + Math.random() * 26;
 
 const Clock_26_10_09 = () => {
   useSuspenseFontLoader([fontConfig]);
@@ -65,31 +83,17 @@ const Clock_26_10_09 = () => {
   // Capture the mount time so cycles always start in the "hold" phase.
   const [startTime] = useState(() => smoothTime.getTime() / 1000);
 
-  // Precompute a long sequence of random image indices (different from previous)
-  // and paired random tile sizes, so each cycle gets a different look.
-  // Lazy state initializer is the idiomatic place for impure random generation.
+  // Precompute random images and tile sizes, avoiding immediate image repeats.
   const [sequences] = useState(() => {
     const imgSeq: number[] = [];
     const sizeSeq: number[] = [];
     let prev = Math.floor(Math.random() * images.length);
     imgSeq.push(prev);
-    // Bimodal tile-size distribution: sometimes 3-4 large tiles, sometimes 15-16 small tiles.
-    const smallSize = 4 + Math.random() * 3; // 4-7 vmin  → ~15-25 tiles
-    const largeSize = 20 + Math.random() * 10; // 20-30 vmin → ~3-5 tiles
-    sizeSeq.push(Math.random() < 0.5 ? smallSize : largeSize);
+    sizeSeq.push(randomTileSize());
     for (let i = 0; i < 999; i++) {
       prev = pickRandomExcluding(prev);
       imgSeq.push(prev);
-      const idx = i + 1; // actual index in the sequence (0 is handled above)
-      if (idx % 3 === 2) {
-        // Every 3rd iteration: larger tiles yielding as few as 6-8 tiles
-        // 35-42 vmin → ~6-8 tiles in a ~100x100 vmin viewport
-        sizeSeq.push(35 + Math.random() * 7);
-      } else {
-        const s = 4 + Math.random() * 3;
-        const l = 20 + Math.random() * 10;
-        sizeSeq.push(Math.random() < 0.5 ? s : l);
-      }
+      sizeSeq.push(randomTileSize());
     }
     return { images: imgSeq, sizes: sizeSeq };
   });
@@ -106,8 +110,8 @@ const Clock_26_10_09 = () => {
 
   const currentImgIdx = sequences.images[currentCycleIdx] ?? 0;
   const nextImgIdx = sequences.images[nextCycleIdx] ?? 0;
-  const currentSize = sequences.sizes[currentCycleIdx] ?? 18;
-  const nextSize = sequences.sizes[nextCycleIdx] ?? 18;
+  const currentSize = sequences.sizes[currentCycleIdx] ?? 26;
+  const nextSize = sequences.sizes[nextCycleIdx] ?? 26;
 
   const currentBgImage = images[currentImgIdx] ?? backgroundImage;
   const nextBgImage = images[nextImgIdx] ?? backgroundImage;
@@ -127,10 +131,6 @@ const Clock_26_10_09 = () => {
 
   const display = `${hours}:${minutes}`;
 
-  const containerStyle = {
-    '--background-image': `url(${backgroundImage})`,
-  } as CSSProperties;
-
   const currentLayerStyle = {
     '--bg-image': `url(${currentBgImage})`,
     '--bg-size': `${currentSize}vmin`,
@@ -144,7 +144,7 @@ const Clock_26_10_09 = () => {
   } as CSSProperties;
 
   return (
-    <main className={styles.container} style={containerStyle}>
+    <main className={styles.container}>
       <SRTime time={time} />
       <div
         className={styles.bgLayer}
