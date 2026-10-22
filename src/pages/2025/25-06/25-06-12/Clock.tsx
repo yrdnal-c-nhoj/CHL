@@ -1,22 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import bgImage from '@/assets/images/25_images/25-06/25-06-12/auth.jpg';
 import cattleFont from '@/assets/fonts/25fonts/25-06-12-cattle.ttf';
 import { useClock } from '@/utils/hooks';
+
 export const assets = [bgImage, cattleFont];
 
-const CattleBrandClock =  () => {
-  const [time, setTime] = useState<any>({ hours: 12, minutes: '00' });
-  // useEffect for updateClock removed - time is reactive via useClock
-
-  const style = {
-    '@font-face': [
-      {
-        fontFamily: 'cattle',
-        src: `url(${cattleFont}) format('truetype')`,
-      },
-    ],
-  };
+const CattleBrandClock = () => {
+  const time = useClock();
+  const hours = time.getHours() % 12 || 12;
+  const minutes = String(time.getMinutes()).padStart(2, '0');
 
   return (
     <div
@@ -74,7 +65,7 @@ const CattleBrandClock =  () => {
           transform: 'rotate(-8deg)',
         }}
       >
-        <div id="hours">{time.hours}</div>
+        <div id="hours">{hours}</div>
         <div style={{ display: 'flex' }}>
           <div
             style={{
@@ -85,7 +76,7 @@ const CattleBrandClock =  () => {
               textAlign: 'center',
             }}
           >
-            {time.minutes[0]}
+            {minutes.charAt(0)}
           </div>
           <div
             style={{
@@ -96,7 +87,7 @@ const CattleBrandClock =  () => {
               textAlign: 'center',
             }}
           >
-            {time.minutes[1]}
+            {minutes.charAt(1)}
           </div>
         </div>
       </div>

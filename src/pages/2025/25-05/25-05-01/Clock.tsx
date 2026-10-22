@@ -13,7 +13,6 @@ import lightningImg from '@/assets/images/25_images/25-05/25-05-01/lightning.web
 import innerFontTTF from '@/assets/fonts/25fonts/25-05-01-Inner.ttf?url';
 export const assets = [lightningImg, innerFontTTF];
 
-
 // Time state interface
 interface TimeState {
   hours: string;
@@ -65,11 +64,16 @@ const SlowLightningClock: React.FC<SlowLightningClockProps> = () => {
   const triggerClockEffect = useCallback((): void => {
     if (!clockRef.current) return;
     clockRef.current.classList.add('animate-clock');
-    setTimeout(() => {
-      if (clockRef.current) {
-        clockRef.current.classList.remove('animate-clock');
+    let startTime = 0;
+    function removeAfterDelay(timestamp: number) {
+      if (startTime === 0) startTime = timestamp;
+      if (timestamp - startTime >= 330) {
+        clockRef.current?.classList.remove('animate-clock');
+      } else {
+        requestAnimationFrame(removeAfterDelay);
       }
-    }, 330);
+    }
+    requestAnimationFrame(removeAfterDelay);
   }, []);
 
   // Flash effect for white or black flash
@@ -77,34 +81,43 @@ const SlowLightningClock: React.FC<SlowLightningClockProps> = () => {
     const el = type === 'white' ? flashWhiteRef.current : flashBlackRef.current;
     if (!el) return;
     el.style.opacity = '1';
-    setTimeout(() => {
-      if (el) el.style.opacity = '0';
-    }, 100);
-  }, []);
-
-  // Loop random effects
-  useEffect(() => {
-    let isMounted = true;
-    function randomEffectsLoop() {
-      if (!isMounted) return;
-
-      const rand = Math.random();
-
-      if (rand < 0.02) {
-        triggerClockEffect();
+    let startTime = 0;
+    function resetAfterDelay(timestamp: number) {
+      if (startTime === 0) startTime = timestamp;
+      if (timestamp - startTime >= 100) {
+        el.style.opacity = '0';
+      } else {
+        requestAnimationFrame(resetAfterDelay);
       }
-
-      if (rand > 0.9) {
-        triggerFlash(Math.random() > 0.5 ? 'white' : 'black');
-      }
-
-      setTimeout(randomEffectsLoop, 500);
     }
-    randomEffectsLoop();
-    return () => {
-      isMounted = false;
-    };
+    requestAnimationFrame(resetAfterDelay);
   }, []);
+
+  // Loop random effects via requestAnimationFrame (animation rendering only,
+  // never used for clock time — displayed time comes from useClock)
+  useEffect(() => {
+    let rafId: number;
+    let lastRun = 0;
+
+    function rafLoop(timestamp: number) {
+      if (timestamp - lastRun >= 500) {
+        lastRun = timestamp;
+
+        const rand = Math.random();
+        if (rand < 0.02) {
+          triggerClockEffect();
+        }
+        if (rand > 0.9) {
+          triggerFlash(Math.random() > 0.5 ? 'white' : 'black');
+        }
+      }
+      rafId = requestAnimationFrame(rafLoop);
+    }
+    rafId = requestAnimationFrame(rafLoop);
+    return () => {
+      cancelAnimationFrame(rafId);
+    };
+  }, [triggerClockEffect, triggerFlash]);
 
   // Inline styles (converted from your CSS)
   const styles = {
@@ -222,7 +235,7 @@ const SlowLightningClock: React.FC<SlowLightningClockProps> = () => {
         .animate-clock {
           animation: shakeJump 0.33s ease-in-out;
         }
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
           #clock {
             flex-direction: column;
             align-items: center;
@@ -269,6 +282,6 @@ const SlowLightningClock: React.FC<SlowLightningClockProps> = () => {
       <div ref={flashBlackRef} style={styles.flashBlack} />
     </>
   );
-}
+};
 
 export default SlowLightningClock;

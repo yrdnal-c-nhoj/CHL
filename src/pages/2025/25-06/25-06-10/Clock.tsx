@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import shaFont from '@/assets/fonts/25fonts/25-06-10-sha.ttf';
 import { useClock } from '@/utils/hooks';
 export const assets = [shaFont];
 
-const ShapesClock =  () => {
-  const [time, setTime] = useState<any>({
-    hours: '00',
-    minutes: '00',
-    seconds: '00',
-  });
+const ShapesClock = () => {
+  const time = useClock();
 
   // Standardized font loading with font-display: swap to avoid FOUC
   const fontConfigs = [
@@ -23,7 +18,10 @@ const ShapesClock =  () => {
     },
   ];
   const fontsLoaded = useSuspenseFontLoader(fontConfigs);
-  // useEffect for updateClock removed - time is reactive via useClock
+
+  const hours = time.getHours().toString().padStart(2, '0');
+  const minutes = time.getMinutes().toString().padStart(2, '0');
+  const seconds = time.getSeconds().toString().padStart(2, '0');
 
   const bodyStyle = {
     margin: 0,
@@ -67,17 +65,17 @@ const ShapesClock =  () => {
     <div style={bodyStyle}>
       <div style={clockStyle}>
         <div>
-          <span style={spanStyle}>{time.hours}</span>
+          <span style={spanStyle}>{hours}</span>
         </div>
         <div>
-          <span style={spanStyle}>{time.minutes}</span>
+          <span style={spanStyle}>{minutes}</span>
         </div>
         <div>
-          <span style={spanStyle}>{time.seconds}</span>
+          <span style={spanStyle}>{seconds}</span>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default ShapesClock;
