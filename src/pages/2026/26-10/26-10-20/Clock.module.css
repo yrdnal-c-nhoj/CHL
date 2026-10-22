@@ -1,0 +1,225 @@
+/* Speedometer-Style Analog Clock on video background */
+
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.videoWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.backgroundVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Dim the video slightly so the speedometer overlay stands out */
+  filter: brightness(0.75) contrast(1.1);
+}
+
+/* Centered speedometer */
+.speedometerWrapper {
+  position: relative;
+  z-index: 1;
+  width: 80vmin;
+  height: 80vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Speedometer housing — metallic rim with chrome finish */
+.speedometerRim {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  border: 4vmin solid transparent;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 6vmin rgba(20, 20, 30, 0.8),
+    inset 0 0 0 10vmin rgba(40, 40, 55, 0.7),
+    0 0 3vmin 3vmin rgba(255, 255, 255, 0.4),
+    0 0 6vmin 6vmin rgba(200, 200, 210, 0.2);
+  pointer-events: none;
+}
+
+/* Colored speedometer arc — green / yellow / red zones */
+.speedoArc {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70vmin;
+  height: 70vmin;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 120deg,
+    #27ae60,
+    #27ae60 30deg,
+    #f39c12 30deg,
+    #f39c12 60deg,
+    #e74c3c 60deg,
+    #e74c3c 180deg
+  );
+  /* Mask out the center so only a ring is visible */
+  box-shadow: inset 0 0 0 12vmin rgba(15, 15, 20, 0.9);
+  pointer-events: none;
+}
+
+/* Tick marks — positioned at each hour around the clock */
+.tickMark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2vmin;
+  height: 6vmin;
+  background: rgba(255, 255, 255, 0.7);
+  transform-origin: bottom center;
+  border-radius: 1vmin;
+  box-shadow: 0 0 2vmin rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+}
+
+/* Hour numbers arranged along the arc */
+.hourNumber {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-family: 'Courier New', monospace;
+  font-size: 3vmin;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 0 3vmin rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Needles — speedometer-style tapered needles */
+.needle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  border-radius: 50% 50% 0 0;
+  filter: drop-shadow(0 0 2vmin rgba(0, 0, 0, 0.8));
+  pointer-events: none;
+}
+
+/* Hour needle — thick, short, chrome */
+.hourNeedle {
+  width: 3vmin;
+  height: 28vmin;
+  background: linear-gradient(
+    to right,
+    #2c3e50 0%,
+    #34495e 30%,
+    #bdc3c7 48%,
+    #ecf0f1 50%,
+    #bdc3c7 52%,
+    #34495e 70%,
+    #2c3e50 100%
+  );
+  transform-origin: bottom center;
+  z-index: 3;
+}
+
+/* Minute needle — medium, longer, metallic */
+.minuteNeedle {
+  width: 2vmin;
+  height: 38vmin;
+  background: linear-gradient(
+    to right,
+    #34495e 0%,
+    #7f8c8d 35%,
+    #ecf0f1 49%,
+    #ecf0f1 51%,
+    #7f8c8d 65%,
+    #34495e 100%
+  );
+  transform-origin: bottom center;
+  z-index: 4;
+}
+
+/* Second needle — thin red sweep hand */
+.secondNeedle {
+  width: 0.8vmin;
+  height: 42vmin;
+  background: linear-gradient(
+    to right,
+    #e74c3c 0%,
+    #e74c3c 45%,
+    #fff 50%,
+    #e74c3c 55%,
+    #e74c3c 100%
+  );
+  transform-origin: bottom center;
+  z-index: 5;
+}
+
+/* Center pivot — ball-bearing look */
+.centerPivot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8vmin;
+  height: 8vmin;
+  background: radial-gradient(
+    circle at 30% 30%,
+    #fff 0%,
+    #f0f0f0 20%,
+    #777 90%,
+    #333 100%
+  );
+  border-radius: 50%;
+  border: 2vmin solid #2c3e50;
+  box-shadow:
+    0 0 2vmin rgba(0, 0, 0, 0.5),
+    inset 0 0 2vmin rgba(0, 0, 0, 0.5);
+  z-index: 6;
+  pointer-events: none;
+}
+
+/* Visually hidden text for screen readers */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Reduced motion: pause all needle animations */
+@media (prefers-reduced-motion: reduce) {
+  .speedometerWrapper {
+    animation: none;
+  }
+
+  .needle,
+  .speedometerRim,
+  .speedoArc,
+  .tickMark,
+  .hourNumber,
+  .centerPivot {
+    animation: none;
+    transition: none;
+  }
+
+  .backgroundVideo {
+    animation: none;
+  }
+}
