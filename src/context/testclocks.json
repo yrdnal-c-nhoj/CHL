@@ -5278,7 +5278,37 @@
   {
     "path": "26-10-20",
     "date": "26-10-20",
+    "title": "Speedometer",
+    "tags": ["analog", "speedometer", "video", "cars", "transport"]
+  },
+  {
+    "path": "26-10-21",
+    "date": "26-10-21",
+    "title": "House of Virgo",
+    "tags": ["analog", "constellations", "earth", "myth", "zodiac"]
+  },
+  {
+    "path": "26-10-22",
+    "date": "26-10-22",
+    "title": "Footnote #4",
+    "tags": ["digital", "image-free", "words"]
+  },
+  {
+    "path": "26-10-23",
+    "date": "26-10-23",
     "title": "Crescent Moon",
     "tags": ["analog", "day-and-night", "moon", "night", "sky"]
+  },
+  {
+    "path": "26-10-24",
+    "date": "26-10-24",
+    "title": "House of Libra",
+    "tags": ["analog", "constellations", "myth", "zodiac"]
+  },
+  {
+    "path": "26-10-25",
+    "date": "26-10-25",
+    "title": "Footnote #5",
+    "tags": ["digital", "image-free", "words"]
   }
 ]
