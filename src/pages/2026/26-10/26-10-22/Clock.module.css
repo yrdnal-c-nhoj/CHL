@@ -5,43 +5,64 @@
   height: 100dvh;
   place-items: center;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse at 50% 42%, rgb(62 84 76 / 42%), transparent 58%),
-    #101917;
+  background-color: #101917;
+  background-image:
+    linear-gradient(
+      45deg,
+      #14201e 25%,
+      transparent 25%,
+      transparent 75%,
+      #14201e 75%
+    ),
+    linear-gradient(
+      45deg,
+      #14201e 25%,
+      transparent 25%,
+      transparent 75%,
+      #14201e 75%
+    );
+  background-position:
+    0 0,
+    1.5rem 1.5rem;
+  background-size: 3rem 3rem;
 }
 
 .dial {
   position: relative;
-  width: min(82vmin, 82dvh);
+  width: min(99vmin, 99dvh);
   aspect-ratio: 1;
   overflow: hidden;
-  border: 1.2vmin solid #354c43;
+  border: 1.2vmin solid #263b3a;
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 34% 26%, #fff9e9, transparent 48%), #e9dfc8;
+  background: #101917;
   box-shadow:
-    0 2.5vmin 7vmin rgb(0 0 0 / 42%),
-    inset 0 0 0 0.45vmin #b39a69,
-    inset 0 0 0 0.75vmin #f9f0dc,
-    inset 0 0 2.6vmin rgb(61 47 27 / 14%);
-  color: #20332d;
+    0 2.5vmin 7vmin rgb(0 0 0 / 55%),
+    inset 0 0 0 0.45vmin #192a29,
+    inset 0 0 0 0.75vmin #344947,
+    inset 0 0 2.6vmin rgb(0 0 0 / 24%);
 }
 
 .dial::before {
   position: absolute;
   inset: 3.7%;
-  border: 0.15vmin solid rgb(92 76 49 / 34%);
+  border: 0.15vmin solid rgb(166 218 208 / 22%);
   border-radius: 50%;
   content: '';
 }
 
-.hourMarker {
+.binaryNumber {
   position: absolute;
   z-index: 1;
-  width: 2.2%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: #24372f;
+  color: #eafffb;
+  font-family: 'ClockFont_26_10_22', monospace;
+  font-size: clamp(1.6rem, 5vmin, 3rem);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-shadow:
+    0 0 0.5vmin #19d8d0,
+    0 0 1.4vmin rgb(123 255 234 / 60%);
+  white-space: nowrap;
   transform: translate(-50%, -50%);
 }
 
@@ -50,59 +71,58 @@
   z-index: 2;
   bottom: 50%;
   left: 50%;
-  width: 0;
+  width: var(--hand-width);
+  margin-left: calc(var(--hand-width) / -2);
   transform-origin: 50% 100%;
 }
 
-.handCircle {
+.laserLines {
   position: absolute;
-  left: 50%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 0.15vmin rgb(255 255 255 / 20%);
-  transform: translate(-50%, -50%);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 0.5vmin var(--laser-color))
+    drop-shadow(0 0 1.4vmin var(--laser-color));
+}
+
+.laserEdge,
+.laserCore {
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+}
+
+.laserEdge {
+  stroke: var(--laser-color);
+  stroke-width: 0.24vmin;
+}
+
+.laserCore {
+  opacity: 0.9;
+  stroke: #fff;
+  stroke-width: 0.08vmin;
 }
 
 .hourHand {
+  --hand-width: 14%;
+  --laser-color: #19d8d0;
+
   height: 24%;
 }
 
-.hourHand .handCircle {
-  width: 3.2vmin;
-  background: #20372f;
-}
-
 .minuteHand {
-  height: 34%;
-}
+  --hand-width: 18%;
+  --laser-color: #38a8ff;
 
-.minuteHand .handCircle {
-  width: 2.8vmin;
-  background: #31493e;
+  height: 34%;
 }
 
 .secondHand {
   z-index: 3;
+  --hand-width: 12%;
+  --laser-color: #ff365f;
+
   height: 39%;
-}
-
-.secondHand .handCircle {
-  width: 2.4vmin;
-  background: #a34f36;
-}
-
-.pin {
-  position: absolute;
-  z-index: 4;
-  top: 50%;
-  left: 50%;
-  width: 3.2%;
-  aspect-ratio: 1;
-  border: 0.45vmin solid #f1e4c8;
-  border-radius: 50%;
-  background: #a34f36;
-  box-shadow: 0 0 0 0.35vmin #31493e;
-  transform: translate(-50%, -50%);
 }
 
 @media (prefers-reduced-motion: reduce) {
