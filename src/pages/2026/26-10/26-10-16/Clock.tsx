@@ -7,10 +7,11 @@ import type { FontConfig } from '@/types/clock';
 import type { CSSProperties } from 'react';
 import flyImage from '@/assets/images/26_images/26-10/26-10-16/fly.webp';
 import callistoImage from '@/assets/images/26_images/26-10/26-10-16/callisto.webp';
-import cowVideo from '@/assets/images/26_images/26-10/26-10-16/cow.webm';
+import cowPoster from '@/assets/images/26_images/26-10/26-10-16/cow-poster.jpg';
+import cowVideo from '@/assets/images/26_images/26-10/26-10-16/cow.mp4';
 import clockFont from '@/assets/fonts/26fonts/26-10-16.ttf?url';
 
-export const assets = [flyImage, callistoImage, cowVideo, clockFont];
+export const assets = [flyImage, callistoImage, cowPoster, cowVideo, clockFont];
 
 const fontConfig: FontConfig = {
   fontFamily: 'ClockFont_26_10_16',
@@ -49,6 +50,7 @@ const Clock = () => {
         <video
           className={`${styles.layer} ${styles.cowLayer}`}
           src={cowVideo}
+          poster={cowPoster}
           autoPlay
           loop
           muted
