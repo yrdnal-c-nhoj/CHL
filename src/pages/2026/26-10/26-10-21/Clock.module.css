@@ -26,17 +26,6 @@
   /* filter: brightness(0.58) saturate(0.76); */
 }
 
-.shade {
-  z-index: 2;
-  background:
-    radial-gradient(
-      ellipse at center,
-      transparent 5%,
-      rgba(2, 4, 9, 0.46) 100%
-    ),
-    linear-gradient(115deg, rgba(3, 9, 18, 0.3), rgba(9, 5, 14, 0.44));
-}
-
 .digitalDisplay {
   position: relative;
   z-index: 1;
@@ -56,6 +45,7 @@
   font-size: clamp(5rem, min(39vw, 68dvh), 32rem);
   letter-spacing: 0;
   text-shadow:
+    9px 0 0em rgb(162, 14, 203),
     0 0 0.12em rgba(229, 8, 8, 0.82),
     0 0 0.42em rgba(251, 9, 9, 0.58);
 }
