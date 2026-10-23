@@ -44,7 +44,6 @@ const Clock_26_10_21 = () => {
         playsInline
         aria-hidden="true"
       />
-      <div className={styles.shade} aria-hidden="true" />
       <SRTime time={time} />
 
       <div className={styles.digitalDisplay} aria-hidden="true">
