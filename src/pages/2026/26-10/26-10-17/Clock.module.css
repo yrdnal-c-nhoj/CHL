@@ -27,7 +27,7 @@
   font-family: 'Diplomata SC', cursive;
   font-size: clamp(2rem, 10vw, 7rem);
   font-variant-numeric: tabular-nums;
-  color: #898083;
+  color: #f60303;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
 }
 
