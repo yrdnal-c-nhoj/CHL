@@ -12,18 +12,13 @@
   background-size: cover;
 }
 
-.backgroundVideo,
-.shade {
+.backgroundVideo {
   position: absolute;
   inset: 0;
+  z-index: 1;
   width: 100%;
   height: 100%;
-}
-
-.backgroundVideo {
-  z-index: 1;
   object-fit: cover;
-  /* filter: brightness(0.58) saturate(0.76); */
 }
 
 .digitalDisplay {
@@ -33,7 +28,7 @@
   display: block;
   max-width: 94vw;
   padding: clamp(1rem, 4vmin, 3rem);
-  color: #ef0b0b;
+  color: #981616;
   font-family: 'ClockFont_26_10_21', monospace;
   font-variant-numeric: tabular-nums;
   line-height: 1;
