@@ -2,70 +2,80 @@ import SRTime from '@/components/SRTime';
 import { useClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
-const formatTime = (time: Date): string =>
-  `${String(time.getHours()).padStart(2, '0')}${String(
-    time.getMinutes(),
-  ).padStart(2, '0')}`;
+const hourMarkers = Array.from({ length: 12 }, (_, index) => index + 1);
 
-function Digits({ time }: { time: string }) {
+function CircleHand({
+  count,
+  angle,
+  className,
+}: {
+  count: number;
+  angle: number;
+  className: string | undefined;
+}) {
   return (
-    <div className={styles.clockDigits}>
-      {time.split('').map((digit, index) => (
-        <span className={styles.clockDigit} key={index}>
-          {digit}
-        </span>
+    <div
+      className={`${styles.hand} ${className}`}
+      style={{ transform: `translateX(-50%) rotate(${angle}deg)` }}
+    >
+      {Array.from({ length: count }, (_, index) => (
+        <span
+          className={styles.handCircle}
+          key={index}
+          style={{ top: `${100 - (index / (count - 1)) * 100}%` }}
+        />
       ))}
     </div>
   );
 }
 
-function Track({ time }: { time: string }) {
-  const COPIES = 24;
-
-  return (
-    <div className={styles.clockTrack}>
-      {[0, 1].map((copy) => (
-        <div className={styles.clockGroup} key={copy}>
-          {Array.from({ length: COPIES }, (_, index) => (
-            <Digits time={time} key={index} />
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function Clock() {
+function Clock_26_10_22() {
   const time = useClock();
-  const display = formatTime(time);
+  const seconds = time.getSeconds();
+  const minutes = time.getMinutes();
+  const hours = time.getHours() % 12;
+
+  const hourAngle = hours * 30 + minutes * 0.5;
+  const minuteAngle = minutes * 6 + seconds * 0.1;
+  const secondAngle = seconds * 6;
 
   return (
-    <main className={styles.clockField}>
+    <main className={styles.container}>
       <SRTime time={time} />
 
-      <time dateTime={time.toISOString()} hidden>
-        {display}
-      </time>
+      <div className={styles.dial} aria-hidden="true">
+        {hourMarkers.map((marker) => {
+          const angle = (marker * Math.PI) / 6 - Math.PI / 2;
 
-      <div className={styles.clockDesktop}>
-        {Array.from({ length: 5 }, (_, index) => (
-          <div className={styles.clockLane} key={index}>
-            <Track time={display} />
-          </div>
-        ))}
-      </div>
+          return (
+            <span
+              className={styles.hourMarker}
+              key={marker}
+              style={{
+                left: `${50 + 38 * Math.cos(angle)}%`,
+                top: `${50 + 38 * Math.sin(angle)}%`,
+              }}
+            />
+          );
+        })}
 
-      <div className={styles.clockMobile}>
-        {Array.from({ length: 3 }, (_, index) => (
-          <div className={styles.clockLane} key={index}>
-            <Track time={display} />
-          </div>
-        ))}
+        <CircleHand count={8} angle={hourAngle} className={styles.hourHand} />
+        <CircleHand
+          count={12}
+          angle={minuteAngle}
+          className={styles.minuteHand}
+        />
+        <CircleHand
+          count={15}
+          angle={secondAngle}
+          className={styles.secondHand}
+        />
+        <div className={styles.pin} />
       </div>
     </main>
   );
 }
 
-Clock.displayName = 'Clock_26_10_13';
+Clock_26_10_22.displayName = 'Clock_26_10_22';
 
-export default Clock;
+export default Clock_26_10_22;

@@ -1,129 +1,112 @@
-.clockField {
+.container {
   position: relative;
+  display: grid;
   width: 100%;
   height: 100dvh;
+  place-items: center;
   overflow: hidden;
-  background: #000;
-  color: #fff;
+  background:
+    radial-gradient(ellipse at 50% 42%, rgb(62 84 76 / 42%), transparent 58%),
+    #101917;
 }
 
-.clockDesktop {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 100%;
-  height: 100%;
-}
-
-.clockMobile {
-  display: none;
-}
-
-.clockLane {
-  flex: 1;
-  min-width: 0;
-  min-height: 0;
+.dial {
+  position: relative;
+  width: min(82vmin, 82dvh);
+  aspect-ratio: 1;
   overflow: hidden;
-  display: flex;
-  align-items: center;
+  border: 1.2vmin solid #354c43;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 26%, #fff9e9, transparent 48%), #e9dfc8;
+  box-shadow:
+    0 2.5vmin 7vmin rgb(0 0 0 / 42%),
+    inset 0 0 0 0.45vmin #b39a69,
+    inset 0 0 0 0.75vmin #f9f0dc,
+    inset 0 0 2.6vmin rgb(61 47 27 / 14%);
+  color: #20332d;
 }
 
-.clockTrack {
-  display: flex;
-  flex-shrink: 0;
-  width: max-content;
-  animation: clockLeft 40s linear infinite;
-  will-change: transform;
+.dial::before {
+  position: absolute;
+  inset: 3.7%;
+  border: 0.15vmin solid rgb(92 76 49 / 34%);
+  border-radius: 50%;
+  content: '';
 }
 
-.clockGroup {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: 0.5rem;
-  padding-right: 0.5rem;
+.hourMarker {
+  position: absolute;
+  z-index: 1;
+  width: 2.2%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #24372f;
+  transform: translate(-50%, -50%);
 }
 
-.clockDigits {
-  display: flex;
-  flex-shrink: 0;
-  gap: 0.15rem;
+.hand {
+  position: absolute;
+  z-index: 2;
+  bottom: 50%;
+  left: 50%;
+  width: 0;
+  transform-origin: 50% 100%;
 }
 
-.clockDigit {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 0.72em;
-  aspect-ratio: 3 / 4;
-  overflow: hidden;
-  background: #171717;
-  color: #fff;
-  font-family: monospace;
-  font-size: clamp(1.5rem, 5vw, 4rem);
-  font-variant-numeric: tabular-nums;
-  font-weight: 700;
-  line-height: 1;
+.handCircle {
+  position: absolute;
+  left: 50%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 0.15vmin rgb(255 255 255 / 20%);
+  transform: translate(-50%, -50%);
 }
 
-@keyframes clockLeft {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
+.hourHand {
+  height: 24%;
 }
 
-@media (max-width: 640px) {
-  .clockDesktop {
-    display: none;
-  }
-
-  .clockMobile {
-    display: flex;
-    width: 100%;
-    height: 100%;
-  }
-
-  .clockMobile .clockLane {
-    align-items: stretch;
-  }
-
-  .clockMobile .clockTrack {
-    flex-direction: column;
-    width: 100%;
-    height: max-content;
-    animation: clockUp 35s linear infinite;
-  }
-
-  .clockMobile .clockGroup {
-    flex-direction: column;
-    width: 100%;
-    padding-right: 0;
-    padding-bottom: 0.5rem;
-  }
-
-  .clockMobile .clockDigits {
-    gap: 0.1rem;
-  }
-
-  .clockMobile .clockDigit {
-    font-size: clamp(1.2rem, 7vw, 2.5rem);
-  }
+.hourHand .handCircle {
+  width: 3.2vmin;
+  background: #20372f;
 }
 
-@keyframes clockUp {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-50%);
-  }
+.minuteHand {
+  height: 34%;
+}
+
+.minuteHand .handCircle {
+  width: 2.8vmin;
+  background: #31493e;
+}
+
+.secondHand {
+  z-index: 3;
+  height: 39%;
+}
+
+.secondHand .handCircle {
+  width: 2.4vmin;
+  background: #a34f36;
+}
+
+.pin {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  left: 50%;
+  width: 3.2%;
+  aspect-ratio: 1;
+  border: 0.45vmin solid #f1e4c8;
+  border-radius: 50%;
+  background: #a34f36;
+  box-shadow: 0 0 0 0.35vmin #31493e;
+  transform: translate(-50%, -50%);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .clockTrack {
-    animation-duration: 120s;
+  .secondHand {
+    display: none;
   }
 }
