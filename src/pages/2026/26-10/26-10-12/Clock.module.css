@@ -6,7 +6,7 @@
   padding: 0;
   overflow: hidden;
   background: #5f5f5d;
-  --hand-color: rgb(188, 187, 187);
+  --hand-color: #ffb3d5;
 }
 
 .videoLayout {
@@ -33,7 +33,7 @@
 
   pointer-events: none;
 
-  filter: brightness(0.8) contrast(1.9) saturate(1.1);
+  filter: brightness(0.8) contrast(1.6) sepia(1) saturate(3) hue-rotate(285deg);
 }
 
 @media (min-width: 601px) {
@@ -147,7 +147,10 @@
   position: absolute;
   font-family: 'ClockFont_26_10_12', monospace, sans-serif;
   font-size: 9vmin;
-  text-shadow: 1px 1px 0 rgba(255, 255, 255);
+  color: #ffb3d5;
+  text-shadow:
+    0 0 0.4rem #ff2e93,
+    1px 1px 0 rgba(40, 0, 18, 0.85);
   transform-origin: center;
   z-index: 15;
   pointer-events: none;

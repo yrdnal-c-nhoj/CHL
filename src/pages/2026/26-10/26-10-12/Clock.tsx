@@ -4,12 +4,13 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
 import { useMemo } from 'react';
 
-import limeVideo from '@/assets/images/26_images/26-10/26-10-12/hurricane.webm';
+import hurricanePoster from '@/assets/images/26_images/26-10/26-10-12/hurricane-poster.jpg';
+import hurricaneVideo from '@/assets/images/26_images/26-10/26-10-12/hurricane.mp4';
 import font from '@/assets/fonts/26fonts/26-10-12.ttf?url';
 
 import styles from './Clock.module.css';
 
-export const assets = [limeVideo, font];
+export const assets = [hurricanePoster, hurricaneVideo, font];
 
 const fontConfig: FontConfig = {
   fontFamily: 'ClockFont_26_10_12',
@@ -39,7 +40,8 @@ const Clock_26_10_12 = () => {
     <main className={styles.container}>
       <div className={styles.videoLayout}>
         <video
-          src={limeVideo}
+          src={hurricaneVideo}
+          poster={hurricanePoster}
           autoPlay
           loop
           muted
