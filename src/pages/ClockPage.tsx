@@ -1,16 +1,18 @@
 import { Suspense, useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import ClockErrorBoundary from '@/components/ClockErrorBoundary';
 import ClockPageNav from '@/components/ClockPageNav';
 import { useDataContext } from '@/context/DataContext';
 import { useClockPage } from '@/hooks/useClockPage';
+import { getRandomClockDate } from '@/utils/randomClock';
 import styles from '@/styles/ClockPage.module.css';
 
 const asString = (v?: string | null) => v ?? '';
 
 export default function ClockPage() {
   const { date } = useParams<{ date: string }>();
+  const location = useLocation();
   const navigate = useNavigate();
   const { items } = useDataContext();
 
@@ -31,6 +33,20 @@ export default function ClockPage() {
     if ((e.target as HTMLElement).closest('a,button,input,select,textarea')) {
       return;
     }
+
+    if (
+      location.state !== null &&
+      typeof location.state === 'object' &&
+      'randomMode' in location.state &&
+      location.state.randomMode === true
+    ) {
+      const randomDate = getRandomClockDate(items, date);
+      if (randomDate) {
+        navigate(`/${randomDate}`, { state: { randomMode: true } });
+        return;
+      }
+    }
+
     navigate('/');
   };
 
