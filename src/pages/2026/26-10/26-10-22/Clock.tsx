@@ -18,14 +18,13 @@ const fontConfig: FontConfig = {
 
 const SVG_CENTER = 500;
 const SVG_VIEWBOX = '-250 -250 1500 1500';
-const BINARY_RING_COUNT = 27;
+const BINARY_RING_COUNT = 28;
 const BINARY_RING_START_RADIUS = 16;
 const BINARY_RING_SPACING = 28;
 const BINARY_CHARACTER_SPACING = 14;
 
-// One revolution every two hours.
-const BINARY_RING_ROTATION_SECONDS = 2 * 60 * 60;
-const BINARY_RING_ROTATION_MS = BINARY_RING_ROTATION_SECONDS * 1000;
+// Each ring completes one revolution every two minutes.
+const BINARY_RING_ROTATION_MS = 2 * 60 * 1000;
 
 const binaryRings = Array.from(
   { length: BINARY_RING_COUNT },
@@ -68,24 +67,34 @@ const hourPositions = Array.from({ length: 12 }, (_, index) => {
  */
 function BinaryBackground() {
   const [rotation, setRotation] = useState(0);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  );
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updatePreference = (event: MediaQueryListEvent) => {
+      setPrefersReducedMotion(event.matches);
+    };
+
+    mediaQuery.addEventListener('change', updatePreference);
+    return () => mediaQuery.removeEventListener('change', updatePreference);
+  }, []);
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
     let frameId = 0;
-    let previousTimestamp: number | undefined;
+    let animationStart: number | undefined;
 
     const animate = (timestamp: number) => {
-      if (previousTimestamp !== undefined) {
-        const elapsed = timestamp - previousTimestamp;
-
-        setRotation((current) => {
-          const next =
-            (current + (elapsed / BINARY_RING_ROTATION_MS) * 360) % 360;
-
-          return next;
-        });
-      }
-
-      previousTimestamp = timestamp;
+      animationStart ??= timestamp;
+      const elapsed = timestamp - animationStart;
+      setRotation(((elapsed / BINARY_RING_ROTATION_MS) * 360) % 360);
       frameId = window.requestAnimationFrame(animate);
     };
 
@@ -94,7 +103,7 @@ function BinaryBackground() {
     return () => {
       window.cancelAnimationFrame(frameId);
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
     <svg
