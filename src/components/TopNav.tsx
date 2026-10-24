@@ -1,9 +1,10 @@
 import { useDataContext } from '@/context/DataContext';
+import { getRandomClockDate } from '@/utils/randomClock';
 import { useState, type MouseEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from '../styles/TopNav.module.css';
 
-const TopNav =  () => {
+const TopNav = () => {
   const { items = [] } = useDataContext();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -16,11 +17,9 @@ const TopNav =  () => {
 
   const handleRandomClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault(); // Prevent navigation to the href '#'
-    if (items.length > 0) {
-      const randomItem = items[Math.floor(Math.random() * items.length)];
-      if (randomItem?.date) {
-        navigate(`/${randomItem.date}`);
-      }
+    const randomDate = getRandomClockDate(items);
+    if (randomDate) {
+      navigate(`/${randomDate}`, { state: { randomMode: true } });
     }
     closeMenu();
   };
@@ -34,7 +33,7 @@ const TopNav =  () => {
       </div>
 
       <nav className={styles.navbar}>
-        <button 
+        <button
           className={`${styles.hamburger} ${isOpen ? styles.active : ''}`}
           onClick={toggleMenu}
           aria-label="Menu"
@@ -46,29 +45,54 @@ const TopNav =  () => {
 
         <ul className={`${styles.navMenu} ${isOpen ? styles.active : ''}`}>
           <li className={styles.navItem}>
-            <Link to="/" className={`${styles.navLink} ${isActive('/') ? styles.active : ''}`} onClick={closeMenu}>HOME</Link>
-
-          </li>
-          <li className={styles.navItem}>
-            <Link to="/list" className={`${styles.navLink} ${isActive('/list') ? styles.active : ''}`} onClick={closeMenu}>LIST</Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link to="/tags" className={`${styles.navLink} ${isActive('/tags') ? styles.active : ''}`} onClick={closeMenu}>TAGS</Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link to="/contact" className={`${styles.navLink} ${isActive('/contact') ? styles.active : ''}`} onClick={closeMenu}>CONTACT</Link>
-
-          </li>
-          <li className={styles.navItem}>
-            <Link to="/today" className={`${styles.navLink} ${isActive('/today') ? styles.active : ''}`} onClick={closeMenu}>TODAY</Link>
-
+            <Link
+              to="/"
+              className={`${styles.navLink} ${isActive('/') ? styles.active : ''}`}
+              onClick={closeMenu}
+            >
+              HOME
+            </Link>
           </li>
           <li className={styles.navItem}>
             <Link
-              to="#"
-              onClick={handleRandomClick}
-              className={styles.navLink}
-            >RANDOM</Link>
+              to="/list"
+              className={`${styles.navLink} ${isActive('/list') ? styles.active : ''}`}
+              onClick={closeMenu}
+            >
+              LIST
+            </Link>
+          </li>
+          <li className={styles.navItem}>
+            <Link
+              to="/tags"
+              className={`${styles.navLink} ${isActive('/tags') ? styles.active : ''}`}
+              onClick={closeMenu}
+            >
+              TAGS
+            </Link>
+          </li>
+          <li className={styles.navItem}>
+            <Link
+              to="/contact"
+              className={`${styles.navLink} ${isActive('/contact') ? styles.active : ''}`}
+              onClick={closeMenu}
+            >
+              CONTACT
+            </Link>
+          </li>
+          <li className={styles.navItem}>
+            <Link
+              to="/today"
+              className={`${styles.navLink} ${isActive('/today') ? styles.active : ''}`}
+              onClick={closeMenu}
+            >
+              TODAY
+            </Link>
+          </li>
+          <li className={styles.navItem}>
+            <Link to="#" onClick={handleRandomClick} className={styles.navLink}>
+              RANDOM
+            </Link>
           </li>
         </ul>
       </nav>
