@@ -1,3 +1,5 @@
+import { memo, useEffect, useState } from 'react';
+
 import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -14,7 +16,131 @@ const fontConfig: FontConfig = {
   fontUrl: clockFont,
 };
 
-const hourValues = Array.from({ length: 12 }, (_, index) => index + 1);
+const SVG_CENTER = 500;
+const SVG_VIEWBOX = '-250 -250 1500 1500';
+const BINARY_RING_COUNT = 27;
+const BINARY_RING_START_RADIUS = 16;
+const BINARY_RING_SPACING = 28;
+const BINARY_CHARACTER_SPACING = 14;
+
+// One revolution every two hours.
+const BINARY_RING_ROTATION_SECONDS = 2 * 60 * 60;
+const BINARY_RING_ROTATION_MS = BINARY_RING_ROTATION_SECONDS * 1000;
+
+const binaryRings = Array.from(
+  { length: BINARY_RING_COUNT },
+  (_, ringIndex) => {
+    const radius = BINARY_RING_START_RADIUS + ringIndex * BINARY_RING_SPACING;
+    const circumference = 2 * Math.PI * radius;
+    const digitCount = Math.floor(circumference / BINARY_CHARACTER_SPACING);
+
+    const digits = Array.from({ length: digitCount }, (_, digitIndex) =>
+      (digitIndex + ringIndex) % 2 === 0 ? '0' : '1',
+    ).join('');
+
+    return {
+      id: `binary-ring-26-10-22-${radius}`,
+      circumference,
+      digits,
+      path: `M ${SVG_CENTER} ${SVG_CENTER - radius} a ${radius} ${radius} 0 1 1 0 ${radius * 2} a ${radius} ${radius} 0 1 1 0 -${radius * 2}`,
+      direction: ringIndex % 2 === 0 ? 1 : -1,
+    };
+  },
+);
+
+const hourPositions = Array.from({ length: 12 }, (_, index) => {
+  const hour = index + 1;
+  const angle = (hour * Math.PI) / 6 - Math.PI / 2;
+
+  return {
+    hour,
+    left: `${50 + 38 * Math.cos(angle)}%`,
+    top: `${50 + 38 * Math.sin(angle)}%`,
+    binary: hour.toString(2).padStart(4, '0'),
+  };
+});
+
+/**
+ * Independent background animation.
+ *
+ * requestAnimationFrame updates only this component, so the clock hands
+ * are not driven by the background's 60-fps rendering loop.
+ */
+function BinaryBackground() {
+  const [rotation, setRotation] = useState(0);
+
+  useEffect(() => {
+    let frameId = 0;
+    let previousTimestamp: number | undefined;
+
+    const animate = (timestamp: number) => {
+      if (previousTimestamp !== undefined) {
+        const elapsed = timestamp - previousTimestamp;
+
+        setRotation((current) => {
+          const next =
+            (current + (elapsed / BINARY_RING_ROTATION_MS) * 360) % 360;
+
+          return next;
+        });
+      }
+
+      previousTimestamp = timestamp;
+      frameId = window.requestAnimationFrame(animate);
+    };
+
+    frameId = window.requestAnimationFrame(animate);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+    };
+  }, []);
+
+  return (
+    <svg
+      className={styles.binaryBackground}
+      viewBox={SVG_VIEWBOX}
+      aria-hidden="true"
+      focusable="false"
+    >
+      <defs>
+        {binaryRings.map((ring) => (
+          <path d={ring.path} id={ring.id} key={ring.id} />
+        ))}
+      </defs>
+
+      {binaryRings.map((ring) => (
+        <text
+          className={styles.binaryRing}
+          key={ring.id}
+          transform={`rotate(${rotation * ring.direction} ${SVG_CENTER} ${SVG_CENTER})`}
+        >
+          <textPath
+            href={`#${ring.id}`}
+            lengthAdjust="spacing"
+            textLength={ring.circumference}
+          >
+            {ring.digits}
+          </textPath>
+        </text>
+      ))}
+    </svg>
+  );
+}
+
+function BinaryHourMarkerList() {
+  return (
+    <>
+      {hourPositions.map(({ hour, left, top, binary }) => (
+        <span className={styles.binaryNumber} key={hour} style={{ left, top }}>
+          {binary}
+        </span>
+      ))}
+    </>
+  );
+}
+
+const BinaryHourMarkers = memo(BinaryHourMarkerList);
 
 function LaserHand({
   angle,
@@ -25,7 +151,7 @@ function LaserHand({
 }) {
   return (
     <div
-      className={`${styles.hand} ${className}`}
+      className={`${styles.hand} ${className ?? ''}`}
       style={{ transform: `rotate(${angle}deg)` }}
     >
       <svg
@@ -44,39 +170,31 @@ function LaserHand({
   );
 }
 
+/**
+ * Hands use whole-second time values.
+ * No animation-frame updates are used for the hands.
+ */
 function Clock_26_10_22() {
   useSuspenseFontLoader([fontConfig]);
 
   const time = useClock();
+
   const seconds = time.getSeconds();
   const minutes = time.getMinutes();
   const hours = time.getHours() % 12;
 
-  const hourAngle = hours * 30 + minutes * 0.5;
-  const minuteAngle = minutes * 6 + seconds * 0.1;
   const secondAngle = seconds * 6;
+  const minuteAngle = minutes * 6;
+  const hourAngle = (hours + minutes / 60) * 30;
 
   return (
     <main className={styles.container}>
       <SRTime time={time} />
 
-      <div className={styles.dial} aria-hidden="true">
-        {hourValues.map((hour) => {
-          const angle = (hour * Math.PI) / 6 - Math.PI / 2;
+      <BinaryBackground />
 
-          return (
-            <span
-              className={styles.binaryNumber}
-              key={hour}
-              style={{
-                left: `${50 + 38 * Math.cos(angle)}%`,
-                top: `${50 + 38 * Math.sin(angle)}%`,
-              }}
-            >
-              {hour.toString(2).padStart(4, '0')}
-            </span>
-          );
-        })}
+      <div className={styles.dial} aria-hidden="true">
+        <BinaryHourMarkers />
 
         <LaserHand angle={hourAngle} className={styles.hourHand} />
         <LaserHand angle={minuteAngle} className={styles.minuteHand} />

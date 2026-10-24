@@ -5,26 +5,35 @@
   height: 100dvh;
   place-items: center;
   overflow: hidden;
-  background-color: #101917;
+  background-color: #813f04;
   background-image:
-    linear-gradient(
-      45deg,
-      #14201e 25%,
-      transparent 25%,
-      transparent 75%,
-      #14201e 75%
-    ),
-    linear-gradient(
-      45deg,
-      #14201e 25%,
-      transparent 25%,
-      transparent 75%,
-      #14201e 75%
-    );
-  background-position:
-    0 0,
-    1.5rem 1.5rem;
-  background-size: 3rem 3rem;
+    linear-gradient(90deg, rgb(72 168 153 / 5%) 1px, transparent 1px),
+    linear-gradient(0deg, rgb(72 168 153 / 5%) 1px, transparent 1px),
+    radial-gradient(ellipse at center, transparent 30%, rgb(0 0 0 / 38%) 100%);
+  background-size:
+    1.4rem 1.4rem,
+    1.4rem 1.4rem,
+    100% 100%;
+}
+
+.binaryBackground {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150vmax;
+  height: 150vmax;
+  overflow: visible;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.binaryRing {
+  fill: #5ffbf1;
+  font-family: 'ClockFont_26_10_22', monospace;
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  opacity: 0.45;
+  filter: drop-shadow(0 0 5px rgb(25 216 208 / 60%));
 }
 
 .dial {
@@ -32,14 +41,7 @@
   width: min(99vmin, 99dvh);
   aspect-ratio: 1;
   overflow: hidden;
-  border: 1.2vmin solid #263b3a;
   border-radius: 50%;
-  background: #101917;
-  box-shadow:
-    0 2.5vmin 7vmin rgb(0 0 0 / 55%),
-    inset 0 0 0 0.45vmin #192a29,
-    inset 0 0 0 0.75vmin #344947,
-    inset 0 0 2.6vmin rgb(0 0 0 / 24%);
 }
 
 .dial::before {
