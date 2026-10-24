@@ -20,12 +20,10 @@
 }
 
 .binaryRing {
-  fill: #6fd411;
+  fill: #45c609;
   font-family: 'ClockFont_26_10_22', monospace;
   font-size: 18px;
   letter-spacing: 0.08em;
-  opacity: 0.8;
-  filter: drop-shadow(0 0 5px rgb(25 216 208 / 60%));
 }
 
 .dial {
@@ -53,9 +51,19 @@
   font-weight: 400;
   letter-spacing: 0.08em;
   line-height: 1;
+
   text-shadow:
-    1px 0 0 #19d8d0,
+    3px 0 0 #19d8d0,
+    -3px -3px 0 #000000,
+    0 -3px 0 #000000,
+    3px -3px 0 #000000,
+    -3px 0 0 #000000,
+    3px 0 0 #000000,
+    -3px 3px 0 #000000,
+    0 3px 0 #000000,
+    3px 3px 0 #000000,
     0 0 1.4vmin rgba(255, 123, 242, 0.6);
+
   white-space: nowrap;
   transform: translate(-50%, -50%);
 }
