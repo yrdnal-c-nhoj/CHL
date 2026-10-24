@@ -5,15 +5,7 @@
   height: 100dvh;
   place-items: center;
   overflow: hidden;
-  background-color: #813f04;
-  background-image:
-    linear-gradient(90deg, rgb(72 168 153 / 5%) 1px, transparent 1px),
-    linear-gradient(0deg, rgb(72 168 153 / 5%) 1px, transparent 1px),
-    radial-gradient(ellipse at center, transparent 30%, rgb(0 0 0 / 38%) 100%);
-  background-size:
-    1.4rem 1.4rem,
-    1.4rem 1.4rem,
-    100% 100%;
+  background-color: #010a1f;
 }
 
 .binaryBackground {
@@ -28,11 +20,11 @@
 }
 
 .binaryRing {
-  fill: #5ffbf1;
+  fill: #6fd411;
   font-family: 'ClockFont_26_10_22', monospace;
   font-size: 18px;
   letter-spacing: 0.08em;
-  opacity: 0.45;
+  opacity: 0.8;
   filter: drop-shadow(0 0 5px rgb(25 216 208 / 60%));
 }
 
@@ -62,8 +54,8 @@
   letter-spacing: 0.08em;
   line-height: 1;
   text-shadow:
-    0 0 0.5vmin #19d8d0,
-    0 0 1.4vmin rgb(123 255 234 / 60%);
+    1px 0 0 #19d8d0,
+    0 0 1.4vmin rgba(255, 123, 242, 0.6);
   white-space: nowrap;
   transform: translate(-50%, -50%);
 }
@@ -96,35 +88,35 @@
 
 .laserEdge {
   stroke: var(--laser-color);
-  stroke-width: 0.24vmin;
+  stroke-width: 1vmin;
 }
 
 .laserCore {
-  opacity: 0.9;
+  /* opacity: 0.9; */
   stroke: #fff;
   stroke-width: 0.08vmin;
 }
 
 .hourHand {
-  --hand-width: 14%;
-  --laser-color: #19d8d0;
+  --hand-width: 22%;
+  --laser-color: #f2fa06;
 
   height: 24%;
 }
 
 .minuteHand {
-  --hand-width: 18%;
-  --laser-color: #38a8ff;
+  --hand-width: 14%;
+  --laser-color: #f44004;
 
-  height: 34%;
+  height: 44%;
 }
 
 .secondHand {
   z-index: 3;
-  --hand-width: 12%;
-  --laser-color: #ff365f;
+  --hand-width: 5%;
+  --laser-color: #fb0637;
 
-  height: 39%;
+  height: 50%;
 }
 
 @media (prefers-reduced-motion: reduce) {
