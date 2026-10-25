@@ -1,124 +1,147 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 
 import SRTime from '@/components/SRTime';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClock } from '@/utils/hooks';
+
+import backgroundVideo from '@/assets/images/26_images/26-10/26-10-22/numcirc.webm';
+import clockFont from '@/assets/fonts/26fonts/26-10-22.otf?url';
 
 import styles from './Clock.module.css';
 
-const SVG_CENTER = 500;
-const SVG_VIEWBOX = '-250 -250 1500 1500';
-const BINARY_RING_COUNT = 28;
-const BINARY_RING_START_RADIUS = 16;
-const BINARY_RING_SPACING = 28;
-const BINARY_CHARACTER_SPACING = 14;
+export const assets = [backgroundVideo, clockFont];
 
-// Each ring completes one revolution every two minutes.
-const BINARY_RING_ROTATION_MS = 2 * 60 * 1000;
+const fontConfig: FontConfig = {
+  fontFamily: 'ClockFont_26_10_22',
+  fontUrl: clockFont,
+};
 
-const binaryRings = Array.from(
-  { length: BINARY_RING_COUNT },
-  (_, ringIndex) => {
-    const radius = BINARY_RING_START_RADIUS + ringIndex * BINARY_RING_SPACING;
-    const circumference = 2 * Math.PI * radius;
-    const digitCount = Math.floor(circumference / BINARY_CHARACTER_SPACING);
+const hourPositions = Array.from({ length: 12 }, (_, index) => {
+  const hour = index + 1;
+  const angle = (hour * Math.PI) / 6 - Math.PI / 2;
 
-    const digits = Array.from({ length: digitCount }, (_, digitIndex) =>
-      (digitIndex + ringIndex) % 2 === 0 ? '0' : '1',
-    ).join('');
+  return {
+    hour,
+    left: `${50 + 38 * Math.cos(angle)}%`,
+    top: `${50 + 38 * Math.sin(angle)}%`,
+    binary: hour.toString(2).padStart(4, '0'),
+  };
+});
 
-    return {
-      id: `binary-ring-26-10-22-${radius}`,
-      circumference,
-      digits,
-      path: `M ${SVG_CENTER} ${SVG_CENTER - radius} a ${radius} ${radius} 0 1 1 0 ${radius * 2} a ${radius} ${radius} 0 1 1 0 -${radius * 2}`,
-      direction: ringIndex % 2 === 0 ? 1 : -1,
-    };
-  },
-);
+function BinaryHourMarkerList() {
+  return (
+    <>
+      {hourPositions.map(({ hour, left, top, binary }) => (
+        <span className={styles.binaryNumber} key={hour} style={{ left, top }}>
+          {binary}
+        </span>
+      ))}
+    </>
+  );
+}
+
+const BinaryHourMarkers = memo(BinaryHourMarkerList);
+
+function LaserHand({
+  angle,
+  className,
+}: {
+  angle: number;
+  className: string | undefined;
+}) {
+  return (
+    <div
+      className={`${styles.hand} ${className ?? ''}`}
+      style={{ transform: `rotate(${angle}deg)` }}
+    >
+      <svg
+        className={styles.laserLines}
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <line className={styles.laserEdge} x1="0" y1="100" x2="50" y2="0" />
+        <line className={styles.laserEdge} x1="100" y1="100" x2="50" y2="0" />
+        <line className={styles.laserCore} x1="0" y1="100" x2="50" y2="0" />
+        <line className={styles.laserCore} x1="100" y1="100" x2="50" y2="0" />
+      </svg>
+    </div>
+  );
+}
 
 /**
- * Rotates the decorative binary rings independently from the accessible clock time.
+ * Hands use whole-second time values.
+ * No animation-frame updates are used for the hands.
  */
-function BinaryBackground() {
-  const [rotation, setRotation] = useState(0);
+function Clock_26_10_22() {
+  useSuspenseFontLoader([fontConfig]);
+
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(
     () =>
       typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   );
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const updatePreference = (event: MediaQueryListEvent) => {
+    const updateMotionPreference = (event: MediaQueryListEvent) => {
       setPrefersReducedMotion(event.matches);
+
+      const video = videoRef.current;
+      if (!video) return;
+
+      if (event.matches) {
+        video.pause();
+      } else {
+        video.play().catch((error: unknown) => {
+          console.warn(
+            '[Clock_26_10_22] Background video playback failed:',
+            error,
+          );
+        });
+      }
     };
 
-    mediaQuery.addEventListener('change', updatePreference);
-    return () => mediaQuery.removeEventListener('change', updatePreference);
+    mediaQuery.addEventListener('change', updateMotionPreference);
+    return () =>
+      mediaQuery.removeEventListener('change', updateMotionPreference);
   }, []);
 
-  useEffect(() => {
-    if (prefersReducedMotion) {
-      return;
-    }
-
-    let frameId = 0;
-    let animationStart: number | undefined;
-
-    const animate = (timestamp: number) => {
-      animationStart ??= timestamp;
-      const elapsed = timestamp - animationStart;
-      setRotation(((elapsed / BINARY_RING_ROTATION_MS) * 360) % 360);
-      frameId = window.requestAnimationFrame(animate);
-    };
-
-    frameId = window.requestAnimationFrame(animate);
-
-    return () => {
-      window.cancelAnimationFrame(frameId);
-    };
-  }, [prefersReducedMotion]);
-
-  return (
-    <svg
-      className={styles.binaryBackground}
-      viewBox={SVG_VIEWBOX}
-      aria-hidden="true"
-      focusable="false"
-    >
-      <defs>
-        {binaryRings.map((ring) => (
-          <path d={ring.path} id={ring.id} key={ring.id} />
-        ))}
-      </defs>
-
-      {binaryRings.map((ring) => (
-        <text
-          className={styles.binaryRing}
-          key={ring.id}
-          transform={`rotate(${rotation * ring.direction} ${SVG_CENTER} ${SVG_CENTER})`}
-        >
-          <textPath
-            href={`#${ring.id}`}
-            lengthAdjust="spacing"
-            textLength={ring.circumference}
-          >
-            {ring.digits}
-          </textPath>
-        </text>
-      ))}
-    </svg>
-  );
-}
-
-function Clock_26_10_22() {
   const time = useClock();
+
+  const seconds = time.getSeconds();
+  const minutes = time.getMinutes();
+  const hours = time.getHours() % 12;
+
+  const secondAngle = seconds * 6;
+  const minuteAngle = minutes * 6;
+  const hourAngle = (hours + minutes / 60) * 30;
 
   return (
     <main className={styles.container}>
       <SRTime time={time} />
 
-      <BinaryBackground />
+      <video
+        ref={videoRef}
+        src={backgroundVideo}
+        autoPlay={!prefersReducedMotion}
+        loop
+        muted
+        playsInline
+        aria-hidden="true"
+        className={styles.backgroundVideo}
+      />
+
+      <div className={styles.dial} aria-hidden="true">
+        <BinaryHourMarkers />
+
+        <LaserHand angle={hourAngle} className={styles.hourHand} />
+        <LaserHand angle={minuteAngle} className={styles.minuteHand} />
+        <LaserHand angle={secondAngle} className={styles.secondHand} />
+      </div>
     </main>
   );
 }

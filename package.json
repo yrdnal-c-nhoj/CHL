@@ -31,12 +31,16 @@
     "@fontsource/roboto-mono": "^5.2.8",
     "@react-three/drei": "^10.7.8",
     "@react-three/fiber": "^9.7.0",
+    "@remotion/cli": "^4.0.538",
+    "ajv": "^8.20.0",
     "axios": "^1.13.2",
     "d3": "^7.9.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.4",
-    "three": "^0.180.0"
+    "remotion": "^4.0.538",
+    "three": "^0.180.0",
+    "zod": "4.5.4"
   },
   "engines": {
     "node": "22.x"
