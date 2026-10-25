@@ -7,30 +7,80 @@
   align-items: center;
   justify-content: center;
   color: #fff;
-  background-color: #8a8a8a;
+  background-color: #050505;
   background-image:
     repeating-linear-gradient(
       60deg,
-      #7a7a7a,
-      #7a7a7a 10px,
-      #a0a0a0 10px,
-      #a0a0a0 20px
+      transparent 0 17px,
+      rgb(255 255 255 / 46%) 17px 18px,
+      transparent 18px 36px
     ),
     repeating-linear-gradient(
       -60deg,
-      #9a9a9a,
-      #9a9a9a 10px,
-      #7a7a7a 10px,
-      #7a7a7a 20px
+      transparent 0 17px,
+      rgb(255 255 255 / 40%) 17px 18px,
+      transparent 18px 36px
     ),
     repeating-linear-gradient(
       0deg,
-      #808080,
-      #808080 10px,
-      #909090 10px,
-      #909090 20px
+      transparent 0 17px,
+      rgb(255 255 255 / 34%) 17px 18px,
+      transparent 18px 36px
+    ),
+    repeating-linear-gradient(
+      60deg,
+      transparent 0 35px,
+      rgb(220 220 220 / 52%) 35px 37px,
+      transparent 37px 72px
+    ),
+    repeating-linear-gradient(
+      -60deg,
+      transparent 0 35px,
+      rgb(220 220 220 / 46%) 35px 37px,
+      transparent 37px 72px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 35px,
+      rgb(220 220 220 / 40%) 35px 37px,
+      transparent 37px 72px
+    ),
+    repeating-linear-gradient(
+      60deg,
+      transparent 0 71px,
+      rgb(255 255 255 / 58%) 71px 74px,
+      transparent 74px 144px
+    ),
+    repeating-linear-gradient(
+      -60deg,
+      transparent 0 71px,
+      rgb(255 255 255 / 52%) 71px 74px,
+      transparent 74px 144px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 71px,
+      rgb(255 255 255 / 46%) 71px 74px,
+      transparent 74px 144px
+    ),
+    repeating-linear-gradient(
+      60deg,
+      transparent 0 143px,
+      rgb(180 180 180 / 56%) 143px 147px,
+      transparent 147px 288px
+    ),
+    repeating-linear-gradient(
+      -60deg,
+      transparent 0 143px,
+      rgb(180 180 180 / 50%) 143px 147px,
+      transparent 147px 288px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 143px,
+      rgb(180 180 180 / 44%) 143px 147px,
+      transparent 147px 288px
     );
-  background-size: 30px 35px;
 }
 
 .gallery {
@@ -56,30 +106,14 @@
   letter-spacing: 0.08em;
 }
 
-.digit,
-.colon {
+.digit {
   display: inline-block;
   width: 1ch;
   text-align: center;
 }
 
-.colon {
-  animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .galleryImage {
     will-change: auto;
-  }
-
-  .colon {
-    animation: none;
-    opacity: 1;
   }
 }

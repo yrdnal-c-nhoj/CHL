@@ -6,11 +6,12 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClock } from '@/utils/hooks';
 
 import backgroundVideo from '@/assets/images/26_images/26-10/26-10-22/numcirc.webm';
+import backgroundPoster from '@/assets/images/26_images/26-10/26-10-22/numcirc-poster.webp';
 import clockFont from '@/assets/fonts/26fonts/26-10-22.otf?url';
 
 import styles from './Clock.module.css';
 
-export const assets = [backgroundVideo, clockFont];
+export const assets = [backgroundVideo, backgroundPoster, clockFont];
 
 const fontConfig: FontConfig = {
   fontFamily: 'ClockFont_26_10_22',
@@ -127,6 +128,7 @@ function Clock_26_10_22() {
       <video
         ref={videoRef}
         src={backgroundVideo}
+        poster={backgroundPoster}
         autoPlay={!prefersReducedMotion}
         loop
         muted

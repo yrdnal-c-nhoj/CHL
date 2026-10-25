@@ -15,7 +15,7 @@ import image8 from '@/assets/images/26_images/26-10/26-10-15/8.webp';
 import image9 from '@/assets/images/26_images/26-10/26-10-15/9.webp';
 import image10 from '@/assets/images/26_images/26-10/26-10-15/10.webp';
 import image11 from '@/assets/images/26_images/26-10/26-10-15/11.webp';
-import font from '@/assets/fonts/26fonts/26-10-15.ttf?url';
+import font from '@/assets/fonts/26fonts/26-10-15.otf?url';
 
 export const assets = [
   image1,
@@ -49,6 +49,8 @@ const allImages = [
   image11,
 ];
 
+const DISPLAYED_IMAGE_COUNT = 18;
+
 interface DisplayedImage {
   id: number;
   src: string;
@@ -81,11 +83,11 @@ const shuffle = (array: number[]): number[] => {
   return result;
 };
 
-const createImage = (idx: number): DisplayedImage => {
+const createImage = (idx: number, id: number): DisplayedImage => {
   const src = allImages[idx];
   if (!src) throw new Error(`Image at index ${idx} not found`);
   return {
-    id: idx,
+    id,
     src,
     size: randomBetween(15, 40),
     opacity: randomBetween(0.2, 0.8),
@@ -101,10 +103,15 @@ const galleryReducer = (
   if (action.type === 'swap' && state.images.length > 0) {
     const [, ...rest] = state.images;
     const nextIdx =
-      action.cycleOrder[(9 + state.cycleCount) % allImages.length];
+      action.cycleOrder[
+        (DISPLAYED_IMAGE_COUNT + state.cycleCount) % allImages.length
+      ];
     if (nextIdx !== undefined) {
       return {
-        images: [...rest, createImage(nextIdx)],
+        images: [
+          ...rest,
+          createImage(nextIdx, DISPLAYED_IMAGE_COUNT + state.cycleCount),
+        ],
         cycleCount: state.cycleCount + 1,
       };
     }
@@ -135,10 +142,10 @@ const Clock_26_10_15 = () => {
   const cycleOrder = useMemo(() => shuffle([...allImages.keys()]), []);
   const [state, dispatch] = useReducer(galleryReducer, null, () => {
     const initial: DisplayedImage[] = [];
-    for (let i = 0; i < 9; i++) {
-      const idx = cycleOrder[i];
+    for (let i = 0; i < DISPLAYED_IMAGE_COUNT; i++) {
+      const idx = cycleOrder[i % cycleOrder.length];
       if (idx !== undefined) {
-        initial.push(createImage(idx));
+        initial.push(createImage(idx, i));
       }
     }
     return { images: initial, cycleCount: 0 };
@@ -179,12 +186,10 @@ const Clock_26_10_15 = () => {
             second: '2-digit',
             hour12: false,
           })
+          .replace(/:/g, '')
           .split('')
           .map((char, index) => (
-            <span
-              key={index}
-              className={char === ':' ? styles.colon : styles.digit}
-            >
+            <span key={index} className={styles.digit}>
               {char}
             </span>
           ))}
