@@ -116,6 +116,10 @@ const ClockPageNav = ({
 
   if (!currentItem) return null;
 
+  const sortedTags = [...(currentItem.tags ?? [])].sort((a, b) =>
+    a.localeCompare(b),
+  );
+
   return (
     <div
       className={`${styles.footerStrip} ${visible ? styles.visible : styles.hidden}`}
@@ -157,8 +161,18 @@ const ClockPageNav = ({
                 const [yy, mm, dd] = currentItem.date.split('-');
                 if (!yy || !mm || !dd) return null;
                 const months = [
-                  'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
-                  'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
+                  'JAN',
+                  'FEB',
+                  'MAR',
+                  'APR',
+                  'MAY',
+                  'JUN',
+                  'JUL',
+                  'AUG',
+                  'SEP',
+                  'OCT',
+                  'NOV',
+                  'DEC',
                 ];
                 const monthName = months[parseInt(mm, 10) - 1] || '???';
                 return `${dd} ${monthName} '${yy}`;
@@ -166,17 +180,17 @@ const ClockPageNav = ({
             </span>
             {currentItem.clockNumber !== undefined &&
               currentItem.clockNumber !== null && (
-              <span className={styles.footerNumber}>
-                #{currentItem.clockNumber}
-              </span>
-            )}
+                <span className={styles.footerNumber}>
+                  #{currentItem.clockNumber}
+                </span>
+              )}
           </div>
           <span className={styles.footerTitle}>
             {formatTitle(currentItem.title)}
           </span>
-          {currentItem.tags && currentItem.tags.length > 0 && (
+          {sortedTags.length > 0 && (
             <div className={styles.footerTags}>
-              {currentItem.tags.map((tag) => (
+              {sortedTags.map((tag) => (
                 <Link
                   key={tag}
                   to={`/tag/${tag}`}

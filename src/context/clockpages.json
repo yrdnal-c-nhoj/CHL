@@ -5281,7 +5281,6 @@
     "title": "Plasma",
     "tags": ["digital", "red", "body", "swim", "blood"]
   },
-
   {
     "path": "26-10-22",
     "date": "26-10-22",
@@ -5293,5 +5292,11 @@
     "date": "26-10-23",
     "title": "House of Virgo",
     "tags": ["digital", "constellation", "myth", "zodiac", "landscape"]
+  },
+  {
+    "path": "26-10-24",
+    "date": "26-10-24",
+    "title": "Turf",
+    "tags": ["analog", "green", "play"]
   }
 ]

@@ -49,6 +49,21 @@ describe('ClockPageNav Snapshots', () => {
     expect(container.firstChild).toMatchSnapshot();
   });
 
+  it('displays current clock tags in alphabetical order', () => {
+    const tags = ['Zebra', 'apple', 'Moon'];
+    const { container } = renderNav({
+      currentItem: { ...navItem, tags },
+    });
+
+    const displayedTags = Array.from(
+      container.querySelectorAll('a[href^="/tag/"]'),
+      (link) => link.textContent,
+    );
+
+    expect(displayedTags).toEqual(['apple', 'Moon', 'Zebra']);
+    expect(tags).toEqual(['Zebra', 'apple', 'Moon']);
+  });
+
   it('matches snapshot with no prev item', () => {
     const { container } = renderNav({ prevItem: null });
     expect(container.firstChild).toMatchSnapshot();
