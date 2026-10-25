@@ -1971,8 +1971,8 @@
   {
     "path": "25-10-25",
     "date": "25-10-25",
-    "title": "Entropy Ananlog",
-    "tags": ["analog", "gravity"]
+    "title": "Sky Clock",
+    "tags": ["clouds", "digital", "sky", "stars"]
   },
   {
     "path": "25-10-26",
@@ -5280,11 +5280,13 @@
     "date": "26-10-21",
     "title": "Plasma",
     "tags": ["digital", "red", "body", "swim", "blood"]
-  },
-  {
-    "path": "26-10-22",
-    "date": "26-10-22",
-    "title": "Binary Analog",
-    "tags": ["analog", "image-free"]
   }
+
+  // ,
+  // {
+  //   "path": "26-10-22",
+  //   "date": "26-10-22",
+  //   "title": "Binary Analog",
+  //   "tags": ["analog", "image-free"]
+  // }
 ]
