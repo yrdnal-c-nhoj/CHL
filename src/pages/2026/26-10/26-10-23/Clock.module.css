@@ -24,14 +24,14 @@
 }
 
 .wheatLayer {
-  opacity: 0.5;
+  filter: saturate(100%) hue-rotate(20deg) brightness(152%) contrast(40%);
 }
 
 .virgoLayer {
   z-index: 1;
   animation: virgoRotate 60s linear infinite;
-  filter: invert(38%) sepia(34%) saturate(400%) hue-rotate(20deg)
-    brightness(72%) contrast(90%);
+  filter: invert(38%) sepia(34%) saturate(100%) hue-rotate(70deg)
+    brightness(92%) contrast(240%);
   transform: scale(1.5);
   transform-origin: center;
 }
@@ -54,7 +54,7 @@
   text-align: center;
   text-shadow:
     0 0 0.08em #fff1bd,
-    0 0 0.3em rgba(255, 211, 113, 0.8);
+    0 0 0.3em rgba(39, 29, 6);
   white-space: nowrap;
 }
 
@@ -63,7 +63,7 @@
   grid-template-columns: 0.58em 0.58em 0.12em 0.58em 0.58em 0.12em 0.58em 0.58em;
   align-items: center;
   justify-items: center;
-  font-size: clamp(2.25rem, 12vw, 12rem);
+  font-size: clamp(5.25rem, 22vw, 22rem);
 }
 
 .digit {
