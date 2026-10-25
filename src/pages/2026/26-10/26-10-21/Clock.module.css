@@ -7,9 +7,6 @@
   justify-content: center;
   overflow: hidden;
   background: #080b12;
-  background-image: var(--background-image);
-  background-position: center;
-  background-size: cover;
 }
 
 .backgroundVideo {
