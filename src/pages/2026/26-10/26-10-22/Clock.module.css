@@ -5,23 +5,112 @@
   height: 100dvh;
   place-items: center;
   overflow: hidden;
-  background-color: #010a1f;
 }
 
-.binaryBackground {
+.backgroundVideo {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 150vmax;
-  height: 150vmax;
-  overflow: visible;
-  pointer-events: none;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dial {
+  position: relative;
+  z-index: 1;
+  width: min(99vmin, 99dvh);
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.binaryNumber {
+  position: absolute;
+  z-index: 1;
+  color: #eafffb;
+  font-family: 'ClockFont_26_10_22', monospace;
+  font-size: clamp(1.6rem, 5vmin, 3rem);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1;
+
+  text-shadow:
+    3px 0 0 #19d8d0,
+    -3px -3px 0 #000000,
+    0 -3px 0 #000000,
+    3px -3px 0 #000000,
+    -3px 0 0 #000000,
+    3px 0 0 #000000,
+    -3px 3px 0 #000000,
+    0 3px 0 #000000,
+    3px 3px 0 #000000,
+    0 0 1.4vmin rgba(255, 123, 242, 0.6);
+
+  white-space: nowrap;
   transform: translate(-50%, -50%);
 }
 
-.binaryRing {
-  fill: #45c609;
-  font-family: monospace;
-  font-size: 18px;
-  letter-spacing: 0.08em;
+.hand {
+  position: absolute;
+  z-index: 2;
+  bottom: 50%;
+  left: 50%;
+  width: var(--hand-width);
+  margin-left: calc(var(--hand-width) / -2);
+  transform-origin: 50% 100%;
+}
+
+.laserLines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 0.5vmin var(--laser-color))
+    drop-shadow(0 0 1.4vmin var(--laser-color));
+}
+
+.laserEdge,
+.laserCore {
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+}
+
+.laserEdge {
+  stroke: var(--laser-color);
+  stroke-width: 1vmin;
+}
+
+.laserCore {
+  /* opacity: 0.9; */
+  stroke: #fff;
+  stroke-width: 0.08vmin;
+}
+
+.hourHand {
+  --hand-width: 22%;
+  --laser-color: #f2fa06;
+
+  height: 24%;
+}
+
+.minuteHand {
+  --hand-width: 14%;
+  --laser-color: #f44004;
+
+  height: 44%;
+}
+
+.secondHand {
+  z-index: 3;
+  --hand-width: 5%;
+  --laser-color: #fb0637;
+
+  height: 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .secondHand {
+    display: none;
+  }
 }
