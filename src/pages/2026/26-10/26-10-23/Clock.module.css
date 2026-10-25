@@ -30,6 +30,8 @@
 .virgoLayer {
   z-index: 1;
   animation: virgoRotate 60s linear infinite;
+  filter: invert(38%) sepia(34%) saturate(400%) hue-rotate(20deg)
+    brightness(72%) contrast(90%);
   transform: scale(1.5);
   transform-origin: center;
 }
