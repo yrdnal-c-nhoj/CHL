@@ -5298,5 +5298,11 @@
     "date": "26-10-24",
     "title": "Turf",
     "tags": ["analog", "green", "monochrome", "play", "run"]
+  },
+  {
+    "path": "26-10-25",
+    "date": "26-10-25",
+    "title": "Hearth",
+    "tags": ["digital", "fire", "hot", "light", "night", "sound"]
   }
 ]
