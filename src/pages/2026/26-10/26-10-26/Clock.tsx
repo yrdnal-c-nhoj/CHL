@@ -76,8 +76,6 @@ const Clock_26_10_26 = () => {
             );
           })}
 
-          <span className={styles.brand}>BORROWED TIME</span>
-
           <span
             className={`${styles.hand} ${styles.hourHand}`}
             style={{ '--angle': `${hourAngle}deg` } as HandStyle}

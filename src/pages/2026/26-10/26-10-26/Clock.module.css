@@ -41,9 +41,7 @@
   aspect-ratio: 1;
   padding: 1.5%;
   place-items: center;
-  border: 1px solid #9d8c66;
   border-radius: 50%;
-  background: #e8dfcc;
   transform: translate(-50%, -50%) perspective(700px) rotateX(22deg)
     rotateY(-28deg);
 }
