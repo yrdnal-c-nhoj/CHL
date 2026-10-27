@@ -5304,5 +5304,41 @@
     "date": "26-10-25",
     "title": "Hearth",
     "tags": ["digital", "fire", "hot", "light", "night", "sound"]
+  },
+  {
+    "path": "26-10-26",
+    "date": "26-10-26",
+    "title": "Crescent",
+    "tags": ["analog", "day-and-night", "moon", "night", "sky"]
+  },
+  {
+    "path": "26-10-27",
+    "date": "26-10-27",
+    "title": "Footnote #4",
+    "tags": ["digital", "image-free", "words"]
+  },
+  {
+    "path": "26-10-28",
+    "date": "26-10-28",
+    "title": "Lighthouse",
+    "tags": ["analog", "day-and-night", "light", "ocean", "transport"]
+  },
+  {
+    "path": "26-10-29",
+    "date": "26-10-29",
+    "title": "Paleolithic",
+    "tags": ["analog", "animal", "cave", "drawings", "prehistoric"]
+  },
+  {
+    "path": "26-10-30",
+    "date": "26-10-30",
+    "title": "#000000",
+    "tags": ["analog", "#000000", "#ffffff", "#ff0000"]
+  },
+  {
+    "path": "26-10-31",
+    "date": "26-10-31",
+    "title": "#ffffff",
+    "tags": ["analog", "#000000", "#ffffff", "#ff0000"]
   }
 ]
