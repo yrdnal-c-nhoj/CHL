@@ -4,13 +4,20 @@ import type { CSSProperties } from 'react';
 import SRTime from '@/components/SRTime';
 import { useClockAngles } from '@/hooks/useClockAngles';
 import { useSmoothClock } from '@/utils/hooks';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 
-import laptopBillboard from '@/assets/images/26_images/26-10/26-10-26/billboard2.webp';
-import phoneBillboard from '@/assets/images/26_images/26-10/26-10-26/billboard4.webp';
+import backdropImage from '@/assets/images/26_images/26-10/26-10-26/billboard6.webp';
+import fontUrl from '@/assets/fonts/26fonts/26-10-26.otf?url';
 
 import styles from './Clock.module.css';
 
-export const assets = [laptopBillboard, phoneBillboard];
+export const assets = [backdropImage, fontUrl];
+
+const fontConfig: FontConfig = {
+  fontFamily: 'ClockFont_26_10_26',
+  fontUrl,
+};
 
 type HandStyle = CSSProperties & {
   '--angle': string;
@@ -34,29 +41,17 @@ const Clock_26_10_26 = () => {
   }, []);
 
   const time = useSmoothClock(prefersReducedMotion ? 1000 : 50);
-  const { hourAngle, minAngle, secAngle } = useClockAngles(time);
+  useSuspenseFontLoader([fontConfig]);
+  const { hourAngle, minAngle } = useClockAngles(time);
 
   return (
     <main className={styles.scene}>
       <SRTime time={time} />
 
-      <picture className={styles.backdrop}>
-        <source media="(max-width: 40rem)" srcSet={phoneBillboard} />
-        <img className={styles.backdropImage} src={laptopBillboard} alt="" />
-      </picture>
+      <img className={styles.backdropImage} src={backdropImage} alt="" />
 
       <div className={styles.clockCase} aria-hidden="true">
         <div className={styles.face}>
-          <div className={styles.ticks}>
-            {Array.from({ length: 60 }, (_, index) => (
-              <span
-                key={index}
-                className={`${styles.tick} ${index % 5 === 0 ? styles.majorTick : ''}`}
-                style={{ transform: `rotate(${index * 6}deg)` }}
-              />
-            ))}
-          </div>
-
           {Array.from({ length: 12 }, (_, index) => {
             const number = index + 1;
             const angle = (number * 30 * Math.PI) / 180;
@@ -84,11 +79,6 @@ const Clock_26_10_26 = () => {
             className={`${styles.hand} ${styles.minuteHand}`}
             style={{ '--angle': `${minAngle}deg` } as HandStyle}
           />
-          <span
-            className={`${styles.hand} ${styles.secondHand}`}
-            style={{ '--angle': `${secAngle}deg` } as HandStyle}
-          />
-          <span className={styles.centerPin} />
         </div>
       </div>
     </main>
