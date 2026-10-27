@@ -1,0 +1,725 @@
+{
+  "boundary": "26-09-01",
+  "findings": [
+    {
+      "date": "25-04-17",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2025/25-04/25-04-17/Clock.tsx",
+      "line": 36,
+      "detail": "https://fonts.googleapis.com/css2?family=Asset&display=swap"
+    },
+    {
+      "date": "25-04-18",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-04/25-04-18",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-04-26",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2025/25-04/25-04-26/Clock.module.css",
+      "line": 1,
+      "detail": "https://fonts.googleapis.com/css2?family=Stick&display=swap"
+    },
+    {
+      "date": "25-05-05",
+      "era": "legacy",
+      "code": "EXT-VIDEO",
+      "file": "src/pages/2025/25-05/25-05-05/Clock.tsx",
+      "line": 38,
+      "detail": "https://www.youtube.com/embed/JHpJvvn9hvk?autoplay=1&mute=1"
+    },
+    {
+      "date": "25-05-06",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2025/25-05/25-05-06/Clock.tsx",
+      "line": 47,
+      "detail": "https://fonts.googleapis.com/css2?${fontQuery}&display=swap"
+    },
+    {
+      "date": "25-05-10",
+      "era": "legacy",
+      "code": "EXT-FONT-FILE",
+      "file": "src/pages/2025/25-05/25-05-10/Clock.tsx",
+      "line": 31,
+      "detail": "https://fonts.gstatic.com/s/michroma/v18/PN_zRfy9qWD8fE-oB4_J_Q.woff2"
+    },
+    {
+      "date": "25-05-10",
+      "era": "legacy",
+      "code": "EXT-FONT-FILE",
+      "file": "src/pages/2025/25-05/25-05-10/Clock.tsx",
+      "line": 33,
+      "detail": "https://fonts.gstatic.com/s/economica/v13/QwZTDPRQo_oF4RxQ_N_J_Q.woff2"
+    },
+    {
+      "date": "25-05-10",
+      "era": "legacy",
+      "code": "EXT-FONT-FILE",
+      "file": "src/pages/2025/25-05/25-05-10/Clock.tsx",
+      "line": 35,
+      "detail": "https://fonts.gstatic.com/s/questrial/v19/Cf6gUOLrC6N_V5I_AQ.woff2 (hash looks truncated: probably already 404s)"
+    },
+    {
+      "date": "25-05-10",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2025/25-05/25-05-10/NumberToss.css",
+      "line": 1,
+      "detail": "https://fonts.googleapis.com/css2?family=Michroma&family=Economica&family=Questrial&display=swap"
+    },
+    {
+      "date": "25-05-10",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-05/25-05-10",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-05-12",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2025/25-05/25-05-12/Cheetah.css",
+      "line": 1,
+      "detail": "https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Monofett&family=Nanum+Gothic+Coding:wght@400;700&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap"
+    },
+    {
+      "date": "25-05-13",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-05/25-05-13",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-05-15",
+      "era": "legacy",
+      "code": "EXT-API",
+      "file": "src/pages/2025/25-05/25-05-15/Clock.tsx",
+      "line": 86,
+      "detail": "https://placehold.co/8x80/000000/000000/png"
+    },
+    {
+      "date": "25-05-15",
+      "era": "legacy",
+      "code": "EXT-API",
+      "file": "src/pages/2025/25-05/25-05-15/Clock.tsx",
+      "line": 90,
+      "detail": "https://placehold.co/6x100/000000/000000/png"
+    },
+    {
+      "date": "25-05-15",
+      "era": "legacy",
+      "code": "EXT-API",
+      "file": "src/pages/2025/25-05/25-05-15/Clock.tsx",
+      "line": 94,
+      "detail": "https://placehold.co/4x120/FF0000/FF0000/png"
+    },
+    {
+      "date": "25-05-15",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2025/25-05/25-05-15/RouletteClock.css",
+      "line": 1,
+      "detail": "https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Nanum+Gothic+Coding&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap"
+    },
+    {
+      "date": "25-05-20",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-05/25-05-20",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-05-30",
+      "era": "legacy",
+      "code": "EXT-VIDEO",
+      "file": "src/pages/2025/25-05/25-05-30/Clock.tsx",
+      "line": 41,
+      "detail": "https://www.youtube.com/embed/${ISS_LIVE_VIDEO_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${ISS_LIVE_VIDEO_ID}&rel=0&modestbranding=1"
+    },
+    {
+      "date": "25-06-06",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-06/25-06-06",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-06-07",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-06/25-06-07",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-06-08",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-06/25-06-08",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-06-16",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-06/25-06-16",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-06-17",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-06/25-06-17",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-06-18",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2025/25-06/25-06-18/index.html",
+      "line": 7,
+      "detail": "https://fonts.googleapis.com"
+    },
+    {
+      "date": "25-06-18",
+      "era": "legacy",
+      "code": "EXT-OTHER",
+      "file": "src/pages/2025/25-06/25-06-18/index.html",
+      "line": 8,
+      "detail": "https://fonts.gstatic.com"
+    },
+    {
+      "date": "25-06-18",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2025/25-06/25-06-18/index.html",
+      "line": 10,
+      "detail": "https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Monofett&family=Nanum+Gothic+Coding:wght@400;700&family=Oxanium:wght@200..800&family=Roboto+Slab:wght@100..900&display=swap"
+    },
+    {
+      "date": "25-06-18",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-06/25-06-18",
+      "line": 0,
+      "detail": "setInterval without clearInterval (also uses shared clock hook)"
+    },
+    {
+      "date": "25-06-20",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2025/25-06/25-06-20/Clock.tsx",
+      "line": 112,
+      "detail": "https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap"
+    },
+    {
+      "date": "25-06-20",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2025/25-06/25-06-20/Clock.tsx",
+      "line": 113,
+      "detail": "https://fonts.googleapis.com/css2?family=Metal+Mania:wght@400&display=swap"
+    },
+    {
+      "date": "25-06-21",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-06/25-06-21",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-06-23",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-06/25-06-23",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-06-27",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-06/25-06-27",
+      "line": 0,
+      "detail": "setInterval without clearInterval (also uses shared clock hook)"
+    },
+    {
+      "date": "25-06-28",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-06/25-06-28",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-07-05",
+      "era": "legacy",
+      "code": "EXT-VIDEO",
+      "file": "src/pages/2025/25-07/25-07-05/Clock.tsx",
+      "line": 86,
+      "detail": "https://www.youtube.com/iframe_api"
+    },
+    {
+      "date": "25-07-09",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-07/25-07-09",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-07-24",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-07/25-07-24",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-07-26",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-07/25-07-26",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-08-30",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2025/25-08/25-08-30/style.css",
+      "line": 1,
+      "detail": "https://fonts.googleapis.com/css?family=Oxygen"
+    },
+    {
+      "date": "25-09-12",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-09/25-09-12",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-09-14",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-09/25-09-14",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-09-28",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-09/25-09-28",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-10-25",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-10/25-10-25",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-11-12",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-11/25-11-12",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-11-13",
+      "era": "legacy",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2025/25-11/25-11-13",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "25-11-25",
+      "era": "legacy",
+      "code": "EXT-API",
+      "file": "src/pages/2025/25-11/25-11-25/Clock.tsx",
+      "line": 28,
+      "detail": "https://worldtimeapi.org/api/timezone/Etc/UTC"
+    },
+    {
+      "date": "25-12-03",
+      "era": "legacy",
+      "code": "EXT-API",
+      "file": "src/pages/2025/25-12/25-12-03/Clock.tsx",
+      "line": 26,
+      "detail": "https://dog.ceo/api/breeds/image/random"
+    },
+    {
+      "date": "25-12-25",
+      "era": "legacy",
+      "code": "EXT-FONT-FILE",
+      "file": "src/pages/2025/25-12/25-12-25/Clock.tsx",
+      "line": 343,
+      "detail": "https://fonts.gstatic.com/s/oxanium/v19/RrQPboN_4yJ0JmiM3N0-14HLVnA.woff2"
+    },
+    {
+      "date": "25-12-25",
+      "era": "legacy",
+      "code": "EXT-FONT-FILE",
+      "file": "src/pages/2025/25-12/25-12-25/Clock.tsx",
+      "line": 348,
+      "detail": "https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2"
+    },
+    {
+      "date": "26-01-28",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-01/26-01-28/Clock.module.css",
+      "line": 1,
+      "detail": "https://fonts.googleapis.com/css2?family=Big+Shoulders+Inline+Text:wght@800&display=swap"
+    },
+    {
+      "date": "26-02-11",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-02/26-02-11/Clock.tsx",
+      "line": 149,
+      "detail": "https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap"
+    },
+    {
+      "date": "26-02-17",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-02/26-02-17/index.html",
+      "line": 11,
+      "detail": "https://fonts.googleapis.com/css?family=Monda:400,700"
+    },
+    {
+      "date": "26-02-21",
+      "era": "legacy",
+      "code": "EXT-API",
+      "file": "src/pages/2026/26-02/26-02-21/Clock.tsx",
+      "line": 115,
+      "detail": "https://picsum.photos/seed/${Math.random("
+    },
+    {
+      "date": "26-02-24",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-02/26-02-24/Clock.tsx",
+      "line": 17,
+      "detail": "https://fonts.googleapis.com/css2?family=Dancing+Script&family=Creepster&family=Oswald&family=Cinzel+Decorative&family=Metal+Mania&family=UnifrakturMaguntia&family=ZCOOL+KuaiLe&family=Press+Start+2P&family=Space+Mono&display=swap"
+    },
+    {
+      "date": "26-02-27",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-02/26-02-27/Clock.tsx",
+      "line": 72,
+      "detail": "https://fonts.googleapis.com/css2?family=Noto+Sans+Egyptian+Hieroglyphs&display=swap"
+    },
+    {
+      "date": "26-03-05",
+      "era": "legacy",
+      "code": "EXT-FONT-FILE",
+      "file": "src/pages/2026/26-03/26-03-05/Clock.tsx",
+      "line": 11,
+      "detail": "https://fonts.gstatic.com/s/vt323/v18/pxiKyp0ihIEF2isfFJA.ttf (hash looks truncated: probably already 404s)"
+    },
+    {
+      "date": "26-03-07",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-03/26-03-07/Clock.tsx",
+      "line": 112,
+      "detail": "https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    },
+    {
+      "date": "26-03-10",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-03/26-03-10/Clock.tsx",
+      "line": 12,
+      "detail": "https://fonts.googleapis.com/css2?family=Varela+Round&display=swap"
+    },
+    {
+      "date": "26-03-11",
+      "era": "legacy",
+      "code": "EXT-API",
+      "file": "src/pages/2026/26-03/26-03-11/Clock.tsx",
+      "line": 12,
+      "detail": "https://picsum.photos/800/600?sig=${Date.now("
+    },
+    {
+      "date": "26-03-11",
+      "era": "legacy",
+      "code": "EXT-API",
+      "file": "src/pages/2026/26-03/26-03-11/Clock.tsx",
+      "line": 23,
+      "detail": "https://picsum.photos/800/600?sig=${now.getTime("
+    },
+    {
+      "date": "26-03-11",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-03/26-03-11/Clock.tsx",
+      "line": 94,
+      "detail": "https://fonts.googleapis.com/css2?family=Xanh+Mono:ital@0;1&display=swap"
+    },
+    {
+      "date": "26-03-13",
+      "era": "legacy",
+      "code": "EXT-VIDEO",
+      "file": "src/pages/2026/26-03/26-03-13/Clock.tsx",
+      "line": 61,
+      "detail": "https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&enablejsapi=1&origin=${window.location.origin}"
+    },
+    {
+      "date": "26-04-01",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-04/26-04-01/Clock.module.css",
+      "line": 1,
+      "detail": "https://fonts.googleapis.com/css2?family=Fleur+De+Leah&display=swap"
+    },
+    {
+      "date": "26-04-02",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-04/26-04-02/Clock.module.css",
+      "line": 1,
+      "detail": "https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Space+Mono:wght@700&display=swap"
+    },
+    {
+      "date": "26-04-14",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-04/26-04-14/Clock.module.css",
+      "line": 1,
+      "detail": "https://fonts.googleapis.com/css2?family=Hanalei&display=swap"
+    },
+    {
+      "date": "26-04-15",
+      "era": "legacy",
+      "code": "EXT-API",
+      "file": "src/pages/2026/26-04/26-04-15/Clock.tsx",
+      "line": 17,
+      "detail": "https://cataas.com/cat?t=${catInterval}"
+    },
+    {
+      "date": "26-04-16",
+      "era": "legacy",
+      "code": "EXT-FONT-FILE",
+      "file": "src/pages/2026/26-04/26-04-16/Clock.tsx",
+      "line": 36,
+      "detail": "https://fonts.gstatic.com/s/cabinsketch/v20/QGYpz_kZZAGACAoIxoicKmMfnw_7TAg.woff2"
+    },
+    {
+      "date": "26-04-17",
+      "era": "legacy",
+      "code": "EXT-FONT-FILE",
+      "file": "src/pages/2026/26-04/26-04-17/Clock.tsx",
+      "line": 18,
+      "detail": "https://fonts.gstatic.com/s/spacegrotesk/v16/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj7oUXskPMBBSSJLm2E.woff2"
+    },
+    {
+      "date": "26-04-21",
+      "era": "legacy",
+      "code": "EXT-FONT-FILE",
+      "file": "src/pages/2026/26-04/26-04-21/Clock.tsx",
+      "line": 45,
+      "detail": "https://fonts.gstatic.com/s/caveat/v18/Wnz6HAc5bAfYB2Q7azYYMg8.woff2"
+    },
+    {
+      "date": "26-04-29",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-04/26-04-29/Clock.module.css",
+      "line": 1,
+      "detail": "https://fonts.googleapis.com/css2?family=Rye&display=swap"
+    },
+    {
+      "date": "26-05-29",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-05/26-05-29/Clock.tsx",
+      "line": 12,
+      "detail": "https://fonts.googleapis.com/css2?family=Bentham&display=swap"
+    },
+    {
+      "date": "26-06-16",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-06/26-06-16/Clock.module.css",
+      "line": 1,
+      "detail": "https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap"
+    },
+    {
+      "date": "26-06-22",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-06/26-06-22/Clock.tsx",
+      "line": 159,
+      "detail": "https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double&display=swap"
+    },
+    {
+      "date": "26-07-07",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-07/26-07-07/Clock.tsx",
+      "line": 8,
+      "detail": "https://fonts.googleapis.com/css2?family=Rubik+Dirt&display=swap"
+    },
+    {
+      "date": "26-07-07",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-07/26-07-07/Clock.tsx",
+      "line": 47,
+      "detail": "https://fonts.googleapis.com/css2?family=Rubik+Dirt&display=swap"
+    },
+    {
+      "date": "26-07-22",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-07/26-07-22/Clock.module.css",
+      "line": 1,
+      "detail": "https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    },
+    {
+      "date": "26-07-25",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-07/26-07-25/Clock.tsx",
+      "line": 46,
+      "detail": "https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&display=swap"
+    },
+    {
+      "date": "26-07-26",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-07/26-07-26/Clock.module.css",
+      "line": 1,
+      "detail": "https://fonts.googleapis.com/css2?family=Almendra+Display&display=swap"
+    },
+    {
+      "date": "26-07-26",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-07/26-07-26/Clock.tsx",
+      "line": 17,
+      "detail": "https://fonts.googleapis.com/css2?family=Almendra+Display&display=swap"
+    },
+    {
+      "date": "26-08-09",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-08/26-08-09/Clock.module.css",
+      "line": 1,
+      "detail": "https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@900&display=swap"
+    },
+    {
+      "date": "26-08-09",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-08/26-08-09/Clock.tsx",
+      "line": 24,
+      "detail": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&display=swap"
+    },
+    {
+      "date": "26-08-17",
+      "era": "legacy",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-08/26-08-17/Clock.module.css",
+      "line": 1,
+      "detail": "https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap"
+    },
+    {
+      "date": "26-09-04",
+      "era": "current",
+      "code": "TIMER-LEAK",
+      "file": "src/pages/2026/26-09/26-09-04",
+      "line": 0,
+      "detail": "requestAnimationFrame without cancelAnimationFrame"
+    },
+    {
+      "date": "26-09-23",
+      "era": "current",
+      "code": "EXT-OTHER",
+      "file": "src/pages/2026/26-09/26-09-23/Clock.tsx",
+      "line": 20,
+      "detail": "https://fonts.gstatic.com"
+    },
+    {
+      "date": "26-09-23",
+      "era": "current",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-09/26-09-23/Clock.tsx",
+      "line": 26,
+      "detail": "https://fonts.googleapis.com/css2?family=GFS+Didot&family=Montserrat&display=swap"
+    },
+    {
+      "date": "26-10-03",
+      "era": "current",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-10/26-10-03/Clock.tsx",
+      "line": 19,
+      "detail": "https://fonts.googleapis.com/css2?family=Cormorant:wght@400;700&display=swap"
+    },
+    {
+      "date": "26-10-03",
+      "era": "current",
+      "code": "EXT-OTHER",
+      "file": "src/pages/2026/26-10/26-10-03/Clock.tsx",
+      "line": 1037,
+      "detail": "https://fonts.gstatic.com"
+    },
+    {
+      "date": "26-10-13",
+      "era": "current",
+      "code": "EXT-OTHER",
+      "file": "src/pages/2026/26-10/26-10-13/Clock.tsx",
+      "line": 26,
+      "detail": "https://fonts.gstatic.com"
+    },
+    {
+      "date": "26-10-13",
+      "era": "current",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-10/26-10-13/Clock.tsx",
+      "line": 32,
+      "detail": "https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap"
+    },
+    {
+      "date": "26-10-17",
+      "era": "current",
+      "code": "EXT-OTHER",
+      "file": "src/pages/2026/26-10/26-10-17/Clock.tsx",
+      "line": 17,
+      "detail": "https://fonts.gstatic.com"
+    },
+    {
+      "date": "26-10-17",
+      "era": "current",
+      "code": "EXT-FONT-CSS",
+      "file": "src/pages/2026/26-10/26-10-17/Clock.tsx",
+      "line": 23,
+      "detail": "https://fonts.googleapis.com/css2?family=Diplomata+SC&display=swap"
+    }
+  ]
+}
