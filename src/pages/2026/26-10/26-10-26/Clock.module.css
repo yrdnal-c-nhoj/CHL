@@ -5,7 +5,7 @@
   height: 100dvh;
   overflow: hidden;
   place-items: center;
-  background: #101522;
+  background: #ede6d4;
 }
 
 .backdrop {
@@ -22,7 +22,6 @@
   width: 100%;
   height: 100%;
   object-fit: fill;
-  /* filter: brightness(0.78) saturate(0.84); */
 }
 
 @media (max-width: 40rem) {
@@ -31,65 +30,22 @@
   }
 }
 
-.scene::before,
-.scene::after {
-  position: absolute;
-  z-index: 1;
-  width: min(120vmin, 120dvh);
-  aspect-ratio: 1;
-  border: 1px solid rgb(221 185 119 / 8%);
-  border-radius: 50%;
-  content: '';
-  pointer-events: none;
-}
-
-.scene::after {
-  width: min(145vmin, 145dvh);
-  border-color: rgb(221 185 119 / 5%);
-}
-
 .clockCase {
   position: absolute;
-  top: 41.2%;
-  left: 48.4%;
+  top: 46%;
+  left: 50%;
   z-index: 2;
   display: grid;
   box-sizing: border-box;
-  transform-style: preserve-3d;
-  width: min(30dvh, 45vw, 34rem);
+  width: min(28dvh, 40vw, 30rem);
   aspect-ratio: 1;
   padding: 1.5%;
   place-items: center;
-  border: 1px solid rgb(255 231 185 / 65%);
+  border: 1px solid #9d8c66;
   border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    #f2d59d 0%,
-    #795a32 15%,
-    #d3ad6e 30%,
-    #4f3923 48%,
-    #d7b578 70%,
-    #604727 88%,
-    #f4dca8 100%
-  );
-  box-shadow:
-    0 2vmin 8vmin rgb(0 0 0 / 48%),
-    0 0 5vmin rgb(227 184 112 / 12%),
-    inset 0 0 0 0.45vmin rgb(255 238 195 / 54%);
+  background: #e8dfcc;
   transform: translate(-50%, -50%) perspective(700px) rotateX(22deg)
     rotateY(-28deg);
-}
-
-.clockCase::before {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  border: 1px solid #43301c;
-  border-radius: 50%;
-  background: linear-gradient(120deg, #654728, #2b211a 48%, #987343);
-  /* box-shadow: 0 1vmin 1.5vmin rgb(0 0 0 / 35%); */
-  content: '';
-  transform: translate3d(2%, 4%, -1.25rem);
 }
 
 .face {
@@ -99,14 +55,8 @@
   height: 100%;
   container-type: inline-size;
   overflow: hidden;
-  border: 0.6vmin solid #51402b;
+  border: 0.5vmin solid #7a6a44;
   border-radius: 50%;
-  /* background:
-    radial-gradient(circle at 50% 43%, rgb(255 255 255 / 42%), transparent 56%),
-    linear-gradient(145deg, #f8f1df, #e5d8bc);
-  box-shadow:
-    inset 0 0 0 0.45vmin rgb(255 250 231 / 85%),
-    inset 0 0 2.6vmin rgb(72 52 27 / 20%); */
 }
 
 .ticks {
@@ -124,75 +74,71 @@
   position: absolute;
   top: 2.7%;
   left: 50%;
-  width: 0.32%;
-  height: 3.3%;
-  border-radius: 999px;
-  background: #84785f;
+  width: 0.3%;
+  height: 3.2%;
+  background: #7a6a44;
   content: '';
   transform: translateX(-50%);
 }
 
 .majorTick::before {
-  width: 0.75%;
-  height: 5.2%;
-  background: #42382a;
+  width: 0.7%;
+  height: 5%;
+  background: #5a4a2d;
 }
 
 .numeral {
   position: absolute;
-  color: #342d22;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(0.6rem, 7.5cqi, 3.6rem);
+  color: #4a3d26;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(0.5rem, 7cqi, 3rem);
   font-variant-numeric: lining-nums;
   line-height: 1;
-  text-shadow: 0 0.1em 0.12em rgb(68 49 22 / 14%);
   transform: translate(-50%, -50%);
   user-select: none;
 }
 
 .brand {
   position: absolute;
-  top: 60%;
+  top: 62%;
   left: 50%;
-  color: #81765f;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(0.45rem, 2.6cqi, 0.8rem);
-  letter-spacing: 0.24em;
+  color: #7a6a44;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(0.4rem, 2.4cqi, 0.7rem);
+  letter-spacing: 0.3em;
   transform: translateX(-50%);
   white-space: nowrap;
+  text-transform: uppercase;
 }
 
 .hand {
   position: absolute;
   bottom: 50%;
   left: 50%;
-  border-radius: 999px;
+  border-radius: 2px;
   transform: translateX(-50%) rotate(var(--angle));
   transform-origin: 50% 100%;
 }
 
 .hourHand {
   z-index: 2;
-  width: 2.2%;
-  height: 23%;
-  background: linear-gradient(90deg, #30291f, #5b4933 52%, #2d261d);
-  box-shadow: 0 0.4vmin 0.5vmin rgb(45 35 22 / 20%);
+  width: 2.5%;
+  height: 22%;
+  background: #4a3d26;
 }
 
 .minuteHand {
   z-index: 3;
-  width: 1.45%;
-  height: 34%;
-  background: linear-gradient(90deg, #55442e, #98805a 50%, #423521);
-  box-shadow: 0 0.35vmin 0.45vmin rgb(45 35 22 / 18%);
+  width: 1.6%;
+  height: 32%;
+  background: #5a4a2d;
 }
 
 .secondHand {
   z-index: 4;
-  width: 0.45%;
-  height: 39%;
-  border-radius: 999px;
-  background: #a64937;
+  width: 0.5%;
+  height: 38%;
+  background: #8a2a1e;
 }
 
 .centerPin {
@@ -200,19 +146,12 @@
   z-index: 5;
   top: 50%;
   left: 50%;
-  width: 4.2%;
+  width: 4%;
   aspect-ratio: 1;
-  border: 0.45vmin solid #f4e3c2;
+  border: 1px solid #7a6a44;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #d8b979, #6e512d 76%);
-  box-shadow: 0 0.25vmin 0.8vmin rgb(52 39 21 / 40%);
+  background: #c9b98c;
   transform: translate(-50%, -50%);
-}
-
-@media (max-width: 32rem) {
-  .clockCase {
-    width: min(30dvh, 45vw, 34rem);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
