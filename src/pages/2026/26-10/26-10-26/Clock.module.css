@@ -6,28 +6,16 @@
   overflow: hidden;
   place-items: center;
   background: #ede6d4;
-}
-
-.backdrop {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
+  --clock-color: #4a3d26;
 }
 
 .backdropImage {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: fill;
-}
-
-@media (max-width: 40rem) {
-  .backdropImage {
-    object-fit: cover;
-  }
+  object-fit: cover;
 }
 
 .clockCase {
@@ -39,11 +27,10 @@
   box-sizing: border-box;
   width: min(28dvh, 40vw, 30rem);
   aspect-ratio: 1;
-  padding: 1.5%;
   place-items: center;
   border-radius: 50%;
   transform: translate(-50%, -50%) perspective(700px) rotateX(22deg)
-    rotateY(-28deg);
+    rotateY(-28deg) rotate(3deg);
 }
 
 .face {
@@ -53,107 +40,56 @@
   height: 100%;
   container-type: inline-size;
   overflow: hidden;
-  border: 0.5vmin solid #7a6a44;
   border-radius: 50%;
-}
-
-.ticks {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-}
-
-.tick {
-  position: absolute;
-  inset: 0;
-}
-
-.tick::before {
-  position: absolute;
-  top: 2.7%;
-  left: 50%;
-  width: 0.3%;
-  height: 3.2%;
-  background: #7a6a44;
-  content: '';
-  transform: translateX(-50%);
-}
-
-.majorTick::before {
-  width: 0.7%;
-  height: 5%;
-  background: #5a4a2d;
 }
 
 .numeral {
   position: absolute;
-  color: #4a3d26;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: clamp(0.5rem, 7cqi, 3rem);
+  color: var(--clock-color);
+  font-family: 'ClockFont_26_10_26', monospace;
+  font-size: clamp(0.9rem, 14cqi, 5.5rem);
   font-variant-numeric: lining-nums;
   line-height: 1;
   transform: translate(-50%, -50%);
   user-select: none;
 }
 
-.brand {
-  position: absolute;
-  top: 62%;
-  left: 50%;
-  color: #7a6a44;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: clamp(0.4rem, 2.4cqi, 0.7rem);
-  letter-spacing: 0.3em;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
 .hand {
   position: absolute;
   bottom: 50%;
   left: 50%;
-  border-radius: 2px;
+  opacity: 0.6;
   transform: translateX(-50%) rotate(var(--angle));
   transform-origin: 50% 100%;
 }
 
+/* Outline-only clock hands */
 .hourHand {
   z-index: 2;
   width: 2.5%;
   height: 22%;
-  background: #4a3d26;
+  background: transparent;
+  border: 1px solid var(--clock-color);
+  border-radius: 2px;
 }
 
 .minuteHand {
   z-index: 3;
   width: 1.6%;
   height: 32%;
-  background: #5a4a2d;
-}
-
-.secondHand {
-  z-index: 4;
-  width: 0.5%;
-  height: 38%;
-  background: #8a2a1e;
-}
-
-.centerPin {
-  position: absolute;
-  z-index: 5;
-  top: 50%;
-  left: 50%;
-  width: 4%;
-  aspect-ratio: 1;
-  border: 1px solid #7a6a44;
-  border-radius: 50%;
-  background: #c9b98c;
-  transform: translate(-50%, -50%);
+  background: transparent;
+  border: 1px solid var(--clock-color);
+  border-radius: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .secondHand {
-    display: none;
+  .hand {
+    transition: none;
+  }
+}
+
+@media (max-width: 40rem) {
+  .clockCase {
+    width: min(36dvh, 65vw, 30rem);
   }
 }
