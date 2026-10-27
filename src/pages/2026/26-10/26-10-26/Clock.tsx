@@ -6,7 +6,7 @@ import { useClockAngles } from '@/hooks/useClockAngles';
 import { useSmoothClock } from '@/utils/hooks';
 
 import laptopBillboard from '@/assets/images/26_images/26-10/26-10-26/billboard2.webp';
-import phoneBillboard from '@/assets/images/26_images/26-10/26-10-26/billboard3.webp';
+import phoneBillboard from '@/assets/images/26_images/26-10/26-10-26/billboard4.webp';
 
 import styles from './Clock.module.css';
 
