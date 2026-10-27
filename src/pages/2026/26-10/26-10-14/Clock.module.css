@@ -13,6 +13,7 @@
   height: 100%;
   object-fit: cover;
   z-index: 0;
+  filter: contrast(1.2) brightness(1.2);
 }
 
 .clockFace {
