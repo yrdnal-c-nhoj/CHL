@@ -1,0 +1,101 @@
+{
+  "base": "http://localhost:4173",
+  "at": null,
+  "results": [
+    {
+      "date": "25-05-10",
+      "era": "legacy",
+      "viewport": "mobile",
+      "navError": null,
+      "blank": false,
+      "stuckLoading": false,
+      "noTimeElement": true,
+      "horizontalOverflow": false,
+      "external": ["https://fonts.googleapis.com", "https://fonts.gstatic.com"],
+      "failedRequests": [
+        {
+          "url": "https://fonts.gstatic.com/s/michroma/v18/PN_zRfy9qWD8fE-oB4_J_Q.woff2",
+          "reason": "HTTP 404"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/michroma/v18/PN_zRfy9qWD8fE-oB4_J_Q.woff2",
+          "reason": "net::ERR_ABORTED"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/economica/v13/QwZTDPRQo_oF4RxQ_N_J_Q.woff2",
+          "reason": "HTTP 404"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/economica/v13/QwZTDPRQo_oF4RxQ_N_J_Q.woff2",
+          "reason": "net::ERR_ABORTED"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/questrial/v19/Cf6gUOLrC6N_V5I_AQ.woff2",
+          "reason": "HTTP 404"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/questrial/v19/Cf6gUOLrC6N_V5I_AQ.woff2",
+          "reason": "net::ERR_ABORTED"
+        }
+      ],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()",
+        "Failed to load resource: the server responded with a status of 404 ()",
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "pageErrors": []
+    },
+    {
+      "date": "25-05-30",
+      "era": "legacy",
+      "viewport": "mobile",
+      "navError": null,
+      "blank": false,
+      "stuckLoading": false,
+      "noTimeElement": false,
+      "horizontalOverflow": false,
+      "external": [
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "https://googleads.g.doubleclick.net",
+        "https://jnn-pa.googleapis.com",
+        "https://static.doubleclick.net",
+        "https://www.google.com",
+        "https://www.youtube.com"
+      ],
+      "failedRequests": [
+        {
+          "url": "https://www.youtube.com/api/stats/qoe?cpn=0hea0IvTpURvwMlv&el=embedded&ns=yt&fexp=v1%2C100673025%2C-76668381%2C27058999%2C34656%2C124674%2C117689%2C9252%2C16509%2C23206%2C100702%2C15105%2C25059%2C4174%2C30446%2C18706%2C26008%2C13016%2C1191%2C14234%2C662%2C6621%2C2783%2C23826%2C9500%2C1840%2C53632%2C41205%2C20589%2C4199%2C30114%2C9181%2C20865%2C38150%2C191%2C977%2C8131%2C19625%2C14695%2C11462%2C41922%2C4009%2C357%2C9716%2C3614%2C26539%2C3844%2C18499%2C6469%2C25019%2C34471%2C2420%2C2%2C15716%2C2237%2C3465%2C8966%2C119%2C20055%2C1656%2C4595%2C9279%2C760%2C2879%2C5325%2C2266%2C4783%2C8893%2C6809%2C17596%2C8898%2C2787%2C633%2C746%2C1060%2C9%2C4270%2C164%2C287%2C3618%2C939%2C2071%2C4823%2C974%2C1795%2C734%2C2840%2C283%2C1645%2C2079%2C1475%2C7121%2C94%2C6728%2C5299%2C3089%2C5178&cl=1006950897&seq=1&event=streamingstats&docid=jKHvbJe9c_Y&cbrand=apple&cbr=HeadlessChrome&cbrver=153.0.8010.12&c=WEB_EMBEDDED_PLAYER&cver=2.20261027.01.00&cplayer=UNIPLAYER&cos=Macintosh&cosver=10_15_7&cplatform=DESKTOP&vps=0.000:N,0.000:ER&cmt=0.000:0.000,0.000:0.000&error=0.000:auth::0.000:0;a6s.0;r.This_live_stream_recording_is_not_available.&vis=0.000:0&bh=0.000:0.000&qclc=ChAwaGVhMEl2VHBVUnZ3TWx2EAE",
+          "reason": "net::ERR_ABORTED"
+        }
+      ],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "date": "26-04-21",
+      "era": "legacy",
+      "viewport": "mobile",
+      "navError": null,
+      "blank": false,
+      "stuckLoading": false,
+      "noTimeElement": true,
+      "horizontalOverflow": false,
+      "external": ["https://fonts.googleapis.com", "https://fonts.gstatic.com"],
+      "failedRequests": [
+        {
+          "url": "https://fonts.gstatic.com/s/caveat/v18/Wnz6HAc5bAfYB2Q7azYYMg8.woff2",
+          "reason": "HTTP 404"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/caveat/v18/Wnz6HAc5bAfYB2Q7azYYMg8.woff2",
+          "reason": "net::ERR_ABORTED"
+        }
+      ],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "pageErrors": []
+    }
+  ]
+}

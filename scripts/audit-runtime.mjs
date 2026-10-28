@@ -53,10 +53,13 @@ const vpNames = opt('--viewports', 'mobile,desktop').split(',').filter((v) => VI
 
 // ---- enumerate clock dates from the filesystem ----
 const PAGES = path.join(process.cwd(), 'src', 'pages');
+// List only real directories (macOS adds .DS_Store files that are not folders).
+const subdirs = (p) =>
+  fs.readdirSync(p, { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name);
 let dates = [];
-for (const y of fs.readdirSync(PAGES).filter((d) => /^\d{4}$/.test(d)))
-  for (const m of fs.readdirSync(path.join(PAGES, y)))
-    for (const d of fs.readdirSync(path.join(PAGES, y, m)))
+for (const y of subdirs(PAGES).filter((d) => /^\d{4}$/.test(d)))
+  for (const m of subdirs(path.join(PAGES, y)))
+    for (const d of subdirs(path.join(PAGES, y, m)))
       if (/^\d{2}-\d{2}-\d{2}$/.test(d)) dates.push(d);
 dates.sort();
 if (flag('--legacy')) dates = dates.filter((d) => d < BOUNDARY);
