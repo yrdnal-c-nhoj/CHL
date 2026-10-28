@@ -52,7 +52,7 @@
   align-items: center;
   white-space: nowrap;
 
-  animation: scrollLeft 80s linear infinite;
+  animation: scrollLeft 100s linear infinite;
 }
 
 /* Each row scrolls at a different speed — wider range for more variation.

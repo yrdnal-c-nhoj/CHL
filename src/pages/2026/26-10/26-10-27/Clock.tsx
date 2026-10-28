@@ -12,28 +12,24 @@ import font3 from '@/assets/fonts/26fonts/26-10-27/BeastMode-Doubleline.woff2';
 import font4 from '@/assets/fonts/26fonts/26-10-27/Bharatic-Fontw.woff2';
 import font5 from '@/assets/fonts/26fonts/26-10-27/Blacklettersh.woff2';
 import font6 from '@/assets/fonts/26fonts/26-10-27/Brother Signature.woff2';
-import font8 from '@/assets/fonts/26fonts/26-10-27/CoasterShadow.woff2';
-import font9 from '@/assets/fonts/26fonts/26-10-27/Cute Days.woff2';
-import font10 from '@/assets/fonts/26fonts/26-10-27/Dearest outline.woff2';
-import font11 from '@/assets/fonts/26fonts/26-10-27/Disko_OT.woff2';
-import font12 from '@/assets/fonts/26fonts/26-10-27/GLOREST SHUFLE OUTLINE.woff2';
-import font13 from '@/assets/fonts/26fonts/26-10-27/India Hair Style-Hollow.woff2';
-import font14 from '@/assets/fonts/26fonts/26-10-27/Maximage ZhiLong.woff2';
-import font15 from '@/assets/fonts/26fonts/26-10-27/Noe Land-Demo.woff2';
-import font16 from '@/assets/fonts/26fonts/26-10-27/PleaturesDemo-Outline.woff2';
-import font17 from '@/assets/fonts/26fonts/26-10-27/PolandCanIntoGlassMakingsItalic-Mmae.woff2';
-import font18 from '@/assets/fonts/26fonts/26-10-27/Pullstar-Holinight.woff2';
-import font19 from '@/assets/fonts/26fonts/26-10-27/Soviet2e3Di.woff2';
-import font20 from '@/assets/fonts/26fonts/26-10-27/Sweet Duck Outline.woff2';
-import font21 from '@/assets/fonts/26fonts/26-10-27/TaurusmonooutlineBold-x3ROR.woff2';
-import font22 from '@/assets/fonts/26fonts/26-10-27/TheOutline-y4qq.woff2';
-import font23 from '@/assets/fonts/26fonts/26-10-27/Thesignature.woff2';
-import font24 from '@/assets/fonts/26fonts/26-10-27/benzion3d.woff2';
-import font25 from '@/assets/fonts/26fonts/26-10-27/benzion3di.woff2';
-import font26 from '@/assets/fonts/26fonts/26-10-27/eggroll3d.woff2';
-import font27 from '@/assets/fonts/26fonts/26-10-27/eggroll3dital.woff2';
-import font28 from '@/assets/fonts/26fonts/26-10-27/nyet3d.woff2';
-import font29 from '@/assets/fonts/26fonts/26-10-27/yamamoto3d.woff2';
+import font7 from '@/assets/fonts/26fonts/26-10-27/CoasterShadow.woff2';
+import font8 from '@/assets/fonts/26fonts/26-10-27/Cute Days.woff2';
+import font9 from '@/assets/fonts/26fonts/26-10-27/Disko_OT.woff2';
+import font10 from '@/assets/fonts/26fonts/26-10-27/GLOREST SHUFLE OUTLINE.woff2';
+import font11 from '@/assets/fonts/26fonts/26-10-27/India Hair Style-Hollow.woff2';
+import font12 from '@/assets/fonts/26fonts/26-10-27/Noe Land-Demo.woff2';
+import font13 from '@/assets/fonts/26fonts/26-10-27/Please write me a song.woff2';
+import font14 from '@/assets/fonts/26fonts/26-10-27/PleaturesDemo-Outline.woff2';
+import font15 from '@/assets/fonts/26fonts/26-10-27/Pullstar-Holinight.woff2';
+import font16 from '@/assets/fonts/26fonts/26-10-27/Soviet2e3Di.woff2';
+import font17 from '@/assets/fonts/26fonts/26-10-27/Sweet Duck Outline.woff2';
+import font18 from '@/assets/fonts/26fonts/26-10-27/TheOutline-y4qq.woff2';
+import font19 from '@/assets/fonts/26fonts/26-10-27/Thesignature.woff2';
+import font20 from '@/assets/fonts/26fonts/26-10-27/benzion3d.woff2';
+import font21 from '@/assets/fonts/26fonts/26-10-27/benzion3di.woff2';
+import font22 from '@/assets/fonts/26fonts/26-10-27/eggroll3dital.woff2';
+import font23 from '@/assets/fonts/26fonts/26-10-27/nyet3d.woff2';
+import font24 from '@/assets/fonts/26fonts/26-10-27/yamamoto3d.woff2';
 
 import styles from './Clock.module.css';
 
@@ -45,6 +41,7 @@ export const assets = [
   font4,
   font5,
   font6,
+  font7,
   font8,
   font9,
   font10,
@@ -62,11 +59,6 @@ export const assets = [
   font22,
   font23,
   font24,
-  font25,
-  font26,
-  font27,
-  font28,
-  font29,
 ];
 
 const fontConfigs: FontConfig[] = [
@@ -77,28 +69,24 @@ const fontConfigs: FontConfig[] = [
   { fontFamily: 'Font_26_10_27_BHARATIC', fontUrl: font4 },
   { fontFamily: 'Font_26_10_27_BLACKLETTERSH', fontUrl: font5 },
   { fontFamily: 'Font_26_10_27_BROTHER_SIG', fontUrl: font6 },
-  { fontFamily: 'Font_26_10_27_COASTER', fontUrl: font8 },
-  { fontFamily: 'Font_26_10_27_CUTE_DAYS', fontUrl: font9 },
-  { fontFamily: 'Font_26_10_27_DEAREST', fontUrl: font10 },
-  { fontFamily: 'Font_26_10_27_DISKO', fontUrl: font11 },
-  { fontFamily: 'Font_26_10_27_GLOREST', fontUrl: font12 },
-  { fontFamily: 'Font_26_10_27_INDIA', fontUrl: font13 },
-  { fontFamily: 'Font_26_10_27_MAXIMAGE', fontUrl: font14 },
-  { fontFamily: 'Font_26_10_27_NOE_LAND', fontUrl: font15 },
-  { fontFamily: 'Font_26_10_27_PLEATURES', fontUrl: font16 },
-  { fontFamily: 'Font_26_10_27_POLAND', fontUrl: font17 },
-  { fontFamily: 'Font_26_10_27_PULLSTAR', fontUrl: font18 },
-  { fontFamily: 'Font_26_10_27_SOVIET', fontUrl: font19 },
-  { fontFamily: 'Font_26_10_27_SWEET_DUCK', fontUrl: font20 },
-  { fontFamily: 'Font_26_10_27_TAURUS', fontUrl: font21 },
-  { fontFamily: 'Font_26_10_27_THEOUTLINE', fontUrl: font22 },
-  { fontFamily: 'Font_26_10_27_THESIGNATURE', fontUrl: font23 },
-  { fontFamily: 'Font_26_10_27_BENZION3D', fontUrl: font24 },
-  { fontFamily: 'Font_26_10_27_BENZION3DI', fontUrl: font25 },
-  { fontFamily: 'Font_26_10_27_EGGROLL3D', fontUrl: font26 },
-  { fontFamily: 'Font_26_10_27_EGGROLL3DITAL', fontUrl: font27 },
-  { fontFamily: 'Font_26_10_27_NYET3D', fontUrl: font28 },
-  { fontFamily: 'Font_26_10_27_YAMAMOTO3D', fontUrl: font29 },
+  { fontFamily: 'Font_26_10_27_COASTER', fontUrl: font7 },
+  { fontFamily: 'Font_26_10_27_CUTE_DAYS', fontUrl: font8 },
+  { fontFamily: 'Font_26_10_27_DISKO', fontUrl: font9 },
+  { fontFamily: 'Font_26_10_27_GLOREST', fontUrl: font10 },
+  { fontFamily: 'Font_26_10_27_INDIA', fontUrl: font11 },
+  { fontFamily: 'Font_26_10_27_NOE_LAND', fontUrl: font12 },
+  { fontFamily: 'Font_26_10_27_PLEASE_SONG', fontUrl: font13 },
+  { fontFamily: 'Font_26_10_27_PLEATURES', fontUrl: font14 },
+  { fontFamily: 'Font_26_10_27_PULLSTAR', fontUrl: font15 },
+  { fontFamily: 'Font_26_10_27_SOVIET', fontUrl: font16 },
+  { fontFamily: 'Font_26_10_27_SWEET_DUCK', fontUrl: font17 },
+  { fontFamily: 'Font_26_10_27_THEOUTLINE', fontUrl: font18 },
+  { fontFamily: 'Font_26_10_27_THESIGNATURE', fontUrl: font19 },
+  { fontFamily: 'Font_26_10_27_BENZION3D', fontUrl: font20 },
+  { fontFamily: 'Font_26_10_27_BENZION3DI', fontUrl: font21 },
+  { fontFamily: 'Font_26_10_27_EGGROLL3DITAL', fontUrl: font22 },
+  { fontFamily: 'Font_26_10_27_NYET3D', fontUrl: font23 },
+  { fontFamily: 'Font_26_10_27_YAMAMOTO3D', fontUrl: font24 },
 ];
 
 const ROWS = 12;
@@ -198,7 +186,7 @@ const COLORS = [
 ];
 
 const SIZES_DESKTOP = ['1.2vw', '1.5vw', '1.8vw', '2.5vw', '3.5vw'];
-const SIZES_MOBILE = ['4vw', '5vw', '7vw', '9vw', '12vw'];
+const SIZES_MOBILE = ['2vw', '3vw', '5vw', '7vw', '12vw'];
 
 // Random scale range: 0.4x to 3.5x for more dramatic size variation
 const SCALES = [0.4, 0.6, 0.8, 1.0, 1.3, 1.7, 2.2, 2.8, 3.2, 3.5];
