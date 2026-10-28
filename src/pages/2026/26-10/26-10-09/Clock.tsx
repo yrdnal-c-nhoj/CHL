@@ -1,8 +1,9 @@
+import { useState, useEffect } from 'react';
 import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClock } from '@/utils/hooks';
-import font from '@/assets/fonts/26fonts/26-10-09.ttf?url';
+import font from '@/assets/fonts/26fonts/26-10-09.woff2?url';
 
 import img1 from '@/assets/images/26_images/26-10/26-10-09/windows.webp';
 import img2 from '@/assets/images/26_images/26-10/26-10-09/windows2.webp';
@@ -32,6 +33,10 @@ const backgroundImages = [
   img11,
 ];
 
+const numImages = backgroundImages.length;
+const MIN_TILES = 1;
+const MAX_TILES = 5;
+
 export const assets = [
   img1,
   img2,
@@ -54,42 +59,107 @@ const fontConfig: FontConfig = {
 
 const pad = (value: number): string => value.toString().padStart(2, '0');
 
+interface BgState {
+  imageIdx: number;
+  tiles: number;
+}
+
+const getRandomBg = (): BgState => ({
+  imageIdx: Math.floor(Math.random() * numImages),
+  tiles: Math.floor(Math.random() * MAX_TILES) + MIN_TILES,
+});
+
+const computeBgSize = (tiles: number): string => `${100 / tiles}vw auto`;
+
+interface BgPair {
+  activeLayer: 'A' | 'B';
+  a: BgState;
+  b: BgState;
+}
+
 const Clock_26_10_09 = () => {
   useSuspenseFontLoader([fontConfig]);
 
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
+    typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handler = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches);
+    };
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
   const time = useClock();
 
-  // 24-hour digital display with leading zeros: HH:MM:SS
+  // 24-hour clock, leading zeros, no AM/PM, no colons — HHMM only
   const hours = pad(time.getHours());
   const minutes = pad(time.getMinutes());
-  const seconds = pad(time.getSeconds());
 
-  // Cycle through background images — one per second
-  const numImages = backgroundImages.length;
-  const currentIndex = time.getSeconds() % numImages;
+  // Two-layer background system for cross-fade.
+  // The inactive layer silently receives the new random image+tile count,
+  // then the active flag swaps so the CSS opacity transition cross-fades.
+  const [bgPair, setBgPair] = useState<BgPair>(() => ({
+    activeLayer: 'A',
+    a: getRandomBg(),
+    b: getRandomBg(),
+  }));
+
+  // Update background every 2 seconds
+  const tick = Math.floor(time.getSeconds() / 2);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setBgPair((prev) => {
+      const newBg = getRandomBg();
+      if (prev.activeLayer === 'A') {
+        return { activeLayer: 'B', a: prev.a, b: newBg };
+      }
+      return { activeLayer: 'A', a: newBg, b: prev.b };
+    });
+  }, [tick, prefersReducedMotion]);
+
+  const activeIsA = bgPair.activeLayer === 'A';
 
   return (
     <main className={styles.container}>
-      {/* Background image layers with cross-fade */}
+      {/* Background layers with cross-fade */}
       <div className={styles.backgroundWrapper}>
-        {backgroundImages.map((src, i) => (
-          <img
-            key={i}
-            src={src}
-            alt=""
-            aria-hidden="true"
-            className={
-              i === currentIndex
-                ? styles.backgroundImageActive
-                : styles.backgroundImageInactive
-            }
-            loading={i === currentIndex ? 'eager' : 'lazy'}
-            draggable={false}
-          />
-        ))}
+        <div
+          className={
+            activeIsA
+              ? `${styles.backgroundLayer} ${styles.backgroundLayerActive}`
+              : styles.backgroundLayer
+          }
+          style={
+            {
+              backgroundImage: `url(${backgroundImages[bgPair.a.imageIdx]})`,
+              backgroundSize: computeBgSize(bgPair.a.tiles),
+            } as React.CSSProperties
+          }
+        />
+        <div
+          className={
+            !activeIsA
+              ? `${styles.backgroundLayer} ${styles.backgroundLayerActive}`
+              : styles.backgroundLayer
+          }
+          style={
+            {
+              backgroundImage: `url(${backgroundImages[bgPair.b.imageIdx]})`,
+              backgroundSize: computeBgSize(bgPair.b.tiles),
+            } as React.CSSProperties
+          }
+        />
       </div>
 
-      {/* Digital clock display (24-hour, leading zeros, no AM/PM) */}
+      {/* Digital clock display (24-hour, leading zeros, no AM/PM, no colons) */}
       <div className={styles.digitalDisplay} aria-hidden="true">
         <span className={styles.digitGroup}>
           {hours.split('').map((d, i) => (
@@ -98,18 +168,9 @@ const Clock_26_10_09 = () => {
             </span>
           ))}
         </span>
-        <span className={styles.colon}>:</span>
         <span className={styles.digitGroup}>
           {minutes.split('').map((d, i) => (
             <span key={`m${i}`} className={styles.digitBox}>
-              {d}
-            </span>
-          ))}
-        </span>
-        <span className={styles.colon}>:</span>
-        <span className={styles.digitGroup}>
-          {seconds.split('').map((d, i) => (
-            <span key={`s${i}`} className={styles.digitBox}>
               {d}
             </span>
           ))}
