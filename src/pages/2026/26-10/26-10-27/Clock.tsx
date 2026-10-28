@@ -198,10 +198,11 @@ const COLORS = [
 ];
 
 const SIZES_DESKTOP = ['1.2vw', '1.5vw', '1.8vw', '2.5vw', '3.5vw'];
-const SIZES_MOBILE = ['3vw', '4vw', '5vw', '7vw', '10vw'];
+const SIZES_MOBILE = ['5vw', '6vw', '7vw', '9vw', '12vw'];
 
 // Random scale range: 0.4x to 3.5x for more dramatic size variation
 const SCALES = [0.4, 0.6, 0.8, 1.0, 1.3, 1.7, 2.2, 2.8, 3.2, 3.5];
+const SCALES_MOBILE = [0.8, 1.0, 1.3, 1.7, 2.2, 2.8, 3.5, 4.0, 4.5, 5.0];
 
 const Clock_26_10_27 = () => {
   useSuspenseFontLoader(fontConfigs);
@@ -217,6 +218,7 @@ const Clock_26_10_27 = () => {
   }, []);
 
   const SIZES = isMobile ? SIZES_MOBILE : SIZES_DESKTOP;
+  const SCALES_USED = isMobile ? SCALES_MOBILE : SCALES;
 
   // 24-hour clock, leading zeros, no colons, no seconds — HHMM
   const hours = pad(time.getHours());
@@ -247,7 +249,7 @@ const Clock_26_10_27 = () => {
                 const font = pickRandom(fontConfigs, idx);
                 const color = pickRandom(COLORS, idx + 0.5);
                 const size = pickRandom(SIZES, idx + 0.25);
-                const scale = pickRandom(SCALES, idx + 0.8);
+                const scale = pickRandom(SCALES_USED, idx + 0.8);
 
                 return (
                   <span
