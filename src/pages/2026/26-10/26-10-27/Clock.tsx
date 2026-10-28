@@ -12,7 +12,6 @@ import font3 from '@/assets/fonts/26fonts/26-10-27/BeastMode-Doubleline.woff2';
 import font4 from '@/assets/fonts/26fonts/26-10-27/Bharatic-Fontw.woff2';
 import font5 from '@/assets/fonts/26fonts/26-10-27/Blacklettersh.woff2';
 import font6 from '@/assets/fonts/26fonts/26-10-27/Brother Signature.woff2';
-import font7 from '@/assets/fonts/26fonts/26-10-27/CHUNKY HEART OUTLINE.woff2';
 import font8 from '@/assets/fonts/26fonts/26-10-27/CoasterShadow.woff2';
 import font9 from '@/assets/fonts/26fonts/26-10-27/Cute Days.woff2';
 import font10 from '@/assets/fonts/26fonts/26-10-27/Dearest outline.woff2';
@@ -46,7 +45,6 @@ export const assets = [
   font4,
   font5,
   font6,
-  font7,
   font8,
   font9,
   font10,
@@ -79,7 +77,6 @@ const fontConfigs: FontConfig[] = [
   { fontFamily: 'Font_26_10_27_BHARATIC', fontUrl: font4 },
   { fontFamily: 'Font_26_10_27_BLACKLETTERSH', fontUrl: font5 },
   { fontFamily: 'Font_26_10_27_BROTHER_SIG', fontUrl: font6 },
-  { fontFamily: 'Font_26_10_27_CHUNKY_HEART', fontUrl: font7 },
   { fontFamily: 'Font_26_10_27_COASTER', fontUrl: font8 },
   { fontFamily: 'Font_26_10_27_CUTE_DAYS', fontUrl: font9 },
   { fontFamily: 'Font_26_10_27_DEAREST', fontUrl: font10 },
@@ -201,7 +198,7 @@ const COLORS = [
 ];
 
 const SIZES_DESKTOP = ['1.2vw', '1.5vw', '1.8vw', '2.5vw', '3.5vw'];
-const SIZES_MOBILE = ['2vw', '2.8vw', '3.5vw', '5vw', '7vw'];
+const SIZES_MOBILE = ['3vw', '4vw', '5vw', '7vw', '10vw'];
 
 // Random scale range: 0.4x to 3.5x for more dramatic size variation
 const SCALES = [0.4, 0.6, 0.8, 1.0, 1.3, 1.7, 2.2, 2.8, 3.2, 3.5];
