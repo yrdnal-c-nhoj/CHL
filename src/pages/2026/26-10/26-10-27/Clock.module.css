@@ -52,16 +52,21 @@
   align-items: center;
   white-space: nowrap;
 
-  animation: scrollLeft 120s linear infinite;
+  animation: scrollLeft 80s linear infinite;
 }
 
-/* Each row scrolls at a slightly different speed for visual variety */
+/* Each row scrolls at a different speed — wider range for more variation.
+   Base is slowest, nth-child selectors stack (last match wins). */
 .row:nth-child(2n) .rowContent {
-  animation-duration: 140s;
+  animation-duration: 130s;
 }
 
 .row:nth-child(3n) .rowContent {
-  animation-duration: 160s;
+  animation-duration: 200s;
+}
+
+.row:nth-child(4n) .rowContent {
+  animation-duration: 280s;
 }
 
 .streamItem {
