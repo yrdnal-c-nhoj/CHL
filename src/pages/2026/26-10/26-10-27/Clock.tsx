@@ -202,7 +202,7 @@ const SIZES_MOBILE = ['5vw', '6vw', '7vw', '9vw', '12vw'];
 
 // Random scale range: 0.4x to 3.5x for more dramatic size variation
 const SCALES = [0.4, 0.6, 0.8, 1.0, 1.3, 1.7, 2.2, 2.8, 3.2, 3.5];
-const SCALES_MOBILE = [0.8, 1.0, 1.3, 1.7, 2.2, 2.8, 3.5, 4.0, 4.5, 5.0];
+const SCALES_MOBILE = [0.8, 1.0, 1.5, 2.2, 3.0, 4.0, 5.0, 6.0, 7.5, 9.0];
 
 const Clock_26_10_27 = () => {
   useSuspenseFontLoader(fontConfigs);
