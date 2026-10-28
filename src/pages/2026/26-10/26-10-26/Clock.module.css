@@ -58,19 +58,44 @@
   position: absolute;
   bottom: 50%;
   left: 50%;
-  opacity: 0.8;
   transform: translateX(-50%) rotate(var(--angle));
   transform-origin: 50% 100%;
   filter: blur(0.5px);
 }
 
-/* Outline-only clock hands */
+/* Clock hands: stroke outline + stenciled fill with worn-away transparent areas */
 .hourHand {
   z-index: 2;
-  width: 5%;
+  width: 2.5%;
   height: 22%;
   background: transparent;
   border: 1px solid var(--clock-color);
+  border-radius: 2px;
+}
+
+.hourHand::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 15%, transparent 8%, var(--clock-color) 8%),
+    radial-gradient(circle at 48% 12%, transparent 6%, var(--clock-color) 6%),
+    radial-gradient(circle at 75% 10%, transparent 9%, var(--clock-color) 9%),
+    radial-gradient(circle at 35% 25%, transparent 5%, var(--clock-color) 5%),
+    radial-gradient(circle at 62% 22%, transparent 7%, var(--clock-color) 7%),
+    radial-gradient(circle at 18% 45%, transparent 6%, var(--clock-color) 6%),
+    radial-gradient(circle at 33% 50%, transparent 9%, var(--clock-color) 9%),
+    radial-gradient(circle at 55% 48%, transparent 8%, var(--clock-color) 8%),
+    radial-gradient(circle at 78% 45%, transparent 7%, var(--clock-color) 7%),
+    radial-gradient(circle at 88% 52%, transparent 5%, var(--clock-color) 5%),
+    radial-gradient(circle at 22% 68%, transparent 8%, var(--clock-color) 8%),
+    radial-gradient(circle at 42% 72%, transparent 6%, var(--clock-color) 6%),
+    radial-gradient(circle at 68% 68%, transparent 7%, var(--clock-color) 7%),
+    radial-gradient(circle at 82% 75%, transparent 5%, var(--clock-color) 5%),
+    radial-gradient(circle at 50% 85%, transparent 9%, var(--clock-color) 9%),
+    radial-gradient(circle at 30% 92%, transparent 6%, var(--clock-color) 6%),
+    radial-gradient(circle at 70% 92%, transparent 5%, var(--clock-color) 5%),
+    var(--clock-color);
   border-radius: 2px;
 }
 
@@ -80,6 +105,32 @@
   height: 32%;
   background: transparent;
   border: 1px solid var(--clock-color);
+  border-radius: 2px;
+}
+
+.minuteHand::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 15%, transparent 8%, var(--clock-color) 8%),
+    radial-gradient(circle at 48% 12%, transparent 6%, var(--clock-color) 6%),
+    radial-gradient(circle at 75% 10%, transparent 9%, var(--clock-color) 9%),
+    radial-gradient(circle at 35% 25%, transparent 5%, var(--clock-color) 5%),
+    radial-gradient(circle at 62% 22%, transparent 7%, var(--clock-color) 7%),
+    radial-gradient(circle at 18% 45%, transparent 6%, var(--clock-color) 6%),
+    radial-gradient(circle at 33% 50%, transparent 9%, var(--clock-color) 9%),
+    radial-gradient(circle at 55% 48%, transparent 8%, var(--clock-color) 8%),
+    radial-gradient(circle at 78% 45%, transparent 7%, var(--clock-color) 7%),
+    radial-gradient(circle at 88% 52%, transparent 5%, var(--clock-color) 5%),
+    radial-gradient(circle at 22% 68%, transparent 8%, var(--clock-color) 8%),
+    radial-gradient(circle at 42% 72%, transparent 6%, var(--clock-color) 6%),
+    radial-gradient(circle at 68% 68%, transparent 7%, var(--clock-color) 7%),
+    radial-gradient(circle at 82% 75%, transparent 5%, var(--clock-color) 5%),
+    radial-gradient(circle at 50% 85%, transparent 9%, var(--clock-color) 9%),
+    radial-gradient(circle at 30% 92%, transparent 6%, var(--clock-color) 6%),
+    radial-gradient(circle at 70% 92%, transparent 5%, var(--clock-color) 5%),
+    var(--clock-color);
   border-radius: 2px;
 }
 
