@@ -85,3 +85,7 @@ capture.mjs
 # Playwright output
 test-results/
 playwright-report/
+
+shots/
+audit-runtime.json
+static.json
