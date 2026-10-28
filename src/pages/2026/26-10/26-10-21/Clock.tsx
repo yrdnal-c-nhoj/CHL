@@ -34,7 +34,7 @@ const Clock_26_10_21 = () => {
         loop
         muted
         playsInline
-        preload="auto"
+        preload="none"
         aria-hidden="true"
       />
       <SRTime time={time} />
