@@ -5291,7 +5291,14 @@
     "path": "26-10-23",
     "date": "26-10-23",
     "title": "House of Virgo",
-    "tags": ["constellation", "digital", "landscape", "myth", "plant", "zodiac"]
+    "tags": [
+      "constellations",
+      "digital",
+      "landscape",
+      "myth",
+      "plant",
+      "zodiac"
+    ]
   },
   {
     "path": "26-10-24",
@@ -5309,7 +5316,7 @@
     "path": "26-10-26",
     "date": "26-10-26",
     "title": "Billboard",
-    "tags": ["analog", "landscape", "transport"]
+    "tags": ["analog", "drive", "landscape", "transport"]
   },
   {
     "path": "26-10-27",
@@ -5333,12 +5340,12 @@
     "path": "26-10-30",
     "date": "26-10-30",
     "title": "#000000",
-    "tags": ["analog", "#000000", "#ffffff", "#ff0000"]
+    "tags": ["#000000", "#ff0000", "#ffffff", "analog"]
   },
   {
     "path": "26-10-31",
     "date": "26-10-31",
     "title": "#ffffff",
-    "tags": ["analog", "#000000", "#ffffff", "#ff0000"]
+    "tags": ["#000000", "#ff0000", "#ffffff", "analog"]
   }
 ]
