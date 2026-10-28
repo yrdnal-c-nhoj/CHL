@@ -25,7 +25,7 @@
   z-index: 2;
   display: grid;
   box-sizing: border-box;
-  width: min(28dvh, 40vw, 30rem);
+  width: min(26dvh, 37vw, 28rem);
   aspect-ratio: 1;
   place-items: center;
   border-radius: 50%;
