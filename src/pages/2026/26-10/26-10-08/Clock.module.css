@@ -1,7 +1,7 @@
 .container {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background: #40403e;
 
@@ -13,7 +13,7 @@
 
   /* Animation controls */
   --slide-duration: 10s;
-  --clock-size: 100vh;
+  --clock-size: 100dvh;
   --number-size: 13vh;
   --travel-distance: 100vw;
 }
@@ -144,7 +144,7 @@
 /* Phone: substantially greater separation */
 @media (max-width: 600px) {
   .container {
-    --clock-size: 100vh;
+    --clock-size: 100dvh;
     --number-size: 9vh;
     --travel-distance: 250vw;
   }
@@ -173,5 +173,13 @@
 
   .slidingClock:nth-child(2) {
     animation-delay: 0s;
+  }
+}
+
+/* Reduced motion: pause non-essential sliding animation, keep time readable */
+@media (prefers-reduced-motion: reduce) {
+  .slidingClock {
+    animation-duration: 0s;
+    animation-play-state: paused;
   }
 }
