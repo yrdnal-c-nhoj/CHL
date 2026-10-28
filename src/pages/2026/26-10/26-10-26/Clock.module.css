@@ -25,7 +25,7 @@
   z-index: 2;
   display: grid;
   box-sizing: border-box;
-  width: min(26dvh, 37vw, 28rem);
+  width: min(28dvh, 40vw, 30rem);
   aspect-ratio: 1;
   place-items: center;
   border-radius: 50%;
@@ -143,6 +143,6 @@
 
 @media (max-width: 40rem) {
   .clockCase {
-    width: min(36dvh, 65vw, 30rem);
+    width: min(34dvh, 60vw, 28rem);
   }
 }
