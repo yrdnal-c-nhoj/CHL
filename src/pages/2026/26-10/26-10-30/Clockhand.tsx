@@ -25,16 +25,17 @@ const ClockHand = ({ className, angle, variant = 'hand' }: ClockHandProps) => {
     >
       <defs>
         <linearGradient id={`${id}-skin`} x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#a67d50" />
-          <stop offset="35%" stopColor="#d4a373" />
-          <stop offset="55%" stopColor="#f0c9a6" />
-          <stop offset="100%" stopColor="#a67d50" />
+          <stop offset="0%" stopColor="#ff007f" />
+          <stop offset="25%" stopColor="#9c27b0" />
+          <stop offset="50%" stopColor="#ff9800" />
+          <stop offset="75%" stopColor="#ffc107" />
+          <stop offset="100%" stopColor="#ff007f" />
         </linearGradient>
 
         <linearGradient id={`${id}-arm`} x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#a67d50" />
-          <stop offset="45%" stopColor="#f0c9a6" />
-          <stop offset="100%" stopColor="#a67d50" />
+          <stop offset="0%" stopColor="#00e676" />
+          <stop offset="50%" stopColor="#00b0ff" />
+          <stop offset="100%" stopColor="#00e676" />
         </linearGradient>
       </defs>
 
@@ -49,12 +50,12 @@ const ClockHand = ({ className, angle, variant = 'hand' }: ClockHandProps) => {
           Z
         "
         fill={`url(#${id}-arm)`}
-        stroke="#8c6235"
+        stroke="#ffffff"
         strokeWidth="1.5"
       />
 
       {/* Small human hand at the end of the arm */}
-      <g fill={`url(#${id}-skin)`} stroke="#8c6235" strokeWidth="1.5">
+      <g fill={`url(#${id}-skin)`} stroke="#ffffff" strokeWidth="1.5">
         {/* Palm and wrist */}
         <path
           d="
@@ -96,10 +97,10 @@ const ClockHand = ({ className, angle, variant = 'hand' }: ClockHandProps) => {
       {/* Knuckle definition */}
       <g
         fill="none"
-        stroke="#8c6235"
+        stroke="#ffffff"
         strokeWidth="1"
         strokeLinecap="round"
-        opacity="0.5"
+        opacity="0.7"
       >
         <path d="M 36 48 Q 42 52 48 48" />
         <path d="M 53 30 Q 59 34 65 30" />
@@ -111,10 +112,10 @@ const ClockHand = ({ className, angle, variant = 'hand' }: ClockHandProps) => {
       <path
         d="M 48 110 L 48 155"
         fill="none"
-        stroke="#f0c9a6"
+        stroke="#ffffff"
         strokeWidth="2"
         strokeLinecap="round"
-        opacity="0.6"
+        opacity="0.8"
       />
     </svg>
   );
