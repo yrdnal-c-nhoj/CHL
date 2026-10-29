@@ -1,0 +1,112 @@
+.container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background: #061a3b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dial {
+  position: relative;
+  width: min(90vmin, 90dvh);
+  aspect-ratio: 1;
+  z-index: 1;
+}
+
+.face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+/* Swipe image decorations — scattered across the viewport */
+.decoration {
+  position: fixed;
+  z-index: 0;
+  object-fit: contain;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* Invert colors for swipe1–4: black becomes white */
+.inverted {
+  filter: invert(1);
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 2;
+}
+
+/* Shorter arm */
+.hourHand {
+  width: 8%;
+  height: 34%;
+  margin-left: -4%;
+}
+
+/* Longer arm */
+.minuteHand {
+  width: 6%;
+  height: 46%;
+  margin-left: -3%;
+}
+
+/* Long, skinny arm with a small hand at its tip */
+.secondHand {
+  width: 4%;
+  height: 55%;
+  margin-left: -2%;
+  z-index: 3;
+}
+
+/* Center hand — same hand shape from ClockHand, rotates CCW once per 60 seconds */
+.centerHand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: 50% 50%;
+  pointer-events: none;
+  z-index: 4;
+  width: 12%;
+  aspect-ratio: 1;
+}
+
+.centerHand svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Make hands more visible on smaller screens */
+@media (max-width: 768px) {
+  .hourHand {
+    width: 10%;
+    height: 38%;
+    margin-left: -5%;
+  }
+
+  .minuteHand {
+    width: 8%;
+    height: 50%;
+    margin-left: -4%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .secondHand {
+    display: none;
+  }
+}
