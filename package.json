@@ -40,7 +40,7 @@
     "react-router-dom": "^7.18.4",
     "remotion": "^4.0.538",
     "three": "^0.180.0",
-    "zod": "4.5.4"
+    "zod": "4.6.6"
   },
   "engines": {
     "node": "22.x"
