@@ -55,7 +55,7 @@ interface DecorationSpec {
 
 /* ==========================================================================
  * Clock_26_10_28
- * Analog clock with stylized human hands + decorative swipe images
+ * Analog clock with stylized SVG hands + decorative swipe images
  * placed at random positions behind the dial.
  * Time: useSmoothClock(16)
  * ========================================================================== */
