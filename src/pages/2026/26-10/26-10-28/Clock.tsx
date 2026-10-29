@@ -50,7 +50,6 @@ interface DecorationSpec {
   top: number;
   size: number;
   rotation: number;
-  opacity: number;
 }
 
 /* ==========================================================================
@@ -64,16 +63,6 @@ const Clock_26_10_28 = () => {
   const time = useSmoothClock(16);
   const { hourAngle, minAngle, secAngle } = useClockAngles(time);
 
-  const ticks = useMemo(
-    () =>
-      Array.from({ length: 60 }, (_, i) => ({
-        index: i,
-        isMajor: i % 5 === 0,
-        rotation: i * 6,
-      })),
-    [],
-  );
-
   // Generate random positions for the swipe images (stable via seeded PRNG)
   const decorations = useMemo<DecorationSpec[]>(() => {
     const rng = mulberry32(0x261028);
@@ -83,7 +72,6 @@ const Clock_26_10_28 = () => {
       top: rng() * 70 + 15, // 15%–85%
       size: rng() * 12 + 10, // 10%–22%
       rotation: rng() * 360, // 0°–360°
-      opacity: rng() * 0.25 + 0.1, // 10%–35%
     }));
   }, []);
 
@@ -93,18 +81,6 @@ const Clock_26_10_28 = () => {
 
       <div className={styles.dial} aria-hidden="true">
         <div className={styles.face}>
-          {ticks.map((tick) => (
-            <div
-              key={tick.index}
-              className={
-                tick.isMajor
-                  ? `${styles.tick} ${styles.majorTick}`
-                  : styles.tick
-              }
-              style={{ transform: `rotate(${tick.rotation}deg)` }}
-            />
-          ))}
-
           {/* Decorative swipe images at random positions */}
           {decorations.map((d, i) => (
             <img
@@ -118,7 +94,6 @@ const Clock_26_10_28 = () => {
                 width: `${d.size}%`,
                 height: `${d.size}%`,
                 transform: `rotate(${d.rotation}deg)`,
-                opacity: d.opacity,
               }}
             />
           ))}
@@ -141,9 +116,6 @@ const Clock_26_10_28 = () => {
             angle={secAngle}
             variant="finger"
           />
-
-          {/* Center pivot */}
-          <div className={styles.centerPivot} />
         </div>
       </div>
     </main>
