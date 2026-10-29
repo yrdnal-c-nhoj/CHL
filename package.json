@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@fontsource/roboto-mono": "^5.2.8",
-    "@react-three/drei": "^10.7.8",
+    "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "^9.7.0",
     "@remotion/cli": "^4.0.538",
     "ajv": "^8.20.0",
