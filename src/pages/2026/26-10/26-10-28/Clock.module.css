@@ -1,0 +1,129 @@
+:root {
+  --clock-bg: #0a0f1a;
+  --face-bg: #131b2c;
+  --face-rim: #3b4a74;
+  --major-tick: #7a92c9;
+  --minor-tick: #3b4a74;
+  --hour-hand: #e8eefc;
+  --minute-hand: #cdd6f0;
+  --second-hand: #f38ba8;
+  --center-pivot: #2c3a63;
+  --glow: rgba(248, 241, 231, 0.12);
+}
+
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--clock-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dial {
+  position: relative;
+  width: min(90vmin, 90dvh);
+  aspect-ratio: 1;
+  z-index: 2;
+}
+
+.face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--face-bg) 0%,
+    #0d1629 60%,
+    #0a0f1a 100%
+  );
+  border: 1.2vmin solid var(--face-rim);
+  box-shadow:
+    inset 0 0 2vmin rgba(0, 0, 0, 0.4),
+    0 0 6vmin var(--glow);
+  box-sizing: border-box;
+}
+
+.tick {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.35%;
+  height: 7.5%;
+  background: var(--minor-tick);
+  transform-origin: 50% 100%;
+  transform: rotate(0deg);
+  margin-top: -0.1%;
+  border-radius: 0.2vmin;
+  pointer-events: none;
+}
+
+.majorTick {
+  height: 12%;
+  width: 0.5%;
+  background: var(--major-tick);
+  box-shadow: 0 0 0.8vmin rgba(122, 146, 201, 0.6);
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+  border-radius: 0.3vmin;
+  pointer-events: none;
+}
+
+.hourHand {
+  width: 2.4%;
+  height: 26%;
+  margin-left: -1.2%;
+  background: var(--hour-hand);
+  box-shadow:
+    0 0 1.5vmin rgba(232, 238, 252, 0.4),
+    inset 0.3vmin -0.3vmin 0 rgba(0, 0, 0, 0.25);
+}
+
+.minuteHand {
+  width: 1.6%;
+  height: 44%;
+  margin-left: -0.8%;
+  background: var(--minute-hand);
+  box-shadow:
+    0 0 1.5vmin rgba(205, 214, 240, 0.4),
+    inset 0.2vmin -0.2vmin 0 rgba(0, 0, 0, 0.25);
+}
+
+.secondHand {
+  width: 0.8%;
+  height: 54%;
+  margin-left: -0.4%;
+  background: var(--second-hand);
+  box-shadow: 0 0 1.2vmin rgba(243, 139, 168, 0.5);
+  z-index: 2;
+}
+
+.centerPivot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1.4vmin solid var(--center-pivot);
+  background: radial-gradient(circle at 30% 30%, #7a92c9, #2c3a63 60%, #1a2744);
+  box-shadow:
+    0 0 1.5vmin rgba(122, 146, 201, 0.5),
+    inset 0 0 0.8vmin rgba(0, 0, 0, 0.4);
+  z-index: 3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .secondHand {
+    display: none;
+  }
+}
