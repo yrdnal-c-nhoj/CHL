@@ -1,10 +1,11 @@
-import { Suspense, useMemo } from 'react';
+import { Suspense, useCallback, useMemo, useRef } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import ClockErrorBoundary from '@/components/ClockErrorBoundary';
 import ClockPageNav from '@/components/ClockPageNav';
 import { useDataContext } from '@/context/DataContext';
 import { useClockPage } from '@/hooks/useClockPage';
+import { useSwipeNavigation } from '@/hooks/useSwipeNavigation';
 import { getRandomClockDate } from '@/utils/randomClock';
 import styles from '@/styles/ClockPage.module.css';
 
@@ -27,9 +28,35 @@ export default function ClockPage() {
     };
   }, [date, items]);
 
+  // Swipe left/right navigates the clock sequence. We use `replace` so the
+  // exploratory swipe trail does not flood the browser history; the back
+  // button still returns to the real previous page (home, list, etc.).
+  const handleSwipe = useCallback(
+    (direction: 'left' | 'right') => {
+      // swipe left -> advance to the next (later) clock;
+      // swipe right -> return to the previous (earlier) clock.
+      const target = direction === 'left' ? nextItem : prevItem;
+      navigate(target ? `/${target.date}` : '/', { replace: true });
+    },
+    [nextItem, prevItem, navigate],
+  );
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const swipeConsumedRef = useSwipeNavigation(containerRef, {
+    onSwipe: handleSwipe,
+    exclude: '[data-nav]',
+  });
+
   // Click-anywhere-to-go-home stays as a mouse convenience; keyboard and
   // screen-reader users get the real link below.
   const handleBackgroundClick = (e: React.MouseEvent) => {
+    // A swipe was just performed: the trailing click that a touchend
+    // synthesises must NOT also navigate home.
+    if (swipeConsumedRef.current) {
+      swipeConsumedRef.current = false;
+      return;
+    }
+
     if ((e.target as HTMLElement).closest('a,button,input,select,textarea')) {
       return;
     }
@@ -52,7 +79,11 @@ export default function ClockPage() {
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-    <div className={styles.container} onClick={handleBackgroundClick}>
+    <div
+      ref={containerRef}
+      className={styles.container}
+      onClick={handleBackgroundClick}
+    >
       <a href="/" className={styles.srOnly}>
         Return to home
       </a>
