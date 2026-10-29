@@ -1,0 +1,19 @@
+                                                        
+   version: 2                                                                   
+                                                                                
+   jobs:                                                                        
+                                                                                
+     snyk:                                                                      
+                                                                                
+       runs-on: ubuntu-latest                                                   
+                                                                                
+       steps:                                                                   
+                                                                                
+         - name: Checkout code                                                  
+                                                                                
+           uses: actions/checkout@v2                                            
+                                                                                
+         - name: Run Snyk                                                       
+                                                                                
+           run: snyk test                                                       
+                               

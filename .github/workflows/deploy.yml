@@ -60,6 +60,6 @@
                                                                                 
              vercel_token: ${{ secrets.VERCEL_TOKEN }}                          
                                                                                 
-             project_name: your-vercel-project-name                             
+             project_name: chl                            
                                                                                 
-             alias: your-vercel-alias   
+             alias: chl-git-main-johns-projects-75897040.vercel.app
