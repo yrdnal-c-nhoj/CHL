@@ -5333,6 +5333,18 @@
   {
     "path": "26-10-28",
     "date": "26-10-28",
+    "title": "Laser",
+    "tags": ["analog", "light", "hot", "color"]
+  },
+  {
+    "path": "26-10-29",
+    "date": "26-10-29",
+    "title": "Pulse",
+    "tags": ["digital", "body", "bonding", "sound"]
+  },
+  {
+    "path": "26-10-30",
+    "date": "26-10-30",
     "title": "Swipe",
     "tags": ["analog", "hand", "tick-tock", "random"]
   }
