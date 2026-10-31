@@ -3,7 +3,7 @@ import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
 import backgroundImage1 from '@/assets/images/26_images/26-10/26-10-28/laser.webp';
 import backgroundImage2 from '@/assets/images/26_images/26-10/26-10-28/laser1.gif';
-import backgroundVideo from '@/assets/images/26_images/26-10/26-10-28/laser.mp4';
+import backgroundVideo from '@/assets/images/26_images/26-10/26-10-28/laser.webm';
 import laserHand from '@/assets/images/26_images/26-10/26-10-28/laserhand.webp';
 import styles from './Clock.module.css';
 

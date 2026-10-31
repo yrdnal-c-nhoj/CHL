@@ -7,7 +7,7 @@
   justify-content: center;
 }
 
-.backgroundLayer2 {
+.backgroundLayer {
   position: absolute;
   inset: 0;
   z-index: 0;
@@ -19,11 +19,23 @@
   pointer-events: none;
 }
 
+.backgroundVideo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  opacity: 0.2;
+  object-fit: cover;
+  filter: contrast(4.7);
+  pointer-events: none;
+}
+
 .analogClock {
   position: relative;
   width: min(80vmin, 80dvh);
   height: min(80vmin, 80dvh);
-  z-index: 1;
+  z-index: 2;
   overflow: visible;
   /* ============================================================
      SIZE OF THE 12 CLOCK-NUMBER IMAGES (laser.webp)
