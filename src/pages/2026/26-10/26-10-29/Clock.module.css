@@ -8,14 +8,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Psychedelic gradient palette for the curvy (carval) hands. Swap these
-     to re-theme the whole clock. */
-  --hand-hour-start: #ff007f;
-  --hand-hour-end: #7b00ff;
-  --hand-minute-start: #00e6ff;
-  --hand-minute-end: #00ff88;
-  --hand-second-start: #ffff00;
-  --hand-second-end: #ff0080;
 }
 
 .backgroundVideo {
@@ -27,57 +19,92 @@
   z-index: 0;
 }
 
-.clockFace {
+.digitalClock {
   position: relative;
-  width: min(90vmin, 90dvh);
-  height: min(90vmin, 90dvh);
   z-index: 1;
-  /* SVG inherits the CSS variable palette. Curvy (carval) hands rotate on pivots
-     whose control points intentionally extend past the viewBox; show them. */
-  overflow: visible;
-  color: rgba(255, 255, 255, 0.9);
+  font-family: 'ClockFont_26_10_29', monospace;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, auto);
+  gap: 1rem 2rem;
+  align-items: center;
+  justify-items: center;
 }
 
-/* Shared hand style — the curvy Bézier paths */
-.hand {
-  /* The glow filter is defined as a static SVG filter (#handGlow);
-     the `filter` attribute is set per-element in the markup. */
-  stroke: rgba(255, 255, 255, 0.5);
-  stroke-width: 0.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+/* Each digit in a fixed-width box to prevent jumping */
+.digitBox {
+  display: inline-flex;
+  width: 1.1ch; /* fixed width per digit */
+  justify-content: center;
 }
 
-.hourHand {
-  /* Broad, short */
-  opacity: 0.95;
+.digit {
+  font-size: clamp(4rem, 15vmin, 10rem);
+  letter-spacing: 0;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-.minuteHand {
-  opacity: 0.9;
-}
-
-.secondHand {
-  /* Longest, most prominent — drops its wave on a tighter period so the
-     undulation reads even at 60fps. */
-  opacity: 0.95;
-}
-
-.centerCap,
-.centerCapInner {
-  fill: rgba(255, 255, 255, 0.95);
-}
-
-.centerCap {
-  filter: url(#handGlow);
+/* Colons - hidden on mobile, shown on desktop */
+.colon {
+  display: none;
+  font-size: clamp(4rem, 15vmin, 10rem);
+  line-height: 1;
+  opacity: 0.5;
+  transform: translateY(-0.15em);
+  width: 0.5ch;
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Keep the time readable: flatten the glow and lock opacity, but keep
-     the hands in place so the clock still tells the time. */
-  .hand,
-  .centerCap {
-    filter: none;
-    opacity: 0.8 !important;
+  .digitalClock {
+    text-shadow: none;
+  }
+}
+
+/* Desktop: horizontal row with colons as grid items */
+@media (min-width: 768px) {
+  .digitalClock {
+    grid-template-columns: repeat(8, auto); /* D D : D D : D D */
+    grid-template-rows: auto;
+    gap: 0 0.15rem;
+  }
+
+  .digitBox {
+    width: 1.05ch;
+  }
+
+  .colon {
+    display: block;
+  }
+
+  /* Position colons at grid columns 3 and 6 (after 2nd and 4th digits) */
+  .colon:nth-child(7) {
+    grid-column: 3;
+  }
+  .colon:nth-child(8) {
+    grid-column: 6;
+  }
+
+  /* Digits occupy columns 1,2,4,5,7,8 */
+  .digitBox:nth-child(1) {
+    grid-column: 1;
+  }
+  .digitBox:nth-child(2) {
+    grid-column: 2;
+  }
+  .digitBox:nth-child(3) {
+    grid-column: 4;
+  }
+  .digitBox:nth-child(4) {
+    grid-column: 5;
+  }
+  .digitBox:nth-child(5) {
+    grid-column: 7;
+  }
+  .digitBox:nth-child(6) {
+    grid-column: 8;
   }
 }
