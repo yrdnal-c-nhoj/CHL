@@ -1,0 +1,83 @@
+.container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Psychedelic gradient palette for the curvy (carval) hands. Swap these
+     to re-theme the whole clock. */
+  --hand-hour-start: #ff007f;
+  --hand-hour-end: #7b00ff;
+  --hand-minute-start: #00e6ff;
+  --hand-minute-end: #00ff88;
+  --hand-second-start: #ffff00;
+  --hand-second-end: #ff0080;
+}
+
+.backgroundVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.clockFace {
+  position: relative;
+  width: min(90vmin, 90dvh);
+  height: min(90vmin, 90dvh);
+  z-index: 1;
+  /* SVG inherits the CSS variable palette. Curvy (carval) hands rotate on pivots
+     whose control points intentionally extend past the viewBox; show them. */
+  overflow: visible;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Shared hand style — the curvy Bézier paths */
+.hand {
+  /* The glow filter is defined as a static SVG filter (#handGlow);
+     the `filter` attribute is set per-element in the markup. */
+  stroke: rgba(255, 255, 255, 0.5);
+  stroke-width: 0.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hourHand {
+  /* Broad, short */
+  opacity: 0.95;
+}
+
+.minuteHand {
+  opacity: 0.9;
+}
+
+.secondHand {
+  /* Longest, most prominent — drops its wave on a tighter period so the
+     undulation reads even at 60fps. */
+  opacity: 0.95;
+}
+
+.centerCap,
+.centerCapInner {
+  fill: rgba(255, 255, 255, 0.95);
+}
+
+.centerCap {
+  filter: url(#handGlow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Keep the time readable: flatten the glow and lock opacity, but keep
+     the hands in place so the clock still tells the time. */
+  .hand,
+  .centerCap {
+    filter: none;
+    opacity: 0.8 !important;
+  }
+}
