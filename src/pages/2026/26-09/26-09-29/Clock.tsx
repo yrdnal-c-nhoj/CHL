@@ -18,15 +18,6 @@ const fontConfig: FontConfig = {
 const formatDigits = (value: number, length = 2): string =>
   value.toString().padStart(length, '0');
 
-const DIGIT_SUBSTITUTIONS: Record<string, string> = {
-  '0': 'G',
-  '5': 'S',
-  '1': 'A',
-};
-
-const substituteDigit = (digit: string): string =>
-  DIGIT_SUBSTITUTIONS[digit] ?? digit;
-
 const Clock = () => {
   useSuspenseFontLoader([fontConfig]);
 
@@ -55,8 +46,8 @@ const Clock = () => {
 
       <div className={styles.digitalDisplay} aria-hidden="true">
         {digits.map((digit, index) => (
-          <span key={`d${index}`}>
-            {substituteDigit(digit)}
+          <span key={`d${index}`} className={styles.digitBox}>
+            {digit}
           </span>
         ))}
       </div>

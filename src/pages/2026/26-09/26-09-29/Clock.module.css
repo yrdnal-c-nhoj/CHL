@@ -42,9 +42,19 @@
   filter: contrast(110%) brightness(200%) saturate(190%);
 }
 
+.digitBox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.5em;
+  height: 1em;
+  flex: 0 0 0.5em;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .backgroundLayer {
-  filter: contrast(110%) brightness(200%) saturate(190%);  }
+    filter: contrast(110%) brightness(200%) saturate(190%);
+  }
 }
 @media (max-width: 600px) {
   .backgroundLayer {
