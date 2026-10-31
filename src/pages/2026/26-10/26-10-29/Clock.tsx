@@ -24,17 +24,7 @@ const Clock_26_10_29 = () => {
   const minutes = time.getMinutes().toString().padStart(2, '0');
   const seconds = time.getSeconds().toString().padStart(2, '0');
 
-  // Create items array with colons interleaved: H H : M M : S S
-  const items = [
-    { type: 'digit', value: hours[0] },
-    { type: 'digit', value: hours[1] },
-    { type: 'colon', value: ':' },
-    { type: 'digit', value: minutes[0] },
-    { type: 'digit', value: minutes[1] },
-    { type: 'colon', value: ':' },
-    { type: 'digit', value: seconds[0] },
-    { type: 'digit', value: seconds[1] },
-  ];
+  const digits = [...hours, ...minutes, ...seconds];
 
   return (
     <main className={styles.container}>
@@ -48,16 +38,12 @@ const Clock_26_10_29 = () => {
         className={styles.backgroundVideo}
       />
       <div className={styles.digitalClock} aria-hidden="true">
-        {items.map((item, i) => (
+        {digits.map((digit, i) => (
           <span
             key={i}
-            className={`${styles.cell} ${item.type === 'colon' ? styles.colonCell : styles.digitCell}`}
+            className={`${styles.digitBox} ${styles[`digit${i + 1}`]}`}
           >
-            <span
-              className={item.type === 'colon' ? styles.colon : styles.digit}
-            >
-              {item.value}
-            </span>
+            <span className={styles.digit}>{digit}</span>
           </span>
         ))}
       </div>

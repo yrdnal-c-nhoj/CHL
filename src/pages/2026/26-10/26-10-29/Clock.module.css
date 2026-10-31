@@ -26,85 +26,424 @@
   color: rgba(255, 255, 255, 0.95);
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(3, auto);
-  gap: 1rem 2rem;
+  grid-template-columns: repeat(6, 12vmin);
+  grid-template-rows: repeat(2, 12vmin);
+  gap: 0.5vmin;
   align-items: center;
   justify-items: center;
+  justify-content: center;
+  perspective: 50vmin;
 }
 
-/* Each digit in a fixed-width box to prevent jumping */
+/* Each digit in its own grid cell */
 .digitBox {
-  display: inline-flex;
-  width: 1.1ch; /* fixed width per digit */
+  display: flex;
   justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
 }
 
 .digit {
-  font-size: clamp(4rem, 15vmin, 10rem);
+  font-size: 8vmin;
   letter-spacing: 0;
   line-height: 1;
   white-space: nowrap;
+  /* Psychedelic animations */
+  animation:
+    psychedelicColor 6s linear infinite,
+    psychedelicFloat 12s ease-in-out infinite,
+    psychedelicScale 15s ease-in-out infinite,
+    psychedelicRotateX 11s ease-in-out infinite,
+    psychedelicRotateY 13s ease-in-out infinite,
+    psychedelicRotateZ 17s ease-in-out infinite,
+    psychedelicGlow 8s ease-in-out infinite;
+  transform-origin: center;
+  will-change: transform, color, text-shadow;
+  transform-style: preserve-3d;
 }
 
-/* Colons - hidden on mobile, shown on desktop */
-.colon {
-  display: none;
-  font-size: clamp(4rem, 15vmin, 10rem);
-  line-height: 1;
-  opacity: 0.5;
-  transform: translateY(-0.15em);
-  width: 0.5ch;
-  text-align: center;
+/* Each digit starts at different hue, all cycle through full spectrum */
+.digit1 {
+  animation-delay: 0s, 0s, 0s, 0s, 0.5s, 1s, 0s;
+}
+.digit2 {
+  animation-delay: 1s, 3s, 4s, 1.5s, 2s, 3s, 1.5s;
+}
+.digit3 {
+  animation-delay: 2s, 6s, 8s, 3s, 4s, 5s, 3s;
+}
+.digit4 {
+  animation-delay: 3s, 9s, 12s, 4.5s, 6s, 7s, 4.5s;
+}
+.digit5 {
+  animation-delay: 4s, 12s, 16s, 6s, 8s, 9s, 6s;
+}
+.digit6 {
+  animation-delay: 5s, 15s, 20s, 7.5s, 10s, 11s, 7.5s;
+}
+
+/* Psychedelic color cycling - full spectrum rainbow */
+@keyframes psychedelicColor {
+  0% {
+    color: #ff006e;
+    text-shadow:
+      0 0 30px #ff006e,
+      0 0 60px #ff006e;
+  }
+  8% {
+    color: #ff3300;
+    text-shadow:
+      0 0 30px #ff3300,
+      0 0 60px #ff3300;
+  }
+  16% {
+    color: #fb5607;
+    text-shadow:
+      0 0 30px #fb5607,
+      0 0 60px #fb5607;
+  }
+  25% {
+    color: #ff8800;
+    text-shadow:
+      0 0 30px #ff8800,
+      0 0 60px #ff8800;
+  }
+  33% {
+    color: #ffbe0b;
+    text-shadow:
+      0 0 30px #ffbe0b,
+      0 0 60px #ffbe0b;
+  }
+  41% {
+    color: #cccc00;
+    text-shadow:
+      0 0 30px #cccc00,
+      0 0 60px #cccc00;
+  }
+  50% {
+    color: #8338ec;
+    text-shadow:
+      0 0 30px #8338ec,
+      0 0 60px #8338ec;
+  }
+  58% {
+    color: #5a2dcc;
+    text-shadow:
+      0 0 30px #5a2dcc,
+      0 0 60px #5a2dcc;
+  }
+  66% {
+    color: #3a86ff;
+    text-shadow:
+      0 0 30px #3a86ff,
+      0 0 60px #3a86ff;
+  }
+  75% {
+    color: #00b4d8;
+    text-shadow:
+      0 0 30px #00b4d8,
+      0 0 60px #00b4d8;
+  }
+  83% {
+    color: #06ffa5;
+    text-shadow:
+      0 0 30px #06ffa5,
+      0 0 60px #06ffa5;
+  }
+  91% {
+    color: #00ff88;
+    text-shadow:
+      0 0 30px #00ff88,
+      0 0 60px #00ff88;
+  }
+  100% {
+    color: #ff006e;
+    text-shadow:
+      0 0 30px #ff006e,
+      0 0 60px #ff006e;
+  }
+}
+
+/* Random float around position - wild */
+@keyframes psychedelicFloat {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  10% {
+    transform: translate3d(0.8vmin, -0.6vmin, 0);
+  }
+  20% {
+    transform: translate3d(-0.7vmin, 0.7vmin, 0);
+  }
+  30% {
+    transform: translate3d(0.6vmin, 0.8vmin, 0);
+  }
+  40% {
+    transform: translate3d(-0.5vmin, -0.7vmin, 0);
+  }
+  50% {
+    transform: translate3d(0.9vmin, 0.4vmin, 0);
+  }
+  60% {
+    transform: translate3d(-0.6vmin, 0.9vmin, 0);
+  }
+  70% {
+    transform: translate3d(0.7vmin, -0.5vmin, 0);
+  }
+  80% {
+    transform: translate3d(-0.8vmin, -0.3vmin, 0);
+  }
+  90% {
+    transform: translate3d(0.5vmin, 0.6vmin, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Bigger and smaller - wild random pulsing */
+@keyframes psychedelicScale {
+  0% {
+    transform: scale(1);
+  }
+  5% {
+    transform: scale(1.3);
+  }
+  10% {
+    transform: scale(0.8);
+  }
+  15% {
+    transform: scale(1.4);
+  }
+  20% {
+    transform: scale(0.85);
+  }
+  25% {
+    transform: scale(1.25);
+  }
+  30% {
+    transform: scale(1.35);
+  }
+  35% {
+    transform: scale(0.9);
+  }
+  40% {
+    transform: scale(1.2);
+  }
+  45% {
+    transform: scale(1.05);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  55% {
+    transform: scale(0.95);
+  }
+  60% {
+    transform: scale(1.2);
+  }
+  65% {
+    transform: scale(1.1);
+  }
+  70% {
+    transform: scale(1.25);
+  }
+  75% {
+    transform: scale(0.9);
+  }
+  80% {
+    transform: scale(1.15);
+  }
+  85% {
+    transform: scale(1.05);
+  }
+  90% {
+    transform: scale(1.2);
+  }
+  95% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Tilt on X axis - extreme */
+@keyframes psychedelicRotateX {
+  0% {
+    transform: rotateX(0deg);
+  }
+  20% {
+    transform: rotateX(20deg);
+  }
+  40% {
+    transform: rotateX(-15deg);
+  }
+  60% {
+    transform: rotateX(12deg);
+  }
+  80% {
+    transform: rotateX(-10deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+/* Tilt on Y axis - extreme */
+@keyframes psychedelicRotateY {
+  0% {
+    transform: rotateY(0deg);
+  }
+  25% {
+    transform: rotateY(-18deg);
+  }
+  50% {
+    transform: rotateY(14deg);
+  }
+  75% {
+    transform: rotateY(-8deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+/* Tilt on Z axis - extreme */
+@keyframes psychedelicRotateZ {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  30% {
+    transform: rotateZ(8deg);
+  }
+  60% {
+    transform: rotateZ(-6deg);
+  }
+  90% {
+    transform: rotateZ(4deg);
+  }
+  100% {
+    transform: rotateZ(0deg);
+  }
+}
+
+/* Glow pulse - intensity cycles wildly */
+@keyframes psychedelicGlow {
+  0% {
+    text-shadow:
+      0 0 20px currentColor,
+      0 0 40px currentColor,
+      0 0 80px currentColor;
+  }
+  15% {
+    text-shadow:
+      0 0 40px currentColor,
+      0 0 80px currentColor,
+      0 0 120px currentColor;
+  }
+  30% {
+    text-shadow:
+      0 0 10px currentColor,
+      0 0 20px currentColor;
+  }
+  45% {
+    text-shadow:
+      0 0 50px currentColor,
+      0 0 100px currentColor,
+      0 0 150px currentColor;
+  }
+  60% {
+    text-shadow:
+      0 0 15px currentColor,
+      0 0 30px currentColor;
+  }
+  75% {
+    text-shadow:
+      0 0 60px currentColor,
+      0 0 120px currentColor,
+      0 0 180px currentColor;
+  }
+  100% {
+    text-shadow:
+      0 0 20px currentColor,
+      0 0 40px currentColor,
+      0 0 80px currentColor;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .digitalClock {
     text-shadow: none;
   }
+  .digit {
+    animation: none;
+  }
 }
 
-/* Desktop: horizontal row with colons as grid items */
-@media (min-width: 768px) {
+/* Desktop: 6 columns × 2 rows - zigzag pattern */
+.digit1 {
+  grid-column: 1;
+  grid-row: 1;
+}
+.digit2 {
+  grid-column: 2;
+  grid-row: 2;
+}
+.digit3 {
+  grid-column: 3;
+  grid-row: 1;
+}
+.digit4 {
+  grid-column: 4;
+  grid-row: 2;
+}
+.digit5 {
+  grid-column: 5;
+  grid-row: 1;
+}
+.digit6 {
+  grid-column: 6;
+  grid-row: 2;
+}
+
+/* Phone: 2 columns × 6 rows - alternating columns */
+@media (max-width: 767px) {
   .digitalClock {
-    grid-template-columns: repeat(8, auto); /* D D : D D : D D */
-    grid-template-rows: auto;
-    gap: 0 0.15rem;
+    grid-template-columns: repeat(2, 18vmin);
+    grid-template-rows: repeat(6, 18vmin);
+    gap: 0.6vmin;
+    perspective: 60vmin;
   }
 
-  .digitBox {
-    width: 1.05ch;
+  .digit {
+    font-size: 12vmin;
   }
 
-  .colon {
-    display: block;
-  }
-
-  /* Position colons at grid columns 3 and 6 (after 2nd and 4th digits) */
-  .colon:nth-child(7) {
-    grid-column: 3;
-  }
-  .colon:nth-child(8) {
-    grid-column: 6;
-  }
-
-  /* Digits occupy columns 1,2,4,5,7,8 */
-  .digitBox:nth-child(1) {
+  .digit1 {
     grid-column: 1;
+    grid-row: 1;
   }
-  .digitBox:nth-child(2) {
+  .digit2 {
     grid-column: 2;
+    grid-row: 2;
   }
-  .digitBox:nth-child(3) {
-    grid-column: 4;
+  .digit3 {
+    grid-column: 1;
+    grid-row: 3;
   }
-  .digitBox:nth-child(4) {
-    grid-column: 5;
+  .digit4 {
+    grid-column: 2;
+    grid-row: 4;
   }
-  .digitBox:nth-child(5) {
-    grid-column: 7;
+  .digit5 {
+    grid-column: 1;
+    grid-row: 5;
   }
-  .digitBox:nth-child(6) {
-    grid-column: 8;
+  .digit6 {
+    grid-column: 2;
+    grid-row: 6;
   }
 }
