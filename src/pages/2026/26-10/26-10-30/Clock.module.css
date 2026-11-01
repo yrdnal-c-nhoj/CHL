@@ -53,21 +53,21 @@
 /* Shorter arm */
 .hourHand {
   width: 8%;
-  height: 34%;
+  height: 11%;
   margin-left: -4%;
 }
 
 /* Longer arm */
 .minuteHand {
-  width: 6%;
+  width: 9%;
   height: 46%;
   margin-left: -3%;
 }
 
 /* Long, skinny arm with a small hand at its tip */
 .secondHand {
-  width: 4%;
-  height: 55%;
+  width: 10%;
+  height: 50%;
   margin-left: -2%;
   z-index: 3;
 }
@@ -80,7 +80,8 @@
   transform-origin: 50% 50%;
   pointer-events: none;
   z-index: 4;
-  width: 12%;
+  width: 15%;
+  height: 22%;
   aspect-ratio: 1;
 }
 
