@@ -33,76 +33,75 @@
 
 .analogClock {
   position: relative;
-  width: min(80vmin, 80dvh);
-  height: min(80vmin, 80dvh);
+  width: min(100vmin, 100dvh);
+  height: min(100vmin, 100dvh);
   z-index: 2;
   overflow: visible;
-  /* ============================================================
-     SIZE OF THE 12 CLOCK-NUMBER IMAGES (laser.webp)
-     Change the value below to resize all 12 images at once.
-     ============================================================ */
-  /* >>> CHANGE THIS NUMBER TO MAKE IMAGES BIGGER OR SMALLER <<< */
-  --clock-image-size: 20px;
-  /* >>> CHANGE THIS NUMBER TO MAKE IMAGES BIGGER OR SMALLER <<< */
 }
 
-.svg {
+/* Digits SVG with vignette mask: transparent at center, opaque from 35% outward */
+.digitsSvg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  mask-image: radial-gradient(
+    circle at center,
+    transparent 0%,
+    transparent 35%,
+    white 35%,
+    white 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    circle at center,
+    transparent 0%,
+    transparent 35%,
+    white 35%,
+    white 100%
+  );
+}
+
+/* Hands SVG: no mask, fully visible */
+.handsSvg {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   overflow: visible;
 }
 
-/* laser.webp images stacked on top of each other, centered.
-   Size is controlled by --clock-image-size on .analogClock.
-   Opacity and visual styling are controlled here. */
-.clockImage {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: var(--clock-image-size);
-  height: var(--clock-image-size);
-  transform: translate(-50%, -50%) rotate(var(--rotation, 0deg));
-  transform-origin: center center;
-  opacity: 1;
-  /* Thin white line on one side, thin black line on the other */
-  filter: drop-shadow(0.5px 0 0 #fff) drop-shadow(-0.5px 0 0 #000)
-    drop-shadow(0 0 3px rgba(255, 255, 255, 0.3));
+/* Digit images — positioned via SVG x/y attributes, only filter in CSS */
+.digitImage {
+  filter: drop-shadow(0.5px 0 0 #fff) drop-shadow(-0.5px 0 0 #000);
   pointer-events: none;
 }
 
-/* laser.mp4 video on top of the bottom background image */
-.hand {
-  opacity: 0.5;
+/* Hand base style — shared filter with customizable glow */
+.handBase {
   filter: drop-shadow(0.5px 0 0 #000) drop-shadow(-0.5px 0 0 #000)
-    drop-shadow(0 0.5px 0 #000) drop-shadow(0 -0.5px 0 #000);
-  /* drop-shadow(0 0 2px rgba(250, 248, 248, 0.5)); */
-  pointer-events: none;
+    drop-shadow(0 0.5px 0 #000) drop-shadow(0 -0.5px 0 #000)
+    drop-shadow(
+      0 0 var(--hand-glow, 2px) rgba(255, 255, 255, var(--hand-opacity, 0.5))
+    );
 }
 
 .hourHand {
-  filter: drop-shadow(0.5px 0 0 #000) drop-shadow(-0.5px 0 0 #000)
-    drop-shadow(0 0.5px 0 #000) drop-shadow(0 -0.5px 0 #000)
-    drop-shadow(0 0 3px rgba(255, 255, 255, 0.8));
+  --hand-glow: 3px;
+  --hand-opacity: 0.8;
 }
 
 .minuteHand {
-  filter: drop-shadow(0.5px 0 0 #000) drop-shadow(-0.5px 0 0 #000)
-    drop-shadow(0 0.5px 0 #000) drop-shadow(0 -0.5px 0 #000)
-    drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
+  --hand-glow: 2px;
+  --hand-opacity: 0.6;
 }
 
 .secondHand {
-  filter: drop-shadow(0.5px 0 0 #000) drop-shadow(-0.5px 0 0 #000)
-    drop-shadow(0 0.5px 0 #000) drop-shadow(0 -0.5px 0 #000)
-    drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
-}
-
-.digitImage {
-  filter: drop-shadow(0.5px 0 0 #fff) drop-shadow(-0.5px 0 0 #000);
+  --hand-glow: 2px;
+  --hand-opacity: 0.5;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hand {
+  .handBase {
     opacity: 0.5;
   }
 }
