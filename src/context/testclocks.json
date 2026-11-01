@@ -5351,7 +5351,7 @@
   {
     "path": "26-10-31",
     "date": "26-10-31",
-    "title": "#ffffff",
-    "tags": ["#000000", "#ff0000", "#ffffff", "analog"]
+    "title": "Threads",
+    "tags": ["digital", "thread", "spin"]
   }
 ]
