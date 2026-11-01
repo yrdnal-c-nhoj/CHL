@@ -16,9 +16,9 @@ export const assets = [
 ];
 
 const HAND_ASPECT = 122 / 550;
-const CLOCK_CENTER = 100;
-const CLOCK_RADIUS = 90;
-const DIGIT_SIZE = 120;
+const CLOCK_CENTER = 150;
+const CLOCK_RADIUS = 110;
+const DIGIT_SIZE = 100;
 
 const Hand = ({
   angle,
@@ -56,7 +56,7 @@ const AnalogClock = ({ time }: { time: Date }) => {
     <div className={styles.analogClock}>
       {/* Bottom SVG: digits with vignette mask */}
       <svg
-        viewBox="0 0 200 200"
+        viewBox="0 0 300 300"
         className={styles.digitsSvg}
         aria-hidden="true"
         focusable="false"
@@ -66,7 +66,7 @@ const AnalogClock = ({ time }: { time: Date }) => {
           const rad = ((angle - 90) * Math.PI) / 180;
           const x = CLOCK_CENTER + Math.cos(rad) * CLOCK_RADIUS;
           const y = CLOCK_CENTER + Math.sin(rad) * CLOCK_RADIUS;
-          const rotation = angle - 90 + 170; // 170° clockwise rotation
+          const rotation = angle - 90 + 158; // 170° clockwise rotation
           return (
             <image
               key={i}
@@ -86,7 +86,7 @@ const AnalogClock = ({ time }: { time: Date }) => {
 
       {/* Top SVG: hands without mask */}
       <svg
-        viewBox="0 0 200 200"
+        viewBox="0 0 300 300"
         className={styles.handsSvg}
         aria-hidden="true"
         focusable="false"

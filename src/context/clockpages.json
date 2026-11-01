@@ -5347,5 +5347,11 @@
     "date": "26-10-30",
     "title": "Swipe",
     "tags": ["analog", "hand", "tick-tock", "random"]
+  },
+  {
+    "path": "26-10-31",
+    "date": "26-10-31",
+    "title": "Threads",
+    "tags": ["digital", "thread", "spin"]
   }
 ]
