@@ -307,11 +307,11 @@ const Clock_26_10_30 = () => {
                   x2="100%"
                   y2="0%"
                 >
-                  <stop offset="0%" stopColor="#ff007f" />
-                  <stop offset="25%" stopColor="#9c27b0" />
-                  <stop offset="50%" stopColor="#ff9800" />
-                  <stop offset="75%" stopColor="#ffc107" />
-                  <stop offset="100%" stopColor="#ff007f" />
+                  <stop offset="0%" stopColor="#b8860b" />
+                  <stop offset="25%" stopColor="#d4af37" />
+                  <stop offset="50%" stopColor="#ffd700" />
+                  <stop offset="75%" stopColor="#d4af37" />
+                  <stop offset="100%" stopColor="#b8860b" />
                 </linearGradient>
               </defs>
 
