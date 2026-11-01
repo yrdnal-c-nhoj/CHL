@@ -1,392 +1,294 @@
 .container {
   position: fixed;
   inset: 0;
+
   width: 100vw;
   height: 100dvh;
+
   overflow: hidden;
   background: #000;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  isolation: isolate;
 }
 
 .backgroundVideo {
   position: absolute;
   inset: 0;
+
   width: 100%;
   height: 100%;
+  filter: brightness(1.1) contrast(1.2) saturate(1.5);
   object-fit: cover;
-  z-index: 0;
+  z-index: -1;
 }
+
+/* -------------------------------------------------------------------------- */
+/* Clock grid                                                                  */
+/* -------------------------------------------------------------------------- */
 
 .digitalClock {
   position: relative;
-  z-index: 1;
-  font-family: 'ClockFont_26_10_29', monospace;
-  color: rgba(255, 255, 255, 0.95);
-  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+
   display: grid;
   grid-template-columns: repeat(6, 12vmin);
   grid-template-rows: repeat(2, 12vmin);
+
   gap: 0.5vmin;
+  opacity: 0.9;
   align-items: center;
   justify-items: center;
   justify-content: center;
+
+  font-family: 'ClockFont_26_10_29', monospace;
+
   perspective: 50vmin;
+  perspective-origin: center;
+
+  transform-style: preserve-3d;
 }
 
-/* Each digit in its own grid cell */
 .digitBox {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
   width: 100%;
   height: 100%;
+
+  overflow: visible;
   transform-style: preserve-3d;
 }
 
 .digit {
-  font-size: 8vmin;
-  letter-spacing: 0;
+  display: inline-block;
+  position: relative;
+
+  color: var(--digit-color);
+
+  font-size: calc(8vmin * var(--digit-size));
   line-height: 1;
+
+  letter-spacing: 0;
   white-space: nowrap;
-  /* Psychedelic animations - each digit gets its own independent transform */
-  animation:
-    psychedelicColor 6s linear infinite,
-    psychedelicGlow 8s ease-in-out infinite;
+  text-align: center;
+
   transform-origin: center;
-  will-change: transform, color, text-shadow;
   transform-style: preserve-3d;
+
+  /*
+   * Shared 10.5-second cycle:
+   * 0.5s still
+   * 7.5s wild motion
+   * 2s return to grid
+   * 0.5s still
+   */
+  animation:
+    raveMotion 10.5s linear infinite,
+    raveColor 10.5s linear infinite;
+
+  /*
+   * Sharp inverse-color pixel shadow.
+   * No blur.
+   */
+  text-shadow:
+    1px 0 0 var(--inverse-color),
+    -1px 0 0 var(--inverse-color),
+    0 1px 0 var(--inverse-color),
+    0 -1px 0 var(--inverse-color),
+    2px 0 0 var(--inverse-color),
+    -2px 0 0 var(--inverse-color),
+    0 2px 0 var(--inverse-color),
+    0 -2px 0 var(--inverse-color);
+
+  will-change: transform, filter;
 }
 
-/* Each digit has its own unique transform animation for independent random behavior */
-.digit1 {
-  animation:
-    psychedelicColor 6s linear infinite,
-    psychedelicTransform1 19s ease-in-out infinite,
-    psychedelicGlow 8s ease-in-out infinite;
-  animation-delay: 0s, 0s, 0s;
-}
-.digit2 {
-  animation:
-    psychedelicColor 6s linear infinite,
-    psychedelicTransform2 23s ease-in-out infinite,
-    psychedelicGlow 8s ease-in-out infinite;
-  animation-delay: 0s, 1.5s, 1.5s;
-}
-.digit3 {
-  animation:
-    psychedelicColor 6s linear infinite,
-    psychedelicTransform3 17s ease-in-out infinite,
-    psychedelicGlow 8s ease-in-out infinite;
-  animation-delay: 0s, 3s, 3s;
-}
-.digit4 {
-  animation:
-    psychedelicColor 6s linear infinite,
-    psychedelicTransform4 25s ease-in-out infinite,
-    psychedelicGlow 8s ease-in-out infinite;
-  animation-delay: 0s, 4.5s, 4.5s;
-}
-.digit5 {
-  animation:
-    psychedelicColor 6s linear infinite,
-    psychedelicTransform5 21s ease-in-out infinite,
-    psychedelicGlow 8s ease-in-out infinite;
-  animation-delay: 0s, 6s, 6s;
-}
-.digit6 {
-  animation:
-    psychedelicColor 6s linear infinite,
-    psychedelicTransform6 27s ease-in-out infinite,
-    psychedelicGlow 8s ease-in-out infinite;
-  animation-delay: 0s, 7.5s, 7.5s;
-}
+/* -------------------------------------------------------------------------- */
+/* Synchronized motion                                                         */
+/* -------------------------------------------------------------------------- */
 
-/* Psychedelic color cycling - full spectrum rainbow */
-@keyframes psychedelicColor {
-  0% {
-    color: #ff006e;
-    text-shadow:
-      0 0 30px #ff006e,
-      0 0 60px #ff006e;
-  }
-  8% {
-    color: #ff3300;
-    text-shadow:
-      0 0 30px #ff3300,
-      0 0 60px #ff3300;
-  }
-  16% {
-    color: #fb5607;
-    text-shadow:
-      0 0 30px #fb5607,
-      0 0 60px #fb5607;
-  }
-  25% {
-    color: #ff8800;
-    text-shadow:
-      0 0 30px #ff8800,
-      0 0 60px #ff8800;
-  }
-  33% {
-    color: #ffbe0b;
-    text-shadow:
-      0 0 30px #ffbe0b,
-      0 0 60px #ffbe0b;
-  }
-  41% {
-    color: #cccc00;
-    text-shadow:
-      0 0 30px #cccc00,
-      0 0 60px #cccc00;
-  }
-  50% {
-    color: #8338ec;
-    text-shadow:
-      0 0 30px #8338ec,
-      0 0 60px #8338ec;
-  }
-  58% {
-    color: #5a2dcc;
-    text-shadow:
-      0 0 30px #5a2dcc,
-      0 0 60px #5a2dcc;
-  }
-  66% {
-    color: #3a86ff;
-    text-shadow:
-      0 0 30px #3a86ff,
-      0 0 60px #3a86ff;
-  }
-  75% {
-    color: #00b4d8;
-    text-shadow:
-      0 0 30px #00b4d8,
-      0 0 60px #00b4d8;
-  }
-  83% {
-    color: #06ffa5;
-    text-shadow:
-      0 0 30px #06ffa5,
-      0 0 60px #06ffa5;
-  }
-  91% {
-    color: #00ff88;
-    text-shadow:
-      0 0 30px #00ff88,
-      0 0 60px #00ff88;
-  }
-  100% {
-    color: #ff006e;
-    text-shadow:
-      0 0 30px #ff006e,
-      0 0 60px #ff006e;
-  }
-}
+/*
+ * 0%       = cycle begins
+ * 4.76%    = 0.5 seconds
+ * 76.19%   = 8 seconds
+ * 95.24%   = 10 seconds
+ * 100%     = 10.5 seconds
+ *
+ * The first and final states are the exact grid state.
+ */
 
-/* Combined transform: scale + float + rotate all in one keyframe */
-@keyframes psychedelicTransform {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1) rotateX(0deg) rotateY(0deg)
-      rotateZ(0deg);
+@keyframes raveMotion {
+  /* Initial grid freeze */
+  0%,
+  4.76% {
+    transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) rotateZ(0) scale(1);
   }
-  5% {
-    transform: translate3d(0.8vmin, -0.6vmin, 0) scale(1.3) rotateX(10deg)
-      rotateY(-5deg) rotateZ(4deg);
-  }
-  10% {
-    transform: translate3d(-0.7vmin, 0.7vmin, 0) scale(0.8) rotateX(-8deg)
-      rotateY(6deg) rotateZ(-3deg);
-  }
+
+  /* Wild motion */
   15% {
-    transform: translate3d(0.6vmin, 0.8vmin, 0) scale(1.4) rotateX(12deg)
-      rotateY(-7deg) rotateZ(5deg);
+    transform: translate3d(var(--x), calc(var(--y) * -1), var(--z))
+      rotateX(var(--rx)) rotateY(calc(var(--ry) * -1)) rotateZ(var(--rz))
+      scale(1.8);
   }
-  20% {
-    transform: translate3d(-0.5vmin, -0.7vmin, 0) scale(0.85) rotateX(-6deg)
-      rotateY(4deg) rotateZ(-2deg);
-  }
-  25% {
-    transform: translate3d(0.9vmin, 0.4vmin, 0) scale(1.25) rotateX(15deg)
-      rotateY(-10deg) rotateZ(6deg);
-  }
+
   30% {
-    transform: translate3d(-0.6vmin, 0.9vmin, 0) scale(1.35) rotateX(-12deg)
-      rotateY(8deg) rotateZ(-4deg);
+    transform: translate3d(calc(var(--x) * -0.8), var(--y), calc(var(--z) * -1))
+      rotateX(calc(var(--rx) * -1.5)) rotateY(var(--ry))
+      rotateZ(calc(var(--rz) * -1.4)) scale(0.65);
   }
-  35% {
-    transform: translate3d(0.7vmin, -0.5vmin, 0) scale(0.9) rotateX(8deg)
-      rotateY(-6deg) rotateZ(3deg);
-  }
-  40% {
-    transform: translate3d(-0.8vmin, -0.3vmin, 0) scale(1.2) rotateX(-10deg)
-      rotateY(5deg) rotateZ(-3deg);
-  }
+
   45% {
-    transform: translate3d(0.5vmin, 0.6vmin, 0) scale(1.05) rotateX(5deg)
-      rotateY(-4deg) rotateZ(2deg);
+    transform: translate3d(var(--x), calc(var(--y) * -1.5), var(--z))
+      rotateX(var(--rx)) rotateY(calc(var(--ry) * 1.5))
+      rotateZ(calc(var(--rz) * -1)) scale(2);
   }
-  50% {
-    transform: translate3d(-0.4vmin, 0.8vmin, 0) scale(1.3) rotateX(-15deg)
-      rotateY(10deg) rotateZ(-5deg);
-  }
-  55% {
-    transform: translate3d(0.8vmin, -0.4vmin, 0) scale(0.95) rotateX(12deg)
-      rotateY(-7deg) rotateZ(4deg);
-  }
+
   60% {
-    transform: translate3d(-0.6vmin, 0.5vmin, 0) scale(1.2) rotateX(-8deg)
-      rotateY(6deg) rotateZ(-3deg);
+    transform: translate3d(
+        calc(var(--x) * -1.2),
+        var(--y),
+        calc(var(--z) * -1.2)
+      )
+      rotateX(calc(var(--rx) * -1.2)) rotateY(calc(var(--ry) * -1.5))
+      rotateZ(calc(var(--rz) * 1.6)) scale(0.8);
   }
-  65% {
-    transform: translate3d(0.4vmin, -0.7vmin, 0) scale(1.1) rotateX(6deg)
-      rotateY(-5deg) rotateZ(2deg);
+
+  /* Last wild pose before the return */
+  76.19% {
+    transform: translate3d(
+        calc(var(--x) * 1.5),
+        var(--y),
+        calc(var(--z) * -1.5)
+      )
+      rotateX(calc(var(--rx) * -1.5)) rotateY(calc(var(--ry) * 1.2))
+      rotateZ(var(--rz)) scale(1.7);
   }
-  70% {
-    transform: translate3d(-0.7vmin, 0.3vmin, 0) scale(1.25) rotateX(-10deg)
-      rotateY(8deg) rotateZ(-4deg);
-  }
-  75% {
-    transform: translate3d(0.6vmin, -0.6vmin, 0) scale(0.9) rotateX(14deg)
-      rotateY(-9deg) rotateZ(5deg);
-  }
-  80% {
-    transform: translate3d(-0.5vmin, 0.7vmin, 0) scale(1.15) rotateX(-7deg)
-      rotateY(5deg) rotateZ(-2deg);
-  }
-  85% {
-    transform: translate3d(0.7vmin, -0.2vmin, 0) scale(1.05) rotateX(4deg)
-      rotateY(-3deg) rotateZ(2deg);
-  }
-  90% {
-    transform: translate3d(-0.3vmin, -0.8vmin, 0) scale(1.2) rotateX(-11deg)
-      rotateY(7deg) rotateZ(-3deg);
-  }
-  95% {
-    transform: translate3d(0.4vmin, 0.5vmin, 0) scale(0.95) rotateX(7deg)
-      rotateY(-4deg) rotateZ(2deg);
-  }
+
+  /* Smooth return to the exact grid state */
+  95.24%,
   100% {
-    transform: translate3d(0, 0, 0) scale(1) rotateX(0deg) rotateY(0deg)
-      rotateZ(0deg);
+    transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) rotateZ(0) scale(1);
   }
 }
 
-/* Glow pulse - intensity cycles wildly */
-@keyframes psychedelicGlow {
-  0% {
-    text-shadow:
-      0 0 20px currentColor,
-      0 0 40px currentColor,
-      0 0 80px currentColor;
+/* -------------------------------------------------------------------------- */
+/* Color cycling                                                               */
+/* -------------------------------------------------------------------------- */
+
+@keyframes raveColor {
+  /* Color remains still during the initial grid pause */
+  0%,
+  4.76% {
+    filter: hue-rotate(0deg);
   }
-  15% {
-    text-shadow:
-      0 0 40px currentColor,
-      0 0 80px currentColor,
-      0 0 120px currentColor;
+
+  /* Color cycles during the wild phase */
+  76.19% {
+    filter: hue-rotate(360deg);
   }
-  30% {
-    text-shadow:
-      0 0 10px currentColor,
-      0 0 20px currentColor;
-  }
-  45% {
-    text-shadow:
-      0 0 50px currentColor,
-      0 0 100px currentColor,
-      0 0 150px currentColor;
-  }
-  60% {
-    text-shadow:
-      0 0 15px currentColor,
-      0 0 30px currentColor;
-  }
-  75% {
-    text-shadow:
-      0 0 60px currentColor,
-      0 0 120px currentColor,
-      0 0 180px currentColor;
-  }
+
+  /* Color remains still during the return and final grid pause */
+  95.24%,
   100% {
-    text-shadow:
-      0 0 20px currentColor,
-      0 0 40px currentColor,
-      0 0 80px currentColor;
+    filter: hue-rotate(360deg);
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .digitalClock {
-    text-shadow: none;
-  }
-  .digit {
-    animation: none;
-  }
-}
+/* -------------------------------------------------------------------------- */
+/* Desktop grid positions                                                      */
+/* -------------------------------------------------------------------------- */
 
-/* Desktop: 6 columns × 2 rows - zigzag pattern */
-.digit1 {
+.position1 {
   grid-column: 1;
   grid-row: 1;
 }
-.digit2 {
+
+.position2 {
   grid-column: 2;
   grid-row: 2;
 }
-.digit3 {
+
+.position3 {
   grid-column: 3;
   grid-row: 1;
 }
-.digit4 {
+
+.position4 {
   grid-column: 4;
   grid-row: 2;
 }
-.digit5 {
+
+.position5 {
   grid-column: 5;
   grid-row: 1;
 }
-.digit6 {
+
+.position6 {
   grid-column: 6;
   grid-row: 2;
 }
 
-/* Phone: 2 columns × 6 rows - alternating columns */
+/* -------------------------------------------------------------------------- */
+/* Phone layout                                                                */
+/* -------------------------------------------------------------------------- */
+
 @media (max-width: 767px) {
   .digitalClock {
     grid-template-columns: repeat(2, 14vmin);
     grid-template-rows: repeat(6, 14vmin);
+
     gap: 0.6vmin;
-    perspective: 60vmin;
+
+    perspective: 40vmin;
   }
 
   .digit {
-    font-size: 12vmin;
+    font-size: calc(12vmin * var(--digit-size));
   }
 
-  .digit1 {
+  .position1 {
     grid-column: 1;
     grid-row: 1;
   }
-  .digit2 {
+
+  .position2 {
     grid-column: 2;
     grid-row: 2;
   }
-  .digit3 {
+
+  .position3 {
     grid-column: 1;
     grid-row: 3;
   }
-  .digit4 {
+
+  .position4 {
     grid-column: 2;
     grid-row: 4;
   }
-  .digit5 {
+
+  .position5 {
     grid-column: 1;
     grid-row: 5;
   }
-  .digit6 {
+
+  .position6 {
     grid-column: 2;
     grid-row: 6;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Accessibility                                                               */
+/* -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .digit {
+    animation: none;
+    filter: none;
+    transform: none;
   }
 }
