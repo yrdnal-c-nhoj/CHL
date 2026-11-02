@@ -16,7 +16,7 @@
   height: 100%;
   object-fit: cover;
   z-index: 1;
-  filter: brightness(1.3) contrast(1.2) saturate(1.2);
+  filter: brightness(1.6) contrast(1.2) saturate(1.2);
   pointer-events: none;
 }
 
@@ -44,7 +44,7 @@
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
-  width: 16vmin;
+  width: 18vmin;
   height: auto;
   pointer-events: none;
   filter: drop-shadow(0 0 1vmin #910505b6) saturate(1.2) contrast(1.8);
@@ -55,10 +55,10 @@
   --hand-height: 0vmin;
 }
 .minuteHand {
-  --hand-height: 16vmin;
+  --hand-height: 13vmin;
 }
 .secondHand {
-  --hand-height: 16vmin;
+  --hand-height: 13vmin;
 }
 .clockNumber {
   position: absolute;
