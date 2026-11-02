@@ -45,9 +45,13 @@
   background-image: var(--merc-border);
   background-repeat: repeat;
   background-size: contain;
-  background-position: center bottom;
+
+  /* Vignette: fade from transparent at top to opaque at bottom */
+  mask-image: linear-gradient(to top, transparent, black 40%, black);
+  -webkit-mask-image: linear-gradient(to top, transparent, black 40%, black);
 
   z-index: 9;
+
   pointer-events: none;
 }
 
