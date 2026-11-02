@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+  background-color: #000;
+  color: #ff3c38;
+  gap: 1rem;
+}
+
+.logo {
+  font-family: monospace;
+  font-size: 8rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.time {
+  font-family: monospace;
+  font-size: 2rem;
+}
