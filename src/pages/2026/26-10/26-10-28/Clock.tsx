@@ -33,17 +33,20 @@ const Hand = ({
   const x = CLOCK_CENTER - width / 2;
   const y = CLOCK_CENTER - length;
   return (
-    <image
-      href={laserHand}
-      x={x}
-      y={y}
-      width={width}
-      height={length}
+    <g
       className={className}
       transform={`rotate(${angle} ${CLOCK_CENTER} ${CLOCK_CENTER})`}
-      aria-hidden="true"
-      focusable="false"
-    />
+    >
+      <image
+        href={laserHand}
+        x={x}
+        y={y}
+        width={width}
+        height={length}
+        aria-hidden="true"
+        focusable="false"
+      />
+    </g>
   );
 };
 
@@ -93,17 +96,17 @@ const AnalogClock = ({ time }: { time: Date }) => {
       >
         <Hand
           angle={hours * 30}
-          length={38}
+          length={58}
           className={`${styles.hourHand} ${styles.handBase}`}
         />
         <Hand
           angle={minutes * 6}
-          length={64}
+          length={94}
           className={`${styles.minuteHand} ${styles.handBase}`}
         />
         <Hand
           angle={seconds * 6}
-          length={74}
+          length={100}
           className={`${styles.secondHand} ${styles.handBase}`}
         />
       </svg>
