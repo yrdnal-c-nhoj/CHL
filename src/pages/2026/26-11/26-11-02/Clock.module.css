@@ -1,35 +1,45 @@
 .container {
   position: relative;
+  width: 100%;
   height: 100dvh;
-  width: 100vw;
-  background-color: #000;
-  color: #ff3c38;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #011238;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  grid-template-rows: repeat(3, minmax(0, 1fr));
-  gap: 0.25rem;
+  grid-template-columns: repeat(6, 1fr);
   width: 100%;
-  height: 100%;
-}
-
-.row {
-  display: contents;
+  align-items: center;
+  justify-items: center;
 }
 
 .cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: monospace;
-  font-size: clamp(4rem, min(12vw, 20vh), 12rem);
-  font-weight: 900;
-  letter-spacing: 0.1em;
-  border: 2px solid #ff3c38;
   width: 100%;
   height: 100%;
-  box-sizing: border-box;
+}
+
+.char {
+  display: inline-block;
+  color: #f34c15;
+  font-family: 'ClockFont_26_11_02', monospace;
+  font-weight: 400;
+  font-size: var(--font-size); /* set by ResizeObserver on .container */
   line-height: 1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .char {
+    transition: none;
+  }
 }
