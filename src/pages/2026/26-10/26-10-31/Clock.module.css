@@ -23,13 +23,6 @@
   position: relative;
   z-index: 1;
   display: grid;
-  /* Grid columns: 8 digit columns + 2 colon columns = 10 columns total
-     Format: HH:MM:SS → 2 digits, colon, 2 digits, colon, 2 digits
-     
-     DIGIT COLUMN WIDTH:  change the '1fr' values below (currently 1fr each)
-     COLON COLUMN WIDTH:  change the '0.05fr' values below (currently 0.05fr each)
-     SPACE BETWEEN COLUMNS: change the 'gap' value below (currently 0)
-  */
   grid-template-columns: repeat(2, 1fr) 0.05fr repeat(2, 1fr) 0.05fr repeat(
       2,
       1fr
@@ -39,17 +32,17 @@
   font-size: clamp(5rem, 25vmin, 14rem);
   line-height: 1;
   color: transparent;
-  background: repeating-linear-gradient(
+  --text-gradient: repeating-linear-gradient(
     -45deg,
     #ffd700,
     #ffd700 0.15em,
     #cc0000 0.15em,
     #cc0000 0.3em
   );
+  background: var(--text-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-stroke: 0.5px #000;
-  text-shadow: none;
 }
 
 .digitBox,
@@ -61,19 +54,6 @@
   height: 1.2em;
 }
 
-/* Negative margins to pull elements closer together */
-.digitBox {
-  margin-left: -0.08ch;
-  margin-right: -0.08ch;
-}
-
-.separator {
-  margin-left: -0.15ch;
-  margin-right: -0.15ch;
-}
-
-/* First digit box: no left negative margin */
-/* Last digit box: no right negative margin */
 .digitBox:first-child {
   margin-left: 0;
 }
@@ -83,23 +63,9 @@
 }
 
 .separator {
-  opacity: 1;
   transform: translateY(-0.08em);
-  color: transparent;
-  background: repeating-linear-gradient(
-    -45deg,
-    #ffd700,
-    #ffd700 0.15em,
-    #cc0000 0.15em,
-    #cc0000 0.3em
-  );
+  background: var(--text-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-stroke: 0.5px #000;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .separator {
-    transform: translateY(-0.08em);
-  }
 }

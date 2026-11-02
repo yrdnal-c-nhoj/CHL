@@ -1,6 +1,5 @@
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
-import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 import backgroundVideo from '@/assets/images/26_images/26-10/26-10-31/threads.mp4';
@@ -10,7 +9,7 @@ import styles from './Clock.module.css';
 
 export const assets = [backgroundVideo, font];
 
-const fontConfig: FontConfig = {
+const fontConfig = {
   fontFamily: 'ClockFont_26_10_31',
   fontUrl: font,
 };
@@ -20,20 +19,7 @@ const Clock_26_10_31 = () => {
 
   const time = useSmoothClock(16);
 
-  const hours = time.getHours().toString().padStart(2, '0');
-  const minutes = time.getMinutes().toString().padStart(2, '0');
-  const seconds = time.getSeconds().toString().padStart(2, '0');
-
-  const chars = [
-    hours[0],
-    hours[1],
-    ':',
-    minutes[0],
-    minutes[1],
-    ':',
-    seconds[0],
-    seconds[1],
-  ];
+  const hhmmss = time.toLocaleTimeString('en-GB', { hour12: false });
 
   return (
     <main className={styles.container}>
@@ -48,17 +34,14 @@ const Clock_26_10_31 = () => {
       />
 
       <div className={styles.digitalClock} aria-hidden="true">
-        {chars.map((char, i) =>
-          char === ':' ? (
-            <span key={i} className={styles.separator}>
-              {char}
-            </span>
-          ) : (
-            <span key={i} className={styles.digitBox}>
-              {char}
-            </span>
-          ),
-        )}
+        {hhmmss.split('').map((char, i) => (
+          <span
+            key={i}
+            className={char === ':' ? styles.separator : styles.digitBox}
+          >
+            {char}
+          </span>
+        ))}
       </div>
 
       <SRTime time={time} />
