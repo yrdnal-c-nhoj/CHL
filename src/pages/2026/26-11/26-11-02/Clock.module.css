@@ -9,15 +9,9 @@
   gap: 1rem;
 }
 
-.logo {
+.time {
   font-family: monospace;
   font-size: 8rem;
   font-weight: 900;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
-.time {
-  font-family: monospace;
-  font-size: 2rem;
+  letter-spacing: 0.1em;
 }
