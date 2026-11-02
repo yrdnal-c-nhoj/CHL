@@ -1,17 +1,35 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  position: relative;
   height: 100dvh;
+  width: 100vw;
   background-color: #000;
   color: #ff3c38;
-  gap: 1rem;
 }
 
-.time {
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 0.25rem;
+  width: 100%;
+  height: 100%;
+}
+
+.row {
+  display: contents;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: monospace;
-  font-size: 8rem;
+  font-size: clamp(4rem, min(12vw, 20vh), 12rem);
   font-weight: 900;
   letter-spacing: 0.1em;
+  border: 2px solid #ff3c38;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  line-height: 1;
 }
