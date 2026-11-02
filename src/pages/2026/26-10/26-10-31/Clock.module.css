@@ -54,6 +54,10 @@
   height: 1.2em;
 }
 
+.digitBox {
+  margin: 0 0.12ch;
+}
+
 .digitBox:first-child {
   margin-left: 0;
 }
