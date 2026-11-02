@@ -10,9 +10,8 @@
   align-items: center;
   justify-content: center;
 
-  background: #E34234;
+  background: #e34234;
 }
-
 
 /* =========================================
    CINNABAR BACKGROUND
@@ -31,11 +30,9 @@
   z-index: 1;
 }
 
-
 /* =========================================
    MERCURY BORDER
    ========================================= */
-
 .mercuryBottom {
   position: absolute;
 
@@ -45,15 +42,14 @@
   width: 100%;
   height: 33.33dvh;
 
-   background-image: var(--merc-border);
-   background-repeat: repeat;
-   background-size: contain;
+  background-image: var(--merc-border);
+  background-repeat: repeat;
+  background-size: contain;
+  background-position: center bottom;
 
   z-index: 9;
-
   pointer-events: none;
 }
-
 
 /* =========================================
    CLOCK FACE
@@ -73,7 +69,6 @@
   z-index: 10;
 }
 
-
 /* =========================================
    CLOCK HANDS
    ========================================= */
@@ -87,19 +82,18 @@
   width: var(--hand-width);
   height: var(--hand-height);
 
-  background: #E34234;
+  background: #e34234;
 
   border-radius: 1vmin;
 
   transform-origin: 50% 100%;
-  transform:
-    translateX(-50%) rotate(var(--hand-rotate));
+  transform: translateX(-50%) rotate(var(--hand-rotate));
 
   box-shadow:
-    1px 0 0 #FFF,
-    -1px 0 0 #FFF,
-    0 1px 0 #FFF,
-    0 -1px 0 #FFF;
+    1px 0 0 #fff,
+    -1px 0 0 #fff,
+    0 1px 0 #fff,
+    0 -1px 0 #fff;
 }
 
 @media (prefers-reduced-motion: reduce) {
