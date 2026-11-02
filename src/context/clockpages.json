@@ -5254,7 +5254,7 @@
   {
     "path": "26-10-16",
     "date": "26-10-16",
-    "title": "Callisto",
+    "title": "Io",
     "tags": ["Jupiter", "analog", "animal", "fly", "moon", "myth"]
   },
   {
@@ -5328,30 +5328,36 @@
     "path": "26-10-27",
     "date": "26-10-27",
     "title": "Synchrony",
-    "tags": ["digital", "image-free", "tick-tock", "typeface", "random"]
+    "tags": ["digital", "image-free", "random", "tick-tock", "typeface"]
   },
   {
     "path": "26-10-28",
     "date": "26-10-28",
     "title": "Laser",
-    "tags": ["analog", "light", "hot", "color"]
+    "tags": ["analog", "color", "hot", "light"]
   },
   {
     "path": "26-10-29",
     "date": "26-10-29",
     "title": "Pulse",
-    "tags": ["digital", "body", "bonding", "sound"]
+    "tags": ["body", "bonding", "digital", "sound"]
   },
   {
     "path": "26-10-30",
     "date": "26-10-30",
     "title": "Swipe",
-    "tags": ["analog", "hand", "tick-tock", "random"]
+    "tags": ["analog", "hand", "random", "tick-tock"]
   },
   {
     "path": "26-10-31",
     "date": "26-10-31",
     "title": "Threads",
-    "tags": ["digital", "thread", "spin"]
+    "tags": ["digital", "spin", "string", "thread"]
+  },
+  {
+    "path": "26-11-01",
+    "date": "26-11-01",
+    "title": "Acorn",
+    "tags": ["analog", "grow", "light", "nature", "plant", "tree", "trunk"]
   }
 ]
