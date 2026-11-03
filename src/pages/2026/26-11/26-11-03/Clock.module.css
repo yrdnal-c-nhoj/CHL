@@ -1,40 +1,62 @@
 .container {
   position: relative;
-  height: 100dvh;
   width: 100vw;
-  background-color: #000;
-  color: #ff3c38;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  grid-template-rows: repeat(3, minmax(0, 1fr));
-  gap: 0.25rem;
-  width: 100%;
-  height: 100%;
-}
-
-.row {
-  display: contents;
-}
-
-.cell {
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'ClockFont_26_11_02', monospace;
-  font-size: 8rem;
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  border: 2px solid #ff3c38;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  line-height: 1;
   overflow: hidden;
+  background: #000;
 }
 
-.cell span {
-  white-space: nowrap;
+.backgroundVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hand,
+.minuteHand,
+.secondHand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+  transform: translateX(-50%) rotate(var(--angle));
+  mix-blend-mode: difference;
+}
+
+.hand {
+  width: 8px;
+  height: 32vmin;
+  background: linear-gradient(0deg, transparent 30%, #fff 60%);
+  border-radius: 4px 4px 0 0;
+  z-index: 3;
+}
+
+.minuteHand {
+  width: 5px;
+  height: 44vmin;
+  background: linear-gradient(0deg, transparent 30%, #fff 60%);
+  border-radius: 3px 3px 0 0;
+  z-index: 2;
+}
+
+.secondHand {
+  width: 2px;
+  height: 48vmin;
+  background: linear-gradient(0deg, transparent 30%, #fff 60%);
+  border-radius: 1px;
+  z-index: 4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .minuteHand,
+  .secondHand {
+    transition: transform 1s steps(60);
+  }
 }
