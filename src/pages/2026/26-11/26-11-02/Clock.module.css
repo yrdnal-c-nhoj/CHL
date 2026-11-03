@@ -1,45 +1,158 @@
 .container {
   position: relative;
+
   width: 100%;
   height: 100dvh;
   min-height: 100dvh;
+
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+
   overflow: hidden;
-  background: #011238;
+
+  background: #030548;
+
+  isolation: isolate;
+
+  /* 18 shades of orange */
+  --orange-0: #fff3e0;
+  --orange-1: #ffe0b2;
+  --orange-2: #ffcc80;
+  --orange-3: #ffb74d;
+  --orange-4: #ffa726;
+  --orange-5: #ff9800;
+  --orange-6: #fb8c00;
+  --orange-7: #f57c00;
+  --orange-8: #ef6c00;
+  --orange-9: #e65100;
+  --orange-10: #ff7043;
+  --orange-11: #ff5722;
+  --orange-12: #f4511e;
+  --orange-13: #e64a19;
+  --orange-14: #d84315;
+  --orange-15: #bf360c;
+  --orange-16: #ff6d00;
+  --orange-17: #dd2c00;
 }
 
 .grid {
+  position: relative;
+
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+
   width: 100%;
+  height: 100%;
+
   align-items: center;
   justify-items: center;
+
+  overflow: hidden;
 }
 
 .cell {
+  position: relative;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   width: 100%;
   height: 100%;
+
+  overflow: visible;
 }
 
 .char {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
   display: inline-block;
-  color: #f34c15;
+
+  color: var(--digit-color, #f87229);
+
   font-family: 'ClockFont_26_11_02', monospace;
-  font-weight: 400;
-  font-size: var(--font-size); /* set by ResizeObserver on .container */
+  font-weight: 300;
+
+  font-size: var(--font-size, 12vw);
   line-height: 1;
+
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+
+  pointer-events: none;
+  user-select: none;
+
+  backface-visibility: hidden;
+
+  will-change: transform, opacity;
+}
+
+/* Previous digit: remain visible until shortly before landing. */
+
+.oldChar {
+  z-index: 1;
+
+  opacity: 1;
+
+  transform: translate(-50%, -50%);
+
+  animation: fadeOut 150ms ease-out var(--exit-delay, 0s) forwards;
+}
+
+/* Incoming digit: fly from outside the viewport. */
+
+.newChar {
+  z-index: 2;
+
+  opacity: 1;
+
+  transform: translate(-50%, -50%);
+
+  animation: flyIn var(--duration, 0.8s) cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0s) both;
+}
+
+@keyframes flyIn {
+  0% {
+    opacity: 0;
+
+    transform: translate(calc(-50% + var(--start-x)),
+        calc(-50% + var(--start-y)));
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .char {
-    transition: none;
+  .oldChar {
+    animation: none;
+    opacity: 0;
+  }
+
+  .newChar {
+    animation: none;
+    opacity: 1;
+    transform: translate(-50%, -50%);
   }
 }
