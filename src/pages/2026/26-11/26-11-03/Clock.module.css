@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #4dd8cd;
+  background: #4da7d8;
 }
 
 .backgroundVideo {
@@ -16,6 +16,7 @@
   height: 100%;
   pointer-events: none;
   z-index: 0;
+  filter: brightness(1.2) contrast(0.8) saturate(1.5) hue-rotate(30deg);
   object-fit: contain;
 }
 
