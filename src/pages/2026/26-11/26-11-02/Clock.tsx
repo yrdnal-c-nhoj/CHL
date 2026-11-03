@@ -52,7 +52,7 @@ const random = (min: number, max: number) =>
 const randomDirection = (): Direction => {
   const directions: Direction[] = ['top', 'right', 'bottom', 'left'];
 
-  return directions[Math.floor(Math.random() * directions.length)];
+  return directions[Math.floor(Math.random() * directions.length)] as Direction;
 };
 
 const createDigit = (
@@ -94,7 +94,7 @@ const createDigit = (
   const exitDelay = delay;
 
   // Pick random orange shade
-  const color = ORANGE_SHADES[Math.floor(Math.random() * ORANGE_SHADES.length)];
+  const color = ORANGE_SHADES[Math.floor(Math.random() * ORANGE_SHADES.length)] as string;
 
   return {
     char,
