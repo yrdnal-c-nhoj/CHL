@@ -23,7 +23,9 @@
   font-family: var(--font-arimo);
   pointer-events: auto;
   will-change: opacity;
-  transition: opacity var(--nav-transition), transform var(--nav-transition);
+  transition:
+    opacity var(--nav-transition),
+    transform var(--nav-transition);
   overflow: visible;
 }
 
@@ -66,7 +68,10 @@
   text-decoration: none; /* remove underlines */
   box-sizing: border-box;
   font-family: inherit;
-  transition: background var(--nav-transition), border var(--nav-transition), opacity var(--nav-transition);
+  transition:
+    background var(--nav-transition),
+    border var(--nav-transition),
+    opacity var(--nav-transition);
 }
 
 /* Ensure all text inside footer buttons uses the same color */
@@ -84,8 +89,6 @@
   opacity: 1;
   border-color: rgba(200, 215, 242, 0.8);
 }
-
-
 
 /* --- Layouts --- */
 
@@ -116,16 +119,16 @@
 }
 
 .footerDate {
-  font-size: 1.0rem;
+  font-size: 1rem;
   letter-spacing: 0.05rem;
-  font-family: var(--font-barlow-condensed);
+  font-family: var(--font-atkinson);
   text-align: left;
 }
 
 .footerNumber {
-  font-size: 1.0rem;
-    letter-spacing: 0.1rem;
-  font-family: var(--font-barlow-condensed);
+  font-size: 1rem;
+  letter-spacing: 0.1rem;
+  font-family: var(--font-atkinson);
   text-align: right;
 }
 
@@ -146,12 +149,12 @@
 .footerTags {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;   /* Centers tags horizontally */
+  justify-content: center; /* Centers tags horizontally */
   align-content: flex-start; /* Packs wrapped rows from top to bottom */
   gap: 0.2rem;
   width: 100%;
-  min-height: 2.4rem;        /* Matches original grid row allocation */
-  padding: 0.2rem 0;         /* Small vertical padding for breathing room */
+  min-height: 2.4rem; /* Matches original grid row allocation */
+  padding: 0.2rem 0; /* Small vertical padding for breathing room */
   box-sizing: border-box;
 }
 
@@ -166,7 +169,9 @@
   white-space: nowrap;
   box-sizing: border-box;
   text-decoration: none;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .tagItem:hover {
@@ -179,7 +184,6 @@
 .footerRight {
   display: flex;
 }
-
 
 /* --- Accessibility --- */
 
