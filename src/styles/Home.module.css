@@ -4,11 +4,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: var(--color-lab-bg-gray); */
-  /* font-family: var(--font-arimo); */
 }
 
-/* Home Page Layout */
 .homeContainer {
   box-sizing: border-box;
   position: relative;
@@ -35,29 +32,92 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  align-items: center;
-  /* gap: clamp(0.5rem, 1vw, 1.5rem); */
   width: 100%;
   max-width: 100%;
 }
 
-/* Month List Container */
-.monthList {
+/* Calendar Grid - 3 columns mobile, 5 columns desktop */
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  width: 100%;
+  border-top: 1px solid var(--color-lab-gray-medium);
+  background-color: var(--color-lab-gray-light);
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+/* Desktop: 5 columns */
+@media (min-width: 768px) {
+  .calendarGrid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.calendarItem {
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0;
-  margin: 0;
-  padding: 0;
-  width: 100%;
+  padding: 0.25rem;
+  border-right: 1px solid var(--color-lab-gray-medium);
+  border-bottom: 1px solid var(--color-lab-gray-medium);
+  color: var(--color-lab-text);
+  text-decoration: none;
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease;
+  height: 100%;
+  box-sizing: border-box;
 }
 
-/* Add space before the first line on phone view */
-@media (max-width: 600px) {
-  .monthList {
-    margin-top: 1rem; /* Adjust this value as needed */
+/* Mobile: every 3rd item no right border */
+.calendarItem:nth-child(3n) {
+  border-right: none;
+}
+
+/* Desktop: every 5th item no right border */
+@media (min-width: 768px) {
+  .calendarItem:nth-child(3n) {
+    border-right: 1px solid var(--color-lab-gray-medium);
   }
+  .calendarItem:nth-child(5n) {
+    border-right: none;
+  }
+}
+
+.calendarItem:hover {
+  background-color: #c4ccdd;
+  opacity: 1;
+}
+
+.calendarItemImage {
+  margin-bottom: 0.1rem;
+  border-radius: 0.25rem;
+  border: 0.5px solid var(--color-lab-gray-dark);
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendarItemInfo {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-atkinson);
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 0;
+}
+
+.calendarItemTitle {
+  font-family: var(--font-arimo);
+  font-size: 1.1rem;
+  text-align: center;
+  margin-top: -0.15rem;
 }
 
 .socialContainer {
@@ -78,89 +138,8 @@
   opacity: 0.6;
 }
 
-/* ========================================
-   MONTH GRID STYLES
-   ======================================== */
-
-.monthGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  margin-left: -50vw;
-  border-top: 1px solid var(--color-lab-gray-medium);
-  background-color: var(--color-lab-gray-light);
-  align-items: stretch;
-  box-sizing: border-box;
-}
-
-.monthItem {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: 0.25rem;
-  border-right: 1px solid var(--color-lab-gray-medium);
-  border-bottom: 1px solid var(--color-lab-gray-medium);
-  color: var(--color-lab-text);
-  text-decoration: none;
-  transition: opacity 0.2s ease;
-  height: 100%;
-  box-sizing: border-box;
-}
-
-/* --- Mobile Grid Logic (3 Columns) --- */
-@media (max-width: 767px) {
-  .monthItem:nth-child(3n) {
-    border-right: none;
-  }
-}
-
-/* --- Laptop/Desktop Grid Logic (5 Columns) --- */
-@media (min-width: 768px) {
-  .monthGrid {
-    grid-template-columns: repeat(5, 1fr);
-  }
-
-  .monthItem:nth-child(5n) {
-    border-right: none;
-  }
-}
-
-.monthItem:hover {
-  background-color: #c4ccdd;
-  opacity: 1;
-}
-
-.monthItemImage {
-  margin-bottom: 0.1rem;
-  border-radius: 0.25rem;
-  border: 0.5px solid var(--color-lab-gray-dark);
-  width: 100%;
-  /* Always square — never let height override the 1:1 ratio. */
-  height: auto;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.monthItemInfo {
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--font-barlow-condensed);
-  font-size: 0.65rem;
-  color: #888;
-  margin-bottom: 0;
-}
-
-.monthItemTitle {
-  /* font-family: 'Roboto Slab', serif; */
-  font-family: var(--font-arimo);
-  font-size: 1.1rem;
-  /* letter-spacing: 0.2rem; */
+.error {
+  padding: 2rem;
   text-align: center;
-  margin-top: -0.15rem;
+  color: var(--color-lab-error);
 }

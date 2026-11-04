@@ -1,4 +1,5 @@
-//Home page component that displays a list of items grouped by month, with navigation and social media links. It also handles font loading and navigation state restoration when returning from the clock page.
+// Home page - flat grid of all clocks, newest first
+// 3 columns always
 
 import fbookImg from '@/assets/icons/fbook.png';
 import instaImg from '@/assets/icons/i.png';
@@ -7,7 +8,6 @@ import type { FC } from 'react';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Footer from '../components/Footer';
-import MonthDropdown from '../components/MonthDropdown';
 import TopNav from '../components/TopNav';
 import { DataContext } from '../context/DataContext';
 import { useNavigationState } from '../hooks/useNavigationState';
@@ -16,6 +16,7 @@ import {
   formatDateStandard as formatDate,
   isValidDate,
 } from '../utils/dateUtils';
+import Thumbnail from '../components/Thumbnail';
 
 interface DataItem {
   date: string;
@@ -42,14 +43,7 @@ const Home: FC = () => {
     restoreScrollPosition,
     clearNavigationState,
   } = useNavigationState();
-  const [expandedMonth, setExpandedMonth] = useState<string | null>(() => {
-    // Initialize expanded month from URL parameter or saved state
-    const monthParam = searchParams.get('month');
-    const savedState = restoreNavigationState();
-    return monthParam || savedState?.expandedMonth || null;
-  });
 
-  // Safety cleanup: Ensure background is white and clock-mode is removed when Home mounts
   useEffect(() => {
     document.body.classList.remove('clock-mode');
     document.body.style.backgroundColor = '#ffffff';
@@ -66,25 +60,19 @@ const Home: FC = () => {
     }
   }, [fontsReady, setFontsReady]);
 
-  // Save navigation state when leaving the home page
   useEffect(() => {
     return () => {
-      // Capture current scroll position and expansion state before unmounting
-      saveNavigationState(expandedMonth || undefined);
+      saveNavigationState(undefined);
     };
-  }, [expandedMonth, saveNavigationState]);
+  }, [saveNavigationState]);
 
-  // Restore scroll position and cursor when returning from clock page
   useEffect(() => {
     if (fontsReady && !loading) {
       const savedState = restoreNavigationState();
       if (savedState) {
-        // Restore scroll position after DOM is ready
         requestAnimationFrame(() => {
           restoreScrollPosition(savedState);
         });
-
-        // Clear the navigation state after restoring
         setTimeout(() => {
           clearNavigationState();
         }, 400);
@@ -98,62 +86,11 @@ const Home: FC = () => {
     clearNavigationState,
   ]);
 
-  const handleMonthToggle = (monthKey: string) => {
-    setExpandedMonth(expandedMonth === monthKey ? null : monthKey);
-  };
-
   const sortedItems = useMemo<DataItem[]>(() => {
     return [...items]
       .filter((item) => item?.date && isValidDate(item.date))
-      .sort((a, b) => b.date.localeCompare(a.date));
+      .sort((a, b) => b.date.localeCompare(a.date)); // newest first
   }, [items]);
-
-  const formatMonthName = (monthKey: string): string => {
-    const [yy, mm] = (monthKey || '').split('-');
-    const monthNames = [
-      'JAN',
-      'FEB',
-      'MAR',
-      'APR',
-      'MAY',
-      'JUN',
-      'JUL',
-      'AUG',
-      'SEP',
-      'OCT',
-      'NOV',
-      'DEC',
-    ];
-    const monthIndex = parseInt(mm || '0', 10) - 1;
-    const year = String(yy || '0');
-    return `${monthNames[monthIndex]}'${year}`;
-  };
-
-  const groupedByMonth = useMemo(() => {
-    const groups: Record<string, DataItem[]> = {};
-
-    sortedItems.forEach((item) => {
-      if (item.date) {
-        const [yy, mm] = (item.date || '').split('-');
-        const monthKey = `${yy}-${mm}`;
-        if (!groups[monthKey]) {
-          groups[monthKey] = [];
-        }
-        groups[monthKey].push(item);
-      }
-    });
-
-    // Sort months based on date sort selection
-    const sortedMonths = Object.keys(groups).sort((a, b) => {
-      return b.localeCompare(a);
-    });
-
-    return sortedMonths.map((monthKey) => ({
-      monthKey,
-      monthName: formatMonthName(monthKey),
-      items: groups[monthKey] || [],
-    }));
-  }, [sortedItems]);
 
   if (loading || (!fontsReady && !error)) {
     return <div className={styles.loadingContainer} />;
@@ -176,17 +113,40 @@ const Home: FC = () => {
     >
       <TopNav />
       <div className={styles.homeCenteredContent}>
-        <div className={styles.monthList}>
-          {groupedByMonth.map((month) => (
-            <MonthDropdown
-              key={month.monthKey}
-              monthKey={month.monthKey}
-              monthName={month.monthName}
-              items={month.items}
-              formatDate={formatDate}
-              onToggle={handleMonthToggle}
-              isExpanded={expandedMonth === month.monthKey}
-            />
+        <div className={styles.calendarGrid}>
+          {sortedItems.map((item) => (
+            <a
+              key={item.date}
+              href={`/${item.date}`}
+              className={styles.calendarItem}
+              role="button"
+              tabIndex={0}
+            >
+              <div className={styles.calendarItemImage}>
+                <Thumbnail date={item.date} title={item.title || ''} />
+              </div>
+              <div className={styles.calendarItemInfo}>
+                <span>{formatDate(item.date)}</span>
+                <span>#{item.clockNumber ?? ''}</span>
+              </div>
+              <div className={styles.calendarItemTitle}>
+                {item.title || 'No Title'}
+              </div>
+              <div className="tags-wrapper">
+                {(item.tags || [])
+                  .sort((a, b) => a.localeCompare(b))
+                  .map((tag) => (
+                    <a
+                      key={tag}
+                      href={`/tag/${tag}`}
+                      className="tag-bubble"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {tag}
+                    </a>
+                  ))}
+              </div>
+            </a>
           ))}
         </div>
       </div>
