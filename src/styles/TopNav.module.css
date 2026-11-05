@@ -5,7 +5,7 @@
 }
 
 .topnavbgcolor {
-  background-color: #e2e3e2;
+  background-color: var(--color-lab-gray-light);
   width: 100%;
 }
 
@@ -44,7 +44,15 @@
   display: block;
   width: 100%;
   margin-top: -0.9rem;
+  margin-bottom: 1.5rem;
   font-family: var(--font-oxanium), sans-serif;
+}
+
+/* Desktop: less space */
+@media (min-width: 768px) {
+  .topnavtag {
+    margin-bottom: 0.5rem;
+  }
 }
 
 .navbar {
@@ -103,7 +111,7 @@
   top: 0.5rem;
   z-index: 1000;
   display: block;
-  background-color: #cac5c5;
+  background-color: var(--color-lab-gray-light);
   border: none;
   cursor: pointer;
 }
@@ -202,7 +210,7 @@
       visibility 0.3s; /* Smooth transition */
     flex-direction: column;
     padding: 0.2rem;
-    background-color: #c0c4c0;
+    background-color: var(--color-lab-gray-light);
     pointer-events: none; /* Disable interaction when hidden */
   }
 
@@ -217,5 +225,6 @@
     right: 0.5rem;
     top: 0.5rem;
     padding: 0.2rem;
+    background-color: var(--color-lab-gray-light);
   }
 }

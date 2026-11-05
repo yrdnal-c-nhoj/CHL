@@ -46,7 +46,6 @@ const Home: FC = () => {
 
   useEffect(() => {
     document.body.classList.remove('clock-mode');
-    document.body.style.backgroundColor = '#ffffff';
     document.body.style.overflow = 'auto';
     document.documentElement.style.overflow = 'auto';
   }, []);
