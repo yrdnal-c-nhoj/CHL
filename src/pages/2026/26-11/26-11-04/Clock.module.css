@@ -7,12 +7,55 @@
   align-items: center;
   justify-content: center;
   background: #000;
-  color: #fff;
+  color: #fad6a4;
 }
 
-.content {
-  font-family: monospace, sans-serif;
-  font-size: clamp(2rem, 15vw, 12rem);
+.backgroundVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  /* opacity: 0.6; */
+}
+
+.grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 90vw;
+}
+
+.digitBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'ClockFont_26_11_04', monospace;
   line-height: 1;
   text-align: center;
+  text-shadow:
+    0 0 30px rgba(0, 0, 0, 0.9),
+    0 2px 8px rgba(0, 0, 0, 0.7);
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+  min-height: 0;
+}
+
+/* Mobile font size */
+@media (max-width: 767px) {
+  .digitBox {
+    font-size: clamp(3rem, 14vh, 10rem);
+  }
+}
+
+/* Desktop font size */
+@media (min-width: 768px) {
+  .digitBox {
+    font-size: clamp(2rem, 26vh, 14rem);
+  }
 }
