@@ -4,33 +4,91 @@
  */
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&family=Oxanium:wght@400;700&family=Arimo:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap');
 
-/* Define design tokens (CSS Custom Properties) */
+/* ========================================
+   DESIGN TOKENS (CSS Custom Properties)
+   ======================================== */
 :root {
-  /* Example font families, extend as needed */
+  /* Font Families */
   --font-roboto: 'Roboto Slab', serif;
   --font-oxanium: 'Oxanium', sans-serif;
   --font-arimo: 'Arimo', sans-serif;
   --font-atkinson: 'Atkinson Hyperlegible', sans-serif;
 
-  /* Example colors, extend as needed */
+  /* ========================================
+     COLORS - LABELED BY PURPOSE
+     ======================================== */
+
+  /* ──────────────────────────────────────────
+     SITE-WIDE BACKGROUND
+     Used on <body>, grid containers, nav bars,
+     and all page backgrounds. This is THE
+     main background color across the entire site.
+     ────────────────────────────────────────── */
+  --color-bg-site: #ececf5; /* ← MAIN SITE BACKGROUND (used everywhere) */
+
+  /* ──────────────────────────────────────────
+     GRAY SCALE (for borders, text, hover states)
+     ────────────────────────────────────────── */
+  --color-gray-100: #f0f0f0; /* Light gray - legacy alias */
+  --color-gray-200: #d7d7e2; /* Same as site bg - legacy alias */
+  --color-gray-400: #888; /* Medium gray - borders, muted text */
+  --color-gray-500: #555; /* Darker gray - image borders */
+  --color-gray-600: #555; /* Alias for gray-500 */
+
+  /* ──────────────────────────────────────────
+     TEXT COLORS
+     ────────────────────────────────────────── */
+  --color-text-primary: #1a1a1a; /* Main body text */
+  --color-text-muted: #888; /* Secondary text (dates, counts) */
+
+  /* ──────────────────────────────────────────
+     SEMANTIC / INTERACTION COLORS
+     ────────────────────────────────────────── */
+  --color-red: #ff0000; /* Accent red */
+  --color-blue: #0000ff; /* Accent blue / focus rings */
+  --color-error: #cc0000; /* Error messages */
+  --color-hover: #c4ccdd; /* Grid item hover state */
+
+  /* ──────────────────────────────────────────
+     LEGACY ALIASES (for backward compatibility)
+     ────────────────────────────────────────── */
   --color-lab-red: #ff0000;
   --color-lab-blue: #0000ff;
   --color-lab-bg-gray: #f0f0f0;
   --color-lab-gray-light: #d7d7e2;
+  --color-lab-gray-medium: #888;
+  --color-lab-gray-dark: #555;
+  --color-lab-text: #1a1a1a;
+  --color-lab-error: #cc0000;
+  --color-lab-hover: #c4ccdd;
+  --color-lab-muted: #888;
 
-  /* Example spacing, extend as needed */
-  --space-sm: 0.5rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
+  /* Spacing */
+  --space-xs: 0.1rem;
+  --space-sm: 0.25rem;
+  --space-md: 0.5rem;
+  --space-lg: 1rem;
+  --space-xl: 1.5rem;
+
+  /* Grid breakpoints */
+  --breakpoint-mobile: 600px;
+  --breakpoint-tablet: 768px;
 }
 
-/*
- * Global element resets.
- * Remove default browser margin from the body to prevent white borders.
- */
+/* ========================================
+   GLOBAL RESETS
+   ======================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  background-color: var(--color-lab-gray-light);
+  background-color: var(--color-bg-site); /* ← SITE BACKGROUND */
+  color: var(--color-text-primary);
+  font-family: var(--font-arimo), sans-serif;
 }
 
 html,
@@ -38,3 +96,5 @@ body {
   width: 100%;
   overflow-x: hidden;
 }
+
+/* ... rest of file unchanged ... */
