@@ -16,6 +16,7 @@
   --color-lab-red: #ff0000;
   --color-lab-blue: #0000ff;
   --color-lab-bg-gray: #f0f0f0;
+  --color-lab-gray-light: #d7d7e2;
 
   /* Example spacing, extend as needed */
   --space-sm: 0.5rem;
@@ -29,6 +30,7 @@
  */
 body {
   margin: 0;
+  background-color: var(--color-lab-gray-light);
 }
 
 html,
