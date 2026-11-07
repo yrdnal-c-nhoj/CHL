@@ -33,20 +33,21 @@
 }
 
 .digitBox {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'ClockFont_26_11_04', monospace;
   line-height: 1;
   text-align: center;
-  text-shadow:
-    -1px 0 0 #fff,
-    1px 0 0 #000,
-    0 0 30px rgba(0, 0, 0, 0.9),
-    0 2px 8px rgba(0, 0, 0, 0.7);
   letter-spacing: 0.1em;
-  opacity: 0.5;
   min-height: 0;
+
+  color: rgba(250, 214, 164, 0.4);
+
+  text-shadow:
+    -1px 0 0 #f2f5f2,
+    1px 0 0 #033006;
 }
 
 /* Mobile font size */
