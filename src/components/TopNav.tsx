@@ -55,6 +55,15 @@ const TopNav = () => {
           </li>
           <li className={styles.navItem}>
             <Link
+              to="/list"
+              className={`${styles.navLink} ${isActive('/list') ? styles.active : ''}`}
+              onClick={closeMenu}
+            >
+              LIST
+            </Link>
+          </li>
+          <li className={styles.navItem}>
+            <Link
               to="/tags"
               className={`${styles.navLink} ${isActive('/tags') ? styles.active : ''}`}
               onClick={closeMenu}

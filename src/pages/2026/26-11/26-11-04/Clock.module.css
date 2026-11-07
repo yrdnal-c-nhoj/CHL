@@ -17,6 +17,7 @@
   height: 100%;
   object-fit: cover;
   z-index: 0;
+  filter: brightness(1.5) contrast(0.8) saturate(3);
   /* opacity: 0.6; */
 }
 
@@ -39,6 +40,8 @@
   line-height: 1;
   text-align: center;
   text-shadow:
+    -1px 0 0 #fff,
+    1px 0 0 #000,
     0 0 30px rgba(0, 0, 0, 0.9),
     0 2px 8px rgba(0, 0, 0, 0.7);
   letter-spacing: 0.1em;

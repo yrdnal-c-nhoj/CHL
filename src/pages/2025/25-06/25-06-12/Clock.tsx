@@ -1,5 +1,5 @@
 import bgImage from '@/assets/images/25_images/25-06/25-06-12/auth.jpg';
-import cattleFont from '@/assets/fonts/25fonts/25-06-12-cattle.ttf';
+import cattleFont from '@/assets/fonts/25fonts/25-06-12.ttf';
 import { useClock } from '@/utils/hooks';
 
 export const assets = [bgImage, cattleFont];
