@@ -8,11 +8,116 @@
   justify-content: center;
   background: #000;
   color: #fff;
+  isolation: isolate;
 }
 
-.content {
-  font-family: monospace, sans-serif;
-  font-size: clamp(2rem, 15vw, 12rem);
-  line-height: 1;
+.background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150vmax;
+  height: 150vmax;
+  object-fit: cover;
+  object-position: center;
+  transform: translate(-50%, -50%) rotate(var(--background-angle));
+  transform-origin: 50% 50%;
+  z-index: 0;
+  filter: saturate(2) brightness(1) contrast(1.2); 
+  will-change: transform;
+}
+
+.clockFace {
+  position: relative;
+  width: min(105vmin, 50rem);
+  height: min(105vmin, 50rem);
+  border-radius: 50%;
+  opacity: 0.7;
+  z-index: 1;
+}
+
+.hands {
+  position: absolute;
+  inset: 0;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+  border-radius: 999px;
+  will-change: transform, filter;
+  filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8));
+  animation: brightRainbow 8s linear infinite;
+}
+
+.hourHand {
+  width: 1.25%;
+  height: 24%;
+  background: #ffff00; /* yellow base */
+  transform: translate(-50%, -100%) rotate(var(--hour-angle));
+  z-index: 3;
+}
+
+.minuteHand {
+  width: 0.85%;
+  height: 34%;
+  background: #ff0000; /* red base */
+  transform: translate(-50%, -100%) rotate(var(--minute-angle));
+  animation-delay: 2.5s;
+}
+
+.secondHand {
+  width: clamp(0.1rem, 0.28vmin, 0.18rem);
+  height: 39%;
+  background: #0000ff; /* blue base */
+  transform: translate(-50%, -100%) rotate(var(--second-angle));
+  animation-delay: 5s;
+}
+
+
+.numbers {
+  position: absolute;
+  inset: 0;
+  font-family: 'ClockFont_26_11_06', monospace;
+  font-size: clamp(5rem, 11vmin, 11rem);
+  font-weight: 300;
+  pointer-events: none;
+}
+
+.number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2em;
+  height: 2em;
+  margin: -1em 0 0 -1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  transform-origin: center center;
+  transform: rotate(var(--angle)) translateY(-115%);
+  color: hsl(var(--hue), 100%, 50%);
+  animation: brightRainbow 4s linear infinite;
+  animation-delay: var(--pulse-delay);
+}
+
+@keyframes brightRainbow {
+  0%   { filter: drop-shadow(0 0 0.18rem rgba(0,0,0,0.8)) hue-rotate(0deg) saturate(1.5); opacity: 1; }
+  16%  { filter: drop-shadow(0 0 0.18rem rgba(0,0,0,0.8)) hue-rotate(60deg) saturate(1.5); opacity: 1; }
+  33%  { filter: drop-shadow(0 0 0.18rem rgba(0,0,0,0.8)) hue-rotate(120deg) saturate(1.5); opacity: 1; }
+  50%  { filter: drop-shadow(0 0 0.18rem rgba(0,0,0,0.8)) hue-rotate(180deg) saturate(1.5); opacity: 1; }
+  66%  { filter: drop-shadow(0 0 0.18rem rgba(0,0,0,0.8)) hue-rotate(240deg) saturate(1.5); opacity: 1; }
+  83%  { filter: drop-shadow(0 0 0.18rem rgba(0,0,0,0.8)) hue-rotate(300deg) saturate(1.5); opacity: 1; }
+  100% { filter: drop-shadow(0 0 0.18rem rgba(0,0,0,0.8)) hue-rotate(360deg) saturate(1.5); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .background, .hand, .number { will-change: auto; animation: none; }
+  .number { filter: none; opacity: 1; }
 }
