@@ -33,9 +33,23 @@ const Clock_26_11_06 = () => {
   const time = useSmoothClock(prefersReducedMotion ? 1000 : 16);
   useSuspenseFontLoader([fontConfig]);
 
+  const numbers = useMemo(() => {
+    const hues = [0, 60, 120, 180, 240, 300, 0, 60, 120, 180, 240, 300];
+    // Deterministic pseudo-random for pulseDelay using index-based hash
+    const pseudoRandom = (seed: number) => {
+      const x = Math.sin(seed * 12345.6789) * 4321.9876;
+      return x - Math.floor(x);
+    };
+    return Array.from({ length: 12 }, (_, i) => ({
+      value: i === 0 ? 12 : i,
+      angle: (i === 0 ? 12 : i) * 30,
+      hue: hues[i],
+      pulseDelay: pseudoRandom(i) * 2,
+    }));
+  }, []);
+
   const angles = useMemo(() => {
-    const ms = time.getMilliseconds();
-    const s = time.getSeconds() + (prefersReducedMotion ? 0 : ms / 1000);
+    const s = time.getSeconds() + (prefersReducedMotion ? 0 : time.getMilliseconds() / 1000);
     const m = time.getMinutes() + s / 60;
     const h = (time.getHours() % 12) + m / 60;
     return {
@@ -46,18 +60,7 @@ const Clock_26_11_06 = () => {
     };
   }, [prefersReducedMotion, time]);
 
-  const numbers = useMemo(() => {
-    // Primary/secondary color wheel: red(0), yellow(60), green(120), cyan(180), blue(240), magenta(300)
-    const hues = [0, 60, 120, 180, 240, 300, 0, 60, 120, 180, 240, 300];
-    return Array.from({ length: 12 }, (_, i) => ({
-      value: i === 0 ? 12 : i,
-      angle: (i === 0 ? 12 : i) * 30,
-      hue: hues[i],
-      pulseDelay: Math.random() * 2,
-    }));
-  }, []);
-
-  return (
+return (
     <main
       className={styles.container}
       style={{
@@ -65,7 +68,8 @@ const Clock_26_11_06 = () => {
         '--minute-angle': `${angles.minute}deg`,
         '--second-angle': `${angles.second}deg`,
         '--background-angle': `${angles.background}deg`,
-      } as Record<string, string>}
+      } as Record<string, string>
+    }
     >
       <SRTime time={time} />
       <img src={backgroundImage} alt="" aria-hidden="true" className={styles.background} />
@@ -86,7 +90,8 @@ const Clock_26_11_06 = () => {
                 '--angle': `${n.angle}deg`,
                 '--hue': `${n.hue}`,
                 '--pulse-delay': `${n.pulseDelay}s`,
-              } as React.CSSProperties}
+              } as Record<string, string>
+            }
             >
               {n.value}
             </span>
