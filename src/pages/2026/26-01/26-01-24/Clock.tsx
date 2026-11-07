@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { useSmoothClock } from '@/utils/hooks';
+import React, { useMemo } from 'react';
+import { useClock } from '@/utils/hooks';
 import styles from './Clock.module.css';
 
 export const assets = [];
@@ -20,20 +20,116 @@ const DIGIT_TO_EMOJI: Record<DigitChar, string> = {
 };
 
 const BACKGROUND_EMOJIS = [
-  '🏓', '🏸', '🏒', '🏑', '🏏', '🥅', '🎣', '🥊',
-  '🎽', '🛹', '🛷', '🥌', '🎿', '🎭', '🎨', '🎬',
-  '🎹', '🥁', '🎸', '🎯', '🐶', '🐱', '🐹', '🦊',
-  '🐯', '🦁', '🐸', '🦄', '🐄', '🐎', '🐩', '🐈',
-  '🐅', '🦓', '🦒', '🦘', '🐛', '🦋', '🐌', '🐢',
-  '🐍', '🦎', '🐙', '🦑', '🦐', '🦀', '🐡', '🐠',
-  '🐬', '🐳', '🐋', '🦈', '🦃', '🦚', '🦜', '🦩',
-  '🐾', '🐉', '🐲', '🌵', '🌴', '🌱', '🌿', '🎋',
-  '🍁', '🍄', '🌾', '💐', '🌹', '🌸', '🌼', '🚗',
-  '🚌', '🚎', '🏎', '🚒', '🚚', '🚜', '🚲', '🛵',
-  '🚍', '🚘', '🚋', '🚞', '🚂', '🚇', '🚊', '🚀',
-  '🚁', '🛶', '🚤', '🚢', '🗿', '🗽', '🗼', '🏰',
-  '🏟', '🎡', '🎢', '🎠', '🏖', '🏜', '🌋', '🏔',
-  '🏕', '🏘', '🏗', '🗺', '💺', '🎳',
+  '🏓',
+  '🏸',
+  '🏒',
+  '🏑',
+  '🏏',
+  '🥅',
+  '🎣',
+  '🥊',
+  '🎽',
+  '🛹',
+  '🛷',
+  '🥌',
+  '🎿',
+  '🎭',
+  '🎨',
+  '🎬',
+  '🎹',
+  '🥁',
+  '🎸',
+  '🎯',
+  '🐶',
+  '🐱',
+  '🐹',
+  '🦊',
+  '🐯',
+  '🦁',
+  '🐸',
+  '🦄',
+  '🐄',
+  '🐎',
+  '🐩',
+  '🐈',
+  '🐅',
+  '🦓',
+  '🦒',
+  '🦘',
+  '🐛',
+  '🦋',
+  '🐌',
+  '🐢',
+  '🐍',
+  '🦎',
+  '🐙',
+  '🦑',
+  '🦐',
+  '🦀',
+  '🐡',
+  '🐠',
+  '🐬',
+  '🐳',
+  '🐋',
+  '🦈',
+  '🦃',
+  '🦚',
+  '🦜',
+  '🦩',
+  '🐾',
+  '🐉',
+  '🐲',
+  '🌵',
+  '🌴',
+  '🌱',
+  '🌿',
+  '🎋',
+  '🍁',
+  '🍄',
+  '🌾',
+  '💐',
+  '🌹',
+  '🌸',
+  '🌼',
+  '🚗',
+  '🚌',
+  '🚎',
+  '🏎',
+  '🚒',
+  '🚚',
+  '🚜',
+  '🚲',
+  '🛵',
+  '🚍',
+  '🚘',
+  '🚋',
+  '🚞',
+  '🚂',
+  '🚇',
+  '🚊',
+  '🚀',
+  '🚁',
+  '🛶',
+  '🚤',
+  '🚢',
+  '🗿',
+  '🗽',
+  '🗼',
+  '🏰',
+  '🏟',
+  '🎡',
+  '🎢',
+  '🎠',
+  '🏖',
+  '🏜',
+  '🌋',
+  '🏔',
+  '🏕',
+  '🏘',
+  '🏗',
+  '🗺',
+  '💺',
+  '🎳',
 ];
 
 const shuffle = <T,>(array: readonly T[]): T[] => {
@@ -48,27 +144,14 @@ const shuffle = <T,>(array: readonly T[]): T[] => {
 };
 
 const Clock = () => {
-  const time = useSmoothClock();
+  const time = useClock();
 
-  const emojiCycle = useMemo(
-    () => shuffle(BACKGROUND_EMOJIS),
-    [],
-  );
-
-  const [backgroundIndex, setBackgroundIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setBackgroundIndex((index) =>
-        (index + 1) % emojiCycle.length,
-      );
-    }, 3000);
-
-    return () => window.clearInterval(timer);
-  }, [emojiCycle.length]);
+  const emojiCycle = useMemo(() => shuffle(BACKGROUND_EMOJIS), []);
+  const backgroundIndex = Math.floor(time.getTime() / 3000) % emojiCycle.length;
+  const backgroundEmoji = emojiCycle[backgroundIndex] ?? emojiCycle[0] ?? '';
 
   /*
-   * Read the time directly from the Date supplied by useSmoothClock.
+   * Read the time directly from the Date supplied by useClock.
    */
   const hours = String(time.getHours()).padStart(2, '0');
   const minutes = String(time.getMinutes()).padStart(2, '0');
@@ -90,11 +173,8 @@ const Clock = () => {
 
   return (
     <main className={styles.container}>
-      <div
-        className={styles.background}
-        aria-hidden="true"
-      >
-        {emojiCycle[backgroundIndex]}
+      <div className={styles.background} aria-hidden="true">
+        {backgroundEmoji}
       </div>
 
       <time
