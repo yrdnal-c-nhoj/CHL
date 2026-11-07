@@ -21,7 +21,7 @@ const DIGIT_TO_LETTER: Record<string, string> = {
   '2': '6',
   '3': 'N',
   '4': 'Y',
-  '5': 'P',
+  '5': 'R',
   '6': 'H',
   '7': '7',
   '8': 'v',
