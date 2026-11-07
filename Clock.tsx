@@ -1,5 +1,6 @@
 import React from 'react';
 import { useClock } from '../../utils/hooks/useClock';
+import './Clock.css';
 
 const AnalogClock: React.FC = () => {
   const currentTime = useClock();
