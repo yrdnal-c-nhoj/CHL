@@ -42,12 +42,7 @@
   text-align: center;
   letter-spacing: 0.1em;
   min-height: 0;
-
-  color: rgba(250, 214, 164, 0.4);
-
-  text-shadow:
-    -1px 0 0 #f2f5f2,
-    1px 0 0 #033006;
+  color: rgba(250, 214, 164, 0.594);
 }
 
 /* Mobile font size */
