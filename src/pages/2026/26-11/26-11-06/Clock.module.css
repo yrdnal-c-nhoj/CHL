@@ -6,12 +6,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  isolation: isolate;
   background: #000;
   color: #fff;
+  isolation: isolate;
 }
-
-/* Background */
 
 .background {
   position: absolute;
@@ -22,25 +20,19 @@
   object-fit: cover;
   object-position: center;
   transform: translate(-50%, -50%) rotate(var(--background-angle));
-  transform-origin: center;
+  transform-origin: 50% 50%;
   z-index: 0;
-  filter: saturate(2) brightness(1) contrast(1.2);
   will-change: transform;
-  pointer-events: none;
 }
-
-/* Clock face */
 
 .clockFace {
   position: relative;
   width: min(115vmin, 55rem);
-  aspect-ratio: 1;
+  height: min(115vmin, 55rem);
   border-radius: 50%;
-  opacity: 0.7;
   z-index: 1;
+  border: 0.2rem solid rgba(255, 255, 255, 0.3);
 }
-
-/* Hands */
 
 .hands {
   position: absolute;
@@ -48,7 +40,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.7;
 }
 
 .hand {
@@ -57,9 +48,10 @@
   left: 50%;
   transform-origin: 50% 100%;
   border-radius: 999px;
+  background: #fff;
+  will-change: transform, filter;
   filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8));
   animation: brightRainbow 8s linear infinite;
-  will-change: transform, filter;
 }
 
 .hourHand {
@@ -76,7 +68,6 @@
   background: #ff0000;
   transform: translate(-50%, -100%) rotate(var(--minute-angle));
   animation-delay: 2.5s;
-  z-index: 2;
 }
 
 .secondHand {
@@ -85,15 +76,28 @@
   background: #0000ff;
   transform: translate(-50%, -100%) rotate(var(--second-angle));
   animation-delay: 5s;
-  z-index: 4;
 }
 
-/* Numerals */
+.centerPin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: clamp(0.9rem, 2.2vmin, 1.4rem);
+  height: clamp(0.9rem, 2.2vmin, 1.4rem);
+  border: 0.2rem solid #fff;
+  border-radius: 50%;
+  background: #151515;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.9);
+}
 
 .numbers {
   position: absolute;
   inset: 0;
   font-family: 'ClockFont_26_11_06', monospace;
+  font-size: clamp(6rem, 13vmin, 13rem);
+  font-weight: 300;
   pointer-events: none;
 }
 
@@ -101,70 +105,82 @@
   position: absolute;
   top: 50%;
   left: 50%;
-
-  /* Independent of clockFace dimensions */
-  font-size: clamp(5rem, 13vmin, 13rem);
-
-  width: 1.5em;
-  height: 1.5em;
-
+  width: 2em;
+  height: 2em;
+  margin: -1em 0 0 -1em;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  font-weight: 300;
-  line-height: 1;
   text-align: center;
-
-  transform:
-    translate(-50%, -50%) rotate(var(--angle)) translateY(-30vmin) rotate(calc(-1 * var(--angle)));
-
+  transform-origin: center center;
+  /* Rotate to position, translate out to edge (55vmin ≈ clockFace radius), no counter-rotation */
+  transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-55vmin);
   color: hsl(var(--hue), 100%, 50%);
-
   animation: brightRainbow 4s linear infinite;
   animation-delay: var(--pulse-delay);
 }
 
-/* Rainbow animation */
-
 @keyframes brightRainbow {
   0% {
-    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(0deg) saturate(1.5);
+    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(0deg)
+      saturate(1.5);
+    opacity: 1;
   }
-
   16% {
-    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(60deg) saturate(1.5);
+    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(60deg)
+      saturate(1.5);
+    opacity: 1;
   }
-
   33% {
-    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(120deg) saturate(1.5);
+    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(120deg)
+      saturate(1.5);
+    opacity: 1;
   }
-
   50% {
-    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(180deg) saturate(1.5);
+    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(180deg)
+      saturate(1.5);
+    opacity: 1;
   }
-
   66% {
-    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(240deg) saturate(1.5);
+    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(240deg)
+      saturate(1.5);
+    opacity: 1;
   }
-
   83% {
-    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(300deg) saturate(1.5);
+    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(300deg)
+      saturate(1.5);
+    opacity: 1;
   }
-
   100% {
-    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(360deg) saturate(1.5);
+    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(360deg)
+      saturate(1.5);
+    opacity: 1;
   }
 }
 
-/* Reduced motion */
+.background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150vmax;
+  height: 150vmax;
+  object-fit: cover;
+  object-position: center;
+  transform: translate(-50%, -50%) rotate(var(--background-angle));
+  transform-origin: 50% 50%;
+  z-index: 0;
+  will-change: transform;
+}
 
 @media (prefers-reduced-motion: reduce) {
-
   .background,
   .hand,
   .number {
-    animation: none;
     will-change: auto;
+    animation: none;
+  }
+  .number {
+    filter: none;
+    opacity: 1;
   }
 }
