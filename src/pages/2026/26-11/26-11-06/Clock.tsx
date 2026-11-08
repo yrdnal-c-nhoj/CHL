@@ -17,25 +17,24 @@ const fontConfig: FontConfig = {
 };
 
 const Clock_26_11_06 = () => {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
-    typeof window !== 'undefined'
-      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      : false,
-  );
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const handleChange = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) =>
+      setPrefersReducedMotion(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
   }, []);
 
   const time = useSmoothClock(prefersReducedMotion ? 1000 : 16);
   useSuspenseFontLoader([fontConfig]);
 
+  const radius = 55; // vmin
+
   const numbers = useMemo(() => {
     const hues = [0, 60, 120, 180, 240, 300, 0, 60, 120, 180, 240, 300];
-    // Deterministic pseudo-random for pulseDelay using index-based hash
     const pseudoRandom = (seed: number) => {
       const x = Math.sin(seed * 12345.6789) * 4321.9876;
       return x - Math.floor(x);
@@ -49,7 +48,9 @@ const Clock_26_11_06 = () => {
   }, []);
 
   const angles = useMemo(() => {
-    const s = time.getSeconds() + (prefersReducedMotion ? 0 : time.getMilliseconds() / 1000);
+    const s =
+      time.getSeconds() +
+      (prefersReducedMotion ? 0 : time.getMilliseconds() / 1000);
     const m = time.getMinutes() + s / 60;
     const h = (time.getHours() % 12) + m / 60;
     return {
@@ -60,19 +61,26 @@ const Clock_26_11_06 = () => {
     };
   }, [prefersReducedMotion, time]);
 
-return (
+  return (
     <main
       className={styles.container}
-      style={{
-        '--hour-angle': `${angles.hour}deg`,
-        '--minute-angle': `${angles.minute}deg`,
-        '--second-angle': `${angles.second}deg`,
-        '--background-angle': `${angles.background}deg`,
-      } as Record<string, string>
-    }
+      style={
+        {
+          '--hour-angle': `${angles.hour}deg`,
+          '--minute-angle': `${angles.minute}deg`,
+          '--second-angle': `${angles.second}deg`,
+          '--background-angle': `${angles.background}deg`,
+          '--radius': `${radius}vmin`,
+        } as Record<string, string>
+      }
     >
       <SRTime time={time} />
-      <img src={backgroundImage} alt="" aria-hidden="true" className={styles.background} />
+      <img
+        src={backgroundImage}
+        alt=""
+        aria-hidden="true"
+        className={styles.background}
+      />
 
       <div className={styles.clockFace} aria-hidden="true">
         <div className={styles.hands}>
@@ -86,12 +94,13 @@ return (
             <span
               key={n.value}
               className={styles.number}
-              style={{
-                '--angle': `${n.angle}deg`,
-                '--hue': `${n.hue}`,
-                '--pulse-delay': `${n.pulseDelay}s`,
-              } as Record<string, string>
-            }
+              style={
+                {
+                  '--angle': `${n.angle}deg`,
+                  '--hue': `${n.hue}`,
+                  '--pulse-delay': `${n.pulseDelay}s`,
+                } as Record<string, string>
+              }
             >
               {n.value}
             </span>
