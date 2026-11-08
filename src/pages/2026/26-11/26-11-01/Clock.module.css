@@ -74,10 +74,10 @@
   transform-origin: center;
   opacity: 0.5;
   text-shadow:
-    -0.5px -0.5px 0 #f0e4e6,
-    0.5px -0.5px 0 #ffedee,
-    -0.5px 1px 0 #000000,
-    0.5px 1px 0 #000000;
+    -1px -1px 0 #f0e4e6,
+    1px 1px 0 #ffedee,
+    1px 1px 0 #000000,
+    1px 1px 0 #000000;
 }
 
 @media (prefers-reduced-motion: reduce) {
