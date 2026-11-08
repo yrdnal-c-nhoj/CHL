@@ -30,6 +30,7 @@
   display: flex;
   flex-direction: row;
   gap: 0.1em;
+  opacity: 0.8;
   font-family:
     'ClockFont_26_11_05', 'Noto Sans JP', 'Hiragino Kaku Gothic ProN',
     'Yu Gothic', 'Meiryo', 'Courier New', monospace;
@@ -42,8 +43,18 @@
   line-height: 1.1;
   font-weight: 300;
   letter-spacing: 0.05em;
-  color: #f117f589;
+  color: #f117f5;
   transform: translateY(30px);
+
+  text-shadow:
+    -0.5px -0.5px 0 #fff,
+    0px -0.5px 0 #fff,
+    0.5px -0.5px 0 #fff,
+    -0.5px 0px 0 #fff,
+    0.5px 0px 0 #030303,
+    -0.5px 0.5px 0 #030303,
+    0px 0.5px 0 #161515,
+    0.5px 0.5px 0 #070707;
 
   animation: fadeInDown 0.8s ease-out forwards;
 }
