@@ -31,7 +31,7 @@
   height: min(115vmin, 55rem);
   border-radius: 50%;
   z-index: 1;
-  border: 0.2rem solid rgba(255, 255, 255, 0.3);
+  opacity: 0.7;
 }
 
 .hands {
@@ -78,20 +78,7 @@
   animation-delay: 5s;
 }
 
-.centerPin {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: clamp(0.9rem, 2.2vmin, 1.4rem);
-  height: clamp(0.9rem, 2.2vmin, 1.4rem);
-  border: 0.2rem solid #fff;
-  border-radius: 50%;
-  background: #151515;
-  transform: translate(-50%, -50%);
-  z-index: 4;
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.9);
-}
-
+/* Radial clock numbers */
 .numbers {
   position: absolute;
   inset: 0;
@@ -99,22 +86,27 @@
   font-size: clamp(6rem, 13vmin, 13rem);
   font-weight: 300;
   pointer-events: none;
+  z-index: 2;
 }
 
 .number {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 2em;
-  height: 2em;
-  margin: -1em 0 0 -1em;
+  width: 1.5em;
+  height: 1.5em;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   text-align: center;
   transform-origin: center center;
-  /* Rotate to position, translate out to edge (55vmin ≈ clockFace radius), no counter-rotation */
-  transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-55vmin);
+
+  /* Center the digit on its radial position and point it outward */
+  transform: translate(-50%, -50%) rotate(var(--angle))
+    translateY(calc(-0.7 * var(--radius)));
+
   color: hsl(var(--hue), 100%, 50%);
   animation: brightRainbow 4s linear infinite;
   animation-delay: var(--pulse-delay);
@@ -126,50 +118,42 @@
       saturate(1.5);
     opacity: 1;
   }
+
   16% {
     filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(60deg)
       saturate(1.5);
     opacity: 1;
   }
+
   33% {
     filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(120deg)
       saturate(1.5);
     opacity: 1;
   }
+
   50% {
     filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(180deg)
       saturate(1.5);
     opacity: 1;
   }
+
   66% {
     filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(240deg)
       saturate(1.5);
     opacity: 1;
   }
+
   83% {
     filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(300deg)
       saturate(1.5);
     opacity: 1;
   }
+
   100% {
     filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(360deg)
       saturate(1.5);
     opacity: 1;
   }
-}
-
-.background {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 150vmax;
-  height: 150vmax;
-  object-fit: cover;
-  object-position: center;
-  transform: translate(-50%, -50%) rotate(var(--background-angle));
-  transform-origin: 50% 50%;
-  z-index: 0;
-  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -179,6 +163,7 @@
     will-change: auto;
     animation: none;
   }
+
   .number {
     filter: none;
     opacity: 1;
