@@ -1,4 +1,3 @@
-
 import SRTime from '@/components/SRTime';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -6,7 +5,7 @@ import { useClock } from '@/utils/hooks';
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 
-import font from '@/assets/fonts/26fonts/26-11-02.ttf?url';
+import font from '@/assets/fonts/26fonts/26-11-01.ttf?url';
 
 import styles from './Clock.module.css';
 
@@ -20,9 +19,24 @@ const fontConfig: FontConfig = {
 type Direction = 'top' | 'right' | 'bottom' | 'left';
 
 const ORANGE_SHADES = [
-  '#fff3e0', '#ffe0b2', '#ffcc80', '#ffb74d', '#ffa726', '#ff9800',
-  '#fb8c00', '#f57c00', '#ef6c00', '#e65100', '#ff7043', '#ff5722',
-  '#f4511e', '#e64a19', '#d84315', '#bf360c', '#ff6d00', '#dd2c00',
+  '#fff3e0',
+  '#ffe0b2',
+  '#ffcc80',
+  '#ffb74d',
+  '#ffa726',
+  '#ff9800',
+  '#fb8c00',
+  '#f57c00',
+  '#ef6c00',
+  '#e65100',
+  '#ff7043',
+  '#ff5722',
+  '#f4511e',
+  '#e64a19',
+  '#d84315',
+  '#bf360c',
+  '#ff6d00',
+  '#dd2c00',
 ] as const;
 
 interface DigitState {
@@ -46,8 +60,7 @@ type DigitCSSProperties = CSSProperties & {
   '--digit-color': string;
 };
 
-const random = (min: number, max: number) =>
-  Math.random() * (max - min) + min;
+const random = (min: number, max: number) => Math.random() * (max - min) + min;
 
 const randomDirection = (): Direction => {
   const directions: Direction[] = ['top', 'right', 'bottom', 'left'];
@@ -55,11 +68,7 @@ const randomDirection = (): Direction => {
   return directions[Math.floor(Math.random() * directions.length)] as Direction;
 };
 
-const createDigit = (
-  char: string,
-  id: number,
-  oldChar = ''
-): DigitState => {
+const createDigit = (char: string, id: number, oldChar = ''): DigitState => {
   const direction = randomDirection();
 
   let startX = '0vw';
@@ -94,7 +103,9 @@ const createDigit = (
   const exitDelay = delay;
 
   // Pick random orange shade
-  const color = ORANGE_SHADES[Math.floor(Math.random() * ORANGE_SHADES.length)] as string;
+  const color = ORANGE_SHADES[
+    Math.floor(Math.random() * ORANGE_SHADES.length)
+  ] as string;
 
   return {
     char,
@@ -141,15 +152,9 @@ const Clock = () => {
     const updateSize = () => {
       const rect = container.getBoundingClientRect();
 
-      const fontSize = Math.min(
-        rect.width / 4,
-        rect.height * 1.5
-      );
+      const fontSize = Math.min(rect.width / 4, rect.height * 1.5);
 
-      container.style.setProperty(
-        '--font-size',
-        `${fontSize}px`
-      );
+      container.style.setProperty('--font-size', `${fontSize}px`);
     };
 
     updateSize();
@@ -169,26 +174,16 @@ const Clock = () => {
 
     setDigits((previousDigits) =>
       chars.map((char, index) =>
-        createDigit(
-          char,
-          nextId.current++,
-          previousDigits[index]?.char ?? ''
-        )
-      )
+        createDigit(char, nextId.current++, previousDigits[index]?.char ?? ''),
+      ),
     );
   }, [timeString, chars]);
 
   return (
-    <main
-      ref={containerRef}
-      className={styles.container}
-    >
+    <main ref={containerRef} className={styles.container}>
       <SRTime time={time} />
 
-      <div
-        className={styles.grid}
-        aria-hidden="true"
-      >
+      <div className={styles.grid} aria-hidden="true">
         {digits.map((digit) => {
           const digitStyle: DigitCSSProperties = {
             '--start-x': digit.startX,
@@ -200,10 +195,7 @@ const Clock = () => {
           };
 
           return (
-            <div
-              key={digit.id}
-              className={styles.cell}
-            >
+            <div key={digit.id} className={styles.cell}>
               {digit.oldChar && (
                 <span
                   className={`${styles.char} ${styles.oldChar}`}
