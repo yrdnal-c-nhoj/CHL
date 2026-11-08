@@ -2,17 +2,90 @@
   position: relative;
   width: 100%;
   height: 100dvh;
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   background: #000;
-  color: #fff;
 }
 
-.content {
-  font-family: monospace, sans-serif;
-  font-size: clamp(2rem, 15vw, 12rem);
-  line-height: 1;
-  text-align: center;
+.backgroundVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.clockFace {
+  position: relative;
+  width: min(60vmin, 40rem);
+  height: min(60vmin, 40rem);
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1), transparent 60%),
+    radial-gradient(circle at 70% 70%, rgba(0, 0, 0, 0.2), transparent 50%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 0 60px rgba(255, 255, 255, 0.1),
+    inset 0 0 60px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.hand,
+.minuteHand,
+.secondHand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+  transform: translateX(-50%) rotate(var(--angle));
+  will-change: transform;
+}
+
+.hand {
+  width: 6px;
+  height: 20vmin;
+  background: linear-gradient(180deg, #fff, #ccc);
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  z-index: 3;
+}
+
+.minuteHand {
+  width: 4px;
+  height: 28vmin;
+  background: linear-gradient(180deg, #fff, #ccc);
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  z-index: 2;
+}
+
+.secondHand {
+  width: 2px;
+  height: 32vmin;
+  background: #ff3366;
+  border-radius: 1px;
+  box-shadow: 0 0 4px #ff3366;
+  z-index: 4;
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, #fff, #ccc);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  z-index: 5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .secondHand {
+    transition: transform 1s steps(60);
+  }
 }
