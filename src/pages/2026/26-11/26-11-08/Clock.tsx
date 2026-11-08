@@ -105,29 +105,27 @@ const Clock_26_11_08 = () => {
           }
         />,
       );
-      // Bottom
-      if (i !== -ring && i !== ring) {
-        tiles.push(
-          <video
-            key={`tile-${tileIndex++}`}
-            src={backgroundVideo}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            aria-hidden="true"
-            className={styles.videoTile}
-            style={
-              {
-                width: `${tileSize}px`,
-                height: `${tileSize}px`,
-                transform: `translate(calc(-50% + ${x}px), calc(-50% + ${offset}px))`,
-              } as React.CSSProperties
-            }
-          />,
-        );
-      }
+      // Bottom - include all positions (corners not placed in top row)
+      tiles.push(
+        <video
+          key={`tile-${tileIndex++}`}
+          src={backgroundVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          className={styles.videoTile}
+          style={
+            {
+              width: `${tileSize}px`,
+              height: `${tileSize}px`,
+              transform: `translate(calc(-50% + ${x}px), calc(-50% + ${offset}px))`,
+            } as React.CSSProperties
+          }
+        />,
+      );
     }
 
     // Left and right columns of this ring (excluding corners)
