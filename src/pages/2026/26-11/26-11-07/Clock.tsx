@@ -9,18 +9,26 @@ const Clock = () => {
   const hours24 = time.getHours();
   const hours12 = hours24 % 12 || 12;
 
-  const hours = hours12.toString().padStart(2, '0'); // "09"
-  const minutes = time.getMinutes().toString().padStart(2, '0'); // "45"
-  const ampm = hours24 >= 12 ? 'PM' : 'AM'; // "AM" or "PM"
+  const hours = hours12.toString().padStart(2, '0');
+  const minutes = time.getMinutes().toString().padStart(2, '0');
+  const ampm = hours24 >= 12 ? 'PM' : 'AM';
 
-  // Each row: single digit repeated 6 times
-  const rows = [
-    Array(6).fill(hours[0]), // Row 1: first hour digit
-    Array(6).fill(hours[1]), // Row 2: second hour digit
-    Array(6).fill(minutes[0]), // Row 3: first minute digit
-    Array(6).fill(minutes[1]), // Row 4: second minute digit
-    Array(6).fill(ampm[0]), // Row 5: A or P
-    Array(6).fill(ampm[1]), // Row 6: M
+  // Fixed 6x6 grid - time displayed in specific cells, rest empty
+  // Grid positions (row, col): 0-indexed
+  const gridData: (string | null)[][] = [
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
+    [
+      null,
+      hours[0] ?? null,
+      hours[1] ?? null,
+      ':',
+      minutes[0] ?? null,
+      minutes[1] ?? null,
+    ],
+    [null, ampm[0] ?? null, ampm[1] ?? null, null, null, null],
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
   ];
 
   return (
@@ -28,10 +36,10 @@ const Clock = () => {
       <SRTime time={time} />
 
       <div className={styles.grid} aria-hidden="true">
-        {rows.flatMap((rowChars) =>
-          rowChars.map((char) => (
-            <div className={styles.cell} key={char}>
-              <Digit char={char} />
+        {gridData.flatMap((row, rowIndex) =>
+          row.map((char, colIndex) => (
+            <div className={styles.cell} key={`${rowIndex}-${colIndex}`}>
+              {char && <Digit char={char} />}
             </div>
           )),
         )}
