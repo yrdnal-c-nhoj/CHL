@@ -57,7 +57,7 @@ const Clock_26_11_06 = () => {
       hour: h * 30,
       minute: m * 6,
       second: s * 6,
-      background: prefersReducedMotion ? 0 : -s * 6,
+      background: prefersReducedMotion ? 0 : -s * 3,
     };
   }, [prefersReducedMotion, time]);
 
