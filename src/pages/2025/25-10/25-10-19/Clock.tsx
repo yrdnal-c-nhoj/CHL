@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useMultiAssetLoader } from '@/utils/fontLoader';
-import blackImg from '@/assets/images/25_images/25-10/25-10-19/tile1.jpg'; // "1" squares
-import pinkImg from '@/assets/images/25_images/25-10/25-10-19/tile2.jpg'; // "0" squares
+import { useClock } from '@/utils/hooks';
+import SRTime from '@/components/SRTime';
+import { useEffect, useState } from 'react';
+
+import blackImg from '@/assets/images/25_images/25-10/25-10-19/tile1.jpg';
+import pinkImg from '@/assets/images/25_images/25-10/25-10-19/tile2.jpg';
+
 import styles from './Clock.module.css';
 
-export const assets = [];
+export const assets = [blackImg, pinkImg];
 
 const GRID_SIZE = 5;
-const DIGIT_GAP = 3; // px between digits
-const CELL_GAP = 1; // px between grid cells
+const DIGIT_GAP = 3;
+const CELL_GAP = 1;
 
-// Digit patterns
 const DIGITS = {
   0: Array(GRID_SIZE)
     .fill(0)
@@ -141,17 +143,13 @@ const DIGITS = {
     ),
 } as const;
 
-export default function QuadrantClock() {
-  const [time, setTime] = useState(getCurrentTime());
-  const [windowSize, setWindowSize] = useState<any>({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+const Clock_25_10_19 = () => {
+  const time = useClock();
 
-  useEffect(() => {
-    const interval = setInterval(() => setTime(getCurrentTime()), 1000);
-    return () => clearInterval(interval);
-  }, []);
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 1920,
+    height: typeof window !== 'undefined' ? window.innerHeight : 1080,
+  });
 
   useEffect(() => {
     const handleResize = () =>
@@ -160,34 +158,27 @@ export default function QuadrantClock() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  function getCurrentTime() {
-    const now = new Date();
-    return {
-      hours: now.getHours().toString().padStart(2, '0'),
-      minutes: now.getMinutes().toString().padStart(2, '0'),
-      seconds: now.getSeconds().toString().padStart(2, '0'),
-    };
-  }
+  const hours = time.getHours().toString().padStart(2, '0');
+  const minutes = time.getMinutes().toString().padStart(2, '0');
+  const seconds = time.getSeconds().toString().padStart(2, '0');
 
-  const digits = [...time.hours, ...time.minutes, ...time.seconds];
+  const digits = [...hours, ...minutes, ...seconds];
   const isMobile = windowSize.width <= 768;
 
-  // Calculate digit size dynamically
   const digitSize = (() => {
     if (isMobile) {
-      const pairCount = 3; // hours, minutes, seconds
+      const pairCount = 3;
       const totalGap = DIGIT_GAP * (pairCount - 1);
       const maxHeightPerPair = (windowSize.height - totalGap) / pairCount;
       const maxWidthPerDigit = (windowSize.width - DIGIT_GAP) / 2;
       return Math.floor(Math.min(maxHeightPerPair, maxWidthPerDigit));
-    } 
-      const totalGap = DIGIT_GAP * (digits.length - 1);
-      return Math.floor((windowSize.width - totalGap) / digits.length);
-    
+    }
+    const totalGap = DIGIT_GAP * (digits.length - 1);
+    return Math.floor((windowSize.width - totalGap) / digits.length);
   })();
 
-  const renderDigit = (digit) => {
-    const grid = DIGITS[digit] || DIGITS['0'];
+  const renderDigit = (digit: string) => {
+    const grid = DIGITS[digit as keyof typeof DIGITS] || DIGITS['0'];
     const totalCellGap = CELL_GAP * (GRID_SIZE - 1);
     const cellSize = (digitSize - totalCellGap) / GRID_SIZE;
 
@@ -202,12 +193,9 @@ export default function QuadrantClock() {
           height: '100%',
         }}
       >
-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
-
+        <SRTime time={time} />
         {grid.flat().map((val, idx) => (
           <img
-            decoding="async"
-            loading="lazy"
             key={idx}
             src={val ? blackImg : pinkImg}
             alt=""
@@ -223,8 +211,7 @@ export default function QuadrantClock() {
     );
   };
 
-  // Helper for mobile pairs
-  const renderPair = (pairDigits, offset) => (
+  const renderPair = (pairDigits: string[], offset: number) => (
     <div style={{ display: 'flex', gap: `${DIGIT_GAP}px` }}>
       {pairDigits.map((d, i) => (
         <div key={i + offset} style={{ width: digitSize, height: digitSize }}>
@@ -263,4 +250,7 @@ export default function QuadrantClock() {
       )}
     </div>
   );
-}
+};
+
+Clock_25_10_19.displayName = 'Clock_25_10_19';
+export default Clock_25_10_19;
