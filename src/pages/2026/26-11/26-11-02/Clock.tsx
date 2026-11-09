@@ -5,7 +5,7 @@ import { useClock } from '@/utils/hooks';
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 
-import font from '@/assets/fonts/26fonts/26-11-01.ttf?url';
+import font from '@/assets/fonts/26fonts/26-11-02.ttf?url';
 
 import styles from './Clock.module.css';
 
