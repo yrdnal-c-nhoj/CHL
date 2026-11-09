@@ -33,7 +33,12 @@ const Clock_26_11_08 = () => {
     <main
       className={styles.container}
       style={
-        { '--background-tile': `url(${backgroundTile})` } as React.CSSProperties
+        {
+          '--background-tile': `url(${backgroundTile})`,
+          '--hand-color': '#422e02',
+          '--hand-color-end': '#49333300',
+          '--hand-shadow': 'rgb(255, 255, 255)',
+        } as React.CSSProperties
       }
     >
       <img
