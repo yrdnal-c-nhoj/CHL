@@ -5,25 +5,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
   background: #000;
-}
-
-.videoGrid {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(6, 1fr);
-  z-index: 0;
-  pointer-events: none;
-}
-
-.videoTile {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  outline: 1px solid rgba(255, 255, 255, 0.15);
+  background-image: var(--background-tile);
+  background-repeat: repeat;
+  background-size: 240px 240px;
+  background-position: center;
 }
 
 .centerImage {
@@ -37,7 +23,6 @@
   width: auto;
   height: auto;
   opacity: 0.8;
-  z-index: 1;
   pointer-events: none;
 }
 
@@ -57,7 +42,6 @@
   box-shadow:
     0 0 60px rgba(255, 255, 255, 0.1),
     inset 0 0 60px rgba(0, 0, 0, 0.5);
-  z-index: 1;
 }
 
 .hand,
