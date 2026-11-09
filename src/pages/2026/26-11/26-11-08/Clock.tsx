@@ -59,19 +59,6 @@ const Clock_26_11_08 = () => {
         <div className={styles.centerDot} />
       </div>
 
-      <time
-        className={styles.digitalTime}
-        dateTime={time.toISOString()}
-        aria-hidden="true"
-      >
-        {time.toLocaleTimeString([], {
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-          hour12: false,
-        })}
-      </time>
-
       <SRTime time={time} />
     </main>
   );

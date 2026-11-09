@@ -31,14 +31,6 @@
   width: min(60vmin, 40rem);
   height: min(60vmin, 40rem);
   border-radius: 50%;
-  background:
-    radial-gradient(
-      circle at 30% 30%,
-      rgba(255, 255, 255, 0.1),
-      transparent 60%
-    ),
-    radial-gradient(circle at 70% 70%, rgba(0, 0, 0, 0.2), transparent 50%);
-  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .hand,
@@ -162,17 +154,4 @@
   .secondHand {
     transition: transform 1s steps(60);
   }
-}
-
-.digitalTime {
-  position: absolute;
-  bottom: 8vh;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: 'ClockFont_26_11_08', monospace;
-  font-size: clamp(2.5rem, 8vmin, 5rem);
-  color: #fff;
-  letter-spacing: 0.5em;
-  font-variant-numeric: tabular-nums;
-  opacity: 0.9;
 }
