@@ -5,6 +5,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  --hand-color: #422e02;
+  --hand-color-end: #49333300;
+  --hand-shadow: rgb(179, 21, 111);
 }
 
 .container::before {
@@ -48,98 +51,34 @@
   transform-origin: 50% 100%;
   transform: translateX(-50%) rotate(var(--angle));
   will-change: transform;
+  filter: drop-shadow(0.5px 0 0 var(--hand-shadow))
+    drop-shadow(-0.5px 0 0 var(--hand-shadow))
+    drop-shadow(0 0.5px 0 var(--hand-shadow))
+    drop-shadow(0 -0.5px 0 var(--hand-shadow))
+    drop-shadow(0.5px 0.5px 0 var(--hand-shadow))
+    drop-shadow(-0.5px -0.5px 0 var(--hand-shadow))
+    drop-shadow(0.5px -0.5px 0 var(--hand-shadow))
+    drop-shadow(-0.5px 0.5px 0 var(--hand-shadow));
 }
 
 .hand {
-  width: 14px;
+  width: 6px;
   height: 20vmin;
-  background: linear-gradient(180deg, #fff, #e8e8e8);
-  clip-path: polygon(
-    50% 0%,
-    58% 8%,
-    52% 18%,
-    62% 28%,
-    48% 38%,
-    58% 48%,
-    42% 58%,
-    52% 68%,
-    38% 78%,
-    48% 88%,
-    42% 95%,
-    50% 100%,
-    58% 95%,
-    52% 88%,
-    62% 78%,
-    48% 68%,
-    58% 58%,
-    42% 48%,
-    52% 38%,
-    38% 28%,
-    48% 18%,
-    42% 8%
-  );
+  background: linear-gradient(180deg, var(--hand-color), var(--hand-color-end));
   z-index: 3;
 }
 
 .minuteHand {
-  width: 10px;
-  height: 28vmin;
-  background: linear-gradient(180deg, #fff, #e0e0e0);
-  clip-path: polygon(
-    50% 0%,
-    56% 10%,
-    48% 22%,
-    58% 32%,
-    44% 42%,
-    54% 52%,
-    38% 62%,
-    50% 72%,
-    34% 82%,
-    46% 90%,
-    40% 96%,
-    50% 100%,
-    60% 96%,
-    54% 90%,
-    66% 82%,
-    50% 72%,
-    62% 62%,
-    46% 52%,
-    56% 42%,
-    42% 32%,
-    52% 22%,
-    44% 10%
-  );
+  width: 4px;
+  height: 32vmin;
+  background: linear-gradient(180deg, var(--hand-color), var(--hand-color-end));
   z-index: 2;
 }
 
 .secondHand {
-  width: 22px;
-  height: 32vmin;
-  background: #f9f6f7;
-  clip-path: polygon(
-    50% 0%,
-    60% 12%,
-    45% 25%,
-    65% 35%,
-    40% 45%,
-    60% 55%,
-    35% 65%,
-    55% 75%,
-    30% 85%,
-    50% 92%,
-    40% 98%,
-    50% 100%,
-    60% 98%,
-    50% 92%,
-    70% 85%,
-    45% 75%,
-    65% 65%,
-    40% 55%,
-    60% 45%,
-    35% 35%,
-    55% 25%,
-    40% 12%
-  );
+  width: 2px;
+  height: 38vmin;
+  background: linear-gradient(180deg, var(--hand-color), var(--hand-color-end));
   z-index: 4;
 }
 
