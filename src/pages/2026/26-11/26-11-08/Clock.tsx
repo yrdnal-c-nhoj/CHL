@@ -2,7 +2,6 @@ import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import { useEffect, useState } from 'react';
 
 import backgroundVideo from '@/assets/images/26_images/26-11/26-11-08/uniqueforms.mp4';
 import tileImage from '@/assets/images/26_images/26-11/26-11-08/forms.webp';
@@ -17,6 +16,8 @@ const fontConfig: FontConfig = {
   fontUrl: font,
 };
 
+const GRID_SIZE = 6;
+
 const Clock_26_11_08 = () => {
   const time = useSmoothClock(16);
   useSuspenseFontLoader([fontConfig]);
@@ -30,61 +31,12 @@ const Clock_26_11_08 = () => {
   const minuteAngle = (minutes + seconds / 60) * 6;
   const secondAngle = (seconds + ms / 1000) * 6;
 
-  // Tile configuration - change tileSize to control tile dimensions
-  const tileSize = 200;
-
-  // Dynamically calculate rings needed to cover viewport
-  const [maxRings, setMaxRings] = useState(7);
-
-  useEffect(() => {
-    const calculateRings = () => {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      // Need rings to cover half the diagonal from center
-      const radius = Math.sqrt(vw * vw + vh * vh) / 2;
-      const rings = Math.ceil(radius / tileSize) + 1; // +1 for safety margin
-      // Cap at reasonable maximum for browser performance
-      setMaxRings(Math.min(rings, 15));
-    };
-    calculateRings();
-    window.addEventListener('resize', calculateRings);
-    return () => window.removeEventListener('resize', calculateRings);
-  }, [tileSize]);
-
-  // Generate tiles in expanding rings from center
+  // Generate 6x6 grid of video tiles
   const tiles = [];
   let tileIndex = 0;
 
-  // Center tile (ring 0)
-  tiles.push(
-    <video
-      key={`tile-${tileIndex++}`}
-      src={backgroundVideo}
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="auto"
-      aria-hidden="true"
-      className={styles.videoTile}
-      style={
-        {
-          width: `${tileSize}px`,
-          height: `${tileSize}px`,
-          transform: `translate(-50%, -50%)`,
-        } as React.CSSProperties
-      }
-    />,
-  );
-
-  // Expanding rings
-  for (let ring = 1; ring <= maxRings; ring++) {
-    const offset = ring * tileSize;
-
-    // Top and bottom rows of this ring
-    for (let i = -ring; i <= ring; i++) {
-      const x = i * tileSize;
-      // Top
+  for (let row = 0; row < GRID_SIZE; row++) {
+    for (let col = 0; col < GRID_SIZE; col++) {
       tiles.push(
         <video
           key={`tile-${tileIndex++}`}
@@ -98,77 +50,9 @@ const Clock_26_11_08 = () => {
           className={styles.videoTile}
           style={
             {
-              width: `${tileSize}px`,
-              height: `${tileSize}px`,
-              transform: `translate(calc(-50% + ${x}px), calc(-50% + ${-offset}px))`,
-            } as React.CSSProperties
-          }
-        />,
-      );
-      // Bottom - include all positions (corners not placed in top row)
-      tiles.push(
-        <video
-          key={`tile-${tileIndex++}`}
-          src={backgroundVideo}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-          className={styles.videoTile}
-          style={
-            {
-              width: `${tileSize}px`,
-              height: `${tileSize}px`,
-              transform: `translate(calc(-50% + ${x}px), calc(-50% + ${offset}px))`,
-            } as React.CSSProperties
-          }
-        />,
-      );
-    }
-
-    // Left and right columns of this ring (excluding corners)
-    for (let i = -ring + 1; i <= ring - 1; i++) {
-      const y = i * tileSize;
-      // Left
-      tiles.push(
-        <video
-          key={`tile-${tileIndex++}`}
-          src={backgroundVideo}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-          className={styles.videoTile}
-          style={
-            {
-              width: `${tileSize}px`,
-              height: `${tileSize}px`,
-              transform: `translate(calc(-50% + ${-offset}px), calc(-50% + ${y}px))`,
-            } as React.CSSProperties
-          }
-        />,
-      );
-      // Right
-      tiles.push(
-        <video
-          key={`tile-${tileIndex++}`}
-          src={backgroundVideo}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-          className={styles.videoTile}
-          style={
-            {
-              width: `${tileSize}px`,
-              height: `${tileSize}px`,
-              transform: `translate(calc(-50% + ${offset}px), calc(-50% + ${y}px))`,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
             } as React.CSSProperties
           }
         />,

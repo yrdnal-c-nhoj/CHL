@@ -11,17 +11,14 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  grid-template-rows: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(6, 1fr);
   gap: 0;
   width: 100%;
   height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.row {
-  display: contents;
+  justify-items: stretch;
+  align-items: stretch;
+  transform: translateZ(0);
 }
 
 .cell {
@@ -34,6 +31,8 @@
   padding: 0;
   overflow: hidden;
   box-sizing: border-box;
+  margin-right: -1px;
+  margin-bottom: -1px;
 }
 
 .cell svg {
