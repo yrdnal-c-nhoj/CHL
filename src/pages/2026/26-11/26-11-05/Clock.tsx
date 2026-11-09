@@ -5,7 +5,7 @@ import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
 
 import backgroundImage from '@/assets/images/26_images/26-11/26-11-06/tiedye.webp';
-import clockFont from '@/assets/fonts/26fonts/26-11-06.otf?url';
+import clockFont from '@/assets/fonts/26fonts/26-11-05.otf?url';
 
 import styles from './Clock.module.css';
 

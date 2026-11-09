@@ -49,8 +49,8 @@
   transform-origin: 50% 100%;
   border-radius: 999px;
   background: #fff;
-  will-change: transform, filter;
-  filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8));
+  z-index: 12;
+  will-change: transform;
   animation: brightRainbow 8s linear infinite;
 }
 
@@ -72,7 +72,7 @@
 
 .secondHand {
   width: clamp(0.1rem, 0.28vmin, 0.18rem);
-  height: 39%;
+  height: 245%;
   background: #0000ff;
   transform: translate(-50%, -100%) rotate(var(--second-angle));
   animation-delay: 5s;
@@ -95,18 +95,14 @@
   left: 50%;
   width: 1.5em;
   height: 1.5em;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   text-align: center;
   transform-origin: center center;
-
   /* Center the digit on its radial position and point it outward */
   transform: translate(-50%, -50%) rotate(var(--angle))
     translateY(calc(-0.7 * var(--radius)));
-
   color: hsl(var(--hue), 100%, 50%);
   animation: brightRainbow 4s linear infinite;
   animation-delay: var(--pulse-delay);
@@ -114,44 +110,37 @@
 
 @keyframes brightRainbow {
   0% {
-    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(0deg)
-      saturate(1.5);
+    filter: hue-rotate(0deg) saturate(1.5);
     opacity: 1;
   }
 
   16% {
-    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(60deg)
-      saturate(1.5);
+    filter: hue-rotate(60deg) saturate(1.5);
     opacity: 1;
   }
 
   33% {
-    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(120deg)
-      saturate(1.5);
+    filter: hue-rotate(120deg) saturate(1.5);
     opacity: 1;
   }
 
   50% {
-    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(180deg)
-      saturate(1.5);
+    filter: hue-rotate(180deg) saturate(1.5);
     opacity: 1;
   }
 
   66% {
-    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(240deg)
-      saturate(1.5);
+    filter: hue-rotate(240deg) saturate(1.5);
     opacity: 1;
   }
 
   83% {
-    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(300deg)
-      saturate(1.5);
+    filter: hue-rotate(300deg) saturate(1.5);
     opacity: 1;
   }
 
   100% {
-    filter: drop-shadow(0 0 0.18rem rgba(0, 0, 0, 0.8)) hue-rotate(360deg)
-      saturate(1.5);
+    filter: hue-rotate(360deg) saturate(1.5);
     opacity: 1;
   }
 }
