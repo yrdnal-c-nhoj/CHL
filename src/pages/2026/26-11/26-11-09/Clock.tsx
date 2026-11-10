@@ -19,5 +19,4 @@ const Clock_26_11_09 = () => {
 };
 
 Clock_26_11_09.displayName = 'Clock_26_11_09';
-
 export default Clock_26_11_09;
