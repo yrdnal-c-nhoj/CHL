@@ -1,44 +1,280 @@
 .container {
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: 100dvh;
-  overflow: hidden;
-  background: #000;
-  color: #ff3c38;
-  margin: 0;
-  padding: 0;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(6, 1fr);
-  gap: 0;
-  width: 100%;
-  height: 100%;
-  justify-items: stretch;
-  align-items: stretch;
-  transform: translateZ(0);
-}
-
-.cell {
-  display: block;
-  width: 100%;
-  height: 100%;
-  min-width: 0;
   min-height: 0;
-  margin: 0;
-  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  box-sizing: border-box;
-  margin-right: -1px;
-  margin-bottom: -1px;
+  isolation: isolate;
+  background:
+    var(--bg-image) center / cover no-repeat,
+    radial-gradient(ellipse at center, #29251e 0%, #100f0d 65%, #050505 100%);
 }
 
-.cell svg {
+.frame {
+  position: relative;
+  width: min(70vw, 105dvh);
+  aspect-ratio: 4 / 3;
+  overflow: visible;
+  isolation: isolate;
+  margin-top: -3vh;
+}
+
+.outerMoulding {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: 1.8vmin ridge #9d722e;
+  background: linear-gradient(
+    135deg,
+    #fff0a1 0%,
+    #b78a38 10%,
+    #674318 24%,
+    #d8b45e 38%,
+    #78501c 52%,
+    #e5c46e 68%,
+    #704819 82%,
+    #d3a94e 100%
+  );
+  box-shadow:
+    inset 0 0 1.2vmin rgba(255, 239, 168, 0.9),
+    inset 0 0 2.5vmin rgba(36, 20, 5, 0.9),
+    0 0 0 0.35vmin #3a2914,
+    0 0 0 0.7vmin #c5a052,
+    0 2.5vmin 2vmin rgba(0, 0, 0, 0.85),
+    0 0 1vmin rgba(218, 171, 75, 0.15);
+}
+
+.goldTexture {
+  position: absolute;
+  inset: 1.5%;
+  z-index: 2;
+  border: 0.5vmin solid #61451d;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 232, 154, 0.12) 0,
+      rgba(255, 232, 154, 0.12) 0.15vmin,
+      transparent 0.15vmin,
+      transparent 0.7vmin
+    ),
+    linear-gradient(
+      120deg,
+      #d7b35d,
+      #75501e 20%,
+      #e7c875 40%,
+      #876027 62%,
+      #d9b65f 82%,
+      #6d4a1c
+    );
+  box-shadow:
+    inset 0 0 1vmin rgba(40, 24, 5, 0.9),
+    0 0 0 0.2vmin #e5c879;
+}
+
+.innerLip {
+  position: absolute;
+  inset: 5%;
+  z-index: 3;
+  border: 1.1vmin ridge #a9823d;
+  background: linear-gradient(
+    135deg,
+    #f2d98c,
+    #79551e 25%,
+    #d5b15d 50%,
+    #634217 75%,
+    #e6c777
+  );
+  box-shadow:
+    inset 0 0 1.2vmin rgba(0, 0, 0, 0.85),
+    0 0 0 0.25vmin #3d2a13;
+}
+
+.mat {
+  position: absolute;
+  inset: 8%;
+  z-index: 4;
+  background: linear-gradient(135deg, #302719, #0d0b08 50%, #342817);
+  box-shadow:
+    inset 0 0 1vmin rgba(0, 0, 0, 0.95),
+    0 0 0 0.3vmin #8c682e;
+}
+
+.centerImage {
+  position: absolute;
+  inset: 9%;
+  width: 82%;
+  height: 82%;
   display: block;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
+  z-index: 5;
+  object-fit: cover;
+  object-position: center;
+  box-shadow:
+    0 0 0 0.2vmin #4d3512,
+    0 0 0 0.4vmin #c9a34b,
+    0 0 0 0.6vmin #634719,
+    0 0.8vmin 1.5vmin rgba(0, 0, 0, 0.8);
+}
+
+.sightEdge {
+  position: absolute;
+  inset: 9%;
+  z-index: 6;
+  pointer-events: none;
+  border: 0.25vmin solid rgba(224, 190, 108, 0.9);
+  box-shadow:
+    inset 0 0 0.5vmin rgba(0, 0, 0, 0.65),
+    0 0 0 0.15vmin rgba(55, 35, 10, 0.9);
+}
+
+.digitalClock {
+  position: absolute;
+  z-index: 10;
+  background: #e6e2d6;
+  color: #555217;
+  font-family:
+    'ClockFont_26_11_07', 'SF Mono', 'Fira Code', 'Monaco', monospace;
+  font-size: clamp(1rem, 1.9vmin, 1.3rem);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  padding: 0.3em 0.6em;
+  box-shadow: none;
+  text-shadow: none;
+  right: -20%;
+  top: 55%;
+  filter: blur(0.3px);
+  transform: translateY(-50%);
+}
+
+@media (max-width: 700px) {
+  .digitalClock {
+    right: auto;
+    left: 50%;
+    bottom: -12%;
+    top: auto;
+    transform: translateX(-50%);
+  }
+}
+
+.ornament {
+  position: absolute;
+  z-index: 8;
+  width: 15%;
+  height: 15%;
+  filter: drop-shadow(0.15vmin 0.2vmin 0.2vmin rgba(0, 0, 0, 0.9))
+    drop-shadow(0 0 0.15vmin rgba(255, 225, 145, 0.6));
+}
+
+.topLeft {
+  top: 1%;
+  left: 1%;
+}
+.topRight {
+  top: 1%;
+  right: 1%;
+  transform: rotate(90deg);
+}
+.bottomRight {
+  right: 1%;
+  bottom: 1%;
+  transform: rotate(180deg);
+}
+.bottomLeft {
+  bottom: 1%;
+  left: 1%;
+  transform: rotate(270deg);
+}
+
+.topCartouche,
+.bottomCartouche {
+  position: absolute;
+  z-index: 9;
+  left: 50%;
+  width: 16%;
+  height: 5%;
+  transform: translateX(-50%);
+  border: 0.3vmin ridge #d5b35e;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #f3d88c 0%, #a77b31 45%, #543814 100%);
+  box-shadow:
+    inset 0 0 0.5vmin rgba(255, 242, 186, 0.8),
+    0 0.2vmin 0.4vmin rgba(0, 0, 0, 0.9);
+}
+
+.topCartouche {
+  top: 0.5%;
+}
+.bottomCartouche {
+  bottom: 0.5%;
+}
+
+.topBand,
+.bottomBand {
+  position: absolute;
+  z-index: 7;
+  left: 12%;
+  width: 76%;
+  height: 1.2%;
+  border-top: 0.2vmin solid #f6df9a;
+  border-bottom: 0.25vmin solid #553913;
+  background: linear-gradient(
+    90deg,
+    #76501d,
+    #e8c875 25%,
+    #8c6426 50%,
+    #f0d78d 75%,
+    #76501d
+  );
+}
+
+.topBand {
+  top: 5.5%;
+}
+.bottomBand {
+  bottom: 5.5%;
+}
+
+.leftBand,
+.rightBand {
+  position: absolute;
+  z-index: 7;
+  top: 12%;
+  width: 1.2%;
+  height: 76%;
+  border-left: 0.2vmin solid #f6df9a;
+  border-right: 0.25vmin solid #553913;
+  background: linear-gradient(
+    180deg,
+    #76501d,
+    #e8c875 25%,
+    #8c6426 50%,
+    #f0d78d 75%,
+    #76501d
+  );
+}
+
+.leftBand {
+  left: 5.5%;
+}
+.rightBand {
+  right: 5.5%;
+}
+
+@media (max-width: 700px) {
+  .frame {
+    width: 94vw;
+    max-height: 82dvh;
+  }
+  .outerMoulding {
+    border-width: 2vmin;
+  }
+  .innerLip {
+    border-width: 1.4vmin;
+  }
+  .ornament {
+    width: 17%;
+    height: 17%;
+  }
 }

@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  --hand-color: #422e02;
+  --hand-color: #422e0200;
   --hand-color-end: #49333300;
   --hand-shadow: rgb(179, 21, 111);
 }
@@ -14,32 +14,20 @@
   content: '';
   position: absolute;
   inset: 0;
-  background-image: var(--background-tile);
-  background-repeat: repeat;
-  background-size: 150px 180px;
-  background-position: center;
-  filter: saturate(0.3) contrast(1.5) brightness(1.2);
+  background: var(--background-tile) center / 150px 180px repeat;
+  filter: saturate(0.3) hue-rotate(180deg) contrast(1.5) brightness(1.6);
   z-index: -1;
   pointer-events: none;
 }
 
 .centerImage {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  inset: 0;
   max-width: 90vmin;
   max-height: 90vmin;
-  width: auto;
-  height: auto;
+  margin: auto;
+  opacity: 0.8;
   pointer-events: none;
-}
-
-.clockFace {
-  position: relative;
-  width: min(60vmin, 40rem);
-  height: min(60vmin, 40rem);
-  border-radius: 50%;
 }
 
 .hand,
@@ -59,27 +47,54 @@
     drop-shadow(-0.5px -0.5px 0 var(--hand-shadow))
     drop-shadow(0.5px -0.5px 0 var(--hand-shadow))
     drop-shadow(-0.5px 0.5px 0 var(--hand-shadow));
+  overflow: visible;
 }
 
 .hand {
   width: 6px;
-  height: 20vmin;
-  background: linear-gradient(180deg, var(--hand-color), var(--hand-color-end));
+  height: 15vmin;
   z-index: 3;
 }
-
 .minuteHand {
   width: 4px;
-  height: 32vmin;
-  background: linear-gradient(180deg, var(--hand-color), var(--hand-color-end));
+  height: 21vmin;
   z-index: 2;
 }
-
 .secondHand {
   width: 2px;
-  height: 38vmin;
-  background: linear-gradient(180deg, var(--hand-color), var(--hand-color-end));
+  height: 25vmin;
   z-index: 4;
+}
+
+.hand::before,
+.minuteHand::before,
+.secondHand::before {
+  content: '';
+  position: absolute;
+  top: -50%; /* at very tips */
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: var(--hand-color);
+  border: 12px solid var(--hand-shadow);
+  box-shadow:
+    0 0.5px 0 var(--hand-shadow),
+    0 -0.5px 0 var(--hand-shadow),
+    0.5px 0 0 var(--hand-shadow),
+    -0.5px 0 0 var(--hand-shadow);
+}
+
+.hand::before {
+  width: 14px;
+  height: 14px;
+}
+.minuteHand::before {
+  width: 12px;
+  height: 12px;
+}
+.secondHand::before {
+  width: 10px;
+  height: 10px;
 }
 
 @media (prefers-reduced-motion: reduce) {
