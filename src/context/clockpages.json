@@ -4887,7 +4887,7 @@
     "path": "26-08-24",
     "date": "26-08-24",
     "title": "Bubbles",
-    "tags": ["air", "analog", "color", "round", "water"]
+    "tags": ["1878", "ROYGBIV", "air", "analog", "color", "round", "water"]
   },
   {
     "path": "26-08-25",
@@ -5381,7 +5381,6 @@
   {
     "path": "26-11-05",
     "date": "26-11-05",
-
     "title": "Tie-Dye",
     "tags": ["ROYGBIV", "analog", "cloth", "color", "spin", "thread"]
   },
@@ -5390,5 +5389,17 @@
     "date": "26-11-06",
     "title": "Screens",
     "tags": ["Japan", "digital", "interior", "robot", "screen", "side-to-side"]
+  },
+  {
+    "path": "26-11-07",
+    "date": "26-11-07",
+    "title": "Landscape",
+    "tags": ["digital", "interior", "screen", "wall"]
+  },
+  {
+    "path": "26-11-08",
+    "date": "26-11-08",
+    "title": "Boccioni",
+    "tags": ["1913", "Italy", "analog", "body", "metal"]
   }
 ]
