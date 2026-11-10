@@ -47,23 +47,27 @@ const Clock_26_11_08 = () => {
         aria-hidden="true"
         className={styles.centerImage}
       />
-
-      <div className={styles.clockFace} aria-hidden="true">
-        <div
-          className={styles.hand}
-          style={{ '--angle': `${hourAngle}deg` } as Record<string, string>}
-        />
-        <div
-          className={styles.minuteHand}
-          style={{ '--angle': `${minuteAngle}deg` } as Record<string, string>}
-        />
-        <div
-          className={styles.secondHand}
-          style={{ '--angle': `${secondAngle}deg` } as Record<string, string>}
-        />
-        <div className={styles.centerDot} />
-      </div>
-
+      <div
+        className={styles.hand}
+        style={
+          { '--angle': `${hourAngle}deg` } as React.CSSProperties &
+            Record<string, string>
+        }
+      />
+      <div
+        className={styles.minuteHand}
+        style={
+          { '--angle': `${minuteAngle}deg` } as React.CSSProperties &
+            Record<string, string>
+        }
+      />
+      <div
+        className={styles.secondHand}
+        style={
+          { '--angle': `${secondAngle}deg` } as React.CSSProperties &
+            Record<string, string>
+        }
+      />
       <SRTime time={time} />
     </main>
   );
