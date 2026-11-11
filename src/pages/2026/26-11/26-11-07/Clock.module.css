@@ -132,7 +132,7 @@
 .digitalClock {
   position: absolute;
   z-index: 10;
-  background: #e6e2d6;
+  background: #f0e6c8;
   color: #555217;
   font-family:
     'ClockFont_26_11_07', 'SF Mono', 'Fira Code', 'Monaco', monospace;
