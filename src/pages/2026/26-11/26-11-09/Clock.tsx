@@ -1,22 +1,13 @@
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 
 import styles from './Clock.module.css';
 import backgroundVideo from '@/assets/images/26_images/26-11/26-11-09/giraffe.mp4';
-import clockFont from '@/assets/fonts/26fonts/26-11-09.otf?url';
 
-export const assets = [backgroundVideo, clockFont];
-
-const fontConfig: FontConfig = {
-  fontFamily: 'ClockFont_26_11_09',
-  fontUrl: clockFont,
-};
+export const assets = [backgroundVideo];
 
 const Clock_26_11_09 = () => {
   const time = useSmoothClock(16);
-  useSuspenseFontLoader([fontConfig]);
 
   const hours = time.getHours().toString().padStart(2, '0');
   const minutes = time.getMinutes().toString().padStart(2, '0');
@@ -33,6 +24,7 @@ const Clock_26_11_09 = () => {
         loop
         muted
         playsInline
+        preload="none"
         aria-hidden="true"
         className={styles.backgroundVideo}
       />
@@ -52,4 +44,5 @@ const Clock_26_11_09 = () => {
 };
 
 Clock_26_11_09.displayName = 'Clock_26_11_09';
+
 export default Clock_26_11_09;

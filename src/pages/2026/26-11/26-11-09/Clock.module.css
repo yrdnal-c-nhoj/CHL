@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'ClockFont_26_11_09';
+  src: url('../../../../assets/fonts/26fonts/26-11-09.otf') format('opentype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
 .container {
   position: relative;
   width: 100%;
@@ -8,6 +16,12 @@
   justify-content: center;
   background: #000;
   color: #c8d5de;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backgroundVideo {
+    display: none;
+  }
 }
 
 @media (min-width: 769px) {
