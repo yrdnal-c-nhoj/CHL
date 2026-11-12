@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'ClockFont_26_11_13';
+  src: url('../../../../assets/fonts/26fonts/26-11-13.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
 .container {
   position: relative;
   width: 100%;
@@ -91,18 +99,20 @@
 }
 
 .minuteMarker {
-  transform-origin: 200 200;
+}
+
+.numeral {
+  font-family: 'ClockFont_26_11_13', serif;
+  font-size: 24px;
+  fill: #ffffff;
+  opacity: 0.9;
 }
 
 .hourHand,
 .minuteHand {
-  transform-origin: 200 200;
-  transform-box: fill-box;
 }
 
 .secondHand {
-  transform-origin: 200 200;
-  transform-box: fill-box;
 }
 
 .centerPin {
@@ -125,6 +135,5 @@
   }
   .secondHand {
     transition: transform 1s steps(60);
-    transform-origin: 200 200;
   }
 }

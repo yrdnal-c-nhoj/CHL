@@ -3,10 +3,11 @@ import SRTime from '@/components/SRTime';
 import whitebullVideo from '@/assets/images/26_images/26-11/26-11-13/whitebull.mp4';
 import europaImage from '@/assets/images/26_images/26-11/26-11-13/europa.webp';
 import frameImage from '@/assets/images/26_images/26-11/26-11-13/frame.webp';
+import clockFont from '@/assets/fonts/26fonts/26-11-13.ttf?url';
 
 import styles from './Clock.module.css';
 
-export const assets = [whitebullVideo, europaImage, frameImage];
+export const assets = [whitebullVideo, europaImage, frameImage, clockFont];
 
 const Clock_26_11_13 = () => {
   const time = useSmoothClock(50);
@@ -15,9 +16,24 @@ const Clock_26_11_13 = () => {
   const m = time.getMinutes() + s / 60;
   const h = (time.getHours() % 12) + m / 60;
 
-  const hourAngle = h * 30 - 90;
-  const minuteAngle = m * 6 - 90;
-  const secondAngle = s * 6 - 90;
+  const hourAngle = h * 30;
+  const minuteAngle = m * 6;
+  const secondAngle = s * 6;
+
+  const ROMAN = [
+    'XII',
+    'I',
+    'II',
+    'III',
+    'IV',
+    'V',
+    'VI',
+    'VII',
+    'VIII',
+    'IX',
+    'X',
+    'XI',
+  ];
 
   return (
     <main className={styles.container}>
@@ -60,10 +76,6 @@ const Clock_26_11_13 = () => {
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
-            <linearGradient id="handGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#ffffff" />
-              <stop offset="100%" stopColor="#aaaaaa" />
-            </linearGradient>
             <radialGradient id="faceGradient" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="#1a1a1a" />
               <stop offset="60%" stopColor="#0a0a0a" />
@@ -104,6 +116,21 @@ const Clock_26_11_13 = () => {
             />
           ))}
 
+          {/* Numerals */}
+          {ROMAN.map((numeral, i) => (
+            <text
+              key={numeral}
+              className={styles.numeral}
+              x="200"
+              y="50"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              transform={`rotate(${i * 30}, 200, 200)`}
+            >
+              {numeral}
+            </text>
+          ))}
+
           {/* Minute markers - tiny dots */}
           {[...Array(60)].map(
             (_, i) =>
@@ -128,11 +155,10 @@ const Clock_26_11_13 = () => {
             y1="200"
             x2="200"
             y2="110"
-            stroke="url(#handGradient)"
-            strokeWidth="6"
+            stroke="#ffffff"
+            strokeWidth="8"
             strokeLinecap="round"
             transform={`rotate(${hourAngle}, 200, 200)`}
-            filter="url(#glow)"
           />
 
           {/* Minute hand */}
@@ -141,12 +167,11 @@ const Clock_26_11_13 = () => {
             x1="200"
             y1="200"
             x2="200"
-            y2="75"
-            stroke="url(#handGradient)"
-            strokeWidth="4"
+            y2="70"
+            stroke="#cccccc"
+            strokeWidth="5"
             strokeLinecap="round"
             transform={`rotate(${minuteAngle}, 200, 200)`}
-            filter="url(#glow)"
           />
 
           {/* Second hand */}
@@ -155,9 +180,9 @@ const Clock_26_11_13 = () => {
             x1="200"
             y1="220"
             x2="200"
-            y2="55"
-            stroke="#e03030"
-            strokeWidth="1.5"
+            y2="50"
+            stroke="#ff3333"
+            strokeWidth="2.5"
             strokeLinecap="round"
             transform={`rotate(${secondAngle}, 200, 200)`}
           />
