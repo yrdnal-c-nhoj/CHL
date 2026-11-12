@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'ClockFont_26_11_07';
+  src: url('../../../../assets/fonts/26fonts/26-11-07.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 300;
+}
+
 .container {
   position: relative;
   width: 100%;
@@ -11,6 +19,12 @@
   background:
     var(--bg-image) center / cover no-repeat,
     radial-gradient(ellipse at center, #29251e 0%, #100f0d 65%, #050505 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ornament {
+    filter: drop-shadow(0.15vmin 0.2vmin 0.2vmin rgba(0, 0, 0, 0.9));
+  }
 }
 
 .frame {

@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'ClockFont_26_11_05';
+  src: url('../../../../assets/fonts/26fonts/26-11-05.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
 .container {
   position: relative;
   width: 100%;
@@ -19,6 +27,12 @@
 @media (max-width: 767px) {
   .backgroundVideo {
     object-position: 75% center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backgroundVideo {
+    display: none;
   }
 }
 

@@ -1,24 +1,15 @@
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 
 import tileImage from '@/assets/images/26_images/26-11/26-11-08/forms.webp';
 import backgroundTile from '@/assets/images/26_images/26-11/26-11-08/uniqueforms.webp';
-import font from '@/assets/fonts/26fonts/26-11-06.otf?url';
 
 import styles from './Clock.module.css';
 
-export const assets = [tileImage, backgroundTile, font];
-
-const fontConfig: FontConfig = {
-  fontFamily: 'ClockFont_26_11_08',
-  fontUrl: font,
-};
+export const assets = [tileImage, backgroundTile];
 
 const Clock_26_11_08 = () => {
   const time = useSmoothClock(16);
-  useSuspenseFontLoader([fontConfig]);
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();

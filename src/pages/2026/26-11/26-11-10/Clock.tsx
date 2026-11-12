@@ -25,6 +25,7 @@ const Clock_26_11_10 = () => {
         loop
         muted
         playsInline
+        preload="none"
         aria-hidden="true"
         className={styles.backgroundVideo}
       />

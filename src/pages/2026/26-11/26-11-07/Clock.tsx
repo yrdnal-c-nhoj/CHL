@@ -1,18 +1,10 @@
 import { useClock } from '@/utils/hooks';
-import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import type { FontConfig } from '@/types/clock';
 import SRTime from '@/components/SRTime';
 import styles from './Clock.module.css';
 import backgroundTile from '@/assets/images/26_images/26-11/26-11-07/wind.webp';
 import backgroundBg from '@/assets/images/26_images/26-11/26-11-07/bg.webp';
-import clockFont from '@/assets/fonts/26fonts/26-11-07.ttf?url';
 
-export const assets = [backgroundTile, backgroundBg, clockFont];
-
-const fontConfig: FontConfig = {
-  fontFamily: 'ClockFont_26_11_07',
-  fontUrl: clockFont,
-};
+export const assets = [backgroundTile, backgroundBg];
 
 function CornerOrnament({ className }: { className?: string }) {
   return (
@@ -39,7 +31,6 @@ function CornerOrnament({ className }: { className?: string }) {
 
 export function Clock() {
   const time = useClock();
-  useSuspenseFontLoader([fontConfig]);
   const hours24 = time.getHours();
   const hours12 = hours24 % 12 || 12;
   const minutes = time.getMinutes().toString().padStart(2, '0');
