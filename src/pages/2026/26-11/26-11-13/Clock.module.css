@@ -3,11 +3,11 @@
   width: 100%;
   height: 100dvh;
   overflow: hidden;
-  isolation: isolate;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #000;
+  color: #fff;
 }
 
 .backgroundVideo {
@@ -25,12 +25,12 @@
   inset: 0;
   z-index: 1;
   opacity: 0.5;
+  filter: grayscale(1) contrast(9) brightness(0.8);
   pointer-events: none;
   background-image: var(--europa-image);
   background-repeat: repeat;
   background-position: center;
   background-size: 300px 300px;
-  filter: grayscale(1) contrast(9) brightness(0.8);
 }
 
 .frameLayer {
@@ -39,10 +39,11 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  z-index: 2;
   opacity: 0.2;
   pointer-events: none;
-  z-index: 2;
   animation: rotateCCW 60s linear infinite;
+  transform-origin: center;
 }
 
 @keyframes rotateCCW {
@@ -54,71 +55,76 @@
   }
 }
 
-/* External analog clock */
-
 .clock {
   position: relative;
   z-index: 3;
-  width: min(70vmin, 32rem);
-  aspect-ratio: 1;
+  width: min(60vmin, 28rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
 }
 
-/* Clock face */
-
-.clock :global(.react-clock__face) {
-  background: rgba(0, 0, 0, 0.48);
-  border: 0.3rem solid rgba(255, 255, 255, 0.9);
-  box-shadow:
-    0 0 2rem rgba(0, 0, 0, 0.65),
-    inset 0 0 2rem rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(0.15rem);
+.svg {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 0.5rem 2rem rgba(0, 0, 0, 0.6));
 }
 
-/* Numerals */
-
-.clock :global(.react-clock__mark__number) {
-  color: #fff;
-  font-family: Georgia, serif;
-  font-weight: 700;
-  text-shadow: 0 0 0.4rem #000;
+.outerRing {
+  stroke-dasharray: 4, 8;
+  animation: ringRotate 60s linear infinite;
 }
 
-/* Hour and minute markers */
-
-.clock :global(.react-clock__mark__body) {
-  background: rgba(255, 255, 255, 0.8);
+@keyframes ringRotate {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: 12;
+  }
 }
 
-.clock :global(.react-clock__mark--hour .react-clock__mark__body) {
-  background: #fff;
+.hourMarker {
+  stroke-dasharray: 6, 25.4;
+  stroke-linecap: round;
 }
 
-/* Hour hand */
-
-.clock :global(.react-clock__hour-hand__body) {
-  background: #fff;
+.minuteMarker {
+  transform-origin: 200 200;
 }
 
-/* Minute hand */
-
-.clock :global(.react-clock__minute-hand__body) {
-  background: #eee;
+.hourHand,
+.minuteHand {
+  transform-origin: 200 200;
+  transform-box: fill-box;
 }
 
-/* Second hand */
-
-.clock :global(.react-clock__second-hand__body) {
-  background: #ff4d4d;
+.secondHand {
+  transform-origin: 200 200;
+  transform-box: fill-box;
 }
 
-/* Reduced motion */
+.centerPin {
+  filter: drop-shadow(0 0.05rem 0.1rem rgba(0, 0, 0, 0.5));
+}
+
+.centerPinInner {
+  filter: none;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .backgroundVideo {
     display: none;
   }
-
   .frameLayer {
     animation: none;
+  }
+  .outerRing {
+    animation: none;
+  }
+  .secondHand {
+    transition: transform 1s steps(60);
+    transform-origin: 200 200;
   }
 }
