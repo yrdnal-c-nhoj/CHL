@@ -10,9 +10,49 @@
   color: #fff;
 }
 
+.backgroundVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  z-index: 0;
+}
+
+.europaLayer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.frameLayer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 2;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
 .content {
+  position: relative;
+  z-index: 3;
   font-family: monospace, sans-serif;
   font-size: clamp(2rem, 15vw, 12rem);
   line-height: 1;
   text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backgroundVideo {
+    display: none;
+  }
 }
