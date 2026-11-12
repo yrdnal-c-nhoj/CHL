@@ -1,18 +1,73 @@
 # Performance Delivery Rules
 
-Last reviewed: 2026-09-21
+Last reviewed: 2026-11-12
 
 For project-level standards, roadmap, and enforcement plan, see
 [`docs/ROADMAP.md`](./ROADMAP.md).
 
 ## Image & Video Budgets
 
-| Asset type | Budget | Notes |
-|---|---|---|
-| Images | `< 200KB` per file | Prefer WebP/AVIF. Use `loading="lazy"` below the fold. |
-| Video backgrounds | `< 2MB` per file | WebM/MP4, `muted`, `loop`, `playsInline`, `preload="none"`. |
-| Sprites / icons | Inline if `< 4KB` | Vite `assetsInlineLimit` handles this automatically. |
-| Thumbnails | `< 50KB` | Generated at build time, served via CDN. |
+| Asset type        | Budget             | Notes                                                       |
+| ----------------- | ------------------ | ----------------------------------------------------------- |
+| Images            | `< 200KB` per file | Prefer WebP/AVIF. Use `loading="lazy"` below the fold.      |
+| Video backgrounds | `< 2MB` per file   | WebM/MP4, `muted`, `loop`, `playsInline`, `preload="none"`. |
+| Sprites / icons   | Inline if `< 4KB`  | Vite `assetsInlineLimit` handles this automatically.        |
+| Thumbnails        | `< 50KB`           | Generated at build time, served via CDN.                    |
+
+## Video Encoding Best Practices
+
+**Target format: WebM (VP9) or AV1** — 30–50% smaller than H.264 MP4 at equivalent visual quality. Provide MP4 as fallback only when WebM is unsupported.
+
+**Encoding guidelines:**
+
+- **Resolution:** 720p max (`-vf scale=-2:720`) — 1080p+ wastes bandwidth on background video.
+- **Bitrate/Quality:** CRF 30–35 for VP9 (`-crf 32 -b:v 0`), CRF 26–30 for H.264 (`-crf 28 -preset slow`).
+- **Audio:** Strip entirely (`-an`) — background video must be `muted`.
+- **Loop length:** 10–30 seconds — shorter loops = smaller files, seamless repetition.
+- **Fast start:** `-movflags +faststart` (MP4) so metadata is at file start.
+- **Poster frame:** Extract first frame as WebP (`ffmpeg -i input.mp4 -vframes 1 -vf scale=-2:720 poster.webp`) and add `poster="..."` to `<video>` for instant visual before playback.
+
+**Component requirements (enforced by conformance):**
+
+- `<video preload="none" ...>` — prevents eager download on page load.
+- `@media (prefers-reduced-motion: reduce) { video { display: none; } }` — respects user motion preferences.
+- `autoPlay loop muted playsInline` — required for auto-play policy compliance.
+- Register every video in the clock's `export const assets = [...]` array.
+
+**FFmpeg reference commands:**
+
+```bash
+# WebM (primary, best compression)
+ffmpeg -i input.mp4 \
+  -an -vf scale=-2:720 \
+  -c:v libvpx-vp9 -crf 32 -b:v 0 \
+  output.webm
+
+# MP4 fallback (H.264)
+ffmpeg -i input.mp4 \
+  -an -vf scale=-2:720 \
+  -c:v libx264 -crf 28 -preset slow \
+  -movflags +faststart output.mp4
+
+# Poster frame
+ffmpeg -i input.mp4 -vframes 1 -vf scale=-2:720 poster.webp
+```
+
+**JSX pattern (established Sept 2026):**
+
+```tsx
+<video
+  src={videoWebM}
+  poster={posterImage}
+  preload="none"
+  autoPlay
+  loop
+  muted
+  playsInline
+  aria-hidden="true"
+  className={styles.backgroundVideo}
+/>
+```
 
 ## Font Rules
 
@@ -26,12 +81,12 @@ For project-level standards, roadmap, and enforcement plan, see
 
 Choose intentionally based on font role:
 
-| Value | Use case | Trade-off |
-|---|---|---|
-| `block` | Art-directed, brand-critical display fonts | Hides text until font loads; protects design |
-| `swap` | UI fonts, fallback-safe text | Shows text immediately with fallback, then swaps |
-| `fallback` | Non-critical text, captions | Short block period, then fallback for the page lifetime |
-| `optional` | Decorative fonts, experimental | May never load; fastest perceived performance |
+| Value      | Use case                                   | Trade-off                                               |
+| ---------- | ------------------------------------------ | ------------------------------------------------------- |
+| `block`    | Art-directed, brand-critical display fonts | Hides text until font loads; protects design            |
+| `swap`     | UI fonts, fallback-safe text               | Shows text immediately with fallback, then swaps        |
+| `fallback` | Non-critical text, captions                | Short block period, then fallback for the page lifetime |
+| `optional` | Decorative fonts, experimental             | May never load; fastest perceived performance           |
 
 **Rule:** Use `block` only when the art direction genuinely requires it and the font is small/subset. For most clocks, `swap` or `fallback` gives better perceived performance without compromising the experience.
 
@@ -43,23 +98,24 @@ All files under `/assets/` receive immutable caching because Vite hashes
 filenames by content (`index-[hash].js`, `style-[hash].css`, etc.).
 
 This single glob covers:
+
 - JavaScript chunks (`/assets/*.js`)
 - CSS bundles (`/assets/*.css`)
 - Fonts (`/assets/fonts/*.woff2`)
 - Images (`/assets/images/*.{webp,png,jpg}`)
 - Media (`/assets/images/*.{mp4,webm}`)
 
-| Path | Policy | Rationale |
-|---|---|---|
-| `/assets/*` | `public, max-age=31536000, immutable` | Hashed filenames are content-addressable. |
-| `/assets/images/*.mp4` | `Cache-Control: public, max-age=31536000, immutable` + `Content-Type: video/mp4` | Media files. |
-| `/assets/images/*.webm` | `Cache-Control: public, max-age=31536000, immutable` + `Content-Type: video/webm` | Media files. |
+| Path                    | Policy                                                                            | Rationale                                 |
+| ----------------------- | --------------------------------------------------------------------------------- | ----------------------------------------- |
+| `/assets/*`             | `public, max-age=31536000, immutable`                                             | Hashed filenames are content-addressable. |
+| `/assets/images/*.mp4`  | `Cache-Control: public, max-age=31536000, immutable` + `Content-Type: video/mp4`  | Media files.                              |
+| `/assets/images/*.webm` | `Cache-Control: public, max-age=31536000, immutable` + `Content-Type: video/webm` | Media files.                              |
 
 ### HTML / shell
 
-| Path | Policy | Rationale |
-|---|---|---|
-| `/` | `no-cache` | Must revalidate on every visit. |
+| Path          | Policy     | Rationale                       |
+| ------------- | ---------- | ------------------------------- |
+| `/`           | `no-cache` | Must revalidate on every visit. |
 | `/index.html` | `no-cache` | Must revalidate on every visit. |
 
 **Current implementation:** `public/_headers` (Netlify). Vercel equivalent:
@@ -81,17 +137,18 @@ This single glob covers:
 
 ## Route-Level Bundle Limits
 
-| Chunk | Limit | Current (2026-09-27, brotli) | Status |
-|---|---|---|---|
-| Framework (React/DOM) | `< 100KB` gzipped | `framework-[hash].js` ≈ 58.71KB br | ✅ |
-| Three.js | `< 150KB` gzipped | `three-[hash].js` ≈ 194.07KB br (872.83KB raw) | ⚠️ Over budget, but loaded only by the 10 clocks that use 3D (no longer site-wide) |
-| Animation (GSAP/Framer) | `< 80KB` gzipped | (none observed in last build) | — |
-| Vendor | `< 120KB` gzipped | `vendor-[hash].js` ≈ 30.93KB br | ✅ |
-| Individual clock page | `< 50KB` gzipped | Dynamic import chunk; biggest observed `useClockPage-[hash].js` ≈ 15.99KB br | ✅ |
-| Thumbnails (`Thumbnail-*.js`) | `< 50KB` gzipped | ≈ 58.96KB br (measured 2026-09-20) | ❌ Over budget; split or lazy-load still open (ROADMAP 4.7) |
-| Total initial JS | `< 150KB` gzipped | framework + vendor + entry ≈ ~95KB br | ✅ |
+| Chunk                         | Limit             | Current (2026-09-27, brotli)                                                 | Status                                                                             |
+| ----------------------------- | ----------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Framework (React/DOM)         | `< 100KB` gzipped | `framework-[hash].js` ≈ 58.71KB br                                           | ✅                                                                                 |
+| Three.js                      | `< 150KB` gzipped | `three-[hash].js` ≈ 194.07KB br (872.83KB raw)                               | ⚠️ Over budget, but loaded only by the 10 clocks that use 3D (no longer site-wide) |
+| Animation (GSAP/Framer)       | `< 80KB` gzipped  | (none observed in last build)                                                | —                                                                                  |
+| Vendor                        | `< 120KB` gzipped | `vendor-[hash].js` ≈ 30.93KB br                                              | ✅                                                                                 |
+| Individual clock page         | `< 50KB` gzipped  | Dynamic import chunk; biggest observed `useClockPage-[hash].js` ≈ 15.99KB br | ✅                                                                                 |
+| Thumbnails (`Thumbnail-*.js`) | `< 50KB` gzipped  | ≈ 58.96KB br (measured 2026-09-20)                                           | ❌ Over budget; split or lazy-load still open (ROADMAP 4.7)                        |
+| Total initial JS              | `< 150KB` gzipped | framework + vendor + entry ≈ ~95KB br                                        | ✅                                                                                 |
 
 **Enforcement:**
+
 - `chunkSizeWarningLimit: 1000` in `vite.config.ts` warns during build.
 - Fail CI if any single chunk exceeds its limit.
 
