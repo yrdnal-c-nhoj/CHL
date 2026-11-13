@@ -5412,6 +5412,12 @@
     "path": "26-11-10",
     "date": "26-11-10",
     "title": "Catwalk",
-    "tags": ["analog", "body", "walk"]
+    "tags": ["analog", "body", "screen", "walk"]
+  },
+  {
+    "path": "26-11-11",
+    "date": "26-11-11",
+    "title": "Shoal",
+    "tags": ["animal", "digital", "ocean", "swim", "water"]
   }
 ]
