@@ -1,29 +1,9 @@
 @font-face {
-  font-family: 'ClockFont_26_11_11';
-  src: url('../../../../assets/fonts/26fonts/26-11-11.ttf') format('truetype');
+  font-family: 'ClockFont_26_11_12';
+  src: url('../../../../assets/fonts/26fonts/26-11-12.otf') format('opentype');
   font-display: swap;
   font-style: normal;
   font-weight: 400;
-}
-
-@keyframes underwater {
-  0%,
-  100% {
-    transform: skewX(6deg) scaleY(0.4);
-    filter: blur(20px) hue-rotate(9deg);
-  }
-  25% {
-    transform: skewX(1deg) scaleY(1.02);
-    filter: blur(4px) hue-rotate(19deg);
-  }
-  50% {
-    transform: skewX(-2deg) scaleY(1.3);
-    filter: blur(10.3px) hue-rotate(-5deg);
-  }
-  75% {
-    transform: skewX(0.5deg) scaleY(1.01);
-    filter: blur(0px) hue-rotate(-35deg);
-  }
 }
 
 .container {
@@ -34,8 +14,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #000;
-  color: #fff;
+  background: #dbb8b8;
+  color: #1e0505;
 }
 
 .backgroundVideo {
@@ -47,12 +27,24 @@
   z-index: 0;
 }
 
-.time {
-  z-index: 1;
-  font-family: 'ClockFont_26_11_11', monospace, sans-serif;
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(2.5rem, 1fr));
+  gap: 0;
+  padding: 0;
+  max-width: 100vw;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'ClockFont_26_11_12', monospace, sans-serif;
+  font-weight: 400;
   font-size: clamp(4rem, 29vw, 22rem);
   line-height: 1;
-  font-weight: 300;
   letter-spacing: 0.05em;
   color: #3ab4b4;
   opacity: 0.5;
@@ -62,6 +54,26 @@
     0 4px 8px rgba(0, 0, 0, 0.5);
   animation: underwater 18s ease-in-out infinite;
   filter: drop-shadow(0 0 5px rgb(168, 208, 230));
+}
+
+@keyframes underwater {
+  0%,
+  100% {
+    transform: skewX(0deg) scaleY(1);
+    filter: blur(0px) hue-rotate(0deg);
+  }
+  25% {
+    transform: skewX(1deg) scaleY(1.02);
+    filter: blur(0.5px) hue-rotate(5deg);
+  }
+  50% {
+    transform: skewX(-2deg) scaleY(1.3);
+    filter: blur(10.3px) hue-rotate(-5deg);
+  }
+  75% {
+    transform: skewX(0.5deg) scaleY(1.01);
+    filter: blur(0px) hue-rotate(-35deg);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

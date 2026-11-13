@@ -76,6 +76,7 @@ ffmpeg -i input.mp4 -vframes 1 -vf scale=-2:720 poster.webp
 - **Location:** Local files are preferred for reliability and to avoid a cross-origin request blocking first paint. Google Fonts (or another reputable remote provider) is allowed when local self-hosting isn't practical — use a `<link rel="preconnect">` to the font host and keep the `@font-face`/`<link>` load out of a blocking synchronous inline `<style>` tag.
 - **Subsetting:** Subset to required Unicode ranges. Remove unused glyphs.
 - **Size:** `< 100KB` per font file. Split weights/styles into separate files.
+- **Weight:** `font-weight: 400` only. Do not use `font-weight` values above `400` (e.g., `700`/`bold`). User-requested exceptions require explicit approval.
 
 ### font-display Policy
 
@@ -89,6 +90,12 @@ Choose intentionally based on font role:
 | `optional` | Decorative fonts, experimental             | May never load; fastest perceived performance           |
 
 **Rule:** Use `block` only when the art direction genuinely requires it and the font is small/subset. For most clocks, `swap` or `fallback` gives better perceived performance without compromising the experience.
+
+## CSS Formatting
+
+- **No blank lines within declaration blocks.** All properties within a CSS selector block (`{...}`) must be contiguous with no blank lines between them.
+- **No spaces within CSS function arguments.** Write `minmax(2.5rem,1fr)` not `minmax(2.5rem, 1fr)`, `rgba(39,27,27,0.6)` not `rgba(39, 27, 27, 0.6)`, etc.
+- **Font-weight must be `400`.** Do not use `font-weight` values above `400` (e.g., `700`/`bold`) without explicit user approval.
 
 ## Cache Headers
 
