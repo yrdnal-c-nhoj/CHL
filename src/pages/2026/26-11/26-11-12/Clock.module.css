@@ -2,7 +2,7 @@
   font-family: 'ClockFont_26_11_12';
   src: url('../../../../assets/fonts/26fonts/26-11-12-subset.ttf')
     format('truetype');
-  font-display: block;
+  font-display: swap;
   font-style: normal;
   font-weight: 400;
 }
