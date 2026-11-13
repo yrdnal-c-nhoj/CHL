@@ -41,6 +41,7 @@
     0 0 20px rgba(168, 208, 230, 0.6),
     0 0 40px rgba(168, 208, 230, 0.3),
     0 4px 8px rgba(0, 0, 0, 0.5);
+  animation: underwater 18s ease-in-out infinite;
 }
 
 .grid {
