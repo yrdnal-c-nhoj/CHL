@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'ClockFont_26_11_11';
+  src: url('../../../../assets/fonts/26fonts/26-11-11.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
 .container {
   position: relative;
   width: 100%;
@@ -10,19 +18,30 @@
   color: #fff;
 }
 
+.backgroundVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   gap: clamp(0.25rem, 1vw, 1rem);
   max-width: min(90vw, 60rem);
   padding: 0 clamp(1rem, 3vw, 3rem);
+  position: relative;
+  z-index: 1;
 }
 
 .digit {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: monospace, sans-serif;
+  font-family: 'ClockFont_26_11_11', monospace, sans-serif;
   font-size: clamp(2rem, 10vw, 8rem);
   line-height: 1;
   font-weight: 700;
@@ -47,6 +66,9 @@
   .digit:nth-child(3) {
     grid-column: 3;
     grid-row: 1;
+    .backgroundVideo {
+      display: none;
+    }
   }
   .digit:nth-child(4) {
     grid-column: 4;
