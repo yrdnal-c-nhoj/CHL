@@ -10,9 +10,69 @@
   color: #fff;
 }
 
-.content {
+.grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: clamp(0.25rem, 1vw, 1rem);
+  max-width: min(90vw, 60rem);
+  padding: 0 clamp(1rem, 3vw, 3rem);
+}
+
+.digit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: monospace, sans-serif;
-  font-size: clamp(2rem, 15vw, 12rem);
+  font-size: clamp(2rem, 10vw, 8rem);
   line-height: 1;
-  text-align: center;
+  font-weight: 700;
+  aspect-ratio: 1;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: clamp(0.15rem, 0.8vw, 0.5rem);
+  }
+
+  .digit:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .digit:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .digit:nth-child(3) {
+    grid-column: 3;
+    grid-row: 1;
+  }
+  .digit:nth-child(4) {
+    grid-column: 4;
+    grid-row: 1;
+  }
+  .digit:nth-child(5) {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .digit:nth-child(6) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .digit:nth-child(7) {
+    grid-column: 3;
+    grid-row: 2;
+  }
+  .digit:nth-child(8) {
+    grid-column: 4;
+    grid-row: 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .digit {
+    animation: none;
+    transition: none;
+  }
 }
