@@ -6,6 +6,26 @@
   font-weight: 400;
 }
 
+@keyframes underwater {
+  0%,
+  100% {
+    transform: skewX(0deg) scaleY(1);
+    filter: blur(0px) hue-rotate(0deg);
+  }
+  25% {
+    transform: skewX(1deg) scaleY(1.02);
+    filter: blur(10.5px) hue-rotate(5deg);
+  }
+  50% {
+    transform: skewX(-1deg) scaleY(0.98);
+    filter: blur(0.3px) hue-rotate(-3deg);
+  }
+  75% {
+    transform: skewX(0.5deg) scaleY(1.01);
+    filter: blur(0.2px) hue-rotate(2deg);
+  }
+}
+
 .container {
   position: relative;
   width: 100%;
@@ -27,74 +47,28 @@
   z-index: 0;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: clamp(0.25rem, 1vw, 1rem);
-  max-width: min(90vw, 60rem);
-  padding: 0 clamp(1rem, 3vw, 3rem);
-  position: relative;
+.time {
   z-index: 1;
-}
-
-.digit {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-family: 'ClockFont_26_11_11', monospace, sans-serif;
-  font-size: clamp(2rem, 10vw, 8rem);
+  font-size: clamp(4rem, 29vw, 22rem);
   line-height: 1;
-  font-weight: 700;
-  aspect-ratio: 1;
-}
-
-@media (max-width: 600px) {
-  .grid {
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: clamp(0.15rem, 0.8vw, 0.5rem);
-  }
-
-  .digit:nth-child(1) {
-    grid-column: 1;
-    grid-row: 1;
-  }
-  .digit:nth-child(2) {
-    grid-column: 2;
-    grid-row: 1;
-  }
-  .digit:nth-child(3) {
-    grid-column: 3;
-    grid-row: 1;
-    .backgroundVideo {
-      display: none;
-    }
-  }
-  .digit:nth-child(4) {
-    grid-column: 4;
-    grid-row: 1;
-  }
-  .digit:nth-child(5) {
-    grid-column: 1;
-    grid-row: 2;
-  }
-  .digit:nth-child(6) {
-    grid-column: 2;
-    grid-row: 2;
-  }
-  .digit:nth-child(7) {
-    grid-column: 3;
-    grid-row: 2;
-  }
-  .digit:nth-child(8) {
-    grid-column: 4;
-    grid-row: 2;
-  }
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: #a8d0e6;
+  opacity: 0.5;
+  text-shadow:
+    0 0 20px rgba(168, 208, 230, 0.6),
+    0 0 40px rgba(168, 208, 230, 0.3),
+    0 4px 8px rgba(0, 0, 0, 0.5);
+  animation: underwater 8s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(168, 208, 230, 0.4));
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .digit {
+  .backgroundVideo {
+    display: none;
+  }
+  .time {
     animation: none;
-    transition: none;
   }
 }
