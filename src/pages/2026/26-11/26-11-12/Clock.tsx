@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
-import clockFont from '@/assets/fonts/26fonts/26-11-12.otf?url';
+import clockFont from '@/assets/fonts/26fonts/26-11-12-subset.ttf?url';
 
 import styles from './Clock.module.css';
 
