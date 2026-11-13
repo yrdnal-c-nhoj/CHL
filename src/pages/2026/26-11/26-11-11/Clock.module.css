@@ -22,7 +22,7 @@
   }
   75% {
     transform: skewX(0.5deg) scaleY(1.01);
-    filter: blur(0.2px) hue-rotate(2deg);
+    filter: blur(16.2px) hue-rotate(2deg);
   }
 }
 
