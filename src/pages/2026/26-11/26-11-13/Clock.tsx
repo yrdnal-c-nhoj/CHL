@@ -3,26 +3,10 @@ import SRTime from '@/components/SRTime';
 import whitebullVideo from '@/assets/images/26_images/26-11/26-11-13/whitebull.mp4';
 import europaImage from '@/assets/images/26_images/26-11/26-11-13/europa.webp';
 import frameImage from '@/assets/images/26_images/26-11/26-11-13/frame.webp';
-import clockFont from '@/assets/fonts/26fonts/26-11-13.ttf?url';
 
 import styles from './Clock.module.css';
 
-export const assets = [whitebullVideo, europaImage, frameImage, clockFont];
-
-const ROMAN = [
-  'XII',
-  'I',
-  'II',
-  'III',
-  'IV',
-  'V',
-  'VI',
-  'VII',
-  'VIII',
-  'IX',
-  'X',
-  'XI',
-];
+export const assets = [whitebullVideo, europaImage, frameImage];
 
 const Clock_26_11_13 = () => {
   const time = useSmoothClock(50);
@@ -67,16 +51,6 @@ const Clock_26_11_13 = () => {
 
       <div className={styles.clock} aria-hidden="true">
         <div className={styles.face}>
-          {ROMAN.map((numeral, i) => (
-            <span
-              key={numeral}
-              className={styles.numeral}
-              style={{ '--angle': `${i * 30}deg` } as React.CSSProperties}
-            >
-              {numeral}
-            </span>
-          ))}
-
           <div
             className={`${styles.hand} ${styles.hourHand}`}
             style={{ '--angle': `${hourAngle}deg` } as React.CSSProperties}
