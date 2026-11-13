@@ -40,6 +40,7 @@
   position: absolute;
   left: 50%;
   bottom: 50%;
+  box-shadow: 0 0 0.4rem rgb(238, 235, 235);
   transform-origin: bottom center;
   border-radius: 0.2rem;
   -webkit-mask-image: linear-gradient(to top, #000 35%, rgba(0, 0, 0, 0) 100%);
@@ -47,27 +48,24 @@
 }
 
 .hourHand {
-  width: 1.4rem;
-  height: 10%;
+  width: 1.2rem;
+  height: 14%;
   background: #72a7e3;
   clip-path: polygon(40% 100%, 60% 100%, 100% 0%, 0% 0%);
-  box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.5);
 }
 
 .minuteHand {
   width: 1rem;
-  height: 19%;
+  height: 24%;
   background: #72a7e3;
   clip-path: polygon(42% 100%, 58% 100%, 100% 0%, 0% 0%);
-  box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.5);
 }
 
 .secondHand {
   width: 0.45rem;
-  height: 19%;
+  height: 75%;
   background: #72a7e3;
   clip-path: polygon(45% 100%, 55% 100%, 100% 0%, 0% 0%);
-  box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.5);
 }
 
 @media (prefers-reduced-motion: reduce) {
