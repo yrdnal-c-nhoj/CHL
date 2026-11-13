@@ -54,16 +54,12 @@
   }
 }
 
-/* External analog clock */
-
 .clock {
   position: relative;
   z-index: 3;
   width: min(100vmin, 32rem);
   aspect-ratio: 1;
 }
-
-/* Clock face */
 
 .face {
   position: relative;
@@ -72,8 +68,6 @@
   border-radius: 50%;
 }
 
-/* Hour and minute markers */
-
 .hand {
   position: absolute;
   left: 50%;
@@ -81,38 +75,28 @@
   transform-origin: bottom center;
   border-radius: 0.2rem;
   background: #dc7fef;
-  opacity: 0.8;
+  opacity: 0.6;
   transform: translateX(-50%) rotate(var(--angle));
   box-shadow: 1px 1px #000;
 }
 
 .hourHand {
-  width: 0.3rem;
-  height: 20%;
-  box-shadow: 1px 1px #000;
+  width: 0.5rem;
+  height: 25%;
 }
-
 .minuteHand {
-  width: 0.2rem;
-  height: 36%;
-  box-shadow: 1px 1px #000;
+  width: 0.3rem;
+  height: 44%;
 }
-
-/* Second hand */
-
 .secondHand {
-  width: 0.1rem;
-  height: 42%;
-  box-shadow: 1px 1px #000;
+  width: 0.2rem;
+  height: 49%;
 }
-
-/* Reduced motion */
 
 @media (prefers-reduced-motion: reduce) {
   .backgroundVideo {
     display: none;
   }
-
   .frameLayer {
     animation: none;
   }

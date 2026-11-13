@@ -15,10 +15,6 @@ const Clock_26_11_13 = () => {
   const minutes = time.getMinutes() + seconds / 60;
   const hours = (time.getHours() % 12) + minutes / 60;
 
-  const secondAngle = seconds * 6;
-  const minuteAngle = minutes * 6;
-  const hourAngle = hours * 30;
-
   return (
     <main className={styles.container}>
       <video
@@ -31,7 +27,6 @@ const Clock_26_11_13 = () => {
         preload="none"
         aria-hidden="true"
       />
-
       <div
         className={styles.europaLayer}
         style={
@@ -39,31 +34,26 @@ const Clock_26_11_13 = () => {
         }
         aria-hidden="true"
       />
-
       <img
         className={styles.frameLayer}
         src={frameImage}
         alt=""
         aria-hidden="true"
       />
-
       <SRTime time={time} />
-
       <div className={styles.clock} aria-hidden="true">
         <div className={styles.face}>
           <div
             className={`${styles.hand} ${styles.hourHand}`}
-            style={{ '--angle': `${hourAngle}deg` } as React.CSSProperties}
+            style={{ '--angle': `${hours * 30}deg` } as React.CSSProperties}
           />
-
           <div
             className={`${styles.hand} ${styles.minuteHand}`}
-            style={{ '--angle': `${minuteAngle}deg` } as React.CSSProperties}
+            style={{ '--angle': `${minutes * 6}deg` } as React.CSSProperties}
           />
-
           <div
             className={`${styles.hand} ${styles.secondHand}`}
-            style={{ '--angle': `${secondAngle}deg` } as React.CSSProperties}
+            style={{ '--angle': `${seconds * 6}deg` } as React.CSSProperties}
           />
         </div>
       </div>
