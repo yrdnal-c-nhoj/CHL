@@ -14,10 +14,18 @@ interface ClockPageNavProps {
   nextItem: NavItem | null;
   currentItem: NavItem;
   formatTitle: (title: string | null | undefined) => string;
-  formatDate: (date: string | null | undefined) => string;
+  _formatDate: (date: string | null | undefined) => string;
 }
 
-const ClockPageNav: React.FC<ClockPageNavProps> = ({ prevItem, nextItem, currentItem, formatTitle, formatDate }) => {
+const ClockPageNav: React.FC<ClockPageNavProps> = ({
+  prevItem,
+  nextItem,
+  currentItem,
+  formatTitle,
+  _formatDate,
+}) => {
+  // _formatDate is part of the interface but not used in this component
+  void _formatDate;
   const [visible, setVisible] = useState(true);
   const [isInHotZone, setIsInHotZone] = useState(false);
   const navigate = useNavigate();
@@ -94,15 +102,22 @@ const ClockPageNav: React.FC<ClockPageNavProps> = ({ prevItem, nextItem, current
     };
 
     document.addEventListener('mousemove', handleGlobalMouseMove);
-    return () => document.removeEventListener('mousemove', handleGlobalMouseMove);
+    return () =>
+      document.removeEventListener('mousemove', handleGlobalMouseMove);
   }, [isInHotZone, resetActivity]);
 
   if (!currentItem) return null;
 
-  const sortedTags = [...(currentItem.tags ?? [])].sort((a, b) => a.localeCompare(b));
+  const sortedTags = [...(currentItem.tags ?? [])].sort((a, b) =>
+    a.localeCompare(b),
+  );
 
   return (
-    <nav
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+    <div
+      data-nav
+      tabIndex={0}
+      role="navigation"
       className={`${styles.footerStrip} ${visible ? styles.visible : styles.hidden}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -111,12 +126,13 @@ const ClockPageNav: React.FC<ClockPageNavProps> = ({ prevItem, nextItem, current
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchCancel}
-      onClick={(e) => e.stopPropagation()}
     >
       <Link
         to={prevItem ? `/${prevItem.date}` : '/'}
         className={styles.navButton}
-        aria-label={prevItem ? `Previous: ${formatTitle(prevItem.title)}` : 'Home'}
+        aria-label={
+          prevItem ? `Previous: ${formatTitle(prevItem.title)}` : 'Home'
+        }
       >
         <span aria-hidden="true">⇽</span>
       </Link>
@@ -191,7 +207,7 @@ const ClockPageNav: React.FC<ClockPageNavProps> = ({ prevItem, nextItem, current
       >
         <span aria-hidden="true">⇾</span>
       </Link>
-    </nav>
+    </div>
   );
 };
 

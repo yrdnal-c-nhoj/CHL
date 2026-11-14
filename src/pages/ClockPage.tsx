@@ -112,7 +112,7 @@ export default function ClockPage() {
           nextItem={nextItem}
           currentItem={currentItem}
           formatTitle={asString}
-          formatDate={asString}
+          _formatDate={asString}
         />
       )}
     </div>
