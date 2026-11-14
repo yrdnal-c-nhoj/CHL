@@ -133,13 +133,17 @@ const ClockPageNav: React.FC<ClockPageNavProps> = ({
         aria-label={
           prevItem ? `Previous: ${formatTitle(prevItem.title)}` : 'Home'
         }
+        onClick={(e) => e.stopPropagation()}
       >
         <span aria-hidden="true">⇽</span>
       </Link>
 
       <button
         className={styles.footerButton}
-        onClick={() => navigate(-1)}
+        onClick={(e) => {
+          e.stopPropagation();
+          navigate(-1);
+        }}
         type="button"
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
@@ -204,6 +208,7 @@ const ClockPageNav: React.FC<ClockPageNavProps> = ({
         to={nextItem ? `/${nextItem.date}` : '/'}
         className={styles.navButton}
         aria-label={nextItem ? `Next: ${formatTitle(nextItem.title)}` : 'Home'}
+        onClick={(e) => e.stopPropagation()}
       >
         <span aria-hidden="true">⇾</span>
       </Link>
