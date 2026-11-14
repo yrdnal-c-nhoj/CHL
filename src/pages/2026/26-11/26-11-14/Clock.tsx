@@ -3,7 +3,7 @@ import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
 
 import backgroundVideo from '@/assets/images/26_images/26-11/26-11-14/collapse.webm';
-import clockFont from '@/assets/fonts/26fonts/26-11-14.ttf?url';
+import clockFont from '@/assets/fonts/26fonts/26-11-14-subset.ttf?url';
 
 import styles from './Clock.module.css';
 
