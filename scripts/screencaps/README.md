@@ -1,5 +1,7 @@
 # Screencap Generator - Website Thumbnails
 
+**This is the only script for capturing website thumbnails/screenshots of clocks.** Use `npm run screencaps` or `tsx scripts/screencaps/capture.ts`.
+
 ## Output (2 images per clock)
 
 - **Full screenshot**: `src/assets/thumbnails/<YY-MM-DD>.webp` (1080×1080 @2x device scale, 90% quality)

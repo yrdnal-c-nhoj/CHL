@@ -22,7 +22,7 @@ npm run dev
 
 Open <http://localhost:5173>.
 
-`npm run setup` is only required for the screenshot tooling (`screencaps`). You can skip it if you only want to run the app.
+`npm run setup` is only required for the **official screenshot tool** (`npm run screencaps`). You can skip it if you only want to run the app.
 
 ## Tech stack
 
@@ -66,14 +66,14 @@ Open <http://localhost:5173>.
 
 ### Clock tooling
 
-| Command                         | Purpose                                                                  |
-| ------------------------------- | ------------------------------------------------------------------------ |
-| `npm run new-clock`             | Scaffold a new clock and register it (see [Adding a clock](#adding-a-clock)) |
-| `npm run verify:clocks`         | Verify every clock against the clock contract                            |
-| `npm run verify:clocks:changed` | Verify only clocks changed in the diff (see [Verifying clocks](#verifying-clocks)) |
+| Command                         | Purpose                                                                                                |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `npm run new-clock`             | Scaffold a new clock and register it (see [Adding a clock](#adding-a-clock))                           |
+| `npm run verify:clocks`         | Verify every clock against the clock contract                                                          |
+| `npm run verify:clocks:changed` | Verify only clocks changed in the diff (see [Verifying clocks](#verifying-clocks))                     |
 | `npm run conform`               | Check current clocks (September 2026 onward) against the standards; add `-- --fix` to apply safe fixes |
-| `npm run screencaps`            | Capture 200px WebP thumbnails of clocks into `src/assets/thumbnails/` (Playwright) |
-| `npm run screencaps:optimize`   | Re-compress existing thumbnails only; does not capture new ones          |
+| `npm run screencaps`            | **Only method** to capture 200px WebP thumbnails of clocks into `src/assets/thumbnails/` (Playwright)  |
+| `npm run screencaps:optimize`   | Re-compress existing thumbnails only; does not capture new ones                                        |
 
 ## Adding a clock
 
@@ -130,11 +130,11 @@ Every clock must not:
 node scripts/verify-all-clocks.js [--changed] [--path <date|file>] [--quiet]
 ```
 
-| Option           | Effect                                                              |
-| ---------------- | ------------------------------------------------------------------- |
-| `--path <value>` | Verify one clock by date (`26-09-25`) or file path. Repeatable.     |
-| `--changed`      | Verify only clocks changed in the git diff (below)                  |
-| `--quiet`        | Print nothing except failures                                       |
+| Option           | Effect                                                          |
+| ---------------- | --------------------------------------------------------------- |
+| `--path <value>` | Verify one clock by date (`26-09-25`) or file path. Repeatable. |
+| `--changed`      | Verify only clocks changed in the git diff (below)              |
+| `--quiet`        | Print nothing except failures                                   |
 
 With `--changed`, the script compares against `origin/$GITHUB_BASE_REF` in a pull request, and against `HEAD^` (the previous commit) otherwise.
 
@@ -169,7 +169,7 @@ The repo includes configuration for several targets:
 .github/workflows/   CI workflows
 docs/                Project documentation (CLOCKS.md is the clock contract)
 public/              Static assets
-scripts/             Clock tooling, screenshots and verification
+scripts/             Clock tooling, **official screenshot capture** (`npm run screencaps`), and verification
 src/context/         clockpages.json and testclocks.json registries
 src/pages/           Clocks, organised as 20YY/YY-MM/YY-MM-DD/
 ```
