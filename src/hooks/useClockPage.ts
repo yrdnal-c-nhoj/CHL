@@ -19,9 +19,9 @@ async function preloadWithTimeout(urls: string[], ms = 5000) {
   try {
     await Promise.race([preloadAssets(urls.map((src) => ({ src }))), timeout]);
   } catch (err) {
-    console.warn('[useClockPage] Preload failed:', err);
+    console.error('[useClockPage] Preload failed:', err);
   } finally {
-    clearTimeout(timer);
+    if (timer) clearTimeout(timer);
   }
 }
 
