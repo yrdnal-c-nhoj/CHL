@@ -74,10 +74,16 @@
   white-space: nowrap;
 }
 
+.cell::before {
+  content: var(--clock-display);
+  content: var(--clock-display);
+}
+
 @keyframes rotateCCW {
   from {
     transform: translate(-50%, -50%) rotate(180deg);
   }
+
   to {
     transform: translate(-50%, -50%) rotate(540deg);
   }
