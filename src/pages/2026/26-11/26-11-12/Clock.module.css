@@ -2,7 +2,7 @@
   font-family: 'ClockFont_26_11_12';
   src: url('../../../../assets/fonts/26fonts/26-11-12-subset.ttf')
     format('truetype');
-  font-display: swap;
+  font-display: block;
   font-style: normal;
   font-weight: 400;
 }
@@ -12,11 +12,20 @@
   width: 100%;
   height: 100dvh;
   overflow: hidden;
+  isolation: isolate;
   display: flex;
   align-items: center;
   justify-content: center;
   background: radial-gradient(circle at center, #f3ae92 0%, #90b7d0 100%);
   color: #1e0505;
+}
+
+.backgroundVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   z-index: 0;
 }
 
@@ -26,20 +35,21 @@
   left: 50%;
   display: flex;
   flex-direction: column;
-  width: min(100vmin, 90vw);
-  height: min(100vmin, 90vh);
+  width: max-content;
+  height: max-content;
   transform-origin: center center;
-  animation: rotateCCW 60s linear infinite;
+  transform: translate(-50%, -50%) rotate(180deg);
+  animation: rotateCCW 60s steps(60, end) infinite;
   will-change: transform;
   pointer-events: none;
-  z-index: -1;
 }
 
 .gridRow {
   display: flex;
   flex-direction: row;
-  width: 100%;
-  height: auto;
+  width: max-content;
+  height: 2rem;
+  flex-shrink: 0;
   gap: 0;
   white-space: nowrap;
 }
@@ -58,7 +68,7 @@
   padding: 0;
   font-family: 'ClockFont_26_11_12', monospace, sans-serif;
   font-weight: 400;
-  font-size: clamp(1rem, 4vw, 2rem);
+  font-size: 3rem;
   line-height: 1;
   color: rgb(39, 27, 27);
   white-space: nowrap;
