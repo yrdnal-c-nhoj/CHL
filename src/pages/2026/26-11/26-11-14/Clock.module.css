@@ -40,7 +40,10 @@
 }
 
 .content {
-  position: relative;
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1;
   font-family: 'ClockFont_26_11_14', monospace, sans-serif;
   font-weight: 400;
@@ -48,6 +51,7 @@
   line-height: 1;
   text-align: center;
   color: #ff0000;
+  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
