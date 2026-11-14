@@ -2,7 +2,7 @@
   font-family: 'ClockFont_26_11_12';
   src: url('../../../../assets/fonts/26fonts/26-11-12-subset.ttf')
     format('truetype');
-  font-display: block;
+  font-display: swap;
   font-style: normal;
   font-weight: 400;
 }
@@ -20,23 +20,14 @@
   color: #1e0505;
 }
 
-.backgroundVideo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-}
-
 .grid {
   position: absolute;
   top: 50%;
   left: 50%;
   display: flex;
   flex-direction: column;
-  width: max-content;
-  height: max-content;
+  width: min(100vmin, 90vw);
+  height: min(100vmin, 90vh);
   transform-origin: center center;
   animation: rotateCCW 60s linear infinite;
   will-change: transform;
@@ -46,9 +37,8 @@
 .gridRow {
   display: flex;
   flex-direction: row;
-  width: max-content;
-  height: 2rem;
-  flex-shrink: 0;
+  width: 100%;
+  height: auto;
   gap: 0;
   white-space: nowrap;
 }
@@ -67,7 +57,7 @@
   padding: 0;
   font-family: 'ClockFont_26_11_12', monospace, sans-serif;
   font-weight: 400;
-  font-size: 3rem;
+  font-size: clamp(1rem, 4vw, 2rem);
   line-height: 1;
   color: rgb(39, 27, 27);
   white-space: nowrap;
