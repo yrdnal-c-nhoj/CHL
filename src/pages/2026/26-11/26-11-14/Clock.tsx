@@ -9,19 +9,15 @@ import styles from './Clock.module.css';
 
 export const assets = [backgroundVideo, clockFont];
 
-const TILE_COLUMNS = 13;
-const TILE_ROWS = 13;
 const TILE_WIDTH = 200;
 const TILE_HEIGHT = 300;
-
-const CANVAS_WIDTH = TILE_COLUMNS * TILE_WIDTH;
-const CANVAS_HEIGHT = TILE_ROWS * TILE_HEIGHT;
 
 const Clock_26_11_14 = () => {
   const time = useSmoothClock(16);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasSizeRef = useRef({ width: 0, height: 0 });
 
   useEffect(() => {
     const video = videoRef.current;
@@ -39,11 +35,23 @@ const Clock_26_11_14 = () => {
     let animationFrame = 0;
     let active = false;
 
+    const resizeCanvas = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+      ctx.scale(dpr, dpr);
+      canvasSizeRef.current = { width: rect.width, height: rect.height };
+    };
+
     // Match object-fit: cover for each individual tile.
     const draw = () => {
       if (!active) return;
 
-      if (video.readyState >= 2) {
+      const { width: canvasWidth, height: canvasHeight } =
+        canvasSizeRef.current;
+
+      if (video.readyState >= 2 && canvasWidth > 0 && canvasHeight > 0) {
         const videoAspect = video.videoWidth / video.videoHeight;
         const tileAspect = TILE_WIDTH / TILE_HEIGHT;
 
@@ -60,10 +68,13 @@ const Clock_26_11_14 = () => {
           sy = (video.videoHeight - sh) / 2;
         }
 
-        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        const tileCols = Math.ceil(canvasWidth / TILE_WIDTH);
+        const tileRows = Math.ceil(canvasHeight / TILE_HEIGHT);
 
-        for (let row = 0; row < TILE_ROWS; row++) {
-          for (let col = 0; col < TILE_COLUMNS; col++) {
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+        for (let row = 0; row < tileRows; row++) {
+          for (let col = 0; col < tileCols; col++) {
             ctx.drawImage(
               video,
               sx,
@@ -114,6 +125,11 @@ const Clock_26_11_14 = () => {
 
     motionPreference.addEventListener('change', handleMotionChange);
 
+    // Initial resize and observer
+    resizeCanvas();
+    const resizeObserver = new ResizeObserver(resizeCanvas);
+    resizeObserver.observe(canvas);
+
     if (video.readyState >= 1) {
       start();
     } else {
@@ -124,6 +140,7 @@ const Clock_26_11_14 = () => {
       stop();
       video.removeEventListener('loadedmetadata', start);
       motionPreference.removeEventListener('change', handleMotionChange);
+      resizeObserver.disconnect();
     };
   }, []);
 
@@ -145,13 +162,7 @@ const Clock_26_11_14 = () => {
         aria-hidden="true"
       />
 
-      <canvas
-        ref={canvasRef}
-        className={styles.tileLayer}
-        width={CANVAS_WIDTH}
-        height={CANVAS_HEIGHT}
-        aria-hidden="true"
-      />
+      <canvas ref={canvasRef} className={styles.tileLayer} aria-hidden="true" />
 
       <SRTime time={time} />
 
