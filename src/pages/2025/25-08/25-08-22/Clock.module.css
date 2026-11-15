@@ -1,0 +1,92 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+  width: 100vw;
+  background-color: var(--bg-color, #f7050d);
+  transition: background-color 2s;
+  overflow: hidden;
+}
+
+.clock {
+  position: relative;
+  width: 70vmin;
+  height: 70vmin;
+}
+
+.square {
+  position: absolute;
+  width: 8vw;
+  height: 8vw;
+  background-color: #3498db;
+  transform: translate(-50%, -50%);
+  transition: background-color 1s;
+  z-index: 2;
+}
+
+.dotContainer {
+  position: absolute;
+  inset: 0;
+}
+
+.dot {
+  position: absolute;
+  width: 3vw;
+  height: 3vw;
+  transition: background-color 1s;
+  z-index: 1;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom;
+  transform: translateX(-50%) rotate(var(--deg, 0deg));
+  transition: background-color 1s;
+}
+
+.hourHand {
+  width: 11vmin;
+  height: 50%;
+  background-color: blue;
+  z-index: 3;
+}
+
+.minuteHand {
+  width: 6vmin;
+  height: 70%;
+  background-color: green;
+  z-index: 4;
+}
+
+.secondHand {
+  width: 2vmin;
+  height: 100%;
+  background-color: red;
+  z-index: 5;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .container {
+    transition: none;
+  }
+  .square,
+  .dot,
+  .hand {
+    transition: none;
+  }
+}
