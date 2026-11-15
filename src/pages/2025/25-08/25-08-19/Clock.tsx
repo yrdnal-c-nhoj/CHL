@@ -1,151 +1,53 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import fontUrl from '@/assets/fonts/25fonts/25-08-19-cas.ttf';
-import bgUrl from '@/assets/images/25_images/25-08/25-08-19/ap.jpeg';
 import { useClock } from '@/utils/hooks';
+import SRTime from '@/components/SRTime';
+import styles from './Clock.module.css';
+
+import fontUrl from '@/assets/fonts/25fonts/25-08-19-cas.ttf?url';
+import bgUrl from '@/assets/images/25_images/25-08/25-08-19/ap.jpeg';
+
 export const assets = [fontUrl, bgUrl];
 
-const Pendulum =  () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'CustomFont',
-      fontUrl,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
+const fontConfig = {
+  fontFamily: 'ClockFont_25_08_19',
+  fontUrl,
+};
 
-  useEffect(() => {
-      updateTimeOnBalls();
-    }, [time]);
+const Clock_25_08_19 = () => {
+  const time = useClock();
+  useSuspenseFontLoader([fontConfig]);
 
-  const styles = {
-    pendulumApp: {
-      height: '100dvh',
-      margin: 0,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'column',
-      position: 'relative',
-      overflow: 'hidden',
-    },
-    bgLayer: {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100dvh',
-      backgroundImage: `url(${bgUrl})`,
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center center',
-      backgroundSize: 'cover',
-      filter: 'contrast(0.8) brightness(0.5) saturate(1.6)',
-      zIndex: 0,
-    },
-
-    pendulum: {
-      display: 'flex',
-      borderStyle: 'solid',
-      borderWidth: '1vw 1vw 3vw 1vw', // thicker bottom
-      borderRadius: '3.25vw 3.25vw 0 0', // rounded top corners
-      padding: '0 4.5vw 2.25vw',
-      height: '26vw',
-      zIndex: 1,
-      borderImage:
-        'linear-gradient(145deg, #b08d57, #f6e27a, #b08d57, #8c6b32) 1',
-      borderImageSlice: 1, // ensures the gradient slices evenly
-      backgroundColor: 'transparent', // keeps inside open
-      boxShadow: `
-    inset 0 0.25vw 0.5vw rgba(255, 255, 255, 0.5),
-    inset 0 -0.25vw 0.5vw rgba(0, 0, 0, 0.5)
-  `,
-    },
-
-    piece: {
-      transformOrigin: 'center top',
-      display: 'flex',
-      alignItems: 'center',
-      flexDirection: 'column',
-      width: '4.5vw',
-      height: '22.5vw',
-    },
-    pieceFirstChild: {
-      animation:
-        'left 1s cubic-bezier(0.215, 0.61, 0.355, 1) infinite alternate',
-    },
-    pieceLastChild: {
-      animation:
-        'right 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite alternate',
-    },
-  };
+  const hours = time.getHours().toString().padStart(2, '0');
+  const minutes = time.getMinutes().toString().padStart(2, '0');
+  const seconds = time.getSeconds().toString().padStart(2, '0');
+  const timeDigits = (hours + minutes + seconds).split('');
 
   return (
-    <div style={styles.pendulumApp}>
-      <div style={styles.bgLayer} />
-
-      <style>{`
-        @keyframes left {
-          0% { transform: rotate(0deg); }
-          50% { transform: rotate(0deg); }
-          100% { transform: rotate(45deg); }
-        }
-        @keyframes right {
-          0% { transform: rotate(-45deg); }
-          50% { transform: rotate(0deg); }
-          100% { transform: rotate(0deg); }
-        }
-        .piece::before {
-          content: "";
-          background: #F6E79DFF;
-          width: 1px;
-          height: 18vw;
-        }
-
-  .piece::after {
-    content: attr(data-digit);
-    border-radius: 50%;
-    width: 4.5vw;
-    height: 4.5vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'CustomFont', monospace;
-    font-size: 5vw;
-    color: #31041DFF;
-
-    /* Chrome metallic gradient */
-    background: radial-gradient(circle at 30% 30%, #ffffff 0%, #d0d0d0 40%, #888888 60%, #4d4d4d 90%);
-    
-    /* Add a subtle inner glow for more metallic feel */
-    box-shadow: inset -0.2vw -0.2vw 0.4vw rgba(255,255,255,0.6),
-                inset 0.2vw 0.2vw 0.4vw rgba(0,0,0,0.4),
-                0 0.2vw 0.4vw rgba(0,0,0,0.3);
-    
-    border: 0.1vw solid #aaa; /* subtle metallic edge */
-  }
-`}</style>
-
-      <div style={styles.pendulum}>
-        <div
-          style={{ ...styles.piece, ...styles.pieceFirstChild }}
-          className="piece"
-         />
-        <div style={styles.piece} className="piece" />
-        <div style={styles.piece} className="piece" />
-        <div style={styles.piece} className="piece" />
-        <div style={styles.piece} className="piece" />
-        <div
-          style={{ ...styles.piece, ...styles.pieceLastChild }}
-          className="piece"
-         />
+    <main
+      className={styles.container}
+      style={{ '--bg-image': `url(${bgUrl})` }}
+    >
+      <div className={styles.bgLayer} aria-hidden="true" />
+      <SRTime time={time} />
+      <div className={styles.pendulum} aria-hidden="true">
+        {timeDigits.map((digit, index) => (
+          <div
+            key={index}
+            className={`${styles.piece} ${
+              index === 0
+                ? styles.pieceFirstChild
+                : index === timeDigits.length - 1
+                  ? styles.pieceLastChild
+                  : ''
+            }`}
+            data-digit={digit}
+          />
+        ))}
       </div>
-    </div>
+    </main>
   );
-}
+};
 
-export default Pendulum;
+Clock_25_08_19.displayName = 'Clock_25_08_19';
+export default Clock_25_08_19;
