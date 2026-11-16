@@ -2,7 +2,7 @@ import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
 import styles from './Clock.module.css';
 
-import bgVideo from '@/assets/images/26_images/26-11/26-11-15/tree.mp4';
+import bgVideo from '@/assets/images/26_images/26-11/26-11-15/tree.webm';
 import hourHandImg from '@/assets/images/26_images/26-11/26-11-15/hour.webp';
 import minuteHandImg from '@/assets/images/26_images/26-11/26-11-15/minute.webp';
 import secondHandImg from '@/assets/images/26_images/26-11/26-11-15/second.webp';

@@ -50,7 +50,7 @@
   left: 50%;
   transform-origin: bottom center;
   transform: translateX(-50%) rotate(var(--deg, 0deg));
-  filter: drop-shadow(0 0 8px rgba(146, 143, 143, 0.706));
+  filter: drop-shadow(0 0 8px rgba(238, 236, 236, 0.706));
   width: auto;
 }
 
