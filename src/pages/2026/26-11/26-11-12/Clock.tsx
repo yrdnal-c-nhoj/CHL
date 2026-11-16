@@ -1,10 +1,8 @@
 import { useClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
-import clockFont from '@/assets/fonts/26fonts/26-11-12-subset.ttf?url';
-
 import styles from './Clock.module.css';
 
-export const assets = [clockFont];
+export const assets: string[] = [];
 
 const GRID_SIZE = 100;
 const COLUMNS = 100;
