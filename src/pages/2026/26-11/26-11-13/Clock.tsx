@@ -3,10 +3,18 @@ import SRTime from '@/components/SRTime';
 import whitebullVideo from '@/assets/images/26_images/26-11/26-11-13/whitebull.mp4';
 import europaImage from '@/assets/images/26_images/26-11/26-11-13/europa.webp';
 import frameImage from '@/assets/images/26_images/26-11/26-11-13/frame.webp';
+import hourHandImg from '@/assets/images/26_images/26-11/26-11-13/hour.webp';
+import minuteHandImg from '@/assets/images/26_images/26-11/26-11-13/minute.webp';
 
 import styles from './Clock.module.css';
 
-export const assets = [whitebullVideo, europaImage, frameImage];
+export const assets = [
+  whitebullVideo,
+  europaImage,
+  frameImage,
+  hourHandImg,
+  minuteHandImg,
+];
 
 const Clock_26_11_13 = () => {
   const time = useSmoothClock(50);
@@ -43,17 +51,17 @@ const Clock_26_11_13 = () => {
       <SRTime time={time} />
       <div className={styles.clock} aria-hidden="true">
         <div className={styles.face}>
-          <div
+          <img
+            src={hourHandImg}
+            alt=""
             className={`${styles.hand} ${styles.hourHand}`}
             style={{ '--angle': `${hours * 30}deg` } as React.CSSProperties}
           />
-          <div
+          <img
+            src={minuteHandImg}
+            alt=""
             className={`${styles.hand} ${styles.minuteHand}`}
             style={{ '--angle': `${minutes * 6}deg` } as React.CSSProperties}
-          />
-          <div
-            className={`${styles.hand} ${styles.secondHand}`}
-            style={{ '--angle': `${seconds * 6}deg` } as React.CSSProperties}
           />
         </div>
       </div>

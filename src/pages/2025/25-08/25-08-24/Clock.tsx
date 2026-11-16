@@ -1,9 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
-import castelImage from '@/assets/images/25_images/25-08/25-08-24/castel.jpg';
-import viaFont from '@/assets/fonts/25fonts/25-08-24-via.ttf';
 import { useClock } from '@/utils/hooks';
+import SRTime from '@/components/SRTime';
+import styles from './Clock.module.css';
+
+import castelImage from '@/assets/images/25_images/25-08/25-08-24/castel.jpg';
+import viaFont from '@/assets/fonts/25fonts/25-08-24-via.ttf?url';
+
 export const assets = [castelImage, viaFont];
+
+const fontConfig = {
+  fontFamily: 'ClockFont_25_08_24',
+  fontUrl: viaFont,
+};
 
 const toRoman = (num: number) => {
   const romanMap = [
@@ -31,55 +40,39 @@ const toRoman = (num: number) => {
   return result || 'N';
 };
 
-const RomanClock = () => {
-  // Standardized font loading with font-display: swap to avoid FOUC
-  const fontConfigs = [
-    {
-      fontFamily: 'Via',
-      fontUrl: viaFont,
-      options: {
-        weight: 'normal',
-        style: 'normal',
-      },
-    },
-  ];
-  const fontsLoaded = useSuspenseFontLoader(fontConfigs);
+const Clock_25_08_24 = () => {
+  const time = useClock();
+  useSuspenseFontLoader([fontConfig]);
 
-  const [time, setTime] = useState('');
-  const [fade, setFade] = useState(false);
-  const timeoutRef = useRef<any | null>(null);
-  // useEffect for updateClock removed - time is reactive via useClock
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
+  const seconds = time.getSeconds();
 
-  const containerStyle = {
-    position: 'relative' as const,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100dvh',
-    width: '100vw',
-    fontFamily: fontsLoaded ? "'Via', serif" : 'serif',
-    backgroundColor: '#1a1a1a',
-    backgroundImage: `url(${castelImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    overflow: 'hidden',
-  };
+  // Format each component with fixed width: hours can be 1-4 chars, minutes/seconds 2 chars each (with leading zeros)
+  const hourStr = toRoman(hours);
+  const minuteStr = toRoman(minutes).padStart(2, '0');
+  const secondStr = toRoman(seconds).padStart(2, '0');
 
-  const timeStyle = {
-    color: 'rgb(203, 227, 197)',
-    fontSize: '1.7rem',
-    textAlign: 'center' as const,
-    position: 'relative' as const,
-    zIndex: 1,
-    opacity: fade ? 0 : 1,
-    transition: 'opacity 0.5s ease-in-out',
-  };
+  // Combine into a single string with colons
+  const timeStr = `${hourStr}:${minuteStr}:${secondStr}`;
+  const chars = timeStr.split('');
 
   return (
-    <div style={containerStyle}>
-      <div style={timeStyle}>{time}</div>
-    </div>
+    <main
+      className={styles.container}
+      style={{ '--bg-image': `url(${castelImage})` }}
+    >
+      <SRTime time={time} />
+      <div className={styles.timeWrapper} aria-hidden="true">
+        {chars.map((char, index) => (
+          <span key={index} className={styles.digitBox}>
+            {char === ':' ? <span className={styles.colon}>:</span> : char}
+          </span>
+        ))}
+      </div>
+    </main>
   );
 };
 
-export default RomanClock;
+Clock_25_08_24.displayName = 'Clock_25_08_24';
+export default Clock_25_08_24;

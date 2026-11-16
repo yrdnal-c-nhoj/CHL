@@ -2,7 +2,8 @@
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding-top: 15dvh;
   height: 100dvh;
   width: 100vw;
   font-family: 'ClockFont_25_08_24', serif;
@@ -13,14 +14,36 @@
   overflow: hidden;
 }
 
-.time {
-  color: rgb(203, 227, 197);
-  font-size: 1.7rem;
-  text-align: center;
+.timeWrapper {
+  display: flex;
+  gap: 0.15em;
   position: relative;
   z-index: 1;
-  opacity: var(--opacity, 1);
-  transition: opacity 0.5s ease-in-out;
+}
+
+.digitBox {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 1.2ch;
+  color: rgb(203, 227, 197);
+  font-size: clamp(2rem, 8vw, 6rem);
+  line-height: 1;
+}
+
+.colon {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
 }
 
 .srOnly {
@@ -36,7 +59,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .time {
-    transition: none;
+  .colon {
+    animation: none;
+    opacity: 1;
   }
 }
