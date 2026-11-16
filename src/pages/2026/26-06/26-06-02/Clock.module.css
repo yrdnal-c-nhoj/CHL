@@ -5,7 +5,6 @@
   width: 100vw;
   height: 100dvh;
   overflow: hidden;
-  pointer-events: none;
   z-index: 5;
 }
 /* 
@@ -30,7 +29,7 @@
   justify-content: center;
   font-size: 26vh;
   color: rgb(163, 10, 10);
-  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
   z-index: 100;
   white-space: nowrap;
   pointer-events: none;
@@ -40,25 +39,31 @@
   display: inline-flex;
   justify-content: center;
   /* Proportionally sized to the 26vh font-size to ensure digits don't overlap */
-  width: 6vh; 
+  width: 6vh;
 }
 
 .vtecImage {
   position: absolute;
   object-fit: contain;
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
   animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 .vtecImageNoPopIn {
   position: absolute;
   object-fit: contain;
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
 }
 
 @keyframes popIn {
-  from { opacity: 0; scale: 0.5; }
-  to { opacity: 1; scale: 1; }
+  from {
+    opacity: 0;
+    scale: 0.5;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
 }
 .srOnly {
   position: absolute;

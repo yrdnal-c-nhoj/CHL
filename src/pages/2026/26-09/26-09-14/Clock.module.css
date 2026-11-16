@@ -10,7 +10,6 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  pointer-events: none;
   background: #6f552a;
   isolation: isolate;
 }
@@ -41,7 +40,10 @@
   border: var(--face-border) solid var(--ink);
   border-radius: 50%;
   background: var(--face-background);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
   transform: rotate(var(--clock-rotation));
   transform-origin: center;
   pointer-events: auto;
