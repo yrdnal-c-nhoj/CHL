@@ -1,24 +1,27 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 import { useClock } from '@/utils/hooks';
+import SRTime from '@/components/SRTime';
+import styles from './Clock.module.css';
+
 export const assets: string[] = [];
 
-const RandomColorClock =  () => {
-  const hourRef = useRef(null);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
-  const dotContainerRef = useRef(null);
-  const squareRefs = useRef([]);
-  const clockRef = useRef(null);
-
-  const [background, setBackground] = useState<any>('#f7050d');
+const Clock_25_08_22 = () => {
+  const time = useClock();
+  const hourRef = useRef<HTMLDivElement>(null);
+  const minuteRef = useRef<HTMLDivElement>(null);
+  const secondRef = useRef<HTMLDivElement>(null);
+  const dotContainerRef = useRef<HTMLDivElement>(null);
+  const squareRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const clockRef = useRef<HTMLDivElement>(null);
+  const [bgColor, setBgColor] = useState('#f7050d');
 
   const getRandomColor = () =>
     `#${Math.floor(Math.random() * 16777215)
       .toString(16)
       .padStart(6, '0')}`;
 
-  const updateClock =  () => {
-    const now = new Date();
+  const updateClock = useCallback(() => {
+    const now = time;
     const hours = now.getHours() % 12;
     const minutes = now.getMinutes();
     const seconds = now.getSeconds();
@@ -28,37 +31,40 @@ const RandomColorClock =  () => {
     const secondDeg = seconds * 6;
 
     if (hourRef.current) {
-      hourRef.current.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
+      hourRef.current.style.setProperty('--deg', `${hourDeg}deg`);
       hourRef.current.style.backgroundColor = getRandomColor();
     }
     if (minuteRef.current) {
-      minuteRef.current.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
+      minuteRef.current.style.setProperty('--deg', `${minuteDeg}deg`);
       minuteRef.current.style.backgroundColor = getRandomColor();
     }
     if (secondRef.current) {
-      secondRef.current.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
+      secondRef.current.style.setProperty('--deg', `${secondDeg}deg`);
       secondRef.current.style.backgroundColor = getRandomColor();
     }
 
     if (dotContainerRef.current) {
       Array.from(dotContainerRef.current.children).forEach((dot) => {
-        dot.style.backgroundColor = getRandomColor();
+        (dot as HTMLElement).style.backgroundColor = getRandomColor();
       });
     }
 
     squareRefs.current.forEach((square) => {
-      square.style.backgroundColor = getRandomColor();
+      if (square) {
+        square.style.backgroundColor = getRandomColor();
+      }
     });
 
-    setBackground(getRandomColor());
-  };
+    setBgColor(getRandomColor());
+  }, [time]);
 
-  const createDots =  () => {
+  const createDots = useCallback(() => {
     const container = dotContainerRef.current;
-    if (!container || !clockRef.current) return;
+    const clock = clockRef.current;
+    if (!container || !clock) return;
 
     container.innerHTML = '';
-    const size = clockRef.current.offsetWidth;
+    const size = clock.offsetWidth;
     const radius = size * 0.3;
     const center = size / 2;
 
@@ -68,24 +74,22 @@ const RandomColorClock =  () => {
       const y = center + radius * Math.sin(angle) - size * 0.04;
 
       const dot = document.createElement('div');
-      dot.style.position = 'absolute';
-      dot.style.width = '3vw';
-      dot.style.height = '3vw';
+      dot.className = styles.dot;
       dot.style.left = `${x}px`;
       dot.style.top = `${y}px`;
-      dot.style.transition = 'background-color 1s';
-      dot.style.zIndex = '1';
       container.appendChild(dot);
     }
-  };
+  }, []);
 
-  const positionSquares =  () => {
-    if (!clockRef.current) return;
-    const size = clockRef.current.offsetWidth;
+  const positionSquares = useCallback(() => {
+    const clock = clockRef.current;
+    if (!clock) return;
+    const size = clock.offsetWidth;
     const radius = size * 0.6;
     const center = size / 2;
 
     squareRefs.current.forEach((square, i) => {
+      if (!square) return;
       const angleDeg = i * 30;
       const angleRad = angleDeg * (Math.PI / 180);
       const x = center + radius * Math.sin(angleRad);
@@ -93,102 +97,52 @@ const RandomColorClock =  () => {
       square.style.left = `${x}px`;
       square.style.top = `${y}px`;
     });
-  };
+  }, []);
 
   useEffect(() => {
-      updateClock();
-    }, [time]);
+    createDots();
+    positionSquares();
+    updateClock();
+  }, [createDots, positionSquares, updateClock]);
 
   return (
     <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100dvh',
-        width: '100vw',
-        backgroundColor: background,
-        transition: 'background-color 2s',
-        overflow: 'hidden',
-      }}
+      className={styles.container}
+      style={{ '--bg-color': bgColor } as React.CSSProperties}
     >
-      <div
-        className="clock"
-        ref={clockRef}
-        style={{
-          position: 'relative',
-          width: '70vmin',
-          height: '70vmin',
-        }}
-      >
+      <SRTime time={time} />
+      <div className={styles.clock} ref={clockRef}>
         {Array.from({ length: 12 }).map((_, i) => (
           <div
             key={i}
             ref={(el) => (squareRefs.current[i] = el)}
-            style={{
-              position: 'absolute',
-              width: '8vw',
-              height: '8vw',
-              backgroundColor: '#3498db',
-              transform: 'translate(-50%, -50%)',
-              transition: 'background-color 1s',
-              zIndex: 2,
-            }}
+            className={styles.square}
           />
         ))}
 
-        <div ref={dotContainerRef} />
+        <div className={styles.dotContainer} ref={dotContainerRef} />
 
         <div
           ref={hourRef}
-          style={{
-            position: 'absolute',
-            bottom: '50%',
-            left: '50%',
-            width: '11vmin',
-            height: '50%',
-            backgroundColor: 'blue',
-            transformOrigin: 'bottom',
-            transform: 'translateX(-50%) rotate(0deg)',
-            transition: 'background-color 1s',
-            zIndex: 3,
-          }}
+          className={`${styles.hand} ${styles.hourHand}`}
+          style={{ '--deg': '0deg' } as React.CSSProperties}
         />
 
         <div
           ref={minuteRef}
-          style={{
-            position: 'absolute',
-            bottom: '50%',
-            left: '50%',
-            width: '6vmin',
-            height: '70%',
-            backgroundColor: 'green',
-            transformOrigin: 'bottom',
-            transform: 'translateX(-50%) rotate(0deg)',
-            transition: 'background-color 1s',
-            zIndex: 4,
-          }}
+          className={`${styles.hand} ${styles.minuteHand}`}
+          style={{ '--deg': '0deg' } as React.CSSProperties}
         />
 
         <div
           ref={secondRef}
-          style={{
-            position: 'absolute',
-            bottom: '50%',
-            left: '50%',
-            width: '2vmin',
-            height: '100%',
-            backgroundColor: 'red',
-            transformOrigin: 'bottom',
-            transform: 'translateX(-50%) rotate(0deg)',
-            transition: 'background-color 1s',
-            zIndex: 5,
-          }}
+          className={`${styles.hand} ${styles.secondHand}`}
+          style={{ '--deg': '0deg' } as React.CSSProperties}
         />
       </div>
     </div>
   );
 };
 
-export default RandomColorClock;
+Clock_25_08_22.displayName = 'Clock_25_08_22';
+export default Clock_25_08_22;
