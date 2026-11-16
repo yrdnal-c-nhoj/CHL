@@ -84,7 +84,7 @@
   bottom: 50%;
   transform-origin: bottom center;
   transform: translateX(-50%) rotate(var(--angle));
-  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
+  filter: saturate(1.5) drop-shadow(0 0 4px rgb(0, 0, 0));
   width: auto;
 }
 
@@ -94,7 +94,7 @@
 }
 
 .minuteHand {
-  height: 36%;
+  height: 43%;
 }
 
 @media (prefers-reduced-motion: reduce) {
