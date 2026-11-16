@@ -10,8 +10,8 @@ const GRID_SIZE = 100;
 const COLUMNS = 100;
 const CHARS_PER_TIME = 8;
 
-// Static data: create once, not on every clock update.
 const ROWS = Array.from({ length: GRID_SIZE }, (_, i) => i);
+
 const CELL_INDICES = Array.from(
   { length: COLUMNS * CHARS_PER_TIME },
   (_, i) => i,
@@ -39,9 +39,15 @@ const Clock_26_11_12 = () => {
             className={`${styles.gridRow} ${row % 2 ? styles.staggered : ''}`}
           >
             {CELL_INDICES.map((index) => (
-              <span key={index} className={styles.cell}>
-                {display[index % CHARS_PER_TIME]}
-              </span>
+              <span
+                key={index}
+                className={styles.cell}
+                style={
+                  {
+                    '--clock-display': `"${display[index % CHARS_PER_TIME]}"`,
+                  } as React.CSSProperties
+                }
+              />
             ))}
           </div>
         ))}
