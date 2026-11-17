@@ -5424,7 +5424,7 @@
     "path": "26-11-12",
     "date": "26-11-12",
     "title": "Pattern",
-    "tags": ["digital", "image-free"]
+    "tags": ["digital", "image-free", "spin", "typeface"]
   },
   {
     "path": "26-11-13",
@@ -5442,6 +5442,14 @@
     "path": "26-11-15",
     "date": "26-11-15",
     "title": "Quercus",
-    "tags": ["trunk", "tree", "day-and-night", "grow", "analog"]
+    "tags": [
+      "analog",
+      "day-and-night",
+      "grow",
+      "landscape",
+      "nature",
+      "tree",
+      "trunk"
+    ]
   }
 ]
