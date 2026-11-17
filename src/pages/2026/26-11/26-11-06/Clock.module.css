@@ -53,7 +53,7 @@
 }
 
 .digit {
-  font-size: clamp(2.5rem, 14vw, 8rem);
+  font-size: clamp(2.5rem, 20vw, 8rem);
   line-height: 1.6;
   font-weight: 300;
   letter-spacing: 0.1em;
@@ -120,7 +120,7 @@
 
 @media (min-width: 768px) {
   .digit {
-    font-size: clamp(2rem, 6vw, 5rem);
+    font-size: clamp(2rem, 10vw, 5rem);
   }
 }
 
