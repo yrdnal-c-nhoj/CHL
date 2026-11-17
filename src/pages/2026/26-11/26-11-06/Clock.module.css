@@ -54,13 +54,12 @@
 
 .digit {
   font-size: clamp(2.5rem, 14vw, 8rem);
-  line-height: 1.1;
+  line-height: 1.6;
   font-weight: 300;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
   color: #f117f5;
   transform: translateY(180px);
   opacity: 0;
-
   text-shadow:
     -0.5px -0.5px 0 #fff,
     0px -0.5px 0 #fff,
