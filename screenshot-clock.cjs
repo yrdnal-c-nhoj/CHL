@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
   await page.setViewportSize({ width: 1920, height: 1080 });
 
   // Navigate to the clock page
-  await page.goto('http://localhost:5174/26-11-16', {
+  await page.goto('http://localhost:5173/26-11-16', {
     waitUntil: 'networkidle',
   });
 
@@ -14,8 +14,8 @@ const { chromium } = require('playwright');
   await page.waitForTimeout(2000);
 
   // Take screenshot
-  await page.screenshot({ path: 'clock-26-11-16.png', fullPage: false });
+  await page.screenshot({ path: 'screenshot-26-11-16.png', fullPage: false });
 
   await browser.close();
-  console.log('Screenshot saved to clock-26-11-16.png');
+  console.log('Screenshot saved to screenshot-26-11-16.png');
 })();
