@@ -24,6 +24,7 @@ const Clock_26_11_16 = () => {
   const minutes = time.getMinutes().toString().padStart(2, '0');
   const seconds = time.getSeconds().toString().padStart(2, '0');
   const displayTime = `${hours}:${minutes}:${seconds}`;
+  const chars = displayTime.split('');
 
   return (
     <main className={styles.container}>
@@ -40,7 +41,14 @@ const Clock_26_11_16 = () => {
       />
 
       <div className={styles.content} aria-hidden="true">
-        {displayTime}
+        {chars.map((char, index) => (
+          <span
+            key={index}
+            className={`${styles.digitBox} ${char === ':' ? styles.colon : ''}`}
+          >
+            {char}
+          </span>
+        ))}
       </div>
     </main>
   );
