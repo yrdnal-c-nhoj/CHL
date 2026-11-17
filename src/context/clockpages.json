@@ -5424,7 +5424,7 @@
     "path": "26-11-12",
     "date": "26-11-12",
     "title": "Pattern",
-    "tags": ["digital", "image-free", "spin", "typeface"]
+    "tags": ["ampm", "digital", "image-free", "spin", "typeface"]
   },
   {
     "path": "26-11-13",
@@ -5451,5 +5451,11 @@
       "tree",
       "trunk"
     ]
+  },
+  {
+    "path": "26-11-16",
+    "date": "26-11-16",
+    "title": "Applause",
+    "tags": ["body", "digital", "hand", "interior", "sound"]
   }
 ]
