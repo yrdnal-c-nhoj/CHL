@@ -19,50 +19,68 @@ const Clock_26_11_17 = () => {
   const minuteAngle = (minutes + seconds / 60) * 6;
   const secondAngle = seconds * 6;
 
-  // Floating animation state
-  const [floatOffset, setFloatOffset] = useState({ x: 0, y: 0, rotation: 0 });
-  const prevOffsetRef = useRef({ x: 0, y: 0 });
-  const animationRef = useRef<number | null>(null);
-  const frameRef = useRef(0);
-
-  // Generate organic floating motion using multiple sine waves
-  useEffect(() => {
+  // Floating animation state - seeds initialized once via lazy useState initializer
+  const [seeds] = useState(() => {
     const seedX1 = Math.random() * 1000;
     const seedY1 = Math.random() * 1000;
     const seedX2 = Math.random() * 1000;
     const seedY2 = Math.random() * 1000;
     const seedR = Math.random() * 1000;
 
+    const initialX = Math.sin(seedX1) * 80 + Math.sin(seedX2) * 25;
+    const initialY = Math.cos(seedY1) * 60 + Math.cos(seedY2) * 20;
+    const initialRotation = Math.sin(seedR) * 1;
+
+    return {
+      seedX1,
+      seedY1,
+      seedX2,
+      seedY2,
+      seedR,
+      initialX,
+      initialY,
+      initialRotation,
+    };
+  });
+
+  const [floatOffset, setFloatOffset] = useState({
+    x: seeds.initialX,
+    y: seeds.initialY,
+    rotation: seeds.initialRotation,
+  });
+  const prevOffsetRef = useRef({ x: seeds.initialX, y: seeds.initialY });
+  const animationRef = useRef<number | null>(null);
+  const frameRef = useRef(0);
+
+  // Generate organic floating motion using multiple sine waves
+  useEffect(() => {
     const animate = () => {
       // Use frame count * ~16.67ms (60fps) for time instead of performance.now
       // This avoids the verifier flagging this as an independent clock time source
       const t = frameRef.current / 60; // seconds
 
-      // Multiple layered sine waves for organic motion
-      // Slow large movements
-      const x1 = Math.sin(t * 0.15 + seedX1) * 40;
-      const y1 = Math.cos(t * 0.13 + seedY1) * 35;
+      // Multiple layered sine waves for organic motion - slow drift across the viewport
+      // Slow large movements - drift across wider area
+      const x1 = Math.sin(t * 0.05 + seeds.seedX1) * 80;
+      const y1 = Math.cos(t * 0.04 + seeds.seedY1) * 60;
       // Medium movements
-      const x2 = Math.sin(t * 0.37 + seedX2) * 15;
-      const y2 = Math.cos(t * 0.41 + seedY2) * 12;
-      // Small jitter
-      const x3 = Math.sin(t * 1.2 + seedX1 * 1.7) * 4;
-      const y3 = Math.cos(t * 1.1 + seedY1 * 1.9) * 3;
+      const x2 = Math.sin(t * 0.12 + seeds.seedX2) * 25;
+      const y2 = Math.cos(t * 0.14 + seeds.seedY2) * 20;
 
-      const x = x1 + x2 + x3;
-      const y = y1 + y2 + y3;
+      const x = x1 + x2;
+      const y = y1 + y2;
 
-      // Calculate velocity for tilt
+      // Calculate velocity for subtle tilt
       const dt = 1 / 60; // ~60fps
       const velX = (x - prevOffsetRef.current.x) / dt;
       const velY = (y - prevOffsetRef.current.y) / dt;
       prevOffsetRef.current = { x, y };
 
-      // Tilt based on velocity (subtle, max ~3 degrees)
-      const rotation = Math.atan2(velY, velX) * (180 / Math.PI) * 0.08;
+      // Subtle tilt based on velocity (max ~2 degrees)
+      const rotation = Math.atan2(velY, velX) * (180 / Math.PI) * 0.03;
 
       // Add subtle idle rotation
-      const idleRotation = Math.sin(t * 0.05 + seedR) * 1.5;
+      const idleRotation = Math.sin(t * 0.02 + seeds.seedR) * 1;
 
       setFloatOffset({ x, y, rotation: rotation + idleRotation });
 
@@ -77,7 +95,7 @@ const Clock_26_11_17 = () => {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, []);
+  }, [seeds]);
 
   // Exactly 12 equally sized ticks
   const ticks = Array.from({ length: 12 }, (_, i) => (
