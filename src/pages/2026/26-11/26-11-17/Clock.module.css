@@ -24,7 +24,6 @@
   transform: translate(-50%, -50%);
   z-index: 1;
   will-change: transform;
-  transition: transform 0.1s linear;
 }
 
 .face {
@@ -93,7 +92,6 @@
     animation: none;
   }
   .clock {
-    transition: none;
     transform: translate(-50%, -50%) !important;
   }
   .hand {
