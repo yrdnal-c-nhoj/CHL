@@ -97,13 +97,31 @@ const Clock_26_11_17 = () => {
     };
   }, [seeds]);
 
-  // Exactly 12 equally sized ticks
+  // Exactly 12 equally sized ticks + cardinal numbers
   const ticks = Array.from({ length: 12 }, (_, i) => (
     <div
       key={i}
       className={styles.tick}
       style={{ transform: `translateX(-50%) rotate(${i * 30}deg)` }}
     />
+  ));
+
+  // Cardinal numbers: 12 (0), 3 (3), 6 (6), 9 (9)
+  const cardinals = [
+    { index: 0, label: '12' },
+    { index: 3, label: '3' },
+    { index: 6, label: '6' },
+    { index: 9, label: '9' },
+  ].map(({ index, label }) => (
+    <div
+      key={index}
+      className={styles.cardinal}
+      style={{
+        transform: `translateX(-50%) rotate(${index * 30}deg) translateY(-78px) rotate(${-index * 30}deg)`,
+      }}
+    >
+      {label}
+    </div>
   ));
 
   return (
@@ -131,6 +149,7 @@ const Clock_26_11_17 = () => {
       >
         <div className={styles.face}>
           {ticks}
+          {cardinals}
 
           <div
             className={`${styles.hand} ${styles.hourHand}`}
