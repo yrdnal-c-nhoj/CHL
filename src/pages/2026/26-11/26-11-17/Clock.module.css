@@ -33,7 +33,7 @@
   border-radius: 50%;
 }
 
-/* Twelve identical ticks */
+/* Twelve ticks - cardinals (12, 3, 6, 9) more prominent */
 .tick {
   position: absolute;
   top: 0;
@@ -45,17 +45,10 @@
   opacity: 0.9;
 }
 
-/* Cardinal numbers: 12, 3, 6, 9 - larger than ticks */
-.cardinal {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform-origin: 50% 90px;
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #fff;
-  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
-  pointer-events: none;
+.tickCardinal {
+  width: 3px;
+  height: 18px;
+  opacity: 1;
 }
 
 /* Center pivot */
