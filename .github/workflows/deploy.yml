@@ -25,8 +25,9 @@ jobs:
         run: npm run build
 
       - name: Deploy to Vercel
-        uses: vercel/action@v1
+        uses: amondnet/vercel-action@v25
         with:
           vercel_token: ${{ secrets.VERCEL_TOKEN }}
-          project_name: chl
-          alias: chl-git-main-johns-projects-75897040.vercel.app
+          vercel_org_id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel_project_id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel_args: '--prod'
