@@ -41,7 +41,7 @@ const ClockComponent = () => {
       (err) => {
         console.warn('[26-01-10] Font load failed:', err);
         setFontLoaded(true);
-      }
+      },
     );
 
     return () => {
@@ -71,10 +71,7 @@ const ClockComponent = () => {
 
   return (
     <main className={styles.container}>
-      <time
-        dateTime={time.toISOString()}
-        className={styles.semanticTime}
-      >
+      <time dateTime={time.toISOString()} className={styles.semanticTime}>
         {time.toLocaleTimeString()}
       </time>
 
@@ -93,18 +90,13 @@ const ClockComponent = () => {
       {/* Clock digits - 6 digits in grid */}
       <div className={styles.layout}>
         {digits.map((digit, index) => (
-          <div
-            key={index}
-            className={styles.digitBox}
-          >
+          <div key={index} className={styles.digitBox}>
             {digitToLetter[digit] ?? digit}
           </div>
         ))}
       </div>
 
-      {!fontLoaded && (
-        <div className={styles.loadingFallback}>Loading...</div>
-      )}
+      {!fontLoaded && <div className={styles.loadingFallback}>Loading...</div>}
     </main>
   );
 };
