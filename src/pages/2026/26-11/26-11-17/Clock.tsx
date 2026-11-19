@@ -61,11 +61,11 @@ const Clock_26_11_17 = () => {
 
       // Multiple layered sine waves for organic motion - slow drift across the viewport
       // Slow large movements - drift across wider area
-      const x1 = Math.sin(t * 0.05 + seeds.seedX1) * 80;
-      const y1 = Math.cos(t * 0.04 + seeds.seedY1) * 60;
+      const x1 = Math.sin(t * 0.05 + seeds.seedX1) * 120;
+      const y1 = Math.cos(t * 0.04 + seeds.seedY1) * 90;
       // Medium movements
-      const x2 = Math.sin(t * 0.12 + seeds.seedX2) * 25;
-      const y2 = Math.cos(t * 0.14 + seeds.seedY2) * 20;
+      const x2 = Math.sin(t * 0.12 + seeds.seedX2) * 40;
+      const y2 = Math.cos(t * 0.14 + seeds.seedY2) * 30;
 
       const x = x1 + x2;
       const y = y1 + y2;
@@ -97,31 +97,13 @@ const Clock_26_11_17 = () => {
     };
   }, [seeds]);
 
-  // Exactly 12 equally sized ticks + cardinal numbers
+  // Exactly 12 equally sized ticks - cardinals (12, 3, 6, 9) more prominent
   const ticks = Array.from({ length: 12 }, (_, i) => (
     <div
       key={i}
-      className={styles.tick}
+      className={`${styles.tick} ${[0, 3, 6, 9].includes(i) ? styles.tickCardinal : ''}`}
       style={{ transform: `translateX(-50%) rotate(${i * 30}deg)` }}
     />
-  ));
-
-  // Cardinal numbers: 12 (0), 3 (3), 6 (6), 9 (9)
-  const cardinals = [
-    { index: 0, label: '12' },
-    { index: 3, label: '3' },
-    { index: 6, label: '6' },
-    { index: 9, label: '9' },
-  ].map(({ index, label }) => (
-    <div
-      key={index}
-      className={styles.cardinal}
-      style={{
-        transform: `translateX(-50%) rotate(${index * 30}deg) translateY(-78px) rotate(${-index * 30}deg)`,
-      }}
-    >
-      {label}
-    </div>
   ));
 
   return (
@@ -149,7 +131,6 @@ const Clock_26_11_17 = () => {
       >
         <div className={styles.face}>
           {ticks}
-          {cardinals}
 
           <div
             className={`${styles.hand} ${styles.hourHand}`}
