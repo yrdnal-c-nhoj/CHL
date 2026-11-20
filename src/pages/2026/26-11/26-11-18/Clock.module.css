@@ -20,7 +20,7 @@
 @media (max-width: 600px) {
   .backgroundVideo {
     /* Compress horizontally by 30% (0.7), then scale up to fill viewport (1/0.7 ≈ 1.4286) */
-    transform: scale(1.4286, 1) translateX(-15%);
+    transform: scale(1, 2);
     transform-origin: center;
   }
 }
