@@ -1,6 +1,7 @@
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 import backgroundVideo from '@/assets/images/26_images/26-11/26-11-18/libra.webm';
 import scaleImage from '@/assets/images/26_images/26-11/26-11-18/scale.gif';
@@ -29,30 +30,6 @@ const Clock_26_11_18 = () => {
     return () => {
       preconnect.remove();
       stylesheet.remove();
-    };
-  }, []);
-
-  // Allow stars overlay to extend beyond viewport (body & ClockPage have overflow: hidden globally)
-  useEffect(() => {
-    const bodyOverflow = document.body.style.overflow;
-    const htmlOverflow = document.documentElement.style.overflow;
-    const clockPageContainer = document.querySelector<HTMLElement>(
-      '[class*="ClockPage"] .container, .ClockPage-module_container__',
-    );
-    const clockPageOverflow = clockPageContainer?.style.overflow;
-
-    document.body.style.overflow = 'visible';
-    document.documentElement.style.overflow = 'visible';
-    if (clockPageContainer) {
-      clockPageContainer.style.overflow = 'visible';
-    }
-
-    return () => {
-      document.body.style.overflow = bodyOverflow;
-      document.documentElement.style.overflow = htmlOverflow;
-      if (clockPageContainer) {
-        clockPageContainer.style.overflow = clockPageOverflow || 'hidden';
-      }
     };
   }, []);
 
@@ -87,12 +64,15 @@ const Clock_26_11_18 = () => {
         aria-hidden="true"
         className={styles.scaleOverlay}
       />
-      <img
-        src={starsImage}
-        alt=""
-        aria-hidden="true"
-        className={styles.starsOverlay}
-      />
+      {createPortal(
+        <img
+          src={starsImage}
+          alt=""
+          aria-hidden="true"
+          className={styles.starsOverlay}
+        />,
+        document.body,
+      )}
 
       {/* Digital clock */}
       <div className={styles.digitalClock} aria-hidden="true">
