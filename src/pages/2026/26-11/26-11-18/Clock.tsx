@@ -62,6 +62,9 @@ const Clock_26_11_18 = () => {
     hour12: true,
   });
 
+  // Split time string into parts for colon styling: "3:45 PM" -> ["3", "45 PM"]
+  const [hours, minutesAmpm] = timeString.split(':');
+
   return (
     <main className={styles.container}>
       <SRTime time={time} />
@@ -93,7 +96,9 @@ const Clock_26_11_18 = () => {
 
       {/* Digital clock */}
       <div className={styles.digitalClock} aria-hidden="true">
-        {timeString}
+        <span>{hours}</span>
+        <span className={styles.colon}>:</span>
+        <span>{minutesAmpm}</span>
       </div>
     </main>
   );
