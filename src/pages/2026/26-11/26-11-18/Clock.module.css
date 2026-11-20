@@ -70,9 +70,9 @@
   font-weight: 400;
   color: #f6bad9;
   text-shadow:
-    1px 1 0px rgb(169, 237, 138),
-    0 0 2px rgb(169, 237, 138),
-    0 0 4px rgb(169, 237, 138);
+    -1px -1px 0px rgb(169, 237, 138),
+    0 0 2px rgb(138, 222, 237),
+    0 0 4px rgb(227, 237, 138);
   letter-spacing: 0.1em;
   display: flex;
   align-items: center;
