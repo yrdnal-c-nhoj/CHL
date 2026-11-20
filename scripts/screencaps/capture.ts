@@ -13,29 +13,6 @@ const DEFAULT_VITE_PORT = 5173;
 const THUMBNAIL_MAX_WIDTH = 200;
 const WEBP_QUALITY = 65;
 
-/**
- * Screencap Generator - Website Thumbnails
- *
- * Captures clock pages for the website's thumbnail display.
- *
- * USAGE:
- *   npx ts-node scripts/screencaps/capture.ts                    # capture all clocks
- *   npx ts-node scripts/screencaps/capture.ts 26-09-01           # capture specific clock
- *   npx ts-node scripts/screencaps/capture.ts 26-09-01 26-09-02 # capture multiple clocks
- *   npx ts-node scripts/screencaps/capture.ts --optimize         # optimize existing thumbnails only
- *
- * OPTIONS:
- *   --port, -p <number>   Vite dev server port (default: 5173)
- *   --optimize            Only optimize existing thumbnails, don't capture new
- *
- * OUTPUT (1 size per clock):
- *   src/assets/thumbnails/<YY-MM-DD>.webp       -> Full-size screenshot (1080x1080 @2x, 90% quality)
- *   src/assets/thumbnails/<YY-MM-DD>-thumb.webp -> Optimized thumbnail (max 200px wide, 65% quality)
- *
- * PREREQUISITES:
- *   1. npm run dev    (start dev server, or script will start one)
- *   2. npx playwright install chromium
- */
 async function optimizeThumbnail(filePath: string): Promise<number> {
   const originalSize = fs.statSync(filePath).size;
   await sharp(filePath)
@@ -218,8 +195,8 @@ async function main(): Promise<void> {
   try {
     const browser = await chromium.launch({ headless: true });
     const context = await browser.newContext({
-      viewport: { width: 1080, height: 1080 },
-      deviceScaleFactor: 2,
+      viewport: { width: 1920, height: 1080 },
+      deviceScaleFactor: 1,
     });
 
     const page = await context.newPage();
@@ -241,7 +218,15 @@ async function main(): Promise<void> {
       console.log(`[screencaps] Capturing ${date} from ${url}`);
 
       await page.goto(url, { waitUntil: 'networkidle' });
-      await page.waitForTimeout(3000);
+      // Wait for video to load and start playing
+      await page.waitForFunction(
+        () => {
+          const video = document.querySelector('video');
+          return video && video.readyState >= 3 && !video.paused;
+        },
+        { timeout: 10000 },
+      );
+      await page.waitForTimeout(1000);
 
       const fullScreenshotPath = path.join(SCREENSHOT_DIR, `${date}.webp`);
       const fullOptions: PageScreenshotOptions = {
