@@ -38,22 +38,26 @@
 
 .starsOverlay {
   position: fixed;
-  inset: -50%;
-  width: 200%;
-  height: 200%;
-  object-fit: cover;
-  opacity: 0.5;
+  top: 50%;
+  left: 50%;
+  width: 150vw;
+  height: 150vh;
+  object-fit: contain;
+  object-position: center;
+  opacity: 0.9;
   z-index: 10;
   pointer-events: none;
+  transform: translate(-50%, -50%);
   animation: rotateStars 60s linear infinite;
 }
 
 @keyframes rotateStars {
   from {
-    transform: rotate(0deg);
+    transform: translate(-50%, -50%) rotate(0deg);
   }
+
   to {
-    transform: rotate(-360deg);
+    transform: translate(-50%, -50%) rotate(-360deg);
   }
 }
 
