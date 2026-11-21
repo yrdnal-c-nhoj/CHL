@@ -1,14 +1,23 @@
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 
 import backgroundVideo from '@/assets/images/26_images/26-11/26-11-20/eyes.webm';
+import clockFont from '@/assets/fonts/26fonts/26-11-20.ttf?url';
 
 import styles from './Clock.module.css';
 
-export const assets = [backgroundVideo];
+export const assets = [backgroundVideo, clockFont];
+
+const fontConfig = {
+  fontFamily: 'ClockFont_26_11_20',
+  fontUrl: clockFont,
+};
 
 const Clock_26_11_20 = () => {
   const time = useSmoothClock(50);
+
+  useSuspenseFontLoader([fontConfig]);
 
   const hours = time.getHours().toString().padStart(2, '0');
   const minutes = time.getMinutes().toString().padStart(2, '0');
