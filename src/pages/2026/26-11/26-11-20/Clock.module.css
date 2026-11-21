@@ -21,7 +21,9 @@
 .digitalClock {
   position: relative;
   z-index: 1;
-  font-family: 'ClockFont_26_11_20', monospace;
+  font-family:
+    'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', 'Droid Sans Mono',
+    monospace;
   font-size: clamp(3rem, 22vh, 10rem);
   font-weight: 400;
   color: #be041d;
