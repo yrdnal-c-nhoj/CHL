@@ -1,0 +1,262 @@
+import { spawn } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import sharp from 'sharp';
+import {
+  chromium,
+  type PageScreenshotOptions,
+  type ConsoleMessage,
+} from 'playwright';
+
+const SCREENSHOT_DIR = path.join(process.cwd(), 'src', 'assets', 'thumbnails');
+const DEFAULT_VITE_PORT = 5173;
+const THUMBNAIL_MAX_WIDTH = 200;
+const WEBP_QUALITY = 65;
+
+async function optimizeThumbnail(filePath: string): Promise<number> {
+  const originalSize = fs.statSync(filePath).size;
+  await sharp(filePath)
+    .resize({ width: THUMBNAIL_MAX_WIDTH, withoutEnlargement: true })
+    .webp({ quality: WEBP_QUALITY, force: true })
+    .toFile(filePath + '.optimized');
+  fs.renameSync(filePath + '.optimized', filePath);
+  return fs.statSync(filePath).size;
+}
+
+async function optimizeExistingThumbnails(): Promise<void> {
+  if (!fs.existsSync(SCREENSHOT_DIR)) {
+    console.log('[screencaps] No thumbnails directory found.');
+    return;
+  }
+
+  const files = fs
+    .readdirSync(SCREENSHOT_DIR)
+    .filter((f) => f.endsWith('.webp'));
+  console.log(
+    `[screencaps] Found ${files.length} thumbnail files to optimize.`,
+  );
+
+  for (const file of files) {
+    const filePath = path.join(SCREENSHOT_DIR, file);
+    try {
+      const optimizedSize = await optimizeThumbnail(filePath);
+      console.log(`[screencaps] Optimized: ${file} → ${optimizedSize} bytes`);
+    } catch (err) {
+      console.warn(`[screencaps] Failed to optimize ${file}:`, err);
+    }
+  }
+}
+
+interface DevServerHandle {
+  url: string;
+  cleanup: () => void;
+}
+
+function parseViteUrl(data: Buffer): string | null {
+  const text = data.toString();
+  const match = text.match(/Local:\s*(http:\/\/localhost:\d+)/);
+  return match ? match[1] : null;
+}
+
+export function isPortInUse(port: number): boolean {
+  try {
+    const net = require('net');
+    const test = net.createServer().listen(port);
+    test.close();
+    return false;
+  } catch {
+    return true;
+  }
+}
+
+async function checkUrlReady(url: string, maxWaitMs = 10000): Promise<boolean> {
+  const start = Date.now();
+  while (Date.now() - start < maxWaitMs) {
+    try {
+      const result = await fetch(url);
+      if (result.ok) return true;
+    } catch {
+      // server not ready yet
+    }
+    await new Promise((resolve) => setTimeout(resolve, 500));
+  }
+  return false;
+}
+
+async function startDevServer(port: number): Promise<DevServerHandle> {
+  console.log('[screencaps] Starting Vite dev server...');
+  const proc = spawn(
+    'npx',
+    ['vite', 'dev', '--port', String(port), '--strictPort'],
+    {
+      stdio: ['ignore', 'pipe', 'pipe'],
+    },
+  );
+
+  let resolvedUrl: string | null = null;
+
+  proc.stdout?.on('data', (data: Buffer) => {
+    process.stdout.write(`[vite] ${data.toString()}`);
+    if (!resolvedUrl) {
+      resolvedUrl = parseViteUrl(data);
+    }
+  });
+  proc.stderr?.on('data', (data: Buffer) => {
+    process.stderr.write(`[vite] ${data.toString()}`);
+  });
+
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      proc.kill();
+      reject(new Error('[screencaps] Dev server did not emit URL in time'));
+    }, 10000);
+
+    const check = setInterval(() => {
+      if (resolvedUrl) {
+        clearTimeout(timeout);
+        clearInterval(check);
+        console.log(`[screencaps] Dev server URL: ${resolvedUrl}`);
+        resolve({
+          url: resolvedUrl,
+          cleanup: () => {
+            proc.kill('SIGTERM');
+            try {
+              proc.stdout?.destroy();
+              proc.stderr?.destroy();
+            } catch {}
+          },
+        });
+      }
+    }, 200);
+
+    proc.on('error', (err: Error) => {
+      clearTimeout(timeout);
+      clearInterval(check);
+      reject(err);
+    });
+  });
+}
+
+async function resolveDevServer(
+  preferredPort: number,
+): Promise<DevServerHandle> {
+  const preferredUrl = `http://localhost:${preferredPort}`;
+  if (await checkUrlReady(preferredUrl, 2000)) {
+    console.log(`[screencaps] Reusing existing dev server at ${preferredUrl}`);
+    return { url: preferredUrl, cleanup: () => {} };
+  }
+
+  return await startDevServer(preferredPort);
+}
+
+function getClockDates(): string[] {
+  const clockPagesPath = path.join(
+    process.cwd(),
+    'src',
+    'context',
+    'clockpages.json',
+  );
+  if (fs.existsSync(clockPagesPath)) {
+    const data = JSON.parse(fs.readFileSync(clockPagesPath, 'utf-8'));
+    return data.map((item: { path: string }) => item.path);
+  }
+  return [];
+}
+
+async function main(): Promise<void> {
+  const args = process.argv.slice(2);
+  const portArg = args.findIndex((a) => a === '--port' || a === '-p');
+  let port = DEFAULT_VITE_PORT;
+  const dates: string[] = [];
+
+  if (portArg !== -1) {
+    port = parseInt(args[portArg + 1], 10);
+    args.splice(portArg, 2);
+  }
+
+  for (const arg of args) {
+    if (!arg.startsWith('-')) {
+      dates.push(arg);
+    }
+  }
+
+  if (!fs.existsSync(SCREENSHOT_DIR)) {
+    fs.mkdirSync(SCREENSHOT_DIR, { recursive: true });
+  }
+
+  if (args.includes('--optimize')) {
+    console.log('[screencaps] Optimizing existing thumbnails...');
+    await optimizeExistingThumbnails();
+    return;
+  }
+
+  const server = await resolveDevServer(port);
+
+  try {
+    const browser = await chromium.launch({ headless: true });
+    const context = await browser.newContext({
+      viewport: { width: 1080, height: 1080 },
+      deviceScaleFactor: 2,
+    });
+
+    const page = await context.newPage();
+
+    const consoleMessages: string[] = [];
+    page.on('console', (msg: ConsoleMessage) => {
+      const text = `[browser:${msg.type()}] ${msg.text()}`;
+      consoleMessages.push(text);
+      console.log(text);
+    });
+    page.on('pageerror', (err: Error) => {
+      console.error('[browser: ERROR]', err.message);
+    });
+
+    const clockDates = dates.length > 0 ? dates : getClockDates();
+
+    for (const date of clockDates) {
+      const url = `${server.url}/${date}`;
+      console.log(`[screencaps] Capturing ${date} from ${url}`);
+
+      await page.goto(url, { waitUntil: 'networkidle' });
+      await page.waitForTimeout(3000);
+
+      const fullScreenshotPath = path.join(SCREENSHOT_DIR, `${date}.webp`);
+      const fullOptions: PageScreenshotOptions = {
+        path: fullScreenshotPath,
+        fullPage: true,
+        type: 'webp',
+        quality: 90,
+      };
+
+      const thumbScreenshotPath = path.join(
+        SCREENSHOT_DIR,
+        `${date}-thumb.webp`,
+      );
+      const thumbOptions: PageScreenshotOptions = {
+        path: thumbScreenshotPath,
+        fullPage: true,
+        type: 'webp',
+        quality: 85,
+      };
+
+      await page.screenshot(fullOptions);
+      const fullSize = fs.statSync(fullScreenshotPath).size;
+
+      await page.screenshot(thumbOptions);
+      const originalSize = fs.statSync(thumbScreenshotPath).size;
+      const optimizedSize = await optimizeThumbnail(thumbScreenshotPath);
+      console.log(
+        `[screencaps] Saved: ${fullScreenshotPath} (${fullSize} bytes), ${thumbScreenshotPath} (${originalSize} → ${optimizedSize} bytes)`,
+      );
+    }
+
+    await browser.close();
+  } finally {
+    server.cleanup();
+  }
+}
+
+main().catch((err) => {
+  console.error('[screencaps] Error:', err);
+  process.exit(1);
+});

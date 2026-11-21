@@ -1,18 +1,48 @@
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
 
+import backgroundVideo from '@/assets/images/26_images/26-11/26-11-20/eyes.webm';
+
 import styles from './Clock.module.css';
 
-export const assets: string[] = [];
+export const assets = [backgroundVideo];
 
 const Clock_26_11_20 = () => {
-  const time = useSmoothClock(16);
+  const time = useSmoothClock(50);
+
+  const hours = time.getHours().toString().padStart(2, '0');
+  const minutes = time.getMinutes().toString().padStart(2, '0');
+  const seconds = time.getSeconds().toString().padStart(2, '0');
+
+  // Split into 6 individual digits for grid layout
+  const digits = [
+    hours[0],
+    hours[1],
+    minutes[0],
+    minutes[1],
+    seconds[0],
+    seconds[1],
+  ];
 
   return (
     <main className={styles.container}>
       <SRTime time={time} />
-      <div className={styles.content} aria-hidden="true">
-        {time.toLocaleTimeString()}
+
+      {/* Background video */}
+      <video
+        src={backgroundVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        aria-hidden="true"
+        className={styles.backgroundVideo}
+      />
+
+      <div className={styles.digitalClock} aria-hidden="true">
+        {digits.map((digit, index) => (
+          <span key={index}>{digit}</span>
+        ))}
       </div>
     </main>
   );

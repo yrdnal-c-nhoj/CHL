@@ -218,11 +218,12 @@ async function main(): Promise<void> {
       console.log(`[screencaps] Capturing ${date} from ${url}`);
 
       await page.goto(url, { waitUntil: 'networkidle' });
-      // Wait for video to load and start playing
+      // Wait for video to load and start playing (if present)
       await page.waitForFunction(
         () => {
           const video = document.querySelector('video');
-          return video && video.readyState >= 3 && !video.paused;
+          if (!video) return true; // No video, proceed
+          return video.readyState >= 3 && !video.paused;
         },
         { timeout: 10000 },
       );
