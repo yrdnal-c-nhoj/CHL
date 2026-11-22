@@ -22,11 +22,12 @@
 .content {
   position: relative;
   z-index: 1;
-  font-family: monospace, sans-serif;
+  font-family: 'ClockFont_26_11_22', monospace, sans-serif;
   font-size: clamp(2rem, 15vw, 12rem);
   line-height: 1;
   text-align: center;
   text-shadow: 0 0 1rem rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.1em;
 }
 
 @media (prefers-reduced-motion: reduce) {
