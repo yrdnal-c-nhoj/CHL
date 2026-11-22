@@ -5480,6 +5480,12 @@
     "path": "26-11-20",
     "date": "26-11-20",
     "title": "Confidential",
-    "tags": ["analog", "eye", "info"]
+    "tags": ["analog", "eye", "info", "paper"]
+  },
+  {
+    "path": "26-11-21",
+    "date": "26-11-21",
+    "title": "Monoline",
+    "tags": ["analog", "image-free"]
   }
 ]
