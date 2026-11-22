@@ -33,11 +33,26 @@
   text-shadow:
     1px 1px 0 #000,
     -1px -1px 0 #fff;
+  opacity: 0;
+  animation: fadePulse 8s ease-in-out infinite;
+}
+
+@keyframes fadePulse {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .digitalClock {
     animation: none;
+    opacity: 1;
   }
 }
