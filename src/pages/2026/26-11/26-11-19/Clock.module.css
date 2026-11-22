@@ -13,8 +13,8 @@
 
 .face {
   position: relative;
-  width: min(100dvh, 100vw);
-  height: min(100dvh, 100vw);
+  width: max(55dvh, 55vw);
+  height: max(55dvh, 55vw);
   border-radius: 50%;
 }
 
@@ -32,18 +32,18 @@
 }
 
 .hand:nth-of-type(1) {
-  height: 30%;
-  filter: saturate(200%) drop-shadow(0 0 1px rgb(23, 16, 5));
+  height: 20%;
+  filter: saturate(200%) drop-shadow(0 0 1px rgb(22, 16, 5));
   z-index: 1;
 }
 .hand:nth-of-type(2) {
   height: 40%;
-  filter: saturate(200%) drop-shadow(0 0 1px rgb(28, 23, 12));
+  filter: saturate(200%) drop-shadow(0 0 1px rgb(28, 22, 12));
   z-index: 2;
 }
 .hand:nth-of-type(3) {
   height: 45%;
-  filter: saturate(100%) drop-shadow(0 0 1px rgb(51, 48, 49));
+  filter: saturate(200%) drop-shadow(0 0 1px rgb(51, 48, 49));
   z-index: 3;
 }
 
