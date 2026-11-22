@@ -10,8 +10,9 @@ import {
 
 const SCREENSHOT_DIR = path.join(process.cwd(), 'src', 'assets', 'thumbnails');
 const DEFAULT_VITE_PORT = 5173;
-const THUMBNAIL_MAX_WIDTH = 200;
-const WEBP_QUALITY = 65;
+const THUMBNAIL_MAX_WIDTH = 400;
+const WEBP_QUALITY = 85;
+const FULL_QUALITY = 95;
 
 async function optimizeThumbnail(filePath: string): Promise<number> {
   const originalSize = fs.statSync(filePath).size;
@@ -195,8 +196,8 @@ async function main(): Promise<void> {
   try {
     const browser = await chromium.launch({ headless: true });
     const context = await browser.newContext({
-      viewport: { width: 1920, height: 1080 },
-      deviceScaleFactor: 1,
+      viewport: { width: 1080, height: 1080 },
+      deviceScaleFactor: 3,
     });
 
     const page = await context.newPage();
@@ -234,7 +235,7 @@ async function main(): Promise<void> {
         path: fullScreenshotPath,
         fullPage: true,
         type: 'webp',
-        quality: 90,
+        quality: FULL_QUALITY,
       };
 
       const thumbScreenshotPath = path.join(
@@ -245,7 +246,7 @@ async function main(): Promise<void> {
         path: thumbScreenshotPath,
         fullPage: true,
         type: 'webp',
-        quality: 85,
+        quality: FULL_QUALITY,
       };
 
       await page.screenshot(fullOptions);

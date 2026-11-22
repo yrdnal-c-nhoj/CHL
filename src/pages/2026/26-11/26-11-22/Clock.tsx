@@ -1,7 +1,7 @@
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
 
-import batsVideo from '@/assets/images/26_images/26-11/26-11-17/fly.webm';
+import batsVideo from '@/assets/images/26_images/26-11/26-11-22/bats.webm';
 
 import styles from './Clock.module.css';
 
