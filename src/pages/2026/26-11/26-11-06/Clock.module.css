@@ -53,7 +53,7 @@
 }
 
 .digit {
-  font-size: clamp(2.5rem, 20vw, 8rem);
+  font-size: clamp(2.5rem, 15vw, 8rem);
   line-height: 1.6;
   font-weight: 300;
   letter-spacing: 0.1em;
