@@ -97,6 +97,7 @@
 
   color: rgb(39, 27, 27);
   white-space: nowrap;
+  pointer-events: none;
 }
 
 .cell::before {
