@@ -10,29 +10,16 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: repeating-conic-gradient(
-    from 0deg,
-    #fff 0deg,
-    #fff 0.25deg,
-    transparent 0.25deg,
-    transparent 6deg
-  );
-  mask-image: radial-gradient(
-    circle at center,
-    transparent 0%,
-    transparent 5%,
-    black 5%,
-    black 95%,
-    transparent 95%
-  );
-  -webkit-mask-image: radial-gradient(
-    circle at center,
-    transparent 0%,
-    transparent 5%,
-    black 5%,
-    black 95%,
-    transparent 95%
-  );
+}
+
+.tickLine {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  width: 1px;
+  height: 100vmax;
+  background: #fff;
+  transform-origin: center bottom;
 }
 
 .hand {

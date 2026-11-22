@@ -12,10 +12,21 @@ const Clock_26_11_21 = () => {
       time.getMilliseconds() / 3_600_000) *
     30;
 
+  const tickLines = Array.from({ length: 60 }, (_, i) => (
+    <div
+      key={i}
+      className={styles.tickLine}
+      style={{ transform: `rotate(${i * 6}deg)` }}
+      aria-hidden="true"
+    />
+  ));
+
   return (
     <main className={styles.container}>
       <SRTime time={time} />
-      <div className={styles.ticks} aria-hidden="true" />
+      <div className={styles.ticks} aria-hidden="true">
+        {tickLines}
+      </div>
       <div
         className={styles.hand}
         style={{ transform: `rotate(${hourAngle}deg)` }}
