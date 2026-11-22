@@ -1,19 +1,26 @@
-import { useSmoothClock } from '@/utils/hooks';
+import { useClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
 
 import styles from './Clock.module.css';
 
-export const assets: string[] = [];
-
 const Clock_26_11_21 = () => {
-  const time = useSmoothClock(16);
+  const time = useClock();
+  const hourAngle =
+    ((time.getHours() % 12) +
+      time.getMinutes() / 60 +
+      time.getSeconds() / 3600 +
+      time.getMilliseconds() / 3_600_000) *
+    30;
 
   return (
     <main className={styles.container}>
       <SRTime time={time} />
-      <div className={styles.content} aria-hidden="true">
-        {time.toLocaleTimeString()}
-      </div>
+      <div
+        className={styles.hand}
+        style={{ transform: `rotate(${hourAngle}deg)` }}
+        aria-hidden="true"
+      />
+      <div className={styles.centerDot} aria-hidden="true" />
     </main>
   );
 };
