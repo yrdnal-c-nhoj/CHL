@@ -5468,13 +5468,13 @@
     "path": "26-11-18",
     "date": "26-11-18",
     "title": "House of Libra",
-    "tags": ["zodiac", "myth", "constellations", "digital", "sky"]
+    "tags": ["constellations", "digital", "myth", "sky", "zodiac"]
   },
   {
     "path": "26-11-19",
     "date": "26-11-19",
     "title": "Microcosm",
-    "tags": ["tree", "trunk", "wood", "landscape", "round"]
+    "tags": ["landscape", "round", "tree", "trunk", "wood"]
   },
   {
     "path": "26-11-20",
@@ -5487,5 +5487,11 @@
     "date": "26-11-21",
     "title": "Monoline",
     "tags": ["analog", "image-free"]
+  },
+  {
+    "path": "26-11-22",
+    "date": "26-11-22",
+    "title": "Bats",
+    "tags": ["animal", "digital", "fly", "night", "sky"]
   }
 ]
