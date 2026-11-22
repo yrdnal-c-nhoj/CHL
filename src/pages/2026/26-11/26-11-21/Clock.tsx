@@ -15,6 +15,7 @@ const Clock_26_11_21 = () => {
   return (
     <main className={styles.container}>
       <SRTime time={time} />
+      <div className={styles.ticks} aria-hidden="true" />
       <div
         className={styles.hand}
         style={{ transform: `rotate(${hourAngle}deg)` }}

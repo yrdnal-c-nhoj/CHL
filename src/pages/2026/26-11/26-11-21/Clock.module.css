@@ -6,31 +6,32 @@
   background: #000;
 }
 
-.radarSweep {
+.ticks {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: conic-gradient(
-    from calc(var(--hand-angle) - 40deg),
-    transparent 0deg,
-    #ffccaa 15deg,
-    #ffaa8a 25deg,
-    #ff8c6b 32deg,
-    #ff6b4a 37deg,
-    #f2543f 39deg,
-    #f2543f 40deg
+  background: repeating-conic-gradient(
+    from 0deg,
+    #fff 0deg,
+    #fff 0.25deg,
+    transparent 0.25deg,
+    transparent 6deg
   );
   mask-image: radial-gradient(
-    circle at center bottom,
-    black 0%,
-    black 45%,
-    transparent 50%
+    circle at center,
+    transparent 0%,
+    transparent 5%,
+    black 5%,
+    black 95%,
+    transparent 95%
   );
   -webkit-mask-image: radial-gradient(
-    circle at center bottom,
-    black 0%,
-    black 45%,
-    transparent 50%
+    circle at center,
+    transparent 0%,
+    transparent 5%,
+    black 5%,
+    black 95%,
+    transparent 95%
   );
 }
 
@@ -59,10 +60,4 @@
   background: #ffd700;
   box-shadow: 0 0 0.5rem rgb(255 215 0 / 50%);
   z-index: 2;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .radarSweep {
-    display: none;
-  }
 }
