@@ -1,9 +1,11 @@
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
 
+import batsVideo from '@/assets/images/26_images/26-11/26-11-17/fly.webm';
+
 import styles from './Clock.module.css';
 
-export const assets: string[] = [];
+export const assets = [batsVideo];
 
 const Clock_26_11_22 = () => {
   const time = useSmoothClock(16);
@@ -11,6 +13,15 @@ const Clock_26_11_22 = () => {
   return (
     <main className={styles.container}>
       <SRTime time={time} />
+      <video
+        src={batsVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        aria-hidden="true"
+        className={styles.backgroundVideo}
+      />
       <div className={styles.content} aria-hidden="true">
         {time.toLocaleTimeString()}
       </div>
