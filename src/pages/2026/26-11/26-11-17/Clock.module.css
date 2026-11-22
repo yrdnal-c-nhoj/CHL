@@ -90,7 +90,7 @@
 .secondHand {
   width: 1px;
   height: 46%;
-  background: #ff4444;
+  background: #60aee9;
 }
 
 @media (prefers-reduced-motion: reduce) {
