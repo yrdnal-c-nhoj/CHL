@@ -89,7 +89,12 @@
   }
   75% {
     transform: skewX(0.5deg) scaleY(1.01);
-    filter: blur(0px) hue-rotate(-35deg);
+    filter: blur(0px) hue-rotate(-25deg);
+  }
+
+  80% {
+    transform: skewX(2.5deg) scaleY(0.9);
+    filter: blur(0px) hue-rotate(15deg);
   }
 }
 
