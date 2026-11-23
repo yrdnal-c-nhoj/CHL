@@ -38,7 +38,7 @@
 
 .digitColumn {
   position: absolute;
-  top: 10vh;
+  top: max(10vh, env(safe-area-inset-top, 0px));
   left: 2vw;
   z-index: 1;
   display: flex;
@@ -58,7 +58,7 @@
   font-weight: 300;
   letter-spacing: 0.1em;
   color: #f117f5;
-  transform: translateY(180px);
+  transform: translateY(120px);
   opacity: 0;
   text-shadow:
     -0.5px -0.5px 0 #fff,
