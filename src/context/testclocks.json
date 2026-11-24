@@ -5480,7 +5480,7 @@
     "path": "26-11-20",
     "date": "26-11-20",
     "title": "Confidential",
-    "tags": ["analog", "eye", "info", "paper"]
+    "tags": ["eye", "info", "paper"]
   },
   {
     "path": "26-11-21",
@@ -5492,17 +5492,19 @@
     "path": "26-11-22",
     "date": "26-11-22",
     "title": "Bats",
-    "tags": ["animal", "pictographic", "fly", "night", "sky"]
+    "tags": ["animal", "fly", "night", "pictographic", "sky"]
   },
   {
     "path": "26-11-23",
     "date": "26-11-23",
-    "title": "Circularity"
+    "title": "Circularity",
+    "tags": ["analog", "circle", "landscape", "play", "walk"]
   },
   {
     "path": "26-11-24",
     "date": "26-11-24",
-    "title": "Untitled"
+    "title": "Tumble",
+    "tags": ["analog", "gravity", "image-free", "typeface"]
   },
   {
     "path": "26-11-25",

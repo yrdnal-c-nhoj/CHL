@@ -4,15 +4,78 @@
   height: 100dvh;
   overflow: hidden;
   display: flex;
-  align-items: center;
   justify-content: center;
-  background: #000;
-  color: #fff;
+  align-items: flex-start;
+  background: linear-gradient(180deg, #25253b 0%, #366545 100%);
+  color: #ed1628;
+  perspective: 1000px;
 }
 
 .content {
-  font-family: monospace, sans-serif;
-  font-size: clamp(2rem, 15vw, 12rem);
+  position: absolute;
+  top: 20%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'ClockFont_26_11_24', monospace, sans-serif;
+  font-weight: 400;
+  font-size: 30dvh;
   line-height: 1;
-  text-align: center;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.digit {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.65ch;
+
+  /* Fixed-width box for each digit to prevent layout jumping */
+  flex-shrink: 0;
+}
+
+.current {
+  position: relative;
+  z-index: 1;
+  text-shadow: -2px 2px 0 #eddede;
+}
+
+.falling {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
+  transform-style: preserve-3d;
+  pointer-events: none;
+  backface-visibility: visible;
+  will-change: transform, opacity;
+  text-shadow: -2px 2px 0 #eddede;
+
+  animation: fallingAway var(--fall-duration) linear forwards;
+  animation-delay: var(--animation-delay, 0ms);
+}
+
+@keyframes fallingAway {
+  0% {
+    transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate3d(0, var(--fall-distance), 0) rotateX(var(--rotate-x))
+      rotateY(var(--rotate-y)) rotateZ(var(--rotate-z));
+    opacity: 0;
+  }
 }
