@@ -64,3 +64,88 @@ export const pageview = (url: string) => {
     });
   }
 };
+
+/**
+ * Send a custom event to GA4.
+ */
+const sendEvent = (name: string, params?: Record<string, any>) => {
+  if (!shouldTrack()) return;
+  loadGaScript();
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', name, params);
+  }
+};
+
+/**
+ * Track when a clock is viewed.
+ */
+export const clockViewed = (date: string, title?: string) =>
+  sendEvent('clock_viewed', { clock_date: date, clock_title: title });
+
+/**
+ * Track when a clock's background video starts playing.
+ */
+export const clockVideoPlayed = (date: string) =>
+  sendEvent('clock_video_played', { clock_date: date });
+
+/**
+ * Track font load success/failure for a clock.
+ */
+export const fontLoaded = (date: string, success: boolean) =>
+  sendEvent('font_loaded', { clock_date: date, success });
+
+/**
+ * Track when user toggles reduced motion preference.
+ */
+export const reducedMotionToggled = (enabled: boolean) =>
+  sendEvent('reduced_motion_toggle', { enabled });
+
+/**
+ * Track navigation method used.
+ */
+export const navigationUsed = (type: 'swipe' | 'click' | 'keyboard') =>
+  sendEvent('navigation', { type });
+
+/**
+ * Track errors during clock rendering.
+ */
+export const clockError = (date: string, error: string) =>
+  sendEvent('clock_error', { clock_date: date, error_message: error });
+
+/**
+ * Set user properties for the session.
+ */
+export const setUserProperties = (props: Record<string, string>) => {
+  if (!shouldTrack()) return;
+  loadGaScript();
+  if (typeof window.gtag === 'function') {
+    window.gtag('set', 'user_properties', props);
+  }
+};
+
+/**
+ * Initialize user properties from current context (viewport, preferences, etc.).
+ */
+export const initUserProperties = () => {
+  const prefersReducedMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)',
+  ).matches;
+  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+
+  setUserProperties({
+    prefers_reduced_motion: String(prefersReducedMotion),
+    device_type: isMobile ? 'mobile' : 'desktop',
+    viewport_size: `${viewportWidth}x${viewportHeight}`,
+  });
+
+  // Listen for changes
+  const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const handleMotionChange = (e: MediaQueryListEvent) => {
+    setUserProperties({ prefers_reduced_motion: String(e.matches) });
+  };
+  motionQuery.addEventListener?.('change', handleMotionChange);
+
+  return () => motionQuery.removeEventListener?.('change', handleMotionChange);
+};
