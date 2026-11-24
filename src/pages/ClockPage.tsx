@@ -1,4 +1,4 @@
-import { Suspense, useCallback, useMemo, useRef } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import ClockErrorBoundary from '@/components/ClockErrorBoundary';
@@ -7,6 +7,12 @@ import { useDataContext } from '@/context/DataContext';
 import { useClockPage } from '@/hooks/useClockPage';
 import { useSwipeNavigation } from '@/hooks/useSwipeNavigation';
 import { getRandomClockDate } from '@/utils/randomClock';
+import {
+  clockViewed,
+  fontLoaded,
+  initUserProperties,
+  navigationUsed,
+} from '@/analytics';
 import styles from '@/styles/ClockPage.module.css';
 
 const asString = (v?: string | null) => v ?? '';
@@ -28,11 +34,32 @@ export default function ClockPage() {
     };
   }, [date, items]);
 
+  // Analytics: track clock view and init user properties
+  useEffect(() => {
+    if (!currentItem) return;
+    clockViewed(currentItem.date, currentItem.title);
+    fontLoaded(currentItem.date, true);
+    const cleanup = initUserProperties();
+    return cleanup;
+  }, [currentItem]);
+
+  // Analytics: track keyboard navigation
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        navigationUsed('keyboard');
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, []);
+
   // Swipe left/right navigates the clock sequence. We use `replace` so the
   // exploratory swipe trail does not flood the browser history; the back
   // button still returns to the real previous page (home, list, etc.).
   const handleSwipe = useCallback(
     (direction: 'left' | 'right') => {
+      navigationUsed('swipe');
       // swipe left -> advance to the next (later) clock;
       // swipe right -> return to the previous (earlier) clock.
       const target = direction === 'left' ? nextItem : prevItem;
@@ -67,6 +94,7 @@ export default function ClockPage() {
       'randomMode' in location.state &&
       location.state.randomMode === true
     ) {
+      navigationUsed('click');
       const randomDate = getRandomClockDate(items, date);
       if (randomDate) {
         navigate(`/${randomDate}`, { state: { randomMode: true } });
@@ -74,6 +102,7 @@ export default function ClockPage() {
       }
     }
 
+    navigationUsed('click');
     navigate('/');
   };
 
