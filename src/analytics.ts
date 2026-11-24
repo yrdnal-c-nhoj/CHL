@@ -2,8 +2,8 @@
 
 declare global {
   interface Window {
-    dataLayer: any[];
-    gtag: (...args: any[]) => void;
+    dataLayer: unknown[];
+    gtag: (...args: unknown[]) => void;
   }
 }
 
@@ -15,10 +15,9 @@ const APP_ENV =
 
 const isProdEnv = (): boolean => (APP_ENV || '').toLowerCase() === 'production';
 const dntEnabled = (): boolean => {
-  const dnt =
-    navigator?.doNotTrack ||
-    (window as any)?.doNotTrack ||
-    (navigator as any)?.msDoNotTrack;
+  const w = window as unknown as Record<string, unknown>;
+  const n = navigator as unknown as Record<string, unknown>;
+  const dnt = navigator?.doNotTrack || w.doNotTrack || n.msDoNotTrack;
   return dnt === '1' || dnt === 'yes';
 };
 
@@ -68,7 +67,7 @@ export const pageview = (url: string) => {
 /**
  * Send a custom event to GA4.
  */
-const sendEvent = (name: string, params?: Record<string, any>) => {
+const sendEvent = (name: string, params?: Record<string, unknown>) => {
   if (!shouldTrack()) return;
   loadGaScript();
   if (typeof window.gtag === 'function') {
