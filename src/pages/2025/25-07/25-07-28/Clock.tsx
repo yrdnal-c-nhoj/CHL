@@ -1,4 +1,4 @@
-import customFont from '@/assets/fonts/25fonts/25-07-28-gol.ttf?url';
+import customFont from '@/assets/fonts/25fonts/25-07-28-gol-digits.woff2?url';
 import backgroundImage from '@/assets/images/25_images/25-07/25-07-28/go.gif';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -8,7 +8,7 @@ import styles from './Clock.module.css';
 
 export const assets = [customFont, backgroundImage];
 
-const Clock =  () => {
+const Clock = () => {
   const fontConfigs = useMemo<FontConfig[]>(
     () => [
       {
@@ -35,8 +35,13 @@ const Clock =  () => {
   };
 
   return (
-    <main className={styles.container} style={{ backgroundImage: `url(${backgroundImage})` }}>
-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+    <main
+      className={styles.container}
+      style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
+      <time dateTime={time.toISOString()} className={styles.srOnly}>
+        {time.toLocaleTimeString()}
+      </time>
 
       <time dateTime={time.toISOString()} className={styles.time}>
         {getFormattedTime()}
