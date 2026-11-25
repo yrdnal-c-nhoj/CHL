@@ -1,10 +1,10 @@
-<img width="150" height="150" alt="25-11-19-thumb" src="https://github.com/user-attachments/assets/9695177c-9e2a-4b57-821f-831d418b4023" />
+
 
 # BorrowedTime
 
 A new clock every day.
 
-<img width="150" height="150" alt="26-11-20" src="https://github.com/user-attachments/assets/98f33ab3-0ff2-425d-93de-7ea706b4a1f1" />
+<img width="150" height="150" alt="26-11-20" src="https://github.com/user-attachments/assets/98f33ab3-0ff2-425d-93de-7ea706b4a1f1" /><img width="150" height="150" alt="25-11-19-thumb" src="https://github.com/user-attachments/assets/9695177c-9e2a-4b57-821f-831d418b4023" />
 
 
 [See it live](https://www.cubistheart.com), an ongoing digital art project by [Cubist Heart Laboratories](https://cubistheart.com).
