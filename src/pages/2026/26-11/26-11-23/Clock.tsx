@@ -15,8 +15,24 @@ const fontConfig: FontConfig = {
   fontUrl: clockFont,
 };
 
+const CLOCK_RADIUS = 45;
+
+const digits = Array.from({ length: 12 }, (_, index) => {
+  const number = index + 1;
+  const angle = number * 30;
+  const radians = (angle * Math.PI) / 180;
+
+  return {
+    number,
+    x: 50 + Math.sin(radians) * CLOCK_RADIUS,
+    y: 50 - Math.cos(radians) * CLOCK_RADIUS,
+    angle,
+  };
+});
+
 const Clock_26_11_23 = () => {
   const time = useSmoothClock(16);
+
   useSuspenseFontLoader([fontConfig]);
 
   const hours = time.getHours() % 12;
@@ -28,38 +44,23 @@ const Clock_26_11_23 = () => {
   const minuteAngle = (minutes + seconds / 60) * 6;
   const secondAngle = (seconds + milliseconds / 1000) * 6;
 
-  const digits = Array.from({ length: 12 }, (_, index) => {
-    const number = index + 1;
-    const angle = number * 30;
-    const radians = (angle * Math.PI) / 180;
-
-    const radius = 45;
-
-    return {
-      number,
-      angle,
-      x: 50 + Math.sin(radians) * radius,
-      y: 50 - Math.cos(radians) * radius,
-    };
-  });
-
   return (
     <main className={styles.container}>
       <SRTime time={time} />
 
       <video
+        className={styles.backgroundVideo}
         src={bgVideo}
         autoPlay
         loop
         muted
         playsInline
         aria-hidden="true"
-        className={styles.backgroundVideo}
       />
 
       <div className={styles.clock}>
         <div className={styles.clockFace} aria-hidden="true">
-          {digits.map(({ number, angle, x, y }) => (
+          {digits.map(({ number, x, y, angle }) => (
             <span
               key={number}
               className={styles.digit}

@@ -30,7 +30,7 @@
 
 .tileLayer {
   position: absolute;
-  z-index: 0;
+  z-index: 1;
   /* Positioned and sized via JavaScript to extend beyond viewport */
 }
 

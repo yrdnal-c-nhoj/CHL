@@ -79,12 +79,20 @@ const Clock_25_10_13 = () => {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#1a0b2e',
+    position: 'relative',
+    textAlign: 'center',
+    fontVariantNumeric: 'tabular-nums',
+  };
+
+  const bgStyle = {
+    position: 'absolute',
+    inset: 0,
+    zIndex: 0,
     backgroundImage: `url(${bgImage}), url(${bgImage2})`,
     backgroundSize: 'contain, cover',
     backgroundRepeat: 'no-repeat, no-repeat',
     backgroundPosition: '50% center, center',
-    textAlign: 'center',
-    fontVariantNumeric: 'tabular-nums',
+    opacity: 0.8,
   };
 
   const lineStyle = {
@@ -127,6 +135,7 @@ const Clock_25_10_13 = () => {
 
   return (
     <div style={containerStyle}>
+      <div style={bgStyle} aria-hidden="true" />
       <SRTime time={now} />
       <div
         style={{

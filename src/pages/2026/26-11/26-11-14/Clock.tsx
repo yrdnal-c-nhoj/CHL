@@ -203,9 +203,15 @@ const Clock_26_11_14 = () => {
       active = true;
       visibleTileCount = 0;
 
-      video.play().catch(() => {
-        active = false;
-      });
+      // Ensure video plays even when hidden
+      video.muted = true;
+      video.playsInline = true;
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          active = false;
+        });
+      }
 
       animationFrame = requestAnimationFrame(draw);
     };
