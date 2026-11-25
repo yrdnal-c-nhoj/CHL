@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
-import type { CSSProperties, AnimationEvent } from 'react';
-
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
+import type { CSSProperties } from 'react';
 
 import clockFont from '@/assets/fonts/26fonts/26-11-24.ttf?url';
 
@@ -16,6 +15,34 @@ const fontConfig: FontConfig = {
   fontFamily: 'ClockFont_26_11_24',
   fontUrl: clockFont,
 };
+
+// Constants
+const COLUMNS = 6;
+const BASE_DURATION_MULTIPLIER = 2.25;
+const MIN_DURATION = 10_000;
+const DURATION_RANGE = 5_000;
+const FALL_DISTANCE = '150vh';
+const MAX_FALL_RATIO = 0.95;
+const HISTORY_COUNT = 20;
+const MAX_HISTORY_BUFFER = 5;
+
+const COLUMN_INTERVALS_MS: readonly [
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+] = [36_000_000, 3_600_000, 600_000, 60_000, 10_000, 1_000] as const;
+
+// Helper to safely get tuple element by index (0-5)
+function getTupleElement<T>(arr: readonly T[], index: number): T {
+  const element = arr[index];
+  if (element === undefined) {
+    throw new RangeError(`No tuple element at index ${index}`);
+  }
+  return element;
+}
 
 interface FallStyle extends CSSProperties {
   '--rotate-x': string;
@@ -34,47 +61,50 @@ interface FallingDigitData {
 
 interface FallingDigitProps {
   value: string;
-  columnIndex: number;
-  totalColumns: number;
   initialDigits: FallingDigitData[];
+  duration: number;
 }
 
-const randomRotation = () => {
-  const direction = Math.random() > 0.5 ? 1 : -1;
-  return direction * (360 + Math.random() * 1080);
-};
+const makeFallStyle = (
+  duration: number,
+  delay = 0,
+  seed: number,
+): FallStyle => {
+  const nextRandom = (state: number) => {
+    state = (state * 1664525 + 1013904223) % 4294967296;
+    return { value: state / 4294967296, state };
+  };
 
-const getColumnInterval = (columnIndex: number): number => {
-  switch (columnIndex) {
-    case 5:
-      return 1;
-    case 4:
-      return 10;
-    case 3:
-      return 60;
-    case 2:
-      return 600;
-    case 1:
-      return 3600;
-    case 0:
-      return 36000;
-    default:
-      return 1;
-  }
+  const randomRotation = (state: number) => {
+    const { value, state: s1 } = nextRandom(state);
+    const dir = value > 0.5 ? 1 : -1;
+    const { value: v2, state: s2 } = nextRandom(s1);
+    return { value: dir * (360 + v2 * 1080), state: s2 };
+  };
+
+  const state = seed;
+  const { value: rx, state: s1 } = randomRotation(state);
+  const { value: ry, state: s2 } = randomRotation(s1);
+  const { value: rz, state: _s3 } = randomRotation(s2);
+
+  return {
+    '--rotate-x': `${rx}deg`,
+    '--rotate-y': `${ry}deg`,
+    '--rotate-z': `${rz}deg`,
+    '--fall-duration': `${duration}ms`,
+    '--fall-distance': FALL_DISTANCE,
+    '--animation-delay': `-${delay}ms`,
+  };
 };
 
 const FallingDigit = ({
   value,
-  columnIndex,
-  totalColumns,
   initialDigits,
+  duration,
 }: FallingDigitProps) => {
   const previous = useRef(value);
   const nextId = useRef(0);
-
-  const [exiting, setExiting] = useState<FallingDigitData[]>(
-    () => initialDigits,
-  );
+  const [exiting, setExiting] = useState<FallingDigitData[]>(initialDigits);
 
   useEffect(() => {
     if (previous.current === value) return;
@@ -82,47 +112,33 @@ const FallingDigit = ({
     const oldValue = previous.current;
     previous.current = value;
 
-    // Rightmost column falls fastest.
-    const baseDuration = (10000 + Math.random() * 5000) * 2.25;
-    const columnsFromRight = totalColumns - 1 - columnIndex;
-
-    const duration = baseDuration * Math.pow(2, columnsFromRight);
-
     const digit: FallingDigitData = {
       value: oldValue,
       id: ++nextId.current,
-      style: {
-        '--rotate-x': `${randomRotation()}deg`,
-        '--rotate-y': `${randomRotation()}deg`,
-        '--rotate-z': `${randomRotation()}deg`,
-        '--fall-duration': `${duration}ms`,
-        '--fall-distance': '150vh',
-      },
+      style: makeFallStyle(duration, 0, nextId.current),
     };
 
     setExiting((current) => [...current, digit]);
-  }, [value, columnIndex, totalColumns]);
+  }, [value, duration]);
 
-  // Remove each digit when its CSS animation finishes.
   const handleAnimationEnd = (
-    event: AnimationEvent<HTMLSpanElement>,
+    event: React.AnimationEvent<HTMLSpanElement>,
     digitId: number,
   ) => {
-    if (event.target !== event.currentTarget) return;
-
-    setExiting((current) => current.filter((digit) => digit.id !== digitId));
+    if (event.target === event.currentTarget) {
+      setExiting((current) => current.filter((d) => d.id !== digitId));
+    }
   };
 
   return (
     <span className={styles.digit}>
       <span className={styles.current}>{value}</span>
-
       {exiting.map((digit) => (
         <span
           key={digit.id}
           className={styles.falling}
           style={digit.style}
-          onAnimationEnd={(event) => handleAnimationEnd(event, digit.id)}
+          onAnimationEnd={(e) => handleAnimationEnd(e, digit.id)}
           aria-hidden="true"
         >
           {digit.value}
@@ -134,11 +150,15 @@ const FallingDigit = ({
 
 const Clock_26_11_24 = () => {
   const time = useSmoothClock(16);
-
   useSuspenseFontLoader([fontConfig]);
 
-  // Capture the starting time once.
-  const [historyTime] = useState(() => time);
+  const [initialTime] = useState(() => ({
+    hours: time.getHours(),
+    minutes: time.getMinutes(),
+    seconds: time.getSeconds(),
+  }));
+
+  const { hours, minutes, seconds } = initialTime;
 
   const displayTime = time
     .toLocaleTimeString('en-GB', {
@@ -149,143 +169,125 @@ const Clock_26_11_24 = () => {
     })
     .replace(/:/g, '');
 
-  const digitColumns = displayTime.length;
+  // Seeded pseudo-random for deterministic, stable durations
+  function seededRandom(seed: number, max: number): number {
+    let state = seed;
+    state = (state * 1664525 + 1013904223) % 4294967296;
+    return (state / 4294967296) * max;
+  }
 
-  // Generate historical digits only once, not on every clock render.
-  const generateInitialDigits = (
-    columnIndex: number,
-    totalColumns: number,
-  ): FallingDigitData[] => {
-    const seed =
-      columnIndex * 1000 +
-      historyTime.getHours() * 100 +
-      historyTime.getMinutes() * 10 +
-      historyTime.getSeconds();
-
-    let randomState = seed;
-
-    const nextRandom = () => {
-      randomState = (randomState * 1664525 + 1013904223) % 4294967296;
-
-      return randomState / 4294967296;
+  // Pre-compute durations once using useMemo with stable random seeds
+  const columnDurations = useMemo(() => {
+    const getColumnDuration = (columnIndex: number) => {
+      const baseDuration =
+        (MIN_DURATION + seededRandom(columnIndex + 1, DURATION_RANGE)) *
+        BASE_DURATION_MULTIPLIER;
+      const columnsFromRight = COLUMNS - 1 - columnIndex;
+      return baseDuration * 2 ** columnsFromRight;
     };
 
-    const baseDuration = (10000 + nextRandom() * 5000) * 2.25;
+    return [
+      getColumnDuration(0),
+      getColumnDuration(1),
+      getColumnDuration(2),
+      getColumnDuration(3),
+      getColumnDuration(4),
+      getColumnDuration(5),
+    ] as const;
+  }, []);
 
-    const columnsFromRight = totalColumns - 1 - columnIndex;
+  // Memoize initial digits - only runs once
+  const initialDigitsByColumn = useMemo(() => {
+    const h = hours;
+    const m = minutes;
+    const s = seconds;
 
-    const duration = baseDuration * Math.pow(2, columnsFromRight);
+    return Array.from({ length: COLUMNS }, (_, columnIndex) => {
+      const intervalMs = getTupleElement(COLUMN_INTERVALS_MS, columnIndex);
+      const duration = getTupleElement(columnDurations, columnIndex);
 
-    const intervalMs = getColumnInterval(columnIndex) * 1000;
+      // Generate historical digits by stepping back in time
+      let hh = h;
+      let mm = m;
+      let ss = s;
 
-    // Limit initial elements to reduce mobile rendering overhead.
-    const historyCount = 20;
+      const historicalDigits: number[] = [];
+      for (let step = 0; step < HISTORY_COUNT; step++) {
+        let digit = 0;
+        switch (columnIndex) {
+          case 0:
+            digit = Math.floor(hh / 10);
+            break;
+          case 1:
+            digit = hh % 10;
+            break;
+          case 2:
+            digit = Math.floor(mm / 10);
+            break;
+          case 3:
+            digit = mm % 10;
+            break;
+          case 4:
+            digit = Math.floor(ss / 10);
+            break;
+          case 5:
+            digit = ss % 10;
+            break;
+        }
+        historicalDigits.push(digit);
 
-    const hours = historyTime.getHours();
-    const minutes = historyTime.getMinutes();
-    const seconds = historyTime.getSeconds();
-
-    const historicalDigits: number[] = [];
-
-    let h = hours;
-    let m = minutes;
-    let s = seconds;
-
-    for (let step = 0; step < historyCount; step++) {
-      let digit = 0;
-
-      switch (columnIndex) {
-        case 0:
-          digit = Math.floor(h / 10);
-          break;
-        case 1:
-          digit = h % 10;
-          break;
-        case 2:
-          digit = Math.floor(m / 10);
-          break;
-        case 3:
-          digit = m % 10;
-          break;
-        case 4:
-          digit = Math.floor(s / 10);
-          break;
-        case 5:
-          digit = s % 10;
-          break;
-      }
-
-      historicalDigits.push(digit);
-
-      s--;
-
-      if (s < 0) {
-        s = 59;
-        m--;
-
-        if (m < 0) {
-          m = 59;
-          h--;
-
-          if (h < 0) {
-            h = 23;
-          }
+        // Step back one second
+        ss--;
+        if (ss < 0) {
+          ss = 59;
+          mm--;
+        }
+        if (mm < 0) {
+          mm = 59;
+          hh--;
+        }
+        if (hh < 0) {
+          hh = 23;
         }
       }
-    }
 
-    const maxHistorySteps = Math.min(
-      historyCount,
-      Math.ceil(duration / intervalMs) + 5,
-    );
+      const maxSteps = Math.min(
+        HISTORY_COUNT,
+        Math.ceil(duration / intervalMs) + MAX_HISTORY_BUFFER,
+      );
+      const digits: FallingDigitData[] = [];
 
-    const digits: FallingDigitData[] = [];
+      for (let step = 0; step < maxSteps; step++) {
+        const elapsedMs = step * intervalMs;
+        if (elapsedMs >= duration * MAX_FALL_RATIO) continue;
 
-    for (let step = 0; step < maxHistorySteps; step++) {
-      const digitIndex = Math.min(step, historicalDigits.length - 1);
-
-      const elapsedMs = step * intervalMs;
-
-      // Do not render digits that have nearly completed their fall.
-      if (elapsedMs >= duration * 0.95) continue;
-
-      digits.push({
-        value: String(historicalDigits[digitIndex]),
-        id: -(step + 1),
-        style: {
-          '--rotate-x': `${(nextRandom() > 0.5 ? 1 : -1) * (360 + nextRandom() * 1080)}deg`,
-          '--rotate-y': `${(nextRandom() > 0.5 ? 1 : -1) * (360 + nextRandom() * 1080)}deg`,
-          '--rotate-z': `${(nextRandom() > 0.5 ? 1 : -1) * (360 + nextRandom() * 1080)}deg`,
-          '--fall-duration': `${duration}ms`,
-          '--fall-distance': '150vh',
-          '--animation-delay': `-${elapsedMs}ms`,
-        },
-      });
-    }
-
-    return digits;
-  };
-
-  const [initialDigitsByColumn] = useState(() =>
-    Array.from({ length: digitColumns }, (_, index) =>
-      generateInitialDigits(index, digitColumns),
-    ),
-  );
+        digits.push({
+          value: String(
+            historicalDigits[Math.min(step, historicalDigits.length - 1)],
+          ),
+          id: -(step + 1),
+          style: makeFallStyle(duration, elapsedMs, step),
+        });
+      }
+      return digits;
+    });
+  }, [hours, minutes, seconds, columnDurations]);
 
   return (
     <main className={styles.container}>
       <SRTime time={time} />
-
       <div className={styles.content} aria-hidden="true">
-        {displayTime.split('').map((char, index) => (
-          <FallingDigit
-            key={index}
-            value={char}
-            columnIndex={index}
-            totalColumns={digitColumns}
-            initialDigits={initialDigitsByColumn[index] ?? []}
-          />
-        ))}
+        {displayTime.split('').map((char, index) => {
+          const duration = getTupleElement(columnDurations, index);
+          return (
+            <FallingDigit
+              key={index}
+              value={char}
+              initialDigits={initialDigitsByColumn[index] ?? []}
+              duration={duration}
+            />
+          );
+        })}
       </div>
     </main>
   );

@@ -37,9 +37,8 @@
   flex-shrink: 0;
 }
 
-.current {
-  position: relative;
-  z-index: 1;
+.current,
+.falling {
   text-shadow: -2px 2px 0 #eddede;
 }
 
@@ -50,20 +49,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   transform-origin: center center;
   transform-style: preserve-3d;
-
   pointer-events: none;
   backface-visibility: hidden;
-
-  text-shadow: -2px 2px 0 #eddede;
-
-  animation-name: fallingAway;
-  animation-duration: var(--fall-duration);
-  animation-timing-function: linear;
-  animation-delay: var(--animation-delay, 0ms);
-  animation-fill-mode: both;
+  animation: fallingAway var(--fall-duration) linear var(--animation-delay, 0ms)
+    both;
 }
 
 @keyframes fallingAway {
@@ -71,11 +62,9 @@
     transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
     opacity: 1;
   }
-
   85% {
     opacity: 1;
   }
-
   100% {
     transform: translate3d(0, var(--fall-distance), 0) rotateX(var(--rotate-x))
       rotateY(var(--rotate-y)) rotateZ(var(--rotate-z));
