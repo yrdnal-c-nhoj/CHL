@@ -14,18 +14,17 @@ A new clock every day.
 
 
 
-
-
 [See it live](https://www.cubistheart.com), an ongoing digital art project by [Cubist Heart Laboratories](https://cubistheart.com).
 
-<!-- VERIFY: the repo About box links to https://chl-flax.vercel.app. Decide which URL is canonical and whether to mention both. -->
 
 ## About the name
 
 🧊🫀🔭 Cubist Heart Laboratories is a global collective of artists and scientists.
 
 <img width="150" height="150" alt="26-04-15-thumb" src="https://github.com/user-attachments/assets/e73f6be8-a6bf-460c-b430-359ccbafe9b4" />
-<img width="150" height="150" alt="26-11-20" src="https://github.com/user-attachments/assets/98f33ab3-0ff2-425d-93de-7ea706b4a1f1" /><img width="150" height="150"  alt="26-01-20-thumb" src="https://github.com/user-attachments/assets/17d8f84b-fd33-4eb8-9c45-452533ede28b" />
+
+<img width="150" height="150"  alt="26-01-20-thumb" src="https://github.com/user-attachments/assets/17d8f84b-fd33-4eb8-9c45-452533ede28b" />
+<img width="150" height="150" alt="26-11-20" src="https://github.com/user-attachments/assets/98f33ab3-0ff2-425d-93de-7ea706b4a1f1" />
 
 The GitHub repository is `CHL` (Cubist Heart Laboratories).
 
