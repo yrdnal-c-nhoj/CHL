@@ -1,6 +1,6 @@
-<img width="30" height="30" alt="26-11-20" src="https://github.com/user-attachments/assets/98f33ab3-0ff2-425d-93de-7ea706b4a1f1" />
-# BorrowedTime
 
+# BorrowedTime
+<img width="200" height="200" alt="26-11-20" src="https://github.com/user-attachments/assets/98f33ab3-0ff2-425d-93de-7ea706b4a1f1" />
 A new clock every day.
 
 [See it live](https://www.cubistheart.com), an ongoing digital art project by [Cubist Heart Laboratories](https://cubistheart.com).
