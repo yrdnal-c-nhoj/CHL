@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://www.cubistheart.com",
   "scripts": {
     "setup": "node -e \"require('fs').mkdirSync('src/assets/thumbnails',{recursive:true})\" && npx playwright install chromium",
     "dev": "vite",

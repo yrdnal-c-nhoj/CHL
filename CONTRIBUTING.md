@@ -10,6 +10,7 @@ BorrowedTime is an ongoing digital-art project. Contributions should preserve th
    - `docs/ARCHITECTURE.md`
    - `docs/CLOCKS.md`
    - `docs/PERFORMANCE.md`
+   - `AGENTS.md` — canonical AI-agent entry point for AI-assisted changes
 4. Inspect an existing current implementation before introducing a new pattern.
 5. Prefer the smallest complete change.
 
