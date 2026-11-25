@@ -2,10 +2,9 @@ import React, { useMemo } from 'react';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useClock } from '@/utils/hooks';
 
-import teeVeeLoungeFont from '@/assets/fonts/26fonts/26-02-10-tv.ttf?url';
+import teeVeeLoungeFont from '@/assets/fonts/26fonts/26-02-10-tv-digits-amp.woff2?url';
 import analogBgImage from '@/assets/images/26_images/26-02/26-02-10/tv.jpg';
 export const assets = [teeVeeLoungeFont, analogBgImage];
-
 
 export const background = analogBgImage;
 
@@ -15,7 +14,7 @@ const CLOCK_CONFIG = {
   },
 } as const;
 
-const DigitalClock =  () => {
+const DigitalClock = () => {
   const now = useClock();
 
   const fontConfigs = useMemo(
