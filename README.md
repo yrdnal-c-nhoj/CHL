@@ -1,14 +1,16 @@
-<img width="200" height="200" alt="26-03-25-thumb" src="https://github.com/user-attachments/assets/a3a73056-a7e2-49c6-b651-18698859fb80" />
-<img width="200" height="200" alt="26-03-25-thumb" src="https://github.com/user-attachments/assets/efd65899-ceaf-4475-8a77-0c9a11280867" />
-<img width="200" height="200" alt="26-03-13-thumb" src="https://github.com/user-attachments/assets/85651505-dfdf-4ac6-a249-6629f36bc83c" />
-<img width="200" height="200" alt="26-01-20-thumb" src="https://github.com/user-attachments/assets/17d8f84b-fd33-4eb8-9c45-452533ede28b" />
+
+
 
 
 # BorrowedTime
 
 A new clock every day.
 
-<img width="150" height="150" alt="26-11-20" src="https://github.com/user-attachments/assets/98f33ab3-0ff2-425d-93de-7ea706b4a1f1" /><img width="150" height="150" alt="25-11-19-thumb" src="https://github.com/user-attachments/assets/9695177c-9e2a-4b57-821f-831d418b4023" />
+<img width="150" height="150" alt="26-11-20" src="https://github.com/user-attachments/assets/98f33ab3-0ff2-425d-93de-7ea706b4a1f1" />
+<img width="150" height="150" alt="25-11-19-thumb" src="https://github.com/user-attachments/assets/9695177c-9e2a-4b57-821f-831d418b4023" />
+<img width="150" height="150" alt="26-03-25-thumb" src="https://github.com/user-attachments/assets/efd65899-ceaf-4475-8a77-0c9a11280867" />
+<img width="150" height="150"  alt="26-03-13-thumb" src="https://github.com/user-attachments/assets/85651505-dfdf-4ac6-a249-6629f36bc83c" />
+<img width="150" height="150"  alt="26-01-20-thumb" src="https://github.com/user-attachments/assets/17d8f84b-fd33-4eb8-9c45-452533ede28b" />
 
 
 [See it live](https://www.cubistheart.com), an ongoing digital art project by [Cubist Heart Laboratories](https://cubistheart.com).
