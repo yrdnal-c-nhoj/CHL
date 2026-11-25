@@ -6,11 +6,13 @@
 
 A new clock every day.
 
-<img width="150" height="150" alt="26-11-20" src="https://github.com/user-attachments/assets/98f33ab3-0ff2-425d-93de-7ea706b4a1f1" />
+
+
+<img width="150" height="150"  alt="26-03-13-thumb" src="https://github.com/user-attachments/assets/85651505-dfdf-4ac6-a249-6629f36bc83c" />
 <img width="150" height="150" alt="25-11-19-thumb" src="https://github.com/user-attachments/assets/9695177c-9e2a-4b57-821f-831d418b4023" />
 <img width="150" height="150" alt="26-03-25-thumb" src="https://github.com/user-attachments/assets/efd65899-ceaf-4475-8a77-0c9a11280867" />
-<img width="150" height="150"  alt="26-01-20-thumb" src="https://github.com/user-attachments/assets/17d8f84b-fd33-4eb8-9c45-452533ede28b" />
-<img width="150" height="150"  alt="26-03-13-thumb" src="https://github.com/user-attachments/assets/85651505-dfdf-4ac6-a249-6629f36bc83c" />
+
+
 
 
 
@@ -21,6 +23,9 @@ A new clock every day.
 ## About the name
 
 🧊🫀🔭 Cubist Heart Laboratories is a global collective of artists and scientists.
+
+<img width="150" height="150"alt="26-04-15-thumb" src="https://github.com/user-attachments/assets/e73f6be8-a6bf-460c-b430-359ccbafe9b4" />
+<img width="150" height="150" alt="26-11-20" src="https://github.com/user-attachments/assets/98f33ab3-0ff2-425d-93de-7ea706b4a1f1" /><img width="150" height="150"  alt="26-01-20-thumb" src="https://github.com/user-attachments/assets/17d8f84b-fd33-4eb8-9c45-452533ede28b" />
 
 The GitHub repository is `CHL` (Cubist Heart Laboratories).
 
