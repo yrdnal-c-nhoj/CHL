@@ -34,8 +34,6 @@
   align-items: center;
   justify-content: center;
   width: 0.65ch;
-
-  /* Fixed-width box for each digit to prevent layout jumping */
   flex-shrink: 0;
 }
 
@@ -52,15 +50,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transform-origin: center;
+
+  transform-origin: center center;
   transform-style: preserve-3d;
+
   pointer-events: none;
-  backface-visibility: visible;
-  will-change: transform, opacity;
+  backface-visibility: hidden;
+
   text-shadow: -2px 2px 0 #eddede;
 
-  animation: fallingAway var(--fall-duration) linear forwards;
+  animation-name: fallingAway;
+  animation-duration: var(--fall-duration);
+  animation-timing-function: linear;
   animation-delay: var(--animation-delay, 0ms);
+  animation-fill-mode: both;
 }
 
 @keyframes fallingAway {
