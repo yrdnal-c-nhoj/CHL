@@ -1,17 +1,30 @@
-import React, { useEffect, useState } from 'react';
 import { useSmoothClock } from '@/utils/hooks';
-import { useMultiAssetLoader , useSuspenseFontLoader } from '@/utils/fontLoader';
+import SRTime from '@/components/SRTime';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
+
 import bgImage2 from '@/assets/images/25_images/25-10/25-10-13/ro.jpeg';
-import bgImage from '@/assets/images/25_images/25-10/25-10-13/roundhay.webp'; // second background
-import roundhayFont from '@/assets/fonts/25fonts/25-10-13-rou.ttf';
-import ifont25100013 from '@/assets/fonts/25fonts/25-10-13-line.otf';
+import bgImage from '@/assets/images/25_images/25-10/25-10-13/roundhay.webp';
+import roundhayFont from '@/assets/fonts/25fonts/25-10-13-rou.ttf?url';
+import ifont25100013 from '@/assets/fonts/25fonts/25-10-13-line.otf?url';
+
 import styles from './Clock.module.css';
 
-export const assets = [];
+export const assets = [bgImage, bgImage2, roundhayFont, ifont25100013];
 
-export default function Clock() {
-  const [ready, setReady] = useState<boolean>(false);
+const roundhayFontConfig: FontConfig = {
+  fontFamily: 'RoundhayFont',
+  fontUrl: roundhayFont,
+};
+
+const lineFontConfig: FontConfig = {
+  fontFamily: 'Ifont25100013',
+  fontUrl: ifont25100013,
+};
+
+const Clock_25_10_13 = () => {
   const now = useSmoothClock(25);
+  useSuspenseFontLoader([roundhayFontConfig, lineFontConfig]);
 
   const fontSizeVH = 4; // base size for digits and labels
   const dividerScale = 1.4; // divider scale relative to fontSizeVH
@@ -87,63 +100,6 @@ export default function Clock() {
     gap: '0.3vw',
   };
 
-  useEffect(() => {
-    let mounted = true;
-    let imageLoaded = false;
-    let image2Loaded = false;
-    let font1Loaded = false;
-    let font2Loaded = false;
-
-    const checkReady =  () => {
-      if (imageLoaded && image2Loaded && font1Loaded && font2Loaded && mounted)
-        setReady(true);
-    };
-
-    const img1 = new Image();
-    img1.src = bgImage;
-    img1.onload = img1.onerror = () => {
-      imageLoaded = true;
-      checkReady();
-    };
-
-    const img2 = new Image();
-    img2.src = bgImage2;
-    img2.onload = img2.onerror = () => {
-      image2Loaded = true;
-      checkReady();
-    };
-
-    const f1 = new FontFace('RoundhayFont', `url(${roundhayFont})`);
-    f1.load()
-      .then((font) => {
-        document.fonts.add(font);
-        font1Loaded = true;
-        checkReady();
-      })
-      .catch(() => {
-        font1Loaded = true;
-        checkReady();
-      });
-
-    const f2 = new FontFace('Ifont25100013', `url(${ifont25100013})`);
-    f2.load()
-      .then((font) => {
-        document.fonts.add(font);
-        font2Loaded = true;
-        checkReady();
-      })
-      .catch(() => {
-        font2Loaded = true;
-        checkReady();
-      });
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  if (!ready) return null;
-
   const hours24 = now.getHours();
   const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12; // 12-hour format
   const minutes = now.getMinutes();
@@ -153,9 +109,11 @@ export default function Clock() {
     .padStart(2, '0');
   const isAM = hours24 < 12;
 
-  const renderDigits = (value) => (
+  const renderDigits = (value: number | string) => (
     <div style={digitsRowStyle}>
-      <time dateTime={time.toISOString()} className={styles.srOnly}>{time.toLocaleTimeString()}</time>
+      <time dateTime={now.toISOString()} className={styles.srOnly}>
+        {now.toLocaleTimeString()}
+      </time>
 
       {String(value)
         .split('')
@@ -169,6 +127,7 @@ export default function Clock() {
 
   return (
     <div style={containerStyle}>
+      <SRTime time={now} />
       <div
         style={{
           display: 'flex',
@@ -204,4 +163,7 @@ export default function Clock() {
       </div>
     </div>
   );
-}
+};
+
+export default Clock_25_10_13;
+Clock_25_10_13.displayName = 'Clock_25_10_13';
