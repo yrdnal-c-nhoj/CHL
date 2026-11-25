@@ -10,10 +10,6 @@ A new clock every day.
 
 🧊🫀🔭 Cubist Heart Laboratories is a global collective of artists and scientists.
 
-|                                                                     |                                                                     |                                                                     |                                                                     |                                                                     |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| ![26-02-09](https://www.cubistheart.com/assets/26-02-09-thumb.webp) | ![25-09-17](https://www.cubistheart.com/assets/25-09-17-thumb.webp) | ![25-07-05](https://www.cubistheart.com/assets/25-07-05-thumb.webp) | ![25-04-19](https://www.cubistheart.com/assets/25-04-19-thumb.webp) | ![26-01-29](https://www.cubistheart.com/assets/26-01-29-thumb.webp) |
-
 The GitHub repository is `CHL` (Cubist Heart Laboratories).
 
 The app itself is called BorrowedTime, which is the package name.
