@@ -1,6 +1,6 @@
 import React from 'react';
 
-import crossFont from '@/assets/fonts/25fonts/25-05-23-Cross.otf';
+import crossFont from '@/assets/fonts/25fonts/25-05-23-Cross-digits.woff2?url';
 import backgroundImage from '@/assets/images/25_images/25-05/25-05-23/blank.jpg';
 import type { FontConfig } from '@/types/clock';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
@@ -47,7 +47,13 @@ const ClockComponent = () => {
 
   return (
     <main className={styles.container}>
-      <img decoding="async" loading="lazy" src={backgroundImage} alt="" className={styles.bg} />
+      <img
+        decoding="async"
+        loading="lazy"
+        src={backgroundImage}
+        alt=""
+        className={styles.bg}
+      />
       <time dateTime={time.toISOString()} className={styles.srOnly}>
         {time.toLocaleTimeString()}
       </time>
