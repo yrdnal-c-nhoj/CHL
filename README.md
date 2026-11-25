@@ -6,9 +6,17 @@ A new clock every day.
 
 <!-- VERIFY: the repo About box links to https://chl-flax.vercel.app. Decide which URL is canonical and whether to mention both. -->
 
+|                                                                                                             |                                                                                                             |                                                                                                             |                                                                                                             |                                                                                                             |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| [![26-10-29](https://www.cubistheart.com/assets/26-10-29-thumb.webp)](https://www.cubistheart.com/26-10-29) | [![26-01-18](https://www.cubistheart.com/assets/26-01-18-thumb.webp)](https://www.cubistheart.com/26-01-18) | [![26-09-26](https://www.cubistheart.com/assets/26-09-26-thumb.webp)](https://www.cubistheart.com/26-09-26) | [![25-06-30](https://www.cubistheart.com/assets/25-06-30-thumb.webp)](https://www.cubistheart.com/25-06-30) | [![26-03-29](https://www.cubistheart.com/assets/26-03-29-thumb.webp)](https://www.cubistheart.com/26-03-29) |
+
 ## About the name
 
-The GitHub repository is `CHL` (Cubist Heart Laboratories). The app itself is called BorrowedTime, which is the package name.
+🧊🫀🔭 Cubist Heart Laboratories is a global collective of artists and scientists.
+
+The GitHub repository is `CHL` (Cubist Heart Laboratories).
+
+The app itself is called BorrowedTime, which is the package name.
 
 ## Quick start
 
@@ -177,3 +185,15 @@ src/pages/           Clocks, organised as 20YY/YY-MM/YY-MM-DD/
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+## Gallery
+
+A sample of clocks from the archive (15 random thumbnails, 3×5):
+
+|                                                                                                             |                                                                                                             |                                                                                                             |                                                                                                             |                                                                                                             |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| [![25-12-11](https://www.cubistheart.com/assets/25-12-11-thumb.webp)](https://www.cubistheart.com/25-12-11) | [![25-10-21](https://www.cubistheart.com/assets/25-10-21-thumb.webp)](https://www.cubistheart.com/25-10-21) | [![25-06-03](https://www.cubistheart.com/assets/25-06-03-thumb.webp)](https://www.cubistheart.com/25-06-03) | [![25-07-29](https://www.cubistheart.com/assets/25-07-29-thumb.webp)](https://www.cubistheart.com/25-07-29) | [![25-05-06](https://www.cubistheart.com/assets/25-05-06-thumb.webp)](https://www.cubistheart.com/25-05-06) |
+| [![25-11-28](https://www.cubistheart.com/assets/25-11-28-thumb.webp)](https://www.cubistheart.com/25-11-28) | [![25-06-12](https://www.cubistheart.com/assets/25-06-12-thumb.webp)](https://www.cubistheart.com/25-06-12) | [![25-04-18](https://www.cubistheart.com/assets/25-04-18-thumb.webp)](https://www.cubistheart.com/25-04-18) | [![25-10-18](https://www.cubistheart.com/assets/25-10-18-thumb.webp)](https://www.cubistheart.com/25-10-18) | [![25-08-13](https://www.cubistheart.com/assets/25-08-13-thumb.webp)](https://www.cubistheart.com/25-08-13) |
+| [![26-03-05](https://www.cubistheart.com/assets/26-03-05-thumb.webp)](https://www.cubistheart.com/26-03-05) | [![26-10-23](https://www.cubistheart.com/assets/26-10-23-thumb.webp)](https://www.cubistheart.com/26-10-23) | [![25-04-27](https://www.cubistheart.com/assets/25-04-27-thumb.webp)](https://www.cubistheart.com/25-04-27) | [![25-06-01](https://www.cubistheart.com/assets/25-06-01-thumb.webp)](https://www.cubistheart.com/25-06-01) | [![26-04-21](https://www.cubistheart.com/assets/26-04-21-thumb.webp)](https://www.cubistheart.com/26-04-21) |
+
+_Thumbnails auto-generated via `npm run screencaps` (Playwright). Click any to view the live clock._
