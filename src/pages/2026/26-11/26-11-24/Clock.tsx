@@ -44,6 +44,12 @@ function createRandom(seed: number) {
   };
 }
 
+// Generate a random seed for initial animation variety (called once at load)
+function generateInitialSeed(): number {
+  // Use a combination of performance timing and random for initial variety
+  return performance.now() + Math.random() * 1000000;
+}
+
 function randomRotation(random: () => number): number {
   const dir = random() > 0.5 ? 1 : -1;
   return dir * (360 + random() * 1080);
@@ -114,10 +120,12 @@ const FallingDigit = ({
     const oldValue = previous.current;
     previous.current = value;
     const nextIdValue = ++nextId.current;
+    // Generate a unique seed using current time + counter for varied animation
+    const randomSeed = performance.now() + nextIdValue * 1000;
     const digit: FallingDigitData = {
       value: oldValue,
       id: nextIdValue,
-      style: makeFallStyle(duration, 0, nextIdValue),
+      style: makeFallStyle(duration, 0, randomSeed),
     };
     setExiting((current) => [...current, digit]);
   }, [value, duration]);
@@ -143,6 +151,18 @@ const FallingDigit = ({
 const Clock_26_11_24 = () => {
   const time = useSmoothClock(16);
   useSuspenseFontLoader([fontConfig]);
+
+  // Generate initial random seeds once for varied animation on each load
+  const initialSeeds = useMemo(
+    () =>
+      Array.from({ length: COLUMNS }, (_, col) =>
+        Array.from(
+          { length: 50 },
+          (_, step) => generateInitialSeed() + col * 1000 + step,
+        ),
+      ),
+    [],
+  );
 
   // Pre-compute durations once using stable random seeds
   const columnDurations = useMemo(() => {
@@ -234,17 +254,21 @@ const Clock_26_11_24 = () => {
         const elapsedMs = step * intervalMs;
         if (elapsedMs >= duration * MAX_FALL_RATIO) continue;
 
+        const seed =
+          initialSeeds[columnIndex]?.[step] ??
+          generateInitialSeed() + columnIndex * 1000 + step;
         digits.push({
           value: String(
             historicalDigits[Math.min(step, historicalDigits.length - 1)],
           ),
           id: -(step + 1),
-          style: makeFallStyle(duration, elapsedMs, step),
+          // Use pre-generated random seed for varied fall animation
+          style: makeFallStyle(duration, elapsedMs, seed),
         });
       }
       return digits;
     });
-  }, [hours, minutes, seconds, columnDurations]);
+  }, [hours, minutes, seconds, columnDurations, initialSeeds]);
 
   const displayTime = time
     .toLocaleTimeString('en-GB', {
