@@ -28,8 +28,10 @@ interface FallingDigit {
   startY: number;
 }
 
+// Animation constants — adjust these to control the falling effect
 const MAX_DIGITS = 240;
-const FALL_DISTANCE = 1.5;
+const FALL_DISTANCE = 1.5; // how far digits fall (multiplier of container height)
+const FALL_SPEED_MULTIPLIER = 0.2; // < 1 = faster, > 1 = slower (e.g., 0.5 = 2x speed, 2 = half speed)
 const FRAME_RATE = 30;
 
 const getRotation = (): number => {
@@ -45,7 +47,9 @@ const createFallingDigit = (
   const distanceFromRight = 5 - column;
 
   const duration =
-    (120000 + Math.random() * 30000) * Math.pow(1.5, distanceFromRight);
+    (120000 + Math.random() * 30000) *
+    Math.pow(1.5, distanceFromRight) *
+    FALL_SPEED_MULTIPLIER;
 
   return {
     value,
