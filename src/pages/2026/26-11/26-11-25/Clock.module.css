@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
   background: #000;
-  color: #fff;
+  color: #95ee17;
 }
 
 .backgroundVideo {
@@ -22,10 +22,25 @@
 .content {
   position: relative;
   z-index: 1;
-  font-family: monospace, sans-serif;
-  font-size: clamp(2rem, 15vw, 12rem);
+  font-family: 'ClockFont_26_11_25', monospace, sans-serif;
+  font-size: 20vw;
   line-height: 1;
   text-align: center;
+  opacity: 0.7;
+  text-shadow:
+    -1px -1px 0 #000,
+    0 -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 0 0 #000,
+    1px 0 0 #000,
+    -1px 1px 0 #000,
+    0 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.colon {
+  display: inline-block;
+  transform: translateY(-0.08em);
 }
 
 @media (prefers-reduced-motion: reduce) {
