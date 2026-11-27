@@ -5,7 +5,7 @@ import SRTime from '@/components/SRTime';
 
 import styles from './Clock.module.css';
 import backgroundVideo from '@/assets/images/26_images/26-11/26-11-25/hydra.webm';
-import font from '@/assets/fonts/26fonts/26-11-25.ttf?url';
+import font from '@/assets/fonts/26fonts/26-11-25-subset.ttf?url';
 
 const timeFormatter = new Intl.DateTimeFormat(undefined, {
   hour: 'numeric',
