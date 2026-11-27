@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useSmoothClock } from '@/utils/hooks';
+import { useEffect, useRef } from 'react';
+
+import { useClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
 import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import type { FontConfig } from '@/types/clock';
-import type { CSSProperties } from 'react';
 
 import clockFont from '@/assets/fonts/26fonts/26-11-24.ttf?url';
 
@@ -16,259 +16,60 @@ const fontConfig: FontConfig = {
   fontUrl: clockFont,
 };
 
-// Constants
-const COLUMNS = 6;
-const BASE_DURATION_MULTIPLIER = 2.25;
-const MIN_DURATION = 10_000;
-const DURATION_RANGE = 5_000;
-const FALL_DISTANCE = '150vh';
-const MAX_FALL_RATIO = 0.95;
-const HISTORY_COUNT = 20;
-const MAX_HISTORY_BUFFER = 5;
-
-const COLUMN_INTERVALS_MS: readonly [
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-] = [36_000_000, 3_600_000, 600_000, 60_000, 10_000, 1_000] as const;
-
-// Seeded pseudo-random generator (LCG)
-function createRandom(seed: number) {
-  let state = seed;
-  return () => {
-    state = (state * 1664525 + 1013904223) % 4294967296;
-    return state / 4294967296;
-  };
-}
-
-// Generate a random seed for initial animation variety (called once at load)
-function generateInitialSeed(): number {
-  // Use a combination of performance timing and random for initial variety
-  return performance.now() + Math.random() * 1000000;
-}
-
-function randomRotation(random: () => number): number {
-  const dir = random() > 0.5 ? 1 : -1;
-  return dir * (360 + random() * 1080);
-}
-
-interface FallStyle extends CSSProperties {
-  '--rotate-x': string;
-  '--rotate-y': string;
-  '--rotate-z': string;
-  '--fall-duration': string;
-  '--fall-distance': string;
-  '--animation-delay'?: string;
-}
-
-interface FallingDigitData {
+interface FallingDigit {
   value: string;
-  id: number;
-  style: FallStyle;
-}
-
-interface FallingDigitProps {
-  value: string;
-  initialDigits: FallingDigitData[];
+  column: number;
+  startTime: number;
   duration: number;
+  rotationX: number;
+  rotationY: number;
+  rotationZ: number;
+  rotationDirection: number;
+  startX: number;
+  startY: number;
 }
 
-const makeFallStyle = (
-  duration: number,
-  delay = 0,
-  seed: number,
-): FallStyle => {
-  const random = createRandom(seed);
-  return {
-    '--rotate-x': `${randomRotation(random)}deg`,
-    '--rotate-y': `${randomRotation(random)}deg`,
-    '--rotate-z': `${randomRotation(random)}deg`,
-    '--fall-duration': `${duration}ms`,
-    '--fall-distance': FALL_DISTANCE,
-    '--animation-delay': `-${delay}ms`,
-  };
+const MAX_DIGITS = 240;
+const FALL_DISTANCE = 1.5;
+
+const getRotation = (): number => {
+  const direction = Math.random() > 0.5 ? 1 : -1;
+  return direction * (360 + Math.random() * 1080);
 };
 
-const FallingDigit = ({
-  value,
-  initialDigits,
-  duration,
-}: FallingDigitProps) => {
-  const previous = useRef(value);
-  const nextId = useRef(0);
-  const [exiting, setExiting] = useState<FallingDigitData[]>(initialDigits);
+const createFallingDigit = (
+  value: string,
+  column: number,
+  startTime: number,
+): FallingDigit => {
+  const distanceFromRight = 5 - column;
 
-  useEffect(() => {
-    previous.current = value;
-  }, [value]);
+  const duration =
+    (120000 + Math.random() * 30000) * Math.pow(1.5, distanceFromRight);
 
-  const handleAnimationEnd = (
-    event: React.AnimationEvent<HTMLSpanElement>,
-    digitId: number,
-  ) => {
-    if (event.target === event.currentTarget) {
-      setExiting((current) => current.filter((d) => d.id !== digitId));
-    }
+  return {
+    value,
+    column,
+    startTime,
+    duration,
+    rotationX: getRotation(),
+    rotationY: getRotation(),
+    rotationZ: getRotation(),
+    rotationDirection: Math.random() > 0.5 ? 1 : -1,
+    startX: 0,
+    startY: 0,
   };
-
-  useEffect(() => {
-    if (previous.current === value) return;
-
-    const oldValue = previous.current;
-    previous.current = value;
-    const nextIdValue = ++nextId.current;
-    // Generate a unique seed using current time + counter for varied animation
-    const randomSeed = performance.now() + nextIdValue * 1000;
-    const digit: FallingDigitData = {
-      value: oldValue,
-      id: nextIdValue,
-      style: makeFallStyle(duration, 0, randomSeed),
-    };
-    setExiting((current) => [...current, digit]);
-  }, [value, duration]);
-
-  return (
-    <span className={styles.digit}>
-      <span className={styles.current}>{value}</span>
-      {exiting.map((digit) => (
-        <span
-          key={digit.id}
-          className={styles.falling}
-          style={digit.style}
-          onAnimationEnd={(e) => handleAnimationEnd(e, digit.id)}
-          aria-hidden="true"
-        >
-          {digit.value}
-        </span>
-      ))}
-    </span>
-  );
 };
 
 const Clock_26_11_24 = () => {
-  const time = useSmoothClock(16);
+  const time = useClock();
+
   useSuspenseFontLoader([fontConfig]);
 
-  // Generate initial random seeds once for varied animation on each load
-  const initialSeeds = useMemo(
-    () =>
-      Array.from({ length: COLUMNS }, (_, col) =>
-        Array.from(
-          { length: 50 },
-          (_, step) => generateInitialSeed() + col * 1000 + step,
-        ),
-      ),
-    [],
-  );
-
-  // Pre-compute durations once using stable random seeds
-  const columnDurations = useMemo(() => {
-    const getColumnDuration = (columnIndex: number) => {
-      const random = createRandom(columnIndex + 1);
-      const baseDuration =
-        (MIN_DURATION + random() * DURATION_RANGE) * BASE_DURATION_MULTIPLIER;
-      const columnsFromRight = COLUMNS - 1 - columnIndex;
-      return baseDuration * 2 ** columnsFromRight;
-    };
-
-    return [
-      getColumnDuration(0),
-      getColumnDuration(1),
-      getColumnDuration(2),
-      getColumnDuration(3),
-      getColumnDuration(4),
-      getColumnDuration(5),
-    ] as const;
-  }, []);
-
-  // Extract time values for useMemo dependencies
-  const hours = time.getHours();
-  const minutes = time.getMinutes();
-  const seconds = time.getSeconds();
-
-  // Memoize initial digits - only runs once
-  const initialDigitsByColumn = useMemo(() => {
-    const h = hours;
-    const m = minutes;
-    const s = seconds;
-
-    return Array.from({ length: COLUMNS }, (_, columnIndex) => {
-      const intervalMs = COLUMN_INTERVALS_MS[columnIndex] as number;
-      const duration = columnDurations[columnIndex] as number;
-
-      // Generate historical digits by stepping back in time
-      let hh = h;
-      let mm = m;
-      let ss = s;
-
-      const historicalDigits: number[] = [];
-      for (let step = 0; step < HISTORY_COUNT; step++) {
-        let digit = 0;
-        switch (columnIndex) {
-          case 0:
-            digit = Math.floor(hh / 10);
-            break;
-          case 1:
-            digit = hh % 10;
-            break;
-          case 2:
-            digit = Math.floor(mm / 10);
-            break;
-          case 3:
-            digit = mm % 10;
-            break;
-          case 4:
-            digit = Math.floor(ss / 10);
-            break;
-          case 5:
-            digit = ss % 10;
-            break;
-        }
-        historicalDigits.push(digit);
-
-        // Step back one second
-        ss--;
-        if (ss < 0) {
-          ss = 59;
-          mm--;
-        }
-        if (mm < 0) {
-          mm = 59;
-          hh--;
-        }
-        if (hh < 0) {
-          hh = 23;
-        }
-      }
-
-      const maxSteps = Math.min(
-        HISTORY_COUNT,
-        Math.ceil(duration / intervalMs) + MAX_HISTORY_BUFFER,
-      );
-      const digits: FallingDigitData[] = [];
-
-      for (let step = 0; step < maxSteps; step++) {
-        const elapsedMs = step * intervalMs;
-        if (elapsedMs >= duration * MAX_FALL_RATIO) continue;
-
-        const seed =
-          initialSeeds[columnIndex]?.[step] ??
-          generateInitialSeed() + columnIndex * 1000 + step;
-        digits.push({
-          value: String(
-            historicalDigits[Math.min(step, historicalDigits.length - 1)],
-          ),
-          id: -(step + 1),
-          // Use pre-generated random seed for varied fall animation
-          style: makeFallStyle(duration, elapsedMs, seed),
-        });
-      }
-      return digits;
-    });
-  }, [hours, minutes, seconds, columnDurations, initialSeeds]);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const digitsRef = useRef<FallingDigit[]>([]);
+  const previousTime = useRef('');
+  const lastAnimationTime = useRef<number>(0);
 
   const displayTime = time
     .toLocaleTimeString('en-GB', {
@@ -279,22 +80,190 @@ const Clock_26_11_24 = () => {
     })
     .replace(/:/g, '');
 
+  // Add a falling digit whenever a displayed digit changes.
+  useEffect(() => {
+    if (!previousTime.current) {
+      previousTime.current = displayTime;
+      return;
+    }
+
+    const previous = previousTime.current;
+
+    if (previous === displayTime) return;
+
+    previousTime.current = displayTime;
+
+    const now = lastAnimationTime.current || 0;
+
+    for (let column = 0; column < 6; column++) {
+      const prevChar = previous[column];
+      const nextChar = displayTime[column];
+
+      if (!prevChar || prevChar === nextChar) continue;
+
+      digitsRef.current.push(createFallingDigit(prevChar, column, now));
+    }
+
+    // Keep memory and rendering costs bounded.
+    if (digitsRef.current.length > MAX_DIGITS) {
+      digitsRef.current.splice(0, digitsRef.current.length - MAX_DIGITS);
+    }
+  }, [displayTime]);
+
+  // Draw all falling digits in one canvas animation loop.
+  useEffect(() => {
+    const canvas = canvasRef.current;
+
+    if (!canvas) return;
+
+    const context = canvas.getContext('2d', {
+      alpha: true,
+      desynchronized: true,
+    });
+
+    if (!context) return;
+
+    let animationFrame = 0;
+    let lastFrame = 0;
+
+    const frameInterval = 1000 / 30;
+
+    let width = 0;
+    let height = 0;
+    let pixelRatio = 1;
+
+    let fontSize = 0;
+    let columnWidth = 0;
+    let centerX = 0;
+    let startY = 0;
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+
+      width = rect.width;
+      height = rect.height;
+
+      pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+
+      canvas.width = Math.round(width * pixelRatio);
+      canvas.height = Math.round(height * pixelRatio);
+
+      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+      fontSize = Math.min(height * 0.3, width * 0.18);
+      columnWidth = fontSize * 0.65;
+
+      centerX = width / 2;
+      startY = height * 0.2;
+    };
+
+    resize();
+
+    const observer = new ResizeObserver(resize);
+    observer.observe(canvas);
+
+    const draw = (timestamp: number) => {
+      animationFrame = requestAnimationFrame(draw);
+
+      lastAnimationTime.current = timestamp;
+
+      if (timestamp - lastFrame < frameInterval) return;
+
+      lastFrame = timestamp;
+
+      context.clearRect(0, 0, width, height);
+
+      context.font = `${fontSize}px ClockFont_26_11_24, monospace`;
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+
+      const digits = digitsRef.current;
+      const now = timestamp;
+
+      // Filter active digits and build new array
+      const activeDigits: FallingDigit[] = [];
+
+      for (let index = 0; index < digits.length; index++) {
+        const digit = digits[index];
+
+        if (!digit) continue;
+
+        const progress = (now - digit.startTime) / digit.duration;
+
+        if (progress >= 1) continue;
+
+        activeDigits.push(digit);
+
+        const columnX = centerX + (digit.column - 2.5) * columnWidth;
+
+        const fallY = progress * height * FALL_DISTANCE;
+
+        const rotationX = digit.rotationX * progress;
+        const rotationY = digit.rotationY * progress;
+        const rotationZ = digit.rotationZ * progress;
+
+        const fade = Math.max(0, 1 - progress * progress);
+
+        // Approximate 3D rotation using canvas transforms.
+        const scaleX = Math.cos((rotationY * Math.PI) / 180);
+        const scaleY = Math.cos((rotationX * Math.PI) / 180);
+
+        context.save();
+
+        context.translate(
+          columnX + digit.startX,
+          startY + fallY + digit.startY,
+        );
+
+        context.rotate((rotationZ * Math.PI) / 180);
+
+        context.transform(
+          scaleX,
+          Math.sin((rotationZ * Math.PI) / 180) * 0.2,
+          Math.sin((rotationZ * Math.PI) / 180) * 0.2,
+          scaleY,
+          0,
+          0,
+        );
+
+        context.globalAlpha = fade;
+
+        context.shadowColor = '#eddede';
+        context.shadowOffsetX = -2;
+        context.shadowOffsetY = 2;
+        context.shadowBlur = 0;
+
+        context.fillStyle = '#f904a0';
+
+        context.fillText(digit.value, 0, 0);
+
+        context.restore();
+      }
+
+      digitsRef.current = activeDigits;
+    };
+
+    animationFrame = requestAnimationFrame(draw);
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <main className={styles.container}>
       <SRTime time={time} />
+
       <div className={styles.content} aria-hidden="true">
-        {displayTime.split('').map((char, index) => {
-          const duration = columnDurations[index] as number;
-          return (
-            <FallingDigit
-              key={index}
-              value={char}
-              initialDigits={initialDigitsByColumn[index] ?? []}
-              duration={duration}
-            />
-          );
-        })}
+        {displayTime.split('').map((value, index) => (
+          <span className={styles.digit} key={index}>
+            {value}
+          </span>
+        ))}
       </div>
+
+      <canvas ref={canvasRef} className={styles.canvas} aria-hidden="true" />
     </main>
   );
 };
