@@ -13,7 +13,7 @@
 
 .content {
   position: absolute;
-  top: 20%;
+  top: 30%;
   left: 0;
   width: 100%;
   transform: translateY(-50%);
@@ -22,7 +22,7 @@
   justify-content: center;
   font-family: 'ClockFont_26_11_24', monospace, sans-serif;
   font-weight: 400;
-  font-size: min(30dvh, 18vw);
+  font-size: min(40dvh, 24vw);
   line-height: 1;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
@@ -37,10 +37,14 @@
   width: 0.65ch;
   flex-shrink: 0;
   text-shadow:
+    -1px -1px 0 #eddede,
+    0 -1px 0 #eddede,
+    1px -1px 0 #eddede,
     -1px 0 0 #eddede,
     1px 0 0 #eddede,
-    0 -1px 0 #eddede,
-    0 1px 0 #eddede;
+    -1px 1px 0 #eddede,
+    0 1px 0 #eddede,
+    1px 1px 0 #eddede;
 }
 
 .canvas {

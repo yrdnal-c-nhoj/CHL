@@ -151,7 +151,7 @@ const Clock_26_11_24 = () => {
 
       context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 
-      fontSize = Math.min(height * 0.3, width * 0.18);
+      fontSize = Math.min(height * 0.4, width * 0.24);
 
       context.font = `${fontSize}px ClockFont_26_11_24, monospace`;
 
@@ -160,7 +160,7 @@ const Clock_26_11_24 = () => {
       columnWidth = characterWidth * 0.65;
 
       centerX = width / 2;
-      startY = height * 0.2;
+      startY = height * 0.3;
     };
 
     resize();
