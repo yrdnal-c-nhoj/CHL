@@ -35,13 +35,18 @@ const COLUMN_INTERVALS_MS: readonly [
   number,
 ] = [36_000_000, 3_600_000, 600_000, 60_000, 10_000, 1_000] as const;
 
-// Helper to safely get tuple element by index (0-5)
-function getTupleElement<T>(arr: readonly T[], index: number): T {
-  const element = arr[index];
-  if (element === undefined) {
-    throw new RangeError(`No tuple element at index ${index}`);
-  }
-  return element;
+// Seeded pseudo-random generator (LCG)
+function createRandom(seed: number) {
+  let state = seed;
+  return () => {
+    state = (state * 1664525 + 1013904223) % 4294967296;
+    return state / 4294967296;
+  };
+}
+
+function randomRotation(random: () => number): number {
+  const dir = random() > 0.5 ? 1 : -1;
+  return dir * (360 + random() * 1080);
 }
 
 interface FallStyle extends CSSProperties {
@@ -70,27 +75,11 @@ const makeFallStyle = (
   delay = 0,
   seed: number,
 ): FallStyle => {
-  const nextRandom = (state: number) => {
-    state = (state * 1664525 + 1013904223) % 4294967296;
-    return { value: state / 4294967296, state };
-  };
-
-  const randomRotation = (state: number) => {
-    const { value, state: s1 } = nextRandom(state);
-    const dir = value > 0.5 ? 1 : -1;
-    const { value: v2, state: s2 } = nextRandom(s1);
-    return { value: dir * (360 + v2 * 1080), state: s2 };
-  };
-
-  const state = seed;
-  const { value: rx, state: s1 } = randomRotation(state);
-  const { value: ry, state: s2 } = randomRotation(s1);
-  const { value: rz, state: _s3 } = randomRotation(s2);
-
+  const random = createRandom(seed);
   return {
-    '--rotate-x': `${rx}deg`,
-    '--rotate-y': `${ry}deg`,
-    '--rotate-z': `${rz}deg`,
+    '--rotate-x': `${randomRotation(random)}deg`,
+    '--rotate-y': `${randomRotation(random)}deg`,
+    '--rotate-z': `${randomRotation(random)}deg`,
     '--fall-duration': `${duration}ms`,
     '--fall-distance': FALL_DISTANCE,
     '--animation-delay': `-${delay}ms`,
@@ -107,19 +96,8 @@ const FallingDigit = ({
   const [exiting, setExiting] = useState<FallingDigitData[]>(initialDigits);
 
   useEffect(() => {
-    if (previous.current === value) return;
-
-    const oldValue = previous.current;
     previous.current = value;
-
-    const digit: FallingDigitData = {
-      value: oldValue,
-      id: ++nextId.current,
-      style: makeFallStyle(duration, 0, nextId.current),
-    };
-
-    setExiting((current) => [...current, digit]);
-  }, [value, duration]);
+  }, [value]);
 
   const handleAnimationEnd = (
     event: React.AnimationEvent<HTMLSpanElement>,
@@ -129,6 +107,20 @@ const FallingDigit = ({
       setExiting((current) => current.filter((d) => d.id !== digitId));
     }
   };
+
+  useEffect(() => {
+    if (previous.current === value) return;
+
+    const oldValue = previous.current;
+    previous.current = value;
+    const nextIdValue = ++nextId.current;
+    const digit: FallingDigitData = {
+      value: oldValue,
+      id: nextIdValue,
+      style: makeFallStyle(duration, 0, nextIdValue),
+    };
+    setExiting((current) => [...current, digit]);
+  }, [value, duration]);
 
   return (
     <span className={styles.digit}>
@@ -152,36 +144,12 @@ const Clock_26_11_24 = () => {
   const time = useSmoothClock(16);
   useSuspenseFontLoader([fontConfig]);
 
-  const [initialTime] = useState(() => ({
-    hours: time.getHours(),
-    minutes: time.getMinutes(),
-    seconds: time.getSeconds(),
-  }));
-
-  const { hours, minutes, seconds } = initialTime;
-
-  const displayTime = time
-    .toLocaleTimeString('en-GB', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false,
-    })
-    .replace(/:/g, '');
-
-  // Seeded pseudo-random for deterministic, stable durations
-  function seededRandom(seed: number, max: number): number {
-    let state = seed;
-    state = (state * 1664525 + 1013904223) % 4294967296;
-    return (state / 4294967296) * max;
-  }
-
-  // Pre-compute durations once using useMemo with stable random seeds
+  // Pre-compute durations once using stable random seeds
   const columnDurations = useMemo(() => {
     const getColumnDuration = (columnIndex: number) => {
+      const random = createRandom(columnIndex + 1);
       const baseDuration =
-        (MIN_DURATION + seededRandom(columnIndex + 1, DURATION_RANGE)) *
-        BASE_DURATION_MULTIPLIER;
+        (MIN_DURATION + random() * DURATION_RANGE) * BASE_DURATION_MULTIPLIER;
       const columnsFromRight = COLUMNS - 1 - columnIndex;
       return baseDuration * 2 ** columnsFromRight;
     };
@@ -196,6 +164,11 @@ const Clock_26_11_24 = () => {
     ] as const;
   }, []);
 
+  // Extract time values for useMemo dependencies
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
+  const seconds = time.getSeconds();
+
   // Memoize initial digits - only runs once
   const initialDigitsByColumn = useMemo(() => {
     const h = hours;
@@ -203,8 +176,8 @@ const Clock_26_11_24 = () => {
     const s = seconds;
 
     return Array.from({ length: COLUMNS }, (_, columnIndex) => {
-      const intervalMs = getTupleElement(COLUMN_INTERVALS_MS, columnIndex);
-      const duration = getTupleElement(columnDurations, columnIndex);
+      const intervalMs = COLUMN_INTERVALS_MS[columnIndex] as number;
+      const duration = columnDurations[columnIndex] as number;
 
       // Generate historical digits by stepping back in time
       let hh = h;
@@ -273,12 +246,21 @@ const Clock_26_11_24 = () => {
     });
   }, [hours, minutes, seconds, columnDurations]);
 
+  const displayTime = time
+    .toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    })
+    .replace(/:/g, '');
+
   return (
     <main className={styles.container}>
       <SRTime time={time} />
       <div className={styles.content} aria-hidden="true">
         {displayTime.split('').map((char, index) => {
-          const duration = getTupleElement(columnDurations, index);
+          const duration = columnDurations[index] as number;
           return (
             <FallingDigit
               key={index}

@@ -71,3 +71,10 @@
     opacity: 0;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .falling {
+    animation: none;
+    display: none;
+  }
+}
