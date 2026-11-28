@@ -6,9 +6,17 @@ import type { FontConfig } from '@/types/clock';
 import styles from './Clock.module.css';
 import backgroundVideo from '@/assets/images/26_images/26-11/26-11-27/moth.mp4';
 import tileImage from '@/assets/images/26_images/26-11/26-11-27/key.gif';
+import hourHandImg from '@/assets/images/26_images/26-11/26-11-27/hour.webp';
+import minuteHandImg from '@/assets/images/26_images/26-11/26-11-27/minute.png';
 import clockFont from '@/assets/fonts/26fonts/26-11-27.ttf?url';
 
-export const assets = [backgroundVideo, tileImage, clockFont];
+export const assets = [
+  backgroundVideo,
+  tileImage,
+  hourHandImg,
+  minuteHandImg,
+  clockFont,
+];
 
 const fontConfig: FontConfig = {
   fontFamily: 'ClockFont_26_11_27',
@@ -114,15 +122,19 @@ const Clock_26_11_27 = () => {
           );
         })}
 
-        {/* Hour hand */}
-        <div
+        {/* Hour hand - image based */}
+        <img
+          src={hourHandImg}
+          alt=""
           className={`${styles.hand} ${styles.hourHand}`}
           style={{ '--rotation': `${hourDeg}deg` } as React.CSSProperties}
           aria-hidden="true"
         />
 
-        {/* Minute hand */}
-        <div
+        {/* Minute hand - image based */}
+        <img
+          src={minuteHandImg}
+          alt=""
           className={`${styles.hand} ${styles.minuteHand}`}
           style={{ '--rotation': `${minuteDeg}deg` } as React.CSSProperties}
           aria-hidden="true"

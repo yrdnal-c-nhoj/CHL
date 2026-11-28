@@ -55,7 +55,7 @@
   transform-origin: center;
 }
 
-/* Clock hands — twisted vine/root appearance */
+/* Clock hands — image based */
 
 .hand {
   position: absolute;
@@ -63,153 +63,21 @@
   bottom: 50%;
   transform-origin: center bottom;
   transform: translateX(-50%) rotate(var(--rotation, 0deg));
-  /* Organic, vine-like silhouette using clip-path — narrow tip at bottom (pivot), wide at top */
-  clip-path: polygon(
-    52% 100%,
-    55% 85%,
-    50% 78%,
-    56% 65%,
-    50% 55%,
-    54% 42%,
-    50% 30%,
-    46% 22%,
-    50% 12%,
-    48% 5%,
-    52% 0%,
-    48% 0%,
-    52% 5%,
-    48% 12%,
-    54% 22%,
-    50% 30%,
-    46% 42%,
-    50% 55%,
-    44% 65%,
-    50% 78%,
-    45% 85%,
-    48% 100%
-  );
   /* Match numerals: color #a09ab0 with identical shadow treatment */
-  box-shadow:
-    1px 3px 0px rgb(233, 246, 254),
-    0 2px 4px rgb(109, 11, 246),
-    inset 1px 0 3px rgba(255, 255, 255, 0.1),
-    inset -1px 0 3px rgba(0, 0, 0, 0.3);
-}
-
-/* Bark/vine texture overlay on hands */
-.hand::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(
-      180deg,
-      transparent,
-      transparent 8px,
-      rgba(0, 0, 0, 0.15) 8px,
-      rgba(0, 0, 0, 0.15) 10px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 3px,
-      rgba(0, 0, 0, 0.08) 3px,
-      rgba(0, 0, 0, 0.08) 4px
-    );
-  pointer-events: none;
-  opacity: 0.6;
-}
-
-/* Subtle highlight on one edge of hands */
-.hand::after {
-  content: '';
-  position: absolute;
-  left: 2px;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  pointer-events: none;
+  filter: drop-shadow(1px 3px 0px rgb(233, 246, 254))
+    drop-shadow(0 2px 4px rgb(109, 11, 246));
 }
 
 .hourHand {
-  --length: 45%;
-  --width: 220px;
-  --color: #a09ab0;
-
-  width: var(--width);
-  height: var(--length);
-  margin-left: calc(var(--width) / -2);
-  background: var(--color);
+  width: 220px;
+  height: auto;
   z-index: 3;
-  /* Thicker, more gnarled hour hand — narrow tip at pivot */
-  clip-path: polygon(
-    53% 100%,
-    57% 88%,
-    50% 80%,
-    58% 70%,
-    48% 60%,
-    57% 50%,
-    49% 40%,
-    45% 32%,
-    50% 22%,
-    47% 12%,
-    53% 6%,
-    47% 6%,
-    53% 12%,
-    47% 22%,
-    55% 32%,
-    45% 40%,
-    51% 50%,
-    43% 60%,
-    50% 70%,
-    42% 70%,
-    50% 80%,
-    43% 88%,
-    47% 100%
-  );
 }
 
 .minuteHand {
-  --length: 55%;
-  --width: 160px;
-  --color: #a09ab0;
-
-  width: var(--width);
-  height: var(--length);
-  margin-left: calc(var(--width) / -2);
-  background: var(--color);
+  width: 160px;
+  height: auto;
   z-index: 2;
-  /* Thinner, more delicate vine-like minute hand — narrow tip at pivot */
-  clip-path: polygon(
-    51% 100%,
-    53% 88%,
-    50% 82%,
-    54% 72%,
-    49% 62%,
-    53% 52%,
-    50% 42%,
-    47% 34%,
-    50% 24%,
-    48% 14%,
-    51% 6%,
-    49% 6%,
-    52% 14%,
-    48% 24%,
-    53% 34%,
-    47% 42%,
-    50% 52%,
-    47% 62%,
-    50% 72%,
-    46% 82%,
-    47% 88%,
-    49% 100%
-  );
 }
 
 /* =========================================
