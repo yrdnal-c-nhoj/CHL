@@ -1,4 +1,6 @@
 import { useEffect, useRef } from 'react';
+import type { FontConfig } from '@/types/clock';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
 
@@ -9,6 +11,11 @@ import styles from './Clock.module.css';
 
 export const assets = [backgroundVideo, clockFont];
 
+const fontConfig: FontConfig = {
+  fontFamily: 'ClockFont_26_11_14',
+  fontUrl: clockFont,
+};
+
 const TILE_WIDTH = 200;
 const TILE_HEIGHT = 300;
 // Grid extends 3x viewport in each direction (9x total area)
@@ -16,6 +23,8 @@ const GRID_SCALE = 3;
 
 const Clock_26_11_14 = () => {
   const time = useSmoothClock(16);
+
+  useSuspenseFontLoader([fontConfig]);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
