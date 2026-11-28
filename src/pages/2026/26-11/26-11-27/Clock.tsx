@@ -8,6 +8,7 @@ import backgroundVideo from '@/assets/images/26_images/26-11/26-11-27/moth.mp4';
 import tileImage from '@/assets/images/26_images/26-11/26-11-27/key.gif';
 import hourHandImg from '@/assets/images/26_images/26-11/26-11-27/hour.webp';
 import minuteHandImg from '@/assets/images/26_images/26-11/26-11-27/minute.png';
+import secondHandImg from '@/assets/images/26_images/26-11/26-11-27/second.png';
 import clockFont from '@/assets/fonts/26fonts/26-11-27.ttf?url';
 
 export const assets = [
@@ -15,6 +16,7 @@ export const assets = [
   tileImage,
   hourHandImg,
   minuteHandImg,
+  secondHandImg,
   clockFont,
 ];
 
@@ -53,6 +55,7 @@ const Clock_26_11_27 = () => {
 
   const hourDeg = (hours + minutes / 60) * 30;
   const minuteDeg = (minutes + seconds / 60) * 6;
+  const secondDeg = seconds * 6;
 
   // Generate tile positions
   const tiles = Array.from({ length: GRID_SIZE * GRID_SIZE }, (_, i) => {
@@ -137,6 +140,15 @@ const Clock_26_11_27 = () => {
           alt=""
           className={`${styles.hand} ${styles.minuteHand}`}
           style={{ '--rotation': `${minuteDeg}deg` } as React.CSSProperties}
+          aria-hidden="true"
+        />
+
+        {/* Second hand - image based */}
+        <img
+          src={secondHandImg}
+          alt=""
+          className={`${styles.hand} ${styles.secondHand}`}
+          style={{ '--rotation': `${secondDeg}deg` } as React.CSSProperties}
           aria-hidden="true"
         />
       </div>
