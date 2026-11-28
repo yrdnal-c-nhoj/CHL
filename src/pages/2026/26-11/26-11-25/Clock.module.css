@@ -40,7 +40,7 @@
 .number {
   position: absolute;
   font-family: 'ClockFont_26_11_25', monospace, sans-serif;
-  font-size: 12vw;
+  font-size: 10vw;
   font-weight: 400;
   line-height: 1;
   text-align: center;
@@ -58,7 +58,7 @@
 }
 @media (max-width: 768px) {
   .number {
-    font-size: 20vw;
+    font-size: 15vw;
   }
 }
 /* Hands using font characters */
