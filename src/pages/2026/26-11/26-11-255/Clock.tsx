@@ -5,7 +5,7 @@ import styles from './Clock.module.css';
 
 export const assets: string[] = [];
 
-const Clock_26_11_26 = () => {
+const Clock_26_11_25 = () => {
   const time = useSmoothClock(16);
 
   return (
@@ -18,6 +18,6 @@ const Clock_26_11_26 = () => {
   );
 };
 
-Clock_26_11_26.displayName = 'Clock_26_11_26';
+Clock_26_11_25.displayName = 'Clock_26_11_25';
 
-export default Clock_26_11_26;
+export default Clock_26_11_25;
