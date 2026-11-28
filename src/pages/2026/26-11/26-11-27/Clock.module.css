@@ -63,30 +63,30 @@
   bottom: 50%;
   transform-origin: center bottom;
   transform: translateX(-50%) rotate(var(--rotation, 0deg));
-  /* Organic, vine-like silhouette using clip-path */
+  /* Organic, vine-like silhouette using clip-path — narrow tip at bottom (pivot), wide at top */
   clip-path: polygon(
-    48% 100%,
-    45% 85%,
-    50% 78%,
-    44% 65%,
-    51% 55%,
-    46% 42%,
-    50% 30%,
-    54% 22%,
-    50% 12%,
-    52% 5%,
-    48% 0%,
-    52% 0%,
-    48% 5%,
-    50% 12%,
-    46% 22%,
-    50% 30%,
-    54% 42%,
-    50% 55%,
-    56% 65%,
-    50% 78%,
+    52% 100%,
     55% 85%,
-    52% 100%
+    50% 78%,
+    56% 65%,
+    50% 55%,
+    54% 42%,
+    50% 30%,
+    46% 22%,
+    50% 12%,
+    48% 5%,
+    52% 0%,
+    48% 0%,
+    52% 5%,
+    48% 12%,
+    54% 22%,
+    50% 30%,
+    46% 42%,
+    50% 55%,
+    44% 65%,
+    50% 78%,
+    45% 85%,
+    48% 100%
   );
   /* Match numerals: color #a09ab0 with identical shadow treatment */
   box-shadow:
@@ -147,31 +147,31 @@
   margin-left: calc(var(--width) / -2);
   background: var(--color);
   z-index: 3;
-  /* Thicker, more gnarled hour hand */
+  /* Thicker, more gnarled hour hand — narrow tip at pivot */
   clip-path: polygon(
-    47% 100%,
-    43% 88%,
-    50% 80%,
-    42% 70%,
-    52% 60%,
-    43% 50%,
-    51% 40%,
-    55% 32%,
-    50% 22%,
-    53% 12%,
-    47% 6%,
-    53% 6%,
-    47% 12%,
-    50% 22%,
-    45% 32%,
-    55% 40%,
-    49% 50%,
-    57% 60%,
-    50% 70%,
-    58% 70%,
-    50% 80%,
+    53% 100%,
     57% 88%,
-    53% 100%
+    50% 80%,
+    58% 70%,
+    48% 60%,
+    57% 50%,
+    49% 40%,
+    45% 32%,
+    50% 22%,
+    47% 12%,
+    53% 6%,
+    47% 6%,
+    53% 12%,
+    47% 22%,
+    55% 32%,
+    45% 40%,
+    51% 50%,
+    43% 60%,
+    50% 70%,
+    42% 70%,
+    50% 80%,
+    43% 88%,
+    47% 100%
   );
 }
 
@@ -185,30 +185,30 @@
   margin-left: calc(var(--width) / -2);
   background: var(--color);
   z-index: 2;
-  /* Thinner, more delicate vine-like minute hand */
+  /* Thinner, more delicate vine-like minute hand — narrow tip at pivot */
   clip-path: polygon(
-    49% 100%,
-    47% 88%,
-    50% 82%,
-    46% 72%,
-    51% 62%,
-    47% 52%,
-    50% 42%,
-    53% 34%,
-    50% 24%,
-    52% 14%,
-    49% 6%,
-    51% 6%,
-    48% 14%,
-    50% 24%,
-    47% 34%,
-    53% 42%,
-    50% 52%,
-    53% 62%,
-    50% 72%,
-    54% 82%,
+    51% 100%,
     53% 88%,
-    51% 100%
+    50% 82%,
+    54% 72%,
+    49% 62%,
+    53% 52%,
+    50% 42%,
+    47% 34%,
+    50% 24%,
+    48% 14%,
+    51% 6%,
+    49% 6%,
+    52% 14%,
+    48% 24%,
+    53% 34%,
+    47% 42%,
+    50% 52%,
+    47% 62%,
+    50% 72%,
+    46% 82%,
+    47% 88%,
+    49% 100%
   );
 }
 
