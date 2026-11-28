@@ -1,10 +1,19 @@
 import { useSmoothClock } from '@/utils/hooks';
 import SRTime from '@/components/SRTime';
+import { useSuspenseFontLoader } from '@/utils/fontLoader';
+import type { FontConfig } from '@/types/clock';
 
 import styles from './Clock.module.css';
-import backgroundImage from '@/assets/images/26_images/26-11/26-11-27/golden-key-bali-east-paradise-ezgif.com-remove-background.gif';
+import backgroundVideo from '@/assets/images/26_images/26-11/26-11-27/moth.mp4';
+import tileImage from '@/assets/images/26_images/26-11/26-11-27/key.gif';
+import clockFont from '@/assets/fonts/26fonts/26-11-27.ttf?url';
 
-export const assets = [backgroundImage];
+export const assets = [backgroundVideo, tileImage, clockFont];
+
+const fontConfig: FontConfig = {
+  fontFamily: 'ClockFont_26_11_27',
+  fontUrl: clockFont,
+};
 
 const ROMAN_NUMERALS = [
   'XII',
@@ -21,8 +30,14 @@ const ROMAN_NUMERALS = [
   'XI',
 ];
 
+// Generate grid positions for tiling
+const TILE_SIZE = 120; // px
+const GRID_SIZE = 12; // 12x12 grid = 144 tiles
+
 const Clock_26_11_27 = () => {
   const time = useSmoothClock(16);
+
+  useSuspenseFontLoader([fontConfig]);
 
   const hours = time.getHours() % 12;
   const minutes = time.getMinutes();
@@ -31,15 +46,47 @@ const Clock_26_11_27 = () => {
   const hourDeg = (hours + minutes / 60) * 30;
   const minuteDeg = (minutes + seconds / 60) * 6;
 
+  // Generate tile positions
+  const tiles = Array.from({ length: GRID_SIZE * GRID_SIZE }, (_, i) => {
+    const col = i % GRID_SIZE;
+    const row = Math.floor(i / GRID_SIZE);
+    // Stagger animation delay for organic feel
+    const delay = (i * 0.5) % 60;
+    return { col, row, delay };
+  });
+
   return (
-    <main
-      className={styles.container}
-      style={
-        {
-          '--background-image': `url(${backgroundImage})`,
-        } as React.CSSProperties
-      }
-    >
+    <main className={styles.container}>
+      {/* Video background */}
+      <video
+        src={backgroundVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        aria-hidden="true"
+        className={styles.backgroundVideo}
+      />
+
+      {/* Grid of rotating images on top of video */}
+      <div className={styles.backgroundGrid} aria-hidden="true">
+        {tiles.map((tile) => (
+          <img
+            key={`${tile.col}-${tile.row}`}
+            src={tileImage}
+            alt=""
+            className={styles.backgroundTile}
+            style={
+              {
+                left: `${tile.col * TILE_SIZE}px`,
+                top: `${tile.row * TILE_SIZE}px`,
+                animationDelay: `${-tile.delay}s`,
+              } as React.CSSProperties
+            }
+          />
+        ))}
+      </div>
+
       <SRTime time={time} />
       <div className={styles.clockFace} aria-hidden="true">
         {/* Roman numerals at 85% radius - matching 26-11-25 geometric pattern */}
