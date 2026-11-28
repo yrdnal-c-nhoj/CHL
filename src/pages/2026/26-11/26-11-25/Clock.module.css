@@ -9,7 +9,6 @@
   background: #45474c;
   color: #e8947b;
 }
-
 .backgroundVideo {
   position: absolute;
   inset: 0;
@@ -18,7 +17,6 @@
   object-fit: contain;
   z-index: 0;
 }
-
 @media (max-width: 768px) {
   .backgroundVideo {
     width: 120%;
@@ -38,7 +36,6 @@
   opacity: 0.8;
   background: transparent;
 }
-
 /* Hour numbers at 85% radius - positioned geometrically with left/top + translate(-50%, -50%) */
 .number {
   position: absolute;
@@ -59,7 +56,6 @@
     1px 1px 0 #000;
   transform-origin: center;
 }
-
 @media (max-width: 768px) {
   .number {
     font-size: 20vw;
@@ -88,17 +84,14 @@
     1px 1px 0 #000;
   white-space: nowrap;
 }
-
 .hourHand {
   font-size: 14vmin;
   z-index: 3;
 }
-
 .minuteHand {
   font-size: 22vmin;
   z-index: 2;
 }
-
 @media (prefers-reduced-motion: reduce) {
   .backgroundVideo {
     display: none;
